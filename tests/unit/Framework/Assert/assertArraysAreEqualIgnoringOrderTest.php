@@ -134,11 +134,6 @@ final class assertArraysAreEqualIgnoringOrderTest extends TestCase
                 ['obj' => new ValueObjectA(0)],
             ],
 
-            'different object instances with strictly equal properties, different order' => [
-                [new ValueObjectA('v1'), new ValueObjectA('v2')],
-                [new ValueObjectA('v2'), new ValueObjectA('v1')],
-            ],
-
             'identical keys, identical values, different order' => [
                 [0 => 1, 'a' => 'b', 2 => 'c'],
                 ['a' => 'b', 0 => 1, 2 => 'c'],
@@ -152,6 +147,21 @@ final class assertArraysAreEqualIgnoringOrderTest extends TestCase
             'false vs null (loose comparison)' => [
                 [false],
                 [null],
+            ],
+
+            'mixed scalar and boolean values, different order, same key-value pairs' => [
+                ['a' => 'string-a', 'b' => true, 'c' => 'string-c'],
+                ['a' => 'string-a', 'c' => 'string-c', 'b' => true],
+            ],
+
+            'nested associative arrays whose keys appear in a different order' => [
+                ['outer' => ['inner_1' => 'v1', 'inner_2' => 'v2']],
+                ['outer' => ['inner_2' => 'v2', 'inner_1' => 'v1']],
+            ],
+
+            'deeply nested associative arrays whose keys appear in a different order' => [
+                ['l1' => ['l2' => ['l3_1' => 'v1', 'l3_2' => 'v2']]],
+                ['l1' => ['l2' => ['l3_2' => 'v2', 'l3_1' => 'v1']]],
             ],
         ];
     }

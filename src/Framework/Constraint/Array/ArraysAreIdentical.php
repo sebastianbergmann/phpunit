@@ -14,7 +14,7 @@ namespace PHPUnit\Framework\Constraint;
  */
 final class ArraysAreIdentical extends ArrayComparison
 {
-    protected function compareArrays(mixed $expected, mixed $actual): bool
+    protected function compareLeaf(mixed $expected, mixed $actual): bool
     {
         return $expected === $actual;
     }

@@ -14,6 +14,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\TestFixture\ObjectComparison\ValueObjectA;
 use stdClass;
 
 #[CoversMethod(Assert::class, 'assertArraysHaveEqualValuesIgnoringOrder')]
@@ -134,6 +135,11 @@ final class assertArraysHaveEqualValuesIgnoringOrderTest extends TestCase
             'equal values, different order' => [
                 [1, 2, 3],
                 [3, 2, 1],
+            ],
+
+            'different object instances with strictly equal properties, different order' => [
+                [new ValueObjectA('v1'), new ValueObjectA('v2')],
+                [new ValueObjectA('v2'), new ValueObjectA('v1')],
             ],
 
             'different keys, equal values, different order' => [
