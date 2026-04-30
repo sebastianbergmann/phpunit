@@ -12,7 +12,9 @@ namespace PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 #[CoversClass(IsNull::class)]
 #[CoversClass(Constraint::class)]
@@ -37,5 +39,29 @@ final class IsNullTest extends TestCase
     public function testIsCountable(): void
     {
         $this->assertCount(1, new IsNull);
+    }
+
+    public function testFailureDescriptionForScalar(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs('Failed asserting that false is null.');
+
+        (new IsNull)->evaluate(false);
+    }
+
+    public function testFailureDescriptionForArray(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs('Failed asserting that an array is null.');
+
+        (new IsNull)->evaluate([1, 2, 3]);
+    }
+
+    public function testFailureDescriptionForObject(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs('Failed asserting that an instance of class stdClass is null.');
+
+        (new IsNull)->evaluate(new stdClass);
     }
 }

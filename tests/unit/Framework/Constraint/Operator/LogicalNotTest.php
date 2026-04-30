@@ -133,6 +133,51 @@ final class LogicalNotTest extends TestCase
         $this->assertCount(2, $constraint);
     }
 
+    public function testHasArityOfOne(): void
+    {
+        $this->assertSame(1, $this->logicalNot($this->isTrue())->arity());
+    }
+
+    public function testToStringTransformsWrappedConstraintString(): void
+    {
+        $this->assertSame('is not true', $this->logicalNot($this->isTrue())->toString());
+    }
+
+    public function testToStringIsReducedThroughDoubleNegation(): void
+    {
+        $constraint = new LogicalNot(new LogicalNot(new IsTrue));
+
+        $this->assertSame('is true', $constraint->toString());
+    }
+
+    public function testFailureDescriptionIsReducedThroughDoubleNegation(): void
+    {
+        $constraint = new LogicalNot(new LogicalNot(new IsTrue));
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs('Failed asserting that false is true.');
+
+        $constraint->evaluate(false);
+    }
+
+    public function testDefaultTransformStringReturnsInputUnchanged(): void
+    {
+        $operator = new class(new IsTrue) extends UnaryOperator
+        {
+            public function operator(): string
+            {
+                return 'identity';
+            }
+
+            public function precedence(): int
+            {
+                return 1;
+            }
+        };
+
+        $this->assertSame('is true', $operator->toString());
+    }
+
     #[TestDox('LogicalNot(IsEqual(\'test contains something\')) is handled correctly')]
     #[Group('regression')]
     #[Group('regression/5516')]

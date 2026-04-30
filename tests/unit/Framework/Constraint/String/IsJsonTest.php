@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\Constraint;
 
 use function json_encode;
+use function str_repeat;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -49,6 +50,24 @@ final class IsJsonTest extends TestCase
                 false,
                 'Failed asserting that an array is valid JSON.',
                 [],
+            ],
+
+            [
+                false,
+                'Failed asserting that a string is valid JSON (Maximum stack depth exceeded).',
+                str_repeat('[', 1000) . '1' . str_repeat(']', 1000),
+            ],
+
+            [
+                false,
+                'Failed asserting that a string is valid JSON (Unexpected control character found).',
+                "\"\x01\"",
+            ],
+
+            [
+                false,
+                'Failed asserting that a string is valid JSON (Malformed UTF-8 characters, possibly incorrectly encoded).',
+                "\"\xC3\x28\"",
             ],
         ];
     }

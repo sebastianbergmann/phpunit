@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function fclose;
+use function fopen;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -181,5 +183,21 @@ EOT,
     public function testIsCountable(): void
     {
         $this->assertCount(1, (new IsIdentical(true)));
+    }
+
+    public function testFailureDescriptionForResources(): void
+    {
+        $expected = fopen('php://memory', 'r');
+        $actual   = fopen('php://memory', 'r');
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs('Failed asserting that two variables reference the same resource.');
+
+        try {
+            new IsIdentical($expected)->evaluate($actual);
+        } finally {
+            fclose($expected);
+            fclose($actual);
+        }
     }
 }

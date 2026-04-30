@@ -13,6 +13,7 @@ use ArrayIterator;
 use ArrayObject;
 use EmptyIterator;
 use Generator;
+use IteratorAggregate;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -26,6 +27,7 @@ use PHPUnit\TestFixture\TestIterator;
 use PHPUnit\TestFixture\TestIterator2;
 use PHPUnit\TestFixture\TestIteratorAggregate;
 use PHPUnit\TestFixture\TestIteratorAggregate2;
+use Traversable;
 
 #[CoversClass(Count::class)]
 #[CoversClass(Constraint::class)]
@@ -212,6 +214,22 @@ final class CountTest extends TestCase
         $this->expectException(Exception::class);
 
         $constraint->evaluate(new ExceptionThrowingIteratorAggregate);
+    }
+
+    public function testRejectsIteratorAggregateThatReturnsItself(): void
+    {
+        $cyclic = new class implements IteratorAggregate
+        {
+            public function getIterator(): Traversable
+            {
+                return $this;
+            }
+        };
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('IteratorAggregate::getIterator() returned an object that was already seen');
+
+        new Count(0)->evaluate($cyclic);
     }
 
     private function generator(): Generator

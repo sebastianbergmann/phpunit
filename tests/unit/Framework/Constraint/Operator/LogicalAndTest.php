@@ -121,4 +121,11 @@ final class LogicalAndTest extends TestCase
 
         $this->assertCount(2, $constraint);
     }
+
+    public function testReducesToInnerOperatorWhenContainingSingleOperator(): void
+    {
+        $constraint = LogicalAnd::fromConstraints(new LogicalNot(new IsTrue));
+
+        $this->assertSame('is not true', $constraint->toString());
+    }
 }

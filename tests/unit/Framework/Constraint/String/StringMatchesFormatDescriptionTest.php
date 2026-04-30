@@ -423,6 +423,29 @@ EOD
         $constraint->evaluate("header\nbar\nextra\nlines");
     }
 
+    public function testFailureMessageWhenActualHasFewerLinesThanExpected(): void
+    {
+        $constraint = new StringMatchesFormatDescription("first\nsecond\nthird\nfourth");
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIsOrContains(
+            <<<'EOD'
+Failed asserting that string matches format description.
+--- Expected
++++ Actual
+@@ @@
+ first
+-second
+-third
+-fourth
++second
+
+EOD
+        );
+
+        $constraint->evaluate("first\nsecond");
+    }
+
     public function testFailureMessageWithMultilineMatchAndAnchorNotFoundInActual(): void
     {
         $constraint = new StringMatchesFormatDescription("start\n%A\nunique_anchor\nend");

@@ -121,4 +121,11 @@ final class LogicalXorTest extends TestCase
 
         $this->assertCount(2, $constraint);
     }
+
+    public function testEvaluatesToFalseWithoutAnyConstraints(): void
+    {
+        $constraint = LogicalXor::fromConstraints();
+
+        $this->assertFalse($constraint->evaluate('anything', returnResult: true));
+    }
 }

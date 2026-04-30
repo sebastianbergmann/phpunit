@@ -72,6 +72,20 @@ final class CallbackTest extends TestCase
         $this->assertFalse(new Callback($class)->isVariadic());
     }
 
+    public function testCanBeEvaluatedWithVariadicCallback(): void
+    {
+        $class = new class
+        {
+            public function __invoke(string ...$values): bool
+            {
+                return $values === ['a', 'b', 'c'];
+            }
+        };
+
+        $this->assertTrue(new Callback($class)->evaluate(['a', 'b', 'c'], returnResult: true));
+        $this->assertFalse(new Callback($class)->evaluate(['x'], returnResult: true));
+    }
+
     private function acceptingCallbackConstraint(): Callback
     {
         return new Callback(static fn (): bool => true);

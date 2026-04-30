@@ -14,6 +14,7 @@ use function log;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(IsInfinite::class)]
@@ -40,5 +41,13 @@ final class IsInfiniteTest extends TestCase
     public function testIsCountable(): void
     {
         $this->assertCount(1, (new IsInfinite));
+    }
+
+    public function testFailureDescriptionForScalar(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs('Failed asserting that 1 is infinite.');
+
+        (new IsInfinite)->evaluate(1);
     }
 }

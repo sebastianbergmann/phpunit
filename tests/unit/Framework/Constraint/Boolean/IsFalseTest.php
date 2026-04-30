@@ -12,7 +12,9 @@ namespace PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 #[CoversClass(IsFalse::class)]
 #[CoversClass(Constraint::class)]
@@ -35,5 +37,29 @@ final class IsFalseTest extends TestCase
     public function testIsCountable(): void
     {
         $this->assertCount(1, (new IsFalse));
+    }
+
+    public function testFailureDescriptionForScalar(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs('Failed asserting that true is false.');
+
+        (new IsFalse)->evaluate(true);
+    }
+
+    public function testFailureDescriptionForArray(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs('Failed asserting that an array is false.');
+
+        (new IsFalse)->evaluate([1, 2, 3]);
+    }
+
+    public function testFailureDescriptionForObject(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs('Failed asserting that an instance of class stdClass is false.');
+
+        (new IsFalse)->evaluate(new stdClass);
     }
 }

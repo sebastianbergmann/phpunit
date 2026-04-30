@@ -14,6 +14,7 @@ use function log;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(IsFinite::class)]
@@ -40,5 +41,13 @@ final class IsFiniteTest extends TestCase
     public function testIsCountable(): void
     {
         $this->assertCount(1, (new IsFinite));
+    }
+
+    public function testFailureDescriptionForScalar(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs('Failed asserting that -INF is finite.');
+
+        (new IsFinite)->evaluate(log(0));
     }
 }

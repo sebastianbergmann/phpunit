@@ -160,6 +160,15 @@ final class StringContainsTest extends TestCase
                 'Example character encoding',
             ],
 
+            'Encoding detection failure for the haystack is reported in the failure message' => [
+                false,
+                "Failed asserting that '\xC3\x28' [Encoding detection failed](length: 2) contains \"needle\" [ASCII](length: 6).",
+                false,
+                false,
+                'needle',
+                "\xC3\x28",
+            ],
+
             'Both the needle and haystack length in the failure message partly account for \r line endings given line endings are ignored' => [
                 false,
                 "Failed asserting that 'Some haystack with\\r\n line\\n\n endings \\n\\r\n' [ASCII](length: 36) contains \"Some needle with\n line\n endings \n\n\" [ASCII](length: 34).",
