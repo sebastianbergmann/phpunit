@@ -88,9 +88,11 @@ final class SourceMapper
             foreach ((new FileIteratorFacade)->getFilesAsArray($path, $suffixes, $prefixes) as $file) {
                 $file = realpath($file);
 
+                // @codeCoverageIgnoreStart
                 if ($file === false) {
                     continue;
                 }
+                // @codeCoverageIgnoreEnd
 
                 if ($this->isInHiddenDirectory($file, $basePath)) {
                     continue;
@@ -116,9 +118,11 @@ final class SourceMapper
             foreach ((new FileIteratorFacade)->getFilesAsArray($path, $suffixes, $prefixes) as $file) {
                 $file = realpath($file);
 
+                // @codeCoverageIgnoreStart
                 if ($file === false) {
                     continue;
                 }
+                // @codeCoverageIgnoreEnd
 
                 if (!isset($files[$file])) {
                     continue;
@@ -162,9 +166,11 @@ final class SourceMapper
             foreach ((new FileIteratorFacade)->getFilesAsArray($directory->path(), $directory->suffix(), $directory->prefix()) as $file) {
                 $file = realpath($file);
 
+                // @codeCoverageIgnoreStart
                 if ($file === false) {
                     continue;
                 }
+                // @codeCoverageIgnoreEnd
 
                 unset($files[$file]);
             }

@@ -69,9 +69,11 @@ final readonly class TestSuiteBuilder
 
                 $fileLines = file($configuration->testFilesFile());
 
+                // @codeCoverageIgnoreStart
                 if ($fileLines === false) {
                     throw new RuntimeException('Cannot read from ' . $configuration->testFilesFile());
                 }
+                // @codeCoverageIgnoreEnd
 
                 foreach ($fileLines as $file) {
                     $file     = trim($file);
