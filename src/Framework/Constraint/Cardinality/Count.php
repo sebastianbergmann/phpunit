@@ -94,7 +94,9 @@ class Count extends Constraint
             }
 
             if (!$iterator instanceof Iterator) {
+                // @codeCoverageIgnoreStart
                 return iterator_count($iterator);
+                // @codeCoverageIgnoreEnd
             }
 
             $key   = $iterator->key();

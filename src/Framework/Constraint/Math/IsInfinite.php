@@ -39,7 +39,9 @@ final class IsInfinite extends Constraint
     protected function failureDescription(mixed $other): string
     {
         if (is_array($other) || is_object($other)) {
+            // @codeCoverageIgnoreStart
             return $this->valueToTypeStringFragment($other) . $this->toString();
+            // @codeCoverageIgnoreEnd
         }
 
         return Exporter::export($other) . ' ' . $this->toString();

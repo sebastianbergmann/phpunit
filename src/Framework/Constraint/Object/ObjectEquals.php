@@ -125,7 +125,9 @@ final class ObjectEquals extends Constraint
         $typeName = $type->getName();
 
         if ($typeName === 'self') {
+            // @codeCoverageIgnoreStart
             $typeName = $other::class;
+            // @codeCoverageIgnoreEnd
         }
 
         if (!$this->expected instanceof $typeName) {

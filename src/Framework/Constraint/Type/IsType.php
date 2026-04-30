@@ -95,7 +95,9 @@ final class IsType extends Constraint
                 return is_iterable($other);
 
             default:
+                // @codeCoverageIgnoreStart
                 return false;
+                // @codeCoverageIgnoreEnd
         }
     }
 }
