@@ -196,7 +196,8 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
 
             (new Renderer)->renderForCoverage(
                 $code,
-                CodeCoverage::instance()->collectsBranchAndPathCoverage(),
+                CodeCoverage::instance()->collectsBranchCoverage(),
+                CodeCoverage::instance()->collectsPathCoverage(),
                 $codeCoverageCacheDirectory,
                 $bootstrap,
                 $this->coverageFiles(),

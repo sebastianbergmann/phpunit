@@ -62,7 +62,8 @@ final class CodeCoverage
     private ?Timer $timer                       = null;
     private bool $requireCoverageContribution   = false;
     private bool $lastTestContributedToCoverage = false;
-    private bool $collectsBranchAndPathCoverage = false;
+    private bool $collectsBranchCoverage        = false;
+    private bool $collectsPathCoverage          = false;
 
     public static function instance(): self
     {
@@ -81,7 +82,11 @@ final class CodeCoverage
             return CodeCoverageInitializationStatus::NOT_REQUESTED;
         }
 
-        $this->activate($codeCoverageFilterRegistry->get(), $configuration->pathCoverage());
+        $this->activate(
+            $codeCoverageFilterRegistry->get(),
+            $configuration->branchCoverage(),
+            $configuration->pathCoverage(),
+        );
 
         if (!$this->isActive()) {
             return CodeCoverageInitializationStatus::FAILED;
@@ -288,15 +293,21 @@ final class CodeCoverage
 
     public function deactivate(): void
     {
-        $this->driver                        = null;
-        $this->codeCoverage                  = null;
-        $this->test                          = null;
-        $this->collectsBranchAndPathCoverage = false;
+        $this->driver                 = null;
+        $this->codeCoverage           = null;
+        $this->test                   = null;
+        $this->collectsBranchCoverage = false;
+        $this->collectsPathCoverage   = false;
     }
 
-    public function collectsBranchAndPathCoverage(): bool
+    public function collectsBranchCoverage(): bool
     {
-        return $this->collectsBranchAndPathCoverage;
+        return $this->collectsBranchCoverage;
+    }
+
+    public function collectsPathCoverage(): bool
+    {
+        return $this->collectsPathCoverage;
     }
 
     public function generateReports(Printer $printer, Configuration $configuration): void
@@ -501,13 +512,26 @@ final class CodeCoverage
         $this->deactivate();
     }
 
-    private function activate(Filter $filter, bool $pathCoverage): void
+    private function activate(Filter $filter, bool $branchCoverage, bool $pathCoverage): void
     {
         try {
+            $granularity = Granularity::Line;
+
+            if ($branchCoverage) {
+                $granularity = Granularity::LineAndBranch;
+            }
+
             if ($pathCoverage) {
                 $granularity = Granularity::LineBranchAndPath;
-            } else {
-                $granularity = Granularity::Line;
+            }
+
+            /**
+             * @todo This needs to be removed once code coverage drivers are supported that can collect branch coverage without path coverage
+             */
+            if ($branchCoverage || $pathCoverage) {
+                $branchCoverage = true;
+                $pathCoverage   = true;
+                $granularity    = Granularity::LineBranchAndPath;
             }
 
             $this->driver = (new Selector)->select($filter, $granularity);
@@ -517,7 +541,8 @@ final class CodeCoverage
                 $filter,
             );
 
-            $this->collectsBranchAndPathCoverage = $pathCoverage;
+            $this->collectsBranchCoverage = $branchCoverage;
+            $this->collectsPathCoverage   = $pathCoverage;
         } catch (CodeCoverageException $e) {
             $message = $e->getMessage();
 

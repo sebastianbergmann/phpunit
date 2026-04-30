@@ -22,14 +22,18 @@ final readonly class CodeCoverageBootstrapper
     /**
      * @param ?non-empty-string $codeCoverageCacheDirectory
      */
-    public static function bootstrap(?string $codeCoverageCacheDirectory, bool $pathCoverage): CodeCoverage
+    public static function bootstrap(?string $codeCoverageCacheDirectory, bool $branchCoverage, bool $pathCoverage): CodeCoverage
     {
         $filter = new Filter;
 
+        $granularity = Granularity::Line;
+
+        if ($branchCoverage) {
+            $granularity = Granularity::LineAndBranch;
+        }
+
         if ($pathCoverage) {
             $granularity = Granularity::LineBranchAndPath;
-        } else {
-            $granularity = Granularity::Line;
         }
 
         $coverage = new CodeCoverage(

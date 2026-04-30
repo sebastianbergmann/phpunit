@@ -58,14 +58,32 @@ final class RendererTest extends TestCase
         (new Renderer)->renderForCoverage(
             $job,
             false,
+            false,
             null,
             '',
             $files,
         );
 
         $this->assertStringEqualsFile($files['job'], '<?php echo 1;');
-        $this->assertStringContainsString('CodeCoverageBootstrapper::bootstrap(null, false)', $job);
+        $this->assertStringContainsString('CodeCoverageBootstrapper::bootstrap(null, false, false)', $job);
         $this->assertStringContainsString($files['coverage'], $job);
+    }
+
+    public function testRenderForCoverageWithBranchCoverage(): void
+    {
+        $files = $this->createTempFiles();
+        $job   = '<?php echo 1;';
+
+        (new Renderer)->renderForCoverage(
+            $job,
+            true,
+            false,
+            null,
+            '',
+            $files,
+        );
+
+        $this->assertStringContainsString('CodeCoverageBootstrapper::bootstrap(null, true, false)', $job);
     }
 
     public function testRenderForCoverageWithPathCoverage(): void
@@ -75,13 +93,14 @@ final class RendererTest extends TestCase
 
         (new Renderer)->renderForCoverage(
             $job,
+            false,
             true,
             null,
             '',
             $files,
         );
 
-        $this->assertStringContainsString('CodeCoverageBootstrapper::bootstrap(null, true)', $job);
+        $this->assertStringContainsString('CodeCoverageBootstrapper::bootstrap(null, false, true)', $job);
     }
 
     public function testRenderForCoverageWithCacheDirectory(): void
@@ -92,12 +111,13 @@ final class RendererTest extends TestCase
         (new Renderer)->renderForCoverage(
             $job,
             false,
+            false,
             '/tmp/cache',
             '',
             $files,
         );
 
-        $this->assertStringContainsString("CodeCoverageBootstrapper::bootstrap('/tmp/cache', false)", $job);
+        $this->assertStringContainsString("CodeCoverageBootstrapper::bootstrap('/tmp/cache', false, false)", $job);
     }
 
     public function testRenderForCoverageWithBootstrap(): void
@@ -107,6 +127,7 @@ final class RendererTest extends TestCase
 
         (new Renderer)->renderForCoverage(
             $job,
+            false,
             false,
             null,
             '/path/to/bootstrap.php',

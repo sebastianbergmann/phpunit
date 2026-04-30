@@ -20,7 +20,7 @@ if ('{bootstrap}' !== '') {
     require_once '{bootstrap}';
 }
 
-$__phpunit_coverage = CodeCoverageBootstrapper::bootstrap({codeCoverageCacheDirectory}, {pathCoverage});
+$__phpunit_coverage = CodeCoverageBootstrapper::bootstrap({codeCoverageCacheDirectory}, {branchCoverage}, {pathCoverage});
 
 if ($__phpunit_coverage !== null) {
     $__phpunit_coverage->start(__FILE__);

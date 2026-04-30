@@ -58,7 +58,7 @@ final readonly class Renderer
      *
      * @throws InvalidArgumentException
      */
-    public function renderForCoverage(string &$job, bool $pathCoverage, ?string $codeCoverageCacheDirectory, string $bootstrap, array $files): void
+    public function renderForCoverage(string &$job, bool $branchCoverage, bool $pathCoverage, ?string $codeCoverageCacheDirectory, string $bootstrap, array $files): void
     {
         $template = new Template(
             __DIR__ . '/templates/phpt.tpl',
@@ -84,6 +84,12 @@ final readonly class Renderer
             $codeCoverageCacheDirectory = "'" . $codeCoverageCacheDirectory . "'";
         }
 
+        if ($branchCoverage) {
+            $branchCoverageValue = 'true';
+        } else {
+            $branchCoverageValue = 'false';
+        }
+
         if ($pathCoverage) {
             $pathCoverageValue = 'true';
         } else {
@@ -97,6 +103,7 @@ final readonly class Renderer
                 'phar'                       => $phar,
                 'job'                        => $files['job'],
                 'coverageFile'               => $files['coverage'],
+                'branchCoverage'             => $branchCoverageValue,
                 'pathCoverage'               => $pathCoverageValue,
                 'codeCoverageCacheDirectory' => $codeCoverageCacheDirectory,
             ],
