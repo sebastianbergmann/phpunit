@@ -101,9 +101,7 @@ final class JunitXmlLogger
     {
         $xml = $this->document->saveXML();
 
-        if ($xml === false) {
-            $xml = '';
-        }
+        assert($xml !== false);
 
         $this->printer->print($xml);
         $this->printer->flush();
