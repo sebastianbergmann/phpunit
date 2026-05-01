@@ -1,0 +1,6 @@
+Foo
+ [ ] Errored
+ [ ] Failed
+ [ ] Incomplete
+ [ ] Skipped
+
