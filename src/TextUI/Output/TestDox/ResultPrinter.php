@@ -50,7 +50,7 @@ final readonly class ResultPrinter
     }
 
     /**
-     * @param array<string, TestResultCollection> $tests
+     * @param array<class-string, TestResultCollection> $tests
      */
     public function print(TestResult $result, array $tests): void
     {
@@ -87,11 +87,11 @@ final readonly class ResultPrinter
     }
 
     /**
-     * @param array<string, TestResultCollection> $tests
+     * @param array<class-string, TestResultCollection> $tests
      */
     private function doPrint(array $tests, bool $onlySummary): void
     {
-        foreach ($tests as $prettifiedClassName => $_tests) {
+        foreach ($tests as $_tests) {
             $print = true;
 
             if ($onlySummary) {
@@ -116,7 +116,7 @@ final readonly class ResultPrinter
                 continue;
             }
 
-            $this->printPrettifiedClassName($prettifiedClassName);
+            $this->printPrettifiedClassName($_tests->asArray()[0]->test()->testDox()->prettifiedClassName());
 
             foreach ($_tests as $test) {
                 if ($onlySummary && $test->status()->isSuccess()) {
