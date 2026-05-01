@@ -25,15 +25,6 @@ another project, unless you wrote the respective code yourself.
 
 Open Source does not mean that copyright does not apply. Copyright infringements will not be tolerated and can lead to you being banned from this project and repository.
 
-### Do Not Submit AI-Generated Pull Requests
-
-The same goes for (largely) AI-generated pull requests. These are not welcome as they will be based on copyrighted code from others
-without accreditation and without taking the license of the original code into account, let alone getting permission
-for the use of the code or for re-licensing.
-
-Aside from that, the experience is that AI-generated pull requests will be incorrect 100% of the time and cost reviewers too much time.
-Submitting a (largely) AI-generated pull request will lead to you being banned from this project and repository.
-
 ## Write bug reports with detail, background, and sample code
 
 [This is an example](https://github.com/sebastianbergmann/phpunit/issues/4376) of a bug report I wrote, and I think it's not too bad.
@@ -65,6 +56,9 @@ Please use the most specific issue tracker to search for existing tickets and to
 * [Documentation](https://github.com/sebastianbergmann/phpunit-documentation-english/issues)
 * [Website](https://github.com/sebastianbergmann/phpunit-website/issues)
 
+Issues must be opened by a human. Do not let an AI assistant (LLM, coding agent, chat bot, or similar) act or speak on your behalf, neither when opening the issue nor when responding to follow-up questions. I am not willing to communicate with a chat bot.
+
+If you used an AI assistant to find, reproduce, or write up the issue, please say so and describe how it was used. Disclosing this does not disqualify a report, but it changes how I triage it.
 
 ## Workflow for Pull Requests
 
@@ -82,6 +76,10 @@ We encourage you to [sign your Git commits with your GPG key](https://docs.githu
 Pull requests for bug fixes must be made for the oldest branch that is [supported](https://phpunit.de/supported-versions.html). Pull requests for new features must be based on the `main` branch.
 
 We are trying to keep backwards compatibility breaks in PHPUnit to an absolute minimum. Please take this into account when proposing changes.
+
+Pull requests must be opened by a human. Do not let an AI assistant (LLM, coding agent, chat bot, or similar) act or speak on your behalf, neither when opening the pull request nor when responding to review feedback. I am not willing to communicate with a chat bot.
+
+If you used an AI assistant to generate code for the proposed changes, please say so and describe how it was used. Disclosing this does not disqualify a pull request, but it changes how I review it.
 
 Due to time constraints, we are not always able to respond as quickly as we would like. Please do not take delays personal and feel free to remind us if you feel that we forgot to respond.
 
