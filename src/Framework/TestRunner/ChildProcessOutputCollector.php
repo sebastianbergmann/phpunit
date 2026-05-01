@@ -10,11 +10,9 @@
 namespace PHPUnit\Framework\TestRunner;
 
 use const STDOUT;
-use function ftruncate;
 use function ini_set;
 use function rewind;
 use function stream_get_contents;
-use function stream_get_meta_data;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -36,13 +34,7 @@ final readonly class ChildProcessOutputCollector
         $hasRewound = @rewind(STDOUT);
 
         if ($hasRewound && $stdout = @stream_get_contents(STDOUT)) {
-            $output         = $stdout . $output;
-            $streamMetaData = stream_get_meta_data(STDOUT);
-
-            if ($streamMetaData['stream_type'] === 'STDIO') {
-                @ftruncate(STDOUT, 0);
-                @rewind(STDOUT);
-            }
+            $output = $stdout . $output;
         }
 
         return $output;
