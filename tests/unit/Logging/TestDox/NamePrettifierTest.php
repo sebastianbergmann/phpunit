@@ -37,15 +37,15 @@ final class NamePrettifierTest extends TestCase
                 'FooTest',
             ],
             [
-                'Foo',
+                'Test Foo',
                 'TestFoo',
             ],
             [
-                'Foo',
+                'Tests Foo',
                 'TestsFoo',
             ],
             [
-                'Foo',
+                'Test Foo',
                 'TestFooTest',
             ],
             [
@@ -57,7 +57,7 @@ final class NamePrettifierTest extends TestCase
                 'Tests\FooTest',
             ],
             [
-                'Unnamed Tests',
+                'Test',
                 'TestTest',
             ],
             [
