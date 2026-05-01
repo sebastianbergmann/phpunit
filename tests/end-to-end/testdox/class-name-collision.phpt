@@ -19,10 +19,10 @@ Runtime:       %s
 
 Time: %s, Memory: %s
 
-Foo (PHPUnit\TestFixture\TestDox\ClassNameCollision\Foo)
+Foo
  ✔ From foo test
 
-Foo (PHPUnit\TestFixture\TestDox\ClassNameCollision\Foo)
+Foo
  ✔ From test foo test
 
 OK (2 tests, 2 assertions)

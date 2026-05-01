@@ -19,8 +19,8 @@ print file_get_contents($output);
 
 unlink($output);
 --EXPECTF--
-Foo (PHPUnit\TestFixture\TestDox\ClassNameCollision\Foo)
+Foo
  [x] From foo test
 
-Foo (PHPUnit\TestFixture\TestDox\ClassNameCollision\Foo)
+Foo
  [x] From test foo test

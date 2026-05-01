@@ -9,8 +9,10 @@
  */
 namespace PHPUnit\TestFixture\TestDox\ClassNameCollision;
 
+use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 
+#[TestDox('Foo')]
 final class TestFooTest extends TestCase
 {
     public function testFromTestFooTest(): void

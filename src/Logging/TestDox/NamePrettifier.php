@@ -100,12 +100,6 @@ final class NamePrettifier
             $className = substr($className, 0, strlen($className) - strlen('Test'));
         }
 
-        if (str_starts_with($className, 'Tests')) {
-            $className = substr($className, strlen('Tests'));
-        } elseif (str_starts_with($className, 'Test')) {
-            $className = substr($className, strlen('Test'));
-        }
-
         if ($className === '') {
             $className = 'UnnamedTests';
         }

@@ -20,11 +20,11 @@ print file_get_contents($output);
 unlink($output);
 --EXPECTF--
 %A
-        <h2>Foo (PHPUnit\TestFixture\TestDox\ClassNameCollision\Foo)</h2>
+        <h2>Foo</h2>
         <ul>
             <li class="success">From foo test</li>
         </ul>
-        <h2>Foo (PHPUnit\TestFixture\TestDox\ClassNameCollision\Foo)</h2>
+        <h2>Foo</h2>
         <ul>
             <li class="success">From test foo test</li>
         </ul>

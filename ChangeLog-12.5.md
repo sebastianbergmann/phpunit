@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 
 ## [12.5.25] - 2026-MM-DD
 
+### Changed
+
+* A `Test` or `Tests` prefix is no longer stripped from class names when they are processed for TestDox output
+
 ### Fixed
 
 * TestDox output collapsed separate test classes into a single group when their prettified class names matched
