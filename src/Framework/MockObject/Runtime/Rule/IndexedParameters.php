@@ -42,7 +42,7 @@ final class IndexedParameters implements ParametersRule
     }
 
     /**
-     * Checks if the invocation $invocation matches the current rules on underlying parameters
+     * Checks if the invocation $invocation matches the current rules on underlying parameters.
      *
      * @throws ExpectationFailedException
      */
