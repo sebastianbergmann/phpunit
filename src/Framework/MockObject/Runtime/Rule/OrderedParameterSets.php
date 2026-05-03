@@ -36,7 +36,7 @@ final class OrderedParameterSets implements ParametersRule
     private int $numberOfConfiguredParameterSets;
 
     /**
-     * @param list<Parameters> $stack
+     * @param list<mixed> $stack
      */
     public function __construct(array $stack)
     {

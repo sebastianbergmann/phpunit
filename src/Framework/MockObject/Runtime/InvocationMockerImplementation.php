@@ -60,6 +60,17 @@ final class InvocationMockerImplementation extends AbstractInvocationImplementat
         return $this;
     }
 
+    public function withParameterSetsInPartialOrder(mixed ...$arguments): InvocationMocker
+    {
+        $this->ensureParametersCanBeConfigured();
+        $this->ensureNoOtherMatcherHasParametersRuleForSameMethod();
+        $this->emitDeprecationWhenCreatedWithoutExplicitExpects();
+
+        $this->matcher->setParametersRule(new Rule\PartialOrderedParameterSets($arguments));
+
+        return $this;
+    }
+
     /**
      * @throws MethodNameNotConfiguredException
      * @throws MethodParametersAlreadyConfiguredException

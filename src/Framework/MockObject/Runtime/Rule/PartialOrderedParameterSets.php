@@ -9,81 +9,81 @@
  */
 namespace PHPUnit\Framework\MockObject\Rule;
 
-use function array_shift;
 use function count;
-use function implode;
 use function is_array;
 use function sprintf;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 use PHPUnit\Framework\MockObject\NoMoreParameterSetsConfiguredException;
 
-final class UnorderedParameterSets implements ParametersRule
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ */
+final class PartialOrderedParameterSets implements ParametersRule
 {
     /**
      * @var list<IndexedParameters>
      */
-    private array $stack = [];
-
-    /**
-     * @var list<IndexedParameters>
-     */
-    private array $unapplied = [];
+    private array $ordered = [];
 
     /**
      * @var list<IndexedParameters>
      */
     private array $applied = [];
+    private UnorderedParameterSets $unordered;
     private int $numberOfConfiguredParameterSets;
+    private int $numberOfInvocations = 0;
 
     /**
      * @param list<mixed> $stack
      */
     public function __construct(array $stack)
     {
+        $unordered = [];
+
         foreach ($stack as $index => $parameters) {
-            if (!$parameters instanceof IndexedParameters) {
-                $parameters = new IndexedParameters(is_array($parameters) ? $parameters : [$parameters], false);
-                $parameters->index($index);
+            $parameters = ($parameters instanceof IndexedParameters)
+                ? $parameters
+                : new IndexedParameters(is_array($parameters) ? $parameters : [$parameters], false);
+            $parameters->index($index);
+
+            if ($parameters->isStrict() === true) {
+                $this->ordered[] = $parameters;
+
+                continue;
             }
 
-            $this->stack[] = $parameters;
+            $unordered[] = $parameters;
         }
 
-        $this->unapplied                       = $this->stack;
+        $this->unordered                       = new UnorderedParameterSets($unordered);
         $this->numberOfConfiguredParameterSets = count($stack);
     }
 
     public function apply(BaseInvocation $invocation): void
     {
-        if ($this->unapplied === []) {
+        $this->numberOfInvocations++;
+
+        if ($this->numberOfInvocations > $this->numberOfConfiguredParameterSets) {
             throw new NoMoreParameterSetsConfiguredException(
                 $invocation,
                 $this->numberOfConfiguredParameterSets,
             );
         }
 
-        $checkedParameters   = 0;
-        $unappliedParameters = count($this->unapplied);
-
-        while ($checkedParameters < $unappliedParameters) {
-            $checkedParameters++;
-            $parameters = array_shift($this->unapplied);
-
-            try {
-                $parameters->useAssertionCount(false);
-                $parameters->apply($invocation);
-
+        foreach ($this->ordered as $key => $parameters) {
+            if ($parameters->at() === $this->numberOfInvocations - 1) {
+                unset($this->ordered[$key]);
                 $this->applied[] = $parameters;
-
-                $parameters->useAssertionCount(true);
                 $parameters->apply($invocation);
 
-                break;
-            } catch (ExpectationFailedException $e) {
-                $this->unapplied[] = $parameters;
+                return;
             }
         }
+
+        $this->unordered->apply($invocation);
     }
 
     /**
@@ -95,25 +95,24 @@ final class UnorderedParameterSets implements ParametersRule
      */
     public function verify(): void
     {
-        if (count($this->applied) !== $this->numberOfConfiguredParameterSets &&
-            count($this->unapplied) > 0) {
-            $unappliedIndexes = [];
+        $this->unordered->verify();
 
-            foreach ($this->unapplied as $parameters) {
-                $unappliedIndexes[] = $parameters->at();
-            }
-
+        if ($this->numberOfInvocations !== $this->numberOfConfiguredParameterSets &&
+            count($this->ordered) + count($this->applied) === $this->numberOfConfiguredParameterSets &&
+            $this->numberOfInvocations > 0) {
             throw new ExpectationFailedException(
                 sprintf(
-                    '%d out of %d expected unordered parameter set%s %s called, index%s [' . implode(', ', $unappliedIndexes) . '] %s not called.',
-                    count($this->applied),
+                    'Too many parameter sets given, %d out of %d expected parameter set%s %s been called.',
+                    $this->numberOfInvocations,
                     $this->numberOfConfiguredParameterSets,
                     $this->numberOfConfiguredParameterSets !== 1 ? 's' : '',
-                    count($this->applied) !== 1 ? 'were' : 'was',
-                    count($unappliedIndexes) !== 1 ? 'es' : '',
-                    count($unappliedIndexes) !== 1 ? 'were' : 'was',
+                    $this->numberOfInvocations !== 1 ? 'have' : 'has',
                 ),
             );
+        }
+
+        foreach ($this->applied as $parameters) {
+            $parameters->verify();
         }
     }
 }
