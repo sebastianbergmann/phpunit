@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\MockObject\Rule;
 
-use function array_search;
 use function array_shift;
 use function count;
 use function implode;
@@ -22,17 +21,17 @@ use PHPUnit\Framework\MockObject\NoMoreParameterSetsConfiguredException;
 final class UnorderedParameterSets implements ParametersRule
 {
     /**
-     * @var list<Parameters>
+     * @var list<IndexedParameters>
      */
     private array $stack = [];
 
     /**
-     * @var list<Parameters>
+     * @var list<IndexedParameters>
      */
     private array $unapplied = [];
 
     /**
-     * @var list<Parameters>
+     * @var list<IndexedParameters>
      */
     private array $applied = [];
     private int $numberOfConfiguredParameterSets;
@@ -42,12 +41,18 @@ final class UnorderedParameterSets implements ParametersRule
      */
     public function __construct(array $stack)
     {
-        foreach ($stack as $parameters) {
-            if (is_array($parameters)) {
-                $this->stack[] = new Parameters($parameters);
-            } else {
-                $this->stack[] = new Parameters([$parameters]);
+        foreach ($stack as $index => $parameters) {
+            if (!$parameters instanceof IndexedParameters) {
+                if (is_array($parameters)) {
+                    $parameters = new IndexedParameters($parameters, false);
+                } else {
+                    $parameters = new IndexedParameters([$parameters], false);
+                }
+
+                $parameters->index($index);
             }
+
+            $this->stack[] = $parameters;
         }
 
         $this->unapplied                       = $this->stack;
@@ -100,12 +105,12 @@ final class UnorderedParameterSets implements ParametersRule
             $unappliedIndexes = [];
 
             foreach ($this->unapplied as $parameters) {
-                $unappliedIndexes[] = array_search($parameters, $this->stack, true);
+                $unappliedIndexes[] = $parameters->at();
             }
 
             throw new ExpectationFailedException(
                 sprintf(
-                    '%d out of %d expected parameter set%s %s called, index%s [' . implode(', ', $unappliedIndexes) . '] %s not called.',
+                    '%d out of %d expected unordered parameter set%s %s called, index%s [' . implode(', ', $unappliedIndexes) . '] %s not called.',
                     count($this->applied),
                     $this->numberOfConfiguredParameterSets,
                     $this->numberOfConfiguredParameterSets !== 1 ? 's' : '',

@@ -66,6 +66,7 @@ use PHPUnit\Framework\Constraint\StringStartsWith;
 use PHPUnit\Framework\Constraint\TraversableContainsEqual;
 use PHPUnit\Framework\Constraint\TraversableContainsIdentical;
 use PHPUnit\Framework\Constraint\TraversableContainsOnly;
+use PHPUnit\Framework\MockObject\Rule\IndexedParameters;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
 use PHPUnit\Util\Xml\XmlException;
 
@@ -3182,6 +3183,11 @@ abstract class Assert
     final public static function objectEquals(object $object, string $method = 'equals'): ObjectEquals
     {
         return new ObjectEquals($object, $method);
+    }
+
+    final public static function fixed(mixed ...$parameters): IndexedParameters
+    {
+        return new IndexedParameters($parameters, true);
     }
 
     /**
