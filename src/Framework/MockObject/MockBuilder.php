@@ -24,7 +24,9 @@ use PHPUnit\Framework\MockObject\Generator\UnknownTypeException;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @template MockedType
+ * @template MockedType of object
+ *
+ * @template-extends TestDoubleBuilder<MockedType>
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
@@ -38,7 +40,7 @@ final class MockBuilder extends TestDoubleBuilder
     private ?string $mockClassName = null;
 
     /**
-     * @param class-string|trait-string $type
+     * @param class-string<MockedType> $type
      */
     public function __construct(TestCase $testCase, string $type)
     {
