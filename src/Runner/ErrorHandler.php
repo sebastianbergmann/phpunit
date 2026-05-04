@@ -24,6 +24,7 @@ use const E_USER_ERROR;
 use const E_USER_NOTICE;
 use const E_USER_WARNING;
 use const E_WARNING;
+use function array_any;
 use function array_keys;
 use function array_reverse;
 use function array_slice;
@@ -135,6 +136,12 @@ final class ErrorHandler
             // @codeCoverageIgnoreEnd
         }
 
+        if ($errorString === '' || $errorFile === '' || $errorLine < 1) {
+            // @codeCoverageIgnoreStart
+            return $this->forwardToPreviousErrorHandler($errorNumber, $errorString, $errorFile, $errorLine);
+            // @codeCoverageIgnoreEnd
+        }
+
         /**
          * E_STRICT is deprecated since PHP 8.4.
          *
@@ -149,9 +156,7 @@ final class ErrorHandler
         $test = Event\Code\TestMethodBuilder::fromCallStack();
 
         if ($errorNumber === E_USER_DEPRECATED) {
-            $deprecationFrame = $this->guessDeprecationFrame();
-            $errorFile        = $deprecationFrame['file'] ?? $errorFile;
-            $errorLine        = $deprecationFrame['line'] ?? $errorLine;
+            [$errorFile, $errorLine] = $this->applyDeprecationFrame($errorFile, $errorLine);
         }
 
         $ignoredByBaseline = $this->ignoredByBaseline($errorFile, $errorLine, $errorString);
@@ -230,7 +235,7 @@ final class ErrorHandler
                     $ignoredByBaseline,
                     $ignoredByTest,
                     $this->trigger($test, true, $errorString),
-                    $this->stackTrace(),
+                    $this->stackTrace($errorFile, $errorLine),
                 );
 
                 break;
@@ -267,6 +272,16 @@ final class ErrorHandler
             return true;
         }
 
+        if ($errorString === '' || $errorFile === '' || $errorLine < 1) {
+            // @codeCoverageIgnoreStart
+            if ($this->previousNonTestCaseErrorHandler !== null) {
+                ($this->previousNonTestCaseErrorHandler)($errorNumber, $errorString, $errorFile, $errorLine);
+            }
+
+            return true;
+            // @codeCoverageIgnoreEnd
+        }
+
         /**
          * E_STRICT is deprecated since PHP 8.4.
          *
@@ -279,9 +294,7 @@ final class ErrorHandler
         }
 
         if ($errorNumber === E_USER_DEPRECATED) {
-            $deprecationFrame = $this->guessDeprecationFrame();
-            $errorFile        = $deprecationFrame['file'] ?? $errorFile;
-            $errorLine        = $deprecationFrame['line'] ?? $errorLine;
+            [$errorFile, $errorLine] = $this->applyDeprecationFrame($errorFile, $errorLine);
         }
 
         $ignoredByBaseline = $this->ignoredByBaseline($errorFile, $errorLine, $errorString);
@@ -351,7 +364,7 @@ final class ErrorHandler
                     $suppressed,
                     $ignoredByBaseline,
                     $this->triggerWithoutTest(true, $errorString),
-                    $this->stackTrace(),
+                    $this->stackTrace($errorFile, $errorLine),
                 );
 
                 break;
@@ -427,7 +440,7 @@ final class ErrorHandler
     }
 
     /**
-     * @return list<string>
+     * @return list<non-empty-string>
      */
     public function snapshotErrorHandlers(): array
     {
@@ -439,7 +452,7 @@ final class ErrorHandler
     }
 
     /**
-     * @return list<string>
+     * @return list<non-empty-string>
      */
     public function restoreErrorHandlers(bool $inIsolation): array
     {
@@ -560,7 +573,7 @@ final class ErrorHandler
     }
 
     /**
-     * @param list<array{function: string, line?: int, file?: string, class?: class-string, type?: '->'|'::', args?: list<mixed>, object?: object}> $trace
+     * @param list<StackFrame> $trace
      */
     private function triggerForUserlandDeprecation(TestMethod $test, string $message, array $trace): IssueTrigger
     {
@@ -628,7 +641,7 @@ final class ErrorHandler
     }
 
     /**
-     * @param list<array{function: string, line?: int, file?: string, class?: class-string, type?: '->'|'::', args?: list<mixed>, object?: object}> $trace
+     * @param list<StackFrame> $trace
      */
     private function triggerForUserlandDeprecationWithoutTest(string $message, array $trace): IssueTrigger
     {
@@ -660,7 +673,7 @@ final class ErrorHandler
     }
 
     /**
-     * @return list<array{function: string, line?: int, file?: string, class?: class-string, type?: '->'|'::', args?: list<mixed>, object?: object}>
+     * @return list<StackFrame>
      */
     private function filteredStackTrace(): array
     {
@@ -694,7 +707,7 @@ final class ErrorHandler
     }
 
     /**
-     * @return ?array{function: string, line?: int, file?: string, class?: class-string, type?: '->'|'::', args?: list<mixed>, object?: object}
+     * @return ?StackFrame
      */
     private function guessDeprecationFrame(): ?array
     {
@@ -705,16 +718,22 @@ final class ErrorHandler
         $trace = $this->errorStackTrace();
 
         foreach ($trace as $frame) {
-            foreach ($this->deprecationTriggers['functions'] as $function) {
-                if ($this->frameIsFunction($frame, $function)) {
-                    return $frame;
-                }
+            if (
+                array_any(
+                    $this->deprecationTriggers['functions'],
+                    /** @param non-empty-string $function */
+                    fn (string $function) => $this->frameIsFunction($frame, $function),
+                )) {
+                return $frame;
             }
 
-            foreach ($this->deprecationTriggers['methods'] as $method) {
-                if ($this->frameIsMethod($frame, $method)) {
-                    return $frame;
-                }
+            if (
+                array_any(
+                    $this->deprecationTriggers['methods'],
+                    /** @param DeprecationMethod $method */
+                    fn (array $method) => $this->frameIsMethod($frame, $method),
+                )) {
+                return $frame;
             }
         }
 
@@ -722,7 +741,32 @@ final class ErrorHandler
     }
 
     /**
-     * @return list<array{function: string, line?: int, file?: string, class?: class-string, type?: '->'|'::', args?: list<mixed>, object?: object}>
+     * @param non-empty-string $errorFile
+     * @param positive-int     $errorLine
+     *
+     * @return array{non-empty-string, positive-int}
+     */
+    private function applyDeprecationFrame(string $errorFile, int $errorLine): array
+    {
+        $deprecationFrame = $this->guessDeprecationFrame();
+
+        if ($deprecationFrame === null) {
+            return [$errorFile, $errorLine];
+        }
+
+        if (isset($deprecationFrame['file']) && $deprecationFrame['file'] !== '') {
+            $errorFile = $deprecationFrame['file'];
+        }
+
+        if (isset($deprecationFrame['line']) && $deprecationFrame['line'] > 0) {
+            $errorLine = $deprecationFrame['line'];
+        }
+
+        return [$errorFile, $errorLine];
+    }
+
+    /**
+     * @return list<StackFrame>
      */
     private function errorStackTrace(bool $ignoreArgs = true): array
     {
@@ -762,7 +806,13 @@ final class ErrorHandler
             $frame['function'] === $method['methodName'];
     }
 
-    private function stackTrace(): string
+    /**
+     * @param non-empty-string $errorFile
+     * @param positive-int     $errorLine
+     *
+     * @return non-empty-string
+     */
+    private function stackTrace(string $errorFile, int $errorLine): string
     {
         $buffer = '';
 
@@ -785,6 +835,12 @@ final class ErrorHandler
             );
         }
 
+        if ($buffer === '') {
+            // @codeCoverageIgnoreStart
+            $buffer = sprintf("%s:%d\n", $errorFile, $errorLine);
+            // @codeCoverageIgnoreEnd
+        }
+
         return $buffer;
     }
 
@@ -803,7 +859,7 @@ final class ErrorHandler
     }
 
     /**
-     * @param list<string> $messages
+     * @param list<non-empty-string> $messages
      *
      * @return list<callable>
      */
