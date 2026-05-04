@@ -23,8 +23,6 @@ use PHPUnit\Framework\ExpectationFailedException;
 final class LogicalNot extends UnaryOperator
 {
     /**
-     * @param non-empty-string $string
-     *
      * @return non-empty-string
      */
     public static function negate(string $string): string
