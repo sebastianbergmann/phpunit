@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
+use function assert;
 use Iterator;
 
 /**
@@ -53,6 +54,8 @@ final class ConstantCollectionIterator implements Iterator
 
     public function current(): Constant
     {
+        assert(isset($this->constants[$this->position]));
+
         return $this->constants[$this->position];
     }
 

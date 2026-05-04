@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
+use function assert;
 use Iterator;
 
 /**
@@ -53,6 +54,8 @@ final class TestDirectoryCollectionIterator implements Iterator
 
     public function current(): TestDirectory
     {
+        assert(isset($this->directories[$this->position]));
+
         return $this->directories[$this->position];
     }
 
