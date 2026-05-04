@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
+use function array_filter;
+use function array_values;
 use function explode;
 
 /**
@@ -361,15 +363,7 @@ final readonly class Configuration
     private int $executionOrder;
     private int $executionOrderDefects;
     private bool $resolveDependencies;
-
-    /**
-     * @var ?non-empty-string
-     */
     private ?string $logfileTeamcity;
-
-    /**
-     * @var ?non-empty-string
-     */
     private ?string $logfileJunit;
 
     /**
@@ -378,15 +372,7 @@ final readonly class Configuration
     private ?string $logfileOtr;
     private bool $includeGitInformation;
     private bool $includeGitInformationInOtrLogfile;
-
-    /**
-     * @var ?non-empty-string
-     */
     private ?string $logfileTestdoxHtml;
-
-    /**
-     * @var ?non-empty-string
-     */
     private ?string $logfileTestdoxText;
 
     /**
@@ -536,11 +522,7 @@ final readonly class Configuration
      * @param positive-int                                                                $timeoutForSmallTests
      * @param positive-int                                                                $timeoutForMediumTests
      * @param positive-int                                                                $timeoutForLargeTests
-     * @param ?non-empty-string                                                           $logfileTeamcity
-     * @param ?non-empty-string                                                           $logfileJunit
      * @param ?non-empty-string                                                           $logfileOtr
-     * @param ?non-empty-string                                                           $logfileTestdoxHtml
-     * @param ?non-empty-string                                                           $logfileTestdoxText
      * @param ?non-empty-string                                                           $logEventsText
      * @param ?non-empty-string                                                           $logEventsVerboseText
      * @param ?non-empty-list<non-empty-string>                                           $testsCovering
@@ -1800,8 +1782,6 @@ final readonly class Configuration
 
     /**
      * @throws LoggingNotConfiguredException
-     *
-     * @return non-empty-string
      */
     public function logfileTeamcity(): string
     {
@@ -1822,8 +1802,6 @@ final readonly class Configuration
 
     /**
      * @throws LoggingNotConfiguredException
-     *
-     * @return non-empty-string
      */
     public function logfileJunit(): string
     {
@@ -1876,8 +1854,6 @@ final readonly class Configuration
 
     /**
      * @throws LoggingNotConfiguredException
-     *
-     * @return non-empty-string
      */
     public function logfileTestdoxHtml(): string
     {
@@ -1898,8 +1874,6 @@ final readonly class Configuration
 
     /**
      * @throws LoggingNotConfiguredException
-     *
-     * @return non-empty-string
      */
     public function logfileTestdoxText(): string
     {
@@ -2195,7 +2169,12 @@ final readonly class Configuration
             return [];
         }
 
-        return explode(',', $this->includeTestSuite);
+        return array_values(
+            array_filter(
+                explode(',', $this->includeTestSuite),
+                static fn (string $name): bool => $name !== '',
+            ),
+        );
     }
 
     /**
@@ -2207,7 +2186,12 @@ final readonly class Configuration
             return [];
         }
 
-        return explode(',', $this->excludeTestSuite);
+        return array_values(
+            array_filter(
+                explode(',', $this->excludeTestSuite),
+                static fn (string $name): bool => $name !== '',
+            ),
+        );
     }
 
     /**

@@ -17,6 +17,7 @@ use function defined;
 use function dirname;
 use function explode;
 use function is_numeric;
+use function max;
 use function preg_match;
 use function realpath;
 use function sprintf;
@@ -297,7 +298,7 @@ final readonly class Loader
         //  - c:/windows
         if (defined('PHP_WINDOWS_VERSION_BUILD') &&
             $path !== '' &&
-            ($path[0] === '\\' || (strlen($path) >= 3 && preg_match('#^[A-Z]:[/\\\]#i', substr($path, 0, 3))))) {
+            ($path[0] === '\\' || (strlen($path) >= 3 && preg_match('#^[A-Z]:[/\\\]#i', substr($path, 0, 3)) === 1))) {
             return $path;
         }
 
@@ -365,7 +366,13 @@ final readonly class Loader
         foreach ($functionNodes as $functionNode) {
             assert($functionNode instanceof DOMElement);
 
-            $deprecationTriggers['functions'][] = $functionNode->textContent;
+            $functionName = $functionNode->textContent;
+
+            if ($functionName === '') {
+                continue;
+            }
+
+            $deprecationTriggers['functions'][] = $functionName;
         }
 
         $methodNodes = $xpath->query('source/deprecationTrigger/method');
@@ -375,7 +382,13 @@ final readonly class Loader
         foreach ($methodNodes as $methodNode) {
             assert($methodNode instanceof DOMElement);
 
-            $deprecationTriggers['methods'][] = $methodNode->textContent;
+            $methodName = $methodNode->textContent;
+
+            if ($methodName === '') {
+                continue;
+            }
+
+            $deprecationTriggers['methods'][] = $methodName;
         }
 
         $issueTriggerResolvers     = [];
@@ -386,7 +399,13 @@ final readonly class Loader
         foreach ($issueTriggerResolverNodes as $node) {
             assert($node instanceof DOMElement);
 
-            $issueTriggerResolvers[] = $node->getAttribute('className');
+            $className = $node->getAttribute('className');
+
+            if ($className === '') {
+                continue;
+            }
+
+            $issueTriggerResolvers[] = $className;
         }
 
         return new Source(
@@ -488,7 +507,7 @@ final readonly class Loader
                         (string) $this->parseStringAttribute($element, 'outputFile'),
                     ),
                 ),
-                $this->parseIntegerAttribute($element, 'threshold', 30),
+                $this->parseNonNegativeIntegerAttribute($element, 'threshold', 30),
             );
         }
 
@@ -511,27 +530,27 @@ final readonly class Loader
 
             $html = new CodeCoverageHtml(
                 $outputDirectory,
-                $this->parseIntegerAttribute($element, 'lowUpperBound', $defaultThresholds->lowUpperBound()),
-                $this->parseIntegerAttribute($element, 'highLowerBound', $defaultThresholds->highLowerBound()),
-                $this->parseStringAttributeWithDefault($element, 'colorSuccessLow', $defaultColors->successLow()),
-                $this->parseStringAttributeWithDefault($element, 'colorSuccessLowDark', $defaultColors->successLowDark()),
-                $this->parseStringAttributeWithDefault($element, 'colorSuccessMedium', $defaultColors->successMedium()),
-                $this->parseStringAttributeWithDefault($element, 'colorSuccessMediumDark', $defaultColors->successMediumDark()),
-                $this->parseStringAttributeWithDefault($element, 'colorSuccessHigh', $defaultColors->successHigh()),
-                $this->parseStringAttributeWithDefault($element, 'colorSuccessHighDark', $defaultColors->successHighDark()),
-                $this->parseStringAttributeWithDefault($element, 'colorSuccessBar', $defaultColors->successBar()),
-                $this->parseStringAttributeWithDefault($element, 'colorSuccessBarDark', $defaultColors->successBarDark()),
-                $this->parseStringAttributeWithDefault($element, 'colorWarning', $defaultColors->warning()),
-                $this->parseStringAttributeWithDefault($element, 'colorWarningDark', $defaultColors->warningDark()),
-                $this->parseStringAttributeWithDefault($element, 'colorWarningBar', $defaultColors->warningBar()),
-                $this->parseStringAttributeWithDefault($element, 'colorWarningBarDark', $defaultColors->warningBarDark()),
-                $this->parseStringAttributeWithDefault($element, 'colorDanger', $defaultColors->danger()),
-                $this->parseStringAttributeWithDefault($element, 'colorDangerDark', $defaultColors->dangerDark()),
-                $this->parseStringAttributeWithDefault($element, 'colorDangerBar', $defaultColors->dangerBar()),
-                $this->parseStringAttributeWithDefault($element, 'colorDangerBarDark', $defaultColors->dangerBarDark()),
-                $this->parseStringAttributeWithDefault($element, 'colorBreadcrumbs', $defaultColors->breadcrumbs()),
-                $this->parseStringAttributeWithDefault($element, 'colorBreadcrumbsDark', $defaultColors->breadcrumbsDark()),
-                $this->parseStringAttribute($element, 'customCssFile'),
+                $this->parseNonNegativeIntegerAttribute($element, 'lowUpperBound', max(0, $defaultThresholds->lowUpperBound())),
+                $this->parseNonNegativeIntegerAttribute($element, 'highLowerBound', max(0, $defaultThresholds->highLowerBound())),
+                $this->parseColorAttributeWithDefault($element, 'colorSuccessLow', $defaultColors->successLow()),
+                $this->parseColorAttributeWithDefault($element, 'colorSuccessLowDark', $defaultColors->successLowDark()),
+                $this->parseColorAttributeWithDefault($element, 'colorSuccessMedium', $defaultColors->successMedium()),
+                $this->parseColorAttributeWithDefault($element, 'colorSuccessMediumDark', $defaultColors->successMediumDark()),
+                $this->parseColorAttributeWithDefault($element, 'colorSuccessHigh', $defaultColors->successHigh()),
+                $this->parseColorAttributeWithDefault($element, 'colorSuccessHighDark', $defaultColors->successHighDark()),
+                $this->parseColorAttributeWithDefault($element, 'colorSuccessBar', $defaultColors->successBar()),
+                $this->parseColorAttributeWithDefault($element, 'colorSuccessBarDark', $defaultColors->successBarDark()),
+                $this->parseColorAttributeWithDefault($element, 'colorWarning', $defaultColors->warning()),
+                $this->parseColorAttributeWithDefault($element, 'colorWarningDark', $defaultColors->warningDark()),
+                $this->parseColorAttributeWithDefault($element, 'colorWarningBar', $defaultColors->warningBar()),
+                $this->parseColorAttributeWithDefault($element, 'colorWarningBarDark', $defaultColors->warningBarDark()),
+                $this->parseColorAttributeWithDefault($element, 'colorDanger', $defaultColors->danger()),
+                $this->parseColorAttributeWithDefault($element, 'colorDangerDark', $defaultColors->dangerDark()),
+                $this->parseColorAttributeWithDefault($element, 'colorDangerBar', $defaultColors->dangerBar()),
+                $this->parseColorAttributeWithDefault($element, 'colorDangerBarDark', $defaultColors->dangerBarDark()),
+                $this->parseColorAttributeWithDefault($element, 'colorBreadcrumbs', $defaultColors->breadcrumbs()),
+                $this->parseColorAttributeWithDefault($element, 'colorBreadcrumbsDark', $defaultColors->breadcrumbsDark()),
+                $this->parseNullableNonEmptyStringAttribute($element, 'customCssFile'),
             );
         }
 
@@ -653,11 +672,29 @@ final readonly class Loader
                 continue;
             }
 
+            $prefix = '';
+
+            if ($directoryNode->hasAttribute('prefix')) {
+                $prefix = $directoryNode->getAttribute('prefix');
+            }
+
+            $suffix = '.php';
+
+            if ($directoryNode->hasAttribute('suffix')) {
+                $candidateSuffix = $directoryNode->getAttribute('suffix');
+
+                if ($candidateSuffix !== '') {
+                    $suffix = $candidateSuffix;
+                }
+            }
+
+            $includeInCodeCoverage = !$directoryNode->hasAttribute('includeInCodeCoverage') || $directoryNode->getAttribute('includeInCodeCoverage') !== 'false';
+
             $directories[] = new FilterDirectory(
                 $this->toAbsolutePath($filename, $directoryPath),
-                $directoryNode->hasAttribute('prefix') ? $directoryNode->getAttribute('prefix') : '',
-                $directoryNode->hasAttribute('suffix') ? $directoryNode->getAttribute('suffix') : '.php',
-                !$directoryNode->hasAttribute('includeInCodeCoverage') || $directoryNode->getAttribute('includeInCodeCoverage') !== 'false',
+                $prefix,
+                $suffix,
+                $includeInCodeCoverage,
             );
         }
 
@@ -700,7 +737,13 @@ final readonly class Loader
         foreach ($groupNodes as $groupNode) {
             assert($groupNode instanceof DOMNode);
 
-            $include[] = new Group($groupNode->textContent);
+            $groupName = $groupNode->textContent;
+
+            if ($groupName === '') {
+                continue;
+            }
+
+            $include[] = new Group($groupName);
         }
 
         $groupNodes = $xpath->query('groups/exclude/group');
@@ -710,7 +753,13 @@ final readonly class Loader
         foreach ($groupNodes as $groupNode) {
             assert($groupNode instanceof DOMNode);
 
-            $exclude[] = new Group($groupNode->textContent);
+            $groupName = $groupNode->textContent;
+
+            if ($groupName === '') {
+                continue;
+            }
+
+            $exclude[] = new Group($groupName);
         }
 
         return new Groups(
@@ -743,6 +792,58 @@ final readonly class Loader
         );
     }
 
+    /**
+     * @param non-negative-int $default
+     *
+     * @return non-negative-int
+     */
+    private function parseNonNegativeIntegerAttribute(DOMElement $element, string $attribute, int $default): int
+    {
+        if (!$element->hasAttribute($attribute)) {
+            return $default;
+        }
+
+        $value = $element->getAttribute($attribute);
+
+        if (!is_numeric($value)) {
+            return $default;
+        }
+
+        $intValue = (int) $value;
+
+        if ($intValue < 0) {
+            return $default;
+        }
+
+        return $intValue;
+    }
+
+    /**
+     * @param positive-int $default
+     *
+     * @return positive-int
+     */
+    private function parsePositiveIntegerAttribute(DOMElement $element, string $attribute, int $default): int
+    {
+        if (!$element->hasAttribute($attribute)) {
+            return $default;
+        }
+
+        $value = $element->getAttribute($attribute);
+
+        if (!is_numeric($value)) {
+            return $default;
+        }
+
+        $intValue = (int) $value;
+
+        if ($intValue < 1) {
+            return $default;
+        }
+
+        return $intValue;
+    }
+
     private function parseStringAttribute(DOMElement $element, string $attribute): ?string
     {
         if (!$element->hasAttribute($attribute)) {
@@ -752,13 +853,59 @@ final readonly class Loader
         return $element->getAttribute($attribute);
     }
 
-    private function parseStringAttributeWithDefault(DOMElement $element, string $attribute, string $default): string
+    /**
+     * @return null|non-empty-string
+     */
+    private function parseNullableNonEmptyStringAttribute(DOMElement $element, string $attribute): ?string
     {
+        if (!$element->hasAttribute($attribute)) {
+            return null;
+        }
+
+        $value = $element->getAttribute($attribute);
+
+        if ($value === '') {
+            return null;
+        }
+
+        return $value;
+    }
+
+    /**
+     * @throws Exception
+     *
+     * @return non-empty-string
+     */
+    private function parseColorAttributeWithDefault(DOMElement $element, string $attribute, string $default): string
+    {
+        if ($default === '') {
+            throw new Exception(sprintf('Default value for "%s" must not be empty', $attribute));
+        }
+
         if (!$element->hasAttribute($attribute)) {
             return $default;
         }
 
-        return $element->getAttribute($attribute);
+        $value = $element->getAttribute($attribute);
+
+        if ($value === '') {
+            return $default;
+        }
+
+        return $value;
+    }
+
+    /**
+     * @throws Exception
+     *
+     * @return '!='|'<'|'<='|'<>'|'='|'=='|'>'|'>='|'eq'|'ge'|'gt'|'le'|'lt'|'ne'
+     */
+    private function parseVersionOperator(string $operator): string
+    {
+        return match ($operator) {
+            '!=', '<', '<=', '<>', '=', '==', '>', '>=', 'eq', 'ge', 'gt', 'le', 'lt', 'ne' => $operator,
+            default                                                                         => throw new Exception(sprintf('Invalid version comparison operator: "%s"', $operator)),
+        };
     }
 
     private function parseInteger(string $value, int $default): int
@@ -797,8 +944,14 @@ final readonly class Loader
         foreach ($iniNodes as $ini) {
             assert($ini instanceof DOMElement);
 
+            $iniName = $ini->getAttribute('name');
+
+            if ($iniName === '') {
+                continue;
+            }
+
             $iniSettings[] = new IniSetting(
-                $ini->getAttribute('name'),
+                $iniName,
                 $ini->getAttribute('value'),
             );
         }
@@ -812,10 +965,16 @@ final readonly class Loader
         foreach ($constNodes as $constNode) {
             assert($constNode instanceof DOMElement);
 
+            $constName = $constNode->getAttribute('name');
+
+            if ($constName === '') {
+                continue;
+            }
+
             $value = $constNode->getAttribute('value');
 
             $constants[] = new Constant(
-                $constNode->getAttribute('name'),
+                $constName,
                 $this->valueFromString($value),
             );
         }
@@ -839,7 +998,12 @@ final readonly class Loader
             foreach ($varNodes as $var) {
                 assert($var instanceof DOMElement);
 
-                $name     = $var->getAttribute('name');
+                $name = $var->getAttribute('name');
+
+                if ($name === '') {
+                    continue;
+                }
+
                 $value    = $var->getAttribute('value');
                 $force    = false;
                 $verbatim = false;
@@ -1060,11 +1224,11 @@ final readonly class Loader
             $beStrictAboutCoverageMetadata,
             $requireCoverageContribution,
             $this->parseBooleanAttribute($document->documentElement, 'enforceTimeLimit', false),
-            $this->parseIntegerAttribute($document->documentElement, 'defaultTimeLimit', 1),
-            $this->parseIntegerAttribute($document->documentElement, 'timeoutForSmallTests', 1),
-            $this->parseIntegerAttribute($document->documentElement, 'timeoutForMediumTests', 10),
-            $this->parseIntegerAttribute($document->documentElement, 'timeoutForLargeTests', 60),
-            $this->parseStringAttribute($document->documentElement, 'defaultTestSuite'),
+            $this->parseNonNegativeIntegerAttribute($document->documentElement, 'defaultTimeLimit', 1),
+            $this->parsePositiveIntegerAttribute($document->documentElement, 'timeoutForSmallTests', 1),
+            $this->parsePositiveIntegerAttribute($document->documentElement, 'timeoutForMediumTests', 10),
+            $this->parsePositiveIntegerAttribute($document->documentElement, 'timeoutForLargeTests', 60),
+            $this->parseNullableNonEmptyStringAttribute($document->documentElement, 'defaultTestSuite'),
             $executionOrder,
             $resolveDependencies,
             $defectsFirst,
@@ -1073,9 +1237,9 @@ final readonly class Loader
             $this->parseBooleanAttribute($document->documentElement, 'testdox', false),
             $this->parseBooleanAttribute($document->documentElement, 'testdoxSummary', false),
             $this->parseBooleanAttribute($document->documentElement, 'controlGarbageCollector', false),
-            $this->parseIntegerAttribute($document->documentElement, 'numberOfTestsBeforeGarbageCollection', 100),
+            $this->parsePositiveIntegerAttribute($document->documentElement, 'numberOfTestsBeforeGarbageCollection', 100),
             $shortenArraysForExportThreshold,
-            $this->parseIntegerAttribute($document->documentElement, 'diffContext', 3),
+            $this->parsePositiveIntegerAttribute($document->documentElement, 'diffContext', 3),
         );
     }
 
@@ -1171,7 +1335,11 @@ final readonly class Loader
                 $suffix = 'Test.php';
 
                 if ($directoryNode->hasAttribute('suffix')) {
-                    $suffix = $directoryNode->getAttribute('suffix');
+                    $candidateSuffix = $directoryNode->getAttribute('suffix');
+
+                    if ($candidateSuffix !== '') {
+                        $suffix = $candidateSuffix;
+                    }
                 }
 
                 $phpVersion = PHP_VERSION;
@@ -1183,7 +1351,9 @@ final readonly class Loader
                 $phpVersionOperator = new VersionComparisonOperator('>=');
 
                 if ($directoryNode->hasAttribute('phpVersionOperator')) {
-                    $phpVersionOperator = new VersionComparisonOperator($directoryNode->getAttribute('phpVersionOperator'));
+                    $phpVersionOperator = new VersionComparisonOperator(
+                        $this->parseVersionOperator($directoryNode->getAttribute('phpVersionOperator')),
+                    );
                 }
 
                 $groups = [];
@@ -1230,7 +1400,9 @@ final readonly class Loader
                 $phpVersionOperator = new VersionComparisonOperator('>=');
 
                 if ($fileNode->hasAttribute('phpVersionOperator')) {
-                    $phpVersionOperator = new VersionComparisonOperator($fileNode->getAttribute('phpVersionOperator'));
+                    $phpVersionOperator = new VersionComparisonOperator(
+                        $this->parseVersionOperator($fileNode->getAttribute('phpVersionOperator')),
+                    );
                 }
 
                 $groups = [];
