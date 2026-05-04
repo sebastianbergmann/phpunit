@@ -167,7 +167,13 @@ final class CodeCoverage
      */
     public function driverNameAndVersion(): string
     {
-        return $this->driver->nameAndVersion();
+        $nameAndVersion = $this->driver->nameAndVersion();
+
+        if ($nameAndVersion === '') {
+            return 'unknown';
+        }
+
+        return $nameAndVersion;
     }
 
     public function start(TestCase $test): void
@@ -504,9 +510,13 @@ final class CodeCoverage
 
             $this->collectsBranchAndPathCoverage = $pathCoverage;
         } catch (CodeCoverageException $e) {
-            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
-                $e->getMessage(),
-            );
+            $message = $e->getMessage();
+
+            if ($message === '') {
+                $message = 'Code coverage cannot be initialized';
+            }
+
+            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning($message);
         }
     }
 

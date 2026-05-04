@@ -15,13 +15,12 @@ use const SIGINT;
 use function array_reverse;
 use function assert;
 use function class_exists;
-use function class_implements;
+use function count;
 use function defined;
 use function dirname;
 use function explode;
 use function function_exists;
 use function getmypid;
-use function in_array;
 use function is_file;
 use function method_exists;
 use function pcntl_async_signals;
@@ -466,7 +465,13 @@ final readonly class Application
                 $this->exitWithErrorMessage('No configuration file found to migrate');
             }
 
-            $this->execute(new MigrateConfigurationCommand(realpath($configurationFile)));
+            $resolved = realpath($configurationFile);
+
+            if ($resolved === false) {
+                $this->exitWithErrorMessage('Configuration file cannot be migrated');
+            }
+
+            $this->execute(new MigrateConfigurationCommand($resolved));
         }
 
         if ($cliConfiguration->validateConfiguration()) {
@@ -474,7 +479,13 @@ final readonly class Application
                 $this->exitWithErrorMessage('No configuration file found to validate');
             }
 
-            $this->execute(new ValidateConfigurationCommand(realpath($configurationFile)));
+            $resolved = realpath($configurationFile);
+
+            if ($resolved === false) {
+                $this->exitWithErrorMessage('Configuration file cannot be validated');
+            }
+
+            $this->execute(new ValidateConfigurationCommand($resolved));
         }
 
         if ($cliConfiguration->hasAtLeastVersion()) {
@@ -765,7 +776,13 @@ final readonly class Application
             try {
                 $baseline = (new Reader)->read($baselineFile);
             } catch (CannotLoadBaselineException $e) {
-                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning($e->getMessage());
+                $message = $e->getMessage();
+
+                if ($message === '') {
+                    $message = 'Cannot load baseline';
+                }
+
+                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning($message);
             }
 
             if ($baseline !== null) {
@@ -889,7 +906,9 @@ final readonly class Application
         }
 
         foreach ($configuration->source()->deprecationTriggers()['methods'] as $method) {
-            if (!str_contains($method, '::')) {
+            $parts = explode('::', $method, 2);
+
+            if (count($parts) !== 2) {
                 EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
                     sprintf(
                         '%s cannot be configured as a deprecation trigger because it is not in ClassName::methodName format',
@@ -900,9 +919,9 @@ final readonly class Application
                 continue;
             }
 
-            [$className, $methodName] = explode('::', $method);
+            [$className, $methodName] = $parts;
 
-            if (!class_exists($className) || !method_exists($className, $methodName)) {
+            if ($methodName === '' || !class_exists($className) || !method_exists($className, $methodName)) {
                 if (!$ignoreUndefinedTriggers) {
                     EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
                         sprintf(
@@ -943,7 +962,9 @@ final readonly class Application
                 continue;
             }
 
-            if (!in_array(Resolver::class, class_implements($className), true)) {
+            $resolver = new $className;
+
+            if (!$resolver instanceof Resolver) {
                 EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
                     sprintf(
                         'Class %s cannot be used as an issue trigger resolver because it does not implement %s',
@@ -955,7 +976,7 @@ final readonly class Application
                 continue;
             }
 
-            ErrorHandler::instance()->addIssueTriggerResolver(new $className);
+            ErrorHandler::instance()->addIssueTriggerResolver($resolver);
         }
     }
 

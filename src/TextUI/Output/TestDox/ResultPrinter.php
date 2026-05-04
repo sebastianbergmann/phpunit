@@ -116,7 +116,13 @@ final readonly class ResultPrinter
                 continue;
             }
 
-            $this->printPrettifiedClassName($_tests->asArray()[0]->test()->testDox()->prettifiedClassName());
+            $list = $_tests->asArray();
+
+            if ($list === []) {
+                continue;
+            }
+
+            $this->printPrettifiedClassName($list[0]->test()->testDox()->prettifiedClassName());
 
             foreach ($_tests as $test) {
                 if ($onlySummary && $test->status()->isSuccess()) {
@@ -316,9 +322,15 @@ final readonly class ResultPrinter
         $message = implode(PHP_EOL, $message);
         $diff    = implode(PHP_EOL, $diff);
 
-        if ($message !== '') {
+        if ($message !== '' && $style !== '') {
+            $columns = $this->columns - 7;
+
+            if ($columns < 0) {
+                $columns = 0;
+            }
+
             // Testdox output has a left-margin of 5; keep right-margin to prevent terminal scrolling
-            $message = Color::colorizeTextBox($style, $message, $this->columns - 7);
+            $message = Color::colorizeTextBox($style, $message, $columns);
         }
 
         return [
@@ -337,8 +349,14 @@ final readonly class ResultPrinter
         $previousPath = '';
 
         foreach (explode(PHP_EOL, $stackTrace) as $line) {
-            if (preg_match('/^(.*):(\d+)$/', $line, $matches) > 0) {
-                $lines[]      = Color::colorizePath($matches[1], $previousPath) . Color::dim(':') . Color::colorize('fg-blue', $matches[2]) . "\n";
+            if (preg_match('/^(.+):(\d+)$/', $line, $matches) > 0) {
+                if ($previousPath === '') {
+                    $colorizedPath = Color::colorizePath($matches[1]);
+                } else {
+                    $colorizedPath = Color::colorizePath($matches[1], $previousPath);
+                }
+
+                $lines[]      = $colorizedPath . Color::dim(':') . Color::colorize('fg-blue', $matches[2]) . "\n";
                 $previousPath = $matches[1];
 
                 continue;
@@ -390,6 +408,9 @@ final readonly class ResultPrinter
         );
     }
 
+    /**
+     * @return non-empty-string
+     */
     private function colorFor(TestStatus $status): string
     {
         if ($status->isSuccess()) {

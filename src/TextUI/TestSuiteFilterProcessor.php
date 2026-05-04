@@ -93,8 +93,16 @@ final readonly class TestSuiteFilterProcessor
                 throw new RuntimeException('Cannot read from ' . $configuration->testIdFilterFile());
             }
 
-            if ($lines !== []) {
-                $factory->addTestIdFilter($lines);
+            $testIds = [];
+
+            foreach ($lines as $line) {
+                if ($line !== '') {
+                    $testIds[] = $line;
+                }
+            }
+
+            if ($testIds !== []) {
+                $factory->addTestIdFilter($testIds);
             }
         }
 
@@ -103,15 +111,19 @@ final readonly class TestSuiteFilterProcessor
         }
 
         if ($configuration->hasExcludeFilter()) {
-            $factory->addExcludeNameFilter(
-                $configuration->excludeFilter(),
-            );
+            $excludeFilter = $configuration->excludeFilter();
+
+            if ($excludeFilter !== '') {
+                $factory->addExcludeNameFilter($excludeFilter);
+            }
         }
 
         if ($configuration->hasFilter()) {
-            $factory->addIncludeNameFilter(
-                $configuration->filter(),
-            );
+            $filter = $configuration->filter();
+
+            if ($filter !== '') {
+                $factory->addIncludeNameFilter($filter);
+            }
         }
 
         $suite->injectFilter($factory);

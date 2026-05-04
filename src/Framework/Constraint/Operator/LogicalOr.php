@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use function array_any;
-
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
@@ -45,9 +43,12 @@ final class LogicalOr extends BinaryOperator
      */
     public function matches(mixed $other): bool
     {
-        return array_any(
-            $this->constraints(),
-            static fn (Constraint $constraint) => $constraint->evaluate($other, '', true),
-        );
+        foreach ($this->constraints() as $constraint) {
+            if ($constraint->evaluate($other, '', true) === true) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

@@ -61,7 +61,7 @@ use PHPUnit\Util\ExcludeList;
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  *
- * @phpstan-type DeprecationMethod array{className: class-string, methodName: non-empty-string}
+ * @phpstan-type DeprecationMethod array{className: string, methodName: non-empty-string}
  * @phpstan-type DeprecationTriggers array{functions: list<non-empty-string>, methods: list<DeprecationMethod>}
  * @phpstan-type StackFrame array{function: string, line?: int, file?: string, class?: class-string, type?: '->'|'::', args?: list<mixed>, object?: object}
  */

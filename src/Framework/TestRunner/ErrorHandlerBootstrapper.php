@@ -10,8 +10,11 @@
 namespace PHPUnit\Framework\TestRunner;
 
 use function array_reverse;
+use function class_exists;
+use function count;
 use function explode;
 use PHPUnit\Runner\ErrorHandler;
+use PHPUnit\Runner\IssueTriggerResolver\Resolver;
 use PHPUnit\TextUI\Configuration\Configuration;
 
 /**
@@ -31,7 +34,17 @@ final readonly class ErrorHandlerBootstrapper
         }
 
         foreach ($configuration->source()->deprecationTriggers()['methods'] as $method) {
-            [$className, $methodName] = explode('::', $method);
+            $parts = explode('::', $method, 2);
+
+            if (count($parts) !== 2) {
+                continue;
+            }
+
+            [$className, $methodName] = $parts;
+
+            if ($methodName === '') {
+                continue;
+            }
 
             $deprecationTriggers['methods'][] = [
                 'className'  => $className,
@@ -42,7 +55,17 @@ final readonly class ErrorHandlerBootstrapper
         ErrorHandler::instance()->useDeprecationTriggers($deprecationTriggers);
 
         foreach (array_reverse($configuration->source()->issueTriggerResolvers()) as $className) {
-            ErrorHandler::instance()->addIssueTriggerResolver(new $className);
+            if (!class_exists($className)) {
+                continue;
+            }
+
+            $resolver = new $className;
+
+            if (!$resolver instanceof Resolver) {
+                continue;
+            }
+
+            ErrorHandler::instance()->addIssueTriggerResolver($resolver);
         }
     }
 }

@@ -206,6 +206,10 @@ final class ExcludeList
 
             $directory = new ReflectionClass($className)->getFileName();
 
+            if ($directory === false) {
+                continue;
+            }
+
             for ($i = 0; $i < $parent; $i++) {
                 $directory = dirname($directory);
             }

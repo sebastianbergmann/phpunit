@@ -28,6 +28,9 @@ final readonly class Large extends Known
         return !$other->isLarge();
     }
 
+    /**
+     * @return 'large'
+     */
     public function asString(): string
     {
         return 'large';

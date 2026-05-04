@@ -26,7 +26,13 @@ final readonly class PlainTextRenderer
         $buffer = '';
 
         foreach ($tests as $_tests) {
-            $buffer .= $_tests->asArray()[0]->test()->testDox()->prettifiedClassName() . "\n";
+            $list = $_tests->asArray();
+
+            if ($list === []) {
+                continue;
+            }
+
+            $buffer .= $list[0]->test()->testDox()->prettifiedClassName() . "\n";
 
             foreach ($this->reduce($_tests) as $prettifiedMethodName => $outcome) {
                 $buffer .= sprintf(

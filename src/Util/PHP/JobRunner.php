@@ -28,6 +28,7 @@ use function is_file;
 use function is_resource;
 use function proc_close;
 use function proc_open;
+use function rewind;
 use function sprintf;
 use function str_contains;
 use function str_replace;
@@ -35,6 +36,7 @@ use function str_starts_with;
 use function stream_get_contents;
 use function sys_get_temp_dir;
 use function tempnam;
+use function tmpfile;
 use function trim;
 use function unlink;
 use function xdebug_is_debugger_active;
@@ -148,14 +150,28 @@ final readonly class JobRunner
             unset($key, $value);
         }
 
-        $pipeSpec = [
-            0 => ['pipe', 'r'],
-            1 => ['pipe', 'w'],
-            2 => ['pipe', 'w'],
-        ];
+        $mergedOutputStream = null;
 
         if ($job->redirectErrors()) {
-            $pipeSpec[2] = ['redirect', 1];
+            $mergedOutputStream = tmpfile();
+
+            if ($mergedOutputStream === false) {
+                // @codeCoverageIgnoreStart
+                throw new PhpProcessException('Unable to create temporary file for redirected output');
+                // @codeCoverageIgnoreEnd
+            }
+
+            $pipeSpec = [
+                0 => ['pipe', 'r'],
+                1 => $mergedOutputStream,
+                2 => $mergedOutputStream,
+            ];
+        } else {
+            $pipeSpec = [
+                0 => ['pipe', 'r'],
+                1 => ['pipe', 'w'],
+                2 => ['pipe', 'w'],
+            ];
         }
 
         $process = proc_open(
@@ -176,8 +192,10 @@ final readonly class JobRunner
 
         Facade::emitter()->childProcessStarted();
 
-        fwrite($pipes[0], $job->code());
-        fclose($pipes[0]);
+        if (isset($pipes[0])) {
+            fwrite($pipes[0], $job->code());
+            fclose($pipes[0]);
+        }
 
         $stdout = '';
         $stderr = '';
@@ -195,6 +213,19 @@ final readonly class JobRunner
         }
 
         proc_close($process);
+
+        if ($mergedOutputStream !== null) {
+            rewind($mergedOutputStream);
+
+            $merged = stream_get_contents($mergedOutputStream);
+
+            fclose($mergedOutputStream);
+
+            assert($merged !== false);
+
+            $stdout = $merged;
+            $stderr = '';
+        }
 
         if ($temporaryFile !== null) {
             unlink($temporaryFile);

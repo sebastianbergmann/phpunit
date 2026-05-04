@@ -60,7 +60,7 @@ final readonly class RelativePathCalculator
     /**
      * @param non-empty-string $filename
      *
-     * @return list<non-empty-string>
+     * @return list<string>
      */
     public function parts(string $filename): array
     {
