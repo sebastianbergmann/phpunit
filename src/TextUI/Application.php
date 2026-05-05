@@ -21,7 +21,9 @@ use function dirname;
 use function explode;
 use function function_exists;
 use function getmypid;
+use function is_array;
 use function is_file;
+use function is_string;
 use function method_exists;
 use function pcntl_async_signals;
 use function pcntl_signal;
@@ -986,13 +988,29 @@ final readonly class Application
             return;
         }
 
-        $classMapFile = dirname(PHPUNIT_COMPOSER_INSTALL) . '/composer/autoload_classmap.php';
+        $composerInstall = PHPUNIT_COMPOSER_INSTALL;
+
+        if (!is_string($composerInstall)) {
+            return;
+        }
+
+        $classMapFile = dirname($composerInstall) . '/composer/autoload_classmap.php';
 
         if (!is_file($classMapFile)) {
             return;
         }
 
-        foreach (require $classMapFile as $codeUnitName => $sourceCodeFile) {
+        $classMap = require $classMapFile;
+
+        if (!is_array($classMap)) {
+            return;
+        }
+
+        foreach ($classMap as $codeUnitName => $sourceCodeFile) {
+            if (!is_string($codeUnitName) || !is_string($sourceCodeFile)) {
+                continue;
+            }
+
             if (!str_starts_with($codeUnitName, 'PHPUnit\\') &&
                 !str_starts_with($codeUnitName, 'SebastianBergmann\\')) {
                 continue;

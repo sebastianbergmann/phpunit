@@ -26,6 +26,7 @@ use function ini_get_all;
 use function is_array;
 use function is_file;
 use function is_resource;
+use function is_string;
 use function proc_close;
 use function proc_open;
 use function rewind;
@@ -135,19 +136,25 @@ final readonly class JobRunner
 
         if ($job->hasEnvironmentVariables()) {
             /** @phpstan-ignore nullCoalesce.variable */
-            $environmentVariables = $_SERVER ?? [];
+            $serverVariables = $_SERVER ?? [];
 
-            unset($environmentVariables['argv'], $environmentVariables['argc']);
+            unset($serverVariables['argv'], $serverVariables['argc']);
 
-            $environmentVariables = array_merge($environmentVariables, $job->environmentVariables());
+            $environmentVariables = [];
 
-            foreach ($environmentVariables as $key => $value) {
-                if (is_array($value)) {
-                    unset($environmentVariables[$key]);
+            foreach ($serverVariables as $key => $value) {
+                if (!is_string($key)) {
+                    continue;
                 }
+
+                if (is_array($value)) {
+                    continue;
+                }
+
+                $environmentVariables[$key] = $value;
             }
 
-            unset($key, $value);
+            $environmentVariables = array_merge($environmentVariables, $job->environmentVariables());
         }
 
         $mergedOutputStream = null;

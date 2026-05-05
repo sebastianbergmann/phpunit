@@ -194,20 +194,22 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
      */
     public function addTestSuite(ReflectionClass $testClass, array $groups = []): void
     {
+        $className = $testClass->getName();
+
         if ($testClass->isAbstract()) {
             throw new Exception(
                 sprintf(
                     'Class %s is abstract',
-                    $testClass->getName(),
+                    $className,
                 ),
             );
         }
 
-        if (!$testClass->isSubclassOf(TestCase::class)) {
+        if (!is_subclass_of($className, TestCase::class)) {
             throw new Exception(
                 sprintf(
                     'Class %s is not a subclass of %s',
-                    $testClass->getName(),
+                    $className,
                     TestCase::class,
                 ),
             );

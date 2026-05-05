@@ -69,8 +69,12 @@ final readonly class Filter
     private static function stackTraceAsString(array $frames): string
     {
         $buffer      = '';
-        $prefix      = defined('__PHPUNIT_PHAR_ROOT__') ? __PHPUNIT_PHAR_ROOT__ : false;
+        $prefix      = false;
         $excludeList = new ExcludeList;
+
+        if (defined('__PHPUNIT_PHAR_ROOT__') && is_string(__PHPUNIT_PHAR_ROOT__)) {
+            $prefix = __PHPUNIT_PHAR_ROOT__;
+        }
 
         foreach ($frames as $frame) {
             if (isset($frame['file']) && self::shouldPrintFrame($frame, $prefix, $excludeList)) {

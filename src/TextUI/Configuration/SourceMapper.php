@@ -14,6 +14,7 @@ use function array_values;
 use function file_get_contents;
 use function file_put_contents;
 use function is_array;
+use function is_string;
 use function preg_match;
 use function realpath;
 use function serialize;
@@ -58,12 +59,21 @@ final class SourceMapper
             return;
         }
 
+        $validated = [];
+
+        foreach ($map as $file => $included) {
+            if (!is_string($file) || $file === '' || $included !== true) {
+                return;
+            }
+
+            $validated[$file] = true;
+        }
+
         if (self::$files === null) {
             self::$files = new SplObjectStorage;
         }
 
-        /** @phpstan-ignore offsetAssign.valueType */
-        self::$files[$source] = $map;
+        self::$files[$source] = $validated;
     }
 
     /**
