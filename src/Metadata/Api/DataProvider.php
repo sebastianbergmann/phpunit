@@ -380,6 +380,8 @@ final readonly class DataProvider
             if ($_testWith->hasName()) {
                 $key = $_testWith->name();
 
+                assert($key !== null);
+
                 if (array_key_exists($key, $result)) {
                     throw new InvalidDataProviderException(
                         sprintf(

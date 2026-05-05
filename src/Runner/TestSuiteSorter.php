@@ -59,7 +59,7 @@ final class TestSuiteSorter
      */
     private array $defectSortOrder = [];
 
-    public function __construct(private readonly ?ResultCache $cache = new NullResultCache)
+    public function __construct(private readonly ResultCache $cache = new NullResultCache)
     {
     }
 

@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function assert;
 use function preg_replace;
 use function sprintf;
 use function trim;
@@ -47,6 +48,10 @@ final class StringEqualsStringIgnoringWhitespace extends Constraint
 
     private function normalizeWhitespace(string $string): string
     {
-        return trim(preg_replace('/\s+/u', ' ', $string));
+        $normalized = preg_replace('/\s+/u', ' ', $string);
+
+        assert($normalized !== null);
+
+        return trim($normalized);
     }
 }

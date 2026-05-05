@@ -509,6 +509,8 @@ final class Builder
                     break;
 
                 case 'd':
+                    assert($option[1] !== null);
+
                     $tmp = explode('=', $option[1]);
 
                     if (isset($tmp[0])) {
@@ -569,6 +571,8 @@ final class Builder
                     break;
 
                 case '--generate-baseline':
+                    assert($option[1] !== null);
+
                     $generateBaseline = $option[1];
 
                     if (basename($generateBaseline) === $generateBaseline) {
@@ -578,6 +582,8 @@ final class Builder
                     break;
 
                 case '--use-baseline':
+                    assert($option[1] !== null);
+
                     $useBaseline = $option[1];
 
                     if (basename($useBaseline) === $useBaseline && !is_file($useBaseline)) {
@@ -728,6 +734,8 @@ final class Builder
                     break;
 
                 case '--order-by':
+                    assert($option[1] !== null);
+
                     foreach (explode(',', $option[1]) as $order) {
                         switch ($order) {
                             case 'default':

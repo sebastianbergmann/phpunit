@@ -86,7 +86,7 @@ final readonly class ReturnValueMap implements Stub
             }
 
             if ($expected instanceof Constraint) {
-                if (!$expected->evaluate($invocationParameters[$i], '', true)) {
+                if ($expected->evaluate($invocationParameters[$i], '', true) === false) {
                     return false;
                 }
             } elseif ($expected !== $invocationParameters[$i]) {

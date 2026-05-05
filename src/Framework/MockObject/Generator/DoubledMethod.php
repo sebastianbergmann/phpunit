@@ -96,7 +96,11 @@ final class DoubledMethod
         if (is_string($docComment) &&
             preg_match('#\*[ \t]*+@deprecated[ \t]*+(.*?)\r?+\n[ \t]*+\*(?:[ \t]*+@|/$)#s', $docComment, $deprecation) > 0
         ) {
-            $deprecation = trim(preg_replace('#[ \t]*\r?\n[ \t]*+\*[ \t]*+#', ' ', $deprecation[1]));
+            $deprecationText = preg_replace('#[ \t]*\r?\n[ \t]*+\*[ \t]*+#', ' ', $deprecation[1]);
+
+            assert($deprecationText !== null);
+
+            $deprecation = trim($deprecationText);
         } else {
             $deprecation = null;
         }
@@ -177,7 +181,7 @@ final class DoubledMethod
             $templateFile = 'doubled_method.tpl';
         }
 
-        $deprecation  = $this->deprecation;
+        $deprecation  = '';
         $returnResult = '';
 
         if (!$this->returnType->isNever() && !$this->returnType->isVoid()) {

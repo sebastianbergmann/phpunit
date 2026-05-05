@@ -159,6 +159,8 @@ final class CodeCoverage
 
     public function codeCoverage(): \SebastianBergmann\CodeCoverage\CodeCoverage
     {
+        assert($this->codeCoverage !== null);
+
         return $this->codeCoverage;
     }
 
@@ -167,6 +169,9 @@ final class CodeCoverage
      */
     public function driverNameAndVersion(): string
     {
+        assert($this->driver !== null);
+
+        /** @phpstan-ignore method.internalClass */
         $nameAndVersion = $this->driver->nameAndVersion();
 
         if ($nameAndVersion === '') {
@@ -194,6 +199,8 @@ final class CodeCoverage
 
         $this->test = $test;
 
+        assert($this->codeCoverage !== null);
+
         $this->codeCoverage->start(
             $test->valueObjectForEvents()->id(),
             $size,
@@ -210,16 +217,17 @@ final class CodeCoverage
             return;
         }
 
+        assert($this->codeCoverage !== null);
+        assert($this->test !== null);
+
         $time             = $this->timer()->stop()->asSeconds();
         $status           = TestStatus::Unknown;
         $this->collecting = false;
 
-        if ($this->test !== null) {
-            if ($this->test->status()->isSuccess()) {
-                $status = TestStatus::Success;
-            } else {
-                $status = TestStatus::Failure;
-            }
+        if ($this->test->status()->isSuccess()) {
+            $status = TestStatus::Success;
+        } else {
+            $status = TestStatus::Failure;
         }
 
         if ($covers instanceof TargetCollection) {
@@ -436,7 +444,8 @@ final class CodeCoverage
             $this->codeCoverageGenerationStart($printer, 'PHPUnit XML');
 
             try {
-                $driverInformation = $this->codeCoverage->driverInformation();
+                /** @phpstan-ignore method.internal */
+                $driverInformation = $this->codeCoverage()->driverInformation();
 
                 $facade->renderXml(
                     $configuration->coverageXml(),

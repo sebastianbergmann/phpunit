@@ -11,6 +11,7 @@ namespace PHPUnit\TextUI\Output\TestDox;
 
 use const PHP_EOL;
 use function array_map;
+use function assert;
 use function explode;
 use function implode;
 use function preg_match;
@@ -181,8 +182,12 @@ final readonly class ResultPrinter
             return;
         }
 
+        $throwable = $test->throwable();
+
+        assert($throwable !== null);
+
         $this->printTestResultBodyStart($test);
-        $this->printThrowable($test->status(), $test->throwable());
+        $this->printThrowable($test->status(), $throwable);
         $this->printTestResultBodyEnd($test);
     }
 

@@ -13,6 +13,7 @@ use const DEBUG_BACKTRACE_IGNORE_ARGS;
 use const DIRECTORY_SEPARATOR;
 use function array_filter;
 use function array_values;
+use function assert;
 use function basename;
 use function debug_backtrace;
 use function dirname;
@@ -390,10 +391,15 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
 
         $actual = preg_replace('/\r\n/', "\n", trim($output));
 
+        assert($actual !== null);
+
         foreach ($assertions as $sectionName => $sectionAssertion) {
             if (isset($sections[$sectionName])) {
                 $sectionContent = preg_replace('/\r\n/', "\n", trim($sections[$sectionName]));
-                $expected       = $sectionContent;
+
+                assert($sectionContent !== null);
+
+                $expected = $sectionContent;
 
                 if ($sectionName === 'EXPECTREGEX') {
                     $expected = "/{$sectionContent}/";
@@ -510,7 +516,12 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
     private function runCodeInLocalSandbox(string $code): string
     {
         $code = preg_replace('/^<\?(?:php)?|\?>\s*+$/', '', $code);
+
+        assert($code !== null);
+
         $code = preg_replace('/declare\S?\([^)]+\)\S?;/', '', $code);
+
+        assert($code !== null);
 
         // wrap in immediately invoked function to isolate local-side-effects of $code from our own process
         $code = '(function() {' . $code . '})();';

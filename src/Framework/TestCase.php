@@ -1468,7 +1468,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                     !$allowsMockObjectsWithoutExpectations &&
                     !$isPhpunitTestSuite) {
                     Event\Facade::emitter()->testTriggeredPhpunitNotice(
-                        $this->testValueObjectForEvents,
+                        $this->valueObjectForEvents(),
                         sprintf(
                             'No expectations were configured for the mock object for %s. ' .
                             'Consider refactoring your test code to use a test stub instead. ' .
@@ -1718,8 +1718,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $message = null;
 
-        if ($activeExceptionHandlers !== $this->backupGlobalExceptionHandlers) {
-            if (count($activeExceptionHandlers) > count($this->backupGlobalExceptionHandlers)) {
+        $backupGlobalExceptionHandlers = $this->backupGlobalExceptionHandlers;
+
+        if ($backupGlobalExceptionHandlers !== null && $activeExceptionHandlers !== $backupGlobalExceptionHandlers) {
+            if (count($activeExceptionHandlers) > count($backupGlobalExceptionHandlers)) {
                 if (!$this->inIsolation) {
                     $message = 'Test code or tested code did not remove its own exception handlers';
                 }
@@ -1731,7 +1733,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 restore_exception_handler();
             }
 
-            foreach ($this->backupGlobalExceptionHandlers as $handler) {
+            foreach ($backupGlobalExceptionHandlers as $handler) {
                 set_exception_handler($handler);
             }
         }
@@ -1774,8 +1776,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     private function snapshotGlobalState(): void
     {
-        if ($this->runTestInSeparateProcess || $this->inIsolation ||
-            (!$this->backupGlobals && !$this->backupStaticProperties)) {
+        if ($this->runTestInSeparateProcess === true || $this->inIsolation ||
+            ($this->backupGlobals !== true && $this->backupStaticProperties !== true)) {
             return;
         }
 
@@ -1786,25 +1788,27 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     private function restoreGlobalState(): void
     {
-        if (!$this->snapshot instanceof Snapshot) {
+        $snapshot = $this->snapshot;
+
+        if (!$snapshot instanceof Snapshot) {
             return;
         }
 
         if (ConfigurationRegistry::get()->beStrictAboutChangesToGlobalState()) {
             $this->compareGlobalStateSnapshots(
-                $this->snapshot,
+                $snapshot,
                 $this->createGlobalStateSnapshot($this->backupGlobals === true),
             );
         }
 
         $restorer = new Restorer;
 
-        if ($this->backupGlobals) {
-            $restorer->restoreGlobalVariables($this->snapshot);
+        if ($this->backupGlobals === true) {
+            $restorer->restoreGlobalVariables($snapshot);
         }
 
-        if ($this->backupStaticProperties) {
-            $restorer->restoreStaticProperties($this->snapshot);
+        if ($this->backupStaticProperties === true) {
+            $restorer->restoreStaticProperties($snapshot);
         }
 
         $this->snapshot = null;
@@ -1895,7 +1899,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             );
         }
 
-        if ($this->backupStaticProperties) {
+        if ($this->backupStaticProperties === true) {
             $this->compareGlobalStateSnapshotPart(
                 $before->staticProperties(),
                 $after->staticProperties(),
@@ -2023,7 +2027,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             return false;
         }
 
-        if ($this->runTestInSeparateProcess) {
+        if ($this->runTestInSeparateProcess === true) {
             return true;
         }
 

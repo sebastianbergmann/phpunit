@@ -390,7 +390,7 @@ final class ErrorHandler
     public function registerForNonTestCaseContext(): void
     {
         $previousHandler = set_error_handler(
-            [self::$instance, 'handleNonTestCaseIssue'],
+            [self::instance(), 'handleNonTestCaseIssue'],
             E_DEPRECATED | E_USER_DEPRECATED | E_NOTICE | E_USER_NOTICE | E_WARNING | E_USER_WARNING,
         );
 
@@ -458,11 +458,14 @@ final class ErrorHandler
     {
         $messages            = [];
         $activeErrorHandlers = $this->activeErrorHandlers($messages);
+        $backupErrorHandlers = $this->backupErrorHandlers;
+
+        assert($backupErrorHandlers !== null);
 
         $activeAbove = $this->handlersAboveSelf($activeErrorHandlers);
-        $backupAbove = $this->handlersAboveSelf($this->backupErrorHandlers);
+        $backupAbove = $this->handlersAboveSelf($backupErrorHandlers);
 
-        if ($this->isOnStack($this->backupErrorHandlers) &&
+        if ($this->isOnStack($backupErrorHandlers) &&
             !$this->isOnStack($activeErrorHandlers)) {
             $messages[] = 'Test code or tested code removed error handlers other than its own';
         } elseif ($activeAbove !== $backupAbove) {
@@ -475,12 +478,12 @@ final class ErrorHandler
             }
         }
 
-        if ($activeErrorHandlers !== $this->backupErrorHandlers) {
+        if ($activeErrorHandlers !== $backupErrorHandlers) {
             foreach ($activeErrorHandlers as $handler) {
                 restore_error_handler();
             }
 
-            foreach ($this->backupErrorHandlers as $handler) {
+            foreach ($backupErrorHandlers as $handler) {
                 set_error_handler($handler);
             }
         }
@@ -587,13 +590,21 @@ final class ErrorHandler
             $callee = null;
 
             if ($result->hasCallee()) {
-                $callee = $this->categorizeFile($result->callee(), $test);
+                $calleeFile = $result->callee();
+
+                assert($calleeFile !== null);
+
+                $callee = $this->categorizeFile($calleeFile, $test);
             }
 
             $caller = null;
 
             if ($result->hasCaller()) {
-                $caller = $this->categorizeFile($result->caller(), $test);
+                $callerFile = $result->caller();
+
+                assert($callerFile !== null);
+
+                $caller = $this->categorizeFile($callerFile, $test);
             }
 
             return IssueTrigger::from($callee, $caller);
@@ -655,13 +666,21 @@ final class ErrorHandler
             $callee = null;
 
             if ($result->hasCallee()) {
-                $callee = $this->categorizeFileWithoutTest($result->callee());
+                $calleeFile = $result->callee();
+
+                assert($calleeFile !== null);
+
+                $callee = $this->categorizeFileWithoutTest($calleeFile);
             }
 
             $caller = null;
 
             if ($result->hasCaller()) {
-                $caller = $this->categorizeFileWithoutTest($result->caller());
+                $callerFile = $result->caller();
+
+                assert($callerFile !== null);
+
+                $caller = $this->categorizeFileWithoutTest($callerFile);
             }
 
             return IssueTrigger::from($callee, $caller);

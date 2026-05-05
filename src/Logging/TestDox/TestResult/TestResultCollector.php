@@ -388,6 +388,8 @@ final class TestResultCollector
             $this->tests[$test->className()] = [];
         }
 
+        assert($this->status !== null);
+
         $this->tests[$test->className()][] = new TestDoxTestMethod(
             $test,
             $this->status,

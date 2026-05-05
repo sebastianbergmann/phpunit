@@ -45,17 +45,19 @@ final class Facade
     {
         self::createPrinter($configuration);
 
-        assert(self::$printer !== null);
+        $printer = self::$printer;
+
+        assert($printer !== null);
 
         if ($configuration->debug()) {
-            return self::$printer;
+            return $printer;
         }
 
         self::createUnexpectedOutputPrinter();
 
         if ($configuration->outputIsCompact()) {
             self::$compactResultPrinter = new CompactResultPrinter(
-                self::$printer,
+                $printer,
                 $configuration->displayDetailsOnIncompleteTests() || $configuration->displayDetailsOnAllIssues(),
                 $configuration->displayDetailsOnSkippedTests() || $configuration->displayDetailsOnAllIssues(),
                 $configuration->displayDetailsOnTestsThatTriggerDeprecations() || $configuration->displayDetailsOnAllIssues(),
