@@ -69,7 +69,7 @@ final class BootstrapLoader
                 $t->getTraceAsString(),
             );
 
-            while ($t = $t->getPrevious()) {
+            while (($t = $t->getPrevious()) !== null) {
                 $message .= sprintf(
                     '%s%sPrevious error: %s:%s%s%s%s',
                     PHP_EOL,

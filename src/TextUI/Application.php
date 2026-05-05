@@ -859,7 +859,7 @@ final readonly class Application
             );
 
             $first = false;
-        } while ($t = $t->getPrevious());
+        } while (($t = $t->getPrevious()) !== null);
 
         exit(Result::CRASH);
     }
