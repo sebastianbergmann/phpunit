@@ -23,6 +23,9 @@ use PHPUnit\Framework\TestCase;
  */
 final class RelativePathCalculatorTest extends TestCase
 {
+    /**
+     * @return non-empty-list<array{string, string, string}>
+     */
     public static function dataGetRelativePath(): array
     {
         return [

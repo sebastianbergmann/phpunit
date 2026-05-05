@@ -23,6 +23,9 @@ use PHPUnit\Framework\TestCase;
 #[Group('framework/constraints')]
 final class ArraysAreEqualTest extends TestCase
 {
+    /**
+     * @return array<string, array{bool, string, array<mixed>, mixed, bool, bool}>
+     */
     public static function provider(): array
     {
         return [

@@ -23,6 +23,9 @@ use PHPUnit\Framework\TestCase;
 #[TestDox('Basic ANSI color highlighting support')]
 final class ColorTest extends TestCase
 {
+    /**
+     * @return array<string, array{string, string, string}>
+     */
     public static function colorizeProvider(): array
     {
         return [
@@ -35,6 +38,9 @@ final class ColorTest extends TestCase
         ];
     }
 
+    /**
+     * @return array<string, array{?string, string, bool, string}>
+     */
     public static function colorizePathProvider(): array
     {
         $sep    = DIRECTORY_SEPARATOR;
@@ -74,6 +80,9 @@ final class ColorTest extends TestCase
         ];
     }
 
+    /**
+     * @return array<string, array{int, string, string}>
+     */
     public static function colorizeTextBoxProvider(): array
     {
         return [
@@ -109,6 +118,9 @@ final class ColorTest extends TestCase
         ];
     }
 
+    /**
+     * @return non-empty-list<array{string, string}>
+     */
     public static function whitespacedStringProvider(): array
     {
         return [
@@ -126,6 +138,9 @@ final class ColorTest extends TestCase
         ];
     }
 
+    /**
+     * @return non-empty-list<array{int}>
+     */
     public static function unnamedDataSetProvider(): array
     {
         return [
@@ -134,6 +149,9 @@ final class ColorTest extends TestCase
         ];
     }
 
+    /**
+     * @return array<string, array{int}>
+     */
     public static function namedDataSetProvider(): array
     {
         return [

@@ -19,6 +19,9 @@ use PHPUnit\Framework\TestCase;
 #[Small]
 final class JsonTest extends TestCase
 {
+    /**
+     * @return non-empty-list<array{string, string, bool}>
+     */
     public static function canonicalizeProvider(): array
     {
         return [
@@ -28,6 +31,9 @@ final class JsonTest extends TestCase
         ];
     }
 
+    /**
+     * @return non-empty-list<array{string, string}>
+     */
     public static function prettifyProvider(): array
     {
         return [
@@ -37,6 +43,9 @@ final class JsonTest extends TestCase
         ];
     }
 
+    /**
+     * @return non-empty-list<array{string}>
+     */
     public static function prettifyExceptionProvider(): array
     {
         return [

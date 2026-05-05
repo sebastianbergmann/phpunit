@@ -1084,6 +1084,9 @@ final class ResultPrinterTest extends TestCase
         );
     }
 
+    /**
+     * @return list<Issue>
+     */
     private static function samePhpDeprecationsTriggeredTwice(): array
     {
         $issue = Issue::from(

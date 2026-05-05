@@ -26,6 +26,9 @@ use stdClass;
 #[Group('framework/constraints')]
 final class IsIdenticalTest extends TestCase
 {
+    /**
+     * @return non-empty-list<array{string, string, string, mixed, mixed}>
+     */
     public static function provider(): array
     {
         return [

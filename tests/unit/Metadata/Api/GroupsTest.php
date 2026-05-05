@@ -26,6 +26,9 @@ use PHPUnit\TestFixture\SmallGroupAttributesTest;
 #[Group('metadata/api')]
 final class GroupsTest extends TestCase
 {
+    /**
+     * @return non-empty-list<array{list<string>, class-string, string, bool}>
+     */
     public static function provider(): array
     {
         return [

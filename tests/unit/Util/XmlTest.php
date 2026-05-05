@@ -24,6 +24,9 @@ use PHPUnit\TextUI\XmlConfiguration\ValidationResult;
 #[Small]
 final class XmlTest extends TestCase
 {
+    /**
+     * @return list<array{string}>
+     */
     public static function charProvider(): array
     {
         $data = [];

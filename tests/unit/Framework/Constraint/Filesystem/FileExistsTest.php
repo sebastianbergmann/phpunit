@@ -23,6 +23,9 @@ use PHPUnit\Framework\TestCase;
 #[Group('framework/constraints')]
 final class FileExistsTest extends TestCase
 {
+    /**
+     * @return non-empty-list<array{bool, string, string}>
+     */
     public static function provider(): array
     {
         return [

@@ -26,6 +26,9 @@ use stdClass;
 #[Group('event-system/value-objects')]
 final class ComparisonFailureBuilderTest extends TestCase
 {
+    /**
+     * @return array<string, array{string, string, string, ExpectationFailedException}>
+     */
     public static function provider(): array
     {
         return [

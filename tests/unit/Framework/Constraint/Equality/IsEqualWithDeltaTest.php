@@ -24,6 +24,9 @@ use stdClass;
 #[Group('framework/constraints')]
 final class IsEqualWithDeltaTest extends TestCase
 {
+    /**
+     * @return non-empty-list<array{bool, string, string, string, mixed, float, mixed}>
+     */
     public static function provider(): array
     {
         return [

@@ -27,6 +27,9 @@ use PHPUnit\Metadata\MetadataCollection;
 #[Group('test-runner/result-cache')]
 final class ResultCacheIdTest extends TestCase
 {
+    /**
+     * @return iterable<array{string, ResultCacheId}>
+     */
     public static function provideResultCacheIds(): iterable
     {
         yield ['PHPUnit\Runner\ResultCache\ResultCacheIdTest::a method', ResultCacheId::fromTestClassAndMethodName(self::class, 'a method')];

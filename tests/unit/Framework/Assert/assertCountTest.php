@@ -28,7 +28,7 @@ use PHPUnit\Framework\Attributes\TestDox;
 final class assertCountTest extends TestCase
 {
     /**
-     * @return non-empty-list<array{0: int, 1: Countable|iterable}>
+     * @return non-empty-list<array{0: int, 1: Countable|iterable<mixed>}>
      */
     public static function successProvider(): array
     {
@@ -39,7 +39,7 @@ final class assertCountTest extends TestCase
     }
 
     /**
-     * @return non-empty-list<array{0: int, 1: Countable|iterable}>
+     * @return non-empty-list<array{0: int, 1: Countable|iterable<mixed>}>
      */
     public static function failureProvider(): array
     {

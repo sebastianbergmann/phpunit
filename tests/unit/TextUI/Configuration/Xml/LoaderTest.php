@@ -36,6 +36,9 @@ use SebastianBergmann\CodeCoverage\Report\Thresholds;
 #[Group('textui/configuration/xml')]
 final class LoaderTest extends TestCase
 {
+    /**
+     * @return array<string, array{string, string, bool|int|string}>
+     */
     public static function configurationRootOptionsProvider(): array
     {
         return [

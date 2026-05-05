@@ -23,6 +23,9 @@ use PHPUnit\Framework\TestCase;
 #[Group('framework/constraints')]
 final class StringContainsTest extends TestCase
 {
+    /**
+     * @return array<string, array{bool, string, bool, bool, string, mixed}>
+     */
     public static function providesEvaluationCases(): array
     {
         return [
@@ -184,6 +187,9 @@ final class StringContainsTest extends TestCase
         ];
     }
 
+    /**
+     * @return array<string, array{string, string, bool, bool}>
+     */
     public static function providesToStringRepresentationCases(): array
     {
         return [

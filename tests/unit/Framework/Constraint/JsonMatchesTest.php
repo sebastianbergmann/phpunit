@@ -24,6 +24,9 @@ use PHPUnit\Framework\TestCase;
 #[Group('framework/constraints')]
 final class JsonMatchesTest extends TestCase
 {
+    /**
+     * @return array<string, array{bool, string, string, mixed, mixed}>
+     */
     public static function provider(): array
     {
         return [

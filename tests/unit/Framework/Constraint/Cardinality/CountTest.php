@@ -36,6 +36,9 @@ use Traversable;
 #[Group('framework/constraints')]
 final class CountTest extends TestCase
 {
+    /**
+     * @return non-empty-list<array{bool, string, int, mixed}>
+     */
     public static function provider(): array
     {
         return [

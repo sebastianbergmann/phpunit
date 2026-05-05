@@ -24,6 +24,9 @@ use PHPUnit\Framework\TestCase;
 #[Group('framework/constraints')]
 final class StringEndsWithTest extends TestCase
 {
+    /**
+     * @return non-empty-list<array{bool, string, string, string}>
+     */
     public static function provider(): array
     {
         return [

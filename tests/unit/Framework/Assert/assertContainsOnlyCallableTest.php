@@ -23,7 +23,7 @@ use PHPUnit\Framework\Attributes\TestDox;
 final class assertContainsOnlyCallableTest extends TestCase
 {
     /**
-     * @return non-empty-list<array{0: iterable}>
+     * @return non-empty-list<array{0: iterable<mixed>}>
      */
     public static function successProvider(): array
     {
@@ -36,7 +36,7 @@ final class assertContainsOnlyCallableTest extends TestCase
     }
 
     /**
-     * @return non-empty-list<array{0: iterable}>
+     * @return non-empty-list<array{0: iterable<mixed>}>
      */
     public static function failureProvider(): array
     {

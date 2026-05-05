@@ -25,6 +25,9 @@ use PHPUnit\Framework\TestCase;
 #[Group('framework/constraints')]
 final class IsJsonTest extends TestCase
 {
+    /**
+     * @return non-empty-list<array{bool, string, mixed}>
+     */
     public static function provider(): array
     {
         return [

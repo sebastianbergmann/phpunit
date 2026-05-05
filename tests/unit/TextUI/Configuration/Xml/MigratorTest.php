@@ -19,6 +19,9 @@ use PHPUnit\Util\Xml\Loader as XmlLoader;
 #[Group('textui/configuration/xml')]
 final class MigratorTest extends TestCase
 {
+    /**
+     * @return array<string, array{string, string}>
+     */
     public static function provider(): array
     {
         return [

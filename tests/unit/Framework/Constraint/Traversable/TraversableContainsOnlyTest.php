@@ -25,6 +25,9 @@ use stdClass;
 #[Group('framework/constraints')]
 final class TraversableContainsOnlyTest extends TestCase
 {
+    /**
+     * @return non-empty-list<array{bool, string, NativeType, mixed}>
+     */
     public static function nativeTypeProvider(): array
     {
         return [
@@ -50,6 +53,9 @@ EOT,
         ];
     }
 
+    /**
+     * @return non-empty-list<array{bool, string, string, mixed}>
+     */
     public static function classOrInterfaceProvider(): array
     {
         return [

@@ -25,6 +25,9 @@ use PHPUnit\Framework\TestCase;
 #[Group('framework/constraints')]
 final class LogicalAndTest extends TestCase
 {
+    /**
+     * @return non-empty-list<array{bool, string, string, LogicalAnd, mixed}>
+     */
     public static function provider(): array
     {
         return [

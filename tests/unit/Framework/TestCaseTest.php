@@ -22,6 +22,9 @@ class TestCaseTest extends TestCase
 {
     protected static int $testStatic = 456;
 
+    /**
+     * @return iterable<array{string, int|string, array<mixed>}>
+     */
     public static function provideDataSetAsStringWithDataProvider(): iterable
     {
         yield ['', 'dataSet', []];
