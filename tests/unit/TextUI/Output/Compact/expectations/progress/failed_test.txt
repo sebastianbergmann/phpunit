@@ -1,0 +1,4 @@
+
+--- FAILURE: FooTest::testBar
+Failed asserting that false is true.
+%A

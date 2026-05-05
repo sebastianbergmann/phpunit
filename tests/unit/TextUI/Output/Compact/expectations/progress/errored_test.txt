@@ -1,0 +1,4 @@
+
+--- ERROR: FooTest::testBar
+Exception: message
+%A

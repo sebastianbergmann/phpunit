@@ -14,17 +14,7 @@ use function assert;
 use function implode;
 use function ksort;
 use function sprintf;
-use function str_starts_with;
-use function strlen;
-use function substr;
 use function trim;
-use PHPUnit\Event\Code\Test;
-use PHPUnit\Event\Code\TestMethod;
-use PHPUnit\Event\Code\Throwable;
-use PHPUnit\Event\Test\AfterLastTestMethodErrored;
-use PHPUnit\Event\Test\AfterLastTestMethodFailed;
-use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
-use PHPUnit\Event\Test\BeforeFirstTestMethodFailed;
 use PHPUnit\Event\Test\PhpunitDeprecationTriggered;
 use PHPUnit\Event\Test\PhpunitErrorTriggered;
 use PHPUnit\Event\Test\PhpunitNoticeTriggered;
@@ -46,6 +36,7 @@ use PHPUnit\TextUI\Output\Printer;
 final readonly class ResultPrinter
 {
     private Printer $printer;
+    private Renderer $renderer;
     private bool $displayDetailsOnIncompleteTests;
     private bool $displayDetailsOnSkippedTests;
     private bool $displayDetailsOnTestsThatTriggerDeprecations;
@@ -56,6 +47,7 @@ final readonly class ResultPrinter
     public function __construct(Printer $printer, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings)
     {
         $this->printer                                      = $printer;
+        $this->renderer                                     = new Renderer($printer);
         $this->displayDetailsOnIncompleteTests              = $displayDetailsOnIncompleteTests;
         $this->displayDetailsOnSkippedTests                 = $displayDetailsOnSkippedTests;
         $this->displayDetailsOnTestsThatTriggerDeprecations = $displayDetailsOnTestsThatTriggerDeprecations;
@@ -72,13 +64,15 @@ final readonly class ResultPrinter
             return;
         }
 
+        if ($result->hasTestErroredEvents() || $result->hasTestFailedEvents()) {
+            $this->printer->print(PHP_EOL);
+        }
+
         $this->printSummaryLine($result);
         $this->printPhpunitErrors($result);
         $this->printTestRunnerWarnings($result);
         $this->printTestRunnerDeprecations($result);
         $this->printTestRunnerNotices($result);
-        $this->printErrors($result);
-        $this->printFailures($result);
         $this->printPhpunitWarnings($result);
         $this->printPhpunitDeprecations($result);
         $this->printPhpunitNotices($result);
@@ -181,50 +175,6 @@ final readonly class ResultPrinter
         }
     }
 
-    private function printErrors(TestResult $result): void
-    {
-        if (!$result->hasTestErroredEvents()) {
-            return;
-        }
-
-        foreach ($result->testErroredEvents() as $event) {
-            if ($event instanceof AfterLastTestMethodErrored || $event instanceof BeforeFirstTestMethodErrored) {
-                $title = $event->testClassName();
-            } else {
-                $title = $this->name($event->test());
-            }
-
-            $this->printer->print(PHP_EOL . '--- ERROR: ' . $title . PHP_EOL);
-            $this->printThrowable($event->throwable());
-        }
-    }
-
-    private function printFailures(TestResult $result): void
-    {
-        if (!$result->hasTestFailedEvents()) {
-            return;
-        }
-
-        foreach ($result->testFailedEvents() as $event) {
-            if ($event instanceof AfterLastTestMethodFailed || $event instanceof BeforeFirstTestMethodFailed) {
-                $title = $event->testClassName();
-            } else {
-                $title = $this->name($event->test());
-            }
-
-            $this->printer->print(PHP_EOL . '--- FAILURE: ' . $title . PHP_EOL);
-
-            $body = $event->throwable()->description();
-
-            if (str_starts_with($body, 'AssertionError: ')) {
-                $body = substr($body, strlen('AssertionError: '));
-            }
-
-            $this->printer->print(trim($body) . PHP_EOL);
-            $this->printStackTrace($event->throwable()->stackTrace());
-        }
-    }
-
     private function printDeprecations(TestResult $result): void
     {
         $this->printIssueList('DEPRECATION', $result->phpDeprecations());
@@ -257,7 +207,7 @@ final readonly class ResultPrinter
         foreach ($result->testTriggeredPhpunitErrorEvents() as $events) {
             assert(isset($events[0]));
 
-            $this->printer->print(PHP_EOL . '--- PHPUNIT ERROR: ' . $this->name($events[0]->test()) . PHP_EOL);
+            $this->printer->print(PHP_EOL . '--- PHPUNIT ERROR: ' . $this->renderer->nameOfTest($events[0]->test()) . PHP_EOL);
 
             foreach ($events as $event) {
                 assert($event instanceof PhpunitErrorTriggered);
@@ -276,7 +226,7 @@ final readonly class ResultPrinter
         foreach ($result->testTriggeredPhpunitWarningEvents() as $events) {
             assert(isset($events[0]));
 
-            $this->printer->print(PHP_EOL . '--- PHPUNIT WARNING: ' . $this->name($events[0]->test()) . PHP_EOL);
+            $this->printer->print(PHP_EOL . '--- PHPUNIT WARNING: ' . $this->renderer->nameOfTest($events[0]->test()) . PHP_EOL);
 
             foreach ($events as $event) {
                 assert($event instanceof PhpunitWarningTriggered);
@@ -295,7 +245,7 @@ final readonly class ResultPrinter
         foreach ($result->testTriggeredPhpunitDeprecationEvents() as $events) {
             assert(isset($events[0]));
 
-            $this->printer->print(PHP_EOL . '--- PHPUNIT DEPRECATION: ' . $this->name($events[0]->test()) . PHP_EOL);
+            $this->printer->print(PHP_EOL . '--- PHPUNIT DEPRECATION: ' . $this->renderer->nameOfTest($events[0]->test()) . PHP_EOL);
 
             foreach ($events as $event) {
                 assert($event instanceof PhpunitDeprecationTriggered);
@@ -314,7 +264,7 @@ final readonly class ResultPrinter
         foreach ($result->testTriggeredPhpunitNoticeEvents() as $events) {
             assert(isset($events[0]));
 
-            $this->printer->print(PHP_EOL . '--- PHPUNIT NOTICE: ' . $this->name($events[0]->test()) . PHP_EOL);
+            $this->printer->print(PHP_EOL . '--- PHPUNIT NOTICE: ' . $this->renderer->nameOfTest($events[0]->test()) . PHP_EOL);
 
             foreach ($events as $event) {
                 assert($event instanceof PhpunitNoticeTriggered);
@@ -420,7 +370,7 @@ final readonly class ResultPrinter
 
             $test = $reasons[0]->test();
 
-            $this->printer->print(PHP_EOL . '--- RISKY: ' . $this->name($test) . PHP_EOL);
+            $this->printer->print(PHP_EOL . '--- RISKY: ' . $this->renderer->nameOfTest($test) . PHP_EOL);
 
             foreach ($reasons as $reason) {
                 $this->printer->print($reason->message() . PHP_EOL);
@@ -435,7 +385,7 @@ final readonly class ResultPrinter
         }
 
         foreach ($result->testMarkedIncompleteEvents() as $event) {
-            $this->printer->print(PHP_EOL . '--- INCOMPLETE: ' . $this->name($event->test()) . PHP_EOL);
+            $this->printer->print(PHP_EOL . '--- INCOMPLETE: ' . $this->renderer->nameOfTest($event->test()) . PHP_EOL);
             $this->printer->print(trim($event->throwable()->description()) . PHP_EOL);
         }
     }
@@ -447,7 +397,7 @@ final readonly class ResultPrinter
         }
 
         foreach ($result->testSkippedEvents() as $event) {
-            $this->printer->print(PHP_EOL . '--- SKIPPED: ' . $this->name($event->test()) . PHP_EOL);
+            $this->printer->print(PHP_EOL . '--- SKIPPED: ' . $this->renderer->nameOfTest($event->test()) . PHP_EOL);
 
             if ($event->message() !== '') {
                 $this->printer->print($event->message() . PHP_EOL);
@@ -488,42 +438,5 @@ final readonly class ResultPrinter
                 }
             }
         }
-    }
-
-    private function printThrowable(Throwable $throwable): void
-    {
-        $this->printer->print(trim($throwable->description()) . PHP_EOL);
-        $this->printStackTrace($throwable->stackTrace());
-
-        if ($throwable->hasPrevious()) {
-            $this->printer->print('Caused by' . PHP_EOL);
-            $this->printThrowable($throwable->previous());
-        }
-    }
-
-    private function printStackTrace(string $stackTrace): void
-    {
-        $stackTrace = trim($stackTrace);
-
-        if ($stackTrace === '') {
-            return;
-        }
-
-        $this->printer->print(PHP_EOL . $stackTrace . PHP_EOL);
-    }
-
-    private function name(Test $test): string
-    {
-        if ($test->isTestMethod()) {
-            assert($test instanceof TestMethod);
-
-            if (!$test->testData()->hasDataFromDataProvider()) {
-                return $test->nameWithClass();
-            }
-
-            return $test->className() . '::' . $test->methodName() . $test->testData()->dataFromDataProvider()->dataAsStringForResultOutput();
-        }
-
-        return $test->name();
     }
 }

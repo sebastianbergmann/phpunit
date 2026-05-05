@@ -15,20 +15,14 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 
-ERRORS (13 tests, 4 assertions, 2 errors, 2 failures, 3 skipped, 2 incomplete, 2 risky)
-
---- ERROR: PHPUnit\TestFixture\Basic\StatusTest::testError
-RuntimeException:
-
-%sStatusTest.php:%d
-
---- ERROR: PHPUnit\TestFixture\Basic\StatusTest::testErrorWithMessage
-RuntimeException: error with custom message
-
-%sStatusTest.php:%d
 
 --- FAILURE: PHPUnit\TestFixture\Basic\StatusTest::testFailure
 Failed asserting that false is true.
+
+%sStatusTest.php:%d
+
+--- ERROR: PHPUnit\TestFixture\Basic\StatusTest::testError
+RuntimeException:
 
 %sStatusTest.php:%d
 
@@ -37,6 +31,13 @@ failure with custom message
 Failed asserting that false is true.
 
 %sStatusTest.php:%d
+
+--- ERROR: PHPUnit\TestFixture\Basic\StatusTest::testErrorWithMessage
+RuntimeException: error with custom message
+
+%sStatusTest.php:%d
+
+ERRORS (13 tests, 4 assertions, 2 errors, 2 failures, 3 skipped, 2 incomplete, 2 risky)
 
 --- RISKY: PHPUnit\TestFixture\Basic\StatusTest::testRisky
 This test did not perform any assertions

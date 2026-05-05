@@ -1,0 +1,4 @@
+
+--- FAILURE: FooTest
+Failed asserting that false is true.
+%A

@@ -1,0 +1,4 @@
+
+--- FAILURE: FooTest::testBar#2 (negative numbers)
+Failed asserting that 1 matches expected 2.
+%A

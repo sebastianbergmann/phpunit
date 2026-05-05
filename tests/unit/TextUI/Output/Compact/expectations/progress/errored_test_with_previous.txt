@@ -1,0 +1,7 @@
+
+--- ERROR: FooTest::testBar
+RuntimeException: outer
+%A
+Caused by
+LogicException: inner
+%A
