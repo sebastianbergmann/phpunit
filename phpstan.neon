@@ -19,6 +19,7 @@ parameters:
     strictRules:
         allRules: false
         booleansInConditions: true
+        booleansInLoopConditions: true
         closureUsesThis: true
         disallowedBacktick: true
         disallowedEmpty: true
@@ -38,6 +39,8 @@ parameters:
 
     ergebnis:
         allRules: false
+        declareStrictTypes:
+            enabled: true
         final:
             enabled: true
             classesNotRequiredToBeAbstractOrFinal:
@@ -45,6 +48,10 @@ parameters:
                 - PHPUnit\Framework\AssertionFailedError
                 - PHPUnit\Framework\Exception
                 - PHPUnit\Framework\TestSuite
+        noCompact:
+            enabled: true
+        noReturnByReference:
+            enabled: true
         privateInFinalClass:
             enabled: true
 
