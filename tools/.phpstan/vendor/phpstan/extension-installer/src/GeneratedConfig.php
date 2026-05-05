@@ -12,7 +12,7 @@ final class GeneratedConfig
 	public const EXTENSIONS = array (
   'ergebnis/phpstan-rules' => 
   array (
-    'install_path' => '/usr/local/src/phpunit/tools/.phpstan/vendor/ergebnis/phpstan-rules',
+    'install_path' => '/Users/sb/Work/OpenSource/phpunit/tools/.phpstan/vendor/ergebnis/phpstan-rules',
     'relative_install_path' => '../../../ergebnis/phpstan-rules',
     'extra' => 
     array (
@@ -26,7 +26,7 @@ final class GeneratedConfig
   ),
   'phpstan/phpstan-strict-rules' => 
   array (
-    'install_path' => '/usr/local/src/phpunit/tools/.phpstan/vendor/phpstan/phpstan-strict-rules',
+    'install_path' => '/Users/sb/Work/OpenSource/phpunit/tools/.phpstan/vendor/phpstan/phpstan-strict-rules',
     'relative_install_path' => '../../phpstan-strict-rules',
     'extra' => 
     array (
@@ -35,12 +35,12 @@ final class GeneratedConfig
         0 => 'rules.neon',
       ),
     ),
-    'version' => '2.0.10',
+    'version' => '2.0.11',
     'phpstanVersionConstraint' => '>=2.1.39.0-dev, <3.0.0.0-dev',
   ),
   'tomasvotruba/type-coverage' => 
   array (
-    'install_path' => '/usr/local/src/phpunit/tools/.phpstan/vendor/tomasvotruba/type-coverage',
+    'install_path' => '/Users/sb/Work/OpenSource/phpunit/tools/.phpstan/vendor/tomasvotruba/type-coverage',
     'relative_install_path' => '../../../tomasvotruba/type-coverage',
     'extra' => 
     array (
