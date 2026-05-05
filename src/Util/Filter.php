@@ -15,6 +15,7 @@ use function defined;
 use function in_array;
 use function is_array;
 use function is_file;
+use function is_string;
 use function realpath;
 use function sprintf;
 use function str_starts_with;
@@ -99,7 +100,7 @@ final readonly class Filter
         $fileIsNotPrefixed = $prefix === false || !str_starts_with($file, $prefix);
 
         // @see https://github.com/sebastianbergmann/phpunit/issues/4033
-        if (isset($GLOBALS['_SERVER']['SCRIPT_NAME'])) {
+        if (isset($GLOBALS['_SERVER']) && is_array($GLOBALS['_SERVER']) && isset($GLOBALS['_SERVER']['SCRIPT_NAME']) && is_string($GLOBALS['_SERVER']['SCRIPT_NAME'])) {
             $script = realpath($GLOBALS['_SERVER']['SCRIPT_NAME']);
         } else {
             // @codeCoverageIgnoreStart

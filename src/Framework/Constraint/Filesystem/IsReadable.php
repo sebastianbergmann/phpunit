@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\Constraint;
 
 use function is_readable;
+use function is_string;
 use function sprintf;
 
 /**
@@ -31,6 +32,10 @@ final class IsReadable extends Constraint
      */
     protected function matches(mixed $other): bool
     {
+        if (!is_string($other)) {
+            return false;
+        }
+
         return is_readable($other);
     }
 
@@ -42,9 +47,15 @@ final class IsReadable extends Constraint
      */
     protected function failureDescription(mixed $other): string
     {
+        if (is_string($other)) {
+            $path = $other;
+        } else {
+            $path = '';
+        }
+
         return sprintf(
             '"%s" is readable',
-            $other,
+            $path,
         );
     }
 }

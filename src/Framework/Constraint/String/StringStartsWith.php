@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function is_string;
 use function str_starts_with;
 use PHPUnit\Framework\EmptyStringException;
 
@@ -45,6 +46,10 @@ final class StringStartsWith extends Constraint
      */
     protected function matches(mixed $other): bool
     {
-        return str_starts_with((string) $other, $this->prefix);
+        if (!is_string($other)) {
+            return false;
+        }
+
+        return str_starts_with($other, $this->prefix);
     }
 }

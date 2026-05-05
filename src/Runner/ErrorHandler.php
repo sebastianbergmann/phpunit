@@ -72,9 +72,17 @@ final class ErrorHandler
     private static ?self $instance          = null;
     private ?Baseline $baseline             = null;
     private ExcludeList $excludeList;
-    private bool $enabled                          = false;
-    private ?int $originalErrorReportingLevel      = null;
-    private mixed $previousErrorHandler            = null;
+    private bool $enabled                     = false;
+    private ?int $originalErrorReportingLevel = null;
+
+    /**
+     * @var ?callable
+     */
+    private mixed $previousErrorHandler = null;
+
+    /**
+     * @var ?callable
+     */
     private mixed $previousNonTestCaseErrorHandler = null;
     private readonly bool $identifyIssueTrigger;
 

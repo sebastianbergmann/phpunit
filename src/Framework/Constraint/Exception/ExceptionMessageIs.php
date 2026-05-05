@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function is_string;
 use function sprintf;
 use PHPUnit\Util\Exporter;
 
@@ -37,7 +38,11 @@ final class ExceptionMessageIs extends Constraint
 
     protected function matches(mixed $other): bool
     {
-        return (string) $other === $this->expectedMessage;
+        if (!is_string($other)) {
+            return false;
+        }
+
+        return $other === $this->expectedMessage;
     }
 
     /**
@@ -48,16 +53,22 @@ final class ExceptionMessageIs extends Constraint
      */
     protected function failureDescription(mixed $other): string
     {
+        if (is_string($other)) {
+            $message = $other;
+        } else {
+            $message = '';
+        }
+
         if ($this->expectedMessage === '') {
             return sprintf(
                 "exception message is empty but is '%s'",
-                $other,
+                $message,
             );
         }
 
         return sprintf(
             "exception message '%s' is '%s'",
-            $other,
+            $message,
             $this->expectedMessage,
         );
     }

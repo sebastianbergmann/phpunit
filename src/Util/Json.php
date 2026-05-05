@@ -15,6 +15,7 @@ use const JSON_UNESCAPED_SLASHES;
 use const JSON_UNESCAPED_UNICODE;
 use const SORT_STRING;
 use function assert;
+use function is_array;
 use function is_object;
 use function is_scalar;
 use function json_decode;
@@ -52,7 +53,7 @@ final readonly class Json
      * * Element 0 is false and element 1 has the decoded value when JSON decoding did work.
      * * This is used to avoid ambiguity with JSON strings consisting entirely of 'null' or 'false'.
      *
-     * @return array{0: false, 1: mixed}|array{0: true, 1: null}
+     * @return array{0: false, 1: string}|array{0: true, 1: null}
      */
     public static function canonicalize(string $json): array
     {
@@ -65,6 +66,10 @@ final readonly class Json
         self::recursiveSort($decodedJson);
 
         $reencodedJson = json_encode($decodedJson);
+
+        if ($reencodedJson === false) {
+            return [true, null];
+        }
 
         return [false, $reencodedJson];
     }
@@ -93,6 +98,8 @@ final readonly class Json
             // See #2919, #4584, #4674
             $json = (array) $json;
             ksort($json, SORT_STRING);
+        } elseif (!is_array($json)) {
+            return;
         }
 
         foreach ($json as &$value) {

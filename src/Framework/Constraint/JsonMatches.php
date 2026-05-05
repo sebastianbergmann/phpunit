@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function is_string;
 use function json_decode;
 use function sprintf;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -47,6 +48,10 @@ final class JsonMatches extends Constraint
      */
     protected function matches(mixed $other): bool
     {
+        if (!is_string($other)) {
+            return false;
+        }
+
         [$error, $recodedOther] = Json::canonicalize($other);
 
         if ($error) {
@@ -70,16 +75,16 @@ final class JsonMatches extends Constraint
      */
     protected function fail(mixed $other, string $description, ?ComparisonFailure $comparisonFailure = null): never
     {
-        if ($comparisonFailure === null) {
+        if ($comparisonFailure === null && is_string($other)) {
             [$error, $recodedOther] = Json::canonicalize($other);
 
-            if ($error) {
+            if ($error || $recodedOther === null) {
                 parent::fail($other, $description);
             }
 
             [$error, $recodedValue] = Json::canonicalize($this->value);
 
-            if ($error) {
+            if ($error || $recodedValue === null) {
                 parent::fail($other, $description);
             }
 

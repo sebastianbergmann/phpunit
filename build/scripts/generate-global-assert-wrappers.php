@@ -6,6 +6,23 @@ use PHPUnit\Framework\Constraint\Constraint;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
+function parameterListAsArguments(ReflectionMethod $method): string
+{
+    $arguments = [];
+
+    foreach ($method->getParameters() as $parameter) {
+        if ($parameter->isVariadic()) {
+            $arguments[] = '...$' . $parameter->getName();
+
+            continue;
+        }
+
+        $arguments[] = '$' . $parameter->getName();
+    }
+
+    return \implode(', ', $arguments);
+}
+
 /** @var string[] $lines */
 $lines = \file(__DIR__ . '/../../src/Framework/Assert.php');
 
@@ -69,10 +86,18 @@ foreach ($class->getMethods() as $method) {
         continue;
     }
 
+    $docComment = (string) $method->getDocComment();
+
+    if ($docComment !== '') {
+        $docComment .= "\n";
+    }
+
     $constraintMethods .= \sprintf(
-        "if (!function_exists('PHPUnit\Framework\\" . $method->getName() . "')) {\n%s\n{\n    return Assert::%s(...\\func_get_args());\n}\n}\n\n",
+        "if (!function_exists('PHPUnit\Framework\\" . $method->getName() . "')) {\n%s%s\n{\n    return Assert::%s(%s);\n}\n}\n\n",
+        $docComment,
         \str_replace('final public static ', '', \trim($lines[$method->getStartLine() - 1])),
-        $method->getName()
+        $method->getName(),
+        parameterListAsArguments($method)
     );
 }
 
@@ -100,7 +125,7 @@ foreach ($class->getMethods() as $method) {
     );
 
     $signature = \str_replace('final public static ', '', \trim($lines[$method->getStartLine() - 1]));
-    $body      = "{\n    Assert::" . $method->getName() . "(...\\func_get_args());\n}";
+    $body      = "{\n    Assert::" . $method->getName() . "(" . parameterListAsArguments($method) . ");\n}";
 
     $buffer .= "if (!function_exists('PHPUnit\Framework\\" . $method->getName() . "')) {\n";
     $buffer .= "$docComment\n$signature\n$body\n";

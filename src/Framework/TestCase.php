@@ -1563,7 +1563,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $deepCopy->skipUncloneable(false);
 
                 $this->dependencyInput[$dependencyTarget] = $deepCopy->copy($returnValue);
-            } elseif ($dependency->shallowClone()) {
+            } elseif ($dependency->shallowClone() && is_object($returnValue)) {
                 $this->dependencyInput[$dependencyTarget] = clone $returnValue;
             } else {
                 $this->dependencyInput[$dependencyTarget] = $returnValue;

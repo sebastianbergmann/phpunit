@@ -75,7 +75,7 @@ final readonly class ReturnValueMap implements Stub
     }
 
     /**
-     * @param array<int, mixed> $mapParameters
+     * @param array<mixed>      $mapParameters
      * @param array<int, mixed> $invocationParameters
      */
     private function parametersMatch(array $mapParameters, array $invocationParameters): bool

@@ -586,7 +586,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         }
 
         if ($buffer !== false) {
-            $coverage = @unserialize(
+            $unserialized = @unserialize(
                 $buffer,
                 [
                     'allowed_classes' => [
@@ -596,11 +596,9 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
                 ],
             );
 
-            if ($coverage === false) {
-                /**
-                 * @phpstan-ignore staticMethod.internalClass
-                 */
-                $coverage = RawCodeCoverageData::fromXdebugWithoutPathCoverage([]);
+            /** @phpstan-ignore instanceof.internalClass */
+            if ($unserialized instanceof RawCodeCoverageData) {
+                $coverage = $unserialized;
             }
         }
 

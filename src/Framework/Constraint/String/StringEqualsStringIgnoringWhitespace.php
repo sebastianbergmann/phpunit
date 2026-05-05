@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\Constraint;
 
 use function assert;
+use function is_string;
 use function preg_replace;
 use function sprintf;
 use function trim;
@@ -43,7 +44,11 @@ final class StringEqualsStringIgnoringWhitespace extends Constraint
      */
     protected function matches(mixed $other): bool
     {
-        return $this->string === $this->normalizeWhitespace((string) $other);
+        if (!is_string($other)) {
+            return false;
+        }
+
+        return $this->string === $this->normalizeWhitespace($other);
     }
 
     private function normalizeWhitespace(string $string): string

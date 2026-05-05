@@ -36,12 +36,16 @@ final class OrderedParameterSets implements ParametersRule
     private int $numberOfConfiguredParameterSets;
 
     /**
-     * @param list<Parameters> $stack
+     * @param list<mixed> $stack
      */
     public function __construct(array $stack)
     {
         foreach ($stack as $parameters) {
-            $this->stack[] = new Parameters(is_array($parameters) ? $parameters : [$parameters]);
+            if (is_array($parameters)) {
+                $this->stack[] = new Parameters($parameters);
+            } else {
+                $this->stack[] = new Parameters([$parameters]);
+            }
         }
 
         $this->numberOfConfiguredParameterSets = count($stack);

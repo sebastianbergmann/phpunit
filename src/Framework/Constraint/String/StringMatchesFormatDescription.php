@@ -15,6 +15,7 @@ use function array_slice;
 use function assert;
 use function explode;
 use function implode;
+use function is_string;
 use function preg_last_error_msg;
 use function preg_match;
 use function preg_quote;
@@ -54,6 +55,10 @@ final class StringMatchesFormatDescription extends Constraint
      */
     protected function matches(mixed $other): bool
     {
+        if (!is_string($other)) {
+            return false;
+        }
+
         $other = $this->convertNewlines($other);
 
         $matches = @preg_match(
@@ -96,8 +101,14 @@ final class StringMatchesFormatDescription extends Constraint
      */
     protected function additionalFailureDescription(mixed $other): string
     {
+        if (is_string($other)) {
+            $otherAsString = $other;
+        } else {
+            $otherAsString = '';
+        }
+
         $expected      = explode("\n", $this->formatDescription);
-        $actual        = explode("\n", $this->convertNewlines($other));
+        $actual        = explode("\n", $this->convertNewlines($otherAsString));
         $synced        = [];
         $expectedIndex = 0;
         $actualIndex   = 0;
