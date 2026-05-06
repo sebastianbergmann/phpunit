@@ -10,6 +10,7 @@ All notable changes of the PHPUnit 13.1 release series are documented in this fi
 
 ### Fixed
 
+* [#6605](https://github.com/sebastianbergmann/phpunit/issues/6605): Data set names and provider values containing Unicode bidirectional control characters distort terminal output
 * TestDox output collapsed separate test classes into a single group when their prettified class names matched
 
 ## [13.1.8] - 2026-05-01
