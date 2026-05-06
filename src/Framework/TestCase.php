@@ -91,6 +91,7 @@ use PHPUnit\Runner\ShutdownHandler;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\Util\Exporter;
+use PHPUnit\Util\Sanitizer;
 use PHPUnit\Util\Test as TestUtil;
 use ReflectionClass;
 use ReflectionException;
@@ -880,7 +881,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 return sprintf(' with data set #%s', $this->dataName);
             }
 
-            return sprintf(' with data set "%s"', $this->dataName);
+            return sprintf(
+                ' with data set "%s"',
+                Sanitizer::sanitizeBidirectionalControlCharacters($this->dataName),
+            );
         }
 
         return '';
@@ -1322,7 +1326,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 return sprintf('#%d', $this->dataName);
             }
 
-            return sprintf('@%s', $this->dataName);
+            return sprintf(
+                '@%s',
+                Sanitizer::sanitizeBidirectionalControlCharacters($this->dataName),
+            );
         }
 
         return '';
