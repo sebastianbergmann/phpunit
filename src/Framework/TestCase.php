@@ -97,6 +97,7 @@ use PHPUnit\TestRunner\TestResult\PassedTests;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\Util\DifferBuilder;
 use PHPUnit\Util\Exporter;
+use PHPUnit\Util\Sanitizer;
 use PHPUnit\Util\Test as TestUtil;
 use ReflectionClass;
 use ReflectionMethod;
@@ -887,7 +888,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 return sprintf(' with data set #%s', $this->dataName);
             }
 
-            return sprintf(' with data set "%s"', $this->dataName);
+            return sprintf(
+                ' with data set "%s"',
+                Sanitizer::sanitizeBidirectionalControlCharacters($this->dataName),
+            );
         }
 
         return '';
@@ -905,7 +909,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         if (is_int($this->dataName)) {
             $dataName = sprintf('#%d', $this->dataName);
         } else {
-            $dataName = sprintf('@%s', $this->dataName);
+            $dataName = sprintf(
+                '@%s',
+                Sanitizer::sanitizeBidirectionalControlCharacters($this->dataName),
+            );
         }
 
         return sprintf(
