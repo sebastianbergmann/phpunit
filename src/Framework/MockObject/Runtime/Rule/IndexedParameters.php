@@ -21,14 +21,13 @@ use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 final class IndexedParameters implements ParametersRule
 {
     private Parameters $parameters;
-    private ?int $index = null;
 
     /**
      * @param array<mixed> $parameters
      *
      * @throws \PHPUnit\Framework\Exception
      */
-    public function __construct(array $parameters, private bool $strict)
+    public function __construct(array $parameters, private int $index, private bool $strict)
     {
         $this->parameters = new Parameters($parameters);
     }

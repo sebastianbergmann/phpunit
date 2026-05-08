@@ -9,9 +9,11 @@
  */
 namespace PHPUnit\Framework\MockObject\Rule;
 
+use function array_key_exists;
+use function array_keys;
+use function array_values;
 use function count;
 use function is_array;
-use function sprintf;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 use PHPUnit\Framework\MockObject\NoMoreParameterSetsConfiguredException;
@@ -26,13 +28,14 @@ final class PartialOrderedParameterSets implements ParametersRule
     /**
      * @var list<IndexedParameters>
      */
-    private array $ordered = [];
+    private array $stack = [];
 
     /**
      * @var list<IndexedParameters>
      */
-    private array $applied = [];
-    private UnorderedParameterSets $unordered;
+    private array $applied                     = [];
+    private ?OrderedParameterSets $ordered     = null;
+    private ?UnorderedParameterSets $unordered = null;
     private int $numberOfConfiguredParameterSets;
     private int $numberOfInvocations = 0;
 
@@ -41,16 +44,30 @@ final class PartialOrderedParameterSets implements ParametersRule
      */
     public function __construct(array $stack)
     {
+        $ordered   = [];
         $unordered = [];
 
         foreach ($stack as $index => $parameters) {
-            $parameters = ($parameters instanceof IndexedParameters)
-                ? $parameters
-                : new IndexedParameters(is_array($parameters) ? $parameters : [$parameters], false);
-            $parameters->index($index);
+            if (is_array($parameters)) {
+                $strict = false;
+                $keys   = array_keys($parameters);
+
+                if (count($parameters) === 1 && array_key_exists('pinned', $parameters)) {
+                    $strict     = true;
+                    $parameters = $parameters['pinned'];
+
+                    if (is_array($parameters) === false) {
+                        $parameters = [$parameters];
+                    }
+                }
+
+                $parameters = new IndexedParameters($parameters, $index, $strict);
+            } else {
+                $parameters = new IndexedParameters([$parameters], $index, false);
+            }
 
             if ($parameters->isStrict() === true) {
-                $this->ordered[] = $parameters;
+                $ordered[] = $parameters;
 
                 continue;
             }
@@ -58,7 +75,17 @@ final class PartialOrderedParameterSets implements ParametersRule
             $unordered[] = $parameters;
         }
 
-        $this->unordered                       = new UnorderedParameterSets($unordered);
+        // when we only have ordered sets we use OrderedParameterSets
+        if (count($ordered) > 0 && count($unordered) === 0) {
+            $this->ordered = new OrderedParameterSets($ordered);
+        } else {
+            $this->stack = $ordered;
+        }
+
+        if (count($unordered) > 0) {
+            $this->unordered = new UnorderedParameterSets($unordered);
+        }
+
         $this->numberOfConfiguredParameterSets = count($stack);
     }
 
@@ -73,9 +100,12 @@ final class PartialOrderedParameterSets implements ParametersRule
             );
         }
 
-        foreach ($this->ordered as $key => $parameters) {
+        $stack = $this->stack;
+
+        foreach ($stack as $index => $parameters) {
             if ($parameters->at() === $this->numberOfInvocations - 1) {
-                unset($this->ordered[$key]);
+                unset($stack[$index]);
+                $this->stack     = array_values($stack);
                 $this->applied[] = $parameters;
                 $parameters->apply($invocation);
 
@@ -83,7 +113,13 @@ final class PartialOrderedParameterSets implements ParametersRule
             }
         }
 
-        $this->unordered->apply($invocation);
+        if ($this->ordered !== null) {
+            $this->ordered->apply($invocation);
+        }
+
+        if ($this->unordered !== null) {
+            $this->unordered->apply($invocation);
+        }
     }
 
     /**
@@ -95,20 +131,12 @@ final class PartialOrderedParameterSets implements ParametersRule
      */
     public function verify(): void
     {
-        $this->unordered->verify();
+        if ($this->unordered !== null) {
+            $this->unordered->verify();
+        }
 
-        if ($this->numberOfInvocations !== $this->numberOfConfiguredParameterSets &&
-            count($this->ordered) + count($this->applied) === $this->numberOfConfiguredParameterSets &&
-            $this->numberOfInvocations > 0) {
-            throw new ExpectationFailedException(
-                sprintf(
-                    'Too many parameter sets given, %d out of %d expected parameter set%s %s been called.',
-                    $this->numberOfInvocations,
-                    $this->numberOfConfiguredParameterSets,
-                    $this->numberOfConfiguredParameterSets !== 1 ? 's' : '',
-                    $this->numberOfInvocations !== 1 ? 'have' : 'has',
-                ),
-            );
+        if ($this->ordered !== null) {
+            $this->ordered->verify();
         }
 
         foreach ($this->applied as $parameters) {

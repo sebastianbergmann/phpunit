@@ -444,7 +444,7 @@ EOT,
             ->withParameterSetsInPartialOrder(
                 1,
                 2,
-                $this->fixed(3),
+                ['pinned' => 3],
             );
 
         $double->doSomethingElse(2);
@@ -476,7 +476,7 @@ EOT,
 
         $double->expects($this->exactly(2))->method('doSomethingElse')
             ->withParameterSetsInPartialOrder(
-                $this->fixed(1),
+                ['pinned' => 1],
                 2,
             );
 
@@ -497,7 +497,7 @@ EOT,
         $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
 
         $double->expects($this->exactly(3))->method('doSomethingElse')
-            ->withParameterSetsInPartialOrder(1, $this->fixed(2));
+            ->withParameterSetsInPartialOrder(1, ['pinned' => 2]);
 
         $this->expectException(NoMoreParameterSetsConfiguredException::class);
         $this->expectExceptionMessageIs('Not enough parameter sets configured, only 2 parameter sets given for PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration::doSomethingElse()');
@@ -512,7 +512,7 @@ EOT,
         $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
 
         $double->expects($this->exactly(2))->method('doSomethingElse')
-            ->withParameterSetsInPartialOrder($this->fixed(1), 2, 3);
+            ->withParameterSetsInPartialOrder(['pinned' => 1], 2, 3);
 
         $double->doSomethingElse(1);
         $double->doSomethingElse(3);
@@ -550,7 +550,7 @@ EOT,
         $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
 
         $double->expects($this->exactly(2))->method('doSomethingElse')
-            ->withParameterSetsInPartialOrder($this->fixed(1), $this->fixed(2), $this->fixed(3));
+            ->withParameterSetsInPartialOrder(['pinned' => 1], ['pinned' => 2], ['pinned' => 3]);
 
         $double->doSomethingElse(1);
         $double->doSomethingElse(2);
