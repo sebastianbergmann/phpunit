@@ -329,7 +329,7 @@ EOT,
     {
         $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
 
-        $double->expects($this->exactly(2))->method('doSomethingElse')->withParameterSetsInOrder(1, 2);
+        $double->expects($this->exactly(2))->method('doSomethingElse')->withParameterSetsInOrder([1], [2]);
 
         $double->doSomethingElse(1);
         $this->assertThatMockObjectExpectationFails(
@@ -380,7 +380,7 @@ EOT,
     {
         $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
 
-        $double->expects($this->exactly(2))->method('doSomethingElse')->withParameterSetsInAnyOrder(1, 2);
+        $double->expects($this->exactly(2))->method('doSomethingElse')->withParameterSetsInAnyOrder([1], [2]);
 
         $double->doSomethingElse(2);
         $double->doSomethingElse(1);
@@ -531,7 +531,7 @@ EOT,
         $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
 
         $double->expects($this->exactly(2))->method('doSomethingElse')
-            ->withParameterSetsInPartialOrder([1], 2, 3);
+            ->withParameterSetsInPartialOrder(1, 2, 3);
 
         $double->doSomethingElse(1);
         $double->doSomethingElse(3);
@@ -552,7 +552,7 @@ EOT,
         $double->expects($this->exactly(2))->method('doSomethingElse')
             ->withParameterSetsInPartialOrder(
                 ['pinned' => 1],
-                ['pinned' => [2]],
+                ['pinned' => 2],
                 ['pinned' => 3],
             );
 
