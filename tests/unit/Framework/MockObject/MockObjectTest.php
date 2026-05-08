@@ -315,7 +315,7 @@ EOT,
         );
     }
 
-    public function testExpectationThatMethodIsCalledWithOrderedParameterSetsSucceedsWhenMethodIsCalledWithExpectedParametersInOrder(): void
+    public function testExpectationThatMethodIsCalledWithConsecutiveParameterSetsSucceedsWhenMethodIsCalledConsecutivelyWithExpectedParameters(): void
     {
         $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
 
@@ -325,7 +325,7 @@ EOT,
         $double->doSomethingElse(2);
     }
 
-    public function testExpectationThatMethodIsCalledWithOrderedParameterSetsFailsWhenMethodIsCalledInOrderWithOneWrongParameter(): void
+    public function testExpectationThatMethodIsCalledWithConsecutiveParameterSetsFailsWhenMethodIsCalledConsecutivelyWithOneWrongParameter(): void
     {
         $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
 
@@ -344,7 +344,7 @@ EOT,
         );
     }
 
-    public function testExpectationThatMethodIsCalledWithOrderedParameterSetsFailsWhenMethodIsCalledInOrderWithNotEnoughParameter(): void
+    public function testExpectationThatMethodIsCalledWithConsecutiveParameterSetsFailsWhenMethodIsCalledConsecutivelyWithNotEnoughParameter(): void
     {
         $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
 
@@ -358,7 +358,7 @@ EOT,
         $double->doSomethingElse(3);
     }
 
-    public function testExpectationThatMethodIsCalledWithOrderedParameterSetsFailsWhenTooManyParameterSetsAreGiven(): void
+    public function testExpectationThatMethodIsCalledWithConsecutiveParameterSetsFailsWhenTooManyParameterSetsAreGiven(): void
     {
         $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
 
@@ -397,7 +397,7 @@ EOT,
         $this->assertThatMockObjectExpectationFails(
             <<<'EOT'
 Expectation for PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration::doSomethingElse() failed.
-1 out of 2 expected unordered parameter sets was called, index [1] was not called.
+1 out of 2 expected parameter sets was called, index [1] was not called.
 
 EOT,
             $double,
@@ -415,7 +415,7 @@ EOT,
         $this->assertThatMockObjectExpectationFails(
             <<<'EOT'
 Expectation for PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration::doSomethingElse() failed.
-2 out of 3 expected unordered parameter sets were called, index [0] was not called.
+2 out of 3 expected parameter sets were called, index [0] was not called.
 
 EOT,
             $double,
@@ -436,7 +436,7 @@ EOT,
         $double->doSomethingElse(3);
     }
 
-    public function testExpectationThatMethodIsCalledWithPartialOrderedParameterSetsSucceedsWhenMethodIsCalledWithExpectedParametersInOrder(): void
+    public function testExpectationThatMethodIsCalledWithPartialOrderedParameterSetsSucceedsWhenMethodIsCalledWithExpectedParameters(): void
     {
         $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
 
@@ -526,7 +526,7 @@ EOT,
         );
     }
 
-    public function testExpectationThatMethodIsCalledWithParameterSetsInPartialOrderFailsWhenTooManyParameterSetsAreGivenWithoutFixedParameterSets(): void
+    public function testExpectationThatMethodIsCalledWithParameterSetsInPartialOrderFailsWhenTooManyParameterSetsAreGivenWithoutPinnedParameterSets(): void
     {
         $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
 
@@ -545,12 +545,16 @@ EOT,
         );
     }
 
-    public function testExpectationThatMethodIsCalledWithParameterSetsInPartialOrderFailsWhenTooManyParameterSetsAreGivenWithFixedParameterSetsOnly(): void
+    public function testExpectationThatMethodIsCalledWithParameterSetsInPartialOrderFailsWhenTooManyParameterSetsAreGivenWithPinnedParameterSetsOnly(): void
     {
         $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
 
         $double->expects($this->exactly(2))->method('doSomethingElse')
-            ->withParameterSetsInPartialOrder(['pinned' => 1], ['pinned' => 2], ['pinned' => 3]);
+            ->withParameterSetsInPartialOrder(
+                ['pinned' => 1],
+                ['pinned' => 2],
+                ['pinned' => 3]
+            );
 
         $double->doSomethingElse(1);
         $double->doSomethingElse(2);
@@ -564,7 +568,7 @@ EOT,
         );
     }
 
-    public function testExpectationThatMethodIsCalledWithParameterSetsInPartialOrderFailsWhenMethodIsCalledWithNotEnoughParametersWithoutFixedParameters(): void
+    public function testExpectationThatMethodIsCalledWithParameterSetsInPartialOrderFailsWhenMethodIsCalledWithNotEnoughParametersWithoutPinnedParameters(): void
     {
         $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
 
