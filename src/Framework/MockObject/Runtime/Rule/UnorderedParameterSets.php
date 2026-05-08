@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\MockObject\Rule;
 
 use function array_shift;
+use function array_values;
 use function count;
 use function implode;
 use function is_array;
@@ -44,7 +45,7 @@ final class UnorderedParameterSets implements ParametersRule
         foreach ($stack as $index => $parameters) {
             if (!$parameters instanceof IndexedParameters) {
                 if (is_array($parameters)) {
-                    $parameters = new IndexedParameters($parameters, $index, false);
+                    $parameters = new IndexedParameters(array_values($parameters), $index, false);
                 } else {
                     $parameters = new IndexedParameters([$parameters], $index, false);
                 }

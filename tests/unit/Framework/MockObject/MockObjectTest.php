@@ -397,7 +397,7 @@ EOT,
         $this->assertThatMockObjectExpectationFails(
             <<<'EOT'
 Expectation for PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration::doSomethingElse() failed.
-1 out of 2 expected parameter sets was called, index [1] was not called.
+1 out of 2 expected unordered parameter sets was called, index [1] was not called.
 
 EOT,
             $double,
@@ -415,7 +415,7 @@ EOT,
         $this->assertThatMockObjectExpectationFails(
             <<<'EOT'
 Expectation for PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration::doSomethingElse() failed.
-2 out of 3 expected parameter sets were called, index [0] was not called.
+2 out of 3 expected unordered parameter sets were called, index [0] was not called.
 
 EOT,
             $double,
@@ -553,7 +553,7 @@ EOT,
             ->withParameterSetsInPartialOrder(
                 ['pinned' => 1],
                 ['pinned' => 2],
-                ['pinned' => 3]
+                ['pinned' => 3],
             );
 
         $double->doSomethingElse(1);
