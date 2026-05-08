@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework\MockObject\Rule;
 
 use function array_key_exists;
-use function array_keys;
 use function array_values;
 use function count;
 use function is_array;
@@ -50,7 +49,6 @@ final class PartialOrderedParameterSets implements ParametersRule
         foreach ($stack as $index => $parameters) {
             if (is_array($parameters)) {
                 $strict = false;
-                $keys   = array_keys($parameters);
 
                 if (count($parameters) === 1 && array_key_exists('pinned', $parameters)) {
                     $strict     = true;
@@ -61,7 +59,7 @@ final class PartialOrderedParameterSets implements ParametersRule
                     }
                 }
 
-                $parameters = new IndexedParameters($parameters, $index, $strict);
+                $parameters = new IndexedParameters(array_values($parameters), $index, $strict);
             } else {
                 $parameters = new IndexedParameters([$parameters], $index, false);
             }
