@@ -55,11 +55,6 @@ final class IndexedParameters implements ParametersRule
         $this->parameters->useAssertionCount($useAssertionCount);
     }
 
-    public function index(int $index): void
-    {
-        $this->index = $index;
-    }
-
     public function at(): int
     {
         return $this->index;
