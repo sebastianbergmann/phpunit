@@ -26,6 +26,9 @@ use stdClass;
 #[Group('framework/constraints')]
 final class TraversableContainsIdenticalTest extends TestCase
 {
+    /**
+     * @return non-empty-list<array{bool, string, mixed, mixed}>
+     */
     public static function provider(): array
     {
         $o = new stdClass;

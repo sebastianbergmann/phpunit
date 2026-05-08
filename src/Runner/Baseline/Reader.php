@@ -57,7 +57,11 @@ final readonly class Reader
             );
         }
 
-        $version = (int) $document->documentElement->getAttribute('version');
+        $documentElement = $document->documentElement;
+
+        assert($documentElement !== null);
+
+        $version = (int) $documentElement->getAttribute('version');
 
         if ($version !== Baseline::VERSION) {
             throw new CannotLoadBaselineException(

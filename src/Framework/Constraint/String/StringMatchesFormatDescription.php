@@ -11,10 +11,11 @@ namespace PHPUnit\Framework\Constraint;
 
 use const DIRECTORY_SEPARATOR;
 use const PHP_EOL;
+use function array_slice;
 use function assert;
-use function count;
 use function explode;
 use function implode;
+use function is_string;
 use function preg_last_error_msg;
 use function preg_match;
 use function preg_quote;
@@ -54,6 +55,10 @@ final class StringMatchesFormatDescription extends Constraint
      */
     protected function matches(mixed $other): bool
     {
+        if (!is_string($other)) {
+            return false;
+        }
+
         $other = $this->convertNewlines($other);
 
         $matches = @preg_match(
@@ -96,17 +101,24 @@ final class StringMatchesFormatDescription extends Constraint
      */
     protected function additionalFailureDescription(mixed $other): string
     {
+        if (is_string($other)) {
+            $otherAsString = $other;
+        } else {
+            $otherAsString = '';
+        }
+
         $expected      = explode("\n", $this->formatDescription);
-        $expectedCount = count($expected);
-        $actual        = explode("\n", $this->convertNewlines($other));
-        $actualCount   = count($actual);
+        $actual        = explode("\n", $this->convertNewlines($otherAsString));
         $synced        = [];
         $expectedIndex = 0;
         $actualIndex   = 0;
 
-        while ($expectedIndex < $expectedCount && $actualIndex < $actualCount) {
-            if ($expected[$expectedIndex] === $actual[$actualIndex]) {
-                $synced[] = $actual[$actualIndex];
+        while (isset($expected[$expectedIndex], $actual[$actualIndex])) {
+            $expectedLine = $expected[$expectedIndex];
+            $actualLine   = $actual[$actualIndex];
+
+            if ($expectedLine === $actualLine) {
+                $synced[] = $actualLine;
 
                 $expectedIndex++;
                 $actualIndex++;
@@ -114,18 +126,18 @@ final class StringMatchesFormatDescription extends Constraint
                 continue;
             }
 
-            if ($this->isMultilineMatch($expected[$expectedIndex])) {
-                $anchorExpectedIndex = $this->findNextAnchor($expected, $expectedIndex + 1);
+            if ($this->isMultilineMatch($expectedLine)) {
+                $anchor = $this->findNextAnchor($expected, $expectedIndex + 1);
 
-                if ($anchorExpectedIndex !== null) {
-                    $anchorActualIndex = $this->findAnchorInActual($expected[$anchorExpectedIndex], $actual, $actualIndex);
+                if ($anchor !== null) {
+                    [$anchorExpectedIndex, $anchorLine] = $anchor;
+
+                    $anchorActualIndex = $this->findAnchorInActual($anchorLine, $actual, $actualIndex);
 
                     if ($anchorActualIndex !== null) {
-                        for ($i = $actualIndex; $i < $anchorActualIndex; $i++) {
-                            $synced[] = $actual[$i];
+                        foreach (array_slice($actual, $actualIndex, $anchorActualIndex - $actualIndex + 1) as $line) {
+                            $synced[] = $line;
                         }
-
-                        $synced[] = $actual[$anchorActualIndex];
 
                         $expectedIndex = $anchorExpectedIndex + 1;
                         $actualIndex   = $anchorActualIndex + 1;
@@ -134,33 +146,29 @@ final class StringMatchesFormatDescription extends Constraint
                     }
                 } else {
                     // No anchor after multiline placeholder(s): consume all remaining actual lines
-                    for ($i = $actualIndex; $i < $actualCount; $i++) {
-                        $synced[] = $actual[$i];
+                    foreach (array_slice($actual, $actualIndex) as $line) {
+                        $synced[] = $line;
                     }
 
-                    $expectedIndex = $expectedCount;
-                    $actualIndex   = $actualCount;
-
-                    continue;
+                    return $this->differ()->diff(implode("\n", $synced), implode("\n", $actual));
                 }
             }
 
             // Single-line comparison
-            $regex = $this->regularExpressionForFormatDescription($expected[$expectedIndex]);
+            $regex = $this->regularExpressionForFormatDescription($expectedLine);
 
-            if (@preg_match($regex, $actual[$actualIndex]) > 0) {
-                $synced[] = $actual[$actualIndex];
+            if (@preg_match($regex, $actualLine) > 0) {
+                $synced[] = $actualLine;
             } else {
-                $synced[] = $expected[$expectedIndex];
+                $synced[] = $expectedLine;
             }
 
             $expectedIndex++;
             $actualIndex++;
         }
 
-        while ($expectedIndex < $expectedCount) {
-            $synced[] = $expected[$expectedIndex];
-            $expectedIndex++;
+        foreach (array_slice($expected, $expectedIndex) as $line) {
+            $synced[] = $line;
         }
 
         return $this->differ()->diff(implode("\n", $synced), implode("\n", $actual));
@@ -223,12 +231,18 @@ final class StringMatchesFormatDescription extends Constraint
 
     /**
      * @param list<string> $expected
+     *
+     * @return null|array{int, string}
      */
-    private function findNextAnchor(array $expected, int $startIdx): ?int
+    private function findNextAnchor(array $expected, int $startIdx): ?array
     {
-        for ($i = $startIdx, $len = count($expected); $i < $len; $i++) {
-            if (!$this->isMultilineMatch($expected[$i])) {
-                return $i;
+        foreach ($expected as $i => $line) {
+            if ($i < $startIdx) {
+                continue;
+            }
+
+            if (!$this->isMultilineMatch($line)) {
+                return [$i, $line];
             }
         }
 
@@ -242,8 +256,12 @@ final class StringMatchesFormatDescription extends Constraint
     {
         $anchorRegex = $this->regularExpressionForFormatDescription($anchorLine);
 
-        for ($i = $startIdx, $len = count($actual); $i < $len; $i++) {
-            if ($anchorLine === $actual[$i] || @preg_match($anchorRegex, $actual[$i]) > 0) {
+        foreach ($actual as $i => $line) {
+            if ($i < $startIdx) {
+                continue;
+            }
+
+            if ($anchorLine === $line || @preg_match($anchorRegex, $line) > 0) {
                 return $i;
             }
         }

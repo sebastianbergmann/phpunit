@@ -23,6 +23,9 @@ use PHPUnit\Framework\Attributes\Small;
 #[Group('textui/configuration')]
 final class SourceFilterTest extends AbstractSourceFilterTestCase
 {
+    /**
+     * @return array<string, array{array<string, bool>, Source}>
+     */
     public static function provider(): array
     {
         return [

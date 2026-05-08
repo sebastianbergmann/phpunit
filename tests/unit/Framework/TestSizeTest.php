@@ -20,6 +20,9 @@ use PHPUnit\Framework\TestCase;
 #[Small]
 final class TestSizeTest extends TestCase
 {
+    /**
+     * @return array<string, array{bool, TestSize, TestSize}>
+     */
     public static function comparisonProvider(): array
     {
         return [

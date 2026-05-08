@@ -27,6 +27,9 @@ use stdClass;
 #[Group('framework/constraints')]
 final class IsTypeTest extends TestCase
 {
+    /**
+     * @return non-empty-list<array{bool, string, NativeType, mixed}>
+     */
     public static function provider(): array
     {
         return [

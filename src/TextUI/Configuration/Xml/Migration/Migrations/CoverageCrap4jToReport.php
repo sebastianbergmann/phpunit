@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
+use function assert;
 use DOMElement;
 
 /**
@@ -25,7 +26,11 @@ final readonly class CoverageCrap4jToReport extends LogToReportMigration
 
     protected function toReportFormat(DOMElement $logNode): DOMElement
     {
-        $crap4j = $logNode->ownerDocument->createElement('crap4j');
+        $ownerDocument = $logNode->ownerDocument;
+
+        assert($ownerDocument !== null);
+
+        $crap4j = $ownerDocument->createElement('crap4j');
         $crap4j->setAttribute('outputFile', $logNode->getAttribute('target'));
 
         $this->migrateAttributes($logNode, $crap4j, ['threshold']);

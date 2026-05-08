@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function is_string;
 use function preg_last_error_msg;
 use function preg_match;
 use function sprintf;
@@ -45,6 +46,10 @@ final class RegularExpression extends Constraint
      */
     protected function matches(mixed $other): bool
     {
+        if (!is_string($other)) {
+            return false;
+        }
+
         $matches = @preg_match($this->pattern, $other);
 
         if ($matches === false) {

@@ -1,0 +1,4 @@
+
+--- ERROR: FooTest
+Exception: message
+%A

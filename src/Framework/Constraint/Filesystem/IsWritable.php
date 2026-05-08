@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function is_string;
 use function is_writable;
 use function sprintf;
 
@@ -31,6 +32,10 @@ final class IsWritable extends Constraint
      */
     protected function matches(mixed $other): bool
     {
+        if (!is_string($other)) {
+            return false;
+        }
+
         return is_writable($other);
     }
 
@@ -42,9 +47,15 @@ final class IsWritable extends Constraint
      */
     protected function failureDescription(mixed $other): string
     {
+        if (is_string($other)) {
+            $path = $other;
+        } else {
+            $path = '';
+        }
+
         return sprintf(
             '"%s" is writable',
-            $other,
+            $path,
         );
     }
 }

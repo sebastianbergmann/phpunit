@@ -15,12 +15,14 @@ use PHPUnit\Framework\MockObject\Generator\ReflectionException;
 use ReflectionClass;
 
 /**
+ * @template T of object
+ *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 abstract class TestDoubleBuilder
 {
     /**
-     * @var class-string|trait-string
+     * @var class-string<T>
      */
     protected readonly string $type;
 
@@ -39,7 +41,7 @@ abstract class TestDoubleBuilder
     protected bool $returnValueGeneration = true;
 
     /**
-     * @param class-string|trait-string $type
+     * @param class-string<T> $type
      */
     public function __construct(string $type)
     {

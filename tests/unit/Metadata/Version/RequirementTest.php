@@ -29,6 +29,9 @@ use PHPUnit\Util\VersionComparisonOperator;
 #[Group('metadata')]
 final class RequirementTest extends TestCase
 {
+    /**
+     * @return non-empty-list<array{bool, string, ConstraintRequirement}>
+     */
     public static function constraintProvider(): array
     {
         return [
@@ -42,6 +45,9 @@ final class RequirementTest extends TestCase
         ];
     }
 
+    /**
+     * @return non-empty-list<array{bool, string, ComparisonRequirement}>
+     */
     public static function comparisonProvider(): array
     {
         return [

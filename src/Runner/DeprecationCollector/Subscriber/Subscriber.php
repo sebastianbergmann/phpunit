@@ -10,19 +10,30 @@
 namespace PHPUnit\Runner\DeprecationCollector;
 
 /**
+ * @template T of Collector|InIsolationCollector
+ *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 abstract class Subscriber
 {
+    /**
+     * @var T
+     */
     private readonly Collector|InIsolationCollector $collector;
 
+    /**
+     * @param T $collector
+     */
     public function __construct(Collector|InIsolationCollector $collector)
     {
         $this->collector = $collector;
     }
 
+    /**
+     * @return T
+     */
     protected function collector(): Collector|InIsolationCollector
     {
         return $this->collector;

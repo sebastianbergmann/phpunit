@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\Constraint;
 
 use function file_exists;
+use function is_string;
 use function sprintf;
 
 /**
@@ -31,6 +32,10 @@ final class FileExists extends Constraint
      */
     protected function matches(mixed $other): bool
     {
+        if (!is_string($other)) {
+            return false;
+        }
+
         return file_exists($other);
     }
 
@@ -42,9 +47,15 @@ final class FileExists extends Constraint
      */
     protected function failureDescription(mixed $other): string
     {
+        if (is_string($other)) {
+            $path = $other;
+        } else {
+            $path = '';
+        }
+
         return sprintf(
             'file "%s" exists',
-            $other,
+            $path,
         );
     }
 }

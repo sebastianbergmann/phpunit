@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function is_string;
 use function str_ends_with;
 use PHPUnit\Framework\EmptyStringException;
 
@@ -45,6 +46,10 @@ final class StringEndsWith extends Constraint
      */
     protected function matches(mixed $other): bool
     {
-        return str_ends_with((string) $other, $this->suffix);
+        if (!is_string($other)) {
+            return false;
+        }
+
+        return str_ends_with($other, $this->suffix);
     }
 }

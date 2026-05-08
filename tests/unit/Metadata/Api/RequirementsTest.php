@@ -22,6 +22,9 @@ use PHPUnit\TestFixture\RequirementsEnvironmentVariableTest;
 #[Group('metadata/api')]
 final class RequirementsTest extends TestCase
 {
+    /**
+     * @return non-empty-list<array{string, list<string>}>
+     */
     public static function missingRequirementsProvider(): array
     {
         return [

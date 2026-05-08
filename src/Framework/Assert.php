@@ -679,7 +679,7 @@ abstract class Assert
     /**
      * Asserts that a haystack contains only instances of a specified interface or class name.
      *
-     * @template T
+     * @template T of object
      *
      * @phpstan-assert iterable<T> $haystack
      *
@@ -1256,12 +1256,11 @@ abstract class Assert
      */
     final public static function assertFileEquals(string $expected, string $actual, string $message = ''): void
     {
-        self::assertFileExists($expected, $message);
-        self::assertFileExists($actual, $message);
-
-        $constraint = new IsEqual(file_get_contents($expected));
-
-        self::assertThat(file_get_contents($actual), $constraint, $message);
+        self::assertThat(
+            self::contentsOfFile($actual, $message),
+            new IsEqual(self::contentsOfFile($expected, $message)),
+            $message,
+        );
     }
 
     /**
@@ -1272,14 +1271,11 @@ abstract class Assert
      */
     final public static function assertFileEqualsCanonicalizing(string $expected, string $actual, string $message = ''): void
     {
-        self::assertFileExists($expected, $message);
-        self::assertFileExists($actual, $message);
-
-        $constraint = new IsEqualCanonicalizing(
-            file_get_contents($expected),
+        self::assertThat(
+            self::contentsOfFile($actual, $message),
+            new IsEqualCanonicalizing(self::contentsOfFile($expected, $message)),
+            $message,
         );
-
-        self::assertThat(file_get_contents($actual), $constraint, $message);
     }
 
     /**
@@ -1290,12 +1286,11 @@ abstract class Assert
      */
     final public static function assertFileEqualsIgnoringCase(string $expected, string $actual, string $message = ''): void
     {
-        self::assertFileExists($expected, $message);
-        self::assertFileExists($actual, $message);
-
-        $constraint = new IsEqualIgnoringCase(file_get_contents($expected));
-
-        self::assertThat(file_get_contents($actual), $constraint, $message);
+        self::assertThat(
+            self::contentsOfFile($actual, $message),
+            new IsEqualIgnoringCase(self::contentsOfFile($expected, $message)),
+            $message,
+        );
     }
 
     /**
@@ -1306,12 +1301,9 @@ abstract class Assert
      */
     final public static function assertFileEqualsFileIgnoringWhitespace(string $expected, string $actual, string $message = ''): void
     {
-        self::assertFileExists($expected, $message);
-        self::assertFileExists($actual, $message);
-
         self::assertThat(
-            file_get_contents($actual),
-            self::stringEqualsStringIgnoringWhitespace(file_get_contents($expected)),
+            self::contentsOfFile($actual, $message),
+            new StringEqualsStringIgnoringWhitespace(self::contentsOfFile($expected, $message)),
             $message,
         );
     }
@@ -1324,14 +1316,13 @@ abstract class Assert
      */
     final public static function assertFileNotEquals(string $expected, string $actual, string $message = ''): void
     {
-        self::assertFileExists($expected, $message);
-        self::assertFileExists($actual, $message);
-
-        $constraint = new LogicalNot(
-            new IsEqual(file_get_contents($expected)),
+        self::assertThat(
+            self::contentsOfFile($actual, $message),
+            new LogicalNot(
+                new IsEqual(self::contentsOfFile($expected, $message)),
+            ),
+            $message,
         );
-
-        self::assertThat(file_get_contents($actual), $constraint, $message);
     }
 
     /**
@@ -1342,14 +1333,13 @@ abstract class Assert
      */
     final public static function assertFileNotEqualsCanonicalizing(string $expected, string $actual, string $message = ''): void
     {
-        self::assertFileExists($expected, $message);
-        self::assertFileExists($actual, $message);
-
-        $constraint = new LogicalNot(
-            new IsEqualCanonicalizing(file_get_contents($expected)),
+        self::assertThat(
+            self::contentsOfFile($actual, $message),
+            new LogicalNot(
+                new IsEqualCanonicalizing(self::contentsOfFile($expected, $message)),
+            ),
+            $message,
         );
-
-        self::assertThat(file_get_contents($actual), $constraint, $message);
     }
 
     /**
@@ -1360,14 +1350,13 @@ abstract class Assert
      */
     final public static function assertFileNotEqualsIgnoringCase(string $expected, string $actual, string $message = ''): void
     {
-        self::assertFileExists($expected, $message);
-        self::assertFileExists($actual, $message);
-
-        $constraint = new LogicalNot(
-            new IsEqualIgnoringCase(file_get_contents($expected)),
+        self::assertThat(
+            self::contentsOfFile($actual, $message),
+            new LogicalNot(
+                new IsEqualIgnoringCase(self::contentsOfFile($expected, $message)),
+            ),
+            $message,
         );
-
-        self::assertThat(file_get_contents($actual), $constraint, $message);
     }
 
     /**
@@ -1378,14 +1367,13 @@ abstract class Assert
      */
     final public static function assertFileNotEqualsFileIgnoringWhitespace(string $expected, string $actual, string $message = ''): void
     {
-        self::assertFileExists($expected, $message);
-        self::assertFileExists($actual, $message);
-
-        $constraint = new LogicalNot(
-            self::stringEqualsStringIgnoringWhitespace(file_get_contents($expected)),
+        self::assertThat(
+            self::contentsOfFile($actual, $message),
+            new LogicalNot(
+                new StringEqualsStringIgnoringWhitespace(self::contentsOfFile($expected, $message)),
+            ),
+            $message,
         );
-
-        self::assertThat(file_get_contents($actual), $constraint, $message);
     }
 
     /**
@@ -1396,11 +1384,11 @@ abstract class Assert
      */
     final public static function assertStringEqualsFile(string $expectedFile, string $actualString, string $message = ''): void
     {
-        self::assertFileExists($expectedFile, $message);
-
-        $constraint = new IsEqual(file_get_contents($expectedFile));
-
-        self::assertThat($actualString, $constraint, $message);
+        self::assertThat(
+            $actualString,
+            new IsEqual(self::contentsOfFile($expectedFile, $message)),
+            $message,
+        );
     }
 
     /**
@@ -1411,11 +1399,11 @@ abstract class Assert
      */
     final public static function assertStringEqualsFileCanonicalizing(string $expectedFile, string $actualString, string $message = ''): void
     {
-        self::assertFileExists($expectedFile, $message);
-
-        $constraint = new IsEqualCanonicalizing(file_get_contents($expectedFile));
-
-        self::assertThat($actualString, $constraint, $message);
+        self::assertThat(
+            $actualString,
+            new IsEqualCanonicalizing(self::contentsOfFile($expectedFile, $message)),
+            $message,
+        );
     }
 
     /**
@@ -1426,11 +1414,11 @@ abstract class Assert
      */
     final public static function assertStringEqualsFileIgnoringCase(string $expectedFile, string $actualString, string $message = ''): void
     {
-        self::assertFileExists($expectedFile, $message);
-
-        $constraint = new IsEqualIgnoringCase(file_get_contents($expectedFile));
-
-        self::assertThat($actualString, $constraint, $message);
+        self::assertThat(
+            $actualString,
+            new IsEqualIgnoringCase(self::contentsOfFile($expectedFile, $message)),
+            $message,
+        );
     }
 
     /**
@@ -1441,13 +1429,13 @@ abstract class Assert
      */
     final public static function assertStringNotEqualsFile(string $expectedFile, string $actualString, string $message = ''): void
     {
-        self::assertFileExists($expectedFile, $message);
-
-        $constraint = new LogicalNot(
-            new IsEqual(file_get_contents($expectedFile)),
+        self::assertThat(
+            $actualString,
+            new LogicalNot(
+                new IsEqual(self::contentsOfFile($expectedFile, $message)),
+            ),
+            $message,
         );
-
-        self::assertThat($actualString, $constraint, $message);
     }
 
     /**
@@ -1458,13 +1446,13 @@ abstract class Assert
      */
     final public static function assertStringNotEqualsFileCanonicalizing(string $expectedFile, string $actualString, string $message = ''): void
     {
-        self::assertFileExists($expectedFile, $message);
-
-        $constraint = new LogicalNot(
-            new IsEqualCanonicalizing(file_get_contents($expectedFile)),
+        self::assertThat(
+            $actualString,
+            new LogicalNot(
+                new IsEqualCanonicalizing(self::contentsOfFile($expectedFile, $message)),
+            ),
+            $message,
         );
-
-        self::assertThat($actualString, $constraint, $message);
     }
 
     /**
@@ -1475,13 +1463,13 @@ abstract class Assert
      */
     final public static function assertStringNotEqualsFileIgnoringCase(string $expectedFile, string $actualString, string $message = ''): void
     {
-        self::assertFileExists($expectedFile, $message);
-
-        $constraint = new LogicalNot(
-            new IsEqualIgnoringCase(file_get_contents($expectedFile)),
+        self::assertThat(
+            $actualString,
+            new LogicalNot(
+                new IsEqualIgnoringCase(self::contentsOfFile($expectedFile, $message)),
+            ),
+            $message,
         );
-
-        self::assertThat($actualString, $constraint, $message);
     }
 
     /**
@@ -1492,11 +1480,9 @@ abstract class Assert
      */
     final public static function assertStringEqualsFileIgnoringWhitespace(string $expectedFile, string $actualString, string $message = ''): void
     {
-        self::assertFileExists($expectedFile, $message);
-
         self::assertThat(
             $actualString,
-            self::stringEqualsStringIgnoringWhitespace(file_get_contents($expectedFile)),
+            new StringEqualsStringIgnoringWhitespace(self::contentsOfFile($expectedFile, $message)),
             $message,
         );
     }
@@ -1509,13 +1495,13 @@ abstract class Assert
      */
     final public static function assertStringNotEqualsFileIgnoringWhitespace(string $expectedFile, string $actualString, string $message = ''): void
     {
-        self::assertFileExists($expectedFile, $message);
-
-        $constraint = new LogicalNot(
-            self::stringEqualsStringIgnoringWhitespace(file_get_contents($expectedFile)),
+        self::assertThat(
+            $actualString,
+            new LogicalNot(
+                new StringEqualsStringIgnoringWhitespace(self::contentsOfFile($expectedFile, $message)),
+            ),
+            $message,
         );
-
-        self::assertThat($actualString, $constraint, $message);
     }
 
     /**
@@ -2462,10 +2448,8 @@ abstract class Assert
      */
     final public static function assertFileMatchesFormat(string $format, string $actualFile, string $message = ''): void
     {
-        self::assertFileExists($actualFile, $message);
-
         self::assertThat(
-            file_get_contents($actualFile),
+            self::contentsOfFile($actualFile, $message),
             new StringMatchesFormatDescription($format),
             $message,
         );
@@ -2478,16 +2462,9 @@ abstract class Assert
      */
     final public static function assertFileMatchesFormatFile(string $formatFile, string $actualFile, string $message = ''): void
     {
-        self::assertFileExists($formatFile, $message);
-        self::assertFileExists($actualFile, $message);
-
-        $formatDescription = file_get_contents($formatFile);
-
-        self::assertIsString($formatDescription);
-
         self::assertThat(
-            file_get_contents($actualFile),
-            new StringMatchesFormatDescription($formatDescription),
+            self::contentsOfFile($actualFile, $message),
+            new StringMatchesFormatDescription(self::contentsOfFile($formatFile, $message)),
             $message,
         );
     }
@@ -2509,17 +2486,9 @@ abstract class Assert
      */
     final public static function assertStringMatchesFormatFile(string $formatFile, string $string, string $message = ''): void
     {
-        self::assertFileExists($formatFile, $message);
-
-        $formatDescription = file_get_contents($formatFile);
-
-        self::assertIsString($formatDescription);
-
         self::assertThat(
             $string,
-            new StringMatchesFormatDescription(
-                $formatDescription,
-            ),
+            new StringMatchesFormatDescription(self::contentsOfFile($formatFile, $message)),
             $message,
         );
     }
@@ -2774,13 +2743,11 @@ abstract class Assert
      */
     final public static function assertJsonStringEqualsJsonFile(string $expectedFile, string $actualJson, string $message = ''): void
     {
-        self::assertFileExists($expectedFile, $message);
-
-        $expectedJson = file_get_contents($expectedFile);
-
-        self::assertIsString($expectedJson);
-        self::assertJson($expectedJson, $message);
         self::assertJson($actualJson, $message);
+
+        $expectedJson = self::contentsOfFile($expectedFile, $message);
+
+        self::assertJson($expectedJson, $message);
 
         self::assertThat($actualJson, new JsonMatches($expectedJson), $message);
     }
@@ -2792,13 +2759,11 @@ abstract class Assert
      */
     final public static function assertJsonStringNotEqualsJsonFile(string $expectedFile, string $actualJson, string $message = ''): void
     {
-        self::assertFileExists($expectedFile, $message);
-
-        $expectedJson = file_get_contents($expectedFile);
-
-        self::assertIsString($expectedJson);
-        self::assertJson($expectedJson, $message);
         self::assertJson($actualJson, $message);
+
+        $expectedJson = self::contentsOfFile($expectedFile, $message);
+
+        self::assertJson($expectedJson, $message);
 
         self::assertThat(
             $actualJson,
@@ -2816,21 +2781,17 @@ abstract class Assert
      */
     final public static function assertJsonFileEqualsJsonFile(string $expectedFile, string $actualFile, string $message = ''): void
     {
-        self::assertFileExists($expectedFile, $message);
-
-        $expectedJson = file_get_contents($expectedFile);
-
-        self::assertIsString($expectedJson);
+        $expectedJson = self::contentsOfFile($expectedFile, $message);
         self::assertJson($expectedJson, $message);
 
-        self::assertFileExists($actualFile, $message);
-
-        $actualJson = file_get_contents($actualFile);
-
-        self::assertIsString($actualJson);
+        $actualJson = self::contentsOfFile($actualFile, $message);
         self::assertJson($actualJson, $message);
 
-        self::assertThat($actualJson, new JsonMatches($expectedJson), $message);
+        self::assertThat(
+            $actualJson,
+            new JsonMatches($expectedJson),
+            $message,
+        );
     }
 
     /**
@@ -2840,21 +2801,19 @@ abstract class Assert
      */
     final public static function assertJsonFileNotEqualsJsonFile(string $expectedFile, string $actualFile, string $message = ''): void
     {
-        self::assertFileExists($expectedFile, $message);
-
-        $expectedJson = file_get_contents($expectedFile);
-
-        self::assertIsString($expectedJson);
+        $expectedJson = self::contentsOfFile($expectedFile, $message);
         self::assertJson($expectedJson, $message);
 
-        self::assertFileExists($actualFile, $message);
-
-        $actualJson = file_get_contents($actualFile);
-
-        self::assertIsString($actualJson);
+        $actualJson = self::contentsOfFile($actualFile, $message);
         self::assertJson($actualJson, $message);
 
-        self::assertThat($actualJson, self::logicalNot(new JsonMatches($expectedJson)), $message);
+        self::assertThat(
+            $actualJson,
+            new LogicalNot(
+                new JsonMatches($expectedJson),
+            ),
+            $message,
+        );
     }
 
     /**
@@ -3279,5 +3238,16 @@ abstract class Assert
     final public static function resetCount(): void
     {
         self::$count = 0;
+    }
+
+    private static function contentsOfFile(string $path, string $message): string
+    {
+        self::assertFileExists($path, $message);
+
+        $buffer = file_get_contents($path);
+
+        self::assertIsString($buffer);
+
+        return $buffer;
     }
 }

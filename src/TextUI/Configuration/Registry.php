@@ -61,7 +61,7 @@ final class Registry
 
         assert($buffer !== false);
 
-        self::$instance = unserialize(
+        $configuration = unserialize(
             $buffer,
             [
                 'allowed_classes' => [
@@ -92,6 +92,12 @@ final class Registry
                 ],
             ],
         );
+
+        if (!$configuration instanceof Configuration) {
+            return;
+        }
+
+        self::$instance = $configuration;
     }
 
     public static function get(): Configuration

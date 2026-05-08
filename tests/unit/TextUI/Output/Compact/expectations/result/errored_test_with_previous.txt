@@ -1,6 +1,2 @@
-ERRORS (1 test, 1 assertion, 1 error)
 
---- ERROR: FooTest::testBar
-RuntimeException: outer
-Caused by
-LogicException: inner
+ERRORS (1 test, 1 assertion, 1 error)

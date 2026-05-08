@@ -103,7 +103,8 @@ final class Parameters implements ParametersRule
             throw new ExpectationFailedException('Doubled method does not exist.');
         }
 
-        $invocationParameters = $this->invocation->parameters();
+        $invocation           = $this->invocation;
+        $invocationParameters = $invocation->parameters();
 
         if (count($invocationParameters) < count($this->parameters)) {
             $message = 'Parameter count for invocation %s is too low.';
@@ -120,11 +121,11 @@ final class Parameters implements ParametersRule
             $this->incrementAssertionCount();
 
             throw new ExpectationFailedException(
-                sprintf($message, $this->invocation->toString()),
+                sprintf($message, $invocation->toString()),
             );
         }
 
-        $parameters = $this->parameters($this->invocation);
+        $parameters = $this->parameters($invocation);
 
         foreach ($this->parameters as $i => $parameter) {
             $other = null;
@@ -142,7 +143,7 @@ final class Parameters implements ParametersRule
                 sprintf(
                     'Parameter %s for invocation %s does not match expected value.',
                     $parameters[$i] ?? (string) $i,
-                    $this->invocation->toString(),
+                    $invocation->toString(),
                 ),
             );
         }

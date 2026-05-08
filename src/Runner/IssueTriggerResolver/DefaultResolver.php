@@ -21,9 +21,18 @@ final class DefaultResolver implements Resolver
      */
     public function resolve(array $trace, string $message): Resolution
     {
-        return new Resolution(
-            $trace[0]['file'] ?? null,
-            $trace[1]['file'] ?? null,
-        );
+        $callee = null;
+
+        if (isset($trace[0]['file']) && $trace[0]['file'] !== '') {
+            $callee = $trace[0]['file'];
+        }
+
+        $caller = null;
+
+        if (isset($trace[1]['file']) && $trace[1]['file'] !== '') {
+            $caller = $trace[1]['file'];
+        }
+
+        return new Resolution($callee, $caller);
     }
 }

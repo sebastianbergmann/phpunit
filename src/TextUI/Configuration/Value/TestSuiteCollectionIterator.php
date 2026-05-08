@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
+use function assert;
 use Iterator;
 
 /**
@@ -53,6 +54,8 @@ final class TestSuiteCollectionIterator implements Iterator
 
     public function current(): TestSuite
     {
+        assert(isset($this->testSuites[$this->position]));
+
         return $this->testSuites[$this->position];
     }
 

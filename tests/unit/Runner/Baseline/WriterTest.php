@@ -29,6 +29,9 @@ final class WriterTest extends TestCase
 {
     private string $target;
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function baselinePathProvider(): iterable
     {
         $absoluteBaselinePath = __DIR__ . '/../../../_files/baseline/expected.xml';

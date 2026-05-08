@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\MockObject\Stub;
 
+use function array_key_exists;
 use function array_pop;
 use function count;
 use function is_array;
@@ -74,14 +75,18 @@ final readonly class ReturnValueMap implements Stub
     }
 
     /**
-     * @param array<int, mixed> $mapParameters
-     * @param array<int, mixed> $invocationParameters
+     * @param array<mixed> $mapParameters
+     * @param array<mixed> $invocationParameters
      */
     private function parametersMatch(array $mapParameters, array $invocationParameters): bool
     {
         foreach ($mapParameters as $i => $expected) {
+            if (!array_key_exists($i, $invocationParameters)) {
+                return false;
+            }
+
             if ($expected instanceof Constraint) {
-                if (!$expected->evaluate($invocationParameters[$i], '', true)) {
+                if ($expected->evaluate($invocationParameters[$i], '', true) === false) {
                     return false;
                 }
             } elseif ($expected !== $invocationParameters[$i]) {

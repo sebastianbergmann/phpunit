@@ -27,6 +27,9 @@ use PHPUnit\Framework\TestCase;
 #[Group('framework/constraints')]
 final class LogicalNotTest extends TestCase
 {
+    /**
+     * @return non-empty-list<array{bool, string, LogicalNot, mixed}>
+     */
     public static function provider(): array
     {
         return [
@@ -58,6 +61,9 @@ final class LogicalNotTest extends TestCase
         ];
     }
 
+    /**
+     * @return non-empty-list<array{string, string}>
+     */
     public static function negateProvider(): array
     {
         return [

@@ -96,9 +96,15 @@ EOT;
         $buffer = self::PAGE_HEADER;
 
         foreach ($tests as $_tests) {
+            $list = $_tests->asArray();
+
+            if ($list === []) {
+                continue;
+            }
+
             $buffer .= sprintf(
                 self::CLASS_HEADER,
-                $_tests->asArray()[0]->test()->testDox()->prettifiedClassName(),
+                $list[0]->test()->testDox()->prettifiedClassName(),
             );
 
             foreach ($this->reduce($_tests) as $prettifiedMethodName => $outcome) {

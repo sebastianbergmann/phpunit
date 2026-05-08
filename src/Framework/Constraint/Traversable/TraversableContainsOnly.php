@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function is_iterable;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\NativeType;
 
@@ -53,13 +54,17 @@ final class TraversableContainsOnly extends Constraint
      */
     public function evaluate(mixed $other, string $description = '', bool $returnResult = false): bool
     {
-        $success = true;
+        if (!is_iterable($other)) {
+            $success = false;
+        } else {
+            $success = true;
 
-        foreach ($other as $item) {
-            if (!$this->constraint->evaluate($item, '', true)) {
-                $success = false;
+            foreach ($other as $item) {
+                if ($this->constraint->evaluate($item, '', true) === false) {
+                    $success = false;
 
-                break;
+                    break;
+                }
             }
         }
 

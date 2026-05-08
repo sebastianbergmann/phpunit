@@ -59,7 +59,7 @@ final class TestSuiteSorter
      */
     private array $defectSortOrder = [];
 
-    public function __construct(private readonly ?ResultCache $cache = new NullResultCache)
+    public function __construct(private readonly ResultCache $cache = new NullResultCache)
     {
     }
 
@@ -336,9 +336,9 @@ final class TestSuiteSorter
      * 3. If the test has dependencies but none left to do: mark done, start again from the top
      * 4. When we reach the end add any leftover tests to the end. These will be marked 'skipped' during execution.
      *
-     * @param array<TestCase> $tests
+     * @param list<TestCase> $tests
      *
-     * @return array<TestCase>
+     * @return list<TestCase>
      */
     private function resolveDependencies(array $tests): array
     {
@@ -346,7 +346,7 @@ final class TestSuiteSorter
         $i            = 0;
         $provided     = [];
 
-        do {
+        while ($tests !== [] && $i < count($tests)) {
             if ([] === array_diff($tests[$i]->requires(), $provided)) {
                 $provided     = array_merge($provided, $tests[$i]->provides());
                 $newTestOrder = array_merge($newTestOrder, array_splice($tests, $i, 1));
@@ -354,7 +354,7 @@ final class TestSuiteSorter
             } else {
                 $i++;
             }
-        } while ($tests !== [] && ($i < count($tests)));
+        }
 
         return array_merge($newTestOrder, $tests);
     }

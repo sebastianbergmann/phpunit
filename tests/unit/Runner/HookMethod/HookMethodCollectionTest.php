@@ -21,6 +21,9 @@ use PHPUnit\Framework\TestCase;
 #[Group('test-runner/hook-methods')]
 final class HookMethodCollectionTest extends TestCase
 {
+    /**
+     * @return iterable<array{HookMethodCollection, list<string>}>
+     */
     public static function provider(): iterable
     {
         return [

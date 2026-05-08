@@ -10,6 +10,7 @@
 namespace PHPUnit\Runner;
 
 use function getenv;
+use function is_string;
 use function putenv;
 
 /**
@@ -46,8 +47,14 @@ final readonly class BackedUpEnvironmentVariable
             $getenv = null;
         }
 
+        if (isset($_ENV[$name]) && is_string($_ENV[$name])) {
+            $superglobalValue = $_ENV[$name];
+        } else {
+            $superglobalValue = null;
+        }
+
         return [
-            new self(self::FROM_SUPERGLOBAL, $name, $_ENV[$name] ?? null),
+            new self(self::FROM_SUPERGLOBAL, $name, $superglobalValue),
             new self(self::FROM_GETENV, $name, $getenv),
         ];
     }

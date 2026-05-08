@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function is_int;
+use function is_string;
 use function sprintf;
 use PHPUnit\Util\Exporter;
 
@@ -37,6 +39,10 @@ final class ExceptionCode extends Constraint
      */
     protected function matches(mixed $other): bool
     {
+        if (!is_int($other) && !is_string($other)) {
+            return false;
+        }
+
         return (string) $other === (string) $this->expectedCode;
     }
 

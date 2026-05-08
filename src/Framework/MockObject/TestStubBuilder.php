@@ -22,7 +22,9 @@ use PHPUnit\Framework\MockObject\Generator\RuntimeException;
 use PHPUnit\Framework\MockObject\Generator\UnknownTypeException;
 
 /**
- * @template StubbedType
+ * @template StubbedType of object
+ *
+ * @template-extends TestDoubleBuilder<StubbedType>
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */

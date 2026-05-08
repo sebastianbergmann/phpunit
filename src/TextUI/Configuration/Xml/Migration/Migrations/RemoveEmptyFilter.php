@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
+use function assert;
 use function sprintf;
 use DOMDocument;
 use DOMElement;
@@ -29,14 +30,24 @@ final readonly class RemoveEmptyFilter implements Migration
 
         if ($whitelist instanceof DOMElement) {
             $this->ensureEmpty($whitelist);
-            $whitelist->parentNode->removeChild($whitelist);
+
+            $whitelistParent = $whitelist->parentNode;
+
+            assert($whitelistParent !== null);
+
+            $whitelistParent->removeChild($whitelist);
         }
 
         $filter = $document->getElementsByTagName('filter')->item(0);
 
         if ($filter instanceof DOMElement) {
             $this->ensureEmpty($filter);
-            $filter->parentNode->removeChild($filter);
+
+            $filterParent = $filter->parentNode;
+
+            assert($filterParent !== null);
+
+            $filterParent->removeChild($filter);
         }
     }
 

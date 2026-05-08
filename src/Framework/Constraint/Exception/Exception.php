@@ -57,19 +57,15 @@ final class Exception extends Constraint
      */
     protected function failureDescription(mixed $other): string
     {
-        if ($other === null) {
+        if (!$other instanceof Throwable) {
             return sprintf(
                 'exception of type "%s" is thrown',
                 $this->className,
             );
         }
 
-        $message = '';
-
-        if ($other instanceof Throwable) {
-            $message = '. Message was: "' . $other->getMessage() . '" at'
-                . "\n" . Filter::stackTraceFromThrowableAsString($other);
-        }
+        $message = '. Message was: "' . $other->getMessage() . '" at'
+            . "\n" . Filter::stackTraceFromThrowableAsString($other);
 
         return sprintf(
             'exception of type "%s" matches expected exception "%s"%s',

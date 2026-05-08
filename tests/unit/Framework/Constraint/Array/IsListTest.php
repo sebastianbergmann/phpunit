@@ -26,6 +26,9 @@ use stdClass;
 #[Group('framework/constraints')]
 final class IsListTest extends TestCase
 {
+    /**
+     * @return non-empty-list<array{bool, string, mixed}>
+     */
     public static function provider(): array
     {
         return [

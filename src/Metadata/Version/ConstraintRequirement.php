@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Metadata\Version;
 
+use function assert;
 use function preg_replace;
 use PharIo\Version\Version;
 use PharIo\Version\VersionConstraint;
@@ -41,10 +42,14 @@ final readonly class ConstraintRequirement extends Requirement
 
     private function sanitize(string $version): string
     {
-        return preg_replace(
+        $sanitized = preg_replace(
             '/^(\d+\.\d+(?:.\d+)?).*$/',
             '$1',
             $version,
         );
+
+        assert($sanitized !== null);
+
+        return $sanitized;
     }
 }

@@ -10,7 +10,8 @@
 |:---------------------------------------|:--------------------------------------------------------------------------------------------------------|
 | `booleansInConditions`                 | Require booleans in `if`, `elseif`, ternary operator, after `!`, and on both sides of `&&` and `\|\|`.  |
 | `booleansInLoopConditions`             | Require booleans in `while` and `do while` loop conditions.                                             |
-| `numericOperandsInArithmeticOperators` | Require numeric operand in `+$var`, `-$var`, `$var++`, `$var--`, `++$var` and `--$var`. |
+| `uselessCast`                          | Detect useless casts — e.g. casting to `int` when the expression is already `int`.                      |
+| `numericOperandsInArithmeticOperators` | Require numeric operands in `+`, `-`, `*`, `/`, `%`, `**`, `+$var`, `-$var`, `$var++`, `$var--`, `++$var` and `--$var`. |
 | `strictFunctionCalls`                  | These functions contain a `$strict` parameter for better type safety, it must be set to `true`:<br>* `in_array` (3rd parameter)<br>* `array_search` (3rd parameter)<br>* `array_keys` (3rd parameter; only if the 2nd parameter `$search_value` is provided)<br>* `base64_decode` (2nd parameter). |
 | `overwriteVariablesWithLoop`           | * Disallow overwriting variables with `foreach` key and value variables.<br>* Disallow overwriting variables with `for` loop initial assignment.                                                                   |
 | `switchConditionsMatchingType`         | Types in `switch` condition and `case` value must match. PHP compares them loosely by default and that can lead to  unexpected results. |
@@ -26,6 +27,9 @@
 |                                        | Check LSP even for static methods.                                                                      |
 | `requireParentConstructorCall`         | Require calling parent constructor.                                                                     |
 | `disallowedBacktick`                   | Disallow usage of backtick operator (`` $ls = `ls -la` ``).                                             |
+| `disallowedImplicitArrayCreation`      | Disallow implicit array creation through `$var[] =` when the variable does not exist yet.               |
+| `strictArrayFilter`                    | Require `array_filter()` to have a callback parameter to avoid loose comparison semantics.              |
+| `illegalConstructorMethodCall`         | Disallow calling `__construct()` on an existing object or as a static call outside of parent constructor. |
 | `closureUsesThis`                      | Closure should use `$this` directly instead of using `$this` variable indirectly.                       |
 
 Additional rules are coming in subsequent releases!

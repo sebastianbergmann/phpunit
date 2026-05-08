@@ -52,6 +52,7 @@ use PHPUnit\Metadata\TestDoxFormatter;
 use PHPUnit\Util\Color;
 use PHPUnit\Util\Exporter;
 use PHPUnit\Util\Filter;
+use PHPUnit\Util\Sanitizer;
 use ReflectionMethod;
 use Stringable;
 use Throwable;
@@ -160,8 +161,22 @@ final class NamePrettifier
 
         $buffer = preg_replace_callback_array(
             [
-                '/(?!^)([A-Z])/' => static fn (array $matches) => ' ' . strtolower((string) ($matches[1] ?? '')),
-                '/(\d+)/'        => static fn (array $matches) => ' ' . (string) ($matches[1] ?? ''),
+                '/(?!^)([A-Z])/' => static function (array $matches): string
+                {
+                    if (!isset($matches[1]) || !is_string($matches[1])) {
+                        return ' ';
+                    }
+
+                    return ' ' . strtolower($matches[1]);
+                },
+                '/(\d+)/' => static function (array $matches): string
+                {
+                    if (!isset($matches[1]) || !is_string($matches[1])) {
+                        return ' ';
+                    }
+
+                    return ' ' . $matches[1];
+                },
             ],
             $name,
         );
@@ -225,7 +240,12 @@ final class NamePrettifier
             return Color::dim(' with data set ') . Color::colorize('fg-cyan', (string) $test->dataName());
         }
 
-        return Color::dim(' with ') . Color::colorize('fg-cyan', Color::visualizeWhitespace($test->dataName()));
+        return Color::dim(' with ') . Color::colorize(
+            'fg-cyan',
+            Color::visualizeWhitespace(
+                Sanitizer::sanitizeBidirectionalControlCharacters($test->dataName()),
+            ),
+        );
     }
 
     /**
@@ -242,7 +262,13 @@ final class NamePrettifier
         $providedDataValues = $test->providedData();
         $i                  = 0;
 
-        $providedData['$_dataName'] = (string) $test->dataName();
+        $dataName = $test->dataName();
+
+        if (is_int($dataName)) {
+            $providedData['$_dataName'] = (string) $dataName;
+        } else {
+            $providedData['$_dataName'] = Sanitizer::sanitizeBidirectionalControlCharacters($dataName);
+        }
 
         foreach ($reflector->getParameters() as $parameter) {
             if (array_key_exists($parameter->getName(), $providedDataValues)) {
@@ -281,7 +307,11 @@ final class NamePrettifier
                 }
             }
 
-            $providedData['$' . $parameter->getName()] = str_replace('$', '\\$', $value);
+            $providedData['$' . $parameter->getName()] = str_replace(
+                '$',
+                '\\$',
+                Sanitizer::sanitizeBidirectionalControlCharacters($value),
+            );
         }
 
         if ($colorize) {

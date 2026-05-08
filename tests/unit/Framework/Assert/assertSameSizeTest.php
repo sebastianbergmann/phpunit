@@ -27,7 +27,7 @@ use PHPUnit\Framework\Attributes\TestDox;
 final class assertSameSizeTest extends TestCase
 {
     /**
-     * @return non-empty-list<array{0: Countable|iterable, 1: Countable|iterable}>
+     * @return non-empty-list<array{0: Countable|iterable<mixed>, 1: Countable|iterable<mixed>}>
      */
     public static function successProvider(): array
     {
@@ -37,7 +37,7 @@ final class assertSameSizeTest extends TestCase
     }
 
     /**
-     * @return non-empty-list<array{0: Countable|iterable, 1: Countable|iterable}>
+     * @return non-empty-list<array{0: Countable|iterable<mixed>, 1: Countable|iterable<mixed>}>
      */
     public static function failureProvider(): array
     {
@@ -47,7 +47,7 @@ final class assertSameSizeTest extends TestCase
     }
 
     /**
-     * @return non-empty-list<array{0: Countable|iterable, 1: Countable|iterable}>
+     * @return non-empty-list<array{0: Countable|iterable<mixed>, 1: Countable|iterable<mixed>}>
      */
     public static function errorProvider(): array
     {

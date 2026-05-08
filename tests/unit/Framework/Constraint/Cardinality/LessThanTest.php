@@ -23,6 +23,9 @@ use PHPUnit\Framework\TestCase;
 #[Group('framework/constraints')]
 final class LessThanTest extends TestCase
 {
+    /**
+     * @return non-empty-list<array{bool, string, mixed, mixed}>
+     */
     public static function provider(): array
     {
         return [

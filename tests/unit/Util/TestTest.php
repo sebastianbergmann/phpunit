@@ -20,6 +20,9 @@ use ReflectionMethod;
 #[Small]
 final class TestTest extends TestCase
 {
+    /**
+     * @return non-empty-list<array{bool, ReflectionMethod}>
+     */
     public static function provider(): array
     {
         return [

@@ -19,9 +19,11 @@ use function dirname;
 use function explode;
 use function getenv;
 use function is_int;
+use function is_string;
 use function realpath;
 use function sprintf;
 use function time;
+use LogicException;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
@@ -97,9 +99,25 @@ final readonly class Merger
 
         if (!isset($testResultCacheFile)) {
             if ($xmlConfiguration->wasLoadedFromFile()) {
-                $testResultCacheFile = dirname(realpath($xmlConfiguration->filename())) . DIRECTORY_SEPARATOR . '.phpunit.result.cache';
+                $configurationFileRealpath = realpath($xmlConfiguration->filename());
+
+                if ($configurationFileRealpath !== false) {
+                    $testResultCacheFile = dirname($configurationFileRealpath) . DIRECTORY_SEPARATOR . '.phpunit.result.cache';
+                } else {
+                    $testResultCacheFile = '.phpunit.result.cache';
+                }
             } else {
-                $candidate = realpath($_SERVER['PHP_SELF']);
+                $phpSelf = null;
+
+                if (isset($_SERVER['PHP_SELF']) && is_string($_SERVER['PHP_SELF'])) {
+                    $phpSelf = $_SERVER['PHP_SELF'];
+                }
+
+                if ($phpSelf !== null) {
+                    $candidate = realpath($phpSelf);
+                } else {
+                    $candidate = false;
+                }
 
                 if ($candidate !== false) {
                     $testResultCacheFile = dirname($candidate) . DIRECTORY_SEPARATOR . '.phpunit.result.cache';
@@ -901,6 +919,10 @@ final readonly class Merger
 
         if ($cliConfiguration->hasIncludePath()) {
             foreach (explode(PATH_SEPARATOR, $cliConfiguration->includePath()) as $includePath) {
+                if ($includePath === '') {
+                    continue;
+                }
+
                 $includePaths[] = new Directory($includePath);
             }
         }
@@ -1012,6 +1034,78 @@ final readonly class Merger
                 'The identification of issue triggers is disabled. However, ignoring self-deprecations, direct deprecations, or indirect deprecations is requested.',
             );
         }
+
+        $testFilesFile                      = $this->nullableNonEmptyString($testFilesFile);
+        $bootstrap                          = $this->nullableNonEmptyString($bootstrap);
+        $coverageClover                     = $this->nullableNonEmptyString($coverageClover);
+        $coverageCobertura                  = $this->nullableNonEmptyString($coverageCobertura);
+        $coverageCrap4j                     = $this->nullableNonEmptyString($coverageCrap4j);
+        $coverageHtml                       = $this->nullableNonEmptyString($coverageHtml);
+        $coverageHtmlLowUpperBound          = $this->clampNonNegativeInt($coverageHtmlLowUpperBound);
+        $coverageHtmlHighLowerBound         = $this->clampNonNegativeInt($coverageHtmlHighLowerBound);
+        $coverageHtmlColorSuccessLow        = $this->requireNonEmptyString($coverageHtmlColorSuccessLow, 'coverage HTML color "success low"');
+        $coverageHtmlColorSuccessLowDark    = $this->requireNonEmptyString($coverageHtmlColorSuccessLowDark, 'coverage HTML color "success low dark"');
+        $coverageHtmlColorSuccessMedium     = $this->requireNonEmptyString($coverageHtmlColorSuccessMedium, 'coverage HTML color "success medium"');
+        $coverageHtmlColorSuccessMediumDark = $this->requireNonEmptyString($coverageHtmlColorSuccessMediumDark, 'coverage HTML color "success medium dark"');
+        $coverageHtmlColorSuccessHigh       = $this->requireNonEmptyString($coverageHtmlColorSuccessHigh, 'coverage HTML color "success high"');
+        $coverageHtmlColorSuccessHighDark   = $this->requireNonEmptyString($coverageHtmlColorSuccessHighDark, 'coverage HTML color "success high dark"');
+        $coverageHtmlColorSuccessBar        = $this->requireNonEmptyString($coverageHtmlColorSuccessBar, 'coverage HTML color "success bar"');
+        $coverageHtmlColorSuccessBarDark    = $this->requireNonEmptyString($coverageHtmlColorSuccessBarDark, 'coverage HTML color "success bar dark"');
+        $coverageHtmlColorWarning           = $this->requireNonEmptyString($coverageHtmlColorWarning, 'coverage HTML color "warning"');
+        $coverageHtmlColorWarningDark       = $this->requireNonEmptyString($coverageHtmlColorWarningDark, 'coverage HTML color "warning dark"');
+        $coverageHtmlColorWarningBar        = $this->requireNonEmptyString($coverageHtmlColorWarningBar, 'coverage HTML color "warning bar"');
+        $coverageHtmlColorWarningBarDark    = $this->requireNonEmptyString($coverageHtmlColorWarningBarDark, 'coverage HTML color "warning bar dark"');
+        $coverageHtmlColorDanger            = $this->requireNonEmptyString($coverageHtmlColorDanger, 'coverage HTML color "danger"');
+        $coverageHtmlColorDangerDark        = $this->requireNonEmptyString($coverageHtmlColorDangerDark, 'coverage HTML color "danger dark"');
+        $coverageHtmlColorDangerBar         = $this->requireNonEmptyString($coverageHtmlColorDangerBar, 'coverage HTML color "danger bar"');
+        $coverageHtmlColorDangerBarDark     = $this->requireNonEmptyString($coverageHtmlColorDangerBarDark, 'coverage HTML color "danger bar dark"');
+        $coverageHtmlColorBreadcrumbs       = $this->requireNonEmptyString($coverageHtmlColorBreadcrumbs, 'coverage HTML color "breadcrumbs"');
+        $coverageHtmlColorBreadcrumbsDark   = $this->requireNonEmptyString($coverageHtmlColorBreadcrumbsDark, 'coverage HTML color "breadcrumbs dark"');
+        $coverageOpenClover                 = $this->nullableNonEmptyString($coverageOpenClover);
+        $coveragePhp                        = $this->nullableNonEmptyString($coveragePhp);
+        $coverageText                       = $this->nullableNonEmptyString($coverageText);
+        $coverageXml                        = $this->nullableNonEmptyString($coverageXml);
+        $stopOnDefect                       = $this->clampNonNegativeInt($stopOnDefect);
+        $stopOnDeprecation                  = $this->clampNonNegativeInt($stopOnDeprecation);
+        $specificDeprecationToStopOn        = $this->nullableNonEmptyString($specificDeprecationToStopOn);
+        $stopOnError                        = $this->clampNonNegativeInt($stopOnError);
+        $stopOnFailure                      = $this->clampNonNegativeInt($stopOnFailure);
+        $stopOnIncomplete                   = $this->clampNonNegativeInt($stopOnIncomplete);
+        $stopOnNotice                       = $this->clampNonNegativeInt($stopOnNotice);
+        $stopOnRisky                        = $this->clampNonNegativeInt($stopOnRisky);
+        $stopOnSkipped                      = $this->clampNonNegativeInt($stopOnSkipped);
+        $stopOnWarning                      = $this->clampNonNegativeInt($stopOnWarning);
+        $defaultTimeLimit                   = $this->clampNonNegativeInt($defaultTimeLimit);
+        $logfileOtr                         = $this->nullableNonEmptyString($logfileOtr);
+        $logEventsText                      = $this->nullableNonEmptyString($logEventsText);
+        $logEventsVerboseText               = $this->nullableNonEmptyString($logEventsVerboseText);
+        $testIdFilterFile                   = $this->nullableNonEmptyString($testIdFilterFile);
+        $testIdFilter                       = $this->nullableNonEmptyString($testIdFilter);
+        $randomOrderSeed                    = $this->clampPositiveInt($randomOrderSeed);
+
+        $normalizedGroups = [];
+
+        foreach ($groups as $group) {
+            if ($group === '') {
+                continue;
+            }
+
+            $normalizedGroups[] = $group;
+        }
+
+        $groups = $normalizedGroups;
+
+        $normalizedExcludeGroups = [];
+
+        foreach ($excludeGroups as $excludeGroup) {
+            if ($excludeGroup === '') {
+                continue;
+            }
+
+            $normalizedExcludeGroups[] = $excludeGroup;
+        }
+
+        $excludeGroups = $normalizedExcludeGroups;
 
         return new Configuration(
             $cliConfiguration->arguments(),
@@ -1201,6 +1295,56 @@ final readonly class Merger
             $cliConfiguration->withTelemetry(),
             $xmlConfiguration->phpunit()->shortenArraysForExportThreshold(),
         );
+    }
+
+    /**
+     * @return null|non-empty-string
+     */
+    private function nullableNonEmptyString(?string $value): ?string
+    {
+        if ($value === null || $value === '') {
+            return null;
+        }
+
+        return $value;
+    }
+
+    /**
+     * @throws LogicException
+     *
+     * @return non-empty-string
+     */
+    private function requireNonEmptyString(string $value, string $context): string
+    {
+        if ($value === '') {
+            throw new LogicException(sprintf('"%s" must not be empty', $context));
+        }
+
+        return $value;
+    }
+
+    /**
+     * @return non-negative-int
+     */
+    private function clampNonNegativeInt(int $value): int
+    {
+        if ($value < 0) {
+            return 0;
+        }
+
+        return $value;
+    }
+
+    /**
+     * @return positive-int
+     */
+    private function clampPositiveInt(int $value): int
+    {
+        if ($value < 1) {
+            return 1;
+        }
+
+        return $value;
     }
 
     private function hasExplicitTestSelection(CliConfiguration $cliConfiguration): bool

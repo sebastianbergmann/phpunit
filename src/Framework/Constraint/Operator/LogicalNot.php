@@ -23,8 +23,6 @@ use PHPUnit\Framework\ExpectationFailedException;
 final class LogicalNot extends UnaryOperator
 {
     /**
-     * @param non-empty-string $string
-     *
      * @return non-empty-string
      */
     public static function negate(string $string): string
@@ -69,13 +67,17 @@ final class LogicalNot extends UnaryOperator
         if (count($matches) >= 3) {
             $nonInput = $matches[2];
 
+            $replacement = preg_replace(
+                $positives,
+                $negatives,
+                $nonInput,
+            );
+
+            assert($replacement !== null);
+
             $negatedString = preg_replace(
                 '/' . preg_quote($nonInput, '/') . '/',
-                preg_replace(
-                    $positives,
-                    $negatives,
-                    $nonInput,
-                ),
+                $replacement,
                 $string,
             );
         } else {
@@ -118,7 +120,7 @@ final class LogicalNot extends UnaryOperator
      */
     protected function matches(mixed $other): bool
     {
-        return !$this->constraint()->evaluate($other, '', true);
+        return $this->constraint()->evaluate($other, '', true) === false;
     }
 
     /**

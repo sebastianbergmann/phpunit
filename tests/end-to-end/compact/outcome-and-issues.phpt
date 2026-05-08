@@ -16,7 +16,21 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 
-ERRORS (17 tests, 7 assertions, 3 errors, 3 failures, 5 deprecations, 5 warnings, 5 notices, 3 skipped, 3 incomplete, 1 risky)
+
+--- FAILURE: PHPUnit\TestFixture\OutcomesAndIssuesTest::testFailWithDeprecation
+Failed asserting that false is true.
+
+%sOutcomesAndIssuesTest.php:%d
+
+--- FAILURE: PHPUnit\TestFixture\OutcomesAndIssuesTest::testFailWithNotice
+Failed asserting that false is true.
+
+%sOutcomesAndIssuesTest.php:%d
+
+--- FAILURE: PHPUnit\TestFixture\OutcomesAndIssuesTest::testFailWithWarning
+Failed asserting that false is true.
+
+%sOutcomesAndIssuesTest.php:%d
 
 --- ERROR: PHPUnit\TestFixture\OutcomesAndIssuesTest::testErrorWithDeprecation
 Exception: exception message
@@ -33,20 +47,7 @@ Exception: exception message
 
 %sOutcomesAndIssuesTest.php:%d
 
---- FAILURE: PHPUnit\TestFixture\OutcomesAndIssuesTest::testFailWithDeprecation
-Failed asserting that false is true.
-
-%sOutcomesAndIssuesTest.php:%d
-
---- FAILURE: PHPUnit\TestFixture\OutcomesAndIssuesTest::testFailWithNotice
-Failed asserting that false is true.
-
-%sOutcomesAndIssuesTest.php:%d
-
---- FAILURE: PHPUnit\TestFixture\OutcomesAndIssuesTest::testFailWithWarning
-Failed asserting that false is true.
-
-%sOutcomesAndIssuesTest.php:%d
+ERRORS (17 tests, 7 assertions, 3 errors, 3 failures, 5 deprecations, 5 warnings, 5 notices, 3 skipped, 3 incomplete, 1 risky)
 
 --- DEPRECATION: %sOutcomesAndIssuesTest.php:%d
 deprecation message

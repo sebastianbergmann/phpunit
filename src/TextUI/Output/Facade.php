@@ -19,6 +19,7 @@ use PHPUnit\TestRunner\TestResult\TestResult;
 use PHPUnit\TextUI\CannotOpenSocketException;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\InvalidSocketException;
+use PHPUnit\TextUI\Output\Compact\ProgressPrinter\ProgressPrinter as CompactProgressPrinter;
 use PHPUnit\TextUI\Output\Compact\ResultPrinter as CompactResultPrinter;
 use PHPUnit\TextUI\Output\Default\ProgressPrinter\ProgressPrinter as DefaultProgressPrinter;
 use PHPUnit\TextUI\Output\Default\ResultPrinter as DefaultResultPrinter;
@@ -45,23 +46,30 @@ final class Facade
     {
         self::createPrinter($configuration);
 
-        assert(self::$printer !== null);
+        $printer = self::$printer;
+
+        assert($printer !== null);
 
         if ($configuration->debug()) {
-            return self::$printer;
+            return $printer;
         }
 
         self::createUnexpectedOutputPrinter();
 
         if ($configuration->outputIsCompact()) {
             self::$compactResultPrinter = new CompactResultPrinter(
-                self::$printer,
+                $printer,
                 $configuration->displayDetailsOnIncompleteTests() || $configuration->displayDetailsOnAllIssues(),
                 $configuration->displayDetailsOnSkippedTests() || $configuration->displayDetailsOnAllIssues(),
                 $configuration->displayDetailsOnTestsThatTriggerDeprecations() || $configuration->displayDetailsOnAllIssues(),
                 $configuration->displayDetailsOnTestsThatTriggerErrors() || $configuration->displayDetailsOnAllIssues(),
                 $configuration->displayDetailsOnTestsThatTriggerNotices() || $configuration->displayDetailsOnAllIssues(),
                 $configuration->displayDetailsOnTestsThatTriggerWarnings() || $configuration->displayDetailsOnAllIssues(),
+            );
+
+            new CompactProgressPrinter(
+                $printer,
+                EventFacade::instance(),
             );
         } else {
             if (!$extensionReplacesProgressOutput) {
@@ -87,7 +95,7 @@ final class Facade
     }
 
     /**
-     * @param ?array<string, TestResultCollection> $testDoxResult
+     * @param ?array<class-string, TestResultCollection> $testDoxResult
      */
     public static function printResult(TestResult $result, ?array $testDoxResult, Duration $duration, bool $stackTraceForDeprecations): void
     {

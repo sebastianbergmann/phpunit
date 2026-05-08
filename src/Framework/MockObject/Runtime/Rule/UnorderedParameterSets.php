@@ -43,7 +43,12 @@ final class UnorderedParameterSets implements ParametersRule
     {
         foreach ($stack as $index => $parameters) {
             if (!$parameters instanceof IndexedParameters) {
-                $parameters = new IndexedParameters(is_array($parameters) ? $parameters : [$parameters], false);
+                if (is_array($parameters)) {
+                    $parameters = new IndexedParameters($parameters, false);
+                } else {
+                    $parameters = new IndexedParameters([$parameters], false);
+                }
+
                 $parameters->index($index);
             }
 

@@ -11,6 +11,8 @@ namespace PHPUnit\Framework\Constraint;
 
 use function is_array;
 use function is_finite;
+use function is_float;
+use function is_int;
 use function is_object;
 use PHPUnit\Util\Exporter;
 
@@ -33,6 +35,10 @@ final class IsFinite extends Constraint
      */
     protected function matches(mixed $other): bool
     {
+        if (!is_float($other) && !is_int($other)) {
+            return false;
+        }
+
         return is_finite($other);
     }
 

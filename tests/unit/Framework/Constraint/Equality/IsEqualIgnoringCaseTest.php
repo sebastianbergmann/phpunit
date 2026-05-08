@@ -25,6 +25,9 @@ use stdClass;
 #[Group('framework/constraints')]
 final class IsEqualIgnoringCaseTest extends TestCase
 {
+    /**
+     * @return non-empty-list<array{bool, string, string, string, mixed, mixed}>
+     */
     public static function provider(): array
     {
         return [

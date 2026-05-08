@@ -23,6 +23,9 @@ use PHPUnit\Framework\TestCase;
 #[Group('framework/constraints')]
 final class IsWritableTest extends TestCase
 {
+    /**
+     * @return non-empty-list<array{bool, string, string}>
+     */
     public static function provider(): array
     {
         return [

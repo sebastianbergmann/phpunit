@@ -24,6 +24,9 @@ use stdClass;
 #[Group('framework/constraints')]
 final class ArraysAreIdenticalTest extends TestCase
 {
+    /**
+     * @return array<string, array{bool, string, array<mixed>, mixed, bool, bool}>
+     */
     public static function provider(): array
     {
         $object = new stdClass;

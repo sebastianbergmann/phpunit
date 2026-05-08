@@ -370,15 +370,21 @@ final readonly class DataProvider
      */
     private function dataProvidedByMetadata(ReflectionMethod $testMethod, MetadataCollection $testWith): array
     {
-        $result = [];
+        $result                       = [];
+        $testMethodNumberOfParameters = $testMethod->getNumberOfParameters();
+        $testMethodIsNonVariadic      = !$testMethod->isVariadic();
+        $autoIncrementKey             = 0;
 
         foreach ($testWith as $i => $_testWith) {
             assert($_testWith instanceof TestWith);
 
             $providerLabel = sprintf('TestWith#%s attribute', $i);
+            $value         = $_testWith->data();
 
             if ($_testWith->hasName()) {
                 $key = $_testWith->name();
+
+                assert($key !== null);
 
                 if (array_key_exists($key, $result)) {
                     throw new InvalidDataProviderException(
@@ -390,28 +396,18 @@ final readonly class DataProvider
                     );
                 }
 
-                $result[$key] = new ProvidedData($providerLabel, $_testWith->data());
+                $formattedKey = $this->formatKey($key);
             } else {
-                $result[] = new ProvidedData($providerLabel, $_testWith->data());
+                $key          = null;
+                $formattedKey = $this->formatKey($autoIncrementKey);
             }
-        }
-
-        $testMethodNumberOfParameters = $testMethod->getNumberOfParameters();
-        $testMethodIsNonVariadic      = !$testMethod->isVariadic();
-
-        foreach ($result as $key => $providedData) {
-            if ($key === '') {
-                continue;
-            }
-
-            $value = $providedData->value();
 
             if (!is_array($value)) {
                 throw new InvalidDataProviderException(
                     sprintf(
                         'Data set %s provided by %s is invalid, expected array but got %s',
-                        $this->formatKey($key),
-                        $providedData->label(),
+                        $formattedKey,
+                        $providerLabel,
                         get_debug_type($value),
                     ),
                 );
@@ -420,11 +416,18 @@ final readonly class DataProvider
             if ($testMethodIsNonVariadic && $testMethodNumberOfParameters < count($value)) {
                 $this->triggerWarningForArgumentCount(
                     $testMethod,
-                    $this->formatKey($key),
-                    $providedData->label(),
+                    $formattedKey,
+                    $providerLabel,
                     count($value),
                     $testMethodNumberOfParameters,
                 );
+            }
+
+            if ($key === null) {
+                $result[] = new ProvidedData($providerLabel, $value);
+                $autoIncrementKey++;
+            } else {
+                $result[$key] = new ProvidedData($providerLabel, $value);
             }
         }
 

@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
+use function assert;
 use DOMDocument;
 
 /**
@@ -20,11 +21,14 @@ final readonly class IntroduceCoverageElement implements Migration
 {
     public function migrate(DOMDocument $document): void
     {
-        $coverage = $document->createElement('coverage');
+        $coverage        = $document->createElement('coverage');
+        $documentElement = $document->documentElement;
 
-        $document->documentElement->insertBefore(
+        assert($documentElement !== null);
+
+        $documentElement->insertBefore(
             $coverage,
-            $document->documentElement->firstChild,
+            $documentElement->firstChild,
         );
     }
 }

@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Util;
 
-use function array_keys;
 use function array_merge;
 use function array_reverse;
 use function assert;
@@ -100,16 +99,14 @@ final readonly class Reflection
             $methodsByClass[$declaringClassName][] = $method;
         }
 
-        $classNames = array_keys($methodsByClass);
-
         if ($sortHighestToLowest) {
-            $classNames = array_reverse($classNames);
+            $methodsByClass = array_reverse($methodsByClass);
         }
 
         $methods = [];
 
-        foreach ($classNames as $className) {
-            $methods = array_merge($methods, $methodsByClass[$className]);
+        foreach ($methodsByClass as $classMethods) {
+            $methods = array_merge($methods, $classMethods);
         }
 
         return $methods;

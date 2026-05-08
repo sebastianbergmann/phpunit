@@ -25,6 +25,9 @@ use PHPUnit\Framework\TestCase;
 #[Group('framework/constraints')]
 final class LogicalXorTest extends TestCase
 {
+    /**
+     * @return non-empty-list<array{bool, string, string, LogicalXor, mixed}>
+     */
     public static function provider(): array
     {
         return [

@@ -889,15 +889,17 @@ final class Generator
             $hasSetHook                 = false;
             $setHookMethodParameterType = null;
 
-            if ($property->hasHook(PropertyHookType::Get) &&
-                !$property->getHook(PropertyHookType::Get)->isFinal()) {
+            $getHook = $property->getHook(PropertyHookType::Get);
+
+            if ($getHook !== null && !$getHook->isFinal()) {
                 $hasGetHook = true;
             }
 
-            if ($property->hasHook(PropertyHookType::Set) &&
-                !$property->getHook(PropertyHookType::Set)->isFinal()) {
+            $setHook = $property->getHook(PropertyHookType::Set);
+
+            if ($setHook !== null && !$setHook->isFinal()) {
                 $hasSetHook        = true;
-                $setHookParameters = $mapper->fromParameterTypes($property->getHook(PropertyHookType::Set));
+                $setHookParameters = $mapper->fromParameterTypes($setHook);
 
                 if (isset($setHookParameters[0])) {
                     $setHookMethodParameterType = $setHookParameters[0]->type();

@@ -11,6 +11,7 @@ namespace PHPUnit\Framework\Constraint;
 
 use function gettype;
 use function is_object;
+use function is_scalar;
 use function sprintf;
 use ReflectionObject;
 
@@ -70,9 +71,15 @@ final class ObjectHasProperty extends Constraint
             );
         }
 
+        if (is_scalar($other)) {
+            $value = (string) $other;
+        } else {
+            $value = '';
+        }
+
         return sprintf(
             '"%s" (%s) %s',
-            $other,
+            $value,
             gettype($other),
             $this->toString(),
         );

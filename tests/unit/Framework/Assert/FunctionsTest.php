@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-use function array_reduce;
 use function file_get_contents;
 use function preg_match_all;
 use PHPUnit\Framework\Attributes\CoversNothing;
@@ -22,6 +21,9 @@ final class FunctionsTest extends TestCase
 {
     private static array $globalAssertionFunctions = [];
 
+    /**
+     * @return array<string, array{string}>
+     */
     public static function provideStaticAssertionMethodNames(): array
     {
         preg_match_all(
@@ -32,16 +34,13 @@ final class FunctionsTest extends TestCase
             $matches,
         );
 
-        return array_reduce(
-            $matches[1],
-            static function (array $functionNames, string $functionName)
-            {
-                $functionNames[$functionName] = [$functionName];
+        $functionNames = [];
 
-                return $functionNames;
-            },
-            [],
-        );
+        foreach ($matches[1] as $functionName) {
+            $functionNames[$functionName] = [$functionName];
+        }
+
+        return $functionNames;
     }
 
     public static function setUpBeforeClass(): void

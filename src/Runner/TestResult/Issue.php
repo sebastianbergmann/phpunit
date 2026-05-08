@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\TestRunner\TestResult\Issues;
 
-use function array_keys;
+use function array_values;
 use function count;
 use PHPUnit\Event\Code\Test;
 
@@ -142,6 +142,6 @@ final class Issue
     public function triggeredInTest(): bool
     {
         return count($this->triggeringTests) === 1 &&
-               $this->file === $this->triggeringTests[array_keys($this->triggeringTests)[0]]['test']->file();
+               $this->file === array_values($this->triggeringTests)[0]['test']->file();
     }
 }

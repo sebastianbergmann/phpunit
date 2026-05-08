@@ -28,6 +28,9 @@ use Throwable;
 #[Group('framework/constraints')]
 final class IsInstanceOfTest extends TestCase
 {
+    /**
+     * @return non-empty-list<array{bool, string, string, mixed}>
+     */
     public static function provider(): array
     {
         return [

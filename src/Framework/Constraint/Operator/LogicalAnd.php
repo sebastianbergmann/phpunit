@@ -44,7 +44,7 @@ final class LogicalAnd extends BinaryOperator
     protected function matches(mixed $other): bool
     {
         foreach ($this->constraints() as $constraint) {
-            if (!$constraint->evaluate($other, '', true)) {
+            if ($constraint->evaluate($other, '', true) === false) {
                 return false;
             }
         }

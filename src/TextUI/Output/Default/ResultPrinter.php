@@ -514,7 +514,11 @@ final class ResultPrinter
             $body = trim($issue->description()) . PHP_EOL . PHP_EOL;
 
             if ($stackTrace && $issue->hasStackTrace()) {
-                $body .= trim($issue->stackTrace()) . PHP_EOL . PHP_EOL;
+                $issueStackTrace = $issue->stackTrace();
+
+                assert($issueStackTrace !== null);
+
+                $body .= trim($issueStackTrace) . PHP_EOL . PHP_EOL;
             }
 
             if (!$issue->triggeredInTest()) {

@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function is_string;
 use function sprintf;
 use function strtr;
 
@@ -41,7 +42,11 @@ final class StringEqualsStringIgnoringLineEndings extends Constraint
      */
     protected function matches(mixed $other): bool
     {
-        return $this->string === $this->normalizeLineEndings((string) $other);
+        if (!is_string($other)) {
+            return false;
+        }
+
+        return $this->string === $this->normalizeLineEndings($other);
     }
 
     private function normalizeLineEndings(string $string): string

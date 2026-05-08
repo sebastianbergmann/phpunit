@@ -24,6 +24,9 @@ use PHPUnit\Framework\TestCase;
 #[Group('framework/constraints')]
 final class ArrayHasKeyTest extends TestCase
 {
+    /**
+     * @return non-empty-list<array{bool, string, int|string, mixed}>
+     */
     public static function provider(): array
     {
         return [

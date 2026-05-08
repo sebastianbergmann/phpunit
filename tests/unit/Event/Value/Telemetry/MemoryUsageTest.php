@@ -21,6 +21,9 @@ use PHPUnit\Framework\TestCase;
 #[Group('event-system/value-objects')]
 final class MemoryUsageTest extends TestCase
 {
+    /**
+     * @return array<string, array{int}>
+     */
     public static function provideValidBytes(): array
     {
         return [

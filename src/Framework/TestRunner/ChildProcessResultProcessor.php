@@ -11,6 +11,8 @@ namespace PHPUnit\Framework\TestRunner;
 
 use function assert;
 use function hash_equals;
+use function is_int;
+use function property_exists;
 use function strlen;
 use function substr;
 use function trim;
@@ -18,6 +20,7 @@ use function unserialize;
 use PHPUnit\Event\Code\TestMethodBuilder;
 use PHPUnit\Event\Code\ThrowableBuilder;
 use PHPUnit\Event\Emitter;
+use PHPUnit\Event\EventCollection;
 use PHPUnit\Event\Facade;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
@@ -26,6 +29,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
 use PHPUnit\TestRunner\TestResult\PassedTests;
+use stdClass;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -105,7 +109,15 @@ final readonly class ChildProcessResultProcessor
 
         $childResult = @unserialize($serializedProcessResult);
 
-        if ($childResult === false) {
+        if (!$childResult instanceof stdClass ||
+            !property_exists($childResult, 'events') ||
+            !property_exists($childResult, 'passedTests') ||
+            !property_exists($childResult, 'testResult') ||
+            !property_exists($childResult, 'numAssertions') ||
+            !$childResult->events instanceof EventCollection ||
+            !$childResult->passedTests instanceof PassedTests ||
+            !is_int($childResult->numAssertions) ||
+            $childResult->numAssertions < 0) {
             $this->emitter->childProcessErrored();
 
             $exception = new AssertionFailedError('Test was run in child process and ended unexpectedly');
@@ -138,7 +150,7 @@ final readonly class ChildProcessResultProcessor
         }
 
         // @codeCoverageIgnoreStart
-        if (!$childResult->codeCoverage instanceof \SebastianBergmann\CodeCoverage\CodeCoverage) {
+        if (!isset($childResult->codeCoverage) || !$childResult->codeCoverage instanceof \SebastianBergmann\CodeCoverage\CodeCoverage) {
             return;
         }
 

@@ -509,6 +509,8 @@ final class Builder
                     break;
 
                 case 'd':
+                    assert($option[1] !== null);
+
                     $tmp = explode('=', $option[1]);
 
                     if (isset($tmp[0])) {
@@ -569,6 +571,8 @@ final class Builder
                     break;
 
                 case '--generate-baseline':
+                    assert($option[1] !== null);
+
                     $generateBaseline = $option[1];
 
                     if (basename($generateBaseline) === $generateBaseline) {
@@ -578,6 +582,8 @@ final class Builder
                     break;
 
                 case '--use-baseline':
+                    assert($option[1] !== null);
+
                     $useBaseline = $option[1];
 
                     if (basename($useBaseline) === $useBaseline && !is_file($useBaseline)) {
@@ -611,7 +617,7 @@ final class Builder
                         $groups = [];
                     }
 
-                    $groups[] = $option[1];
+                    $groups[] = $this->requireNonEmptyValue($option[1], '--group');
 
                     $optionAllowedMultipleTimes = true;
 
@@ -622,7 +628,7 @@ final class Builder
                         $excludeGroups = [];
                     }
 
-                    $excludeGroups[] = $option[1];
+                    $excludeGroups[] = $this->requireNonEmptyValue($option[1], '--exclude-group');
 
                     $optionAllowedMultipleTimes = true;
 
@@ -633,7 +639,7 @@ final class Builder
                         $testsCovering = [];
                     }
 
-                    $testsCovering[] = strtolower($option[1]);
+                    $testsCovering[] = strtolower($this->requireNonEmptyValue($option[1], '--covers'));
 
                     $optionAllowedMultipleTimes = true;
 
@@ -644,7 +650,7 @@ final class Builder
                         $testsUsing = [];
                     }
 
-                    $testsUsing[] = strtolower($option[1]);
+                    $testsUsing[] = strtolower($this->requireNonEmptyValue($option[1], '--uses'));
 
                     $optionAllowedMultipleTimes = true;
 
@@ -655,7 +661,7 @@ final class Builder
                         $testsRequiringPhpExtension = [];
                     }
 
-                    $testsRequiringPhpExtension[] = strtolower($option[1]);
+                    $testsRequiringPhpExtension[] = strtolower($this->requireNonEmptyValue($option[1], '--requires-php-extension'));
 
                     $optionAllowedMultipleTimes = true;
 
@@ -666,7 +672,7 @@ final class Builder
                         $testSuffixes = [];
                     }
 
-                    $testSuffixes[] = $option[1];
+                    $testSuffixes[] = $this->requireNonEmptyValue($option[1], '--test-suffix');
 
                     $optionAllowedMultipleTimes = true;
 
@@ -728,6 +734,8 @@ final class Builder
                     break;
 
                 case '--order-by':
+                    assert($option[1] !== null);
+
                     foreach (explode(',', $option[1]) as $order) {
                         switch ($order) {
                             case 'default':
@@ -1142,7 +1150,7 @@ final class Builder
                     break;
 
                 case '--diff-context':
-                    $diffContext = (int) $option[1];
+                    $diffContext = $this->requirePositiveIntValue($option[1], '--diff-context');
 
                     break;
 
@@ -1171,7 +1179,7 @@ final class Builder
                         $coverageFilter = [];
                     }
 
-                    $coverageFilter[] = $option[1];
+                    $coverageFilter[] = $this->requireNonEmptyValue($option[1], '--coverage-filter');
 
                     $optionAllowedMultipleTimes = true;
 
@@ -1203,13 +1211,14 @@ final class Builder
                     break;
 
                 case '--log-events-text':
-                    $logEventsText = Filesystem::resolveStreamOrFile($option[1]);
+                    $logEventsTextPath = $this->requireNonEmptyValue($option[1], '--log-events-text');
+                    $logEventsText     = Filesystem::resolveStreamOrFile($logEventsTextPath);
 
                     if ($logEventsText === false) {
                         throw new Exception(
                             sprintf(
                                 'The path "%s" specified for the --log-events-text option could not be resolved',
-                                $option[1],
+                                $logEventsTextPath,
                             ),
                         );
                     }
@@ -1217,13 +1226,14 @@ final class Builder
                     break;
 
                 case '--log-events-verbose-text':
-                    $logEventsVerboseText = Filesystem::resolveStreamOrFile($option[1]);
+                    $logEventsVerboseTextPath = $this->requireNonEmptyValue($option[1], '--log-events-verbose-text');
+                    $logEventsVerboseText     = Filesystem::resolveStreamOrFile($logEventsVerboseTextPath);
 
                     if ($logEventsVerboseText === false) {
                         throw new Exception(
                             sprintf(
                                 'The path "%s" specified for the --log-events-verbose-text option could not be resolved',
-                                $option[1],
+                                $logEventsVerboseTextPath,
                             ),
                         );
                     }
@@ -1241,7 +1251,7 @@ final class Builder
                     break;
 
                 case '--extension':
-                    $extensions[] = $option[1];
+                    $extensions[] = $this->requireNonEmptyValue($option[1], '--extension');
 
                     $optionAllowedMultipleTimes = true;
 
@@ -1271,8 +1281,18 @@ final class Builder
             );
         }
 
+        $arguments = [];
+
+        foreach ($options[1] as $argument) {
+            if ($argument === '') {
+                continue;
+            }
+
+            $arguments[] = $argument;
+        }
+
         return new Configuration(
-            $options[1],
+            $arguments,
             $testFilesFile,
             $testIdFile,
             $testIdFilter,
@@ -1409,9 +1429,6 @@ final class Builder
         );
     }
 
-    /**
-     * @param non-empty-string $option
-     */
     private function markProcessed(string $option): void
     {
         if (!isset($this->processed[$option])) {
@@ -1470,10 +1487,50 @@ final class Builder
      */
     private function parseStopOnValue(?string $value): int
     {
-        if ($value !== null && is_numeric($value)) {
+        if (is_numeric($value)) {
             return max(1, (int) $value);
         }
 
         return 1;
+    }
+
+    /**
+     * @throws Exception
+     *
+     * @return non-empty-string
+     */
+    private function requireNonEmptyValue(?string $value, string $option): string
+    {
+        if ($value === null || $value === '') {
+            throw new Exception(
+                sprintf('Option %s requires a non-empty value', $option),
+            );
+        }
+
+        return $value;
+    }
+
+    /**
+     * @throws Exception
+     *
+     * @return positive-int
+     */
+    private function requirePositiveIntValue(?string $value, string $option): int
+    {
+        if (!is_numeric($value)) {
+            throw new Exception(
+                sprintf('Option %s requires a positive integer value', $option),
+            );
+        }
+
+        $intValue = (int) $value;
+
+        if ($intValue < 1) {
+            throw new Exception(
+                sprintf('Option %s requires a positive integer value', $option),
+            );
+        }
+
+        return $intValue;
     }
 }

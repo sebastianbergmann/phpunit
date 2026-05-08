@@ -21,6 +21,9 @@ use PHPUnit\TextUI\Output\DefaultPrinter;
 #[Medium]
 final class DefaultPrinterTest extends TestCase
 {
+    /**
+     * @return array<string, array{DefaultPrinter}>
+     */
     public static function providePrinter(): array
     {
         $data = [
