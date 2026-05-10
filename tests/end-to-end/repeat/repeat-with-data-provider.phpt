@@ -24,8 +24,8 @@ Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (4 tests)
 Test Suite Started (PHPUnit\TestFixture\Repeat\DataProviderTest, 4 tests)
-Test Suite Started (PHPUnit\TestFixture\Repeat\DataProviderTest::testWithDataProvider, 4 tests)
-Test Suite Started (PHPUnit\TestFixture\Repeat\DataProviderTest::testWithDataProvider#one, 2 tests)
+Test Suite for Test Method with Data Provider Started (PHPUnit\TestFixture\Repeat\DataProviderTest::testWithDataProvider, 4 data sets)
+Test Suite for Repeated Test Method Started (PHPUnit\TestFixture\Repeat\DataProviderTest::testWithDataProvider#one, 2 repetitions)
 Test Preparation Started (PHPUnit\TestFixture\Repeat\DataProviderTest::testWithDataProvider#one (repetition 1 of 2))
 Test Prepared (PHPUnit\TestFixture\Repeat\DataProviderTest::testWithDataProvider#one (repetition 1 of 2))
 Test Passed (PHPUnit\TestFixture\Repeat\DataProviderTest::testWithDataProvider#one (repetition 1 of 2))
@@ -34,8 +34,8 @@ Test Preparation Started (PHPUnit\TestFixture\Repeat\DataProviderTest::testWithD
 Test Prepared (PHPUnit\TestFixture\Repeat\DataProviderTest::testWithDataProvider#one (repetition 2 of 2))
 Test Passed (PHPUnit\TestFixture\Repeat\DataProviderTest::testWithDataProvider#one (repetition 2 of 2))
 Test Finished (PHPUnit\TestFixture\Repeat\DataProviderTest::testWithDataProvider#one (repetition 2 of 2))
-Test Suite Finished (PHPUnit\TestFixture\Repeat\DataProviderTest::testWithDataProvider#one, 2 tests)
-Test Suite Started (PHPUnit\TestFixture\Repeat\DataProviderTest::testWithDataProvider#two, 2 tests)
+Test Suite for Repeated Test Method Finished (PHPUnit\TestFixture\Repeat\DataProviderTest::testWithDataProvider#one, 2 repetitions)
+Test Suite for Repeated Test Method Started (PHPUnit\TestFixture\Repeat\DataProviderTest::testWithDataProvider#two, 2 repetitions)
 Test Preparation Started (PHPUnit\TestFixture\Repeat\DataProviderTest::testWithDataProvider#two (repetition 1 of 2))
 Test Prepared (PHPUnit\TestFixture\Repeat\DataProviderTest::testWithDataProvider#two (repetition 1 of 2))
 Test Passed (PHPUnit\TestFixture\Repeat\DataProviderTest::testWithDataProvider#two (repetition 1 of 2))
@@ -44,8 +44,8 @@ Test Preparation Started (PHPUnit\TestFixture\Repeat\DataProviderTest::testWithD
 Test Prepared (PHPUnit\TestFixture\Repeat\DataProviderTest::testWithDataProvider#two (repetition 2 of 2))
 Test Passed (PHPUnit\TestFixture\Repeat\DataProviderTest::testWithDataProvider#two (repetition 2 of 2))
 Test Finished (PHPUnit\TestFixture\Repeat\DataProviderTest::testWithDataProvider#two (repetition 2 of 2))
-Test Suite Finished (PHPUnit\TestFixture\Repeat\DataProviderTest::testWithDataProvider#two, 2 tests)
-Test Suite Finished (PHPUnit\TestFixture\Repeat\DataProviderTest::testWithDataProvider, 4 tests)
+Test Suite for Repeated Test Method Finished (PHPUnit\TestFixture\Repeat\DataProviderTest::testWithDataProvider#two, 2 repetitions)
+Test Suite for Test Method with Data Provider Finished (PHPUnit\TestFixture\Repeat\DataProviderTest::testWithDataProvider, 4 data sets)
 Test Suite Finished (PHPUnit\TestFixture\Repeat\DataProviderTest, 4 tests)
 Test Runner Execution Finished
 Test Runner Finished

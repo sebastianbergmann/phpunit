@@ -24,12 +24,12 @@ Test Suite Sorted
 Test Suite Filtered (1 test)
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Issue4975Test, 1 test)
-Test Suite Started (PHPUnit\TestFixture\Issue4975Test::testSomething, 1 test)
+Test Suite for Test Method with Data Provider Started (PHPUnit\TestFixture\Issue4975Test::testSomething, 1 data set)
 Test Preparation Started (PHPUnit\TestFixture\Issue4975Test::testSomething##2 second)
 Test Prepared (PHPUnit\TestFixture\Issue4975Test::testSomething##2 second)
 Test Passed (PHPUnit\TestFixture\Issue4975Test::testSomething##2 second)
 Test Finished (PHPUnit\TestFixture\Issue4975Test::testSomething##2 second)
-Test Suite Finished (PHPUnit\TestFixture\Issue4975Test::testSomething, 1 test)
+Test Suite for Test Method with Data Provider Finished (PHPUnit\TestFixture\Issue4975Test::testSomething, 1 data set)
 Test Suite Finished (PHPUnit\TestFixture\Issue4975Test, 1 test)
 Test Runner Execution Finished
 Test Runner Finished
