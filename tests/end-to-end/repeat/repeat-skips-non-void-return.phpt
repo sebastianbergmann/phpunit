@@ -25,7 +25,7 @@ Test Preparation Started (PHPUnit\TestFixture\Repeat\NonVoidReturnTest::testWith
 Test Prepared (PHPUnit\TestFixture\Repeat\NonVoidReturnTest::testWithReturnValue)
 Test Passed (PHPUnit\TestFixture\Repeat\NonVoidReturnTest::testWithReturnValue)
 Test Finished (PHPUnit\TestFixture\Repeat\NonVoidReturnTest::testWithReturnValue)
-Test Suite Started (PHPUnit\TestFixture\Repeat\NonVoidReturnTest::testWithVoidReturn, 2 tests)
+Test Suite for Repeated Test Method Started (PHPUnit\TestFixture\Repeat\NonVoidReturnTest::testWithVoidReturn, 2 repetitions)
 Test Preparation Started (PHPUnit\TestFixture\Repeat\NonVoidReturnTest::testWithVoidReturn (repetition 1 of 2))
 Test Prepared (PHPUnit\TestFixture\Repeat\NonVoidReturnTest::testWithVoidReturn (repetition 1 of 2))
 Test Passed (PHPUnit\TestFixture\Repeat\NonVoidReturnTest::testWithVoidReturn (repetition 1 of 2))
@@ -34,7 +34,7 @@ Test Preparation Started (PHPUnit\TestFixture\Repeat\NonVoidReturnTest::testWith
 Test Prepared (PHPUnit\TestFixture\Repeat\NonVoidReturnTest::testWithVoidReturn (repetition 2 of 2))
 Test Passed (PHPUnit\TestFixture\Repeat\NonVoidReturnTest::testWithVoidReturn (repetition 2 of 2))
 Test Finished (PHPUnit\TestFixture\Repeat\NonVoidReturnTest::testWithVoidReturn (repetition 2 of 2))
-Test Suite Finished (PHPUnit\TestFixture\Repeat\NonVoidReturnTest::testWithVoidReturn, 2 tests)
+Test Suite for Repeated Test Method Finished (PHPUnit\TestFixture\Repeat\NonVoidReturnTest::testWithVoidReturn, 2 repetitions)
 Test Suite Finished (PHPUnit\TestFixture\Repeat\NonVoidReturnTest, 3 tests)
 Test Runner Execution Finished
 Test Runner Finished

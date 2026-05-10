@@ -21,7 +21,7 @@ Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (6 tests)
 Test Suite Started (PHPUnit\TestFixture\Repeat\SuccessTest, 6 tests)
-Test Suite Started (PHPUnit\TestFixture\Repeat\SuccessTest::testOne, 3 tests)
+Test Suite for Repeated Test Method Started (PHPUnit\TestFixture\Repeat\SuccessTest::testOne, 3 repetitions)
 Test Preparation Started (PHPUnit\TestFixture\Repeat\SuccessTest::testOne (repetition 1 of 3))
 Test Prepared (PHPUnit\TestFixture\Repeat\SuccessTest::testOne (repetition 1 of 3))
 Test Passed (PHPUnit\TestFixture\Repeat\SuccessTest::testOne (repetition 1 of 3))
@@ -34,8 +34,8 @@ Test Preparation Started (PHPUnit\TestFixture\Repeat\SuccessTest::testOne (repet
 Test Prepared (PHPUnit\TestFixture\Repeat\SuccessTest::testOne (repetition 3 of 3))
 Test Passed (PHPUnit\TestFixture\Repeat\SuccessTest::testOne (repetition 3 of 3))
 Test Finished (PHPUnit\TestFixture\Repeat\SuccessTest::testOne (repetition 3 of 3))
-Test Suite Finished (PHPUnit\TestFixture\Repeat\SuccessTest::testOne, 3 tests)
-Test Suite Started (PHPUnit\TestFixture\Repeat\SuccessTest::testTwo, 3 tests)
+Test Suite for Repeated Test Method Finished (PHPUnit\TestFixture\Repeat\SuccessTest::testOne, 3 repetitions)
+Test Suite for Repeated Test Method Started (PHPUnit\TestFixture\Repeat\SuccessTest::testTwo, 3 repetitions)
 Test Preparation Started (PHPUnit\TestFixture\Repeat\SuccessTest::testTwo (repetition 1 of 3))
 Test Prepared (PHPUnit\TestFixture\Repeat\SuccessTest::testTwo (repetition 1 of 3))
 Test Passed (PHPUnit\TestFixture\Repeat\SuccessTest::testTwo (repetition 1 of 3))
@@ -48,7 +48,7 @@ Test Preparation Started (PHPUnit\TestFixture\Repeat\SuccessTest::testTwo (repet
 Test Prepared (PHPUnit\TestFixture\Repeat\SuccessTest::testTwo (repetition 3 of 3))
 Test Passed (PHPUnit\TestFixture\Repeat\SuccessTest::testTwo (repetition 3 of 3))
 Test Finished (PHPUnit\TestFixture\Repeat\SuccessTest::testTwo (repetition 3 of 3))
-Test Suite Finished (PHPUnit\TestFixture\Repeat\SuccessTest::testTwo, 3 tests)
+Test Suite for Repeated Test Method Finished (PHPUnit\TestFixture\Repeat\SuccessTest::testTwo, 3 repetitions)
 Test Suite Finished (PHPUnit\TestFixture\Repeat\SuccessTest, 6 tests)
 Test Runner Execution Finished
 Test Runner Finished

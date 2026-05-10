@@ -24,7 +24,7 @@ Test Suite Sorted
 Test Suite Filtered (2 tests)
 Test Runner Execution Started (2 tests)
 Test Suite Started (PHPUnit\TestFixture\Repeat\SuccessTest, 2 tests)
-Test Suite Started (PHPUnit\TestFixture\Repeat\SuccessTest::testOne, 2 tests)
+Test Suite for Repeated Test Method Started (PHPUnit\TestFixture\Repeat\SuccessTest::testOne, 2 repetitions)
 Test Preparation Started (PHPUnit\TestFixture\Repeat\SuccessTest::testOne (repetition 1 of 2))
 Test Prepared (PHPUnit\TestFixture\Repeat\SuccessTest::testOne (repetition 1 of 2))
 Test Passed (PHPUnit\TestFixture\Repeat\SuccessTest::testOne (repetition 1 of 2))
@@ -33,7 +33,7 @@ Test Preparation Started (PHPUnit\TestFixture\Repeat\SuccessTest::testOne (repet
 Test Prepared (PHPUnit\TestFixture\Repeat\SuccessTest::testOne (repetition 2 of 2))
 Test Passed (PHPUnit\TestFixture\Repeat\SuccessTest::testOne (repetition 2 of 2))
 Test Finished (PHPUnit\TestFixture\Repeat\SuccessTest::testOne (repetition 2 of 2))
-Test Suite Finished (PHPUnit\TestFixture\Repeat\SuccessTest::testOne, 2 tests)
+Test Suite for Repeated Test Method Finished (PHPUnit\TestFixture\Repeat\SuccessTest::testOne, 2 repetitions)
 Test Suite Finished (PHPUnit\TestFixture\Repeat\SuccessTest, 2 tests)
 Test Runner Execution Finished
 Test Runner Finished

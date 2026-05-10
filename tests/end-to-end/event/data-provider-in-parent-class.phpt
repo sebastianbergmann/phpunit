@@ -22,12 +22,12 @@ Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\DataProviderInParentTest, 1 test)
-Test Suite Started (PHPUnit\TestFixture\Event\DataProviderInParentTest::testSomething, 1 test)
+Test Suite for Test Method with Data Provider Started (PHPUnit\TestFixture\Event\DataProviderInParentTest::testSomething, 1 data set)
 Test Preparation Started (PHPUnit\TestFixture\Event\DataProviderInParentTest::testSomething#0)
 Test Prepared (PHPUnit\TestFixture\Event\DataProviderInParentTest::testSomething#0)
 Test Passed (PHPUnit\TestFixture\Event\DataProviderInParentTest::testSomething#0)
 Test Finished (PHPUnit\TestFixture\Event\DataProviderInParentTest::testSomething#0)
-Test Suite Finished (PHPUnit\TestFixture\Event\DataProviderInParentTest::testSomething, 1 test)
+Test Suite for Test Method with Data Provider Finished (PHPUnit\TestFixture\Event\DataProviderInParentTest::testSomething, 1 data set)
 Test Suite Finished (PHPUnit\TestFixture\Event\DataProviderInParentTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished
