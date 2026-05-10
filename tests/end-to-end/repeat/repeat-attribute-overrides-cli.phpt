@@ -21,7 +21,7 @@ Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (2 tests)
 Test Suite Started (PHPUnit\TestFixture\Repeat\RepeatAttributeOverrideTest, 2 tests)
-Test Suite Started (PHPUnit\TestFixture\Repeat\RepeatAttributeOverrideTest::testAttributeOverridesCliRepeat, 2 tests)
+Test Suite for Repeated Test Method Started (PHPUnit\TestFixture\Repeat\RepeatAttributeOverrideTest::testAttributeOverridesCliRepeat, 2 repetitions)
 Test Preparation Started (PHPUnit\TestFixture\Repeat\RepeatAttributeOverrideTest::testAttributeOverridesCliRepeat (repetition 1 of 2))
 Test Prepared (PHPUnit\TestFixture\Repeat\RepeatAttributeOverrideTest::testAttributeOverridesCliRepeat (repetition 1 of 2))
 Test Passed (PHPUnit\TestFixture\Repeat\RepeatAttributeOverrideTest::testAttributeOverridesCliRepeat (repetition 1 of 2))
@@ -30,7 +30,7 @@ Test Preparation Started (PHPUnit\TestFixture\Repeat\RepeatAttributeOverrideTest
 Test Prepared (PHPUnit\TestFixture\Repeat\RepeatAttributeOverrideTest::testAttributeOverridesCliRepeat (repetition 2 of 2))
 Test Passed (PHPUnit\TestFixture\Repeat\RepeatAttributeOverrideTest::testAttributeOverridesCliRepeat (repetition 2 of 2))
 Test Finished (PHPUnit\TestFixture\Repeat\RepeatAttributeOverrideTest::testAttributeOverridesCliRepeat (repetition 2 of 2))
-Test Suite Finished (PHPUnit\TestFixture\Repeat\RepeatAttributeOverrideTest::testAttributeOverridesCliRepeat, 2 tests)
+Test Suite for Repeated Test Method Finished (PHPUnit\TestFixture\Repeat\RepeatAttributeOverrideTest::testAttributeOverridesCliRepeat, 2 repetitions)
 Test Suite Finished (PHPUnit\TestFixture\Repeat\RepeatAttributeOverrideTest, 2 tests)
 Test Runner Execution Finished
 Test Runner Finished

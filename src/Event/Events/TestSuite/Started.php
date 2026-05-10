@@ -47,11 +47,31 @@ final readonly class Started implements Event
      */
     public function asString(): string
     {
+        $prefix = 'Test Suite Started';
+        $unit   = 'test';
+
+        if ($this->testSuite->isForTestMethodWithDataProvider()) {
+            $prefix = 'Test Suite for Test Method with Data Provider Started';
+            $unit   = 'data set';
+        } elseif ($this->testSuite->isForRepeatedTestMethod()) {
+            $prefix = 'Test Suite for Repeated Test Method Started';
+            $unit   = 'repetition';
+        }
+
+        $count  = $this->testSuite->count();
+        $plural = '';
+
+        if ($count !== 1) {
+            $plural = 's';
+        }
+
         return sprintf(
-            'Test Suite Started (%s, %d test%s)',
+            '%s (%s, %d %s%s)',
+            $prefix,
             $this->testSuite->name(),
-            $this->testSuite->count(),
-            $this->testSuite->count() !== 1 ? 's' : '',
+            $count,
+            $unit,
+            $plural,
         );
     }
 }
