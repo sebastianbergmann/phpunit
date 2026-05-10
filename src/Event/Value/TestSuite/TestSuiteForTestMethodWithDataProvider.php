@@ -34,6 +34,8 @@ final readonly class TestSuiteForTestMethodWithDataProvider extends TestSuite
      * @param non-empty-string $name
      * @param class-string     $className
      * @param non-empty-string $methodName
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public function __construct(string $name, int $size, TestCollection $tests, string $className, string $methodName, string $file, int $line)
     {

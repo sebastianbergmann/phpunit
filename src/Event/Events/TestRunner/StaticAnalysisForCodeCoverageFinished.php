@@ -35,6 +35,8 @@ final readonly class StaticAnalysisForCodeCoverageFinished implements Event
     /**
      * @param non-negative-int $cacheHits
      * @param non-negative-int $cacheMisses
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public function __construct(Telemetry\Info $telemetryInfo, int $cacheHits, int $cacheMisses)
     {

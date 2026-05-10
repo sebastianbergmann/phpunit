@@ -41,6 +41,8 @@ final readonly class ExtensionLoadedFromPhar implements Event
      * @param non-empty-string $filename
      * @param non-empty-string $name
      * @param non-empty-string $version
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public function __construct(Telemetry\Info $telemetryInfo, string $filename, string $name, string $version)
     {

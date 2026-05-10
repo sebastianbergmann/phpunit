@@ -55,6 +55,8 @@ final readonly class DeprecationTriggered implements Event
      * @param non-empty-string $file
      * @param positive-int     $line
      * @param non-empty-string $stackTrace
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public function __construct(Telemetry\Info $telemetryInfo, string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline, IssueTrigger $trigger, string $stackTrace)
     {

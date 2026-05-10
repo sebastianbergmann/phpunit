@@ -29,6 +29,9 @@ final readonly class GarbageCollectorStatus
     private bool $full;
     private int $bufferSize;
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public function __construct(int $runs, int $collected, int $threshold, int $roots, float $applicationTime, float $collectorTime, float $destructorTime, float $freeTime, bool $running, bool $protected, bool $full, int $bufferSize)
     {
         $this->runs            = $runs;

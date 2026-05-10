@@ -28,6 +28,9 @@ final readonly class Errored implements Event
     private Code\Test $test;
     private Throwable $throwable;
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, Throwable $throwable)
     {
         $this->telemetryInfo = $telemetryInfo;

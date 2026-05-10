@@ -44,6 +44,8 @@ final readonly class TestMethod extends Test
      * @param non-empty-string $methodName
      * @param non-empty-string $file
      * @param non-negative-int $line
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public function __construct(string $className, string $methodName, string $file, int $line, TestDox $testDox, MetadataCollection $metadata, TestDataCollection $testData)
     {
