@@ -23,6 +23,9 @@ final readonly class NoticeTriggered implements Event
     private Telemetry\Info $telemetryInfo;
     private string $message;
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public function __construct(Telemetry\Info $telemetryInfo, string $message)
     {
         $this->telemetryInfo = $telemetryInfo;

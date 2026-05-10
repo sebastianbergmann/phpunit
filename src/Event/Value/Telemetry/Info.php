@@ -24,6 +24,9 @@ final readonly class Info
     private Duration $durationSincePrevious;
     private MemoryUsage $memorySincePrevious;
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public function __construct(Snapshot $current, Duration $durationSinceStart, MemoryUsage $memorySinceStart, Duration $durationSincePrevious, MemoryUsage $memorySincePrevious)
     {
         $this->current               = $current;

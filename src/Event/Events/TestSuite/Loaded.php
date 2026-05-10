@@ -23,6 +23,9 @@ final readonly class Loaded implements Event
     private Telemetry\Info $telemetryInfo;
     private TestSuite $testSuite;
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public function __construct(Telemetry\Info $telemetryInfo, TestSuite $testSuite)
     {
         $this->telemetryInfo = $telemetryInfo;

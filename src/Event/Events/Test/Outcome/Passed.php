@@ -24,6 +24,9 @@ final readonly class Passed implements Event
     private Telemetry\Info $telemetryInfo;
     private Code\Test $test;
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test)
     {
         $this->telemetryInfo = $telemetryInfo;

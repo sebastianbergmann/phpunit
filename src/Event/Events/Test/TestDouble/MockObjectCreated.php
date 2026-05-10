@@ -29,6 +29,8 @@ final readonly class MockObjectCreated implements Event
 
     /**
      * @param class-string $className
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public function __construct(Telemetry\Info $telemetryInfo, string $className)
     {

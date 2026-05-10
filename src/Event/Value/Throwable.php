@@ -30,6 +30,8 @@ final readonly class Throwable
 
     /**
      * @param class-string $className
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public function __construct(string $className, string $message, string $description, string $stackTrace, ?self $previous)
     {

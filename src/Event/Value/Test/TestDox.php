@@ -20,6 +20,9 @@ final readonly class TestDox
     private string $prettifiedMethodName;
     private string $prettifiedAndColorizedMethodName;
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public function __construct(string $prettifiedClassName, string $prettifiedMethodName, string $prettifiedAndColorizedMethodName)
     {
         $this->prettifiedClassName              = $prettifiedClassName;

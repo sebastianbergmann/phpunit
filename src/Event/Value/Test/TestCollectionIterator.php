@@ -28,6 +28,9 @@ final class TestCollectionIterator implements Iterator
      */
     private int $position = 0;
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public function __construct(TestCollection $tests)
     {
         $this->tests = $tests->asArray();

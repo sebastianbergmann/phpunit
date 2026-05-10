@@ -20,6 +20,9 @@ final readonly class ComparisonFailure
     private string $actual;
     private string $diff;
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public function __construct(string $expected, string $actual, string $diff)
     {
         $this->expected = $expected;

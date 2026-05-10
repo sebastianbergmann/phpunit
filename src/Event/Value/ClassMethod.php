@@ -29,6 +29,8 @@ final readonly class ClassMethod
     /**
      * @param class-string     $className
      * @param non-empty-string $methodName
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public function __construct(string $className, string $methodName)
     {

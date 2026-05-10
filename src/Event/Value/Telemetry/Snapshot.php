@@ -21,6 +21,9 @@ final readonly class Snapshot
     private MemoryUsage $peakMemoryUsage;
     private GarbageCollectorStatus $garbageCollectorStatus;
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public function __construct(HRTime $time, MemoryUsage $memoryUsage, MemoryUsage $peakMemoryUsage, GarbageCollectorStatus $garbageCollectorStatus)
     {
         $this->time                   = $time;

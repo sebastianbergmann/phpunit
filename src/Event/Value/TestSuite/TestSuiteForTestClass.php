@@ -27,6 +27,8 @@ final readonly class TestSuiteForTestClass extends TestSuite
 
     /**
      * @param class-string $name
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public function __construct(string $name, int $size, TestCollection $tests, string $file, int $line)
     {
