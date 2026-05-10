@@ -51,6 +51,7 @@ use PHPUnit\Event\TestRunner\WarningTriggered as TestRunnerWarningTriggered;
 use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
 use PHPUnit\Event\TestSuite\Skipped as TestSuiteSkipped;
 use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
+use PHPUnit\Event\TestSuite\TestSuiteForRepeatedTestMethod;
 use PHPUnit\Event\TestSuite\TestSuiteForTestClass;
 use PHPUnit\Event\TestSuite\TestSuiteForTestMethodWithDataProvider;
 use PHPUnit\TestRunner\IssueFilter;
@@ -329,6 +330,29 @@ final class Collector
 
         if ($testSuite->isForTestMethodWithDataProvider()) {
             assert($testSuite instanceof TestSuiteForTestMethodWithDataProvider);
+            assert(count($testSuite->tests()->asArray()) > 0);
+
+            $test = $testSuite->tests()->asArray()[0];
+
+            assert($test instanceof TestMethod);
+
+            foreach ($this->testFailedEvents as $testFailedEvent) {
+                if ($testFailedEvent instanceof AfterLastTestMethodFailed || $testFailedEvent instanceof BeforeFirstTestMethodFailed) {
+                    continue;
+                }
+
+                if ($testFailedEvent->test()->isTestMethod() && $testFailedEvent->test()->methodName() === $test->methodName()) {
+                    return;
+                }
+            }
+
+            PassedTests::instance()->testMethodPassed($test, null);
+
+            return;
+        }
+
+        if ($testSuite->isForRepeatedTestMethod()) {
+            assert($testSuite instanceof TestSuiteForRepeatedTestMethod);
             assert(count($testSuite->tests()->asArray()) > 0);
 
             $test = $testSuite->tests()->asArray()[0];

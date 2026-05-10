@@ -9,54 +9,73 @@
  */
 namespace PHPUnit\Framework;
 
-use function count;
+use function assert;
 use PHPUnit\Event;
-use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\NoPreviousThrowableException;
+use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
+use SebastianBergmann\CodeCoverage\InvalidArgumentException;
+use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class RepeatTestSuite implements Reorderable, SelfDescribing, Test
+final class RepeatTestSuite extends TestSuite
 {
-    /**
-     * @var non-empty-list<TestCase>
-     */
-    private array $tests;
-
     /**
      * @var positive-int
      */
-    private int $failureThreshold;
+    private int $failureThreshold = 1;
 
     /**
+     * @param non-empty-string         $name
      * @param non-empty-list<TestCase> $tests
      * @param positive-int             $failureThreshold
      */
-    public function __construct(array $tests, int $failureThreshold = 1)
+    public static function fromTests(string $name, array $tests, int $failureThreshold): self
     {
-        $this->tests            = $tests;
-        $this->failureThreshold = $failureThreshold;
-    }
+        $suite = self::empty($name);
 
-    public function count(): int
-    {
-        return count($this->tests);
+        $suite->failureThreshold = $failureThreshold;
+
+        foreach ($tests as $test) {
+            $suite->addTest($test);
+        }
+
+        return $suite;
     }
 
     /**
-     * @throws Event\InvalidArgumentException
+     * @throws Event\RuntimeException
      * @throws Exception
+     * @throws InvalidArgumentException
      * @throws NoPreviousThrowableException
+     * @throws UnintentionallyCoveredCodeException
      */
     public function run(): void
     {
+        if ($this->isEmpty()) {
+            return;
+        }
+
+        $emitter                       = Event\Facade::emitter();
+        $testSuiteValueObjectForEvents = Event\TestSuite\TestSuiteBuilder::from($this);
+
+        $emitter->testSuiteStarted($testSuiteValueObjectForEvents);
+
         $failureCount         = 0;
         $lastFailedRepetition = 0;
 
-        foreach ($this->tests as $test) {
+        foreach ($this as $test) {
+            assert($test instanceof TestCase);
+
+            if (TestResultFacade::shouldStop()) {
+                $emitter->testRunnerExecutionAborted();
+
+                break;
+            }
+
             if ($failureCount >= $this->failureThreshold) {
                 $test->markSkippedForRepeatAbort($lastFailedRepetition);
 
@@ -70,27 +89,8 @@ final class RepeatTestSuite implements Reorderable, SelfDescribing, Test
                 $lastFailedRepetition = $test->repetition();
             }
         }
-    }
 
-    public function sortId(): string
-    {
-        return $this->tests[0]->sortId();
-    }
-
-    /**
-     * @return list<ExecutionOrderDependency>
-     */
-    public function provides(): array
-    {
-        return $this->tests[0]->provides();
-    }
-
-    /**
-     * @return list<ExecutionOrderDependency>
-     */
-    public function requires(): array
-    {
-        return $this->tests[0]->requires();
+        $emitter->testSuiteFinished($testSuiteValueObjectForEvents);
     }
 
     /**
@@ -98,29 +98,52 @@ final class RepeatTestSuite implements Reorderable, SelfDescribing, Test
      */
     public function setDependencies(array $dependencies): void
     {
-        foreach ($this->tests as $test) {
+        foreach ($this->tests() as $test) {
+            assert($test instanceof TestCase);
+
             $test->setDependencies($dependencies);
         }
     }
 
     /**
-     * @return non-empty-string
+     * @return list<ExecutionOrderDependency>
      */
-    public function name(): string
+    public function provides(): array
     {
-        return $this->tests[0]::class . '::' . $this->tests[0]->nameWithDataSet();
+        $tests = $this->tests();
+
+        if ($tests === []) {
+            return [];
+        }
+
+        assert($tests[0] instanceof TestCase);
+
+        return $tests[0]->provides();
     }
 
     /**
-     * @return non-empty-string
+     * @return list<ExecutionOrderDependency>
      */
-    public function toString(): string
+    public function requires(): array
     {
-        return $this->name();
+        $tests = $this->tests();
+
+        if ($tests === []) {
+            return [];
+        }
+
+        assert($tests[0] instanceof TestCase);
+
+        return $tests[0]->requires();
     }
 
-    public function valueObjectForEvents(): TestMethod
+    public function sortId(): string
     {
-        return $this->tests[0]->valueObjectForEvents();
+        $tests = $this->tests();
+
+        assert($tests !== []);
+        assert($tests[0] instanceof TestCase);
+
+        return $tests[0]->sortId();
     }
 }

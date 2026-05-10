@@ -32,9 +32,13 @@ OK (4 tests, 4 assertions)
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
   <testsuite name="PHPUnit\TestFixture\Repeat\SuccessTest" file="%sSuccessTest.php" tests="4" assertions="4" errors="0" failures="0" skipped="0" time="%f">
-    <testcase name="testOne (repetition 1 of 2)" file="%sSuccessTest.php" line="16" class="PHPUnit\TestFixture\Repeat\SuccessTest" classname="PHPUnit.TestFixture.Repeat.SuccessTest" assertions="1" time="%f"/>
-    <testcase name="testOne (repetition 2 of 2)" file="%sSuccessTest.php" line="16" class="PHPUnit\TestFixture\Repeat\SuccessTest" classname="PHPUnit.TestFixture.Repeat.SuccessTest" assertions="1" time="%f"/>
-    <testcase name="testTwo (repetition 1 of 2)" file="%sSuccessTest.php" line="21" class="PHPUnit\TestFixture\Repeat\SuccessTest" classname="PHPUnit.TestFixture.Repeat.SuccessTest" assertions="1" time="%f"/>
-    <testcase name="testTwo (repetition 2 of 2)" file="%sSuccessTest.php" line="21" class="PHPUnit\TestFixture\Repeat\SuccessTest" classname="PHPUnit.TestFixture.Repeat.SuccessTest" assertions="1" time="%f"/>
+    <testsuite name="PHPUnit\TestFixture\Repeat\SuccessTest::testOne" tests="2" assertions="2" errors="0" failures="0" skipped="0" time="%f">
+      <testcase name="testOne (repetition 1 of 2)" file="%sSuccessTest.php" line="16" class="PHPUnit\TestFixture\Repeat\SuccessTest" classname="PHPUnit.TestFixture.Repeat.SuccessTest" assertions="1" time="%f"/>
+      <testcase name="testOne (repetition 2 of 2)" file="%sSuccessTest.php" line="16" class="PHPUnit\TestFixture\Repeat\SuccessTest" classname="PHPUnit.TestFixture.Repeat.SuccessTest" assertions="1" time="%f"/>
+    </testsuite>
+    <testsuite name="PHPUnit\TestFixture\Repeat\SuccessTest::testTwo" tests="2" assertions="2" errors="0" failures="0" skipped="0" time="%f">
+      <testcase name="testTwo (repetition 1 of 2)" file="%sSuccessTest.php" line="21" class="PHPUnit\TestFixture\Repeat\SuccessTest" classname="PHPUnit.TestFixture.Repeat.SuccessTest" assertions="1" time="%f"/>
+      <testcase name="testTwo (repetition 2 of 2)" file="%sSuccessTest.php" line="21" class="PHPUnit\TestFixture\Repeat\SuccessTest" classname="PHPUnit.TestFixture.Repeat.SuccessTest" assertions="1" time="%f"/>
+    </testsuite>
   </testsuite>
 </testsuites>

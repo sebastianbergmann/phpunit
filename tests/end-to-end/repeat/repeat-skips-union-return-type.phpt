@@ -25,6 +25,7 @@ Test Preparation Started (PHPUnit\TestFixture\Repeat\UnionReturnTypeTest::testWi
 Test Prepared (PHPUnit\TestFixture\Repeat\UnionReturnTypeTest::testWithUnionReturnType)
 Test Passed (PHPUnit\TestFixture\Repeat\UnionReturnTypeTest::testWithUnionReturnType)
 Test Finished (PHPUnit\TestFixture\Repeat\UnionReturnTypeTest::testWithUnionReturnType)
+Test Suite Started (PHPUnit\TestFixture\Repeat\UnionReturnTypeTest::testWithVoidReturn, 2 tests)
 Test Preparation Started (PHPUnit\TestFixture\Repeat\UnionReturnTypeTest::testWithVoidReturn (repetition 1 of 2))
 Test Prepared (PHPUnit\TestFixture\Repeat\UnionReturnTypeTest::testWithVoidReturn (repetition 1 of 2))
 Test Passed (PHPUnit\TestFixture\Repeat\UnionReturnTypeTest::testWithVoidReturn (repetition 1 of 2))
@@ -33,6 +34,7 @@ Test Preparation Started (PHPUnit\TestFixture\Repeat\UnionReturnTypeTest::testWi
 Test Prepared (PHPUnit\TestFixture\Repeat\UnionReturnTypeTest::testWithVoidReturn (repetition 2 of 2))
 Test Passed (PHPUnit\TestFixture\Repeat\UnionReturnTypeTest::testWithVoidReturn (repetition 2 of 2))
 Test Finished (PHPUnit\TestFixture\Repeat\UnionReturnTypeTest::testWithVoidReturn (repetition 2 of 2))
+Test Suite Finished (PHPUnit\TestFixture\Repeat\UnionReturnTypeTest::testWithVoidReturn, 2 tests)
 Test Suite Finished (PHPUnit\TestFixture\Repeat\UnionReturnTypeTest, 3 tests)
 Test Runner Execution Finished
 Test Runner Finished
