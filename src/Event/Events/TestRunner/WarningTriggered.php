@@ -29,6 +29,8 @@ final readonly class WarningTriggered implements Event
 
     /**
      * @param non-empty-string $message
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public function __construct(Telemetry\Info $telemetryInfo, string $message)
     {

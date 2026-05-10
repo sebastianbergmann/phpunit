@@ -27,6 +27,8 @@ abstract readonly class TestSuite
 
     /**
      * @param non-empty-string $name
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public function __construct(string $name, int $size, TestCollection $tests)
     {

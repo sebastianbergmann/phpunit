@@ -31,6 +31,8 @@ final readonly class Finished implements Event
 
     /**
      * @param non-negative-int $numberOfAssertionsPerformed
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, int $numberOfAssertionsPerformed)
     {

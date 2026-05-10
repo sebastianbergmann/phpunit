@@ -20,6 +20,9 @@ final readonly class System
     private MemoryMeter $memoryMeter;
     private GarbageCollectorStatusProvider $garbageCollectorStatusProvider;
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public function __construct(StopWatch $stopWatch, MemoryMeter $memoryMeter, GarbageCollectorStatusProvider $garbageCollectorStatusProvider)
     {
         $this->stopWatch                      = $stopWatch;
