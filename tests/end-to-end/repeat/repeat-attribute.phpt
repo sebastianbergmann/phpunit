@@ -19,6 +19,7 @@ Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (4 tests)
 Test Suite Started (PHPUnit\TestFixture\Repeat\RepeatAttributeTest, 4 tests)
+Test Suite Started (PHPUnit\TestFixture\Repeat\RepeatAttributeTest::testRepeatedThreeTimes, 3 tests)
 Test Preparation Started (PHPUnit\TestFixture\Repeat\RepeatAttributeTest::testRepeatedThreeTimes (repetition 1 of 3))
 Test Prepared (PHPUnit\TestFixture\Repeat\RepeatAttributeTest::testRepeatedThreeTimes (repetition 1 of 3))
 Test Passed (PHPUnit\TestFixture\Repeat\RepeatAttributeTest::testRepeatedThreeTimes (repetition 1 of 3))
@@ -31,6 +32,7 @@ Test Preparation Started (PHPUnit\TestFixture\Repeat\RepeatAttributeTest::testRe
 Test Prepared (PHPUnit\TestFixture\Repeat\RepeatAttributeTest::testRepeatedThreeTimes (repetition 3 of 3))
 Test Passed (PHPUnit\TestFixture\Repeat\RepeatAttributeTest::testRepeatedThreeTimes (repetition 3 of 3))
 Test Finished (PHPUnit\TestFixture\Repeat\RepeatAttributeTest::testRepeatedThreeTimes (repetition 3 of 3))
+Test Suite Finished (PHPUnit\TestFixture\Repeat\RepeatAttributeTest::testRepeatedThreeTimes, 3 tests)
 Test Preparation Started (PHPUnit\TestFixture\Repeat\RepeatAttributeTest::testNotRepeated)
 Test Prepared (PHPUnit\TestFixture\Repeat\RepeatAttributeTest::testNotRepeated)
 Test Passed (PHPUnit\TestFixture\Repeat\RepeatAttributeTest::testNotRepeated)
