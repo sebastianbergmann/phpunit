@@ -157,6 +157,10 @@ final readonly class Configuration
     private ?bool $noLogging;
     private ?bool $processIsolation;
     private ?int $randomOrderSeed;
+
+    /**
+     * @var ?positive-int
+     */
     private ?int $repeat;
     private ?bool $reportUselessTests;
     private ?bool $resolveDependencies;
@@ -208,6 +212,7 @@ final readonly class Configuration
      * @param ?non-empty-list<non-empty-string>                    $testsUsing
      * @param ?non-empty-list<non-empty-string>                    $testsRequiringPhpExtension
      * @param ?non-empty-array<non-empty-string, non-empty-string> $iniSettings
+     * @param ?positive-int                                        $repeat
      * @param ?non-empty-list<non-empty-string>                    $testSuffixes
      * @param ?non-empty-list<non-empty-string>                    $coverageFilter
      * @param ?non-empty-list<non-empty-string>                    $extensions
@@ -2252,6 +2257,8 @@ final readonly class Configuration
 
     /**
      * @throws Exception
+     *
+     * @return positive-int
      */
     public function repeat(): int
     {

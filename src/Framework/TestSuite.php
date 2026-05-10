@@ -538,6 +538,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
     /**
      * @param ReflectionClass<TestCase> $class
      * @param list<non-empty-string>    $groups
+     * @param positive-int              $numberOfRuns
      *
      * @throws Exception
      */
