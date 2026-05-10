@@ -57,14 +57,12 @@ abstract class NameFilterIterator extends RecursiveFilterIterator
             return true;
         }
 
-        if (!$test instanceof TestCase) {
-            return false;
-        }
-
         if ($test instanceof RepeatTestSuite) {
             $name = $test->name();
-        } else {
+        } elseif ($test instanceof TestCase) {
             $name = $test::class . '::' . $test->nameWithDataSet();
+        } else {
+            return false;
         }
 
         $accepted = @preg_match($this->regularExpression, $name, $matches) === 1;

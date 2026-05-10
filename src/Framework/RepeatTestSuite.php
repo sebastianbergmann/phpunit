@@ -103,6 +103,9 @@ final class RepeatTestSuite implements Reorderable, SelfDescribing, Test
         }
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function name(): string
     {
         return $this->tests[0]::class . '::' . $this->tests[0]->nameWithDataSet();
