@@ -14,6 +14,8 @@ use function class_exists;
 use function count;
 use function explode;
 use function method_exists;
+use function strpos;
+use function substr;
 use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Code\TestCollection;
 use PHPUnit\Event\Code\TestDoxBuilder;
@@ -68,6 +70,44 @@ final readonly class TestSuiteBuilder
             );
         }
 
+        if ($testSuite instanceof RepeatTestSuite) {
+            $name = $testSuite->name();
+
+            $separatorPosition = strpos($name, '::');
+
+            assert($separatorPosition !== false);
+
+            $className  = substr($name, 0, $separatorPosition);
+            $methodName = substr($name, $separatorPosition + 2);
+
+            $hashPosition = strpos($methodName, '#');
+
+            if ($hashPosition !== false) {
+                $methodName = substr($methodName, 0, $hashPosition);
+            }
+
+            assert($className !== '' && class_exists($className));
+            assert($methodName !== '' && method_exists($className, $methodName));
+
+            $reflector = new ReflectionMethod($className, $methodName);
+
+            $file = $reflector->getFileName();
+            $line = $reflector->getStartLine();
+
+            assert($file !== false);
+            assert($line !== false);
+
+            return new TestSuiteForRepeatedTestMethod(
+                $name,
+                $testSuite->count(),
+                TestCollection::fromArray($tests),
+                $className,
+                $methodName,
+                $file,
+                $line,
+            );
+        }
+
         if ($testSuite->isForTestClass()) {
             $testClassName = $testSuite->name();
 
@@ -106,12 +146,6 @@ final readonly class TestSuiteBuilder
         foreach ($testSuite->getIterator() as $test) {
             if ($test instanceof FrameworkTestSuite) {
                 self::process($test, $tests);
-
-                continue;
-            }
-
-            if ($test instanceof RepeatTestSuite) {
-                $tests[] = $test->valueObjectForEvents();
 
                 continue;
             }

@@ -25,6 +25,7 @@ Test Preparation Started (PHPUnit\TestFixture\Repeat\NoReturnTypeTest::testWitho
 Test Prepared (PHPUnit\TestFixture\Repeat\NoReturnTypeTest::testWithoutReturnType)
 Test Passed (PHPUnit\TestFixture\Repeat\NoReturnTypeTest::testWithoutReturnType)
 Test Finished (PHPUnit\TestFixture\Repeat\NoReturnTypeTest::testWithoutReturnType)
+Test Suite Started (PHPUnit\TestFixture\Repeat\NoReturnTypeTest::testWithVoidReturn, 2 tests)
 Test Preparation Started (PHPUnit\TestFixture\Repeat\NoReturnTypeTest::testWithVoidReturn (repetition 1 of 2))
 Test Prepared (PHPUnit\TestFixture\Repeat\NoReturnTypeTest::testWithVoidReturn (repetition 1 of 2))
 Test Passed (PHPUnit\TestFixture\Repeat\NoReturnTypeTest::testWithVoidReturn (repetition 1 of 2))
@@ -33,6 +34,7 @@ Test Preparation Started (PHPUnit\TestFixture\Repeat\NoReturnTypeTest::testWithV
 Test Prepared (PHPUnit\TestFixture\Repeat\NoReturnTypeTest::testWithVoidReturn (repetition 2 of 2))
 Test Passed (PHPUnit\TestFixture\Repeat\NoReturnTypeTest::testWithVoidReturn (repetition 2 of 2))
 Test Finished (PHPUnit\TestFixture\Repeat\NoReturnTypeTest::testWithVoidReturn (repetition 2 of 2))
+Test Suite Finished (PHPUnit\TestFixture\Repeat\NoReturnTypeTest::testWithVoidReturn, 2 tests)
 Test Suite Finished (PHPUnit\TestFixture\Repeat\NoReturnTypeTest, 3 tests)
 Test Runner Execution Finished
 Test Runner Finished

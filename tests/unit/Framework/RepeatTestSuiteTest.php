@@ -17,12 +17,40 @@ use PHPUnit\TestFixture\Success;
 #[Small]
 final class RepeatTestSuiteTest extends TestCase
 {
-    public function testToStringReturnsSameValueAsName(): void
+    public function testCountReturnsNumberOfRepetitions(): void
+    {
+        $tests = [
+            new Success('testOne'),
+            new Success('testOne'),
+            new Success('testOne'),
+        ];
+
+        $suite = RepeatTestSuite::fromTests('PHPUnit\TestFixture\Success::testOne', $tests, 1);
+
+        $this->assertCount(3, $suite);
+    }
+
+    public function testNameReturnsValueProvidedToFactory(): void
+    {
+        $suite = RepeatTestSuite::fromTests(
+            'PHPUnit\TestFixture\Success::testOne',
+            [new Success('testOne')],
+            1,
+        );
+
+        $this->assertSame('PHPUnit\TestFixture\Success::testOne', $suite->name());
+    }
+
+    public function testSortIdDelegatesToFirstChild(): void
     {
         $test = new Success('testOne');
 
-        $suite = new RepeatTestSuite([$test]);
+        $suite = RepeatTestSuite::fromTests(
+            'PHPUnit\TestFixture\Success::testOne',
+            [$test],
+            1,
+        );
 
-        $this->assertSame($suite->name(), $suite->toString());
+        $this->assertSame($test->sortId(), $suite->sortId());
     }
 }

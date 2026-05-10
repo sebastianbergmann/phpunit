@@ -192,7 +192,11 @@ final readonly class TestBuilder
                 }
 
                 $dataProviderTestSuite->addTest(
-                    new RepeatTestSuite($tests, $failureThreshold),
+                    RepeatTestSuite::fromTests(
+                        $className . '::' . $methodName . '#' . $_dataName,
+                        $tests,
+                        $failureThreshold,
+                    ),
                     $groups,
                 );
             } else {
@@ -240,7 +244,11 @@ final readonly class TestBuilder
             $tests[] = $test;
         }
 
-        return new RepeatTestSuite($tests, $failureThreshold);
+        return RepeatTestSuite::fromTests(
+            $className . '::' . $methodName,
+            $tests,
+            $failureThreshold,
+        );
     }
 
     /**
