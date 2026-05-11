@@ -22,7 +22,7 @@ use PHPUnit\Framework\MockObject\NoMoreParameterSetsConfiguredException;
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class PartialOrderedParameterSets implements ParametersRule
+final class PartiallyOrderedParameterSets implements ParametersRule
 {
     /**
      * @var list<IndexedParameters>
@@ -103,8 +103,10 @@ final class PartialOrderedParameterSets implements ParametersRule
         foreach ($stack as $index => $parameters) {
             if ($parameters->at() === $this->numberOfInvocations - 1) {
                 unset($stack[$index]);
+
                 $this->stack     = array_values($stack);
                 $this->applied[] = $parameters;
+
                 $parameters->apply($invocation);
 
                 return;

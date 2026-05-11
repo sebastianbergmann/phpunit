@@ -66,7 +66,7 @@ final class InvocationMockerImplementation extends AbstractInvocationImplementat
         $this->ensureNoOtherMatcherHasParametersRuleForSameMethod();
         $this->emitDeprecationWhenCreatedWithoutExplicitExpects();
 
-        $this->matcher->setParametersRule(new Rule\PartialOrderedParameterSets($arguments));
+        $this->matcher->setParametersRule(new Rule\PartiallyOrderedParameterSets($arguments));
 
         return $this;
     }
