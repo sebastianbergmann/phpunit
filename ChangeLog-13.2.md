@@ -26,6 +26,7 @@ All notable changes of the PHPUnit 13.2 release series are documented in this fi
 * [#6577](https://github.com/sebastianbergmann/phpunit/issues/6577): `--run-test-id <test-id>` CLI option that accepts a single test ID for exact matching
 * [#6579](https://github.com/sebastianbergmann/phpunit/pull/6579): Properly handle issues triggered outside of tests
 * [#6597](https://github.com/sebastianbergmann/phpunit/pull/6597): Compact output (activated through `--compact` CLI option and `PHPUNIT_COMPACT_OUTPUT=1` environment variable)
+* [#6606](https://github.com/sebastianbergmann/phpunit/pull/6606): Support for partially ordered parameter sets in mock object expectations
 * The `executionOrder` attribute in the XML configuration file now accepts `defects` combined with any main order, as well as three-way combinations of `depends`/`no-depends`, `defects`, and a main order (for example, `depends,defects,duration-ascending`)
 * `--validate-configuration` CLI option to validate an XML configuration file for PHPUnit
 * Report per-test and per-test-suite resource usage (time, memory usage, peak memory usage) in Open Test Reporting XML
