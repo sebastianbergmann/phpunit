@@ -323,20 +323,22 @@ final readonly class Application
                 );
             }
 
-            CodeCoverage::instance()->generateReports($printer, $configuration);
+            if (!TestResultFacade::wasInterrupted()) {
+                CodeCoverage::instance()->generateReports($printer, $configuration);
 
-            if (isset($baselineGenerator)) {
-                (new Writer)->write(
-                    $configuration->generateBaseline(),
-                    $baselineGenerator->baseline(),
-                );
+                if (isset($baselineGenerator)) {
+                    (new Writer)->write(
+                        $configuration->generateBaseline(),
+                        $baselineGenerator->baseline(),
+                    );
 
-                $printer->print(
-                    sprintf(
-                        PHP_EOL . 'Baseline written to %s.' . PHP_EOL,
-                        realpath($configuration->generateBaseline()),
-                    ),
-                );
+                    $printer->print(
+                        sprintf(
+                            PHP_EOL . 'Baseline written to %s.' . PHP_EOL,
+                            realpath($configuration->generateBaseline()),
+                        ),
+                    );
+                }
             }
 
             $shellExitCode = (new ShellExitCodeCalculator)->calculate(
