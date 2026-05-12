@@ -12,6 +12,7 @@ namespace PHPUnit\Framework;
 use function array_merge;
 use function assert;
 use function get_parent_class;
+use function preg_match;
 use PHPUnit\Metadata\Api\DataProvider;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\ProvidedData;
@@ -23,6 +24,7 @@ use PHPUnit\Metadata\ExcludeStaticPropertyFromBackup;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Metadata\PreserveGlobalState;
 use PHPUnit\Runner\ErrorHandler;
+use PHPUnit\Runner\Filter\MethodNameFilterCompiler;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use ReflectionClass;
 
@@ -48,7 +50,8 @@ final readonly class TestBuilder
 
         $data = null;
 
-        if ($this->requirementsSatisfied($className, $methodName)) {
+        if ($this->requirementsSatisfied($className, $methodName) &&
+            !$this->filterExcludesMethod($className, $methodName)) {
             try {
                 ErrorHandler::instance()->enterTestCaseContext($className, $methodName);
 
@@ -292,5 +295,32 @@ final readonly class TestBuilder
     private function requirementsSatisfied(string $className, string $methodName): bool
     {
         return (new Requirements)->requirementsNotSatisfiedFor($className, $methodName) === [];
+    }
+
+    /**
+     * @param class-string<TestCase> $className
+     * @param non-empty-string       $methodName
+     */
+    private function filterExcludesMethod(string $className, string $methodName): bool
+    {
+        $configuration = ConfigurationRegistry::get();
+
+        if (!$configuration->hasFilter()) {
+            return false;
+        }
+
+        $regularExpression = MethodNameFilterCompiler::compile($configuration->filter());
+
+        if ($regularExpression === null) {
+            return false;
+        }
+
+        $result = @preg_match($regularExpression, $className . '::' . $methodName);
+
+        if ($result === false) {
+            return false;
+        }
+
+        return $result === 0;
     }
 }
