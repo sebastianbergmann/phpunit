@@ -1618,6 +1618,12 @@ final class DispatchingEmitter implements Emitter
             $current->memoryUsage()->diff($this->startSnapshot->memoryUsage()),
             $current->time()->duration($this->previousSnapshot->time()),
             $current->memoryUsage()->diff($this->previousSnapshot->memoryUsage()),
+            $current->userCpuTime()->diff($this->startSnapshot->userCpuTime()),
+            $current->systemCpuTime()->diff($this->startSnapshot->systemCpuTime()),
+            $current->totalCpuTime()->diff($this->startSnapshot->totalCpuTime()),
+            $current->userCpuTime()->diff($this->previousSnapshot->userCpuTime()),
+            $current->systemCpuTime()->diff($this->previousSnapshot->systemCpuTime()),
+            $current->totalCpuTime()->diff($this->previousSnapshot->totalCpuTime()),
         );
 
         $this->previousSnapshot = $current;

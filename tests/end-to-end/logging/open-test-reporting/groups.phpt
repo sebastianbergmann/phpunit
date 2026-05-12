@@ -55,7 +55,7 @@ unlink($logfile);
  </e:started>
  <e:finished id="2" time="%s">
   <attachments>
-   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d" userCpuTime="%f" systemCpuTime="%f" cpuTime="%f"/>
    <phpunit:assertions count="%d"/>
   </attachments>
   <result status="SUCCESSFUL"/>
@@ -77,14 +77,14 @@ unlink($logfile);
  </e:started>
  <e:finished id="3" time="%s">
   <attachments>
-   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d" userCpuTime="%f" systemCpuTime="%f" cpuTime="%f"/>
    <phpunit:assertions count="%d"/>
   </attachments>
   <result status="SUCCESSFUL"/>
  </e:finished>
  <e:finished id="1" time="%s">
   <attachments>
-   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d" userCpuTime="%f" systemCpuTime="%f" cpuTime="%f"/>
   </attachments>
  </e:finished>
 </e:events>

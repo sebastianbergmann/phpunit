@@ -27,17 +27,26 @@ final class SnapshotTest extends TestCase
         $memoryUsage            = MemoryUsage::fromBytes(2000);
         $peakMemoryUsage        = MemoryUsage::fromBytes(3000);
         $garbageCollectorStatus = new GarbageCollectorStatus(0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, false, false, false, 0);
+        $userCpuTime            = CpuTime::fromSecondsAndNanoseconds(1, 200);
+        $systemCpuTime          = CpuTime::fromSecondsAndNanoseconds(2, 300);
+        $totalCpuTime           = CpuTime::fromSecondsAndNanoseconds(3, 500);
 
         $snapshot = new Snapshot(
             $time,
             $memoryUsage,
             $peakMemoryUsage,
             $garbageCollectorStatus,
+            $userCpuTime,
+            $systemCpuTime,
+            $totalCpuTime,
         );
 
         $this->assertSame($time, $snapshot->time());
         $this->assertSame($memoryUsage, $snapshot->memoryUsage());
         $this->assertSame($peakMemoryUsage, $snapshot->peakMemoryUsage());
         $this->assertSame($garbageCollectorStatus, $snapshot->garbageCollectorStatus());
+        $this->assertSame($userCpuTime, $snapshot->userCpuTime());
+        $this->assertSame($systemCpuTime, $snapshot->systemCpuTime());
+        $this->assertSame($totalCpuTime, $snapshot->totalCpuTime());
     }
 }

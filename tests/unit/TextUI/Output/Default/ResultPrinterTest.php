@@ -21,6 +21,7 @@ use PHPUnit\Event\Code\TestDoxBuilder;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Code\ThrowableBuilder;
+use PHPUnit\Event\Telemetry\CpuTime;
 use PHPUnit\Event\Telemetry\Duration;
 use PHPUnit\Event\Telemetry\GarbageCollectorStatus;
 use PHPUnit\Event\Telemetry\HRTime;
@@ -1076,11 +1077,20 @@ final class ResultPrinterTest extends TestCase
                 MemoryUsage::fromBytes(1000),
                 MemoryUsage::fromBytes(2000),
                 new GarbageCollectorStatus(0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, false, false, false, 0),
+                CpuTime::fromSecondsAndNanoseconds(0, 0),
+                CpuTime::fromSecondsAndNanoseconds(0, 0),
+                CpuTime::fromSecondsAndNanoseconds(0, 0),
             ),
             Duration::fromSecondsAndNanoseconds(123, 456),
             MemoryUsage::fromBytes(2000),
             Duration::fromSecondsAndNanoseconds(234, 567),
             MemoryUsage::fromBytes(3000),
+            CpuTime::fromSecondsAndNanoseconds(0, 0),
+            CpuTime::fromSecondsAndNanoseconds(0, 0),
+            CpuTime::fromSecondsAndNanoseconds(0, 0),
+            CpuTime::fromSecondsAndNanoseconds(0, 0),
+            CpuTime::fromSecondsAndNanoseconds(0, 0),
+            CpuTime::fromSecondsAndNanoseconds(0, 0),
         );
     }
 

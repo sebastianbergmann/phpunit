@@ -54,7 +54,7 @@ unlink($logfile);
  </e:finished>
  <e:finished id="1" time="%s">
   <attachments>
-   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d" userCpuTime="%f" systemCpuTime="%f" cpuTime="%f"/>
   </attachments>
  </e:finished>
 </e:events>

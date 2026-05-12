@@ -51,7 +51,7 @@ unlink($logfile);
  </e:started>
  <e:finished id="4" time="%s">
   <attachments>
-   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d" userCpuTime="%f" systemCpuTime="%f" cpuTime="%f"/>
    <phpunit:assertions count="%d"/>
   </attachments>
   <result status="SUCCESSFUL"/>
@@ -66,7 +66,7 @@ unlink($logfile);
  </e:started>
  <e:finished id="5" time="%s">
   <attachments>
-   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d" userCpuTime="%f" systemCpuTime="%f" cpuTime="%f"/>
    <phpunit:assertions count="%d"/>
   </attachments>
   <result status="FAILED">
@@ -87,7 +87,7 @@ unlink($logfile);
  </e:started>
  <e:finished id="6" time="%s">
   <attachments>
-   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d" userCpuTime="%f" systemCpuTime="%f" cpuTime="%f"/>
    <phpunit:assertions count="%d"/>
   </attachments>
   <result status="ERRORED">
@@ -108,7 +108,7 @@ unlink($logfile);
  </e:started>
  <e:finished id="7" time="%s">
   <attachments>
-   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d" userCpuTime="%f" systemCpuTime="%f" cpuTime="%f"/>
    <phpunit:assertions count="%d"/>
   </attachments>
   <result status="ABORTED">
@@ -128,7 +128,7 @@ unlink($logfile);
  </e:started>
  <e:finished id="8" time="%s">
   <attachments>
-   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d" userCpuTime="%f" systemCpuTime="%f" cpuTime="%f"/>
    <phpunit:assertions count="%d"/>
   </attachments>
   <result status="SKIPPED">
@@ -150,7 +150,7 @@ unlink($logfile);
  </e:reported>
  <e:finished id="9" time="%s">
   <attachments>
-   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d" userCpuTime="%f" systemCpuTime="%f" cpuTime="%f"/>
    <phpunit:assertions count="%d"/>
   </attachments>
   <result status="SUCCESSFUL"/>
@@ -165,7 +165,7 @@ unlink($logfile);
  </e:started>
  <e:finished id="10" time="%s">
   <attachments>
-   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d" userCpuTime="%f" systemCpuTime="%f" cpuTime="%f"/>
    <phpunit:assertions count="%d"/>
   </attachments>
   <result status="SUCCESSFUL"/>
@@ -180,7 +180,7 @@ unlink($logfile);
  </e:started>
  <e:finished id="11" time="%s">
   <attachments>
-   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d" userCpuTime="%f" systemCpuTime="%f" cpuTime="%f"/>
    <phpunit:assertions count="%d"/>
   </attachments>
   <result status="FAILED">
@@ -203,7 +203,7 @@ Failed asserting that false is true.
  </e:started>
  <e:finished id="12" time="%s">
   <attachments>
-   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d" userCpuTime="%f" systemCpuTime="%f" cpuTime="%f"/>
    <phpunit:assertions count="%d"/>
   </attachments>
   <result status="ERRORED">
@@ -224,7 +224,7 @@ Failed asserting that false is true.
  </e:started>
  <e:finished id="13" time="%s">
   <attachments>
-   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d" userCpuTime="%f" systemCpuTime="%f" cpuTime="%f"/>
    <phpunit:assertions count="%d"/>
   </attachments>
   <result status="ABORTED">
@@ -258,7 +258,7 @@ Failed asserting that false is true.
  </e:started>
  <e:finished id="15" time="%s">
   <attachments>
-   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d" userCpuTime="%f" systemCpuTime="%f" cpuTime="%f"/>
    <phpunit:assertions count="%d"/>
   </attachments>
   <result status="SKIPPED">
@@ -280,24 +280,24 @@ Failed asserting that false is true.
  </e:reported>
  <e:finished id="16" time="%s">
   <attachments>
-   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d" userCpuTime="%f" systemCpuTime="%f" cpuTime="%f"/>
    <phpunit:assertions count="%d"/>
   </attachments>
   <result status="SUCCESSFUL"/>
  </e:finished>
  <e:finished id="3" time="%s">
   <attachments>
-   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d" userCpuTime="%f" systemCpuTime="%f" cpuTime="%f"/>
   </attachments>
  </e:finished>
  <e:finished id="2" time="%s">
   <attachments>
-   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d" userCpuTime="%f" systemCpuTime="%f" cpuTime="%f"/>
   </attachments>
  </e:finished>
  <e:finished id="1" time="%s">
   <attachments>
-   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d" userCpuTime="%f" systemCpuTime="%f" cpuTime="%f"/>
   </attachments>
  </e:finished>
 </e:events>

@@ -49,7 +49,7 @@ unlink($logfile);
  </e:started>
  <e:finished id="2" time="%s">
   <attachments>
-   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d" userCpuTime="%f" systemCpuTime="%f" cpuTime="%f"/>
   </attachments>
   <result status="FAILED">
    <reason>Failed asserting that two arrays are identical.</reason>
@@ -93,7 +93,7 @@ unlink($logfile);
  </e:finished>
  <e:finished id="1" time="%s">
   <attachments>
-   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d"/>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d" userCpuTime="%f" systemCpuTime="%f" cpuTime="%f"/>
   </attachments>
  </e:finished>
 </e:events>

@@ -102,6 +102,7 @@ final class Facade
                 new Telemetry\SystemStopWatchWithOffset($offset),
                 new Telemetry\SystemMemoryMeter,
                 new SystemGarbageCollectorStatusProvider,
+                new Telemetry\SystemCpuTimeMeter,
             ),
         );
 
@@ -142,6 +143,7 @@ final class Facade
             new Telemetry\SystemStopWatch,
             new Telemetry\SystemMemoryMeter,
             new SystemGarbageCollectorStatusProvider,
+            new Telemetry\SystemCpuTimeMeter,
         );
     }
 
