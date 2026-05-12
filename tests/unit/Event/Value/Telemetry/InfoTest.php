@@ -60,6 +60,57 @@ final class InfoTest extends TestCase
         $this->assertInstanceOf(GarbageCollectorStatus::class, $this->info()->garbageCollectorStatus());
     }
 
+    public function testHasUserCpuTime(): void
+    {
+        $this->assertInstanceOf(CpuTime::class, $this->info()->userCpuTime());
+    }
+
+    public function testHasSystemCpuTime(): void
+    {
+        $this->assertInstanceOf(CpuTime::class, $this->info()->systemCpuTime());
+    }
+
+    public function testHasTotalCpuTime(): void
+    {
+        $this->assertInstanceOf(CpuTime::class, $this->info()->totalCpuTime());
+    }
+
+    public function testHasUserCpuTimeSinceStart(): void
+    {
+        $this->assertSame(0, $this->info()->userCpuTimeSinceStart()->nanoseconds());
+        $this->assertSame(0, $this->info()->userCpuTimeSinceStart()->seconds());
+    }
+
+    public function testHasSystemCpuTimeSinceStart(): void
+    {
+        $this->assertSame(0, $this->info()->systemCpuTimeSinceStart()->nanoseconds());
+        $this->assertSame(0, $this->info()->systemCpuTimeSinceStart()->seconds());
+    }
+
+    public function testHasTotalCpuTimeSinceStart(): void
+    {
+        $this->assertSame(0, $this->info()->totalCpuTimeSinceStart()->nanoseconds());
+        $this->assertSame(0, $this->info()->totalCpuTimeSinceStart()->seconds());
+    }
+
+    public function testHasUserCpuTimeSincePrevious(): void
+    {
+        $this->assertSame(0, $this->info()->userCpuTimeSincePrevious()->nanoseconds());
+        $this->assertSame(0, $this->info()->userCpuTimeSincePrevious()->seconds());
+    }
+
+    public function testHasSystemCpuTimeSincePrevious(): void
+    {
+        $this->assertSame(0, $this->info()->systemCpuTimeSincePrevious()->nanoseconds());
+        $this->assertSame(0, $this->info()->systemCpuTimeSincePrevious()->seconds());
+    }
+
+    public function testHasTotalCpuTimeSincePrevious(): void
+    {
+        $this->assertSame(0, $this->info()->totalCpuTimeSincePrevious()->nanoseconds());
+        $this->assertSame(0, $this->info()->totalCpuTimeSincePrevious()->seconds());
+    }
+
     public function testCanBeFormattedAsString(): void
     {
         $this->assertStringMatchesFormat(
@@ -78,6 +129,12 @@ final class InfoTest extends TestCase
             $current->memoryUsage()->diff($current->memoryUsage()),
             $current->time()->duration($current->time()),
             $current->memoryUsage()->diff($current->memoryUsage()),
+            $current->userCpuTime()->diff($current->userCpuTime()),
+            $current->systemCpuTime()->diff($current->systemCpuTime()),
+            $current->totalCpuTime()->diff($current->totalCpuTime()),
+            $current->userCpuTime()->diff($current->userCpuTime()),
+            $current->systemCpuTime()->diff($current->systemCpuTime()),
+            $current->totalCpuTime()->diff($current->totalCpuTime()),
         );
     }
 
@@ -87,6 +144,7 @@ final class InfoTest extends TestCase
             new SystemStopWatch,
             new SystemMemoryMeter,
             new SystemGarbageCollectorStatusProvider,
+            new SystemCpuTimeMeter,
         );
     }
 }

@@ -3817,6 +3817,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             new Telemetry\SystemStopWatch,
             new Telemetry\SystemMemoryMeter,
             new SystemGarbageCollectorStatusProvider,
+            new Telemetry\SystemCpuTimeMeter,
         );
     }
 

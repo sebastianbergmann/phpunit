@@ -20,16 +20,22 @@ final readonly class Snapshot
     private MemoryUsage $memoryUsage;
     private MemoryUsage $peakMemoryUsage;
     private GarbageCollectorStatus $garbageCollectorStatus;
+    private CpuTime $userCpuTime;
+    private CpuTime $systemCpuTime;
+    private CpuTime $totalCpuTime;
 
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function __construct(HRTime $time, MemoryUsage $memoryUsage, MemoryUsage $peakMemoryUsage, GarbageCollectorStatus $garbageCollectorStatus)
+    public function __construct(HRTime $time, MemoryUsage $memoryUsage, MemoryUsage $peakMemoryUsage, GarbageCollectorStatus $garbageCollectorStatus, CpuTime $userCpuTime, CpuTime $systemCpuTime, CpuTime $totalCpuTime)
     {
         $this->time                   = $time;
         $this->memoryUsage            = $memoryUsage;
         $this->peakMemoryUsage        = $peakMemoryUsage;
         $this->garbageCollectorStatus = $garbageCollectorStatus;
+        $this->userCpuTime            = $userCpuTime;
+        $this->systemCpuTime          = $systemCpuTime;
+        $this->totalCpuTime           = $totalCpuTime;
     }
 
     public function time(): HRTime
@@ -50,5 +56,20 @@ final readonly class Snapshot
     public function garbageCollectorStatus(): GarbageCollectorStatus
     {
         return $this->garbageCollectorStatus;
+    }
+
+    public function userCpuTime(): CpuTime
+    {
+        return $this->userCpuTime;
+    }
+
+    public function systemCpuTime(): CpuTime
+    {
+        return $this->systemCpuTime;
+    }
+
+    public function totalCpuTime(): CpuTime
+    {
+        return $this->totalCpuTime;
     }
 }

@@ -23,17 +23,29 @@ final readonly class Info
     private MemoryUsage $memorySinceStart;
     private Duration $durationSincePrevious;
     private MemoryUsage $memorySincePrevious;
+    private CpuTime $userCpuTimeSinceStart;
+    private CpuTime $systemCpuTimeSinceStart;
+    private CpuTime $totalCpuTimeSinceStart;
+    private CpuTime $userCpuTimeSincePrevious;
+    private CpuTime $systemCpuTimeSincePrevious;
+    private CpuTime $totalCpuTimeSincePrevious;
 
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function __construct(Snapshot $current, Duration $durationSinceStart, MemoryUsage $memorySinceStart, Duration $durationSincePrevious, MemoryUsage $memorySincePrevious)
+    public function __construct(Snapshot $current, Duration $durationSinceStart, MemoryUsage $memorySinceStart, Duration $durationSincePrevious, MemoryUsage $memorySincePrevious, CpuTime $userCpuTimeSinceStart, CpuTime $systemCpuTimeSinceStart, CpuTime $totalCpuTimeSinceStart, CpuTime $userCpuTimeSincePrevious, CpuTime $systemCpuTimeSincePrevious, CpuTime $totalCpuTimeSincePrevious)
     {
-        $this->current               = $current;
-        $this->durationSinceStart    = $durationSinceStart;
-        $this->memorySinceStart      = $memorySinceStart;
-        $this->durationSincePrevious = $durationSincePrevious;
-        $this->memorySincePrevious   = $memorySincePrevious;
+        $this->current                    = $current;
+        $this->durationSinceStart         = $durationSinceStart;
+        $this->memorySinceStart           = $memorySinceStart;
+        $this->durationSincePrevious      = $durationSincePrevious;
+        $this->memorySincePrevious        = $memorySincePrevious;
+        $this->userCpuTimeSinceStart      = $userCpuTimeSinceStart;
+        $this->systemCpuTimeSinceStart    = $systemCpuTimeSinceStart;
+        $this->totalCpuTimeSinceStart     = $totalCpuTimeSinceStart;
+        $this->userCpuTimeSincePrevious   = $userCpuTimeSincePrevious;
+        $this->systemCpuTimeSincePrevious = $systemCpuTimeSincePrevious;
+        $this->totalCpuTimeSincePrevious  = $totalCpuTimeSincePrevious;
     }
 
     public function time(): HRTime
@@ -74,6 +86,51 @@ final readonly class Info
     public function garbageCollectorStatus(): GarbageCollectorStatus
     {
         return $this->current->garbageCollectorStatus();
+    }
+
+    public function userCpuTime(): CpuTime
+    {
+        return $this->current->userCpuTime();
+    }
+
+    public function systemCpuTime(): CpuTime
+    {
+        return $this->current->systemCpuTime();
+    }
+
+    public function totalCpuTime(): CpuTime
+    {
+        return $this->current->totalCpuTime();
+    }
+
+    public function userCpuTimeSinceStart(): CpuTime
+    {
+        return $this->userCpuTimeSinceStart;
+    }
+
+    public function systemCpuTimeSinceStart(): CpuTime
+    {
+        return $this->systemCpuTimeSinceStart;
+    }
+
+    public function totalCpuTimeSinceStart(): CpuTime
+    {
+        return $this->totalCpuTimeSinceStart;
+    }
+
+    public function userCpuTimeSincePrevious(): CpuTime
+    {
+        return $this->userCpuTimeSincePrevious;
+    }
+
+    public function systemCpuTimeSincePrevious(): CpuTime
+    {
+        return $this->systemCpuTimeSincePrevious;
+    }
+
+    public function totalCpuTimeSincePrevious(): CpuTime
+    {
+        return $this->totalCpuTimeSincePrevious;
     }
 
     public function asString(): string

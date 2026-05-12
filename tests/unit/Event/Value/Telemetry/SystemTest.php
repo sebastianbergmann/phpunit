@@ -82,11 +82,40 @@ final class SystemTest extends TestCase
             }
         };
 
-        $snapshot = new System($clock, $memoryMeter, $garbageCollectorProvider)->snapshot();
+        $userCpuTime   = CpuTime::fromSecondsAndNanoseconds(1, 200);
+        $systemCpuTime = CpuTime::fromSecondsAndNanoseconds(2, 300);
+
+        $cpuTimeMeter = new readonly class($userCpuTime, $systemCpuTime) implements CpuTimeMeter
+        {
+            private CpuTime $userCpuTime;
+            private CpuTime $systemCpuTime;
+
+            public function __construct(CpuTime $userCpuTime, CpuTime $systemCpuTime)
+            {
+                $this->userCpuTime   = $userCpuTime;
+                $this->systemCpuTime = $systemCpuTime;
+            }
+
+            public function userCpuTime(): CpuTime
+            {
+                return $this->userCpuTime;
+            }
+
+            public function systemCpuTime(): CpuTime
+            {
+                return $this->systemCpuTime;
+            }
+        };
+
+        $snapshot = new System($clock, $memoryMeter, $garbageCollectorProvider, $cpuTimeMeter)->snapshot();
 
         $this->assertSame($time, $snapshot->time());
         $this->assertSame($memoryUsage, $snapshot->memoryUsage());
         $this->assertSame($peakMemoryUsage, $snapshot->peakMemoryUsage());
         $this->assertSame($garbageCollectorStatus, $snapshot->garbageCollectorStatus());
+        $this->assertSame($userCpuTime, $snapshot->userCpuTime());
+        $this->assertSame($systemCpuTime, $snapshot->systemCpuTime());
+        $this->assertSame(3, $snapshot->totalCpuTime()->seconds());
+        $this->assertSame(500, $snapshot->totalCpuTime()->nanoseconds());
     }
 }
