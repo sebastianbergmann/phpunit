@@ -26,6 +26,7 @@ All notable changes of the PHPUnit 13.2 release series are documented in this fi
 * [#6577](https://github.com/sebastianbergmann/phpunit/issues/6577): `--run-test-id <test-id>` CLI option that accepts a single test ID for exact matching
 * [#6579](https://github.com/sebastianbergmann/phpunit/pull/6579): Properly handle issues triggered outside of tests
 * [#6597](https://github.com/sebastianbergmann/phpunit/pull/6597): Compact output (activated through `--compact` CLI option and `PHPUNIT_COMPACT_OUTPUT=1` environment variable)
+* [#6598](https://github.com/sebastianbergmann/phpunit/pull/6598): `--disable-coverage-targeting` CLI option
 * [#6602](https://github.com/sebastianbergmann/phpunit/pull/6602): Separate configuration for branch coverage from path coverage
 * [#6606](https://github.com/sebastianbergmann/phpunit/pull/6606): Support for partially ordered parameter sets in mock object expectations
 * [#6611](https://github.com/sebastianbergmann/phpunit/pull/6611): Add CPU time to telemetry
