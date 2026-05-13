@@ -19,6 +19,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
@@ -32,7 +34,7 @@ jobs:
         run: echo "RELEASE_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
 
       - name: Parse ChangeLog
-        run: build/scripts/extract-release-notes.php ${{ env.RELEASE_TAG }} > release-notes.md
+        run: build/scripts/extract-release-notes.php ${RELEASE_TAG} > release-notes.md
 
       - name: Create release
         uses: ncipollo/release-action@v1

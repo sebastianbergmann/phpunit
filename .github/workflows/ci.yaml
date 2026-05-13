@@ -38,6 +38,7 @@ jobs:
         with:
           fetch-depth: 1
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
 
       - name: Use local branch
         shell: bash
@@ -94,6 +95,7 @@ jobs:
         with:
           fetch-depth: 1
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
 
       - name: Use local branch
         shell: bash
@@ -145,6 +147,7 @@ jobs:
         with:
           fetch-depth: 1
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
 
       - name: Use local branch
         shell: bash
@@ -233,6 +236,7 @@ jobs:
         with:
           fetch-depth: 1
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
 
       - name: Use local branch
         shell: bash
@@ -318,6 +322,7 @@ jobs:
         with:
           fetch-depth: 1
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
 
       - name: Use local branch
         shell: bash
@@ -377,6 +382,7 @@ jobs:
         with:
           fetch-depth: 1
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
 
       - name: Use local branch
         shell: bash
@@ -459,6 +465,7 @@ jobs:
         with:
           fetch-depth: 1
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
 
       - name: Use local branch
         shell: bash
@@ -539,6 +546,7 @@ jobs:
         with:
           fetch-depth: 1
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
 
       - name: Use local branch
         shell: bash
