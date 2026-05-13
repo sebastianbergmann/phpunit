@@ -51,6 +51,21 @@ final class MergerTest extends TestCase
         $this->assertSame($junitLog, $mergedConfig->logfileJunit());
     }
 
+    public function testBranchCoverageCanBeEnabledFromCli(): void
+    {
+        $fromFile = (new Loader)->load(TEST_FILES_PATH . 'configuration_codecoverage.xml');
+
+        $this->assertFalse($fromFile->codeCoverage()->branchCoverage());
+
+        $fromCli = (new Builder)->fromParameters([
+            '--branch-coverage',
+        ]);
+
+        $mergedConfig = (new Merger)->merge($fromCli, $fromFile);
+
+        $this->assertTrue($mergedConfig->branchCoverage());
+    }
+
     public function testNoCoverageShouldOnlyAffectXmlConfiguration(): void
     {
         $phpCoverage = uniqid('php_coverage_');
