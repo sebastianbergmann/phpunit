@@ -126,6 +126,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           ref: ${{ matrix.phpunit-branch }}
+          persist-credentials: false
 
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
