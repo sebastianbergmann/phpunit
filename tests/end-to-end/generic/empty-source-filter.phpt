@@ -1,5 +1,5 @@
 --TEST--
-Warning when configured source filter does not match any files
+Warning when configured source filter includes no files
 --SKIPIF--
 <?php declare(strict_types=1);
 if (!extension_loaded('xdebug') && !extension_loaded('pcov')) {
@@ -29,7 +29,7 @@ Time: %s, Memory: %s
 
 There was 1 PHPUnit test runner warning:
 
-1) Configured source filter (include-path: %snonexistent-directory) does not match any files, code coverage will not be processed
+1) Configured source filter includes no files (configured paths: %snonexistent-directory), code coverage will not be processed
 
 OK, but there were issues!
 Tests: 1, Assertions: 1, PHPUnit Warnings: 1.
