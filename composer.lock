@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3aa8d27d8ddfad0c0cc0d9057aa43b13",
+    "content-hash": "c4c1e75d5216f9977789fab1e7296949",
     "packages": [
         {
             "name": "myclabs/deep-copy",
@@ -697,23 +697,23 @@
         },
         {
             "name": "sebastian/comparator",
-            "version": "8.1.2",
+            "version": "8.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/comparator.git",
-                "reference": "b3d09f4360ad97dcad8f82d1c047ad16ff38b7e1"
+                "reference": "b8354ddf58f87d2eb7239d419256c7cffb3dcce2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/b3d09f4360ad97dcad8f82d1c047ad16ff38b7e1",
-                "reference": "b3d09f4360ad97dcad8f82d1c047ad16ff38b7e1",
+                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/b8354ddf58f87d2eb7239d419256c7cffb3dcce2",
+                "reference": "b8354ddf58f87d2eb7239d419256c7cffb3dcce2",
                 "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
                 "ext-mbstring": "*",
                 "php": ">=8.4",
-                "sebastian/diff": "^8.1",
+                "sebastian/diff": "^8.3",
                 "sebastian/exporter": "^8.0"
             },
             "require-dev": {
@@ -765,7 +765,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/comparator/issues",
                 "security": "https://github.com/sebastianbergmann/comparator/security/policy",
-                "source": "https://github.com/sebastianbergmann/comparator/tree/8.1.2"
+                "source": "https://github.com/sebastianbergmann/comparator/tree/8.1.3"
             },
             "funding": [
                 {
@@ -785,7 +785,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-04-14T08:24:42+00:00"
+            "time": "2026-05-15T05:47:50+00:00"
         },
         {
             "name": "sebastian/complexity",
