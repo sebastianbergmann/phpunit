@@ -22,6 +22,11 @@
             "description": "Group GitHub Actions updates per branch into one PR",
             "matchManagers": ["github-actions"],
             "groupName": "github-actions"
+        },
+        {
+            "description": "Bump composer.json ranges when dependencies update",
+            "matchManagers": ["composer"],
+            "rangeStrategy": "bump"
         }
     ]
 }
