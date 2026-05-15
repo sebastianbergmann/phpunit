@@ -12,7 +12,7 @@ namespace PHPUnit\Util;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use SebastianBergmann\Comparator\Factory as ComparatorFactory;
 use SebastianBergmann\Diff\Differ;
-use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
+use SebastianBergmann\Diff\Output\StrictUnifiedDiffOutputBuilder;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -29,11 +29,13 @@ final readonly class DifferBuilder
         $contextLines = ConfigurationRegistry::get()->diffContext();
 
         return new Differ(
-            new UnifiedDiffOutputBuilder(
-                $header,
-                false,
-                $contextLines,
-            ),
+            new StrictUnifiedDiffOutputBuilder([
+                'addLineNumbers'          => false,
+                'contextLines'            => $contextLines,
+                'emitDiffLineEndWarning'  => true,
+                'emitNoLineEndEofWarning' => false,
+                'header'                  => $header,
+            ]),
         );
     }
 
