@@ -1923,7 +1923,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             return;
         }
 
-        $differ = new Differ(new UnifiedDiffOutputBuilder($header));
+        $differ = new Differ(new UnifiedDiffOutputBuilder($header, false, 3, false));
 
         Event\Facade::emitter()->testConsideredRisky(
             $this->valueObjectForEvents(),

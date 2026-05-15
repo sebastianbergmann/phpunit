@@ -262,6 +262,6 @@ final class StringMatchesFormatDescription extends Constraint
 
     private function differ(): Differ
     {
-        return new Differ(new UnifiedDiffOutputBuilder("--- Expected\n+++ Actual\n"));
+        return new Differ(new UnifiedDiffOutputBuilder("--- Expected\n+++ Actual\n", false, 3, false));
     }
 }
