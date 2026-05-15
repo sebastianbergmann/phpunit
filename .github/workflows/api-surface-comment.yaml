@@ -19,4 +19,4 @@ jobs:
   check-api-surface:
     runs-on: ubuntu-latest
     steps:
-      - uses: composer/api-surface-check@main
+      - uses: composer/api-surface-check@8817bcdb1d067675d726060181f579bac4c3cd98 # main
