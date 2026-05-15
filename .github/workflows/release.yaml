@@ -19,12 +19,12 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           persist-credentials: false
 
       - name: Install PHP with extensions
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc # v2
         with:
           php-version: 8.4
           coverage: none
@@ -38,7 +38,7 @@ jobs:
         run: build/scripts/extract-release-notes.php ${RELEASE_TAG} > release-notes.md
 
       - name: Create release
-        uses: ncipollo/release-action@v1
+        uses: ncipollo/release-action@339a81892b84b4eeb0f6e744e4574d79d0d9b8dd # v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ env.RELEASE_TAG }}
@@ -48,7 +48,7 @@ jobs:
 
       - name: Announce release
         id: mastodon
-        uses: cbrgm/mastodon-github-action@v2
+        uses: cbrgm/mastodon-github-action@776364a15dd1171530479600c75363f7cbc89ef5 # v2
         with:
           access-token: ${{ secrets.MASTODON_ACCESS_TOKEN }}
           url: ${{ secrets.MASTODON_URL }}
