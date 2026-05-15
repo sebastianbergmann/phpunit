@@ -33,6 +33,12 @@
             "matchManagers": ["composer"],
             "matchDepNames": ["php"],
             "enabled": false
+        },
+        {
+            "description": "Do not suggest major updates for Composer dependencies",
+            "matchManagers": ["composer"],
+            "matchUpdateTypes": ["major"],
+            "enabled": false
         }
     ]
 }
