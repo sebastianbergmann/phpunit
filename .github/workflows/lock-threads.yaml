@@ -4,13 +4,20 @@ on:
   schedule:
     - cron: "0 0 * * *"
 
-permissions:
-  issues: write
-  pull-requests: write
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+permissions: {}
 
 jobs:
   lock-threads:
+    name: Lock Threads
     runs-on: ubuntu-latest
+
+    permissions:
+      issues: write        # needed by dessant/lock-threads to lock inactive issues
+      pull-requests: write # needed by dessant/lock-threads to lock inactive PRs
 
     steps:
       - uses: dessant/lock-threads@7266a7ce5c1df01b1c6db85bf8cd86c737dadbe7 # v6

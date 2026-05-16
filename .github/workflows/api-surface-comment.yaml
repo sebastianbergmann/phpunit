@@ -7,9 +7,7 @@ on:
 
 name: "API Surface Comment"
 
-permissions:
-  contents: read
-  pull-requests: write
+permissions: {}
 
 concurrency:
   group: api-surface-comment-${{ github.event.workflow_run.head_repository.full_name }}-${{ github.event.workflow_run.head_branch }}
@@ -17,6 +15,10 @@ concurrency:
 
 jobs:
   check-api-surface:
+    name: API Surface Comment
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write # needed to post the API surface diff as a PR comment
     steps:
       - uses: composer/api-surface-check@8817bcdb1d067675d726060181f579bac4c3cd98 # main

@@ -7,6 +7,10 @@ on:
 
 name: Nightly
 
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
 permissions:
   contents: read
 
