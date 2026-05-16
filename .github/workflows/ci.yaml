@@ -18,6 +18,10 @@ on:
 
 name: CI
 
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 env:
   COMPOSER_ROOT_VERSION: "9.6.x-dev"
   PHP_VERSION: 8.4

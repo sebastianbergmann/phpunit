@@ -7,6 +7,12 @@ on:
 
 name: Release
 
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+permissions: {}
+
 jobs:
   release:
     name: Release
@@ -14,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: write
+      contents: write # needed to create the GitHub Release
 
     steps:
       - name: Checkout
