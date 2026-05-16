@@ -1,6 +1,6 @@
 {
     "require": {
-        "seld/phar-utils": "^1.2"
+        "seld/phar-utils": "^1.2.1"
     },
     "config": {
         "optimize-autoloader": true
