@@ -24,11 +24,6 @@
             "groupName": "github-actions"
         },
         {
-            "description": "Bump composer.json ranges when dependencies update",
-            "matchManagers": ["composer"],
-            "rangeStrategy": "bump"
-        },
-        {
             "description": "Do not update the PHP platform requirement in composer.json",
             "matchManagers": ["composer"],
             "matchDepNames": ["php"],
@@ -39,6 +34,11 @@
             "matchManagers": ["composer"],
             "matchUpdateTypes": ["major"],
             "enabled": false
+        },
+        {
+            "description": "Bump composer.json ranges when updating dependencies",
+            "matchManagers": ["composer"],
+            "rangeStrategy": "bump"
         }
     ]
 }
