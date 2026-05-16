@@ -22,3 +22,10 @@ jobs:
       pull-requests: write # needed to post the API surface diff as a PR comment
     steps:
       - uses: composer/api-surface-check@8817bcdb1d067675d726060181f579bac4c3cd98 # main
+        with:
+          install-dependencies: false
+          paths: src/**/*.php
+          source-roots: src
+          include-internal: false
+          show-removed: true
+          show-modified: true
