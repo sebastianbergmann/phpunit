@@ -20,7 +20,7 @@ concurrency:
 
 jobs:
   signal:
-    name: API Surface Check
+    name: Signal
     runs-on: ubuntu-latest
     steps:
       - run: "true"
