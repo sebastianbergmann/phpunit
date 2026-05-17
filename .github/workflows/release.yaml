@@ -43,13 +43,9 @@ jobs:
         run: build/scripts/extract-release-notes.php ${RELEASE_TAG} > release-notes.md
 
       - name: Create release
-        uses: ncipollo/release-action@339a81892b84b4eeb0f6e744e4574d79d0d9b8dd # v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ env.RELEASE_TAG }}
-          name: PHPUnit ${{ env.RELEASE_TAG }}
-          bodyFile: release-notes.md
-          commit: "9.6"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release create "$RELEASE_TAG" --title "PHPUnit $RELEASE_TAG" --notes-file release-notes.md --target "9.6"
 
       - name: Announce release
         id: mastodon
