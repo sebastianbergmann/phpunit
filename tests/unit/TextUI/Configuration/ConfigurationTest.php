@@ -84,6 +84,25 @@ final class ConfigurationTest extends TestCase
         $configuration->coverageCacheDirectory();
     }
 
+    public function testCoverageDriverThrowsWhenNotConfigured(): void
+    {
+        $configuration = $this->defaultConfiguration();
+
+        $this->assertFalse($configuration->hasCoverageDriver());
+
+        $this->expectException(CodeCoverageDriverNotConfiguredException::class);
+
+        $configuration->coverageDriver();
+    }
+
+    public function testReturnsConfiguredCoverageDriver(): void
+    {
+        $configuration = $this->configurationFromXml('configuration_codecoverage_driver.xml');
+
+        $this->assertTrue($configuration->hasCoverageDriver());
+        $this->assertSame('My\Custom\Driver', $configuration->coverageDriver());
+    }
+
     public function testCoverageCloverThrowsWhenNotConfigured(): void
     {
         $configuration = $this->defaultConfiguration();
