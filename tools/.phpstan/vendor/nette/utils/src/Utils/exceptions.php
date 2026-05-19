@@ -1,11 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Nette Framework (https://nette.org)
  * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  */
-
-declare(strict_types=1);
 
 namespace Nette\Utils;
 
@@ -46,5 +44,21 @@ class RegexpException extends \Exception
  * Type validation failed. The value doesn't match the expected type constraints.
  */
 class AssertionException extends \Exception
+{
+}
+
+
+/**
+ * The process failed to run successfully.
+ */
+class ProcessFailedException extends \RuntimeException
+{
+}
+
+
+/**
+ * The process execution exceeded its timeout limit.
+ */
+class ProcessTimeoutException extends \RuntimeException
 {
 }

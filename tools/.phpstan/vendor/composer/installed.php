@@ -29,9 +29,9 @@
             'dev_requirement' => true,
         ),
         'nette/utils' => array(
-            'pretty_version' => 'v4.1.3',
-            'version' => '4.1.3.0',
-            'reference' => 'bb3ea637e3d131d72acc033cfc2746ee893349fe',
+            'pretty_version' => 'v4.1.4',
+            'version' => '4.1.4.0',
+            'reference' => '7da6c396d7ebe142bc857c20479d5e70a5e1aac7',
             'type' => 'library',
             'install_path' => __DIR__ . '/../nette/utils',
             'aliases' => array(),
