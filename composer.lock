@@ -248,12 +248,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "5c578680a925a146493bb550378d5a604c68679a"
+                "reference": "b624230c7837e4bbecada79aae55dd1f7232c1fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/5c578680a925a146493bb550378d5a604c68679a",
-                "reference": "5c578680a925a146493bb550378d5a604c68679a",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/b624230c7837e4bbecada79aae55dd1f7232c1fa",
+                "reference": "b624230c7837e4bbecada79aae55dd1f7232c1fa",
                 "shasum": ""
             },
             "require": {
@@ -265,14 +265,14 @@
                 "php": ">=8.4",
                 "phpunit/php-text-template": "^6.0",
                 "sebastian/complexity": "^6.0",
-                "sebastian/environment": "^9.2",
+                "sebastian/environment": "^9.3.0",
                 "sebastian/git-state": "^1.0",
                 "sebastian/lines-of-code": "^5.0",
                 "sebastian/version": "^7.0",
                 "theseer/tokenizer": "^2.0.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "^13.1"
+                "phpunit/phpunit": "^13.1.10"
             },
             "suggest": {
                 "ext-pcov": "PHP extension that provides line coverage",
@@ -331,7 +331,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-14T20:08:07+00:00"
+            "time": "2026-05-19T05:05:07+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
