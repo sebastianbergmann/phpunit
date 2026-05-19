@@ -1,11 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Nette Framework (https://nette.org)
  * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  */
-
-declare(strict_types=1);
 
 namespace Nette\Utils;
 
@@ -114,7 +112,7 @@ class Validators
 
 
 	/**
-	 * Verifies that element $key in array is of expected types separated by pipe.
+	 * Verifies that item $key in array exists and is of expected types separated by pipe.
 	 * @param  mixed[]  $array
 	 * @throws AssertionException
 	 */
@@ -197,7 +195,7 @@ class Validators
 
 	/**
 	 * Finds whether all values are of expected types separated by pipe.
-	 * @param  mixed[]  $values
+	 * @param  iterable<mixed>  $values
 	 */
 	public static function everyIs(iterable $values, string $expected): bool
 	{
