@@ -1,11 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Nette Framework (https://nette.org)
  * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  */
-
-declare(strict_types=1);
 
 namespace Nette\Utils;
 
@@ -18,6 +16,9 @@ use function hexdec, ltrim, max, min, round, strlen;
  */
 class ImageColor
 {
+	/**
+	 * Creates a color from RGB components (0..255) and opacity (0..1).
+	 */
 	public static function rgb(int $red, int $green, int $blue, float $opacity = 1): self
 	{
 		return new self($red, $green, $blue, $opacity);

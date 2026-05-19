@@ -1,11 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Nette Framework (https://nette.org)
  * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  */
-
-declare(strict_types=1);
 
 namespace Nette\Utils;
 
@@ -13,7 +11,7 @@ use function array_merge, checkdate, implode, is_numeric, is_string, preg_replac
 
 
 /**
- * DateTime.
+ * Extends PHP's DateTime with strict validation and additional factory methods.
  */
 class DateTime extends \DateTime implements \JsonSerializable
 {
@@ -189,7 +187,7 @@ class DateTime extends \DateTime implements \JsonSerializable
 
 
 	/**
-	 * You'd better use: (clone $dt)->modify(...)
+	 * Returns a modified copy of the object. Use (clone $dt)->modify(...) for better type safety.
 	 */
 	public function modifyClone(string $modify = ''): static
 	{
