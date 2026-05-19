@@ -2,8 +2,11 @@
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "extends": [
         "config:recommended",
-        "helpers:pinGitHubActionDigests"
+        "helpers:pinGitHubActionDigestsToSemver",
+        ":configMigration",
+        ":maintainLockFilesWeekly"
     ],
+    "timezone": "Europe/Berlin",
     "baseBranchPatterns": [
         "main",
         "/^\\d+\\.\\d+$/"
@@ -13,15 +16,29 @@
     "prConcurrentLimit": 10,
     "dependencyDashboard": true,
     "labels": ["type/dependencies"],
+    "platformAutomerge": true,
+    "osvVulnerabilityAlerts": true,
+    "dependencyDashboardOSVVulnerabilitySummary": "all",
     "vulnerabilityAlerts": {
         "enabled": true,
         "labels": ["type/security", "type/dependencies"]
     },
+    "lockFileMaintenance": {
+        "enabled": true,
+        "automerge": true,
+        "schedule": ["before 6am on monday"]
+    },
     "packageRules": [
         {
-            "description": "Group GitHub Actions updates per branch into one PR",
+            "description": "Group GitHub Actions updates per branch into one PR, automerge",
             "matchManagers": ["github-actions"],
-            "groupName": "github-actions"
+            "groupName": "github-actions",
+            "automerge": true
+        },
+        {
+            "description": "Automerge patch updates after they have settled",
+            "matchUpdateTypes": ["patch", "pin", "digest"],
+            "automerge": true
         },
         {
             "description": "Do not update the PHP platform requirement in composer.json",
