@@ -20,7 +20,10 @@ use PHPUnit\Event\InvalidArgumentException;
  */
 final readonly class Duration
 {
+    /** @var non-negative-int */
     private int $seconds;
+
+    /** @var non-negative-int */
     private int $nanoseconds;
 
     /**
@@ -120,6 +123,8 @@ final readonly class Duration
     }
 
     /**
+     * @phpstan-assert non-negative-int $value
+     *
      * @throws InvalidArgumentException
      */
     private function ensureNotNegative(int $value, string $type): void
