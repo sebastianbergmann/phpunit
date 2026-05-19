@@ -57,6 +57,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -124,6 +125,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -189,6 +191,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -253,6 +256,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -318,6 +322,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -383,6 +388,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -448,6 +454,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -515,6 +522,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -581,6 +589,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -646,6 +655,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -714,6 +724,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -780,6 +791,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -846,6 +858,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -912,6 +925,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -978,6 +992,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -1045,6 +1060,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -1109,6 +1125,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -1173,6 +1190,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -1239,6 +1257,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -1311,6 +1330,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -1378,6 +1398,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -1446,6 +1467,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -1515,6 +1537,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -1579,6 +1602,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -1643,6 +1667,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -1707,6 +1732,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -1772,6 +1798,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -1837,6 +1864,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -1904,6 +1932,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -1971,6 +2000,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -2039,6 +2069,7 @@ final class MetadataTest extends TestCase
         $this->assertTrue($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -2104,6 +2135,7 @@ final class MetadataTest extends TestCase
         $this->assertTrue($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -2168,6 +2200,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertTrue($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -2232,6 +2265,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertTrue($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -2363,6 +2397,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -2429,6 +2464,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertTrue($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -2557,6 +2593,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertTrue($metadata->isTest());
@@ -2623,6 +2660,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -2690,6 +2728,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -2751,6 +2790,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -2813,6 +2853,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -2879,6 +2920,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -2946,6 +2988,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -3013,6 +3056,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -3079,6 +3123,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -3145,6 +3190,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -3211,6 +3257,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -3277,6 +3324,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -3343,6 +3391,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -3414,6 +3463,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -3485,6 +3535,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -3551,6 +3602,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -3627,6 +3679,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -3695,6 +3748,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -3771,6 +3825,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -3844,6 +3899,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -3910,6 +3966,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -3981,6 +4038,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -4047,6 +4105,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -4113,6 +4172,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -4180,6 +4240,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -4247,6 +4308,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -4314,6 +4376,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -4381,6 +4444,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -4448,6 +4512,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -4515,6 +4580,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -4581,6 +4647,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -4647,6 +4714,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -4714,6 +4782,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -4783,6 +4852,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -4849,6 +4919,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -4915,6 +4986,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -4981,6 +5053,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -5047,6 +5120,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -5112,6 +5186,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -5179,6 +5254,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -5245,6 +5321,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isIgnoreDeprecations());
         $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
         $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
         $this->assertFalse($metadata->isRunInSeparateProcess());
         $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
         $this->assertFalse($metadata->isTest());
@@ -5273,6 +5350,74 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesMethod());
         $this->assertFalse($metadata->isUsesTrait());
         $this->assertTrue($metadata->isWithoutErrorHandler());
+
+        $this->assertTrue($metadata->isMethodLevel());
+        $this->assertFalse($metadata->isClassLevel());
+    }
+
+    public function testCanBeRepeat(): void
+    {
+        $metadata = Metadata::repeat(3, 2);
+
+        $this->assertFalse($metadata->isAfter());
+        $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
+        $this->assertFalse($metadata->isBackupGlobals());
+        $this->assertFalse($metadata->isBackupStaticProperties());
+        $this->assertFalse($metadata->isBeforeClass());
+        $this->assertFalse($metadata->isBefore());
+        $this->assertFalse($metadata->isCoversNamespace());
+        $this->assertFalse($metadata->isCoversClass());
+        $this->assertFalse($metadata->isCoversClassesThatExtendClass());
+        $this->assertFalse($metadata->isCoversClassesThatImplementInterface());
+        $this->assertFalse($metadata->isCoversFunction());
+        $this->assertFalse($metadata->isCoversMethod());
+        $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
+        $this->assertFalse($metadata->isDataProvider());
+        $this->assertFalse($metadata->isDataProviderClosure());
+        $this->assertFalse($metadata->isDependsOnClass());
+        $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
+        $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
+        $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
+        $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertTrue($metadata->isRepeat());
+        $this->assertFalse($metadata->isRunInSeparateProcess());
+        $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
+        $this->assertFalse($metadata->isTest());
+        $this->assertFalse($metadata->isPreCondition());
+        $this->assertFalse($metadata->isPostCondition());
+        $this->assertFalse($metadata->isPreserveGlobalState());
+        $this->assertFalse($metadata->isRequiresMethod());
+        $this->assertFalse($metadata->isRequiresFunction());
+        $this->assertFalse($metadata->isRequiresOperatingSystem());
+        $this->assertFalse($metadata->isRequiresOperatingSystemFamily());
+        $this->assertFalse($metadata->isRequiresPhp());
+        $this->assertFalse($metadata->isRequiresPhpExtension());
+        $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
+        $this->assertFalse($metadata->isRequiresEnvironmentVariable());
+        $this->assertFalse($metadata->isWithEnvironmentVariable());
+        $this->assertFalse($metadata->isRequiresSetting());
+        $this->assertFalse($metadata->isTestDox());
+        $this->assertFalse($metadata->isTestDoxFormatter());
+        $this->assertFalse($metadata->isTestWith());
+        $this->assertFalse($metadata->isUsesNamespace());
+        $this->assertFalse($metadata->isUsesClass());
+        $this->assertFalse($metadata->isUsesClassesThatExtendClass());
+        $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
+        $this->assertFalse($metadata->isUsesFunction());
+        $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
+        $this->assertFalse($metadata->isWithoutErrorHandler());
+
+        $this->assertSame(3, $metadata->times());
+        $this->assertSame(2, $metadata->failureThreshold());
 
         $this->assertTrue($metadata->isMethodLevel());
         $this->assertFalse($metadata->isClassLevel());

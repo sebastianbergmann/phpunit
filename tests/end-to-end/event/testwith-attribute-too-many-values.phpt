@@ -21,12 +21,12 @@ Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Metadata\Attribute\TestWithTooManyValuesTest, 1 test)
-Test Suite Started (PHPUnit\TestFixture\Metadata\Attribute\TestWithTooManyValuesTest::testOne, 1 test)
+Test Suite for Test Method with Data Provider Started (PHPUnit\TestFixture\Metadata\Attribute\TestWithTooManyValuesTest::testOne, 1 data set)
 Test Preparation Started (PHPUnit\TestFixture\Metadata\Attribute\TestWithTooManyValuesTest::testOne#0)
 Test Prepared (PHPUnit\TestFixture\Metadata\Attribute\TestWithTooManyValuesTest::testOne#0)
 Test Passed (PHPUnit\TestFixture\Metadata\Attribute\TestWithTooManyValuesTest::testOne#0)
 Test Finished (PHPUnit\TestFixture\Metadata\Attribute\TestWithTooManyValuesTest::testOne#0)
-Test Suite Finished (PHPUnit\TestFixture\Metadata\Attribute\TestWithTooManyValuesTest::testOne, 1 test)
+Test Suite for Test Method with Data Provider Finished (PHPUnit\TestFixture\Metadata\Attribute\TestWithTooManyValuesTest::testOne, 1 data set)
 Test Suite Finished (PHPUnit\TestFixture\Metadata\Attribute\TestWithTooManyValuesTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished

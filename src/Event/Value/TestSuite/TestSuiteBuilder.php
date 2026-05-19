@@ -14,10 +14,13 @@ use function class_exists;
 use function count;
 use function explode;
 use function method_exists;
+use function strpos;
+use function substr;
 use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Code\TestCollection;
 use PHPUnit\Event\RuntimeException;
 use PHPUnit\Framework\DataProviderTestSuite;
+use PHPUnit\Framework\RepeatTestSuite;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite as FrameworkTestSuite;
 use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
@@ -57,6 +60,44 @@ final readonly class TestSuiteBuilder
 
             return new TestSuiteForTestMethodWithDataProvider(
                 $testSuite->name(),
+                $testSuite->count(),
+                TestCollection::fromArray($tests),
+                $className,
+                $methodName,
+                $file,
+                $line,
+            );
+        }
+
+        if ($testSuite instanceof RepeatTestSuite) {
+            $name = $testSuite->name();
+
+            $separatorPosition = strpos($name, '::');
+
+            assert($separatorPosition !== false);
+
+            $className  = substr($name, 0, $separatorPosition);
+            $methodName = substr($name, $separatorPosition + 2);
+
+            $hashPosition = strpos($methodName, '#');
+
+            if ($hashPosition !== false) {
+                $methodName = substr($methodName, 0, $hashPosition);
+            }
+
+            assert($className !== '' && class_exists($className));
+            assert($methodName !== '' && method_exists($className, $methodName));
+
+            $reflector = new ReflectionMethod($className, $methodName);
+
+            $file = $reflector->getFileName();
+            $line = $reflector->getStartLine();
+
+            assert($file !== false);
+            assert($line !== false);
+
+            return new TestSuiteForRepeatedTestMethod(
+                $name,
                 $testSuite->count(),
                 TestCollection::fromArray($tests),
                 $className,

@@ -482,6 +482,15 @@ abstract readonly class Metadata
         return new RunTestsInSeparateProcesses(Level::CLASS_LEVEL);
     }
 
+    /**
+     * @param positive-int $times
+     * @param positive-int $failureThreshold
+     */
+    public static function repeat(int $times, int $failureThreshold): Repeat
+    {
+        return new Repeat(Level::METHOD_LEVEL, $times, $failureThreshold);
+    }
+
     public static function runInSeparateProcess(): RunInSeparateProcess
     {
         return new RunInSeparateProcess(Level::METHOD_LEVEL);
@@ -816,6 +825,14 @@ abstract readonly class Metadata
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public function isIgnorePhpunitDeprecations(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true Repeat $this
+     */
+    public function isRepeat(): bool
     {
         return false;
     }
