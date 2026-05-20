@@ -29,7 +29,7 @@ Time: %s, Memory: %s
 
 There was 1 PHPUnit test runner warning:
 
-1) Configured source filter (include-path: %snonexistent-directory) does not match any files, code coverage will not be processed
+1) Configured source filter (include-path: %snonexistent-directory) does not match any files, code coverage will not be processed. Make sure <source> includes existing files and that directory paths are relative to the XML configuration file.
 
 OK, but there were issues!
 Tests: 1, Assertions: 1, PHPUnit Warnings: 1.
