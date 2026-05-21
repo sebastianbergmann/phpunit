@@ -136,6 +136,21 @@ EOT,
                 phpSettings: ['highlight.string'],
             ),
         ];
+
+        // https://github.com/sebastianbergmann/environment/issues/64
+        $valueContainingEquals = 'phpstorm://open?file=%f&line=%l';
+
+        yield 'PHP setting value containing equals sign' => [
+            new Result($valueContainingEquals, ''),
+            new Job(
+                <<<'EOT'
+<?php declare(strict_types=1);
+print ini_get('highlight.string');
+
+EOT,
+                phpSettings: ['highlight.string=' . $valueContainingEquals],
+            ),
+        ];
     }
 
     #[DataProvider('provider')]

@@ -349,7 +349,9 @@ final readonly class JobRunner
      *
      * Otherwise quotes the value portion only when it contains characters
      * PHP's INI parser would interpret as metacharacters (`;` starts a
-     * comment, `"` is a string delimiter).
+     * comment, `"` is a string delimiter, `=` is the assignment operator
+     * that would otherwise be parsed as starting a new directive and
+     * trigger `PHP: syntax error, unexpected '='`).
      *
      * Quoting is avoided for plain values so that boolean keywords such as
      * `On` / `Off` keep their special INI semantics; wrapping them in quotes
@@ -377,7 +379,7 @@ final readonly class JobRunner
             );
         }
 
-        if (!str_contains($value, ';') && !str_contains($value, '"')) {
+        if (!str_contains($value, ';') && !str_contains($value, '"') && !str_contains($value, '=')) {
             return $setting;
         }
 
