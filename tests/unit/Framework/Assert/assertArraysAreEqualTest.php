@@ -323,14 +323,14 @@ EOT,
 @@ @@
  Array &0 [
 -    0 => PHPUnit\TestFixture\ObjectComparison\ValueObjectA Object #%d (
-+    0 => PHPUnit\TestFixture\ObjectComparison\ValueObjectA Object #%d (
-+        'value' => 'v2',
-+    ),
-+    1 => PHPUnit\TestFixture\ObjectComparison\ValueObjectA Object #%d (
-         'value' => 'v1',
+-        'value' => 'v1',
 -    ),
 -    1 => PHPUnit\TestFixture\ObjectComparison\ValueObjectA Object #%d (
--        'value' => 'v2',
++    0 => PHPUnit\TestFixture\ObjectComparison\ValueObjectA Object #%d (
+         'value' => 'v2',
++    ),
++    1 => PHPUnit\TestFixture\ObjectComparison\ValueObjectA Object #%d (
++        'value' => 'v1',
      ),
  ]
 

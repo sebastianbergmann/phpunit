@@ -27,9 +27,9 @@ Diff (PHPUnit\TestFixture\TestDox\Diff)
    │ +++ Actual
    │ @@ @@
    │  'foo\n
-   │ +baz\n
-   │  bar\n
-   │ -baz\n
+   │ -bar\n
+   │  baz\n
+   │ +bar\n
    │  '
    │
    │ %sDiffTest.php:%d

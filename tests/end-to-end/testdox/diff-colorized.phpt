@@ -32,9 +32,9 @@ Time: %s, Memory: %s
    [31m┊[0m [32m+++[2m·[22mActual[0m
    [31m┊[0m [36m@@ @@[0m
    [31m┊[0m  'foo\n
-   [31m┊[0m [32m+baz\n[0m
-   [31m┊[0m  bar\n
-   [31m┊[0m [31m-baz\n[0m
+   [31m┊[0m [31m-bar\n[0m
+   [31m┊[0m  baz\n
+   [31m┊[0m [32m+bar\n[0m
    [31m┊[0m  '
    [31m│[0m
    [31m│[0m %s[22m_files[2m%e[22mDiffTest.php[2m:[22m[34m%d[0m
