@@ -19,6 +19,9 @@ use function strpos;
 use function strtolower;
 use function substr;
 use Countable;
+use PHPUnit\Event\Code\NoTestCaseObjectOnCallStackException;
+use PHPUnit\Event\Code\TestMethodBuilder;
+use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\SelfDescribing;
@@ -297,20 +300,34 @@ abstract class Constraint implements Countable, SelfDescribing
 
     /**
      * @throws ComparisonFailure
+     * @throws NoTestCaseObjectOnCallStackException
      */
     final protected function assertEqualsUsingComparator(mixed $expected, mixed $actual, float $delta = 0.0, bool $canonicalize = false, bool $ignoreCase = false): void
     {
-        $comparator = ComparatorFactory::getInstance()->getComparatorFor(
+        $factory = ComparatorFactory::getInstance();
+
+        $factory->resetClosureComparisonTracking();
+
+        $comparator = $factory->getComparatorFor(
             $expected,
             $actual,
         );
 
-        $comparator->assertEquals(
-            $expected,
-            $actual,
-            $delta,
-            $canonicalize,
-            $ignoreCase,
-        );
+        try {
+            $comparator->assertEquals(
+                $expected,
+                $actual,
+                $delta,
+                $canonicalize,
+                $ignoreCase,
+            );
+        } finally {
+            if ($factory->closureComparisonOccurred()) {
+                EventFacade::emitter()->testTriggeredPhpunitWarning(
+                    TestMethodBuilder::fromCallStack(),
+                    'Comparing closures for equality is problematic because there is no reliable way to determine whether two closures are equal',
+                );
+            }
+        }
     }
 }
