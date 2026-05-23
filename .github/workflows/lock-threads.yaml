@@ -20,7 +20,7 @@ jobs:
       pull-requests: write # needed by dessant/lock-threads to lock inactive PRs
 
     steps:
-      - uses: dessant/lock-threads@851cffe46851ddd2051ea7147ebdc995113241c3 # v6.0.1
+      - uses: dessant/lock-threads@89ae32b08ed1a541efecbab17912962a5e38981c # v6.0.2
         with:
           issue-inactive-days: 30
           pr-inactive-days: 30
