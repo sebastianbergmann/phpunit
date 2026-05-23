@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a6560b6be970f5ea4df96e5c4112958a",
+    "content-hash": "a887c434a79745dcd1ade6567d70ff48",
     "packages": [
         {
             "name": "myclabs/deep-copy",
@@ -701,12 +701,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/comparator.git",
-                "reference": "77ba14eaa061d1128500e38fee132f9a7168f0cf"
+                "reference": "79613715cd7513bb123cce000be4bf82071322fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/77ba14eaa061d1128500e38fee132f9a7168f0cf",
-                "reference": "77ba14eaa061d1128500e38fee132f9a7168f0cf",
+                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/79613715cd7513bb123cce000be4bf82071322fe",
+                "reference": "79613715cd7513bb123cce000be4bf82071322fe",
                 "shasum": ""
             },
             "require": {
@@ -726,7 +726,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "8.2-dev"
+                    "dev-main": "8.3-dev"
                 }
             },
             "autoload": {
@@ -786,7 +786,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-23T12:24:15+00:00"
+            "time": "2026-05-23T12:47:40+00:00"
         },
         {
             "name": "sebastian/complexity",
