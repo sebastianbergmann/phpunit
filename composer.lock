@@ -864,12 +864,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/diff.git",
-                "reference": "a2d3cfc7836d3b743d297dd1278f08327186da8b"
+                "reference": "c1b3f6800c29179e13a5cb07c6c7e1298f0c9c69"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/a2d3cfc7836d3b743d297dd1278f08327186da8b",
-                "reference": "a2d3cfc7836d3b743d297dd1278f08327186da8b",
+                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/c1b3f6800c29179e13a5cb07c6c7e1298f0c9c69",
+                "reference": "c1b3f6800c29179e13a5cb07c6c7e1298f0c9c69",
                 "shasum": ""
             },
             "require": {
@@ -936,7 +936,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-23T12:34:04+00:00"
+            "time": "2026-05-23T13:10:30+00:00"
         },
         {
             "name": "sebastian/environment",
