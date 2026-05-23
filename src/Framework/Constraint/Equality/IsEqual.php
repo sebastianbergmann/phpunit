@@ -16,7 +16,6 @@ use function trim;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Util\Exporter;
 use SebastianBergmann\Comparator\ComparisonFailure;
-use SebastianBergmann\Comparator\Factory as ComparatorFactory;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -51,18 +50,8 @@ final class IsEqual extends Constraint
             return true;
         }
 
-        $comparatorFactory = ComparatorFactory::getInstance();
-
         try {
-            $comparator = $comparatorFactory->getComparatorFor(
-                $this->value,
-                $other,
-            );
-
-            $comparator->assertEquals(
-                $this->value,
-                $other,
-            );
+            $this->assertEqualsUsingComparator($this->value, $other);
         } catch (ComparisonFailure $f) {
             if ($returnResult) {
                 return false;

@@ -25,6 +25,7 @@ use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Util\Exporter;
 use ReflectionObject;
 use SebastianBergmann\Comparator\ComparisonFailure;
+use SebastianBergmann\Comparator\Factory as ComparatorFactory;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -292,5 +293,24 @@ abstract class Constraint implements Countable, SelfDescribing
             'null'                                                      => 'null ',
             default                                                     => 'a value of ' . $type . ' ',
         };
+    }
+
+    /**
+     * @throws ComparisonFailure
+     */
+    final protected function assertEqualsUsingComparator(mixed $expected, mixed $actual, float $delta = 0.0, bool $canonicalize = false, bool $ignoreCase = false): void
+    {
+        $comparator = ComparatorFactory::getInstance()->getComparatorFor(
+            $expected,
+            $actual,
+        );
+
+        $comparator->assertEquals(
+            $expected,
+            $actual,
+            $delta,
+            $canonicalize,
+            $ignoreCase,
+        );
     }
 }

@@ -12,7 +12,6 @@ namespace PHPUnit\Framework\Constraint;
 use function is_iterable;
 use function is_object;
 use SebastianBergmann\Comparator\ComparisonFailure;
-use SebastianBergmann\Comparator\Factory as ComparatorFactory;
 use SplObjectStorage;
 
 /**
@@ -40,19 +39,9 @@ final class TraversableContainsEqual extends TraversableContains
             return false;
         }
 
-        $comparatorFactory = ComparatorFactory::getInstance();
-
         foreach ($other as $element) {
             try {
-                $comparator = $comparatorFactory->getComparatorFor(
-                    $this->value(),
-                    $element,
-                );
-
-                $comparator->assertEquals(
-                    $this->value(),
-                    $element,
-                );
+                $this->assertEqualsUsingComparator($this->value(), $element);
 
                 return true;
             } catch (ComparisonFailure) {
