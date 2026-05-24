@@ -484,7 +484,7 @@ final class CodeCoverage
 
         if (!$codeCoverageFilterRegistry->configured()) {
             EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
-                'No filter is configured, code coverage will not be processed',
+                'No filter is configured, code coverage will not be processed. Configure a <source> with <include> directives in phpunit.xml or use --coverage-filter',
             );
 
             $this->deactivate();
@@ -504,7 +504,7 @@ final class CodeCoverage
 
         EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
             sprintf(
-                'Configured source filter (include-path: %s) does not match any files, code coverage will not be processed',
+                'Configured source filter (include-path: %s) does not match any files. Verify include paths in phpunit.xml <source> configuration point to existing directories or files',
                 implode(', ', $paths),
             ),
         );
