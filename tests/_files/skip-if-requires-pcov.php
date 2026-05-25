@@ -11,6 +11,6 @@ use SebastianBergmann\Environment\Runtime;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-if (!(new Runtime)->canCollectCodeCoverage()) {
-    print 'skip: This test requires a code coverage driver';
+if (!(new Runtime)->hasPCOV()) {
+    print 'skip: This test requires PCOV to be available for code coverage';
 }

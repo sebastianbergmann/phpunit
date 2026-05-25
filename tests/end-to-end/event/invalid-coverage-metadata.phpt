@@ -2,9 +2,7 @@
 The right events are emitted in the right order for a test that has invalid code coverage metadata
 --SKIPIF--
 <?php declare(strict_types=1);
-if (!extension_loaded('pcov')) {
-    print "skip: this test requires pcov\n";
-}
+require __DIR__ . '/../../_files/skip-if-requires-pcov.php';
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
