@@ -482,31 +482,12 @@ final class CodeCoverage
             return;
         }
 
-        if (!$codeCoverageFilterRegistry->configured()) {
-            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
-                'No filter is configured, code coverage will not be processed',
-            );
-
-            $this->deactivate();
-
+        if ($codeCoverageFilterRegistry->configured()) {
             return;
         }
 
-        $paths = [];
-
-        foreach ($configuration->source()->includeDirectories() as $directory) {
-            $paths[] = $directory->path();
-        }
-
-        foreach ($configuration->source()->includeFiles() as $file) {
-            $paths[] = $file->path();
-        }
-
         EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
-            sprintf(
-                'Configured source filter (include-path: %s) does not match any files, code coverage will not be processed',
-                implode(', ', $paths),
-            ),
+            'No filter is configured, code coverage will not be processed',
         );
 
         $this->deactivate();

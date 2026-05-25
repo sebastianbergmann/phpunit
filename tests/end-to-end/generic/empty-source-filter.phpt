@@ -1,5 +1,5 @@
 --TEST--
-Warning when configured source filter does not match any files
+No warning when configured source filter does not match any files
 --SKIPIF--
 <?php declare(strict_types=1);
 require __DIR__ . '/../../_files/skip-if-requires-code-coverage-driver.php';
@@ -25,9 +25,4 @@ Configuration: %s
 
 Time: %s, Memory: %s
 
-There was 1 PHPUnit test runner warning:
-
-1) Configured source filter (include-path: %snonexistent-directory) does not match any files, code coverage will not be processed
-
-OK, but there were issues!
-Tests: 1, Assertions: 1, PHPUnit Warnings: 1.
+OK (%d test, %d assertion)
