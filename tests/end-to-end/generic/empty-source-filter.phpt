@@ -2,9 +2,7 @@
 Warning when configured source filter does not match any files
 --SKIPIF--
 <?php declare(strict_types=1);
-if (!extension_loaded('xdebug') && !extension_loaded('pcov')) {
-    print 'skip: Extension Xdebug or PCOV must be loaded.';
-}
+require __DIR__ . '/../../_files/skip-if-requires-code-coverage-driver.php';
 --INI--
 xdebug.mode=coverage
 --FILE--
