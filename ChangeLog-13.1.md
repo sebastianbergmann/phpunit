@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 13.1 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [13.1.12] - 2026-MM-DD
+
+### Fixed
+
+* [#6673](https://github.com/sebastianbergmann/phpunit/issues/6673): Empty PHP settings from the parent process override per-test `-d` settings forwarded to child processes (breaks PCOV coverage)
+
 ## [13.1.11] - 2026-05-21
 
 ### Fixed
@@ -131,6 +137,7 @@ All notable changes of the PHPUnit 13.1 release series are documented in this fi
 * [#6433](https://github.com/sebastianbergmann/phpunit/issues/6433): Logic in `TestSuiteLoader` is brittle and causes "Class FooTest not found" even for valid tests in valid filenames
 * [#6463](https://github.com/sebastianbergmann/phpunit/issues/6463): Process Isolation fails on non-serializable globals and quietly ignore closures
 
+[13.1.12]: https://github.com/sebastianbergmann/phpunit/compare/13.1.11...13.1
 [13.1.11]: https://github.com/sebastianbergmann/phpunit/compare/13.1.10...13.1.11
 [13.1.10]: https://github.com/sebastianbergmann/phpunit/compare/13.1.9...13.1.10
 [13.1.9]: https://github.com/sebastianbergmann/phpunit/compare/13.1.8...13.1.9
