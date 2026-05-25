@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "af766786b7cd5c01f40a3eb97baadd0e",
+    "content-hash": "578bcff86e8d339d23358037997560dd",
     "packages": [
         {
             "name": "myclabs/deep-copy",
@@ -937,23 +937,23 @@
         },
         {
             "name": "sebastian/environment",
-            "version": "9.3.1",
+            "version": "9.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/environment.git",
-                "reference": "a15fa79a5f5cfd0e9f6817dbcdb0048e99efa146"
+                "reference": "6c9e487c9eb706a8d258102a1c0b0a3e53e86c2e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/a15fa79a5f5cfd0e9f6817dbcdb0048e99efa146",
-                "reference": "a15fa79a5f5cfd0e9f6817dbcdb0048e99efa146",
+                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/6c9e487c9eb706a8d258102a1c0b0a3e53e86c2e",
+                "reference": "6c9e487c9eb706a8d258102a1c0b0a3e53e86c2e",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.4"
             },
             "require-dev": {
-                "phpunit/phpunit": "^13.1.10"
+                "phpunit/phpunit": "^13.1.11"
             },
             "suggest": {
                 "ext-posix": "*"
@@ -989,7 +989,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/environment/issues",
                 "security": "https://github.com/sebastianbergmann/environment/security/policy",
-                "source": "https://github.com/sebastianbergmann/environment/tree/9.3.1"
+                "source": "https://github.com/sebastianbergmann/environment/tree/9.3.2"
             },
             "funding": [
                 {
@@ -1009,7 +1009,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-21T08:47:00+00:00"
+            "time": "2026-05-25T13:41:38+00:00"
         },
         {
             "name": "sebastian/exporter",
