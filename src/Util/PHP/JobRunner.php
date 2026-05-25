@@ -230,11 +230,15 @@ final readonly class JobRunner
 
             assert($pcovSettings !== false);
 
+            // The settings forwarded from the current process must be applied
+            // before the settings configured for the job so that the latter,
+            // for instance a "pcov.directory" set in the --INI-- section of a
+            // PHPT test, take precedence: the value of the last -d flag wins.
             $phpSettings = array_merge(
-                $phpSettings,
                 $runtime->getCurrentSettings(
                     array_keys($pcovSettings),
                 ),
+                $phpSettings,
             );
         } elseif ($runtime->hasXdebug()) {
             assert(function_exists('xdebug_is_debugger_active'));
@@ -243,11 +247,14 @@ final readonly class JobRunner
 
             assert($xdebugSettings !== false);
 
+            // The settings forwarded from the current process must be applied
+            // before the settings configured for the job so that the latter
+            // take precedence: the value of the last -d flag wins.
             $phpSettings = array_merge(
-                $phpSettings,
                 $runtime->getCurrentSettings(
                     array_keys($xdebugSettings),
                 ),
+                $phpSettings,
             );
 
             if (
