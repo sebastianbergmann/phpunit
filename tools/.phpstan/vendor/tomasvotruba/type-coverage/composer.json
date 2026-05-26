@@ -6,7 +6,7 @@
     "keywords": ["static analysis", "phpstan-extension"],
     "require": {
         "php": "^7.4 || ^8.0",
-        "phpstan/phpstan": "^2.0",
+        "phpstan/phpstan": "^2.1.33",
         "nette/utils": "^3.2 || ^4.0"
     },
     "autoload": {
