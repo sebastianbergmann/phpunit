@@ -27,7 +27,7 @@ final class PropertyTypeDeclarationCollector implements Collector
 
     /**
      * @param InClassNode $node
-     * @return array<int, int|list<(int | int<1, max>)>>
+     * @return array{int, list<int>, string|null}
      */
     public function processNode(Node $node, Scope $scope): array
     {
@@ -57,7 +57,13 @@ final class PropertyTypeDeclarationCollector implements Collector
             $missingTypeLines[] = $property->getLine();
         }
 
-        return [$propertyCount, $missingTypeLines];
+        $traitFilePath = null;
+        if ($scope->isInTrait()) {
+            $traitFilePath = $scope->getTraitReflection()
+                ->getFileName();
+        }
+
+        return [$propertyCount, $missingTypeLines, $traitFilePath];
     }
 
     private function isPropertyDocTyped(Property $property): bool

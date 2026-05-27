@@ -9,7 +9,7 @@ use TomasVotruba\TypeCoverage\ValueObject\TypeCountAndMissingTypes;
 final class CollectorDataNormalizer
 {
     /**
-     * @param array<string, array<array{0: int, 1: array<string, int>}>> $collectorDataByPath
+     * @param array<string, array<array{0: int, 1: array<int, int>, 2?: string|null}>> $collectorDataByPath
      */
     public function normalize(array $collectorDataByPath): TypeCountAndMissingTypes
     {
@@ -24,8 +24,12 @@ final class CollectorDataNormalizer
 
                 $missingCount += count($nestedData[1]);
 
-                $missingTypeLinesByFilePath[$filePath] = array_merge(
-                    $missingTypeLinesByFilePath[$filePath] ?? [],
+                // if the node is from a trait, route the error to the trait file
+                // instead of the using-class file, so lines match the actual source
+                $effectiveFilePath = $nestedData[2] ?? $filePath;
+
+                $missingTypeLinesByFilePath[$effectiveFilePath] = array_merge(
+                    $missingTypeLinesByFilePath[$effectiveFilePath] ?? [],
                     $nestedData[1]
                 );
             }
