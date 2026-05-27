@@ -2985,6 +2985,109 @@ if (!function_exists('PHPUnit\Framework\assertXmlStringNotEqualsXmlString')) {
     }
 }
 
+if (!function_exists('PHPUnit\Framework\assertXmlFileEqualsXmlFileConsideringComments')) {
+    /**
+     * Asserts that two XML files are equal, considering comments.
+     *
+     * @throws Exception
+     * @throws ExpectationFailedException
+     * @throws XmlException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertXmlFileEqualsXmlFileConsideringComments
+     */
+    function assertXmlFileEqualsXmlFileConsideringComments(string $expectedFile, string $actualFile, string $message = ''): void
+    {
+        Assert::assertXmlFileEqualsXmlFileConsideringComments($expectedFile, $actualFile, $message);
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\assertXmlFileNotEqualsXmlFileConsideringComments')) {
+    /**
+     * Asserts that two XML files are not equal, considering comments.
+     *
+     * @throws \PHPUnit\Util\Exception
+     * @throws ExpectationFailedException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertXmlFileNotEqualsXmlFileConsideringComments
+     */
+    function assertXmlFileNotEqualsXmlFileConsideringComments(string $expectedFile, string $actualFile, string $message = ''): void
+    {
+        Assert::assertXmlFileNotEqualsXmlFileConsideringComments($expectedFile, $actualFile, $message);
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\assertXmlStringEqualsXmlFileConsideringComments')) {
+    /**
+     * Asserts that two XML documents are equal, considering comments.
+     *
+     * @throws ExpectationFailedException
+     * @throws XmlException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertXmlStringEqualsXmlFileConsideringComments
+     */
+    function assertXmlStringEqualsXmlFileConsideringComments(string $expectedFile, string $actualXml, string $message = ''): void
+    {
+        Assert::assertXmlStringEqualsXmlFileConsideringComments($expectedFile, $actualXml, $message);
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\assertXmlStringNotEqualsXmlFileConsideringComments')) {
+    /**
+     * Asserts that two XML documents are not equal, considering comments.
+     *
+     * @throws ExpectationFailedException
+     * @throws XmlException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertXmlStringNotEqualsXmlFileConsideringComments
+     */
+    function assertXmlStringNotEqualsXmlFileConsideringComments(string $expectedFile, string $actualXml, string $message = ''): void
+    {
+        Assert::assertXmlStringNotEqualsXmlFileConsideringComments($expectedFile, $actualXml, $message);
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\assertXmlStringEqualsXmlStringConsideringComments')) {
+    /**
+     * Asserts that two XML documents are equal, considering comments.
+     *
+     * @throws ExpectationFailedException
+     * @throws XmlException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertXmlStringEqualsXmlStringConsideringComments
+     */
+    function assertXmlStringEqualsXmlStringConsideringComments(string $expectedXml, string $actualXml, string $message = ''): void
+    {
+        Assert::assertXmlStringEqualsXmlStringConsideringComments($expectedXml, $actualXml, $message);
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\assertXmlStringNotEqualsXmlStringConsideringComments')) {
+    /**
+     * Asserts that two XML documents are not equal, considering comments.
+     *
+     * @throws ExpectationFailedException
+     * @throws XmlException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertXmlStringNotEqualsXmlStringConsideringComments
+     */
+    function assertXmlStringNotEqualsXmlStringConsideringComments(string $expectedXml, string $actualXml, string $message = ''): void
+    {
+        Assert::assertXmlStringNotEqualsXmlStringConsideringComments($expectedXml, $actualXml, $message);
+    }
+}
+
 if (!function_exists('PHPUnit\Framework\assertThat')) {
     /**
      * Evaluates a PHPUnit\Framework\Constraint matcher object.

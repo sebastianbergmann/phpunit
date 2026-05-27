@@ -30,6 +30,7 @@ All notable changes of the PHPUnit 13.2 release series are documented in this fi
 * [#6602](https://github.com/sebastianbergmann/phpunit/pull/6602): Separate configuration for branch coverage from path coverage
 * [#6606](https://github.com/sebastianbergmann/phpunit/pull/6606): Support for partially ordered parameter sets in mock object expectations
 * [#6611](https://github.com/sebastianbergmann/phpunit/pull/6611): Add CPU time to telemetry
+* [#6681](https://github.com/sebastianbergmann/phpunit/pull/6681): Comment-aware variants of XML comparison assertions
 * The `executionOrder` attribute in the XML configuration file now accepts `defects` combined with any main order, as well as three-way combinations of `depends`/`no-depends`, `defects`, and a main order (for example, `depends,defects,duration-ascending`)
 * `--validate-configuration` CLI option to validate an XML configuration file for PHPUnit
 * Report per-test and per-test-suite resource usage (time, memory usage, peak memory usage) in Open Test Reporting XML
