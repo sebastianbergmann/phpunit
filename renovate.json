@@ -36,8 +36,8 @@
             "automerge": true
         },
         {
-            "description": "Automerge patch updates after they have settled",
-            "matchUpdateTypes": ["patch", "pin", "digest"],
+            "description": "Automerge minor and patch updates after they have settled",
+            "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
             "automerge": true
         },
         {
