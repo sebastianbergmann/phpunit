@@ -38,4 +38,12 @@ final class assertXmlFileEqualsXmlFileTest extends TestCase
             TEST_FILES_PATH . 'bar.xml',
         );
     }
+
+    public function testIgnoresComments(): void
+    {
+        $this->assertXmlFileEqualsXmlFile(
+            TEST_FILES_PATH . 'xml-with-comments.xml',
+            TEST_FILES_PATH . 'xml-without-comments.xml',
+        );
+    }
 }
