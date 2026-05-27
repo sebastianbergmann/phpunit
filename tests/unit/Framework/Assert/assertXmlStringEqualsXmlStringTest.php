@@ -30,6 +30,7 @@ final class assertXmlStringEqualsXmlStringTest extends TestCase
         return [
             ['<root/>', '<root/>'],
             ['<root/>', '<root></root>'],
+            ['<root><!-- comment --><node/></root>', '<root><node/></root>'],
             [
                 <<<'XML'
 <?xml version="1.0"?>

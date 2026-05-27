@@ -38,4 +38,14 @@ final class assertXmlFileNotEqualsXmlFileTest extends TestCase
             TEST_FILES_PATH . 'foo.xml',
         );
     }
+
+    public function testTreatsDocumentsDifferingOnlyInCommentsAsEqual(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertXmlFileNotEqualsXmlFile(
+            TEST_FILES_PATH . 'xml-with-comments.xml',
+            TEST_FILES_PATH . 'xml-without-comments.xml',
+        );
+    }
 }
