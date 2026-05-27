@@ -15,12 +15,12 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 
-#[CoversMethod(Assert::class, 'assertXmlStringEqualsXmlString')]
-#[TestDox('assertXmlStringEqualsXmlString()')]
+#[CoversMethod(Assert::class, 'assertXmlStringEqualsXmlStringConsideringComments')]
+#[TestDox('assertXmlStringEqualsXmlStringConsideringComments()')]
 #[Small]
 #[Group('framework')]
 #[Group('framework/assertions')]
-final class assertXmlStringEqualsXmlStringTest extends TestCase
+final class assertXmlStringEqualsXmlStringConsideringCommentsTest extends TestCase
 {
     /**
      * @return non-empty-list<array{0: non-empty-string, 1: non-empty-string}>
@@ -28,23 +28,8 @@ final class assertXmlStringEqualsXmlStringTest extends TestCase
     public static function successProvider(): array
     {
         return [
-            ['<root/>', '<root/>'],
-            ['<root/>', '<root></root>'],
-            ['<root><!-- comment --><node/></root>', '<root><node/></root>'],
-            [
-                <<<'XML'
-<?xml version="1.0"?>
-<root>
-    <node />
-</root>
-XML,
-                <<<'XML'
-<?xml version="1.0"?>
-<root>
-<node />
-</root>
-XML
-            ],
+            ['<root><node/></root>', '<root><node/></root>'],
+            ['<root><!-- comment --><node/></root>', '<root><!-- comment --><node/></root>'],
         ];
     }
 
@@ -55,13 +40,15 @@ XML
     {
         return [
             ['<foo/>', '<bar/>'],
+            ['<root><!-- comment --><node/></root>', '<root><node/></root>'],
+            ['<root><!-- expected --><node/></root>', '<root><!-- actual --><node/></root>'],
         ];
     }
 
     #[DataProvider('successProvider')]
     public function testSucceedsWhenConstraintEvaluatesToTrue(string $expectedXml, string $actualXml): void
     {
-        $this->assertXmlStringEqualsXmlString($expectedXml, $actualXml);
+        $this->assertXmlStringEqualsXmlStringConsideringComments($expectedXml, $actualXml);
     }
 
     #[DataProvider('failureProvider')]
@@ -69,6 +56,6 @@ XML
     {
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertXmlStringEqualsXmlString($expectedXml, $actualXml);
+        $this->assertXmlStringEqualsXmlStringConsideringComments($expectedXml, $actualXml);
     }
 }

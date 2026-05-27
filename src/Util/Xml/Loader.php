@@ -10,6 +10,7 @@
 namespace PHPUnit\Util\Xml;
 
 use const LIBXML_NONET;
+use function assert;
 use function error_reporting;
 use function file_get_contents;
 use function libxml_get_errors;
@@ -17,6 +18,8 @@ use function libxml_use_internal_errors;
 use function sprintf;
 use function trim;
 use DOMDocument;
+use DOMNode;
+use DOMXPath;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -28,7 +31,7 @@ final readonly class Loader
     /**
      * @throws XmlException
      */
-    public function loadFile(string $filename): DOMDocument
+    public function loadFile(string $filename, bool $ignoreComments = false): DOMDocument
     {
         $reporting = error_reporting(0);
         $contents  = file_get_contents($filename);
@@ -53,13 +56,13 @@ final readonly class Loader
             );
         }
 
-        return $this->load($contents);
+        return $this->load($contents, $ignoreComments);
     }
 
     /**
      * @throws XmlException
      */
-    public function load(string $actual): DOMDocument
+    public function load(string $actual, bool $ignoreComments = false): DOMDocument
     {
         if ($actual === '') {
             throw new XmlException('Could not parse XML from empty string');
@@ -90,6 +93,25 @@ final readonly class Loader
             throw new XmlException($message);
         }
 
+        if ($ignoreComments) {
+            $this->removeComments($document);
+        }
+
         return $document;
+    }
+
+    private function removeComments(DOMDocument $document): void
+    {
+        $xpath    = new DOMXPath($document);
+        $comments = $xpath->query('//comment()');
+
+        assert($comments !== false);
+
+        foreach ($comments as $comment) {
+            assert($comment instanceof DOMNode);
+            assert($comment->parentNode !== null);
+
+            $comment->parentNode->removeChild($comment);
+        }
     }
 }

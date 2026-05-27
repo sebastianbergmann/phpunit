@@ -70,4 +70,32 @@ final class LoaderTest extends TestCase
 
         (new Loader)->load('<test>');
     }
+
+    public function testKeepsCommentsInStringByDefault(): void
+    {
+        $document = (new Loader)->load('<root><!-- comment --><node/></root>');
+
+        $this->assertStringContainsString('<!-- comment -->', (string) $document->saveXML());
+    }
+
+    public function testCanRemoveCommentsFromString(): void
+    {
+        $document = (new Loader)->load('<root><!-- comment --><node/></root>', true);
+
+        $this->assertStringNotContainsString('<!-- comment -->', (string) $document->saveXML());
+    }
+
+    public function testCanRemoveCommentsFromStringWithoutComments(): void
+    {
+        $document = (new Loader)->load('<root><node/></root>', true);
+
+        $this->assertStringNotContainsString('<!--', (string) $document->saveXML());
+    }
+
+    public function testCanRemoveCommentsFromFile(): void
+    {
+        $document = (new Loader)->loadFile(__DIR__ . '/../../../_files/xml-with-comments.xml', true);
+
+        $this->assertStringNotContainsString('<!--', (string) $document->saveXML());
+    }
 }
