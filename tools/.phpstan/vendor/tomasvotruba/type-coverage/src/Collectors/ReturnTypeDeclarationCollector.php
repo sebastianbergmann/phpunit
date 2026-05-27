@@ -21,7 +21,7 @@ final class ReturnTypeDeclarationCollector implements Collector
 
     /**
      * @param ClassMethod $node
-     * @return mixed[]|null
+     * @return array{int, list<int>, string|null}|null
      */
     public function processNode(Node $node, Scope $scope): ?array
     {
@@ -30,11 +30,15 @@ final class ReturnTypeDeclarationCollector implements Collector
             return null;
         }
 
+        $traitFilePath = null;
         if ($scope->isInTrait()) {
             $originalMethodName = $node->getAttribute('originalTraitMethodName');
             if ($originalMethodName === '__construct') {
                 return null;
             }
+
+            $traitFilePath = $scope->getTraitReflection()
+                ->getFileName();
         }
 
         $missingTypeLines = [];
@@ -43,6 +47,6 @@ final class ReturnTypeDeclarationCollector implements Collector
             $missingTypeLines[] = $node->getLine();
         }
 
-        return [1, $missingTypeLines];
+        return [1, $missingTypeLines, $traitFilePath];
     }
 }
