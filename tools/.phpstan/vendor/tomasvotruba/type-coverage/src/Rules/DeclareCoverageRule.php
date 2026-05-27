@@ -27,6 +27,11 @@ final class DeclareCoverageRule implements Rule
     public const ERROR_MESSAGE = 'Out of %d possible declare(strict_types=1), only %d - %.1f %% actually have it. Add more declares to get over %s %%';
 
     /**
+     * @var string
+     */
+    private const IDENTIFIER = 'typeCoverage.declareCoverage';
+
+    /**
      * @readonly
      */
     private Configuration $configuration;
@@ -108,7 +113,10 @@ final class DeclareCoverageRule implements Rule
                 $requiredDeclareLevel,
             );
 
-            $ruleErrors[] = RuleErrorBuilder::message($errorMessage)->file($notCoveredDeclareFilePath)->build();
+            $ruleErrors[] = RuleErrorBuilder::message($errorMessage)
+                ->identifier(self::IDENTIFIER)
+                ->file($notCoveredDeclareFilePath)
+                ->build();
         }
 
         return $ruleErrors;
