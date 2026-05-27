@@ -2664,7 +2664,7 @@ if (!function_exists('PHPUnit\Framework\assertStringEndsNotWith')) {
 
 if (!function_exists('PHPUnit\Framework\assertXmlFileEqualsXmlFile')) {
     /**
-     * Asserts that two XML files are equal.
+     * Asserts that two XML files are equal, ignoring comments.
      *
      * @throws Exception
      * @throws ExpectationFailedException
@@ -2682,7 +2682,7 @@ if (!function_exists('PHPUnit\Framework\assertXmlFileEqualsXmlFile')) {
 
 if (!function_exists('PHPUnit\Framework\assertXmlFileNotEqualsXmlFile')) {
     /**
-     * Asserts that two XML files are not equal.
+     * Asserts that two XML files are not equal, ignoring comments.
      *
      * @throws \PHPUnit\Util\Exception
      * @throws ExpectationFailedException
@@ -2699,7 +2699,7 @@ if (!function_exists('PHPUnit\Framework\assertXmlFileNotEqualsXmlFile')) {
 
 if (!function_exists('PHPUnit\Framework\assertXmlStringEqualsXmlFile')) {
     /**
-     * Asserts that two XML documents are equal.
+     * Asserts that two XML documents are equal, ignoring comments.
      *
      * @throws ExpectationFailedException
      * @throws XmlException
@@ -2716,7 +2716,7 @@ if (!function_exists('PHPUnit\Framework\assertXmlStringEqualsXmlFile')) {
 
 if (!function_exists('PHPUnit\Framework\assertXmlStringNotEqualsXmlFile')) {
     /**
-     * Asserts that two XML documents are not equal.
+     * Asserts that two XML documents are not equal, ignoring comments.
      *
      * @throws ExpectationFailedException
      * @throws XmlException
@@ -2733,7 +2733,7 @@ if (!function_exists('PHPUnit\Framework\assertXmlStringNotEqualsXmlFile')) {
 
 if (!function_exists('PHPUnit\Framework\assertXmlStringEqualsXmlString')) {
     /**
-     * Asserts that two XML documents are equal.
+     * Asserts that two XML documents are equal, ignoring comments.
      *
      * @throws ExpectationFailedException
      * @throws XmlException
@@ -2750,7 +2750,7 @@ if (!function_exists('PHPUnit\Framework\assertXmlStringEqualsXmlString')) {
 
 if (!function_exists('PHPUnit\Framework\assertXmlStringNotEqualsXmlString')) {
     /**
-     * Asserts that two XML documents are not equal.
+     * Asserts that two XML documents are not equal, ignoring comments.
      *
      * @throws ExpectationFailedException
      * @throws XmlException

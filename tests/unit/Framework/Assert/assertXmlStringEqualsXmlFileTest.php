@@ -36,4 +36,12 @@ final class assertXmlStringEqualsXmlFileTest extends TestCase
             file_get_contents(TEST_FILES_PATH . 'bar.xml'),
         );
     }
+
+    public function testIgnoresComments(): void
+    {
+        $this->assertXmlStringEqualsXmlFile(
+            TEST_FILES_PATH . 'xml-with-comments.xml',
+            '<root><node/></root>',
+        );
+    }
 }

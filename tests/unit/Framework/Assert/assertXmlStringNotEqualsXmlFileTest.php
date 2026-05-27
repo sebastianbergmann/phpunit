@@ -36,4 +36,14 @@ final class assertXmlStringNotEqualsXmlFileTest extends TestCase
             file_get_contents(TEST_FILES_PATH . 'foo.xml'),
         );
     }
+
+    public function testTreatsDocumentsDifferingOnlyInCommentsAsEqual(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertXmlStringNotEqualsXmlFile(
+            TEST_FILES_PATH . 'xml-with-comments.xml',
+            '<root><node/></root>',
+        );
+    }
 }

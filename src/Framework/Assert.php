@@ -2520,7 +2520,7 @@ abstract class Assert
     }
 
     /**
-     * Asserts that two XML files are equal.
+     * Asserts that two XML files are equal, ignoring comments.
      *
      * @throws Exception
      * @throws ExpectationFailedException
@@ -2528,78 +2528,78 @@ abstract class Assert
      */
     final public static function assertXmlFileEqualsXmlFile(string $expectedFile, string $actualFile, string $message = ''): void
     {
-        $expected = (new XmlLoader)->loadFile($expectedFile);
-        $actual   = (new XmlLoader)->loadFile($actualFile);
+        $expected = (new XmlLoader)->loadFile($expectedFile, true);
+        $actual   = (new XmlLoader)->loadFile($actualFile, true);
 
         self::assertEquals($expected, $actual, $message);
     }
 
     /**
-     * Asserts that two XML files are not equal.
+     * Asserts that two XML files are not equal, ignoring comments.
      *
      * @throws \PHPUnit\Util\Exception
      * @throws ExpectationFailedException
      */
     final public static function assertXmlFileNotEqualsXmlFile(string $expectedFile, string $actualFile, string $message = ''): void
     {
-        $expected = (new XmlLoader)->loadFile($expectedFile);
-        $actual   = (new XmlLoader)->loadFile($actualFile);
+        $expected = (new XmlLoader)->loadFile($expectedFile, true);
+        $actual   = (new XmlLoader)->loadFile($actualFile, true);
 
         self::assertNotEquals($expected, $actual, $message);
     }
 
     /**
-     * Asserts that two XML documents are equal.
+     * Asserts that two XML documents are equal, ignoring comments.
      *
      * @throws ExpectationFailedException
      * @throws XmlException
      */
     final public static function assertXmlStringEqualsXmlFile(string $expectedFile, string $actualXml, string $message = ''): void
     {
-        $expected = (new XmlLoader)->loadFile($expectedFile);
-        $actual   = (new XmlLoader)->load($actualXml);
+        $expected = (new XmlLoader)->loadFile($expectedFile, true);
+        $actual   = (new XmlLoader)->load($actualXml, true);
 
         self::assertEquals($expected, $actual, $message);
     }
 
     /**
-     * Asserts that two XML documents are not equal.
+     * Asserts that two XML documents are not equal, ignoring comments.
      *
      * @throws ExpectationFailedException
      * @throws XmlException
      */
     final public static function assertXmlStringNotEqualsXmlFile(string $expectedFile, string $actualXml, string $message = ''): void
     {
-        $expected = (new XmlLoader)->loadFile($expectedFile);
-        $actual   = (new XmlLoader)->load($actualXml);
+        $expected = (new XmlLoader)->loadFile($expectedFile, true);
+        $actual   = (new XmlLoader)->load($actualXml, true);
 
         self::assertNotEquals($expected, $actual, $message);
     }
 
     /**
-     * Asserts that two XML documents are equal.
+     * Asserts that two XML documents are equal, ignoring comments.
      *
      * @throws ExpectationFailedException
      * @throws XmlException
      */
     final public static function assertXmlStringEqualsXmlString(string $expectedXml, string $actualXml, string $message = ''): void
     {
-        $expected = (new XmlLoader)->load($expectedXml);
-        $actual   = (new XmlLoader)->load($actualXml);
+        $expected = (new XmlLoader)->load($expectedXml, true);
+        $actual   = (new XmlLoader)->load($actualXml, true);
 
         self::assertEquals($expected, $actual, $message);
     }
 
     /**
-     * Asserts that two XML documents are not equal.
+     * Asserts that two XML documents are not equal, ignoring comments.
      *
      * @throws ExpectationFailedException
      * @throws XmlException
      */
     final public static function assertXmlStringNotEqualsXmlString(string $expectedXml, string $actualXml, string $message = ''): void
     {
-        $expected = (new XmlLoader)->load($expectedXml);
-        $actual   = (new XmlLoader)->load($actualXml);
+        $expected = (new XmlLoader)->load($expectedXml, true);
+        $actual   = (new XmlLoader)->load($actualXml, true);
 
         self::assertNotEquals($expected, $actual, $message);
     }
