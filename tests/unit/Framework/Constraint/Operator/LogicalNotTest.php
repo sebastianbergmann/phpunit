@@ -85,6 +85,26 @@ final class LogicalNotTest extends TestCase
             ['it ends with', 'it ends with'],
             ['you reference me', 'you don\'t reference me'],
             ['it\'s not not false', 'it\'s not false'],
+
+            // The exported representation of an array or object contains
+            // single-quoted keys and values. The constraint's wording, which
+            // sits outside of those quotes, must still be negated while the
+            // quoted segments are left untouched. See issue #6683.
+            [
+                "Array &0 [\n    'key' => 'value',\n] is equal to Array &0 [\n    'key' => 'value',\n]",
+                "Array &0 [\n    'key' => 'value',\n] is not equal to Array &0 [\n    'key' => 'value',\n]",
+            ],
+            [
+                "stdClass Object #1 (\n    'name' => 'foo',\n) is equal to stdClass Object #2 (\n    'name' => 'foo',\n)",
+                "stdClass Object #1 (\n    'name' => 'foo',\n) is not equal to stdClass Object #2 (\n    'name' => 'foo',\n)",
+            ],
+
+            // A negatable word inside an exported string value must not be
+            // rewritten, even when the description contains many quotes.
+            [
+                "Array &0 [\n    'note' => 'this contains water',\n] is equal to Array &0 [\n    'note' => 'this contains water',\n]",
+                "Array &0 [\n    'note' => 'this contains water',\n] is not equal to Array &0 [\n    'note' => 'this contains water',\n]",
+            ],
         ];
     }
 
@@ -144,5 +164,20 @@ final class LogicalNotTest extends TestCase
         $this->expectExceptionMessage("Failed asserting that 'test contains something' is not equal to 'test contains something'.");
 
         Assert::assertThat('test contains something', $constraint);
+    }
+
+    #[TestDox('LogicalNot(IsEqual(object)) negates the description although the exported object contains quotes')]
+    #[Ticket('https://github.com/sebastianbergmann/phpunit/issues/6683')]
+    public function testForNotEqualsWithObjectThatIsExportedWithQuotes(): void
+    {
+        $expected = (object) ['name' => 'foo'];
+        $actual   = (object) ['name' => 'foo'];
+
+        $constraint = new LogicalNot(new IsEqual($expected));
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageMatches('/ is not equal to /');
+
+        Assert::assertThat($actual, $constraint);
     }
 }
