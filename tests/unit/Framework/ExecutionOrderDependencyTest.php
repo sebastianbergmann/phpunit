@@ -12,6 +12,8 @@ namespace PHPUnit\Framework;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Metadata\Metadata;
+use PHPUnit\TestFixture\DependencySuccessTest;
+use stdClass;
 
 #[CoversClass(ExecutionOrderDependency::class)]
 #[Small]
@@ -251,5 +253,38 @@ class ExecutionOrderDependencyTest extends TestCase
         $this->assertCount(2, $result);
         $this->assertSame($a, $result[0]);
         $this->assertSame($c, $result[1]);
+    }
+
+    public function testTargetIsCallableTestMethodReturnsFalseForInvalidDependency(): void
+    {
+        $this->assertFalse(ExecutionOrderDependency::invalid()->targetIsCallableTestMethod());
+    }
+
+    public function testTargetIsCallableTestMethodReturnsFalseWhenClassDoesNotExist(): void
+    {
+        $dependency = new ExecutionOrderDependency('NonExistentClassForTesting::testFoo');
+
+        $this->assertFalse($dependency->targetIsCallableTestMethod());
+    }
+
+    public function testTargetIsCallableTestMethodReturnsFalseWhenClassIsNotATestCase(): void
+    {
+        $dependency = new ExecutionOrderDependency(stdClass::class . '::method');
+
+        $this->assertFalse($dependency->targetIsCallableTestMethod());
+    }
+
+    public function testTargetIsCallableTestMethodReturnsFalseWhenMethodDoesNotExist(): void
+    {
+        $dependency = new ExecutionOrderDependency(DependencySuccessTest::class . '::doesNotExist');
+
+        $this->assertFalse($dependency->targetIsCallableTestMethod());
+    }
+
+    public function testTargetIsCallableTestMethodReturnsTrueWhenTargetIsATestMethod(): void
+    {
+        $dependency = new ExecutionOrderDependency(DependencySuccessTest::class . '::testOne');
+
+        $this->assertTrue($dependency->targetIsCallableTestMethod());
     }
 }

@@ -24,7 +24,6 @@ use function clearstatcache;
 use function count;
 use function defined;
 use function error_clear_last;
-use function explode;
 use function fclose;
 use function getcwd;
 use function implode;
@@ -98,7 +97,6 @@ use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\Util\DifferBuilder;
 use PHPUnit\Util\Exporter;
 use PHPUnit\Util\Sanitizer;
-use PHPUnit\Util\Test as TestUtil;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionObject;
@@ -1534,46 +1532,44 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
                     return false;
                 }
+            } else {
+                $dependencyTarget = $dependency->getTarget();
 
-                continue;
-            }
+                if (!$passedTests->hasTestMethodPassed($dependencyTarget)) {
+                    if (!$dependency->targetIsCallableTestMethod()) {
+                        $this->markErrorForInvalidDependency($dependency);
+                    } else {
+                        $this->markSkippedForMissingDependency($dependency);
+                    }
 
-            $dependencyTarget = $dependency->getTarget();
-
-            if (!$passedTests->hasTestMethodPassed($dependencyTarget)) {
-                if (!$this->isCallableTestMethod($dependencyTarget)) {
-                    $this->markErrorForInvalidDependency($dependency);
-                } else {
-                    $this->markSkippedForMissingDependency($dependency);
+                    return false;
                 }
 
-                return false;
-            }
+                if ($passedTests->isGreaterThan($dependencyTarget, $this->size())) {
+                    Event\Facade::emitter()->testConsideredRisky(
+                        $this->valueObjectForEvents(),
+                        'This test depends on a test that is larger than itself',
+                    );
 
-            if ($passedTests->isGreaterThan($dependencyTarget, $this->size())) {
-                Event\Facade::emitter()->testConsideredRisky(
-                    $this->valueObjectForEvents(),
-                    'This test depends on a test that is larger than itself',
-                );
+                    return true;
+                }
 
-                return true;
-            }
+                if (!$passedTests->hasReturnValue($dependencyTarget)) {
+                    return true;
+                }
 
-            if (!$passedTests->hasReturnValue($dependencyTarget)) {
-                return true;
-            }
+                $returnValue = $passedTests->returnValue($dependencyTarget);
 
-            $returnValue = $passedTests->returnValue($dependencyTarget);
+                if ($dependency->deepClone()) {
+                    $deepCopy = new DeepCopy;
+                    $deepCopy->skipUncloneable(false);
 
-            if ($dependency->deepClone()) {
-                $deepCopy = new DeepCopy;
-                $deepCopy->skipUncloneable(false);
-
-                $this->dependencyInput[$dependencyTarget] = $deepCopy->copy($returnValue);
-            } elseif ($dependency->shallowClone() && is_object($returnValue)) {
-                $this->dependencyInput[$dependencyTarget] = clone $returnValue;
-            } else {
-                $this->dependencyInput[$dependencyTarget] = $returnValue;
+                    $this->dependencyInput[$dependencyTarget] = $deepCopy->copy($returnValue);
+                } elseif ($dependency->shallowClone() && is_object($returnValue)) {
+                    $this->dependencyInput[$dependencyTarget] = clone $returnValue;
+                } else {
+                    $this->dependencyInput[$dependencyTarget] = $returnValue;
+                }
             }
         }
 
@@ -2039,35 +2035,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         return ConfigurationRegistry::get()->processIsolation();
-    }
-
-    private function isCallableTestMethod(string $dependency): bool
-    {
-        $parts = explode('::', $dependency, 2);
-
-        if (!isset($parts[1])) {
-            return false;
-        }
-
-        [$className, $methodName] = $parts;
-
-        if (!class_exists($className)) {
-            return false;
-        }
-
-        $class = new ReflectionClass($className);
-
-        if (!$class->isSubclassOf(__CLASS__)) {
-            return false;
-        }
-
-        if (!$class->hasMethod($methodName)) {
-            return false;
-        }
-
-        return TestUtil::isTestMethod(
-            $class->getMethod($methodName),
-        );
     }
 
     /**
