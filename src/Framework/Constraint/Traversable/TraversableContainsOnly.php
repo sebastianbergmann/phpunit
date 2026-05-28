@@ -82,4 +82,18 @@ final class TraversableContainsOnly extends Constraint
     {
         return 'contains only values of type "' . $this->type . '"';
     }
+
+    /**
+     * Returns the negated description when this constraint is wrapped in a
+     * LogicalNot operator. The guard ensures that LogicalAnd, LogicalOr, and
+     * LogicalXor keep using the affirmative toString().
+     */
+    protected function toStringInContext(Operator $operator, mixed $role): string
+    {
+        if (!$operator instanceof LogicalNot) {
+            return '';
+        }
+
+        return 'does not contain only values of type "' . $this->type . '"';
+    }
 }

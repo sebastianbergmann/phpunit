@@ -34,6 +34,20 @@ final class IsJson extends Constraint
     }
 
     /**
+     * Returns the negated description when this constraint is wrapped in a
+     * LogicalNot operator. The guard ensures that LogicalAnd, LogicalOr, and
+     * LogicalXor keep using the affirmative toString().
+     */
+    protected function toStringInContext(Operator $operator, mixed $role): string
+    {
+        if (!$operator instanceof LogicalNot) {
+            return '';
+        }
+
+        return 'is not valid JSON';
+    }
+
+    /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
      */
@@ -72,6 +86,28 @@ final class IsJson extends Constraint
             'a string is valid JSON (%s)',
             $this->determineJsonError($other),
         );
+    }
+
+    /**
+     * When this constraint is wrapped in a LogicalNot operator, the failure
+     * only occurs for a value that *is* valid JSON, so the parse-error detail
+     * that the affirmative description carries is not applicable here.
+     */
+    protected function failureDescriptionInContext(Operator $operator, mixed $role, mixed $other): string
+    {
+        if (!$operator instanceof LogicalNot) {
+            return '';
+        }
+
+        if (!is_string($other)) {
+            return $this->valueToTypeStringFragment($other) . 'is not valid JSON';
+        }
+
+        if ($other === '') {
+            return 'an empty string is not valid JSON';
+        }
+
+        return 'a string is not valid JSON';
     }
 
     private function determineJsonError(string $json): string

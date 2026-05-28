@@ -203,4 +203,64 @@ EOT,
             fclose($actual);
         }
     }
+
+    public function testCanBeNegated(): void
+    {
+        $this->assertSame(
+            'is not identical to an object of class "stdClass"',
+            new LogicalNot(new IsIdentical(new stdClass))->toString(),
+        );
+
+        $this->assertSame(
+            'is not identical to 0',
+            new LogicalNot(new IsIdentical(0))->toString(),
+        );
+
+        $object = new stdClass;
+
+        $this->assertSame(
+            'Failed asserting that two variables do not reference the same object.',
+            $this->negatedFailureDescription(new IsIdentical($object), $object),
+        );
+
+        $this->assertSame(
+            'Failed asserting that two strings are not identical.',
+            $this->negatedFailureDescription(new IsIdentical('foo'), 'foo'),
+        );
+
+        $this->assertSame(
+            'Failed asserting that two arrays are not identical.',
+            $this->negatedFailureDescription(new IsIdentical([1, 2]), [1, 2]),
+        );
+
+        $this->assertSame(
+            'Failed asserting that 0 is not identical to 0.',
+            $this->negatedFailureDescription(new IsIdentical(0), 0),
+        );
+    }
+
+    public function testCanBeNegatedForResources(): void
+    {
+        $resource = fopen('php://memory', 'r');
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs('Failed asserting that two variables do not reference the same resource.');
+
+        try {
+            new LogicalNot(new IsIdentical($resource))->evaluate($resource);
+        } finally {
+            fclose($resource);
+        }
+    }
+
+    private function negatedFailureDescription(IsIdentical $constraint, mixed $actual): string
+    {
+        try {
+            new LogicalNot($constraint)->evaluate($actual);
+        } catch (ExpectationFailedException $e) {
+            return $e->getMessage();
+        }
+
+        $this->fail();
+    }
 }

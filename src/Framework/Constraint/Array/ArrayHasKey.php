@@ -67,4 +67,27 @@ final class ArrayHasKey extends Constraint
     {
         return 'an array ' . $this->toString();
     }
+
+    /**
+     * Returns the negated description when this constraint is wrapped in a
+     * LogicalNot operator. The guard ensures that LogicalAnd, LogicalOr, and
+     * LogicalXor keep using the affirmative toString().
+     */
+    protected function toStringInContext(Operator $operator, mixed $role): string
+    {
+        if (!$operator instanceof LogicalNot) {
+            return '';
+        }
+
+        return 'does not have the key ' . Exporter::export($this->key);
+    }
+
+    protected function failureDescriptionInContext(Operator $operator, mixed $role, mixed $other): string
+    {
+        if (!$operator instanceof LogicalNot) {
+            return '';
+        }
+
+        return 'an array ' . $this->toStringInContext($operator, $role);
+    }
 }

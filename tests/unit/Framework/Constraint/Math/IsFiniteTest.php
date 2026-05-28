@@ -38,6 +38,18 @@ final class IsFiniteTest extends TestCase
         $this->assertSame('is finite', (new IsFinite)->toString());
     }
 
+    public function testCanBeNegated(): void
+    {
+        $constraint = new LogicalNot(new IsFinite);
+
+        $this->assertSame('is not finite', $constraint->toString());
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs('Failed asserting that 1.0 is not finite.');
+
+        $constraint->evaluate(1.0);
+    }
+
     public function testIsCountable(): void
     {
         $this->assertCount(1, (new IsFinite));

@@ -36,6 +36,18 @@ final class IsNullTest extends TestCase
         $this->assertSame('is null', (new IsNull)->toString());
     }
 
+    public function testCanBeNegated(): void
+    {
+        $constraint = new LogicalNot(new IsNull);
+
+        $this->assertSame('is not null', $constraint->toString());
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs('Failed asserting that null is not null.');
+
+        $constraint->evaluate(null);
+    }
+
     public function testIsCountable(): void
     {
         $this->assertCount(1, new IsNull);

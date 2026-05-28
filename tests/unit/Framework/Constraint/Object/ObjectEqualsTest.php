@@ -49,6 +49,18 @@ final class ObjectEqualsTest extends TestCase
         $this->assertSame('two objects are equal', new ObjectEquals(new ValueObject(1))->toString());
     }
 
+    public function testCanBeNegated(): void
+    {
+        $constraint = new LogicalNot(new ObjectEquals(new ValueObject(1)));
+
+        $this->assertSame('two objects are not equal', $constraint->toString());
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs('Failed asserting that two objects are not equal.');
+
+        $constraint->evaluate(new ValueObject(1));
+    }
+
     public function testIsCountable(): void
     {
         $this->assertCount(1, (new ObjectEquals(new ValueObject(1))));

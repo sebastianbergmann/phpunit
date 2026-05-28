@@ -476,6 +476,18 @@ EOD
         );
     }
 
+    public function testCanBeNegated(): void
+    {
+        $constraint = new LogicalNot(new StringMatchesFormatDescription('%d'));
+
+        $this->assertSame('does not match format description:' . PHP_EOL . '%d', $constraint->toString());
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs('Failed asserting that string does not match format description.');
+
+        $constraint->evaluate('42');
+    }
+
     public function testIsCountable(): void
     {
         $this->assertCount(1, (new StringMatchesFormatDescription('string')));

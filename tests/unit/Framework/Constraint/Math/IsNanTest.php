@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use const NAN;
 use function acos;
 use function log;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -36,6 +37,18 @@ final class IsNanTest extends TestCase
     public function testCanBeRepresentedAsString(): void
     {
         $this->assertSame('is nan', (new IsNan)->toString());
+    }
+
+    public function testCanBeNegated(): void
+    {
+        $constraint = new LogicalNot(new IsNan);
+
+        $this->assertSame('is not nan', $constraint->toString());
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs('Failed asserting that NAN is not nan.');
+
+        $constraint->evaluate(NAN);
     }
 
     public function testIsCountable(): void

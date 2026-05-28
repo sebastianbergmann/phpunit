@@ -67,6 +67,18 @@ final class StringEqualsStringIgnoringLineEndingsTest extends TestCase
         $this->assertSame('is equal to "string" ignoring line endings', new StringEqualsStringIgnoringLineEndings('string')->toString());
     }
 
+    public function testCanBeNegated(): void
+    {
+        $constraint = new LogicalNot(new StringEqualsStringIgnoringLineEndings('string'));
+
+        $this->assertSame('is not equal to "string" ignoring line endings', $constraint->toString());
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs('Failed asserting that \'string\' is not equal to "string" ignoring line endings.');
+
+        $constraint->evaluate('string');
+    }
+
     public function testIsCountable(): void
     {
         $this->assertCount(1, (new StringEqualsStringIgnoringLineEndings('string')));

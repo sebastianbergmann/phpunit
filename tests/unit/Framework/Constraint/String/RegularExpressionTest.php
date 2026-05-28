@@ -69,6 +69,18 @@ final class RegularExpressionTest extends TestCase
         $this->assertSame('matches PCRE pattern "/.*/"', new RegularExpression('/.*/')->toString());
     }
 
+    public function testCanBeNegated(): void
+    {
+        $constraint = new LogicalNot(new RegularExpression('/foo/'));
+
+        $this->assertSame('does not match PCRE pattern "/foo/"', $constraint->toString());
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs('Failed asserting that \'foo\' does not match PCRE pattern "/foo/".');
+
+        $constraint->evaluate('foo');
+    }
+
     public function testIsCountable(): void
     {
         $this->assertCount(1, (new RegularExpression('/.*/')));

@@ -321,6 +321,18 @@ EOT,
         $this->assertStringMatchesFormat($constraintAsString, $constraint->toString(true));
     }
 
+    public function testCanBeNegated(): void
+    {
+        $constraint = new LogicalNot(new IsEqualCanonicalizing('foo'));
+
+        $this->assertSame("is not equal to 'foo'", $constraint->toString());
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs("Failed asserting that 'foo' is not equal to 'foo'.");
+
+        $constraint->evaluate('foo');
+    }
+
     public function testIsCountable(): void
     {
         $this->assertCount(1, (new IsEqualCanonicalizing(true)));

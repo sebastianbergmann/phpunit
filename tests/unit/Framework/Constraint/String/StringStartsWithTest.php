@@ -68,6 +68,18 @@ final class StringStartsWithTest extends TestCase
         $this->assertSame('starts with "prefix"', new StringStartsWith('prefix')->toString());
     }
 
+    public function testCanBeNegated(): void
+    {
+        $constraint = new LogicalNot(new StringStartsWith('prefix'));
+
+        $this->assertSame('does not start with "prefix"', $constraint->toString());
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs('Failed asserting that \'prefix suffix\' does not start with "prefix".');
+
+        $constraint->evaluate('prefix suffix');
+    }
+
     public function testIsCountable(): void
     {
         $this->assertCount(1, (new StringStartsWith('prefix')));

@@ -30,10 +30,22 @@ final class StringEqualsStringIgnoringLineEndings extends Constraint
      */
     public function toString(): string
     {
-        return sprintf(
-            'is equal to "%s" ignoring line endings',
-            $this->string,
-        );
+        return 'is equal to ' . $this->valueAsString();
+    }
+
+    /**
+     * Returns the negated description when this constraint is wrapped in a
+     * LogicalNot operator. Authoring the negation here keeps the expected value
+     * out of the negation entirely. The guard ensures that LogicalAnd,
+     * LogicalOr, and LogicalXor keep using the affirmative toString().
+     */
+    protected function toStringInContext(Operator $operator, mixed $role): string
+    {
+        if (!$operator instanceof LogicalNot) {
+            return '';
+        }
+
+        return 'is not equal to ' . $this->valueAsString();
     }
 
     /**
@@ -47,6 +59,14 @@ final class StringEqualsStringIgnoringLineEndings extends Constraint
         }
 
         return $this->string === $this->normalizeLineEndings($other);
+    }
+
+    private function valueAsString(): string
+    {
+        return sprintf(
+            '"%s" ignoring line endings',
+            $this->string,
+        );
     }
 
     private function normalizeLineEndings(string $string): string

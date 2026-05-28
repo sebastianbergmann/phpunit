@@ -126,6 +126,18 @@ EOT,
         $this->assertSame('contains only values of type "stdClass"', TraversableContainsOnly::forClassOrInterface(stdClass::class)->toString());
     }
 
+    public function testCanBeNegated(): void
+    {
+        $constraint = new LogicalNot(TraversableContainsOnly::forNativeType(NativeType::Int));
+
+        $this->assertSame('does not contain only values of type "int"', $constraint->toString());
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageMatches('/does not contain only values of type "int"/');
+
+        $constraint->evaluate([1, 2]);
+    }
+
     public function testIsCountable(): void
     {
         $this->assertCount(1, TraversableContainsOnly::forNativeType(NativeType::Int));

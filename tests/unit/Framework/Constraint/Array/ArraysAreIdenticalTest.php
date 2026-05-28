@@ -243,6 +243,18 @@ final class ArraysAreIdenticalTest extends TestCase
         $this->assertSame('two arrays are identical', new ArraysAreIdentical([], true, true)->toString());
     }
 
+    public function testCanBeNegated(): void
+    {
+        $constraint = new LogicalNot(new ArraysAreIdentical([1, 2], true, true));
+
+        $this->assertSame('two arrays are not identical', $constraint->toString());
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs('Failed asserting that two arrays are not identical.');
+
+        $constraint->evaluate([1, 2]);
+    }
+
     public function testIsCountable(): void
     {
         $this->assertCount(1, new ArraysAreIdentical([], false, false));

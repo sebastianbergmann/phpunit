@@ -88,6 +88,18 @@ final class IsInstanceOfTest extends TestCase
         $this->assertSame('is an instance of interface Throwable', new IsInstanceOf(Throwable::class)->toString());
     }
 
+    public function testCanBeNegated(): void
+    {
+        $constraint = new LogicalNot(new IsInstanceOf(stdClass::class));
+
+        $this->assertSame('is not an instance of class stdClass', $constraint->toString());
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs('Failed asserting that an instance of class stdClass is not an instance of class stdClass.');
+
+        $constraint->evaluate(new stdClass);
+    }
+
     public function testIsCountable(): void
     {
         $this->assertCount(1, new IsInstanceOf(stdClass::class));

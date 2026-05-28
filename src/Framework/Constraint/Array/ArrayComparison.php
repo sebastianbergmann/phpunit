@@ -86,19 +86,21 @@ abstract class ArrayComparison extends Constraint
      */
     public function toString(): string
     {
-        if ($this->keysMatter && $this->orderMatters) {
-            return 'two arrays are ' . $this->comparisonType();
+        return 'two arrays are ' . $this->comparisonDescription();
+    }
+
+    /**
+     * Returns the negated description when this constraint is wrapped in a
+     * LogicalNot operator. The guard ensures that LogicalAnd, LogicalOr, and
+     * LogicalXor keep using the affirmative toString().
+     */
+    protected function toStringInContext(Operator $operator, mixed $role): string
+    {
+        if (!$operator instanceof LogicalNot) {
+            return '';
         }
 
-        if (!$this->keysMatter && !$this->orderMatters) {
-            return 'two arrays are ' . $this->comparisonType() . ' while ignoring keys and order';
-        }
-
-        if (!$this->keysMatter) {
-            return 'two arrays are ' . $this->comparisonType() . ' while ignoring keys';
-        }
-
-        return 'two arrays are ' . $this->comparisonType() . ' while ignoring order';
+        return 'two arrays are not ' . $this->comparisonDescription();
     }
 
     /**
@@ -112,6 +114,15 @@ abstract class ArrayComparison extends Constraint
         return $this->toString();
     }
 
+    protected function failureDescriptionInContext(Operator $operator, mixed $role, mixed $other): string
+    {
+        if (!$operator instanceof LogicalNot) {
+            return '';
+        }
+
+        return $this->toStringInContext($operator, $role);
+    }
+
     /**
      * @return 'equal'|'identical'
      */
@@ -123,6 +134,23 @@ abstract class ArrayComparison extends Constraint
      * concrete subclass.
      */
     abstract protected function compareLeaf(mixed $expected, mixed $actual): bool;
+
+    private function comparisonDescription(): string
+    {
+        if ($this->keysMatter && $this->orderMatters) {
+            return $this->comparisonType();
+        }
+
+        if (!$this->keysMatter && !$this->orderMatters) {
+            return $this->comparisonType() . ' while ignoring keys and order';
+        }
+
+        if (!$this->keysMatter) {
+            return $this->comparisonType() . ' while ignoring keys';
+        }
+
+        return $this->comparisonType() . ' while ignoring order';
+    }
 
     /**
      * Compares two values, recursing into arrays as needed.

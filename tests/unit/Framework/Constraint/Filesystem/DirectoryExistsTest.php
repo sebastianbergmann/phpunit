@@ -65,6 +65,18 @@ final class DirectoryExistsTest extends TestCase
         $this->assertSame('directory exists', (new DirectoryExists)->toString());
     }
 
+    public function testCanBeNegated(): void
+    {
+        $constraint = new LogicalNot(new DirectoryExists);
+
+        $this->assertSame('directory does not exist', $constraint->toString());
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs('Failed asserting that directory "' . __DIR__ . '" does not exist.');
+
+        $constraint->evaluate(__DIR__);
+    }
+
     public function testIsCountable(): void
     {
         $this->assertCount(1, (new DirectoryExists));

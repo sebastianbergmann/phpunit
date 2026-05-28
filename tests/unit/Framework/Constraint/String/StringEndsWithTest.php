@@ -68,6 +68,18 @@ final class StringEndsWithTest extends TestCase
         $this->assertSame('ends with "suffix"', new StringEndsWith('suffix')->toString());
     }
 
+    public function testCanBeNegated(): void
+    {
+        $constraint = new LogicalNot(new StringEndsWith('suffix'));
+
+        $this->assertSame('does not end with "suffix"', $constraint->toString());
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs('Failed asserting that \'prefix suffix\' does not end with "suffix".');
+
+        $constraint->evaluate('prefix suffix');
+    }
+
     public function testIsCountable(): void
     {
         $this->assertCount(1, (new StringEndsWith('suffix')));

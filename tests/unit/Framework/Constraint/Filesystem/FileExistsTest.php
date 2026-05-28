@@ -65,6 +65,18 @@ final class FileExistsTest extends TestCase
         $this->assertSame('file exists', (new FileExists)->toString());
     }
 
+    public function testCanBeNegated(): void
+    {
+        $constraint = new LogicalNot(new FileExists);
+
+        $this->assertSame('file does not exist', $constraint->toString());
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs('Failed asserting that file "' . __FILE__ . '" does not exist.');
+
+        $constraint->evaluate(__FILE__);
+    }
+
     public function testIsCountable(): void
     {
         $this->assertCount(1, (new FileExists));

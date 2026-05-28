@@ -67,6 +67,18 @@ final class LessThanTest extends TestCase
         $this->assertSame('is less than 0', new LessThan(0)->toString());
     }
 
+    public function testCanBeNegated(): void
+    {
+        $constraint = new LogicalNot(new LessThan(0));
+
+        $this->assertSame('is not less than 0', $constraint->toString());
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs('Failed asserting that -1 is not less than 0.');
+
+        $constraint->evaluate(-1);
+    }
+
     public function testIsCountable(): void
     {
         $this->assertCount(1, (new LessThan(1)));

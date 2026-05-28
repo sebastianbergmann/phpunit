@@ -139,6 +139,18 @@ final class TraversableContainsEqualTest extends TestCase
         $this->assertSame('contains \'value\'', new TraversableContainsEqual('value')->toString());
     }
 
+    public function testCanBeNegated(): void
+    {
+        $constraint = new LogicalNot(new TraversableContainsEqual('value'));
+
+        $this->assertSame('does not contain \'value\'', $constraint->toString());
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs('Failed asserting that an array does not contain \'value\'.');
+
+        $constraint->evaluate(['value']);
+    }
+
     public function testIsCountable(): void
     {
         $this->assertCount(1, (new TraversableContainsEqual('value')));

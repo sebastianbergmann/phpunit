@@ -58,6 +58,24 @@ final class IsInstanceOf extends Constraint
     }
 
     /**
+     * Returns the negated description when this constraint is wrapped in a
+     * LogicalNot operator. The guard ensures that LogicalAnd, LogicalOr, and
+     * LogicalXor keep using the affirmative toString().
+     */
+    protected function toStringInContext(Operator $operator, mixed $role): string
+    {
+        if (!$operator instanceof LogicalNot) {
+            return '';
+        }
+
+        return sprintf(
+            'is not an instance of %s %s',
+            $this->type,
+            $this->name,
+        );
+    }
+
+    /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
      */
@@ -75,5 +93,14 @@ final class IsInstanceOf extends Constraint
     protected function failureDescription(mixed $other): string
     {
         return $this->valueToTypeStringFragment($other) . $this->toString();
+    }
+
+    protected function failureDescriptionInContext(Operator $operator, mixed $role, mixed $other): string
+    {
+        if (!$operator instanceof LogicalNot) {
+            return '';
+        }
+
+        return $this->valueToTypeStringFragment($other) . $this->toStringInContext($operator, $role);
     }
 }

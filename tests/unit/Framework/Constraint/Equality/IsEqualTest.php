@@ -390,6 +390,39 @@ EOT,
         $this->assertStringMatchesFormat($constraintAsString, $constraint->toString(true));
     }
 
+    public function testCanBeNegated(): void
+    {
+        $constraint = new LogicalNot(new IsEqual('foo'));
+
+        $this->assertSame("is not equal to 'foo'", $constraint->toString());
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs("Failed asserting that 'foo' is not equal to 'foo'.");
+
+        $constraint->evaluate('foo');
+    }
+
+    #[Group('regression')]
+    #[Group('regression/6683')]
+    public function testNegationDoesNotRewriteKeywordsContainedInTheValue(): void
+    {
+        $value = "it's equal to and contains that";
+
+        $constraint = new LogicalNot(new IsEqual($value));
+
+        $this->assertSame(
+            "is not equal to 'it's equal to and contains that'",
+            $constraint->toString(),
+        );
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs(
+            "Failed asserting that 'it's equal to and contains that' is not equal to 'it's equal to and contains that'.",
+        );
+
+        $constraint->evaluate($value);
+    }
+
     public function testIsCountable(): void
     {
         $this->assertCount(1, (new IsEqual(true)));

@@ -110,4 +110,14 @@ final class LogicalOrTest extends TestCase
 
         $this->assertCount(2, $constraint);
     }
+
+    public function testDoesNotNegateOperandsThatAuthorTheirNegation(): void
+    {
+        $constraint = $this->logicalOr(
+            $this->isFalse(),
+            'foo',
+        );
+
+        $this->assertSame("is false or is equal to 'foo'", $constraint->toString());
+    }
 }

@@ -27,6 +27,20 @@ final class IsWritable extends Constraint
     }
 
     /**
+     * Returns the negated description when this constraint is wrapped in a
+     * LogicalNot operator. The guard ensures that LogicalAnd, LogicalOr, and
+     * LogicalXor keep using the affirmative toString().
+     */
+    protected function toStringInContext(Operator $operator, mixed $role): string
+    {
+        if (!$operator instanceof LogicalNot) {
+            return '';
+        }
+
+        return 'is not writable';
+    }
+
+    /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
      */
@@ -47,15 +61,30 @@ final class IsWritable extends Constraint
      */
     protected function failureDescription(mixed $other): string
     {
-        if (is_string($other)) {
-            $path = $other;
-        } else {
-            $path = '';
+        return sprintf(
+            '"%s" is writable',
+            $this->path($other),
+        );
+    }
+
+    protected function failureDescriptionInContext(Operator $operator, mixed $role, mixed $other): string
+    {
+        if (!$operator instanceof LogicalNot) {
+            return '';
         }
 
         return sprintf(
-            '"%s" is writable',
-            $path,
+            '"%s" is not writable',
+            $this->path($other),
         );
+    }
+
+    private function path(mixed $other): string
+    {
+        if (is_string($other)) {
+            return $other;
+        }
+
+        return '';
     }
 }

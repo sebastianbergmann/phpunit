@@ -56,6 +56,21 @@ final class ObjectHasPropertyTest extends TestCase
         $this->assertSame('has property "theProperty"', $constraint->toString());
     }
 
+    public function testCanBeNegated(): void
+    {
+        $constraint = new LogicalNot(new ObjectHasProperty('theProperty'));
+
+        $this->assertSame('does not have property "theProperty"', $constraint->toString());
+
+        $object              = new stdClass;
+        $object->theProperty = 'value';
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs('Failed asserting that object of class "stdClass" does not have property "theProperty".');
+
+        $constraint->evaluate($object);
+    }
+
     public function testIsCountable(): void
     {
         $constraint = new ObjectHasProperty('theProperty');

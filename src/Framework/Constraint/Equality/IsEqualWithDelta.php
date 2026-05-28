@@ -71,8 +71,29 @@ final class IsEqualWithDelta extends Constraint
      */
     public function toString(): string
     {
+        return 'is equal to ' . $this->valueAsString();
+    }
+
+    /**
+     * Returns the negated description when this constraint is wrapped in a
+     * LogicalNot operator. Authoring the negation here, instead of letting
+     * LogicalNot rewrite the affirmative description, keeps the exported value
+     * out of the negation entirely. The guard ensures that LogicalAnd,
+     * LogicalOr, and LogicalXor keep using the affirmative toString().
+     */
+    protected function toStringInContext(Operator $operator, mixed $role): string
+    {
+        if (!$operator instanceof LogicalNot) {
+            return '';
+        }
+
+        return 'is not equal to ' . $this->valueAsString();
+    }
+
+    private function valueAsString(): string
+    {
         return sprintf(
-            'is equal to %s with delta <%F>',
+            '%s with delta <%F>',
             Exporter::export($this->value),
             $this->delta,
         );

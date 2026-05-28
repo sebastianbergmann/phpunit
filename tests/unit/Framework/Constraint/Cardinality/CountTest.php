@@ -129,6 +129,18 @@ final class CountTest extends TestCase
         $this->assertSame('count matches 1', new Count(1)->toString());
     }
 
+    public function testCanBeNegated(): void
+    {
+        $constraint = new LogicalNot(new Count(1));
+
+        $this->assertSame('count does not match 1', $constraint->toString());
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs('Failed asserting that actual size 1 does not match expected size 1.');
+
+        $constraint->evaluate([2]);
+    }
+
     public function testIsCountable(): void
     {
         $this->assertCount(1, (new Count(1)));
