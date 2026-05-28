@@ -33,7 +33,7 @@ use ReflectionClass;
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  *
- * @phpstan-type BackupSettings array{backupGlobals: ?true, backupGlobalsExcludeList: list<string>, backupStaticProperties: ?true, backupStaticPropertiesExcludeList: array<string, list<string>>}
+ * @phpstan-type BackupSettings array{backupGlobals: ?true, backupGlobalsExcludeList: list<string>, backupStaticProperties: ?true, backupStaticPropertiesExcludeList: array<class-string, list<non-empty-string>>}
  */
 final readonly class TestBuilder
 {
@@ -154,7 +154,7 @@ final readonly class TestBuilder
             $test->setBackupStaticProperties(ConfigurationRegistry::get()->backupStaticProperties());
         }
 
-        /** @var array<string, list<class-string>> $backupStaticPropertiesExcludeList */
+        /** @var array<class-string, list<non-empty-string>> $backupStaticPropertiesExcludeList */
         $backupStaticPropertiesExcludeList = $backupSettings['backupStaticPropertiesExcludeList'];
 
         $test->setBackupStaticPropertiesExcludeList($backupStaticPropertiesExcludeList);
