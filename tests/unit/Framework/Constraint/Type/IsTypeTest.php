@@ -165,6 +165,14 @@ final class IsTypeTest extends TestCase
         $this->assertCount(1, new IsType(NativeType::Array));
     }
 
+    public function testReturnsAffirmativeStringInNonLogicalNotContext(): void
+    {
+        $this->assertSame(
+            'is of type int',
+            LogicalAnd::fromConstraints(new IsType(NativeType::Int))->toString(),
+        );
+    }
+
     private static function closedResource()
     {
         $resource = fopen(__FILE__, 'r');

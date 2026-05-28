@@ -433,4 +433,17 @@ EOT,
     {
         $this->assertCount(1, (new JsonMatches(json_encode(['key' => 'value']))));
     }
+
+    public function testMatchesReturnsFalseForNonString(): void
+    {
+        $this->assertFalse(new JsonMatches(json_encode(['key' => 'value']))->evaluate(123, returnResult: true));
+    }
+
+    public function testReturnsAffirmativeStringInNonLogicalNotContext(): void
+    {
+        $this->assertSame(
+            'matches JSON string "{"key":"value"}"',
+            LogicalAnd::fromConstraints(new JsonMatches(json_encode(['key' => 'value'])))->toString(),
+        );
+    }
 }

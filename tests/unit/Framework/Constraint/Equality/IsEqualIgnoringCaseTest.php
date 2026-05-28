@@ -315,6 +315,14 @@ EOT,
         $this->assertCount(1, (new IsEqualIgnoringCase(true)));
     }
 
+    public function testReturnsAffirmativeStringInNonLogicalNotContext(): void
+    {
+        $this->assertSame(
+            "is equal to 'foo'",
+            LogicalAnd::fromConstraints(new IsEqualIgnoringCase('foo'))->toString(),
+        );
+    }
+
     private static function stdClass(string $key, string $value): stdClass
     {
         $o = new stdClass;

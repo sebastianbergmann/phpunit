@@ -91,4 +91,17 @@ final class StringStartsWithTest extends TestCase
 
         new StringStartsWith('');
     }
+
+    public function testMatchesReturnsFalseForNonString(): void
+    {
+        $this->assertFalse(new StringStartsWith('prefix')->evaluate(123, returnResult: true));
+    }
+
+    public function testReturnsAffirmativeStringInNonLogicalNotContext(): void
+    {
+        $this->assertSame(
+            'starts with "prefix"',
+            LogicalAnd::fromConstraints(new StringStartsWith('prefix'))->toString(),
+        );
+    }
 }

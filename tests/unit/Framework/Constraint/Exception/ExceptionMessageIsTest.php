@@ -93,4 +93,26 @@ final class ExceptionMessageIsTest extends TestCase
     {
         $this->assertCount(1, (new ExceptionMessageIs('message')));
     }
+
+    public function testRejectsNonString(): void
+    {
+        $constraint = new ExceptionMessageIs('expected-message');
+
+        $this->assertFalse($constraint->evaluate(123, returnResult: true));
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs("Failed asserting that exception message '' is 'expected-message'.");
+
+        $constraint->evaluate(123);
+    }
+
+    public function testRejectsNonStringWhenExpectedMessageIsEmpty(): void
+    {
+        $constraint = new ExceptionMessageIs('');
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs("Failed asserting that exception message is empty but is ''.");
+
+        $constraint->evaluate(123);
+    }
 }

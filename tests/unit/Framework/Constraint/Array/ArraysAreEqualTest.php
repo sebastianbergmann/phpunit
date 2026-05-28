@@ -200,4 +200,12 @@ final class ArraysAreEqualTest extends TestCase
     {
         $this->assertCount(1, new ArraysAreEqual([], false, false));
     }
+
+    public function testReturnsAffirmativeStringInNonLogicalNotContext(): void
+    {
+        $this->assertSame(
+            'two arrays are equal',
+            LogicalAnd::fromConstraints(new ArraysAreEqual([], true, true))->toString(),
+        );
+    }
 }

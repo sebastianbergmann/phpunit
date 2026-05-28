@@ -62,4 +62,20 @@ final class IsFiniteTest extends TestCase
 
         (new IsFinite)->evaluate(log(0));
     }
+
+    public function testMatchesReturnsFalseForNonNumeric(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs("Failed asserting that 'foo' is finite.");
+
+        (new IsFinite)->evaluate('foo');
+    }
+
+    public function testReturnsAffirmativeStringInNonLogicalNotContext(): void
+    {
+        $this->assertSame(
+            'is finite',
+            LogicalAnd::fromConstraints(new IsFinite)->toString(),
+        );
+    }
 }

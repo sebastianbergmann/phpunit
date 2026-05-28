@@ -81,4 +81,20 @@ final class FileExistsTest extends TestCase
     {
         $this->assertCount(1, (new FileExists));
     }
+
+    public function testMatchesReturnsFalseForNonString(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs('Failed asserting that file "" exists.');
+
+        (new FileExists)->evaluate(123);
+    }
+
+    public function testReturnsAffirmativeStringInNonLogicalNotContext(): void
+    {
+        $this->assertSame(
+            'file exists',
+            LogicalAnd::fromConstraints(new FileExists)->toString(),
+        );
+    }
 }

@@ -204,6 +204,16 @@ final class LogicalNotTest extends TestCase
         $this->assertSame('is true', $operator->toString());
     }
 
+    public function testNegatesAffirmativeFailureDescriptionOfConstraintWithoutContextString(): void
+    {
+        $constraint = new LogicalNot(new IsAnything);
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs("Failed asserting that 'value' is not anything.");
+
+        $constraint->evaluate('value');
+    }
+
     #[TestDox('LogicalNot(IsEqual(\'test contains something\')) is handled correctly')]
     #[Group('regression')]
     #[Group('regression/5516')]

@@ -506,4 +506,24 @@ EOD
 
         $constraint->evaluate(str_repeat($actualLine . "\n", 220));
     }
+
+    public function testRejectsNonStringValue(): void
+    {
+        $constraint = new StringMatchesFormatDescription('string');
+
+        $this->assertFalse($constraint->evaluate(123, returnResult: true));
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIsOrContains('Failed asserting that string matches format description.');
+
+        $constraint->evaluate(123);
+    }
+
+    public function testReturnsAffirmativeStringInNonLogicalNotContext(): void
+    {
+        $this->assertSame(
+            'matches format description:' . PHP_EOL . 'string',
+            LogicalAnd::fromConstraints(new StringMatchesFormatDescription('string'))->toString(),
+        );
+    }
 }

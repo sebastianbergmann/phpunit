@@ -63,4 +63,20 @@ final class IsNanTest extends TestCase
 
         (new IsNan)->evaluate(1);
     }
+
+    public function testMatchesReturnsFalseForNonNumeric(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs("Failed asserting that 'foo' is nan.");
+
+        (new IsNan)->evaluate('foo');
+    }
+
+    public function testReturnsAffirmativeStringInNonLogicalNotContext(): void
+    {
+        $this->assertSame(
+            'is nan',
+            LogicalAnd::fromConstraints(new IsNan)->toString(),
+        );
+    }
 }

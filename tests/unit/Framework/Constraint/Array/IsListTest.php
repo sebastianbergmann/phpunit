@@ -127,6 +127,14 @@ final class IsListTest extends TestCase
         $this->assertCount(1, (new IsList));
     }
 
+    public function testReturnsAffirmativeStringInNonLogicalNotContext(): void
+    {
+        $this->assertSame(
+            'is a list',
+            LogicalAnd::fromConstraints(new IsList)->toString(),
+        );
+    }
+
     private static function closedResource()
     {
         $resource = fopen(__FILE__, 'r');

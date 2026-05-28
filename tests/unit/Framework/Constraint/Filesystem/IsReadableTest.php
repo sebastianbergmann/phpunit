@@ -81,4 +81,20 @@ final class IsReadableTest extends TestCase
     {
         $this->assertCount(1, (new IsReadable));
     }
+
+    public function testMatchesReturnsFalseForNonString(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs('Failed asserting that "" is readable.');
+
+        (new IsReadable)->evaluate(123);
+    }
+
+    public function testReturnsAffirmativeStringInNonLogicalNotContext(): void
+    {
+        $this->assertSame(
+            'is readable',
+            LogicalAnd::fromConstraints(new IsReadable)->toString(),
+        );
+    }
 }

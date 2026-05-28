@@ -113,4 +113,12 @@ final class IsJsonTest extends TestCase
     {
         $this->assertCount(1, (new IsJson));
     }
+
+    public function testReturnsAffirmativeStringInNonLogicalNotContext(): void
+    {
+        $this->assertSame(
+            'is valid JSON',
+            LogicalAnd::fromConstraints(new IsJson)->toString(),
+        );
+    }
 }

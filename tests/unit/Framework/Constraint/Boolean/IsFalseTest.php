@@ -74,4 +74,12 @@ final class IsFalseTest extends TestCase
 
         (new IsFalse)->evaluate(new stdClass);
     }
+
+    public function testReturnsAffirmativeStringInNonLogicalNotContext(): void
+    {
+        $this->assertSame(
+            'is false',
+            LogicalAnd::fromConstraints(new IsFalse)->toString(),
+        );
+    }
 }

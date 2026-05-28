@@ -111,4 +111,12 @@ final class IsInstanceOfTest extends TestCase
 
         new IsInstanceOf('Does\Not\Exist');
     }
+
+    public function testReturnsAffirmativeStringInNonLogicalNotContext(): void
+    {
+        $this->assertSame(
+            'is an instance of class stdClass',
+            LogicalAnd::fromConstraints(new IsInstanceOf(stdClass::class))->toString(),
+        );
+    }
 }

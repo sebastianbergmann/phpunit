@@ -71,4 +71,9 @@ final class ExceptionCodeTest extends TestCase
     {
         $this->assertCount(1, (new ExceptionCode(1234)));
     }
+
+    public function testMatchesReturnsFalseForNonStringNonInteger(): void
+    {
+        $this->assertFalse(new ExceptionCode(1234)->evaluate(1.5, returnResult: true));
+    }
 }

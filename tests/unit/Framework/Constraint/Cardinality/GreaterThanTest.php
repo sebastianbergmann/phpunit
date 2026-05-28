@@ -83,4 +83,12 @@ final class GreaterThanTest extends TestCase
     {
         $this->assertCount(1, (new GreaterThan(1)));
     }
+
+    public function testReturnsAffirmativeStringInNonLogicalNotContext(): void
+    {
+        $this->assertSame(
+            'is greater than 0',
+            LogicalAnd::fromConstraints(new GreaterThan(0))->toString(),
+        );
+    }
 }

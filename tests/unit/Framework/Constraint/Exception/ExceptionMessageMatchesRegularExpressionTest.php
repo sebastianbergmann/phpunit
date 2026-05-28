@@ -82,4 +82,16 @@ final class ExceptionMessageMatchesRegularExpressionTest extends TestCase
     {
         $this->assertCount(1, (new ExceptionMessageMatchesRegularExpression('/.*/')));
     }
+
+    public function testRejectsNonString(): void
+    {
+        $constraint = new ExceptionMessageMatchesRegularExpression('/[0-9]/');
+
+        $this->assertFalse($constraint->evaluate(123, returnResult: true));
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs("Failed asserting that exception message '' matches '/[0-9]/'.");
+
+        $constraint->evaluate(123);
+    }
 }

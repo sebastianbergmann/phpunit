@@ -76,4 +76,12 @@ final class IsNullTest extends TestCase
 
         (new IsNull)->evaluate(new stdClass);
     }
+
+    public function testReturnsAffirmativeStringInNonLogicalNotContext(): void
+    {
+        $this->assertSame(
+            'is null',
+            LogicalAnd::fromConstraints(new IsNull)->toString(),
+        );
+    }
 }

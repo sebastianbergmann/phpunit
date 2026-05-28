@@ -428,6 +428,14 @@ EOT,
         $this->assertCount(1, (new IsEqual(true)));
     }
 
+    public function testReturnsAffirmativeStringInNonLogicalNotContext(): void
+    {
+        $this->assertSame(
+            "is equal to 'foo'",
+            LogicalAnd::fromConstraints(new IsEqual('foo'))->toString(),
+        );
+    }
+
     private static function stdClass(string $key, string $value): stdClass
     {
         $o = new stdClass;

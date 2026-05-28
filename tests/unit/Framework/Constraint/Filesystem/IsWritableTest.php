@@ -81,4 +81,20 @@ final class IsWritableTest extends TestCase
     {
         $this->assertCount(1, (new IsWritable));
     }
+
+    public function testMatchesReturnsFalseForNonString(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs('Failed asserting that "" is writable.');
+
+        (new IsWritable)->evaluate(123);
+    }
+
+    public function testReturnsAffirmativeStringInNonLogicalNotContext(): void
+    {
+        $this->assertSame(
+            'is writable',
+            LogicalAnd::fromConstraints(new IsWritable)->toString(),
+        );
+    }
 }

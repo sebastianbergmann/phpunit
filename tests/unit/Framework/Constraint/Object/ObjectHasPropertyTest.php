@@ -49,6 +49,16 @@ final class ObjectHasPropertyTest extends TestCase
         $constraint->evaluate('non-object');
     }
 
+    public function testHandlesNonScalarNonObjectGracefully(): void
+    {
+        $constraint = new ObjectHasProperty('theProperty');
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs('Failed asserting that "" (array) has property "theProperty".');
+
+        $constraint->evaluate([]);
+    }
+
     public function testCanBeRepresentedAsString(): void
     {
         $constraint = new ObjectHasProperty('theProperty');
@@ -76,5 +86,13 @@ final class ObjectHasPropertyTest extends TestCase
         $constraint = new ObjectHasProperty('theProperty');
 
         $this->assertCount(1, $constraint);
+    }
+
+    public function testReturnsAffirmativeStringInNonLogicalNotContext(): void
+    {
+        $this->assertSame(
+            'has property "theProperty"',
+            LogicalAnd::fromConstraints(new ObjectHasProperty('theProperty'))->toString(),
+        );
     }
 }

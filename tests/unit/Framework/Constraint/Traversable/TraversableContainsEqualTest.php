@@ -155,4 +155,22 @@ final class TraversableContainsEqualTest extends TestCase
     {
         $this->assertCount(1, (new TraversableContainsEqual('value')));
     }
+
+    public function testReturnsFalseForNonIterableActual(): void
+    {
+        $this->assertFalse(new TraversableContainsEqual('value')->evaluate('not iterable', returnResult: true));
+    }
+
+    public function testReturnsFalseForSplObjectStorageWithNonObjectValue(): void
+    {
+        $this->assertFalse(new TraversableContainsEqual('not-object')->evaluate(new SplObjectStorage, returnResult: true));
+    }
+
+    public function testReturnsAffirmativeStringInNonLogicalNotContext(): void
+    {
+        $this->assertSame(
+            "contains 'value'",
+            LogicalAnd::fromConstraints(new TraversableContainsEqual('value'))->toString(),
+        );
+    }
 }

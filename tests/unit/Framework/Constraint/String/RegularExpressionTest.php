@@ -95,4 +95,17 @@ final class RegularExpressionTest extends TestCase
 
         $constraint->evaluate(str_repeat('foobar', 1024));
     }
+
+    public function testMatchesReturnsFalseForNonString(): void
+    {
+        $this->assertFalse(new RegularExpression('/.*/')->evaluate(123, returnResult: true));
+    }
+
+    public function testReturnsAffirmativeStringInNonLogicalNotContext(): void
+    {
+        $this->assertSame(
+            'matches PCRE pattern "/.*/"',
+            LogicalAnd::fromConstraints(new RegularExpression('/.*/'))->toString(),
+        );
+    }
 }

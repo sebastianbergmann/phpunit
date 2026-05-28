@@ -102,4 +102,12 @@ final class IsEmptyTest extends TestCase
     {
         $this->assertCount(1, new IsEmpty);
     }
+
+    public function testReturnsAffirmativeStringInNonLogicalNotContext(): void
+    {
+        $this->assertSame(
+            'is empty',
+            LogicalAnd::fromConstraints(new IsEmpty)->toString(),
+        );
+    }
 }

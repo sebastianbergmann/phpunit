@@ -142,4 +142,17 @@ EOT,
     {
         $this->assertCount(1, TraversableContainsOnly::forNativeType(NativeType::Int));
     }
+
+    public function testFailsForNonIterableActual(): void
+    {
+        $this->assertFalse(TraversableContainsOnly::forNativeType(NativeType::Int)->evaluate('not iterable', returnResult: true));
+    }
+
+    public function testReturnsAffirmativeStringInNonLogicalNotContext(): void
+    {
+        $this->assertSame(
+            'contains only values of type "int"',
+            LogicalAnd::fromConstraints(TraversableContainsOnly::forNativeType(NativeType::Int))->toString(),
+        );
+    }
 }

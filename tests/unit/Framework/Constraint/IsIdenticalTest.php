@@ -188,6 +188,14 @@ EOT,
         $this->assertCount(1, (new IsIdentical(true)));
     }
 
+    public function testReturnsAffirmativeStringInNonLogicalNotContext(): void
+    {
+        $this->assertSame(
+            'is identical to 0',
+            LogicalAnd::fromConstraints(new IsIdentical(0))->toString(),
+        );
+    }
+
     public function testFailureDescriptionForResources(): void
     {
         $expected = fopen('php://memory', 'r');

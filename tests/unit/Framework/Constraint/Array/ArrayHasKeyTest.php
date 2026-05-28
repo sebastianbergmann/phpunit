@@ -120,4 +120,19 @@ final class ArrayHasKeyTest extends TestCase
     {
         $this->assertCount(1, (new ArrayHasKey(0)));
     }
+
+    public function testMatchesReturnsFalseWhenKeyIsNeitherIntegerNorString(): void
+    {
+        $constraint = new ArrayHasKey(1.5);
+
+        $this->assertFalse($constraint->evaluate(['key' => 'value'], returnResult: true));
+    }
+
+    public function testReturnsAffirmativeStringInNonLogicalNotContext(): void
+    {
+        $this->assertSame(
+            'has the key \'key\'',
+            LogicalAnd::fromConstraints(new ArrayHasKey('key'))->toString(),
+        );
+    }
 }

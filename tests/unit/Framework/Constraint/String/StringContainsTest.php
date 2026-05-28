@@ -262,4 +262,12 @@ final class StringContainsTest extends TestCase
     {
         $this->assertCount(1, (new StringContains('needle')));
     }
+
+    public function testReturnsAffirmativeStringInNonLogicalNotContext(): void
+    {
+        $this->assertSame(
+            'contains "needle" [ASCII](length: 6)',
+            LogicalAnd::fromConstraints(new StringContains('needle'))->toString(),
+        );
+    }
 }

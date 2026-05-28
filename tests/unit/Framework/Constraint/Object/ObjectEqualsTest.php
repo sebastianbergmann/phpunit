@@ -66,6 +66,14 @@ final class ObjectEqualsTest extends TestCase
         $this->assertCount(1, (new ObjectEquals(new ValueObject(1))));
     }
 
+    public function testReturnsAffirmativeStringInNonLogicalNotContext(): void
+    {
+        $this->assertSame(
+            'two objects are equal',
+            LogicalAnd::fromConstraints(new ObjectEquals(new ValueObject(1)))->toString(),
+        );
+    }
+
     public function testAcceptsActualObjectWhenMethodSaysTheyAreEqual(): void
     {
         $this->assertTrue(new ObjectEquals(new ValueObject(1))->evaluate(new ValueObject(1), '', true));

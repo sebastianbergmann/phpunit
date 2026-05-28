@@ -63,4 +63,20 @@ final class IsInfiniteTest extends TestCase
 
         (new IsInfinite)->evaluate(1);
     }
+
+    public function testMatchesReturnsFalseForNonNumeric(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs("Failed asserting that 'foo' is infinite.");
+
+        (new IsInfinite)->evaluate('foo');
+    }
+
+    public function testReturnsAffirmativeStringInNonLogicalNotContext(): void
+    {
+        $this->assertSame(
+            'is infinite',
+            LogicalAnd::fromConstraints(new IsInfinite)->toString(),
+        );
+    }
 }

@@ -86,4 +86,16 @@ final class ExceptionMessageIsOrContainsTest extends TestCase
     {
         $this->assertCount(1, (new ExceptionMessageIsOrContains('message')));
     }
+
+    public function testRejectsNonString(): void
+    {
+        $constraint = new ExceptionMessageIsOrContains('expected-message');
+
+        $this->assertFalse($constraint->evaluate(123, returnResult: true));
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs("Failed asserting that exception message '' contains 'expected-message'.");
+
+        $constraint->evaluate(123);
+    }
 }

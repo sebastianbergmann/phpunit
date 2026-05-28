@@ -83,4 +83,17 @@ final class StringEqualsStringIgnoringLineEndingsTest extends TestCase
     {
         $this->assertCount(1, (new StringEqualsStringIgnoringLineEndings('string')));
     }
+
+    public function testMatchesReturnsFalseForNonString(): void
+    {
+        $this->assertFalse(new StringEqualsStringIgnoringLineEndings('string')->evaluate(123, returnResult: true));
+    }
+
+    public function testReturnsAffirmativeStringInNonLogicalNotContext(): void
+    {
+        $this->assertSame(
+            'is equal to "string" ignoring line endings',
+            LogicalAnd::fromConstraints(new StringEqualsStringIgnoringLineEndings('string'))->toString(),
+        );
+    }
 }

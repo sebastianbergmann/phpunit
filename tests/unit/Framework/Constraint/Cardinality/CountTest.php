@@ -146,6 +146,14 @@ final class CountTest extends TestCase
         $this->assertCount(1, (new Count(1)));
     }
 
+    public function testReturnsAffirmativeStringInNonLogicalNotContext(): void
+    {
+        $this->assertSame(
+            'count matches 1',
+            LogicalAnd::fromConstraints(new Count(1))->toString(),
+        );
+    }
+
     public function testCountDoesNotChangeIteratorKey(): void
     {
         $countConstraint = new Count(2);

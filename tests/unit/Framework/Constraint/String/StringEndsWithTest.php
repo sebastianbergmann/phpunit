@@ -91,4 +91,17 @@ final class StringEndsWithTest extends TestCase
 
         new StringEndsWith('');
     }
+
+    public function testMatchesReturnsFalseForNonString(): void
+    {
+        $this->assertFalse(new StringEndsWith('suffix')->evaluate(123, returnResult: true));
+    }
+
+    public function testReturnsAffirmativeStringInNonLogicalNotContext(): void
+    {
+        $this->assertSame(
+            'ends with "suffix"',
+            LogicalAnd::fromConstraints(new StringEndsWith('suffix'))->toString(),
+        );
+    }
 }

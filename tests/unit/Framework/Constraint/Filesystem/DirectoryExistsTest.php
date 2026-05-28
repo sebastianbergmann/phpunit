@@ -81,4 +81,20 @@ final class DirectoryExistsTest extends TestCase
     {
         $this->assertCount(1, (new DirectoryExists));
     }
+
+    public function testMatchesReturnsFalseForNonString(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs('Failed asserting that directory "" exists.');
+
+        (new DirectoryExists)->evaluate(123);
+    }
+
+    public function testReturnsAffirmativeStringInNonLogicalNotContext(): void
+    {
+        $this->assertSame(
+            'directory exists',
+            LogicalAnd::fromConstraints(new DirectoryExists)->toString(),
+        );
+    }
 }

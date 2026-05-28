@@ -214,6 +214,14 @@ EOT,
         $this->assertCount(1, (new IsEqualWithDelta(1.0, 0.0)));
     }
 
+    public function testReturnsAffirmativeStringInNonLogicalNotContext(): void
+    {
+        $this->assertSame(
+            'is equal to 1.0 with delta <0.100000>',
+            LogicalAnd::fromConstraints(new IsEqualWithDelta(1.0, 0.1))->toString(),
+        );
+    }
+
     private static function stdClass(string $key, float $value): stdClass
     {
         $o = new stdClass;
