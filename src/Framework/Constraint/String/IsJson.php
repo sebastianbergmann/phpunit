@@ -18,6 +18,7 @@ use const JSON_ERROR_UTF8;
 use function is_string;
 use function json_decode;
 use function json_last_error;
+use function json_validate;
 use function sprintf;
 
 /**
@@ -57,9 +58,7 @@ final class IsJson extends Constraint
             return false;
         }
 
-        json_decode($other);
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
+        if (!json_validate($other)) {
             return false;
         }
 
