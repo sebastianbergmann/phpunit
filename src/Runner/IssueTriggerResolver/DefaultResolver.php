@@ -17,7 +17,7 @@ namespace PHPUnit\Runner\IssueTriggerResolver;
 final class DefaultResolver implements Resolver
 {
     /**
-     * @param list<array{file?: string, line?: int, class?: class-string, function?: string, type?: string, args?: list<mixed>}> $trace
+     * @param list<array{file?: string, line?: int, class?: class-string, function?: string, type?: string, args?: list<mixed>, object?: object, ...}> $trace
      */
     public function resolve(array $trace, string $message): Resolution
     {

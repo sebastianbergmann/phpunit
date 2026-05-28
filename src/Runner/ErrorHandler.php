@@ -362,7 +362,7 @@ final class ErrorHandler
     }
 
     /**
-     * @param list<array{file?: string, line?: int, class?: class-string, function?: string, type?: string, args?: list<mixed>}> $trace
+     * @param list<array{file?: string, line?: int, class?: class-string, function?: string, type?: string, args?: list<mixed>, object?: object, ...}> $trace
      */
     private function triggerForUserlandDeprecation(TestMethod $test, string $message, array $trace): IssueTrigger
     {
@@ -414,7 +414,7 @@ final class ErrorHandler
     }
 
     /**
-     * @return list<array{file: string, line: int, class?: string, function?: string, type: string, args?: list<mixed>, object?: object}>
+     * @return list<array{file?: string, line?: int, class?: class-string, function?: string, type?: string, args?: list<mixed>, object?: object, ...}>
      */
     private function filteredStackTrace(): array
     {
@@ -459,15 +459,19 @@ final class ErrorHandler
         $trace = $this->errorStackTrace();
 
         foreach ($trace as $frame) {
+            if (!isset($frame['file']) || $frame['file'] === '' || !isset($frame['line']) || $frame['line'] < 1) {
+                continue;
+            }
+
             foreach ($this->deprecationTriggers['functions'] as $function) {
                 if ($this->frameIsFunction($frame, $function)) {
-                    return $frame;
+                    return ['file' => $frame['file'], 'line' => $frame['line']];
                 }
             }
 
             foreach ($this->deprecationTriggers['methods'] as $method) {
                 if ($this->frameIsMethod($frame, $method)) {
-                    return $frame;
+                    return ['file' => $frame['file'], 'line' => $frame['line']];
                 }
             }
         }
@@ -476,7 +480,7 @@ final class ErrorHandler
     }
 
     /**
-     * @return list<array{file: string, line: ?int, class?: class-string, function?: string, type: string, args?: list<mixed>, object?: object}>
+     * @return list<array{file?: string, line?: int, class?: class-string, function?: string, type?: string, args?: list<mixed>, object?: object, ...}>
      */
     private function errorStackTrace(bool $ignoreArgs = true): array
     {
@@ -496,8 +500,8 @@ final class ErrorHandler
     }
 
     /**
-     * @param array{class? : class-string, function?: non-empty-string} $frame
-     * @param non-empty-string                                          $function
+     * @param array{class?: class-string, function?: non-empty-string, ...<mixed>} $frame
+     * @param non-empty-string                                                     $function
      */
     private function frameIsFunction(array $frame, string $function): bool
     {
@@ -505,8 +509,8 @@ final class ErrorHandler
     }
 
     /**
-     * @param array{class? : class-string, function?: non-empty-string}    $frame
-     * @param array{className: class-string, methodName: non-empty-string} $method
+     * @param array{class?: class-string, function?: non-empty-string, ...<mixed>} $frame
+     * @param array{className: class-string, methodName: non-empty-string}         $method
      */
     private function frameIsMethod(array $frame, array $method): bool
     {

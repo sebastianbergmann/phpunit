@@ -148,7 +148,7 @@ final class Help
      */
     private function elements(): array
     {
-        $elements = [
+        return [
             'Usage' => [
                 ['text' => 'phpunit [options] <directory|file> ...'],
             ],
@@ -314,24 +314,19 @@ final class Help
                 ['arg' => '--disable-coverage-ignore', 'desc' => 'Disable metadata for ignoring code coverage'],
                 ['arg' => '--no-coverage', 'desc' => 'Ignore code coverage reporting configured in the XML configuration file'],
             ],
-        ];
-
-        if (defined('__PHPUNIT_PHAR__')) {
-            $elements['PHAR'] = [
+            ...(defined('__PHPUNIT_PHAR__') ? ['PHAR' => [
                 ['arg' => '--manifest', 'desc' => 'Print Software Bill of Materials (SBOM) in plain-text format'],
                 ['arg' => '--sbom', 'desc' => 'Print Software Bill of Materials (SBOM) in CycloneDX XML format'],
                 ['arg' => '--composer-lock', 'desc' => 'Print composer.lock file used to build the PHAR'],
-            ];
-        }
+            ]] : []),
 
-        $elements['Miscellaneous'] = [
-            ['arg' => '-h|--help', 'desc' => 'Prints this usage information'],
-            ['arg' => '--version', 'desc' => 'Prints the version and exits'],
-            ['arg' => '--atleast-version <min>', 'desc' => 'Checks that version is greater than <min> and exits'],
-            ['arg' => '--check-version', 'desc' => 'Checks whether PHPUnit is the latest version and exits'],
-            ['arg' => '--check-php-configuration', 'desc' => 'Checks whether PHP configuration follows best practices'],
+            'Miscellaneous' => [
+                ['arg' => '-h|--help', 'desc' => 'Prints this usage information'],
+                ['arg' => '--version', 'desc' => 'Prints the version and exits'],
+                ['arg' => '--atleast-version <min>', 'desc' => 'Checks that version is greater than <min> and exits'],
+                ['arg' => '--check-version', 'desc' => 'Checks whether PHPUnit is the latest version and exits'],
+                ['arg' => '--check-php-configuration', 'desc' => 'Checks whether PHP configuration follows best practices'],
+            ],
         ];
-
-        return $elements;
     }
 }
