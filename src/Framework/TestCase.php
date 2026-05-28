@@ -126,7 +126,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private ?bool $backupStaticProperties   = null;
 
     /**
-     * @var array<string, list<string>>
+     * @var array<class-string, list<non-empty-string>>
      */
     private array $backupStaticPropertiesExcludeList = [];
     private ?Snapshot $snapshot                      = null;
@@ -760,7 +760,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @param array<string, list<string>> $backupStaticPropertiesExcludeList
+     * @param array<class-string, list<non-empty-string>> $backupStaticPropertiesExcludeList
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
@@ -1636,9 +1636,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $this->outputBufferingCaptured .= $buffer;
             }
 
+            // @codeCoverageIgnoreStart
             if ($isFinal && !$isClean) {
                 return $buffer;
             }
+            // @codeCoverageIgnoreEnd
 
             return '';
         });
@@ -1827,6 +1829,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             }
         }
 
+        foreach ($this->backupStaticPropertiesExcludeList as $class => $properties) {
+            foreach ($properties as $property) {
+                $excludeList->addStaticProperty($class, $property);
+            }
+        }
+
         if (!defined('PHPUNIT_TESTSUITE')) {
             $excludeList->addClassNamePrefix('PHPUnit');
             $excludeList->addClassNamePrefix('SebastianBergmann\CodeCoverage');
@@ -1842,18 +1850,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             }
 
             $excludeList->addStaticProperty(ComparatorFactory::class, 'instance');
-
-            foreach ($this->backupStaticPropertiesExcludeList as $class => $properties) {
-                if ($class === '') {
-                    continue;
-                }
-
-                foreach ($properties as $property) {
-                    if ($property !== '') {
-                        $excludeList->addStaticProperty($class, $property);
-                    }
-                }
-            }
         }
 
         try {
@@ -2189,6 +2185,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @param 'afterLastTestMethodFinished'|'beforeFirstTestMethodFinished' $finishedMethod
      *
      * @throws Throwable
+     *
+     * @codeCoverageIgnore
      */
     private function invokeClassLevelHookMethods(HookMethodCollection $hookMethods, Event\Emitter $emitter, string $calledMethod, string $erroredMethod, string $failedMethod, string $finishedMethod): void
     {
@@ -2403,15 +2401,19 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $errorLogCapture = tmpfile();
 
+        // @codeCoverageIgnoreStart
         if ($errorLogCapture === false) {
             return;
         }
+        // @codeCoverageIgnoreEnd
 
         $meta = stream_get_meta_data($errorLogCapture);
 
-        if (!isset($meta['uri']) || !is_string($meta['uri'])) {
+        // @codeCoverageIgnoreStart
+        if (!isset($meta['uri'])) {
             return;
         }
+        // @codeCoverageIgnoreEnd
 
         $capturePath = $meta['uri'];
 
@@ -2428,6 +2430,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     private function verifyErrorLogExpectation(): void
     {
+        // @codeCoverageIgnoreStart
         if ($this->errorLogCapture === false) {
             if ($this->expectErrorLog) {
                 throw new ErrorLogNotWritableException;
@@ -2435,6 +2438,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             return;
         }
+        // @codeCoverageIgnoreEnd
 
         $errorLogOutput = stream_get_contents($this->errorLogCapture);
 
@@ -2444,9 +2448,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             return;
         }
 
+        // @codeCoverageIgnoreStart
         if ($errorLogOutput === false) {
             return;
         }
+        // @codeCoverageIgnoreEnd
 
         print $this->stripDateFromErrorLog($errorLogOutput);
     }
@@ -2480,9 +2486,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $this->errorLogCapture = false;
 
+        // @codeCoverageIgnoreStart
         if ($this->previousErrorLogTarget === false) {
             return;
         }
+        // @codeCoverageIgnoreEnd
 
         ini_set('error_log', $this->previousErrorLogTarget);
 

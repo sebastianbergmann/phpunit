@@ -14,6 +14,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\ExcludeGlobalVariableFromBackup;
 use PHPUnit\TestFixture\TestWithDifferentNames;
+use ReflectionMethod;
+use stdClass;
 
 #[CoversClass(TestCase::class)]
 #[ExcludeGlobalVariableFromBackup('i')]
@@ -126,5 +128,52 @@ class TestCaseTest extends TestCase
             TestWithDifferentNames::class . '::testWithName with data set "myDataSet"',
             $testCase->sortId(),
         );
+    }
+
+    public function testShouldRunInSeparateProcessReturnsFalseWhenTestIsAlreadyInIsolation(): void
+    {
+        $testCase = new TestWithDifferentNames('testWithName');
+        $testCase->setInIsolation(true);
+
+        $method = new ReflectionMethod(TestCase::class, 'shouldRunInSeparateProcess');
+
+        $this->assertFalse($method->invoke($testCase));
+    }
+
+    public function testShouldInvocationMockerBeResetReturnsFalseWhenMockIsAmongDependencyInput(): void
+    {
+        $testCase = new TestWithDifferentNames('testWithName');
+        $mock     = $this->createMock(stdClass::class);
+
+        $testCase->setDependencyInput(['previousTest' => $mock]);
+
+        $method = new ReflectionMethod(TestCase::class, 'shouldInvocationMockerBeReset');
+
+        $this->assertFalse($method->invoke($testCase, $mock));
+    }
+
+    public function testShouldInvocationMockerBeResetReturnsFalseWhenMockIsAmongTestResult(): void
+    {
+        $testCase = new TestWithDifferentNames('testWithName');
+        $mock     = $this->createMock(stdClass::class);
+
+        $testCase->setResult([$mock]);
+
+        $method = new ReflectionMethod(TestCase::class, 'shouldInvocationMockerBeReset');
+
+        $this->assertFalse($method->invoke($testCase, $mock));
+    }
+
+    public function testCreateGlobalStateSnapshotAppliesBackupStaticPropertiesExcludeList(): void
+    {
+        $testCase = new TestWithDifferentNames('testWithName');
+
+        $testCase->setBackupStaticPropertiesExcludeList([
+            self::class => ['testStatic'],
+        ]);
+
+        $method = new ReflectionMethod(TestCase::class, 'createGlobalStateSnapshot');
+
+        $this->assertNotNull($method->invoke($testCase, true));
     }
 }
