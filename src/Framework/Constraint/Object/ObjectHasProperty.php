@@ -85,9 +85,11 @@ final class ObjectHasProperty extends Constraint
 
     protected function failureDescriptionInContext(Operator $operator, mixed $role, mixed $other): string
     {
+        // @codeCoverageIgnoreStart
         if (!$operator instanceof LogicalNot) {
             return '';
         }
+        // @codeCoverageIgnoreEnd
 
         return $this->describe($other, $this->toStringInContext($operator, $role));
     }

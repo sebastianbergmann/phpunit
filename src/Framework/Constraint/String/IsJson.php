@@ -95,9 +95,11 @@ final class IsJson extends Constraint
      */
     protected function failureDescriptionInContext(Operator $operator, mixed $role, mixed $other): string
     {
+        // @codeCoverageIgnoreStart
         if (!$operator instanceof LogicalNot) {
             return '';
         }
+        // @codeCoverageIgnoreEnd
 
         if (!is_string($other)) {
             return $this->valueToTypeStringFragment($other) . 'is not valid JSON';

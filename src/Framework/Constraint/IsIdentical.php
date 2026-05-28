@@ -132,9 +132,11 @@ final class IsIdentical extends Constraint
 
     protected function failureDescriptionInContext(Operator $operator, mixed $role, mixed $other): string
     {
+        // @codeCoverageIgnoreStart
         if (!$operator instanceof LogicalNot) {
             return '';
         }
+        // @codeCoverageIgnoreEnd
 
         if (is_object($this->value) && is_object($other)) {
             return 'two variables do not reference the same object';

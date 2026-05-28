@@ -72,7 +72,9 @@ final class LogicalNot extends UnaryOperator
         );
 
         if ($segments === false) {
+            // @codeCoverageIgnoreStart
             $segments = [$string];
+            // @codeCoverageIgnoreEnd
         }
 
         $negatedString = '';

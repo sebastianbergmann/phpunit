@@ -69,9 +69,11 @@ final class FileExists extends Constraint
 
     protected function failureDescriptionInContext(Operator $operator, mixed $role, mixed $other): string
     {
+        // @codeCoverageIgnoreStart
         if (!$operator instanceof LogicalNot) {
             return '';
         }
+        // @codeCoverageIgnoreEnd
 
         return sprintf(
             'file "%s" does not exist',

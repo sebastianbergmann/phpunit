@@ -116,9 +116,11 @@ abstract class ArrayComparison extends Constraint
 
     protected function failureDescriptionInContext(Operator $operator, mixed $role, mixed $other): string
     {
+        // @codeCoverageIgnoreStart
         if (!$operator instanceof LogicalNot) {
             return '';
         }
+        // @codeCoverageIgnoreEnd
 
         return $this->toStringInContext($operator, $role);
     }

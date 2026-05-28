@@ -97,9 +97,11 @@ final class IsInstanceOf extends Constraint
 
     protected function failureDescriptionInContext(Operator $operator, mixed $role, mixed $other): string
     {
+        // @codeCoverageIgnoreStart
         if (!$operator instanceof LogicalNot) {
             return '';
         }
+        // @codeCoverageIgnoreEnd
 
         return $this->valueToTypeStringFragment($other) . $this->toStringInContext($operator, $role);
     }
