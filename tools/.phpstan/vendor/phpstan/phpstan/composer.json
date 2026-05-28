@@ -2,6 +2,17 @@
 	"name": "phpstan/phpstan",
 	"description": "PHPStan - PHP Static Analysis Tool",
 	"license": ["MIT"],
+  "authors": [
+    {
+      "name": "Ondřej Mirtes"
+    },
+    {
+      "name": "Markus Staab"
+    },
+    {
+      "name": "Vincent Langlet"
+    }
+  ],
 	"keywords": ["dev", "static analysis"],
 	"require": {
 		"php": "^7.4|^8.0"

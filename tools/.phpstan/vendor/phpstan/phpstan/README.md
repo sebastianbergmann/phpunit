@@ -67,7 +67,7 @@ Want your logo here? [Learn more »](https://phpstan.org/sponsor)
 <br>
 <a href="https://zol.fr?utm_source=phpstan"><img src="website/src/images/sponsor/zol.png" alt="ZOL" width="283" height="64"></a>
 &nbsp;&nbsp;&nbsp;
-<a href="https://www.edgenext.com/"><img src="website/src/images/sponsor/edgenext.png" alt="EdgeNext" width="283" height="64"></a>
+<a href="https://inviqa.com/"><img src="website/src/images/sponsor/inviqa.png" alt="Inviqa" width="254" height="65"></a>
 <br>
 <a href="https://route4me.com/"><img src="website/src/images/sponsor/route4me.png" alt="Route4Me: Route Optimizer and Route Planner Software" width="283" height="64"></a>
 &nbsp;&nbsp;&nbsp;
@@ -78,10 +78,8 @@ Want your logo here? [Learn more »](https://phpstan.org/sponsor)
 <a href="https://www.campoint.net/"><img src="website/src/images/sponsor/campoint.png" alt="campoint AG" width="283" height="64"></a>
 <br>
 <a href="https://www.crisp.nl/"><img src="website/src/images/sponsor/crisp.png" alt="Crisp.nl" width="283" height="64"></a>
-&nbsp;&nbsp;&nbsp;
-<a href="https://inviqa.com/"><img src="website/src/images/sponsor/inviqa.png" alt="Inviqa" width="254" height="65"></a>
 <br>
-
+<a href="https://www.netrouting.com/"><img src="website/src/images/sponsor/netrouting.png" alt="Netrouting" width="254" height="65"></a>
 
 
 [**You can sponsor my open-source work on PHPStan through GitHub Sponsors and also directly.**](https://phpstan.org/sponsor)
