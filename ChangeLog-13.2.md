@@ -44,6 +44,7 @@ All notable changes of the PHPUnit 13.2 release series are documented in this fi
 * [#6535](https://github.com/sebastianbergmann/phpunit/pull/6535): Use `sebastian/file-filter` in `SourceFilter::includes()` for issue trigger identification
 * [#6581](https://github.com/sebastianbergmann/phpunit/issues/6581): Allow `#[IgnoreDeprecations]` to be repeated
 * [#6609](https://github.com/sebastianbergmann/phpunit/pull/6609): Skip data providers whose method cannot match `--filter`
+* [#6685](https://github.com/sebastianbergmann/phpunit/pull/6685): Generate failure messages for inverse assertions by authoring negations, not by rewriting strings
 * Only errors and failures are now considered for "defect first" test reordering (tests that triggered deprecations, notices, or warnings as well as incomplete, risky, and skipped tests were previous also considered)
 * A warning is now emitted when closures are compared for equality using the `IsEqual`, `IsEqualCanonicalizing`, `IsEqualIgnoringCase`, `IsEqualWithDelta`, and `TraversableContainsEqual` constraints or the `assertEquals()`, `assertEqualsCanonicalizing()`, `assertEqualsIgnoringCase()`, `assertEqualsWithDelta()`, and `assertContainsEquals()` assertions
 
