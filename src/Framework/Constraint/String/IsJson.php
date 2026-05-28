@@ -101,6 +101,10 @@ final class IsJson extends Constraint
         }
         // @codeCoverageIgnoreEnd
 
+        // LogicalNot(IsJson) only fails when IsJson succeeds, which requires
+        // $other to be a non-empty string. The defensive branches below are
+        // therefore unreachable through the regular API.
+        // @codeCoverageIgnoreStart
         if (!is_string($other)) {
             return $this->valueToTypeStringFragment($other) . 'is not valid JSON';
         }
@@ -108,6 +112,7 @@ final class IsJson extends Constraint
         if ($other === '') {
             return 'an empty string is not valid JSON';
         }
+        // @codeCoverageIgnoreEnd
 
         return 'a string is not valid JSON';
     }
