@@ -10,8 +10,6 @@
 namespace PHPUnit\Framework;
 
 use const PHP_EOL;
-use const PHP_OUTPUT_HANDLER_CLEAN;
-use const PHP_OUTPUT_HANDLER_FINAL;
 use function array_any;
 use function array_keys;
 use function array_merge;
@@ -34,10 +32,6 @@ use function is_object;
 use function is_string;
 use function libxml_clear_errors;
 use function method_exists;
-use function ob_end_clean;
-use function ob_get_contents;
-use function ob_get_level;
-use function ob_start;
 use function preg_match;
 use function putenv;
 use function restore_exception_handler;
@@ -67,6 +61,7 @@ use PHPUnit\Framework\MockObject\TestStubBuilder;
 use PHPUnit\Framework\TestCase\ErrorLogCapture;
 use PHPUnit\Framework\TestCase\ExceptionExpectation;
 use PHPUnit\Framework\TestCase\HookMethodInvoker;
+use PHPUnit\Framework\TestCase\OutputBuffer;
 use PHPUnit\Framework\TestRunner\SeparateProcessTestRunner;
 use PHPUnit\Framework\TestRunner\TestRunner;
 use PHPUnit\Framework\TestSize\TestSize;
@@ -172,15 +167,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     private int $numberOfAssertionsPerformed = 0;
     private mixed $testResult                = null;
-    private string $output                   = '';
-    private ?string $outputExpectedRegex     = null;
-    private ?string $outputExpectedString    = null;
-    private bool $outputBufferingActive      = false;
-    private int $outputBufferingLevel;
-    private string $outputBufferingCaptured   = '';
-    private bool $outputBufferingDestroyed    = false;
-    private bool $outputRetrievedForAssertion = false;
-    private bool $doesNotPerformAssertions    = false;
+    private bool $doesNotPerformAssertions   = false;
+    private OutputBuffer $outputBuffer;
     private ErrorLogCapture $errorLogCapture;
 
     /**
@@ -216,6 +204,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->methodName           = $name;
         $this->status               = TestStatus::unknown();
         $this->exceptionExpectation = new ExceptionExpectation;
+        $this->outputBuffer         = new OutputBuffer;
         $this->errorLogCapture      = new ErrorLogCapture;
 
         if (is_callable($this->sortId(), true)) {
@@ -407,15 +396,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function hasUnexpectedOutput(): bool
     {
-        if ($this->output === '') {
-            return false;
-        }
-
-        if ($this->expectsOutput()) {
-            return false;
-        }
-
-        return true;
+        return $this->outputBuffer->hasUnexpectedOutput();
     }
 
     /**
@@ -423,11 +404,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function output(): string
     {
-        if (!$this->outputBufferingActive) {
-            return $this->output;
-        }
-
-        return $this->outputBufferingCaptured . (string) ob_get_contents();
+        return $this->outputBuffer->output();
     }
 
     /**
@@ -443,7 +420,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function expectsOutput(): bool
     {
-        return $this->hasExpectationOnOutput() || $this->outputRetrievedForAssertion;
+        return $this->outputBuffer->expectsOutput();
     }
 
     /**
@@ -465,7 +442,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->snapshotGlobalState();
         $this->snapshotGlobalErrorExceptionHandlers();
         $this->handleEnvironmentVariables();
-        $this->startOutputBuffering();
+        $this->outputBuffer->start();
 
         $hookMethods                       = (new HookMethods)->hookMethods(static::class);
         $hasMetRequirements                = false;
@@ -580,14 +557,30 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $outputBufferingStopped = false;
 
-        if (!isset($e) &&
-            $this->hasExpectationOnOutput() &&
-            $this->stopOutputBuffering()) {
-            $outputBufferingStopped = true;
+        if (!isset($e) && $this->outputBuffer->hasExpectation()) {
+            $stopResult = $this->outputBuffer->stop();
 
-            try {
-                $this->performAssertionsOnOutput();
-            } catch (ExpectationFailedException $e) {
+            if ($stopResult->riskyMessage !== null) {
+                $emitter->testConsideredRisky(
+                    $this->valueObjectForEvents(),
+                    $stopResult->riskyMessage,
+                );
+            }
+
+            if ($stopResult->closedCleanly) {
+                $outputBufferingStopped = true;
+
+                try {
+                    $this->outputBuffer->performAssertions();
+                } catch (ExpectationFailedException $e) {
+                    $this->status = TestStatus::failure($e->getMessage());
+
+                    $emitter->testFailed(
+                        $this->valueObjectForEvents(),
+                        Event\Code\ThrowableBuilder::from($e),
+                        Event\Code\ComparisonFailureBuilder::from($e),
+                    );
+                }
             }
         }
 
@@ -648,7 +641,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         if (!$outputBufferingStopped) {
-            $this->stopOutputBuffering();
+            $stopResult = $this->outputBuffer->stop();
+
+            if ($stopResult->riskyMessage !== null) {
+                $emitter->testConsideredRisky(
+                    $this->valueObjectForEvents(),
+                    $stopResult->riskyMessage,
+                );
+            }
         }
 
         clearstatcache();
@@ -1063,19 +1063,17 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     final protected function getActualOutputForAssertion(): string
     {
-        $this->outputRetrievedForAssertion = true;
-
-        return $this->output();
+        return $this->outputBuffer->getActualOutputForAssertion();
     }
 
     final protected function expectOutputRegex(string $expectedRegex): void
     {
-        $this->outputExpectedRegex = $expectedRegex;
+        $this->outputBuffer->expectRegex($expectedRegex);
     }
 
     final protected function expectOutputString(string $expectedString): void
     {
-        $this->outputExpectedString = $expectedString;
+        $this->outputBuffer->expectString($expectedString);
     }
 
     final protected function expectErrorLog(): void
@@ -1583,86 +1581,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->status = TestStatus::skipped($message);
     }
 
-    private function startOutputBuffering(): void
-    {
-        $this->outputBufferingCaptured  = '';
-        $this->outputBufferingDestroyed = false;
-
-        ob_start(function (string $buffer, int $phase): string
-        {
-            $isClean = ($phase & PHP_OUTPUT_HANDLER_CLEAN) !== 0;
-            $isFinal = ($phase & PHP_OUTPUT_HANDLER_FINAL) !== 0;
-
-            if ($isFinal) {
-                $this->outputBufferingDestroyed = true;
-            }
-
-            if (!$isClean || $isFinal) {
-                $this->outputBufferingCaptured .= $buffer;
-            }
-
-            // @codeCoverageIgnoreStart
-            if ($isFinal && !$isClean) {
-                return $buffer;
-            }
-            // @codeCoverageIgnoreEnd
-
-            return '';
-        });
-
-        $this->outputBufferingActive = true;
-        $this->outputBufferingLevel  = ob_get_level();
-    }
-
-    private function stopOutputBuffering(): bool
-    {
-        $bufferingLevel = ob_get_level();
-
-        if ($bufferingLevel !== $this->outputBufferingLevel) {
-            if ($bufferingLevel > $this->outputBufferingLevel) {
-                $message = 'Test code or tested code did not close its own output buffers';
-            } else {
-                $message = 'Test code or tested code closed output buffers other than its own';
-            }
-
-            while (ob_get_level() >= $this->outputBufferingLevel) {
-                if (!ob_end_clean()) {
-                    break;
-                }
-            }
-
-            $this->output                = $this->outputBufferingCaptured;
-            $this->outputBufferingActive = false;
-            $this->outputBufferingLevel  = ob_get_level();
-
-            Event\Facade::emitter()->testConsideredRisky(
-                $this->valueObjectForEvents(),
-                $message,
-            );
-
-            return false;
-        }
-
-        $bufferWasSubstituted = $this->outputBufferingDestroyed;
-
-        ob_end_clean();
-
-        $this->output                = $this->outputBufferingCaptured;
-        $this->outputBufferingActive = false;
-        $this->outputBufferingLevel  = ob_get_level();
-
-        if ($bufferWasSubstituted) {
-            Event\Facade::emitter()->testConsideredRisky(
-                $this->valueObjectForEvents(),
-                'Test code or tested code closed output buffers other than its own',
-            );
-
-            return false;
-        }
-
-        return true;
-    }
-
     private function snapshotGlobalErrorExceptionHandlers(): void
     {
         foreach (ErrorHandler::instance()->snapshotErrorHandlers() as $message) {
@@ -1970,46 +1888,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         return ConfigurationRegistry::get()->processIsolation();
     }
 
-    /**
-     * @throws Exception
-     * @throws ExpectationFailedException
-     * @throws NoPreviousThrowableException
-     */
-    private function performAssertionsOnOutput(): void
-    {
-        try {
-            if ($this->outputExpectedRegex !== null) {
-                $this->assertMatchesRegularExpression($this->outputExpectedRegex, $this->output);
-            } elseif ($this->outputExpectedString !== null) {
-                $this->assertSame($this->outputExpectedString, $this->output);
-            }
-        } catch (ExpectationFailedException $e) {
-            $this->status = TestStatus::failure($e->getMessage());
-
-            Event\Facade::emitter()->testFailed(
-                $this->valueObjectForEvents(),
-                Event\Code\ThrowableBuilder::from($e),
-                Event\Code\ComparisonFailureBuilder::from($e),
-            );
-
-            throw $e;
-        }
-    }
-
     private function isRegisteredFailure(Throwable $t): bool
     {
         return array_any(
             array_keys($this->failureTypes),
             static fn (string $failureType) => $t instanceof $failureType,
         );
-    }
-
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    private function hasExpectationOnOutput(): bool
-    {
-        return is_string($this->outputExpectedString) || is_string($this->outputExpectedRegex);
     }
 
     private function requirementsNotSatisfied(): bool

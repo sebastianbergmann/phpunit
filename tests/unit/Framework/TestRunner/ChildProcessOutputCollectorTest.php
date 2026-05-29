@@ -14,6 +14,7 @@ use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\TestCase\OutputBuffer;
 use PHPUnit\Framework\TestRunner\ChildProcessOutputCollector;
 use PHPUnit\TestFixture\Success;
 use ReflectionProperty;
@@ -29,7 +30,8 @@ final class ChildProcessOutputCollectorTest extends TestCase
     {
         $test = new Success('testOne');
 
-        new ReflectionProperty(TestCase::class, 'outputExpectedString')->setValue($test, 'whatever');
+        $outputBuffer = new ReflectionProperty(TestCase::class, 'outputBuffer')->getValue($test);
+        new ReflectionProperty(OutputBuffer::class, 'expectedString')->setValue($outputBuffer, 'whatever');
 
         $this->assertSame('', ChildProcessOutputCollector::collect($test));
     }
@@ -41,7 +43,8 @@ final class ChildProcessOutputCollectorTest extends TestCase
     {
         $test = new Success('testOne');
 
-        new ReflectionProperty(TestCase::class, 'output')->setValue($test, 'expected test output');
+        $outputBuffer = new ReflectionProperty(TestCase::class, 'outputBuffer')->getValue($test);
+        new ReflectionProperty(OutputBuffer::class, 'output')->setValue($outputBuffer, 'expected test output');
 
         $this->assertSame('expected test output', ChildProcessOutputCollector::collect($test));
     }
