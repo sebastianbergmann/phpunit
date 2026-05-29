@@ -14,6 +14,7 @@ use PHPUnit\Event\Facade;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\HasStaticState;
 use PHPUnit\TestFixture\Success;
 
 #[CoversClass(GlobalStateCapture::class)]
@@ -35,6 +36,21 @@ final class GlobalStateCaptureTest extends TestCase
         } finally {
             unset($GLOBALS['phpunitCaptureTestGlobal']);
         }
+    }
+
+    public function testCreateSnapshotAppliesBackupStaticPropertiesExcludeList(): void
+    {
+        $capture = new GlobalStateCapture;
+
+        $capture->setBackupStaticProperties(true);
+        $capture->setBackupStaticPropertiesExcludeList([
+            HasStaticState::class => ['value'],
+        ]);
+
+        $snapshot = $capture->createSnapshot(new Success('testOne'), Facade::emitter(), false);
+
+        $staticProperties = $snapshot->staticProperties();
+        $this->assertArrayNotHasKey(HasStaticState::class, $staticProperties);
     }
 
     public function testSnapshotGlobalsIsSkippedWhenRunningInSeparateProcess(): void
