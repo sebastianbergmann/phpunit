@@ -10,11 +10,14 @@
 namespace PHPUnit\Framework;
 
 use function sprintf;
+use PHPUnit\Event;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\ExcludeGlobalVariableFromBackup;
+use PHPUnit\Framework\TestCase\GlobalStateCapture;
 use PHPUnit\TestFixture\TestWithDifferentNames;
 use ReflectionMethod;
+use ReflectionProperty;
 use stdClass;
 
 #[CoversClass(TestCase::class)]
@@ -172,8 +175,9 @@ class TestCaseTest extends TestCase
             self::class => ['testStatic'],
         ]);
 
-        $method = new ReflectionMethod(TestCase::class, 'createGlobalStateSnapshot');
+        $capture = new ReflectionProperty(TestCase::class, 'globalStateCapture')->getValue($testCase);
 
-        $this->assertNotNull($method->invoke($testCase, true));
+        $this->assertInstanceOf(GlobalStateCapture::class, $capture);
+        $this->assertNotNull($capture->createSnapshot($testCase, Event\Facade::emitter(), true));
     }
 }

@@ -13,14 +13,11 @@ use const PHP_EOL;
 use function array_any;
 use function array_keys;
 use function array_merge;
-use function array_reverse;
 use function array_values;
 use function assert;
 use function chdir;
 use function class_exists;
 use function clearstatcache;
-use function count;
-use function defined;
 use function error_clear_last;
 use function getcwd;
 use function implode;
@@ -29,17 +26,13 @@ use function is_array;
 use function is_callable;
 use function is_int;
 use function is_object;
-use function is_string;
 use function libxml_clear_errors;
 use function method_exists;
 use function preg_match;
 use function putenv;
-use function restore_exception_handler;
-use function set_exception_handler;
 use function sprintf;
 use function str_contains;
 use function str_starts_with;
-use function trim;
 use AssertionError;
 use DeepCopy\DeepCopy;
 use PHPUnit\Event;
@@ -60,6 +53,7 @@ use PHPUnit\Framework\MockObject\Stub\Exception as ExceptionStub;
 use PHPUnit\Framework\MockObject\TestStubBuilder;
 use PHPUnit\Framework\TestCase\ErrorLogCapture;
 use PHPUnit\Framework\TestCase\ExceptionExpectation;
+use PHPUnit\Framework\TestCase\GlobalStateCapture;
 use PHPUnit\Framework\TestCase\HookMethodInvoker;
 use PHPUnit\Framework\TestCase\OutputBuffer;
 use PHPUnit\Framework\TestRunner\SeparateProcessTestRunner;
@@ -73,11 +67,9 @@ use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Metadata\WithEnvironmentVariable;
 use PHPUnit\Runner\BackedUpEnvironmentVariable;
 use PHPUnit\Runner\DeprecationCollector\Facade as DeprecationCollector;
-use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\Runner\ShutdownHandler;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
-use PHPUnit\Util\DifferBuilder;
 use PHPUnit\Util\Exporter;
 use PHPUnit\Util\Sanitizer;
 use ReflectionClass;
@@ -85,9 +77,6 @@ use ReflectionMethod;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use SebastianBergmann\Comparator\Comparator;
 use SebastianBergmann\Comparator\Factory as ComparatorFactory;
-use SebastianBergmann\GlobalState\ExcludeList as GlobalStateExcludeList;
-use SebastianBergmann\GlobalState\Restorer;
-use SebastianBergmann\GlobalState\Snapshot;
 use SebastianBergmann\Invoker\TimeoutException;
 use SebastianBergmann\ObjectEnumerator\Enumerator;
 use Throwable;
@@ -97,27 +86,10 @@ use Throwable;
  */
 abstract class TestCase extends Assert implements Reorderable, SelfDescribing, Test
 {
-    private ?bool $backupGlobals = null;
-
-    /**
-     * @var list<string>
-     */
-    private array $backupGlobalsExcludeList = [];
-    private ?bool $backupStaticProperties   = null;
-
-    /**
-     * @var array<class-string, list<non-empty-string>>
-     */
-    private array $backupStaticPropertiesExcludeList = [];
-    private ?Snapshot $snapshot                      = null;
-
-    /**
-     * @var list<callable>
-     */
-    private ?array $backupGlobalExceptionHandlers = null;
-    private ?bool $runTestInSeparateProcess       = null;
-    private bool $preserveGlobalState             = false;
-    private bool $inIsolation                     = false;
+    private GlobalStateCapture $globalStateCapture;
+    private ?bool $runTestInSeparateProcess = null;
+    private bool $preserveGlobalState       = false;
+    private bool $inIsolation               = false;
     private ExceptionExpectation $exceptionExpectation;
 
     /**
@@ -206,6 +178,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->exceptionExpectation = new ExceptionExpectation;
         $this->outputBuffer         = new OutputBuffer;
         $this->errorLogCapture      = new ErrorLogCapture;
+        $this->globalStateCapture   = new GlobalStateCapture;
 
         if (is_callable($this->sortId(), true)) {
             $this->providedTests = [new ExecutionOrderDependency($this->sortId())];
@@ -439,8 +412,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $this->valueObjectForEvents(),
         );
 
-        $this->snapshotGlobalState();
-        $this->snapshotGlobalErrorExceptionHandlers();
+        $this->globalStateCapture->snapshotGlobals($this, $emitter, $this->inIsolation, $this->runTestInSeparateProcess);
+        $this->globalStateCapture->snapshotErrorHandlers($this, $emitter);
         $this->handleEnvironmentVariables();
         $this->outputBuffer->start();
 
@@ -658,8 +631,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         $this->restoreEnvironmentVariables();
-        $this->restoreGlobalErrorExceptionHandlers();
-        $this->restoreGlobalState();
+        $this->globalStateCapture->restoreErrorHandlers($this, $emitter, $this->inIsolation);
+        $this->globalStateCapture->restoreGlobals($this, $emitter);
         $this->unregisterCustomComparators();
         libxml_clear_errors();
 
@@ -715,7 +688,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function setBackupGlobals(bool $backupGlobals): void
     {
-        $this->backupGlobals = $backupGlobals;
+        $this->globalStateCapture->setBackupGlobals($backupGlobals);
     }
 
     /**
@@ -725,7 +698,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function setBackupGlobalsExcludeList(array $backupGlobalsExcludeList): void
     {
-        $this->backupGlobalsExcludeList = $backupGlobalsExcludeList;
+        $this->globalStateCapture->setBackupGlobalsExcludeList($backupGlobalsExcludeList);
     }
 
     /**
@@ -733,7 +706,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function setBackupStaticProperties(bool $backupStaticProperties): void
     {
-        $this->backupStaticProperties = $backupStaticProperties;
+        $this->globalStateCapture->setBackupStaticProperties($backupStaticProperties);
     }
 
     /**
@@ -743,7 +716,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function setBackupStaticPropertiesExcludeList(array $backupStaticPropertiesExcludeList): void
     {
-        $this->backupStaticPropertiesExcludeList = $backupStaticPropertiesExcludeList;
+        $this->globalStateCapture->setBackupStaticPropertiesExcludeList($backupStaticPropertiesExcludeList);
     }
 
     /**
@@ -1579,240 +1552,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         );
 
         $this->status = TestStatus::skipped($message);
-    }
-
-    private function snapshotGlobalErrorExceptionHandlers(): void
-    {
-        foreach (ErrorHandler::instance()->snapshotErrorHandlers() as $message) {
-            Event\Facade::emitter()->testConsideredRisky(
-                $this->valueObjectForEvents(),
-                $message,
-            );
-        }
-
-        $this->backupGlobalExceptionHandlers = $this->activeExceptionHandlers();
-    }
-
-    private function restoreGlobalErrorExceptionHandlers(): void
-    {
-        foreach (ErrorHandler::instance()->restoreErrorHandlers($this->inIsolation) as $message) {
-            Event\Facade::emitter()->testConsideredRisky(
-                $this->valueObjectForEvents(),
-                $message,
-            );
-        }
-
-        $activeExceptionHandlers = $this->activeExceptionHandlers();
-
-        $message = null;
-
-        $backupGlobalExceptionHandlers = $this->backupGlobalExceptionHandlers;
-
-        if ($backupGlobalExceptionHandlers !== null && $activeExceptionHandlers !== $backupGlobalExceptionHandlers) {
-            if (count($activeExceptionHandlers) > count($backupGlobalExceptionHandlers)) {
-                if (!$this->inIsolation) {
-                    $message = 'Test code or tested code did not remove its own exception handlers';
-                }
-            } else {
-                $message = 'Test code or tested code removed exception handlers other than its own';
-            }
-
-            foreach ($activeExceptionHandlers as $handler) {
-                restore_exception_handler();
-            }
-
-            foreach ($backupGlobalExceptionHandlers as $handler) {
-                set_exception_handler($handler);
-            }
-        }
-
-        $this->backupGlobalExceptionHandlers = null;
-
-        if ($message !== null) {
-            Event\Facade::emitter()->testConsideredRisky(
-                $this->valueObjectForEvents(),
-                $message,
-            );
-        }
-    }
-
-    /**
-     * @return list<callable>
-     */
-    private function activeExceptionHandlers(): array
-    {
-        $res = [];
-
-        while (true) {
-            $previousHandler = set_exception_handler(static fn () => null);
-            restore_exception_handler();
-
-            if ($previousHandler === null) {
-                break;
-            }
-            $res[] = $previousHandler;
-            restore_exception_handler();
-        }
-        $res = array_reverse($res);
-
-        foreach ($res as $handler) {
-            set_exception_handler($handler);
-        }
-
-        return $res;
-    }
-
-    private function snapshotGlobalState(): void
-    {
-        if ($this->runTestInSeparateProcess === true || $this->inIsolation ||
-            ($this->backupGlobals !== true && $this->backupStaticProperties !== true)) {
-            return;
-        }
-
-        $snapshot = $this->createGlobalStateSnapshot($this->backupGlobals === true);
-
-        $this->snapshot = $snapshot;
-    }
-
-    private function restoreGlobalState(): void
-    {
-        $snapshot = $this->snapshot;
-
-        if (!$snapshot instanceof Snapshot) {
-            return;
-        }
-
-        if (ConfigurationRegistry::get()->beStrictAboutChangesToGlobalState()) {
-            $this->compareGlobalStateSnapshots(
-                $snapshot,
-                $this->createGlobalStateSnapshot($this->backupGlobals === true),
-            );
-        }
-
-        $restorer = new Restorer;
-
-        if ($this->backupGlobals === true) {
-            $restorer->restoreGlobalVariables($snapshot);
-        }
-
-        if ($this->backupStaticProperties === true) {
-            $restorer->restoreStaticProperties($snapshot);
-        }
-
-        $this->snapshot = null;
-    }
-
-    private function createGlobalStateSnapshot(bool $backupGlobals): Snapshot
-    {
-        $excludeList = new GlobalStateExcludeList;
-
-        foreach ($this->backupGlobalsExcludeList as $globalVariable) {
-            if ($globalVariable !== '') {
-                $excludeList->addGlobalVariable($globalVariable);
-            }
-        }
-
-        foreach ($this->backupStaticPropertiesExcludeList as $class => $properties) {
-            foreach ($properties as $property) {
-                $excludeList->addStaticProperty($class, $property);
-            }
-        }
-
-        if (!defined('PHPUNIT_TESTSUITE')) {
-            $excludeList->addClassNamePrefix('PHPUnit');
-            $excludeList->addClassNamePrefix('SebastianBergmann\CodeCoverage');
-            $excludeList->addClassNamePrefix('SebastianBergmann\FileIterator');
-            $excludeList->addClassNamePrefix('SebastianBergmann\Invoker');
-            $excludeList->addClassNamePrefix('SebastianBergmann\Template');
-            $excludeList->addClassNamePrefix('SebastianBergmann\Timer');
-
-            foreach (array_keys($GLOBALS) as $key) {
-                if (is_string($key) && str_starts_with($key, '__phpunit_')) {
-                    $excludeList->addGlobalVariable($key);
-                }
-            }
-
-            $excludeList->addStaticProperty(ComparatorFactory::class, 'instance');
-        }
-
-        try {
-            return new Snapshot(
-                $excludeList,
-                $backupGlobals,
-                (bool) $this->backupStaticProperties,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-            );
-        } catch (Throwable $t) {
-            Event\Facade::emitter()->testPreparationFailed(
-                $this->valueObjectForEvents(),
-                Event\Code\ThrowableBuilder::from($t),
-            );
-
-            Event\Facade::emitter()->testErrored(
-                $this->valueObjectForEvents(),
-                Event\Code\ThrowableBuilder::from($t),
-            );
-
-            throw $t;
-        }
-    }
-
-    private function compareGlobalStateSnapshots(Snapshot $before, Snapshot $after): void
-    {
-        $backupGlobals = $this->backupGlobals === null || $this->backupGlobals;
-
-        if ($backupGlobals) {
-            $this->compareGlobalStateSnapshotPart(
-                $before->globalVariables(),
-                $after->globalVariables(),
-                "--- Global variables before the test\n+++ Global variables after the test\n",
-            );
-
-            $this->compareGlobalStateSnapshotPart(
-                $before->superGlobalVariables(),
-                $after->superGlobalVariables(),
-                "--- Super-global variables before the test\n+++ Super-global variables after the test\n",
-            );
-        }
-
-        if ($this->backupStaticProperties === true) {
-            $this->compareGlobalStateSnapshotPart(
-                $before->staticProperties(),
-                $after->staticProperties(),
-                "--- Static properties before the test\n+++ Static properties after the test\n",
-            );
-        }
-    }
-
-    /**
-     * @param array<mixed>     $before
-     * @param array<mixed>     $after
-     * @param non-empty-string $header
-     */
-    private function compareGlobalStateSnapshotPart(array $before, array $after, string $header): void
-    {
-        if ($before === $after) {
-            return;
-        }
-
-        $differ = DifferBuilder::build($header);
-
-        Event\Facade::emitter()->testConsideredRisky(
-            $this->valueObjectForEvents(),
-            'This test modified global state but was not expected to do so' . PHP_EOL .
-            trim(
-                $differ->diff(
-                    Exporter::export($before),
-                    Exporter::export($after),
-                ),
-            ),
-        );
     }
 
     private function handleEnvironmentVariables(): void
