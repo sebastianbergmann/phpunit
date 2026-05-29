@@ -1041,7 +1041,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     final protected function expectOutputRegex(string $expectedRegex): void
     {
-        $this->outputBuffer->expectRegex($expectedRegex);
+        $this->outputBuffer->expectRegularExpression($expectedRegex);
     }
 
     final protected function expectOutputString(string $expectedString): void

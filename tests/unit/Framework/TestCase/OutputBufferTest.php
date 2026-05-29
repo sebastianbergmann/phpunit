@@ -30,7 +30,7 @@ final class OutputBufferTest extends TestCase
     {
         $buffer = new OutputBuffer;
 
-        $buffer->expectRegex('/.+/');
+        $buffer->expectRegularExpression('/.+/');
 
         $this->assertTrue($buffer->hasExpectation());
         $this->assertTrue($buffer->expectsOutput());
@@ -136,7 +136,7 @@ final class OutputBufferTest extends TestCase
     {
         $buffer = new OutputBuffer;
 
-        $buffer->expectRegex('/^cap/');
+        $buffer->expectRegularExpression('/^cap/');
         $buffer->start();
 
         print 'captured';
@@ -151,7 +151,7 @@ final class OutputBufferTest extends TestCase
     {
         $buffer = new OutputBuffer;
 
-        $buffer->expectRegex('/^cap/');
+        $buffer->expectRegularExpression('/^cap/');
         $buffer->start();
 
         print 'actual';

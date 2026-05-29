@@ -27,18 +27,18 @@ use PHPUnit\Framework\ExpectationFailedException;
  */
 final class OutputBuffer
 {
-    private string $output              = '';
-    private ?string $expectedRegex      = null;
-    private ?string $expectedString     = null;
-    private bool $bufferingActive       = false;
-    private int $bufferingLevel         = 0;
-    private string $bufferingCaptured   = '';
-    private bool $bufferingDestroyed    = false;
-    private bool $retrievedForAssertion = false;
+    private string $output                     = '';
+    private ?string $expectedRegularExpression = null;
+    private ?string $expectedString            = null;
+    private bool $bufferingActive              = false;
+    private int $bufferingLevel                = 0;
+    private string $bufferingCaptured          = '';
+    private bool $bufferingDestroyed           = false;
+    private bool $retrievedForAssertion        = false;
 
-    public function expectRegex(string $expectedRegex): void
+    public function expectRegularExpression(string $expectedRegularExpression): void
     {
-        $this->expectedRegex = $expectedRegex;
+        $this->expectedRegularExpression = $expectedRegularExpression;
     }
 
     public function expectString(string $expectedString): void
@@ -48,7 +48,7 @@ final class OutputBuffer
 
     public function hasExpectation(): bool
     {
-        return is_string($this->expectedString) || is_string($this->expectedRegex);
+        return is_string($this->expectedString) || is_string($this->expectedRegularExpression);
     }
 
     public function expectsOutput(): bool
@@ -167,8 +167,8 @@ final class OutputBuffer
      */
     public function performAssertions(): void
     {
-        if ($this->expectedRegex !== null) {
-            Assert::assertMatchesRegularExpression($this->expectedRegex, $this->output);
+        if ($this->expectedRegularExpression !== null) {
+            Assert::assertMatchesRegularExpression($this->expectedRegularExpression, $this->output);
         } elseif ($this->expectedString !== null) {
             Assert::assertSame($this->expectedString, $this->output);
         }
