@@ -190,9 +190,11 @@ final class ExecutionOrderDependency implements Stringable
 
     public function getTarget(): string
     {
-        return $this->isValid()
-            ? $this->className . '::' . $this->methodName
-            : '';
+        if ($this->isValid()) {
+            return $this->className . '::' . $this->methodName;
+        }
+
+        return '';
     }
 
     public function getTargetClassName(): string
