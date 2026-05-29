@@ -15,6 +15,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\ExcludeGlobalVariableFromBackup;
 use PHPUnit\Framework\TestCase\GlobalStateCapture;
+use PHPUnit\TestFixture\ExpectsOutput;
 use PHPUnit\TestFixture\TestWithDifferentNames;
 use ReflectionMethod;
 use ReflectionProperty;
@@ -179,5 +180,21 @@ class TestCaseTest extends TestCase
 
         $this->assertInstanceOf(GlobalStateCapture::class, $capture);
         $this->assertNotNull($capture->createSnapshot($testCase, Event\Facade::emitter(), true));
+    }
+
+    public function testExpectsOutputDelegatesToTheOutputBuffer(): void
+    {
+        $testCase = new TestWithDifferentNames('testWithName');
+
+        $this->assertFalse($testCase->expectsOutput());
+    }
+
+    public function testExpectsOutputReturnsTrueWhenAnOutputExpectationIsSet(): void
+    {
+        $testCase = new ExpectsOutput('testOne');
+
+        $testCase->configureExpectation();
+
+        $this->assertTrue($testCase->expectsOutput());
     }
 }
