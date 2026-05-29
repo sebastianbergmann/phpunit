@@ -78,6 +78,7 @@ use PHPUnit\Framework\MockObject\Rule\InvokedCount as InvokedCountMatcher;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\MockObject\Stub\Exception as ExceptionStub;
 use PHPUnit\Framework\MockObject\TestStubBuilder;
+use PHPUnit\Framework\TestCase\HookMethodInvoker;
 use PHPUnit\Framework\TestRunner\SeparateProcessTestRunner;
 use PHPUnit\Framework\TestRunner\TestRunner;
 use PHPUnit\Framework\TestSize\TestSize;
@@ -90,7 +91,6 @@ use PHPUnit\Metadata\WithEnvironmentVariable;
 use PHPUnit\Runner\BackedUpEnvironmentVariable;
 use PHPUnit\Runner\DeprecationCollector\Facade as DeprecationCollector;
 use PHPUnit\Runner\ErrorHandler;
-use PHPUnit\Runner\HookMethodCollection;
 use PHPUnit\Runner\ShutdownHandler;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
@@ -99,7 +99,6 @@ use PHPUnit\Util\Exporter;
 use PHPUnit\Util\Sanitizer;
 use ReflectionClass;
 use ReflectionMethod;
-use ReflectionObject;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use SebastianBergmann\Comparator\Comparator;
 use SebastianBergmann\Comparator\Factory as ComparatorFactory;
@@ -112,8 +111,6 @@ use Throwable;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
- * @phpstan-import-type HookMethodsByType from HookMethods
  */
 abstract class TestCase extends Assert implements Reorderable, SelfDescribing, Test
 {
@@ -505,7 +502,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             if ($this->inIsolation) {
                 // @codeCoverageIgnoreStart
-                $this->invokeBeforeClassHookMethods($hookMethods, $emitter);
+                HookMethodInvoker::invokeBeforeClass($this, $hookMethods, $emitter);
                 // @codeCoverageIgnoreEnd
             }
 
@@ -514,8 +511,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $this->doesNotPerformAssertions = true;
             }
 
-            $this->invokeBeforeTestHookMethods($hookMethods, $emitter);
-            $this->invokePreConditionHookMethods($hookMethods, $emitter);
+            HookMethodInvoker::invokeBeforeTest($this, $hookMethods, $emitter);
+            HookMethodInvoker::invokePreCondition($this, $hookMethods, $emitter);
 
             $emitter->testPrepared(
                 $this->valueObjectForEvents(),
@@ -526,7 +523,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             $this->verifyDeprecationExpectations();
             $this->verifyMockObjects();
-            $this->invokePostConditionHookMethods($hookMethods, $emitter);
+            HookMethodInvoker::invokePostCondition($this, $hookMethods, $emitter);
 
             $this->status = TestStatus::success();
         } catch (IncompleteTest $e) {
@@ -629,11 +626,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         // caught and passed on when no exception was raised before.
         try {
             if ($hasMetRequirements) {
-                $this->invokeAfterTestHookMethods($hookMethods, $emitter);
+                HookMethodInvoker::invokeAfterTest($this, $hookMethods, $emitter);
 
                 if ($this->inIsolation) {
                     // @codeCoverageIgnoreStart
-                    $this->invokeAfterClassHookMethods($hookMethods, $emitter);
+                    HookMethodInvoker::invokeAfterClass($this, $hookMethods, $emitter);
                     // @codeCoverageIgnoreEnd
                 }
             }
@@ -2057,215 +2054,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             throw $e;
         }
-    }
-
-    /**
-     * @param HookMethodsByType $hookMethods
-     *
-     * @throws Throwable
-     *
-     * @codeCoverageIgnore
-     */
-    private function invokeBeforeClassHookMethods(array $hookMethods, Event\Emitter $emitter): void
-    {
-        $this->invokeClassLevelHookMethods(
-            $hookMethods['beforeClass'],
-            $emitter,
-            'beforeFirstTestMethodCalled',
-            'beforeFirstTestMethodErrored',
-            'beforeFirstTestMethodFailed',
-            'beforeFirstTestMethodFinished',
-        );
-    }
-
-    /**
-     * @param HookMethodsByType $hookMethods
-     *
-     * @throws Throwable
-     */
-    private function invokeBeforeTestHookMethods(array $hookMethods, Event\Emitter $emitter): void
-    {
-        $this->invokeMethodLevelHookMethods(
-            $hookMethods['before'],
-            $emitter,
-            'beforeTestMethodCalled',
-            'beforeTestMethodErrored',
-            'beforeTestMethodFailed',
-            'beforeTestMethodFinished',
-        );
-    }
-
-    /**
-     * @param HookMethodsByType $hookMethods
-     *
-     * @throws Throwable
-     */
-    private function invokePreConditionHookMethods(array $hookMethods, Event\Emitter $emitter): void
-    {
-        $this->invokeMethodLevelHookMethods(
-            $hookMethods['preCondition'],
-            $emitter,
-            'preConditionCalled',
-            'preConditionErrored',
-            'preConditionFailed',
-            'preConditionFinished',
-        );
-    }
-
-    /**
-     * @param HookMethodsByType $hookMethods
-     *
-     * @throws Throwable
-     */
-    private function invokePostConditionHookMethods(array $hookMethods, Event\Emitter $emitter): void
-    {
-        $this->invokeMethodLevelHookMethods(
-            $hookMethods['postCondition'],
-            $emitter,
-            'postConditionCalled',
-            'postConditionErrored',
-            'postConditionFailed',
-            'postConditionFinished',
-        );
-    }
-
-    /**
-     * @param HookMethodsByType $hookMethods
-     *
-     * @throws Throwable
-     */
-    private function invokeAfterTestHookMethods(array $hookMethods, Event\Emitter $emitter): void
-    {
-        $this->invokeMethodLevelHookMethods(
-            $hookMethods['after'],
-            $emitter,
-            'afterTestMethodCalled',
-            'afterTestMethodErrored',
-            'afterTestMethodFailed',
-            'afterTestMethodFinished',
-        );
-    }
-
-    /**
-     * @param HookMethodsByType $hookMethods
-     *
-     * @throws Throwable
-     *
-     * @codeCoverageIgnore
-     */
-    private function invokeAfterClassHookMethods(array $hookMethods, Event\Emitter $emitter): void
-    {
-        $this->invokeClassLevelHookMethods(
-            $hookMethods['afterClass'],
-            $emitter,
-            'afterLastTestMethodCalled',
-            'afterLastTestMethodErrored',
-            'afterLastTestMethodFailed',
-            'afterLastTestMethodFinished',
-        );
-    }
-
-    /**
-     * @param 'afterTestMethodCalled'|'beforeTestMethodCalled'|'postConditionCalled'|'preConditionCalled'         $calledMethod
-     * @param 'afterTestMethodErrored'|'beforeTestMethodErrored'|'postConditionErrored'|'preConditionErrored'     $erroredMethod
-     * @param 'afterTestMethodFailed'|'beforeTestMethodFailed'|'postConditionFailed'|'preConditionFailed'         $failedMethod
-     * @param 'afterTestMethodFinished'|'beforeTestMethodFinished'|'postConditionFinished'|'preConditionFinished' $finishedMethod
-     *
-     * @throws Throwable
-     */
-    private function invokeMethodLevelHookMethods(HookMethodCollection $hookMethods, Event\Emitter $emitter, string $calledMethod, string $erroredMethod, string $failedMethod, string $finishedMethod): void
-    {
-        $this->doInvokeHookMethods($hookMethods, $emitter, $this->valueObjectForEvents(), $calledMethod, $erroredMethod, $failedMethod, $finishedMethod);
-    }
-
-    /**
-     * @param 'afterLastTestMethodCalled'|'beforeFirstTestMethodCalled'     $calledMethod
-     * @param 'afterLastTestMethodErrored'|'beforeFirstTestMethodErrored'   $erroredMethod
-     * @param 'afterLastTestMethodFailed'|'beforeFirstTestMethodFailed'     $failedMethod
-     * @param 'afterLastTestMethodFinished'|'beforeFirstTestMethodFinished' $finishedMethod
-     *
-     * @throws Throwable
-     *
-     * @codeCoverageIgnore
-     */
-    private function invokeClassLevelHookMethods(HookMethodCollection $hookMethods, Event\Emitter $emitter, string $calledMethod, string $erroredMethod, string $failedMethod, string $finishedMethod): void
-    {
-        $this->doInvokeHookMethods($hookMethods, $emitter, static::class, $calledMethod, $erroredMethod, $failedMethod, $finishedMethod);
-    }
-
-    /**
-     * @param class-string<TestCase>|Event\Code\TestMethod $test
-     *
-     * @throws Throwable
-     */
-    private function doInvokeHookMethods(HookMethodCollection $hookMethods, Event\Emitter $emitter, Event\Code\TestMethod|string $test, string $calledMethod, string $erroredMethod, string $failedMethod, string $finishedMethod): void
-    {
-        $methodsInvoked = [];
-
-        foreach ($hookMethods->methodNamesSortedByPriority() as $methodName) {
-            if ($this->methodDoesNotExistOrIsDeclaredInTestCase($methodName)) {
-                continue;
-            }
-
-            $methodInvoked = new Event\Code\ClassMethod(
-                static::class,
-                $methodName,
-            );
-
-            try {
-                /** @phpstan-ignore method.dynamicName */
-                $this->{$methodName}();
-            } catch (Throwable $t) {
-            }
-
-            /** @phpstan-ignore method.dynamicName */
-            $emitter->{$calledMethod}(
-                $test,
-                $methodInvoked
-            );
-
-            $methodsInvoked[] = $methodInvoked;
-
-            if (isset($t) && !$t instanceof SkippedTest) {
-                if ($t instanceof AssertionFailedError) {
-                    $method = $failedMethod;
-                } else {
-                    $method = $erroredMethod;
-                }
-
-                /** @phpstan-ignore method.dynamicName */
-                $emitter->{$method}(
-                    $test,
-                    $methodInvoked,
-                    Event\Code\ThrowableBuilder::from($t),
-                );
-
-                break;
-            }
-        }
-
-        if ($methodsInvoked !== []) {
-            /** @phpstan-ignore method.dynamicName */
-            $emitter->{$finishedMethod}(
-                $test,
-                ...$methodsInvoked
-            );
-        }
-
-        if (isset($t)) {
-            throw $t;
-        }
-    }
-
-    /**
-     * @param non-empty-string $methodName
-     */
-    private function methodDoesNotExistOrIsDeclaredInTestCase(string $methodName): bool
-    {
-        $reflector = new ReflectionObject($this);
-
-        return !$reflector->hasMethod($methodName) ||
-               $reflector->getMethod($methodName)->getDeclaringClass()->getName() === self::class;
     }
 
     /**
