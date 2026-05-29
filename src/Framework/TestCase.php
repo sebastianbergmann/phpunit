@@ -24,18 +24,14 @@ use function clearstatcache;
 use function count;
 use function defined;
 use function error_clear_last;
-use function fclose;
 use function getcwd;
 use function implode;
 use function in_array;
-use function ini_get;
-use function ini_set;
 use function is_array;
 use function is_callable;
 use function is_int;
 use function is_object;
 use function is_string;
-use function is_writable;
 use function libxml_clear_errors;
 use function method_exists;
 use function ob_end_clean;
@@ -43,16 +39,12 @@ use function ob_get_contents;
 use function ob_get_level;
 use function ob_start;
 use function preg_match;
-use function preg_replace;
 use function putenv;
 use function restore_exception_handler;
 use function set_exception_handler;
 use function sprintf;
 use function str_contains;
 use function str_starts_with;
-use function stream_get_contents;
-use function stream_get_meta_data;
-use function tmpfile;
 use function trim;
 use AssertionError;
 use DeepCopy\DeepCopy;
@@ -72,6 +64,7 @@ use PHPUnit\Framework\MockObject\Rule\InvokedCount as InvokedCountMatcher;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\MockObject\Stub\Exception as ExceptionStub;
 use PHPUnit\Framework\MockObject\TestStubBuilder;
+use PHPUnit\Framework\TestCase\ErrorLogCapture;
 use PHPUnit\Framework\TestCase\ExceptionExpectation;
 use PHPUnit\Framework\TestCase\HookMethodInvoker;
 use PHPUnit\Framework\TestRunner\SeparateProcessTestRunner;
@@ -188,7 +181,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private bool $outputBufferingDestroyed    = false;
     private bool $outputRetrievedForAssertion = false;
     private bool $doesNotPerformAssertions    = false;
-    private bool $expectErrorLog              = false;
+    private ErrorLogCapture $errorLogCapture;
 
     /**
      * @var list<Comparator>
@@ -211,13 +204,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @var list<non-empty-string>
      */
     private array $expectedUserDeprecationMessageRegularExpression = [];
-
-    /**
-     * @var false|resource
-     */
-    private mixed $errorLogCapture                = false;
-    private false|string $previousErrorLogTarget  = false;
-    private ?string $emptyDataProviderSkipMessage = null;
+    private ?string $emptyDataProviderSkipMessage                  = null;
 
     /**
      * @param non-empty-string $name
@@ -229,6 +216,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->methodName           = $name;
         $this->status               = TestStatus::unknown();
         $this->exceptionExpectation = new ExceptionExpectation;
+        $this->errorLogCapture      = new ErrorLogCapture;
 
         if (is_callable($this->sortId(), true)) {
             $this->providedTests = [new ExecutionOrderDependency($this->sortId())];
@@ -1092,7 +1080,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     final protected function expectErrorLog(): void
     {
-        $this->expectErrorLog = true;
+        $this->errorLogCapture->expect();
     }
 
     /**
@@ -1358,14 +1346,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         $testArguments = array_merge($this->data, array_values($this->dependencyInput));
 
-        $this->startErrorLogCapture();
+        $this->errorLogCapture->start();
 
         try {
             $testResult = $this->invokeTestMethod($this->methodName, $testArguments);
 
-            $this->verifyErrorLogExpectation();
+            $this->errorLogCapture->verify();
         } catch (Throwable $exception) {
-            $this->handleErrorLogError();
+            $this->errorLogCapture->handleError();
 
             if (!$this->exceptionExpectation->shouldBeVerifiedFor($exception)) {
                 throw $exception;
@@ -1375,23 +1363,13 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             return null;
         } finally {
-            $this->stopErrorLogCapture();
+            $this->errorLogCapture->stop();
         }
 
         $this->emitEventForCustomTestMethodInvocation();
         $this->exceptionExpectation->assertWasRaised($this);
 
         return $testResult;
-    }
-
-    private function stripDateFromErrorLog(string $log): string
-    {
-        // https://github.com/php/php-src/blob/c696087e323263e941774ebbf902ac249774ec9f/main/main.c#L905
-        $result = preg_replace('/\[\d+-\w+-\d+ \d+:\d+:\d+ [^\r\n[\]]+?\] /', '', $log);
-
-        assert($result !== null);
-
-        return $result;
     }
 
     /**
@@ -2058,112 +2036,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         if (isset($trace[0]['class']) && $trace[0]['class'] === InvokedCount::class) {
             $this->numberOfAssertionsPerformed++;
         }
-    }
-
-    private function startErrorLogCapture(): void
-    {
-        if (ini_get('display_errors') === '0') {
-            ShutdownHandler::setMessage(
-                'Fatal error: Premature end of PHPUnit\'s PHP process. Use display_errors=On to see the error message.',
-            );
-        }
-
-        $errorLogCapture = tmpfile();
-
-        // @codeCoverageIgnoreStart
-        if ($errorLogCapture === false) {
-            return;
-        }
-        // @codeCoverageIgnoreEnd
-
-        $meta = stream_get_meta_data($errorLogCapture);
-
-        // @codeCoverageIgnoreStart
-        if (!isset($meta['uri'])) {
-            return;
-        }
-        // @codeCoverageIgnoreEnd
-
-        $capturePath = $meta['uri'];
-
-        if (!@is_writable($capturePath)) {
-            return;
-        }
-
-        $this->errorLogCapture        = $errorLogCapture;
-        $this->previousErrorLogTarget = ini_set('error_log', $capturePath);
-    }
-
-    /**
-     * @throws ErrorLogNotWritableException
-     */
-    private function verifyErrorLogExpectation(): void
-    {
-        // @codeCoverageIgnoreStart
-        if ($this->errorLogCapture === false) {
-            if ($this->expectErrorLog) {
-                throw new ErrorLogNotWritableException;
-            }
-
-            return;
-        }
-        // @codeCoverageIgnoreEnd
-
-        $errorLogOutput = stream_get_contents($this->errorLogCapture);
-
-        if ($this->expectErrorLog) {
-            $this->assertNotEmpty($errorLogOutput, 'error_log() was not called');
-
-            return;
-        }
-
-        // @codeCoverageIgnoreStart
-        if ($errorLogOutput === false) {
-            return;
-        }
-        // @codeCoverageIgnoreEnd
-
-        print $this->stripDateFromErrorLog($errorLogOutput);
-    }
-
-    private function handleErrorLogError(): void
-    {
-        if ($this->errorLogCapture === false) {
-            return;
-        }
-
-        if ($this->expectErrorLog) {
-            return;
-        }
-
-        $errorLogOutput = stream_get_contents($this->errorLogCapture);
-
-        if ($errorLogOutput !== false) {
-            print $this->stripDateFromErrorLog($errorLogOutput);
-        }
-    }
-
-    private function stopErrorLogCapture(): void
-    {
-        if ($this->errorLogCapture === false) {
-            return;
-        }
-
-        ShutdownHandler::resetMessage();
-
-        fclose($this->errorLogCapture);
-
-        $this->errorLogCapture = false;
-
-        // @codeCoverageIgnoreStart
-        if ($this->previousErrorLogTarget === false) {
-            return;
-        }
-        // @codeCoverageIgnoreEnd
-
-        ini_set('error_log', $this->previousErrorLogTarget);
-
-        $this->previousErrorLogTarget = false;
     }
 
     private function allowsMockObjectsWithoutExpectations(): bool
