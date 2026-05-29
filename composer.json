@@ -59,6 +59,17 @@
         "platform": {
             "php": "8.3.0"
         },
+        "policy": {
+            "malware": {
+                "audit": "fail"
+            },
+            "security-advisory": {
+                "audit": "fail"
+            },
+            "abandoned": {
+                "audit": "fail"
+            }
+        },
         "classmap-authoritative": true,
         "optimize-autoloader": true,
         "sort-packages": true
