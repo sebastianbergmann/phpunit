@@ -219,11 +219,11 @@ final readonly class TestBuilder
     }
 
     /**
-     * @param class-string<TestCase>                                                                                                                                            $className
-     * @param non-empty-string                                                                                                                                                  $methodName
-     * @param positive-int                                                                                                                                                      $numberOfRuns
-     * @param positive-int                                                                                                                                                      $failureThreshold
-     * @param array{backupGlobals: ?true, backupGlobalsExcludeList: list<string>, backupStaticProperties: ?true, backupStaticPropertiesExcludeList: array<string,list<string>>} $backupSettings
+     * @param class-string<TestCase> $className
+     * @param non-empty-string       $methodName
+     * @param positive-int           $numberOfRuns
+     * @param positive-int           $failureThreshold
+     * @param BackupSettings         $backupSettings
      */
     private function buildRepeatTestSuite(string $className, string $methodName, int $numberOfRuns, int $failureThreshold, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, array $backupSettings): RepeatTestSuite
     {
