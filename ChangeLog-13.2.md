@@ -38,6 +38,7 @@ All notable changes of the PHPUnit 13.2 release series are documented in this fi
 * Report number of assertions performed for each test in Open Test Reporting XML
 * Report structured comparison failure details (expected, actual, diff) in Open Test Reporting XML
 * Report random order seed in Open Test Reporting XML when test execution order is randomised
+* Report description (`--TEST--` section) of a PHPT test in Open Test Reporting XML
 
 ### Changed
 
