@@ -13,7 +13,7 @@ All notable changes of the PHPUnit 13.2 release series are documented in this fi
 * [#5810](https://github.com/sebastianbergmann/phpunit/issues/5810): Do not dump arrays and objects in failure messages of `IsTrue`, `IsFalse`, `IsNull`, `IsFinite`, `IsInfinite`, and `IsNan` constraints
 * [#5838](https://github.com/sebastianbergmann/phpunit/issues/5838): Inherit `#[RunTestsInSeparateProcesses]` from parent test classes
 * [#5922](https://github.com/sebastianbergmann/phpunit/issues/5922): `assertContainsEquals()` should use `sebastian/comparator` for element comparison
-* [#6000](https://github.com/sebastianbergmann/phpunit/issues/6000): Report PHPT test as risky when `--SKIPIF--` does not have standard-output side-effect
+* [#6000](https://github.com/sebastianbergmann/phpunit/issues/6000): Report PHPT test as risky when `--SKIPIF--` does not have standard-output side effect
 * [#6075](https://github.com/sebastianbergmann/phpunit/issues/6075): Support test execution order sorted by descending duration
 * [#6346](https://github.com/sebastianbergmann/phpunit/issues/6346): Emit warning when conflicting CLI options are used
 * [#6534](https://github.com/sebastianbergmann/phpunit/issues/6534): Make `$_dataName` available to `#[TestDoxFormatter]` callbacks
@@ -37,7 +37,7 @@ All notable changes of the PHPUnit 13.2 release series are documented in this fi
 * Report per-test and per-test-suite resource usage (time, memory usage, peak memory usage) in Open Test Reporting XML
 * Report number of assertions performed for each test in Open Test Reporting XML
 * Report structured comparison failure details (expected, actual, diff) in Open Test Reporting XML
-* Report random order seed in Open Test Reporting XML when test execution order is randomized
+* Report random order seed in Open Test Reporting XML when test execution order is randomised
 
 ### Changed
 
