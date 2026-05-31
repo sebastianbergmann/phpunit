@@ -113,4 +113,11 @@
     </xs:element>
 
     <xs:element name="randomOrderSeed" type="xs:integer"/>
+
+    <xs:element name="testDox">
+        <xs:complexType>
+            <xs:attribute name="prettifiedClassName"  type="xs:string" use="optional"/>
+            <xs:attribute name="prettifiedMethodName" type="xs:string" use="optional"/>
+        </xs:complexType>
+    </xs:element>
 </xs:schema>

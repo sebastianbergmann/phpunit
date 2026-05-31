@@ -25,13 +25,14 @@ final class TestSuiteTest extends TestCase
 {
     public function testCanBeTestSuiteForTestClass(): void
     {
-        $className = 'ExampleTest';
-        $size      = 0;
-        $tests     = TestCollection::fromArray([]);
-        $file      = 'ExampleTest.php';
-        $line      = 1;
+        $className      = 'ExampleTest';
+        $size           = 0;
+        $tests          = TestCollection::fromArray([]);
+        $prettifiedName = 'Example';
+        $file           = 'ExampleTest.php';
+        $line           = 1;
 
-        $testSuite = new TestSuiteForTestClass($className, $size, $tests, $file, $line);
+        $testSuite = new TestSuiteForTestClass($className, $size, $tests, $prettifiedName, $file, $line);
 
         $this->assertTrue($testSuite->isForTestClass());
         $this->assertFalse($testSuite->isForTestMethodWithDataProvider());
@@ -41,6 +42,7 @@ final class TestSuiteTest extends TestCase
         $this->assertSame($className, $testSuite->name());
         $this->assertSame($size, $testSuite->count());
         $this->assertSame($tests, $testSuite->tests());
+        $this->assertSame($prettifiedName, $testSuite->prettifiedName());
         $this->assertSame($file, $testSuite->file());
         $this->assertSame($line, $testSuite->line());
     }

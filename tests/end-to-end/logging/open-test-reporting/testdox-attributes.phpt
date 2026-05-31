@@ -1,5 +1,5 @@
 --TEST--
-phpunit --log-otr /path/to/logfile ../_files/PhpNoticeIssueTest.php
+phpunit --log-otr /path/to/logfile ../_files/TestDoxAttributesTest.php
 --FILE--
 <?php declare(strict_types=1);
 use function PHPUnit\TestFixture\validate_and_print;
@@ -11,7 +11,7 @@ $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--no-output';
 $_SERVER['argv'][] = '--log-otr';
 $_SERVER['argv'][] = $logfile;
-$_SERVER['argv'][] = __DIR__ . '/_files/PhpNoticeIssueTest.php';
+$_SERVER['argv'][] = __DIR__ . '/_files/TestDoxAttributesTest.php';
 
 require __DIR__ . '/../../../bootstrap.php';
 require __DIR__ . '/validate_and_print.php';
@@ -31,34 +31,47 @@ unlink($logfile);
   <php:phpVersion>%s</php:phpVersion>
   <php:threadModel>%s</php:threadModel>
  </infrastructure>
- <e:started id="1" name="PHPUnit\TestFixture\OpenTestReporting\PhpNoticeIssueTest" time="%s">
+ <e:started id="1" name="PHPUnit\TestFixture\OpenTestReporting\TestDoxAttributesTest" time="%s">
   <metadata>
-   <phpunit:testDox prettifiedClassName="Php Notice Issue (PHPUnit\TestFixture\OpenTestReporting\PhpNoticeIssue)"/>
+   <phpunit:testDox prettifiedClassName="Custom class label"/>
   </metadata>
   <sources>
-   <fileSource path="%sPhpNoticeIssueTest.php">
+   <fileSource path="%sTestDoxAttributesTest.php">
     <filePosition line="%d"/>
    </fileSource>
-   <phpunit:classSource className="PHPUnit\TestFixture\OpenTestReporting\PhpNoticeIssueTest"/>
+   <phpunit:classSource className="PHPUnit\TestFixture\OpenTestReporting\TestDoxAttributesTest"/>
   </sources>
  </e:started>
  <e:started id="2" parentId="1" name="testOne" time="%s">
   <metadata>
-   <phpunit:testDox prettifiedMethodName="One"/>
+   <phpunit:testDox prettifiedMethodName="custom method label"/>
   </metadata>
   <sources>
-   <fileSource path="%sPhpNoticeIssueTest.php">
+   <fileSource path="%sTestDoxAttributesTest.php">
     <filePosition line="%d"/>
    </fileSource>
-   <phpunit:methodSource className="PHPUnit\TestFixture\OpenTestReporting\PhpNoticeIssueTest" methodName="testOne"/>
+   <phpunit:methodSource className="PHPUnit\TestFixture\OpenTestReporting\TestDoxAttributesTest" methodName="testOne"/>
   </sources>
  </e:started>
- <e:reported id="2" time="%s">
-  <attachments>
-   <phpunit:issue type="php-notice" message="Only variables should be assigned by reference" file="%sPhpNoticeIssueTest.php" line="%d" suppressed="false" ignoredByBaseline="false"/>
-  </attachments>
- </e:reported>
  <e:finished id="2" time="%s">
+  <attachments>
+   <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d" userCpuTime="%f" systemCpuTime="%f" cpuTime="%f"/>
+   <phpunit:assertions count="%d"/>
+  </attachments>
+  <result status="SUCCESSFUL"/>
+ </e:finished>
+ <e:started id="3" parentId="1" name="testTwo" time="%s">
+  <metadata>
+   <phpunit:testDox prettifiedMethodName="Two"/>
+  </metadata>
+  <sources>
+   <fileSource path="%sTestDoxAttributesTest.php">
+    <filePosition line="%d"/>
+   </fileSource>
+   <phpunit:methodSource className="PHPUnit\TestFixture\OpenTestReporting\TestDoxAttributesTest" methodName="testTwo"/>
+  </sources>
+ </e:started>
+ <e:finished id="3" time="%s">
   <attachments>
    <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d" userCpuTime="%f" systemCpuTime="%f" cpuTime="%f"/>
    <phpunit:assertions count="%d"/>

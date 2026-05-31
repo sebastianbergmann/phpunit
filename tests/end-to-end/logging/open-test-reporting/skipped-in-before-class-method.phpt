@@ -32,6 +32,9 @@ unlink($logfile);
   <php:threadModel>%s</php:threadModel>
  </infrastructure>
  <e:started id="1" name="PHPUnit\TestFixture\Event\SkippedInSetupBeforeClassTest" time="%s">
+  <metadata>
+   <phpunit:testDox prettifiedClassName="Skipped In Setup Before Class (PHPUnit\TestFixture\Event\SkippedInSetupBeforeClass)"/>
+  </metadata>
   <sources>
    <fileSource path="%sSkippedInSetupBeforeClassTest.php">
     <filePosition line="%d"/>

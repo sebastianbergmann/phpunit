@@ -32,6 +32,9 @@ unlink($logfile);
   <php:threadModel>%s</php:threadModel>
  </infrastructure>
  <e:started id="1" name="PHPUnit\TestFixture\Basic\StatusTest" time="%s">
+  <metadata>
+   <phpunit:testDox prettifiedClassName="Test result status with and without message"/>
+  </metadata>
   <sources>
    <fileSource path="%sStatusTest.php">
     <filePosition line="%d"/>
@@ -40,6 +43,9 @@ unlink($logfile);
   </sources>
  </e:started>
  <e:started id="2" parentId="1" name="testSuccess" time="%s">
+  <metadata>
+   <phpunit:testDox prettifiedMethodName="Success"/>
+  </metadata>
   <sources>
    <fileSource path="%sStatusTest.php">
     <filePosition line="%d"/>
@@ -55,6 +61,9 @@ unlink($logfile);
   <result status="SUCCESSFUL"/>
  </e:finished>
  <e:started id="3" parentId="1" name="testFailure" time="%s">
+  <metadata>
+   <phpunit:testDox prettifiedMethodName="Failure"/>
+  </metadata>
   <sources>
    <fileSource path="%sStatusTest.php">
     <filePosition line="%d"/>
@@ -76,6 +85,9 @@ unlink($logfile);
   </result>
  </e:finished>
  <e:started id="4" parentId="1" name="testError" time="%s">
+  <metadata>
+   <phpunit:testDox prettifiedMethodName="Error"/>
+  </metadata>
   <sources>
    <fileSource path="%sStatusTest.php">
     <filePosition line="%d"/>
@@ -97,6 +109,9 @@ unlink($logfile);
   </result>
  </e:finished>
  <e:started id="5" parentId="1" name="testIncomplete" time="%s">
+  <metadata>
+   <phpunit:testDox prettifiedMethodName="Incomplete"/>
+  </metadata>
   <sources>
    <fileSource path="%sStatusTest.php">
     <filePosition line="%d"/>
@@ -117,6 +132,9 @@ unlink($logfile);
   </result>
  </e:finished>
  <e:started id="6" parentId="1" name="testSkipped" time="%s">
+  <metadata>
+   <phpunit:testDox prettifiedMethodName="Skipped"/>
+  </metadata>
   <sources>
    <fileSource path="%sStatusTest.php">
     <filePosition line="%d"/>
@@ -134,6 +152,9 @@ unlink($logfile);
   </result>
  </e:finished>
  <e:started id="7" parentId="1" name="testRisky" time="%s">
+  <metadata>
+   <phpunit:testDox prettifiedMethodName="Risky"/>
+  </metadata>
   <sources>
    <fileSource path="%sStatusTest.php">
     <filePosition line="%d"/>
@@ -154,6 +175,9 @@ unlink($logfile);
   <result status="SUCCESSFUL"/>
  </e:finished>
  <e:started id="8" parentId="1" name="testSuccessWithMessage" time="%s">
+  <metadata>
+   <phpunit:testDox prettifiedMethodName="Success with message"/>
+  </metadata>
   <sources>
    <fileSource path="%sStatusTest.php">
     <filePosition line="%d"/>
@@ -169,6 +193,9 @@ unlink($logfile);
   <result status="SUCCESSFUL"/>
  </e:finished>
  <e:started id="9" parentId="1" name="testFailureWithMessage" time="%s">
+  <metadata>
+   <phpunit:testDox prettifiedMethodName="Failure with message"/>
+  </metadata>
   <sources>
    <fileSource path="%sStatusTest.php">
     <filePosition line="%d"/>
@@ -192,6 +219,9 @@ Failed asserting that false is true.
   </result>
  </e:finished>
  <e:started id="10" parentId="1" name="testErrorWithMessage" time="%s">
+  <metadata>
+   <phpunit:testDox prettifiedMethodName="Error with message"/>
+  </metadata>
   <sources>
    <fileSource path="%sStatusTest.php">
     <filePosition line="%d"/>
@@ -213,6 +243,9 @@ Failed asserting that false is true.
   </result>
  </e:finished>
  <e:started id="11" parentId="1" name="testIncompleteWithMessage" time="%s">
+  <metadata>
+   <phpunit:testDox prettifiedMethodName="Incomplete with message"/>
+  </metadata>
   <sources>
    <fileSource path="%sStatusTest.php">
     <filePosition line="%d"/>
@@ -234,6 +267,9 @@ Failed asserting that false is true.
   </result>
  </e:finished>
  <e:started id="12" parentId="1" name="testSkippedByMetadata" time="%s">
+  <metadata>
+   <phpunit:testDox prettifiedMethodName="Skipped by metadata"/>
+  </metadata>
   <sources>
    <fileSource path="%sStatusTest.php">
     <filePosition line="%d"/>
@@ -247,6 +283,9 @@ Failed asserting that false is true.
   </result>
  </e:finished>
  <e:started id="13" parentId="1" name="testSkippedWithMessage" time="%s">
+  <metadata>
+   <phpunit:testDox prettifiedMethodName="Skipped with message"/>
+  </metadata>
   <sources>
    <fileSource path="%sStatusTest.php">
     <filePosition line="%d"/>
@@ -264,6 +303,9 @@ Failed asserting that false is true.
   </result>
  </e:finished>
  <e:started id="14" parentId="1" name="testRiskyWithMessage" time="%s">
+  <metadata>
+   <phpunit:testDox prettifiedMethodName="Risky with message"/>
+  </metadata>
   <sources>
    <fileSource path="%sStatusTest.php">
     <filePosition line="%d"/>

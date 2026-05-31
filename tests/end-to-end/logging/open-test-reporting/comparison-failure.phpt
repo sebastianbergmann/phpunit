@@ -32,6 +32,9 @@ unlink($logfile);
   <php:threadModel>%s</php:threadModel>
  </infrastructure>
  <e:started id="1" name="PHPUnit\TestFixture\OpenTestReporting\ComparisonFailureTest" time="%s">
+  <metadata>
+   <phpunit:testDox prettifiedClassName="Comparison Failure (PHPUnit\TestFixture\OpenTestReporting\ComparisonFailure)"/>
+  </metadata>
   <sources>
    <fileSource path="%sComparisonFailureTest.php">
     <filePosition line="%d"/>
@@ -40,6 +43,9 @@ unlink($logfile);
   </sources>
  </e:started>
  <e:started id="2" parentId="1" name="testEquals" time="%s">
+  <metadata>
+   <phpunit:testDox prettifiedMethodName="Equals"/>
+  </metadata>
   <sources>
    <fileSource path="%sComparisonFailureTest.php">
     <filePosition line="%d"/>

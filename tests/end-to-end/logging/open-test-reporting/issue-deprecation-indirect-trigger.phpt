@@ -35,6 +35,9 @@ unlink($logfile);
  <e:started id="1" name="%sphpunit.xml" time="%s"/>
  <e:started id="2" parentId="1" name="default" time="%s"/>
  <e:started id="3" parentId="2" name="PHPUnit\TestFixture\OpenTestReporting\DeprecationIndirectTriggerTest" time="%s">
+  <metadata>
+   <phpunit:testDox prettifiedClassName="Deprecation Indirect Trigger (PHPUnit\TestFixture\OpenTestReporting\DeprecationIndirectTrigger)"/>
+  </metadata>
   <sources>
    <fileSource path="%sDeprecationIndirectTriggerTest.php">
     <filePosition line="%d"/>
@@ -43,6 +46,9 @@ unlink($logfile);
   </sources>
  </e:started>
  <e:started id="4" parentId="3" name="testOne" time="%s">
+  <metadata>
+   <phpunit:testDox prettifiedMethodName="One"/>
+  </metadata>
   <sources>
    <fileSource path="%sDeprecationIndirectTriggerTest.php">
     <filePosition line="%d"/>

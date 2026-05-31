@@ -32,6 +32,9 @@ unlink($logfile);
   <php:threadModel>%s</php:threadModel>
  </infrastructure>
  <e:started id="1" name="PHPUnit\TestFixture\Event\ExceptionInSetUpBeforeClassTest" time="%s">
+  <metadata>
+   <phpunit:testDox prettifiedClassName="Exception In Set Up Before Class (PHPUnit\TestFixture\Event\ExceptionInSetUpBeforeClass)"/>
+  </metadata>
   <sources>
    <fileSource path="%sExceptionInSetUpBeforeClassTest.php">
     <filePosition line="%d"/>

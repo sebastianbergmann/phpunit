@@ -33,6 +33,9 @@ unlink($logfile);
   <php:threadModel>%s</php:threadModel>
  </infrastructure>
  <e:started id="1" name="PHPUnit\TestFixture\OpenTestReporting\PhpDeprecationIssueTest" time="%s">
+  <metadata>
+   <phpunit:testDox prettifiedClassName="Php Deprecation Issue (PHPUnit\TestFixture\OpenTestReporting\PhpDeprecationIssue)"/>
+  </metadata>
   <sources>
    <fileSource path="%sPhpDeprecationIssueTest.php">
     <filePosition line="%d"/>
@@ -41,6 +44,9 @@ unlink($logfile);
   </sources>
  </e:started>
  <e:started id="2" parentId="1" name="testOne" time="%s">
+  <metadata>
+   <phpunit:testDox prettifiedMethodName="One"/>
+  </metadata>
   <sources>
    <fileSource path="%sPhpDeprecationIssueTest.php">
     <filePosition line="%d"/>

@@ -32,6 +32,9 @@ unlink($logfile);
   <php:threadModel>%s</php:threadModel>
  </infrastructure>
  <e:started id="1" name="PHPUnit\TestFixture\Basic\GroupsTest" time="%s">
+  <metadata>
+   <phpunit:testDox prettifiedClassName="Groups (PHPUnit\TestFixture\Basic\Groups)"/>
+  </metadata>
   <sources>
    <fileSource path="%sGroupsTest.php">
     <filePosition line="%d"/>
@@ -45,6 +48,7 @@ unlink($logfile);
     <tag>one</tag>
     <tag>two</tag>
    </tags>
+   <phpunit:testDox prettifiedMethodName="With class and method group"/>
   </metadata>
   <sources>
    <fileSource path="%sGroupsTest.php">
@@ -67,6 +71,7 @@ unlink($logfile);
     <tag>two</tag>
     <tag>three</tag>
    </tags>
+   <phpunit:testDox prettifiedMethodName="With class group only"/>
   </metadata>
   <sources>
    <fileSource path="%sGroupsTest.php">

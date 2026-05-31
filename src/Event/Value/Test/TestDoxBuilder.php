@@ -49,6 +49,14 @@ final class TestDoxBuilder
         );
     }
 
+    /**
+     * @param class-string $className
+     */
+    public static function prettifyClassName(string $className): string
+    {
+        return self::namePrettifier()->prettifyTestClassName($className);
+    }
+
     private static function namePrettifier(): NamePrettifier
     {
         if (self::$namePrettifier === null) {

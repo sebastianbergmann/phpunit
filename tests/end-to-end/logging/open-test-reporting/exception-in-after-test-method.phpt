@@ -32,6 +32,9 @@ unlink($logfile);
   <php:threadModel>%s</php:threadModel>
  </infrastructure>
  <e:started id="1" name="PHPUnit\TestFixture\Event\ExceptionInTearDownTest" time="%s">
+  <metadata>
+   <phpunit:testDox prettifiedClassName="Exception In Tear Down (PHPUnit\TestFixture\Event\ExceptionInTearDown)"/>
+  </metadata>
   <sources>
    <fileSource path="%sExceptionInTearDownTest.php">
     <filePosition line="%d"/>
@@ -40,6 +43,9 @@ unlink($logfile);
   </sources>
  </e:started>
  <e:started id="2" parentId="1" name="testOne" time="%s">
+  <metadata>
+   <phpunit:testDox prettifiedMethodName="One"/>
+  </metadata>
   <sources>
    <fileSource path="%sExceptionInTearDownTest.php">
     <filePosition line="%d"/>

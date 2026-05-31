@@ -32,6 +32,9 @@ unlink($logfile);
   <php:threadModel>%s</php:threadModel>
  </infrastructure>
  <e:started id="1" name="PHPUnit\TestFixture\Basic\UnexpectedOutputTest" time="%s">
+  <metadata>
+   <phpunit:testDox prettifiedClassName="Unexpected Output (PHPUnit\TestFixture\Basic\UnexpectedOutput)"/>
+  </metadata>
   <sources>
    <fileSource path="%sUnexpectedOutputTest.php">
     <filePosition line="%d"/>
@@ -40,6 +43,9 @@ unlink($logfile);
   </sources>
  </e:started>
  <e:started id="2" parentId="1" name="testWithOutput" time="%s">
+  <metadata>
+   <phpunit:testDox prettifiedMethodName="With output"/>
+  </metadata>
   <sources>
    <fileSource path="%sUnexpectedOutputTest.php">
     <filePosition line="%d"/>

@@ -33,6 +33,7 @@ All notable changes of the PHPUnit 13.2 release series are documented in this fi
 * [#6681](https://github.com/sebastianbergmann/phpunit/pull/6681): Comment-aware variants of XML comparison assertions
 * The `executionOrder` attribute in the XML configuration file now accepts `defects` combined with any main order, as well as three-way combinations of `depends`/`no-depends`, `defects`, and a main order (for example, `depends,defects,duration-ascending`)
 * `--validate-configuration` CLI option to validate an XML configuration file for PHPUnit
+* Report TestDox information in Open Test Reporting XML
 * Report per-test and per-test-suite resource usage (time, memory usage, peak memory usage) in Open Test Reporting XML
 * Report number of assertions performed for each test in Open Test Reporting XML
 * Report structured comparison failure details (expected, actual, diff) in Open Test Reporting XML
