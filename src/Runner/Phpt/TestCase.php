@@ -78,12 +78,13 @@ use staabm\SideEffectsDetector\SideEffectsDetector;
  *
  * @phpstan-type CoverageFiles array{coverage: non-empty-string, job: non-empty-string}
  */
-final readonly class TestCase implements Reorderable, SelfDescribing, Test
+final class TestCase implements Reorderable, SelfDescribing, Test
 {
     /**
      * @var non-empty-string
      */
     private string $filename;
+    private Phpt $valueObjectForEvents;
 
     /**
      * @param non-empty-string $filename
@@ -112,21 +113,28 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
      */
     public function run(): void
     {
-        $emitter = EventFacade::emitter();
-        $parser  = new Parser;
+        $emitter                    = EventFacade::emitter();
+        $parser                     = new Parser;
+        $this->valueObjectForEvents = new Phpt($this->filename, null);
 
-        $emitter->testPreparationStarted(
-            $this->valueObjectForEvents(),
-        );
+        $emitter->testPreparationStarted($this->valueObjectForEvents);
 
         try {
             $sections = $parser->parse($this->filename);
         } catch (Exception $e) {
-            $emitter->testPrepared($this->valueObjectForEvents());
-            $emitter->testErrored($this->valueObjectForEvents(), ThrowableBuilder::from($e));
-            $emitter->testFinished($this->valueObjectForEvents(), 0);
+            $emitter->testPrepared($this->valueObjectForEvents);
+            $emitter->testErrored($this->valueObjectForEvents, ThrowableBuilder::from($e));
+            $emitter->testFinished($this->valueObjectForEvents, 0);
 
             return;
+        }
+
+        if (isset($sections['TEST']) && trim($sections['TEST']) !== '') {
+            $description = trim($sections['TEST']);
+
+            assert($description !== '');
+
+            $this->valueObjectForEvents = new Phpt($this->filename, $description);
         }
 
         if (!isset($sections['FILE']) || $sections['FILE'] === '') {
@@ -146,7 +154,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         $input                = null;
         $arguments            = [];
 
-        $emitter->testPrepared($this->valueObjectForEvents());
+        $emitter->testPrepared($this->valueObjectForEvents);
 
         if (isset($sections['INI'])) {
             $phpSettings = $parser->parseIniSection($sections['INI'], $phpSettings);
@@ -221,7 +229,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         if (TestResultFacade::wasInterrupted()) {
             $this->runClean($sections, CodeCoverage::instance()->isActive());
 
-            $emitter->testFinished($this->valueObjectForEvents(), 0);
+            $emitter->testFinished($this->valueObjectForEvents, 0);
 
             return;
         }
@@ -315,21 +323,21 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
             }
 
             if ($failure instanceof IncompleteTestError) {
-                $emitter->testMarkedAsIncomplete($this->valueObjectForEvents(), ThrowableBuilder::from($failure));
+                $emitter->testMarkedAsIncomplete($this->valueObjectForEvents, ThrowableBuilder::from($failure));
             } else {
-                $emitter->testFailed($this->valueObjectForEvents(), ThrowableBuilder::from($failure), null);
+                $emitter->testFailed($this->valueObjectForEvents, ThrowableBuilder::from($failure), null);
             }
 
             $passed = false;
         }
 
         if ($passed) {
-            $emitter->testPassed($this->valueObjectForEvents());
+            $emitter->testPassed($this->valueObjectForEvents);
         }
 
         $this->runClean($sections, CodeCoverage::instance()->isActive());
 
-        $emitter->testFinished($this->valueObjectForEvents(), 1);
+        $emitter->testFinished($this->valueObjectForEvents, 1);
     }
 
     /**
@@ -374,7 +382,11 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
      */
     public function valueObjectForEvents(): Phpt
     {
-        return new Phpt($this->filename);
+        if (isset($this->valueObjectForEvents)) {
+            return $this->valueObjectForEvents;
+        }
+
+        return new Phpt($this->filename, null);
     }
 
     /**
@@ -455,11 +467,11 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
             }
 
             EventFacade::emitter()->testSkipped(
-                $this->valueObjectForEvents(),
+                $this->valueObjectForEvents,
                 $message,
             );
 
-            EventFacade::emitter()->testFinished($this->valueObjectForEvents(), 0);
+            EventFacade::emitter()->testFinished($this->valueObjectForEvents, 0);
 
             return true;
         }
@@ -471,7 +483,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
             !in_array(SideEffect::STANDARD_OUTPUT, $sideEffects, true) &&
             !in_array(SideEffect::SCOPE_POLLUTION, $sideEffects, true)) {
             EventFacade::emitter()->testConsideredRisky(
-                $this->valueObjectForEvents(),
+                $this->valueObjectForEvents,
                 'SKIPIF section does not produce output that could result in the test being skipped',
             );
         }
