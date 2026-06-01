@@ -24,6 +24,7 @@ use function file_get_contents;
 use function in_array;
 use function is_array;
 use function is_file;
+use function is_string;
 use function ltrim;
 use function ob_get_clean;
 use function ob_start;
@@ -529,13 +530,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         ob_start();
         @eval($code);
 
-        $output = ob_get_clean();
-
-        if ($output === false) {
-            return '';
-        }
-
-        return $output;
+        return (string) ob_get_clean();
     }
 
     /**
@@ -717,9 +712,8 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         $needle   = trim($needle);
         $realFile = realpath($this->filename);
 
-        if ($realFile === false) {
-            $realFile = $this->filename;
-        }
+        assert(is_string($realFile));
+        assert($realFile !== '');
 
         if ($needle === '') {
             return [[
@@ -744,9 +738,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
                 $externalFile     = trim($sections[$section . '_EXTERNAL']);
                 $externalRealPath = realpath(dirname($this->filename) . DIRECTORY_SEPARATOR . $externalFile);
 
-                if ($externalRealPath === false) {
-                    $externalRealPath = dirname($this->filename) . DIRECTORY_SEPARATOR . $externalFile;
-                }
+                assert(is_string($externalRealPath) && $externalRealPath !== '');
 
                 return [
                     [
@@ -857,9 +849,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
      */
     private function sectionOffset(array $sections, string $key): int
     {
-        if (!isset($sections[$key])) {
-            return 0;
-        }
+        assert(isset($sections[$key]));
 
         return (int) $sections[$key];
     }

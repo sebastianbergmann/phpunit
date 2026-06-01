@@ -36,4 +36,11 @@ final class TestCaseTest extends FrameworkTestCase
 
         $this->assertSame(1, $testCase->count());
     }
+
+    public function testCanBeConstructedForFileThatDoesNotExist(): void
+    {
+        $testCase = new TestCase('/this/file/does/not/exist.phpt');
+
+        $this->assertSame(1, $testCase->count());
+    }
 }

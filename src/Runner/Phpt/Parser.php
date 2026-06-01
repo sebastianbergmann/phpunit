@@ -87,9 +87,7 @@ final readonly class Parser
                 throw new InvalidPhptFileException;
             }
 
-            if (!isset($sections[$section])) {
-                $sections[$section] = '';
-            }
+            assert(isset($sections[$section]));
 
             $sections[$section] .= $line;
         }
@@ -204,14 +202,16 @@ final readonly class Parser
                 $externalPath = $testDirectory . $externalFilename;
                 $contents     = file_get_contents($externalPath);
 
-                assert($contents !== false && $contents !== '');
+                assert($contents !== false);
+                assert($contents !== '');
 
                 $sections[$section] = $contents;
 
                 if ($section === 'FILE') {
                     $resolvedPath = realpath($externalPath);
 
-                    assert(is_string($resolvedPath) && $resolvedPath !== '');
+                    assert(is_string($resolvedPath));
+                    assert($resolvedPath !== '');
 
                     $sections['FILE_EXTERNAL_PATH'] = $resolvedPath;
                 }

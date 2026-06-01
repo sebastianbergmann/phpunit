@@ -20,6 +20,7 @@ use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(Parser::class)]
+#[CoversClass(CannotLoadPhptFileException::class)]
 #[CoversClass(PhptExternalFileCannotBeLoadedException::class)]
 #[Small]
 #[Group('test-runner')]
@@ -100,6 +101,15 @@ final class ParserTest extends TestCase
         $parser->parse(__DIR__ . '/../../../_files/phpt/external-missing-file.phpt');
     }
 
+    public function testRejectsFileThatCannotBeLoaded(): void
+    {
+        $parser = new Parser;
+
+        $this->expectException(CannotLoadPhptFileException::class);
+
+        $parser->parse(__DIR__ . '/../../../_files/phpt/does-not-exist.phpt');
+    }
+
     #[TestDox('parseIniSection() skips settings without equals sign')]
     public function testParseIniSectionSkipsSettingsWithoutEqualsSign(): void
     {
@@ -109,6 +119,16 @@ final class ParserTest extends TestCase
         $this->assertSame('bar', $result['foo']);
         $this->assertSame('qux', $result['baz']);
         $this->assertArrayNotHasKey('no_equals_here', $result);
+    }
+
+    #[TestDox('parseIniSection() skips settings with empty name')]
+    public function testParseIniSectionSkipsSettingsWithEmptyName(): void
+    {
+        $parser = new Parser;
+        $result = $parser->parseIniSection("=value_without_name\nfoo=bar");
+
+        $this->assertSame('bar', $result['foo']);
+        $this->assertArrayNotHasKey('', $result);
     }
 
     #[TestDox('parseIniSection() accumulates extension values as array')]
