@@ -248,12 +248,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "7c1344ed3093b7d6f9e1f11a84c7d749ff903a2f"
+                "reference": "6ff7c5ba7da13d049290ee4206096992a739ee27"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/7c1344ed3093b7d6f9e1f11a84c7d749ff903a2f",
-                "reference": "7c1344ed3093b7d6f9e1f11a84c7d749ff903a2f",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/6ff7c5ba7da13d049290ee4206096992a739ee27",
+                "reference": "6ff7c5ba7da13d049290ee4206096992a739ee27",
                 "shasum": ""
             },
             "require": {
@@ -265,14 +265,14 @@
                 "php": ">=8.4",
                 "phpunit/php-text-template": "^6.0",
                 "sebastian/complexity": "^6.0",
-                "sebastian/environment": "^9.3.1",
+                "sebastian/environment": "^9.3.2",
                 "sebastian/git-state": "^1.0",
                 "sebastian/lines-of-code": "^5.0.1",
                 "sebastian/version": "^7.0",
                 "theseer/tokenizer": "^2.0.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "^13.1.11"
+                "phpunit/phpunit": "^13.1.13"
             },
             "suggest": {
                 "ext-pcov": "PHP extension that provides line coverage",
@@ -331,7 +331,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-21T17:09:30+00:00"
+            "time": "2026-06-01T13:27:21+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -701,12 +701,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/comparator.git",
-                "reference": "42ce92a8fc63bfe5bba6dea16b45139a04665acc"
+                "reference": "12e4deaecc3ce0f5296955a434bfb15a6bdd7cfc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/42ce92a8fc63bfe5bba6dea16b45139a04665acc",
-                "reference": "42ce92a8fc63bfe5bba6dea16b45139a04665acc",
+                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/12e4deaecc3ce0f5296955a434bfb15a6bdd7cfc",
+                "reference": "12e4deaecc3ce0f5296955a434bfb15a6bdd7cfc",
                 "shasum": ""
             },
             "require": {
@@ -786,7 +786,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-23T14:55:38+00:00"
+            "time": "2026-05-29T11:12:35+00:00"
         },
         {
             "name": "sebastian/complexity",
@@ -864,12 +864,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/diff.git",
-                "reference": "c1b3f6800c29179e13a5cb07c6c7e1298f0c9c69"
+                "reference": "fa158b2ccc225b74d379b968cc6d563b537200d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/c1b3f6800c29179e13a5cb07c6c7e1298f0c9c69",
-                "reference": "c1b3f6800c29179e13a5cb07c6c7e1298f0c9c69",
+                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/fa158b2ccc225b74d379b968cc6d563b537200d7",
+                "reference": "fa158b2ccc225b74d379b968cc6d563b537200d7",
                 "shasum": ""
             },
             "require": {
@@ -877,7 +877,7 @@
             },
             "require-dev": {
                 "phpunit/phpunit": "^13.2",
-                "symfony/process": "^7.4.11"
+                "symfony/process": "^7.4.13"
             },
             "default-branch": true,
             "type": "library",
@@ -936,7 +936,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-23T13:10:30+00:00"
+            "time": "2026-05-29T09:23:40+00:00"
         },
         {
             "name": "sebastian/environment",
