@@ -51,7 +51,7 @@
         "sebastian/exporter": "^8.1.0",
         "sebastian/file-filter": "^1.0",
         "sebastian/git-state": "^1.0",
-        "sebastian/global-state": "^9.0.0",
+        "sebastian/global-state": "^9.0.1",
         "sebastian/object-enumerator": "^8.0.0",
         "sebastian/recursion-context": "^8.0.0",
         "sebastian/type": "^7.0.1",
