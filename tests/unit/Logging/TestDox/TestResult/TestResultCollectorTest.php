@@ -329,7 +329,7 @@ final class TestResultCollectorTest extends TestCase
     public function test_Events_for_a_non_test_method_are_ignored(): void
     {
         $collector = $this->collector();
-        $phpt      = new Phpt('Foo.phpt', 'description');
+        $phpt      = new Phpt('Foo.phpt');
         $throwable = $this->throwable('boom');
 
         $collector->testPrepared(new Prepared($this->telemetryInfo(), $phpt));
@@ -350,7 +350,7 @@ final class TestResultCollectorTest extends TestCase
     public function test_Filtered_issue_events_for_a_non_test_method_are_ignored(): void
     {
         $collector = $this->collector();
-        $phpt      = new Phpt('Foo.phpt', 'description');
+        $phpt      = new Phpt('Foo.phpt');
 
         $collector->testTriggeredDeprecation(
             new DeprecationTriggered($this->telemetryInfo(), $phpt, 'message', 'file.php', 1, false, false, false, IssueTrigger::from(null, null), 'trace'),

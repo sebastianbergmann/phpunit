@@ -433,7 +433,7 @@ final class IssueFilterTest extends TestCase
     {
         return new DeprecationTriggered(
             $this->telemetryInfo(),
-            new Phpt('test.phpt', 'description'),
+            new Phpt('test.phpt'),
             'message',
             'file.php',
             1,

@@ -16,24 +16,6 @@ namespace PHPUnit\Event\Code;
  */
 final readonly class Phpt extends Test
 {
-    /**
-     * @var ?non-empty-string
-     */
-    private ?string $description;
-
-    /**
-     * @param non-empty-string  $file
-     * @param ?non-empty-string $description
-     *
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public function __construct(string $file, ?string $description)
-    {
-        parent::__construct($file);
-
-        $this->description = $description;
-    }
-
     public function isPhpt(): true
     {
         return true;
@@ -53,27 +35,5 @@ final readonly class Phpt extends Test
     public function name(): string
     {
         return $this->file();
-    }
-
-    /**
-     * @phpstan-assert-if-true !null $this->description
-     */
-    public function hasDescription(): bool
-    {
-        return $this->description !== null;
-    }
-
-    /**
-     * @throws NoDescriptionException
-     *
-     * @return non-empty-string
-     */
-    public function description(): string
-    {
-        if ($this->description === null) {
-            throw new NoDescriptionException;
-        }
-
-        return $this->description;
     }
 }

@@ -36,15 +36,4 @@ final class TestCaseTest extends FrameworkTestCase
 
         $this->assertSame(1, $testCase->count());
     }
-
-    public function testValueObjectForEventsReturnsPhptWithoutDescriptionBeforeRun(): void
-    {
-        $filename = realpath(__DIR__ . '/../../../_files/success.phpt');
-        $testCase = new TestCase($filename);
-
-        $phpt = $testCase->valueObjectForEvents();
-
-        $this->assertSame($filename, $phpt->file());
-        $this->assertFalse($phpt->hasDescription());
-    }
 }

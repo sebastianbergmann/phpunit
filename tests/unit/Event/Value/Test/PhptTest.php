@@ -15,7 +15,6 @@ use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(Phpt::class)]
-#[CoversClass(NoDescriptionException::class)]
 #[CoversClass(Test::class)]
 #[Small]
 #[Group('event-system')]
@@ -24,35 +23,14 @@ final class PhptTest extends TestCase
 {
     public function testConstructorSetsValues(): void
     {
-        $file        = 'test.phpt';
-        $description = 'the description';
+        $file = 'test.phpt';
 
-        $test = new Phpt($file, $description);
+        $test = new Phpt($file);
 
         $this->assertSame($file, $test->file());
         $this->assertSame($file, $test->id());
         $this->assertSame($file, $test->name());
-        $this->assertSame($description, $test->description());
         $this->assertTrue($test->isPhpt());
         $this->assertFalse($test->isTestMethod());
-    }
-
-    public function testMayHaveDescription(): void
-    {
-        $test = new Phpt('test.phpt', 'the description');
-
-        $this->assertTrue($test->hasDescription());
-        $this->assertSame('the description', $test->description());
-    }
-
-    public function testMayNotHaveDescription(): void
-    {
-        $test = new Phpt('test.phpt', null);
-
-        $this->assertFalse($test->hasDescription());
-
-        $this->expectException(NoDescriptionException::class);
-
-        $test->description();
     }
 }

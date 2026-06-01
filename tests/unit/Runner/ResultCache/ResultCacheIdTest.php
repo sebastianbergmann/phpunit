@@ -62,7 +62,7 @@ final class ResultCacheIdTest extends TestCase
     public function testPhptResultCacheId(): void
     {
         $file     = 'test.phpt';
-        $phptTest = new Phpt($file, 'description');
+        $phptTest = new Phpt($file);
 
         $this->assertSame('test.phpt', ResultCacheId::fromTest($phptTest)->asString());
     }

@@ -806,7 +806,7 @@ final class ResultPrinterTest extends TestCase
                         'phpt-test' => [
                             new ConsideredRisky(
                                 self::telemetryInfo(),
-                                new Phpt('/path/to/test.phpt', 'description'),
+                                new Phpt('/path/to/test.phpt'),
                                 'message',
                             ),
                         ],
