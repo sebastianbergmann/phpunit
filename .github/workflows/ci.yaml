@@ -23,7 +23,7 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
-  COMPOSER_ROOT_VERSION: "13.2.x-dev"
+  COMPOSER_ROOT_VERSION: "13.3.x-dev"
   PHP_VERSION: 8.4
 
 permissions:

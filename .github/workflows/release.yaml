@@ -46,7 +46,7 @@ jobs:
       - name: Create release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release create "$RELEASE_TAG" --title "PHPUnit $RELEASE_TAG" --notes-file release-notes.md --target "13.2"
+        run: gh release create "$RELEASE_TAG" --title "PHPUnit $RELEASE_TAG" --notes-file release-notes.md --target "13.3"
 
       - name: Announce release
         id: mastodon
