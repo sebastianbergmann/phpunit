@@ -4,13 +4,10 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 
 ## [12.5.29] - 2026-MM-DD
 
-### Changed
-
-* [#6700](https://github.com/sebastianbergmann/phpunit/issues/6700): A warning is now emitted when a test configures more than one output expectation
-
 ### Fixed
 
 * [#6683](https://github.com/sebastianbergmann/phpunit/issues/6683): `assertNotEquals()` failure message says "is equal to" instead of "is not equal to" when comparing arrays or objects
+* [#6700](https://github.com/sebastianbergmann/phpunit/issues/6700): `expectOutputString()` and `expectOutputRegex()` silently replace themselves and each other
 
 ## [12.5.28] - 2026-05-27
 
