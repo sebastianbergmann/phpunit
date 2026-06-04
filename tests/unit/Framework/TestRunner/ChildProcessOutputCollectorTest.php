@@ -31,7 +31,7 @@ final class ChildProcessOutputCollectorTest extends TestCase
         $test = new Success('testOne');
 
         $outputBuffer = new ReflectionProperty(TestCase::class, 'outputBuffer')->getValue($test);
-        new ReflectionProperty(OutputBuffer::class, 'expectedString')->setValue($outputBuffer, 'whatever');
+        $outputBuffer->expectString('whatever');
 
         $this->assertSame('', ChildProcessOutputCollector::collect($test));
     }

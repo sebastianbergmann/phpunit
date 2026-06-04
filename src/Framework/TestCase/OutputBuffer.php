@@ -11,7 +11,7 @@ namespace PHPUnit\Framework\TestCase;
 
 use const PHP_OUTPUT_HANDLER_CLEAN;
 use const PHP_OUTPUT_HANDLER_FINAL;
-use function is_string;
+use function in_array;
 use function ob_end_clean;
 use function ob_get_contents;
 use function ob_get_level;
@@ -27,28 +27,55 @@ use PHPUnit\Framework\ExpectationFailedException;
  */
 final class OutputBuffer
 {
-    private string $output                     = '';
-    private ?string $expectedRegularExpression = null;
-    private ?string $expectedString            = null;
-    private bool $bufferingActive              = false;
-    private int $bufferingLevel                = 0;
-    private string $bufferingCaptured          = '';
-    private bool $bufferingDestroyed           = false;
-    private bool $retrievedForAssertion        = false;
+    private string $output = '';
+
+    /**
+     * @var list<string>
+     */
+    private array $expectedRegularExpressions = [];
+
+    /**
+     * @var list<string>
+     */
+    private array $expectedStrings      = [];
+    private bool $bufferingActive       = false;
+    private int $bufferingLevel         = 0;
+    private string $bufferingCaptured   = '';
+    private bool $bufferingDestroyed    = false;
+    private bool $retrievedForAssertion = false;
 
     public function expectRegularExpression(string $expectedRegularExpression): void
     {
-        $this->expectedRegularExpression = $expectedRegularExpression;
+        if (in_array($expectedRegularExpression, $this->expectedRegularExpressions, true)) {
+            return;
+        }
+
+        $this->expectedRegularExpressions[] = $expectedRegularExpression;
     }
 
     public function expectString(string $expectedString): void
     {
-        $this->expectedString = $expectedString;
+        if (in_array($expectedString, $this->expectedStrings, true)) {
+            return;
+        }
+
+        $this->expectedStrings[] = $expectedString;
+    }
+
+    public function conflictsWithExpectedString(string $expectedString): bool
+    {
+        foreach ($this->expectedStrings as $alreadyExpectedString) {
+            if ($alreadyExpectedString !== $expectedString) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function hasExpectation(): bool
     {
-        return is_string($this->expectedString) || is_string($this->expectedRegularExpression);
+        return $this->expectedStrings !== [] || $this->expectedRegularExpressions !== [];
     }
 
     public function expectsOutput(): bool
@@ -167,10 +194,12 @@ final class OutputBuffer
      */
     public function performAssertions(): void
     {
-        if ($this->expectedRegularExpression !== null) {
-            Assert::assertMatchesRegularExpression($this->expectedRegularExpression, $this->output);
-        } elseif ($this->expectedString !== null) {
-            Assert::assertSame($this->expectedString, $this->output);
+        foreach ($this->expectedRegularExpressions as $expectedRegularExpression) {
+            Assert::assertMatchesRegularExpression($expectedRegularExpression, $this->output);
+        }
+
+        foreach ($this->expectedStrings as $expectedString) {
+            Assert::assertSame($expectedString, $this->output);
         }
     }
 }
