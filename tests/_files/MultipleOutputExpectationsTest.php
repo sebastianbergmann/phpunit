@@ -13,19 +13,22 @@ use PHPUnit\Framework\TestCase;
 
 final class MultipleOutputExpectationsTest extends TestCase
 {
-    public function testExpectOutputStringThenExpectOutputRegex(): void
+    public function testCombinedAndRepeatedExpectationsAreAllVerified(): void
     {
+        $this->expectOutputRegex('/^f/');
+        $this->expectOutputRegex('/^f/');
+        $this->expectOutputRegex('/o$/');
         $this->expectOutputString('foo');
-        $this->expectOutputRegex('/.*/');
+        $this->expectOutputString('foo');
 
-        print 'bar';
+        print 'foo';
     }
 
-    public function testExpectOutputRegexThenExpectOutputString(): void
+    public function testConflictingStringExpectationsTriggerWarning(): void
     {
-        $this->expectOutputRegex('/.*/');
+        $this->expectOutputString('foo');
         $this->expectOutputString('bar');
 
-        print 'bar';
+        print 'foo';
     }
 }

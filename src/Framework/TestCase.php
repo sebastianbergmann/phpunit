@@ -1041,14 +1041,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     final protected function expectOutputRegex(string $expectedRegex): void
     {
-        $this->warnAboutMultipleOutputExpectations();
-
         $this->outputBuffer->expectRegularExpression($expectedRegex);
     }
 
     final protected function expectOutputString(string $expectedString): void
     {
-        $this->warnAboutMultipleOutputExpectations();
+        $this->warnAboutConflictingOutputStringExpectation($expectedString);
 
         $this->outputBuffer->expectString($expectedString);
     }
@@ -1687,12 +1685,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         );
     }
 
-    private function warnAboutMultipleOutputExpectations(): void
+    private function warnAboutConflictingOutputStringExpectation(string $expectedString): void
     {
-        if ($this->outputBuffer->hasExpectation()) {
+        if ($this->outputBuffer->conflictsWithExpectedString($expectedString)) {
             Event\Facade::emitter()->testTriggeredPhpunitWarning(
                 $this->valueObjectForEvents(),
-                'Only one expectation on output can be configured: expectOutputString() and expectOutputRegex() cannot be combined and must not be called more than once',
+                'Output cannot be expected to be identical to more than one string; expectOutputString() was already called with a different argument',
             );
         }
     }

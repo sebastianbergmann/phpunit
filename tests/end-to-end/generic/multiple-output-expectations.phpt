@@ -1,5 +1,5 @@
 --TEST--
-A PHPUnit warning is triggered when an output expectation is configured more than once
+expectOutputString() and expectOutputRegex() can be combined and repeated; conflicting exact strings trigger a PHPUnit warning
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
@@ -14,21 +14,28 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 
-WW                                                                  2 / 2 (100%)
+.F                                                                  2 / 2 (100%)
 
 Time: %s, Memory: %s
 
-2 tests triggered 2 PHPUnit warnings:
+There was 1 failure:
 
-1) PHPUnit\TestFixture\MultipleOutputExpectationsTest::testExpectOutputStringThenExpectOutputRegex
-Only one expectation on output can be configured: expectOutputString() and expectOutputRegex() cannot be combined and must not be called more than once
+1) PHPUnit\TestFixture\MultipleOutputExpectationsTest::testConflictingStringExpectationsTriggerWarning
+Failed asserting that two strings are identical.
+--- Expected
++++ Actual
+@@ @@
+-'bar'
++'foo'
 
-%s%eMultipleOutputExpectationsTest.php:16
+--
 
-2) PHPUnit\TestFixture\MultipleOutputExpectationsTest::testExpectOutputRegexThenExpectOutputString
-Only one expectation on output can be configured: expectOutputString() and expectOutputRegex() cannot be combined and must not be called more than once
+1 test triggered 1 PHPUnit warning:
 
-%s%eMultipleOutputExpectationsTest.php:24
+1) PHPUnit\TestFixture\MultipleOutputExpectationsTest::testConflictingStringExpectationsTriggerWarning
+Output cannot be expected to be identical to more than one string; expectOutputString() was already called with a different argument
 
-OK, but there were issues!
-Tests: 2, Assertions: 2, PHPUnit Warnings: 2.
+%s%eMultipleOutputExpectationsTest.php:27
+
+FAILURES!
+Tests: 2, Assertions: 5, Failures: 1, PHPUnit Warnings: 1.
