@@ -74,6 +74,8 @@ final class ErrorHandler
     private ExcludeList $excludeList;
     private bool $enabled                     = false;
     private ?int $originalErrorReportingLevel = null;
+    private bool $deferToPreviousErrorHandler = false;
+    private bool $handlingDeferredIssue       = false;
 
     /**
      * @var ?callable
@@ -136,263 +138,48 @@ final class ErrorHandler
      */
     public function __invoke(int $errorNumber, string $errorString, string $errorFile, int $errorLine): bool
     {
-        $suppressed = (error_reporting() & ~self::INSUPPRESSIBLE_LEVELS) === 0;
+        if ($this->deferToPreviousErrorHandler &&
+            !$this->handlingDeferredIssue &&
+            $this->previousErrorHandler !== null) {
+            $this->handlingDeferredIssue = true;
 
-        if ($suppressed && $this->excludeList->isExcluded($errorFile)) {
-            // @codeCoverageIgnoreStart
-            return $this->forwardToPreviousErrorHandler($errorNumber, $errorString, $errorFile, $errorLine);
-            // @codeCoverageIgnoreEnd
+            try {
+                $handledByPreviousErrorHandler = (bool) ($this->previousErrorHandler)($errorNumber, $errorString, $errorFile, $errorLine);
+            } finally {
+                $this->handlingDeferredIssue = false;
+            }
+
+            if ($handledByPreviousErrorHandler) {
+                return true;
+            }
+
+            return $this->handle($errorNumber, $errorString, $errorFile, $errorLine, false);
         }
 
-        if ($errorString === '' || $errorFile === '' || $errorLine < 1) {
-            // @codeCoverageIgnoreStart
-            return $this->forwardToPreviousErrorHandler($errorNumber, $errorString, $errorFile, $errorLine);
-            // @codeCoverageIgnoreEnd
-        }
-
-        /**
-         * E_STRICT is deprecated since PHP 8.4.
-         *
-         * @see https://github.com/sebastianbergmann/phpunit/issues/5956
-         */
-        if (defined('E_STRICT') && $errorNumber === 2048) {
-            // @codeCoverageIgnoreStart
-            $errorNumber = E_NOTICE;
-            // @codeCoverageIgnoreEnd
-        }
-
-        $test = Event\Code\TestMethodBuilder::fromCallStack();
-
-        if ($errorNumber === E_USER_DEPRECATED) {
-            [$errorFile, $errorLine] = $this->applyDeprecationFrame($errorFile, $errorLine);
-        }
-
-        $ignoredByBaseline = $this->ignoredByBaseline($errorFile, $errorLine, $errorString);
-        $ignoredByTest     = $this->deprecationIgnoredByTest($test, $errorString);
-
-        switch ($errorNumber) {
-            case E_NOTICE:
-                Event\Facade::emitter()->testTriggeredPhpNotice(
-                    $test,
-                    $errorString,
-                    $errorFile,
-                    $errorLine,
-                    $suppressed,
-                    $ignoredByBaseline,
-                );
-
-                break;
-
-            case E_USER_NOTICE:
-                Event\Facade::emitter()->testTriggeredNotice(
-                    $test,
-                    $errorString,
-                    $errorFile,
-                    $errorLine,
-                    $suppressed,
-                    $ignoredByBaseline,
-                );
-
-                break;
-
-            case E_WARNING:
-                Event\Facade::emitter()->testTriggeredPhpWarning(
-                    $test,
-                    $errorString,
-                    $errorFile,
-                    $errorLine,
-                    $suppressed,
-                    $ignoredByBaseline,
-                );
-
-                break;
-
-            case E_USER_WARNING:
-                Event\Facade::emitter()->testTriggeredWarning(
-                    $test,
-                    $errorString,
-                    $errorFile,
-                    $errorLine,
-                    $suppressed,
-                    $ignoredByBaseline,
-                );
-
-                break;
-
-            case E_DEPRECATED:
-                Event\Facade::emitter()->testTriggeredPhpDeprecation(
-                    $test,
-                    $errorString,
-                    $errorFile,
-                    $errorLine,
-                    $suppressed,
-                    $ignoredByBaseline,
-                    $ignoredByTest,
-                    $this->trigger($test, false, $errorString, $errorFile),
-                );
-
-                break;
-
-            case E_USER_DEPRECATED:
-                Event\Facade::emitter()->testTriggeredDeprecation(
-                    $test,
-                    $errorString,
-                    $errorFile,
-                    $errorLine,
-                    $suppressed,
-                    $ignoredByBaseline,
-                    $ignoredByTest,
-                    $this->trigger($test, true, $errorString),
-                    $this->stackTrace($errorFile, $errorLine),
-                );
-
-                break;
-
-            case E_USER_ERROR:
-                Event\Facade::emitter()->testTriggeredError(
-                    $test,
-                    $errorString,
-                    $errorFile,
-                    $errorLine,
-                    $suppressed,
-                );
-
-                throw new ErrorException('E_USER_ERROR was triggered');
-
-            default:
-                return $this->forwardToPreviousErrorHandler($errorNumber, $errorString, $errorFile, $errorLine);
-        }
-
-        return $this->forwardToPreviousErrorHandler($errorNumber, $errorString, $errorFile, $errorLine);
+        return $this->handle($errorNumber, $errorString, $errorFile, $errorLine, !$this->deferToPreviousErrorHandler);
     }
 
     public function handleNonTestCaseIssue(int $errorNumber, string $errorString, string $errorFile, int $errorLine): true
     {
-        $suppressed = (error_reporting() & ~self::INSUPPRESSIBLE_LEVELS) === 0;
+        if ($this->deferToPreviousErrorHandler &&
+            !$this->handlingDeferredIssue &&
+            $this->previousNonTestCaseErrorHandler !== null) {
+            $this->handlingDeferredIssue = true;
 
-        if ($suppressed && $this->excludeList->isExcluded($errorFile)) {
-            return true;
-        }
-
-        if ($this->testCaseContext !== null) {
-            $this->testCaseContextIssues[$this->testCaseContext][] = [$errorNumber, $errorString, $errorFile, $errorLine];
-
-            return true;
-        }
-
-        if ($errorString === '' || $errorFile === '' || $errorLine < 1) {
-            // @codeCoverageIgnoreStart
-            if ($this->previousNonTestCaseErrorHandler !== null) {
-                ($this->previousNonTestCaseErrorHandler)($errorNumber, $errorString, $errorFile, $errorLine);
+            try {
+                $handledByPreviousErrorHandler = (bool) ($this->previousNonTestCaseErrorHandler)($errorNumber, $errorString, $errorFile, $errorLine);
+            } finally {
+                $this->handlingDeferredIssue = false;
             }
 
-            return true;
-            // @codeCoverageIgnoreEnd
+            if ($handledByPreviousErrorHandler) {
+                return true;
+            }
+
+            return $this->handleNonTestCaseIssueInternal($errorNumber, $errorString, $errorFile, $errorLine, false);
         }
 
-        /**
-         * E_STRICT is deprecated since PHP 8.4.
-         *
-         * @see https://github.com/sebastianbergmann/phpunit/issues/5956
-         */
-        if (defined('E_STRICT') && $errorNumber === 2048) {
-            // @codeCoverageIgnoreStart
-            $errorNumber = E_NOTICE;
-            // @codeCoverageIgnoreEnd
-        }
-
-        if ($errorNumber === E_USER_DEPRECATED) {
-            [$errorFile, $errorLine] = $this->applyDeprecationFrame($errorFile, $errorLine);
-        }
-
-        $ignoredByBaseline = $this->ignoredByBaseline($errorFile, $errorLine, $errorString);
-
-        switch ($errorNumber) {
-            case E_NOTICE:
-                Event\Facade::emitter()->testRunnerTriggeredPhpNotice(
-                    $errorString,
-                    $errorFile,
-                    $errorLine,
-                    $suppressed,
-                    $ignoredByBaseline,
-                );
-
-                break;
-
-            case E_USER_NOTICE:
-                Event\Facade::emitter()->testRunnerTriggeredNotice(
-                    $errorString,
-                    $errorFile,
-                    $errorLine,
-                    $suppressed,
-                    $ignoredByBaseline,
-                );
-
-                break;
-
-            case E_WARNING:
-                Event\Facade::emitter()->testRunnerTriggeredPhpWarning(
-                    $errorString,
-                    $errorFile,
-                    $errorLine,
-                    $suppressed,
-                    $ignoredByBaseline,
-                );
-
-                break;
-
-            case E_USER_WARNING:
-                Event\Facade::emitter()->testRunnerTriggeredWarning(
-                    $errorString,
-                    $errorFile,
-                    $errorLine,
-                    $suppressed,
-                    $ignoredByBaseline,
-                );
-
-                break;
-
-            case E_DEPRECATED:
-                Event\Facade::emitter()->testRunnerTriggeredPhpDeprecation(
-                    $errorString,
-                    $errorFile,
-                    $errorLine,
-                    $suppressed,
-                    $ignoredByBaseline,
-                    $this->triggerWithoutTest(false, $errorString, $errorFile),
-                );
-
-                break;
-
-            case E_USER_DEPRECATED:
-                Event\Facade::emitter()->testRunnerTriggeredDeprecation(
-                    $errorString,
-                    $errorFile,
-                    $errorLine,
-                    $suppressed,
-                    $ignoredByBaseline,
-                    $this->triggerWithoutTest(true, $errorString),
-                    $this->stackTrace($errorFile, $errorLine),
-                );
-
-                break;
-
-            case E_USER_ERROR:
-                Event\Facade::emitter()->testRunnerTriggeredError(
-                    $errorString,
-                    $errorFile,
-                    $errorLine,
-                    $suppressed,
-                );
-
-                break;
-        }
-
-        if ($this->previousNonTestCaseErrorHandler !== null) {
-            ($this->previousNonTestCaseErrorHandler)($errorNumber, $errorString, $errorFile, $errorLine);
-        }
-
-        return true;
+        return $this->handleNonTestCaseIssueInternal($errorNumber, $errorString, $errorFile, $errorLine, !$this->deferToPreviousErrorHandler);
     }
 
     public function registerForNonTestCaseContext(): void
@@ -506,6 +293,11 @@ final class ErrorHandler
         $this->baseline = $baseline;
     }
 
+    public function enableDeferToPreviousErrorHandler(): void
+    {
+        $this->deferToPreviousErrorHandler = true;
+    }
+
     /**
      * @param DeprecationTriggers $deprecationTriggers
      */
@@ -527,6 +319,270 @@ final class ErrorHandler
     public function leaveTestCaseContext(): void
     {
         $this->testCaseContext = null;
+    }
+
+    /**
+     * @throws NoTestCaseObjectOnCallStackException
+     */
+    private function handle(int $errorNumber, string $errorString, string $errorFile, int $errorLine, bool $forwardToPreviousErrorHandler): bool
+    {
+        $suppressed = (error_reporting() & ~self::INSUPPRESSIBLE_LEVELS) === 0;
+
+        if ($suppressed && $this->excludeList->isExcluded($errorFile)) {
+            // @codeCoverageIgnoreStart
+            return $this->forwardIfRequested($forwardToPreviousErrorHandler, $errorNumber, $errorString, $errorFile, $errorLine);
+            // @codeCoverageIgnoreEnd
+        }
+
+        if ($errorString === '' || $errorFile === '' || $errorLine < 1) {
+            // @codeCoverageIgnoreStart
+            return $this->forwardIfRequested($forwardToPreviousErrorHandler, $errorNumber, $errorString, $errorFile, $errorLine);
+            // @codeCoverageIgnoreEnd
+        }
+
+        /**
+         * E_STRICT is deprecated since PHP 8.4.
+         *
+         * @see https://github.com/sebastianbergmann/phpunit/issues/5956
+         */
+        if (defined('E_STRICT') && $errorNumber === 2048) {
+            // @codeCoverageIgnoreStart
+            $errorNumber = E_NOTICE;
+            // @codeCoverageIgnoreEnd
+        }
+
+        $test = Event\Code\TestMethodBuilder::fromCallStack();
+
+        if ($errorNumber === E_USER_DEPRECATED) {
+            [$errorFile, $errorLine] = $this->applyDeprecationFrame($errorFile, $errorLine);
+        }
+
+        $ignoredByBaseline = $this->ignoredByBaseline($errorFile, $errorLine, $errorString);
+        $ignoredByTest     = $this->deprecationIgnoredByTest($test, $errorString);
+
+        switch ($errorNumber) {
+            case E_NOTICE:
+                Event\Facade::emitter()->testTriggeredPhpNotice(
+                    $test,
+                    $errorString,
+                    $errorFile,
+                    $errorLine,
+                    $suppressed,
+                    $ignoredByBaseline,
+                );
+
+                break;
+
+            case E_USER_NOTICE:
+                Event\Facade::emitter()->testTriggeredNotice(
+                    $test,
+                    $errorString,
+                    $errorFile,
+                    $errorLine,
+                    $suppressed,
+                    $ignoredByBaseline,
+                );
+
+                break;
+
+            case E_WARNING:
+                Event\Facade::emitter()->testTriggeredPhpWarning(
+                    $test,
+                    $errorString,
+                    $errorFile,
+                    $errorLine,
+                    $suppressed,
+                    $ignoredByBaseline,
+                );
+
+                break;
+
+            case E_USER_WARNING:
+                Event\Facade::emitter()->testTriggeredWarning(
+                    $test,
+                    $errorString,
+                    $errorFile,
+                    $errorLine,
+                    $suppressed,
+                    $ignoredByBaseline,
+                );
+
+                break;
+
+            case E_DEPRECATED:
+                Event\Facade::emitter()->testTriggeredPhpDeprecation(
+                    $test,
+                    $errorString,
+                    $errorFile,
+                    $errorLine,
+                    $suppressed,
+                    $ignoredByBaseline,
+                    $ignoredByTest,
+                    $this->trigger($test, false, $errorString, $errorFile),
+                );
+
+                break;
+
+            case E_USER_DEPRECATED:
+                Event\Facade::emitter()->testTriggeredDeprecation(
+                    $test,
+                    $errorString,
+                    $errorFile,
+                    $errorLine,
+                    $suppressed,
+                    $ignoredByBaseline,
+                    $ignoredByTest,
+                    $this->trigger($test, true, $errorString),
+                    $this->stackTrace($errorFile, $errorLine),
+                );
+
+                break;
+
+            case E_USER_ERROR:
+                Event\Facade::emitter()->testTriggeredError(
+                    $test,
+                    $errorString,
+                    $errorFile,
+                    $errorLine,
+                    $suppressed,
+                );
+
+                throw new ErrorException('E_USER_ERROR was triggered');
+
+            default:
+                return $this->forwardIfRequested($forwardToPreviousErrorHandler, $errorNumber, $errorString, $errorFile, $errorLine);
+        }
+
+        return $this->forwardIfRequested($forwardToPreviousErrorHandler, $errorNumber, $errorString, $errorFile, $errorLine);
+    }
+
+    private function handleNonTestCaseIssueInternal(int $errorNumber, string $errorString, string $errorFile, int $errorLine, bool $forwardToPreviousErrorHandler): true
+    {
+        $suppressed = (error_reporting() & ~self::INSUPPRESSIBLE_LEVELS) === 0;
+
+        if ($suppressed && $this->excludeList->isExcluded($errorFile)) {
+            return true;
+        }
+
+        if ($this->testCaseContext !== null) {
+            $this->testCaseContextIssues[$this->testCaseContext][] = [$errorNumber, $errorString, $errorFile, $errorLine];
+
+            return true;
+        }
+
+        if ($errorString === '' || $errorFile === '' || $errorLine < 1) {
+            // @codeCoverageIgnoreStart
+            if ($forwardToPreviousErrorHandler && $this->previousNonTestCaseErrorHandler !== null) {
+                ($this->previousNonTestCaseErrorHandler)($errorNumber, $errorString, $errorFile, $errorLine);
+            }
+
+            return true;
+            // @codeCoverageIgnoreEnd
+        }
+
+        /**
+         * E_STRICT is deprecated since PHP 8.4.
+         *
+         * @see https://github.com/sebastianbergmann/phpunit/issues/5956
+         */
+        if (defined('E_STRICT') && $errorNumber === 2048) {
+            // @codeCoverageIgnoreStart
+            $errorNumber = E_NOTICE;
+            // @codeCoverageIgnoreEnd
+        }
+
+        if ($errorNumber === E_USER_DEPRECATED) {
+            [$errorFile, $errorLine] = $this->applyDeprecationFrame($errorFile, $errorLine);
+        }
+
+        $ignoredByBaseline = $this->ignoredByBaseline($errorFile, $errorLine, $errorString);
+
+        switch ($errorNumber) {
+            case E_NOTICE:
+                Event\Facade::emitter()->testRunnerTriggeredPhpNotice(
+                    $errorString,
+                    $errorFile,
+                    $errorLine,
+                    $suppressed,
+                    $ignoredByBaseline,
+                );
+
+                break;
+
+            case E_USER_NOTICE:
+                Event\Facade::emitter()->testRunnerTriggeredNotice(
+                    $errorString,
+                    $errorFile,
+                    $errorLine,
+                    $suppressed,
+                    $ignoredByBaseline,
+                );
+
+                break;
+
+            case E_WARNING:
+                Event\Facade::emitter()->testRunnerTriggeredPhpWarning(
+                    $errorString,
+                    $errorFile,
+                    $errorLine,
+                    $suppressed,
+                    $ignoredByBaseline,
+                );
+
+                break;
+
+            case E_USER_WARNING:
+                Event\Facade::emitter()->testRunnerTriggeredWarning(
+                    $errorString,
+                    $errorFile,
+                    $errorLine,
+                    $suppressed,
+                    $ignoredByBaseline,
+                );
+
+                break;
+
+            case E_DEPRECATED:
+                Event\Facade::emitter()->testRunnerTriggeredPhpDeprecation(
+                    $errorString,
+                    $errorFile,
+                    $errorLine,
+                    $suppressed,
+                    $ignoredByBaseline,
+                    $this->triggerWithoutTest(false, $errorString, $errorFile),
+                );
+
+                break;
+
+            case E_USER_DEPRECATED:
+                Event\Facade::emitter()->testRunnerTriggeredDeprecation(
+                    $errorString,
+                    $errorFile,
+                    $errorLine,
+                    $suppressed,
+                    $ignoredByBaseline,
+                    $this->triggerWithoutTest(true, $errorString),
+                    $this->stackTrace($errorFile, $errorLine),
+                );
+
+                break;
+
+            case E_USER_ERROR:
+                Event\Facade::emitter()->testRunnerTriggeredError(
+                    $errorString,
+                    $errorFile,
+                    $errorLine,
+                    $suppressed,
+                );
+
+                break;
+        }
+
+        if ($forwardToPreviousErrorHandler && $this->previousNonTestCaseErrorHandler !== null) {
+            ($this->previousNonTestCaseErrorHandler)($errorNumber, $errorString, $errorFile, $errorLine);
+        }
+
+        return true;
     }
 
     /**
@@ -991,5 +1047,14 @@ final class ErrorHandler
         }
 
         return (bool) ($this->previousErrorHandler)($errorNumber, $errorString, $errorFile, $errorLine);
+    }
+
+    private function forwardIfRequested(bool $forwardToPreviousErrorHandler, int $errorNumber, string $errorString, string $errorFile, int $errorLine): bool
+    {
+        if (!$forwardToPreviousErrorHandler) {
+            return true;
+        }
+
+        return $this->forwardToPreviousErrorHandler($errorNumber, $errorString, $errorFile, $errorLine);
     }
 }

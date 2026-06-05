@@ -24,6 +24,10 @@ final readonly class ErrorHandlerBootstrapper
 {
     public static function bootstrap(Configuration $configuration): void
     {
+        if ($configuration->deferToPreviousErrorHandler()) {
+            ErrorHandler::instance()->enableDeferToPreviousErrorHandler();
+        }
+
         $deprecationTriggers = [
             'functions' => [],
             'methods'   => [],

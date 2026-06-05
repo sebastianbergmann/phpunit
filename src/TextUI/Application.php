@@ -205,6 +205,8 @@ final readonly class Application
 
             EventFacade::instance()->seal();
 
+            $this->configureErrorHandlerDeferral($configuration);
+
             ErrorHandler::instance()->registerForNonTestCaseContext();
 
             $testSuite = $this->buildTestSuite($configuration);
@@ -881,6 +883,21 @@ final readonly class Application
         (new TestSuiteFilterProcessor)->process($configuration, $suite);
 
         return $suite->collect();
+    }
+
+    private function configureErrorHandlerDeferral(Configuration $configuration): void
+    {
+        if (!$configuration->deferToPreviousErrorHandler()) {
+            return;
+        }
+
+        ErrorHandler::instance()->enableDeferToPreviousErrorHandler();
+
+        EventFacade::emitter()->testRunnerTriggeredPhpunitNotice(
+            'Issue handling has been deferred to an error handler registered before PHPUnit (deferToPreviousErrorHandler="true"). ' .
+            'PHPUnit cannot guarantee the integrity of its reporting of deprecations, notices, warnings, and errors because the ' .
+            'decision whether such an issue is processed, ignored, or reported is made outside of PHPUnit\'s control.',
+        );
     }
 
     private function configureDeprecationTriggers(Configuration $configuration): void

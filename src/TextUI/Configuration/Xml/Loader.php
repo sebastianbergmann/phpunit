@@ -1169,6 +1169,12 @@ final readonly class Loader
             $requireSealedMockObjects = $this->parseBooleanAttribute($documentElement, 'requireSealedMockObjects', false);
         }
 
+        $deferToPreviousErrorHandler = false;
+
+        if ($documentElement->hasAttribute('deferToPreviousErrorHandler')) {
+            $deferToPreviousErrorHandler = $this->parseBooleanAttribute($documentElement, 'deferToPreviousErrorHandler', false);
+        }
+
         $beStrictAboutCoverageMetadata = false;
 
         if ($documentElement->hasAttribute('beStrictAboutCoverageMetadata')) {
@@ -1205,6 +1211,7 @@ final readonly class Loader
             $this->parseBooleanAttribute($documentElement, 'reverseDefectList', false),
             $requireCoverageMetadata,
             $requireSealedMockObjects,
+            $deferToPreviousErrorHandler,
             $bootstrap,
             $this->bootstrapForTestSuite($filename, $xpath),
             $this->parseBooleanAttribute($documentElement, 'processIsolation', false),

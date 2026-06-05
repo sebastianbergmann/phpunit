@@ -698,6 +698,8 @@ final readonly class Merger
         $requireCoverageMetadata  = $xmlConfiguration->phpunit()->requireCoverageMetadata();
         $requireSealedMockObjects = $xmlConfiguration->phpunit()->requireSealedMockObjects();
 
+        $deferToPreviousErrorHandler = $xmlConfiguration->phpunit()->deferToPreviousErrorHandler();
+
         if ($cliConfiguration->hasExecutionOrder()) {
             $executionOrder = $cliConfiguration->executionOrder();
         } else {
@@ -1253,6 +1255,7 @@ final readonly class Merger
             $reverseDefectList,
             $requireCoverageMetadata,
             $requireSealedMockObjects,
+            $deferToPreviousErrorHandler,
             $noProgress,
             $noResults,
             $noOutput,
