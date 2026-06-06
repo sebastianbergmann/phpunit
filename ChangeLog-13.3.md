@@ -7,5 +7,6 @@ All notable changes of the PHPUnit 13.3 release series are documented in this fi
 ### Added
 
 * [#6701](https://github.com/sebastianbergmann/phpunit/pull/6701): Allow `expectOutputString()` and `expectOutputRegex()` to be combined and repeated
+* [#6710](https://github.com/sebastianbergmann/phpunit/pull/6710): Deprecation Filters
 
 [13.3.0]: https://github.com/sebastianbergmann/phpunit/compare/13.2...main
