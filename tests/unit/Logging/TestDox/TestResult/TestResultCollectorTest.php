@@ -196,7 +196,7 @@ final class TestResultCollectorTest extends TestCase
 
         $deprecation = $this->testMethod('testOne');
         $collector->testPrepared(new Prepared($info, $deprecation));
-        $collector->testTriggeredDeprecation(new DeprecationTriggered($info, $deprecation, 'message', 'file.php', 1, false, false, false, $trigger, 'trace'));
+        $collector->testTriggeredDeprecation(new DeprecationTriggered($info, $deprecation, 'message', 'file.php', 1, false, false, false, false, $trigger, 'trace'));
         $collector->testFinished(new Finished($info, $deprecation, 1));
 
         $notice = $this->testMethod('testTwo');
@@ -211,7 +211,7 @@ final class TestResultCollectorTest extends TestCase
 
         $phpDeprecation = $this->testMethod('testFour');
         $collector->testPrepared(new Prepared($info, $phpDeprecation));
-        $collector->testTriggeredPhpDeprecation(new PhpDeprecationTriggered($info, $phpDeprecation, 'message', 'file.php', 1, false, false, false, $trigger));
+        $collector->testTriggeredPhpDeprecation(new PhpDeprecationTriggered($info, $phpDeprecation, 'message', 'file.php', 1, false, false, false, false, $trigger));
         $collector->testFinished(new Finished($info, $phpDeprecation, 1));
 
         $phpNotice = $this->testMethod('testFive');
@@ -263,6 +263,7 @@ final class TestResultCollectorTest extends TestCase
                 false,
                 false,
                 true,
+                false,
                 IssueTrigger::from(null, null),
                 'trace',
             ),
@@ -281,7 +282,7 @@ final class TestResultCollectorTest extends TestCase
 
         $collector->testPrepared(new Prepared($this->telemetryInfo(), $test));
         $collector->testTriggeredDeprecation(
-            new DeprecationTriggered($this->telemetryInfo(), $test, 'message', 'file.php', 1, false, true, false, IssueTrigger::from(null, null), 'trace'),
+            new DeprecationTriggered($this->telemetryInfo(), $test, 'message', 'file.php', 1, false, true, false, false, IssueTrigger::from(null, null), 'trace'),
         );
         $collector->testTriggeredNotice(
             new NoticeTriggered($this->telemetryInfo(), $test, 'message', 'file.php', 1, false, true),
@@ -290,7 +291,7 @@ final class TestResultCollectorTest extends TestCase
             new WarningTriggered($this->telemetryInfo(), $test, 'message', 'file.php', 1, false, true),
         );
         $collector->testTriggeredPhpDeprecation(
-            new PhpDeprecationTriggered($this->telemetryInfo(), $test, 'message', 'file.php', 1, false, true, false, IssueTrigger::from(null, null)),
+            new PhpDeprecationTriggered($this->telemetryInfo(), $test, 'message', 'file.php', 1, false, true, false, false, IssueTrigger::from(null, null)),
         );
         $collector->testTriggeredPhpNotice(
             new PhpNoticeTriggered($this->telemetryInfo(), $test, 'message', 'file.php', 1, false, true),
@@ -353,7 +354,7 @@ final class TestResultCollectorTest extends TestCase
         $phpt      = new Phpt('Foo.phpt');
 
         $collector->testTriggeredDeprecation(
-            new DeprecationTriggered($this->telemetryInfo(), $phpt, 'message', 'file.php', 1, false, false, false, IssueTrigger::from(null, null), 'trace'),
+            new DeprecationTriggered($this->telemetryInfo(), $phpt, 'message', 'file.php', 1, false, false, false, false, IssueTrigger::from(null, null), 'trace'),
         );
         $collector->testTriggeredNotice(
             new NoticeTriggered($this->telemetryInfo(), $phpt, 'message', 'file.php', 1, false, false),
@@ -362,7 +363,7 @@ final class TestResultCollectorTest extends TestCase
             new WarningTriggered($this->telemetryInfo(), $phpt, 'message', 'file.php', 1, false, false),
         );
         $collector->testTriggeredPhpDeprecation(
-            new PhpDeprecationTriggered($this->telemetryInfo(), $phpt, 'message', 'file.php', 1, false, false, false, IssueTrigger::from(null, null)),
+            new PhpDeprecationTriggered($this->telemetryInfo(), $phpt, 'message', 'file.php', 1, false, false, false, false, IssueTrigger::from(null, null)),
         );
         $collector->testTriggeredPhpNotice(
             new PhpNoticeTriggered($this->telemetryInfo(), $phpt, 'message', 'file.php', 1, false, false),

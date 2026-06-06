@@ -2137,6 +2137,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $suppressed        = false;
         $ignoredByBaseline = false;
         $ignoredByTest     = false;
+        $ignoredByFilter   = false;
         $trigger           = IssueTrigger::from(null, null);
 
         $emitter->testTriggeredPhpDeprecation(
@@ -2147,6 +2148,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $suppressed,
             $ignoredByBaseline,
             $ignoredByTest,
+            $ignoredByFilter,
             $trigger,
         );
 
@@ -2162,6 +2164,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($suppressed, $event->wasSuppressed());
         $this->assertSame($ignoredByBaseline, $event->ignoredByBaseline());
         $this->assertSame($ignoredByTest, $event->ignoredByTest());
+        $this->assertSame($ignoredByFilter, $event->ignoredByFilter());
         $this->assertSame($trigger, $event->trigger());
     }
 
@@ -2196,6 +2199,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $suppressed        = false;
         $ignoredByBaseline = false;
         $ignoredByTest     = false;
+        $ignoredByFilter   = false;
         $trigger           = IssueTrigger::from(null, null);
         $stackTrace        = 'stack-trace';
 
@@ -2207,6 +2211,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $suppressed,
             $ignoredByBaseline,
             $ignoredByTest,
+            $ignoredByFilter,
             $trigger,
             $stackTrace,
         );
@@ -2223,6 +2228,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($suppressed, $event->wasSuppressed());
         $this->assertSame($ignoredByBaseline, $event->ignoredByBaseline());
         $this->assertSame($ignoredByTest, $event->ignoredByTest());
+        $this->assertSame($ignoredByFilter, $event->ignoredByFilter());
         $this->assertSame($trigger, $event->trigger());
         $this->assertSame($stackTrace, $event->stackTrace());
     }

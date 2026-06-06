@@ -13,6 +13,7 @@ use function array_reverse;
 use function class_exists;
 use function count;
 use function explode;
+use PHPUnit\Runner\DeprecationFilter\Filter;
 use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\Runner\IssueTriggerResolver\Resolver;
 use PHPUnit\TextUI\Configuration\Configuration;
@@ -66,6 +67,20 @@ final readonly class ErrorHandlerBootstrapper
             }
 
             ErrorHandler::instance()->addIssueTriggerResolver($resolver);
+        }
+
+        foreach ($configuration->source()->deprecationFilters() as $className) {
+            if (!class_exists($className)) {
+                continue;
+            }
+
+            $filter = new $className;
+
+            if (!$filter instanceof Filter) {
+                continue;
+            }
+
+            ErrorHandler::instance()->addDeprecationFilter($filter);
         }
     }
 }

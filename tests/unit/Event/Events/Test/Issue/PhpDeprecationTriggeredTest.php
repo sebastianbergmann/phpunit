@@ -32,6 +32,7 @@ final class PhpDeprecationTriggeredTest extends AbstractEventTestCase
         $suppressed        = false;
         $ignoredByBaseline = false;
         $ignoredByTest     = false;
+        $ignoredByFilter   = false;
         $trigger           = IssueTrigger::from(null, null);
 
         $event = new PhpDeprecationTriggered(
@@ -43,6 +44,7 @@ final class PhpDeprecationTriggeredTest extends AbstractEventTestCase
             $suppressed,
             $ignoredByBaseline,
             $ignoredByTest,
+            $ignoredByFilter,
             $trigger,
         );
 
@@ -54,6 +56,7 @@ final class PhpDeprecationTriggeredTest extends AbstractEventTestCase
         $this->assertSame($suppressed, $event->wasSuppressed());
         $this->assertSame($ignoredByBaseline, $event->ignoredByBaseline());
         $this->assertSame($ignoredByTest, $event->ignoredByTest());
+        $this->assertSame($ignoredByFilter, $event->ignoredByFilter());
         $this->assertSame('Test Triggered PHP Deprecation (FooTest::testBar, unknown if issue was triggered in first-party code or third-party code) in file:1' . PHP_EOL . 'message', $event->asString());
         $this->assertSame($trigger, $event->trigger());
     }
@@ -68,6 +71,7 @@ final class PhpDeprecationTriggeredTest extends AbstractEventTestCase
             1,
             false,
             true,
+            false,
             false,
             IssueTrigger::from(null, null),
         );
@@ -87,11 +91,31 @@ final class PhpDeprecationTriggeredTest extends AbstractEventTestCase
             false,
             false,
             true,
+            false,
             IssueTrigger::from(null, null),
         );
 
         $this->assertTrue($event->ignoredByTest());
         $this->assertSame('Test Triggered PHP Deprecation (FooTest::testBar, unknown if issue was triggered in first-party code or third-party code, ignored by test) in file:1' . PHP_EOL . 'message', $event->asString());
+    }
+
+    public function testCanBeIgnoredByFilter(): void
+    {
+        $event = new PhpDeprecationTriggered(
+            $this->telemetryInfo(),
+            $this->testValueObject(),
+            'message',
+            'file',
+            1,
+            false,
+            false,
+            false,
+            true,
+            IssueTrigger::from(null, null),
+        );
+
+        $this->assertTrue($event->ignoredByFilter());
+        $this->assertSame('Test Triggered PHP Deprecation (FooTest::testBar, unknown if issue was triggered in first-party code or third-party code, ignored by filter) in file:1' . PHP_EOL . 'message', $event->asString());
     }
 
     public function testCanBeSuppressed(): void
@@ -103,6 +127,7 @@ final class PhpDeprecationTriggeredTest extends AbstractEventTestCase
             'file',
             1,
             true,
+            false,
             false,
             false,
             IssueTrigger::from(null, null),

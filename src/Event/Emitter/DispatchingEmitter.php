@@ -835,7 +835,7 @@ final class DispatchingEmitter implements Emitter
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
-    public function testTriggeredPhpDeprecation(Code\Test $test, string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline, bool $ignoredByTest, IssueTrigger $trigger): void
+    public function testTriggeredPhpDeprecation(Code\Test $test, string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline, bool $ignoredByTest, bool $ignoredByFilter, IssueTrigger $trigger): void
     {
         $this->dispatcher->dispatch(
             new Test\PhpDeprecationTriggered(
@@ -847,6 +847,7 @@ final class DispatchingEmitter implements Emitter
                 $suppressed,
                 $ignoredByBaseline,
                 $ignoredByTest,
+                $ignoredByFilter,
                 $trigger,
             ),
         );
@@ -861,7 +862,7 @@ final class DispatchingEmitter implements Emitter
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
-    public function testTriggeredDeprecation(Code\Test $test, string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline, bool $ignoredByTest, IssueTrigger $trigger, string $stackTrace): void
+    public function testTriggeredDeprecation(Code\Test $test, string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline, bool $ignoredByTest, bool $ignoredByFilter, IssueTrigger $trigger, string $stackTrace): void
     {
         $this->dispatcher->dispatch(
             new Test\DeprecationTriggered(
@@ -873,6 +874,7 @@ final class DispatchingEmitter implements Emitter
                 $suppressed,
                 $ignoredByBaseline,
                 $ignoredByTest,
+                $ignoredByFilter,
                 $trigger,
                 $stackTrace,
             ),

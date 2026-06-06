@@ -408,6 +408,23 @@ final readonly class Loader
             $issueTriggerResolvers[] = $className;
         }
 
+        $deprecationFilters     = [];
+        $deprecationFilterNodes = $xpath->query('source/deprecationFilters/deprecationFilter');
+
+        assert($deprecationFilterNodes instanceof DOMNodeList);
+
+        foreach ($deprecationFilterNodes as $node) {
+            assert($node instanceof DOMElement);
+
+            $className = $node->getAttribute('className');
+
+            if ($className === '') {
+                continue;
+            }
+
+            $deprecationFilters[] = $className;
+        }
+
         return new Source(
             $baseline,
             false,
@@ -430,6 +447,7 @@ final readonly class Loader
             $ignoreIndirectDeprecations,
             $identifyIssueTrigger,
             $issueTriggerResolvers,
+            $deprecationFilters,
         );
     }
 

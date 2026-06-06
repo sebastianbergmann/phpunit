@@ -50,6 +50,7 @@ use PHPUnit\Metadata\IgnoreDeprecations;
 use PHPUnit\Metadata\Parser\Registry as MetadataParserRegistry;
 use PHPUnit\Runner\Baseline\Baseline;
 use PHPUnit\Runner\Baseline\Issue;
+use PHPUnit\Runner\DeprecationFilter\Filter as DeprecationFilter;
 use PHPUnit\Runner\IssueTriggerResolver\DefaultResolver as DefaultIssueTriggerResolver;
 use PHPUnit\Runner\IssueTriggerResolver\Resolver as IssueTriggerResolver;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
@@ -106,6 +107,11 @@ final class ErrorHandler
      * @var non-empty-list<IssueTriggerResolver>
      */
     private array $issueTriggerResolvers;
+
+    /**
+     * @var list<DeprecationFilter>
+     */
+    private array $deprecationFilters = [];
 
     public static function instance(): self
     {
@@ -220,6 +226,8 @@ final class ErrorHandler
                 break;
 
             case E_DEPRECATED:
+                $trigger = $this->trigger($test, false, $errorString, $errorFile);
+
                 Event\Facade::emitter()->testTriggeredPhpDeprecation(
                     $test,
                     $errorString,
@@ -228,12 +236,15 @@ final class ErrorHandler
                     $suppressed,
                     $ignoredByBaseline,
                     $ignoredByTest,
-                    $this->trigger($test, false, $errorString, $errorFile),
+                    $this->deprecationIgnoredByFilter($errorString, $errorFile, $errorLine, $trigger),
+                    $trigger,
                 );
 
                 break;
 
             case E_USER_DEPRECATED:
+                $trigger = $this->trigger($test, true, $errorString);
+
                 Event\Facade::emitter()->testTriggeredDeprecation(
                     $test,
                     $errorString,
@@ -242,7 +253,8 @@ final class ErrorHandler
                     $suppressed,
                     $ignoredByBaseline,
                     $ignoredByTest,
-                    $this->trigger($test, true, $errorString),
+                    $this->deprecationIgnoredByFilter($errorString, $errorFile, $errorLine, $trigger),
+                    $trigger,
                     $this->stackTrace($errorFile, $errorLine),
                 );
 
@@ -517,6 +529,11 @@ final class ErrorHandler
     public function addIssueTriggerResolver(IssueTriggerResolver $resolver): void
     {
         array_unshift($this->issueTriggerResolvers, $resolver);
+    }
+
+    public function addDeprecationFilter(DeprecationFilter $filter): void
+    {
+        $this->deprecationFilters[] = $filter;
     }
 
     public function enterTestCaseContext(string $className, string $methodName): void
@@ -977,6 +994,17 @@ final class ErrorHandler
 
             if ($ignoreDeprecationMessagePattern === null ||
                 (bool) preg_match('{' . $ignoreDeprecationMessagePattern . '}', $message)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function deprecationIgnoredByFilter(string $message, string $file, int $line, IssueTrigger $trigger): bool
+    {
+        foreach ($this->deprecationFilters as $filter) {
+            if ($filter->ignores($message, $file, $line, $trigger)) {
                 return true;
             }
         }

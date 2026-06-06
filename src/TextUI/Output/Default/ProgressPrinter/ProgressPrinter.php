@@ -140,7 +140,7 @@ final class ProgressPrinter
 
     public function testTriggeredDeprecation(DeprecationTriggered $event): void
     {
-        if ($event->ignoredByBaseline() || $event->ignoredByTest()) {
+        if ($event->ignoredByBaseline() || $event->ignoredByTest() || $event->ignoredByFilter()) {
             return;
         }
 
@@ -165,7 +165,7 @@ final class ProgressPrinter
 
     public function testTriggeredPhpDeprecation(PhpDeprecationTriggered $event): void
     {
-        if ($event->ignoredByBaseline() || $event->ignoredByTest()) {
+        if ($event->ignoredByBaseline() || $event->ignoredByTest() || $event->ignoredByFilter()) {
             return;
         }
 
