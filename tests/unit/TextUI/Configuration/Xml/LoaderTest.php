@@ -242,6 +242,18 @@ final class LoaderTest extends TestCase
         );
     }
 
+    public function testDeprecationFiltersAreReadCorrectlyAndEmptyClassNamesAreIgnored(): void
+    {
+        $source = $this->configuration('configuration_deprecation_filters.xml')->source();
+
+        $this->assertSame(
+            [
+                'PHPUnit\TestFixture\DeprecationFilter\FilterA',
+            ],
+            $source->deprecationFilters(),
+        );
+    }
+
     public function testBranchCoverageConfigurationIsReadCorrectly(): void
     {
         $codeCoverage = $this->configuration('configuration_codecoverage_branchcoverage.xml')->codeCoverage();

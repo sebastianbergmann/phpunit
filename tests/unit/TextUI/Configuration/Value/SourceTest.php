@@ -885,6 +885,72 @@ final class SourceTest extends TestCase
         $this->assertSame($resolvers, $source->issueTriggerResolvers());
     }
 
+    public function testDeprecationFiltersDefaultsToEmpty(): void
+    {
+        $source = new Source(
+            null,
+            false,
+            FilterDirectoryCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
+            FilterDirectoryCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            [
+                'functions' => [],
+                'methods'   => [],
+            ],
+            false,
+            false,
+            false,
+            true,
+        );
+
+        $this->assertSame([], $source->deprecationFilters());
+    }
+
+    public function testHasDeprecationFilters(): void
+    {
+        $filters = ['FirstFilter', 'SecondFilter'];
+
+        $source = new Source(
+            null,
+            false,
+            FilterDirectoryCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
+            FilterDirectoryCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            [
+                'functions' => [],
+                'methods'   => [],
+            ],
+            false,
+            false,
+            false,
+            true,
+            [],
+            $filters,
+        );
+
+        $this->assertSame($filters, $source->deprecationFilters());
+    }
+
     public function testMayNotBeEmpty(): void
     {
         $source = new Source(
