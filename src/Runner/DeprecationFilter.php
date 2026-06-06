@@ -7,14 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Runner\DeprecationFilter;
+namespace PHPUnit\Runner;
 
 use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-interface Filter
+interface DeprecationFilter
 {
     /**
      * Return true to ignore the deprecation, false to let PHPUnit process it.

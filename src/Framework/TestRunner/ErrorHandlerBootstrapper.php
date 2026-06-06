@@ -13,7 +13,7 @@ use function array_reverse;
 use function class_exists;
 use function count;
 use function explode;
-use PHPUnit\Runner\DeprecationFilter\Filter;
+use PHPUnit\Runner\DeprecationFilter;
 use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\Runner\IssueTriggerResolver\Resolver;
 use PHPUnit\TextUI\Configuration\Configuration;
@@ -76,7 +76,7 @@ final readonly class ErrorHandlerBootstrapper
 
             $filter = new $className;
 
-            if (!$filter instanceof Filter) {
+            if (!$filter instanceof DeprecationFilter) {
                 continue;
             }
 
