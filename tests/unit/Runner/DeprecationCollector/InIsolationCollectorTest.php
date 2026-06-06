@@ -105,6 +105,7 @@ final class InIsolationCollectorTest extends TestCase
             $suppressed,
             false,
             false,
+            false,
             IssueTrigger::from(null, null),
             'stack trace',
         );

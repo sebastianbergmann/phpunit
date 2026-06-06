@@ -1150,6 +1150,7 @@ final readonly class Merger
                 $xmlConfiguration->source()->ignoreIndirectDeprecations(),
                 $xmlConfiguration->source()->identifyIssueTrigger(),
                 $xmlConfiguration->source()->issueTriggerResolvers(),
+                $xmlConfiguration->source()->deprecationFilters(),
             ),
             $testResultCacheFile,
             $coverageClover,

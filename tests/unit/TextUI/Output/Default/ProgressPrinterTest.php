@@ -334,6 +334,19 @@ final class ProgressPrinterTest extends TestCase
         $this->assertStringStartsWith('.', $buffer());
     }
 
+    public function testTriggeredDeprecationIsIgnoredWhenIgnoredByFilter(): void
+    {
+        [$printer, $buffer] = $this->printer();
+        $progress           = $this->progressPrinter($printer);
+
+        $progress->testRunnerExecutionStarted($this->executionStarted(1));
+        $progress->testPrepared();
+        $progress->testTriggeredDeprecation($this->deprecationEvent(ignoredByFilter: true));
+        $progress->testFinished();
+
+        $this->assertStringStartsWith('.', $buffer());
+    }
+
     public function testTriggeredDeprecationIsIgnoredWhenSelfAndIgnoreSelf(): void
     {
         [$printer, $buffer] = $this->printer();
@@ -420,6 +433,19 @@ final class ProgressPrinterTest extends TestCase
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
         $progress->testPrepared();
         $progress->testTriggeredPhpDeprecation($this->phpDeprecationEvent(ignoredByTest: true));
+        $progress->testFinished();
+
+        $this->assertStringStartsWith('.', $buffer());
+    }
+
+    public function testTriggeredPhpDeprecationIsIgnoredWhenIgnoredByFilter(): void
+    {
+        [$printer, $buffer] = $this->printer();
+        $progress           = $this->progressPrinter($printer);
+
+        $progress->testRunnerExecutionStarted($this->executionStarted(1));
+        $progress->testPrepared();
+        $progress->testTriggeredPhpDeprecation($this->phpDeprecationEvent(ignoredByFilter: true));
         $progress->testFinished();
 
         $this->assertStringStartsWith('.', $buffer());
@@ -835,6 +861,7 @@ final class ProgressPrinterTest extends TestCase
         bool $suppressed = false,
         bool $ignoredByBaseline = false,
         bool $ignoredByTest = false,
+        bool $ignoredByFilter = false,
         ?IssueTrigger $trigger = null,
     ): DeprecationTriggered {
         return new DeprecationTriggered(
@@ -846,6 +873,7 @@ final class ProgressPrinterTest extends TestCase
             $suppressed,
             $ignoredByBaseline,
             $ignoredByTest,
+            $ignoredByFilter,
             $trigger ?? IssueTrigger::from(null, null),
             'stack trace',
         );
@@ -855,6 +883,7 @@ final class ProgressPrinterTest extends TestCase
         bool $suppressed = false,
         bool $ignoredByBaseline = false,
         bool $ignoredByTest = false,
+        bool $ignoredByFilter = false,
         ?IssueTrigger $trigger = null,
     ): PhpDeprecationTriggered {
         return new PhpDeprecationTriggered(
@@ -866,6 +895,7 @@ final class ProgressPrinterTest extends TestCase
             $suppressed,
             $ignoredByBaseline,
             $ignoredByTest,
+            $ignoredByFilter,
             $trigger ?? IssueTrigger::from(null, null),
         );
     }

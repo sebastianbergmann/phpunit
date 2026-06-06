@@ -89,6 +89,24 @@ final class IssueFilterTest extends TestCase
         );
     }
 
+    public function testDoesNotProcessDeprecationIgnoredByFilter(): void
+    {
+        $filter = new IssueFilter($this->source());
+
+        $this->assertFalse(
+            $filter->shouldBeProcessed($this->deprecationEvent(ignoredByFilter: true)),
+        );
+    }
+
+    public function testDoesNotProcessPhpDeprecationIgnoredByFilter(): void
+    {
+        $filter = new IssueFilter($this->source());
+
+        $this->assertFalse(
+            $filter->shouldBeProcessed($this->phpDeprecationEvent(ignoredByFilter: true)),
+        );
+    }
+
     public function testDoesNotProcessSelfDeprecationWhenIgnored(): void
     {
         $filter = new IssueFilter($this->source(ignoreSelfDeprecations: true));
@@ -413,7 +431,7 @@ final class IssueFilterTest extends TestCase
         );
     }
 
-    private function deprecationEvent(bool $suppressed = false, bool $ignoredByTest = false, ?IssueTrigger $trigger = null): DeprecationTriggered
+    private function deprecationEvent(bool $suppressed = false, bool $ignoredByTest = false, bool $ignoredByFilter = false, ?IssueTrigger $trigger = null): DeprecationTriggered
     {
         return new DeprecationTriggered(
             $this->telemetryInfo(),
@@ -424,6 +442,7 @@ final class IssueFilterTest extends TestCase
             $suppressed,
             false,
             $ignoredByTest,
+            $ignoredByFilter,
             $trigger ?? IssueTrigger::from(null, null),
             'stack trace',
         );
@@ -440,12 +459,13 @@ final class IssueFilterTest extends TestCase
             $suppressed,
             false,
             false,
+            false,
             IssueTrigger::from(null, null),
             'stack trace',
         );
     }
 
-    private function phpDeprecationEvent(bool $suppressed = false, bool $ignoredByTest = false, ?IssueTrigger $trigger = null): PhpDeprecationTriggered
+    private function phpDeprecationEvent(bool $suppressed = false, bool $ignoredByTest = false, bool $ignoredByFilter = false, ?IssueTrigger $trigger = null): PhpDeprecationTriggered
     {
         return new PhpDeprecationTriggered(
             $this->telemetryInfo(),
@@ -456,6 +476,7 @@ final class IssueFilterTest extends TestCase
             $suppressed,
             false,
             $ignoredByTest,
+            $ignoredByFilter,
             $trigger ?? IssueTrigger::from(null, null),
         );
     }

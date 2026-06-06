@@ -54,6 +54,7 @@ use PHPUnit\Runner\Baseline\Writer;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\CodeCoverageInitializationStatus;
 use PHPUnit\Runner\DeprecationCollector\Facade as DeprecationCollector;
+use PHPUnit\Runner\DeprecationFilter\Filter;
 use PHPUnit\Runner\DirectoryDoesNotExistException;
 use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\Runner\Extension\ExtensionBootstrapper;
@@ -242,6 +243,7 @@ final readonly class Application
 
             $this->configureDeprecationTriggers($configuration);
             $this->configureIssueTriggerResolvers($configuration);
+            $this->configureDeprecationFilters($configuration);
             $this->registerInterruptHandler();
 
             $timer = new Timer;
@@ -981,6 +983,38 @@ final readonly class Application
             }
 
             ErrorHandler::instance()->addIssueTriggerResolver($resolver);
+        }
+    }
+
+    private function configureDeprecationFilters(Configuration $configuration): void
+    {
+        foreach ($configuration->source()->deprecationFilters() as $className) {
+            if (!class_exists($className)) {
+                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                    sprintf(
+                        'Class %s cannot be used as a deprecation filter because it does not exist',
+                        $className,
+                    ),
+                );
+
+                continue;
+            }
+
+            $filter = new $className;
+
+            if (!$filter instanceof Filter) {
+                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                    sprintf(
+                        'Class %s cannot be used as a deprecation filter because it does not implement %s',
+                        $className,
+                        Filter::class,
+                    ),
+                );
+
+                continue;
+            }
+
+            ErrorHandler::instance()->addDeprecationFilter($filter);
         }
     }
 

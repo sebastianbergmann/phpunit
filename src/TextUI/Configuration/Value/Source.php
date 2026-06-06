@@ -52,11 +52,17 @@ final readonly class Source
     private array $issueTriggerResolvers;
 
     /**
+     * @var list<non-empty-string>
+     */
+    private array $deprecationFilters;
+
+    /**
      * @param ?non-empty-string      $baseline
      * @param DeprecationTriggers    $deprecationTriggers
      * @param list<non-empty-string> $issueTriggerResolvers
+     * @param list<non-empty-string> $deprecationFilters
      */
-    public function __construct(?string $baseline, bool $ignoreBaseline, FilterDirectoryCollection $includeDirectories, FilterFileCollection $includeFiles, FilterDirectoryCollection $excludeDirectories, FilterFileCollection $excludeFiles, bool $restrictNotices, bool $restrictWarnings, bool $ignoreSuppressionOfDeprecations, bool $ignoreSuppressionOfPhpDeprecations, bool $ignoreSuppressionOfErrors, bool $ignoreSuppressionOfNotices, bool $ignoreSuppressionOfPhpNotices, bool $ignoreSuppressionOfWarnings, bool $ignoreSuppressionOfPhpWarnings, array $deprecationTriggers, bool $ignoreSelfDeprecations, bool $ignoreDirectDeprecations, bool $ignoreIndirectDeprecations, bool $identifyIssueTrigger, array $issueTriggerResolvers = [])
+    public function __construct(?string $baseline, bool $ignoreBaseline, FilterDirectoryCollection $includeDirectories, FilterFileCollection $includeFiles, FilterDirectoryCollection $excludeDirectories, FilterFileCollection $excludeFiles, bool $restrictNotices, bool $restrictWarnings, bool $ignoreSuppressionOfDeprecations, bool $ignoreSuppressionOfPhpDeprecations, bool $ignoreSuppressionOfErrors, bool $ignoreSuppressionOfNotices, bool $ignoreSuppressionOfPhpNotices, bool $ignoreSuppressionOfWarnings, bool $ignoreSuppressionOfPhpWarnings, array $deprecationTriggers, bool $ignoreSelfDeprecations, bool $ignoreDirectDeprecations, bool $ignoreIndirectDeprecations, bool $identifyIssueTrigger, array $issueTriggerResolvers = [], array $deprecationFilters = [])
     {
         $this->baseline                           = $baseline;
         $this->ignoreBaseline                     = $ignoreBaseline;
@@ -79,6 +85,7 @@ final readonly class Source
         $this->ignoreIndirectDeprecations         = $ignoreIndirectDeprecations;
         $this->identifyIssueTrigger               = $identifyIssueTrigger;
         $this->issueTriggerResolvers              = $issueTriggerResolvers;
+        $this->deprecationFilters                 = $deprecationFilters;
     }
 
     /**
@@ -215,5 +222,13 @@ final readonly class Source
     public function issueTriggerResolvers(): array
     {
         return $this->issueTriggerResolvers;
+    }
+
+    /**
+     * @return list<non-empty-string>
+     */
+    public function deprecationFilters(): array
+    {
+        return $this->deprecationFilters;
     }
 }
