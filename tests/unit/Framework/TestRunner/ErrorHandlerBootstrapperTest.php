@@ -15,9 +15,12 @@ use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestRunner\ErrorHandlerBootstrapper;
+use PHPUnit\Runner\DeprecationFilter;
 use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\Runner\IssueTriggerResolver\DefaultResolver;
 use PHPUnit\Runner\IssueTriggerResolver\Resolver;
+use PHPUnit\TestFixture\DeprecationFilter\FilterA;
+use PHPUnit\TestFixture\DeprecationFilter\FilterB;
 use PHPUnit\TestFixture\IssueTriggerResolver\ResolverA;
 use PHPUnit\TestFixture\IssueTriggerResolver\ResolverB;
 use PHPUnit\TextUI\CliArguments\Builder;
@@ -86,6 +89,64 @@ final class ErrorHandlerBootstrapperTest extends TestCase
         foreach ($resolvers as $resolver) {
             $this->assertInstanceOf(Resolver::class, $resolver);
         }
+    }
+
+    #[TestDox('Leaves no deprecation filters registered when configuration is empty')]
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testBootstrapsWithoutDeprecationFilters(): void
+    {
+        ErrorHandlerBootstrapper::bootstrap($this->configurationFromFixture('empty-source.xml'));
+
+        $this->assertSame([], $this->reflectProperty('deprecationFilters'));
+    }
+
+    #[TestDox('Registers configured deprecation filters in the configured order')]
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testBootstrapsDeprecationFiltersInConfiguredOrder(): void
+    {
+        ErrorHandlerBootstrapper::bootstrap($this->configurationFromFixture('with-deprecation-filters.xml'));
+
+        $filters = $this->reflectProperty('deprecationFilters');
+
+        $this->assertCount(2, $filters);
+        $this->assertInstanceOf(FilterA::class, $filters[0]);
+        $this->assertInstanceOf(FilterB::class, $filters[1]);
+
+        foreach ($filters as $filter) {
+            $this->assertInstanceOf(DeprecationFilter::class, $filter);
+        }
+    }
+
+    #[TestDox('Ignores a configured deprecation filter class that does not exist')]
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testIgnoresNonexistentDeprecationFilterClass(): void
+    {
+        ErrorHandlerBootstrapper::bootstrap($this->configurationFromFixture('with-nonexistent-deprecation-filter.xml'));
+
+        $this->assertSame([], $this->reflectProperty('deprecationFilters'));
+    }
+
+    #[TestDox('Ignores a configured deprecation filter class that does not implement the interface')]
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testIgnoresDeprecationFilterNotImplementingTheInterface(): void
+    {
+        ErrorHandlerBootstrapper::bootstrap($this->configurationFromFixture('with-invalid-deprecation-filter.xml'));
+
+        $this->assertSame([], $this->reflectProperty('deprecationFilters'));
+    }
+
+    #[TestDox('Ignores a configured deprecation filter with an empty class name')]
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testIgnoresDeprecationFilterWithEmptyClassName(): void
+    {
+        ErrorHandlerBootstrapper::bootstrap($this->configurationFromFixture('with-empty-deprecation-filter-classname.xml'));
+
+        $this->assertSame([], $this->reflectProperty('deprecationFilters'));
     }
 
     private function configurationFromFixture(string $filename): Configuration
