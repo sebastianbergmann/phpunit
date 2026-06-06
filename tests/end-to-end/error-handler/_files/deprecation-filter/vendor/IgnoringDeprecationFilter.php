@@ -3,9 +3,9 @@ namespace PHPUnit\TestFixture\ErrorHandler\DeprecationFilter;
 
 use function str_contains;
 use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
-use PHPUnit\Runner\DeprecationFilter\Filter;
+use PHPUnit\Runner\DeprecationFilter;
 
-final class IgnoringDeprecationFilter implements Filter
+final class IgnoringDeprecationFilter implements DeprecationFilter
 {
     public function ignores(string $message, string $file, int $line, IssueTrigger $trigger): bool
     {

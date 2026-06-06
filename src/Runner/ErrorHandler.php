@@ -50,7 +50,6 @@ use PHPUnit\Metadata\IgnoreDeprecations;
 use PHPUnit\Metadata\Parser\Registry as MetadataParserRegistry;
 use PHPUnit\Runner\Baseline\Baseline;
 use PHPUnit\Runner\Baseline\Issue;
-use PHPUnit\Runner\DeprecationFilter\Filter as DeprecationFilter;
 use PHPUnit\Runner\IssueTriggerResolver\DefaultResolver as DefaultIssueTriggerResolver;
 use PHPUnit\Runner\IssueTriggerResolver\Resolver as IssueTriggerResolver;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
