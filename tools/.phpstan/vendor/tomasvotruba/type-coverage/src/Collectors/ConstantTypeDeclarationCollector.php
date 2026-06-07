@@ -72,12 +72,9 @@ final class ConstantTypeDeclarationCollector implements Collector
             return false;
         }
 
-        foreach ($classReflection->getParents() as $parentClassReflection) {
-            if ($parentClassReflection->hasConstant($constName)) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any(
+            $classReflection->getParents(),
+            fn (ClassReflection $parentClassReflection): bool => $parentClassReflection->hasConstant($constName)
+        );
     }
 }

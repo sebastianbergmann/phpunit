@@ -4,32 +4,16 @@ declare(strict_types=1);
 
 namespace TomasVotruba\TypeCoverage\ValueObject;
 
-final class TypeCountAndMissingTypes
+final readonly class TypeCountAndMissingTypes
 {
-    /**
-     * @readonly
-     */
-    private int $totalCount;
-
-    /**
-     * @readonly
-     */
-    private int $missingCount;
-
-    /**
-     * @var array<string, int[]>
-     * @readonly
-     */
-    private array $missingTypeLinesByFilePath;
-
     /**
      * @param array<string, int[]> $missingTypeLinesByFilePath
      */
-    public function __construct(int $totalCount, int $missingCount, array $missingTypeLinesByFilePath)
-    {
-        $this->totalCount = $totalCount;
-        $this->missingCount = $missingCount;
-        $this->missingTypeLinesByFilePath = $missingTypeLinesByFilePath;
+    public function __construct(
+        private int $totalCount,
+        private int $missingCount,
+        private array $missingTypeLinesByFilePath
+    ) {
     }
 
     public function getTotalCount(): int
