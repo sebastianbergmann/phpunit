@@ -23,59 +23,143 @@ unlink($output);
 <html lang="en">
     <head>
         <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <title>Test Documentation</title>
         <style>
+            :root {
+                color-scheme: light dark;
+
+                --background: light-dark(#f4f5f7, #16181d);
+                --card-background: light-dark(#ffffff, #1f2228);
+                --border: light-dark(#e2e4e8, #30343c);
+                --text: light-dark(#1a1a1a, #e6e8eb);
+                --muted: light-dark(#6b7280, #9aa1ab);
+                --shadow: light-dark(0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.4));
+
+                --passed-background: light-dark(#d6e6f2, #1e3550);
+                --failed-background: light-dark(#fad4c0, #4a2a10);
+            }
+
+            *, *::before, *::after {
+                box-sizing: border-box;
+            }
+
             body {
                 text-rendering: optimizeLegibility;
-                font-family: Source SansSerif Pro, Arial, sans-serif;
+                font-family: Source SansSerif Pro, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
                 font-variant-ligatures: common-ligatures;
                 font-kerning: normal;
-                margin-left: 2rem;
-                background-color: #fff;
-                color: #000;
-            }
-
-            body > ul > li {
-                font-size: larger;
-            }
-
-            h2 {
-                font-size: larger;
-                text-decoration-line: underline;
-                text-decoration-thickness: 2px;
+                line-height: 1.5;
                 margin: 0;
-                padding: 0.5rem 0;
+                padding: 2.5rem 1rem;
+                background-color: var(--background);
+                color: var(--text);
+            }
+
+            .summary,
+            main {
+                max-width: 52rem;
+                margin: 0 auto;
+            }
+
+            .summary {
+                margin-bottom: 1.5rem;
+            }
+
+            .summary h1 {
+                font-size: 1.5rem;
+                font-weight: 600;
+                margin: 0 0 0.25rem;
+            }
+
+            .counts {
+                margin: 0;
+                color: var(--muted);
+            }
+
+            .counts .passed,
+            .counts .failed {
+                display: inline-block;
+                padding: 0.1rem 0.5rem;
+                border-radius: 0.25rem;
+                color: var(--text);
+                font-weight: 600;
+            }
+
+            .counts .passed {
+                background-color: var(--passed-background);
+            }
+
+            .counts .failed {
+                background-color: var(--failed-background);
+            }
+
+            .test-class {
+                background-color: var(--card-background);
+                border: 1px solid var(--border);
+                border-radius: 0.5rem;
+                box-shadow: var(--shadow);
+                padding: 1rem 1.25rem;
+                margin-bottom: 1rem;
+            }
+
+            .test-class h2 {
+                font-size: 1.1rem;
+                font-weight: 600;
+                margin: 0 0 0.5rem;
+                padding-bottom: 0.5rem;
+                border-bottom: 1px solid var(--border);
             }
 
             ul {
                 list-style: none;
-                margin: 0 0 2rem;
-                padding: 0 0 0 1rem;
-                text-indent: -1rem;
+                margin: 0;
+                padding: 0;
             }
 
-            .success:before {
-                color: #4e9a06;
+            li {
+                position: relative;
+                margin-bottom: 0.25rem;
+                padding: 0.25rem 0.5rem 0.25rem 1.9rem;
+                border-radius: 0.25rem;
+            }
+
+            li::before {
+                position: absolute;
+                left: 0.5rem;
+            }
+
+            li.success {
+                background-color: var(--passed-background);
+            }
+
+            li.success::before {
                 content: '✓';
-                padding-right: 0.5rem;
             }
 
-            .defect {
-                color: #a40000;
+            li.defect {
+                background-color: var(--failed-background);
             }
 
-            .defect:before {
-                color: #a40000;
+            li.defect::before {
                 content: '✗';
-                padding-right: 0.5rem;
             }
         </style>
     </head>
     <body>
-        <h2>Bank Account (PHPUnit\TestFixture\BankAccount)</h2>
-        <ul>
-            <li class="success">Balance is initially zero</li>
-            <li class="success">Balance cannot become negative</li>
-        </ul>
+        <header class="summary">
+            <h1>Test Documentation</h1>
+            <p class="counts"><span class="passed">2 passed</span></p>
+        </header>
+        <main>
+
+            <section class="test-class">
+                <h2>Bank Account (PHPUnit\TestFixture\BankAccount)</h2>
+                <ul>
+                    <li class="success">Balance is initially zero</li>
+                    <li class="success">Balance cannot become negative</li>
+                </ul>
+            </section>
+        </main>
     </body>
 </html>
