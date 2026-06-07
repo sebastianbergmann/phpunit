@@ -19,26 +19,15 @@ use TomasVotruba\TypeCoverage\Configuration\ScopeConfigurationResolver;
  *
  * @implements Rule<CollectedDataNode>
  */
-final class DeclareCoverageRule implements Rule
+final readonly class DeclareCoverageRule implements Rule
 {
-    /**
-     * @var string
-     */
-    public const ERROR_MESSAGE = 'Out of %d possible declare(strict_types=1), only %d - %.1f %% actually have it. Add more declares to get over %s %%';
+    public const string ERROR_MESSAGE = 'Out of %d possible declare(strict_types=1), only %d - %.1f %% actually have it. Add more declares to get over %s %%';
 
-    /**
-     * @var string
-     */
-    private const IDENTIFIER = 'typeCoverage.declareCoverage';
+    private const string IDENTIFIER = 'typeCoverage.declareCoverage';
 
-    /**
-     * @readonly
-     */
-    private Configuration $configuration;
-
-    public function __construct(Configuration $configuration)
-    {
-        $this->configuration = $configuration;
+    public function __construct(
+        private Configuration $configuration,
+    ) {
     }
 
     /**
