@@ -76,7 +76,7 @@ final class PropertyTypeDeclarationCollector implements Collector
         $docCommentText = $docComment->getText();
 
         // skip as unable to type
-        return strpos($docCommentText, 'callable') !== false || strpos($docCommentText, 'resource') !== false;
+        return str_contains($docCommentText, 'callable') || str_contains($docCommentText, 'resource');
     }
 
     private function isGuardedByParentClassProperty(Scope $scope, Property $property): bool
@@ -88,12 +88,9 @@ final class PropertyTypeDeclarationCollector implements Collector
             return false;
         }
 
-        foreach ($classReflection->getParents() as $parentClassReflection) {
-            if ($parentClassReflection->hasProperty($propertyName)) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any(
+            $classReflection->getParents(),
+            fn (ClassReflection $parentClassReflection): bool => $parentClassReflection->hasProperty($propertyName)
+        );
     }
 }
