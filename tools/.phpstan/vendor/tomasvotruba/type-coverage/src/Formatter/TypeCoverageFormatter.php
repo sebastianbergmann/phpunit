@@ -12,12 +12,11 @@ final class TypeCoverageFormatter
 {
     /**
      * @return RuleError[]
-     * @param float|int $minimalLevel
      */
     public function formatErrors(
         string $message,
         string $identifier,
-        $minimalLevel,
+        float|int $minimalLevel,
         TypeCountAndMissingTypes $typeCountAndMissingTypes
     ): array {
         if ($typeCountAndMissingTypes->getTotalCount() === 0) {

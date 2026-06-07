@@ -5,13 +5,39 @@
     "license": "MIT",
     "keywords": ["static analysis", "phpstan-extension"],
     "require": {
-        "php": "^7.4 || ^8.0",
-        "phpstan/phpstan": "^2.1.33",
-        "nette/utils": "^3.2 || ^4.0"
+        "php": "^8.4",
+        "phpstan/phpstan": "^2.2"
+    },
+    "require-dev": {
+        "phpstan/extension-installer": "^1.4",
+        "phpunit/phpunit": "^12.5",
+        "symplify/easy-coding-standard": "^13.1",
+        "rector/rector": "^2.4",
+        "tracy/tracy": "^2.12",
+        "tomasvotruba/unused-public": "^2.2",
+        "rector/jack": "^1.0",
+        "shipmonk/composer-dependency-analyser": "^1.8"
     },
     "autoload": {
         "psr-4": {
             "TomasVotruba\\TypeCoverage\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "TomasVotruba\\TypeCoverage\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "check-cs": "vendor/bin/ecs check --ansi",
+        "fix-cs": "vendor/bin/ecs check --fix --ansi",
+        "phpstan": "vendor/bin/phpstan --ansi",
+        "rector": "vendor/bin/rector --dry-run --ansi",
+        "release": "vendor/bin/monorepo-builder release patch --ansi"
+    },
+    "config": {
+        "allow-plugins": {
+            "phpstan/extension-installer": true
         }
     },
     "extra": {
