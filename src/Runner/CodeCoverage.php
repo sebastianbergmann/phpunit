@@ -532,15 +532,7 @@ final class CodeCoverage
             }
 
             if ($pathCoverage) {
-                $granularity = Granularity::LineBranchAndPath;
-            }
-
-            /**
-             * @todo This needs to be removed once code coverage drivers are supported that can collect branch coverage without path coverage
-             */
-            if ($branchCoverage || $pathCoverage) {
                 $branchCoverage = true;
-                $pathCoverage   = true;
                 $granularity    = Granularity::LineBranchAndPath;
             }
 

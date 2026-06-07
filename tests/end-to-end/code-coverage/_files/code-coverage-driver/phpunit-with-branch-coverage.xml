@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="../../../../../phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         cacheDirectory=".phpunit.cache.with-branch-coverage">
+    <testsuites>
+        <testsuite name="default">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <source>
+        <include>
+            <file>src/Foo.php</file>
+        </include>
+    </source>
+
+    <coverage driver="PHPUnit\TestFixture\CodeCoverageDriver\CustomDriverWithBranchCoverage"
+              branchCoverage="true">
+        <report>
+            <text outputFile="php://stdout"/>
+        </report>
+    </coverage>
+</phpunit>
