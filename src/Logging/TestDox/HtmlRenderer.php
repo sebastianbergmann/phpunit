@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Logging\TestDox;
 
+use const ENT_QUOTES;
+use const ENT_SUBSTITUTE;
+use function htmlspecialchars;
 use function sprintf;
 
 /**
@@ -98,14 +101,17 @@ EOT;
         foreach ($tests as $_tests) {
             $buffer .= sprintf(
                 self::CLASS_HEADER,
-                $_tests->asArray()[0]->test()->testDox()->prettifiedClassName(),
+                htmlspecialchars(
+                    $_tests->asArray()[0]->test()->testDox()->prettifiedClassName(),
+                    ENT_QUOTES | ENT_SUBSTITUTE,
+                ),
             );
 
             foreach ($this->reduce($_tests) as $prettifiedMethodName => $outcome) {
                 $buffer .= sprintf(
                     "            <li class=\"%s\">%s</li>\n",
                     $outcome,
-                    $prettifiedMethodName,
+                    htmlspecialchars($prettifiedMethodName, ENT_QUOTES | ENT_SUBSTITUTE),
                 );
             }
 
