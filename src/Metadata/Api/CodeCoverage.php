@@ -18,6 +18,7 @@ use PHPUnit\Metadata\CoversFunction;
 use PHPUnit\Metadata\CoversMethod;
 use PHPUnit\Metadata\CoversNamespace;
 use PHPUnit\Metadata\CoversTrait;
+use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry;
 use PHPUnit\Metadata\UsesClass;
 use PHPUnit\Metadata\UsesClassesThatExtendClass;
@@ -42,9 +43,50 @@ final class CodeCoverage
      */
     public function coversTargets(string $className, string $methodName): TargetCollection
     {
+        return $this->coversTargetsFor(Registry::parser()->forClassAndMethod($className, $methodName));
+    }
+
+    /**
+     * @param class-string     $className
+     * @param non-empty-string $methodName
+     */
+    public function usesTargets(string $className, string $methodName): TargetCollection
+    {
+        return $this->usesTargetsFor(Registry::parser()->forClassAndMethod($className, $methodName));
+    }
+
+    public function shouldCodeCoverageBeCollectedFor(TestCase $test): bool
+    {
+        if (Registry::parser()->forClassAndMethod($test::class, $test->name())->isCoversNothing()->isNotEmpty()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param class-string $className
+     */
+    public function coversNothingContradictsCoversOrUses(string $className): bool
+    {
+        $classLevel = Registry::parser()->forClass($className);
+
+        if ($classLevel->isCoversNothing()->isEmpty()) {
+            return false;
+        }
+
+        if ($this->coversTargetsFor($classLevel)->isNotEmpty() || $this->usesTargetsFor($classLevel)->isNotEmpty()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private function coversTargetsFor(MetadataCollection $metadataCollection): TargetCollection
+    {
         $targets = [];
 
-        foreach (Registry::parser()->forClassAndMethod($className, $methodName) as $metadata) {
+        foreach ($metadataCollection as $metadata) {
             if ($metadata->isCoversNamespace()) {
                 assert($metadata instanceof CoversNamespace);
 
@@ -91,15 +133,11 @@ final class CodeCoverage
         return TargetCollection::fromArray($targets);
     }
 
-    /**
-     * @param class-string     $className
-     * @param non-empty-string $methodName
-     */
-    public function usesTargets(string $className, string $methodName): TargetCollection
+    private function usesTargetsFor(MetadataCollection $metadataCollection): TargetCollection
     {
         $targets = [];
 
-        foreach (Registry::parser()->forClassAndMethod($className, $methodName) as $metadata) {
+        foreach ($metadataCollection as $metadata) {
             if ($metadata->isUsesNamespace()) {
                 assert($metadata instanceof UsesNamespace);
 
@@ -144,16 +182,5 @@ final class CodeCoverage
         }
 
         return TargetCollection::fromArray($targets);
-    }
-
-    public function shouldCodeCoverageBeCollectedFor(TestCase $test): bool
-    {
-        $parser = Registry::parser();
-
-        if ($parser->forClass($test::class)->isCoversNothing()->isNotEmpty()) {
-            return false;
-        }
-
-        return true;
     }
 }
