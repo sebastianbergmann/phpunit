@@ -63,9 +63,10 @@ final class TestRunner
     {
         Assert::resetCount();
 
-        $codeCoverageMetadataApi = new CodeCoverageMetadataApi;
-        $coversTargets           = TargetCollection::fromArray([]);
-        $usesTargets             = TargetCollection::fromArray([]);
+        $codeCoverageMetadataApi    = new CodeCoverageMetadataApi;
+        $coversTargets              = TargetCollection::fromArray([]);
+        $usesTargets                = TargetCollection::fromArray([]);
+        $coversNothingContradiction = false;
 
         if ($this->configuration->disableCoverageTargeting()) {
             $shouldCodeCoverageBeCollected = true;
@@ -81,9 +82,13 @@ final class TestRunner
             );
 
             $shouldCodeCoverageBeCollected = $codeCoverageMetadataApi->shouldCodeCoverageBeCollectedFor($test);
+
+            $coversNothingContradiction = $codeCoverageMetadataApi->coversNothingContradictsCoversOrUses(
+                $test::class,
+            );
         }
 
-        $this->performSanityChecks($test, $coversTargets, $usesTargets, $shouldCodeCoverageBeCollected);
+        $this->performSanityChecks($test, $coversTargets, $usesTargets, $coversNothingContradiction);
 
         $error      = false;
         $failure    = false;
@@ -365,15 +370,13 @@ final class TestRunner
         return true;
     }
 
-    private function performSanityChecks(TestCase $test, TargetCollection $coversTargets, TargetCollection $usesTargets, bool $shouldCodeCoverageBeCollected): void
+    private function performSanityChecks(TestCase $test, TargetCollection $coversTargets, TargetCollection $usesTargets, bool $coversNothingContradiction): void
     {
-        if (!$shouldCodeCoverageBeCollected) {
-            if ($coversTargets->isNotEmpty() || $usesTargets->isNotEmpty()) {
-                Facade::emitter()->testTriggeredPhpunitWarning(
-                    $test->valueObjectForEvents(),
-                    '#[Covers*] and #[Uses*] attributes do not have an effect when the #[CoversNothing] attribute is used',
-                );
-            }
+        if ($coversNothingContradiction) {
+            Facade::emitter()->testTriggeredPhpunitWarning(
+                $test->valueObjectForEvents(),
+                '#[Covers*] and #[Uses*] attributes do not have an effect when the #[CoversNothing] attribute is used',
+            );
         }
 
         $coversAsString = [];
