@@ -364,25 +364,31 @@ final class ErrorHandler
                 break;
 
             case E_DEPRECATED:
+                $trigger = $this->triggerWithoutTest(false, $errorString, $errorFile);
+
                 Event\Facade::emitter()->testRunnerTriggeredPhpDeprecation(
                     $errorString,
                     $errorFile,
                     $errorLine,
                     $suppressed,
                     $ignoredByBaseline,
-                    $this->triggerWithoutTest(false, $errorString, $errorFile),
+                    $this->deprecationIgnoredByFilter($errorString, $errorFile, $errorLine, $trigger),
+                    $trigger,
                 );
 
                 break;
 
             case E_USER_DEPRECATED:
+                $trigger = $this->triggerWithoutTest(true, $errorString);
+
                 Event\Facade::emitter()->testRunnerTriggeredDeprecation(
                     $errorString,
                     $errorFile,
                     $errorLine,
                     $suppressed,
                     $ignoredByBaseline,
-                    $this->triggerWithoutTest(true, $errorString),
+                    $this->deprecationIgnoredByFilter($errorString, $errorFile, $errorLine, $trigger),
+                    $trigger,
                     $this->stackTrace($errorFile, $errorLine),
                 );
 

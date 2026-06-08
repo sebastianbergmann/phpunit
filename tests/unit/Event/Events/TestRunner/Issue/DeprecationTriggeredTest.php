@@ -29,6 +29,7 @@ final class DeprecationTriggeredTest extends AbstractEventTestCase
         $line              = 1;
         $suppressed        = false;
         $ignoredByBaseline = false;
+        $ignoredByFilter   = false;
         $trigger           = IssueTrigger::from(null, null);
         $stackTrace        = 'stack trace';
 
@@ -39,6 +40,7 @@ final class DeprecationTriggeredTest extends AbstractEventTestCase
             $line,
             $suppressed,
             $ignoredByBaseline,
+            $ignoredByFilter,
             $trigger,
             $stackTrace,
         );
@@ -49,6 +51,7 @@ final class DeprecationTriggeredTest extends AbstractEventTestCase
         $this->assertSame($line, $event->line());
         $this->assertFalse($event->wasSuppressed());
         $this->assertFalse($event->ignoredByBaseline());
+        $this->assertFalse($event->ignoredByFilter());
         $this->assertSame($trigger, $event->trigger());
         $this->assertSame($stackTrace, $event->stackTrace());
         $this->assertStringContainsString('Test Runner Triggered Deprecation (', $event->asString());
@@ -64,12 +67,31 @@ final class DeprecationTriggeredTest extends AbstractEventTestCase
             1,
             false,
             true,
+            false,
             IssueTrigger::from(null, null),
             'stack trace',
         );
 
         $this->assertTrue($event->ignoredByBaseline());
         $this->assertStringContainsString('ignored by baseline', $event->asString());
+    }
+
+    public function testCanBeIgnoredByFilter(): void
+    {
+        $event = new DeprecationTriggered(
+            $this->telemetryInfo(),
+            'message',
+            'file',
+            1,
+            false,
+            false,
+            true,
+            IssueTrigger::from(null, null),
+            'stack trace',
+        );
+
+        $this->assertTrue($event->ignoredByFilter());
+        $this->assertStringContainsString('ignored by filter', $event->asString());
     }
 
     public function testCanBeSuppressed(): void
@@ -80,6 +102,7 @@ final class DeprecationTriggeredTest extends AbstractEventTestCase
             'file',
             1,
             true,
+            false,
             false,
             IssueTrigger::from(null, null),
             'stack trace',

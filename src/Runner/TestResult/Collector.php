@@ -683,6 +683,10 @@ final class Collector
 
     public function testRunnerTriggeredIssueDeprecation(TestRunnerIssueDeprecationTriggered $event): void
     {
+        if ($event->ignoredByFilter()) {
+            return;
+        }
+
         $this->testRunnerTriggeredIssueDeprecationEvents[] = $event;
     }
 
@@ -698,6 +702,10 @@ final class Collector
 
     public function testRunnerTriggeredIssuePhpDeprecation(TestRunnerIssuePhpDeprecationTriggered $event): void
     {
+        if ($event->ignoredByFilter()) {
+            return;
+        }
+
         $this->testRunnerTriggeredIssuePhpDeprecationEvents[] = $event;
     }
 

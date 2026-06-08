@@ -30,6 +30,7 @@ final class PhpDeprecationTriggeredTest extends AbstractEventTestCase
         $line              = 1;
         $suppressed        = false;
         $ignoredByBaseline = false;
+        $ignoredByFilter   = false;
         $trigger           = IssueTrigger::from(null, null);
 
         $event = new PhpDeprecationTriggered(
@@ -39,6 +40,7 @@ final class PhpDeprecationTriggeredTest extends AbstractEventTestCase
             $line,
             $suppressed,
             $ignoredByBaseline,
+            $ignoredByFilter,
             $trigger,
         );
 
@@ -48,6 +50,7 @@ final class PhpDeprecationTriggeredTest extends AbstractEventTestCase
         $this->assertSame($line, $event->line());
         $this->assertFalse($event->wasSuppressed());
         $this->assertFalse($event->ignoredByBaseline());
+        $this->assertFalse($event->ignoredByFilter());
         $this->assertSame($trigger, $event->trigger());
         $this->assertStringContainsString('Test Runner Triggered PHP Deprecation (', $event->asString());
         $this->assertStringContainsString('in file:1', $event->asString());
@@ -62,11 +65,29 @@ final class PhpDeprecationTriggeredTest extends AbstractEventTestCase
             1,
             false,
             true,
+            false,
             IssueTrigger::from(null, null),
         );
 
         $this->assertTrue($event->ignoredByBaseline());
         $this->assertStringContainsString('ignored by baseline', $event->asString());
+    }
+
+    public function testCanBeIgnoredByFilter(): void
+    {
+        $event = new PhpDeprecationTriggered(
+            $this->telemetryInfo(),
+            'message',
+            'file',
+            1,
+            false,
+            false,
+            true,
+            IssueTrigger::from(null, null),
+        );
+
+        $this->assertTrue($event->ignoredByFilter());
+        $this->assertStringContainsString('ignored by filter', $event->asString());
     }
 
     public function testCanBeSuppressed(): void
@@ -77,6 +98,7 @@ final class PhpDeprecationTriggeredTest extends AbstractEventTestCase
             'file',
             1,
             true,
+            false,
             false,
             IssueTrigger::from(null, null),
         );

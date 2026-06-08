@@ -354,7 +354,7 @@ interface Emitter
      * @param non-empty-string $file
      * @param positive-int     $line
      */
-    public function testRunnerTriggeredPhpDeprecation(string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline, IssueTrigger $trigger): void;
+    public function testRunnerTriggeredPhpDeprecation(string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline, bool $ignoredByFilter, IssueTrigger $trigger): void;
 
     /**
      * @param non-empty-string $message
@@ -362,7 +362,7 @@ interface Emitter
      * @param positive-int     $line
      * @param non-empty-string $stackTrace
      */
-    public function testRunnerTriggeredDeprecation(string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline, IssueTrigger $trigger, string $stackTrace): void;
+    public function testRunnerTriggeredDeprecation(string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline, bool $ignoredByFilter, IssueTrigger $trigger, string $stackTrace): void;
 
     /**
      * @param non-empty-string $message

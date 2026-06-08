@@ -206,6 +206,10 @@ final readonly class Application
 
             EventFacade::instance()->seal();
 
+            $this->configureDeprecationTriggers($configuration);
+            $this->configureIssueTriggerResolvers($configuration);
+            $this->configureDeprecationFilters($configuration);
+
             ErrorHandler::instance()->registerForNonTestCaseContext();
 
             $testSuite = $this->buildTestSuite($configuration);
@@ -241,9 +245,6 @@ final readonly class Application
                 $printer->print(PHP_EOL);
             }
 
-            $this->configureDeprecationTriggers($configuration);
-            $this->configureIssueTriggerResolvers($configuration);
-            $this->configureDeprecationFilters($configuration);
             $this->registerInterruptHandler();
 
             $timer = new Timer;

@@ -3542,7 +3542,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $trigger = IssueTrigger::from(null, null);
 
-        $emitter->testRunnerTriggeredPhpDeprecation('message', 'file', 1, false, false, $trigger);
+        $emitter->testRunnerTriggeredPhpDeprecation('message', 'file', 1, false, false, false, $trigger);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 
@@ -3554,6 +3554,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame(1, $event->line());
         $this->assertFalse($event->wasSuppressed());
         $this->assertFalse($event->ignoredByBaseline());
+        $this->assertFalse($event->ignoredByFilter());
         $this->assertSame($trigger, $event->trigger());
     }
 
@@ -3583,7 +3584,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $trigger = IssueTrigger::from(null, null);
 
-        $emitter->testRunnerTriggeredDeprecation('message', 'file', 1, false, false, $trigger, 'stack trace');
+        $emitter->testRunnerTriggeredDeprecation('message', 'file', 1, false, false, false, $trigger, 'stack trace');
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 
@@ -3595,6 +3596,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame(1, $event->line());
         $this->assertFalse($event->wasSuppressed());
         $this->assertFalse($event->ignoredByBaseline());
+        $this->assertFalse($event->ignoredByFilter());
         $this->assertSame($trigger, $event->trigger());
         $this->assertSame('stack trace', $event->stackTrace());
     }
