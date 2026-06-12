@@ -90,6 +90,18 @@ final class MergerTest extends TestCase
         $this->assertFalse($mergedConfig->disableCoverageTargeting());
     }
 
+    public function testCoverageDriverIsCarriedOverFromXmlConfiguration(): void
+    {
+        $fromFile = (new Loader)->load(TEST_FILES_PATH . 'configuration_codecoverage_driver.xml');
+
+        $fromCli = (new Builder)->fromParameters([]);
+
+        $mergedConfig = (new Merger)->merge($fromCli, $fromFile);
+
+        $this->assertTrue($mergedConfig->hasCoverageDriver());
+        $this->assertSame('My\Custom\Driver', $mergedConfig->coverageDriver());
+    }
+
     public function testNoCoverageShouldOnlyAffectXmlConfiguration(): void
     {
         $phpCoverage = uniqid('php_coverage_');

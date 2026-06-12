@@ -413,6 +413,12 @@ final readonly class Merger
             $branchCoverage = $xmlConfiguration->codeCoverage()->branchCoverage();
         }
 
+        $coverageDriver = null;
+
+        if ($xmlConfiguration->codeCoverage()->hasDriver()) {
+            $coverageDriver = $xmlConfiguration->codeCoverage()->driver();
+        }
+
         $defaultColors     = Colors::default();
         $defaultThresholds = Thresholds::default();
 
@@ -1188,6 +1194,7 @@ final readonly class Merger
             $coverageXmlIncludeSource,
             $pathCoverage,
             $branchCoverage,
+            $coverageDriver,
             $xmlConfiguration->codeCoverage()->ignoreDeprecatedCodeUnits(),
             $disableCodeCoverageIgnore,
             $disableCoverageTargeting,
