@@ -22,6 +22,7 @@ use function usort;
 use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\Reorderable;
 use PHPUnit\Framework\RepeatTestSuite;
+use PHPUnit\Framework\RetryTestSuite;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
@@ -96,8 +97,9 @@ final class TestSuiteSorter
             // @codeCoverageIgnoreEnd
         }
 
-        // the repetitions of a repeated test always run in ascending order
-        if ($suite instanceof RepeatTestSuite) {
+        // the repetitions of a repeated test and the attempts of a retried test
+        // always run in their original order
+        if ($suite instanceof RepeatTestSuite || $suite instanceof RetryTestSuite) {
             return;
         }
 

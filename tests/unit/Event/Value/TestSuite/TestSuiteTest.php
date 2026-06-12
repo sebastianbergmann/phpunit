@@ -117,6 +117,53 @@ final class TestSuiteTest extends TestCase
         $this->assertTrue($testSuite->isForDataSet());
     }
 
+    public function testCanBeTestSuiteForRetriedTestMethod(): void
+    {
+        $name       = 'ExampleTest::testOne';
+        $className  = 'ExampleTest';
+        $methodName = 'testOne';
+        $size       = 1;
+        $tests      = TestCollection::fromArray([]);
+        $file       = 'ExampleTest.php';
+        $line       = 1;
+
+        $testSuite = new TestSuiteForRetriedTestMethod($name, $size, $tests, $className, $methodName, $file, $line, false, 3);
+
+        $this->assertFalse($testSuite->isForTestClass());
+        $this->assertFalse($testSuite->isForTestMethodWithDataProvider());
+        $this->assertFalse($testSuite->isForRepeatedTestMethod());
+        $this->assertTrue($testSuite->isForRetriedTestMethod());
+        $this->assertFalse($testSuite->isWithName());
+
+        $this->assertSame($name, $testSuite->name());
+        $this->assertSame($className, $testSuite->className());
+        $this->assertSame($methodName, $testSuite->methodName());
+        $this->assertSame($size, $testSuite->count());
+        $this->assertSame($tests, $testSuite->tests());
+        $this->assertSame($file, $testSuite->file());
+        $this->assertSame($line, $testSuite->line());
+        $this->assertFalse($testSuite->isForDataSet());
+        $this->assertSame(3, $testSuite->maxAttempts());
+    }
+
+    public function testCanBeTestSuiteForRetriedTestMethodWithDataSet(): void
+    {
+        $testSuite = new TestSuiteForRetriedTestMethod(
+            'ExampleTest::testOne#0',
+            1,
+            TestCollection::fromArray([]),
+            'ExampleTest',
+            'testOne',
+            'ExampleTest.php',
+            1,
+            true,
+            3,
+        );
+
+        $this->assertTrue($testSuite->isForRetriedTestMethod());
+        $this->assertTrue($testSuite->isForDataSet());
+    }
+
     public function testCanBeTestSuiteWithName(): void
     {
         $name  = 'the-name';

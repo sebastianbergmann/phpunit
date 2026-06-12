@@ -87,4 +87,27 @@ final class FinishedTest extends AbstractEventTestCase
             $event->asString(),
         );
     }
+
+    public function testCanBeRepresentedAsStringForTestSuiteForRetriedTestMethod(): void
+    {
+        $event = new Finished(
+            $this->telemetryInfo(),
+            new TestSuiteForRetriedTestMethod(
+                'PHPUnit\TestFixture\ExampleTest::testSomething',
+                1,
+                TestCollection::fromArray([]),
+                'PHPUnit\TestFixture\ExampleTest',
+                'testSomething',
+                'ExampleTest.php',
+                10,
+                false,
+                3,
+            ),
+        );
+
+        $this->assertSame(
+            'Test Suite for Retried Test Method Finished (PHPUnit\TestFixture\ExampleTest::testSomething, up to 3 attempts)',
+            $event->asString(),
+        );
+    }
 }

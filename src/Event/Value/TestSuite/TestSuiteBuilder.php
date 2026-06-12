@@ -22,6 +22,7 @@ use PHPUnit\Event\Code\TestDoxBuilder;
 use PHPUnit\Event\RuntimeException;
 use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\RepeatTestSuite;
+use PHPUnit\Framework\RetryTestSuite;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite as FrameworkTestSuite;
 use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
@@ -70,7 +71,7 @@ final readonly class TestSuiteBuilder
             );
         }
 
-        if ($testSuite instanceof RepeatTestSuite) {
+        if ($testSuite instanceof RepeatTestSuite || $testSuite instanceof RetryTestSuite) {
             $name = $testSuite->name();
 
             $separatorPosition = strpos($name, '::');
@@ -98,6 +99,20 @@ final readonly class TestSuiteBuilder
 
             assert($file !== false);
             assert($line !== false);
+
+            if ($testSuite instanceof RetryTestSuite) {
+                return new TestSuiteForRetriedTestMethod(
+                    $name,
+                    $testSuite->count(),
+                    TestCollection::fromArray($tests),
+                    $className,
+                    $methodName,
+                    $file,
+                    $line,
+                    $isForDataSet,
+                    $testSuite->maxAttempts(),
+                );
+            }
 
             return new TestSuiteForRepeatedTestMethod(
                 $name,

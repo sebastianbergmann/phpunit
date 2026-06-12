@@ -602,7 +602,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             return;
         }
 
-        if ($test instanceof TestCase || $test instanceof DataProviderTestSuite || $test instanceof RepeatTestSuite) {
+        if ($test instanceof TestCase || $test instanceof DataProviderTestSuite || $test instanceof RepeatTestSuite || $test instanceof RetryTestSuite) {
             $test->setDependencies(
                 Dependencies::dependencies($class->getName(), $methodName),
             );
