@@ -55,4 +55,14 @@ final class RetryTestSuiteTest extends TestCase
 
         $this->assertSame($test->sortId(), $suite->sortId());
     }
+
+    public function testProvidesNothingWhenItIsEmpty(): void
+    {
+        $this->assertSame([], RetryTestSuite::empty('the-name')->provides());
+    }
+
+    public function testRequiresNothingWhenItIsEmpty(): void
+    {
+        $this->assertSame([], RetryTestSuite::empty('the-name')->requires());
+    }
 }
