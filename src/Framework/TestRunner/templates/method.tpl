@@ -59,6 +59,7 @@ function __phpunit_run_isolated_test()
 
     $test->setData('{dataName}', unserialize('{data}'));
     $test->setDependencyInput(unserialize('{dependencyInput}'));
+    $test->setRepetition({repetition}, {totalRepetitions});
     $test->setInIsolation(true);
 
     ob_end_clean();
