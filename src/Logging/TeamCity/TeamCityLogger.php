@@ -36,6 +36,7 @@ use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
 use PHPUnit\Event\TestSuite\Skipped as TestSuiteSkipped;
 use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
 use PHPUnit\Event\TestSuite\TestSuiteForRepeatedTestMethod;
+use PHPUnit\Event\TestSuite\TestSuiteForRetriedTestMethod;
 use PHPUnit\Event\TestSuite\TestSuiteForTestClass;
 use PHPUnit\Event\TestSuite\TestSuiteForTestMethodWithDataProvider;
 use PHPUnit\Framework\Exception as FrameworkException;
@@ -99,6 +100,15 @@ final class TeamCityLogger
             $parameters['name'] = $testSuite->methodName();
         } elseif ($testSuite->isForRepeatedTestMethod()) {
             assert($testSuite instanceof TestSuiteForRepeatedTestMethod);
+
+            $parameters['locationHint'] = sprintf(
+                'php_qn://%s::\\%s::%s',
+                $testSuite->file(),
+                $testSuite->className(),
+                $testSuite->methodName(),
+            );
+        } elseif ($testSuite->isForRetriedTestMethod()) {
+            assert($testSuite instanceof TestSuiteForRetriedTestMethod);
 
             $parameters['locationHint'] = sprintf(
                 'php_qn://%s::\\%s::%s',
