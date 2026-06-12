@@ -21,6 +21,7 @@ use function shuffle;
 use function usort;
 use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\Reorderable;
+use PHPUnit\Framework\RepeatTestSuite;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
@@ -93,6 +94,11 @@ final class TestSuiteSorter
             // @codeCoverageIgnoreStart
             throw new InvalidOrderException;
             // @codeCoverageIgnoreEnd
+        }
+
+        // the repetitions of a repeated test always run in ascending order
+        if ($suite instanceof RepeatTestSuite) {
+            return;
         }
 
         if ($suite instanceof TestSuite) {
