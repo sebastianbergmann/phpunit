@@ -210,6 +210,8 @@ final class Facade
             Test\ComparatorRegistered::class,
             Test\CustomTestMethodInvocationUsed::class,
             Test\ConsideredRisky::class,
+            Test\AttemptErrored::class,
+            Test\AttemptFailed::class,
             Test\DeprecationTriggered::class,
             Test\Errored::class,
             Test\ErrorTriggered::class,

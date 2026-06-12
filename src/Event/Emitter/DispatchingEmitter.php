@@ -724,6 +724,37 @@ final class DispatchingEmitter implements Emitter
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
+    public function testAttemptErrored(Code\Test $test, Throwable $throwable): void
+    {
+        $this->dispatcher->dispatch(
+            new Test\AttemptErrored(
+                $this->telemetryInfo(),
+                $test,
+                $throwable,
+            ),
+        );
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
+    public function testAttemptFailed(Code\Test $test, Throwable $throwable, ?ComparisonFailure $comparisonFailure): void
+    {
+        $this->dispatcher->dispatch(
+            new Test\AttemptFailed(
+                $this->telemetryInfo(),
+                $test,
+                $throwable,
+                $comparisonFailure,
+            ),
+        );
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testPassed(Code\Test $test): void
     {
         $this->dispatcher->dispatch(
