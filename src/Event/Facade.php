@@ -120,6 +120,16 @@ final class Facade
         }
     }
 
+    public function startCollectingEvents(): void
+    {
+        $this->deferredDispatcher()->startCollectingEvents();
+    }
+
+    public function stopCollectingEvents(): EventCollection
+    {
+        return $this->deferredDispatcher()->stopCollectingEvents();
+    }
+
     public function seal(): void
     {
         $this->deferredDispatcher()->flush();
