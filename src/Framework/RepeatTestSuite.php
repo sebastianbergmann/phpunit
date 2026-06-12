@@ -134,10 +134,7 @@ final class RepeatTestSuite extends TestSuite
     {
         $tests = $this->tests();
 
-        if ($tests === []) {
-            return [];
-        }
-
+        assert($tests !== []);
         assert($tests[0] instanceof TestCase);
 
         return $tests[0]->provides();
@@ -150,10 +147,7 @@ final class RepeatTestSuite extends TestSuite
     {
         $tests = $this->tests();
 
-        if ($tests === []) {
-            return [];
-        }
-
+        assert($tests !== []);
         assert($tests[0] instanceof TestCase);
 
         return $tests[0]->requires();
