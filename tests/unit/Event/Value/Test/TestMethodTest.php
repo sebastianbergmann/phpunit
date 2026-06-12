@@ -59,6 +59,72 @@ final class TestMethodTest extends TestCase
         $this->assertSame(1, $test->repetition());
         $this->assertSame(1, $test->totalRepetitions());
         $this->assertFalse($test->isRepeated());
+        $this->assertSame(1, $test->attempt());
+        $this->assertSame(1, $test->maxAttempts());
+        $this->assertFalse($test->isRetried());
+    }
+
+    public function testAttemptValues(): void
+    {
+        $test = new TestMethod(
+            'FooTest',
+            'testBar',
+            'FooTest.php',
+            1,
+            TestDoxBuilder::fromClassNameAndMethodName('Foo', 'bar'),
+            MetadataCollection::fromArray([]),
+            TestDataCollection::fromArray([]),
+            1,
+            1,
+            2,
+            3,
+        );
+
+        $this->assertSame(2, $test->attempt());
+        $this->assertSame(3, $test->maxAttempts());
+        $this->assertTrue($test->isRetried());
+    }
+
+    public function testNameIncludesAttemptForAdditionalAttempts(): void
+    {
+        $test = new TestMethod(
+            'FooTest',
+            'testBar',
+            'FooTest.php',
+            1,
+            TestDoxBuilder::fromClassNameAndMethodName('Foo', 'bar'),
+            MetadataCollection::fromArray([]),
+            TestDataCollection::fromArray([]),
+            1,
+            1,
+            2,
+            3,
+        );
+
+        $this->assertSame('testBar (attempt 2 of 3)', $test->name());
+        $this->assertSame('FooTest::testBar (attempt 2 of 3)', $test->nameWithClass());
+        $this->assertSame('FooTest::testBar (attempt 2 of 3)', $test->id());
+    }
+
+    public function testNameDoesNotIncludeAttemptForFirstAttempt(): void
+    {
+        $test = new TestMethod(
+            'FooTest',
+            'testBar',
+            'FooTest.php',
+            1,
+            TestDoxBuilder::fromClassNameAndMethodName('Foo', 'bar'),
+            MetadataCollection::fromArray([]),
+            TestDataCollection::fromArray([]),
+            1,
+            1,
+            1,
+            3,
+        );
+
+        $this->assertTrue($test->isRetried());
+        $this->assertSame('testBar', $test->name());
+        $this->assertSame('FooTest::testBar', $test->id());
     }
 
     public function testRepetitionValues(): void
