@@ -996,6 +996,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
+    final public function setStatus(TestStatus $status): void
+    {
+        $this->status = $status;
+    }
+
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     final public function markSkippedForRepeatAbort(int $failedRepetition): void
     {
         $message = sprintf(

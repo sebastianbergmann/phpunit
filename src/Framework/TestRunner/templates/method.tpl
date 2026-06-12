@@ -73,6 +73,7 @@ function __phpunit_run_isolated_test()
         '{processResultNonce}' . serialize(
             (object)[
                 'testResult'    => $test->result(),
+                'status'        => $test->status(),
                 'codeCoverage'  => {collectCodeCoverageInformation} ? CodeCoverage::instance()->codeCoverage() : null,
                 'numAssertions' => $test->numberOfAssertionsPerformed(),
                 'output'        => $output,
