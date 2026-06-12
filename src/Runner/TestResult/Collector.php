@@ -348,6 +348,13 @@ final class Collector
             return;
         }
 
+        if ($testSuite->isForRetriedTestMethod()) {
+            // a retried test method registers itself as passed when an attempt
+            // passes, a retried data set is handled by the enclosing data
+            // provider test suite
+            return;
+        }
+
         assert($testSuite instanceof TestSuiteForTestClass);
 
         PassedTests::instance()->testClassPassed($testSuite->className());
@@ -409,6 +416,8 @@ final class Collector
     {
         $this->testFailedEvents[] = $event;
     }
+
+
 
     public function testMarkedIncomplete(MarkedIncomplete $event): void
     {

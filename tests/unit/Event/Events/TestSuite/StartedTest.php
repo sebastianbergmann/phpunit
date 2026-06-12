@@ -84,4 +84,27 @@ final class StartedTest extends AbstractEventTestCase
             $event->asString(),
         );
     }
+
+    public function testCanBeRepresentedAsStringForTestSuiteForRetriedTestMethod(): void
+    {
+        $event = new Started(
+            $this->telemetryInfo(),
+            new TestSuiteForRetriedTestMethod(
+                'PHPUnit\TestFixture\ExampleTest::testSomething',
+                1,
+                TestCollection::fromArray([]),
+                'PHPUnit\TestFixture\ExampleTest',
+                'testSomething',
+                'ExampleTest.php',
+                10,
+                false,
+                3,
+            ),
+        );
+
+        $this->assertSame(
+            'Test Suite for Retried Test Method Started (PHPUnit\TestFixture\ExampleTest::testSomething, up to 3 attempts)',
+            $event->asString(),
+        );
+    }
 }
