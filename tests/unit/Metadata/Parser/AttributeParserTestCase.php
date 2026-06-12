@@ -22,6 +22,7 @@ use PHPUnit\Metadata\RequiresPhpExtension;
 use PHPUnit\Metadata\RequiresPhpunit;
 use PHPUnit\Metadata\RequiresPhpunitExtension;
 use PHPUnit\Metadata\RequiresSetting;
+use PHPUnit\Metadata\Retry;
 use PHPUnit\Metadata\Version\ComparisonRequirement;
 use PHPUnit\Metadata\Version\ConstraintRequirement;
 use PHPUnit\Metadata\WithEnvironmentVariable;
@@ -64,6 +65,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\RequiresPhpTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresPhpunitExtensionTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresPhpunitTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresSettingTest;
+use PHPUnit\TestFixture\Metadata\Attribute\RetryTest;
 use PHPUnit\TestFixture\Metadata\Attribute\SmallTest;
 use PHPUnit\TestFixture\Metadata\Attribute\TestDoxTest;
 use PHPUnit\TestFixture\Metadata\Attribute\TestWithTest;
@@ -1229,6 +1231,21 @@ abstract class AttributeParserTestCase extends TestCase
 
         $this->assertSame(5, $repeat->times());
         $this->assertSame(2, $repeat->failureThreshold());
+    }
+
+    #[TestDox('Parses #[Retry] attribute on method')]
+    public function test_parses_Retry_attribute_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(RetryTest::class, 'testOne')->isRetry();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isRetry());
+
+        $retry = $metadata->asArray()[0];
+
+        assert($retry instanceof Retry);
+
+        $this->assertSame(5, $retry->maxAttempts());
     }
 
     #[TestDox('Parses #[WithoutErrorHandler] attribute on method')]

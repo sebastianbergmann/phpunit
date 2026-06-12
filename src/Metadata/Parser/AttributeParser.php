@@ -73,6 +73,7 @@ use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use PHPUnit\Framework\Attributes\RequiresPhpunit;
 use PHPUnit\Framework\Attributes\RequiresPhpunitExtension;
 use PHPUnit\Framework\Attributes\RequiresSetting;
+use PHPUnit\Framework\Attributes\Retry;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\Attributes\Small;
@@ -937,6 +938,28 @@ final readonly class AttributeParser implements Parser
                     $result[] = Metadata::repeat(
                         $attributeInstance->times(),
                         $attributeInstance->failureThreshold(),
+                    );
+
+                    break;
+
+                case Retry::class:
+                    assert($attributeInstance instanceof Retry);
+
+                    if ($attributeInstance->maxAttempts() < 1) {
+                        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                            sprintf(
+                                'Method %s::%s is annotated with #[Retry] but %d is not a positive integer for the maximum number of attempts and will not be retried',
+                                $className,
+                                $methodName,
+                                $attributeInstance->maxAttempts(),
+                            ),
+                        );
+
+                        break;
+                    }
+
+                    $result[] = Metadata::retry(
+                        $attributeInstance->maxAttempts(),
                     );
 
                     break;
