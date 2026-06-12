@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework;
 
+use function array_pop;
+use function array_reverse;
 use function assert;
 use PHPUnit\Event;
 use PHPUnit\Event\NoPreviousThrowableException;
@@ -27,6 +29,7 @@ final class RepeatTestSuite extends TestSuite
      * @var positive-int
      */
     private int $failureThreshold = 1;
+    private bool $wasRun          = false;
 
     /**
      * @param non-empty-string         $name
@@ -55,6 +58,14 @@ final class RepeatTestSuite extends TestSuite
      */
     public function run(): void
     {
+        if ($this->wasRun) {
+            // @codeCoverageIgnoreStart
+            throw new Exception('The tests aggregated by this TestSuite were already run');
+            // @codeCoverageIgnoreEnd
+        }
+
+        $this->wasRun = true;
+
         if ($this->isEmpty()) {
             return;
         }
@@ -64,12 +75,23 @@ final class RepeatTestSuite extends TestSuite
 
         $emitter->testSuiteStarted($testSuiteValueObjectForEvents);
 
-        $failureCount         = 0;
-        $lastFailedRepetition = 0;
+        /** @var list<TestCase> $tests */
+        $tests = [];
 
         foreach ($this as $test) {
             assert($test instanceof TestCase);
 
+            $tests[] = $test;
+        }
+
+        $tests = array_reverse($tests);
+
+        $this->setTests([]);
+
+        $failureCount         = 0;
+        $lastFailedRepetition = 0;
+
+        while (($test = array_pop($tests)) !== null) {
             if (TestResultFacade::shouldStop()) {
                 $emitter->testRunnerExecutionAborted();
 
