@@ -779,7 +779,9 @@ final class Collector
                 continue;
             }
 
-            if ($testFailedEvent->test()->isTestMethod() && $testFailedEvent->test()->methodName() === $test->methodName()) {
+            if ($testFailedEvent->test()->isTestMethod() &&
+                $testFailedEvent->test()->className() === $test->className() &&
+                $testFailedEvent->test()->methodName() === $test->methodName()) {
                 return;
             }
         }
