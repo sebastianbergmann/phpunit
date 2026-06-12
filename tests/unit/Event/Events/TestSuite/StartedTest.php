@@ -75,6 +75,7 @@ final class StartedTest extends AbstractEventTestCase
                 'testSomething',
                 'ExampleTest.php',
                 10,
+                false,
             ),
         );
 

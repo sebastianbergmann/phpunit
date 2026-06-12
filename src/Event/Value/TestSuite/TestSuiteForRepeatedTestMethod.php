@@ -29,20 +29,22 @@ final readonly class TestSuiteForRepeatedTestMethod extends TestSuite
     private string $methodName;
     private string $file;
     private int $line;
+    private bool $isForDataSet;
 
     /**
      * @param non-empty-string $name
      * @param class-string     $className
      * @param non-empty-string $methodName
      */
-    public function __construct(string $name, int $size, TestCollection $tests, string $className, string $methodName, string $file, int $line)
+    public function __construct(string $name, int $size, TestCollection $tests, string $className, string $methodName, string $file, int $line, bool $isForDataSet)
     {
         parent::__construct($name, $size, $tests);
 
-        $this->className  = $className;
-        $this->methodName = $methodName;
-        $this->file       = $file;
-        $this->line       = $line;
+        $this->className    = $className;
+        $this->methodName   = $methodName;
+        $this->file         = $file;
+        $this->line         = $line;
+        $this->isForDataSet = $isForDataSet;
     }
 
     /**
@@ -69,6 +71,15 @@ final readonly class TestSuiteForRepeatedTestMethod extends TestSuite
     public function line(): int
     {
         return $this->line;
+    }
+
+    /**
+     * Returns true when this test suite holds the repetitions of a single data set
+     * of a test method that uses a data provider.
+     */
+    public function isForDataSet(): bool
+    {
+        return $this->isForDataSet;
     }
 
     public function isForRepeatedTestMethod(): true

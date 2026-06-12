@@ -81,9 +81,11 @@ final readonly class TestSuiteBuilder
             $methodName = substr($name, $separatorPosition + 2);
 
             $hashPosition = strpos($methodName, '#');
+            $isForDataSet = false;
 
             if ($hashPosition !== false) {
-                $methodName = substr($methodName, 0, $hashPosition);
+                $methodName   = substr($methodName, 0, $hashPosition);
+                $isForDataSet = true;
             }
 
             assert($className !== '' && class_exists($className));
@@ -105,6 +107,7 @@ final readonly class TestSuiteBuilder
                 $methodName,
                 $file,
                 $line,
+                $isForDataSet,
             );
         }
 
