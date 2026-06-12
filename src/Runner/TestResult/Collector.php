@@ -13,10 +13,13 @@ use function array_values;
 use function assert;
 use function count;
 use function implode;
+use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Test\AfterLastTestMethodErrored;
 use PHPUnit\Event\Test\AfterLastTestMethodFailed;
+use PHPUnit\Event\Test\AttemptErrored;
+use PHPUnit\Event\Test\AttemptFailed;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
 use PHPUnit\Event\Test\BeforeFirstTestMethodFailed;
 use PHPUnit\Event\Test\ConsideredRisky;
@@ -211,6 +214,11 @@ final class Collector
      */
     private array $phpWarnings = [];
 
+    /**
+     * @var array<non-empty-string, positive-int>
+     */
+    private array $retriedTests = [];
+
     public function __construct(Facade $facade, IssueFilter $issueFilter)
     {
         $facade->registerSubscribers(
@@ -226,6 +234,8 @@ final class Collector
             new AfterTestClassMethodFailedSubscriber($this),
             new TestErroredSubscriber($this),
             new TestFailedSubscriber($this),
+            new TestAttemptErroredSubscriber($this),
+            new TestAttemptFailedSubscriber($this),
             new TestMarkedIncompleteSubscriber($this),
             new TestSkippedSubscriber($this),
             new TestConsideredRiskySubscriber($this),
@@ -290,6 +300,7 @@ final class Collector
             array_values($this->phpNotices),
             array_values($this->phpWarnings),
             $this->numberOfIssuesIgnoredByBaseline,
+            $this->retriedTests,
         );
     }
 
@@ -403,6 +414,8 @@ final class Collector
     {
         $this->testErroredEvents[] = $event;
 
+        $this->forgetRetriedTest($event->test());
+
         if ($this->childProcessErrored) {
             return;
         }
@@ -415,9 +428,19 @@ final class Collector
     public function testFailed(Failed $event): void
     {
         $this->testFailedEvents[] = $event;
+
+        $this->forgetRetriedTest($event->test());
     }
 
+    public function testAttemptErrored(AttemptErrored $event): void
+    {
+        $this->rememberRetriedTest($event->test());
+    }
 
+    public function testAttemptFailed(AttemptFailed $event): void
+    {
+        $this->rememberRetriedTest($event->test());
+    }
 
     public function testMarkedIncomplete(MarkedIncomplete $event): void
     {
@@ -773,6 +796,50 @@ final class Collector
                count($this->phpWarnings) +
                count($this->testTriggeredPhpunitWarningEvents) +
                count($this->testRunnerTriggeredWarningEvents);
+    }
+
+    private function rememberRetriedTest(Test $test): void
+    {
+        if (!$test->isTestMethod()) {
+            return;
+        }
+
+        assert($test instanceof TestMethod);
+
+        $id = $this->logicalTestId($test);
+
+        if (!isset($this->retriedTests[$id])) {
+            $this->retriedTests[$id] = 1;
+
+            return;
+        }
+
+        $this->retriedTests[$id]++;
+    }
+
+    private function forgetRetriedTest(Test $test): void
+    {
+        if (!$test->isTestMethod()) {
+            return;
+        }
+
+        assert($test instanceof TestMethod);
+
+        unset($this->retriedTests[$this->logicalTestId($test)]);
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    private function logicalTestId(TestMethod $test): string
+    {
+        $id = $test->className() . '::' . $test->methodName();
+
+        if ($test->testData()->hasDataFromDataProvider()) {
+            $id .= '#' . $test->testData()->dataFromDataProvider()->dataSetName();
+        }
+
+        return $id;
     }
 
     private function registerTestMethodAsPassedIfItDidNotFail(TestSuiteForRepeatedTestMethod|TestSuiteForTestMethodWithDataProvider $testSuite): void

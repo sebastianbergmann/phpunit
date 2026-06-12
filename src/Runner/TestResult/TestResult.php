@@ -190,6 +190,11 @@ final readonly class TestResult
     private int $numberOfIssuesIgnoredByBaseline;
 
     /**
+     * @var array<non-empty-string, positive-int>
+     */
+    private array $retriedTests;
+
+    /**
      * @param list<AfterLastTestMethodErrored|BeforeFirstTestMethodErrored|Errored> $testErroredEvents
      * @param list<AfterLastTestMethodFailed|BeforeFirstTestMethodFailed|Failed>    $testFailedEvents
      * @param array<string,list<ConsideredRisky>>                                   $testConsideredRiskyEvents
@@ -218,8 +223,9 @@ final readonly class TestResult
      * @param list<Issue>                                                           $phpNotices
      * @param list<Issue>                                                           $phpWarnings
      * @param non-negative-int                                                      $numberOfIssuesIgnoredByBaseline
+     * @param array<non-empty-string, positive-int>                                 $retriedTests
      */
-    public function __construct(int $numberOfTests, int $numberOfTestsRun, int $numberOfAssertions, array $testErroredEvents, array $testFailedEvents, array $testConsideredRiskyEvents, array $testSuiteSkippedEvents, array $testSkippedEvents, array $testMarkedIncompleteEvents, array $testTriggeredPhpunitDeprecationEvents, array $testTriggeredPhpunitErrorEvents, array $testTriggeredPhpunitNoticeEvents, array $testTriggeredPhpunitWarningEvents, array $testRunnerTriggeredDeprecationEvents, array $testRunnerTriggeredNoticeEvents, array $testRunnerTriggeredWarningEvents, array $testRunnerTriggeredIssueDeprecationEvents, array $testRunnerTriggeredIssueErrorEvents, array $testRunnerTriggeredIssueNoticeEvents, array $testRunnerTriggeredIssuePhpDeprecationEvents, array $testRunnerTriggeredIssuePhpNoticeEvents, array $testRunnerTriggeredIssuePhpWarningEvents, array $testRunnerTriggeredIssueWarningEvents, array $errors, array $deprecations, array $notices, array $warnings, array $phpDeprecations, array $phpNotices, array $phpWarnings, int $numberOfIssuesIgnoredByBaseline)
+    public function __construct(int $numberOfTests, int $numberOfTestsRun, int $numberOfAssertions, array $testErroredEvents, array $testFailedEvents, array $testConsideredRiskyEvents, array $testSuiteSkippedEvents, array $testSkippedEvents, array $testMarkedIncompleteEvents, array $testTriggeredPhpunitDeprecationEvents, array $testTriggeredPhpunitErrorEvents, array $testTriggeredPhpunitNoticeEvents, array $testTriggeredPhpunitWarningEvents, array $testRunnerTriggeredDeprecationEvents, array $testRunnerTriggeredNoticeEvents, array $testRunnerTriggeredWarningEvents, array $testRunnerTriggeredIssueDeprecationEvents, array $testRunnerTriggeredIssueErrorEvents, array $testRunnerTriggeredIssueNoticeEvents, array $testRunnerTriggeredIssuePhpDeprecationEvents, array $testRunnerTriggeredIssuePhpNoticeEvents, array $testRunnerTriggeredIssuePhpWarningEvents, array $testRunnerTriggeredIssueWarningEvents, array $errors, array $deprecations, array $notices, array $warnings, array $phpDeprecations, array $phpNotices, array $phpWarnings, int $numberOfIssuesIgnoredByBaseline, array $retriedTests = [])
     {
         $this->numberOfTests                                = $numberOfTests;
         $this->numberOfTestsRun                             = $numberOfTestsRun;
@@ -252,6 +258,23 @@ final readonly class TestResult
         $this->phpNotices                                   = $phpNotices;
         $this->phpWarnings                                  = $phpWarnings;
         $this->numberOfIssuesIgnoredByBaseline              = $numberOfIssuesIgnoredByBaseline;
+        $this->retriedTests                                 = $retriedTests;
+    }
+
+    /**
+     * @phpstan-assert-if-true !array{} $this->retriedTests
+     */
+    public function hasRetriedTests(): bool
+    {
+        return $this->retriedTests !== [];
+    }
+
+    /**
+     * @return array<non-empty-string, positive-int>
+     */
+    public function retriedTests(): array
+    {
+        return $this->retriedTests;
     }
 
     public function numberOfTestsRun(): int
