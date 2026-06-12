@@ -10,6 +10,8 @@
 namespace PHPUnit\Runner\Filter;
 
 use function preg_match;
+use function restore_error_handler;
+use function set_error_handler;
 use function sprintf;
 use function substr;
 
@@ -32,11 +34,9 @@ final readonly class MethodNameFilterCompiler
     public static function compile(string $filter): ?string
     {
         if (preg_match('/[a-zA-Z0-9]/', substr($filter, 0, 1)) !== 1 &&
-            @preg_match($filter, '') !== false) {
+            self::isRegularExpression($filter)) {
             return null;
         }
-
-        $methodNamePortion = $filter;
 
         if (preg_match('/^(.*?)#(\d+)(?:-(\d+))?$/', $filter, $matches) === 1) {
             $methodNamePortion = $matches[1];
@@ -44,6 +44,12 @@ final readonly class MethodNameFilterCompiler
             $methodNamePortion = $matches[1];
         } elseif (preg_match('/^(.*?)@(.+)$/', $filter, $matches) === 1) {
             $methodNamePortion = $matches[1];
+        } else {
+            // A filter without a data set portion is matched against the entire
+            // test name, including the name of the data set, by NameFilterIterator.
+            // It may therefore match a data set name that cannot be known without
+            // invoking the data provider (#6741).
+            return null;
         }
 
         if ($methodNamePortion === '') {
@@ -51,5 +57,16 @@ final readonly class MethodNameFilterCompiler
         }
 
         return sprintf('{%s}i', $methodNamePortion);
+    }
+
+    private static function isRegularExpression(string $filter): bool
+    {
+        set_error_handler(static fn (): bool => true);
+
+        try {
+            return preg_match($filter, '') !== false;
+        } finally {
+            restore_error_handler();
+        }
     }
 }

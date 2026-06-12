@@ -1,12 +1,12 @@
 --TEST--
-phpunit --filter testA does not invoke data providers for non-matching methods
+phpunit --filter testA#0-1 does not invoke data providers for non-matching methods
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = '--filter';
-$_SERVER['argv'][] = 'testA';
+$_SERVER['argv'][] = 'testA#0-1';
 $_SERVER['argv'][] = __DIR__ . '/../../_files/DataProviderSkipWhenFilteredTest.php';
 
 require_once __DIR__ . '/../../../bootstrap.php';
