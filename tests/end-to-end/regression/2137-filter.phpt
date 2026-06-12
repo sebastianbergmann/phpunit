@@ -6,7 +6,7 @@ $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = __DIR__ . '/2137/Issue2137Test.php';
 $_SERVER['argv'][] = '--filter';
-$_SERVER['argv'][] = 'test';
+$_SERVER['argv'][] = 'BrandService';
 
 require_once __DIR__ . '/../../bootstrap.php';
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);

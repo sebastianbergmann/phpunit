@@ -28,12 +28,11 @@ final class MethodNameFilterCompilerTest extends TestCase
     public static function provideFiltersWithMethodNamePortion(): array
     {
         return [
-            'plain method name'                                            => ['testFoo', '{testFoo}i'],
             'with numeric data set index'                                  => ['testFoo#0', '{testFoo}i'],
             'with numeric data set range'                                  => ['testFoo#0-3', '{testFoo}i'],
             'with named data set'                                          => ['testFoo#named', '{testFoo}i'],
             'with attribute constant'                                      => ['testFoo@CONST', '{testFoo}i'],
-            'fully qualified method name'                                  => ['PHPUnit\\TestFixture\\FooTest::testFoo', '{PHPUnit\\TestFixture\\FooTest::testFoo}i'],
+            'fully qualified method name with numeric data set index'      => ['PHPUnit\\TestFixture\\FooTest::testFoo#0', '{PHPUnit\\TestFixture\\FooTest::testFoo}i'],
             'non-alphanumeric leading character that is not a valid regex' => ['_test#0', '{_test}i'],
         ];
     }
@@ -44,14 +43,16 @@ final class MethodNameFilterCompilerTest extends TestCase
     public static function provideFiltersThatYieldNull(): array
     {
         return [
-            'empty string'                     => [''],
-            'numeric index only'               => ['#0'],
-            'numeric range only'               => ['#0-3'],
-            'named data set only'              => ['#named'],
-            'attribute constant only'          => ['@CONST'],
-            'valid regex delimited by slashes' => ['/testFoo/'],
-            'valid regex delimited by hashes'  => ['#testFoo#i'],
-            'valid regex delimited by braces'  => ['{testFoo}'],
+            'empty string'                                            => [''],
+            'plain method name (may match a data set name)'           => ['testFoo'],
+            'fully qualified method name (may match a data set name)' => ['PHPUnit\\TestFixture\\FooTest::testFoo'],
+            'numeric index only'                                      => ['#0'],
+            'numeric range only'                                      => ['#0-3'],
+            'named data set only'                                     => ['#named'],
+            'attribute constant only'                                 => ['@CONST'],
+            'valid regex delimited by slashes'                        => ['/testFoo/'],
+            'valid regex delimited by hashes'                         => ['#testFoo#i'],
+            'valid regex delimited by braces'                         => ['{testFoo}'],
         ];
     }
 

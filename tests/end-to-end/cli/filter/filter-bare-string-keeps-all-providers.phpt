@@ -1,12 +1,12 @@
 --TEST--
-phpunit --filter 'foo}#0' (filter whose method name portion compiles to an invalid regex) keeps all data providers running
+phpunit --filter testA (bare string that may match a data set name) keeps all data providers running
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = '--filter';
-$_SERVER['argv'][] = 'foo}#0';
+$_SERVER['argv'][] = 'testA';
 $_SERVER['argv'][] = __DIR__ . '/../../_files/DataProviderSkipWhenFilteredTest.php';
 
 require_once __DIR__ . '/../../../bootstrap.php';
@@ -25,8 +25,20 @@ Data Provider Method Finished for PHPUnit\TestFixture\DataProviderSkipWhenFilter
 Test Suite Loaded (4 tests)
 Test Runner Started
 Test Suite Sorted
-Test Suite Filtered (0 tests)
-Test Runner Execution Started (0 tests)
+Test Suite Filtered (2 tests)
+Test Runner Execution Started (2 tests)
+Test Suite Started (PHPUnit\TestFixture\DataProviderSkipWhenFilteredTest, 2 tests)
+Test Suite Started (PHPUnit\TestFixture\DataProviderSkipWhenFilteredTest::testA, 2 tests)
+Test Preparation Started (PHPUnit\TestFixture\DataProviderSkipWhenFilteredTest::testA#0)
+Test Prepared (PHPUnit\TestFixture\DataProviderSkipWhenFilteredTest::testA#0)
+Test Passed (PHPUnit\TestFixture\DataProviderSkipWhenFilteredTest::testA#0)
+Test Finished (PHPUnit\TestFixture\DataProviderSkipWhenFilteredTest::testA#0)
+Test Preparation Started (PHPUnit\TestFixture\DataProviderSkipWhenFilteredTest::testA#1)
+Test Prepared (PHPUnit\TestFixture\DataProviderSkipWhenFilteredTest::testA#1)
+Test Passed (PHPUnit\TestFixture\DataProviderSkipWhenFilteredTest::testA#1)
+Test Finished (PHPUnit\TestFixture\DataProviderSkipWhenFilteredTest::testA#1)
+Test Suite Finished (PHPUnit\TestFixture\DataProviderSkipWhenFilteredTest::testA, 2 tests)
+Test Suite Finished (PHPUnit\TestFixture\DataProviderSkipWhenFilteredTest, 2 tests)
 Test Runner Execution Finished
 Test Runner Finished
-PHPUnit Finished (Shell Exit Code: 1)
+PHPUnit Finished (Shell Exit Code: 0)
