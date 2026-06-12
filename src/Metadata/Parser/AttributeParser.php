@@ -908,6 +908,32 @@ final readonly class AttributeParser implements Parser
                 case Repeat::class:
                     assert($attributeInstance instanceof Repeat);
 
+                    if ($attributeInstance->times() < 1) {
+                        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                            sprintf(
+                                'Method %s::%s is annotated with #[Repeat] but %d is not a positive integer for the number of repetitions and will not be repeated',
+                                $className,
+                                $methodName,
+                                $attributeInstance->times(),
+                            ),
+                        );
+
+                        break;
+                    }
+
+                    if ($attributeInstance->failureThreshold() < 1) {
+                        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                            sprintf(
+                                'Method %s::%s is annotated with #[Repeat] but %d is not a positive integer for the failure threshold and will not be repeated',
+                                $className,
+                                $methodName,
+                                $attributeInstance->failureThreshold(),
+                            ),
+                        );
+
+                        break;
+                    }
+
                     $result[] = Metadata::repeat(
                         $attributeInstance->times(),
                         $attributeInstance->failureThreshold(),
