@@ -411,6 +411,16 @@ final readonly class MetadataCollection implements Countable, IteratorAggregate
         );
     }
 
+    public function isRetry(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isRetry(),
+            ),
+        );
+    }
+
     public function isRunInSeparateProcess(): self
     {
         return new self(

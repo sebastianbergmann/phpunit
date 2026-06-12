@@ -503,6 +503,14 @@ abstract readonly class Metadata
         return new Repeat(Level::METHOD_LEVEL, $times, $failureThreshold);
     }
 
+    /**
+     * @param positive-int $maxAttempts
+     */
+    public static function retry(int $maxAttempts): Retry
+    {
+        return new Retry(Level::METHOD_LEVEL, $maxAttempts);
+    }
+
     public static function runInSeparateProcess(): RunInSeparateProcess
     {
         return new RunInSeparateProcess(Level::METHOD_LEVEL);
@@ -853,6 +861,14 @@ abstract readonly class Metadata
      * @phpstan-assert-if-true Repeat $this
      */
     public function isRepeat(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true Retry $this
+     */
+    public function isRetry(): bool
     {
         return false;
     }
