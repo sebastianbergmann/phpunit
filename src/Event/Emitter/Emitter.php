@@ -155,6 +155,10 @@ interface Emitter
 
     public function testFailed(Code\Test $test, Throwable $throwable, ?ComparisonFailure $comparisonFailure): void;
 
+    public function testAttemptErrored(Code\Test $test, Throwable $throwable): void;
+
+    public function testAttemptFailed(Code\Test $test, Throwable $throwable, ?ComparisonFailure $comparisonFailure): void;
+
     public function testPassed(Code\Test $test): void;
 
     /**
