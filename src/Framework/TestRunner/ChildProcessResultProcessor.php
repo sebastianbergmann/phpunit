@@ -26,6 +26,7 @@ use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
 use PHPUnit\TestRunner\TestResult\PassedTests;
@@ -70,6 +71,8 @@ final readonly class ChildProcessResultProcessor
 
             assert($test instanceof TestCase);
 
+            $test->setStatus(TestStatus::error($exception->getMessage()));
+
             $this->emitter->testErrored(
                 TestMethodBuilder::fromTestCase($test),
                 ThrowableBuilder::from($exception),
@@ -90,6 +93,8 @@ final readonly class ChildProcessResultProcessor
                 );
 
                 assert($test instanceof TestCase);
+
+                $test->setStatus(TestStatus::error($exception->getMessage()));
 
                 $this->emitter->testErrored(
                     TestMethodBuilder::fromTestCase($test),
@@ -113,9 +118,11 @@ final readonly class ChildProcessResultProcessor
             !property_exists($childResult, 'events') ||
             !property_exists($childResult, 'passedTests') ||
             !property_exists($childResult, 'testResult') ||
+            !property_exists($childResult, 'status') ||
             !property_exists($childResult, 'numAssertions') ||
             !$childResult->events instanceof EventCollection ||
             !$childResult->passedTests instanceof PassedTests ||
+            !$childResult->status instanceof TestStatus ||
             !is_int($childResult->numAssertions) ||
             $childResult->numAssertions < 0) {
             $this->emitter->childProcessErrored();
@@ -123,6 +130,8 @@ final readonly class ChildProcessResultProcessor
             $exception = new AssertionFailedError('Test was run in child process and ended unexpectedly');
 
             assert($test instanceof TestCase);
+
+            $test->setStatus(TestStatus::error($exception->getMessage()));
 
             $this->emitter->testErrored(
                 TestMethodBuilder::fromTestCase($test),
@@ -143,6 +152,7 @@ final readonly class ChildProcessResultProcessor
         assert($test instanceof TestCase);
 
         $test->setResult($childResult->testResult);
+        $test->setStatus($childResult->status);
         $test->addToAssertionCount($childResult->numAssertions);
 
         if (!$this->codeCoverage->isActive()) {

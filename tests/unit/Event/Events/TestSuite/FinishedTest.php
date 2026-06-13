@@ -10,6 +10,7 @@
 namespace PHPUnit\Event\TestSuite;
 
 use PHPUnit\Event\AbstractEventTestCase;
+use PHPUnit\Event\Code\TestCollection;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
@@ -42,5 +43,48 @@ final class FinishedTest extends AbstractEventTestCase
         );
 
         $this->assertSame('Test Suite Finished (foo, 9001 tests)', $event->asString());
+    }
+
+    public function testCanBeRepresentedAsStringForTestSuiteForTestMethodWithDataProvider(): void
+    {
+        $event = new Finished(
+            $this->telemetryInfo(),
+            new TestSuiteForTestMethodWithDataProvider(
+                'PHPUnit\TestFixture\ExampleTest::testSomething',
+                2,
+                TestCollection::fromArray([]),
+                'PHPUnit\TestFixture\ExampleTest',
+                'testSomething',
+                'ExampleTest.php',
+                10,
+            ),
+        );
+
+        $this->assertSame(
+            'Test Suite for Test Method with Data Provider Finished (PHPUnit\TestFixture\ExampleTest::testSomething, 2 data sets)',
+            $event->asString(),
+        );
+    }
+
+    public function testCanBeRepresentedAsStringForTestSuiteForRepeatedTestMethod(): void
+    {
+        $event = new Finished(
+            $this->telemetryInfo(),
+            new TestSuiteForRepeatedTestMethod(
+                'PHPUnit\TestFixture\ExampleTest::testSomething',
+                3,
+                TestCollection::fromArray([]),
+                'PHPUnit\TestFixture\ExampleTest',
+                'testSomething',
+                'ExampleTest.php',
+                10,
+                false,
+            ),
+        );
+
+        $this->assertSame(
+            'Test Suite for Repeated Test Method Finished (PHPUnit\TestFixture\ExampleTest::testSomething, 3 repetitions)',
+            $event->asString(),
+        );
     }
 }

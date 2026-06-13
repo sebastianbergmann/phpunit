@@ -192,6 +192,10 @@ final class NamePrettifier
             $key .= '#' . $test->dataName();
         }
 
+        if ($test->totalRepetitions() > 1) {
+            $key .= '#' . $test->repetition();
+        }
+
         if ($colorize) {
             $key .= '#colorize';
         }
@@ -225,6 +229,10 @@ final class NamePrettifier
             $result .= $this->prettifyDataSet($test, $colorize);
         }
 
+        if ($test->totalRepetitions() > 1) {
+            $result .= $this->prettifyRepetition($test, $colorize);
+        }
+
         $this->prettifiedTestCases[$key] = $result;
 
         return $result;
@@ -246,6 +254,21 @@ final class NamePrettifier
                 Sanitizer::sanitizeBidirectionalControlCharacters($test->dataName()),
             ),
         );
+    }
+
+    private function prettifyRepetition(TestCase $test, bool $colorize): string
+    {
+        $buffer = sprintf(
+            ' (repetition %d of %d)',
+            $test->repetition(),
+            $test->totalRepetitions(),
+        );
+
+        if ($colorize) {
+            return Color::dim($buffer);
+        }
+
+        return $buffer;
     }
 
     /**

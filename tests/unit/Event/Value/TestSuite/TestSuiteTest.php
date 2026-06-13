@@ -61,6 +61,7 @@ final class TestSuiteTest extends TestCase
 
         $this->assertFalse($testSuite->isForTestClass());
         $this->assertTrue($testSuite->isForTestMethodWithDataProvider());
+        $this->assertFalse($testSuite->isForRepeatedTestMethod());
         $this->assertFalse($testSuite->isWithName());
 
         $this->assertSame($name, $testSuite->name());
@@ -70,6 +71,50 @@ final class TestSuiteTest extends TestCase
         $this->assertSame($tests, $testSuite->tests());
         $this->assertSame($file, $testSuite->file());
         $this->assertSame($line, $testSuite->line());
+    }
+
+    public function testCanBeTestSuiteForRepeatedTestMethod(): void
+    {
+        $name       = 'ExampleTest::testOne';
+        $className  = 'ExampleTest';
+        $methodName = 'testOne';
+        $size       = 0;
+        $tests      = TestCollection::fromArray([]);
+        $file       = 'ExampleTest.php';
+        $line       = 1;
+
+        $testSuite = new TestSuiteForRepeatedTestMethod($name, $size, $tests, $className, $methodName, $file, $line, false);
+
+        $this->assertFalse($testSuite->isForTestClass());
+        $this->assertFalse($testSuite->isForTestMethodWithDataProvider());
+        $this->assertTrue($testSuite->isForRepeatedTestMethod());
+        $this->assertFalse($testSuite->isWithName());
+
+        $this->assertSame($name, $testSuite->name());
+        $this->assertSame($className, $testSuite->className());
+        $this->assertSame($methodName, $testSuite->methodName());
+        $this->assertSame($size, $testSuite->count());
+        $this->assertSame($tests, $testSuite->tests());
+        $this->assertSame($file, $testSuite->file());
+        $this->assertSame($line, $testSuite->line());
+        $this->assertFalse($testSuite->isForDataSet());
+    }
+
+    public function testCanBeTestSuiteForRepeatedTestMethodWithDataSet(): void
+    {
+        $testSuite = new TestSuiteForRepeatedTestMethod(
+            'ExampleTest::testOne#0',
+            0,
+            TestCollection::fromArray([]),
+            'ExampleTest',
+            'testOne',
+            'ExampleTest.php',
+            1,
+            true,
+        );
+
+        $this->assertTrue($testSuite->isForRepeatedTestMethod());
+        $this->assertTrue($testSuite->isForDataSet());
     }
 
     public function testCanBeTestSuiteWithName(): void
