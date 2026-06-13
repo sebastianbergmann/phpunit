@@ -47,6 +47,14 @@ final readonly class Finished implements Event
      */
     public function asString(): string
     {
+        if ($this->testSuite->isForRetriedTestMethod()) {
+            return sprintf(
+                'Test Suite for Retried Test Method Finished (%s, up to %d attempts)',
+                $this->testSuite->name(),
+                $this->testSuite->maxAttempts(),
+            );
+        }
+
         $prefix = 'Test Suite Finished';
         $unit   = 'test';
 

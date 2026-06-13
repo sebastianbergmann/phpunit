@@ -47,6 +47,8 @@ final readonly class TestMethodBuilder
             self::dataFor($testCase),
             $testCase->repetition(),
             $testCase->totalRepetitions(),
+            $testCase->attempt(),
+            $testCase->maxAttempts(),
         );
     }
 

@@ -55,6 +55,78 @@ final class DeferringDispatcherTest extends TestCase
         $deferringDispatcher->flush();
     }
 
+    public function testCollectsEventsWhileCollectionIsActive(): void
+    {
+        $event = $this->createStub(Event::class);
+
+        $subscribableDispatcher = $this->createMock(SubscribableDispatcher::class);
+
+        $subscribableDispatcher
+            ->expects($this->never())
+            ->method('dispatch')
+            ->seal();
+
+        $deferringDispatcher = new DeferringDispatcher($subscribableDispatcher);
+
+        $deferringDispatcher->flush();
+
+        $deferringDispatcher->startCollectingEvents();
+
+        $deferringDispatcher->dispatch($event);
+
+        $events = $deferringDispatcher->stopCollectingEvents();
+
+        $this->assertCount(1, $events);
+        $this->assertSame($event, $events->asArray()[0]);
+    }
+
+    public function testCollectionTakesPrecedenceOverRecording(): void
+    {
+        $event = $this->createStub(Event::class);
+
+        $subscribableDispatcher = $this->createMock(SubscribableDispatcher::class);
+
+        $subscribableDispatcher
+            ->expects($this->never())
+            ->method('dispatch')
+            ->seal();
+
+        $deferringDispatcher = new DeferringDispatcher($subscribableDispatcher);
+
+        $deferringDispatcher->startCollectingEvents();
+
+        $deferringDispatcher->dispatch($event);
+
+        $events = $deferringDispatcher->stopCollectingEvents();
+
+        $this->assertCount(1, $events);
+        $this->assertSame($event, $events->asArray()[0]);
+
+        $deferringDispatcher->flush();
+    }
+
+    public function testDispatchesDirectlyAfterCollectionHasStopped(): void
+    {
+        $event = $this->createStub(Event::class);
+
+        $subscribableDispatcher = $this->createMock(SubscribableDispatcher::class);
+
+        $subscribableDispatcher
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with($this->identicalTo($event))
+            ->seal();
+
+        $deferringDispatcher = new DeferringDispatcher($subscribableDispatcher);
+
+        $deferringDispatcher->flush();
+
+        $deferringDispatcher->startCollectingEvents();
+        $deferringDispatcher->stopCollectingEvents();
+
+        $deferringDispatcher->dispatch($event);
+    }
+
     public function testSubscriberCanBeRegistered(): void
     {
         $subscriber = $this->createMock(DummySubscriber::class);

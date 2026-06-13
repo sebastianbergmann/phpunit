@@ -580,6 +580,14 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isRepeat());
     }
 
+    public function test_Can_be_filtered_for_Retry(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isRetry();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isRetry());
+    }
+
     public function test_Can_be_filtered_for_WithoutErrorHandler(): void
     {
         $collection = $this->collectionWithOneOfEach()->isWithoutErrorHandler();
@@ -660,6 +668,7 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::usesFunction(''),
                 Metadata::usesMethod('', ''),
                 Metadata::repeat(3, 1),
+                Metadata::retry(3),
                 Metadata::withEnvironmentVariableOnClass('foo', 'bar'),
                 Metadata::withoutErrorHandler(),
             ],

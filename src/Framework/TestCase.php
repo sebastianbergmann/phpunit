@@ -177,6 +177,16 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private int $totalRepetitions = 1;
 
     /**
+     * @var positive-int
+     */
+    private int $attempt = 1;
+
+    /**
+     * @var positive-int
+     */
+    private int $maxAttempts = 1;
+
+    /**
      * @param non-empty-string $name
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
@@ -991,6 +1001,38 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         $this->repetition       = $repetition;
         $this->totalRepetitions = $totalRepetitions;
+    }
+
+    /**
+     * @return positive-int
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    final public function attempt(): int
+    {
+        return $this->attempt;
+    }
+
+    /**
+     * @return positive-int
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    final public function maxAttempts(): int
+    {
+        return $this->maxAttempts;
+    }
+
+    /**
+     * @param positive-int $attempt
+     * @param positive-int $maxAttempts
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    final public function setAttempt(int $attempt, int $maxAttempts): void
+    {
+        $this->attempt     = $attempt;
+        $this->maxAttempts = $maxAttempts;
     }
 
     /**

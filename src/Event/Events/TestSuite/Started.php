@@ -47,6 +47,14 @@ final readonly class Started implements Event
      */
     public function asString(): string
     {
+        if ($this->testSuite->isForRetriedTestMethod()) {
+            return sprintf(
+                'Test Suite for Retried Test Method Started (%s, up to %d attempts)',
+                $this->testSuite->name(),
+                $this->testSuite->maxAttempts(),
+            );
+        }
+
         $prefix = 'Test Suite Started';
         $unit   = 'test';
 
