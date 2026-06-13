@@ -14,7 +14,7 @@ use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\DependsOnClass;
 use PHPUnit\Metadata\DependsOnMethod;
-use PHPUnit\Metadata\InvalidAttributeException;
+use PHPUnit\Metadata\InvalidAttribute;
 use PHPUnit\Metadata\RequiresEnvironmentVariable;
 use PHPUnit\Metadata\RequiresPhp;
 use PHPUnit\Metadata\RequiresPhpExtension;
@@ -1244,18 +1244,38 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertTrue($metadata->isEmpty());
     }
 
-    public function test_handles_ReflectionException_raised_when_instantiating_attribute_on_class(): void
+    public function testRecordsInvalidAttributeMetadataWhenAttributeCannotBeInstantiatedOnClass(): void
     {
-        $this->expectException(InvalidAttributeException::class);
+        $metadata = $this->parser()->forClass(DuplicateSmallAttributeTest::class)->isInvalidAttribute();
 
-        $this->parser()->forClass(DuplicateSmallAttributeTest::class);
+        $this->assertTrue($metadata->isNotEmpty());
+
+        $invalidAttribute = $metadata->asArray()[0];
+
+        assert($invalidAttribute instanceof InvalidAttribute);
+
+        $this->assertTrue($invalidAttribute->isInvalidAttribute());
+        $this->assertStringContainsString(
+            'Invalid attribute PHPUnit\Framework\Attributes\Small for class ' . DuplicateSmallAttributeTest::class,
+            $invalidAttribute->message(),
+        );
     }
 
-    public function test_handles_ReflectionException_raised_when_instantiating_attribute_on_method(): void
+    public function testRecordsInvalidAttributeMetadataWhenAttributeCannotBeInstantiatedOnMethod(): void
     {
-        $this->expectException(InvalidAttributeException::class);
+        $metadata = $this->parser()->forMethod(DuplicateTestAttributeTest::class, 'testOne')->isInvalidAttribute();
 
-        $this->parser()->forMethod(DuplicateTestAttributeTest::class, 'testOne');
+        $this->assertTrue($metadata->isNotEmpty());
+
+        $invalidAttribute = $metadata->asArray()[0];
+
+        assert($invalidAttribute instanceof InvalidAttribute);
+
+        $this->assertTrue($invalidAttribute->isInvalidAttribute());
+        $this->assertStringContainsString(
+            'Invalid attribute PHPUnit\Framework\Attributes\Test for method ' . DuplicateTestAttributeTest::class . '::testOne()',
+            $invalidAttribute->message(),
+        );
     }
 
     abstract protected function parser(): Parser;

@@ -75,7 +75,7 @@ use PHPUnit\Framework\Attributes\UsesTrait;
 use PHPUnit\Framework\Attributes\WithEnvironmentVariable;
 use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 use PHPUnit\Metadata\DisableReturnValueGenerationForTestDoubles;
-use PHPUnit\Metadata\InvalidAttributeException;
+use PHPUnit\Metadata\InvalidAttribute;
 
 #[CoversClass(AttributeParser::class)]
 #[CoversClass(AllowMockObjectsWithoutExpectations::class)]
@@ -109,7 +109,7 @@ use PHPUnit\Metadata\InvalidAttributeException;
 #[CoversClass(ExcludeGlobalVariableFromBackup::class)]
 #[CoversClass(ExcludeStaticPropertyFromBackup::class)]
 #[CoversClass(Group::class)]
-#[CoversClass(InvalidAttributeException::class)]
+#[CoversClass(InvalidAttribute::class)]
 #[CoversClass(Large::class)]
 #[CoversClass(Medium::class)]
 #[CoversClass(PostCondition::class)]

@@ -35,7 +35,9 @@ use PHPUnit\Metadata\Api\Dependencies;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\HookMethods;
 use PHPUnit\Metadata\Api\Requirements;
+use PHPUnit\Metadata\InvalidAttribute;
 use PHPUnit\Metadata\MetadataCollection;
+use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\Exception as RunnerException;
 use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
@@ -519,16 +521,16 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
         $className  = $class->getName();
         $methodName = $method->getName();
 
-        $invalidVersionRequirements = (new Requirements)->invalidVersionRequirementsFor($className, $methodName);
+        $metadataErrors = $this->metadataErrorsFor($className, $methodName);
 
-        if ($invalidVersionRequirements !== []) {
+        if ($metadataErrors !== []) {
             $file = $method->getFileName();
             $line = $method->getStartLine();
 
             assert($file !== false && $file !== '');
             assert($line !== false);
 
-            foreach ($invalidVersionRequirements as $message) {
+            foreach ($metadataErrors as $message) {
                 Event\Facade::emitter()->testTriggeredPhpunitError(
                     new TestMethod(
                         $className,
@@ -607,6 +609,25 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                 (new Groups)->groups($class->getName(), $methodName),
             ),
         );
+    }
+
+    /**
+     * @param class-string     $className
+     * @param non-empty-string $methodName
+     *
+     * @return list<non-empty-string>
+     */
+    private function metadataErrorsFor(string $className, string $methodName): array
+    {
+        $errors = (new Requirements)->invalidVersionRequirementsFor($className, $methodName);
+
+        foreach (MetadataRegistry::parser()->forClassAndMethod($className, $methodName)->isInvalidAttribute() as $metadata) {
+            assert($metadata instanceof InvalidAttribute);
+
+            $errors[] = $metadata->message();
+        }
+
+        return $errors;
     }
 
     private function clearCaches(): void

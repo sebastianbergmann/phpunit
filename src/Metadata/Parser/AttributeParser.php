@@ -10,6 +10,7 @@
 namespace PHPUnit\Metadata\Parser;
 
 use const JSON_THROW_ON_ERROR;
+use const PHP_EOL;
 use function assert;
 use function class_exists;
 use function is_numeric;
@@ -90,7 +91,6 @@ use PHPUnit\Framework\Attributes\UsesNamespace;
 use PHPUnit\Framework\Attributes\UsesTrait;
 use PHPUnit\Framework\Attributes\WithEnvironmentVariable;
 use PHPUnit\Framework\Attributes\WithoutErrorHandler;
-use PHPUnit\Metadata\InvalidAttributeException;
 use PHPUnit\Metadata\InvalidVersionRequirementException;
 use PHPUnit\Metadata\Metadata;
 use PHPUnit\Metadata\MetadataCollection;
@@ -140,13 +140,17 @@ final readonly class AttributeParser implements Parser
                 assert($line !== false);
                 assert($message !== '');
 
-                throw new InvalidAttributeException(
-                    $attribute->getName(),
-                    'class ' . $className,
-                    $file,
-                    $line,
-                    $message,
+                $result[] = Metadata::invalidAttributeOnClass(
+                    $this->invalidAttributeMessage(
+                        $attribute->getName(),
+                        'class ' . $className,
+                        $file,
+                        $line,
+                        $message,
+                    ),
                 );
+
+                continue;
             }
 
             switch ($attribute->getName()) {
@@ -559,13 +563,17 @@ final readonly class AttributeParser implements Parser
                 assert($line !== false);
                 assert($message !== '');
 
-                throw new InvalidAttributeException(
-                    $attribute->getName(),
-                    'method ' . $className . '::' . $methodName . '()',
-                    $file,
-                    $line,
-                    $message,
+                $result[] = Metadata::invalidAttributeOnMethod(
+                    $this->invalidAttributeMessage(
+                        $attribute->getName(),
+                        'method ' . $className . '::' . $methodName . '()',
+                        $file,
+                        $line,
+                        $message,
+                    ),
                 );
+
+                continue;
             }
 
             switch ($attribute->getName()) {
@@ -1035,6 +1043,28 @@ final readonly class AttributeParser implements Parser
                 ),
             );
         }
+    }
+
+    /**
+     * @param non-empty-string $attributeName
+     * @param non-empty-string $target
+     * @param non-empty-string $file
+     * @param positive-int     $line
+     * @param non-empty-string $message
+     *
+     * @return non-empty-string
+     */
+    private function invalidAttributeMessage(string $attributeName, string $target, string $file, int $line, string $message): string
+    {
+        return sprintf(
+            'Invalid attribute %s for %s in %s:%d%s%s',
+            $attributeName,
+            $target,
+            $file,
+            $line,
+            PHP_EOL,
+            $message,
+        );
     }
 
     /**

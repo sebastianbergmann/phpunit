@@ -280,6 +280,22 @@ abstract readonly class Metadata
     }
 
     /**
+     * @param non-empty-string $message
+     */
+    public static function invalidAttributeOnClass(string $message): InvalidAttribute
+    {
+        return new InvalidAttribute(Level::CLASS_LEVEL, $message);
+    }
+
+    /**
+     * @param non-empty-string $message
+     */
+    public static function invalidAttributeOnMethod(string $message): InvalidAttribute
+    {
+        return new InvalidAttribute(Level::METHOD_LEVEL, $message);
+    }
+
+    /**
      * @param non-negative-int $priority
      */
     public static function postCondition(int $priority): PostCondition
@@ -816,6 +832,14 @@ abstract readonly class Metadata
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public function isIgnorePhpunitDeprecations(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true InvalidAttribute $this
+     */
+    public function isInvalidAttribute(): bool
     {
         return false;
     }
