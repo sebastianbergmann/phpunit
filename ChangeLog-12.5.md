@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 
 ### Fixed
 
+* [#6743](https://github.com/sebastianbergmann/phpunit/issues/6743): Improve error message for invalid version constraint in attribute
 * Class, method, and data-set names in TestDox HTML report are not escaped
 
 ## [12.5.29] - 2026-06-04
