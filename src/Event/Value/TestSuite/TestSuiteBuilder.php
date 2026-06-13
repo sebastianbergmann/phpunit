@@ -168,12 +168,6 @@ final readonly class TestSuiteBuilder
                 continue;
             }
 
-            if ($test instanceof RepeatTestSuite) {
-                $tests[] = $test->valueObjectForEvents();
-
-                continue;
-            }
-
             if ($test instanceof TestCase || $test instanceof PhptTestCase) {
                 $tests[] = $test->valueObjectForEvents();
             }
