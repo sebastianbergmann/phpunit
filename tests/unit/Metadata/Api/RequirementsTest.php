@@ -15,6 +15,7 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\RequirementsEnvironmentVariableTest;
+use PHPUnit\TestFixture\RequirementsWithInvalidVersionConstraintTest;
 
 #[CoversClass(Requirements::class)]
 #[Small]
@@ -161,6 +162,44 @@ final class RequirementsTest extends TestCase
                 'Environment variable "BAZ" is required.',
             ],
             (new Requirements)->requirementsNotSatisfiedFor(RequirementsEnvironmentVariableTest::class, 'testRequiresEnvironmentVariable'),
+        );
+    }
+
+    public function testReportsInvalidVersionRequirementOnRequiresPhp(): void
+    {
+        $this->assertSame(
+            [
+                'Test method PHPUnit\TestFixture\RequirementsWithInvalidVersionConstraintTest::testRequiresPhp has attribute with invalid version constraint argument ("invalid-version")',
+            ],
+            (new Requirements)->invalidVersionRequirementsFor(RequirementsWithInvalidVersionConstraintTest::class, 'testRequiresPhp'),
+        );
+    }
+
+    public function testReportsInvalidVersionRequirementOnRequiresPhpunit(): void
+    {
+        $this->assertSame(
+            [
+                'Test method PHPUnit\TestFixture\RequirementsWithInvalidVersionConstraintTest::testRequiresPhpunit has attribute with invalid version constraint argument ("invalid-version")',
+            ],
+            (new Requirements)->invalidVersionRequirementsFor(RequirementsWithInvalidVersionConstraintTest::class, 'testRequiresPhpunit'),
+        );
+    }
+
+    public function testReportsInvalidVersionRequirementOnRequiresPhpExtension(): void
+    {
+        $this->assertSame(
+            [
+                'Test method PHPUnit\TestFixture\RequirementsWithInvalidVersionConstraintTest::testRequiresPhpExtension has attribute with invalid version constraint argument ("invalid-version")',
+            ],
+            (new Requirements)->invalidVersionRequirementsFor(RequirementsWithInvalidVersionConstraintTest::class, 'testRequiresPhpExtension'),
+        );
+    }
+
+    public function testReportsNoInvalidVersionRequirementWhenConstraintIsValid(): void
+    {
+        $this->assertSame(
+            [],
+            (new Requirements)->invalidVersionRequirementsFor(RequirementsWithInvalidVersionConstraintTest::class, 'testWithoutVersionConstraint'),
         );
     }
 }

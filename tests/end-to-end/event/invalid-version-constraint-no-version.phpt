@@ -10,9 +10,21 @@ require __DIR__ . '/../../bootstrap.php';
 
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
-An error occurred inside PHPUnit.
+PHPUnit %s by Sebastian Bergmann and contributors.
 
-Message:  Test method PHPUnit\TestFixture\Event\InvalidVersionConstraintNoVersionTest::testOne has attribute with invalid version constraint argument ("invalid-version")
-Location: %s%eAttributeParser.php:%d
+Runtime:       PHP %s
 
-%a
+There was 1 PHPUnit error:
+
+1) PHPUnit\TestFixture\Event\InvalidVersionConstraintNoVersionTest::testOne
+Test method PHPUnit\TestFixture\Event\InvalidVersionConstraintNoVersionTest::testOne has attribute with invalid version constraint argument ("invalid-version")
+
+%sInvalidVersionConstraintNoVersionTest.php:18
+
+--
+
+There was 1 PHPUnit test runner warning:
+
+1) No tests found in class "PHPUnit\TestFixture\Event\InvalidVersionConstraintNoVersionTest".
+
+No tests executed!

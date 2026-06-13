@@ -94,6 +94,7 @@ use PHPUnit\Metadata\InvalidAttributeException;
 use PHPUnit\Metadata\InvalidVersionRequirementException;
 use PHPUnit\Metadata\Metadata;
 use PHPUnit\Metadata\MetadataCollection;
+use PHPUnit\Metadata\Version\InvalidVersionRequirement;
 use PHPUnit\Metadata\Version\Requirement;
 use ReflectionClass;
 use ReflectionMethod;
@@ -1026,7 +1027,7 @@ final readonly class AttributeParser implements Parser
         try {
             return Requirement::from($versionRequirement);
         } catch (InvalidVersionRequirementException) {
-            throw new InvalidVersionRequirementException(
+            return new InvalidVersionRequirement(
                 sprintf(
                     'Test %s has attribute with invalid version constraint argument ("%s")',
                     $this->testAsString($testClassName, $testMethodName),

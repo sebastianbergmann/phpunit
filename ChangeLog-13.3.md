@@ -12,6 +12,7 @@ All notable changes of the PHPUnit 13.3 release series are documented in this fi
 
 ### Changed
 
+* The test runner no longer crashes on invalid version constraints used in attributes
 * Improved TestDox HTML report
 
 [13.3.0]: https://github.com/sebastianbergmann/phpunit/compare/13.2...main

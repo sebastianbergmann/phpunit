@@ -38,6 +38,7 @@ use PHPUnit\Metadata\RequiresPhpunit;
 use PHPUnit\Metadata\RequiresPhpunitExtension;
 use PHPUnit\Metadata\RequiresSetting;
 use PHPUnit\Metadata\Version\ComparisonRequirement;
+use PHPUnit\Metadata\Version\InvalidVersionRequirement;
 use PHPUnit\Metadata\Version\Requirement;
 use PHPUnit\Runner\Version;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
@@ -212,6 +213,43 @@ final readonly class Requirements
         }
 
         return $notSatisfied;
+    }
+
+    /**
+     * @param class-string     $className
+     * @param non-empty-string $methodName
+     *
+     * @return list<non-empty-string>
+     */
+    public function invalidVersionRequirementsFor(string $className, string $methodName): array
+    {
+        $invalid = [];
+
+        foreach (Registry::parser()->forClassAndMethod($className, $methodName) as $metadata) {
+            $versionRequirement = null;
+
+            if ($metadata->isRequiresPhp()) {
+                assert($metadata instanceof RequiresPhp);
+
+                $versionRequirement = $metadata->versionRequirement();
+            } elseif ($metadata->isRequiresPhpunit()) {
+                assert($metadata instanceof RequiresPhpunit);
+
+                $versionRequirement = $metadata->versionRequirement();
+            } elseif ($metadata->isRequiresPhpExtension()) {
+                assert($metadata instanceof RequiresPhpExtension);
+
+                if ($metadata->hasVersionRequirement()) {
+                    $versionRequirement = $metadata->versionRequirement();
+                }
+            }
+
+            if ($versionRequirement instanceof InvalidVersionRequirement) {
+                $invalid[] = $versionRequirement->asString();
+            }
+        }
+
+        return $invalid;
     }
 
     /**

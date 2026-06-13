@@ -519,6 +519,36 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
         $className  = $class->getName();
         $methodName = $method->getName();
 
+        $invalidVersionRequirements = (new Requirements)->invalidVersionRequirementsFor($className, $methodName);
+
+        if ($invalidVersionRequirements !== []) {
+            $file = $method->getFileName();
+            $line = $method->getStartLine();
+
+            assert($file !== false && $file !== '');
+            assert($line !== false);
+
+            foreach ($invalidVersionRequirements as $message) {
+                Event\Facade::emitter()->testTriggeredPhpunitError(
+                    new TestMethod(
+                        $className,
+                        $methodName,
+                        $file,
+                        $line,
+                        Event\Code\TestDoxBuilder::fromClassNameAndMethodName(
+                            $className,
+                            $methodName,
+                        ),
+                        MetadataCollection::fromArray([]),
+                        Event\TestData\TestDataCollection::fromArray([]),
+                    ),
+                    $message,
+                );
+            }
+
+            return;
+        }
+
         try {
             $test = (new TestBuilder)->build($class, $methodName, $groups);
         } catch (InvalidDataProviderException $e) {
