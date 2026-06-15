@@ -2,13 +2,13 @@
 
 All notable changes of the PHPUnit 13.2 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
-## [13.2.1] - 2026-MM-DD
+## [13.2.1] - 2026-06-15
 
 ### Fixed
 
 * [#6741](https://github.com/sebastianbergmann/phpunit/issues/6741): Test is not run when `--filter` matches the name of a data set but not the name of the test method
 * [#6743](https://github.com/sebastianbergmann/phpunit/issues/6743): Improve error message for invalid version constraint in attribute
-* [#6744](https://github.com/sebastianbergmann/phpunit/issues/6744): Environment-variable attributes reject empty-string values since PHPUnit 13.2.0
+* [#6744](https://github.com/sebastianbergmann/phpunit/issues/6744): Environment variable attributes reject empty-string values since PHPUnit 13.2.0
 
 ## [13.2.0] - 2026-06-05
 
@@ -71,5 +71,5 @@ All notable changes of the PHPUnit 13.2 release series are documented in this fi
 * [#5851](https://github.com/sebastianbergmann/phpunit/issues/5851): Output buffer manipulation in tests causes incorrect capture, hangs, and silent failures
 * [#6582](https://github.com/sebastianbergmann/phpunit/issues/6582): `TestSuiteSorter::cmpSize()` does not handle `TestSuite` objects for `TestCase` classes
 
-[13.2.1]: https://github.com/sebastianbergmann/phpunit/compare/13.2.0...13.2
+[13.2.1]: https://github.com/sebastianbergmann/phpunit/compare/13.2.0...13.2.1
 [13.2.0]: https://github.com/sebastianbergmann/phpunit/compare/13.1.14...13.2.0
