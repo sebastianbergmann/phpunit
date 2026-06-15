@@ -21,14 +21,10 @@ final readonly class WithEnvironmentVariable extends Metadata
      */
     private string $environmentVariableName;
 
-    /**
-     * @var ?non-empty-string
-     */
     private null|string $value;
 
     /**
-     * @param non-empty-string  $environmentVariableName
-     * @param ?non-empty-string $value
+     * @param non-empty-string $environmentVariableName
      */
     protected function __construct(Level $level, string $environmentVariableName, null|string $value)
     {
@@ -51,9 +47,6 @@ final readonly class WithEnvironmentVariable extends Metadata
         return $this->environmentVariableName;
     }
 
-    /**
-     * @return ?non-empty-string
-     */
     public function value(): null|string
     {
         return $this->value;
