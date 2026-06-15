@@ -20,7 +20,6 @@ final readonly class WithEnvironmentVariable extends Metadata
      * @var non-empty-string
      */
     private string $environmentVariableName;
-
     private null|string $value;
 
     /**

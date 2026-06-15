@@ -23,7 +23,6 @@ final readonly class WithEnvironmentVariable
      * @var non-empty-string
      */
     private string $environmentVariableName;
-
     private null|string $value;
 
     /**
