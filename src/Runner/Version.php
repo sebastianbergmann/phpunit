@@ -35,7 +35,7 @@ final class Version
         }
 
         if (self::$version === '') {
-            self::$version = (new VersionId('12.5.29', dirname(__DIR__, 2)))->asString();
+            self::$version = (new VersionId('12.5.30', dirname(__DIR__, 2)))->asString();
         }
 
         return self::$version;
