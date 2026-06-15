@@ -8,7 +8,7 @@ All notable changes of the PHPUnit 13.2 release series are documented in this fi
 
 * [#6741](https://github.com/sebastianbergmann/phpunit/issues/6741): Test is not run when `--filter` matches the name of a data set but not the name of the test method
 * [#6743](https://github.com/sebastianbergmann/phpunit/issues/6743): Improve error message for invalid version constraint in attribute
-* Class, method, and data-set names in TestDox HTML report are not escaped
+* [#6744](https://github.com/sebastianbergmann/phpunit/issues/6744): Environment-variable attributes reject empty-string values since PHPUnit 13.2.0
 
 ## [13.2.0] - 2026-06-05
 

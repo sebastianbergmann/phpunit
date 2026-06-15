@@ -424,8 +424,7 @@ abstract readonly class Metadata
     }
 
     /**
-     * @param non-empty-string  $environmentVariableName
-     * @param ?non-empty-string $value
+     * @param non-empty-string $environmentVariableName
      */
     public static function requiresEnvironmentVariableOnClass(string $environmentVariableName, null|string $value): RequiresEnvironmentVariable
     {
@@ -433,8 +432,7 @@ abstract readonly class Metadata
     }
 
     /**
-     * @param non-empty-string  $environmentVariableName
-     * @param ?non-empty-string $value
+     * @param non-empty-string $environmentVariableName
      */
     public static function requiresEnvironmentVariableOnMethod(string $environmentVariableName, null|string $value): RequiresEnvironmentVariable
     {
@@ -442,8 +440,7 @@ abstract readonly class Metadata
     }
 
     /**
-     * @param non-empty-string  $environmentVariableName
-     * @param ?non-empty-string $value
+     * @param non-empty-string $environmentVariableName
      */
     public static function withEnvironmentVariableOnClass(string $environmentVariableName, null|string $value): WithEnvironmentVariable
     {
@@ -451,8 +448,7 @@ abstract readonly class Metadata
     }
 
     /**
-     * @param non-empty-string  $environmentVariableName
-     * @param ?non-empty-string $value
+     * @param non-empty-string $environmentVariableName
      */
     public static function withEnvironmentVariableOnMethod(string $environmentVariableName, null|string $value): WithEnvironmentVariable
     {

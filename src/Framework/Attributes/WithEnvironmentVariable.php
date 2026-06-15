@@ -24,14 +24,10 @@ final readonly class WithEnvironmentVariable
      */
     private string $environmentVariableName;
 
-    /**
-     * @var ?non-empty-string
-     */
     private null|string $value;
 
     /**
-     * @param non-empty-string  $environmentVariableName
-     * @param ?non-empty-string $value
+     * @param non-empty-string $environmentVariableName
      */
     public function __construct(string $environmentVariableName, null|string $value = null)
     {
@@ -47,9 +43,6 @@ final readonly class WithEnvironmentVariable
         return $this->environmentVariableName;
     }
 
-    /**
-     * @return ?non-empty-string
-     */
     public function value(): null|string
     {
         return $this->value;
