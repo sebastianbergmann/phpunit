@@ -151,6 +151,8 @@
                                        running tests in random order
   [32m--repeat [36m<N>[0m                        [0m Run each test N times, stopping at the
                                        first failure
+  [32m--retry [36m<N>[0m                         [0m Attempt each test up to N times,
+                                       stopping at the first success
   [32m--reverse-order                     [0m Alias for "--order-by reverse"
 
 [33mReporting:[0m

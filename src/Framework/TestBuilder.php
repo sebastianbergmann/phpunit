@@ -50,10 +50,11 @@ final readonly class TestBuilder
      * @param list<non-empty-string>    $groups
      * @param positive-int              $numberOfRuns
      * @param positive-int              $failureThreshold
+     * @param positive-int              $maxAttempts
      *
      * @throws InvalidDataProviderException
      */
-    public function build(ReflectionClass $theClass, string $methodName, array $groups = [], int $numberOfRuns = 1, int $failureThreshold = 1): Test
+    public function build(ReflectionClass $theClass, string $methodName, array $groups = [], int $numberOfRuns = 1, int $failureThreshold = 1, int $maxAttempts = 1): Test
     {
         $className                = $theClass->getName();
         $runTestInSeparateProcess = $this->shouldTestMethodBeRunInSeparateProcess($className, $methodName);
@@ -69,6 +70,9 @@ final readonly class TestBuilder
 
             $numberOfRuns     = $metadata->times();
             $failureThreshold = $metadata->failureThreshold();
+
+            // a method-level #[Repeat] attribute takes precedence over the --retry CLI option
+            $maxAttempts = 1;
 
             if (!$this->hasVoidReturnType($theClass->getMethod($methodName))) {
                 EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
@@ -92,7 +96,6 @@ final readonly class TestBuilder
         }
 
         $retryMetadata = MetadataRegistry::parser()->forMethod($className, $methodName)->isRetry();
-        $maxAttempts   = 1;
 
         if ($retryMetadata->isNotEmpty()) {
             if ($repeatMetadata->isNotEmpty()) {
