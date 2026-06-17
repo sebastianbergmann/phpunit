@@ -138,6 +138,8 @@ final class SeparateProcessTestRunner
             'data'                           => $data,
             'dataName'                       => $dataName,
             'dependencyInput'                => $dependencyInput,
+            'repetition'                     => (string) $test->repetition(),
+            'totalRepetitions'               => (string) $test->totalRepetitions(),
             'constants'                      => $constants,
             'globals'                        => $globals,
             'include_path'                   => $includePath,

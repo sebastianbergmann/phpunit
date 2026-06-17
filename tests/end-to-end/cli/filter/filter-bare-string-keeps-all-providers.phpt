@@ -28,7 +28,7 @@ Test Suite Sorted
 Test Suite Filtered (2 tests)
 Test Runner Execution Started (2 tests)
 Test Suite Started (PHPUnit\TestFixture\DataProviderSkipWhenFilteredTest, 2 tests)
-Test Suite Started (PHPUnit\TestFixture\DataProviderSkipWhenFilteredTest::testA, 2 tests)
+Test Suite for Test Method with Data Provider Started (PHPUnit\TestFixture\DataProviderSkipWhenFilteredTest::testA, 2 data sets)
 Test Preparation Started (PHPUnit\TestFixture\DataProviderSkipWhenFilteredTest::testA#0)
 Test Prepared (PHPUnit\TestFixture\DataProviderSkipWhenFilteredTest::testA#0)
 Test Passed (PHPUnit\TestFixture\DataProviderSkipWhenFilteredTest::testA#0)
@@ -37,7 +37,7 @@ Test Preparation Started (PHPUnit\TestFixture\DataProviderSkipWhenFilteredTest::
 Test Prepared (PHPUnit\TestFixture\DataProviderSkipWhenFilteredTest::testA#1)
 Test Passed (PHPUnit\TestFixture\DataProviderSkipWhenFilteredTest::testA#1)
 Test Finished (PHPUnit\TestFixture\DataProviderSkipWhenFilteredTest::testA#1)
-Test Suite Finished (PHPUnit\TestFixture\DataProviderSkipWhenFilteredTest::testA, 2 tests)
+Test Suite for Test Method with Data Provider Finished (PHPUnit\TestFixture\DataProviderSkipWhenFilteredTest::testA, 2 data sets)
 Test Suite Finished (PHPUnit\TestFixture\DataProviderSkipWhenFilteredTest, 2 tests)
 Test Runner Execution Finished
 Test Runner Finished

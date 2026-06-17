@@ -40,23 +40,37 @@ final readonly class TestMethod extends Test
     private TestDataCollection $testData;
 
     /**
+     * @var positive-int
+     */
+    private int $repetition;
+
+    /**
+     * @var positive-int
+     */
+    private int $totalRepetitions;
+
+    /**
      * @param class-string     $className
      * @param non-empty-string $methodName
      * @param non-empty-string $file
      * @param non-negative-int $line
+     * @param positive-int     $repetition
+     * @param positive-int     $totalRepetitions
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function __construct(string $className, string $methodName, string $file, int $line, TestDox $testDox, MetadataCollection $metadata, TestDataCollection $testData)
+    public function __construct(string $className, string $methodName, string $file, int $line, TestDox $testDox, MetadataCollection $metadata, TestDataCollection $testData, int $repetition = 1, int $totalRepetitions = 1)
     {
         parent::__construct($file);
 
-        $this->className  = $className;
-        $this->methodName = $methodName;
-        $this->line       = $line;
-        $this->testDox    = $testDox;
-        $this->metadata   = $metadata;
-        $this->testData   = $testData;
+        $this->className        = $className;
+        $this->methodName       = $methodName;
+        $this->line             = $line;
+        $this->testDox          = $testDox;
+        $this->metadata         = $metadata;
+        $this->testData         = $testData;
+        $this->repetition       = $repetition;
+        $this->totalRepetitions = $totalRepetitions;
     }
 
     /**
@@ -98,6 +112,27 @@ final readonly class TestMethod extends Test
         return $this->testData;
     }
 
+    /**
+     * @return positive-int
+     */
+    public function repetition(): int
+    {
+        return $this->repetition;
+    }
+
+    /**
+     * @return positive-int
+     */
+    public function totalRepetitions(): int
+    {
+        return $this->totalRepetitions;
+    }
+
+    public function isRepeated(): bool
+    {
+        return $this->totalRepetitions > 1;
+    }
+
     public function isTestMethod(): true
     {
         return true;
@@ -112,6 +147,14 @@ final readonly class TestMethod extends Test
 
         if ($this->testData()->hasDataFromDataProvider()) {
             $buffer .= '#' . $this->testData->dataFromDataProvider()->dataSetName();
+        }
+
+        if ($this->totalRepetitions > 1) {
+            $buffer .= sprintf(
+                ' (repetition %d of %d)',
+                $this->repetition,
+                $this->totalRepetitions,
+            );
         }
 
         return $buffer;
@@ -130,24 +173,32 @@ final readonly class TestMethod extends Test
      */
     public function name(): string
     {
-        if (!$this->testData->hasDataFromDataProvider()) {
-            return $this->methodName;
+        $name = $this->methodName;
+
+        if ($this->testData->hasDataFromDataProvider()) {
+            $dataSetName = $this->testData->dataFromDataProvider()->dataSetName();
+
+            if (is_int($dataSetName)) {
+                $name .= sprintf(
+                    ' with data set #%d',
+                    $dataSetName,
+                );
+            } else {
+                $name .= sprintf(
+                    ' with data set "%s"',
+                    $dataSetName,
+                );
+            }
         }
 
-        $dataSetName = $this->testData->dataFromDataProvider()->dataSetName();
-
-        if (is_int($dataSetName)) {
-            $dataSetName = sprintf(
-                ' with data set #%d',
-                $dataSetName,
-            );
-        } else {
-            $dataSetName = sprintf(
-                ' with data set "%s"',
-                $dataSetName,
+        if ($this->totalRepetitions > 1) {
+            $name .= sprintf(
+                ' (repetition %d of %d)',
+                $this->repetition,
+                $this->totalRepetitions,
             );
         }
 
-        return $this->methodName . $dataSetName;
+        return $name;
     }
 }

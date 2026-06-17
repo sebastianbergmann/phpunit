@@ -51,6 +51,7 @@ use PHPUnit\Event\TestRunner\WarningTriggered as TestRunnerWarningTriggered;
 use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
 use PHPUnit\Event\TestSuite\Skipped as TestSuiteSkipped;
 use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
+use PHPUnit\Event\TestSuite\TestSuiteForRepeatedTestMethod;
 use PHPUnit\Event\TestSuite\TestSuiteForTestClass;
 use PHPUnit\Event\TestSuite\TestSuiteForTestMethodWithDataProvider;
 use PHPUnit\TestRunner\IssueFilter;
@@ -329,23 +330,20 @@ final class Collector
 
         if ($testSuite->isForTestMethodWithDataProvider()) {
             assert($testSuite instanceof TestSuiteForTestMethodWithDataProvider);
-            assert(count($testSuite->tests()->asArray()) > 0);
 
-            $test = $testSuite->tests()->asArray()[0];
+            $this->registerTestMethodAsPassedIfItDidNotFail($testSuite);
 
-            assert($test instanceof TestMethod);
+            return;
+        }
 
-            foreach ($this->testFailedEvents as $testFailedEvent) {
-                if ($testFailedEvent instanceof AfterLastTestMethodFailed || $testFailedEvent instanceof BeforeFirstTestMethodFailed) {
-                    continue;
-                }
+        if ($testSuite->isForRepeatedTestMethod()) {
+            assert($testSuite instanceof TestSuiteForRepeatedTestMethod);
 
-                if ($testFailedEvent->test()->isTestMethod() && $testFailedEvent->test()->methodName() === $test->methodName()) {
-                    return;
-                }
+            // for a repeated data set, the enclosing data provider test suite decides
+            // whether the test method passed once all of its data sets have finished
+            if (!$testSuite->isForDataSet()) {
+                $this->registerTestMethodAsPassedIfItDidNotFail($testSuite);
             }
-
-            PassedTests::instance()->testMethodPassed($test, null);
 
             return;
         }
@@ -766,6 +764,29 @@ final class Collector
                count($this->phpWarnings) +
                count($this->testTriggeredPhpunitWarningEvents) +
                count($this->testRunnerTriggeredWarningEvents);
+    }
+
+    private function registerTestMethodAsPassedIfItDidNotFail(TestSuiteForRepeatedTestMethod|TestSuiteForTestMethodWithDataProvider $testSuite): void
+    {
+        assert(count($testSuite->tests()->asArray()) > 0);
+
+        $test = $testSuite->tests()->asArray()[0];
+
+        assert($test instanceof TestMethod);
+
+        foreach ($this->testFailedEvents as $testFailedEvent) {
+            if ($testFailedEvent instanceof AfterLastTestMethodFailed || $testFailedEvent instanceof BeforeFirstTestMethodFailed) {
+                continue;
+            }
+
+            if ($testFailedEvent->test()->isTestMethod() &&
+                $testFailedEvent->test()->className() === $test->className() &&
+                $testFailedEvent->test()->methodName() === $test->methodName()) {
+                return;
+            }
+        }
+
+        PassedTests::instance()->testMethodPassed($test, null);
     }
 
     /**
