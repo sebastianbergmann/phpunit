@@ -152,7 +152,9 @@ final class PersistentWorker
         @unlink($resultFile);
 
         if ($serializedResult === false) {
+            // @codeCoverageIgnoreStart
             $serializedResult = '';
+            // @codeCoverageIgnoreEnd
         }
 
         $this->processor->process($test, $serializedResult, '', $nonce);
@@ -229,11 +231,15 @@ final class PersistentWorker
         if (defined('PHPUNIT_COMPOSER_INSTALL')) {
             $composerAutoload = var_export(PHPUNIT_COMPOSER_INSTALL, true);
         } else {
+            // @codeCoverageIgnoreStart
             $composerAutoload = '\'\'';
+            // @codeCoverageIgnoreEnd
         }
 
         if (defined('__PHPUNIT_PHAR__')) {
+            // @codeCoverageIgnoreStart
             $phar = var_export(__PHPUNIT_PHAR__, true);
+            // @codeCoverageIgnoreEnd
         } else {
             $phar = '\'\'';
         }
@@ -241,7 +247,9 @@ final class PersistentWorker
         if (CodeCoverage::instance()->isActive()) {
             $coverage = 'true';
         } else {
+            // @codeCoverageIgnoreStart
             $coverage = 'false';
+            // @codeCoverageIgnoreEnd
         }
 
         $includePath = var_export(get_include_path(), true);
@@ -296,7 +304,9 @@ final class PersistentWorker
     private function sourceMapFileForChildProcess(): string
     {
         if (!ConfigurationRegistry::get()->source()->notEmpty()) {
+            // @codeCoverageIgnoreStart
             return '';
+            // @codeCoverageIgnoreEnd
         }
 
         $path = tempnam(sys_get_temp_dir(), 'phpunit_');
