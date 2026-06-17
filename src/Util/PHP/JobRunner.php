@@ -17,24 +17,19 @@ use function array_values;
 use function assert;
 use function count;
 use function explode;
-use function fclose;
 use function file_get_contents;
 use function file_put_contents;
 use function function_exists;
-use function fwrite;
 use function ini_get_all;
 use function is_array;
 use function is_file;
 use function is_resource;
 use function is_string;
-use function proc_close;
 use function proc_open;
-use function rewind;
 use function sprintf;
 use function str_contains;
 use function str_replace;
 use function str_starts_with;
-use function stream_get_contents;
 use function sys_get_temp_dir;
 use function tempnam;
 use function tmpfile;
@@ -122,7 +117,39 @@ final readonly class JobRunner
 
         assert($temporaryFile !== '');
 
-        return $this->runProcess($job, $temporaryFile);
+        $running = $this->startProcess($job, $temporaryFile);
+
+        $running->write($job->code());
+        $running->closeStdin();
+
+        return $running->wait();
+    }
+
+    /**
+     * Spawn the code of the given job as a long-running worker process whose
+     * standard input remains open as a control channel.
+     *
+     * The job's code is written to a temporary file that is executed by the
+     * worker process; in contrast to run(), the code is not piped through
+     * standard input, leaving it available for the caller to send subsequent
+     * commands to the worker.
+     *
+     * @throws PhpProcessException
+     */
+    public function start(Job $job): RunningJob
+    {
+        $temporaryFile = tempnam(sys_get_temp_dir(), 'phpunit_');
+
+        if ($temporaryFile === false ||
+            file_put_contents($temporaryFile, $job->code()) === false) {
+            // @codeCoverageIgnoreStart
+            throw new PhpProcessException(
+                'Unable to write temporary file',
+            );
+            // @codeCoverageIgnoreEnd
+        }
+
+        return $this->startProcess($job, $temporaryFile);
     }
 
     /**
@@ -130,7 +157,7 @@ final readonly class JobRunner
      *
      * @throws PhpProcessException
      */
-    private function runProcess(Job $job, ?string $temporaryFile): Result
+    private function startProcess(Job $job, ?string $temporaryFile): RunningJob
     {
         $environmentVariables = null;
 
@@ -199,49 +226,7 @@ final readonly class JobRunner
 
         Facade::emitter()->childProcessStarted();
 
-        if (isset($pipes[0])) {
-            fwrite($pipes[0], $job->code());
-            fclose($pipes[0]);
-        }
-
-        $stdout = '';
-        $stderr = '';
-
-        if (isset($pipes[1])) {
-            $stdout = stream_get_contents($pipes[1]);
-
-            fclose($pipes[1]);
-        }
-
-        if (isset($pipes[2])) {
-            $stderr = stream_get_contents($pipes[2]);
-
-            fclose($pipes[2]);
-        }
-
-        proc_close($process);
-
-        if ($mergedOutputStream !== null) {
-            rewind($mergedOutputStream);
-
-            $merged = stream_get_contents($mergedOutputStream);
-
-            fclose($mergedOutputStream);
-
-            assert($merged !== false);
-
-            $stdout = $merged;
-            $stderr = '';
-        }
-
-        if ($temporaryFile !== null) {
-            unlink($temporaryFile);
-        }
-
-        assert($stdout !== false);
-        assert($stderr !== false);
-
-        return new Result($stdout, $stderr);
+        return new RunningJob($process, $pipes, $mergedOutputStream, $temporaryFile);
     }
 
     /**
