@@ -24,6 +24,7 @@ use PHPUnit\TestRunner\TestResult\PassedTests;
 #[CoversClass(JobRunner::class)]
 #[UsesClass(Job::class)]
 #[UsesClass(Result::class)]
+#[UsesClass(RunningJob::class)]
 #[Small]
 final class JobRunnerTest extends TestCase
 {
@@ -169,6 +170,33 @@ EOT,
 
         $this->assertSame($expected->stdout(), $result->stdout());
         $this->assertSame($expected->stderr(), $result->stderr());
+    }
+
+    public function testStartsJobAsProcessWhoseStandardInputRemainsOpen(): void
+    {
+        $jobRunner = new JobRunner(
+            new ChildProcessResultProcessor(
+                new Facade,
+                $this->createStub(Emitter::class),
+                new PassedTests,
+                new CodeCoverage,
+            ),
+        );
+
+        $running = $jobRunner->start(
+            new Job(
+                <<<'EOT'
+<?php declare(strict_types=1);
+fwrite(STDOUT, fgets(STDIN));
+
+EOT,
+            ),
+        );
+
+        $running->write("echoed\n");
+        $running->closeStdin();
+
+        $this->assertSame("echoed\n", $running->wait()->stdout());
     }
 
     public function testRejectsPhpSettingValueContainingLineBreak(): void
