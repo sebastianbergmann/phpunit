@@ -100,8 +100,9 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
      * @param ReflectionClass<TestCase> $class
      * @param list<non-empty-string>    $groups
      * @param positive-int              $numberOfRuns
+     * @param positive-int              $maxAttempts
      */
-    public static function fromClassReflector(ReflectionClass $class, array $groups = [], int $numberOfRuns = 1): static
+    public static function fromClassReflector(ReflectionClass $class, array $groups = [], int $numberOfRuns = 1, int $maxAttempts = 1): static
     {
         $testSuite = new static($class->getName());
 
@@ -122,7 +123,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                 continue;
             }
 
-            $testSuite->addTestMethod($class, $method, $groups, $numberOfRuns);
+            $testSuite->addTestMethod($class, $method, $groups, $numberOfRuns, $maxAttempts);
         }
 
         if ($testSuite->isEmpty()) {
@@ -193,10 +194,11 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
      * @param ReflectionClass<TestCase> $testClass
      * @param list<non-empty-string>    $groups
      * @param positive-int              $numberOfRuns
+     * @param positive-int              $maxAttempts
      *
      * @throws Exception
      */
-    public function addTestSuite(ReflectionClass $testClass, array $groups = [], int $numberOfRuns = 1): void
+    public function addTestSuite(ReflectionClass $testClass, array $groups = [], int $numberOfRuns = 1, int $maxAttempts = 1): void
     {
         $className = $testClass->getName();
 
@@ -219,7 +221,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             );
         }
 
-        $this->addTest(self::fromClassReflector($testClass, $groups, $numberOfRuns), $groups);
+        $this->addTest(self::fromClassReflector($testClass, $groups, $numberOfRuns, $maxAttempts), $groups);
     }
 
     /**
@@ -232,10 +234,11 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
      *
      * @param list<non-empty-string> $groups
      * @param positive-int           $numberOfRuns
+     * @param positive-int           $maxAttempts
      *
      * @throws Exception
      */
-    public function addTestFile(string $filename, array $groups = [], int $numberOfRuns = 1): void
+    public function addTestFile(string $filename, array $groups = [], int $numberOfRuns = 1, int $maxAttempts = 1): void
     {
         try {
             if (str_ends_with($filename, '.phpt') && is_file($filename)) {
@@ -245,6 +248,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                     (new TestSuiteLoader)->load($filename),
                     $groups,
                     $numberOfRuns,
+                    $maxAttempts,
                 );
             }
         } catch (RunnerException $e) {
@@ -263,13 +267,14 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
      *
      * @param iterable<string> $fileNames
      * @param positive-int     $numberOfRuns
+     * @param positive-int     $maxAttempts
      *
      * @throws Exception
      */
-    public function addTestFiles(iterable $fileNames, int $numberOfRuns = 1): void
+    public function addTestFiles(iterable $fileNames, int $numberOfRuns = 1, int $maxAttempts = 1): void
     {
         foreach ($fileNames as $filename) {
-            $this->addTestFile((string) $filename, [], $numberOfRuns);
+            $this->addTestFile((string) $filename, [], $numberOfRuns, $maxAttempts);
         }
     }
 
@@ -519,10 +524,11 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
      * @param ReflectionClass<TestCase> $class
      * @param list<non-empty-string>    $groups
      * @param positive-int              $numberOfRuns
+     * @param positive-int              $maxAttempts
      *
      * @throws Exception
      */
-    protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method, array $groups, int $numberOfRuns = 1): void
+    protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method, array $groups, int $numberOfRuns = 1, int $maxAttempts = 1): void
     {
         $className  = $class->getName();
         $methodName = $method->getName();
@@ -558,7 +564,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
         }
 
         try {
-            $test = (new TestBuilder)->build($class, $methodName, $groups, $numberOfRuns);
+            $test = (new TestBuilder)->build($class, $methodName, $groups, $numberOfRuns, 1, $maxAttempts);
         } catch (InvalidDataProviderException $e) {
             if ($e->getProviderLabel() === null) {
                 $message = sprintf(
@@ -602,7 +608,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             return;
         }
 
-        if ($test instanceof TestCase || $test instanceof DataProviderTestSuite || $test instanceof RepeatTestSuite) {
+        if ($test instanceof TestCase || $test instanceof DataProviderTestSuite || $test instanceof RepeatTestSuite || $test instanceof RetryTestSuite) {
             $test->setDependencies(
                 Dependencies::dependencies($class->getName(), $methodName),
             );

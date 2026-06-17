@@ -27,6 +27,7 @@ use PHPUnit\Metadata\ExcludeStaticPropertyFromBackup;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Metadata\PreserveGlobalState;
 use PHPUnit\Metadata\Repeat as RepeatMetadata;
+use PHPUnit\Metadata\Retry as RetryMetadata;
 use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\Runner\Filter\MethodNameFilterCompiler;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
@@ -49,10 +50,11 @@ final readonly class TestBuilder
      * @param list<non-empty-string>    $groups
      * @param positive-int              $numberOfRuns
      * @param positive-int              $failureThreshold
+     * @param positive-int              $maxAttempts
      *
      * @throws InvalidDataProviderException
      */
-    public function build(ReflectionClass $theClass, string $methodName, array $groups = [], int $numberOfRuns = 1, int $failureThreshold = 1): Test
+    public function build(ReflectionClass $theClass, string $methodName, array $groups = [], int $numberOfRuns = 1, int $failureThreshold = 1, int $maxAttempts = 1): Test
     {
         $className                = $theClass->getName();
         $runTestInSeparateProcess = $this->shouldTestMethodBeRunInSeparateProcess($className, $methodName);
@@ -68,6 +70,9 @@ final readonly class TestBuilder
 
             $numberOfRuns     = $metadata->times();
             $failureThreshold = $metadata->failureThreshold();
+
+            // a method-level #[Repeat] attribute takes precedence over the --retry CLI option
+            $maxAttempts = 1;
 
             if (!$this->hasVoidReturnType($theClass->getMethod($methodName))) {
                 EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
@@ -88,6 +93,55 @@ final readonly class TestBuilder
                     ),
                 );
             }
+        }
+
+        $retryMetadata = MetadataRegistry::parser()->forMethod($className, $methodName)->isRetry();
+
+        if ($retryMetadata->isNotEmpty()) {
+            if ($repeatMetadata->isNotEmpty()) {
+                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                    sprintf(
+                        'Method %s::%s is annotated with both #[Repeat] and #[Retry], the #[Retry] attribute is ignored',
+                        $className,
+                        $methodName,
+                    ),
+                );
+            } else {
+                $metadata = $retryMetadata->asArray()[0];
+
+                assert($metadata instanceof RetryMetadata);
+
+                $maxAttempts = $metadata->maxAttempts();
+
+                if (!$this->hasVoidReturnType($theClass->getMethod($methodName))) {
+                    EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                        sprintf(
+                            'Method %s::%s is annotated with #[Retry] but does not have a void return type declaration and will not be retried',
+                            $className,
+                            $methodName,
+                        ),
+                    );
+                }
+
+                if (!$this->doesNotDependOnAnotherTest($className, $methodName)) {
+                    EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                        sprintf(
+                            'Method %s::%s is annotated with #[Retry] but depends on another test and will not be retried',
+                            $className,
+                            $methodName,
+                        ),
+                    );
+                }
+            }
+        }
+
+        $retry = $maxAttempts > 1 &&
+                 $this->hasVoidReturnType($theClass->getMethod($methodName)) &&
+                 $this->doesNotDependOnAnotherTest($className, $methodName);
+
+        if ($retry) {
+            // #[Retry] takes precedence over --repeat
+            $numberOfRuns = 1;
         }
 
         $repeat = $numberOfRuns > 1 &&
@@ -118,6 +172,18 @@ final readonly class TestBuilder
                 $groups,
                 $repeat ? $numberOfRuns : 1,
                 $failureThreshold,
+                $retry ? $maxAttempts : 1,
+            );
+        }
+
+        if ($retry) {
+            return $this->buildRetryTestSuite(
+                $className,
+                $methodName,
+                $maxAttempts,
+                $runTestInSeparateProcess,
+                $preserveGlobalState,
+                $backupSettings,
             );
         }
 
@@ -159,8 +225,9 @@ final readonly class TestBuilder
      * @param list<non-empty-string> $groups
      * @param positive-int           $numberOfRuns
      * @param positive-int           $failureThreshold
+     * @param positive-int           $maxAttempts
      */
-    private function buildDataProviderTestSuite(string $methodName, string $className, array $data, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, array $backupSettings, array $groups, int $numberOfRuns = 1, int $failureThreshold = 1): DataProviderTestSuite
+    private function buildDataProviderTestSuite(string $methodName, string $className, array $data, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, array $backupSettings, array $groups, int $numberOfRuns = 1, int $failureThreshold = 1, int $maxAttempts = 1): DataProviderTestSuite
     {
         $dataProviderTestSuite = DataProviderTestSuite::empty(
             $className . '::' . $methodName,
@@ -172,7 +239,33 @@ final readonly class TestBuilder
         );
 
         foreach ($data as $_dataName => $_data) {
-            if ($numberOfRuns > 1) {
+            if ($maxAttempts > 1) {
+                $factory = function () use ($className, $methodName, $_dataName, $_data, $runTestInSeparateProcess, $preserveGlobalState, $backupSettings): TestCase
+                {
+                    $test = new $className($methodName);
+
+                    $test->setData($_dataName, $_data->value());
+
+                    $this->configureTestCase(
+                        $test,
+                        $runTestInSeparateProcess,
+                        $preserveGlobalState,
+                        $backupSettings,
+                    );
+
+                    return $test;
+                };
+
+                $dataProviderTestSuite->addTest(
+                    RetryTestSuite::fromTestCase(
+                        $className . '::' . $methodName . '#' . $_dataName,
+                        $factory(),
+                        $maxAttempts,
+                        $factory,
+                    ),
+                    $groups,
+                );
+            } elseif ($numberOfRuns > 1) {
                 $tests = [];
 
                 foreach (range(1, $numberOfRuns) as $i) {
@@ -248,6 +341,36 @@ final readonly class TestBuilder
             $className . '::' . $methodName,
             $tests,
             $failureThreshold,
+        );
+    }
+
+    /**
+     * @param class-string<TestCase> $className
+     * @param non-empty-string       $methodName
+     * @param positive-int           $maxAttempts
+     * @param BackupSettings         $backupSettings
+     */
+    private function buildRetryTestSuite(string $className, string $methodName, int $maxAttempts, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, array $backupSettings): RetryTestSuite
+    {
+        $factory = function () use ($className, $methodName, $runTestInSeparateProcess, $preserveGlobalState, $backupSettings): TestCase
+        {
+            $test = new $className($methodName);
+
+            $this->configureTestCase(
+                $test,
+                $runTestInSeparateProcess,
+                $preserveGlobalState,
+                $backupSettings,
+            );
+
+            return $test;
+        };
+
+        return RetryTestSuite::fromTestCase(
+            $className . '::' . $methodName,
+            $factory(),
+            $maxAttempts,
+            $factory,
         );
     }
 

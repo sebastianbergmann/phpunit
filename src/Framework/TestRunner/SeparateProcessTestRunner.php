@@ -140,6 +140,8 @@ final class SeparateProcessTestRunner
             'dependencyInput'                => $dependencyInput,
             'repetition'                     => (string) $test->repetition(),
             'totalRepetitions'               => (string) $test->totalRepetitions(),
+            'attempt'                        => (string) $test->attempt(),
+            'maxAttempts'                    => (string) $test->maxAttempts(),
             'constants'                      => $constants,
             'globals'                        => $globals,
             'include_path'                   => $includePath,

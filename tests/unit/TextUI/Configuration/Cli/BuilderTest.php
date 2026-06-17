@@ -2972,6 +2972,26 @@ final class BuilderTest extends TestCase
         $configuration->repeat();
     }
 
+    #[TestDox('--retry')]
+    public function testRetry(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--retry', '3']);
+
+        $this->assertTrue($configuration->hasRetry());
+        $this->assertSame(3, $configuration->retry());
+    }
+
+    public function testRetryMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasRetry());
+
+        $this->expectException(Exception::class);
+
+        $configuration->retry();
+    }
+
     public function testInvalidOption(): void
     {
         $this->expectException(Exception::class);

@@ -117,6 +117,7 @@ final class Builder
         'random-order',
         'random-order-seed=',
         'repeat=',
+        'retry=',
         'reverse-order',
         'reverse-list',
         'static-backup',
@@ -195,6 +196,7 @@ final class Builder
         ['--fail-on-warning', '--do-not-fail-on-warning'],
         ['--resolve-dependencies', '--ignore-dependencies'],
         ['--random-order', '--reverse-order'],
+        ['--repeat', '--retry'],
         ['--generate-baseline', '--ignore-baseline'],
         ['--generate-baseline', '--use-baseline'],
         ['--no-output', '--compact'],
@@ -365,6 +367,7 @@ final class Builder
         $processIsolation                  = null;
         $randomOrderSeed                   = null;
         $repeat                            = null;
+        $retry                             = null;
         $reportUselessTests                = null;
         $resolveDependencies               = null;
         $reverseList                       = null;
@@ -1230,6 +1233,25 @@ final class Builder
 
                     break;
 
+                case '--retry':
+                    if (!is_numeric($option[1]) ||
+                        (string) (int) $option[1] !== $option[1] ||
+                        (int) $option[1] < 1) {
+                        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                            sprintf(
+                                'Option "--retry %s" ignored because "%s" is not a positive integer',
+                                $option[1],
+                                $option[1],
+                            ),
+                        );
+
+                        break;
+                    }
+
+                    $retry = (int) $option[1];
+
+                    break;
+
                 case '--resolve-dependencies':
                     $resolveDependencies = true;
 
@@ -1431,6 +1453,7 @@ final class Builder
             $processIsolation,
             $randomOrderSeed,
             $repeat,
+            $retry,
             $reportUselessTests,
             $resolveDependencies,
             $reverseList,

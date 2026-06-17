@@ -50,16 +50,28 @@ final readonly class TestMethod extends Test
     private int $totalRepetitions;
 
     /**
+     * @var positive-int
+     */
+    private int $attempt;
+
+    /**
+     * @var positive-int
+     */
+    private int $maxAttempts;
+
+    /**
      * @param class-string     $className
      * @param non-empty-string $methodName
      * @param non-empty-string $file
      * @param non-negative-int $line
      * @param positive-int     $repetition
      * @param positive-int     $totalRepetitions
+     * @param positive-int     $attempt
+     * @param positive-int     $maxAttempts
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function __construct(string $className, string $methodName, string $file, int $line, TestDox $testDox, MetadataCollection $metadata, TestDataCollection $testData, int $repetition = 1, int $totalRepetitions = 1)
+    public function __construct(string $className, string $methodName, string $file, int $line, TestDox $testDox, MetadataCollection $metadata, TestDataCollection $testData, int $repetition = 1, int $totalRepetitions = 1, int $attempt = 1, int $maxAttempts = 1)
     {
         parent::__construct($file);
 
@@ -71,6 +83,8 @@ final readonly class TestMethod extends Test
         $this->testData         = $testData;
         $this->repetition       = $repetition;
         $this->totalRepetitions = $totalRepetitions;
+        $this->attempt          = $attempt;
+        $this->maxAttempts      = $maxAttempts;
     }
 
     /**
@@ -133,6 +147,27 @@ final readonly class TestMethod extends Test
         return $this->totalRepetitions > 1;
     }
 
+    /**
+     * @return positive-int
+     */
+    public function attempt(): int
+    {
+        return $this->attempt;
+    }
+
+    /**
+     * @return positive-int
+     */
+    public function maxAttempts(): int
+    {
+        return $this->maxAttempts;
+    }
+
+    public function isRetried(): bool
+    {
+        return $this->maxAttempts > 1;
+    }
+
     public function isTestMethod(): true
     {
         return true;
@@ -154,6 +189,14 @@ final readonly class TestMethod extends Test
                 ' (repetition %d of %d)',
                 $this->repetition,
                 $this->totalRepetitions,
+            );
+        }
+
+        if ($this->attempt > 1) {
+            $buffer .= sprintf(
+                ' (attempt %d of %d)',
+                $this->attempt,
+                $this->maxAttempts,
             );
         }
 
@@ -196,6 +239,14 @@ final readonly class TestMethod extends Test
                 ' (repetition %d of %d)',
                 $this->repetition,
                 $this->totalRepetitions,
+            );
+        }
+
+        if ($this->attempt > 1) {
+            $name .= sprintf(
+                ' (attempt %d of %d)',
+                $this->attempt,
+                $this->maxAttempts,
             );
         }
 

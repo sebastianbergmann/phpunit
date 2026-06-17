@@ -86,4 +86,12 @@ abstract readonly class TestSuite
     {
         return false;
     }
+
+    /**
+     * @phpstan-assert-if-true TestSuiteForRetriedTestMethod $this
+     */
+    public function isForRetriedTestMethod(): bool
+    {
+        return false;
+    }
 }
