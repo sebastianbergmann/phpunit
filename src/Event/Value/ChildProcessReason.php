@@ -20,4 +20,5 @@ enum ChildProcessReason: string
     case PhptTest                      = 'FILE section of a PHPT test';
     case PhptSkipIfSection             = 'SKIPIF section of a PHPT test';
     case PhptCleanSection              = 'CLEAN section of a PHPT test';
+    case ParallelWorker                = 'worker for parallel test execution';
 }
