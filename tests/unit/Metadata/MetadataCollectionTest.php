@@ -14,8 +14,8 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Metadata\Version\ComparisonRequirement;
-use PHPUnit\Util\VersionComparisonOperator;
+use SebastianBergmann\VersionRequirement\ComparisonRequirement;
+use SebastianBergmann\VersionRequirement\VersionComparisonOperator;
 use stdClass;
 
 #[CoversClass(MetadataCollection::class)]

@@ -77,11 +77,11 @@ use PHPUnit\TextUI\XmlConfiguration\Logging\Otr;
 use PHPUnit\TextUI\XmlConfiguration\Logging\TeamCity;
 use PHPUnit\TextUI\XmlConfiguration\Logging\TestDox\Html as TestDoxHtml;
 use PHPUnit\TextUI\XmlConfiguration\Logging\TestDox\Text as TestDoxText;
-use PHPUnit\Util\VersionComparisonOperator;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
 use PHPUnit\Util\Xml\XmlException;
 use SebastianBergmann\CodeCoverage\Report\Html\Colors;
 use SebastianBergmann\CodeCoverage\Report\Thresholds;
+use SebastianBergmann\VersionRequirement\VersionComparisonOperator;
 use Throwable;
 
 /**

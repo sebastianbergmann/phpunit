@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Metadata;
 
-use PHPUnit\Metadata\Version\Requirement;
+use SebastianBergmann\VersionRequirement\Requirement;
 
 /**
  * @immutable

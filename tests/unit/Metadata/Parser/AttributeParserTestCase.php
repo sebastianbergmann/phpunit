@@ -23,8 +23,6 @@ use PHPUnit\Metadata\RequiresPhpunit;
 use PHPUnit\Metadata\RequiresPhpunitExtension;
 use PHPUnit\Metadata\RequiresSetting;
 use PHPUnit\Metadata\Retry;
-use PHPUnit\Metadata\Version\ComparisonRequirement;
-use PHPUnit\Metadata\Version\ConstraintRequirement;
 use PHPUnit\Metadata\WithEnvironmentVariable;
 use PHPUnit\TestFixture\Metadata\Attribute\AllowMockObjectsWithoutExpectationsOnClassTest;
 use PHPUnit\TestFixture\Metadata\Attribute\AllowMockObjectsWithoutExpectationsOnMethodTest;
@@ -72,6 +70,8 @@ use PHPUnit\TestFixture\Metadata\Attribute\TestWithTest;
 use PHPUnit\TestFixture\Metadata\Attribute\UsesTest;
 use PHPUnit\TestFixture\Metadata\Attribute\WithEnvironmentVariableTest;
 use PHPUnit\TestFixture\Metadata\Attribute\WithoutErrorHandlerTest;
+use SebastianBergmann\VersionRequirement\ComparisonRequirement;
+use SebastianBergmann\VersionRequirement\ConstraintRequirement;
 
 abstract class AttributeParserTestCase extends TestCase
 {

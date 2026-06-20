@@ -10,8 +10,8 @@
 namespace PHPUnit\Metadata;
 
 use Closure;
-use PHPUnit\Metadata\Version\Requirement;
 use PHPUnit\Runner\Extension\Extension;
+use SebastianBergmann\VersionRequirement\Requirement;
 
 /**
  * @immutable

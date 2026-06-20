@@ -14,7 +14,7 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Util\VersionComparisonOperator;
+use SebastianBergmann\VersionRequirement\VersionComparisonOperator;
 
 #[CoversClass(TestDirectoryCollection::class)]
 #[CoversClass(TestDirectoryCollectionIterator::class)]

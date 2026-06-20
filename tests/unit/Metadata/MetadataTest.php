@@ -14,9 +14,9 @@ use PHPUnit\Framework\Attributes\CoversClassesThatExtendClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Metadata\Version\ComparisonRequirement;
 use PHPUnit\TestFixture\Metadata\Attribute\ExampleTrait;
-use PHPUnit\Util\VersionComparisonOperator;
+use SebastianBergmann\VersionRequirement\ComparisonRequirement;
+use SebastianBergmann\VersionRequirement\VersionComparisonOperator;
 
 #[CoversClass(Metadata::class)]
 #[CoversClassesThatExtendClass(Metadata::class)]

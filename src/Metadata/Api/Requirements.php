@@ -37,11 +37,11 @@ use PHPUnit\Metadata\RequiresPhpExtension;
 use PHPUnit\Metadata\RequiresPhpunit;
 use PHPUnit\Metadata\RequiresPhpunitExtension;
 use PHPUnit\Metadata\RequiresSetting;
-use PHPUnit\Metadata\Version\ComparisonRequirement;
-use PHPUnit\Metadata\Version\InvalidVersionRequirement;
-use PHPUnit\Metadata\Version\Requirement;
 use PHPUnit\Runner\Version;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
+use SebastianBergmann\VersionRequirement\ComparisonRequirement;
+use SebastianBergmann\VersionRequirement\InvalidVersionRequirement;
+use SebastianBergmann\VersionRequirement\Requirement;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
