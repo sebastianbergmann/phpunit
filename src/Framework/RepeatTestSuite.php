@@ -35,15 +35,16 @@ final class RepeatTestSuite extends TestSuite
      * @param non-empty-string         $name
      * @param non-empty-list<TestCase> $tests
      * @param positive-int             $failureThreshold
+     * @param list<non-empty-string>   $groups
      */
-    public static function fromTests(string $name, array $tests, int $failureThreshold): self
+    public static function fromTests(string $name, array $tests, int $failureThreshold, array $groups = []): self
     {
         $suite = self::empty($name);
 
         $suite->failureThreshold = $failureThreshold;
 
         foreach ($tests as $test) {
-            $suite->addTest($test);
+            $suite->addTest($test, $groups);
         }
 
         return $suite;

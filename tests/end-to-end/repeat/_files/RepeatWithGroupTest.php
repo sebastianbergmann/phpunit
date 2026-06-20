@@ -1,0 +1,30 @@
+<?php declare(strict_types=1);
+/*
+ * This file is part of PHPUnit.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+namespace PHPUnit\TestFixture\Repeat;
+
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Repeat;
+use PHPUnit\Framework\TestCase;
+
+#[Group('foo')]
+final class RepeatWithGroupTest extends TestCase
+{
+    #[Group('bar')]
+    #[Repeat(3)]
+    public function testRepeatedThreeTimes(): void
+    {
+        $this->assertTrue(true);
+    }
+
+    public function testNotRepeated(): void
+    {
+        $this->assertTrue(true);
+    }
+}

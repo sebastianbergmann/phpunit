@@ -184,6 +184,7 @@ final readonly class TestBuilder
                 $runTestInSeparateProcess,
                 $preserveGlobalState,
                 $backupSettings,
+                $groups,
             );
         }
 
@@ -196,6 +197,7 @@ final readonly class TestBuilder
                 $runTestInSeparateProcess,
                 $preserveGlobalState,
                 $backupSettings,
+                $groups,
             );
         }
 
@@ -262,6 +264,7 @@ final readonly class TestBuilder
                         $factory(),
                         $maxAttempts,
                         $factory,
+                        $groups,
                     ),
                     $groups,
                 );
@@ -289,6 +292,7 @@ final readonly class TestBuilder
                         $className . '::' . $methodName . '#' . $_dataName,
                         $tests,
                         $failureThreshold,
+                        $groups,
                     ),
                     $groups,
                 );
@@ -317,8 +321,9 @@ final readonly class TestBuilder
      * @param positive-int           $numberOfRuns
      * @param positive-int           $failureThreshold
      * @param BackupSettings         $backupSettings
+     * @param list<non-empty-string> $groups
      */
-    private function buildRepeatTestSuite(string $className, string $methodName, int $numberOfRuns, int $failureThreshold, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, array $backupSettings): RepeatTestSuite
+    private function buildRepeatTestSuite(string $className, string $methodName, int $numberOfRuns, int $failureThreshold, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, array $backupSettings, array $groups): RepeatTestSuite
     {
         $tests = [];
 
@@ -337,10 +342,16 @@ final readonly class TestBuilder
             $tests[] = $test;
         }
 
+        $groups = array_merge(
+            $groups,
+            (new Groups)->groups($className, $methodName),
+        );
+
         return RepeatTestSuite::fromTests(
             $className . '::' . $methodName,
             $tests,
             $failureThreshold,
+            $groups,
         );
     }
 
@@ -349,8 +360,9 @@ final readonly class TestBuilder
      * @param non-empty-string       $methodName
      * @param positive-int           $maxAttempts
      * @param BackupSettings         $backupSettings
+     * @param list<non-empty-string> $groups
      */
-    private function buildRetryTestSuite(string $className, string $methodName, int $maxAttempts, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, array $backupSettings): RetryTestSuite
+    private function buildRetryTestSuite(string $className, string $methodName, int $maxAttempts, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, array $backupSettings, array $groups): RetryTestSuite
     {
         $factory = function () use ($className, $methodName, $runTestInSeparateProcess, $preserveGlobalState, $backupSettings): TestCase
         {
@@ -366,11 +378,17 @@ final readonly class TestBuilder
             return $test;
         };
 
+        $groups = array_merge(
+            $groups,
+            (new Groups)->groups($className, $methodName),
+        );
+
         return RetryTestSuite::fromTestCase(
             $className . '::' . $methodName,
             $factory(),
             $maxAttempts,
             $factory,
+            $groups,
         );
     }
 

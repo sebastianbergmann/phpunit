@@ -42,18 +42,19 @@ final class RetryTestSuite extends TestSuite
     private bool $wasRun        = false;
 
     /**
-     * @param non-empty-string    $name
-     * @param positive-int        $maxAttempts
-     * @param Closure(): TestCase $additionalAttemptFactory
+     * @param non-empty-string       $name
+     * @param positive-int           $maxAttempts
+     * @param Closure(): TestCase    $additionalAttemptFactory
+     * @param list<non-empty-string> $groups
      */
-    public static function fromTestCase(string $name, TestCase $test, int $maxAttempts, Closure $additionalAttemptFactory): self
+    public static function fromTestCase(string $name, TestCase $test, int $maxAttempts, Closure $additionalAttemptFactory, array $groups = []): self
     {
         $suite = self::empty($name);
 
         $suite->maxAttempts              = $maxAttempts;
         $suite->additionalAttemptFactory = $additionalAttemptFactory;
 
-        $suite->addTest($test);
+        $suite->addTest($test, $groups);
 
         return $suite;
     }
