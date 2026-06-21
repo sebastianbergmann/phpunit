@@ -90,9 +90,6 @@ jobs:
       - name: Ensure that dependencies do not have known security vulnerabilities and are not abandoned
         run: ./tools/composer audit --no-ansi
 
-      - name: Ensure that dependencies do not have known security vulnerabilities and are not abandoned
-        run: ./tools/composer audit --no-ansi
-
   coding-guidelines:
     name: Coding Guidelines
 
