@@ -65,6 +65,20 @@ final readonly class Duration
         return $this->seconds() + ($this->nanoseconds() / 1000000000);
     }
 
+    public function add(self $other): self
+    {
+        $seconds     = $this->seconds + $other->seconds;
+        $nanoseconds = $this->nanoseconds + $other->nanoseconds;
+
+        if ($nanoseconds >= 1000000000) {
+            $seconds++;
+
+            $nanoseconds -= 1000000000;
+        }
+
+        return new self($seconds, $nanoseconds);
+    }
+
     public function asString(): string
     {
         $seconds = $this->seconds();

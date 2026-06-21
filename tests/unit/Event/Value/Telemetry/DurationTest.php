@@ -99,6 +99,26 @@ final class DurationTest extends TestCase
         $this->assertSame(0.0, Duration::fromSecondsAndNanoseconds(0, 0)->asFloat());
     }
 
+    public function testCanBeAddedToAnotherDuration(): void
+    {
+        $one = Duration::fromSecondsAndNanoseconds(1, 250000000);
+        $two = Duration::fromSecondsAndNanoseconds(2, 500000000);
+
+        $this->assertTrue(
+            Duration::fromSecondsAndNanoseconds(3, 750000000)->equals($one->add($two)),
+        );
+    }
+
+    public function testAddingDurationsCarriesNanosecondsIntoSeconds(): void
+    {
+        $one = Duration::fromSecondsAndNanoseconds(1, 750000000);
+        $two = Duration::fromSecondsAndNanoseconds(2, 500000000);
+
+        $this->assertTrue(
+            Duration::fromSecondsAndNanoseconds(4, 250000000)->equals($one->add($two)),
+        );
+    }
+
     public function testEqualsReturnsFalseWhenValuesAreDifferent(): void
     {
         $one = Duration::fromSecondsAndNanoseconds(

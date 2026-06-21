@@ -23,6 +23,8 @@ use PHPUnit\Event\Facade;
 use PHPUnit\Event\InvalidArgumentException;
 use PHPUnit\Event\Telemetry\HRTime;
 use PHPUnit\Event\Telemetry\Info;
+use PHPUnit\Event\Test\AttemptErrored;
+use PHPUnit\Event\Test\AttemptFailed;
 use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\Finished;
@@ -87,6 +89,13 @@ final class JunitXmlLogger
     private bool $prepared               = false;
     private bool $preparationFailed      = false;
     private ?string $unexpectedOutput    = null;
+
+    /**
+     * Wall-clock time of the failed attempts that preceded the final attempt
+     * of a retried test. This is added to the time of the final attempt so
+     * that the reported duration covers all attempts.
+     */
+    private float $retriedAttemptsTime = 0.0;
 
     public function __construct(Printer $printer, Facade $facade)
     {
@@ -228,6 +237,16 @@ final class JunitXmlLogger
         $this->prepared = true;
     }
 
+    public function testAttemptFailed(AttemptFailed $event): void
+    {
+        $this->retriedAttemptsTime += $event->duration()->asFloat();
+    }
+
+    public function testAttemptErrored(AttemptErrored $event): void
+    {
+        $this->retriedAttemptsTime += $event->duration()->asFloat();
+    }
+
     public function testPrintedUnexpectedOutput(PrintedUnexpectedOutput $event): void
     {
         $this->unexpectedOutput = $event->output();
@@ -295,7 +314,7 @@ final class JunitXmlLogger
         assert(isset($this->testSuiteTests[$this->testSuiteLevel]));
         assert(isset($this->testSuiteTimes[$this->testSuiteLevel]));
 
-        $time = $telemetryInfo->time()->duration($this->time)->asFloat();
+        $time = $telemetryInfo->time()->duration($this->time)->asFloat() + $this->retriedAttemptsTime;
 
         $this->testSuiteAssertions[$this->testSuiteLevel] += $numberOfAssertionsPerformed;
 
@@ -325,11 +344,12 @@ final class JunitXmlLogger
         $this->testSuiteTests[$this->testSuiteLevel]++;
         $this->testSuiteTimes[$this->testSuiteLevel] += $time;
 
-        $this->currentTestCase   = null;
-        $this->time              = null;
-        $this->preparationFailed = false;
-        $this->prepared          = false;
-        $this->unexpectedOutput  = null;
+        $this->currentTestCase     = null;
+        $this->time                = null;
+        $this->preparationFailed   = false;
+        $this->prepared            = false;
+        $this->unexpectedOutput    = null;
+        $this->retriedAttemptsTime = 0.0;
     }
 
     private function registerSubscribers(Facade $facade): void
@@ -342,6 +362,8 @@ final class JunitXmlLogger
             new TestPreparationErroredSubscriber($this),
             new TestPreparationFailedSubscriber($this),
             new TestPreparedSubscriber($this),
+            new TestAttemptFailedSubscriber($this),
+            new TestAttemptErroredSubscriber($this),
             new TestPrintedUnexpectedOutputSubscriber($this),
             new TestFinishedSubscriber($this),
             new TestErroredSubscriber($this),

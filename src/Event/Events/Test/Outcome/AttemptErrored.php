@@ -27,20 +27,30 @@ final readonly class AttemptErrored implements Event
     private Telemetry\Info $telemetryInfo;
     private Code\Test $test;
     private Throwable $throwable;
+    private Telemetry\Duration $duration;
 
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, Throwable $throwable)
+    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, Throwable $throwable, Telemetry\Duration $duration)
     {
         $this->telemetryInfo = $telemetryInfo;
         $this->test          = $test;
         $this->throwable     = $throwable;
+        $this->duration      = $duration;
     }
 
     public function telemetryInfo(): Telemetry\Info
     {
         return $this->telemetryInfo;
+    }
+
+    /**
+     * The wall-clock time spent on this errored attempt.
+     */
+    public function duration(): Telemetry\Duration
+    {
+        return $this->duration;
     }
 
     public function test(): Code\Test

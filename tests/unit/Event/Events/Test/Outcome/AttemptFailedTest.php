@@ -13,6 +13,7 @@ use Exception;
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Code;
 use PHPUnit\Event\Code\ComparisonFailure;
+use PHPUnit\Event\Telemetry\Duration;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
@@ -29,12 +30,14 @@ final class AttemptFailedTest extends AbstractEventTestCase
         $test              = $this->testValueObject();
         $throwable         = $this->throwable();
         $comparisonFailure = $this->comparisonFailure();
+        $duration          = Duration::fromSecondsAndNanoseconds(1, 0);
 
         $event = new AttemptFailed(
             $telemetryInfo,
             $test,
             $throwable,
             $comparisonFailure,
+            $duration,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
@@ -42,6 +45,7 @@ final class AttemptFailedTest extends AbstractEventTestCase
         $this->assertSame($throwable, $event->throwable());
         $this->assertSame($comparisonFailure, $event->comparisonFailure());
         $this->assertTrue($event->hasComparisonFailure());
+        $this->assertSame($duration, $event->duration());
     }
 
     public function testThrowsExceptionOnAccessToUnspecifiedComparisonFailure(): void
@@ -55,6 +59,7 @@ final class AttemptFailedTest extends AbstractEventTestCase
             $test,
             $throwable,
             null,
+            Duration::fromSecondsAndNanoseconds(1, 0),
         );
 
         $this->assertFalse($event->hasComparisonFailure());
@@ -71,6 +76,7 @@ final class AttemptFailedTest extends AbstractEventTestCase
             $this->testValueObject(),
             $this->throwable(),
             null,
+            Duration::fromSecondsAndNanoseconds(1, 0),
         );
 
         $this->assertStringEqualsStringIgnoringLineEndings(

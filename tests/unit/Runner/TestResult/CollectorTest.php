@@ -47,6 +47,7 @@ final class CollectorTest extends TestCase
                 new Phpt('test.phpt'),
                 ThrowableBuilder::from(new Exception('failure')),
                 null,
+                Duration::fromSecondsAndNanoseconds(1, 0),
             ),
         );
 
@@ -62,6 +63,7 @@ final class CollectorTest extends TestCase
                 $this->telemetryInfo(),
                 new Phpt('test.phpt'),
                 ThrowableBuilder::from(new Exception('error')),
+                Duration::fromSecondsAndNanoseconds(1, 0),
             ),
         );
 

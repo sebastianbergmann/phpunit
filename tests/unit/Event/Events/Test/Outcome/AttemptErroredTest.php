@@ -12,6 +12,7 @@ namespace PHPUnit\Event\Test;
 use Exception;
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Code;
+use PHPUnit\Event\Telemetry\Duration;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
@@ -27,16 +28,19 @@ final class AttemptErroredTest extends AbstractEventTestCase
         $telemetryInfo = $this->telemetryInfo();
         $test          = $this->testValueObject();
         $throwable     = $this->throwable();
+        $duration      = Duration::fromSecondsAndNanoseconds(1, 0);
 
         $event = new AttemptErrored(
             $telemetryInfo,
             $test,
             $throwable,
+            $duration,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
         $this->assertSame($test, $event->test());
         $this->assertSame($throwable, $event->throwable());
+        $this->assertSame($duration, $event->duration());
     }
 
     public function testCanBeRepresentedAsString(): void
@@ -45,6 +49,7 @@ final class AttemptErroredTest extends AbstractEventTestCase
             $this->telemetryInfo(),
             $this->testValueObject(),
             $this->throwable(),
+            Duration::fromSecondsAndNanoseconds(1, 0),
         );
 
         $this->assertStringEqualsStringIgnoringLineEndings(

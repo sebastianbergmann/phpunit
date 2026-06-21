@@ -29,21 +29,31 @@ final readonly class AttemptFailed implements Event
     private Code\Test $test;
     private Throwable $throwable;
     private ?ComparisonFailure $comparisonFailure;
+    private Telemetry\Duration $duration;
 
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, Throwable $throwable, ?ComparisonFailure $comparisonFailure)
+    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, Throwable $throwable, ?ComparisonFailure $comparisonFailure, Telemetry\Duration $duration)
     {
         $this->telemetryInfo     = $telemetryInfo;
         $this->test              = $test;
         $this->throwable         = $throwable;
         $this->comparisonFailure = $comparisonFailure;
+        $this->duration          = $duration;
     }
 
     public function telemetryInfo(): Telemetry\Info
     {
         return $this->telemetryInfo;
+    }
+
+    /**
+     * The wall-clock time spent on this failed attempt.
+     */
+    public function duration(): Telemetry\Duration
+    {
+        return $this->duration;
     }
 
     public function test(): Code\Test

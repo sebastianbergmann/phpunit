@@ -724,13 +724,14 @@ final class DispatchingEmitter implements Emitter
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
-    public function testAttemptErrored(Code\Test $test, Throwable $throwable): void
+    public function testAttemptErrored(Code\Test $test, Throwable $throwable, Telemetry\Duration $duration): void
     {
         $this->dispatcher->dispatch(
             new Test\AttemptErrored(
                 $this->telemetryInfo(),
                 $test,
                 $throwable,
+                $duration,
             ),
         );
     }
@@ -739,7 +740,7 @@ final class DispatchingEmitter implements Emitter
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
-    public function testAttemptFailed(Code\Test $test, Throwable $throwable, ?ComparisonFailure $comparisonFailure): void
+    public function testAttemptFailed(Code\Test $test, Throwable $throwable, ?ComparisonFailure $comparisonFailure, Telemetry\Duration $duration): void
     {
         $this->dispatcher->dispatch(
             new Test\AttemptFailed(
@@ -747,6 +748,7 @@ final class DispatchingEmitter implements Emitter
                 $test,
                 $throwable,
                 $comparisonFailure,
+                $duration,
             ),
         );
     }
