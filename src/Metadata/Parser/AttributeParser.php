@@ -93,13 +93,13 @@ use PHPUnit\Framework\Attributes\UsesNamespace;
 use PHPUnit\Framework\Attributes\UsesTrait;
 use PHPUnit\Framework\Attributes\WithEnvironmentVariable;
 use PHPUnit\Framework\Attributes\WithoutErrorHandler;
+use PHPUnit\Metadata\InvalidVersionRequirementException;
 use PHPUnit\Metadata\Metadata;
 use PHPUnit\Metadata\MetadataCollection;
+use PHPUnit\Metadata\Version\InvalidVersionRequirement;
+use PHPUnit\Metadata\Version\Requirement;
 use ReflectionClass;
 use ReflectionMethod;
-use SebastianBergmann\VersionRequirement\InvalidVersionRequirement;
-use SebastianBergmann\VersionRequirement\InvalidVersionRequirementException;
-use SebastianBergmann\VersionRequirement\Requirement;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit

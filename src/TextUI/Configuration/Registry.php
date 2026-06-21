@@ -18,7 +18,7 @@ use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
 use PHPUnit\TextUI\CliArguments\Exception;
 use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
-use SebastianBergmann\VersionRequirement\VersionComparisonOperator;
+use PHPUnit\Util\VersionComparisonOperator;
 
 /**
  * CLI options and XML configuration are static within a single PHPUnit process.
