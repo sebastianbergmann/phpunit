@@ -93,26 +93,32 @@ final class HookMethodsTest extends TestCase
 
         $beforeClassHooks = HookMethodCollection::defaultBeforeClass();
         $beforeClassHooks->add(new HookMethod('beforeFirstTest', 1));
+        $beforeClassHooks->add(new HookMethod('beforeFirstTestWithNegativePriority', -1));
         $this->assertEquals($beforeClassHooks, $hookMethods['beforeClass']);
 
         $beforeHooks = HookMethodCollection::defaultBefore();
         $beforeHooks->add(new HookMethod('beforeEachTest', 2));
+        $beforeHooks->add(new HookMethod('beforeEachTestWithNegativePriority', -2));
         $this->assertEquals($beforeHooks, $hookMethods['before']);
 
         $preConditionHooks = HookMethodCollection::defaultPreCondition();
         $preConditionHooks->add(new HookMethod('preConditions', 3));
+        $preConditionHooks->add(new HookMethod('preConditionsWithNegativePriority', -3));
         $this->assertEquals($preConditionHooks, $hookMethods['preCondition']);
 
         $postConditionHooks = HookMethodCollection::defaultPostCondition();
         $postConditionHooks->add(new HookMethod('postConditions', 4));
+        $postConditionHooks->add(new HookMethod('postConditionsWithNegativePriority', -4));
         $this->assertEquals($postConditionHooks, $hookMethods['postCondition']);
 
         $afterHooks = HookMethodCollection::defaultAfter();
         $afterHooks->add(new HookMethod('afterEachTest', 5));
+        $afterHooks->add(new HookMethod('afterEachTestWithNegativePriority', -5));
         $this->assertEquals($afterHooks, $hookMethods['after']);
 
         $afterClassHooks = HookMethodCollection::defaultAfterClass();
         $afterClassHooks->add(new HookMethod('afterLastTest', 6));
+        $afterClassHooks->add(new HookMethod('afterLastTestWithNegativePriority', -6));
         $this->assertEquals($afterClassHooks, $hookMethods['afterClass']);
     }
 }

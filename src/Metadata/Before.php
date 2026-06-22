@@ -16,14 +16,8 @@ namespace PHPUnit\Metadata;
  */
 final readonly class Before extends Metadata
 {
-    /**
-     * @var non-negative-int
-     */
     private int $priority;
 
-    /**
-     * @param non-negative-int $priority
-     */
     protected function __construct(Level $level, int $priority)
     {
         parent::__construct($level);
@@ -36,9 +30,6 @@ final readonly class Before extends Metadata
         return true;
     }
 
-    /**
-     * @return non-negative-int
-     */
     public function priority(): int
     {
         return $this->priority;
