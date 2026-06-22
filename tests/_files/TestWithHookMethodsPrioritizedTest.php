@@ -24,8 +24,18 @@ final class TestWithHookMethodsPrioritizedTest extends TestCase
     {
     }
 
+    #[BeforeClass(priority: -1)]
+    public static function beforeFirstTestWithNegativePriority(): void
+    {
+    }
+
     #[AfterClass(priority: 6)]
     public static function afterLastTest(): void
+    {
+    }
+
+    #[AfterClass(priority: -6)]
+    public static function afterLastTestWithNegativePriority(): void
     {
     }
 
@@ -34,8 +44,18 @@ final class TestWithHookMethodsPrioritizedTest extends TestCase
     {
     }
 
+    #[Before(priority: -2)]
+    protected function beforeEachTestWithNegativePriority(): void
+    {
+    }
+
     #[PreCondition(priority: 3)]
     protected function preConditions(): void
+    {
+    }
+
+    #[PreCondition(priority: -3)]
+    protected function preConditionsWithNegativePriority(): void
     {
     }
 
@@ -44,8 +64,18 @@ final class TestWithHookMethodsPrioritizedTest extends TestCase
     {
     }
 
+    #[PostCondition(priority: -4)]
+    protected function postConditionsWithNegativePriority(): void
+    {
+    }
+
     #[After(priority: 5)]
     protected function afterEachTest(): void
+    {
+    }
+
+    #[After(priority: -5)]
+    protected function afterEachTestWithNegativePriority(): void
     {
     }
 }

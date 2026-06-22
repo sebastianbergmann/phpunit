@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 13.2 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [13.2.2] - 2026-MM-DD
+
+### Fixed
+
+* [#6768](https://github.com/sebastianbergmann/phpunit/issues/6768): Negative priorities for hook methods are rejected by static analysis
+
 ## [13.2.1] - 2026-06-15
 
 ### Fixed
