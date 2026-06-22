@@ -19,22 +19,13 @@ use Attribute;
 #[Attribute(Attribute::TARGET_METHOD)]
 final readonly class After
 {
-    /**
-     * @var non-negative-int
-     */
     private int $priority;
 
-    /**
-     * @param non-negative-int $priority
-     */
     public function __construct(int $priority = 0)
     {
         $this->priority = $priority;
     }
 
-    /**
-     * @return non-negative-int
-     */
     public function priority(): int
     {
         return $this->priority;
