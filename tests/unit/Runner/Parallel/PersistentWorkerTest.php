@@ -71,6 +71,24 @@ final class PersistentWorkerTest extends TestCase
         );
     }
 
+    public function testRecognizesCompletionEvenWhenATestLeavesStrayOutputOnTheControlChannel(): void
+    {
+        $worker = $this->worker();
+
+        $worker->start();
+
+        $stray = new WorkerSecondTest('testThatWritesStrayOutputWithoutANewlineToTheControlChannel');
+
+        $worker->run($stray);
+
+        $worker->stop();
+
+        // The completion marker fuses with the stray output the test wrote to
+        // the control channel without a trailing newline; the worker is only
+        // reported as succeeding if the parent still recognizes the marker.
+        $this->assertTrue($stray->status()->isSuccess());
+    }
+
     public function testReportsAnErrorWhenTheWorkerDiesWhileRunningATest(): void
     {
         $worker = $this->worker();
