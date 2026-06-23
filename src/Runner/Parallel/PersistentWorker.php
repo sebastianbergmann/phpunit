@@ -21,6 +21,7 @@ use function is_resource;
 use function json_encode;
 use function random_bytes;
 use function serialize;
+use function str_ends_with;
 use function sys_get_temp_dir;
 use function tempnam;
 use function trim;
@@ -188,6 +189,12 @@ final class PersistentWorker
      * identified by the given nonce has finished. Any unrelated output the
      * worker may have written to the channel is skipped. Returns false if the
      * worker terminated before reporting completion.
+     *
+     * The marker is the last thing the worker writes on its line, followed by
+     * a newline. Stray output that the test produced on the control channel
+     * without a trailing newline therefore fuses with the marker as a prefix
+     * of the same line; matching the marker as a suffix tolerates this instead
+     * of being defeated by it.
      */
     private function awaitResult(string $nonce): bool
     {
@@ -204,7 +211,7 @@ final class PersistentWorker
         $expected = self::DONE_PREFIX . $nonce;
 
         while (($line = fgets($stdout)) !== false) {
-            if (trim($line) === $expected) {
+            if (str_ends_with(trim($line), $expected)) {
                 return true;
             }
         }
