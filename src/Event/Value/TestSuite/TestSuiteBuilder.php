@@ -21,7 +21,7 @@ use PHPUnit\Event\Code\TestCollection;
 use PHPUnit\Event\Code\TestDoxBuilder;
 use PHPUnit\Event\RuntimeException;
 use PHPUnit\Framework\DataProviderTestSuite;
-use PHPUnit\Framework\RepeatTestSuite;
+use PHPUnit\Framework\IterativeTestSuite;
 use PHPUnit\Framework\RetryTestSuite;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite as FrameworkTestSuite;
@@ -71,7 +71,7 @@ final readonly class TestSuiteBuilder
             );
         }
 
-        if ($testSuite instanceof RepeatTestSuite || $testSuite instanceof RetryTestSuite) {
+        if ($testSuite instanceof IterativeTestSuite) {
             $name = $testSuite->name();
 
             $separatorPosition = strpos($name, '::');

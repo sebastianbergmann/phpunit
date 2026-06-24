@@ -20,9 +20,8 @@ use function max;
 use function shuffle;
 use function usort;
 use PHPUnit\Framework\DataProviderTestSuite;
+use PHPUnit\Framework\IterativeTestSuite;
 use PHPUnit\Framework\Reorderable;
-use PHPUnit\Framework\RepeatTestSuite;
-use PHPUnit\Framework\RetryTestSuite;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
@@ -99,7 +98,7 @@ final class TestSuiteSorter
 
         // the repetitions of a repeated test and the attempts of a retried test
         // always run in their original order
-        if ($suite instanceof RepeatTestSuite || $suite instanceof RetryTestSuite) {
+        if ($suite instanceof IterativeTestSuite) {
             return;
         }
 

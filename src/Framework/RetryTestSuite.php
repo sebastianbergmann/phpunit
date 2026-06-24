@@ -23,7 +23,7 @@ use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class RetryTestSuite extends TestSuite
+final class RetryTestSuite extends IterativeTestSuite
 {
     /**
      * @var positive-int
@@ -34,12 +34,6 @@ final class RetryTestSuite extends TestSuite
      * @var ?Closure(): TestCase
      */
     private ?Closure $additionalAttemptFactory = null;
-
-    /**
-     * @var list<ExecutionOrderDependency>
-     */
-    private array $dependencies = [];
-    private bool $wasRun        = false;
 
     /**
      * @param non-empty-string       $name
@@ -60,50 +54,6 @@ final class RetryTestSuite extends TestSuite
     }
 
     /**
-     * @throws Event\RuntimeException
-     * @throws Exception
-     * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws UnintentionallyCoveredCodeException
-     */
-    public function run(): void
-    {
-        if ($this->wasRun) {
-            // @codeCoverageIgnoreStart
-            throw new Exception('The tests aggregated by this TestSuite were already run');
-            // @codeCoverageIgnoreEnd
-        }
-
-        $this->wasRun = true;
-
-        if ($this->isEmpty()) {
-            return;
-        }
-
-        $emitter                       = Event\Facade::emitter();
-        $testSuiteValueObjectForEvents = Event\TestSuite\TestSuiteBuilder::from($this);
-
-        $emitter->testSuiteStarted($testSuiteValueObjectForEvents);
-
-        /** @var list<TestCase> $tests */
-        $tests = [];
-
-        foreach ($this as $test) {
-            assert($test instanceof TestCase);
-
-            $tests[] = $test;
-        }
-
-        $this->setTests([]);
-
-        if ($tests !== []) {
-            $this->runAttempts($tests[0], $emitter);
-        }
-
-        $emitter->testSuiteFinished($testSuiteValueObjectForEvents);
-    }
-
-    /**
      * @return positive-int
      */
     public function maxAttempts(): int
@@ -112,59 +62,13 @@ final class RetryTestSuite extends TestSuite
     }
 
     /**
-     * @param list<ExecutionOrderDependency> $dependencies
+     * @param list<TestCase> $tests
      */
-    public function setDependencies(array $dependencies): void
+    protected function execute(array $tests, Event\Emitter $emitter): void
     {
-        $this->dependencies = $dependencies;
-
-        foreach ($this->tests() as $test) {
-            assert($test instanceof TestCase);
-
-            $test->setDependencies($dependencies);
+        if ($tests !== []) {
+            $this->runAttempts($tests[0], $emitter);
         }
-    }
-
-    /**
-     * @return list<ExecutionOrderDependency>
-     */
-    public function provides(): array
-    {
-        $tests = $this->tests();
-
-        if ($tests === []) {
-            return [];
-        }
-
-        assert($tests[0] instanceof TestCase);
-
-        return $tests[0]->provides();
-    }
-
-    /**
-     * @return list<ExecutionOrderDependency>
-     */
-    public function requires(): array
-    {
-        $tests = $this->tests();
-
-        if ($tests === []) {
-            return [];
-        }
-
-        assert($tests[0] instanceof TestCase);
-
-        return $tests[0]->requires();
-    }
-
-    public function sortId(): string
-    {
-        $tests = $this->tests();
-
-        assert($tests !== []);
-        assert($tests[0] instanceof TestCase);
-
-        return $tests[0]->sortId();
     }
 
     /**
@@ -190,7 +94,7 @@ final class RetryTestSuite extends TestSuite
 
                 $test = ($this->additionalAttemptFactory)();
 
-                $test->setDependencies($this->dependencies);
+                $test->setDependencies($this->dependencies());
             }
 
             $test->setAttempt($attempt, $this->maxAttempts);
