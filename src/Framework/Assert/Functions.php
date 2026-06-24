@@ -2638,6 +2638,20 @@ if (!function_exists('PHPUnit\Framework\assertStringContainsStringIgnoringLineEn
     }
 }
 
+if (!function_exists('PHPUnit\Framework\assertStringNotContainsStringIgnoringLineEndings')) {
+    /**
+     * @throws ExpectationFailedException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertStringNotContainsStringIgnoringLineEndings
+     */
+    function assertStringNotContainsStringIgnoringLineEndings(string $needle, string $haystack, string $message = ''): void
+    {
+        Assert::assertStringNotContainsStringIgnoringLineEndings($needle, $haystack, $message);
+    }
+}
+
 if (!function_exists('PHPUnit\Framework\assertStringEqualsStringIgnoringLineEndings')) {
     /**
      * Asserts that two strings are equal except for line endings.
@@ -2651,6 +2665,22 @@ if (!function_exists('PHPUnit\Framework\assertStringEqualsStringIgnoringLineEndi
     function assertStringEqualsStringIgnoringLineEndings(string $expected, string $actual, string $message = ''): void
     {
         Assert::assertStringEqualsStringIgnoringLineEndings($expected, $actual, $message);
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\assertStringNotEqualsStringIgnoringLineEndings')) {
+    /**
+     * Asserts that two strings are not equal except for line endings.
+     *
+     * @throws ExpectationFailedException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertStringNotEqualsStringIgnoringLineEndings
+     */
+    function assertStringNotEqualsStringIgnoringLineEndings(string $expected, string $actual, string $message = ''): void
+    {
+        Assert::assertStringNotEqualsStringIgnoringLineEndings($expected, $actual, $message);
     }
 }
 

@@ -2405,6 +2405,14 @@ abstract class Assert
     }
 
     /**
+     * @throws ExpectationFailedException
+     */
+    final public static function assertStringNotContainsStringIgnoringLineEndings(string $needle, string $haystack, string $message = ''): void
+    {
+        self::assertThat($haystack, new LogicalNot(new StringContains($needle, false, true)), $message);
+    }
+
+    /**
      * Asserts that two strings are equal except for line endings.
      *
      * @throws ExpectationFailedException
@@ -2412,6 +2420,22 @@ abstract class Assert
     final public static function assertStringEqualsStringIgnoringLineEndings(string $expected, string $actual, string $message = ''): void
     {
         self::assertThat($actual, new StringEqualsStringIgnoringLineEndings($expected), $message);
+    }
+
+    /**
+     * Asserts that two strings are not equal except for line endings.
+     *
+     * @throws ExpectationFailedException
+     */
+    final public static function assertStringNotEqualsStringIgnoringLineEndings(string $expected, string $actual, string $message = ''): void
+    {
+        self::assertThat(
+            $actual,
+            new LogicalNot(
+                self::stringEqualsStringIgnoringLineEndings($expected),
+            ),
+            $message,
+        );
     }
 
     /**
