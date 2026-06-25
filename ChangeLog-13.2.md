@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 13.2 release series are documented in this fi
 ### Fixed
 
 * [#6768](https://github.com/sebastianbergmann/phpunit/issues/6768): Negative priorities for hook methods are rejected by static analysis
+* [#6778](https://github.com/sebastianbergmann/phpunit/issues/6778): Deprecation triggered outside of tests cannot be ignored
 
 ## [13.2.1] - 2026-06-15
 

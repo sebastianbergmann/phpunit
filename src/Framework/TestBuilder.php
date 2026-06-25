@@ -50,15 +50,15 @@ final readonly class TestBuilder
 
         $data = null;
 
-        if ($this->requirementsSatisfied($className, $methodName) &&
-            !$this->filterExcludesMethod($className, $methodName)) {
-            try {
-                ErrorHandler::instance()->enterTestCaseContext($className, $methodName);
+        try {
+            ErrorHandler::instance()->enterTestCaseContext($className, $methodName);
 
+            if ($this->requirementsSatisfied($className, $methodName) &&
+                !$this->filterExcludesMethod($className, $methodName)) {
                 $data = (new DataProvider)->providedData($className, $methodName);
-            } finally {
-                ErrorHandler::instance()->leaveTestCaseContext();
             }
+        } finally {
+            ErrorHandler::instance()->leaveTestCaseContext();
         }
 
         if ($data !== null && $data !== []) {
