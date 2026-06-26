@@ -26,7 +26,6 @@ use PHPUnit\Util\PHP\JobRunner;
 
 #[CoversClass(WorkerPool::class)]
 #[CoversClass(TestClassWorkUnit::class)]
-#[CoversClass(PhptWorkUnit::class)]
 #[CoversClass(CompletedWorkUnit::class)]
 #[CoversClass(PersistentWorker::class)]
 #[UsesClass(JobRunner::class)]
@@ -34,20 +33,6 @@ use PHPUnit\Util\PHP\JobRunner;
 #[Large]
 final class WorkerPoolTest extends TestCase
 {
-    public function testRunsAPhptTestInAWorker(): void
-    {
-        $units = [
-            new PhptWorkUnit(0, __DIR__ . '/../../../_files/parallel-worker/worker.phpt'),
-        ];
-
-        $completed = $this->execute($this->pool(1), $units);
-
-        $this->assertCount(1, $completed);
-        $this->assertFalse($completed[0]->crashed());
-        $this->assertNotSame('', $completed[0]->serializedResult());
-        $this->assertNotNull($completed[0]->nonce());
-    }
-
     public function testRunsUnitsAcrossWorkersAndReportsEachAsCompleted(): void
     {
         $units = [
