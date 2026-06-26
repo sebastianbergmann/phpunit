@@ -1,5 +1,6 @@
 --TEST--
 Order by depends,defects,duration-ascending (with result cache): Test methods with dependencies and defects
+--DO_NOT_RUN_IN_PARALLEL--
 --FILE--
 <?php declare(strict_types=1);
 $testResultsFile = sys_get_temp_dir() . '/test-results';
