@@ -24,10 +24,15 @@ final readonly class PhptWorkUnit implements WorkUnit
      * @var non-negative-int
      */
     private int $index;
+
+    /**
+     * @var non-empty-string
+     */
     private string $file;
 
     /**
      * @param non-negative-int $index
+     * @param non-empty-string $file
      */
     public function __construct(int $index, string $file)
     {
@@ -43,11 +48,17 @@ final readonly class PhptWorkUnit implements WorkUnit
         return $this->index;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function file(): string
     {
         return $this->file;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function name(): string
     {
         return $this->file;
