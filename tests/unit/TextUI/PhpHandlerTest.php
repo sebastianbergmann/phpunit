@@ -20,6 +20,7 @@ use function putenv;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DoNotRunInParallel;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\TestCase;
@@ -29,6 +30,7 @@ use PHPUnit\TextUI\XmlConfiguration\Loader;
 #[Medium]
 #[Group('textui')]
 #[Group('textui/configuration')]
+#[DoNotRunInParallel]
 final class PhpHandlerTest extends TestCase
 {
     #[BackupGlobals(true)]
