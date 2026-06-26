@@ -28,6 +28,7 @@ use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\Parallel\CompletedWorkUnit;
 use PHPUnit\Runner\Parallel\PersistentWorker;
+use PHPUnit\Runner\Parallel\PhptRunner;
 use PHPUnit\Runner\Parallel\PhptWorkUnit;
 use PHPUnit\Runner\Parallel\ResultAggregator;
 use PHPUnit\Runner\Parallel\TestClassWorkUnit;
@@ -100,8 +101,8 @@ final class ParallelTestRunner
 
             $collected = $this->collectUnits($suite);
 
-            if ($collected['units'] !== [] || $collected['standalone'] !== []) {
-                $this->execute($configuration, $collected['units'], $collected['standalone']);
+            if ($collected['units'] !== [] || $collected['phpt'] !== [] || $collected['standalone'] !== []) {
+                $this->execute($configuration, $collected['units'], $collected['phpt'], $collected['standalone']);
             }
 
             Event\Facade::emitter()->testRunnerExecutionFinished();
@@ -140,11 +141,12 @@ final class ParallelTestRunner
      * run in the main process, each at its own suite index.
      *
      * @param list<WorkUnit>                                   $units
+     * @param list<PhptWorkUnit>                               $phpt
      * @param list<array{index: non-negative-int, test: Test}> $standalone
      *
      * @throws WorkerException
      */
-    private function execute(Configuration $configuration, array $units, array $standalone): void
+    private function execute(Configuration $configuration, array $units, array $phpt, array $standalone): void
     {
         $aggregator = new ResultAggregator(
             Event\Facade::instance(),
@@ -192,6 +194,15 @@ final class ParallelTestRunner
             );
         }
 
+        // The PHPT tests run concurrently in the main process, each as its own
+        // child process rather than nested inside a worker. Every one is
+        // registered with the aggregator so that the events it collected are
+        // replayed at its suite index, interspersed in global suite order with
+        // the worker units and the in-process units.
+        if ($phpt !== []) {
+            $this->runPhpt($configuration, $phpt, $aggregator);
+        }
+
         // Run any in-process units that precede the first worker unit, then the
         // worker units (whose completions drive the release of the in-process
         // units interspersed among them), then any that follow the last one.
@@ -202,6 +213,54 @@ final class ParallelTestRunner
         }
 
         $aggregator->flush();
+    }
+
+    /**
+     * Run the PHPT tests concurrently, each as its own child process in the
+     * main process, and register every one with the aggregator so that the
+     * events it collected are replayed at its suite index, in global suite
+     * order.
+     *
+     * @param non-empty-list<PhptWorkUnit> $phpt
+     */
+    private function runPhpt(Configuration $configuration, array $phpt, ResultAggregator $aggregator): void
+    {
+        $concurrency = $configuration->numberOfParallelWorkers();
+
+        if (CodeCoverage::instance()->isActive()) {
+            // The PHPT tests run in the main process and share its single code
+            // coverage instance, so they must not collect coverage at the same
+            // time; they are therefore run one at a time when coverage is on.
+            $concurrency = 1;
+        }
+
+        $processor = new ChildProcessResultProcessor(
+            Event\Facade::instance(),
+            Event\Facade::emitter(),
+            PassedTests::instance(),
+            CodeCoverage::instance(),
+        );
+
+        new PhptRunner(new JobRunner($processor), $concurrency)->run(
+            $phpt,
+            static function (int $index, Event\EventCollection $events) use ($aggregator): void
+            {
+                $aggregator->registerInProcessUnit(
+                    $index,
+                    static function () use ($events): void
+                    {
+                        Event\Facade::instance()->forward($events);
+                    },
+                );
+
+                // Release everything that has become contiguous in suite order
+                // so that progress is reported as the PHPT tests finish, rather
+                // than buffered until the whole phase is done. PHPT tests finish
+                // out of order, so this releases nothing until the next test in
+                // suite order is among those that have finished.
+                $aggregator->flush();
+            },
+        );
     }
 
     /**
@@ -409,14 +468,14 @@ final class ParallelTestRunner
      * the main process. All draw from one shared index sequence so that they
      * can be released together in global suite order.
      *
-     * @return array{units: list<WorkUnit>, standalone: list<array{index: non-negative-int, test: Test}>}
+     * @return array{units: list<WorkUnit>, phpt: list<PhptWorkUnit>, standalone: list<array{index: non-negative-int, test: Test}>}
      */
     private function collectUnits(TestSuite $suite): array
     {
         /** @var array<class-string<TestCase>, array{index: non-negative-int, tests: list<TestCase>}> $byClass */
         $byClass = [];
 
-        /** @var list<array{index: non-negative-int, file: string}> $phpt */
+        /** @var list<array{index: non-negative-int, file: non-empty-string}> $phpt */
         $phpt = [];
 
         /** @var list<array{index: non-negative-int, test: Test}> $standalone */
@@ -432,19 +491,22 @@ final class ParallelTestRunner
             $units[] = new TestClassWorkUnit($group['index'], $className, $group['tests']);
         }
 
+        $phptUnits = [];
+
         foreach ($phpt as $item) {
-            $units[] = new PhptWorkUnit($item['index'], $item['file']);
+            $phptUnits[] = new PhptWorkUnit($item['index'], $item['file']);
         }
 
         return [
             'units'      => $units,
+            'phpt'       => $phptUnits,
             'standalone' => $standalone,
         ];
     }
 
     /**
      * @param array<class-string<TestCase>, array{index: non-negative-int, tests: list<TestCase>}> $byClass
-     * @param list<array{index: non-negative-int, file: string}>                                   $phpt
+     * @param list<array{index: non-negative-int, file: non-empty-string}>                         $phpt
      * @param list<array{index: non-negative-int, test: Test}>                                     $standalone
      * @param non-negative-int                                                                     $index
      */

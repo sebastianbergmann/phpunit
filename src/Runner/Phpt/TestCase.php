@@ -40,8 +40,10 @@ use function substr;
 use function trim;
 use function unlink;
 use function unserialize;
+use Generator;
 use PHPUnit\Event\Code\Phpt;
 use PHPUnit\Event\Code\ThrowableBuilder;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Event\TestRunner\ChildProcessReason;
@@ -61,6 +63,7 @@ use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\Util\PHP\Job;
 use PHPUnit\Util\PHP\JobRunnerRegistry;
+use PHPUnit\Util\PHP\Result;
 use SebastianBergmann\CodeCoverage\Data\RawCodeCoverageData;
 use SebastianBergmann\CodeCoverage\InvalidArgumentException;
 use SebastianBergmann\CodeCoverage\ReflectionException;
@@ -142,8 +145,43 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
      */
     public function run(): void
     {
-        $emitter = EventFacade::emitter();
-        $parser  = new Parser;
+        $generator = $this->execute(EventFacade::emitter());
+
+        $generator->rewind();
+
+        while ($generator->valid()) {
+            $generator->send(JobRunnerRegistry::run($generator->current()));
+        }
+    }
+
+    /**
+     * The staged execution of this PHPT test as a generator that yields a Job
+     * for each section that has to run in a child process and is resumed with
+     * that job's Result.
+     *
+     * Driving the generator synchronously, as run() does, runs the sections one
+     * after another and is equivalent to ordinary sequential execution. The
+     * parallel test runner instead drives the generators of several PHPT tests
+     * at once, each writing its events to its own emitter, so that the child
+     * processes of independent PHPT tests run concurrently without any of them
+     * being nested inside a worker process.
+     *
+     * @throws \PHPUnit\Framework\Exception
+     * @throws \SebastianBergmann\Template\InvalidArgumentException
+     * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws NoPreviousThrowableException
+     * @throws ReflectionException
+     * @throws TestIdMissingException
+     * @throws UnintentionallyCoveredCodeException
+     *
+     * @return Generator<int, Job, Result, void>
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function execute(Emitter $emitter): Generator
+    {
+        $parser = new Parser;
 
         $emitter->testPreparationStarted(
             $this->valueObjectForEvents(),
@@ -186,7 +224,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
             $environmentVariables = $parser->parseEnvSection($sections['ENV']);
         }
 
-        if ($this->shouldTestBeSkipped($sections, $phpSettings)) {
+        if (yield from $this->executeSkipIf($emitter, $sections, $phpSettings)) {
             return;
         }
 
@@ -235,22 +273,20 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
             // @codeCoverageIgnoreEnd
         }
 
-        $jobResult = JobRunnerRegistry::run(
-            new Job(
-                $code,
-                ChildProcessReason::PhptTest,
-                $this->stringifyIni($phpSettings),
-                $environmentVariables,
-                $arguments,
-                $input,
-                true,
-            ),
+        $jobResult = yield new Job(
+            $code,
+            ChildProcessReason::PhptTest,
+            $this->stringifyIni($phpSettings),
+            $environmentVariables,
+            $arguments,
+            $input,
+            true,
         );
 
-        EventFacade::emitter()->childProcessFinished(ChildProcessReason::PhptTest, $jobResult->stdout(), $jobResult->stderr());
+        $emitter->childProcessFinished(ChildProcessReason::PhptTest, $jobResult->stdout(), $jobResult->stderr());
 
         if (TestResultFacade::wasInterrupted()) {
-            $this->runClean($sections, CodeCoverage::instance()->isActive());
+            yield from $this->executeClean($emitter, $sections, CodeCoverage::instance()->isActive());
 
             $emitter->testFinished($this->valueObjectForEvents(), 0);
 
@@ -358,7 +394,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
             $emitter->testPassed($this->valueObjectForEvents());
         }
 
-        $this->runClean($sections, CodeCoverage::instance()->isActive());
+        yield from $this->executeClean($emitter, $sections, CodeCoverage::instance()->isActive());
 
         $emitter->testFinished($this->valueObjectForEvents(), 1);
     }
@@ -373,6 +409,8 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
 
     /**
      * Returns a string representation of the test case.
+     *
+     * @return non-empty-string
      */
     public function toString(): string
     {
@@ -478,8 +516,10 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
     /**
      * @param array<non-empty-string, string>               $sections
      * @param array<non-empty-string, array<string>|string> $settings
+     *
+     * @return Generator<int, Job, Result, bool>
      */
-    private function shouldTestBeSkipped(array $sections, array $settings): bool
+    private function executeSkipIf(Emitter $emitter, array $sections, array $settings): Generator
     {
         if (!isset($sections['SKIPIF']) || $sections['SKIPIF'] === '') {
             return false;
@@ -488,22 +528,20 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         $skipIfCode = (new Renderer)->render($this->filename, $sections['SKIPIF']);
 
         if ($this->shouldRunInSubprocess($sections, $skipIfCode)) {
-            $jobResult = JobRunnerRegistry::run(
-                new Job(
-                    $skipIfCode,
-                    ChildProcessReason::PhptSkipIfSection,
-                    $this->stringifyIni($settings),
-                ),
+            $jobResult = yield new Job(
+                $skipIfCode,
+                ChildProcessReason::PhptSkipIfSection,
+                $this->stringifyIni($settings),
             );
 
             $output = $jobResult->stdout();
 
-            EventFacade::emitter()->childProcessFinished(ChildProcessReason::PhptSkipIfSection, $output, $jobResult->stderr());
+            $emitter->childProcessFinished(ChildProcessReason::PhptSkipIfSection, $output, $jobResult->stderr());
         } else {
             $output = $this->runCodeInLocalSandbox($skipIfCode);
         }
 
-        $this->triggerRunnerWarningOnPhpErrors('SKIPIF', $output);
+        $this->triggerRunnerWarningOnPhpErrors($emitter, 'SKIPIF', $output);
 
         if (strncasecmp('skip', ltrim($output), 4) === 0) {
             $message = '';
@@ -516,12 +554,12 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
                 $message = 'Skipped';
             }
 
-            EventFacade::emitter()->testSkipped(
+            $emitter->testSkipped(
                 $this->valueObjectForEvents(),
                 $message,
             );
 
-            EventFacade::emitter()->testFinished($this->valueObjectForEvents(), 0);
+            $emitter->testFinished($this->valueObjectForEvents(), 0);
 
             return true;
         }
@@ -532,7 +570,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
             !str_contains($output, 'Fatal error:') &&
             !in_array(SideEffect::STANDARD_OUTPUT, $sideEffects, true) &&
             !in_array(SideEffect::SCOPE_POLLUTION, $sideEffects, true)) {
-            EventFacade::emitter()->testConsideredRisky(
+            $emitter->testConsideredRisky(
                 $this->valueObjectForEvents(),
                 'SKIPIF section does not produce output that could result in the test being skipped',
             );
@@ -596,8 +634,10 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
 
     /**
      * @param array<non-empty-string, string> $sections
+     *
+     * @return Generator<int, Job, Result, void>
      */
-    private function runClean(array $sections, bool $collectCoverage): void
+    private function executeClean(Emitter $emitter, array $sections, bool $collectCoverage): Generator
     {
         if (!isset($sections['CLEAN']) || $sections['CLEAN'] === '') {
             return;
@@ -606,22 +646,20 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         $cleanCode = (new Renderer)->render($this->filename, $sections['CLEAN']);
 
         if ($this->shouldRunInSubprocess($sections, $cleanCode)) {
-            $jobResult = JobRunnerRegistry::run(
-                new Job(
-                    $cleanCode,
-                    ChildProcessReason::PhptCleanSection,
-                    $this->settings($collectCoverage),
-                ),
+            $jobResult = yield new Job(
+                $cleanCode,
+                ChildProcessReason::PhptCleanSection,
+                $this->settings($collectCoverage),
             );
 
             $output = $jobResult->stdout();
 
-            EventFacade::emitter()->childProcessFinished(ChildProcessReason::PhptCleanSection, $jobResult->stdout(), $jobResult->stderr());
+            $emitter->childProcessFinished(ChildProcessReason::PhptCleanSection, $jobResult->stdout(), $jobResult->stderr());
         } else {
             $output = $this->runCodeInLocalSandbox($cleanCode);
         }
 
-        $this->triggerRunnerWarningOnPhpErrors('CLEAN', $output);
+        $this->triggerRunnerWarningOnPhpErrors($emitter, 'CLEAN', $output);
     }
 
     /**
@@ -882,10 +920,10 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         return $settings;
     }
 
-    private function triggerRunnerWarningOnPhpErrors(string $section, string $output): void
+    private function triggerRunnerWarningOnPhpErrors(Emitter $emitter, string $section, string $output): void
     {
         if (str_contains($output, 'Parse error:')) {
-            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+            $emitter->testRunnerTriggeredPhpunitWarning(
                 sprintf(
                     '%s section triggered a parse error: %s',
                     $section,
@@ -895,7 +933,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         }
 
         if (str_contains($output, 'Fatal error:')) {
-            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+            $emitter->testRunnerTriggeredPhpunitWarning(
                 sprintf(
                     '%s section triggered a fatal error: %s',
                     $section,

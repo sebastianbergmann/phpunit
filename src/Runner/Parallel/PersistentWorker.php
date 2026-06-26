@@ -226,13 +226,9 @@ final class PersistentWorker
             // @codeCoverageIgnoreEnd
         }
 
-        if ($unit instanceof PhptWorkUnit) {
-            $command = $this->phptCommand($unit, $offset, $resultFile, $nonce);
-        } else {
-            assert($unit instanceof TestClassWorkUnit);
+        assert($unit instanceof TestClassWorkUnit);
 
-            $command = $this->testClassCommand($unit, $offset, $resultFile, $nonce);
-        }
+        $command = $this->testClassCommand($unit, $offset, $resultFile, $nonce);
 
         $encodedCommand = json_encode($command);
 
@@ -399,25 +395,6 @@ final class PersistentWorker
             'file'              => $file,
             'className'         => $unit->className(),
             'tests'             => $tests,
-            'offsetSeconds'     => $offset[0],
-            'offsetNanoseconds' => $offset[1],
-            'resultFile'        => $resultFile,
-            'nonce'             => $nonce,
-        ];
-    }
-
-    /**
-     * @param array{0: int, 1: int} $offset
-     * @param non-empty-string      $resultFile
-     * @param non-empty-string      $nonce
-     *
-     * @return array<string, mixed>
-     */
-    private function phptCommand(PhptWorkUnit $unit, array $offset, string $resultFile, string $nonce): array
-    {
-        return [
-            'command'           => 'runPhpt',
-            'file'              => $unit->file(),
             'offsetSeconds'     => $offset[0],
             'offsetNanoseconds' => $offset[1],
             'resultFile'        => $resultFile,
