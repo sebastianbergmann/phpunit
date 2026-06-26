@@ -366,6 +366,11 @@ final class Collector
             return;
         }
 
+        if ($testSuite->isForRepeatedPhpt() || $testSuite->isForRetriedPhpt()) {
+            // PHPT tests do not register themselves with PassedTests
+            return;
+        }
+
         assert($testSuite instanceof TestSuiteForTestClass);
 
         PassedTests::instance()->testClassPassed($testSuite->className());
@@ -800,13 +805,11 @@ final class Collector
 
     private function rememberRetriedTest(Test $test): void
     {
-        if (!$test->isTestMethod()) {
+        $id = $this->retriedTestId($test);
+
+        if ($id === null) {
             return;
         }
-
-        assert($test instanceof TestMethod);
-
-        $id = $this->logicalTestId($test);
 
         if (!isset($this->retriedTests[$id])) {
             $this->retriedTests[$id] = 1;
@@ -819,13 +822,31 @@ final class Collector
 
     private function forgetRetriedTest(Test $test): void
     {
-        if (!$test->isTestMethod()) {
+        $id = $this->retriedTestId($test);
+
+        if ($id === null) {
             return;
         }
 
-        assert($test instanceof TestMethod);
+        unset($this->retriedTests[$id]);
+    }
 
-        unset($this->retriedTests[$this->logicalTestId($test)]);
+    /**
+     * @return ?non-empty-string
+     */
+    private function retriedTestId(Test $test): ?string
+    {
+        if ($test->isTestMethod()) {
+            assert($test instanceof TestMethod);
+
+            return $this->logicalTestId($test);
+        }
+
+        if ($test->isPhpt()) {
+            return $test->file();
+        }
+
+        return null;
     }
 
     /**

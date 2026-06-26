@@ -57,12 +57,10 @@ abstract class IterativeTestSuite extends TestSuite
 
         $emitter->testSuiteStarted($testSuiteValueObjectForEvents);
 
-        /** @var list<TestCase> $tests */
+        /** @var list<Test> $tests */
         $tests = [];
 
         foreach ($this as $test) {
-            assert($test instanceof TestCase);
-
             $tests[] = $test;
         }
 
@@ -81,7 +79,9 @@ abstract class IterativeTestSuite extends TestSuite
         $this->dependencies = $dependencies;
 
         foreach ($this->tests() as $test) {
-            assert($test instanceof TestCase);
+            if (!$test instanceof TestCase) {
+                continue;
+            }
 
             $test->setDependencies($dependencies);
         }
@@ -98,7 +98,7 @@ abstract class IterativeTestSuite extends TestSuite
             return [];
         }
 
-        assert($tests[0] instanceof TestCase);
+        assert($tests[0] instanceof Reorderable);
 
         return $tests[0]->provides();
     }
@@ -114,7 +114,7 @@ abstract class IterativeTestSuite extends TestSuite
             return [];
         }
 
-        assert($tests[0] instanceof TestCase);
+        assert($tests[0] instanceof Reorderable);
 
         return $tests[0]->requires();
     }
@@ -124,7 +124,7 @@ abstract class IterativeTestSuite extends TestSuite
         $tests = $this->tests();
 
         assert($tests !== []);
-        assert($tests[0] instanceof TestCase);
+        assert($tests[0] instanceof Reorderable);
 
         return $tests[0]->sortId();
     }
@@ -138,7 +138,7 @@ abstract class IterativeTestSuite extends TestSuite
     }
 
     /**
-     * @param list<TestCase> $tests
+     * @param list<Test> $tests
      *
      * @throws Event\RuntimeException
      * @throws Exception

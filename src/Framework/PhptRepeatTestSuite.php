@@ -9,10 +9,11 @@
  */
 namespace PHPUnit\Framework;
 
-use function array_pop;
-use function array_reverse;
 use function assert;
+use function range;
 use PHPUnit\Event;
+use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
 
 /**
@@ -20,7 +21,7 @@ use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class RepeatTestSuite extends IterativeTestSuite
+final class PhptRepeatTestSuite extends PhptIterativeTestSuite
 {
     /**
      * @var positive-int
@@ -28,19 +29,19 @@ final class RepeatTestSuite extends IterativeTestSuite
     private int $failureThreshold = 1;
 
     /**
-     * @param non-empty-string         $name
-     * @param non-empty-list<TestCase> $tests
-     * @param positive-int             $failureThreshold
-     * @param list<non-empty-string>   $groups
+     * @param non-empty-string $filename
+     * @param positive-int     $numberOfRuns
+     * @param positive-int     $failureThreshold
      */
-    public static function fromTests(string $name, array $tests, int $failureThreshold, array $groups = []): self
+    public static function for(string $filename, int $numberOfRuns, int $failureThreshold): self
     {
-        $suite = self::empty($name);
+        $suite = self::empty($filename);
 
+        $suite->filename         = $filename;
         $suite->failureThreshold = $failureThreshold;
 
-        foreach ($tests as $test) {
-            $suite->addTest($test, $groups);
+        foreach (range(1, $numberOfRuns) as $repetition) {
+            $suite->addTest(new PhptTestCase($filename, $repetition, $numberOfRuns));
         }
 
         return $suite;
@@ -51,13 +52,13 @@ final class RepeatTestSuite extends IterativeTestSuite
      */
     protected function execute(array $tests, Event\Emitter $emitter): void
     {
-        $tests = array_reverse($tests);
+        $facade = EventFacade::instance();
 
         $failureCount         = 0;
         $lastFailedRepetition = 0;
 
-        while (($test = array_pop($tests)) !== null) {
-            assert($test instanceof TestCase);
+        foreach ($tests as $test) {
+            assert($test instanceof PhptTestCase);
 
             if (TestResultFacade::shouldStop()) {
                 $emitter->testRunnerExecutionAborted();
@@ -71,9 +72,15 @@ final class RepeatTestSuite extends IterativeTestSuite
                 continue;
             }
 
+            $facade->startCollectingEvents();
+
             $test->run();
 
-            if ($test->status()->isFailure() || $test->status()->isError()) {
+            $events = $facade->stopCollectingEvents();
+
+            $facade->forward($events);
+
+            if ($this->failedOrErrored($events)) {
                 $failureCount++;
                 $lastFailedRepetition = $test->repetition();
             }

@@ -87,11 +87,39 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
     private string $filename;
 
     /**
-     * @param non-empty-string $filename
+     * @var positive-int
      */
-    public function __construct(string $filename)
+    private int $repetition;
+
+    /**
+     * @var positive-int
+     */
+    private int $totalRepetitions;
+
+    /**
+     * @var positive-int
+     */
+    private int $attempt;
+
+    /**
+     * @var positive-int
+     */
+    private int $maxAttempts;
+
+    /**
+     * @param non-empty-string $filename
+     * @param positive-int     $repetition
+     * @param positive-int     $totalRepetitions
+     * @param positive-int     $attempt
+     * @param positive-int     $maxAttempts
+     */
+    public function __construct(string $filename, int $repetition = 1, int $totalRepetitions = 1, int $attempt = 1, int $maxAttempts = 1)
     {
-        $this->filename = $filename;
+        $this->filename         = $filename;
+        $this->repetition       = $repetition;
+        $this->totalRepetitions = $totalRepetitions;
+        $this->attempt          = $attempt;
+        $this->maxAttempts      = $maxAttempts;
 
         $this->ensureCoverageFileDoesNotExist();
     }
@@ -375,7 +403,37 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
      */
     public function valueObjectForEvents(): Phpt
     {
-        return new Phpt($this->filename);
+        return new Phpt(
+            $this->filename,
+            $this->repetition,
+            $this->totalRepetitions,
+            $this->attempt,
+            $this->maxAttempts,
+        );
+    }
+
+    /**
+     * @return positive-int
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function repetition(): int
+    {
+        return $this->repetition;
+    }
+
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function markSkippedForRepeatAbort(int $failedRepetition): void
+    {
+        EventFacade::emitter()->testSkipped(
+            $this->valueObjectForEvents(),
+            sprintf(
+                'Remaining repetition skipped after failure in repetition %d',
+                $failedRepetition,
+            ),
+        );
     }
 
     /**

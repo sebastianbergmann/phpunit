@@ -37,7 +37,7 @@ use PHPUnit\TextUI\Configuration\Source;
 #[Group('test-runner')]
 final class CollectorTest extends TestCase
 {
-    public function testDoesNotRememberRetriedTestForFailedAttemptOfTestThatIsNotATestMethod(): void
+    public function testRemembersRetriedTestForFailedAttemptOfPhpt(): void
     {
         $collector = $this->collector();
 
@@ -51,10 +51,11 @@ final class CollectorTest extends TestCase
             ),
         );
 
-        $this->assertFalse($collector->result()->hasRetriedTests());
+        $this->assertTrue($collector->result()->hasRetriedTests());
+        $this->assertSame(['test.phpt' => 1], $collector->result()->retriedTests());
     }
 
-    public function testDoesNotRememberRetriedTestForErroredAttemptOfTestThatIsNotATestMethod(): void
+    public function testRemembersRetriedTestForErroredAttemptOfPhpt(): void
     {
         $collector = $this->collector();
 
@@ -67,7 +68,8 @@ final class CollectorTest extends TestCase
             ),
         );
 
-        $this->assertFalse($collector->result()->hasRetriedTests());
+        $this->assertTrue($collector->result()->hasRetriedTests());
+        $this->assertSame(['test.phpt' => 1], $collector->result()->retriedTests());
     }
 
     private function collector(): Collector

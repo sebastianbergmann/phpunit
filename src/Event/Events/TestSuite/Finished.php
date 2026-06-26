@@ -55,6 +55,14 @@ final readonly class Finished implements Event
             );
         }
 
+        if ($this->testSuite->isForRetriedPhpt()) {
+            return sprintf(
+                'Test Suite for Retried PHPT Finished (%s, up to %d attempts)',
+                $this->testSuite->name(),
+                $this->testSuite->maxAttempts(),
+            );
+        }
+
         $prefix = 'Test Suite Finished';
         $unit   = 'test';
 
@@ -63,6 +71,9 @@ final readonly class Finished implements Event
             $unit   = 'data set';
         } elseif ($this->testSuite->isForRepeatedTestMethod()) {
             $prefix = 'Test Suite for Repeated Test Method Finished';
+            $unit   = 'repetition';
+        } elseif ($this->testSuite->isForRepeatedPhpt()) {
+            $prefix = 'Test Suite for Repeated PHPT Finished';
             $unit   = 'repetition';
         }
 

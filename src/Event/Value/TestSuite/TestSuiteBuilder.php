@@ -22,6 +22,8 @@ use PHPUnit\Event\Code\TestDoxBuilder;
 use PHPUnit\Event\RuntimeException;
 use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\IterativeTestSuite;
+use PHPUnit\Framework\PhptRepeatTestSuite;
+use PHPUnit\Framework\PhptRetryTestSuite;
 use PHPUnit\Framework\RetryTestSuite;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite as FrameworkTestSuite;
@@ -44,6 +46,23 @@ final readonly class TestSuiteBuilder
         $tests = [];
 
         self::process($testSuite, $tests);
+
+        if ($testSuite instanceof PhptRetryTestSuite) {
+            return new TestSuiteForRetriedPhpt(
+                $testSuite->name(),
+                $testSuite->count(),
+                TestCollection::fromArray($tests),
+                $testSuite->maxAttempts(),
+            );
+        }
+
+        if ($testSuite instanceof PhptRepeatTestSuite) {
+            return new TestSuiteForRepeatedPhpt(
+                $testSuite->name(),
+                $testSuite->count(),
+                TestCollection::fromArray($tests),
+            );
+        }
 
         if ($testSuite instanceof DataProviderTestSuite) {
             assert(count(explode('::', $testSuite->name())) === 2);

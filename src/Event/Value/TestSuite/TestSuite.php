@@ -94,4 +94,20 @@ abstract readonly class TestSuite
     {
         return false;
     }
+
+    /**
+     * @phpstan-assert-if-true TestSuiteForRepeatedPhpt $this
+     */
+    public function isForRepeatedPhpt(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true TestSuiteForRetriedPhpt $this
+     */
+    public function isForRetriedPhpt(): bool
+    {
+        return false;
+    }
 }

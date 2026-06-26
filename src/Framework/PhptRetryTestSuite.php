@@ -9,21 +9,18 @@
  */
 namespace PHPUnit\Framework;
 
-use function assert;
-use Closure;
 use PHPUnit\Event;
 use PHPUnit\Event\EventCollection;
-use PHPUnit\Event\NoPreviousThrowableException;
+use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
-use SebastianBergmann\CodeCoverage\InvalidArgumentException;
-use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class RetryTestSuite extends IterativeTestSuite
+final class PhptRetryTestSuite extends PhptIterativeTestSuite
 {
     /**
      * @var positive-int
@@ -31,24 +28,17 @@ final class RetryTestSuite extends IterativeTestSuite
     private int $maxAttempts = 1;
 
     /**
-     * @var ?Closure(): TestCase
+     * @param non-empty-string $filename
+     * @param positive-int     $maxAttempts
      */
-    private ?Closure $additionalAttemptFactory = null;
-
-    /**
-     * @param non-empty-string       $name
-     * @param positive-int           $maxAttempts
-     * @param Closure(): TestCase    $additionalAttemptFactory
-     * @param list<non-empty-string> $groups
-     */
-    public static function fromTestCase(string $name, TestCase $test, int $maxAttempts, Closure $additionalAttemptFactory, array $groups = []): self
+    public static function for(string $filename, int $maxAttempts): self
     {
-        $suite = self::empty($name);
+        $suite = self::empty($filename);
 
-        $suite->maxAttempts              = $maxAttempts;
-        $suite->additionalAttemptFactory = $additionalAttemptFactory;
+        $suite->filename    = $filename;
+        $suite->maxAttempts = $maxAttempts;
 
-        $suite->addTest($test, $groups);
+        $suite->addTest(new PhptTestCase($filename, 1, 1, 1, $maxAttempts));
 
         return $suite;
     }
@@ -66,23 +56,7 @@ final class RetryTestSuite extends IterativeTestSuite
      */
     protected function execute(array $tests, Event\Emitter $emitter): void
     {
-        if ($tests !== []) {
-            assert($tests[0] instanceof TestCase);
-
-            $this->runAttempts($tests[0], $emitter);
-        }
-    }
-
-    /**
-     * @throws Event\RuntimeException
-     * @throws Exception
-     * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws UnintentionallyCoveredCodeException
-     */
-    private function runAttempts(TestCase $test, Event\Emitter $emitter): void
-    {
-        $facade = Event\Facade::instance();
+        $facade = EventFacade::instance();
 
         for ($attempt = 1; $attempt <= $this->maxAttempts; $attempt++) {
             if (TestResultFacade::shouldStop()) {
@@ -91,15 +65,7 @@ final class RetryTestSuite extends IterativeTestSuite
                 return;
             }
 
-            if ($attempt > 1) {
-                assert($this->additionalAttemptFactory !== null);
-
-                $test = ($this->additionalAttemptFactory)();
-
-                $test->setDependencies($this->dependencies());
-            }
-
-            $test->setAttempt($attempt, $this->maxAttempts);
+            $test = new PhptTestCase($this->filename, 1, 1, $attempt, $this->maxAttempts);
 
             $facade->startCollectingEvents();
 
@@ -107,8 +73,7 @@ final class RetryTestSuite extends IterativeTestSuite
 
             $events = $facade->stopCollectingEvents();
 
-            $retryable = ($test->status()->isFailure() || $test->status()->isError()) &&
-                         $attempt < $this->maxAttempts;
+            $retryable = $this->failedOrErrored($events) && $attempt < $this->maxAttempts;
 
             if (!$retryable) {
                 $facade->forward($events);
