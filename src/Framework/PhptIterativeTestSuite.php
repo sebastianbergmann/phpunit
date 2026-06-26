@@ -25,11 +25,6 @@ use PHPUnit\Event\EventCollection;
 abstract class PhptIterativeTestSuite extends IterativeTestSuite
 {
     /**
-     * @var non-empty-string
-     */
-    protected string $filename;
-
-    /**
      * Whether the events collected for a single run of a PHPT test indicate
      * that the run failed or errored.
      */

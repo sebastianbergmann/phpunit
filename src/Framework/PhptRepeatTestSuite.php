@@ -24,21 +24,12 @@ use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
 final class PhptRepeatTestSuite extends PhptIterativeTestSuite
 {
     /**
-     * @var positive-int
-     */
-    private int $failureThreshold = 1;
-
-    /**
      * @param non-empty-string $filename
      * @param positive-int     $numberOfRuns
-     * @param positive-int     $failureThreshold
      */
-    public static function for(string $filename, int $numberOfRuns, int $failureThreshold): self
+    public static function for(string $filename, int $numberOfRuns): self
     {
         $suite = self::empty($filename);
-
-        $suite->filename         = $filename;
-        $suite->failureThreshold = $failureThreshold;
 
         foreach (range(1, $numberOfRuns) as $repetition) {
             $suite->addTest(new PhptTestCase($filename, $repetition, $numberOfRuns));
@@ -54,7 +45,6 @@ final class PhptRepeatTestSuite extends PhptIterativeTestSuite
     {
         $facade = EventFacade::instance();
 
-        $failureCount         = 0;
         $lastFailedRepetition = 0;
 
         foreach ($tests as $test) {
@@ -66,7 +56,7 @@ final class PhptRepeatTestSuite extends PhptIterativeTestSuite
                 break;
             }
 
-            if ($failureCount >= $this->failureThreshold) {
+            if ($lastFailedRepetition !== 0) {
                 $test->markSkippedForRepeatAbort($lastFailedRepetition);
 
                 continue;
@@ -81,7 +71,6 @@ final class PhptRepeatTestSuite extends PhptIterativeTestSuite
             $facade->forward($events);
 
             if ($this->failedOrErrored($events)) {
-                $failureCount++;
                 $lastFailedRepetition = $test->repetition();
             }
         }

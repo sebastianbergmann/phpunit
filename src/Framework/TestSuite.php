@@ -244,7 +244,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             if (str_ends_with($filename, '.phpt') && is_file($filename)) {
                 if ($numberOfRuns > 1) {
                     $this->addTest(
-                        PhptRepeatTestSuite::for($filename, $numberOfRuns, 1),
+                        PhptRepeatTestSuite::for($filename, $numberOfRuns),
                         $groups,
                     );
                 } elseif ($maxAttempts > 1) {

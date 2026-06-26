@@ -12,7 +12,6 @@ namespace PHPUnit\Framework;
 use function assert;
 use Closure;
 use PHPUnit\Event;
-use PHPUnit\Event\EventCollection;
 use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
 use SebastianBergmann\CodeCoverage\InvalidArgumentException;
@@ -124,70 +123,5 @@ final class RetryTestSuite extends IterativeTestSuite
                 return;
             }
         }
-    }
-
-    private function emitAttemptEvent(EventCollection $events, Event\Emitter $emitter): bool
-    {
-        $duration = $this->durationOf($events);
-
-        foreach ($events as $event) {
-            if ($event instanceof Event\Test\Failed) {
-                $comparisonFailure = null;
-
-                if ($event->hasComparisonFailure()) {
-                    $comparisonFailure = $event->comparisonFailure();
-                }
-
-                $emitter->testAttemptFailed(
-                    $event->test(),
-                    $event->throwable(),
-                    $comparisonFailure,
-                    $duration,
-                );
-
-                return true;
-            }
-
-            if ($event instanceof Event\Test\Errored) {
-                $emitter->testAttemptErrored(
-                    $event->test(),
-                    $event->throwable(),
-                    $duration,
-                );
-
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Determine the wall-clock time spent on an attempt from its collected
-     * events. This mirrors the way duration-aware loggers measure the time
-     * of a test, namely from its Prepared event to its Finished event, so
-     * that the durations of retried attempts can be accounted for even though
-     * the attempt's events themselves are not forwarded.
-     */
-    private function durationOf(EventCollection $events): Event\Telemetry\Duration
-    {
-        $start = null;
-        $end   = null;
-
-        foreach ($events as $event) {
-            if ($event instanceof Event\Test\Prepared) {
-                $start = $event->telemetryInfo()->time();
-            }
-
-            if ($event instanceof Event\Test\Finished) {
-                $end = $event->telemetryInfo()->time();
-            }
-        }
-
-        if ($start === null || $end === null) {
-            return Event\Telemetry\Duration::fromSecondsAndNanoseconds(0, 0);
-        }
-
-        return $end->duration($start);
     }
 }
