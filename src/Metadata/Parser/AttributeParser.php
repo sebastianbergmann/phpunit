@@ -54,6 +54,7 @@ use PHPUnit\Framework\Attributes\DependsUsingDeepClone;
 use PHPUnit\Framework\Attributes\DependsUsingShallowClone;
 use PHPUnit\Framework\Attributes\DisableReturnValueGenerationForTestDoubles;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\Attributes\DoNotRunInParallel;
 use PHPUnit\Framework\Attributes\ExcludeGlobalVariableFromBackup;
 use PHPUnit\Framework\Attributes\ExcludeStaticPropertyFromBackup;
 use PHPUnit\Framework\Attributes\Group;
@@ -269,6 +270,11 @@ final readonly class AttributeParser implements Parser
 
                 case DoesNotPerformAssertions::class:
                     $result[] = Metadata::doesNotPerformAssertionsOnClass();
+
+                    break;
+
+                case DoNotRunInParallel::class:
+                    $result[] = Metadata::doNotRunInParallelOnClass();
 
                     break;
 
@@ -775,6 +781,11 @@ final readonly class AttributeParser implements Parser
                     assert($attributeInstance instanceof DoesNotPerformAssertions);
 
                     $result[] = Metadata::doesNotPerformAssertionsOnMethod();
+
+                    break;
+
+                case DoNotRunInParallel::class:
+                    $result[] = Metadata::doNotRunInParallelOnMethod();
 
                     break;
 

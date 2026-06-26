@@ -46,6 +46,7 @@ Selection:
 Execution:
 
   --process-isolation                  Run each test in a separate PHP process
+  --parallel <n>                       Run test classes in parallel using <n> worker processes
   --globals-backup                     Backup and restore $GLOBALS for each test
   --static-backup                      Backup and restore static properties for each test
 
