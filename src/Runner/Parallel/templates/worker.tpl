@@ -194,49 +194,6 @@ function __phpunit_worker_run_unit(object $command): string
     return $result;
 }
 
-function __phpunit_worker_run_phpt(object $command): string
-{
-    $dispatcher = Facade::instance()->initForIsolation(
-        PHPUnit\Event\Telemetry\HRTime::fromSecondsAndNanoseconds(
-            $command->offsetSeconds,
-            $command->offsetNanoseconds
-        ),
-    );
-
-    $test = new PHPUnit\Runner\Phpt\TestCase($command->file);
-
-    $test->run();
-
-    $codeCoverage = null;
-
-    if (CodeCoverage::instance()->isActive()) {
-        $codeCoverage = CodeCoverage::instance()->codeCoverage();
-    }
-
-    $result = $command->nonce . serialize(
-        (object) [
-            'codeCoverage' => $codeCoverage,
-            'events'       => $dispatcher->flush(),
-            'passedTests'  => PassedTests::instance(),
-        ]
-    );
-
-    // Per-test code coverage has been collected for this command and is about
-    // to be shipped to the parent process. It is cleared here so that the next
-    // test executed by this worker does not ship it a second time.
-    if (CodeCoverage::instance()->isActive()) {
-        CodeCoverage::instance()->codeCoverage()->clear();
-    }
-
-    // Reset the stream that captures test output so that the next test does
-    // not inherit the output of the test that has just finished.
-    if (@rewind(STDOUT)) {
-        @ftruncate(STDOUT, 0);
-    }
-
-    return $result;
-}
-
 $__phpunit_input = fopen('php://stdin', 'rb');
 
 while (($__phpunit_line = fgets($__phpunit_input)) !== false) {
@@ -254,8 +211,6 @@ while (($__phpunit_line = fgets($__phpunit_input)) !== false) {
 
     if ($__phpunit_command->command === 'runUnit') {
         $__phpunit_result = __phpunit_worker_run_unit($__phpunit_command);
-    } else if ($__phpunit_command->command === 'runPhpt') {
-        $__phpunit_result = __phpunit_worker_run_phpt($__phpunit_command);
     } else {
         $__phpunit_result = __phpunit_worker_run_test($__phpunit_command);
     }
