@@ -92,6 +92,61 @@ final readonly class JobRunner
      */
     public function run(Job $job): Result
     {
+        return $this->startAsync($job)->wait();
+    }
+
+    /**
+     * Spawn the code of the given job as a long-running worker process whose
+     * standard input remains open as a control channel.
+     *
+     * The job's code is written to a temporary file that is executed by the
+     * worker process; in contrast to run(), the code is not piped through
+     * standard input, leaving it available for the caller to send subsequent
+     * commands to the worker.
+     *
+     * @throws PhpProcessException
+     */
+    public function start(Job $job): RunningJob
+    {
+        $temporaryFile = tempnam(sys_get_temp_dir(), 'phpunit_');
+
+        if ($temporaryFile === false ||
+            file_put_contents($temporaryFile, $job->code()) === false) {
+            // @codeCoverageIgnoreStart
+            throw new PhpProcessException(
+                'Unable to write temporary file',
+            );
+            // @codeCoverageIgnoreEnd
+        }
+
+        return $this->startProcess($job, $temporaryFile);
+    }
+
+    /**
+     * Start the given job as an asynchronous one-shot process.
+     *
+     * The job's code is piped through the process' standard input — exactly as
+     * the synchronous run() does, of which this is the non-blocking half — and
+     * its input, if the job carries a --STDIN-- section, is run from a temporary
+     * file instead so that standard input remains free to deliver that section.
+     * Standard input is closed once written; the returned RunningJob can be
+     * polled for completion and reaped with wait().
+     *
+     * Feeding the code through standard input rather than from a temporary file
+     * (as start() does for the persistent worker, whose standard input is its
+     * control channel) keeps the child's __FILE__ out of the filesystem, which
+     * matters to tests that, for instance, restrict open_basedir.
+     *
+     * Unlike start(), the process' standard input is not left open as a control
+     * channel; unlike run(), the caller is not made to block until the process
+     * has terminated. This lets a caller keep several such processes running at
+     * the same time — for instance the PHPT test runner, which runs the child
+     * processes of independent PHPT tests concurrently.
+     *
+     * @throws PhpProcessException
+     */
+    public function startAsync(Job $job): RunningJob
+    {
         $temporaryFile = null;
 
         if ($job->hasInput()) {
@@ -125,34 +180,7 @@ final readonly class JobRunner
         $running->write($job->code());
         $running->closeStdin();
 
-        return $running->wait();
-    }
-
-    /**
-     * Spawn the code of the given job as a long-running worker process whose
-     * standard input remains open as a control channel.
-     *
-     * The job's code is written to a temporary file that is executed by the
-     * worker process; in contrast to run(), the code is not piped through
-     * standard input, leaving it available for the caller to send subsequent
-     * commands to the worker.
-     *
-     * @throws PhpProcessException
-     */
-    public function start(Job $job): RunningJob
-    {
-        $temporaryFile = tempnam(sys_get_temp_dir(), 'phpunit_');
-
-        if ($temporaryFile === false ||
-            file_put_contents($temporaryFile, $job->code()) === false) {
-            // @codeCoverageIgnoreStart
-            throw new PhpProcessException(
-                'Unable to write temporary file',
-            );
-            // @codeCoverageIgnoreEnd
-        }
-
-        return $this->startProcess($job, $temporaryFile);
+        return $running;
     }
 
     /**

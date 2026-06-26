@@ -15,6 +15,7 @@ use function feof;
 use function fwrite;
 use function is_resource;
 use function proc_close;
+use function proc_get_status;
 use function rewind;
 use function stream_get_contents;
 use function stream_set_blocking;
@@ -138,6 +139,22 @@ final class RunningJob
         }
 
         return $streams;
+    }
+
+    /**
+     * Whether the worker process is still executing. Once it has terminated,
+     * wait() can be called to reap it without blocking. Intended for callers
+     * that cannot wait on the process' output streams — for instance because
+     * its output is redirected to a file rather than a pipe — and therefore
+     * poll its liveness instead.
+     */
+    public function isRunning(): bool
+    {
+        if ($this->result !== null) {
+            return false;
+        }
+
+        return proc_get_status($this->process)['running'];
     }
 
     /**
