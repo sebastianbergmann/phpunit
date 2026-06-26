@@ -114,6 +114,23 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
     }
 
     /**
+     * Creates an empty test suite for the given test class, to which tests of
+     * that class are then added one by one. Used where the tests of the class
+     * have already been selected, as for a work unit of a parallel test run,
+     * rather than found by reflecting on the class.
+     *
+     * @param class-string<TestCase> $className
+     */
+    public static function forTestClass(string $className, Event\Emitter $emitter): static
+    {
+        $testSuite = new static($className, $emitter);
+
+        $testSuite->isForTestClass = true;
+
+        return $testSuite;
+    }
+
+    /**
      * @param ReflectionClass<TestCase> $class
      * @param list<non-empty-string>    $groups
      * @param positive-int              $numberOfRuns
