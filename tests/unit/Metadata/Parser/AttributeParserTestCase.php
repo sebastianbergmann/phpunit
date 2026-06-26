@@ -39,6 +39,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\DataProviderTest;
 use PHPUnit\TestFixture\Metadata\Attribute\DependencyTest;
 use PHPUnit\TestFixture\Metadata\Attribute\DisableReturnValueGenerationForTestDoublesTest;
 use PHPUnit\TestFixture\Metadata\Attribute\DoesNotPerformAssertionsTest;
+use PHPUnit\TestFixture\Metadata\Attribute\DoNotRunInParallelTest;
 use PHPUnit\TestFixture\Metadata\Attribute\DuplicateSmallAttributeTest;
 use PHPUnit\TestFixture\Metadata\Attribute\DuplicateTestAttributeTest;
 use PHPUnit\TestFixture\Metadata\Attribute\Example;
@@ -232,6 +233,15 @@ abstract class AttributeParserTestCase extends TestCase
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isDoesNotPerformAssertions());
+    }
+
+    #[TestDox('Parses #[DoNotRunInParallel] attribute on class')]
+    public function test_parses_DoNotRunInParallel_attribute_on_class(): void
+    {
+        $metadata = $this->parser()->forClass(DoNotRunInParallelTest::class)->isDoNotRunInParallel();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isDoNotRunInParallel());
     }
 
     #[TestDox('Parses #[ExcludeGlobalVariableFromBackup] attribute on class')]
@@ -874,6 +884,15 @@ abstract class AttributeParserTestCase extends TestCase
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isDoesNotPerformAssertions());
+    }
+
+    #[TestDox('Parses #[DoNotRunInParallel] attribute on method')]
+    public function test_parses_DoNotRunInParallel_attribute_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(DoNotRunInParallelTest::class, 'testOne')->isDoNotRunInParallel();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isDoNotRunInParallel());
     }
 
     #[TestDox('Parses #[ExcludeGlobalVariableFromBackup] attribute on method')]
