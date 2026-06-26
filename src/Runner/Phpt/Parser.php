@@ -79,6 +79,7 @@ final readonly class Parser
         'CONFLICTS',
         'CREDITS',
         'DESCRIPTION',
+        'DO_NOT_RUN_IN_PARALLEL',
         'FLAKY',
         'WHITESPACE_SENSITIVE',
         'XLEAK',

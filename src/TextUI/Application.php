@@ -282,13 +282,20 @@ final readonly class Application
             if ($coverageInitializationStatus === CodeCoverageInitializationStatus::NOT_REQUESTED ||
                 $coverageInitializationStatus === CodeCoverageInitializationStatus::SUCCEEDED) {
                 $started = true;
-                $runner  = new TestRunner($this->emitter);
 
-                $runner->run(
-                    $configuration,
-                    $testRunHistory,
-                    $testSuite,
-                );
+                if ($configuration->numberOfParallelWorkers() > 1) {
+                    new ParallelTestRunner()->run(
+                        $configuration,
+                        $testRunHistory,
+                        $testSuite,
+                    );
+                } else {
+                    new TestRunner($this->emitter)->run(
+                        $configuration,
+                        $testRunHistory,
+                        $testSuite,
+                    );
+                }
             }
 
             $duration = $timer->stop();
