@@ -111,6 +111,28 @@ final class Facade
         return $dispatcher;
     }
 
+    /**
+     * Mint an emitter that collects its events into an independent collection,
+     * without sealing this facade or replacing its emitter. Unlike
+     * initForIsolation(), which can only establish one isolated emitter for the
+     * whole process, any number of these can be in use at once; the parallel
+     * test runner uses one per concurrently running PHPT test.
+     */
+    public function collectingEmitter(): CollectingEmitter
+    {
+        $dispatcher = new CollectingDispatcher(
+            new DirectDispatcher($this->typeMap()),
+        );
+
+        return new CollectingEmitter(
+            new DispatchingEmitter(
+                $dispatcher,
+                $this->createTelemetrySystem(),
+            ),
+            $dispatcher,
+        );
+    }
+
     public function forward(EventCollection $events): void
     {
         $dispatcher = $this->deferredDispatcher();
