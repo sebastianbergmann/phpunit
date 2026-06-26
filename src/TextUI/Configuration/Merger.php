@@ -930,6 +930,12 @@ final readonly class Merger
             $retry = $cliConfiguration->retry();
         }
 
+        $numberOfParallelWorkers = 1;
+
+        if ($cliConfiguration->hasNumberOfParallelWorkers()) {
+            $numberOfParallelWorkers = $cliConfiguration->numberOfParallelWorkers();
+        }
+
         if ($xmlConfiguration->wasLoadedFromFile() && $xmlConfiguration->hasValidationErrors()) {
             if ((new SchemaDetector)->detect($xmlConfiguration->filename())->detected()) {
                 EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
@@ -1330,6 +1336,7 @@ final readonly class Merger
             $cliConfiguration->debug(),
             $cliConfiguration->withTelemetry(),
             $xmlConfiguration->phpunit()->shortenArraysForExportThreshold(),
+            $numberOfParallelWorkers,
         );
     }
 

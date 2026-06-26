@@ -13,6 +13,7 @@ use function assert;
 use function base64_encode;
 use function bin2hex;
 use function defined;
+use function feof;
 use function fgets;
 use function file_get_contents;
 use function get_include_path;
@@ -21,7 +22,11 @@ use function is_resource;
 use function json_encode;
 use function random_bytes;
 use function serialize;
+use function sprintf;
+use function str_contains;
 use function str_ends_with;
+use function stream_get_contents;
+use function stream_set_blocking;
 use function sys_get_temp_dir;
 use function tempnam;
 use function trim;
@@ -38,6 +43,7 @@ use PHPUnit\Util\PHP\JobRunner;
 use PHPUnit\Util\PHP\RunningJob;
 use ReflectionClass;
 use SebastianBergmann\Template\Template;
+use Throwable;
 
 /**
  * A worker process that boots PHPUnit once and then executes an arbitrary
@@ -76,10 +82,34 @@ final class PersistentWorker
      */
     private array $temporaryFiles = [];
 
-    public function __construct(JobRunner $jobRunner, ChildProcessResultProcessor $processor)
+    /**
+     * The unit currently being executed by this worker, together with the
+     * bookkeeping needed to harvest its result once the worker reports that it
+     * has finished. These are set by dispatch() and cleared by tick() (or by a
+     * detected crash); a null currentUnit means the worker is idle.
+     */
+    private ?WorkUnit $currentUnit = null;
+
+    /**
+     * @var ?non-empty-string
+     */
+    private ?string $currentNonce        = null;
+    private ?string $currentResultFile   = null;
+    private string $controlChannelBuffer = '';
+
+    /**
+     * @var non-negative-int
+     */
+    private readonly int $id;
+
+    /**
+     * @param non-negative-int $id
+     */
+    public function __construct(JobRunner $jobRunner, ChildProcessResultProcessor $processor, int $id = 0)
     {
         $this->jobRunner = $jobRunner;
         $this->processor = $processor;
+        $this->id        = $id;
     }
 
     /**
@@ -87,7 +117,17 @@ final class PersistentWorker
      */
     public function start(): void
     {
-        $this->job = $this->jobRunner->start(new Job($this->buildWorkerCode()));
+        // The worker's identity is exposed to the tests it runs so that test
+        // fixtures can partition shared resources (a database, a port, a
+        // temporary directory, ...) per worker and thereby avoid colliding with
+        // the tests running concurrently in the other workers.
+        $environmentVariables = [
+            'PHPUNIT_WORKER_ID' => (string) $this->id,
+        ];
+
+        $this->job = $this->jobRunner->start(
+            new Job($this->buildWorkerCode(), [], $environmentVariables),
+        );
     }
 
     /**
@@ -160,6 +200,130 @@ final class PersistentWorker
         $this->processor->process($test, $serializedResult, '', $nonce);
     }
 
+    /**
+     * Send a unit of work to the worker without waiting for it to finish.
+     *
+     * The command is written to the worker's control channel and dispatch()
+     * returns immediately; the caller is expected to multiplex this worker's
+     * standard output with stream_select() and to call tick() once output
+     * becomes available, so that a single thread of control can keep several
+     * workers busy at the same time.
+     *
+     * @throws WorkerException
+     */
+    public function dispatch(WorkUnit $unit): void
+    {
+        assert($this->job !== null);
+        assert($this->currentUnit === null);
+
+        $offset     = hrtime();
+        $nonce      = bin2hex(random_bytes(16));
+        $resultFile = tempnam(sys_get_temp_dir(), 'phpunit_');
+
+        if ($resultFile === false) {
+            // @codeCoverageIgnoreStart
+            throw new WorkerException('Unable to create temporary file for the worker result');
+            // @codeCoverageIgnoreEnd
+        }
+
+        if ($unit instanceof PhptWorkUnit) {
+            $command = $this->phptCommand($unit, $offset, $resultFile, $nonce);
+        } else {
+            assert($unit instanceof TestClassWorkUnit);
+
+            $command = $this->testClassCommand($unit, $offset, $resultFile, $nonce);
+        }
+
+        $encodedCommand = json_encode($command);
+
+        assert($encodedCommand !== false);
+
+        $this->currentUnit          = $unit;
+        $this->currentNonce         = $nonce;
+        $this->currentResultFile    = $resultFile;
+        $this->controlChannelBuffer = '';
+
+        $this->job->write($encodedCommand . "\n");
+    }
+
+    /**
+     * Whether the worker is currently executing a dispatched unit.
+     */
+    public function isBusy(): bool
+    {
+        return $this->currentUnit !== null;
+    }
+
+    /**
+     * Whether the worker process is still usable. A worker that died while
+     * running a unit is no longer usable and must not be dispatched to again.
+     */
+    public function isAlive(): bool
+    {
+        return $this->job !== null;
+    }
+
+    /**
+     * The worker's standard output, to be passed to stream_select() so that
+     * the caller can wait for the worker to report progress without blocking.
+     *
+     * @return ?resource
+     */
+    public function controlChannel(): mixed
+    {
+        if ($this->job === null) {
+            return null;
+        }
+
+        return $this->job->stdout();
+    }
+
+    /**
+     * Consume whatever the worker has written to its control channel since the
+     * last call and, if the dispatched unit has finished, harvest its result.
+     *
+     * Returns null while the unit is still running. Intended to be called after
+     * stream_select() has reported the stream returned by controlChannel() as
+     * ready.
+     */
+    public function tick(): ?CompletedWorkUnit
+    {
+        assert($this->currentUnit !== null);
+        assert($this->currentNonce !== null);
+
+        if ($this->job === null) {
+            // @codeCoverageIgnoreStart
+            return $this->crashed();
+            // @codeCoverageIgnoreEnd
+        }
+
+        $stdout = $this->job->stdout();
+
+        if (!is_resource($stdout)) {
+            // @codeCoverageIgnoreStart
+            return $this->crashed();
+            // @codeCoverageIgnoreEnd
+        }
+
+        stream_set_blocking($stdout, false);
+
+        $chunk = stream_get_contents($stdout);
+
+        if ($chunk !== false && $chunk !== '') {
+            $this->controlChannelBuffer .= $chunk;
+        }
+
+        if (str_contains($this->controlChannelBuffer, self::DONE_PREFIX . $this->currentNonce)) {
+            return $this->finished();
+        }
+
+        if (feof($stdout)) {
+            return $this->crashed();
+        }
+
+        return null;
+    }
+
     public function stop(): void
     {
         if ($this->job !== null) {
@@ -182,6 +346,83 @@ final class PersistentWorker
         }
 
         $this->temporaryFiles = [];
+    }
+
+    /**
+     * @param array{0: int, 1: int} $offset
+     * @param non-empty-string      $resultFile
+     * @param non-empty-string      $nonce
+     *
+     * @throws WorkerException
+     *
+     * @return array<string, mixed>
+     */
+    private function testClassCommand(TestClassWorkUnit $unit, array $offset, string $resultFile, string $nonce): array
+    {
+        $class = new ReflectionClass($unit->className());
+        $file  = $class->getFileName();
+
+        assert($file !== false);
+
+        $tests = [];
+
+        foreach ($unit->tests() as $test) {
+            try {
+                $data            = base64_encode(serialize($test->providedData()));
+                $dependencyInput = base64_encode(serialize($test->dependencyInput()));
+            } catch (Throwable $t) {
+                @unlink($resultFile);
+
+                throw new WorkerException(
+                    sprintf(
+                        'The tests of class %s cannot be run in parallel because their data cannot be serialized: %s',
+                        $unit->className(),
+                        $t->getMessage(),
+                    ),
+                );
+            }
+
+            $tests[] = [
+                'methodName'       => $test->name(),
+                'data'             => $data,
+                'dataName'         => $test->dataName(),
+                'dependencyInput'  => $dependencyInput,
+                'repetition'       => $test->repetition(),
+                'totalRepetitions' => $test->totalRepetitions(),
+                'attempt'          => $test->attempt(),
+                'maxAttempts'      => $test->maxAttempts(),
+            ];
+        }
+
+        return [
+            'command'           => 'runUnit',
+            'file'              => $file,
+            'className'         => $unit->className(),
+            'tests'             => $tests,
+            'offsetSeconds'     => $offset[0],
+            'offsetNanoseconds' => $offset[1],
+            'resultFile'        => $resultFile,
+            'nonce'             => $nonce,
+        ];
+    }
+
+    /**
+     * @param array{0: int, 1: int} $offset
+     * @param non-empty-string      $resultFile
+     * @param non-empty-string      $nonce
+     *
+     * @return array<string, mixed>
+     */
+    private function phptCommand(PhptWorkUnit $unit, array $offset, string $resultFile, string $nonce): array
+    {
+        return [
+            'command'           => 'runPhpt',
+            'file'              => $unit->file(),
+            'offsetSeconds'     => $offset[0],
+            'offsetNanoseconds' => $offset[1],
+            'resultFile'        => $resultFile,
+            'nonce'             => $nonce,
+        ];
     }
 
     /**
@@ -217,6 +458,69 @@ final class PersistentWorker
         }
 
         return false;
+    }
+
+    /**
+     * Harvest the result of the unit the worker has just reported as finished.
+     */
+    private function finished(): CompletedWorkUnit
+    {
+        assert($this->currentUnit !== null);
+        assert($this->currentResultFile !== null);
+
+        $serializedResult = file_get_contents($this->currentResultFile);
+
+        @unlink($this->currentResultFile);
+
+        if ($serializedResult === false) {
+            // @codeCoverageIgnoreStart
+            $serializedResult = '';
+            // @codeCoverageIgnoreEnd
+        }
+
+        $completed = new CompletedWorkUnit(
+            $this->currentUnit,
+            $serializedResult,
+            $this->currentNonce,
+            false,
+        );
+
+        $this->clearCurrentUnit();
+
+        return $completed;
+    }
+
+    /**
+     * Record that the worker died while running the dispatched unit and reap
+     * the dead process so that it is not used again.
+     */
+    private function crashed(): CompletedWorkUnit
+    {
+        assert($this->currentUnit !== null);
+
+        if ($this->currentResultFile !== null) {
+            @unlink($this->currentResultFile);
+        }
+
+        $completed = new CompletedWorkUnit($this->currentUnit, '', null, true);
+
+        if ($this->job !== null) {
+            $this->job->wait();
+
+            $this->job = null;
+        }
+
+        $this->clearCurrentUnit();
+
+        return $completed;
+    }
+
+    private function clearCurrentUnit(): void
+    {
+        $this->currentUnit          = null;
+        $this->currentNonce         = null;
+        $this->currentResultFile    = null;
+        $this->controlChannelBuffer = '';
     }
 
     /**

@@ -214,6 +214,7 @@ final class Help
 
             'Execution' => [
                 ['arg' => '--process-isolation', 'desc' => 'Run each test in a separate PHP process'],
+                ['arg'    => '--parallel <n>', 'desc' => 'Run test classes in parallel using <n> worker processes'],
                 ['arg'    => '--globals-backup', 'desc' => 'Backup and restore $GLOBALS for each test'],
                 ['arg'    => '--static-backup', 'desc' => 'Backup and restore static properties for each test'],
                 ['spacer' => ''],

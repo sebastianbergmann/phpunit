@@ -36,6 +36,7 @@ use stdClass;
 #[UsesClass(DependsOnMethod::class)]
 #[UsesClass(DisableReturnValueGenerationForTestDoubles::class)]
 #[UsesClass(DoesNotPerformAssertions::class)]
+#[UsesClass(DoNotRunInParallel::class)]
 #[UsesClass(Group::class)]
 #[UsesClass(Metadata::class)]
 #[UsesClass(PostCondition::class)]
@@ -306,6 +307,14 @@ final class MetadataCollectionTest extends TestCase
 
         $this->assertCount(1, $collection);
         $this->assertTrue($collection->asArray()[0]->isDoesNotPerformAssertions());
+    }
+
+    public function test_Can_be_filtered_for_DoNotRunInParallel(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isDoNotRunInParallel();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isDoNotRunInParallel());
     }
 
     public function test_Can_be_filtered_for_ExcludeGlobalVariableFromBackup(): void
@@ -625,6 +634,7 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::dependsOnMethod('', '', false, false),
                 Metadata::disableReturnValueGenerationForTestDoubles(),
                 Metadata::doesNotPerformAssertionsOnClass(),
+                Metadata::doNotRunInParallelOnClass(),
                 Metadata::excludeGlobalVariableFromBackupOnClass(''),
                 Metadata::excludeStaticPropertyFromBackupOnClass('', ''),
                 Metadata::groupOnClass(''),
