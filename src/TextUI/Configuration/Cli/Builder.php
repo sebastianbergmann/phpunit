@@ -119,6 +119,7 @@ final class Builder
         'no-results',
         'order-by=',
         'process-isolation',
+        'parallel=',
         'do-not-report-useless-tests',
         'random-order',
         'random-order-seed=',
@@ -392,6 +393,7 @@ final class Builder
         $noResults                                = null;
         $noLogging                                = null;
         $processIsolation                         = null;
+        $numberOfParallelWorkers                  = null;
         $randomOrderSeed                          = null;
         $repeat                                   = null;
         $retry                                    = null;
@@ -892,6 +894,25 @@ final class Builder
 
                 case '--process-isolation':
                     $processIsolation = true;
+
+                    break;
+
+                case '--parallel':
+                    if (!is_numeric($option[1]) ||
+                        (string) (int) $option[1] !== $option[1] ||
+                        (int) $option[1] < 1) {
+                        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                            sprintf(
+                                'Option "--parallel %s" ignored because "%s" is not a positive integer',
+                                $option[1],
+                                $option[1],
+                            ),
+                        );
+
+                        break;
+                    }
+
+                    $numberOfParallelWorkers = (int) $option[1];
 
                     break;
 
@@ -1594,6 +1615,7 @@ final class Builder
             $debug,
             $withTelemetry,
             $extensions,
+            $numberOfParallelWorkers,
         );
     }
 
