@@ -1,5 +1,6 @@
 --TEST--
 Order by duration ascending (without test run history, test methods)
+--DO_NOT_RUN_IN_PARALLEL--
 --FILE--
 <?php declare(strict_types=1);
 $testRunHistoryFile = sys_get_temp_dir() . '/test-run-history';
