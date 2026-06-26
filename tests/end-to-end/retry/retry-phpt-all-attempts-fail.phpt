@@ -22,7 +22,7 @@ Time: %s, Memory: %s
 
 There was 1 failure:
 
-1) %s/RetryFailingPhpt.phpt (attempt 3 of 3)
+1) %sRetryFailingPhpt.phpt (attempt 3 of 3)
 Failed asserting that two strings are equal.
 --- Expected
 +++ Actual
@@ -30,7 +30,7 @@ Failed asserting that two strings are equal.
 -'OK'
 +'FAIL'
 
-%s/RetryFailingPhpt.phpt:7
+%sRetryFailingPhpt.phpt:7
 
 FAILURES!
 Tests: 1, Assertions: 1, Failures: 1.

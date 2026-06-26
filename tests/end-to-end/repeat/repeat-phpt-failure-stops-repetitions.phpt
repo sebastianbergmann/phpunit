@@ -20,21 +20,21 @@ Test Suite Loaded (3 tests)
 Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (3 tests)
-Test Suite Started (%s/RepeatFailingPhpt.phpt, 3 tests)
-Test Suite for Repeated PHPT Started (%s/RepeatFailingPhpt.phpt, 3 repetitions)
-Test Preparation Started (%s/RepeatFailingPhpt.phpt (repetition 1 of 3))
-Test Prepared (%s/RepeatFailingPhpt.phpt (repetition 1 of 3))
+Test Suite Started (%sRepeatFailingPhpt.phpt, 3 tests)
+Test Suite for Repeated PHPT Started (%sRepeatFailingPhpt.phpt, 3 repetitions)
+Test Preparation Started (%sRepeatFailingPhpt.phpt (repetition 1 of 3))
+Test Prepared (%sRepeatFailingPhpt.phpt (repetition 1 of 3))
 Child Process Started
 Child Process Finished
-Test Failed (%s/RepeatFailingPhpt.phpt (repetition 1 of 3))
+Test Failed (%sRepeatFailingPhpt.phpt (repetition 1 of 3))
 Failed asserting that two strings are equal.
-Test Finished (%s/RepeatFailingPhpt.phpt (repetition 1 of 3))
-Test Skipped (%s/RepeatFailingPhpt.phpt (repetition 2 of 3))
+Test Finished (%sRepeatFailingPhpt.phpt (repetition 1 of 3))
+Test Skipped (%sRepeatFailingPhpt.phpt (repetition 2 of 3))
 Remaining repetition skipped after failure in repetition 1
-Test Skipped (%s/RepeatFailingPhpt.phpt (repetition 3 of 3))
+Test Skipped (%sRepeatFailingPhpt.phpt (repetition 3 of 3))
 Remaining repetition skipped after failure in repetition 1
-Test Suite for Repeated PHPT Finished (%s/RepeatFailingPhpt.phpt, 3 repetitions)
-Test Suite Finished (%s/RepeatFailingPhpt.phpt, 3 tests)
+Test Suite for Repeated PHPT Finished (%sRepeatFailingPhpt.phpt, 3 repetitions)
+Test Suite Finished (%sRepeatFailingPhpt.phpt, 3 tests)
 Test Runner Execution Finished
 Test Runner Finished
 PHPUnit Finished (Shell Exit Code: 1)

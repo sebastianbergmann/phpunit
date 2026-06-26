@@ -24,7 +24,7 @@ Time: %s, Memory: %s
 
 There was 1 retried test:
 
-1) %s/RetryFlakyPhpt.phpt
+1) %sRetryFlakyPhpt.phpt
 1 failed attempt
 
 OK (1 test, 1 assertion)
