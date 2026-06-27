@@ -10,8 +10,7 @@
 namespace PHPUnit\Runner\Parallel;
 
 use function array_shift;
-use function is_resource;
-use function stream_select;
+use function usleep;
 
 /**
  * A fixed-size pool of PersistentWorkers across which units of work are
@@ -21,11 +20,13 @@ use function stream_select;
  * pre-partitioning of the units: whenever a worker becomes idle it pulls the
  * next unit from the queue, which self-balances the load against stragglers.
  *
- * A single thread of control keeps all of the workers busy by multiplexing
- * their control channels with stream_select(): it blocks until at least one
- * worker has reported progress, harvests every worker that is ready, hands the
- * finished units to the caller-supplied callback, and tops the idle workers up
- * with more work until the queue is drained.
+ * A single thread of control keeps all of the workers busy by polling them in
+ * rounds: each round it harvests every worker that has finished its unit, hands
+ * those finished units to the caller-supplied callback, tops the idle workers
+ * up with more work, and sleeps briefly before the next round if none finished.
+ * A worker signals completion through the filesystem (see PersistentWorker),
+ * which is polled rather than waited on with stream_select() because the latter
+ * does not work on the workers' output pipes on Windows.
  *
  * If a worker dies, the unit it was running is reported to the callback as a
  * crashed unit and the dead worker is dropped from the pool; the remaining
@@ -39,6 +40,12 @@ use function stream_select;
  */
 final class WorkerPool
 {
+    /**
+     * How long to sleep, in microseconds, when a polling round finds that no
+     * worker has finished, so that waiting on the workers does not spin the CPU.
+     */
+    private const int POLL_INTERVAL_MICROSECONDS = 1000;
+
     /**
      * @var non-empty-list<PersistentWorker>
      */
@@ -82,14 +89,24 @@ final class WorkerPool
                 break;
             }
 
-            $readable = $this->awaitReadable($busy);
+            $progressed = false;
 
-            foreach ($readable as $worker) {
-                $completed = $worker->tick();
+            foreach ($busy as $worker) {
+                $completed = $worker->poll();
 
                 if ($completed !== null) {
                     $onCompleted($completed);
+
+                    $progressed = true;
                 }
+            }
+
+            // No worker finished this round: sleep briefly before polling again
+            // so that waiting for the workers does not spin the CPU. A worker
+            // that did finish is not slept on, so its freed slot is refilled at
+            // once on the next iteration.
+            if (!$progressed) {
+                usleep(self::POLL_INTERVAL_MICROSECONDS);
             }
         }
 
@@ -153,67 +170,5 @@ final class WorkerPool
         }
 
         return $busy;
-    }
-
-    /**
-     * Block until at least one of the busy workers has produced output on its
-     * control channel, then return those workers.
-     *
-     * @param non-empty-list<PersistentWorker> $busy
-     *
-     * @return list<PersistentWorker>
-     */
-    private function awaitReadable(array $busy): array
-    {
-        $streams = [];
-        $byId    = [];
-
-        foreach ($busy as $worker) {
-            $stream = $worker->controlChannel();
-
-            if (!is_resource($stream)) {
-                // @codeCoverageIgnoreStart
-                continue;
-                // @codeCoverageIgnoreEnd
-            }
-
-            $streams[] = $stream;
-            $byId[]    = $worker;
-        }
-
-        if ($streams === []) {
-            // @codeCoverageIgnoreStart
-            return $busy;
-            // @codeCoverageIgnoreEnd
-        }
-
-        $write  = null;
-        $except = null;
-
-        $ready = @stream_select($streams, $write, $except, 1);
-
-        if ($ready === false || $ready === 0) {
-            // @codeCoverageIgnoreStart
-            // A signal interrupted the wait, or it timed out: re-examine every
-            // busy worker on the next iteration rather than risk missing one.
-            return $busy;
-            // @codeCoverageIgnoreEnd
-        }
-
-        $readable = [];
-
-        foreach ($streams as $stream) {
-            foreach ($byId as $index => $worker) {
-                if ($worker->controlChannel() === $stream) {
-                    $readable[] = $worker;
-
-                    unset($byId[$index]);
-
-                    break;
-                }
-            }
-        }
-
-        return $readable;
     }
 }
