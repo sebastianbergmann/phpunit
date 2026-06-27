@@ -12,10 +12,6 @@ use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 use PHPUnit\Util\DifferBuilder;
 
-// The real standard output is captured as the worker's control channel before
-// STDOUT is potentially redirected to capture the output produced by tests.
-$__phpunit_worker_control = fopen('php://fd/1', 'wb');
-
 // php://stdout does not obey output buffering. Any output would break
 // unserialization of child process results in the parent process.
 if (!defined('STDOUT')) {
@@ -217,6 +213,10 @@ while (($__phpunit_line = fgets($__phpunit_input)) !== false) {
 
     file_put_contents($__phpunit_command->resultFile, $__phpunit_result);
 
-    fwrite($__phpunit_worker_control, 'PHPUNIT_WORKER_DONE:' . $__phpunit_command->nonce . "\n");
-    fflush($__phpunit_worker_control);
+    // Signal completion through the filesystem rather than standard output: the
+    // parent polls for this file, and because it is created only after the
+    // result file has been fully written, its presence means the result is
+    // ready to be read. This avoids the parent having to read the worker's
+    // output pipe, which cannot be done without blocking on Windows.
+    file_put_contents($__phpunit_command->doneFile, $__phpunit_command->nonce);
 }

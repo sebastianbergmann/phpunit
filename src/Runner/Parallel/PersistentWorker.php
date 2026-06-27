@@ -13,24 +13,18 @@ use function assert;
 use function base64_encode;
 use function bin2hex;
 use function defined;
-use function feof;
-use function fgets;
 use function file_get_contents;
 use function get_include_path;
 use function hrtime;
-use function is_resource;
+use function is_file;
 use function json_encode;
 use function random_bytes;
 use function serialize;
 use function sprintf;
-use function str_contains;
-use function str_ends_with;
-use function stream_get_contents;
-use function stream_set_blocking;
 use function sys_get_temp_dir;
 use function tempnam;
-use function trim;
 use function unlink;
+use function usleep;
 use function var_export;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\TestCase;
@@ -68,11 +62,10 @@ use Throwable;
 final class PersistentWorker
 {
     /**
-     * Marker written by the worker to its control channel to signal that a
-     * test has finished and its result has been written to the result file.
-     * Must be kept in sync with templates/worker.tpl.
+     * How long to sleep between polls of a busy worker, in microseconds, so
+     * that waiting for a worker to finish does not spin the CPU.
      */
-    private const string DONE_PREFIX = 'PHPUNIT_WORKER_DONE:';
+    private const int POLL_INTERVAL_MICROSECONDS = 1000;
     private readonly JobRunner $jobRunner;
     private readonly ChildProcessResultProcessor $processor;
     private ?RunningJob $job = null;
@@ -85,17 +78,23 @@ final class PersistentWorker
     /**
      * The unit currently being executed by this worker, together with the
      * bookkeeping needed to harvest its result once the worker reports that it
-     * has finished. These are set by dispatch() and cleared by tick() (or by a
+     * has finished. These are set by dispatch() and cleared by poll() (or by a
      * detected crash); a null currentUnit means the worker is idle.
+     *
+     * Completion is signalled through the filesystem rather than the worker's
+     * standard output: once the worker has written the result file it creates a
+     * sibling "done" file, whose appearance the parent detects by polling. This
+     * avoids stream_select() and non-blocking reads on the worker's output pipe,
+     * neither of which works on Windows.
      */
     private ?WorkUnit $currentUnit = null;
 
     /**
      * @var ?non-empty-string
      */
-    private ?string $currentNonce        = null;
-    private ?string $currentResultFile   = null;
-    private string $controlChannelBuffer = '';
+    private ?string $currentNonce      = null;
+    private ?string $currentResultFile = null;
+    private ?string $currentDoneFile   = null;
 
     /**
      * @var non-negative-int
@@ -152,6 +151,8 @@ final class PersistentWorker
             // @codeCoverageIgnoreEnd
         }
 
+        $doneFile = $resultFile . '.done';
+
         $command = [
             'command'           => 'run',
             'file'              => $file,
@@ -167,6 +168,7 @@ final class PersistentWorker
             'offsetSeconds'     => $offset[0],
             'offsetNanoseconds' => $offset[1],
             'resultFile'        => $resultFile,
+            'doneFile'          => $doneFile,
             'nonce'             => $nonce,
         ];
 
@@ -176,20 +178,26 @@ final class PersistentWorker
 
         $this->job->write($encodedCommand . "\n");
 
-        if (!$this->awaitResult($nonce)) {
-            $result    = $this->job->wait();
-            $this->job = null;
+        while (!is_file($doneFile)) {
+            if (!$this->job->isRunning()) {
+                $result    = $this->job->wait();
+                $this->job = null;
 
-            @unlink($resultFile);
+                @unlink($resultFile);
+                @unlink($doneFile);
 
-            $this->processor->process($test, '', $result->stderr(), $nonce);
+                $this->processor->process($test, '', $result->stderr(), $nonce);
 
-            return;
+                return;
+            }
+
+            usleep(self::POLL_INTERVAL_MICROSECONDS);
         }
 
         $serializedResult = file_get_contents($resultFile);
 
         @unlink($resultFile);
+        @unlink($doneFile);
 
         if ($serializedResult === false) {
             // @codeCoverageIgnoreStart
@@ -203,11 +211,10 @@ final class PersistentWorker
     /**
      * Send a unit of work to the worker without waiting for it to finish.
      *
-     * The command is written to the worker's control channel and dispatch()
-     * returns immediately; the caller is expected to multiplex this worker's
-     * standard output with stream_select() and to call tick() once output
-     * becomes available, so that a single thread of control can keep several
-     * workers busy at the same time.
+     * The command is written to the worker's standard input and dispatch()
+     * returns immediately; the caller is expected to poll this worker with
+     * poll() until it reports completion, so that a single thread of control can
+     * keep several workers busy at the same time.
      *
      * @throws WorkerException
      */
@@ -228,16 +235,18 @@ final class PersistentWorker
 
         assert($unit instanceof TestClassWorkUnit);
 
-        $command = $this->testClassCommand($unit, $offset, $resultFile, $nonce);
+        $doneFile = $resultFile . '.done';
+
+        $command = $this->testClassCommand($unit, $offset, $resultFile, $doneFile, $nonce);
 
         $encodedCommand = json_encode($command);
 
         assert($encodedCommand !== false);
 
-        $this->currentUnit          = $unit;
-        $this->currentNonce         = $nonce;
-        $this->currentResultFile    = $resultFile;
-        $this->controlChannelBuffer = '';
+        $this->currentUnit       = $unit;
+        $this->currentNonce      = $nonce;
+        $this->currentResultFile = $resultFile;
+        $this->currentDoneFile   = $doneFile;
 
         $this->job->write($encodedCommand . "\n");
     }
@@ -260,60 +269,24 @@ final class PersistentWorker
     }
 
     /**
-     * The worker's standard output, to be passed to stream_select() so that
-     * the caller can wait for the worker to report progress without blocking.
+     * Check, without blocking, whether the dispatched unit has finished and, if
+     * so, harvest its result; if the worker has died without finishing it,
+     * report the unit as crashed instead.
      *
-     * @return ?resource
+     * Returns null while the unit is still running. The caller is expected to
+     * call this repeatedly, sleeping briefly between rounds, until it returns a
+     * completed unit.
      */
-    public function controlChannel(): mixed
-    {
-        if ($this->job === null) {
-            return null;
-        }
-
-        return $this->job->stdout();
-    }
-
-    /**
-     * Consume whatever the worker has written to its control channel since the
-     * last call and, if the dispatched unit has finished, harvest its result.
-     *
-     * Returns null while the unit is still running. Intended to be called after
-     * stream_select() has reported the stream returned by controlChannel() as
-     * ready.
-     */
-    public function tick(): ?CompletedWorkUnit
+    public function poll(): ?CompletedWorkUnit
     {
         assert($this->currentUnit !== null);
-        assert($this->currentNonce !== null);
+        assert($this->currentDoneFile !== null);
 
-        if ($this->job === null) {
-            // @codeCoverageIgnoreStart
-            return $this->crashed();
-            // @codeCoverageIgnoreEnd
-        }
-
-        $stdout = $this->job->stdout();
-
-        if (!is_resource($stdout)) {
-            // @codeCoverageIgnoreStart
-            return $this->crashed();
-            // @codeCoverageIgnoreEnd
-        }
-
-        stream_set_blocking($stdout, false);
-
-        $chunk = stream_get_contents($stdout);
-
-        if ($chunk !== false && $chunk !== '') {
-            $this->controlChannelBuffer .= $chunk;
-        }
-
-        if (str_contains($this->controlChannelBuffer, self::DONE_PREFIX . $this->currentNonce)) {
+        if (is_file($this->currentDoneFile)) {
             return $this->finished();
         }
 
-        if (feof($stdout)) {
+        if ($this->job === null || !$this->job->isRunning()) {
             return $this->crashed();
         }
 
@@ -347,13 +320,14 @@ final class PersistentWorker
     /**
      * @param array{0: int, 1: int} $offset
      * @param non-empty-string      $resultFile
+     * @param non-empty-string      $doneFile
      * @param non-empty-string      $nonce
      *
      * @throws WorkerException
      *
      * @return array<string, mixed>
      */
-    private function testClassCommand(TestClassWorkUnit $unit, array $offset, string $resultFile, string $nonce): array
+    private function testClassCommand(TestClassWorkUnit $unit, array $offset, string $resultFile, string $doneFile, string $nonce): array
     {
         $class = new ReflectionClass($unit->className());
         $file  = $class->getFileName();
@@ -398,43 +372,9 @@ final class PersistentWorker
             'offsetSeconds'     => $offset[0],
             'offsetNanoseconds' => $offset[1],
             'resultFile'        => $resultFile,
+            'doneFile'          => $doneFile,
             'nonce'             => $nonce,
         ];
-    }
-
-    /**
-     * Read the worker's control channel until it reports that the test
-     * identified by the given nonce has finished. Any unrelated output the
-     * worker may have written to the channel is skipped. Returns false if the
-     * worker terminated before reporting completion.
-     *
-     * The marker is the last thing the worker writes on its line, followed by
-     * a newline. Stray output that the test produced on the control channel
-     * without a trailing newline therefore fuses with the marker as a prefix
-     * of the same line; matching the marker as a suffix tolerates this instead
-     * of being defeated by it.
-     */
-    private function awaitResult(string $nonce): bool
-    {
-        assert($this->job !== null);
-
-        $stdout = $this->job->stdout();
-
-        if (!is_resource($stdout)) {
-            // @codeCoverageIgnoreStart
-            return false;
-            // @codeCoverageIgnoreEnd
-        }
-
-        $expected = self::DONE_PREFIX . $nonce;
-
-        while (($line = fgets($stdout)) !== false) {
-            if (str_ends_with(trim($line), $expected)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**
@@ -444,10 +384,12 @@ final class PersistentWorker
     {
         assert($this->currentUnit !== null);
         assert($this->currentResultFile !== null);
+        assert($this->currentDoneFile !== null);
 
         $serializedResult = file_get_contents($this->currentResultFile);
 
         @unlink($this->currentResultFile);
+        @unlink($this->currentDoneFile);
 
         if ($serializedResult === false) {
             // @codeCoverageIgnoreStart
@@ -479,6 +421,10 @@ final class PersistentWorker
             @unlink($this->currentResultFile);
         }
 
+        if ($this->currentDoneFile !== null) {
+            @unlink($this->currentDoneFile);
+        }
+
         $completed = new CompletedWorkUnit($this->currentUnit, '', null, true);
 
         if ($this->job !== null) {
@@ -494,10 +440,10 @@ final class PersistentWorker
 
     private function clearCurrentUnit(): void
     {
-        $this->currentUnit          = null;
-        $this->currentNonce         = null;
-        $this->currentResultFile    = null;
-        $this->controlChannelBuffer = '';
+        $this->currentUnit       = null;
+        $this->currentNonce      = null;
+        $this->currentResultFile = null;
+        $this->currentDoneFile   = null;
     }
 
     /**
