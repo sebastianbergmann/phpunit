@@ -303,6 +303,13 @@
             </fileset>
         </copy>
 
+        <copy file="${basedir}/vendor/sebastian/version-requirement/LICENSE" tofile="${basedir}/build/tmp/phar/sebastian-version-requirement/LICENSE"/>
+        <copy todir="${basedir}/build/tmp/phar/sebastian-version-requirement">
+            <fileset dir="${basedir}/vendor/sebastian/version-requirement/src">
+                <include name="**/*.php" />
+            </fileset>
+        </copy>
+
         <copy file="${basedir}/vendor/staabm/side-effects-detector/LICENSE" tofile="${basedir}/build/tmp/phar/staabm-side-effects-detector/LICENSE"/>
         <copy todir="${basedir}/build/tmp/phar/staabm-side-effects-detector">
             <fileset dir="${basedir}/vendor/staabm/side-effects-detector/lib">

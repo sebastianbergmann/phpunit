@@ -14,9 +14,8 @@ use PHPUnit\Framework\Attributes\CoversClassesThatExtendClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Metadata\Version\ComparisonRequirement;
+use PHPUnit\Metadata\Version\Requirement;
 use PHPUnit\TestFixture\Metadata\Attribute\ExampleTrait;
-use PHPUnit\Util\VersionComparisonOperator;
 
 #[CoversClass(Metadata::class)]
 #[CoversClassesThatExtendClass(Metadata::class)]
@@ -3662,10 +3661,7 @@ final class MetadataTest extends TestCase
     public function testCanBeRequiresPhpOnClass(): void
     {
         $metadata = Metadata::requiresPhpOnClass(
-            new ComparisonRequirement(
-                '8.0.0',
-                new VersionComparisonOperator('>='),
-            ),
+            Requirement::from('>= 8.0.0'),
         );
 
         $this->assertFalse($metadata->isAfter());
@@ -3736,10 +3732,7 @@ final class MetadataTest extends TestCase
     public function testCanBeRequiresPhpOnMethod(): void
     {
         $metadata = Metadata::requiresPhpOnMethod(
-            new ComparisonRequirement(
-                '8.0.0',
-                new VersionComparisonOperator('>='),
-            ),
+            Requirement::from('>= 8.0.0'),
         );
 
         $this->assertFalse($metadata->isAfter());
@@ -3884,10 +3877,7 @@ final class MetadataTest extends TestCase
     {
         $metadata = Metadata::requiresPhpExtensionOnClass(
             'test',
-            new ComparisonRequirement(
-                '1.0.0',
-                new VersionComparisonOperator('>='),
-            ),
+            Requirement::from('>= 1.0.0'),
         );
 
         $this->assertFalse($metadata->isAfter());
@@ -4034,10 +4024,7 @@ final class MetadataTest extends TestCase
     {
         $metadata = Metadata::requiresPhpExtensionOnMethod(
             'test',
-            new ComparisonRequirement(
-                '1.0.0',
-                new VersionComparisonOperator('>='),
-            ),
+            Requirement::from('>= 1.0.0'),
         );
 
         $this->assertFalse($metadata->isAfter());
@@ -4110,10 +4097,7 @@ final class MetadataTest extends TestCase
     public function testCanBeRequiresPhpunitOnClass(): void
     {
         $metadata = Metadata::requiresPhpunitOnClass(
-            new ComparisonRequirement(
-                '10.0.0',
-                new VersionComparisonOperator('>='),
-            ),
+            Requirement::from('>= 10.0.0'),
         );
 
         $this->assertFalse($metadata->isAfter());
@@ -4253,10 +4237,7 @@ final class MetadataTest extends TestCase
     public function testCanBeRequiresPhpunitOnMethod(): void
     {
         $metadata = Metadata::requiresPhpunitOnMethod(
-            new ComparisonRequirement(
-                '10.0.0',
-                new VersionComparisonOperator('>='),
-            ),
+            Requirement::from('>= 10.0.0'),
         );
 
         $this->assertFalse($metadata->isAfter());

@@ -42,6 +42,7 @@ use PHPUnit\Metadata\Version\InvalidVersionRequirement;
 use PHPUnit\Metadata\Version\Requirement;
 use PHPUnit\Runner\Version;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
+use SebastianBergmann\VersionRequirement\Requirement as RequirementImplementation;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -68,7 +69,7 @@ final readonly class Requirements
 
                 $this->warnAboutIncompleteVersion($metadata->versionRequirement(), $className, $methodName);
 
-                if (!$versionRequirement->isSatisfiedBy(PHP_VERSION)) {
+                if (!$this->isSatisfiedBy($versionRequirement, PHP_VERSION)) {
                     $notSatisfied[] = sprintf(
                         'PHP %s is required.',
                         $versionRequirement->asString(),
@@ -91,7 +92,7 @@ final readonly class Requirements
 
                 if (!extension_loaded($metadata->extension()) ||
                     ($metadata->hasVersionRequirement() &&
-                    !$metadata->versionRequirement()->isSatisfiedBy($extensionVersion))) {
+                    !$this->isSatisfiedBy($metadata->versionRequirement(), $extensionVersion))) {
                     $notSatisfied[] = sprintf(
                         'PHP extension %s%s is required.',
                         $metadata->extension(),
@@ -107,7 +108,7 @@ final readonly class Requirements
 
                 $this->warnAboutIncompleteVersion($metadata->versionRequirement(), $className, $methodName);
 
-                if (!$versionRequirement->isSatisfiedBy(Version::id())) {
+                if (!$this->isSatisfiedBy($versionRequirement, Version::id())) {
                     $notSatisfied[] = sprintf(
                         'PHPUnit %s is required.',
                         $versionRequirement->asString(),
@@ -267,6 +268,17 @@ final readonly class Requirements
         }
 
         return false;
+    }
+
+    private function isSatisfiedBy(Requirement $versionRequirement, string $version): bool
+    {
+        $requirement = $versionRequirement->asString();
+
+        if ($versionRequirement instanceof InvalidVersionRequirement || $requirement === '') {
+            return false;
+        }
+
+        return RequirementImplementation::from($requirement)->isSatisfiedBy($version);
     }
 
     /**

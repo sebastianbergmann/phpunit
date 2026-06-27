@@ -27,6 +27,7 @@
         "security": "https://github.com/sebastianbergmann/phpunit/security/policy"
     },
     "prefer-stable": true,
+    "minimum-stability": "dev",
     "require": {
         "php": ">=8.4.1",
         "ext-dom": "*",
@@ -55,6 +56,7 @@
         "sebastian/recursion-context": "^8.0.0",
         "sebastian/type": "^7.0.1",
         "sebastian/version": "^7.0.0",
+        "sebastian/version-requirement": "^1.0",
         "staabm/side-effects-detector": "^1.0.5"
     },
     "config": {

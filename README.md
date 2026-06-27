@@ -57,6 +57,7 @@ Here is a list of all components that are primarily developed and maintained by 
 * [sebastian/recursion-context](https://github.com/sebastianbergmann/recursion-context)
 * [sebastian/type](https://github.com/sebastianbergmann/type)
 * [sebastian/version](https://github.com/sebastianbergmann/version)
+* [sebastian/version-requirement](https://github.com/sebastianbergmann/version-requirement)
 
 A very special thanks to everyone who has contributed to the [PHPUnit Manual](https://github.com/sebastianbergmann/phpunit-documentation-english).
 

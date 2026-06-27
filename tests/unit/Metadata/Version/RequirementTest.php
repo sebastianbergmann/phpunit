@@ -9,9 +9,7 @@
  */
 namespace PHPUnit\Metadata;
 
-use PharIo\Version\VersionConstraintParser;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -29,32 +27,6 @@ use PHPUnit\Util\VersionComparisonOperator;
 #[Group('metadata')]
 final class RequirementTest extends TestCase
 {
-    /**
-     * @return non-empty-list<array{bool, string, ConstraintRequirement}>
-     */
-    public static function constraintProvider(): array
-    {
-        return [
-            [
-                true,
-                '1.0.0',
-                new ConstraintRequirement(
-                    (new VersionConstraintParser)->parse('1.0.0'),
-                ),
-            ],
-        ];
-    }
-
-    /**
-     * @return non-empty-list<array{bool, string, ComparisonRequirement}>
-     */
-    public static function comparisonProvider(): array
-    {
-        return [
-            [true, '1.0.0', new ComparisonRequirement('1.0.0', new VersionComparisonOperator('='))],
-        ];
-    }
-
     public function testCanBeCreatedFromStringWithVersionConstraint(): void
     {
         $requirement = Requirement::from('^1.0');
@@ -63,24 +35,13 @@ final class RequirementTest extends TestCase
         $this->assertSame('^1.0', $requirement->asString());
     }
 
-    #[DataProvider('constraintProvider')]
-    public function testVersionRequirementCanBeCheckedUsingVersionConstraint(bool $expected, string $version, ConstraintRequirement $requirement): void
-    {
-        $this->assertSame($expected, $requirement->isSatisfiedBy($version));
-    }
-
     public function testCanBeCreatedFromStringWithSimpleComparison(): void
     {
-        $requirement = Requirement::from('>= 1.0');
+        $requirement = Requirement::from('>= 1.0.0');
 
         $this->assertInstanceOf(ComparisonRequirement::class, $requirement);
-        $this->assertSame('>= 1.0', $requirement->asString());
-    }
-
-    #[DataProvider('comparisonProvider')]
-    public function testVersionRequirementCanBeCheckedUsingSimpleComparison(bool $expected, string $version, ComparisonRequirement $requirement): void
-    {
-        $this->assertSame($expected, $requirement->isSatisfiedBy($version));
+        $this->assertSame('>= 1.0.0', $requirement->asString());
+        $this->assertSame('1.0.0', $requirement->version());
     }
 
     public function testCannotBeCreatedFromInvalidString(): void

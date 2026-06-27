@@ -29,11 +29,6 @@ final readonly class InvalidVersionRequirement extends Requirement
         $this->message = $message;
     }
 
-    public function isSatisfiedBy(string $version): bool
-    {
-        return false;
-    }
-
     /**
      * @return non-empty-string
      */
