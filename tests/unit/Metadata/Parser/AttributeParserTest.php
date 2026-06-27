@@ -36,6 +36,7 @@ use PHPUnit\Framework\Attributes\DependsOnClassUsingShallowClone;
 use PHPUnit\Framework\Attributes\DependsUsingDeepClone;
 use PHPUnit\Framework\Attributes\DependsUsingShallowClone;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\Attributes\DoNotRunInParallel;
 use PHPUnit\Framework\Attributes\ExcludeGlobalVariableFromBackup;
 use PHPUnit\Framework\Attributes\ExcludeStaticPropertyFromBackup;
 use PHPUnit\Framework\Attributes\Group;
@@ -106,6 +107,7 @@ use PHPUnit\Metadata\InvalidAttribute;
 #[CoversClass(DependsUsingShallowClone::class)]
 #[CoversClass(DisableReturnValueGenerationForTestDoubles::class)]
 #[CoversClass(DoesNotPerformAssertions::class)]
+#[CoversClass(DoNotRunInParallel::class)]
 #[CoversClass(ExcludeGlobalVariableFromBackup::class)]
 #[CoversClass(ExcludeStaticPropertyFromBackup::class)]
 #[CoversClass(Group::class)]

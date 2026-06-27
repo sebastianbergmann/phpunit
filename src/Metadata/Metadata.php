@@ -175,6 +175,16 @@ abstract readonly class Metadata
         return new DisableReturnValueGenerationForTestDoubles(Level::CLASS_LEVEL);
     }
 
+    public static function doNotRunInParallelOnClass(): DoNotRunInParallel
+    {
+        return new DoNotRunInParallel(Level::CLASS_LEVEL);
+    }
+
+    public static function doNotRunInParallelOnMethod(): DoNotRunInParallel
+    {
+        return new DoNotRunInParallel(Level::METHOD_LEVEL);
+    }
+
     public static function doesNotPerformAssertionsOnClass(): DoesNotPerformAssertions
     {
         return new DoesNotPerformAssertions(Level::CLASS_LEVEL);
@@ -785,6 +795,14 @@ abstract readonly class Metadata
      * @phpstan-assert-if-true DoesNotPerformAssertions $this
      */
     public function isDoesNotPerformAssertions(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true DoNotRunInParallel $this
+     */
+    public function isDoNotRunInParallel(): bool
     {
         return false;
     }

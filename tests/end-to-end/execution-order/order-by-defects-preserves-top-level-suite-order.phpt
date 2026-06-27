@@ -1,5 +1,6 @@
 --TEST--
 Order by defects (with result cache): Top-level testsuite order is preserved when child suites contain equally-weighted defects
+--DO_NOT_RUN_IN_PARALLEL--
 --FILE--
 <?php declare(strict_types=1);
 $testResultsFile = sys_get_temp_dir() . '/test-results';
