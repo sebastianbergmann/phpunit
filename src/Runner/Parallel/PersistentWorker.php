@@ -102,6 +102,11 @@ final class PersistentWorker
     private readonly int $id;
 
     /**
+     * @var non-empty-string
+     */
+    private readonly string $token;
+
+    /**
      * @param non-negative-int $id
      */
     public function __construct(JobRunner $jobRunner, ChildProcessResultProcessor $processor, int $id = 0)
@@ -109,6 +114,7 @@ final class PersistentWorker
         $this->jobRunner = $jobRunner;
         $this->processor = $processor;
         $this->id        = $id;
+        $this->token     = $id . '_' . bin2hex(random_bytes(16));
     }
 
     /**
@@ -120,8 +126,15 @@ final class PersistentWorker
         // fixtures can partition shared resources (a database, a port, a
         // temporary directory, ...) per worker and thereby avoid colliding with
         // the tests running concurrently in the other workers.
+        //
+        // Two identifiers are provided: PHPUNIT_WORKER_ID is the small, stable
+        // ordinal (0, 1, 2, ...) that is ideal for indexing a fixed set of
+        // pre-provisioned resources, while PHPUNIT_WORKER_TOKEN adds a value
+        // that is unique across workers and across runs, for resources that must
+        // not collide with those left behind by a previous run.
         $environmentVariables = [
-            'PHPUNIT_WORKER_ID' => (string) $this->id,
+            'PHPUNIT_WORKER_ID'    => (string) $this->id,
+            'PHPUNIT_WORKER_TOKEN' => $this->token,
         ];
 
         $this->job = $this->jobRunner->start(
