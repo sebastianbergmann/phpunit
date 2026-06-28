@@ -1,6 +1,7 @@
 --TEST--
 Possibility to migrate XML configuration file from PHPUnit 8.5 format is detected
---DO_NOT_RUN_IN_PARALLEL--
+--CONFLICTS--
+all
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';

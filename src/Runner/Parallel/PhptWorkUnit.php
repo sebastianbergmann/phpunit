@@ -31,13 +31,20 @@ final readonly class PhptWorkUnit implements WorkUnit
     private string $file;
 
     /**
-     * @param non-negative-int $index
-     * @param non-empty-string $file
+     * @var list<non-empty-string>
      */
-    public function __construct(int $index, string $file)
+    private array $conflicts;
+
+    /**
+     * @param non-negative-int       $index
+     * @param non-empty-string       $file
+     * @param list<non-empty-string> $conflicts
+     */
+    public function __construct(int $index, string $file, array $conflicts = [])
     {
-        $this->index = $index;
-        $this->file  = $file;
+        $this->index     = $index;
+        $this->file      = $file;
+        $this->conflicts = $conflicts;
     }
 
     /**
@@ -54,6 +61,19 @@ final readonly class PhptWorkUnit implements WorkUnit
     public function file(): string
     {
         return $this->file;
+    }
+
+    /**
+     * The conflict keys declared by the test's --CONFLICTS-- section. While a
+     * test that conflicts with key K is running, no other test that conflicts
+     * with K may run. The reserved key "all" conflicts with every other test,
+     * so a test that declares it runs on its own.
+     *
+     * @return list<non-empty-string>
+     */
+    public function conflicts(): array
+    {
+        return $this->conflicts;
     }
 
     /**

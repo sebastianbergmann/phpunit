@@ -1,6 +1,7 @@
 --TEST--
 Order by defects (with result cache): Skipped tests are not hoisted to the front
---DO_NOT_RUN_IN_PARALLEL--
+--CONFLICTS--
+all
 --FILE--
 <?php declare(strict_types=1);
 $testResultsFile = sys_get_temp_dir() . '/test-results';

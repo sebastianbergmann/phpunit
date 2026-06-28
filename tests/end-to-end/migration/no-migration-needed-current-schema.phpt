@@ -1,6 +1,7 @@
 --TEST--
 Configuration migration is not possible when the configuration file already uses the current schema
---DO_NOT_RUN_IN_PARALLEL--
+--CONFLICTS--
+all
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';

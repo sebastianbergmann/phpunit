@@ -1,6 +1,7 @@
 --TEST--
 Configuration migration from PHPUnit 10.0 format works
---DO_NOT_RUN_IN_PARALLEL--
+--CONFLICTS--
+all
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';

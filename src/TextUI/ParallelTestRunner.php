@@ -9,14 +9,12 @@
  */
 namespace PHPUnit\TextUI;
 
-use function file;
 use function get_parent_class;
 use function gettype;
 use function is_array;
 use function is_object;
 use function is_resource;
 use function mt_srand;
-use function preg_match;
 use function serialize;
 use function spl_object_id;
 use PHPUnit\Event;
@@ -26,6 +24,7 @@ use PHPUnit\Framework\TestRunner\ChildProcessResultProcessor;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\CodeCoverage;
+use PHPUnit\Runner\Exception as PhptException;
 use PHPUnit\Runner\Parallel\CompletedWorkUnit;
 use PHPUnit\Runner\Parallel\PersistentWorker;
 use PHPUnit\Runner\Parallel\PhptRunner;
@@ -35,6 +34,7 @@ use PHPUnit\Runner\Parallel\TestClassWorkUnit;
 use PHPUnit\Runner\Parallel\WorkerException;
 use PHPUnit\Runner\Parallel\WorkerPool;
 use PHPUnit\Runner\Parallel\WorkUnit;
+use PHPUnit\Runner\Phpt\Parser;
 use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 use PHPUnit\Runner\ResultCache\ResultCache;
 use PHPUnit\Runner\TestSuiteSorter;
@@ -138,9 +138,11 @@ final class ParallelTestRunner
      * in the main process is ordinary execution that behaves exactly as it would
      * in sequential mode.
      *
-     * Standalone tests that are not PHPUnit\Framework\TestCase instances — most
-     * commonly PHPT tests — cannot be reconstructed in a worker and are likewise
-     * run in the main process, each at its own suite index.
+     * PHPT tests are not PHPUnit\Framework\TestCase instances and cannot run in
+     * a worker, so they run concurrently in the main process, each as its own
+     * child process, honouring the conflict keys of their --CONFLICTS-- section.
+     * Any remaining standalone test — one that is neither a TestCase nor a PHPT
+     * test — is run in the main process at its own suite index.
      *
      * @param list<WorkUnit>                                   $units
      * @param list<PhptWorkUnit>                               $phpt
@@ -477,7 +479,7 @@ final class ParallelTestRunner
         /** @var array<class-string<TestCase>, array{index: non-negative-int, tests: list<TestCase>}> $byClass */
         $byClass = [];
 
-        /** @var list<array{index: non-negative-int, file: non-empty-string}> $phpt */
+        /** @var list<array{index: non-negative-int, file: non-empty-string, conflicts: list<non-empty-string>}> $phpt */
         $phpt = [];
 
         /** @var list<array{index: non-negative-int, test: Test}> $standalone */
@@ -496,7 +498,7 @@ final class ParallelTestRunner
         $phptUnits = [];
 
         foreach ($phpt as $item) {
-            $phptUnits[] = new PhptWorkUnit($item['index'], $item['file']);
+            $phptUnits[] = new PhptWorkUnit($item['index'], $item['file'], $item['conflicts']);
         }
 
         return [
@@ -507,10 +509,10 @@ final class ParallelTestRunner
     }
 
     /**
-     * @param array<class-string<TestCase>, array{index: non-negative-int, tests: list<TestCase>}> $byClass
-     * @param list<array{index: non-negative-int, file: non-empty-string}>                         $phpt
-     * @param list<array{index: non-negative-int, test: Test}>                                     $standalone
-     * @param non-negative-int                                                                     $index
+     * @param array<class-string<TestCase>, array{index: non-negative-int, tests: list<TestCase>}>            $byClass
+     * @param list<array{index: non-negative-int, file: non-empty-string, conflicts: list<non-empty-string>}> $phpt
+     * @param list<array{index: non-negative-int, test: Test}>                                                $standalone
+     * @param non-negative-int                                                                                $index
      */
     private function collect(TestSuite $suite, array &$byClass, array &$phpt, array &$standalone, int &$index): void
     {
@@ -541,23 +543,15 @@ final class ParallelTestRunner
             if ($test instanceof PhptTestCase) {
                 $file = $test->toString();
 
-                if ($this->phptMustNotRunInParallel($file)) {
-                    // A PHPT test cannot carry the #[DoNotRunInParallel]
-                    // attribute, so it opts out with a --DO_NOT_RUN_IN_PARALLEL--
-                    // section, which routes it to the main process.
-                    $standalone[] = [
-                        'index' => $index,
-                        'test'  => $test,
-                    ];
-                } else {
-                    // A PHPT test is not a PHPUnit\Framework\TestCase, but a
-                    // worker can reconstruct it from its file path alone and run
-                    // it just like the main process would.
-                    $phpt[] = [
-                        'index' => $index,
-                        'file'  => $file,
-                    ];
-                }
+                // A PHPT test cannot carry the #[DoNotRunInParallel] attribute,
+                // so it declares any tests it must not run alongside with a
+                // --CONFLICTS-- section. The runner honours those conflict keys
+                // while running the PHPT tests concurrently in the main process.
+                $phpt[] = [
+                    'index'     => $index,
+                    'file'      => $file,
+                    'conflicts' => $this->phptConflicts($file),
+                ];
 
                 $index++;
 
@@ -578,26 +572,33 @@ final class ParallelTestRunner
     }
 
     /**
-     * Whether a PHPT test declares, with a --DO_NOT_RUN_IN_PARALLEL-- section,
-     * that it must not run in parallel — typically because it relies on a shared
-     * resource such as a fixed temporary file or the result cache.
+     * The conflict keys a PHPT test declares with a --CONFLICTS-- section. While
+     * a test that conflicts with a key is running, no other test that conflicts
+     * with the same key may run; the reserved key "all" conflicts with every
+     * other test. A test with no such section declares no conflicts.
+     *
+     * @param non-empty-string $file
+     *
+     * @return list<non-empty-string>
      */
-    private function phptMustNotRunInParallel(string $file): bool
+    private function phptConflicts(string $file): array
     {
-        $lines = @file($file);
+        $parser = new Parser;
 
-        if ($lines === false) {
+        try {
+            $sections = $parser->parse($file);
             // @codeCoverageIgnoreStart
-            return false;
+        } catch (PhptException) {
+            // A malformed PHPT cannot meaningfully declare conflicts; it is run
+            // anyway and reports its own parse error at its suite position.
+            return [];
             // @codeCoverageIgnoreEnd
         }
 
-        foreach ($lines as $line) {
-            if (preg_match('/^--DO_NOT_RUN_IN_PARALLEL--/', $line) === 1) {
-                return true;
-            }
+        if (!isset($sections['CONFLICTS'])) {
+            return [];
         }
 
-        return false;
+        return $parser->parseConflictsSection($sections['CONFLICTS']);
     }
 }
