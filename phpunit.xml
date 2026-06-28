@@ -61,7 +61,7 @@
             <exclude>tests/end-to-end/migration/_files</exclude>
             <exclude>tests/end-to-end/parallel/phpt/_files</exclude>
             <exclude>tests/end-to-end/parallel/phpt-coverage/_files</exclude>
-            <exclude>tests/end-to-end/parallel/phpt-do-not-run/_files</exclude>
+            <exclude>tests/end-to-end/parallel/phpt-conflicts/_files</exclude>
             <exclude>tests/end-to-end/parallel/phpt-with-classes/_files</exclude>
             <exclude>tests/end-to-end/property-based-testing/_files</exclude>
             <exclude>tests/end-to-end/random-seed/_files</exclude>
