@@ -1,6 +1,7 @@
 --TEST--
 executionOrder="depends,defects,duration-ascending" in phpunit.xml (with test run history): Test methods with dependencies and defects
---DO_NOT_RUN_IN_PARALLEL--
+--CONFLICTS--
+all
 --FILE--
 <?php declare(strict_types=1);
 $testRunHistoryFile = sys_get_temp_dir() . '/test-run-history';
