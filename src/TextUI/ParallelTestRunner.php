@@ -107,12 +107,14 @@ final class ParallelTestRunner
 
             Event\Facade::emitter()->testRunnerExecutionFinished();
             Event\Facade::emitter()->testRunnerFinished();
+            // @codeCoverageIgnoreStart
         } catch (Throwable $t) {
             throw new RuntimeException(
                 $t->getMessage(),
                 (int) $t->getCode(),
                 $t,
             );
+            // @codeCoverageIgnoreEnd
         }
     }
 
@@ -564,12 +566,14 @@ final class ParallelTestRunner
 
             // Any other kind of test cannot be reconstructed in a worker and is
             // run as a standalone unit in the main process.
+            // @codeCoverageIgnoreStart
             $standalone[] = [
                 'index' => $index,
                 'test'  => $test,
             ];
 
             $index++;
+            // @codeCoverageIgnoreEnd
         }
     }
 
