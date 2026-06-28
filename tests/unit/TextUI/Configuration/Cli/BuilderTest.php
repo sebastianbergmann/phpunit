@@ -1593,6 +1593,26 @@ final class BuilderTest extends TestCase
         $configuration->processIsolation();
     }
 
+    #[TestDox('--parallel')]
+    public function testParallel(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--parallel', '4']);
+
+        $this->assertTrue($configuration->hasNumberOfParallelWorkers());
+        $this->assertSame(4, $configuration->numberOfParallelWorkers());
+    }
+
+    public function testNumberOfParallelWorkersMayNotBeConfigured(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters([]);
+
+        $this->assertFalse($configuration->hasNumberOfParallelWorkers());
+
+        $this->expectException(Exception::class);
+
+        $configuration->numberOfParallelWorkers();
+    }
+
     #[TestDox('--stderr')]
     public function testStderr(): void
     {
