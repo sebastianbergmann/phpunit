@@ -32,6 +32,18 @@ final class PhptWorkUnitTest extends TestCase
         $this->assertSame('/path/to/test.phpt', $this->unit()->name());
     }
 
+    public function testHasNoConflictsByDefault(): void
+    {
+        $this->assertSame([], $this->unit()->conflicts());
+    }
+
+    public function testHasConflicts(): void
+    {
+        $unit = new PhptWorkUnit(5, '/path/to/test.phpt', ['all']);
+
+        $this->assertSame(['all'], $unit->conflicts());
+    }
+
     private function unit(): PhptWorkUnit
     {
         return new PhptWorkUnit(5, '/path/to/test.phpt');
