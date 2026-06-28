@@ -65,6 +65,26 @@ final class WorkerPoolTest extends TestCase
         $this->assertTrue($completed[0]->crashed());
     }
 
+    public function testReportsRemainingUnitsAsCrashedWhenEveryWorkerHasDied(): void
+    {
+        // The only worker dies on the first unit, so the second unit can no
+        // longer be dispatched anywhere; it must still be reported as crashed
+        // rather than silently lost.
+        $units = [
+            new TestClassWorkUnit(0, WorkerSecondTest::class, [new WorkerSecondTest('testThatKillsTheWorkerProcess')]),
+            new TestClassWorkUnit(1, WorkerFirstTest::class, [new WorkerFirstTest('testStartsTheProcessLocalCounter')]),
+        ];
+
+        $completed = $this->execute($this->pool(1), $units);
+
+        $this->assertCount(2, $completed);
+        $this->assertSame([0, 1], $this->indexesOf($completed));
+
+        foreach ($completed as $unit) {
+            $this->assertTrue($unit->crashed());
+        }
+    }
+
     public function testReportsAUnitWhoseDataCannotBeSerializedAsCrashedAndKeepsRunning(): void
     {
         $test = new WorkerFirstTest('testStartsTheProcessLocalCounter');

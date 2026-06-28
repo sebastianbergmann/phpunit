@@ -50,6 +50,8 @@
             <exclude>tests/end-to-end/logging/_files</exclude>
             <exclude>tests/end-to-end/migration/_files</exclude>
             <exclude>tests/end-to-end/parallel/phpt/_files</exclude>
+            <exclude>tests/end-to-end/parallel/phpt-coverage/_files</exclude>
+            <exclude>tests/end-to-end/parallel/phpt-do-not-run/_files</exclude>
             <exclude>tests/end-to-end/parallel/phpt-with-classes/_files</exclude>
             <exclude>tests/end-to-end/repeat/_files</exclude>
             <exclude>tests/end-to-end/retry/_files</exclude>
