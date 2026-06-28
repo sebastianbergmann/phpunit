@@ -9,8 +9,9 @@
  */
 namespace PHPUnit\Runner\Parallel;
 
-use function array_shift;
+use function array_merge;
 use function count;
+use function in_array;
 use function usleep;
 use Generator;
 use PHPUnit\Event\CollectingEmitter;
@@ -48,6 +49,13 @@ use PHPUnit\Util\PHP\RunningJob;
  * liveness instead, draining the pipes of the sections that do use them so that
  * a child never blocks on a full pipe buffer.
  *
+ * A test may declare conflict keys with a --CONFLICTS-- section: while a test
+ * that conflicts with key K is running, no other test that conflicts with K is
+ * started. The reserved key "all" conflicts with every other test, so a test
+ * that declares it runs entirely on its own; such tests are ordered last and
+ * run once the others have drained, mirroring how run-tests.php defers them
+ * until a single worker remains.
+ *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -80,13 +88,45 @@ final class PhptRunner
      */
     public function run(array $units, callable $onCompleted): void
     {
-        $queue  = $units;
+        // Tests that conflict with "all" run on their own; ordering them last
+        // lets the others start first, so an "all" test only runs once the
+        // queue ahead of it has drained.
+        $queue    = [];
+        $deferred = [];
+
+        foreach ($units as $unit) {
+            if (in_array('all', $unit->conflicts(), true)) {
+                $deferred[] = $unit;
+
+                continue;
+            }
+
+            $queue[] = $unit;
+        }
+
+        $queue = array_merge($queue, $deferred);
+
         $active = [];
-        $nextId = 0;
+
+        // The conflict keys currently held by a running test, and whether a
+        // test that conflicts with "all" is running (which blocks every other
+        // test from starting).
+        $activeConflicts = [];
+        $exclusive       = false;
+        $nextId          = 0;
 
         while ($queue !== [] || $active !== []) {
-            while (count($active) < $this->concurrency && $queue !== []) {
-                $unit      = array_shift($queue);
+            foreach ($queue as $position => $unit) {
+                if (count($active) >= $this->concurrency || $exclusive) {
+                    break;
+                }
+
+                if (!$this->canStart($unit, $active, $activeConflicts)) {
+                    continue;
+                }
+
+                unset($queue[$position]);
+
                 $collector = EventFacade::instance()->collectingEmitter();
                 $generator = new PhptTestCase($unit->file())->execute($collector->emitter());
 
@@ -94,11 +134,14 @@ final class PhptRunner
 
                 if (!$generator->valid()) {
                     // The test produced its events without running any child
-                    // process — a parse error, or a skip decided in-process.
+                    // process — a parse error, or a skip decided in-process. It
+                    // is already finished, so it reserves no conflict keys.
                     $onCompleted($unit->index(), $collector->flush());
 
                     continue;
                 }
+
+                $this->reserve($unit, $activeConflicts, $exclusive);
 
                 $active[$nextId] = [
                     'unit'      => $unit,
@@ -114,15 +157,77 @@ final class PhptRunner
                 continue;
             }
 
-            $this->harvest($active, $onCompleted);
+            $this->harvest($active, $onCompleted, $activeConflicts, $exclusive);
+        }
+    }
+
+    /**
+     * Whether the unit may be started right now: a unit that conflicts with
+     * "all" may start only when nothing else is running, and any other unit may
+     * start only when none of its conflict keys are currently held.
+     *
+     * @param array<int, array{unit: PhptWorkUnit, generator: Generator<int, Job, Result, void>, collector: CollectingEmitter, job: RunningJob}> $active
+     * @param array<non-empty-string, true>                                                                                                      $activeConflicts
+     */
+    private function canStart(PhptWorkUnit $unit, array $active, array $activeConflicts): bool
+    {
+        if (in_array('all', $unit->conflicts(), true)) {
+            return $active === [];
+        }
+
+        foreach ($unit->conflicts() as $key) {
+            if (isset($activeConflicts[$key])) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Record the conflict keys the unit holds while it runs. The reserved key
+     * "all" is tracked through the exclusive flag rather than the key map,
+     * because it blocks every other test rather than one sharing its key.
+     *
+     * @param array<non-empty-string, true> $activeConflicts
+     */
+    private function reserve(PhptWorkUnit $unit, array &$activeConflicts, bool &$exclusive): void
+    {
+        foreach ($unit->conflicts() as $key) {
+            if ($key === 'all') {
+                $exclusive = true;
+
+                continue;
+            }
+
+            $activeConflicts[$key] = true;
+        }
+    }
+
+    /**
+     * Release the conflict keys the unit held once it has finished.
+     *
+     * @param array<non-empty-string, true> $activeConflicts
+     */
+    private function release(PhptWorkUnit $unit, array &$activeConflicts, bool &$exclusive): void
+    {
+        foreach ($unit->conflicts() as $key) {
+            if ($key === 'all') {
+                $exclusive = false;
+
+                continue;
+            }
+
+            unset($activeConflicts[$key]);
         }
     }
 
     /**
      * @param array<int, array{unit: PhptWorkUnit, generator: Generator<int, Job, Result, void>, collector: CollectingEmitter, job: RunningJob}> $active
      * @param callable(non-negative-int, EventCollection): void                                                                                  $onCompleted
+     * @param array<non-empty-string, true>                                                                                                      $activeConflicts
      */
-    private function harvest(array &$active, callable $onCompleted): void
+    private function harvest(array &$active, callable $onCompleted, array &$activeConflicts, bool &$exclusive): void
     {
         $progressed = false;
 
@@ -149,6 +254,8 @@ final class PhptRunner
             }
 
             $onCompleted($task['unit']->index(), $task['collector']->flush());
+
+            $this->release($task['unit'], $activeConflicts, $exclusive);
 
             unset($active[$id]);
         }
