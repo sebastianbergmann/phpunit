@@ -1,6 +1,7 @@
 --TEST--
 Possibility to migrate XML configuration file from PHPUnit 9.2 format is detected
---DO_NOT_RUN_IN_PARALLEL--
+--CONFLICTS--
+all
 --FILE--
 <?php declare(strict_types=1);
 $cacheDirectory = sys_get_temp_dir() . '/phpunit-migration-from-92-detected';
