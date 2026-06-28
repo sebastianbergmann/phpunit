@@ -55,6 +55,31 @@ EOT,
         $this->assertSame($result, $job->wait());
     }
 
+    public function testReportsWhetherTheProcessIsStillRunning(): void
+    {
+        $job = $this->jobRunner()->start(
+            new Job(
+                <<<'EOT'
+<?php declare(strict_types=1);
+fgets(STDIN);
+
+EOT,
+            ),
+        );
+
+        // The job blocks reading from its standard input, so it is still
+        // running until input arrives.
+        $this->assertTrue($job->isRunning());
+
+        $job->write("go\n");
+        $job->closeStdin();
+        $job->wait();
+
+        // Once the job has been reaped, its memoized result short-circuits the
+        // liveness poll.
+        $this->assertFalse($job->isRunning());
+    }
+
     public function testWritesToTheStandardInputOfTheJob(): void
     {
         $job = $this->jobRunner()->start(
