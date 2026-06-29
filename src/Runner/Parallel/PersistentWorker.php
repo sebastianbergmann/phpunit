@@ -24,11 +24,8 @@ use function sprintf;
 use function sys_get_temp_dir;
 use function tempnam;
 use function unlink;
-use function usleep;
 use function var_export;
 use PHPUnit\Event\Facade as EventFacade;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\TestRunner\ChildProcessResultProcessor;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\TextUI\Configuration\SourceMapper;
@@ -42,18 +39,20 @@ use Throwable;
 /**
  * A worker process that boots PHPUnit once and then executes an arbitrary
  * number of tests, each in response to a command received on its control
- * channel (its standard input).
+ * channel (its standard input). A unit of work is a whole test class; the
+ * worker reconstructs it from the dispatched command, runs it, and reports the
+ * result back through the filesystem (see dispatch() and poll()).
  *
  * Unlike the SeparateProcessTestRunner, which spawns one process per test for
  * isolation, a PersistentWorker amortizes the cost of bootstrapping PHPUnit
- * across all of the tests it runs. The tests executed by a single worker share
+ * across all of the units it runs. The tests executed by a single worker share
  * one process and therefore do not get the per-test global-state isolation that
  * process isolation provides; this is the trade-off that makes the worker
  * suitable as a building block for parallel test execution.
  *
- * The result of each test is transported back to the parent process using the
- * very same serialized envelope that process isolation uses, so that the
- * ChildProcessResultProcessor can reconstitute it unchanged.
+ * The result of each unit is transported back to the parent process as the same
+ * kind of serialized envelope that process isolation uses, which the
+ * ResultAggregator decodes and replays into the parent's event subsystem.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -61,13 +60,7 @@ use Throwable;
  */
 final class PersistentWorker
 {
-    /**
-     * How long to sleep between polls of a busy worker, in microseconds, so
-     * that waiting for a worker to finish does not spin the CPU.
-     */
-    private const int POLL_INTERVAL_MICROSECONDS = 1000;
     private readonly JobRunner $jobRunner;
-    private readonly ChildProcessResultProcessor $processor;
     private ?RunningJob $job = null;
 
     /**
@@ -109,10 +102,9 @@ final class PersistentWorker
     /**
      * @param non-negative-int $id
      */
-    public function __construct(JobRunner $jobRunner, ChildProcessResultProcessor $processor, int $id = 0)
+    public function __construct(JobRunner $jobRunner, int $id = 0)
     {
         $this->jobRunner = $jobRunner;
-        $this->processor = $processor;
         $this->id        = $id;
         $this->token     = $id . '_' . bin2hex(random_bytes(16));
     }
@@ -140,85 +132,6 @@ final class PersistentWorker
         $this->job = $this->jobRunner->start(
             new Job($this->buildWorkerCode(), [], $environmentVariables),
         );
-    }
-
-    /**
-     * @throws WorkerException
-     */
-    public function run(TestCase $test): void
-    {
-        assert($this->job !== null);
-
-        $class = new ReflectionClass($test);
-        $file  = $class->getFileName();
-
-        assert($file !== false);
-
-        $offset     = hrtime();
-        $nonce      = bin2hex(random_bytes(16));
-        $resultFile = tempnam(sys_get_temp_dir(), 'phpunit_');
-
-        if ($resultFile === false) {
-            // @codeCoverageIgnoreStart
-            throw new WorkerException('Unable to create temporary file for the worker result');
-            // @codeCoverageIgnoreEnd
-        }
-
-        $doneFile = $resultFile . '.done';
-
-        $command = [
-            'command'           => 'run',
-            'file'              => $file,
-            'className'         => $class->getName(),
-            'methodName'        => $test->name(),
-            'data'              => base64_encode(serialize($test->providedData())),
-            'dataName'          => $test->dataName(),
-            'dependencyInput'   => base64_encode(serialize($test->dependencyInput())),
-            'repetition'        => $test->repetition(),
-            'totalRepetitions'  => $test->totalRepetitions(),
-            'attempt'           => $test->attempt(),
-            'maxAttempts'       => $test->maxAttempts(),
-            'offsetSeconds'     => $offset[0],
-            'offsetNanoseconds' => $offset[1],
-            'resultFile'        => $resultFile,
-            'doneFile'          => $doneFile,
-            'nonce'             => $nonce,
-        ];
-
-        $encodedCommand = json_encode($command);
-
-        assert($encodedCommand !== false);
-
-        $this->job->write($encodedCommand . "\n");
-
-        while (!is_file($doneFile)) {
-            if (!$this->job->isRunning()) {
-                $result    = $this->job->wait();
-                $this->job = null;
-
-                @unlink($resultFile);
-                @unlink($doneFile);
-
-                $this->processor->process($test, '', $result->stderr(), $nonce);
-
-                return;
-            }
-
-            usleep(self::POLL_INTERVAL_MICROSECONDS);
-        }
-
-        $serializedResult = file_get_contents($resultFile);
-
-        @unlink($resultFile);
-        @unlink($doneFile);
-
-        if ($serializedResult === false) {
-            // @codeCoverageIgnoreStart
-            $serializedResult = '';
-            // @codeCoverageIgnoreEnd
-        }
-
-        $this->processor->process($test, $serializedResult, '', $nonce);
     }
 
     /**
