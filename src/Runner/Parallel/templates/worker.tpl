@@ -1,6 +1,5 @@
 <?php declare(strict_types=1);
 use PHPUnit\Event\Facade;
-use PHPUnit\Framework\TestRunner\ChildProcessOutputCollector;
 use PHPUnit\Framework\TestRunner\ErrorHandlerBootstrapper;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\CodeCoverage;
@@ -70,66 +69,6 @@ ErrorHandlerBootstrapper::bootstrap($__phpunit_configuration);
 TestResultFacade::init();
 
 ob_end_clean();
-
-function __phpunit_worker_run_test(object $command): string
-{
-    $dispatcher = Facade::instance()->initForIsolation(
-        PHPUnit\Event\Telemetry\HRTime::fromSecondsAndNanoseconds(
-            $command->offsetSeconds,
-            $command->offsetNanoseconds
-        ),
-    );
-
-    require_once $command->file;
-
-    $className  = $command->className;
-    $methodName = $command->methodName;
-
-    $test = new $className($methodName);
-
-    $test->setData($command->dataName, unserialize(base64_decode($command->data)));
-    $test->setDependencyInput(unserialize(base64_decode($command->dependencyInput)));
-    $test->setRepetition($command->repetition, $command->totalRepetitions);
-    $test->setAttempt($command->attempt, $command->maxAttempts);
-    $test->setInIsolation(true);
-
-    $test->run();
-
-    $output = ChildProcessOutputCollector::collect($test);
-
-    $codeCoverage = null;
-
-    if (CodeCoverage::instance()->isActive()) {
-        $codeCoverage = CodeCoverage::instance()->codeCoverage();
-    }
-
-    $result = $command->nonce . serialize(
-        (object) [
-            'testResult'    => $test->result(),
-            'status'        => $test->status(),
-            'codeCoverage'  => $codeCoverage,
-            'numAssertions' => $test->numberOfAssertionsPerformed(),
-            'output'        => $output,
-            'events'        => $dispatcher->flush(),
-            'passedTests'   => PassedTests::instance(),
-        ]
-    );
-
-    // Per-test code coverage has been collected for this command and is about
-    // to be shipped to the parent process. It is cleared here so that the next
-    // test executed by this worker does not ship it a second time.
-    if (CodeCoverage::instance()->isActive()) {
-        CodeCoverage::instance()->codeCoverage()->clear();
-    }
-
-    // Reset the stream that captures test output so that the next test does
-    // not inherit the output of the test that has just finished.
-    if (@rewind(STDOUT)) {
-        @ftruncate(STDOUT, 0);
-    }
-
-    return $result;
-}
 
 function __phpunit_worker_run_unit(object $command): string
 {
@@ -205,11 +144,7 @@ while (($__phpunit_line = fgets($__phpunit_input)) !== false) {
         break;
     }
 
-    if ($__phpunit_command->command === 'runUnit') {
-        $__phpunit_result = __phpunit_worker_run_unit($__phpunit_command);
-    } else {
-        $__phpunit_result = __phpunit_worker_run_test($__phpunit_command);
-    }
+    $__phpunit_result = __phpunit_worker_run_unit($__phpunit_command);
 
     file_put_contents($__phpunit_command->resultFile, $__phpunit_result);
 
