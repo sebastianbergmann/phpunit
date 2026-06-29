@@ -10,12 +10,9 @@
 namespace PHPUnit\Framework\TestRunner;
 
 use function assert;
-use function hash_equals;
 use function is_int;
 use function property_exists;
 use function sprintf;
-use function strlen;
-use function substr;
 use function trim;
 use function unserialize;
 use PHPUnit\Event\Code\ThrowableBuilder;
@@ -66,24 +63,19 @@ final readonly class ChildProcessResultProcessor
             return;
         }
 
-        if ($processResultNonce !== null && $serializedProcessResult !== '') {
-            $nonceLength = strlen($processResultNonce);
+        $verifiedProcessResult = ChildProcessResultEnvelope::verifyAndStripNonce($serializedProcessResult, $processResultNonce);
 
-            if (strlen($serializedProcessResult) < $nonceLength ||
-                !hash_equals($processResultNonce, substr($serializedProcessResult, 0, $nonceLength))) {
-                $this->childProcessErrored(
-                    $test,
-                    'Test was run in child process and the result file was tampered with or written by an unexpected process',
-                );
+        if ($verifiedProcessResult === null) {
+            $this->childProcessErrored(
+                $test,
+                'Test was run in child process and the result file was tampered with or written by an unexpected process',
+            );
 
-                return;
-            }
-
-            $serializedProcessResult = substr($serializedProcessResult, $nonceLength);
+            return;
         }
 
         try {
-            $childResult = @unserialize($serializedProcessResult);
+            $childResult = @unserialize($verifiedProcessResult);
         } catch (Throwable $t) {
             // An object can only be unserialized when its class exists in this
             // process: an object of a test double class, which only exists in
@@ -127,26 +119,14 @@ final readonly class ChildProcessResultProcessor
         $test->setStatus($childResult->status);
         $test->addToAssertionCount($childResult->numAssertions);
 
-        if (!$this->codeCoverage->isActive()) {
-            return;
-        }
-
-        if (!isset($childResult->codeCoverage) || !$childResult->codeCoverage instanceof \SebastianBergmann\CodeCoverage\CodeCoverage) {
+        if (!ChildProcessResultEnvelope::mergeCodeCoverage($childResult, $this->codeCoverage)) {
             $this->emitter->testRunnerTriggeredPhpunitWarning(
                 sprintf(
                     'Code coverage could not be collected for %s',
                     $test->valueObjectForEvents()->id(),
                 ),
             );
-
-            return;
         }
-
-        // @codeCoverageIgnoreStart
-        CodeCoverage::instance()->codeCoverage()->merge(
-            $childResult->codeCoverage,
-        );
-        // @codeCoverageIgnoreEnd
     }
 
     /**
