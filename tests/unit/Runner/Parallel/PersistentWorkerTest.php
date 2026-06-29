@@ -9,8 +9,15 @@
  */
 namespace PHPUnit\Runner\Parallel;
 
+use function strlen;
+use function substr;
+use function unserialize;
+use function usleep;
 use PHPUnit\Event\Emitter;
+use PHPUnit\Event\EventCollection;
 use PHPUnit\Event\Facade;
+use PHPUnit\Event\Test\Errored;
+use PHPUnit\Event\Test\Failed;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -24,51 +31,55 @@ use PHPUnit\Util\PHP\Job;
 use PHPUnit\Util\PHP\JobRunner;
 
 #[CoversClass(PersistentWorker::class)]
+#[UsesClass(TestClassWorkUnit::class)]
+#[UsesClass(CompletedWorkUnit::class)]
 #[UsesClass(JobRunner::class)]
 #[UsesClass(Job::class)]
 #[Large]
 final class PersistentWorkerTest extends TestCase
 {
-    public function testRunsMultipleTestsFromDifferentClassesInOneProcess(): void
+    public function testReusesOneProcessAcrossSequentiallyDispatchedUnits(): void
     {
         $worker = $this->worker();
 
         $worker->start();
 
-        $first  = new WorkerFirstTest('testStartsTheProcessLocalCounter');
-        $second = new WorkerSecondTest('testSeesTheStateLeftBehindByTheFirstTest');
+        $first = $this->runToCompletion(
+            $worker,
+            new TestClassWorkUnit(0, WorkerFirstTest::class, [new WorkerFirstTest('testStartsTheProcessLocalCounter')]),
+        );
 
-        $worker->run($first);
-        $worker->run($second);
+        // The second unit only passes if it ran in the same process as the
+        // first one, which is what reusing a single worker provides.
+        $second = $this->runToCompletion(
+            $worker,
+            new TestClassWorkUnit(1, WorkerSecondTest::class, [new WorkerSecondTest('testSeesTheStateLeftBehindByTheFirstTest')]),
+        );
 
         $worker->stop();
 
-        $this->assertTrue($first->status()->isSuccess());
-        $this->assertSame(1, $first->numberOfAssertionsPerformed());
+        $this->assertFalse($first->crashed());
+        $this->assertFalse($this->failedOrErrored($first));
 
-        // The second test only passes if it ran in the same process as the
-        // first one, which is what reusing a single worker provides.
-        $this->assertTrue($second->status()->isSuccess());
-        $this->assertSame(2, $second->numberOfAssertionsPerformed());
+        $this->assertFalse($second->crashed());
+        $this->assertFalse($this->failedOrErrored($second));
     }
 
-    public function testReportsFailingTestsBackToTheParentProcess(): void
+    public function testReportsAFailingTestThroughTheResultEnvelopeRatherThanAsACrash(): void
     {
         $worker = $this->worker();
 
         $worker->start();
 
-        $failing = new WorkerSecondTest('testThatFails');
-
-        $worker->run($failing);
+        $completed = $this->runToCompletion(
+            $worker,
+            new TestClassWorkUnit(0, WorkerSecondTest::class, [new WorkerSecondTest('testThatFails')]),
+        );
 
         $worker->stop();
 
-        $this->assertTrue($failing->status()->isFailure());
-        $this->assertStringContainsString(
-            'intentional failure inside a persistent worker',
-            $failing->status()->message(),
-        );
+        $this->assertFalse($completed->crashed());
+        $this->assertTrue($this->failedOrErrored($completed));
     }
 
     public function testRecognizesCompletionEvenWhenATestLeavesStrayOutputOnTheControlChannel(): void
@@ -77,31 +88,72 @@ final class PersistentWorkerTest extends TestCase
 
         $worker->start();
 
-        $stray = new WorkerSecondTest('testThatWritesStrayOutputWithoutANewlineToTheControlChannel');
-
-        $worker->run($stray);
+        // The test writes stray bytes to file descriptor 1 without a trailing
+        // newline; the worker must still report the unit as finished and ship a
+        // result envelope that is not corrupted by that output.
+        $completed = $this->runToCompletion(
+            $worker,
+            new TestClassWorkUnit(0, WorkerSecondTest::class, [new WorkerSecondTest('testThatWritesStrayOutputWithoutANewlineToTheControlChannel')]),
+        );
 
         $worker->stop();
 
-        // The completion marker fuses with the stray output the test wrote to
-        // the control channel without a trailing newline; the worker is only
-        // reported as succeeding if the parent still recognizes the marker.
-        $this->assertTrue($stray->status()->isSuccess());
+        $this->assertFalse($completed->crashed());
+        $this->assertFalse($this->failedOrErrored($completed));
     }
 
-    public function testReportsAnErrorWhenTheWorkerDiesWhileRunningATest(): void
+    public function testReportsACrashWhenTheWorkerDiesWhileRunningAUnit(): void
     {
         $worker = $this->worker();
 
         $worker->start();
 
-        $crashing = new WorkerSecondTest('testThatKillsTheWorkerProcess');
-
-        $worker->run($crashing);
+        $completed = $this->runToCompletion(
+            $worker,
+            new TestClassWorkUnit(0, WorkerSecondTest::class, [new WorkerSecondTest('testThatKillsTheWorkerProcess')]),
+        );
 
         $worker->stop();
 
-        $this->assertTrue($crashing->status()->isError());
+        $this->assertTrue($completed->crashed());
+    }
+
+    private function runToCompletion(PersistentWorker $worker, TestClassWorkUnit $unit): CompletedWorkUnit
+    {
+        $worker->dispatch($unit);
+
+        while (true) {
+            $completed = $worker->poll();
+
+            if ($completed !== null) {
+                return $completed;
+            }
+
+            usleep(1000);
+        }
+    }
+
+    private function failedOrErrored(CompletedWorkUnit $completed): bool
+    {
+        foreach ($this->eventsOf($completed) as $event) {
+            if ($event instanceof Failed || $event instanceof Errored) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function eventsOf(CompletedWorkUnit $completed): EventCollection
+    {
+        $nonce      = (string) $completed->nonce();
+        $serialized = substr($completed->serializedResult(), strlen($nonce));
+        $envelope   = unserialize($serialized);
+
+        $this->assertIsObject($envelope);
+        $this->assertInstanceOf(EventCollection::class, $envelope->events);
+
+        return $envelope->events;
     }
 
     private function worker(): PersistentWorker
@@ -113,6 +165,6 @@ final class PersistentWorkerTest extends TestCase
             new CodeCoverage,
         );
 
-        return new PersistentWorker(new JobRunner($processor), $processor);
+        return new PersistentWorker(new JobRunner($processor));
     }
 }

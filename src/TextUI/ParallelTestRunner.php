@@ -451,10 +451,10 @@ final class ParallelTestRunner
 
         $jobRunner = new JobRunner($processor);
 
-        $workers = [new PersistentWorker($jobRunner, $processor, 0)];
+        $workers = [new PersistentWorker($jobRunner, 0)];
 
         for ($id = 1; $id < $numberOfWorkers; $id++) {
-            $workers[] = new PersistentWorker($jobRunner, $processor, $id);
+            $workers[] = new PersistentWorker($jobRunner, $id);
         }
 
         return new WorkerPool($workers);
