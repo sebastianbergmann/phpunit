@@ -180,7 +180,7 @@ final class WorkerPoolTest extends TestCase
         $workers = [];
 
         for ($id = 0; $id < $numberOfWorkers; $id++) {
-            $workers[] = new PersistentWorker($jobRunner, $processor, $id);
+            $workers[] = new PersistentWorker($jobRunner, $id);
         }
 
         return new WorkerPool($workers);
