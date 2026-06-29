@@ -10,11 +10,8 @@
 namespace PHPUnit\Framework\TestRunner;
 
 use function assert;
-use function hash_equals;
 use function is_int;
 use function property_exists;
-use function strlen;
-use function substr;
 use function trim;
 use function unserialize;
 use PHPUnit\Event\Code\TestMethodBuilder;
@@ -82,38 +79,33 @@ final readonly class ChildProcessResultProcessor
             return;
         }
 
-        if ($processResultNonce !== null && $serializedProcessResult !== '') {
-            $nonceLength = strlen($processResultNonce);
+        $verifiedProcessResult = ChildProcessResultEnvelope::verifyAndStripNonce($serializedProcessResult, $processResultNonce);
 
-            if (strlen($serializedProcessResult) < $nonceLength ||
-                !hash_equals($processResultNonce, substr($serializedProcessResult, 0, $nonceLength))) {
-                $message = 'Test was run in child process and the result file was tampered with or written by an unexpected process';
+        if ($verifiedProcessResult === null) {
+            $message = 'Test was run in child process and the result file was tampered with or written by an unexpected process';
 
-                $this->emitter->childProcessErrored(ChildProcessReason::TestRequiringProcessIsolation, $message);
+            $this->emitter->childProcessErrored(ChildProcessReason::TestRequiringProcessIsolation, $message);
 
-                $exception = new AssertionFailedError($message);
+            $exception = new AssertionFailedError($message);
 
-                assert($test instanceof TestCase);
+            assert($test instanceof TestCase);
 
-                $test->setStatus(TestStatus::error($exception->getMessage()));
+            $test->setStatus(TestStatus::error($exception->getMessage()));
 
-                $this->emitter->testErrored(
-                    TestMethodBuilder::fromTestCase($test),
-                    ThrowableBuilder::from($exception),
-                );
+            $this->emitter->testErrored(
+                TestMethodBuilder::fromTestCase($test),
+                ThrowableBuilder::from($exception),
+            );
 
-                $this->emitter->testFinished(
-                    TestMethodBuilder::fromTestCase($test),
-                    0,
-                );
+            $this->emitter->testFinished(
+                TestMethodBuilder::fromTestCase($test),
+                0,
+            );
 
-                return;
-            }
-
-            $serializedProcessResult = substr($serializedProcessResult, $nonceLength);
+            return;
         }
 
-        $childResult = @unserialize($serializedProcessResult);
+        $childResult = @unserialize($verifiedProcessResult);
 
         if (!$childResult instanceof stdClass ||
             !property_exists($childResult, 'events') ||
@@ -158,18 +150,6 @@ final readonly class ChildProcessResultProcessor
         $test->setStatus($childResult->status);
         $test->addToAssertionCount($childResult->numAssertions);
 
-        if (!$this->codeCoverage->isActive()) {
-            return;
-        }
-
-        // @codeCoverageIgnoreStart
-        if (!isset($childResult->codeCoverage) || !$childResult->codeCoverage instanceof \SebastianBergmann\CodeCoverage\CodeCoverage) {
-            return;
-        }
-
-        CodeCoverage::instance()->codeCoverage()->merge(
-            $childResult->codeCoverage,
-        );
-        // @codeCoverageIgnoreEnd
+        ChildProcessResultEnvelope::mergeCodeCoverage($childResult, $this->codeCoverage);
     }
 }

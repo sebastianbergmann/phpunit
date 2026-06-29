@@ -9,15 +9,13 @@
  */
 namespace PHPUnit\Runner\Parallel;
 
-use function hash_equals;
 use function property_exists;
 use function sprintf;
-use function strlen;
-use function substr;
 use function unserialize;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Event\EventCollection;
 use PHPUnit\Event\Facade;
+use PHPUnit\Framework\TestRunner\ChildProcessResultEnvelope;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 use stdClass;
@@ -164,26 +162,21 @@ final class ResultAggregator
             return;
         }
 
-        $serializedResult = $completed->serializedResult();
-        $nonce            = $completed->nonce();
+        $serializedResult = ChildProcessResultEnvelope::verifyAndStripNonce(
+            $completed->serializedResult(),
+            $completed->nonce(),
+        );
 
-        if ($nonce !== null && $serializedResult !== '') {
-            $nonceLength = strlen($nonce);
+        if ($serializedResult === null) {
+            $this->emitter->childProcessErrored();
+            $this->emitter->testRunnerTriggeredPhpunitWarning(
+                sprintf(
+                    'The result of the worker process running %s was tampered with or written by an unexpected process',
+                    $completed->unit()->name(),
+                ),
+            );
 
-            if (strlen($serializedResult) < $nonceLength ||
-                !hash_equals($nonce, substr($serializedResult, 0, $nonceLength))) {
-                $this->emitter->childProcessErrored();
-                $this->emitter->testRunnerTriggeredPhpunitWarning(
-                    sprintf(
-                        'The result of the worker process running %s was tampered with or written by an unexpected process',
-                        $completed->unit()->name(),
-                    ),
-                );
-
-                return;
-            }
-
-            $serializedResult = substr($serializedResult, $nonceLength);
+            return;
         }
 
         $childResult = @unserialize($serializedResult);
@@ -207,18 +200,6 @@ final class ResultAggregator
         $this->eventFacade->forward($childResult->events);
         $this->passedTests->import($childResult->passedTests);
 
-        if (!$this->codeCoverage->isActive()) {
-            return;
-        }
-
-        // @codeCoverageIgnoreStart
-        if (!isset($childResult->codeCoverage) || !$childResult->codeCoverage instanceof \SebastianBergmann\CodeCoverage\CodeCoverage) {
-            return;
-        }
-
-        CodeCoverage::instance()->codeCoverage()->merge(
-            $childResult->codeCoverage,
-        );
-        // @codeCoverageIgnoreEnd
+        ChildProcessResultEnvelope::mergeCodeCoverage($childResult, $this->codeCoverage);
     }
 }
