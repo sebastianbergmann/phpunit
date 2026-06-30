@@ -377,7 +377,7 @@
         <xs:attribute name="colorSuccessBarDark" type="xs:string" default="#1560a0"/>
         <xs:attribute name="colorWarningDark" type="xs:string" default="#3d3010"/>
         <xs:attribute name="colorWarningBarDark" type="xs:string" default="#b88a00"/>
-        <xs:attribute name="colorDangerDark" type="xs:string" default="#4a2a10"/>
+        <xs:attribute name="colorDangerDark" type="xs:string" default="#371e09"/>
         <xs:attribute name="colorDangerBarDark" type="xs:string" default="#b54400"/>
         <xs:attribute name="colorBreadcrumbsDark" type="xs:string" default="var(--bs-gray-800)"/>
         <xs:attribute name="customCssFile" type="xs:string"/>
