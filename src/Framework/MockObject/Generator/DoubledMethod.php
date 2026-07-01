@@ -21,6 +21,7 @@ use function preg_replace;
 use function str_contains;
 use function strlen;
 use function strpos;
+use function strtolower;
 use function substr;
 use function substr_count;
 use function trim;
@@ -180,7 +181,7 @@ final class DoubledMethod
         $deprecation  = $this->deprecation;
         $returnResult = '';
 
-        if (!$this->returnType->isNever() && !$this->returnType->isVoid()) {
+        if (strtolower($this->methodName) !== '__construct' && !$this->returnType->isNever() && !$this->returnType->isVoid()) {
             $returnResult = <<<'EOT'
 
 
