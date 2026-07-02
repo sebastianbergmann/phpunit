@@ -1,5 +1,7 @@
 <?php declare(strict_types=1);
 use PHPUnit\Event\Facade;
+use PHPUnit\Framework\RepeatTestSuite;
+use PHPUnit\Framework\RetryTestSuite;
 use PHPUnit\Framework\TestRunner\ErrorHandlerBootstrapper;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\CodeCoverage;
@@ -70,6 +72,18 @@ TestResultFacade::init();
 
 ob_end_clean();
 
+function __phpunit_worker_build_test(string $className, object $descriptor): PHPUnit\Framework\TestCase
+{
+    $test = new $className($descriptor->methodName);
+
+    $test->setData($descriptor->dataName, unserialize(base64_decode($descriptor->data)));
+    $test->setDependencyInput(unserialize(base64_decode($descriptor->dependencyInput)));
+    $test->setRepetition($descriptor->repetition, $descriptor->totalRepetitions);
+    $test->setAttempt($descriptor->attempt, $descriptor->maxAttempts);
+
+    return $test;
+}
+
 function __phpunit_worker_run_unit(object $command): string
 {
     $dispatcher = Facade::instance()->initForIsolation(
@@ -84,17 +98,53 @@ function __phpunit_worker_run_unit(object $command): string
     $suite = TestSuite::empty($command->className);
 
     foreach ($command->tests as $__phpunit_test) {
-        $className  = $command->className;
-        $methodName = $__phpunit_test->methodName;
+        $className = $command->className;
 
-        $test = new $className($methodName);
+        // A retried test method travels as its RetryTestSuite so that the
+        // retry orchestration runs inside the worker; additional attempts are
+        // built here, from the same descriptor as the first one.
+        if ($__phpunit_test->type === 'retry') {
+            $descriptor = $__phpunit_test->test;
 
-        $test->setData($__phpunit_test->dataName, unserialize(base64_decode($__phpunit_test->data)));
-        $test->setDependencyInput(unserialize(base64_decode($__phpunit_test->dependencyInput)));
-        $test->setRepetition($__phpunit_test->repetition, $__phpunit_test->totalRepetitions);
-        $test->setAttempt($__phpunit_test->attempt, $__phpunit_test->maxAttempts);
+            $factory = static function () use ($className, $descriptor): PHPUnit\Framework\TestCase
+            {
+                return __phpunit_worker_build_test($className, $descriptor);
+            };
 
-        $suite->addTest($test);
+            $suite->addTest(
+                RetryTestSuite::fromTestCase(
+                    $__phpunit_test->name,
+                    $factory(),
+                    $__phpunit_test->maxAttempts,
+                    $factory,
+                ),
+            );
+
+            continue;
+        }
+
+        // A repeated test method travels as its RepeatTestSuite so that the
+        // repetition orchestration (failure threshold, skipping of remaining
+        // repetitions) runs inside the worker.
+        if ($__phpunit_test->type === 'repeat') {
+            $repetitions = [];
+
+            foreach ($__phpunit_test->tests as $descriptor) {
+                $repetitions[] = __phpunit_worker_build_test($className, $descriptor);
+            }
+
+            $suite->addTest(
+                RepeatTestSuite::fromTests(
+                    $__phpunit_test->name,
+                    $repetitions,
+                    $__phpunit_test->failureThreshold,
+                ),
+            );
+
+            continue;
+        }
+
+        $suite->addTest(__phpunit_worker_build_test($className, $__phpunit_test));
     }
 
     $suite->run();

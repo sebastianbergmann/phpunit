@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI;
 
+use function assert;
 use function get_parent_class;
 use function gettype;
 use function is_array;
@@ -18,6 +19,8 @@ use function mt_srand;
 use function serialize;
 use function spl_object_id;
 use PHPUnit\Event;
+use PHPUnit\Framework\IterativeTestSuite;
+use PHPUnit\Framework\PhptIterativeTestSuite;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestRunner\ChildProcessResultProcessor;
@@ -322,7 +325,7 @@ final class ParallelTestRunner
      */
     private function canBeSerialized(TestClassWorkUnit $unit): bool
     {
-        foreach ($unit->tests() as $test) {
+        foreach ($this->testCasesOf($unit) as $test) {
             try {
                 serialize($test->providedData());
                 serialize($test->dependencyInput());
@@ -401,7 +404,7 @@ final class ParallelTestRunner
             }
         } while (($class = get_parent_class($class)) !== false);
 
-        foreach ($unit->tests() as $test) {
+        foreach ($this->testCasesOf($unit) as $test) {
             if (MetadataRegistry::parser()->forMethod($className, $test->name())->isDoNotRunInParallel()->isNotEmpty()) {
                 return true;
             }
@@ -428,13 +431,40 @@ final class ParallelTestRunner
             }
         } while (($class = get_parent_class($class)) !== false);
 
-        foreach ($unit->tests() as $test) {
+        foreach ($this->testCasesOf($unit) as $test) {
             if (MetadataRegistry::parser()->forMethod($className, $test->name())->isRunInSeparateProcess()->isNotEmpty()) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    /**
+     * The test cases of a unit, with the test cases aggregated by an
+     * IterativeTestSuite member enumerated in its place.
+     *
+     * @return list<TestCase>
+     */
+    private function testCasesOf(TestClassWorkUnit $unit): array
+    {
+        $testCases = [];
+
+        foreach ($unit->tests() as $test) {
+            if ($test instanceof IterativeTestSuite) {
+                foreach ($test->tests() as $aggregated) {
+                    assert($aggregated instanceof TestCase);
+
+                    $testCases[] = $aggregated;
+                }
+
+                continue;
+            }
+
+            $testCases[] = $test;
+        }
+
+        return $testCases;
     }
 
     /**
@@ -476,7 +506,7 @@ final class ParallelTestRunner
      */
     private function collectUnits(TestSuite $suite): array
     {
-        /** @var array<class-string<TestCase>, array{index: non-negative-int, tests: list<TestCase>}> $byClass */
+        /** @var array<class-string<TestCase>, array{index: non-negative-int, tests: list<IterativeTestSuite|TestCase>}> $byClass */
         $byClass = [];
 
         /** @var list<array{index: non-negative-int, file: non-empty-string, conflicts: list<non-empty-string>}> $phpt */
@@ -509,14 +539,54 @@ final class ParallelTestRunner
     }
 
     /**
-     * @param array<class-string<TestCase>, array{index: non-negative-int, tests: list<TestCase>}>            $byClass
-     * @param list<array{index: non-negative-int, file: non-empty-string, conflicts: list<non-empty-string>}> $phpt
-     * @param list<array{index: non-negative-int, test: Test}>                                                $standalone
-     * @param non-negative-int                                                                                $index
+     * @param array<class-string<TestCase>, array{index: non-negative-int, tests: list<IterativeTestSuite|TestCase>}> $byClass
+     * @param list<array{index: non-negative-int, file: non-empty-string, conflicts: list<non-empty-string>}>         $phpt
+     * @param list<array{index: non-negative-int, test: Test}>                                                        $standalone
+     * @param non-negative-int                                                                                        $index
      */
     private function collect(TestSuite $suite, array &$byClass, array &$phpt, array &$standalone, int &$index): void
     {
         foreach ($suite as $test) {
+            // The repetitions of a repeated PHPT test and the attempts of a
+            // retried PHPT test are orchestrated by their suite's runTests()
+            // method and must run sequentially, so the suite runs as one unit
+            // in the main process at its suite index.
+            if ($test instanceof PhptIterativeTestSuite) {
+                $standalone[] = [
+                    'index' => $index,
+                    'test'  => $test,
+                ];
+
+                $index++;
+
+                continue;
+            }
+
+            // The repetitions of a repeated test method and the attempts of a
+            // retried test method are orchestrated by their suite's runTests()
+            // method; the suite therefore travels as one atomic member of its
+            // class' work unit instead of being flattened into its tests.
+            if ($test instanceof IterativeTestSuite) {
+                $tests = $test->tests();
+
+                assert($tests !== [] && $tests[0] instanceof TestCase);
+
+                $className = $tests[0]::class;
+
+                if (!isset($byClass[$className])) {
+                    $byClass[$className] = [
+                        'index' => $index,
+                        'tests' => [],
+                    ];
+
+                    $index++;
+                }
+
+                $byClass[$className]['tests'][] = $test;
+
+                continue;
+            }
+
             if ($test instanceof TestSuite) {
                 $this->collect($test, $byClass, $phpt, $standalone, $index);
 
