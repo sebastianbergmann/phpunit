@@ -30,47 +30,6 @@ abstract class IterativeTestSuite extends TestSuite
      * @var list<ExecutionOrderDependency>
      */
     private array $dependencies = [];
-    private bool $wasRun        = false;
-
-    /**
-     * @throws Event\RuntimeException
-     * @throws Exception
-     * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws UnintentionallyCoveredCodeException
-     */
-    public function run(): void
-    {
-        if ($this->wasRun) {
-            // @codeCoverageIgnoreStart
-            throw new Exception('The tests aggregated by this TestSuite were already run');
-            // @codeCoverageIgnoreEnd
-        }
-
-        $this->wasRun = true;
-
-        if ($this->isEmpty()) {
-            return;
-        }
-
-        $emitter                       = Event\Facade::emitter();
-        $testSuiteValueObjectForEvents = Event\TestSuite\TestSuiteBuilder::from($this);
-
-        $emitter->testSuiteStarted($testSuiteValueObjectForEvents);
-
-        /** @var list<Test> $tests */
-        $tests = [];
-
-        foreach ($this as $test) {
-            $tests[] = $test;
-        }
-
-        $this->setTests([]);
-
-        $this->execute($tests, $emitter);
-
-        $emitter->testSuiteFinished($testSuiteValueObjectForEvents);
-    }
 
     /**
      * @param list<ExecutionOrderDependency> $dependencies
@@ -128,6 +87,20 @@ abstract class IterativeTestSuite extends TestSuite
         assert($tests[0] instanceof Reorderable);
 
         return $tests[0]->sortId();
+    }
+
+    /**
+     * @param list<Test> $tests
+     *
+     * @throws Event\RuntimeException
+     * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws NoPreviousThrowableException
+     * @throws UnintentionallyCoveredCodeException
+     */
+    final protected function runTests(array $tests, Event\Emitter $emitter): void
+    {
+        $this->execute($tests, $emitter);
     }
 
     /**

@@ -332,6 +332,12 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
     }
 
     /**
+     * The repetitions of a repeated test and the attempts of a retried test
+     * are aggregated by an IterativeTestSuite whose runTests() method
+     * implements the repetition and retry logic. Running the test cases
+     * returned by this method individually bypasses this logic: an
+     * IterativeTestSuite must be treated as an atomic unit.
+     *
      * @return list<PhptTestCase|TestCase>
      */
     public function collect(): array
@@ -383,27 +389,10 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             return;
         }
 
-        /** @var list<Test> $tests */
-        $tests = [];
-
-        foreach ($this as $test) {
-            $tests[] = $test;
-        }
-
-        $tests = array_reverse($tests);
-
-        $this->tests  = [];
-        $this->groups = [];
-
-        while (($test = array_pop($tests)) !== null) {
-            if (TestResultFacade::shouldStop()) {
-                $emitter->testRunnerExecutionAborted();
-
-                break;
-            }
-
-            $test->run();
-        }
+        // runTests() receives the tests as an argument expression so that no
+        // local variable retains a reference to them; this allows each test
+        // object to be destructed as soon as it has run (see #5875)
+        $this->runTests($this->takeTests(), $emitter);
 
         $this->invokeMethodsAfterLastTest($emitter);
 
@@ -533,6 +522,32 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
     }
 
     /**
+     * Runs the tests aggregated by this test suite.
+     *
+     * @param list<Test> $tests
+     *
+     * @throws Event\RuntimeException
+     * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws NoPreviousThrowableException
+     * @throws UnintentionallyCoveredCodeException
+     */
+    protected function runTests(array $tests, Event\Emitter $emitter): void
+    {
+        $tests = array_reverse($tests);
+
+        while (($test = array_pop($tests)) !== null) {
+            if (TestResultFacade::shouldStop()) {
+                $emitter->testRunnerExecutionAborted();
+
+                break;
+            }
+
+            $test->run();
+        }
+    }
+
+    /**
      * @param ReflectionClass<TestCase> $class
      * @param list<non-empty-string>    $groups
      * @param positive-int              $numberOfRuns
@@ -633,6 +648,25 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                 (new Groups)->groups($class->getName(), $methodName),
             ),
         );
+    }
+
+    /**
+     * Removes the tests aggregated by this test suite from it and returns them.
+     *
+     * @return list<Test>
+     */
+    private function takeTests(): array
+    {
+        $tests = [];
+
+        foreach ($this as $test) {
+            $tests[] = $test;
+        }
+
+        $this->tests  = [];
+        $this->groups = [];
+
+        return $tests;
     }
 
     /**

@@ -74,25 +74,7 @@ final readonly class TestBuilder
             // a method-level #[Repeat] attribute takes precedence over the --retry CLI option
             $maxAttempts = 1;
 
-            if (!$this->hasVoidReturnType($theClass->getMethod($methodName))) {
-                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
-                    sprintf(
-                        'Method %s::%s is annotated with #[Repeat] but does not have a void return type declaration and will not be repeated',
-                        $className,
-                        $methodName,
-                    ),
-                );
-            }
-
-            if (!$this->doesNotDependOnAnotherTest($className, $methodName)) {
-                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
-                    sprintf(
-                        'Method %s::%s is annotated with #[Repeat] but depends on another test and will not be repeated',
-                        $className,
-                        $methodName,
-                    ),
-                );
-            }
+            $this->warnWhenMethodIsIneligible('Repeat', 'repeated', $theClass, $className, $methodName);
         }
 
         $retryMetadata = MetadataRegistry::parser()->forMethod($className, $methodName)->isRetry();
@@ -113,31 +95,12 @@ final readonly class TestBuilder
 
                 $maxAttempts = $metadata->maxAttempts();
 
-                if (!$this->hasVoidReturnType($theClass->getMethod($methodName))) {
-                    EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
-                        sprintf(
-                            'Method %s::%s is annotated with #[Retry] but does not have a void return type declaration and will not be retried',
-                            $className,
-                            $methodName,
-                        ),
-                    );
-                }
-
-                if (!$this->doesNotDependOnAnotherTest($className, $methodName)) {
-                    EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
-                        sprintf(
-                            'Method %s::%s is annotated with #[Retry] but depends on another test and will not be retried',
-                            $className,
-                            $methodName,
-                        ),
-                    );
-                }
+                $this->warnWhenMethodIsIneligible('Retry', 'retried', $theClass, $className, $methodName);
             }
         }
 
         $retry = $maxAttempts > 1 &&
-                 $this->hasVoidReturnType($theClass->getMethod($methodName)) &&
-                 $this->doesNotDependOnAnotherTest($className, $methodName);
+                 $this->isEligibleForRepeatOrRetry($theClass, $className, $methodName);
 
         if ($retry) {
             // #[Retry] takes precedence over --repeat
@@ -145,8 +108,7 @@ final readonly class TestBuilder
         }
 
         $repeat = $numberOfRuns > 1 &&
-                  $this->hasVoidReturnType($theClass->getMethod($methodName)) &&
-                  $this->doesNotDependOnAnotherTest($className, $methodName);
+                  $this->isEligibleForRepeatOrRetry($theClass, $className, $methodName);
 
         $data = null;
 
@@ -587,6 +549,54 @@ final readonly class TestBuilder
         }
 
         return $result === 0;
+    }
+
+    /**
+     * A test method is eligible for repetition and retrying when it declares
+     * an explicit void return type and does not depend on another test.
+     *
+     * @param ReflectionClass<TestCase> $theClass
+     * @param class-string<TestCase>    $className
+     * @param non-empty-string          $methodName
+     */
+    private function isEligibleForRepeatOrRetry(ReflectionClass $theClass, string $className, string $methodName): bool
+    {
+        return $this->hasVoidReturnType($theClass->getMethod($methodName)) &&
+               $this->doesNotDependOnAnotherTest($className, $methodName);
+    }
+
+    /**
+     * @param 'Repeat'|'Retry'          $attribute
+     * @param 'repeated'|'retried'      $verb
+     * @param ReflectionClass<TestCase> $theClass
+     * @param class-string<TestCase>    $className
+     * @param non-empty-string          $methodName
+     */
+    private function warnWhenMethodIsIneligible(string $attribute, string $verb, ReflectionClass $theClass, string $className, string $methodName): void
+    {
+        if (!$this->hasVoidReturnType($theClass->getMethod($methodName))) {
+            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                sprintf(
+                    'Method %s::%s is annotated with #[%s] but does not have a void return type declaration and will not be %s',
+                    $className,
+                    $methodName,
+                    $attribute,
+                    $verb,
+                ),
+            );
+        }
+
+        if (!$this->doesNotDependOnAnotherTest($className, $methodName)) {
+            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                sprintf(
+                    'Method %s::%s is annotated with #[%s] but depends on another test and will not be %s',
+                    $className,
+                    $methodName,
+                    $attribute,
+                    $verb,
+                ),
+            );
+        }
     }
 
     private function hasVoidReturnType(ReflectionMethod $method): bool
