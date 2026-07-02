@@ -12,6 +12,7 @@ namespace PHPUnit\Runner\Parallel;
 use function assert;
 use function base64_encode;
 use function bin2hex;
+use function count;
 use function defined;
 use function file_get_contents;
 use function get_include_path;
@@ -26,6 +27,9 @@ use function tempnam;
 use function unlink;
 use function var_export;
 use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Framework\RepeatTestSuite;
+use PHPUnit\Framework\RetryTestSuite;
+use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\TextUI\Configuration\SourceMapper;
@@ -263,31 +267,43 @@ final class PersistentWorker
         $tests = [];
 
         foreach ($unit->tests() as $test) {
-            try {
-                $data            = base64_encode(serialize($test->providedData()));
-                $dependencyInput = base64_encode(serialize($test->dependencyInput()));
-            } catch (Throwable $t) {
-                @unlink($resultFile);
+            if ($test instanceof RetryTestSuite) {
+                $aggregated = $test->tests();
 
-                throw new WorkerException(
-                    sprintf(
-                        'The tests of class %s cannot be run in parallel because their data cannot be serialized: %s',
-                        $unit->className(),
-                        $t->getMessage(),
-                    ),
-                );
+                assert(count($aggregated) === 1 && $aggregated[0] instanceof TestCase);
+
+                $tests[] = [
+                    'type'        => 'retry',
+                    'name'        => $test->name(),
+                    'maxAttempts' => $test->maxAttempts(),
+                    'test'        => $this->testDescriptor($aggregated[0], $unit->className(), $resultFile),
+                ];
+
+                continue;
             }
 
-            $tests[] = [
-                'methodName'       => $test->name(),
-                'data'             => $data,
-                'dataName'         => $test->dataName(),
-                'dependencyInput'  => $dependencyInput,
-                'repetition'       => $test->repetition(),
-                'totalRepetitions' => $test->totalRepetitions(),
-                'attempt'          => $test->attempt(),
-                'maxAttempts'      => $test->maxAttempts(),
-            ];
+            if ($test instanceof RepeatTestSuite) {
+                $repetitions = [];
+
+                foreach ($test->tests() as $repetition) {
+                    assert($repetition instanceof TestCase);
+
+                    $repetitions[] = $this->testDescriptor($repetition, $unit->className(), $resultFile);
+                }
+
+                $tests[] = [
+                    'type'             => 'repeat',
+                    'name'             => $test->name(),
+                    'failureThreshold' => $test->failureThreshold(),
+                    'tests'            => $repetitions,
+                ];
+
+                continue;
+            }
+
+            assert($test instanceof TestCase);
+
+            $tests[] = $this->testDescriptor($test, $unit->className(), $resultFile);
         }
 
         return [
@@ -300,6 +316,47 @@ final class PersistentWorker
             'resultFile'        => $resultFile,
             'doneFile'          => $doneFile,
             'nonce'             => $nonce,
+        ];
+    }
+
+    /**
+     * The transportable description of a single test case, from which the
+     * worker reconstructs it.
+     *
+     * @param class-string     $className
+     * @param non-empty-string $resultFile
+     *
+     * @throws WorkerException
+     *
+     * @return array<string, mixed>
+     */
+    private function testDescriptor(TestCase $test, string $className, string $resultFile): array
+    {
+        try {
+            $data            = base64_encode(serialize($test->providedData()));
+            $dependencyInput = base64_encode(serialize($test->dependencyInput()));
+        } catch (Throwable $t) {
+            @unlink($resultFile);
+
+            throw new WorkerException(
+                sprintf(
+                    'The tests of class %s cannot be run in parallel because their data cannot be serialized: %s',
+                    $className,
+                    $t->getMessage(),
+                ),
+            );
+        }
+
+        return [
+            'type'             => 'test',
+            'methodName'       => $test->name(),
+            'data'             => $data,
+            'dataName'         => $test->dataName(),
+            'dependencyInput'  => $dependencyInput,
+            'repetition'       => $test->repetition(),
+            'totalRepetitions' => $test->totalRepetitions(),
+            'attempt'          => $test->attempt(),
+            'maxAttempts'      => $test->maxAttempts(),
         ];
     }
 

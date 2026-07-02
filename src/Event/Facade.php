@@ -24,9 +24,10 @@ final class Facade
 {
     private static ?self $instance = null;
     private Emitter $emitter;
-    private ?TypeMap $typeMap                         = null;
-    private ?DeferringDispatcher $deferringDispatcher = null;
-    private bool $sealed                              = false;
+    private ?TypeMap $typeMap                          = null;
+    private ?DeferringDispatcher $deferringDispatcher  = null;
+    private ?CollectingDispatcher $isolationDispatcher = null;
+    private bool $sealed                               = false;
 
     public static function instance(): self
     {
@@ -108,6 +109,8 @@ final class Facade
 
         $this->sealed = true;
 
+        $this->isolationDispatcher = $dispatcher;
+
         return $dispatcher;
     }
 
@@ -135,20 +138,41 @@ final class Facade
 
     public function forward(EventCollection $events): void
     {
-        $dispatcher = $this->deferredDispatcher();
+        if ($this->isolationDispatcher !== null) {
+            $dispatcher = $this->isolationDispatcher;
+        } else {
+            $dispatcher = $this->deferredDispatcher();
+        }
 
         foreach ($events as $event) {
             $dispatcher->dispatch($event);
         }
     }
 
+    /**
+     * In a process whose event facade was initialized for isolation — a
+     * parallel test runner worker, for example — the collection window is
+     * opened on the isolation dispatcher, because that is the dispatcher the
+     * emitter dispatches to there; the deferring dispatcher is unused in such
+     * a process.
+     */
     public function startCollectingEvents(): void
     {
+        if ($this->isolationDispatcher !== null) {
+            $this->isolationDispatcher->startCollectingEvents();
+
+            return;
+        }
+
         $this->deferredDispatcher()->startCollectingEvents();
     }
 
     public function stopCollectingEvents(): EventCollection
     {
+        if ($this->isolationDispatcher !== null) {
+            return $this->isolationDispatcher->stopCollectingEvents();
+        }
+
         return $this->deferredDispatcher()->stopCollectingEvents();
     }
 

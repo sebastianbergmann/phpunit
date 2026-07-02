@@ -53,6 +53,7 @@
             <exclude>tests/end-to-end/parallel/phpt-coverage/_files</exclude>
             <exclude>tests/end-to-end/parallel/phpt-conflicts/_files</exclude>
             <exclude>tests/end-to-end/parallel/phpt-with-classes/_files</exclude>
+            <exclude>tests/end-to-end/parallel/repeat-retry/_files</exclude>
             <exclude>tests/end-to-end/repeat/_files</exclude>
             <exclude>tests/end-to-end/retry/_files</exclude>
             <exclude>tests/end-to-end/self-direct-indirect/_files</exclude>
