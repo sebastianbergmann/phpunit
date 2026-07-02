@@ -1,6 +1,6 @@
 {
     "require-dev": {
-        "phpstan/phpstan": "^2.2.2",
+        "phpstan/phpstan": "^2.2.3",
         "phpstan/extension-installer": "^1.4.3",
         "phpstan/phpstan-strict-rules": "^2.0.11",
         "tomasvotruba/type-coverage": "^2.2.2",
