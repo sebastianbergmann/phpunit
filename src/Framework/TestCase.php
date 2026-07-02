@@ -625,7 +625,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $this->valueObjectForEvents(),
             );
 
-            if (!$this->usesDataProvider()) {
+            // a repeated test method is registered as passed once all of its
+            // repetitions have finished without failure or error
+            if (!$this->usesDataProvider() && $this->totalRepetitions === 1) {
                 PassedTests::instance()->testMethodPassed(
                     $this->valueObjectForEvents(),
                     $this->testResult,

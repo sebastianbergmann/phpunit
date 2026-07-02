@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TestRunner\TestResult;
 
+use function array_merge;
 use function array_values;
 use function assert;
 use function count;
@@ -342,7 +343,7 @@ final class Collector
         if ($testSuite->isForTestMethodWithDataProvider()) {
             assert($testSuite instanceof TestSuiteForTestMethodWithDataProvider);
 
-            $this->registerTestMethodAsPassedIfItDidNotFail($testSuite);
+            $this->registerTestMethodAsPassedIfNoRunFailedOrErrored($testSuite);
 
             return;
         }
@@ -353,7 +354,7 @@ final class Collector
             // for a repeated data set, the enclosing data provider test suite decides
             // whether the test method passed once all of its data sets have finished
             if (!$testSuite->isForDataSet()) {
-                $this->registerTestMethodAsPassedIfItDidNotFail($testSuite);
+                $this->registerTestMethodAsPassedIfNoRunFailedOrErrored($testSuite);
             }
 
             return;
@@ -863,7 +864,7 @@ final class Collector
         return $id;
     }
 
-    private function registerTestMethodAsPassedIfItDidNotFail(TestSuiteForRepeatedTestMethod|TestSuiteForTestMethodWithDataProvider $testSuite): void
+    private function registerTestMethodAsPassedIfNoRunFailedOrErrored(TestSuiteForRepeatedTestMethod|TestSuiteForTestMethodWithDataProvider $testSuite): void
     {
         assert(count($testSuite->tests()->asArray()) > 0);
 
@@ -871,14 +872,17 @@ final class Collector
 
         assert($test instanceof TestMethod);
 
-        foreach ($this->testFailedEvents as $testFailedEvent) {
-            if ($testFailedEvent instanceof AfterLastTestMethodFailed || $testFailedEvent instanceof BeforeFirstTestMethodFailed) {
+        foreach (array_merge($this->testFailedEvents, $this->testErroredEvents) as $event) {
+            if ($event instanceof AfterLastTestMethodFailed ||
+                $event instanceof BeforeFirstTestMethodFailed ||
+                $event instanceof AfterLastTestMethodErrored ||
+                $event instanceof BeforeFirstTestMethodErrored) {
                 continue;
             }
 
-            if ($testFailedEvent->test()->isTestMethod() &&
-                $testFailedEvent->test()->className() === $test->className() &&
-                $testFailedEvent->test()->methodName() === $test->methodName()) {
+            if ($event->test()->isTestMethod() &&
+                $event->test()->className() === $test->className() &&
+                $event->test()->methodName() === $test->methodName()) {
                 return;
             }
         }
