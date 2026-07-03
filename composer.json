@@ -33,7 +33,6 @@
         "ext-json": "*",
         "ext-libxml": "*",
         "ext-mbstring": "*",
-        "ext-xml": "*",
         "ext-xmlwriter": "*",
         "myclabs/deep-copy": "^1.13.4",
         "phar-io/manifest": "^2.0.4",
