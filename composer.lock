@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fdd1cf0b879485ea837501dd977847ec",
+    "content-hash": "ce29f3be7009692e093af4b0ebb7bc68",
     "packages": [
         {
             "name": "myclabs/deep-copy",
@@ -1733,6 +1733,77 @@
             "time": "2026-02-06T04:52:52+00:00"
         },
         {
+            "name": "sebastian/version-requirement",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/version-requirement.git",
+                "reference": "7662b2811918858a5421fbbaebdfa87f68f39190"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/version-requirement/zipball/7662b2811918858a5421fbbaebdfa87f68f39190",
+                "reference": "7662b2811918858a5421fbbaebdfa87f68f39190",
+                "shasum": ""
+            },
+            "require": {
+                "phar-io/version": "^3.2.1",
+                "php": ">=8.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^13.2.1"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
+                }
+            ],
+            "description": "Library for working with version requirements",
+            "homepage": "https://github.com/sebastianbergmann/version-requirement",
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/version-requirement/issues",
+                "security": "https://github.com/sebastianbergmann/version-requirement/security/policy",
+                "source": "https://github.com/sebastianbergmann/version-requirement/tree/main"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sebastianbergmann",
+                    "type": "github"
+                },
+                {
+                    "url": "https://liberapay.com/sebastianbergmann",
+                    "type": "liberapay"
+                },
+                {
+                    "url": "https://thanks.dev/u/gh/sebastianbergmann",
+                    "type": "thanks_dev"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/sebastian/version-requirement",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2026-06-20T08:35:21+00:00"
+        },
+        {
             "name": "staabm/side-effects-detector",
             "version": "1.0.5",
             "source": {
@@ -1837,7 +1908,7 @@
     ],
     "packages-dev": [],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,

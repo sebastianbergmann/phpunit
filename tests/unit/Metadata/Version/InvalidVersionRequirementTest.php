@@ -25,11 +25,4 @@ final class InvalidVersionRequirementTest extends TestCase
 
         $this->assertSame('message', $requirement->asString());
     }
-
-    public function testIsNeverSatisfied(): void
-    {
-        $requirement = new InvalidVersionRequirement('message');
-
-        $this->assertFalse($requirement->isSatisfiedBy('1.0.0'));
-    }
 }

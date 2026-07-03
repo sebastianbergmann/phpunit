@@ -14,8 +14,7 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Metadata\Version\ComparisonRequirement;
-use PHPUnit\Util\VersionComparisonOperator;
+use PHPUnit\Metadata\Version\Requirement;
 use stdClass;
 
 #[CoversClass(MetadataCollection::class)]
@@ -640,16 +639,10 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::requiresOperatingSystemOnClass(''),
                 Metadata::requiresPhpExtensionOnClass('', null),
                 Metadata::requiresPhpOnClass(
-                    new ComparisonRequirement(
-                        '8.0.0',
-                        new VersionComparisonOperator('>='),
-                    ),
+                    Requirement::from('>= 8.0.0'),
                 ),
                 Metadata::requiresPhpunitOnClass(
-                    new ComparisonRequirement(
-                        '10.0.0',
-                        new VersionComparisonOperator('>='),
-                    ),
+                    Requirement::from('>= 10.0.0'),
                 ),
                 Metadata::requiresPhpunitExtensionOnClass(stdClass::class),
                 Metadata::requiresEnvironmentVariableOnClass('foo', 'bar'),

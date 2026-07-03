@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Metadata\Version;
 
-use function version_compare;
 use PHPUnit\Util\VersionComparisonOperator;
 
 /**
@@ -26,11 +25,6 @@ final readonly class ComparisonRequirement extends Requirement
     {
         $this->version  = $version;
         $this->operator = $operator;
-    }
-
-    public function isSatisfiedBy(string $version): bool
-    {
-        return version_compare($version, $this->version, $this->operator->asString());
     }
 
     public function asString(): string
