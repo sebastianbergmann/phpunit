@@ -30,7 +30,7 @@ if (version_compare('8.4.1', PHP_VERSION, '>')) {
     die(1);
 }
 
-$requiredExtensions = ['ctype', 'dom', 'json', 'libxml', 'mbstring', 'tokenizer', 'xml', 'xmlwriter'];
+$requiredExtensions = ['ctype', 'dom', 'json', 'libxml', 'mbstring', 'tokenizer', 'xmlwriter'];
 
 $unavailableExtensions = array_filter(
     $requiredExtensions,
