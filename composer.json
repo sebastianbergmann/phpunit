@@ -30,6 +30,7 @@
     "require": {
         "php": ">=7.3",
         "ext-dom": "*",
+        "ext-filter": "*",
         "ext-json": "*",
         "ext-libxml": "*",
         "ext-mbstring": "*",
