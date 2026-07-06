@@ -40,12 +40,10 @@ class %s implements PHPUnit\Framework\MockObject\MockObject, InterfaceWithConstr
             }
         }
 
-        $__phpunit_result = $this->__phpunit_getInvocationHandler()->invoke(
+        $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
                 'InterfaceWithConstructor', '__construct', $__phpunit_arguments, '', $this, true
             )
         );
-
-        return $__phpunit_result;
     }
 }

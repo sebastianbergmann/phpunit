@@ -19,6 +19,7 @@ use function preg_replace;
 use function sprintf;
 use function strlen;
 use function strpos;
+use function strtolower;
 use function substr;
 use function substr_count;
 use function trim;
@@ -188,7 +189,7 @@ final class MockMethod
     {
         if ($this->static) {
             $templateFile = 'mocked_static_method.tpl';
-        } elseif ($this->returnType->isNever() || $this->returnType->isVoid()) {
+        } elseif ($this->returnType->isNever() || $this->returnType->isVoid() || $this->mustNotReturnValue()) {
             $templateFile = sprintf(
                 '%s_method_never_or_void.tpl',
                 $this->callOriginalMethod ? 'proxied' : 'mocked',
@@ -261,6 +262,16 @@ final class MockMethod
         }
 
         return self::$templates[$filename];
+    }
+
+    /**
+     * @see https://wiki.php.net/rfc/deprecate-return-value-from-construct
+     */
+    private function mustNotReturnValue(): bool
+    {
+        $methodName = strtolower($this->methodName);
+
+        return $methodName === '__construct' || $methodName === '__destruct';
     }
 
     /**
