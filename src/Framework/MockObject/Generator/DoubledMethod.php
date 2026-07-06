@@ -21,6 +21,7 @@ use function preg_replace;
 use function str_contains;
 use function strlen;
 use function strpos;
+use function strtolower;
 use function substr;
 use function substr_count;
 use function trim;
@@ -184,7 +185,7 @@ final class DoubledMethod
         $deprecation  = '';
         $returnResult = '';
 
-        if (!$this->returnType->isNever() && !$this->returnType->isVoid()) {
+        if (!$this->returnType->isNever() && !$this->returnType->isVoid() && !$this->mustNotReturnValue()) {
             $returnResult = <<<'EOT'
 
 
@@ -260,6 +261,16 @@ EOT;
     public function numberOfParameters(): int
     {
         return $this->numberOfParameters;
+    }
+
+    /**
+     * @see https://wiki.php.net/rfc/deprecate-return-value-from-construct
+     */
+    private function mustNotReturnValue(): bool
+    {
+        $methodName = strtolower($this->methodName);
+
+        return $methodName === '__construct' || $methodName === '__destruct';
     }
 
     /**

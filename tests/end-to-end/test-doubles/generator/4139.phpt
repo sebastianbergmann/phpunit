@@ -59,7 +59,5 @@ class %s implements PHPUnit\Framework\MockObject\MockObjectInternal, InterfaceWi
                 'InterfaceWithConstructor', '__construct', $__phpunit_arguments, '', $this
             )
         );
-
-        return $__phpunit_result;
     }
 }
