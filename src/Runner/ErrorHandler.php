@@ -156,6 +156,15 @@ final class ErrorHandler
         }
 
         /**
+         * A previously registered error handler must run before the issue is recorded:
+         * when it turns the error into an exception, the error becomes control flow
+         * that the test runner observes directly and no issue must be recorded.
+         *
+         * @see https://github.com/sebastianbergmann/phpunit/issues/6817
+         */
+        $handledByPreviousErrorHandler = $this->forwardToPreviousErrorHandler($errorNumber, $errorString, $errorFile, $errorLine);
+
+        /**
          * E_STRICT is deprecated since PHP 8.4.
          *
          * @see https://github.com/sebastianbergmann/phpunit/issues/5956
@@ -271,10 +280,10 @@ final class ErrorHandler
                 throw new ErrorException('E_USER_ERROR was triggered');
 
             default:
-                return $this->forwardToPreviousErrorHandler($errorNumber, $errorString, $errorFile, $errorLine);
+                return $handledByPreviousErrorHandler;
         }
 
-        return $this->forwardToPreviousErrorHandler($errorNumber, $errorString, $errorFile, $errorLine);
+        return $handledByPreviousErrorHandler;
     }
 
     public function handleNonTestCaseIssue(int $errorNumber, string $errorString, string $errorFile, int $errorLine): true
@@ -299,6 +308,17 @@ final class ErrorHandler
 
             return true;
             // @codeCoverageIgnoreEnd
+        }
+
+        /**
+         * A previously registered error handler must run before the issue is recorded:
+         * when it turns the error into an exception, the error becomes control flow
+         * that the test runner observes directly and no issue must be recorded.
+         *
+         * @see https://github.com/sebastianbergmann/phpunit/issues/6817
+         */
+        if ($this->previousNonTestCaseErrorHandler !== null) {
+            ($this->previousNonTestCaseErrorHandler)($errorNumber, $errorString, $errorFile, $errorLine);
         }
 
         /**
@@ -403,10 +423,6 @@ final class ErrorHandler
                 );
 
                 break;
-        }
-
-        if ($this->previousNonTestCaseErrorHandler !== null) {
-            ($this->previousNonTestCaseErrorHandler)($errorNumber, $errorString, $errorFile, $errorLine);
         }
 
         return true;
