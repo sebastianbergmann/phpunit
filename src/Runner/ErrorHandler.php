@@ -1039,6 +1039,32 @@ final class ErrorHandler
             return false;
         }
 
-        return (bool) ($this->previousErrorHandler)($errorNumber, $errorString, $errorFile, $errorLine);
+        /**
+         * The previously registered error handler must observe the error reporting level
+         * as it would be without PHPUnit's manipulation of it. The error reporting level
+         * is only restored when it currently is the masked level configured by enable():
+         * for errors suppressed using the @ operator it is the suppression mask set by
+         * PHP and for errors triggered before enable() masked it (or after test code
+         * changed it) it already is the level the previous error handler must observe.
+         *
+         * @see https://github.com/sebastianbergmann/phpunit/issues/6818
+         */
+        $errorReportingLevel = error_reporting();
+        $restoreRequired     = false;
+
+        if ($this->originalErrorReportingLevel !== null &&
+            $errorReportingLevel === ($this->originalErrorReportingLevel & self::UNHANDLEABLE_LEVELS)) {
+            error_reporting($this->originalErrorReportingLevel);
+
+            $restoreRequired = true;
+        }
+
+        try {
+            return (bool) ($this->previousErrorHandler)($errorNumber, $errorString, $errorFile, $errorLine);
+        } finally {
+            if ($restoreRequired) {
+                error_reporting($errorReportingLevel);
+            }
+        }
     }
 }
