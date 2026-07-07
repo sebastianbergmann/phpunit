@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 13.2 release series are documented in this fi
 ### Fixed
 
 * [#6817](https://github.com/sebastianbergmann/phpunit/issues/6817): Issue is reported even when previously registered error handler turns the error into an exception
+* [#6818](https://github.com/sebastianbergmann/phpunit/issues/6818): Issue is reported when custom error handler checks `error_reporting()` output dynamically
 
 ## [13.2.3] - 2026-07-06
 
