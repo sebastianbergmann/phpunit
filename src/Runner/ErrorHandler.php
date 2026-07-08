@@ -74,6 +74,7 @@ final class ErrorHandler
     private ExcludeList $excludeList;
     private bool $enabled                     = false;
     private ?int $originalErrorReportingLevel = null;
+    private bool $isForwarding                = false;
 
     /**
      * @var ?callable
@@ -291,8 +292,14 @@ final class ErrorHandler
 
         if ($errorString === '' || $errorFile === '' || $errorLine < 1) {
             // @codeCoverageIgnoreStart
-            if ($this->previousNonTestCaseErrorHandler !== null) {
-                ($this->previousNonTestCaseErrorHandler)($errorNumber, $errorString, $errorFile, $errorLine);
+            if ($this->previousNonTestCaseErrorHandler !== null && !$this->isForwarding) {
+                $this->isForwarding = true;
+
+                try {
+                    ($this->previousNonTestCaseErrorHandler)($errorNumber, $errorString, $errorFile, $errorLine);
+                } finally {
+                    $this->isForwarding = false;
+                }
             }
 
             return true;
@@ -306,8 +313,14 @@ final class ErrorHandler
          *
          * @see https://github.com/sebastianbergmann/phpunit/issues/6817
          */
-        if ($this->previousNonTestCaseErrorHandler !== null) {
-            ($this->previousNonTestCaseErrorHandler)($errorNumber, $errorString, $errorFile, $errorLine);
+        if ($this->previousNonTestCaseErrorHandler !== null && !$this->isForwarding) {
+            $this->isForwarding = true;
+
+            try {
+                ($this->previousNonTestCaseErrorHandler)($errorNumber, $errorString, $errorFile, $errorLine);
+            } finally {
+                $this->isForwarding = false;
+            }
         }
 
         /**
@@ -1002,7 +1015,7 @@ final class ErrorHandler
 
     private function forwardToPreviousErrorHandler(int $errorNumber, string $errorString, string $errorFile, int $errorLine): bool
     {
-        if ($this->previousErrorHandler === null) {
+        if ($this->previousErrorHandler === null || $this->isForwarding) {
             return false;
         }
 
@@ -1026,9 +1039,13 @@ final class ErrorHandler
             $restoreRequired = true;
         }
 
+        $this->isForwarding = true;
+
         try {
             return (bool) ($this->previousErrorHandler)($errorNumber, $errorString, $errorFile, $errorLine);
         } finally {
+            $this->isForwarding = false;
+
             if ($restoreRequired) {
                 error_reporting($errorReportingLevel);
             }
