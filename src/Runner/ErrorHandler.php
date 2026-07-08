@@ -76,6 +76,11 @@ final class ErrorHandler
     private ?int $originalErrorReportingLevel = null;
 
     /**
+     * @var ?array{int, string, string, int}
+     */
+    private ?array $forwardedError = null;
+
+    /**
      * @var ?callable
      */
     private mixed $previousErrorHandler = null;
@@ -141,6 +146,15 @@ final class ErrorHandler
      */
     public function __invoke(int $errorNumber, string $errorString, string $errorFile, int $errorLine): bool
     {
+        /**
+         * A previously registered error handler may delegate an error that is being
+         * forwarded to it back to this error handler: the issue must only be recorded
+         * by the invocation that forwards the error, not by the delegating invocation.
+         */
+        if ($this->forwardedError === [$errorNumber, $errorString, $errorFile, $errorLine]) {
+            return false;
+        }
+
         $suppressed = (error_reporting() & ~self::INSUPPRESSIBLE_LEVELS) === 0;
 
         if ($suppressed && $this->excludeList->isExcluded($errorFile)) {
@@ -288,6 +302,15 @@ final class ErrorHandler
 
     public function handleNonTestCaseIssue(int $errorNumber, string $errorString, string $errorFile, int $errorLine): true
     {
+        /**
+         * A previously registered error handler may delegate an error that is being
+         * forwarded to it back to this error handler: the issue must only be recorded
+         * by the invocation that forwards the error, not by the delegating invocation.
+         */
+        if ($this->forwardedError === [$errorNumber, $errorString, $errorFile, $errorLine]) {
+            return true;
+        }
+
         $suppressed = (error_reporting() & ~self::INSUPPRESSIBLE_LEVELS) === 0;
 
         if ($suppressed && $this->excludeList->isExcluded($errorFile)) {
@@ -302,9 +325,7 @@ final class ErrorHandler
 
         if ($errorString === '' || $errorFile === '' || $errorLine < 1) {
             // @codeCoverageIgnoreStart
-            if ($this->previousNonTestCaseErrorHandler !== null) {
-                ($this->previousNonTestCaseErrorHandler)($errorNumber, $errorString, $errorFile, $errorLine);
-            }
+            $this->forwardToPreviousNonTestCaseErrorHandler($errorNumber, $errorString, $errorFile, $errorLine);
 
             return true;
             // @codeCoverageIgnoreEnd
@@ -317,9 +338,7 @@ final class ErrorHandler
          *
          * @see https://github.com/sebastianbergmann/phpunit/issues/6817
          */
-        if ($this->previousNonTestCaseErrorHandler !== null) {
-            ($this->previousNonTestCaseErrorHandler)($errorNumber, $errorString, $errorFile, $errorLine);
-        }
+        $this->forwardToPreviousNonTestCaseErrorHandler($errorNumber, $errorString, $errorFile, $errorLine);
 
         /**
          * E_STRICT is deprecated since PHP 8.4.
@@ -1035,7 +1054,7 @@ final class ErrorHandler
 
     private function forwardToPreviousErrorHandler(int $errorNumber, string $errorString, string $errorFile, int $errorLine): bool
     {
-        if ($this->previousErrorHandler === null) {
+        if ($this->previousErrorHandler === null || $this->forwardedError !== null) {
             return false;
         }
 
@@ -1059,12 +1078,31 @@ final class ErrorHandler
             $restoreRequired = true;
         }
 
+        $this->forwardedError = [$errorNumber, $errorString, $errorFile, $errorLine];
+
         try {
             return (bool) ($this->previousErrorHandler)($errorNumber, $errorString, $errorFile, $errorLine);
         } finally {
+            $this->forwardedError = null;
+
             if ($restoreRequired) {
                 error_reporting($errorReportingLevel);
             }
+        }
+    }
+
+    private function forwardToPreviousNonTestCaseErrorHandler(int $errorNumber, string $errorString, string $errorFile, int $errorLine): void
+    {
+        if ($this->previousNonTestCaseErrorHandler === null || $this->forwardedError !== null) {
+            return;
+        }
+
+        $this->forwardedError = [$errorNumber, $errorString, $errorFile, $errorLine];
+
+        try {
+            ($this->previousNonTestCaseErrorHandler)($errorNumber, $errorString, $errorFile, $errorLine);
+        } finally {
+            $this->forwardedError = null;
         }
     }
 }
