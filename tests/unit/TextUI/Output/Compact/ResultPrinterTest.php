@@ -985,6 +985,12 @@ final class ResultPrinterTest extends TestCase
             $phpNotices,
             $phpWarnings,
             0,
+            [
+                'self'     => 0,
+                'direct'   => 0,
+                'indirect' => 0,
+                'unknown'  => 0,
+            ],
         );
     }
 

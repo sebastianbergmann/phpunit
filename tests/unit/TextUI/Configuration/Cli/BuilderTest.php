@@ -1573,6 +1573,66 @@ final class BuilderTest extends TestCase
         $configuration->failOnDeprecation();
     }
 
+    #[TestDox('--fail-on-self-deprecation')]
+    public function testFailOnSelfDeprecation(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--fail-on-self-deprecation']);
+
+        $this->assertTrue($configuration->hasFailOnSelfDeprecation());
+        $this->assertTrue($configuration->failOnSelfDeprecation());
+    }
+
+    public function testFailOnSelfDeprecationMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasFailOnSelfDeprecation());
+
+        $this->expectException(Exception::class);
+
+        $configuration->failOnSelfDeprecation();
+    }
+
+    #[TestDox('--fail-on-direct-deprecation')]
+    public function testFailOnDirectDeprecation(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--fail-on-direct-deprecation']);
+
+        $this->assertTrue($configuration->hasFailOnDirectDeprecation());
+        $this->assertTrue($configuration->failOnDirectDeprecation());
+    }
+
+    public function testFailOnDirectDeprecationMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasFailOnDirectDeprecation());
+
+        $this->expectException(Exception::class);
+
+        $configuration->failOnDirectDeprecation();
+    }
+
+    #[TestDox('--fail-on-indirect-deprecation')]
+    public function testFailOnIndirectDeprecation(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--fail-on-indirect-deprecation']);
+
+        $this->assertTrue($configuration->hasFailOnIndirectDeprecation());
+        $this->assertTrue($configuration->failOnIndirectDeprecation());
+    }
+
+    public function testFailOnIndirectDeprecationMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasFailOnIndirectDeprecation());
+
+        $this->expectException(Exception::class);
+
+        $configuration->failOnIndirectDeprecation();
+    }
+
     #[TestDox('--fail-on-phpunit-deprecation')]
     public function testFailOnPhpunitDeprecation(): void
     {
@@ -1771,6 +1831,66 @@ final class BuilderTest extends TestCase
         $this->expectException(Exception::class);
 
         $configuration->doNotFailOnDeprecation();
+    }
+
+    #[TestDox('--do-not-fail-on-self-deprecation')]
+    public function testDoNotFailOnSelfDeprecation(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--do-not-fail-on-self-deprecation']);
+
+        $this->assertTrue($configuration->hasDoNotFailOnSelfDeprecation());
+        $this->assertTrue($configuration->doNotFailOnSelfDeprecation());
+    }
+
+    public function testDoNotFailOnSelfDeprecationMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasDoNotFailOnSelfDeprecation());
+
+        $this->expectException(Exception::class);
+
+        $configuration->doNotFailOnSelfDeprecation();
+    }
+
+    #[TestDox('--do-not-fail-on-direct-deprecation')]
+    public function testDoNotFailOnDirectDeprecation(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--do-not-fail-on-direct-deprecation']);
+
+        $this->assertTrue($configuration->hasDoNotFailOnDirectDeprecation());
+        $this->assertTrue($configuration->doNotFailOnDirectDeprecation());
+    }
+
+    public function testDoNotFailOnDirectDeprecationMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasDoNotFailOnDirectDeprecation());
+
+        $this->expectException(Exception::class);
+
+        $configuration->doNotFailOnDirectDeprecation();
+    }
+
+    #[TestDox('--do-not-fail-on-indirect-deprecation')]
+    public function testDoNotFailOnIndirectDeprecation(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--do-not-fail-on-indirect-deprecation']);
+
+        $this->assertTrue($configuration->hasDoNotFailOnIndirectDeprecation());
+        $this->assertTrue($configuration->doNotFailOnIndirectDeprecation());
+    }
+
+    public function testDoNotFailOnIndirectDeprecationMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasDoNotFailOnIndirectDeprecation());
+
+        $this->expectException(Exception::class);
+
+        $configuration->doNotFailOnIndirectDeprecation();
     }
 
     #[TestDox('--do-not-fail-on-phpunit-deprecation')]

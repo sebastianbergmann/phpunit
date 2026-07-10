@@ -126,6 +126,9 @@ final class Builder
         'stderr',
         'fail-on-all-issues',
         'fail-on-deprecation',
+        'fail-on-self-deprecation',
+        'fail-on-direct-deprecation',
+        'fail-on-indirect-deprecation',
         'fail-on-phpunit-deprecation',
         'fail-on-phpunit-notice',
         'fail-on-phpunit-warning',
@@ -136,6 +139,9 @@ final class Builder
         'fail-on-skipped',
         'fail-on-warning',
         'do-not-fail-on-deprecation',
+        'do-not-fail-on-self-deprecation',
+        'do-not-fail-on-direct-deprecation',
+        'do-not-fail-on-indirect-deprecation',
         'do-not-fail-on-phpunit-deprecation',
         'do-not-fail-on-phpunit-notice',
         'do-not-fail-on-phpunit-warning',
@@ -187,6 +193,9 @@ final class Builder
     private const array CONFLICTING_OPTIONS = [
         ['--cache-result', '--do-not-cache-result'],
         ['--fail-on-deprecation', '--do-not-fail-on-deprecation'],
+        ['--fail-on-self-deprecation', '--do-not-fail-on-self-deprecation'],
+        ['--fail-on-direct-deprecation', '--do-not-fail-on-direct-deprecation'],
+        ['--fail-on-indirect-deprecation', '--do-not-fail-on-indirect-deprecation'],
         ['--fail-on-phpunit-deprecation', '--do-not-fail-on-phpunit-deprecation'],
         ['--fail-on-phpunit-notice', '--do-not-fail-on-phpunit-notice'],
         ['--fail-on-phpunit-warning', '--do-not-fail-on-phpunit-warning'],
@@ -309,6 +318,9 @@ final class Builder
         $executionOrderDefects             = null;
         $failOnAllIssues                   = null;
         $failOnDeprecation                 = null;
+        $failOnSelfDeprecation             = null;
+        $failOnDirectDeprecation           = null;
+        $failOnIndirectDeprecation         = null;
         $failOnPhpunitDeprecation          = null;
         $failOnPhpunitNotice               = null;
         $failOnPhpunitWarning              = null;
@@ -319,6 +331,9 @@ final class Builder
         $failOnSkipped                     = null;
         $failOnWarning                     = null;
         $doNotFailOnDeprecation            = null;
+        $doNotFailOnSelfDeprecation        = null;
+        $doNotFailOnDirectDeprecation      = null;
+        $doNotFailOnIndirectDeprecation    = null;
         $doNotFailOnPhpunitDeprecation     = null;
         $doNotFailOnPhpunitNotice          = null;
         $doNotFailOnPhpunitWarning         = null;
@@ -868,6 +883,21 @@ final class Builder
 
                     break;
 
+                case '--fail-on-self-deprecation':
+                    $failOnSelfDeprecation = true;
+
+                    break;
+
+                case '--fail-on-direct-deprecation':
+                    $failOnDirectDeprecation = true;
+
+                    break;
+
+                case '--fail-on-indirect-deprecation':
+                    $failOnIndirectDeprecation = true;
+
+                    break;
+
                 case '--fail-on-phpunit-deprecation':
                     $failOnPhpunitDeprecation = true;
 
@@ -915,6 +945,21 @@ final class Builder
 
                 case '--do-not-fail-on-deprecation':
                     $doNotFailOnDeprecation = true;
+
+                    break;
+
+                case '--do-not-fail-on-self-deprecation':
+                    $doNotFailOnSelfDeprecation = true;
+
+                    break;
+
+                case '--do-not-fail-on-direct-deprecation':
+                    $doNotFailOnDirectDeprecation = true;
+
+                    break;
+
+                case '--do-not-fail-on-indirect-deprecation':
+                    $doNotFailOnIndirectDeprecation = true;
 
                     break;
 
@@ -1407,6 +1452,9 @@ final class Builder
             $executionOrderDefects,
             $failOnAllIssues,
             $failOnDeprecation,
+            $failOnSelfDeprecation,
+            $failOnDirectDeprecation,
+            $failOnIndirectDeprecation,
             $failOnPhpunitDeprecation,
             $failOnPhpunitNotice,
             $failOnPhpunitWarning,
@@ -1417,6 +1465,9 @@ final class Builder
             $failOnSkipped,
             $failOnWarning,
             $doNotFailOnDeprecation,
+            $doNotFailOnSelfDeprecation,
+            $doNotFailOnDirectDeprecation,
+            $doNotFailOnIndirectDeprecation,
             $doNotFailOnPhpunitDeprecation,
             $doNotFailOnPhpunitNotice,
             $doNotFailOnPhpunitWarning,

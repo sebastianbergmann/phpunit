@@ -219,6 +219,9 @@
         <xs:attribute name="processIsolation" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnAllIssues" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnDeprecation" type="xs:boolean" default="false"/>
+        <xs:attribute name="failOnSelfDeprecation" type="xs:boolean" default="false"/>
+        <xs:attribute name="failOnDirectDeprecation" type="xs:boolean" default="false"/>
+        <xs:attribute name="failOnIndirectDeprecation" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnPhpunitDeprecation" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnPhpunitNotice" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnPhpunitWarning" type="xs:boolean" default="true"/>
