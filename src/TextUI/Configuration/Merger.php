@@ -427,6 +427,7 @@ final readonly class Merger
         $coverageCrap4j                     = null;
         $coverageCrap4jThreshold            = 30;
         $coverageHtml                       = null;
+        $coverageHtmlClassView              = true;
         $coverageHtmlLowUpperBound          = $defaultThresholds->lowUpperBound();
         $coverageHtmlHighLowerBound         = $defaultThresholds->highLowerBound();
         $coverageHtmlColorSuccessLow        = $defaultColors->successLow();
@@ -520,6 +521,12 @@ final readonly class Merger
             $coverageHtml = $cliConfiguration->coverageHtml();
         } elseif ($coverageFromXmlConfiguration && $xmlConfiguration->codeCoverage()->hasHtml() && $xmlConfiguration->codeCoverage()->html()->hasTarget()) {
             $coverageHtml = $xmlConfiguration->codeCoverage()->html()->target()->path();
+        }
+
+        if ($cliConfiguration->hasWithoutClassView()) {
+            $coverageHtmlClassView = !$cliConfiguration->withoutClassView();
+        } elseif ($xmlConfiguration->codeCoverage()->hasHtml()) {
+            $coverageHtmlClassView = $xmlConfiguration->codeCoverage()->html()->classView();
         }
 
         if ($cliConfiguration->hasCoverageOpenClover()) {
@@ -1176,6 +1183,7 @@ final readonly class Merger
             $coverageCrap4j,
             $coverageCrap4jThreshold,
             $coverageHtml,
+            $coverageHtmlClassView,
             $coverageHtmlLowUpperBound,
             $coverageHtmlHighLowerBound,
             $coverageHtmlColorSuccessLow,

@@ -383,6 +383,26 @@ final class BuilderTest extends TestCase
         $configuration->coverageHtml();
     }
 
+    #[TestDox('--without-class-view')]
+    public function testWithoutClassView(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--without-class-view']);
+
+        $this->assertTrue($configuration->hasWithoutClassView());
+        $this->assertTrue($configuration->withoutClassView());
+    }
+
+    public function testWithoutClassViewMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasWithoutClassView());
+
+        $this->expectException(Exception::class);
+
+        $configuration->withoutClassView();
+    }
+
     #[TestDox('--coverage-openclover file')]
     public function testCoverageOpenClover(): void
     {

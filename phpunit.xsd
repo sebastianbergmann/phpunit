@@ -362,6 +362,7 @@
     </xs:complexType>
     <xs:complexType name="coverageReportHtmlType">
         <xs:attribute name="outputDirectory" type="xs:anyURI"/>
+        <xs:attribute name="classView" type="xs:boolean" default="true"/>
         <xs:attribute name="lowUpperBound" type="xs:integer" default="50"/>
         <xs:attribute name="highLowerBound" type="xs:integer" default="90"/>
         <xs:attribute name="colorSuccessLow" type="xs:string" default="#d6e6f2"/>

@@ -234,6 +234,8 @@
                                        format to file
   [32m--coverage-html [36m<dir>[0m               [0m Write code coverage report in HTML
                                        format to directory
+  [32m--without-class-view                [0m Render code coverage report in HTML
+                                       format without class view
   [32m--coverage-php [36m<file>[0m               [0m Write serialized code coverage data to
                                        file
   [32m--coverage-text=[36m<file>[0m              [0m Write code coverage report in text

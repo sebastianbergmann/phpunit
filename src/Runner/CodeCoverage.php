@@ -429,6 +429,7 @@ final class CodeCoverage
                         $configuration->coverageHtmlHighLowerBound(),
                     ),
                     $customCssFile,
+                    $configuration->coverageHtmlClassView(),
                 );
 
                 $this->codeCoverageGenerationSucceeded($printer);

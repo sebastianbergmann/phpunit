@@ -330,6 +330,7 @@ final class Help
                 ['arg' => '--coverage-cobertura <file>', 'desc' => 'Write code coverage report in Cobertura XML format to file'],
                 ['arg' => '--coverage-crap4j <file>', 'desc' => 'Write code coverage report in Crap4J XML format to file'],
                 ['arg' => '--coverage-html <dir>', 'desc' => 'Write code coverage report in HTML format to directory'],
+                ['arg' => '--without-class-view', 'desc' => 'Render code coverage report in HTML format without class view'],
                 ['arg' => '--coverage-php <file>', 'desc' => 'Write serialized code coverage data to file'],
                 ['arg' => '--coverage-text=<file>', 'desc' => 'Write code coverage report in text format to file [default: standard output]'],
                 ['arg' => '--only-summary-for-coverage-text', 'desc' => 'Option for code coverage report in text format: only show summary'],

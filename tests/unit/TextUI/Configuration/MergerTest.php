@@ -66,6 +66,41 @@ final class MergerTest extends TestCase
         $this->assertTrue($mergedConfig->branchCoverage());
     }
 
+    public function testClassViewForHtmlCodeCoverageReportIsEnabledByDefault(): void
+    {
+        $fromFile = (new Loader)->load(TEST_FILES_PATH . 'configuration_codecoverage.xml');
+
+        $fromCli = (new Builder)->fromParameters([]);
+
+        $mergedConfig = (new Merger)->merge($fromCli, $fromFile);
+
+        $this->assertTrue($mergedConfig->coverageHtmlClassView());
+    }
+
+    public function testClassViewForHtmlCodeCoverageReportCanBeDisabledFromXmlConfiguration(): void
+    {
+        $fromFile = (new Loader)->load(TEST_FILES_PATH . 'configuration_codecoverage_html_classview.xml');
+
+        $fromCli = (new Builder)->fromParameters([]);
+
+        $mergedConfig = (new Merger)->merge($fromCli, $fromFile);
+
+        $this->assertFalse($mergedConfig->coverageHtmlClassView());
+    }
+
+    public function testClassViewForHtmlCodeCoverageReportCanBeDisabledFromCli(): void
+    {
+        $fromFile = (new Loader)->load(TEST_FILES_PATH . 'configuration_codecoverage.xml');
+
+        $fromCli = (new Builder)->fromParameters([
+            '--without-class-view',
+        ]);
+
+        $mergedConfig = (new Merger)->merge($fromCli, $fromFile);
+
+        $this->assertFalse($mergedConfig->coverageHtmlClassView());
+    }
+
     public function testCoverageTargetingCanBeDisabledFromCli(): void
     {
         $fromFile = (new Loader)->load(TEST_FILES_PATH . 'configuration_codecoverage.xml');

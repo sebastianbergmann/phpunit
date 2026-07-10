@@ -152,6 +152,7 @@ Code Coverage:
   --coverage-cobertura <file>          Write code coverage report in Cobertura XML format to file
   --coverage-crap4j <file>             Write code coverage report in Crap4J XML format to file
   --coverage-html <dir>                Write code coverage report in HTML format to directory
+  --without-class-view                 Render code coverage report in HTML format without class view
   --coverage-php <file>                Write serialized code coverage data to file
   --coverage-text=<file>               Write code coverage report in text format to file [default: standard output]
   --only-summary-for-coverage-text     Option for code coverage report in text format: only show summary
