@@ -34,7 +34,7 @@ Time: %s, Memory: %s
 
 * Directory (recursively) %stests is outside of the code that is configured to be first-party code using <source>, the attribute is ignored
 
-* Directory %stests%e.. is outside of the code that is configured to be first-party code using <source>, the attribute is ignored
+* Directory %stests/.. is outside of the code that is configured to be first-party code using <source>, the attribute is ignored
 
 %stests%eFooTest.php:%d
 
