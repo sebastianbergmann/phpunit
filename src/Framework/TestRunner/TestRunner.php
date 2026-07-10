@@ -9,13 +9,16 @@
  */
 namespace PHPUnit\Framework\TestRunner;
 
+use const DIRECTORY_SEPARATOR;
 use const PHP_EOL;
 use function array_diff_assoc;
 use function array_intersect;
 use function array_unique;
 use function assert;
 use function extension_loaded;
+use function realpath;
 use function sprintf;
+use function str_starts_with;
 use function xdebug_is_debugger_active;
 use AssertionError;
 use PHPUnit\Event\Facade;
@@ -31,8 +34,10 @@ use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\Runner\Exception;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
+use PHPUnit\TextUI\Configuration\SourceFilter;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
 use SebastianBergmann\CodeCoverage\InvalidArgumentException;
+use SebastianBergmann\CodeCoverage\Test\Target\Target;
 use SebastianBergmann\CodeCoverage\Test\Target\TargetCollection;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use SebastianBergmann\Invoker\Invoker;
@@ -80,6 +85,9 @@ final class TestRunner
                 $test::class,
                 $test->name(),
             );
+
+            $coversTargets = $this->removeFilesystemTargetsThatAreNotFirstPartyCode($test, $coversTargets);
+            $usesTargets   = $this->removeFilesystemTargetsThatAreNotFirstPartyCode($test, $usesTargets);
 
             $shouldCodeCoverageBeCollected = $codeCoverageMetadataApi->shouldCodeCoverageBeCollectedFor($test);
 
@@ -423,5 +431,78 @@ final class TestRunner
                 ),
             );
         }
+    }
+
+    private function removeFilesystemTargetsThatAreNotFirstPartyCode(TestCase $test, TargetCollection $targets): TargetCollection
+    {
+        if (!$this->configuration->source()->notEmpty()) {
+            return $targets;
+        }
+
+        $filteredTargets = [];
+        $warnings        = [];
+
+        foreach ($targets as $target) {
+            if ($this->isFilesystemTargetThatIsNotFirstPartyCode($target)) {
+                $warnings[] = sprintf(
+                    '%s is outside of the code that is configured to be first-party code using <source>, the attribute is ignored',
+                    $target->description(),
+                );
+
+                continue;
+            }
+
+            $filteredTargets[] = $target;
+        }
+
+        foreach (array_unique($warnings) as $warning) {
+            Facade::emitter()->testTriggeredPhpunitWarning(
+                $test->valueObjectForEvents(),
+                $warning,
+            );
+        }
+
+        return TargetCollection::fromArray($filteredTargets);
+    }
+
+    private function isFilesystemTargetThatIsNotFirstPartyCode(Target $target): bool
+    {
+        if (!$target->isFile() && !$target->isDirectory() && !$target->isDirectoryRecursively()) {
+            return false;
+        }
+
+        $path = realpath($target->target());
+
+        if ($path === false) {
+            // paths that cannot be resolved are reported by phpunit/php-code-coverage's target validation
+            return false;
+        }
+
+        if ($target->isFile()) {
+            return !SourceFilter::instance()->includes($path);
+        }
+
+        return !$this->isDirectoryConfiguredAsFirstPartyCode($path);
+    }
+
+    private function isDirectoryConfiguredAsFirstPartyCode(string $directory): bool
+    {
+        foreach ($this->configuration->source()->includeDirectories() as $includeDirectory) {
+            $includeDirectoryPath = realpath($includeDirectory->path());
+
+            if ($includeDirectoryPath === false) {
+                continue;
+            }
+
+            if ($directory === $includeDirectoryPath) {
+                return true;
+            }
+
+            if (str_starts_with($directory, $includeDirectoryPath . DIRECTORY_SEPARATOR)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
