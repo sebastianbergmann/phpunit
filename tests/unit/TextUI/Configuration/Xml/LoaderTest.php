@@ -267,6 +267,16 @@ final class LoaderTest extends TestCase
 
         $this->assertTrue($codeCoverage->hasHtml());
         $this->assertFalse($codeCoverage->html()->classView());
+        $this->assertTrue($codeCoverage->html()->fileView());
+    }
+
+    public function testFileViewForHtmlCodeCoverageReportCanBeDisabled(): void
+    {
+        $codeCoverage = $this->configuration('configuration_codecoverage_html_fileview.xml')->codeCoverage();
+
+        $this->assertTrue($codeCoverage->hasHtml());
+        $this->assertTrue($codeCoverage->html()->classView());
+        $this->assertFalse($codeCoverage->html()->fileView());
     }
 
     public function testCodeCoverageConfigurationIsReadCorrectly(): void
@@ -297,6 +307,7 @@ final class LoaderTest extends TestCase
         $this->assertTrue($codeCoverage->hasHtml());
         $this->assertSame(TEST_FILES_PATH . 'coverage', $codeCoverage->html()->target()->path());
         $this->assertTrue($codeCoverage->html()->classView());
+        $this->assertTrue($codeCoverage->html()->fileView());
         $this->assertSame($defaultThresholds->lowUpperBound(), $codeCoverage->html()->lowUpperBound());
         $this->assertSame($defaultThresholds->highLowerBound(), $codeCoverage->html()->highLowerBound());
         $this->assertSame($defaultColors->successLow(), $codeCoverage->html()->colorSuccessLow());

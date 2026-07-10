@@ -428,6 +428,7 @@ final readonly class Merger
         $coverageCrap4jThreshold            = 30;
         $coverageHtml                       = null;
         $coverageHtmlClassView              = true;
+        $coverageHtmlFileView               = true;
         $coverageHtmlLowUpperBound          = $defaultThresholds->lowUpperBound();
         $coverageHtmlHighLowerBound         = $defaultThresholds->highLowerBound();
         $coverageHtmlColorSuccessLow        = $defaultColors->successLow();
@@ -527,6 +528,21 @@ final readonly class Merger
             $coverageHtmlClassView = !$cliConfiguration->withoutClassView();
         } elseif ($xmlConfiguration->codeCoverage()->hasHtml()) {
             $coverageHtmlClassView = $xmlConfiguration->codeCoverage()->html()->classView();
+        }
+
+        if ($cliConfiguration->hasWithoutFileView()) {
+            $coverageHtmlFileView = !$cliConfiguration->withoutFileView();
+        } elseif ($xmlConfiguration->codeCoverage()->hasHtml()) {
+            $coverageHtmlFileView = $xmlConfiguration->codeCoverage()->html()->fileView();
+        }
+
+        if (!$coverageHtmlClassView && !$coverageHtmlFileView) {
+            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                'The class view and the file view of the code coverage report in HTML format cannot both be disabled, rendering both',
+            );
+
+            $coverageHtmlClassView = true;
+            $coverageHtmlFileView  = true;
         }
 
         if ($cliConfiguration->hasCoverageOpenClover()) {
@@ -1184,6 +1200,7 @@ final readonly class Merger
             $coverageCrap4jThreshold,
             $coverageHtml,
             $coverageHtmlClassView,
+            $coverageHtmlFileView,
             $coverageHtmlLowUpperBound,
             $coverageHtmlHighLowerBound,
             $coverageHtmlColorSuccessLow,

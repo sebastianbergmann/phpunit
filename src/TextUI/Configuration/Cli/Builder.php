@@ -55,6 +55,7 @@ final class Builder
         'coverage-crap4j=',
         'coverage-html=',
         'without-class-view',
+        'without-file-view',
         'coverage-openclover=',
         'coverage-php=',
         'coverage-text==',
@@ -278,6 +279,7 @@ final class Builder
         $coverageCrap4J                    = null;
         $coverageHtml                      = null;
         $withoutClassView                  = null;
+        $withoutFileView                   = null;
         $coverageOpenClover                = null;
         $coveragePhp                       = null;
         $coverageText                      = null;
@@ -477,6 +479,11 @@ final class Builder
 
                 case '--without-class-view':
                     $withoutClassView = true;
+
+                    break;
+
+                case '--without-file-view':
+                    $withoutFileView = true;
 
                     break;
 
@@ -1378,6 +1385,7 @@ final class Builder
             $coverageCrap4J,
             $coverageHtml,
             $withoutClassView,
+            $withoutFileView,
             $coverageOpenClover,
             $coveragePhp,
             $coverageText,

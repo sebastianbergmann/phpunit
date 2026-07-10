@@ -403,6 +403,26 @@ final class BuilderTest extends TestCase
         $configuration->withoutClassView();
     }
 
+    #[TestDox('--without-file-view')]
+    public function testWithoutFileView(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--without-file-view']);
+
+        $this->assertTrue($configuration->hasWithoutFileView());
+        $this->assertTrue($configuration->withoutFileView());
+    }
+
+    public function testWithoutFileViewMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasWithoutFileView());
+
+        $this->expectException(Exception::class);
+
+        $configuration->withoutFileView();
+    }
+
     #[TestDox('--coverage-openclover file')]
     public function testCoverageOpenClover(): void
     {

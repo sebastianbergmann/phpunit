@@ -31,6 +31,7 @@ use SebastianBergmann\CodeCoverage\Filter;
 use SebastianBergmann\CodeCoverage\Report\Facade as ReportFacade;
 use SebastianBergmann\CodeCoverage\Report\Html\Colors;
 use SebastianBergmann\CodeCoverage\Report\Html\CustomCssFile;
+use SebastianBergmann\CodeCoverage\Report\Html\Views;
 use SebastianBergmann\CodeCoverage\Report\Thresholds;
 use SebastianBergmann\CodeCoverage\Serialization\Serializer;
 use SebastianBergmann\CodeCoverage\StaticAnalysis\CacheWarmer;
@@ -398,6 +399,14 @@ final class CodeCoverage
                     $customCssFile = CustomCssFile::from($configuration->coverageHtmlCustomCssFile());
                 }
 
+                if ($configuration->coverageHtmlClassView() && $configuration->coverageHtmlFileView()) {
+                    $views = Views::FileViewAndClassView;
+                } elseif ($configuration->coverageHtmlClassView()) {
+                    $views = Views::OnlyClassView;
+                } else {
+                    $views = Views::OnlyFileView;
+                }
+
                 $facade->renderHtml(
                     $configuration->coverageHtml(),
                     sprintf(
@@ -429,7 +438,7 @@ final class CodeCoverage
                         $configuration->coverageHtmlHighLowerBound(),
                     ),
                     $customCssFile,
-                    $configuration->coverageHtmlClassView(),
+                    $views,
                 );
 
                 $this->codeCoverageGenerationSucceeded($printer);

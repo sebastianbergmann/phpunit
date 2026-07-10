@@ -559,6 +559,7 @@ final readonly class Loader
             $html = new CodeCoverageHtml(
                 $outputDirectory,
                 $this->parseBooleanAttribute($element, 'classView', true),
+                $this->parseBooleanAttribute($element, 'fileView', true),
                 $this->parseNonNegativeIntegerAttribute($element, 'lowUpperBound', max(0, $defaultThresholds->lowUpperBound())),
                 $this->parseNonNegativeIntegerAttribute($element, 'highLowerBound', max(0, $defaultThresholds->highLowerBound())),
                 $this->parseColorAttributeWithDefault($element, 'colorSuccessLow', $defaultColors->successLow()),

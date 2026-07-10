@@ -66,7 +66,7 @@ final class MergerTest extends TestCase
         $this->assertTrue($mergedConfig->branchCoverage());
     }
 
-    public function testClassViewForHtmlCodeCoverageReportIsEnabledByDefault(): void
+    public function testClassViewAndFileViewForHtmlCodeCoverageReportAreEnabledByDefault(): void
     {
         $fromFile = (new Loader)->load(TEST_FILES_PATH . 'configuration_codecoverage.xml');
 
@@ -75,6 +75,7 @@ final class MergerTest extends TestCase
         $mergedConfig = (new Merger)->merge($fromCli, $fromFile);
 
         $this->assertTrue($mergedConfig->coverageHtmlClassView());
+        $this->assertTrue($mergedConfig->coverageHtmlFileView());
     }
 
     public function testClassViewForHtmlCodeCoverageReportCanBeDisabledFromXmlConfiguration(): void
@@ -86,6 +87,7 @@ final class MergerTest extends TestCase
         $mergedConfig = (new Merger)->merge($fromCli, $fromFile);
 
         $this->assertFalse($mergedConfig->coverageHtmlClassView());
+        $this->assertTrue($mergedConfig->coverageHtmlFileView());
     }
 
     public function testClassViewForHtmlCodeCoverageReportCanBeDisabledFromCli(): void
@@ -99,6 +101,33 @@ final class MergerTest extends TestCase
         $mergedConfig = (new Merger)->merge($fromCli, $fromFile);
 
         $this->assertFalse($mergedConfig->coverageHtmlClassView());
+        $this->assertTrue($mergedConfig->coverageHtmlFileView());
+    }
+
+    public function testFileViewForHtmlCodeCoverageReportCanBeDisabledFromXmlConfiguration(): void
+    {
+        $fromFile = (new Loader)->load(TEST_FILES_PATH . 'configuration_codecoverage_html_fileview.xml');
+
+        $fromCli = (new Builder)->fromParameters([]);
+
+        $mergedConfig = (new Merger)->merge($fromCli, $fromFile);
+
+        $this->assertTrue($mergedConfig->coverageHtmlClassView());
+        $this->assertFalse($mergedConfig->coverageHtmlFileView());
+    }
+
+    public function testFileViewForHtmlCodeCoverageReportCanBeDisabledFromCli(): void
+    {
+        $fromFile = (new Loader)->load(TEST_FILES_PATH . 'configuration_codecoverage.xml');
+
+        $fromCli = (new Builder)->fromParameters([
+            '--without-file-view',
+        ]);
+
+        $mergedConfig = (new Merger)->merge($fromCli, $fromFile);
+
+        $this->assertTrue($mergedConfig->coverageHtmlClassView());
+        $this->assertFalse($mergedConfig->coverageHtmlFileView());
     }
 
     public function testCoverageTargetingCanBeDisabledFromCli(): void
