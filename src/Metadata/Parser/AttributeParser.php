@@ -32,6 +32,9 @@ use PHPUnit\Framework\Attributes\BeforeClass;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversClassesThatExtendClass;
 use PHPUnit\Framework\Attributes\CoversClassesThatImplementInterface;
+use PHPUnit\Framework\Attributes\CoversDirectory;
+use PHPUnit\Framework\Attributes\CoversDirectoryRecursively;
+use PHPUnit\Framework\Attributes\CoversFile;
 use PHPUnit\Framework\Attributes\CoversFunction;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\CoversNamespace;
@@ -87,6 +90,9 @@ use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\Attributes\UsesClassesThatExtendClass;
 use PHPUnit\Framework\Attributes\UsesClassesThatImplementInterface;
+use PHPUnit\Framework\Attributes\UsesDirectory;
+use PHPUnit\Framework\Attributes\UsesDirectoryRecursively;
+use PHPUnit\Framework\Attributes\UsesFile;
 use PHPUnit\Framework\Attributes\UsesFunction;
 use PHPUnit\Framework\Attributes\UsesMethod;
 use PHPUnit\Framework\Attributes\UsesNamespace;
@@ -226,6 +232,27 @@ final readonly class AttributeParser implements Parser
                         $attributeInstance->className(),
                         $attributeInstance->methodName(),
                     );
+
+                    break;
+
+                case CoversFile::class:
+                    assert($attributeInstance instanceof CoversFile);
+
+                    $result[] = Metadata::coversFile($attributeInstance->path());
+
+                    break;
+
+                case CoversDirectory::class:
+                    assert($attributeInstance instanceof CoversDirectory);
+
+                    $result[] = Metadata::coversDirectory($attributeInstance->directory());
+
+                    break;
+
+                case CoversDirectoryRecursively::class:
+                    assert($attributeInstance instanceof CoversDirectoryRecursively);
+
+                    $result[] = Metadata::coversDirectoryRecursively($attributeInstance->directory());
 
                     break;
 
@@ -525,6 +552,27 @@ final readonly class AttributeParser implements Parser
                         $attributeInstance->className(),
                         $attributeInstance->methodName(),
                     );
+
+                    break;
+
+                case UsesFile::class:
+                    assert($attributeInstance instanceof UsesFile);
+
+                    $result[] = Metadata::usesFile($attributeInstance->path());
+
+                    break;
+
+                case UsesDirectory::class:
+                    assert($attributeInstance instanceof UsesDirectory);
+
+                    $result[] = Metadata::usesDirectory($attributeInstance->directory());
+
+                    break;
+
+                case UsesDirectoryRecursively::class:
+                    assert($attributeInstance instanceof UsesDirectoryRecursively);
+
+                    $result[] = Metadata::usesDirectoryRecursively($attributeInstance->directory());
 
                     break;
             }

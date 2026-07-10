@@ -31,6 +31,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\AllowMockObjectsWithoutExpectationsOn
 use PHPUnit\TestFixture\Metadata\Attribute\AnotherTest;
 use PHPUnit\TestFixture\Metadata\Attribute\BackupGlobalsTest;
 use PHPUnit\TestFixture\Metadata\Attribute\BackupStaticPropertiesTest;
+use PHPUnit\TestFixture\Metadata\Attribute\CoversFilesystemTest;
 use PHPUnit\TestFixture\Metadata\Attribute\CoversNothingTest;
 use PHPUnit\TestFixture\Metadata\Attribute\CoversTest;
 use PHPUnit\TestFixture\Metadata\Attribute\DataProviderClosureTest;
@@ -69,6 +70,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\RetryTest;
 use PHPUnit\TestFixture\Metadata\Attribute\SmallTest;
 use PHPUnit\TestFixture\Metadata\Attribute\TestDoxTest;
 use PHPUnit\TestFixture\Metadata\Attribute\TestWithTest;
+use PHPUnit\TestFixture\Metadata\Attribute\UsesFilesystemTest;
 use PHPUnit\TestFixture\Metadata\Attribute\UsesTest;
 use PHPUnit\TestFixture\Metadata\Attribute\WithEnvironmentVariableTest;
 use PHPUnit\TestFixture\Metadata\Attribute\WithoutErrorHandlerTest;
@@ -173,6 +175,36 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isCoversMethod());
         $this->assertSame(Example::class, $metadata->asArray()[0]->className());
         $this->assertSame('method', $metadata->asArray()[0]->methodName());
+    }
+
+    #[TestDox('Parses #[CoversFile] attribute on class')]
+    public function test_parses_CoversFile_attribute_on_class(): void
+    {
+        $metadata = $this->parser()->forClass(CoversFilesystemTest::class)->isCoversFile();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isCoversFile());
+        $this->assertSame('source.php', $metadata->asArray()[0]->path());
+    }
+
+    #[TestDox('Parses #[CoversDirectory] attribute on class')]
+    public function test_parses_CoversDirectory_attribute_on_class(): void
+    {
+        $metadata = $this->parser()->forClass(CoversFilesystemTest::class)->isCoversDirectory();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isCoversDirectory());
+        $this->assertSame('source', $metadata->asArray()[0]->directory());
+    }
+
+    #[TestDox('Parses #[CoversDirectoryRecursively] attribute on class')]
+    public function test_parses_CoversDirectoryRecursively_attribute_on_class(): void
+    {
+        $metadata = $this->parser()->forClass(CoversFilesystemTest::class)->isCoversDirectoryRecursively();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isCoversDirectoryRecursively());
+        $this->assertSame('source', $metadata->asArray()[0]->directory());
     }
 
     #[TestDox('Parses #[CoversNothing] attribute on class')]
@@ -546,6 +578,36 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isUsesMethod());
         $this->assertSame(Example::class, $metadata->asArray()[0]->className());
         $this->assertSame('method', $metadata->asArray()[0]->methodName());
+    }
+
+    #[TestDox('Parses #[UsesFile] attribute on class')]
+    public function test_parses_UsesFile_attribute_on_class(): void
+    {
+        $metadata = $this->parser()->forClass(UsesFilesystemTest::class)->isUsesFile();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isUsesFile());
+        $this->assertSame('source.php', $metadata->asArray()[0]->path());
+    }
+
+    #[TestDox('Parses #[UsesDirectory] attribute on class')]
+    public function test_parses_UsesDirectory_attribute_on_class(): void
+    {
+        $metadata = $this->parser()->forClass(UsesFilesystemTest::class)->isUsesDirectory();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isUsesDirectory());
+        $this->assertSame('source', $metadata->asArray()[0]->directory());
+    }
+
+    #[TestDox('Parses #[UsesDirectoryRecursively] attribute on class')]
+    public function test_parses_UsesDirectoryRecursively_attribute_on_class(): void
+    {
+        $metadata = $this->parser()->forClass(UsesFilesystemTest::class)->isUsesDirectoryRecursively();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isUsesDirectoryRecursively());
+        $this->assertSame('source', $metadata->asArray()[0]->directory());
     }
 
     #[TestDox('Parses #[After] attribute on class')]

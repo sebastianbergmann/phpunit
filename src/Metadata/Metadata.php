@@ -129,6 +129,30 @@ abstract readonly class Metadata
         return new CoversFunction(Level::CLASS_LEVEL, $functionName);
     }
 
+    /**
+     * @param non-empty-string $path
+     */
+    public static function coversFile(string $path): CoversFile
+    {
+        return new CoversFile(Level::CLASS_LEVEL, $path);
+    }
+
+    /**
+     * @param non-empty-string $directory
+     */
+    public static function coversDirectory(string $directory): CoversDirectory
+    {
+        return new CoversDirectory(Level::CLASS_LEVEL, $directory);
+    }
+
+    /**
+     * @param non-empty-string $directory
+     */
+    public static function coversDirectoryRecursively(string $directory): CoversDirectoryRecursively
+    {
+        return new CoversDirectoryRecursively(Level::CLASS_LEVEL, $directory);
+    }
+
     public static function coversNothingOnClass(): CoversNothing
     {
         return new CoversNothing(Level::CLASS_LEVEL);
@@ -593,6 +617,30 @@ abstract readonly class Metadata
         return new UsesMethod(Level::CLASS_LEVEL, $className, $methodName);
     }
 
+    /**
+     * @param non-empty-string $path
+     */
+    public static function usesFile(string $path): UsesFile
+    {
+        return new UsesFile(Level::CLASS_LEVEL, $path);
+    }
+
+    /**
+     * @param non-empty-string $directory
+     */
+    public static function usesDirectory(string $directory): UsesDirectory
+    {
+        return new UsesDirectory(Level::CLASS_LEVEL, $directory);
+    }
+
+    /**
+     * @param non-empty-string $directory
+     */
+    public static function usesDirectoryRecursively(string $directory): UsesDirectoryRecursively
+    {
+        return new UsesDirectoryRecursively(Level::CLASS_LEVEL, $directory);
+    }
+
     public static function withoutErrorHandler(): WithoutErrorHandler
     {
         return new WithoutErrorHandler(Level::METHOD_LEVEL);
@@ -729,6 +777,30 @@ abstract readonly class Metadata
      * @phpstan-assert-if-true CoversMethod $this
      */
     public function isCoversMethod(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true CoversFile $this
+     */
+    public function isCoversFile(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true CoversDirectory $this
+     */
+    public function isCoversDirectory(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true CoversDirectoryRecursively $this
+     */
+    public function isCoversDirectoryRecursively(): bool
     {
         return false;
     }
@@ -1067,6 +1139,30 @@ abstract readonly class Metadata
      * @phpstan-assert-if-true UsesMethod $this
      */
     public function isUsesMethod(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true UsesFile $this
+     */
+    public function isUsesFile(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true UsesDirectory $this
+     */
+    public function isUsesDirectory(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true UsesDirectoryRecursively $this
+     */
+    public function isUsesDirectoryRecursively(): bool
     {
         return false;
     }

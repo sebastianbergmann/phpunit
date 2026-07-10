@@ -18,12 +18,17 @@ use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\CoversClassOnClassTest;
 use PHPUnit\TestFixture\CoversNothingOnClassTest;
+use PHPUnit\TestFixture\Metadata\Attribute\CoversFilesystemTest;
 use PHPUnit\TestFixture\Metadata\Attribute\CoversTest;
+use PHPUnit\TestFixture\Metadata\Attribute\UsesFilesystemTest;
 use PHPUnit\TestFixture\Metadata\Attribute\UsesTest;
 use PHPUnit\TestFixture\NoCoverageAttributesTest;
 use SebastianBergmann\CodeCoverage\Test\Target\Class_;
 use SebastianBergmann\CodeCoverage\Test\Target\ClassesThatExtendClass;
 use SebastianBergmann\CodeCoverage\Test\Target\ClassesThatImplementInterface;
+use SebastianBergmann\CodeCoverage\Test\Target\Directory;
+use SebastianBergmann\CodeCoverage\Test\Target\DirectoryRecursively;
+use SebastianBergmann\CodeCoverage\Test\Target\File;
 use SebastianBergmann\CodeCoverage\Test\Target\Function_;
 use SebastianBergmann\CodeCoverage\Test\Target\Method;
 use SebastianBergmann\CodeCoverage\Test\Target\Namespace_;
@@ -125,6 +130,52 @@ final class CodeCoverageTest extends TestCase
         $target = array_shift($targets);
         $this->assertInstanceOf(Function_::class, $target);
         $this->assertSame('f', $target->functionName());
+    }
+
+    #[TestDox('Maps #[CoversFile], #[CoversDirectory], and #[CoversDirectoryRecursively] metadata to phpunit/php-code-coverage TargetCollection')]
+    public function testMapsCoversFilesystemMetadataToCodeCoverageTargetCollection(): void
+    {
+        $targets = (new CodeCoverage)->coversTargets(CoversFilesystemTest::class, 'testOne');
+
+        $this->assertNotFalse($targets);
+        $this->assertCount(3, $targets);
+
+        $targets = $targets->asArray();
+
+        $target = array_shift($targets);
+        $this->assertInstanceOf(File::class, $target);
+        $this->assertSame('source.php', $target->path());
+
+        $target = array_shift($targets);
+        $this->assertInstanceOf(Directory::class, $target);
+        $this->assertSame('source', $target->path());
+
+        $target = array_shift($targets);
+        $this->assertInstanceOf(DirectoryRecursively::class, $target);
+        $this->assertSame('source', $target->path());
+    }
+
+    #[TestDox('Maps #[UsesFile], #[UsesDirectory], and #[UsesDirectoryRecursively] metadata to phpunit/php-code-coverage TargetCollection')]
+    public function testMapsUsesFilesystemMetadataToCodeCoverageTargetCollection(): void
+    {
+        $targets = (new CodeCoverage)->usesTargets(UsesFilesystemTest::class, 'testOne');
+
+        $this->assertNotFalse($targets);
+        $this->assertCount(3, $targets);
+
+        $targets = $targets->asArray();
+
+        $target = array_shift($targets);
+        $this->assertInstanceOf(File::class, $target);
+        $this->assertSame('source.php', $target->path());
+
+        $target = array_shift($targets);
+        $this->assertInstanceOf(Directory::class, $target);
+        $this->assertSame('source', $target->path());
+
+        $target = array_shift($targets);
+        $this->assertInstanceOf(DirectoryRecursively::class, $target);
+        $this->assertSame('source', $target->path());
     }
 
     /**

@@ -243,6 +243,30 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isCoversMethod());
     }
 
+    public function test_Can_be_filtered_for_CoversFile(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isCoversFile();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isCoversFile());
+    }
+
+    public function test_Can_be_filtered_for_CoversDirectory(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isCoversDirectory();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isCoversDirectory());
+    }
+
+    public function test_Can_be_filtered_for_CoversDirectoryRecursively(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isCoversDirectoryRecursively();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isCoversDirectoryRecursively());
+    }
+
     public function test_Can_be_filtered_for_CoversNothing(): void
     {
         $collection = $this->collectionWithOneOfEach()->isCoversNothing();
@@ -572,6 +596,30 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isUsesMethod());
     }
 
+    public function test_Can_be_filtered_for_UsesFile(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isUsesFile();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isUsesFile());
+    }
+
+    public function test_Can_be_filtered_for_UsesDirectory(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isUsesDirectory();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isUsesDirectory());
+    }
+
+    public function test_Can_be_filtered_for_UsesDirectoryRecursively(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isUsesDirectoryRecursively();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isUsesDirectoryRecursively());
+    }
+
     public function test_Can_be_filtered_for_Repeat(): void
     {
         $collection = $this->collectionWithOneOfEach()->isRepeat();
@@ -618,6 +666,9 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::coversTrait(''),
                 Metadata::coversFunction(''),
                 Metadata::coversMethod('', ''),
+                Metadata::coversFile(''),
+                Metadata::coversDirectory(''),
+                Metadata::coversDirectoryRecursively(''),
                 Metadata::coversNothingOnClass(),
                 Metadata::dataProvider('', '', true, false),
                 Metadata::dataProviderClosure($closure, true),
@@ -667,6 +718,9 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::usesTrait(''),
                 Metadata::usesFunction(''),
                 Metadata::usesMethod('', ''),
+                Metadata::usesFile(''),
+                Metadata::usesDirectory(''),
+                Metadata::usesDirectoryRecursively(''),
                 Metadata::repeat(3, 1),
                 Metadata::retry(3),
                 Metadata::withEnvironmentVariableOnClass('foo', 'bar'),

@@ -14,6 +14,9 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\CoversClass;
 use PHPUnit\Metadata\CoversClassesThatExtendClass;
 use PHPUnit\Metadata\CoversClassesThatImplementInterface;
+use PHPUnit\Metadata\CoversDirectory;
+use PHPUnit\Metadata\CoversDirectoryRecursively;
+use PHPUnit\Metadata\CoversFile;
 use PHPUnit\Metadata\CoversFunction;
 use PHPUnit\Metadata\CoversMethod;
 use PHPUnit\Metadata\CoversNamespace;
@@ -23,6 +26,9 @@ use PHPUnit\Metadata\Parser\Registry;
 use PHPUnit\Metadata\UsesClass;
 use PHPUnit\Metadata\UsesClassesThatExtendClass;
 use PHPUnit\Metadata\UsesClassesThatImplementInterface;
+use PHPUnit\Metadata\UsesDirectory;
+use PHPUnit\Metadata\UsesDirectoryRecursively;
+use PHPUnit\Metadata\UsesFile;
 use PHPUnit\Metadata\UsesFunction;
 use PHPUnit\Metadata\UsesMethod;
 use PHPUnit\Metadata\UsesNamespace;
@@ -128,6 +134,24 @@ final class CodeCoverage
 
                 $targets[] = Target::forTrait($metadata->traitName());
             }
+
+            if ($metadata->isCoversFile()) {
+                assert($metadata instanceof CoversFile);
+
+                $targets[] = Target::forFile($metadata->path());
+            }
+
+            if ($metadata->isCoversDirectory()) {
+                assert($metadata instanceof CoversDirectory);
+
+                $targets[] = Target::forDirectory($metadata->directory());
+            }
+
+            if ($metadata->isCoversDirectoryRecursively()) {
+                assert($metadata instanceof CoversDirectoryRecursively);
+
+                $targets[] = Target::forDirectoryRecursively($metadata->directory());
+            }
         }
 
         return TargetCollection::fromArray($targets);
@@ -178,6 +202,24 @@ final class CodeCoverage
                 assert($metadata instanceof UsesTrait);
 
                 $targets[] = Target::forTrait($metadata->traitName());
+            }
+
+            if ($metadata->isUsesFile()) {
+                assert($metadata instanceof UsesFile);
+
+                $targets[] = Target::forFile($metadata->path());
+            }
+
+            if ($metadata->isUsesDirectory()) {
+                assert($metadata instanceof UsesDirectory);
+
+                $targets[] = Target::forDirectory($metadata->directory());
+            }
+
+            if ($metadata->isUsesDirectoryRecursively()) {
+                assert($metadata instanceof UsesDirectoryRecursively);
+
+                $targets[] = Target::forDirectoryRecursively($metadata->directory());
             }
         }
 
