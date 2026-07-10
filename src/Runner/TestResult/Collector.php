@@ -216,6 +216,16 @@ final class Collector
     private array $phpWarnings = [];
 
     /**
+     * @var array{self: array<non-empty-string, true>, direct: array<non-empty-string, true>, indirect: array<non-empty-string, true>, unknown: array<non-empty-string, true>}
+     */
+    private array $deprecationIdsByTrigger = [
+        'self'     => [],
+        'direct'   => [],
+        'indirect' => [],
+        'unknown'  => [],
+    ];
+
+    /**
      * @var array<non-empty-string, positive-int>
      */
     private array $retriedTests = [];
@@ -301,6 +311,12 @@ final class Collector
             array_values($this->phpNotices),
             array_values($this->phpWarnings),
             $this->numberOfIssuesIgnoredByBaseline,
+            [
+                'self'     => count($this->deprecationIdsByTrigger['self']),
+                'direct'   => count($this->deprecationIdsByTrigger['direct']),
+                'indirect' => count($this->deprecationIdsByTrigger['indirect']),
+                'unknown'  => count($this->deprecationIdsByTrigger['unknown']),
+            ],
             $this->retriedTests,
         );
     }
@@ -483,6 +499,8 @@ final class Collector
             return;
         }
 
+        $this->registerDeprecationByTrigger($event);
+
         $id = $this->issueId($event);
 
         if (!isset($this->deprecations[$id])) {
@@ -511,6 +529,8 @@ final class Collector
 
             return;
         }
+
+        $this->registerDeprecationByTrigger($event);
 
         $id = $this->issueId($event);
 
@@ -723,6 +743,8 @@ final class Collector
             return;
         }
 
+        $this->registerDeprecationByTrigger($event);
+
         $this->testRunnerTriggeredIssueDeprecationEvents[] = $event;
     }
 
@@ -741,6 +763,8 @@ final class Collector
         if ($event->ignoredByFilter()) {
             return;
         }
+
+        $this->registerDeprecationByTrigger($event);
 
         $this->testRunnerTriggeredIssuePhpDeprecationEvents[] = $event;
     }
@@ -896,5 +920,32 @@ final class Collector
     private function issueId(DeprecationTriggered|ErrorTriggered|NoticeTriggered|PhpDeprecationTriggered|PhpNoticeTriggered|PhpWarningTriggered|WarningTriggered $event): string
     {
         return implode(':', [$event->file(), $event->line(), $event->message()]);
+    }
+
+    private function registerDeprecationByTrigger(DeprecationTriggered|PhpDeprecationTriggered|TestRunnerIssueDeprecationTriggered|TestRunnerIssuePhpDeprecationTriggered $event): void
+    {
+        $id = implode(':', [$event->file(), $event->line(), $event->message()]);
+
+        assert($id !== '');
+
+        if ($event->trigger()->isSelf()) {
+            $this->deprecationIdsByTrigger['self'][$id] = true;
+
+            return;
+        }
+
+        if ($event->trigger()->isDirect()) {
+            $this->deprecationIdsByTrigger['direct'][$id] = true;
+
+            return;
+        }
+
+        if ($event->trigger()->isIndirect()) {
+            $this->deprecationIdsByTrigger['indirect'][$id] = true;
+
+            return;
+        }
+
+        $this->deprecationIdsByTrigger['unknown'][$id] = true;
     }
 }

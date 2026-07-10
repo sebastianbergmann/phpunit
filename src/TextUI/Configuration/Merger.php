@@ -151,6 +151,24 @@ final readonly class Merger
             $failOnDeprecation = $xmlConfiguration->phpunit()->failOnDeprecation();
         }
 
+        if ($cliConfiguration->hasFailOnSelfDeprecation()) {
+            $failOnSelfDeprecation = $cliConfiguration->failOnSelfDeprecation();
+        } else {
+            $failOnSelfDeprecation = $xmlConfiguration->phpunit()->failOnSelfDeprecation();
+        }
+
+        if ($cliConfiguration->hasFailOnDirectDeprecation()) {
+            $failOnDirectDeprecation = $cliConfiguration->failOnDirectDeprecation();
+        } else {
+            $failOnDirectDeprecation = $xmlConfiguration->phpunit()->failOnDirectDeprecation();
+        }
+
+        if ($cliConfiguration->hasFailOnIndirectDeprecation()) {
+            $failOnIndirectDeprecation = $cliConfiguration->failOnIndirectDeprecation();
+        } else {
+            $failOnIndirectDeprecation = $xmlConfiguration->phpunit()->failOnIndirectDeprecation();
+        }
+
         if ($cliConfiguration->hasFailOnPhpunitDeprecation()) {
             $failOnPhpunitDeprecation = $cliConfiguration->failOnPhpunitDeprecation();
         } else {
@@ -211,6 +229,24 @@ final readonly class Merger
 
         if ($cliConfiguration->hasDoNotFailOnDeprecation()) {
             $doNotFailOnDeprecation = $cliConfiguration->doNotFailOnDeprecation();
+        }
+
+        $doNotFailOnSelfDeprecation = false;
+
+        if ($cliConfiguration->hasDoNotFailOnSelfDeprecation()) {
+            $doNotFailOnSelfDeprecation = $cliConfiguration->doNotFailOnSelfDeprecation();
+        }
+
+        $doNotFailOnDirectDeprecation = false;
+
+        if ($cliConfiguration->hasDoNotFailOnDirectDeprecation()) {
+            $doNotFailOnDirectDeprecation = $cliConfiguration->doNotFailOnDirectDeprecation();
+        }
+
+        $doNotFailOnIndirectDeprecation = false;
+
+        if ($cliConfiguration->hasDoNotFailOnIndirectDeprecation()) {
+            $doNotFailOnIndirectDeprecation = $cliConfiguration->doNotFailOnIndirectDeprecation();
         }
 
         $doNotFailOnPhpunitDeprecation = false;
@@ -1056,6 +1092,18 @@ final readonly class Merger
             $displayDetailsOnTestsThatTriggerDeprecations = true;
         }
 
+        if ($failOnSelfDeprecation && !$doNotFailOnSelfDeprecation) {
+            $displayDetailsOnTestsThatTriggerDeprecations = true;
+        }
+
+        if ($failOnDirectDeprecation && !$doNotFailOnDirectDeprecation) {
+            $displayDetailsOnTestsThatTriggerDeprecations = true;
+        }
+
+        if ($failOnIndirectDeprecation && !$doNotFailOnIndirectDeprecation) {
+            $displayDetailsOnTestsThatTriggerDeprecations = true;
+        }
+
         if ($failOnPhpunitDeprecation && !$doNotFailOnPhpunitDeprecation) {
             $displayDetailsOnPhpunitDeprecations = true;
         }
@@ -1237,6 +1285,9 @@ final readonly class Merger
             $disableCoverageTargeting,
             $failOnAllIssues,
             $failOnDeprecation,
+            $failOnSelfDeprecation,
+            $failOnDirectDeprecation,
+            $failOnIndirectDeprecation,
             $failOnPhpunitDeprecation,
             $failOnPhpunitNotice,
             $failOnPhpunitWarning,
@@ -1247,6 +1298,9 @@ final readonly class Merger
             $failOnSkipped,
             $failOnWarning,
             $doNotFailOnDeprecation,
+            $doNotFailOnSelfDeprecation,
+            $doNotFailOnDirectDeprecation,
+            $doNotFailOnIndirectDeprecation,
             $doNotFailOnPhpunitDeprecation,
             $doNotFailOnPhpunitNotice,
             $doNotFailOnPhpunitWarning,

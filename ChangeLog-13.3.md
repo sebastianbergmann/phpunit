@@ -13,6 +13,7 @@ All notable changes of the PHPUnit 13.3 release series are documented in this fi
 * [#6710](https://github.com/sebastianbergmann/phpunit/pull/6710): Deprecation Filters
 * [#6722](https://github.com/sebastianbergmann/phpunit/issues/6722): Allow `#[CoversNothing]` on methods
 * [#6742](https://github.com/sebastianbergmann/phpunit/pull/6742): Retry failing tests up to N times using `--retry` CLI option `#[Retry]` attribute
+* [#6827](https://github.com/sebastianbergmann/phpunit/pull/6827): Customize which deprecation trigger types fail the test run
 * `--without-class-view` CLI option and `classView` attribute for the XML configuration file to disable the [class-oriented view](https://github.com/sebastianbergmann/php-code-coverage/pull/1140) in the HTML code coverage report
 * `--without-file-view` CLI option and `fileView` attribute for the XML configuration file to disable the file-oriented view in the HTML code coverage report
 

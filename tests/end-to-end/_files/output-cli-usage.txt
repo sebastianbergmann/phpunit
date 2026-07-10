@@ -71,6 +71,9 @@ Execution:
   --fail-on-warning                    Signal failure using shell exit code when a warning was triggered
   --fail-on-risky                      Signal failure using shell exit code when a test was considered risky
   --fail-on-deprecation                Signal failure using shell exit code when a deprecation was triggered
+  --fail-on-self-deprecation           Signal failure using shell exit code when a deprecation was triggered in first-party code
+  --fail-on-direct-deprecation         Signal failure using shell exit code when a deprecation was triggered in third-party code called from first-party code
+  --fail-on-indirect-deprecation       Signal failure using shell exit code when a deprecation was triggered in third-party code called from third-party code
   --fail-on-phpunit-deprecation        Signal failure using shell exit code when a PHPUnit deprecation was triggered
   --fail-on-phpunit-notice             Signal failure using shell exit code when a PHPUnit notice was triggered
   --fail-on-phpunit-warning            Signal failure using shell exit code when a PHPUnit warning was triggered
@@ -83,6 +86,10 @@ Execution:
   --do-not-fail-on-warning             Do not signal failure using shell exit code when a warning was triggered
   --do-not-fail-on-risky               Do not signal failure using shell exit code when a test was considered risky
   --do-not-fail-on-deprecation         Do not signal failure using shell exit code when a deprecation was triggered
+  --do-not-fail-on-self-deprecation    Do not signal failure using shell exit code when a deprecation was triggered in first-party code
+  --do-not-fail-on-direct-deprecation  Do not signal failure using shell exit code when a deprecation was triggered in third-party code called from first-party code
+  --do-not-fail-on-indirect-deprecation
+                                       Do not signal failure using shell exit code when a deprecation was triggered in third-party code called from third-party code
   --do-not-fail-on-phpunit-deprecation Do not signal failure using shell exit code when a PHPUnit deprecation was triggered
   --do-not-fail-on-phpunit-notice      Do not signal failure using shell exit code when a PHPUnit notice was triggered
   --do-not-fail-on-phpunit-warning     Do not signal failure using shell exit code when a PHPUnit warning was triggered
