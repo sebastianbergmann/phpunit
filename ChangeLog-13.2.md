@@ -4,6 +4,11 @@ All notable changes of the PHPUnit 13.2 release series are documented in this fi
 
 ## [13.2.5] - 2026-MM-DD
 
+### Changed
+
+* Messages for tests that are skipped because of an unsatisfied `RequiresPhp`, `RequiresPhpunit`, or `RequiresPhpExtension` version requirement now include the version that is actually being used
+* Warning messages about incomplete version requirements as well as version requirements without a version comparison operator, and the error message for invalid version requirements, now include the full version requirement and explain what is expected
+
 ### Fixed
 
 * [#6825](https://github.com/sebastianbergmann/phpunit/pull/6825): Forwarding to previous error handler can result in infinite recursion

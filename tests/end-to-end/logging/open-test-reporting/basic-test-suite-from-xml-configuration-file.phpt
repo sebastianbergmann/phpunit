@@ -281,7 +281,7 @@ Failed asserting that false is true.
  </e:started>
  <e:finished id="14" time="%s">
   <result status="SKIPPED">
-   <reason>PHP &gt; 9000 is required.</reason>
+   <reason>PHP &gt; 9000 is required, but PHP %s is being used.</reason>
   </result>
  </e:finished>
  <e:started id="15" parentId="3" name="testSkippedWithMessage" time="%s">

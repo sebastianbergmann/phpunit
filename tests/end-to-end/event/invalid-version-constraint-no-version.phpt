@@ -12,7 +12,7 @@ require __DIR__ . '/../../bootstrap.php';
 --EXPECTF--
 An error occurred inside PHPUnit.
 
-Message:  Test method PHPUnit\TestFixture\Event\InvalidVersionConstraintNoVersionTest::testOne has attribute with invalid version constraint argument ("invalid-version")
+Message:  Attribute RequiresPhp for test method PHPUnit\TestFixture\Event\InvalidVersionConstraintNoVersionTest::testOne has invalid version requirement "invalid-version": expected a version constraint (such as "^8.1", "~8.1.0", or "8.1.*") or a version comparison (such as ">= 8.1.0")
 Location: %s%eAttributeParser.php:%d
 
 %a

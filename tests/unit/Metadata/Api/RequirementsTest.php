@@ -9,11 +9,15 @@
  */
 namespace PHPUnit\Metadata\Api;
 
+use const PHP_VERSION;
+use function phpversion;
+use function sprintf;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Runner\Version;
 use PHPUnit\TestFixture\RequirementsEnvironmentVariableTest;
 
 #[CoversClass(Requirements::class)]
@@ -33,100 +37,106 @@ final class RequirementsTest extends TestCase
                 'Function testFunc() is required.',
             ]],
             ['testTen',            [
-                'PHP extension testExt is required.',
+                'PHP extension testExt is required, but it is not loaded.',
             ]],
             ['testAlwaysSkip',     [
-                'PHPUnit >= 1111111.0.0 is required.',
+                self::phpunitIsRequired('>= 1111111.0.0'),
             ]],
             ['testAlwaysSkip2',    [
-                'PHP >= 9999999.0.0 is required.',
+                self::phpIsRequired('>= 9999999.0.0'),
             ]],
             ['testAlwaysSkip3',    [
                 'Operating system DOESNOTEXIST is required.',
             ]],
             ['testAllPossibleRequirements', [
-                'PHP 99.0.0-dev is required.',
-                'PHPUnit 99.0.0-dev is required.',
+                self::phpIsRequired('99.0.0-dev'),
+                self::phpunitIsRequired('99.0.0-dev'),
                 'Operating system DOESNOTEXIST is required.',
                 'Operating system DOESNOTEXIST is required.',
                 'Function testFuncOne() is required.',
                 'Function testFunc2() is required.',
                 'Method DoesNotExist::doesNotExist() is required.',
-                'PHP extension testExtOne is required.',
-                'PHP extension testExt2 is required.',
-                'PHP extension testExtThree >= 2.0.0 is required.',
+                'PHP extension testExtOne is required, but it is not loaded.',
+                'PHP extension testExt2 is required, but it is not loaded.',
+                'PHP extension testExtThree >= 2.0.0 is required, but it is not loaded.',
                 'Setting "not_a_setting" is required to be "Off".',
             ]],
             ['testPHPVersionOperatorLessThan', [
-                'PHP < 5.4.0 is required.',
+                self::phpIsRequired('< 5.4.0'),
             ]],
             ['testPHPVersionOperatorLessThanEquals', [
-                'PHP <= 5.4.0 is required.',
+                self::phpIsRequired('<= 5.4.0'),
             ]],
             ['testPHPVersionOperatorGreaterThan', [
-                'PHP > 99.0.0 is required.',
+                self::phpIsRequired('> 99.0.0'),
             ]],
             ['testPHPVersionOperatorGreaterThanEquals', [
-                'PHP >= 99.0.0 is required.',
+                self::phpIsRequired('>= 99.0.0'),
             ]],
             ['testPHPVersionOperatorNoSpace', [
-                'PHP >= 99.0.0 is required.',
+                self::phpIsRequired('>= 99.0.0'),
             ]],
             ['testPHPVersionOperatorEquals', [
-                'PHP = 5.4.0 is required.',
+                self::phpIsRequired('= 5.4.0'),
             ]],
             ['testPHPVersionOperatorDoubleEquals', [
-                'PHP == 5.4.0 is required.',
+                self::phpIsRequired('== 5.4.0'),
             ]],
             ['testPHPUnitVersionOperatorLessThan', [
-                'PHPUnit < 1.0.0 is required.',
+                self::phpunitIsRequired('< 1.0.0'),
             ]],
             ['testPHPUnitVersionOperatorLessThanEquals', [
-                'PHPUnit <= 1.0.0 is required.',
+                self::phpunitIsRequired('<= 1.0.0'),
             ]],
             ['testPHPUnitVersionOperatorGreaterThan', [
-                'PHPUnit > 99.0.0 is required.',
+                self::phpunitIsRequired('> 99.0.0'),
             ]],
             ['testPHPUnitVersionOperatorGreaterThanEquals', [
-                'PHPUnit >= 99.0.0 is required.',
+                self::phpunitIsRequired('>= 99.0.0'),
             ]],
             ['testPHPUnitVersionOperatorEquals', [
-                'PHPUnit = 1.0.0 is required.',
+                self::phpunitIsRequired('= 1.0.0'),
             ]],
             ['testPHPUnitVersionOperatorDoubleEquals', [
-                'PHPUnit == 1.0.0 is required.',
+                self::phpunitIsRequired('== 1.0.0'),
             ]],
             ['testPHPUnitVersionOperatorNoSpace', [
-                'PHPUnit >= 99.0.0 is required.',
+                self::phpunitIsRequired('>= 99.0.0'),
             ]],
             ['testExtensionVersionOperatorLessThan', [
-                'PHP extension testExtOne < 1.0.0 is required.',
+                'PHP extension testExtOne < 1.0.0 is required, but it is not loaded.',
             ]],
             ['testExtensionVersionOperatorLessThanEquals', [
-                'PHP extension testExtOne <= 1.0.0 is required.',
+                'PHP extension testExtOne <= 1.0.0 is required, but it is not loaded.',
             ]],
             ['testExtensionVersionOperatorGreaterThan', [
-                'PHP extension testExtOne > 99.0.0 is required.',
+                'PHP extension testExtOne > 99.0.0 is required, but it is not loaded.',
             ]],
             ['testExtensionVersionOperatorGreaterThanEquals', [
-                'PHP extension testExtOne >= 99.0.0 is required.',
+                'PHP extension testExtOne >= 99.0.0 is required, but it is not loaded.',
             ]],
             ['testExtensionVersionOperatorEquals', [
-                'PHP extension testExtOne = 1.0.0 is required.',
+                'PHP extension testExtOne = 1.0.0 is required, but it is not loaded.',
             ]],
             ['testExtensionVersionOperatorDoubleEquals', [
-                'PHP extension testExtOne == 1.0.0 is required.',
+                'PHP extension testExtOne == 1.0.0 is required, but it is not loaded.',
             ]],
             ['testExtensionVersionOperatorNoSpace', [
-                'PHP extension testExtOne >= 99.0.0 is required.',
+                'PHP extension testExtOne >= 99.0.0 is required, but it is not loaded.',
+            ]],
+            ['testLoadedExtensionVersionRequirementNotSatisfied', [
+                sprintf(
+                    'PHP extension spl >= 9999999.0.0 is required, but version %s is loaded.',
+                    phpversion('spl'),
+                ),
             ]],
             ['testVersionConstraintTildeMajor', [
-                'PHP ~1.0 is required.',
-                'PHPUnit ~2.0 is required.',
+                self::phpIsRequired('~1.0'),
+                self::phpunitIsRequired('~2.0'),
             ]],
             ['testVersionConstraintCaretMajor', [
-                'PHP ^1.0 is required.',
-                'PHPUnit ^2.0 is required.',
+                self::phpIsRequired('^1.0'),
+                self::phpunitIsRequired('^2.0'),
             ]],
             ['testPHPUnitExtensionRequired', [
                 'PHPUnit extension "PHPUnit\TestFixture\SomeExtension" is required.',
@@ -161,6 +171,24 @@ final class RequirementsTest extends TestCase
                 'Environment variable "BAZ" is required.',
             ],
             (new Requirements)->requirementsNotSatisfiedFor(RequirementsEnvironmentVariableTest::class, 'testRequiresEnvironmentVariable'),
+        );
+    }
+
+    private static function phpIsRequired(string $versionRequirement): string
+    {
+        return sprintf(
+            'PHP %s is required, but PHP %s is being used.',
+            $versionRequirement,
+            PHP_VERSION,
+        );
+    }
+
+    private static function phpunitIsRequired(string $versionRequirement): string
+    {
+        return sprintf(
+            'PHPUnit %s is required, but PHPUnit %s is being used.',
+            $versionRequirement,
+            Version::id(),
         );
     }
 }

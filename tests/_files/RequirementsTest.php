@@ -153,6 +153,11 @@ final class RequirementsTest extends TestCase
     {
     }
 
+    #[RequiresPhpExtension('spl', '>= 9999999.0.0')]
+    public function testLoadedExtensionVersionRequirementNotSatisfied(): void
+    {
+    }
+
     #[TestDox('PHP version operator less than')]
     #[RequiresPhp('< 5.4.0')]
     public function testPHPVersionOperatorLessThan(): void
