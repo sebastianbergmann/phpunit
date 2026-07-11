@@ -303,6 +303,60 @@ final readonly class Merger
             $doNotFailOnWarning = $cliConfiguration->doNotFailOnWarning();
         }
 
+        if ($failOnAllIssues) {
+            if ($xmlConfiguration->phpunit()->hasFailOnDeprecation() && !$xmlConfiguration->phpunit()->failOnDeprecation()) {
+                $this->warnAboutFailOnSettingThatHasNoEffect('failOnDeprecation', '--do-not-fail-on-deprecation');
+            }
+
+            if ($xmlConfiguration->phpunit()->hasFailOnSelfDeprecation() && !$xmlConfiguration->phpunit()->failOnSelfDeprecation()) {
+                $this->warnAboutFailOnSettingThatHasNoEffect('failOnSelfDeprecation', '--do-not-fail-on-self-deprecation');
+            }
+
+            if ($xmlConfiguration->phpunit()->hasFailOnDirectDeprecation() && !$xmlConfiguration->phpunit()->failOnDirectDeprecation()) {
+                $this->warnAboutFailOnSettingThatHasNoEffect('failOnDirectDeprecation', '--do-not-fail-on-direct-deprecation');
+            }
+
+            if ($xmlConfiguration->phpunit()->hasFailOnIndirectDeprecation() && !$xmlConfiguration->phpunit()->failOnIndirectDeprecation()) {
+                $this->warnAboutFailOnSettingThatHasNoEffect('failOnIndirectDeprecation', '--do-not-fail-on-indirect-deprecation');
+            }
+
+            if ($xmlConfiguration->phpunit()->hasFailOnPhpunitDeprecation() && !$xmlConfiguration->phpunit()->failOnPhpunitDeprecation()) {
+                $this->warnAboutFailOnSettingThatHasNoEffect('failOnPhpunitDeprecation', '--do-not-fail-on-phpunit-deprecation');
+            }
+
+            if ($xmlConfiguration->phpunit()->hasFailOnPhpunitNotice() && !$xmlConfiguration->phpunit()->failOnPhpunitNotice()) {
+                $this->warnAboutFailOnSettingThatHasNoEffect('failOnPhpunitNotice', '--do-not-fail-on-phpunit-notice');
+            }
+
+            if ($xmlConfiguration->phpunit()->hasFailOnPhpunitWarning() && !$xmlConfiguration->phpunit()->failOnPhpunitWarning()) {
+                $this->warnAboutFailOnSettingThatHasNoEffect('failOnPhpunitWarning', '--do-not-fail-on-phpunit-warning');
+            }
+
+            if ($xmlConfiguration->phpunit()->hasFailOnEmptyTestSuite() && !$xmlConfiguration->phpunit()->failOnEmptyTestSuite()) {
+                $this->warnAboutFailOnSettingThatHasNoEffect('failOnEmptyTestSuite', '--do-not-fail-on-empty-test-suite');
+            }
+
+            if ($xmlConfiguration->phpunit()->hasFailOnIncomplete() && !$xmlConfiguration->phpunit()->failOnIncomplete()) {
+                $this->warnAboutFailOnSettingThatHasNoEffect('failOnIncomplete', '--do-not-fail-on-incomplete');
+            }
+
+            if ($xmlConfiguration->phpunit()->hasFailOnNotice() && !$xmlConfiguration->phpunit()->failOnNotice()) {
+                $this->warnAboutFailOnSettingThatHasNoEffect('failOnNotice', '--do-not-fail-on-notice');
+            }
+
+            if ($xmlConfiguration->phpunit()->hasFailOnRisky() && !$xmlConfiguration->phpunit()->failOnRisky()) {
+                $this->warnAboutFailOnSettingThatHasNoEffect('failOnRisky', '--do-not-fail-on-risky');
+            }
+
+            if ($xmlConfiguration->phpunit()->hasFailOnSkipped() && !$xmlConfiguration->phpunit()->failOnSkipped()) {
+                $this->warnAboutFailOnSettingThatHasNoEffect('failOnSkipped', '--do-not-fail-on-skipped');
+            }
+
+            if ($xmlConfiguration->phpunit()->hasFailOnWarning() && !$xmlConfiguration->phpunit()->failOnWarning()) {
+                $this->warnAboutFailOnSettingThatHasNoEffect('failOnWarning', '--do-not-fail-on-warning');
+            }
+        }
+
         if ($cliConfiguration->hasStopOnDefect()) {
             $stopOnDefect = $cliConfiguration->stopOnDefect();
         } else {
@@ -1489,5 +1543,20 @@ final readonly class Merger
         }
 
         return false;
+    }
+
+    /**
+     * @param non-empty-string $attribute
+     * @param non-empty-string $cliOption
+     */
+    private function warnAboutFailOnSettingThatHasNoEffect(string $attribute, string $cliOption): void
+    {
+        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+            sprintf(
+                '%s="false" has no effect because failOnAllIssues is enabled. Use the %s CLI option instead',
+                $attribute,
+                $cliOption,
+            ),
+        );
     }
 }

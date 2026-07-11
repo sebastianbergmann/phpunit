@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="../../../../phpunit.xsd"
+         failOnAllIssues="true"
+         failOnDeprecation="false"
+         failOnSelfDeprecation="false"
+         failOnDirectDeprecation="false"
+         failOnIndirectDeprecation="false"
+         failOnPhpunitDeprecation="false"
+         failOnPhpunitNotice="false"
+         failOnPhpunitWarning="false"
+         failOnEmptyTestSuite="false"
+         failOnIncomplete="false"
+         failOnNotice="false"
+         failOnRisky="false"
+         failOnSkipped="false"
+         failOnWarning="false"
+>
+    <testsuites>
+        <testsuite name="default">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <source>
+        <include>
+            <directory>src</directory>
+        </include>
+    </source>
+</phpunit>
