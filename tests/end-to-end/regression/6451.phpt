@@ -19,11 +19,11 @@ Time: %s, Memory: %s
 
 There were 3 PHPUnit test runner warnings:
 
-1) Incomplete version requirement "8" used by PHPUnit\TestFixture\Issue6451\Issue6451Test::testIncompletePhpVersion()
+1) Version requirement ">= 8" used by PHPUnit\TestFixture\Issue6451\Issue6451Test::testIncompletePhpVersion() is incomplete, expected a version that consists of major, minor, and patch level ("8.5.0" instead of "8.5", for example)
 
-2) Incomplete version requirement "10" used by PHPUnit\TestFixture\Issue6451\Issue6451Test::testIncompletePhpunitVersion()
+2) Version requirement ">= 10" used by PHPUnit\TestFixture\Issue6451\Issue6451Test::testIncompletePhpunitVersion() is incomplete, expected a version that consists of major, minor, and patch level ("8.5.0" instead of "8.5", for example)
 
-3) Incomplete version requirement "1" used by PHPUnit\TestFixture\Issue6451\Issue6451Test::testIncompletePhpExtensionVersion()
+3) Version requirement ">= 1" used by PHPUnit\TestFixture\Issue6451\Issue6451Test::testIncompletePhpExtensionVersion() is incomplete, expected a version that consists of major, minor, and patch level ("8.5.0" instead of "8.5", for example)
 
 OK, but there were issues!
 Tests: 4, Assertions: 4, PHPUnit Warnings: 6.

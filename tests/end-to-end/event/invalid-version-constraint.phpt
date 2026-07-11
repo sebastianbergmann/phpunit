@@ -14,7 +14,7 @@ require __DIR__ . '/../../bootstrap.php';
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
 Event Facade Sealed
-Test Runner Triggered PHPUnit Warning (Test method PHPUnit\TestFixture\Event\InvalidVersionConstraintTest::testOne has attribute with version constraint string argument without explicit version comparison operator ("100"), version constraint is ignored)
+Test Runner Triggered PHPUnit Warning (Attribute RequiresPhp for test method PHPUnit\TestFixture\Event\InvalidVersionConstraintTest::testOne has version requirement "100" without a version comparison operator, the version requirement is ignored (use a version comparison such as ">= 8.1.0" or a version constraint such as "^8.1"))
 Test Suite Loaded (1 test)
 Test Runner Started
 Test Suite Sorted

@@ -401,6 +401,7 @@ final readonly class AttributeParser implements Parser
                     assert($attributeInstance instanceof RequiresPhp);
 
                     $requirement = $this->requirement(
+                        'RequiresPhp',
                         $attributeInstance->versionRequirement(),
                         $className,
                     );
@@ -419,6 +420,7 @@ final readonly class AttributeParser implements Parser
 
                     if ($versionRequirement !== null) {
                         $versionConstraint = $this->requirement(
+                            'RequiresPhpExtension',
                             $versionRequirement,
                             $className,
                         );
@@ -435,6 +437,7 @@ final readonly class AttributeParser implements Parser
                     assert($attributeInstance instanceof RequiresPhpunit);
 
                     $requirement = $this->requirement(
+                        'RequiresPhpunit',
                         $attributeInstance->versionRequirement(),
                         $className,
                     );
@@ -868,6 +871,7 @@ final readonly class AttributeParser implements Parser
                     assert($attributeInstance instanceof RequiresPhp);
 
                     $requirement = $this->requirement(
+                        'RequiresPhp',
                         $attributeInstance->versionRequirement(),
                         $className,
                         $methodName,
@@ -887,6 +891,7 @@ final readonly class AttributeParser implements Parser
 
                     if ($versionRequirement !== null) {
                         $versionConstraint = $this->requirement(
+                            'RequiresPhpExtension',
                             $versionRequirement,
                             $className,
                             $methodName,
@@ -904,6 +909,7 @@ final readonly class AttributeParser implements Parser
                     assert($attributeInstance instanceof RequiresPhpunit);
 
                     $requirement = $this->requirement(
+                        'RequiresPhpunit',
                         $attributeInstance->versionRequirement(),
                         $className,
                         $methodName,
@@ -1122,16 +1128,18 @@ final readonly class AttributeParser implements Parser
     }
 
     /**
+     * @param non-empty-string  $attributeName
      * @param non-empty-string  $versionRequirement
      * @param class-string      $testClassName
      * @param ?non-empty-string $testMethodName
      */
-    private function requirement(string $versionRequirement, string $testClassName, ?string $testMethodName = null): ?Requirement
+    private function requirement(string $attributeName, string $versionRequirement, string $testClassName, ?string $testMethodName = null): ?Requirement
     {
         if (is_numeric(trim($versionRequirement))) {
             EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
                 sprintf(
-                    'Test %s has attribute with version constraint string argument without explicit version comparison operator ("%s"), version constraint is ignored',
+                    'Attribute %s for test %s has version requirement "%s" without a version comparison operator, the version requirement is ignored (use a version comparison such as ">= 8.1.0" or a version constraint such as "^8.1")',
+                    $attributeName,
                     $this->testAsString($testClassName, $testMethodName),
                     $versionRequirement,
                 ),
@@ -1145,7 +1153,8 @@ final readonly class AttributeParser implements Parser
         } catch (InvalidVersionRequirementException) {
             return new InvalidVersionRequirement(
                 sprintf(
-                    'Test %s has attribute with invalid version constraint argument ("%s")',
+                    'Attribute %s for test %s has invalid version requirement "%s": expected a version constraint (such as "^8.1", "~8.1.0", or "8.1.*") or a version comparison (such as ">= 8.1.0")',
+                    $attributeName,
                     $this->testAsString($testClassName, $testMethodName),
                     $versionRequirement,
                 ),

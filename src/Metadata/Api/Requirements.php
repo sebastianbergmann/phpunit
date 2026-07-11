@@ -70,8 +70,9 @@ final readonly class Requirements
 
                 if (!$versionRequirement->isSatisfiedBy(PHP_VERSION)) {
                     $notSatisfied[] = sprintf(
-                        'PHP %s is required.',
+                        'PHP %s is required, but PHP %s is being used.',
                         $versionRequirement->asString(),
+                        PHP_VERSION,
                     );
                 }
             }
@@ -89,13 +90,19 @@ final readonly class Requirements
                     $this->warnAboutIncompleteVersion($metadata->versionRequirement(), $className, $methodName);
                 }
 
-                if (!extension_loaded($metadata->extension()) ||
-                    ($metadata->hasVersionRequirement() &&
-                    !$metadata->versionRequirement()->isSatisfiedBy($extensionVersion))) {
+                if (!extension_loaded($metadata->extension())) {
                     $notSatisfied[] = sprintf(
-                        'PHP extension %s%s is required.',
+                        'PHP extension %s%s is required, but it is not loaded.',
                         $metadata->extension(),
                         $metadata->hasVersionRequirement() ? (' ' . $metadata->versionRequirement()->asString()) : '',
+                    );
+                } elseif ($metadata->hasVersionRequirement() &&
+                    !$metadata->versionRequirement()->isSatisfiedBy($extensionVersion)) {
+                    $notSatisfied[] = sprintf(
+                        'PHP extension %s %s is required, but version %s is loaded.',
+                        $metadata->extension(),
+                        $metadata->versionRequirement()->asString(),
+                        $extensionVersion,
                     );
                 }
             }
@@ -109,8 +116,9 @@ final readonly class Requirements
 
                 if (!$versionRequirement->isSatisfiedBy(Version::id())) {
                     $notSatisfied[] = sprintf(
-                        'PHPUnit %s is required.',
+                        'PHPUnit %s is required, but PHPUnit %s is being used.',
                         $versionRequirement->asString(),
+                        Version::id(),
                     );
                 }
             }
@@ -285,8 +293,8 @@ final readonly class Requirements
 
         Facade::emitter()->testRunnerTriggeredPhpunitWarning(
             sprintf(
-                'Incomplete version requirement "%s" used by %s::%s()',
-                $versionRequirement->version(),
+                'Version requirement "%s" used by %s::%s() is incomplete, expected a version that consists of major, minor, and patch level ("8.5.0" instead of "8.5", for example)',
+                $versionRequirement->asString(),
                 $className,
                 $methodName,
             ),
