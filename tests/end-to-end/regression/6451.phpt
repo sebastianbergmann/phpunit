@@ -13,7 +13,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 
-...S..                                                              6 / 6 (100%)
+......                                                              6 / 6 (100%)
 
 Time: %s, Memory: %s
 
@@ -26,4 +26,4 @@ There were 3 PHPUnit test runner warnings:
 3) Version requirement ">= 1" used by PHPUnit\TestFixture\Issue6451\Issue6451Test::testIncompletePhpExtensionVersion() is incomplete, expected a version that consists of major, minor, and patch level ("8.5.0" instead of "8.5", for example)
 
 OK, but there were issues!
-Tests: 6, Assertions: 5, PHPUnit Warnings: 6, Skipped: 1.
+Tests: 6, Assertions: 6, PHPUnit Warnings: 6.

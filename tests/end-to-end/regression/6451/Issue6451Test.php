@@ -29,13 +29,13 @@ final class Issue6451Test extends TestCase
     }
 
     #[RequiresPhp('^8.3')]
-    public function testIncompletePhpunitCaretVersion(): void
+    public function testCaretPhpVersionRequirementIsNotConsideredIncomplete(): void
     {
         $this->assertTrue(true);
     }
 
-    #[RequiresPhp('8.3.*')]
-    public function testIncompletePhpunitAsteriskVersion(): void
+    #[RequiresPhp('8.*')]
+    public function testAsteriskPhpVersionRequirementIsNotConsideredIncomplete(): void
     {
         $this->assertTrue(true);
     }
