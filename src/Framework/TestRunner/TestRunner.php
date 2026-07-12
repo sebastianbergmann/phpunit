@@ -92,7 +92,11 @@ final class TestRunner
         $skipped    = false;
 
         if ($this->shouldErrorHandlerBeUsed($test)) {
-            ErrorHandler::instance()->enable($test);
+            $throwableFromDeferredIssue = ErrorHandler::instance()->enable($test);
+
+            if ($throwableFromDeferredIssue !== null) {
+                $test->setThrowableFromDeferredIssue($throwableFromDeferredIssue);
+            }
         }
 
         $collectCodeCoverage = CodeCoverage::instance()->isActive() &&
