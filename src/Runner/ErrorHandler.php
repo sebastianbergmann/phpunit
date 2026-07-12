@@ -55,6 +55,7 @@ use PHPUnit\Runner\IssueTriggerResolver\Resolver as IssueTriggerResolver;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\TextUI\Configuration\SourceFilter;
 use PHPUnit\Util\ExcludeList;
+use Throwable;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -72,8 +73,9 @@ final class ErrorHandler
     private static ?self $instance          = null;
     private ?Baseline $baseline             = null;
     private ExcludeList $excludeList;
-    private bool $enabled                     = false;
-    private ?int $originalErrorReportingLevel = null;
+    private bool $enabled                          = false;
+    private ?int $originalErrorReportingLevel      = null;
+    private ?int $deferredIssueErrorReportingLevel = null;
 
     /**
      * @var ?array{int, string, string, int}
@@ -92,7 +94,7 @@ final class ErrorHandler
     private readonly bool $identifyIssueTrigger;
 
     /**
-     * @var array<string, list<array{int, string, string, int}>>
+     * @var array<string, list<array{int, string, string, int, int}>>
      */
     private array $testCaseContextIssues = [];
     private ?string $testCaseContext     = null;
@@ -318,7 +320,7 @@ final class ErrorHandler
         }
 
         if ($this->testCaseContext !== null) {
-            $this->testCaseContextIssues[$this->testCaseContext][] = [$errorNumber, $errorString, $errorFile, $errorLine];
+            $this->testCaseContextIssues[$this->testCaseContext][] = [$errorNumber, $errorString, $errorFile, $errorLine, error_reporting()];
 
             return true;
         }
@@ -466,7 +468,7 @@ final class ErrorHandler
         $this->previousNonTestCaseErrorHandler = null;
     }
 
-    public function enable(TestCase $test): void
+    public function enable(TestCase $test): ?Throwable
     {
         assert(!$this->enabled);
 
@@ -479,9 +481,11 @@ final class ErrorHandler
         $this->enabled                     = true;
         $this->originalErrorReportingLevel = error_reporting();
 
-        $this->triggerTestCaseContextIssues($test);
+        $throwableFromDeferredIssue = $this->triggerTestCaseContextIssues($test);
 
         error_reporting($this->originalErrorReportingLevel & self::UNHANDLEABLE_LEVELS);
+
+        return $throwableFromDeferredIssue;
     }
 
     public function disable(): void
@@ -928,13 +932,33 @@ final class ErrorHandler
         return $buffer;
     }
 
-    private function triggerTestCaseContextIssues(TestCase $test): void
+    private function triggerTestCaseContextIssues(TestCase $test): ?Throwable
     {
         $testCaseContext = $this->testCaseContext($test::class, $test->name());
 
-        foreach ($this->testCaseContextIssues[$testCaseContext] ?? [] as $d) {
-            $this->__invoke(...$d);
+        foreach ($this->testCaseContextIssues[$testCaseContext] ?? [] as $issue) {
+            [$errorNumber, $errorString, $errorFile, $errorLine, $errorReportingLevel] = $issue;
+
+            $this->deferredIssueErrorReportingLevel = $errorReportingLevel;
+
+            try {
+                $this->__invoke($errorNumber, $errorString, $errorFile, $errorLine);
+            } catch (Throwable $t) {
+                /**
+                 * A previously registered error handler may turn an issue that is
+                 * being forwarded to it into an exception: the exception is control
+                 * flow of the test the issue is attributed to and must not abort
+                 * the test runner.
+                 *
+                 * @see https://github.com/sebastianbergmann/phpunit/issues/6831
+                 */
+                return $t;
+            } finally {
+                $this->deferredIssueErrorReportingLevel = null;
+            }
         }
+
+        return null;
     }
 
     private function testCaseContext(string $className, string $methodName): string
@@ -1074,6 +1098,21 @@ final class ErrorHandler
         if ($this->originalErrorReportingLevel !== null &&
             $errorReportingLevel === ($this->originalErrorReportingLevel & self::UNHANDLEABLE_LEVELS)) {
             error_reporting($this->originalErrorReportingLevel);
+
+            $restoreRequired = true;
+        }
+
+        /**
+         * An issue that was triggered in a test case context before the test case
+         * was run is forwarded when the test case is prepared: the previously
+         * registered error handler must observe the error reporting level that
+         * was in effect when the error was triggered, for errors suppressed
+         * using the @ operator this is the suppression mask set by PHP.
+         *
+         * @see https://github.com/sebastianbergmann/phpunit/issues/6831
+         */
+        if ($this->deferredIssueErrorReportingLevel !== null) {
+            error_reporting($this->deferredIssueErrorReportingLevel);
 
             $restoreRequired = true;
         }

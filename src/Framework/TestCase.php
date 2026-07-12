@@ -165,6 +165,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     private array $expectedUserDeprecationMessageRegularExpression = [];
     private ?string $emptyDataProviderSkipMessage                  = null;
+    private ?Throwable $throwableFromDeferredIssue                 = null;
 
     /**
      * @var positive-int
@@ -443,6 +444,23 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $currentWorkingDirectory           = getcwd();
 
         try {
+            /**
+             * A previously registered error handler may have turned an issue that
+             * was triggered before this test was run, in a data provider for
+             * example, into an exception: the exception is control flow of this
+             * test and must be handled as if it was thrown while this test was
+             * prepared.
+             *
+             * @see https://github.com/sebastianbergmann/phpunit/issues/6831
+             */
+            if ($this->throwableFromDeferredIssue !== null) {
+                $throwableFromDeferredIssue = $this->throwableFromDeferredIssue;
+
+                $this->throwableFromDeferredIssue = null;
+
+                throw $throwableFromDeferredIssue;
+            }
+
             $this->checkRequirements();
             $hasMetRequirements = true;
 
@@ -775,6 +793,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     final public function setEmptyDataProviderSkipMessage(string $message): void
     {
         $this->emptyDataProviderSkipMessage = $message;
+    }
+
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    final public function setThrowableFromDeferredIssue(Throwable $throwable): void
+    {
+        $this->throwableFromDeferredIssue = $throwable;
     }
 
     /**
