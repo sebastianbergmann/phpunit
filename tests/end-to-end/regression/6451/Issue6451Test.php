@@ -28,6 +28,18 @@ final class Issue6451Test extends TestCase
         $this->assertTrue(true);
     }
 
+    #[RequiresPhp('^8.3')]
+    public function testCaretPhpVersionRequirementIsNotConsideredIncomplete(): void
+    {
+        $this->assertTrue(true);
+    }
+
+    #[RequiresPhp('8.*')]
+    public function testAsteriskPhpVersionRequirementIsNotConsideredIncomplete(): void
+    {
+        $this->assertTrue(true);
+    }
+
     #[RequiresPhpExtension('json', '>= 1')]
     public function testIncompletePhpExtensionVersion(): void
     {
