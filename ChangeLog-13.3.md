@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 13.3 release series are documented in this fi
 ### Added
 
 * [#3794](https://github.com/sebastianbergmann/phpunit/issues/3794): Filesystem-based code coverage targeting
+* [#5758](https://github.com/sebastianbergmann/phpunit/issues/5758): Make export of objects customizable
 * [#6586](https://github.com/sebastianbergmann/phpunit/pull/6586): Custom code coverage driver support
 * [#6591](https://github.com/sebastianbergmann/phpunit/pull/6591): Repeated test execution using `--repeat` CLI option and `#[Repeat]` attribute
 * [#6701](https://github.com/sebastianbergmann/phpunit/pull/6701): Allow `expectOutputString()` and `expectOutputRegex()` to be combined and repeated

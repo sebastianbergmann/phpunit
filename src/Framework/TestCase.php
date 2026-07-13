@@ -77,6 +77,7 @@ use ReflectionMethod;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use SebastianBergmann\Comparator\Comparator;
 use SebastianBergmann\Comparator\Factory as ComparatorFactory;
+use SebastianBergmann\Exporter\ObjectExporter;
 use SebastianBergmann\Invoker\TimeoutException;
 use SebastianBergmann\ObjectEnumerator\Enumerator;
 use Throwable;
@@ -146,7 +147,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @var list<Comparator>
      */
-    private array $customComparators                         = [];
+    private array $customComparators = [];
+
+    /**
+     * @var list<ObjectExporter>
+     */
+    private array $customObjectExporters                     = [];
     private ?Event\Code\TestMethod $testValueObjectForEvents = null;
     private bool $wasPrepared                                = false;
 
@@ -674,6 +680,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->globalStateCapture->restoreErrorHandlers($this, $emitter, $this->inIsolation);
         $this->globalStateCapture->restoreGlobals($this, $emitter);
         $this->unregisterCustomComparators();
+        $this->unregisterCustomObjectExporters();
         libxml_clear_errors();
 
         $this->testValueObjectForEvents = null;
@@ -1286,6 +1293,13 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->customComparators[] = $comparator;
     }
 
+    final protected function registerObjectExporter(ObjectExporter $objectExporter): void
+    {
+        $this->customObjectExporters[] = $objectExporter;
+
+        Exporter::registerObjectExporters($this->customObjectExporters);
+    }
+
     /**
      * @param class-string $classOrInterface
      */
@@ -1752,6 +1766,17 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         $this->customComparators = [];
+    }
+
+    private function unregisterCustomObjectExporters(): void
+    {
+        if ($this->customObjectExporters === []) {
+            return;
+        }
+
+        $this->customObjectExporters = [];
+
+        Exporter::unregisterObjectExporters();
     }
 
     private function shouldRunInSeparateProcess(): bool
