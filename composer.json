@@ -48,7 +48,7 @@
         "sebastian/comparator": "^8.3.0",
         "sebastian/diff": "^9.0",
         "sebastian/environment": "^9.3.2",
-        "sebastian/exporter": "^8.1.0",
+        "sebastian/exporter": "^8.1.1",
         "sebastian/file-filter": "^1.0",
         "sebastian/git-state": "^1.0",
         "sebastian/global-state": "^9.0.1",
