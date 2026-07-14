@@ -31,8 +31,7 @@ use PHPUnit\Framework\TestStatus\TestStatus;
 final class ResultCacheHandler
 {
     private readonly ResultCache $cache;
-    private ?HRTime $time  = null;
-    private int $testSuite = 0;
+    private ?HRTime $time = null;
 
     public function __construct(ResultCache $cache, Facade $facade)
     {
@@ -41,18 +40,16 @@ final class ResultCacheHandler
         $this->registerSubscribers($facade);
     }
 
-    public function testSuiteStarted(): void
+    /**
+     * The cache is persisted once, at the end of the test runner's execution,
+     * and not each time the outermost test suite finishes: when tests are run
+     * in parallel, the events of each unit of work are replayed as a
+     * self-contained test suite, so an outermost test suite finishes once per
+     * unit and persisting the cache that often is prohibitively expensive.
+     */
+    public function testRunnerExecutionFinished(): void
     {
-        $this->testSuite++;
-    }
-
-    public function testSuiteFinished(): void
-    {
-        $this->testSuite--;
-
-        if ($this->testSuite === 0) {
-            $this->cache->persist();
-        }
+        $this->cache->persist();
     }
 
     public function testPrepared(Prepared $event): void
@@ -133,8 +130,7 @@ final class ResultCacheHandler
     private function registerSubscribers(Facade $facade): void
     {
         $facade->registerSubscribers(
-            new TestSuiteStartedSubscriber($this),
-            new TestSuiteFinishedSubscriber($this),
+            new TestRunnerExecutionFinishedSubscriber($this),
             new TestPreparedSubscriber($this),
             new TestMarkedIncompleteSubscriber($this),
             new TestConsideredRiskySubscriber($this),
