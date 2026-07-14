@@ -280,6 +280,39 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
         @unlink($file);
     }
 
+    public function testExecutionFinishedPersistsTestRunHistory(): void
+    {
+        $file = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-persist-' . uniqid() . '.cache';
+
+        @unlink($file);
+
+        $cache   = new DefaultTestRunHistory($file);
+        $handler = new TestRunHistoryHandler($cache, new Facade, false);
+
+        $test = $this->testValueObject();
+
+        $handler->testConsideredRisky(
+            new ConsideredRisky(
+                $this->telemetryInfo(),
+                $test,
+                'This test did not perform any assertions',
+            ),
+        );
+
+        $this->assertFileDoesNotExist($file);
+
+        $handler->testRunnerExecutionFinished();
+
+        $this->assertFileExists($file);
+
+        $loaded = new DefaultTestRunHistory($file);
+        $loaded->load();
+
+        $this->assertTrue($loaded->status(TestRunHistoryId::fromTest($test))->isRisky());
+
+        @unlink($file);
+    }
+
     public function testSkippedWithoutPreparedDoesNotRecordDuration(): void
     {
         $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-test.cache');
