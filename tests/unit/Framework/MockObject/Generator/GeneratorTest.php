@@ -17,8 +17,10 @@ use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\ExtendableClass;
 use PHPUnit\TestFixture\MockObject\ExtendableClassWithConstructorArguments;
+use PHPUnit\TestFixture\MockObject\ExtendableClassWithPropertiesWithoutHooks;
 use PHPUnit\TestFixture\MockObject\InterfaceExtendingThrowable;
 use PHPUnit\TestFixture\MockObject\InterfaceExtendingTraversable;
+use ReflectionProperty;
 use Traversable;
 
 #[CoversClass(Generator::class)]
@@ -77,5 +79,39 @@ final class GeneratorTest extends TestCase
         $double = (new Generator)->testDouble(InterfaceExtendingThrowable::class, false);
 
         $this->assertInstanceOf(InterfaceExtendingThrowable::class, $double);
+    }
+
+    public function testDoublesPropertyWithoutHooksWhenPropertyIsListedForDoubling(): void
+    {
+        $double = (new Generator)->testDouble(
+            ExtendableClassWithPropertiesWithoutHooks::class,
+            false,
+            [],
+            [],
+            '',
+            true,
+            true,
+            true,
+            ['property'],
+        );
+
+        $this->assertTrue(new ReflectionProperty($double, 'property')->hasHooks());
+        $this->assertFalse(new ReflectionProperty($double, 'otherProperty')->hasHooks());
+    }
+
+    public function testGeneratesCodeForClassWithDoubledPropertyWithoutHooksWhenClassNameIsSpecified(): void
+    {
+        $doubledClass = (new Generator)->generate(
+            ExtendableClassWithPropertiesWithoutHooks::class,
+            false,
+            [],
+            'TestStubWithDoubledPropertyWithoutHooks',
+            true,
+            ['property'],
+        );
+
+        $this->assertStringContainsString('$property::get', $doubledClass->classCode());
+        $this->assertStringContainsString('$property::set', $doubledClass->classCode());
+        $this->assertStringNotContainsString('$otherProperty::get', $doubledClass->classCode());
     }
 }

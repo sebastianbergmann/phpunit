@@ -79,6 +79,7 @@ final class Generator
      * @param class-string            $type
      * @param ?list<non-empty-string> $methods
      * @param array<mixed>            $arguments
+     * @param list<non-empty-string>  $doubledProperties
      *
      * @throws ClassIsAnonymousException
      * @throws ClassIsEnumerationException
@@ -91,7 +92,7 @@ final class Generator
      * @throws RuntimeException
      * @throws UnknownTypeException
      */
-    public function testDouble(string $type, bool $mockObject, ?array $methods = [], array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $returnValueGeneration = true): MockObject|Stub
+    public function testDouble(string $type, bool $mockObject, ?array $methods = [], array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $returnValueGeneration = true, array $doubledProperties = []): MockObject|Stub
     {
         if ($type === Traversable::class) {
             $type = Iterator::class;
@@ -108,6 +109,7 @@ final class Generator
             $methods,
             $mockClassName,
             $callOriginalClone,
+            $doubledProperties,
         );
 
         $object = $this->instantiate(
@@ -200,6 +202,7 @@ final class Generator
     /**
      * @param class-string            $type
      * @param ?list<non-empty-string> $methods
+     * @param list<non-empty-string>  $doubledProperties
      *
      * @throws ClassIsAnonymousException
      * @throws ClassIsEnumerationException
@@ -211,7 +214,7 @@ final class Generator
      *
      * @see https://github.com/sebastianbergmann/phpunit/issues/5476
      */
-    public function generate(string $type, bool $mockObject, ?array $methods = null, string $mockClassName = '', bool $callOriginalClone = true): DoubledClass
+    public function generate(string $type, bool $mockObject, ?array $methods = null, string $mockClassName = '', bool $callOriginalClone = true, array $doubledProperties = []): DoubledClass
     {
         if ($mockClassName !== '') {
             return $this->generateCodeForTestDoubleClass(
@@ -220,6 +223,7 @@ final class Generator
                 $methods,
                 $mockClassName,
                 $callOriginalClone,
+                $doubledProperties,
             );
         }
 
@@ -227,7 +231,8 @@ final class Generator
             $type .
             ($mockObject ? 'MockObject' : 'TestStub') .
             serialize($methods) .
-            serialize($callOriginalClone),
+            serialize($callOriginalClone) .
+            serialize($doubledProperties),
         );
 
         if (!isset(self::$cache[$key])) {
@@ -237,6 +242,7 @@ final class Generator
                 $methods,
                 $mockClassName,
                 $callOriginalClone,
+                $doubledProperties,
             );
         }
 
@@ -341,6 +347,7 @@ final class Generator
     /**
      * @param class-string            $type
      * @param ?list<non-empty-string> $explicitMethods
+     * @param list<non-empty-string>  $doubledProperties
      *
      * @throws ClassIsAnonymousException
      * @throws ClassIsEnumerationException
@@ -349,7 +356,7 @@ final class Generator
      * @throws ReflectionException
      * @throws RuntimeException
      */
-    private function generateCodeForTestDoubleClass(string $type, bool $mockObject, ?array $explicitMethods, string $mockClassName, bool $callOriginalClone): DoubledClass
+    private function generateCodeForTestDoubleClass(string $type, bool $mockObject, ?array $explicitMethods, string $mockClassName, bool $callOriginalClone, array $doubledProperties): DoubledClass
     {
         $classTemplate         = $this->loadTemplate('test_double_class.tpl');
         $additionalInterfaces  = [];
@@ -480,7 +487,7 @@ final class Generator
         }
 
         /** @var ReflectionClass<object> $class */
-        $propertiesWithHooks = $this->properties($class);
+        $propertiesWithHooks = $this->properties($class, $doubledProperties);
         $configurableMethods = $this->configurableMethods($mockMethods, $propertiesWithHooks);
 
         $mockedMethods = '';
@@ -864,10 +871,11 @@ final class Generator
 
     /**
      * @param ReflectionClass<object> $class
+     * @param list<non-empty-string>  $doubledProperties
      *
      * @return list<HookedProperty>
      */
-    private function properties(ReflectionClass $class): array
+    private function properties(ReflectionClass $class, array $doubledProperties): array
     {
         $mapper     = new ReflectionMapper;
         $properties = [];
@@ -882,6 +890,20 @@ final class Generator
             }
 
             if (!$property->hasHooks()) {
+                if (!in_array($property->getName(), $doubledProperties, true)) {
+                    continue;
+                }
+
+                $properties[] = new HookedProperty(
+                    $property->getName(),
+                    $mapper->fromPropertyType($property),
+                    true,
+                    true,
+                    false,
+                    false,
+                    null,
+                );
+
                 continue;
             }
 
