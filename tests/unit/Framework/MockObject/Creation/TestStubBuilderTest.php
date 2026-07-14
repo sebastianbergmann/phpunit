@@ -17,12 +17,17 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\MockObject\Generator\NameAlreadyInUseException;
+use PHPUnit\Framework\MockObject\Runtime\PropertyHook;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\ExtendableClass;
 use PHPUnit\TestFixture\MockObject\ExtendableClassWithConstructorArguments;
+use PHPUnit\TestFixture\MockObject\ExtendableClassWithPropertiesThatCannotBeDoubled;
+use PHPUnit\TestFixture\MockObject\ExtendableClassWithPropertiesWithoutHooks;
 use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
 
 #[CoversClass(TestStubBuilder::class)]
+#[CoversClass(TestDoubleBuilder::class)]
+#[CoversClass(PropertyCannotBeDoubledException::class)]
 #[CoversMethod(TestCase::class, 'getStubBuilder')]
 #[Group('test-doubles')]
 #[Group('test-doubles/creation')]
@@ -88,5 +93,89 @@ final class TestStubBuilderTest extends TestCase
             ->getStub();
 
         $this->assertTrue($double->constructorCalled);
+    }
+
+    #[TestDox('doubleProperties() can be used to double a property that does not declare hooks')]
+    public function testGetHookForPropertyWithoutHooksCanBeConfiguredWhenPropertyIsDoubled(): void
+    {
+        $double = $this->getStubBuilder(ExtendableClassWithPropertiesWithoutHooks::class)
+            ->doubleProperties(['property'])
+            ->getStub();
+
+        $double->method(PropertyHook::get('property'))->willReturn('value');
+
+        $this->assertSame('value', $double->property);
+    }
+
+    #[TestDox('doubleProperties() does not affect properties that are not doubled')]
+    public function testPropertyThatIsNotDoubledBehavesLikeRegularProperty(): void
+    {
+        $double = $this->getStubBuilder(ExtendableClassWithPropertiesWithoutHooks::class)
+            ->doubleProperties(['property'])
+            ->getStub();
+
+        $double->otherProperty = 'value';
+
+        $this->assertSame('value', $double->otherProperty);
+    }
+
+    #[TestDox('doubleProperties() cannot be used for a property that does not exist')]
+    public function testPropertyThatDoesNotExistCannotBeDoubled(): void
+    {
+        $this->expectException(PropertyCannotBeDoubledException::class);
+        $this->expectExceptionMessageIs('Trying to double property "doesNotExist" of class "PHPUnit\TestFixture\MockObject\ExtendableClassWithPropertiesWithoutHooks" with doubleProperties(), but it does not exist');
+
+        $this->getStubBuilder(ExtendableClassWithPropertiesWithoutHooks::class)
+            ->doubleProperties(['doesNotExist']);
+    }
+
+    #[TestDox('doubleProperties() cannot be used for a property that is not public')]
+    public function testPropertyThatIsNotPublicCannotBeDoubled(): void
+    {
+        $this->expectException(PropertyCannotBeDoubledException::class);
+        $this->expectExceptionMessageIs('Trying to double property "protectedProperty" of class "PHPUnit\TestFixture\MockObject\ExtendableClassWithPropertiesThatCannotBeDoubled" with doubleProperties(), but it is not public');
+
+        $this->getStubBuilder(ExtendableClassWithPropertiesThatCannotBeDoubled::class)
+            ->doubleProperties(['protectedProperty']);
+    }
+
+    #[TestDox('doubleProperties() cannot be used for a property that is static')]
+    public function testPropertyThatIsStaticCannotBeDoubled(): void
+    {
+        $this->expectException(PropertyCannotBeDoubledException::class);
+        $this->expectExceptionMessageIs('Trying to double property "staticProperty" of class "PHPUnit\TestFixture\MockObject\ExtendableClassWithPropertiesThatCannotBeDoubled" with doubleProperties(), but it is static');
+
+        $this->getStubBuilder(ExtendableClassWithPropertiesThatCannotBeDoubled::class)
+            ->doubleProperties(['staticProperty']);
+    }
+
+    #[TestDox('doubleProperties() cannot be used for a property that is readonly')]
+    public function testPropertyThatIsReadonlyCannotBeDoubled(): void
+    {
+        $this->expectException(PropertyCannotBeDoubledException::class);
+        $this->expectExceptionMessageIs('Trying to double property "readonlyProperty" of class "PHPUnit\TestFixture\MockObject\ExtendableClassWithPropertiesThatCannotBeDoubled" with doubleProperties(), but it is readonly');
+
+        $this->getStubBuilder(ExtendableClassWithPropertiesThatCannotBeDoubled::class)
+            ->doubleProperties(['readonlyProperty']);
+    }
+
+    #[TestDox('doubleProperties() cannot be used for a property that is final')]
+    public function testPropertyThatIsFinalCannotBeDoubled(): void
+    {
+        $this->expectException(PropertyCannotBeDoubledException::class);
+        $this->expectExceptionMessageIs('Trying to double property "finalProperty" of class "PHPUnit\TestFixture\MockObject\ExtendableClassWithPropertiesThatCannotBeDoubled" with doubleProperties(), but it is final');
+
+        $this->getStubBuilder(ExtendableClassWithPropertiesThatCannotBeDoubled::class)
+            ->doubleProperties(['finalProperty']);
+    }
+
+    #[TestDox('doubleProperties() cannot be used for a property that does not declare a type')]
+    public function testPropertyThatDoesNotDeclareTypeCannotBeDoubled(): void
+    {
+        $this->expectException(PropertyCannotBeDoubledException::class);
+        $this->expectExceptionMessageIs('Trying to double property "untypedProperty" of class "PHPUnit\TestFixture\MockObject\ExtendableClassWithPropertiesThatCannotBeDoubled" with doubleProperties(), but it does not declare a type');
+
+        $this->getStubBuilder(ExtendableClassWithPropertiesThatCannotBeDoubled::class)
+            ->doubleProperties(['untypedProperty']);
     }
 }

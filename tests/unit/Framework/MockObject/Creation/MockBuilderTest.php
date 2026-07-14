@@ -20,10 +20,12 @@ use PHPUnit\Framework\MockObject\Generator\DuplicateMethodException;
 use PHPUnit\Framework\MockObject\Generator\InvalidClassNameException;
 use PHPUnit\Framework\MockObject\Generator\InvalidMethodNameException;
 use PHPUnit\Framework\MockObject\Generator\NameAlreadyInUseException;
+use PHPUnit\Framework\MockObject\Runtime\PropertyHook;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\ExtendableClass;
 use PHPUnit\TestFixture\MockObject\ExtendableClassCallingMethodInConstructor;
 use PHPUnit\TestFixture\MockObject\ExtendableClassWithConstructorArguments;
+use PHPUnit\TestFixture\MockObject\ExtendableClassWithPropertiesWithoutHooks;
 use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
 
 #[CoversClass(MockBuilder::class)]
@@ -117,5 +119,17 @@ final class MockBuilderTest extends TestCase
         $double->expects($this->once())->method('reset');
 
         $double->second();
+    }
+
+    #[TestDox('doubleProperties() can be used to configure an expectation for a property that does not declare hooks')]
+    public function testExpectationCanBeConfiguredForSetHookForPropertyWithoutHooksWhenPropertyIsDoubled(): void
+    {
+        $double = $this->getMockBuilder(ExtendableClassWithPropertiesWithoutHooks::class)
+            ->doubleProperties(['property'])
+            ->getMock();
+
+        $double->expects($this->once())->method(PropertyHook::set('property'))->with('value');
+
+        $double->property = 'value';
     }
 }
