@@ -57,10 +57,17 @@ final class TestRunHistoryHandler
     /**
      * The test run history is persisted when the test runner has finished
      * executing the test suite, and not when the outermost test suite
-     * finishes: a test suite that is skipped by a method that is invoked
-     * before the first test of a test class does not emit the event that ends
-     * it, so counting the test suites that started and finished can never
-     * reach the outermost one again once such a test suite was run.
+     * finishes.
+     *
+     * A test suite that is skipped by a method that is invoked before the
+     * first test of a test class does not emit the event that ends it, so
+     * counting the test suites that started and finished can never reach the
+     * outermost one again once such a test suite was run.
+     *
+     * And when tests are run in parallel, the events of each unit of work are
+     * replayed as a self-contained test suite, so an outermost test suite
+     * finishes once per unit; persisting the history that often would be
+     * prohibitively expensive.
      */
     public function testRunnerExecutionFinished(): void
     {
