@@ -40,5 +40,13 @@ class TestStubFoo extends Foo implements PHPUnit\Framework\MockObject\StubIntern
                 )
             );
         }
+
+        set (string $value) {
+            $this->__phpunit_getInvocationHandler()->invoke(
+                new \PHPUnit\Framework\MockObject\Invocation(
+                    'TestStubFoo', '$bar::set', [$value], 'void', $this
+                )
+            );
+        }
     }
 }

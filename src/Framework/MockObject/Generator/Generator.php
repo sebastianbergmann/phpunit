@@ -887,22 +887,32 @@ final class Generator
 
             $hasGetHook                 = false;
             $hasSetHook                 = false;
+            $hasFinalGetHook            = false;
+            $hasFinalSetHook            = false;
             $setHookMethodParameterType = null;
 
             $getHook = $property->getHook(PropertyHookType::Get);
 
-            if ($getHook !== null && !$getHook->isFinal()) {
-                $hasGetHook = true;
+            if ($getHook !== null) {
+                if ($getHook->isFinal()) {
+                    $hasFinalGetHook = true;
+                } else {
+                    $hasGetHook = true;
+                }
             }
 
             $setHook = $property->getHook(PropertyHookType::Set);
 
-            if ($setHook !== null && !$setHook->isFinal()) {
-                $hasSetHook        = true;
-                $setHookParameters = $mapper->fromParameterTypes($setHook);
+            if ($setHook !== null) {
+                if ($setHook->isFinal()) {
+                    $hasFinalSetHook = true;
+                } else {
+                    $hasSetHook        = true;
+                    $setHookParameters = $mapper->fromParameterTypes($setHook);
 
-                if (isset($setHookParameters[0])) {
-                    $setHookMethodParameterType = $setHookParameters[0]->type();
+                    if (isset($setHookParameters[0])) {
+                        $setHookMethodParameterType = $setHookParameters[0]->type();
+                    }
                 }
             }
 
@@ -915,7 +925,8 @@ final class Generator
                 $mapper->fromPropertyType($property),
                 $hasGetHook,
                 $hasSetHook,
-                $property->isVirtual(),
+                $hasFinalGetHook,
+                $hasFinalSetHook,
                 $setHookMethodParameterType,
             );
         }

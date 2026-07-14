@@ -8,6 +8,7 @@ All notable changes of the PHPUnit 13.3 release series are documented in this fi
 
 * [#3794](https://github.com/sebastianbergmann/phpunit/issues/3794): Filesystem-based code coverage targeting
 * [#5758](https://github.com/sebastianbergmann/phpunit/issues/5758): Make export of objects customizable
+* [#6546](https://github.com/sebastianbergmann/phpunit/issues/6546): Both property hooks can now be configured on test doubles of virtual hooked properties, even when the doubled property only declares one of them
 * [#6586](https://github.com/sebastianbergmann/phpunit/pull/6586): Custom code coverage driver support
 * [#6591](https://github.com/sebastianbergmann/phpunit/pull/6591): Repeated test execution using `--repeat` CLI option and `#[Repeat]` attribute
 * [#6701](https://github.com/sebastianbergmann/phpunit/pull/6701): Allow `expectOutputString()` and `expectOutputRegex()` to be combined and repeated
@@ -27,5 +28,9 @@ All notable changes of the PHPUnit 13.3 release series are documented in this fi
 * [phpunit/php-code-coverage #1231](https://github.com/sebastianbergmann/php-code-coverage/pull/1231): Identify dead code using static analysis
 * The test runner no longer crashes when an attribute cannot be instantiated
 * Improved TestDox HTML report
+
+### Fixed
+
+* Doubling a class with a property that declares both a final and a non-final hook no longer triggers a fatal error
 
 [13.3.0]: https://github.com/sebastianbergmann/phpunit/compare/13.2...main

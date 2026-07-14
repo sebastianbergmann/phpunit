@@ -24,7 +24,7 @@ final class HookedPropertyTest extends TestCase
     {
         $name = 'property-name';
 
-        $property = new HookedProperty($name, Type::fromName('string', false), false, false, false, Type::fromName('string', false));
+        $property = new HookedProperty($name, Type::fromName('string', false), false, false, false, false, Type::fromName('string', false));
 
         $this->assertSame($name, $property->name());
     }
@@ -33,37 +33,79 @@ final class HookedPropertyTest extends TestCase
     {
         $type = Type::fromName('string', false);
 
-        $property = new HookedProperty('property-name', $type, false, false, false, $type);
+        $property = new HookedProperty('property-name', $type, false, false, false, false, $type);
 
         $this->assertSame($type, $property->type());
     }
 
     public function testMayHaveGetHook(): void
     {
-        $property = new HookedProperty('property-name', Type::fromName('string', false), true, false, false, Type::fromName('string', false));
+        $property = new HookedProperty('property-name', Type::fromName('string', false), true, false, false, false, Type::fromName('string', false));
 
         $this->assertTrue($property->hasGetHook());
     }
 
     public function testMayNotHaveGetHook(): void
     {
-        $property = new HookedProperty('property-name', Type::fromName('string', false), false, false, false, Type::fromName('string', false));
+        $property = new HookedProperty('property-name', Type::fromName('string', false), false, false, false, false, Type::fromName('string', false));
 
         $this->assertFalse($property->hasGetHook());
     }
 
     public function testMayHaveSetHook(): void
     {
-        $property = new HookedProperty('property-name', Type::fromName('string', false), false, true, false, Type::fromName('string', false));
+        $property = new HookedProperty('property-name', Type::fromName('string', false), false, true, false, false, Type::fromName('string', false));
 
         $this->assertTrue($property->hasSetHook());
     }
 
     public function testMayNotHaveSetHook(): void
     {
-        $property = new HookedProperty('property-name', Type::fromName('string', false), false, false, false, Type::fromName('string', false));
+        $property = new HookedProperty('property-name', Type::fromName('string', false), false, false, false, false, Type::fromName('string', false));
 
         $this->assertFalse($property->hasSetHook());
+    }
+
+    public function testGetHookIsGeneratedWhenPropertyHasGetHookThatCanBeDoubled(): void
+    {
+        $property = new HookedProperty('property-name', Type::fromName('string', false), true, false, false, false, Type::fromName('string', false));
+
+        $this->assertTrue($property->shouldGenerateGetHook());
+    }
+
+    public function testGetHookIsGeneratedWhenPropertyHasSetHookThatCanBeDoubledAndDoesNotHaveGetHook(): void
+    {
+        $property = new HookedProperty('property-name', Type::fromName('string', false), false, true, false, false, Type::fromName('string', false));
+
+        $this->assertTrue($property->shouldGenerateGetHook());
+    }
+
+    public function testGetHookIsNotGeneratedWhenPropertyHasSetHookThatCanBeDoubledAndFinalGetHook(): void
+    {
+        $property = new HookedProperty('property-name', Type::fromName('string', false), false, true, true, false, Type::fromName('string', false));
+
+        $this->assertFalse($property->shouldGenerateGetHook());
+    }
+
+    public function testSetHookIsGeneratedWhenPropertyHasSetHookThatCanBeDoubled(): void
+    {
+        $property = new HookedProperty('property-name', Type::fromName('string', false), false, true, false, false, Type::fromName('string', false));
+
+        $this->assertTrue($property->shouldGenerateSetHook());
+    }
+
+    public function testSetHookIsGeneratedWhenPropertyHasGetHookThatCanBeDoubledAndDoesNotHaveSetHook(): void
+    {
+        $property = new HookedProperty('property-name', Type::fromName('string', false), true, false, false, false, Type::fromName('string', false));
+
+        $this->assertTrue($property->shouldGenerateSetHook());
+    }
+
+    public function testSetHookIsNotGeneratedWhenPropertyHasGetHookThatCanBeDoubledAndFinalSetHook(): void
+    {
+        $property = new HookedProperty('property-name', Type::fromName('string', false), true, false, false, true, Type::fromName('string', false));
+
+        $this->assertFalse($property->shouldGenerateSetHook());
     }
 
     public function testHasSetterType(): void
@@ -71,14 +113,14 @@ final class HookedPropertyTest extends TestCase
         $type       = Type::fromName('string', false);
         $setterType = Type::fromName('string', true);
 
-        $property = new HookedProperty('property-name', $type, false, false, false, $setterType);
+        $property = new HookedProperty('property-name', $type, false, false, false, false, $setterType);
 
         $this->assertSame($setterType, $property->setterType());
     }
 
     public function testThrowsExceptionWhenSetterTypeIsNull(): void
     {
-        $property = new HookedProperty('property-name', Type::fromName('string', false), false, false, false, null);
+        $property = new HookedProperty('property-name', Type::fromName('string', false), false, false, false, false, null);
 
         $this->expectException(RuntimeException::class);
 

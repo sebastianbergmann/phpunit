@@ -18,9 +18,12 @@ use PHPUnit\Framework\MockObject\Runtime\PropertyHook;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\ExtendableClassCallingMethodInDestructor;
 use PHPUnit\TestFixture\MockObject\ExtendableClassWithCloneMethod;
+use PHPUnit\TestFixture\MockObject\ExtendableClassWithPropertyWithFinalGetHook;
 use PHPUnit\TestFixture\MockObject\ExtendableClassWithPropertyWithGetHook;
+use PHPUnit\TestFixture\MockObject\ExtendableClassWithPropertyWithGetHookAndFinalSetHook;
 use PHPUnit\TestFixture\MockObject\ExtendableClassWithPropertyWithSetHook;
 use PHPUnit\TestFixture\MockObject\ExtendableClassWithVirtualPropertyWithGetHook;
+use PHPUnit\TestFixture\MockObject\ExtendableClassWithVirtualPropertyWithSetHook;
 use PHPUnit\TestFixture\MockObject\ExtendableReadonlyClassWithCloneMethod;
 use PHPUnit\TestFixture\MockObject\InterfaceWithMethodNamedMethod;
 use PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatHasDefaultParameterValues;
@@ -445,6 +448,31 @@ abstract class TestDoubleTestCase extends TestCase
         $double->method(PropertyHook::get('property'))->willReturn('value');
 
         $this->assertSame('value', $double->property);
+    }
+
+    public function testGetHookForVirtualPropertyWithSetHookOfExtendableClassCanBeConfigured(): void
+    {
+        $double = $this->createTestDouble(ExtendableClassWithVirtualPropertyWithSetHook::class);
+
+        $double->method(PropertyHook::get('property'))->willReturn('value');
+
+        $this->assertSame('value', $double->property);
+    }
+
+    public function testGetHookForPropertyWithFinalSetHookOfExtendableClassCanBeConfigured(): void
+    {
+        $double = $this->createTestDouble(ExtendableClassWithPropertyWithGetHookAndFinalSetHook::class);
+
+        $double->method(PropertyHook::get('property'))->willReturn('value');
+
+        $this->assertSame('value', $double->property);
+    }
+
+    public function testPropertyWithOnlyFinalHooksIsNotDoubled(): void
+    {
+        $double = $this->createTestDouble(ExtendableClassWithPropertyWithFinalGetHook::class);
+
+        $this->assertSame('original value', $double->property);
     }
 
     /**
