@@ -35,7 +35,6 @@ final class TestRunHistoryHandler
     private bool $pruneOnPersist;
     private ?HRTime $time        = null;
     private bool $testWasSkipped = false;
-    private int $testSuite       = 0;
 
     /**
      * A status loaded from a previous run must always be replaced by the
@@ -55,19 +54,16 @@ final class TestRunHistoryHandler
         $this->registerSubscribers($facade);
     }
 
-    public function testSuiteStarted(): void
+    /**
+     * The test run history is persisted once, at the end of the test runner's
+     * execution, and not each time the outermost test suite finishes: when
+     * tests are run in parallel, the events of each unit of work are replayed
+     * as a self-contained test suite, so an outermost test suite finishes once
+     * per unit and persisting the history that often is prohibitively
+     * expensive.
+     */
+    public function testRunnerExecutionFinished(): void
     {
-        $this->testSuite++;
-    }
-
-    public function testSuiteFinished(): void
-    {
-        $this->testSuite--;
-
-        if ($this->testSuite !== 0) {
-            return;
-        }
-
         if ($this->pruneOnPersist) {
             $this->testRunHistory->persistAndPrune();
         } else {
@@ -188,8 +184,7 @@ final class TestRunHistoryHandler
     private function registerSubscribers(Facade $facade): void
     {
         $facade->registerSubscribers(
-            new TestSuiteStartedSubscriber($this),
-            new TestSuiteFinishedSubscriber($this),
+            new TestRunnerExecutionFinishedSubscriber($this),
             new TestPreparedSubscriber($this),
             new TestMarkedIncompleteSubscriber($this),
             new TestConsideredRiskySubscriber($this),
