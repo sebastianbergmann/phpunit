@@ -1,10 +1,5 @@
 --TEST--
 Extendable class with property with final get property hook
---SKIPIF--
-<?php declare(strict_types=1);
-if (!method_exists(ReflectionProperty::class, 'isFinal')) {
-    print 'skip: PHP 8.4 is required.';
-}
 --FILE--
 <?php declare(strict_types=1);
 class Foo
