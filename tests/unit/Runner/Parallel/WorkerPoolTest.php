@@ -22,6 +22,7 @@ use PHPUnit\Framework\TestRunner\ChildProcessResultProcessor;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TestFixture\ParallelWorker\WorkerFirstTest;
 use PHPUnit\TestFixture\ParallelWorker\WorkerSecondTest;
+use PHPUnit\TestFixture\ParallelWorker\WorkerSleepingTest;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 use PHPUnit\Util\PHP\Job;
 use PHPUnit\Util\PHP\JobRunner;
@@ -189,6 +190,49 @@ final class WorkerPoolTest extends TestCase
 
             $this->assertCount(1, $completed);
             $this->assertFalse($completed[0]->crashed());
+        } finally {
+            $pool->stop();
+        }
+    }
+
+    public function testHaltDropsTheQueuedUnitsAndTerminatesTheBusyWorkers(): void
+    {
+        $budget = new ProcessBudget(1);
+
+        $pool = $this->pool(1, $budget);
+
+        $pool->start();
+
+        try {
+            $completed = [];
+
+            $pool->begin(
+                [
+                    new TestClassWorkUnit(0, WorkerSleepingTest::class, [new WorkerSleepingTest('testThatSleeps')]),
+                    new TestClassWorkUnit(1, WorkerFirstTest::class, [new WorkerFirstTest('testStartsTheProcessLocalCounter')]),
+                ],
+                static function (CompletedWorkUnit $unit) use (&$completed): void
+                {
+                    $completed[] = $unit;
+                },
+                static function (WorkUnit $unit, EventCollection $events): void
+                {
+                },
+            );
+
+            $pool->tick();
+
+            $this->assertFalse($pool->isFinished());
+
+            $pool->halt();
+
+            // The queued unit was dropped and the sleeping unit's worker was
+            // terminated without being waited for: the pool is finished,
+            // nothing was reported, and the slot the terminated unit held has
+            // been given back to the shared budget.
+            $this->assertTrue($pool->isFinished());
+            $this->assertSame([], $completed);
+            $this->assertTrue($budget->acquire());
         } finally {
             $pool->stop();
         }
