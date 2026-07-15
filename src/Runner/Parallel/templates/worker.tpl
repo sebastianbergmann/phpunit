@@ -93,6 +93,45 @@ function __phpunit_worker_run_unit(object $command): string
         ),
     );
 
+    // Stream the events of the unit to the parent process while the unit is
+    // still running: whenever a test finishes, the events collected so far are
+    // drained from the dispatcher and appended to the stream file as one
+    // frame. The parent forwards a frame as soon as suite order allows, so
+    // progress is reported per finished test instead of per finished unit.
+    // Draining the dispatcher here also means that the end-of-unit result
+    // envelope carries only the events emitted after the last test finished.
+    //
+    // The events of a retried test's attempt are diverted into a collection
+    // window and not dispatched to subscribers, so a frame can never carry
+    // events that a RetryTestSuite may yet decide to suppress.
+    $dispatcher->registerSubscriber(
+        new class($dispatcher, $command->streamFile, $command->nonce) implements PHPUnit\Event\Test\FinishedSubscriber
+        {
+            public function __construct(
+                private readonly PHPUnit\Event\CollectingDispatcher $dispatcher,
+                private readonly string $streamFile,
+                private readonly string $nonce,
+            ) {
+            }
+
+            public function notify(PHPUnit\Event\Test\Finished $event): void
+            {
+                $handle = @fopen($this->streamFile, 'ab');
+
+                if ($handle === false) {
+                    // The stream file cannot be appended to. The events stay
+                    // in the dispatcher, and thereby ship with the end-of-unit
+                    // result envelope: streaming degrades, no event is lost.
+                    return;
+                }
+
+                fwrite($handle, PHPUnit\Runner\Parallel\EventStream::frame($this->nonce, $this->dispatcher->flush()));
+
+                fclose($handle);
+            }
+        },
+    );
+
     require_once $command->file;
 
     $suite = TestSuite::empty($command->className);
