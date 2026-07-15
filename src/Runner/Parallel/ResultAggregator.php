@@ -98,6 +98,15 @@ final class ResultAggregator
     private array $streamedEvents = [];
 
     /**
+     * The indexes of the units whose streamed events have been forwarded.
+     * Such a unit can no longer be re-run from scratch: some of its results
+     * were already reported, and running it again would report them twice.
+     *
+     * @var array<non-negative-int, true>
+     */
+    private array $forwardedStreamedEvents = [];
+
+    /**
      * @var non-negative-int
      */
     private int $nextIndex = 0;
@@ -154,6 +163,8 @@ final class ResultAggregator
         // sequence is frozen, so they will never be shown. Their tests are
         // ones that a sequential run would not have run.
         if ($index === $this->nextIndex && !($this->shouldStop)()) {
+            $this->forwardedStreamedEvents[$index] = true;
+
             $this->eventFacade->forward($events);
 
             return;
@@ -164,6 +175,27 @@ final class ResultAggregator
         }
 
         $this->streamedEvents[$index][] = $events;
+    }
+
+    /**
+     * Whether the unit at the given index may be re-run from scratch: true
+     * when none of its streamed events have been forwarded yet. The events
+     * that were buffered for it are discarded, so that the events of the new
+     * attempt take their place. The worker pool makes this call before it
+     * retries a crashed unit on a fresh worker, because the retry re-runs all
+     * of the unit's tests and must not repeat any that were already reported.
+     *
+     * @param non-negative-int $index
+     */
+    public function discardStreamedEventsFor(int $index): bool
+    {
+        if (isset($this->forwardedStreamedEvents[$index])) {
+            return false;
+        }
+
+        unset($this->streamedEvents[$index]);
+
+        return true;
     }
 
     /**
@@ -230,6 +262,8 @@ final class ResultAggregator
         if (!isset($this->streamedEvents[$index])) {
             return;
         }
+
+        $this->forwardedStreamedEvents[$index] = true;
 
         foreach ($this->streamedEvents[$index] as $events) {
             $this->eventFacade->forward($events);
