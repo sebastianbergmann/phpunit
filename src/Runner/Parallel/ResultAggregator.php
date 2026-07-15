@@ -31,6 +31,17 @@ use stdClass;
  * is an event stream that is byte-for-byte identical to the sequential one,
  * which keeps CI diffs stable.
  *
+ * A worker does not only report a unit when the whole unit has finished: while
+ * the unit is still running, it streams the events of every test that finishes,
+ * and those partial event streams reach the aggregator through
+ * addStreamedEvents(). The events streamed by the unit that is next in suite
+ * order are forwarded immediately — that unit is what the ordered output is
+ * waiting for, so its progress can be shown live — while the events streamed by
+ * any later unit are buffered and forwarded when their unit's turn comes. This
+ * is what makes progress output appear per finished test instead of stalling
+ * until an entire test class has finished, without giving up the ordering
+ * guarantee.
+ *
  * Forwarding a unit means replaying its collected event stream through the
  * parent dispatcher, importing the tests it recorded as passed, and merging its
  * code coverage. Because every user-facing output is a downstream subscriber of
@@ -68,6 +79,14 @@ final class ResultAggregator
     private array $inProcessRunners = [];
 
     /**
+     * The events streamed by units that are still running, buffered per suite
+     * index until their unit's turn in the release sequence comes.
+     *
+     * @var array<non-negative-int, list<EventCollection>>
+     */
+    private array $streamedEvents = [];
+
+    /**
      * @var non-negative-int
      */
     private int $nextIndex = 0;
@@ -101,6 +120,31 @@ final class ResultAggregator
         $this->buffer[$completed->unit()->index()] = $completed;
 
         $this->release();
+    }
+
+    /**
+     * Accept events that a worker streamed while its unit is still running.
+     *
+     * The events of the unit that is next in suite order are forwarded
+     * immediately: every event that precedes them has already been forwarded,
+     * so showing them live cannot violate the ordering guarantee. The events
+     * of any later unit are buffered and forwarded when its turn comes.
+     *
+     * @param non-negative-int $index
+     */
+    public function addStreamedEvents(int $index, EventCollection $events): void
+    {
+        if ($index === $this->nextIndex) {
+            $this->eventFacade->forward($events);
+
+            return;
+        }
+
+        if (!isset($this->streamedEvents[$index])) {
+            $this->streamedEvents[$index] = [];
+        }
+
+        $this->streamedEvents[$index][] = $events;
     }
 
     /**
@@ -142,10 +186,37 @@ final class ResultAggregator
 
             break;
         }
+
+        // The unit that the release sequence now waits for may have streamed
+        // events while it was buffered behind its predecessors; with the
+        // predecessors forwarded, those events are next in suite order and are
+        // forwarded now. Events it streams from here on are forwarded live.
+        $this->forwardStreamedEventsOf($this->nextIndex);
+    }
+
+    /**
+     * @param non-negative-int $index
+     */
+    private function forwardStreamedEventsOf(int $index): void
+    {
+        if (!isset($this->streamedEvents[$index])) {
+            return;
+        }
+
+        foreach ($this->streamedEvents[$index] as $events) {
+            $this->eventFacade->forward($events);
+        }
+
+        unset($this->streamedEvents[$index]);
     }
 
     private function forward(CompletedWorkUnit $completed): void
     {
+        // Whatever the outcome of the unit, the events it streamed while it
+        // was running precede that outcome in suite order — for a crashed
+        // unit, they are the tests that did complete before the worker died.
+        $this->forwardStreamedEventsOf($completed->unit()->index());
+
         if ($completed->crashed()) {
             $message = $completed->message();
 

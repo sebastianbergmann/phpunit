@@ -50,6 +50,19 @@ final class CollectingDispatcher implements Dispatcher
     }
 
     /**
+     * Register a subscriber with the direct dispatcher that events are
+     * dispatched to as they are collected. The parallel test runner's worker
+     * uses this to observe, while a unit is running, the events that have
+     * become part of the unit's recorded stream — an event diverted by a
+     * collection window is not dispatched and thus not observed until the
+     * window's owner forwards it.
+     */
+    public function registerSubscriber(Subscriber $subscriber): void
+    {
+        $this->isolatedDirectDispatcher->registerSubscriber($subscriber);
+    }
+
+    /**
      * Open a collection window: until stopCollectingEvents() is called, events
      * are diverted into a separate collection instead of being recorded and
      * dispatched. This mirrors the collection window of the DeferringDispatcher

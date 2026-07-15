@@ -289,6 +289,10 @@ final class ParallelTestRunner
                 {
                     $aggregator->add($completed);
                 },
+                static function (WorkUnit $unit, Event\EventCollection $events) use ($aggregator): void
+                {
+                    $aggregator->addStreamedEvents($unit->index(), $events);
+                },
             );
         } finally {
             $pool->stop();

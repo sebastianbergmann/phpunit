@@ -22,10 +22,12 @@ use function json_encode;
 use function random_bytes;
 use function serialize;
 use function sprintf;
+use function strlen;
 use function sys_get_temp_dir;
 use function tempnam;
 use function unlink;
 use function var_export;
+use PHPUnit\Event\EventCollection;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\RepeatTestSuite;
 use PHPUnit\Framework\RetryTestSuite;
@@ -57,6 +59,14 @@ use Throwable;
  * The result of each unit is transported back to the parent process as the same
  * kind of serialized envelope that process isolation uses, which the
  * ResultAggregator decodes and replays into the parent's event subsystem.
+ *
+ * While a unit is still running, the worker additionally streams the events of
+ * every test that has finished so far: it appends them, as length-prefixed
+ * frames, to a stream file that the parent reads incrementally on each poll.
+ * This is what lets the parent report progress per finished test instead of
+ * per finished unit. Events shipped in a frame are drained from the worker's
+ * event collection, so the end-of-unit envelope carries only the events that
+ * were emitted after the last test finished.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -92,6 +102,24 @@ final class PersistentWorker
     private ?string $currentNonce      = null;
     private ?string $currentResultFile = null;
     private ?string $currentDoneFile   = null;
+    private ?string $currentStreamFile = null;
+
+    /**
+     * How many bytes of the current unit's event stream file have been
+     * consumed by drainStreamedEvents() so far.
+     *
+     * @var non-negative-int
+     */
+    private int $currentStreamOffset = 0;
+
+    /**
+     * Whether the current unit's event stream failed verification: a frame
+     * whose nonce does not match, a frame whose payload does not decode to a
+     * collection of events, or trailing bytes that do not form a complete
+     * frame even though the worker has signalled completion. A tainted stream
+     * is not read any further, and the unit it belongs to is not trusted.
+     */
+    private bool $currentStreamTainted = false;
 
     /**
      * @var non-negative-int
@@ -165,18 +193,22 @@ final class PersistentWorker
 
         assert($unit instanceof TestClassWorkUnit);
 
-        $doneFile = $resultFile . '.done';
+        $doneFile   = $resultFile . '.done';
+        $streamFile = $resultFile . '.stream';
 
-        $command = $this->testClassCommand($unit, $offset, $resultFile, $doneFile, $nonce);
+        $command = $this->testClassCommand($unit, $offset, $resultFile, $doneFile, $streamFile, $nonce);
 
         $encodedCommand = json_encode($command);
 
         assert($encodedCommand !== false);
 
-        $this->currentUnit       = $unit;
-        $this->currentNonce      = $nonce;
-        $this->currentResultFile = $resultFile;
-        $this->currentDoneFile   = $doneFile;
+        $this->currentUnit          = $unit;
+        $this->currentNonce         = $nonce;
+        $this->currentResultFile    = $resultFile;
+        $this->currentDoneFile      = $doneFile;
+        $this->currentStreamFile    = $streamFile;
+        $this->currentStreamOffset  = 0;
+        $this->currentStreamTainted = false;
 
         $this->job->write($encodedCommand . "\n");
     }
@@ -203,16 +235,33 @@ final class PersistentWorker
      * so, harvest its result; if the worker has died without finishing it,
      * report the unit as crashed instead.
      *
+     * Either way, the events that the worker has streamed since the previous
+     * poll are drained first and handed, one frame at a time, to the given
+     * callback, so that the caller can report progress while the unit is still
+     * running.
+     *
      * Returns null while the unit is still running. The caller is expected to
      * call this repeatedly, sleeping briefly between rounds, until it returns a
      * completed unit.
+     *
+     * @param callable(WorkUnit, EventCollection):void $onStreamedEvents
      */
-    public function poll(): ?CompletedWorkUnit
+    public function poll(callable $onStreamedEvents): ?CompletedWorkUnit
     {
         assert($this->currentUnit !== null);
         assert($this->currentDoneFile !== null);
 
-        if (is_file($this->currentDoneFile)) {
+        // Completion is snapshotted before the stream is drained: the done
+        // file is created only after the last frame has been written, so a
+        // stream that is drained after the done file was seen is known to have
+        // been read in its entirety.
+        $done = is_file($this->currentDoneFile);
+
+        foreach ($this->drainStreamedEvents($done) as $events) {
+            $onStreamedEvents($this->currentUnit, $events);
+        }
+
+        if ($done) {
             return $this->finished();
         }
 
@@ -248,16 +297,60 @@ final class PersistentWorker
     }
 
     /**
+     * Read the frames that the worker has appended to its event stream file
+     * since the previous read (see EventStream for the format) and decode each
+     * one into the collection of events it carries.
+     *
+     * When $streamIsComplete is true, the worker has signalled completion and
+     * no further writes can happen; trailing bytes that do not form a complete
+     * frame then taint the stream, in addition to the conditions under which
+     * EventStream itself reports taint. A tainted stream is not read any
+     * further, and finished() reports the unit as compromised instead of
+     * trusting its result.
+     *
+     * @return list<EventCollection>
+     */
+    private function drainStreamedEvents(bool $streamIsComplete): array
+    {
+        assert($this->currentStreamFile !== null);
+
+        if ($this->currentStreamTainted || !is_file($this->currentStreamFile)) {
+            return [];
+        }
+
+        $data = @file_get_contents($this->currentStreamFile, false, null, $this->currentStreamOffset);
+
+        if ($data === false || $data === '') {
+            return [];
+        }
+
+        $result = EventStream::readFrames($data, $this->currentNonce);
+
+        $this->currentStreamOffset += $result['bytesConsumed'];
+
+        if ($result['tainted']) {
+            $this->currentStreamTainted = true;
+        }
+
+        if ($streamIsComplete && $result['bytesConsumed'] < strlen($data)) {
+            $this->currentStreamTainted = true;
+        }
+
+        return $result['frames'];
+    }
+
+    /**
      * @param array{0: int, 1: int} $offset
      * @param non-empty-string      $resultFile
      * @param non-empty-string      $doneFile
+     * @param non-empty-string      $streamFile
      * @param non-empty-string      $nonce
      *
      * @throws WorkerException
      *
      * @return array<string, mixed>
      */
-    private function testClassCommand(TestClassWorkUnit $unit, array $offset, string $resultFile, string $doneFile, string $nonce): array
+    private function testClassCommand(TestClassWorkUnit $unit, array $offset, string $resultFile, string $doneFile, string $streamFile, string $nonce): array
     {
         $class = new ReflectionClass($unit->className());
         $file  = $class->getFileName();
@@ -315,6 +408,7 @@ final class PersistentWorker
             'offsetNanoseconds' => $offset[1],
             'resultFile'        => $resultFile,
             'doneFile'          => $doneFile,
+            'streamFile'        => $streamFile,
             'nonce'             => $nonce,
         ];
     }
@@ -368,16 +462,39 @@ final class PersistentWorker
         assert($this->currentUnit !== null);
         assert($this->currentResultFile !== null);
         assert($this->currentDoneFile !== null);
+        assert($this->currentStreamFile !== null);
 
         $serializedResult = file_get_contents($this->currentResultFile);
 
         @unlink($this->currentResultFile);
         @unlink($this->currentDoneFile);
+        @unlink($this->currentStreamFile);
 
         if ($serializedResult === false) {
             // @codeCoverageIgnoreStart
             $serializedResult = '';
             // @codeCoverageIgnoreEnd
+        }
+
+        // A unit whose event stream failed verification is not trusted, even
+        // though its result envelope may verify: the events already forwarded
+        // from the stream and the events in the envelope are two parts of one
+        // result, and part of it was interfered with.
+        if ($this->currentStreamTainted) {
+            $completed = new CompletedWorkUnit(
+                $this->currentUnit,
+                '',
+                null,
+                true,
+                sprintf(
+                    'The event stream of the worker process running %s was tampered with or written by an unexpected process',
+                    $this->currentUnit->name(),
+                ),
+            );
+
+            $this->clearCurrentUnit();
+
+            return $completed;
         }
 
         $completed = new CompletedWorkUnit(
@@ -408,6 +525,10 @@ final class PersistentWorker
             @unlink($this->currentDoneFile);
         }
 
+        if ($this->currentStreamFile !== null) {
+            @unlink($this->currentStreamFile);
+        }
+
         $completed = new CompletedWorkUnit($this->currentUnit, '', null, true);
 
         if ($this->job !== null) {
@@ -423,10 +544,13 @@ final class PersistentWorker
 
     private function clearCurrentUnit(): void
     {
-        $this->currentUnit       = null;
-        $this->currentNonce      = null;
-        $this->currentResultFile = null;
-        $this->currentDoneFile   = null;
+        $this->currentUnit          = null;
+        $this->currentNonce         = null;
+        $this->currentResultFile    = null;
+        $this->currentDoneFile      = null;
+        $this->currentStreamFile    = null;
+        $this->currentStreamOffset  = 0;
+        $this->currentStreamTainted = false;
     }
 
     /**
