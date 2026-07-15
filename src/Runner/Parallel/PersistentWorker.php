@@ -29,8 +29,10 @@ use function unlink;
 use function var_export;
 use PHPUnit\Event\EventCollection;
 use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\RepeatTestSuite;
 use PHPUnit\Framework\RetryTestSuite;
+use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
@@ -360,43 +362,7 @@ final class PersistentWorker
         $tests = [];
 
         foreach ($unit->tests() as $test) {
-            if ($test instanceof RetryTestSuite) {
-                $aggregated = $test->tests();
-
-                assert(count($aggregated) === 1 && $aggregated[0] instanceof TestCase);
-
-                $tests[] = [
-                    'type'        => 'retry',
-                    'name'        => $test->name(),
-                    'maxAttempts' => $test->maxAttempts(),
-                    'test'        => $this->testDescriptor($aggregated[0], $unit->className(), $resultFile),
-                ];
-
-                continue;
-            }
-
-            if ($test instanceof RepeatTestSuite) {
-                $repetitions = [];
-
-                foreach ($test->tests() as $repetition) {
-                    assert($repetition instanceof TestCase);
-
-                    $repetitions[] = $this->testDescriptor($repetition, $unit->className(), $resultFile);
-                }
-
-                $tests[] = [
-                    'type'             => 'repeat',
-                    'name'             => $test->name(),
-                    'failureThreshold' => $test->failureThreshold(),
-                    'tests'            => $repetitions,
-                ];
-
-                continue;
-            }
-
-            assert($test instanceof TestCase);
-
-            $tests[] = $this->testDescriptor($test, $unit->className(), $resultFile);
+            $tests[] = $this->memberDescriptor($test, $unit->className(), $resultFile);
         }
 
         return [
@@ -411,6 +377,74 @@ final class PersistentWorker
             'streamFile'        => $streamFile,
             'nonce'             => $nonce,
         ];
+    }
+
+    /**
+     * The transportable description of one member of a unit: a single test
+     * case, the RetryTestSuite of a retried test method, the RepeatTestSuite
+     * of a repeated test method, or the DataProviderTestSuite of a data
+     * provider method, whose members are in turn described recursively.
+     *
+     * @param class-string     $className
+     * @param non-empty-string $resultFile
+     *
+     * @throws WorkerException
+     *
+     * @return array<string, mixed>
+     */
+    private function memberDescriptor(Test $test, string $className, string $resultFile): array
+    {
+        // The tests of a data provider method travel as their
+        // DataProviderTestSuite so that the suite's event envelope, which
+        // nests the tests in the logger output of a sequential run, is
+        // emitted inside the worker in a parallel run, too.
+        if ($test instanceof DataProviderTestSuite) {
+            $members = [];
+
+            foreach ($test->tests() as $member) {
+                $members[] = $this->memberDescriptor($member, $className, $resultFile);
+            }
+
+            return [
+                'type'  => 'dataProvider',
+                'name'  => $test->name(),
+                'tests' => $members,
+            ];
+        }
+
+        if ($test instanceof RetryTestSuite) {
+            $aggregated = $test->tests();
+
+            assert(count($aggregated) === 1 && $aggregated[0] instanceof TestCase);
+
+            return [
+                'type'        => 'retry',
+                'name'        => $test->name(),
+                'maxAttempts' => $test->maxAttempts(),
+                'test'        => $this->testDescriptor($aggregated[0], $className, $resultFile),
+            ];
+        }
+
+        if ($test instanceof RepeatTestSuite) {
+            $repetitions = [];
+
+            foreach ($test->tests() as $repetition) {
+                assert($repetition instanceof TestCase);
+
+                $repetitions[] = $this->testDescriptor($repetition, $className, $resultFile);
+            }
+
+            return [
+                'type'             => 'repeat',
+                'name'             => $test->name(),
+                'failureThreshold' => $test->failureThreshold(),
+                'tests'            => $repetitions,
+            ];
+        }
+
+        assert($test instanceof TestCase);
+
+        return $this->testDescriptor($test, $className, $resultFile);
     }
 
     /**
