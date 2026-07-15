@@ -268,6 +268,56 @@ final class ResultAggregatorTest extends TestCase
         $this->assertStringContainsString(WorkerSecondTest::class, $forwarded[2]);
     }
 
+    public function testDiscardsTheBufferedStreamedEventsOfAUnitThatIsToBeRetried(): void
+    {
+        $forwarded = [];
+
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter->method('testRunnerTriggeredPhpunitWarning')->willReturnCallback(
+            static function (string $message) use (&$forwarded): void
+            {
+                $forwarded[] = $message;
+            },
+        );
+
+        $aggregator = $this->aggregatorObservedThrough($forwarded, $emitter);
+
+        // The unit at index 1 streamed an event, buffered behind index 0,
+        // and then its worker crashed: the retry is allowed, and the crashed
+        // attempt's buffered event is discarded.
+        $aggregator->addStreamedEvents(1, $this->events('first attempt'));
+
+        $this->assertTrue($aggregator->discardStreamedEventsFor(1));
+
+        // The retry streams its own event and both units finish (as crashes,
+        // whose warnings mark their places in the forwarded sequence): the
+        // discarded event must not appear, the retry's event must.
+        $aggregator->addStreamedEvents(1, $this->events('second attempt'));
+
+        $aggregator->add(new CompletedWorkUnit(new TestClassWorkUnit(0, WorkerFirstTest::class, []), '', null, true));
+        $aggregator->add(new CompletedWorkUnit(new TestClassWorkUnit(1, WorkerSecondTest::class, []), '', null, true));
+
+        $this->assertCount(3, $forwarded);
+        $this->assertStringContainsString(WorkerFirstTest::class, $forwarded[0]);
+        $this->assertSame('second attempt', $forwarded[1]);
+        $this->assertStringContainsString(WorkerSecondTest::class, $forwarded[2]);
+    }
+
+    public function testDoesNotAllowARetryForAUnitWhoseStreamedEventsWereForwarded(): void
+    {
+        $forwarded = [];
+
+        $aggregator = $this->aggregatorObservedThrough($forwarded, $this->createStub(Emitter::class));
+
+        // The unit at index 0 is next in suite order, so its streamed events
+        // were forwarded live; re-running it would report them twice.
+        $aggregator->addStreamedEvents(0, $this->events('already reported'));
+
+        $this->assertSame(['already reported'], $forwarded);
+        $this->assertFalse($aggregator->discardStreamedEventsFor(0));
+    }
+
     public function testFreezesTheReleaseSequenceWhenTheCollectedResultsCallForTheRunToStop(): void
     {
         $messages = [];
