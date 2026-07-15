@@ -118,7 +118,7 @@ final class ParallelTestRunner
             $chunks = $this->collectChunks($configuration, $suite);
 
             if ($chunks !== []) {
-                $this->execute($configuration, $chunks);
+                $this->execute($configuration, $suite, $chunks);
             }
 
             Event\Facade::emitter()->testRunnerExecutionFinished();
@@ -163,11 +163,19 @@ final class ParallelTestRunner
      * in sequential mode. Any remaining standalone test — one that is neither a
      * TestCase nor a PHPT test — is run the same way, at its own suite index.
      *
-     * @param non-empty-list<array{units: list<WorkUnit>, phpt: list<PhptWorkUnit>, standalone: list<array{index: non-negative-int, test: Test}>}> $chunks
+     * In sequential mode, TestSuite::run() wraps every suite's tests in a pair
+     * of "test suite started" / "test suite finished" events. The workers and
+     * the in-process units produce these for the test classes they run, but
+     * nothing produces them for the root suite and the top-level test suites
+     * in a parallel run; they are therefore emitted here, around the chunks.
+     * The loggers that reconstruct the suite hierarchy from these events —
+     * JUnit XML, Open Test Reporting, TeamCity — depend on them.
+     *
+     * @param non-empty-list<array{suite: TestSuite, units: list<WorkUnit>, phpt: list<PhptWorkUnit>, standalone: list<array{index: non-negative-int, test: Test}>}> $chunks
      *
      * @throws WorkerException
      */
-    private function execute(Configuration $configuration, array $chunks): void
+    private function execute(Configuration $configuration, TestSuite $suite, array $chunks): void
     {
         $aggregator = new ResultAggregator(
             Event\Facade::instance(),
@@ -230,6 +238,7 @@ final class ParallelTestRunner
             }
 
             $runs[] = [
+                'suite'    => $chunk['suite'],
                 'parallel' => $parallel,
                 'phpt'     => $chunk['phpt'],
             ];
@@ -257,12 +266,24 @@ final class ParallelTestRunner
             $phptRunner = $this->createPhptRunner($configuration, $budget);
         }
 
-        // Run any in-process units that precede the first chunk's units.
-        $aggregator->flush();
+        // When the suite was partitioned into chunks, the chunks are the
+        // root suite's top-level test suites, and the root suite needs an
+        // envelope of its own around all of them. When it was not, the only
+        // chunk is the root suite itself, whose envelope is emitted by
+        // runChunk().
+        $rootSuiteValueObject = null;
+
+        if ($chunks[0]['suite'] !== $suite) {
+            $rootSuiteValueObject = Event\TestSuite\TestSuiteBuilder::from($suite);
+        }
+
+        if ($rootSuiteValueObject !== null) {
+            Event\Facade::emitter()->testSuiteStarted($rootSuiteValueObject);
+        }
 
         try {
             foreach ($runs as $run) {
-                $this->runChunk($run['parallel'], $run['phpt'], $pool, $phptRunner, $aggregator);
+                $this->runChunk($run['suite'], $run['parallel'], $run['phpt'], $pool, $phptRunner, $aggregator);
             }
         } finally {
             if ($pool !== null) {
@@ -270,7 +291,9 @@ final class ParallelTestRunner
             }
         }
 
-        $aggregator->flush();
+        if ($rootSuiteValueObject !== null) {
+            Event\Facade::emitter()->testSuiteFinished($rootSuiteValueObject);
+        }
     }
 
     /**
@@ -282,11 +305,32 @@ final class ParallelTestRunner
      * the release sequence reaches their indexes; the trailing flush releases
      * those that sit between this chunk and the next.
      *
+     * The chunk's results are wrapped in the "test suite started" / "test
+     * suite finished" envelope that its suite would have emitted had it been
+     * run by TestSuite::run() in sequential mode.
+     *
      * @param list<WorkUnit>     $parallel
      * @param list<PhptWorkUnit> $phpt
      */
-    private function runChunk(array $parallel, array $phpt, ?WorkerPool $pool, ?PhptRunner $phptRunner, ResultAggregator $aggregator): void
+    private function runChunk(TestSuite $suite, array $parallel, array $phpt, ?WorkerPool $pool, ?PhptRunner $phptRunner, ResultAggregator $aggregator): void
     {
+        $suiteValueObject = Event\TestSuite\TestSuiteBuilder::from($suite);
+
+        // A chunk whose suite is itself a test class suite — a single test
+        // class file given as the CLI argument — becomes one unit whose
+        // execution emits that very envelope: the worker replays it, or the
+        // in-process run emits it live. Emitting it here as well would nest
+        // the class suite inside itself.
+        $suiteEnvelopeIsEmittedByUnits = $suiteValueObject->isForTestClass();
+
+        if (!$suiteEnvelopeIsEmittedByUnits) {
+            Event\Facade::emitter()->testSuiteStarted($suiteValueObject);
+        }
+
+        // Run the in-process units that precede the chunk's first worker or
+        // PHPT unit.
+        $aggregator->flush();
+
         $activePool = null;
 
         if ($parallel !== []) {
@@ -362,6 +406,10 @@ final class ParallelTestRunner
 
         // Run the in-process units that follow the chunk's last unit.
         $aggregator->flush();
+
+        if (!$suiteEnvelopeIsEmittedByUnits) {
+            Event\Facade::emitter()->testSuiteFinished($suiteValueObject);
+        }
     }
 
     private function createPhptRunner(Configuration $configuration, ProcessBudget $budget): PhptRunner
@@ -595,7 +643,13 @@ final class ParallelTestRunner
      * order, so that the aggregator releases the results of every chunk in
      * global suite order.
      *
-     * @return list<array{units: list<WorkUnit>, phpt: list<PhptWorkUnit>, standalone: list<array{index: non-negative-int, test: Test}>}>
+     * Every chunk carries the suite it was collected from, so that the chunk's
+     * results can be wrapped in that suite's "test suite started" / "test
+     * suite finished" envelope. A chunk whose units were all filtered away is
+     * dropped, mirroring how TestSuite::run() emits no envelope for a suite
+     * that has become empty.
+     *
+     * @return list<array{suite: TestSuite, units: list<WorkUnit>, phpt: list<PhptWorkUnit>, standalone: list<array{index: non-negative-int, test: Test}>}>
      */
     private function collectChunks(Configuration $configuration, TestSuite $suite): array
     {
@@ -633,7 +687,12 @@ final class ParallelTestRunner
                 continue;
             }
 
-            $chunks[] = $chunk;
+            $chunks[] = [
+                'suite'      => $root,
+                'units'      => $chunk['units'],
+                'phpt'       => $chunk['phpt'],
+                'standalone' => $chunk['standalone'],
+            ];
         }
 
         return $chunks;
