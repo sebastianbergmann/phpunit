@@ -268,13 +268,85 @@ final class ResultAggregatorTest extends TestCase
         $this->assertStringContainsString(WorkerSecondTest::class, $forwarded[2]);
     }
 
-    private function aggregator(Emitter $emitter): ResultAggregator
+    public function testFreezesTheReleaseSequenceWhenTheCollectedResultsCallForTheRunToStop(): void
     {
+        $messages = [];
+
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter->method('testRunnerTriggeredPhpunitWarning')->willReturnCallback(
+            static function (string $message) use (&$messages): void
+            {
+                $messages[] = $message;
+            },
+        );
+
+        $shouldStop = false;
+
+        $aggregator = $this->aggregator(
+            $emitter,
+            static function () use (&$shouldStop): bool
+            {
+                return $shouldStop;
+            },
+        );
+
+        $aggregator->add(new CompletedWorkUnit(new TestClassWorkUnit(0, WorkerFirstTest::class, []), '', null, true));
+
+        $this->assertCount(1, $messages);
+
+        // The run is to stop: the unit at index 1 is not released, neither by
+        // its own arrival nor by an explicit flush — its tests are ones that
+        // a sequential run would not have run.
+        $shouldStop = true;
+
+        $aggregator->add(new CompletedWorkUnit(new TestClassWorkUnit(1, WorkerSecondTest::class, []), '', null, true));
+        $aggregator->flush();
+
+        $this->assertCount(1, $messages);
+    }
+
+    public function testBuffersStreamedEventsInsteadOfForwardingThemWhenTheRunIsToStop(): void
+    {
+        $forwarded = [];
+
+        $shouldStop = false;
+
+        $aggregator = $this->aggregatorObservedThrough(
+            $forwarded,
+            $this->createStub(Emitter::class),
+            static function () use (&$shouldStop): bool
+            {
+                return $shouldStop;
+            },
+        );
+
+        $aggregator->addStreamedEvents(0, $this->events('before the stop'));
+
+        $this->assertSame(['before the stop'], $forwarded);
+
+        $shouldStop = true;
+
+        $aggregator->addStreamedEvents(0, $this->events('after the stop'));
+
+        $this->assertSame(['before the stop'], $forwarded);
+    }
+
+    private function aggregator(Emitter $emitter, ?callable $shouldStop = null): ResultAggregator
+    {
+        if ($shouldStop === null) {
+            $shouldStop = static function (): bool
+            {
+                return false;
+            };
+        }
+
         return new ResultAggregator(
             new Facade,
             $emitter,
             new PassedTests,
             new CodeCoverage,
+            $shouldStop,
         );
     }
 
@@ -287,8 +359,15 @@ final class ResultAggregatorTest extends TestCase
      *
      * @param list<string> $forwarded
      */
-    private function aggregatorObservedThrough(array &$forwarded, Emitter $emitter): ResultAggregator
+    private function aggregatorObservedThrough(array &$forwarded, Emitter $emitter, ?callable $shouldStop = null): ResultAggregator
     {
+        if ($shouldStop === null) {
+            $shouldStop = static function (): bool
+            {
+                return false;
+            };
+        }
+
         $facade = new Facade;
 
         $facade->registerSubscriber(
@@ -321,6 +400,7 @@ final class ResultAggregatorTest extends TestCase
             $emitter,
             new PassedTests,
             new CodeCoverage,
+            $shouldStop,
         );
     }
 
