@@ -55,6 +55,26 @@ EOT,
         $this->assertSame($result, $job->wait());
     }
 
+    public function testTerminatesAJobWithoutWaitingForItToFinish(): void
+    {
+        $job = $this->jobRunner()->start(
+            new Job(
+                <<<'EOT'
+<?php declare(strict_types=1);
+sleep(10);
+
+EOT,
+            ),
+        );
+
+        $job->terminate();
+
+        $this->assertFalse($job->isRunning());
+
+        // Terminating a job that has already been reaped is a no-op.
+        $job->terminate();
+    }
+
     public function testReportsWhetherTheProcessIsStillRunning(): void
     {
         $job = $this->jobRunner()->start(
