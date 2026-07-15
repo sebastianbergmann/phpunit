@@ -106,12 +106,21 @@ final class PhptRunner
     private $onCompleted;
 
     /**
+     * The budget of concurrently executing units that the PHPT tests share
+     * with the worker pool: a slot is taken for every started test and given
+     * back when the test finishes, so that the PHPT tests and the worker pool
+     * together never execute more units at once than the budget allows.
+     */
+    private readonly ProcessBudget $budget;
+
+    /**
      * @param positive-int $concurrency
      */
-    public function __construct(JobRunner $jobRunner, int $concurrency)
+    public function __construct(JobRunner $jobRunner, int $concurrency, ProcessBudget $budget)
     {
         $this->jobRunner   = $jobRunner;
         $this->concurrency = $concurrency;
+        $this->budget      = $budget;
     }
 
     /**
@@ -218,6 +227,12 @@ final class PhptRunner
                 continue;
             }
 
+            // The unit may only start while the shared process budget has a
+            // slot left; the slot is held until the test finishes.
+            if (!$this->budget->acquire()) {
+                break;
+            }
+
             unset($this->queue[$position]);
 
             $progressed = true;
@@ -230,7 +245,10 @@ final class PhptRunner
             if (!$generator->valid()) {
                 // The test produced its events without running any child
                 // process — a parse error, or a skip decided in-process. It
-                // is already finished, so it reserves no conflict keys.
+                // is already finished, so it reserves no conflict keys and
+                // gives its slot back to the budget right away.
+                $this->budget->release();
+
                 $onCompleted($unit->index(), $collector->flush());
 
                 continue;
@@ -338,6 +356,8 @@ final class PhptRunner
 
                 continue;
             }
+
+            $this->budget->release();
 
             $onCompleted($task['unit']->index(), $task['collector']->flush());
 
