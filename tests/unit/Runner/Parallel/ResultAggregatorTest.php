@@ -9,10 +9,15 @@
  */
 namespace PHPUnit\Runner\Parallel;
 
+use function hrtime;
 use function serialize;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Event\EventCollection;
 use PHPUnit\Event\Facade;
+use PHPUnit\Event\Telemetry;
+use PHPUnit\Event\Telemetry\HRTime;
+use PHPUnit\Event\TestRunner\WarningTriggered;
+use PHPUnit\Event\TestRunner\WarningTriggeredSubscriber;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -185,6 +190,84 @@ final class ResultAggregatorTest extends TestCase
         $this->assertSame(['in-process'], $order);
     }
 
+    public function testForwardsTheStreamedEventsOfTheUnitThatIsNextInSuiteOrderImmediately(): void
+    {
+        $forwarded = [];
+
+        $aggregator = $this->aggregatorObservedThrough($forwarded, $this->createStub(Emitter::class));
+
+        // The unit at index 0 is what the ordered output waits for, so the
+        // events it streams while it is still running are forwarded live.
+        $aggregator->addStreamedEvents(0, $this->events('first test of unit 0'));
+
+        $this->assertSame(['first test of unit 0'], $forwarded);
+    }
+
+    public function testBuffersTheStreamedEventsOfALaterUnitUntilItsTurnComes(): void
+    {
+        $forwarded = [];
+
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter->method('testRunnerTriggeredPhpunitWarning')->willReturnCallback(
+            static function (string $message) use (&$forwarded): void
+            {
+                $forwarded[] = $message;
+            },
+        );
+
+        $aggregator = $this->aggregatorObservedThrough($forwarded, $emitter);
+
+        // The unit at index 1 streams events while the unit at index 0 is
+        // still running; they must be held back.
+        $aggregator->addStreamedEvents(1, $this->events('first test of unit 1'));
+
+        $this->assertSame([], $forwarded);
+
+        // The unit at index 0 finishes (as a crash, whose warning marks its
+        // place in the forwarded sequence); the buffered events of the unit at
+        // index 1 follow it immediately, and events the unit streams from now
+        // on are forwarded live.
+        $aggregator->add(new CompletedWorkUnit(new TestClassWorkUnit(0, WorkerFirstTest::class, []), '', null, true));
+
+        $aggregator->addStreamedEvents(1, $this->events('second test of unit 1'));
+
+        $this->assertCount(3, $forwarded);
+        $this->assertStringContainsString(WorkerFirstTest::class, $forwarded[0]);
+        $this->assertSame('first test of unit 1', $forwarded[1]);
+        $this->assertSame('second test of unit 1', $forwarded[2]);
+    }
+
+    public function testForwardsTheStreamedEventsOfACrashedUnitBeforeReportingTheCrash(): void
+    {
+        $forwarded = [];
+
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter->method('testRunnerTriggeredPhpunitWarning')->willReturnCallback(
+            static function (string $message) use (&$forwarded): void
+            {
+                $forwarded[] = $message;
+            },
+        );
+
+        $aggregator = $this->aggregatorObservedThrough($forwarded, $emitter);
+
+        // The unit at index 1 streams the events of a test that completed and
+        // then crashes, all while the unit at index 0 is still running.
+        $aggregator->addStreamedEvents(1, $this->events('completed test of unit 1'));
+        $aggregator->add(new CompletedWorkUnit(new TestClassWorkUnit(1, WorkerSecondTest::class, []), '', null, true));
+
+        $this->assertSame([], $forwarded);
+
+        $aggregator->add(new CompletedWorkUnit(new TestClassWorkUnit(0, WorkerFirstTest::class, []), '', null, true));
+
+        $this->assertCount(3, $forwarded);
+        $this->assertStringContainsString(WorkerFirstTest::class, $forwarded[0]);
+        $this->assertSame('completed test of unit 1', $forwarded[1]);
+        $this->assertStringContainsString(WorkerSecondTest::class, $forwarded[2]);
+    }
+
     private function aggregator(Emitter $emitter): ResultAggregator
     {
         return new ResultAggregator(
@@ -193,5 +276,85 @@ final class ResultAggregatorTest extends TestCase
             new PassedTests,
             new CodeCoverage,
         );
+    }
+
+    /**
+     * An aggregator whose forwarded events are observable: the message of
+     * every forwarded test runner warning event is appended to $forwarded.
+     * Forwarding a crashed unit records its warning message through the
+     * emitter into the same array, so the order of events and crash reports
+     * relative to each other is observable, too.
+     *
+     * @param list<string> $forwarded
+     */
+    private function aggregatorObservedThrough(array &$forwarded, Emitter $emitter): ResultAggregator
+    {
+        $facade = new Facade;
+
+        $facade->registerSubscriber(
+            new class($forwarded) implements WarningTriggeredSubscriber
+            {
+                /**
+                 * @var list<string>
+                 */
+                private array $forwarded;
+
+                /**
+                 * @param list<string> $forwarded
+                 */
+                public function __construct(array &$forwarded)
+                {
+                    $this->forwarded = &$forwarded;
+                }
+
+                public function notify(WarningTriggered $event): void
+                {
+                    $this->forwarded[] = $event->message();
+                }
+            },
+        );
+
+        $facade->seal();
+
+        return new ResultAggregator(
+            $facade,
+            $emitter,
+            new PassedTests,
+            new CodeCoverage,
+        );
+    }
+
+    private function events(string $message): EventCollection
+    {
+        $events = new EventCollection;
+
+        $events->add(
+            new WarningTriggered(
+                new Telemetry\Info(
+                    new Telemetry\Snapshot(
+                        HRTime::fromSecondsAndNanoseconds(...hrtime(false)),
+                        Telemetry\MemoryUsage::fromBytes(1000),
+                        Telemetry\MemoryUsage::fromBytes(2000),
+                        new Telemetry\GarbageCollectorStatus(0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, false, false, false, 0),
+                        Telemetry\CpuTime::fromSecondsAndNanoseconds(0, 0),
+                        Telemetry\CpuTime::fromSecondsAndNanoseconds(0, 0),
+                        Telemetry\CpuTime::fromSecondsAndNanoseconds(0, 0),
+                    ),
+                    Telemetry\Duration::fromSecondsAndNanoseconds(123, 456),
+                    Telemetry\MemoryUsage::fromBytes(2000),
+                    Telemetry\Duration::fromSecondsAndNanoseconds(234, 567),
+                    Telemetry\MemoryUsage::fromBytes(3000),
+                    Telemetry\CpuTime::fromSecondsAndNanoseconds(0, 0),
+                    Telemetry\CpuTime::fromSecondsAndNanoseconds(0, 0),
+                    Telemetry\CpuTime::fromSecondsAndNanoseconds(0, 0),
+                    Telemetry\CpuTime::fromSecondsAndNanoseconds(0, 0),
+                    Telemetry\CpuTime::fromSecondsAndNanoseconds(0, 0),
+                    Telemetry\CpuTime::fromSecondsAndNanoseconds(0, 0),
+                ),
+                $message,
+            ),
+        );
+
+        return $events;
     }
 }
