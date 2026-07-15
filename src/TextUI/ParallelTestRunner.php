@@ -18,6 +18,7 @@ use function is_resource;
 use function mt_srand;
 use function serialize;
 use function spl_object_id;
+use function usleep;
 use PHPUnit\Event;
 use PHPUnit\Framework\IterativeTestSuite;
 use PHPUnit\Framework\PhptIterativeTestSuite;
@@ -54,6 +55,10 @@ use Throwable;
  * are run together by a single worker, which preserves the class' shared
  * fixtures (#[BeforeClass] / #[AfterClass]) and its intra-class ordering.
  *
+ * The top-level <testsuite> elements of an XML configuration are run one after
+ * another, just as they are in sequential mode: only tests that belong to the
+ * same top-level test suite run concurrently with each other.
+ *
  * Apart from the parallel execution itself, this runner is a drop-in
  * replacement for the sequential TestRunner: it performs the same test suite
  * sorting and filtering and emits the same test runner lifecycle events, so the
@@ -65,6 +70,13 @@ use Throwable;
  */
 final class ParallelTestRunner
 {
+    /**
+     * How long to sleep, in microseconds, when a polling round finds that
+     * neither the worker pool nor the PHPT runner has progressed, so that
+     * waiting does not spin the CPU.
+     */
+    private const int POLL_INTERVAL_MICROSECONDS = 1000;
+
     /**
      * @throws RuntimeException
      */
@@ -102,10 +114,10 @@ final class ParallelTestRunner
                 Event\TestSuite\TestSuiteBuilder::from($suite),
             );
 
-            $collected = $this->collectUnits($suite);
+            $chunks = $this->collectChunks($configuration, $suite);
 
-            if ($collected['units'] !== [] || $collected['phpt'] !== [] || $collected['standalone'] !== []) {
-                $this->execute($configuration, $collected['units'], $collected['phpt'], $collected['standalone']);
+            if ($chunks !== []) {
+                $this->execute($configuration, $chunks);
             }
 
             Event\Facade::emitter()->testRunnerExecutionFinished();
@@ -122,16 +134,24 @@ final class ParallelTestRunner
     }
 
     /**
-     * Units are run in two phases.
+     * The chunks are run one after another; within a chunk, three kinds of
+     * units run concurrently.
      *
-     * The parallel phase distributes across the worker pool every unit whose
-     * tests may run in a worker process: those that are neither attributed with
-     * #[DoNotRunInParallel] nor carry test data that cannot be serialized for
-     * transport to a worker.
+     * Units whose tests may run in a worker process — those that are neither
+     * attributed with #[DoNotRunInParallel] nor carry test data that cannot be
+     * serialized for transport to a worker — are distributed across the worker
+     * pool.
      *
-     * The in-process phase then runs the remaining units one at a time in the
-     * main PHPUnit process, after the parallel phase has finished so that they
-     * never overlap a worker. A unit runs here when it is attributed with
+     * PHPT tests are not PHPUnit\Framework\TestCase instances and cannot run in
+     * a worker, so they run concurrently in the main process, each as its own
+     * child process, honouring the conflict keys of their --CONFLICTS-- section.
+     * The worker pool and the PHPT runner are advanced side by side in one
+     * polling loop, so that neither has to wait for the other and results reach
+     * the output the moment suite order allows.
+     *
+     * The remaining units run one at a time in the main PHPUnit process, each
+     * at the moment its suite index comes up in the aggregator's release
+     * sequence. A unit runs there when it is attributed with
      * #[DoNotRunInParallel] (the author has declared that its tests must not run
      * alongside others, for instance because they share a process-global
      * resource), when it is configured to run in a separate process (an
@@ -139,21 +159,14 @@ final class ParallelTestRunner
      * or when its test data cannot be serialized for transport to a worker (in
      * which case the main process is the only place it can run at all). Running
      * in the main process is ordinary execution that behaves exactly as it would
-     * in sequential mode.
+     * in sequential mode. Any remaining standalone test — one that is neither a
+     * TestCase nor a PHPT test — is run the same way, at its own suite index.
      *
-     * PHPT tests are not PHPUnit\Framework\TestCase instances and cannot run in
-     * a worker, so they run concurrently in the main process, each as its own
-     * child process, honouring the conflict keys of their --CONFLICTS-- section.
-     * Any remaining standalone test — one that is neither a TestCase nor a PHPT
-     * test — is run in the main process at its own suite index.
-     *
-     * @param list<WorkUnit>                                   $units
-     * @param list<PhptWorkUnit>                               $phpt
-     * @param list<array{index: non-negative-int, test: Test}> $standalone
+     * @param non-empty-list<array{units: list<WorkUnit>, phpt: list<PhptWorkUnit>, standalone: list<array{index: non-negative-int, test: Test}>}> $chunks
      *
      * @throws WorkerException
      */
-    private function execute(Configuration $configuration, array $units, array $phpt, array $standalone): void
+    private function execute(Configuration $configuration, array $chunks): void
     {
         $aggregator = new ResultAggregator(
             Event\Facade::instance(),
@@ -162,75 +175,189 @@ final class ParallelTestRunner
             CodeCoverage::instance(),
         );
 
-        $parallel = [];
-
         $processIsolation = $configuration->processIsolation();
 
-        foreach ($units as $unit) {
-            if ($unit instanceof TestClassWorkUnit &&
-                ($processIsolation ||
-                 $this->mustNotRunInParallel($unit) ||
-                 $this->requiresProcessIsolation($unit) ||
-                 !$this->canBeSerialized($unit))) {
-                // The unit keeps its global suite index; the aggregator runs it
-                // in the main process at the moment that index comes up in the
-                // release sequence, which keeps the output in global suite order.
-                $aggregator->registerInProcessUnit(
-                    $unit->index(),
-                    function () use ($unit): void
-                    {
-                        $this->runInProcess($unit);
-                    },
-                );
+        $runs         = [];
+        $poolIsNeeded = false;
+        $phptIsNeeded = false;
 
-                continue;
+        foreach ($chunks as $chunk) {
+            $parallel = [];
+
+            foreach ($chunk['units'] as $unit) {
+                if ($unit instanceof TestClassWorkUnit &&
+                    ($processIsolation ||
+                     $this->mustNotRunInParallel($unit) ||
+                     $this->requiresProcessIsolation($unit) ||
+                     !$this->canBeSerialized($unit))) {
+                    // The unit keeps its global suite index; the aggregator runs
+                    // it in the main process at the moment that index comes up in
+                    // the release sequence, which keeps the output in global
+                    // suite order.
+                    $aggregator->registerInProcessUnit(
+                        $unit->index(),
+                        function () use ($unit): void
+                        {
+                            $this->runInProcess($unit);
+                        },
+                    );
+
+                    continue;
+                }
+
+                $parallel[] = $unit;
             }
 
-            $parallel[] = $unit;
+            foreach ($chunk['standalone'] as $item) {
+                $test = $item['test'];
+
+                $aggregator->registerInProcessUnit(
+                    $item['index'],
+                    static function () use ($test): void
+                    {
+                        $test->run();
+                    },
+                );
+            }
+
+            if ($parallel !== []) {
+                $poolIsNeeded = true;
+            }
+
+            if ($chunk['phpt'] !== []) {
+                $phptIsNeeded = true;
+            }
+
+            $runs[] = [
+                'parallel' => $parallel,
+                'phpt'     => $chunk['phpt'],
+            ];
         }
 
-        foreach ($standalone as $item) {
-            $test = $item['test'];
+        // The pool and the PHPT runner are created once and reused across the
+        // chunks, so that the worker processes are booted only once.
+        $pool = null;
 
-            $aggregator->registerInProcessUnit(
-                $item['index'],
-                static function () use ($test): void
-                {
-                    $test->run();
-                },
-            );
+        if ($poolIsNeeded) {
+            $pool = $this->createPool($configuration->numberOfParallelWorkers());
+
+            $pool->start();
         }
 
-        // The PHPT tests run concurrently in the main process, each as its own
-        // child process rather than nested inside a worker. Every one is
-        // registered with the aggregator so that the events it collected are
-        // replayed at its suite index, interspersed in global suite order with
-        // the worker units and the in-process units.
-        if ($phpt !== []) {
-            $this->runPhpt($configuration, $phpt, $aggregator);
+        $phptRunner = null;
+
+        if ($phptIsNeeded) {
+            $phptRunner = $this->createPhptRunner($configuration);
         }
 
-        // Run any in-process units that precede the first worker unit, then the
-        // worker units (whose completions drive the release of the in-process
-        // units interspersed among them), then any that follow the last one.
+        // Run any in-process units that precede the first chunk's units.
         $aggregator->flush();
 
-        if ($parallel !== []) {
-            $this->runInParallel($parallel, $aggregator, $configuration->numberOfParallelWorkers());
+        try {
+            foreach ($runs as $run) {
+                $this->runChunk($run['parallel'], $run['phpt'], $pool, $phptRunner, $aggregator);
+            }
+        } finally {
+            if ($pool !== null) {
+                $pool->stop();
+            }
         }
 
         $aggregator->flush();
     }
 
     /**
-     * Run the PHPT tests concurrently, each as its own child process in the
-     * main process, and register every one with the aggregator so that the
-     * events it collected are replayed at its suite index, in global suite
-     * order.
+     * Run the units of one chunk: the worker pool and the PHPT runner are
+     * begun with the chunk's units and advanced side by side in one polling
+     * loop, so that the chunk's test classes and PHPT tests execute
+     * concurrently and their results and streamed events reach the parent the
+     * moment they arrive. The in-process units interspersed among them run as
+     * the release sequence reaches their indexes; the trailing flush releases
+     * those that sit between this chunk and the next.
      *
-     * @param non-empty-list<PhptWorkUnit> $phpt
+     * @param list<WorkUnit>     $parallel
+     * @param list<PhptWorkUnit> $phpt
      */
-    private function runPhpt(Configuration $configuration, array $phpt, ResultAggregator $aggregator): void
+    private function runChunk(array $parallel, array $phpt, ?WorkerPool $pool, ?PhptRunner $phptRunner, ResultAggregator $aggregator): void
+    {
+        $activePool = null;
+
+        if ($parallel !== []) {
+            assert($pool !== null);
+
+            $pool->begin(
+                $parallel,
+                static function (CompletedWorkUnit $completed) use ($aggregator): void
+                {
+                    $aggregator->add($completed);
+                },
+                static function (WorkUnit $unit, Event\EventCollection $events) use ($aggregator): void
+                {
+                    $aggregator->addStreamedEvents($unit->index(), $events);
+                },
+            );
+
+            $activePool = $pool;
+        }
+
+        $activePhptRunner = null;
+
+        if ($phpt !== []) {
+            assert($phptRunner !== null);
+
+            $phptRunner->begin(
+                $phpt,
+                static function (int $index, Event\EventCollection $events) use ($aggregator): void
+                {
+                    $aggregator->registerInProcessUnit(
+                        $index,
+                        static function () use ($events): void
+                        {
+                            Event\Facade::instance()->forward($events);
+                        },
+                    );
+
+                    // Release everything that has become contiguous in suite
+                    // order, so that progress is reported as the PHPT tests
+                    // finish rather than buffered until the chunk is done.
+                    $aggregator->flush();
+                },
+            );
+
+            $activePhptRunner = $phptRunner;
+        }
+
+        while (true) {
+            $progressed = false;
+
+            if ($activePool !== null && $activePool->tick()) {
+                $progressed = true;
+            }
+
+            if ($activePhptRunner !== null && $activePhptRunner->tick()) {
+                $progressed = true;
+            }
+
+            $poolIsFinished       = $activePool === null || $activePool->isFinished();
+            $phptRunnerIsFinished = $activePhptRunner === null || $activePhptRunner->isFinished();
+
+            if ($poolIsFinished && $phptRunnerIsFinished) {
+                break;
+            }
+
+            // Neither the pool nor the PHPT runner progressed this round: sleep
+            // briefly before polling again so that waiting does not spin the
+            // CPU.
+            if (!$progressed) {
+                usleep(self::POLL_INTERVAL_MICROSECONDS);
+            }
+        }
+
+        // Run the in-process units that follow the chunk's last unit.
+        $aggregator->flush();
+    }
+
+    private function createPhptRunner(Configuration $configuration): PhptRunner
     {
         $concurrency = $configuration->numberOfParallelWorkers();
 
@@ -248,55 +375,7 @@ final class ParallelTestRunner
             CodeCoverage::instance(),
         );
 
-        new PhptRunner(new JobRunner($processor), $concurrency)->run(
-            $phpt,
-            static function (int $index, Event\EventCollection $events) use ($aggregator): void
-            {
-                $aggregator->registerInProcessUnit(
-                    $index,
-                    static function () use ($events): void
-                    {
-                        Event\Facade::instance()->forward($events);
-                    },
-                );
-
-                // Release everything that has become contiguous in suite order
-                // so that progress is reported as the PHPT tests finish, rather
-                // than buffered until the whole phase is done. PHPT tests finish
-                // out of order, so this releases nothing until the next test in
-                // suite order is among those that have finished.
-                $aggregator->flush();
-            },
-        );
-    }
-
-    /**
-     * @param non-empty-list<WorkUnit> $units
-     * @param positive-int             $numberOfWorkers
-     *
-     * @throws WorkerException
-     */
-    private function runInParallel(array $units, ResultAggregator $aggregator, int $numberOfWorkers): void
-    {
-        $pool = $this->createPool($numberOfWorkers);
-
-        $pool->start();
-
-        try {
-            $pool->run(
-                $units,
-                static function (CompletedWorkUnit $completed) use ($aggregator): void
-                {
-                    $aggregator->add($completed);
-                },
-                static function (WorkUnit $unit, Event\EventCollection $events) use ($aggregator): void
-                {
-                    $aggregator->addStreamedEvents($unit->index(), $events);
-                },
-            );
-        } finally {
-            $pool->stop();
-        }
+        return new PhptRunner(new JobRunner($processor), $concurrency);
     }
 
     /**
@@ -495,6 +574,65 @@ final class ParallelTestRunner
     }
 
     /**
+     * Walk the suite and group the selected tests into units, partitioned into
+     * chunks that are run one after another.
+     *
+     * A test suite that was assembled from an XML configuration runs its
+     * top-level <testsuite> elements one after another in sequential mode; the
+     * chunks preserve that boundary in parallel mode: each top-level test suite
+     * becomes one chunk, and only the units of the same chunk run concurrently
+     * with each other. A suite assembled from CLI arguments or a test-files
+     * file has no such boundaries and forms a single chunk.
+     *
+     * All chunks draw their unit indexes from one shared sequence in suite
+     * order, so that the aggregator releases the results of every chunk in
+     * global suite order.
+     *
+     * @return list<array{units: list<WorkUnit>, phpt: list<PhptWorkUnit>, standalone: list<array{index: non-negative-int, test: Test}>}>
+     */
+    private function collectChunks(Configuration $configuration, TestSuite $suite): array
+    {
+        $roots = [$suite];
+
+        if (!$configuration->hasCliArguments() && !$configuration->hasTestFilesFile()) {
+            $childSuites = [];
+
+            foreach ($suite as $test) {
+                if (!$test instanceof TestSuite) {
+                    // A test directly under the root does not belong to any
+                    // top-level test suite; there are no boundaries to honour.
+                    // @codeCoverageIgnoreStart
+                    $childSuites = [];
+
+                    break;
+                    // @codeCoverageIgnoreEnd
+                }
+
+                $childSuites[] = $test;
+            }
+
+            if ($childSuites !== []) {
+                $roots = $childSuites;
+            }
+        }
+
+        $index  = 0;
+        $chunks = [];
+
+        foreach ($roots as $root) {
+            $chunk = $this->collectUnits($root, $index);
+
+            if ($chunk['units'] === [] && $chunk['phpt'] === [] && $chunk['standalone'] === []) {
+                continue;
+            }
+
+            $chunks[] = $chunk;
+        }
+
+        return $chunks;
+    }
+
+    /**
      * Walk the suite and group the selected tests into units in suite order.
      *
      * The tests of a class are gathered into one TestClassWorkUnit, indexed by
@@ -506,9 +644,11 @@ final class ParallelTestRunner
      * the main process. All draw from one shared index sequence so that they
      * can be released together in global suite order.
      *
+     * @param non-negative-int $index
+     *
      * @return array{units: list<WorkUnit>, phpt: list<PhptWorkUnit>, standalone: list<array{index: non-negative-int, test: Test}>}
      */
-    private function collectUnits(TestSuite $suite): array
+    private function collectUnits(TestSuite $suite, int &$index): array
     {
         /** @var array<class-string<TestCase>, array{index: non-negative-int, tests: list<IterativeTestSuite|TestCase>}> $byClass */
         $byClass = [];
@@ -518,8 +658,6 @@ final class ParallelTestRunner
 
         /** @var list<array{index: non-negative-int, test: Test}> $standalone */
         $standalone = [];
-
-        $index = 0;
 
         $this->collect($suite, $byClass, $phpt, $standalone, $index);
 
