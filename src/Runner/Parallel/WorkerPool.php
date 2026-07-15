@@ -11,6 +11,7 @@ namespace PHPUnit\Runner\Parallel;
 
 use function array_shift;
 use function usleep;
+use PHPUnit\Event\EventCollection;
 
 /**
  * A fixed-size pool of PersistentWorkers across which units of work are
@@ -21,9 +22,10 @@ use function usleep;
  * next unit from the queue, which self-balances the load against stragglers.
  *
  * A single thread of control keeps all of the workers busy by polling them in
- * rounds: each round it harvests every worker that has finished its unit, hands
- * those finished units to the caller-supplied callback, tops the idle workers
- * up with more work, and sleeps briefly before the next round if none finished.
+ * rounds: each round it drains the events that the busy workers have streamed
+ * so far, harvests every worker that has finished its unit, hands both to the
+ * caller-supplied callbacks, tops the idle workers up with more work, and
+ * sleeps briefly before the next round if none finished.
  * A worker signals completion through the filesystem (see PersistentWorker),
  * which is polled rather than waited on with stream_select() because the latter
  * does not work on the workers' output pipes on Windows.
@@ -70,13 +72,21 @@ final class WorkerPool
     }
 
     /**
-     * Run all of the given units across the pool, invoking the callback once
-     * for each unit as it finishes (in completion order, not suite order).
+     * Run all of the given units across the pool, invoking the completion
+     * callback once for each unit as it finishes (in completion order, not
+     * suite order).
      *
-     * @param list<WorkUnit>                   $units
-     * @param callable(CompletedWorkUnit):void $onCompleted
+     * While a unit is still running, the events that its worker has streamed
+     * so far are handed to the streamed-events callback as they arrive, so
+     * that the caller can report progress per finished test instead of per
+     * finished unit. The events of a unit are always delivered before its
+     * completion.
+     *
+     * @param list<WorkUnit>                           $units
+     * @param callable(CompletedWorkUnit):void         $onCompleted
+     * @param callable(WorkUnit, EventCollection):void $onStreamedEvents
      */
-    public function run(array $units, callable $onCompleted): void
+    public function run(array $units, callable $onCompleted, callable $onStreamedEvents): void
     {
         $queue = $units;
 
@@ -92,7 +102,7 @@ final class WorkerPool
             $progressed = false;
 
             foreach ($busy as $worker) {
-                $completed = $worker->poll();
+                $completed = $worker->poll($onStreamedEvents);
 
                 if ($completed !== null) {
                     $onCompleted($completed);
