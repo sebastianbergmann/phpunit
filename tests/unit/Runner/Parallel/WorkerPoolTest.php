@@ -145,6 +145,27 @@ final class WorkerPoolTest extends TestCase
         $this->assertFalse($crashed[2]);
     }
 
+    public function testATickOnAFinishedPoolReportsNoProgress(): void
+    {
+        $pool = $this->pool(1);
+
+        $pool->begin(
+            [],
+            static function (CompletedWorkUnit $unit): void
+            {
+            },
+            static function (WorkUnit $unit, EventCollection $events): void
+            {
+            },
+        );
+
+        // The parallel test runner advances the pool and the PHPT runner side
+        // by side and keeps ticking both until both are finished, so a tick on
+        // a pool that has nothing left to do must be a harmless no-op.
+        $this->assertTrue($pool->isFinished());
+        $this->assertFalse($pool->tick());
+    }
+
     /**
      * @param list<WorkUnit>                                 $units
      * @param array<non-negative-int, list<EventCollection>> $streamed

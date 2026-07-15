@@ -10,6 +10,7 @@
 namespace PHPUnit\Runner\Parallel;
 
 use function array_shift;
+use function assert;
 use function usleep;
 use PHPUnit\Event\EventCollection;
 
@@ -54,6 +55,24 @@ final class WorkerPool
     private readonly array $workers;
 
     /**
+     * The units that have not been dispatched to a worker yet, in dispatch
+     * order.
+     *
+     * @var list<WorkUnit>
+     */
+    private array $queue = [];
+
+    /**
+     * @var ?callable(CompletedWorkUnit):void
+     */
+    private $onCompleted;
+
+    /**
+     * @var ?callable(WorkUnit, EventCollection):void
+     */
+    private $onStreamedEvents;
+
+    /**
      * @param non-empty-list<PersistentWorker> $workers
      */
     public function __construct(array $workers)
@@ -88,43 +107,93 @@ final class WorkerPool
      */
     public function run(array $units, callable $onCompleted, callable $onStreamedEvents): void
     {
-        $queue = $units;
+        $this->begin($units, $onCompleted, $onStreamedEvents);
 
-        while (true) {
-            $this->dispatchTo($queue, $onCompleted);
-
-            $busy = $this->busyWorkers();
-
-            if ($busy === []) {
-                break;
-            }
-
-            $progressed = false;
-
-            foreach ($busy as $worker) {
-                $completed = $worker->poll($onStreamedEvents);
-
-                if ($completed !== null) {
-                    $onCompleted($completed);
-
-                    $progressed = true;
-                }
-            }
-
-            // No worker finished this round: sleep briefly before polling again
-            // so that waiting for the workers does not spin the CPU. A worker
-            // that did finish is not slept on, so its freed slot is refilled at
-            // once on the next iteration.
-            if (!$progressed) {
+        while (!$this->isFinished()) {
+            // Sleep briefly when a polling round did not progress so that
+            // waiting for the workers does not spin the CPU. A round in which
+            // a worker finished is not slept on, so its freed slot is refilled
+            // at once on the next iteration.
+            if (!$this->tick()) {
                 usleep(self::POLL_INTERVAL_MICROSECONDS);
             }
         }
+    }
 
-        // Every worker has died while units remain to be run: account for the
-        // abandoned units so that the caller does not silently lose them.
-        foreach ($queue as $unit) {
-            $onCompleted(new CompletedWorkUnit($unit, '', null, true));
+    /**
+     * Accept the units to run without running them yet: the caller is expected
+     * to drive the pool with tick() until isFinished() reports completion. This
+     * is what lets the parallel test runner advance the worker pool and the
+     * PHPT runner side by side in one polling loop.
+     *
+     * @param list<WorkUnit>                           $units
+     * @param callable(CompletedWorkUnit):void         $onCompleted
+     * @param callable(WorkUnit, EventCollection):void $onStreamedEvents
+     */
+    public function begin(array $units, callable $onCompleted, callable $onStreamedEvents): void
+    {
+        $this->queue            = $units;
+        $this->onCompleted      = $onCompleted;
+        $this->onStreamedEvents = $onStreamedEvents;
+    }
+
+    /**
+     * Advance the pool by one polling round: top the idle workers up with
+     * queued units, drain the events the busy workers have streamed, and
+     * harvest every worker that has finished its unit. Returns whether the
+     * round made progress; a caller driving the pool in a loop is expected to
+     * sleep briefly when it did not, so that polling does not spin the CPU.
+     */
+    public function tick(): bool
+    {
+        $onCompleted      = $this->onCompleted;
+        $onStreamedEvents = $this->onStreamedEvents;
+
+        assert($onCompleted !== null);
+        assert($onStreamedEvents !== null);
+
+        $this->dispatch();
+
+        $busy = $this->busyWorkers();
+
+        if ($busy === []) {
+            // Every worker has died while units remain to be run: account for
+            // the abandoned units so that the caller does not silently lose
+            // them.
+            if ($this->queue !== []) {
+                foreach ($this->queue as $unit) {
+                    $onCompleted(new CompletedWorkUnit($unit, '', null, true));
+                }
+
+                $this->queue = [];
+
+                return true;
+            }
+
+            return false;
         }
+
+        $progressed = false;
+
+        foreach ($busy as $worker) {
+            $completed = $worker->poll($onStreamedEvents);
+
+            if ($completed !== null) {
+                $onCompleted($completed);
+
+                $progressed = true;
+            }
+        }
+
+        return $progressed;
+    }
+
+    /**
+     * Whether every unit accepted by begin() has finished.
+     */
+    public function isFinished(): bool
+    {
+        return $this->queue === [] && $this->busyWorkers() === [];
     }
 
     public function stop(): void
@@ -141,19 +210,20 @@ final class WorkerPool
      * cannot be serialized for transport to a worker — is reported to the
      * callback as a crashed unit and skipped, so that one undispatchable unit
      * does not abort the entire run or starve an otherwise idle worker.
-     *
-     * @param list<WorkUnit>                   $queue
-     * @param callable(CompletedWorkUnit):void $onCompleted
      */
-    private function dispatchTo(array &$queue, callable $onCompleted): void
+    private function dispatch(): void
     {
+        $onCompleted = $this->onCompleted;
+
+        assert($onCompleted !== null);
+
         foreach ($this->workers as $worker) {
             if (!$worker->isAlive() || $worker->isBusy()) {
                 continue;
             }
 
-            while ($queue !== []) {
-                $unit = array_shift($queue);
+            while ($this->queue !== []) {
+                $unit = array_shift($this->queue);
 
                 try {
                     $worker->dispatch($unit);
