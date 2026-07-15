@@ -39,6 +39,7 @@ use PHPUnit\Runner\Parallel\PhptRunner;
 use PHPUnit\Runner\Parallel\PhptWorkUnit;
 use PHPUnit\Runner\Parallel\ProcessBudget;
 use PHPUnit\Runner\Parallel\ResultAggregator;
+use PHPUnit\Runner\Parallel\Scheduler;
 use PHPUnit\Runner\Parallel\TestClassWorkUnit;
 use PHPUnit\Runner\Parallel\WorkerException;
 use PHPUnit\Runner\Parallel\WorkerPool;
@@ -95,6 +96,9 @@ final class ParallelTestRunner
 
             new RandomNumberGeneratorSeeder($configuration)->seed();
 
+            // The durations recorded by a previous run inform both the
+            // optional reordering of the suite and the scheduling of the
+            // units across the workers.
             $testRunHistory->load();
 
             $pipeline = ReorderPipeline::fromConfiguration(
@@ -117,7 +121,7 @@ final class ParallelTestRunner
             $chunks = $this->collectChunks($configuration, $suite);
 
             if ($chunks !== []) {
-                $this->execute($configuration, $suite, $chunks);
+                $this->execute($configuration, $testRunHistory, $suite, $chunks);
             }
 
             Event\Facade::emitter()->testRunnerExecutionFinished();
@@ -173,12 +177,20 @@ final class ParallelTestRunner
      * The loggers that reconstruct the suite hierarchy from these events —
      * JUnit XML, Open Test Reporting, TeamCity — depend on them.
      *
+     * Within a chunk, the worker units and the PHPT tests are dispatched in
+     * the order of their recorded durations, longest first, so that the
+     * longest-running work does not become the straggler that the workers
+     * wait for at the end of the chunk (see Scheduler). The results are
+     * released in suite order regardless of the dispatch order.
+     *
      * @param non-empty-list<array{suite: TestSuite, units: list<WorkUnit>, phpt: list<PhptWorkUnit>, standalone: list<array{index: non-negative-int, test: Test}>}> $chunks
      *
      * @throws WorkerException
      */
-    private function execute(Configuration $configuration, TestSuite $suite, array $chunks): void
+    private function execute(Configuration $configuration, TestRunHistory $testRunHistory, TestSuite $suite, array $chunks): void
     {
+        $scheduler = new Scheduler($testRunHistory);
+
         $aggregator = new ResultAggregator(
             Event\Facade::instance(),
             Event\Facade::emitter(),
@@ -246,8 +258,8 @@ final class ParallelTestRunner
 
             $runs[] = [
                 'suite'    => $chunk['suite'],
-                'parallel' => $parallel,
-                'phpt'     => $chunk['phpt'],
+                'parallel' => $scheduler->schedule($parallel),
+                'phpt'     => $scheduler->schedule($chunk['phpt']),
             ];
         }
 
