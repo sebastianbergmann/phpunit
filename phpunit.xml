@@ -55,6 +55,7 @@
             <exclude>tests/end-to-end/parallel/phpt-with-classes/_files</exclude>
             <exclude>tests/end-to-end/parallel/logging/_files</exclude>
             <exclude>tests/end-to-end/parallel/repeat-retry/_files</exclude>
+            <exclude>tests/end-to-end/parallel/stop-on/_files</exclude>
             <exclude>tests/end-to-end/repeat/_files</exclude>
             <exclude>tests/end-to-end/retry/_files</exclude>
             <exclude>tests/end-to-end/self-direct-indirect/_files</exclude>

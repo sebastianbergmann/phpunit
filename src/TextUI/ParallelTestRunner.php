@@ -47,6 +47,7 @@ use PHPUnit\Runner\Phpt\Parser;
 use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 use PHPUnit\Runner\ResultCache\ResultCache;
 use PHPUnit\Runner\TestSuiteSorter;
+use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\Util\PHP\JobRunner;
@@ -186,6 +187,10 @@ final class ParallelTestRunner
             Event\Facade::emitter(),
             PassedTests::instance(),
             CodeCoverage::instance(),
+            static function (): bool
+            {
+                return TestResultFacade::shouldStop();
+            },
         );
 
         $processIsolation = $configuration->processIsolation();
@@ -287,7 +292,12 @@ final class ParallelTestRunner
 
         try {
             foreach ($runs as $run) {
-                $this->runChunk($run['suite'], $run['parallel'], $run['phpt'], $pool, $phptRunner, $aggregator);
+                if ($this->runChunk($run['suite'], $run['parallel'], $run['phpt'], $pool, $phptRunner, $aggregator)) {
+                    // The run was stopped early; the remaining chunks are
+                    // abandoned, exactly as the sequential runner does not
+                    // start another test suite once it has decided to stop.
+                    break;
+                }
             }
         } finally {
             if ($pool !== null) {
@@ -313,10 +323,18 @@ final class ParallelTestRunner
      * suite finished" envelope that its suite would have emitted had it been
      * run by TestSuite::run() in sequential mode.
      *
+     * When the results forwarded so far call for the run to stop
+     * (--stop-on-*), the chunk is aborted: the pumps drop their queued units
+     * and terminate the units they are executing, and true is returned so
+     * that the remaining chunks are abandoned. The results that were already
+     * forwarded are exactly those a sequential run would have reported,
+     * because the aggregator forwards in suite order and freezes as soon as
+     * the stop condition holds.
+     *
      * @param list<WorkUnit>     $parallel
      * @param list<PhptWorkUnit> $phpt
      */
-    private function runChunk(TestSuite $suite, array $parallel, array $phpt, ?WorkerPool $pool, ?PhptRunner $phptRunner, ResultAggregator $aggregator): void
+    private function runChunk(TestSuite $suite, array $parallel, array $phpt, ?WorkerPool $pool, ?PhptRunner $phptRunner, ResultAggregator $aggregator): bool
     {
         $suiteValueObject = Event\TestSuite\TestSuiteBuilder::from($suite);
 
@@ -382,7 +400,28 @@ final class ParallelTestRunner
             $activePhptRunner = $phptRunner;
         }
 
+        $aborted = false;
+
         while (true) {
+            // Stop early when the results forwarded so far call for it: the
+            // queued units are dropped, and the units that are executing
+            // right now are terminated without waiting for their results —
+            // their results would be for tests that a sequential run would
+            // not have run.
+            if (TestResultFacade::shouldStop()) {
+                if ($activePool !== null) {
+                    $activePool->halt();
+                }
+
+                if ($activePhptRunner !== null) {
+                    $activePhptRunner->halt();
+                }
+
+                $aborted = true;
+
+                break;
+            }
+
             $progressed = false;
 
             if ($activePool !== null && $activePool->tick()) {
@@ -408,12 +447,30 @@ final class ParallelTestRunner
             }
         }
 
-        // Run the in-process units that follow the chunk's last unit.
+        // Run the in-process units that follow the chunk's last unit. When
+        // the run was stopped early, the aggregator is frozen and this
+        // releases nothing.
         $aggregator->flush();
+
+        // The chunk's very last releases may have tripped the stop condition
+        // after the loop's final check; the remaining chunks are then
+        // abandoned just the same.
+        if (!$aborted && TestResultFacade::shouldStop()) {
+            $aborted = true;
+        }
+
+        // The sequential runner emits this event when it decides to stop
+        // between two tests; it is emitted here when the parallel runner
+        // decides to abandon the run's remaining work.
+        if ($aborted) {
+            Event\Facade::emitter()->testRunnerExecutionAborted();
+        }
 
         if (!$suiteEnvelopeIsEmittedByUnits) {
             Event\Facade::emitter()->testSuiteFinished($suiteValueObject);
         }
+
+        return $aborted;
     }
 
     private function createPhptRunner(Configuration $configuration, ProcessBudget $budget): PhptRunner

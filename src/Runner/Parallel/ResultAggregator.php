@@ -69,6 +69,16 @@ final class ResultAggregator
     private readonly CodeCoverage $codeCoverage;
 
     /**
+     * Whether the results collected so far call for the run to stop
+     * (--stop-on-*). Once this reports true, nothing further is released:
+     * the results that have not been forwarded yet are for tests that a
+     * sequential run would not have run.
+     *
+     * @var callable(): bool
+     */
+    private $shouldStop;
+
+    /**
      * @var array<non-negative-int, CompletedWorkUnit>
      */
     private array $buffer = [];
@@ -91,12 +101,16 @@ final class ResultAggregator
      */
     private int $nextIndex = 0;
 
-    public function __construct(Facade $eventFacade, Emitter $emitter, PassedTests $passedTests, CodeCoverage $codeCoverage)
+    /**
+     * @param callable(): bool $shouldStop
+     */
+    public function __construct(Facade $eventFacade, Emitter $emitter, PassedTests $passedTests, CodeCoverage $codeCoverage, callable $shouldStop)
     {
         $this->eventFacade  = $eventFacade;
         $this->emitter      = $emitter;
         $this->passedTests  = $passedTests;
         $this->codeCoverage = $codeCoverage;
+        $this->shouldStop   = $shouldStop;
     }
 
     /**
@@ -134,7 +148,11 @@ final class ResultAggregator
      */
     public function addStreamedEvents(int $index, EventCollection $events): void
     {
-        if ($index === $this->nextIndex) {
+        // Events that arrive after the collected results have called for the
+        // run to stop are buffered rather than forwarded; the release
+        // sequence is frozen, so they will never be shown. Their tests are
+        // ones that a sequential run would not have run.
+        if ($index === $this->nextIndex && !($this->shouldStop)()) {
             $this->eventFacade->forward($events);
 
             return;
@@ -162,6 +180,15 @@ final class ResultAggregator
     private function release(): void
     {
         while (true) {
+            // Freeze the release sequence once the collected results call for
+            // the run to stop: like the sequential runner, which checks
+            // between two tests whether it should go on, the aggregator checks
+            // between two releases. Returning here also leaves the streamed
+            // events of the unit that is next in line unforwarded.
+            if (($this->shouldStop)()) {
+                return;
+            }
+
             if (isset($this->buffer[$this->nextIndex])) {
                 $this->forward($this->buffer[$this->nextIndex]);
 

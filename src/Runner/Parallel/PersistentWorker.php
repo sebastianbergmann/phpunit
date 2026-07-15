@@ -274,6 +274,35 @@ final class PersistentWorker
         return null;
     }
 
+    /**
+     * Terminate the worker process immediately, abandoning the unit it is
+     * executing: the unit's result is neither awaited nor harvested. Used
+     * when the test runner stops early, because the results collected so far
+     * call for it (--stop-on-*).
+     */
+    public function kill(): void
+    {
+        if ($this->job !== null) {
+            $this->job->terminate();
+
+            $this->job = null;
+        }
+
+        if ($this->currentResultFile !== null) {
+            @unlink($this->currentResultFile);
+        }
+
+        if ($this->currentDoneFile !== null) {
+            @unlink($this->currentDoneFile);
+        }
+
+        if ($this->currentStreamFile !== null) {
+            @unlink($this->currentStreamFile);
+        }
+
+        $this->clearCurrentUnit();
+    }
+
     public function stop(): void
     {
         if ($this->job !== null) {
