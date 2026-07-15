@@ -102,6 +102,40 @@ final class PhptRunnerTest extends TestCase
         }
     }
 
+    public function testHaltDropsTheQueuedTestsAndTerminatesTheRunningChildProcesses(): void
+    {
+        $budget = new ProcessBudget(1);
+
+        $runner = $this->runner(1, $budget);
+
+        $collected = [];
+
+        $runner->begin(
+            [
+                new PhptWorkUnit(0, __DIR__ . '/../../../_files/parallel-worker/worker-sleeping.phpt'),
+                new PhptWorkUnit(1, __DIR__ . '/../../../_files/parallel-worker/worker.phpt'),
+            ],
+            static function (int $index, EventCollection $events) use (&$collected): void
+            {
+                $collected[$index] = $events;
+            },
+        );
+
+        $runner->tick();
+
+        $this->assertFalse($runner->isFinished());
+
+        $runner->halt();
+
+        // The queued test was dropped and the sleeping test's child process
+        // was terminated without being waited for: the runner is finished,
+        // nothing was reported, and the slot the terminated test held has
+        // been given back to the shared budget.
+        $this->assertTrue($runner->isFinished());
+        $this->assertSame([], $collected);
+        $this->assertTrue($budget->acquire());
+    }
+
     public function testWaitsForASlotOfTheSharedProcessBudgetBeforeStartingATest(): void
     {
         $budget = new ProcessBudget(1);
