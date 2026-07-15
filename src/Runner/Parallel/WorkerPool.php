@@ -73,11 +73,20 @@ final class WorkerPool
     private $onStreamedEvents;
 
     /**
+     * The budget of concurrently executing units that the pool shares with the
+     * PHPT runner: a slot is taken for every dispatched unit and given back
+     * when the unit finishes, so that the pool and the PHPT tests together
+     * never execute more units at once than the budget allows.
+     */
+    private readonly ProcessBudget $budget;
+
+    /**
      * @param non-empty-list<PersistentWorker> $workers
      */
-    public function __construct(array $workers)
+    public function __construct(array $workers, ProcessBudget $budget)
     {
         $this->workers = $workers;
+        $this->budget  = $budget;
     }
 
     /**
@@ -157,10 +166,12 @@ final class WorkerPool
         $busy = $this->busyWorkers();
 
         if ($busy === []) {
-            // Every worker has died while units remain to be run: account for
-            // the abandoned units so that the caller does not silently lose
-            // them.
-            if ($this->queue !== []) {
+            // With no unit in flight, queued units can be waiting for one of
+            // two reasons: every worker has died, or the shared process budget
+            // is exhausted by units executing elsewhere. Only the former is
+            // terminal; the abandoned units are then accounted for so that the
+            // caller does not silently lose them.
+            if ($this->queue !== [] && !$this->hasAliveWorkers()) {
                 foreach ($this->queue as $unit) {
                     $onCompleted(new CompletedWorkUnit($unit, '', null, true));
                 }
@@ -179,6 +190,8 @@ final class WorkerPool
             $completed = $worker->poll($onStreamedEvents);
 
             if ($completed !== null) {
+                $this->budget->release();
+
                 $onCompleted($completed);
 
                 $progressed = true;
@@ -223,6 +236,13 @@ final class WorkerPool
             }
 
             while ($this->queue !== []) {
+                // The idle worker may only be topped up while the shared
+                // process budget has a slot left; the slot is held until the
+                // dispatched unit finishes.
+                if (!$this->budget->acquire()) {
+                    return;
+                }
+
                 $unit = array_shift($this->queue);
 
                 try {
@@ -230,10 +250,25 @@ final class WorkerPool
 
                     break;
                 } catch (WorkerException $e) {
+                    // The unit never started executing, so the slot taken for
+                    // it goes back to the budget right away.
+                    $this->budget->release();
+
                     $onCompleted(new CompletedWorkUnit($unit, '', null, true, $e->getMessage()));
                 }
             }
         }
+    }
+
+    private function hasAliveWorkers(): bool
+    {
+        foreach ($this->workers as $worker) {
+            if ($worker->isAlive()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
