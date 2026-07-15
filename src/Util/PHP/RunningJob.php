@@ -16,6 +16,7 @@ use function fwrite;
 use function is_resource;
 use function proc_close;
 use function proc_get_status;
+use function proc_terminate;
 use function rewind;
 use function stream_get_contents;
 use function stream_set_blocking;
@@ -166,6 +167,24 @@ final class RunningJob
     {
         $this->stdoutBuffer .= $this->readAvailable($this->stdout);
         $this->stderrBuffer .= $this->readAvailable($this->stderr);
+    }
+
+    /**
+     * Terminate the worker process instead of waiting for it to finish, then
+     * reap it. Used when the test runner stops early and abandons the work
+     * the process is doing.
+     */
+    public function terminate(): void
+    {
+        if ($this->result !== null) {
+            return;
+        }
+
+        $this->closeStdin();
+
+        proc_terminate($this->process);
+
+        $this->wait();
     }
 
     /**

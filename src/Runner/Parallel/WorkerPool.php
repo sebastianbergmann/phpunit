@@ -209,6 +209,30 @@ final class WorkerPool
         return $this->queue === [] && $this->busyWorkers() === [];
     }
 
+    /**
+     * Abandon the run: the units that have not been dispatched yet are dropped
+     * and every worker that is busy executing a unit is terminated without
+     * waiting for its result. Used when the test runner stops early, because
+     * the results collected so far call for it (--stop-on-*); the workers that
+     * are idle stay alive and are shut down by stop() as usual.
+     */
+    public function halt(): void
+    {
+        $this->queue = [];
+
+        foreach ($this->workers as $worker) {
+            if (!$worker->isAlive() || !$worker->isBusy()) {
+                continue;
+            }
+
+            $worker->kill();
+
+            // The slot that the killed unit held goes back to the shared
+            // process budget.
+            $this->budget->release();
+        }
+    }
+
     public function stop(): void
     {
         foreach ($this->workers as $worker) {
