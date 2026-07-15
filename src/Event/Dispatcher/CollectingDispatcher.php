@@ -52,7 +52,11 @@ final class CollectingDispatcher implements Dispatcher
     /**
      * Registers a subscriber with the direct dispatcher that events are
      * dispatched to as they are collected, so that it receives the events of
-     * the test that a child process runs while the test is running.
+     * the test that a child process runs while the test is running. The
+     * parallel test runner's worker uses this to observe, while a unit is
+     * running, the events that have become part of the unit's recorded stream
+     * — an event diverted by a collection window is not dispatched and thus
+     * not observed until the window's owner forwards it.
      *
      * @throws UnknownSubscriberTypeException
      */

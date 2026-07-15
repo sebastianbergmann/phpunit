@@ -11,6 +11,7 @@ namespace PHPUnit\Runner\Parallel;
 
 use function sort;
 use PHPUnit\Event\Emitter;
+use PHPUnit\Event\EventCollection;
 use PHPUnit\Event\Facade;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Large;
@@ -40,7 +41,9 @@ final class WorkerPoolTest extends TestCase
             new TestClassWorkUnit(1, WorkerSecondTest::class, [new WorkerSecondTest('testThatFails')]),
         ];
 
-        $completed = $this->execute($this->pool(2), $units);
+        $streamed = [];
+
+        $completed = $this->execute($this->pool(2), $units, $streamed);
 
         $this->assertCount(2, $completed);
 
@@ -51,6 +54,11 @@ final class WorkerPoolTest extends TestCase
         }
 
         $this->assertSame([0, 1], $this->indexesOf($completed));
+
+        // Both units streamed the events of their finished tests while they
+        // were still running.
+        $this->assertArrayHasKey(0, $streamed);
+        $this->assertArrayHasKey(1, $streamed);
     }
 
     public function testReportsACrashedUnitWhenItsWorkerDies(): void
@@ -138,11 +146,12 @@ final class WorkerPoolTest extends TestCase
     }
 
     /**
-     * @param list<WorkUnit> $units
+     * @param list<WorkUnit>                                 $units
+     * @param array<non-negative-int, list<EventCollection>> $streamed
      *
      * @return list<CompletedWorkUnit>
      */
-    private function execute(WorkerPool $pool, array $units): array
+    private function execute(WorkerPool $pool, array $units, array &$streamed = []): array
     {
         $completed = [];
 
@@ -154,6 +163,14 @@ final class WorkerPoolTest extends TestCase
                 static function (CompletedWorkUnit $unit) use (&$completed): void
                 {
                     $completed[] = $unit;
+                },
+                static function (WorkUnit $unit, EventCollection $events) use (&$streamed): void
+                {
+                    if (!isset($streamed[$unit->index()])) {
+                        $streamed[$unit->index()] = [];
+                    }
+
+                    $streamed[$unit->index()][] = $events;
                 },
             );
         } finally {
