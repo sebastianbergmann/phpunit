@@ -10,6 +10,9 @@
 namespace PHPUnit\Runner\Parallel;
 
 use function sort;
+use function sys_get_temp_dir;
+use function tempnam;
+use function unlink;
 use function usleep;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Event\EventCollection;
@@ -20,6 +23,7 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestRunner\ChildProcessResultProcessor;
 use PHPUnit\Runner\CodeCoverage;
+use PHPUnit\TestFixture\ParallelWorker\WorkerCrashesOnceTest;
 use PHPUnit\TestFixture\ParallelWorker\WorkerFirstTest;
 use PHPUnit\TestFixture\ParallelWorker\WorkerSecondTest;
 use PHPUnit\TestFixture\ParallelWorker\WorkerSleepingTest;
@@ -147,6 +151,62 @@ final class WorkerPoolTest extends TestCase
         $this->assertFalse($crashed[2]);
     }
 
+    public function testRetriesAUnitWhoseWorkerDiedOnceOnAFreshWorker(): void
+    {
+        $marker = tempnam(sys_get_temp_dir(), 'phpunit_crash_once_');
+
+        $this->assertNotFalse($marker);
+
+        // The marker must not exist yet: its absence is what makes the
+        // fixture test kill its worker on the first attempt.
+        unlink($marker);
+
+        $test = new WorkerCrashesOnceTest('testThatCrashesOnTheFirstAttempt');
+        $test->setData('marker', [$marker]);
+
+        $units = [
+            new TestClassWorkUnit(0, WorkerCrashesOnceTest::class, [$test]),
+        ];
+
+        $completed = $this->execute($this->pool(1), $units);
+
+        @unlink($marker);
+
+        // The first attempt killed the worker; the retry, on a freshly booted
+        // worker, passed — so the unit is reported as completed, not crashed.
+        $this->assertCount(1, $completed);
+        $this->assertFalse($completed[0]->crashed());
+    }
+
+    public function testDoesNotRetryAUnitWhoseRetryWasVetoed(): void
+    {
+        $units = [
+            new TestClassWorkUnit(0, WorkerSecondTest::class, [new WorkerSecondTest('testThatKillsTheWorkerProcess')]),
+        ];
+
+        $vetoed   = [];
+        $streamed = [];
+
+        $completed = $this->execute(
+            $this->pool(1),
+            $units,
+            $streamed,
+            static function (WorkUnit $unit) use (&$vetoed): bool
+            {
+                $vetoed[] = $unit->index();
+
+                return false;
+            },
+        );
+
+        // The caller vetoed the retry — some of the unit's results had
+        // already been reported, in a real run — so the unit is reported as
+        // crashed after its first attempt.
+        $this->assertSame([0], $vetoed);
+        $this->assertCount(1, $completed);
+        $this->assertTrue($completed[0]->crashed());
+    }
+
     public function testWaitsForASlotOfTheSharedProcessBudgetBeforeDispatching(): void
     {
         $budget = new ProcessBudget(1);
@@ -166,6 +226,10 @@ final class WorkerPoolTest extends TestCase
                 },
                 static function (WorkUnit $unit, EventCollection $events): void
                 {
+                },
+                static function (WorkUnit $unit): bool
+                {
+                    return true;
                 },
             );
 
@@ -218,6 +282,10 @@ final class WorkerPoolTest extends TestCase
                 static function (WorkUnit $unit, EventCollection $events): void
                 {
                 },
+                static function (WorkUnit $unit): bool
+                {
+                    return true;
+                },
             );
 
             $pool->tick();
@@ -250,6 +318,10 @@ final class WorkerPoolTest extends TestCase
             static function (WorkUnit $unit, EventCollection $events): void
             {
             },
+            static function (WorkUnit $unit): bool
+            {
+                return true;
+            },
         );
 
         // The parallel test runner advances the pool and the PHPT runner side
@@ -265,8 +337,15 @@ final class WorkerPoolTest extends TestCase
      *
      * @return list<CompletedWorkUnit>
      */
-    private function execute(WorkerPool $pool, array $units, array &$streamed = []): array
+    private function execute(WorkerPool $pool, array $units, array &$streamed = [], ?callable $onCrashedUnitRetry = null): array
     {
+        if ($onCrashedUnitRetry === null) {
+            $onCrashedUnitRetry = static function (WorkUnit $unit): bool
+            {
+                return true;
+            };
+        }
+
         $completed = [];
 
         $pool->start();
@@ -286,6 +365,7 @@ final class WorkerPoolTest extends TestCase
 
                     $streamed[$unit->index()][] = $events;
                 },
+                $onCrashedUnitRetry,
             );
         } finally {
             $pool->stop();

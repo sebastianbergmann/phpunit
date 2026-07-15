@@ -132,7 +132,7 @@ final class PersistentWorker
     /**
      * @var non-empty-string
      */
-    private readonly string $token;
+    private string $token;
 
     /**
      * @param non-negative-int $id
@@ -141,7 +141,7 @@ final class PersistentWorker
     {
         $this->jobRunner = $jobRunner;
         $this->id        = $id;
-        $this->token     = $id . '_' . bin2hex(random_bytes(16));
+        $this->token     = $this->newToken();
     }
 
     /**
@@ -167,6 +167,24 @@ final class PersistentWorker
         $this->job = $this->jobRunner->start(
             new Job($this->buildWorkerCode(), ChildProcessReason::ParallelWorker, [], $environmentVariables),
         );
+    }
+
+    /**
+     * Boot a fresh worker process in place of one that has died. The new
+     * process keeps the worker's ordinal identity (PHPUNIT_WORKER_ID), so
+     * that resources partitioned per worker stay partitioned, but receives a
+     * new PHPUNIT_WORKER_TOKEN, so that it cannot collide with resources that
+     * the dead process left behind.
+     *
+     * @throws WorkerException
+     */
+    public function restart(): void
+    {
+        assert($this->job === null);
+
+        $this->token = $this->newToken();
+
+        $this->start();
     }
 
     /**
@@ -604,6 +622,14 @@ final class PersistentWorker
         $this->clearCurrentUnit();
 
         return $completed;
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    private function newToken(): string
+    {
+        return $this->id . '_' . bin2hex(random_bytes(16));
     }
 
     private function clearCurrentUnit(): void
