@@ -11,6 +11,7 @@ namespace PHPUnit\Runner\Parallel;
 
 use function array_keys;
 use function ksort;
+use function usleep;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Event\EventCollection;
 use PHPUnit\Event\Facade;
@@ -101,6 +102,43 @@ final class PhptRunnerTest extends TestCase
         }
     }
 
+    public function testWaitsForASlotOfTheSharedProcessBudgetBeforeStartingATest(): void
+    {
+        $budget = new ProcessBudget(1);
+
+        $runner = $this->runner(2, $budget);
+
+        $collected = [];
+
+        $runner->begin(
+            [new PhptWorkUnit(0, __DIR__ . '/../../../_files/parallel-worker/worker.phpt')],
+            static function (int $index, EventCollection $events) use (&$collected): void
+            {
+                $collected[$index] = $events;
+            },
+        );
+
+        // The budget's only slot is held by a unit executing elsewhere — a
+        // test class running in a worker, in a real run. The runner must not
+        // start the test until the slot has been given back.
+        $this->assertTrue($budget->acquire());
+
+        $this->assertFalse($runner->tick());
+        $this->assertFalse($runner->isFinished());
+        $this->assertSame([], $collected);
+
+        $budget->release();
+
+        while (!$runner->isFinished()) {
+            if (!$runner->tick()) {
+                usleep(1000);
+            }
+        }
+
+        $this->assertSame([0], array_keys($collected));
+        $this->assertTrue($this->contains($collected[0], Passed::class));
+    }
+
     /**
      * @param list<PhptWorkUnit> $units
      * @param positive-int       $concurrency
@@ -109,16 +147,9 @@ final class PhptRunnerTest extends TestCase
      */
     private function execute(array $units, int $concurrency): array
     {
-        $processor = new ChildProcessResultProcessor(
-            Facade::instance(),
-            $this->createStub(Emitter::class),
-            new PassedTests,
-            new CodeCoverage,
-        );
-
         $collected = [];
 
-        new PhptRunner(new JobRunner($processor), $concurrency)->run(
+        $this->runner($concurrency, new ProcessBudget($concurrency))->run(
             $units,
             static function (int $index, EventCollection $events) use (&$collected): void
             {
@@ -129,6 +160,21 @@ final class PhptRunnerTest extends TestCase
         ksort($collected);
 
         return $collected;
+    }
+
+    /**
+     * @param positive-int $concurrency
+     */
+    private function runner(int $concurrency, ProcessBudget $budget): PhptRunner
+    {
+        $processor = new ChildProcessResultProcessor(
+            Facade::instance(),
+            $this->createStub(Emitter::class),
+            new PassedTests,
+            new CodeCoverage,
+        );
+
+        return new PhptRunner(new JobRunner($processor), $concurrency, $budget);
     }
 
     /**
