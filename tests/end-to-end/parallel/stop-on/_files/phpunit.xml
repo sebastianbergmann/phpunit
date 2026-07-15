@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="../../../../../phpunit.xsd"
+>
+    <testsuites>
+        <testsuite name="one">
+            <file>FailingTest.php</file>
+        </testsuite>
+        <testsuite name="two">
+            <file>SlowTest.php</file>
+        </testsuite>
+    </testsuites>
+</phpunit>
