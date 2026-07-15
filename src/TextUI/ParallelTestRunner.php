@@ -32,6 +32,7 @@ use PHPUnit\Runner\Parallel\CompletedWorkUnit;
 use PHPUnit\Runner\Parallel\PersistentWorker;
 use PHPUnit\Runner\Parallel\PhptRunner;
 use PHPUnit\Runner\Parallel\PhptWorkUnit;
+use PHPUnit\Runner\Parallel\ProcessBudget;
 use PHPUnit\Runner\Parallel\ResultAggregator;
 use PHPUnit\Runner\Parallel\TestClassWorkUnit;
 use PHPUnit\Runner\Parallel\WorkerException;
@@ -227,12 +228,18 @@ final class ParallelTestRunner
             ];
         }
 
+        // The pool and the PHPT runner share one budget of concurrently
+        // executing units, so that a chunk that contains both test classes
+        // and PHPT tests never executes more units at once than the number
+        // of parallel workers that was asked for.
+        $budget = new ProcessBudget($configuration->numberOfParallelWorkers());
+
         // The pool and the PHPT runner are created once and reused across the
         // chunks, so that the worker processes are booted only once.
         $pool = null;
 
         if ($poolIsNeeded) {
-            $pool = $this->createPool($configuration->numberOfParallelWorkers());
+            $pool = $this->createPool($configuration->numberOfParallelWorkers(), $budget);
 
             $pool->start();
         }
@@ -240,7 +247,7 @@ final class ParallelTestRunner
         $phptRunner = null;
 
         if ($phptIsNeeded) {
-            $phptRunner = $this->createPhptRunner($configuration);
+            $phptRunner = $this->createPhptRunner($configuration, $budget);
         }
 
         // Run any in-process units that precede the first chunk's units.
@@ -350,7 +357,7 @@ final class ParallelTestRunner
         $aggregator->flush();
     }
 
-    private function createPhptRunner(Configuration $configuration): PhptRunner
+    private function createPhptRunner(Configuration $configuration, ProcessBudget $budget): PhptRunner
     {
         $concurrency = $configuration->numberOfParallelWorkers();
 
@@ -368,7 +375,7 @@ final class ParallelTestRunner
             CodeCoverage::instance(),
         );
 
-        return new PhptRunner(new JobRunner($processor, Event\Facade::emitter()), $concurrency);
+        return new PhptRunner(new JobRunner($processor, Event\Facade::emitter()), $concurrency, $budget);
     }
 
     /**
@@ -546,7 +553,7 @@ final class ParallelTestRunner
     /**
      * @param positive-int $numberOfWorkers
      */
-    private function createPool(int $numberOfWorkers): WorkerPool
+    private function createPool(int $numberOfWorkers, ProcessBudget $budget): WorkerPool
     {
         $processor = new ChildProcessResultProcessor(
             Event\Facade::instance(),
@@ -563,7 +570,7 @@ final class ParallelTestRunner
             $workers[] = new PersistentWorker($jobRunner, $id);
         }
 
-        return new WorkerPool($workers);
+        return new WorkerPool($workers, $budget);
     }
 
     /**
