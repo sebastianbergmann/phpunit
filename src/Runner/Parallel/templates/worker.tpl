@@ -1,5 +1,6 @@
 <?php declare(strict_types=1);
 use PHPUnit\Event\Facade;
+use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\RepeatTestSuite;
 use PHPUnit\Framework\RetryTestSuite;
 use PHPUnit\Framework\TestRunner\ErrorHandlerBootstrapper;
@@ -84,6 +85,62 @@ function __phpunit_worker_build_test(string $className, object $descriptor): PHP
     return $test;
 }
 
+function __phpunit_worker_build_member(string $className, object $descriptor): PHPUnit\Framework\Test
+{
+    // The tests of a data provider method travel as their
+    // DataProviderTestSuite so that the suite's event envelope, which nests
+    // the tests in the logger output of a sequential run, is emitted here,
+    // inside the worker, too. The suite is rebuilt exactly as TestBuilder
+    // builds it, so its "test suite started" event carries the same value.
+    if ($descriptor->type === 'dataProvider') {
+        $suite = DataProviderTestSuite::empty($descriptor->name);
+
+        foreach ($descriptor->tests as $member) {
+            $suite->addTest(__phpunit_worker_build_member($className, $member));
+        }
+
+        return $suite;
+    }
+
+    // A retried test method travels as its RetryTestSuite so that the
+    // retry orchestration runs inside the worker; additional attempts are
+    // built here, from the same descriptor as the first one.
+    if ($descriptor->type === 'retry') {
+        $testDescriptor = $descriptor->test;
+
+        $factory = static function () use ($className, $testDescriptor): PHPUnit\Framework\TestCase
+        {
+            return __phpunit_worker_build_test($className, $testDescriptor);
+        };
+
+        return RetryTestSuite::fromTestCase(
+            $descriptor->name,
+            $factory(),
+            $descriptor->maxAttempts,
+            $factory,
+        );
+    }
+
+    // A repeated test method travels as its RepeatTestSuite so that the
+    // repetition orchestration (failure threshold, skipping of remaining
+    // repetitions) runs inside the worker.
+    if ($descriptor->type === 'repeat') {
+        $repetitions = [];
+
+        foreach ($descriptor->tests as $repetition) {
+            $repetitions[] = __phpunit_worker_build_test($className, $repetition);
+        }
+
+        return RepeatTestSuite::fromTests(
+            $descriptor->name,
+            $repetitions,
+            $descriptor->failureThreshold,
+        );
+    }
+
+    return __phpunit_worker_build_test($className, $descriptor);
+}
+
 function __phpunit_worker_run_unit(object $command): string
 {
     $dispatcher = Facade::instance()->initForIsolation(
@@ -137,53 +194,7 @@ function __phpunit_worker_run_unit(object $command): string
     $suite = TestSuite::empty($command->className);
 
     foreach ($command->tests as $__phpunit_test) {
-        $className = $command->className;
-
-        // A retried test method travels as its RetryTestSuite so that the
-        // retry orchestration runs inside the worker; additional attempts are
-        // built here, from the same descriptor as the first one.
-        if ($__phpunit_test->type === 'retry') {
-            $descriptor = $__phpunit_test->test;
-
-            $factory = static function () use ($className, $descriptor): PHPUnit\Framework\TestCase
-            {
-                return __phpunit_worker_build_test($className, $descriptor);
-            };
-
-            $suite->addTest(
-                RetryTestSuite::fromTestCase(
-                    $__phpunit_test->name,
-                    $factory(),
-                    $__phpunit_test->maxAttempts,
-                    $factory,
-                ),
-            );
-
-            continue;
-        }
-
-        // A repeated test method travels as its RepeatTestSuite so that the
-        // repetition orchestration (failure threshold, skipping of remaining
-        // repetitions) runs inside the worker.
-        if ($__phpunit_test->type === 'repeat') {
-            $repetitions = [];
-
-            foreach ($__phpunit_test->tests as $descriptor) {
-                $repetitions[] = __phpunit_worker_build_test($className, $descriptor);
-            }
-
-            $suite->addTest(
-                RepeatTestSuite::fromTests(
-                    $__phpunit_test->name,
-                    $repetitions,
-                    $__phpunit_test->failureThreshold,
-                ),
-            );
-
-            continue;
-        }
-
-        $suite->addTest(__phpunit_worker_build_test($className, $__phpunit_test));
+        $suite->addTest(__phpunit_worker_build_member($command->className, $__phpunit_test));
     }
 
     $suite->run();

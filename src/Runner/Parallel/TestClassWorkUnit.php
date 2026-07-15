@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner\Parallel;
 
+use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\IterativeTestSuite;
 use PHPUnit\Framework\TestCase;
 
@@ -18,10 +19,12 @@ use PHPUnit\Framework\TestCase;
  * #[AfterClass]) and intra-class ordering are preserved when the unit is run by
  * a single worker.
  *
- * A member of the unit is either a single test case or an IterativeTestSuite
- * that aggregates the repetitions of a repeated test method or the attempts of
- * a retried test method; such a suite travels as one atomic member so that its
- * repetition and retry orchestration runs inside the worker.
+ * A member of the unit is either a single test case or a suite that must
+ * travel as one atomic member: an IterativeTestSuite, which aggregates the
+ * repetitions of a repeated test method or the attempts of a retried test
+ * method so that its repetition and retry orchestration runs inside the
+ * worker, or a DataProviderTestSuite, which aggregates the tests of a data
+ * provider method so that its event envelope is emitted inside the worker.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -40,14 +43,14 @@ final readonly class TestClassWorkUnit implements WorkUnit
     private string $className;
 
     /**
-     * @var list<IterativeTestSuite|TestCase>
+     * @var list<DataProviderTestSuite|IterativeTestSuite|TestCase>
      */
     private array $tests;
 
     /**
-     * @param non-negative-int                  $index
-     * @param class-string<TestCase>            $className
-     * @param list<IterativeTestSuite|TestCase> $tests
+     * @param non-negative-int                                        $index
+     * @param class-string<TestCase>                                  $className
+     * @param list<DataProviderTestSuite|IterativeTestSuite|TestCase> $tests
      */
     public function __construct(int $index, string $className, array $tests)
     {
@@ -73,7 +76,7 @@ final readonly class TestClassWorkUnit implements WorkUnit
     }
 
     /**
-     * @return list<IterativeTestSuite|TestCase>
+     * @return list<DataProviderTestSuite|IterativeTestSuite|TestCase>
      */
     public function tests(): array
     {
