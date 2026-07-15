@@ -208,6 +208,29 @@ final class PhptRunner
     }
 
     /**
+     * Abandon the run: the tests that have not been started yet are dropped
+     * and the child processes of the running tests are terminated without
+     * waiting for their results. Used when the test runner stops early,
+     * because the results collected so far call for it (--stop-on-*).
+     */
+    public function halt(): void
+    {
+        $this->queue = [];
+
+        foreach ($this->active as $task) {
+            $task['job']->terminate();
+
+            // The slot that the abandoned test held goes back to the shared
+            // process budget.
+            $this->budget->release();
+        }
+
+        $this->active          = [];
+        $this->activeConflicts = [];
+        $this->exclusive       = false;
+    }
+
+    /**
      * Start every queued unit that a free slot and its conflict keys allow.
      */
     private function startRunnable(): bool
