@@ -10,6 +10,7 @@
 namespace PHPUnit\Runner\Parallel;
 
 use function sort;
+use function usleep;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Event\EventCollection;
 use PHPUnit\Event\Facade;
@@ -145,6 +146,54 @@ final class WorkerPoolTest extends TestCase
         $this->assertFalse($crashed[2]);
     }
 
+    public function testWaitsForASlotOfTheSharedProcessBudgetBeforeDispatching(): void
+    {
+        $budget = new ProcessBudget(1);
+
+        $pool = $this->pool(1, $budget);
+
+        $pool->start();
+
+        try {
+            $completed = [];
+
+            $pool->begin(
+                [new TestClassWorkUnit(0, WorkerFirstTest::class, [new WorkerFirstTest('testStartsTheProcessLocalCounter')])],
+                static function (CompletedWorkUnit $unit) use (&$completed): void
+                {
+                    $completed[] = $unit;
+                },
+                static function (WorkUnit $unit, EventCollection $events): void
+                {
+                },
+            );
+
+            // The budget's only slot is held by a unit executing elsewhere —
+            // a PHPT test, in a real run. The pool must not dispatch, and it
+            // must not mistake the starvation for a pool whose workers have
+            // all died, which would report the queued unit as crashed.
+            $this->assertTrue($budget->acquire());
+
+            $this->assertFalse($pool->tick());
+            $this->assertFalse($pool->isFinished());
+            $this->assertSame([], $completed);
+
+            // The slot has been given back; the pool may dispatch now.
+            $budget->release();
+
+            while (!$pool->isFinished()) {
+                if (!$pool->tick()) {
+                    usleep(1000);
+                }
+            }
+
+            $this->assertCount(1, $completed);
+            $this->assertFalse($completed[0]->crashed());
+        } finally {
+            $pool->stop();
+        }
+    }
+
     public function testATickOnAFinishedPoolReportsNoProgress(): void
     {
         $pool = $this->pool(1);
@@ -204,7 +253,7 @@ final class WorkerPoolTest extends TestCase
     /**
      * @param positive-int $numberOfWorkers
      */
-    private function pool(int $numberOfWorkers): WorkerPool
+    private function pool(int $numberOfWorkers, ?ProcessBudget $budget = null): WorkerPool
     {
         $processor = new ChildProcessResultProcessor(
             new Facade,
@@ -221,7 +270,11 @@ final class WorkerPoolTest extends TestCase
             $workers[] = new PersistentWorker($jobRunner, $id);
         }
 
-        return new WorkerPool($workers);
+        if ($budget === null) {
+            $budget = new ProcessBudget($numberOfWorkers);
+        }
+
+        return new WorkerPool($workers, $budget);
     }
 
     /**
