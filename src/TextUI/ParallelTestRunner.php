@@ -30,6 +30,7 @@ use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestRunner\ChildProcessResultProcessor;
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\Metadata\Api\Dependencies;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\Exception as PhptException;
@@ -162,8 +163,11 @@ final class ParallelTestRunner
      * alongside others, for instance because they share a process-global
      * resource), when it is configured to run in a separate process (an
      * isolation that a shared worker cannot provide but the main process can),
-     * or when its test data cannot be serialized for transport to a worker (in
-     * which case the main process is the only place it can run at all). Running
+     * when one of its tests depends on a test of another class (whose result
+     * is only available in the main process, once the unit it belongs to has
+     * been released), or when its test data cannot be serialized for transport
+     * to a worker (in which case the main process is the only place it can run
+     * at all). Running
      * in the main process is ordinary execution that behaves exactly as it would
      * in sequential mode. Any remaining standalone test — one that is neither a
      * TestCase nor a PHPT test — is run the same way, at its own suite index.
@@ -207,6 +211,7 @@ final class ParallelTestRunner
                     ($processIsolation ||
                      $this->mustNotRunInParallel($unit) ||
                      $this->requiresProcessIsolation($unit) ||
+                     $this->hasCrossClassDependencies($unit) ||
                      !$this->canBeSerialized($unit))) {
                     // The unit keeps its global suite index; the aggregator runs
                     // it in the main process at the moment that index comes up in
@@ -610,6 +615,34 @@ final class ParallelTestRunner
         foreach ($this->testCasesOf($unit) as $test) {
             if (MetadataRegistry::parser()->forMethod($className, $test->name())->isDoNotRunInParallel()->isNotEmpty()) {
                 return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Whether any of the unit's tests depends on a test — or on all of the
+     * tests — of another test class. Such a test needs the results of tests
+     * that run in a different unit: possibly in a different worker, possibly
+     * not finished yet, and in any case invisible to this unit's worker
+     * process. The unit is therefore run in the main process, at its suite
+     * index: by then, every unit that precedes it in suite order has been
+     * released and the results its tests depend on have been imported —
+     * exactly the state a sequential run would present to them.
+     */
+    private function hasCrossClassDependencies(TestClassWorkUnit $unit): bool
+    {
+        $className = $unit->className();
+
+        foreach ($this->testCasesOf($unit) as $test) {
+            foreach (Dependencies::dependencies($className, $test->name()) as $dependency) {
+                // An invalid dependency — one whose declaration does not name
+                // a test method — is not a cross-class dependency; the test
+                // runner reports it wherever the unit runs.
+                if ($dependency->isValid() && $dependency->getTargetClassName() !== $className) {
+                    return true;
+                }
             }
         }
 
