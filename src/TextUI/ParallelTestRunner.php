@@ -368,6 +368,10 @@ final class ParallelTestRunner
                 {
                     $aggregator->addStreamedEvents($unit->index(), $events);
                 },
+                static function (WorkUnit $unit) use ($aggregator): bool
+                {
+                    return $aggregator->discardStreamedEventsFor($unit->index());
+                },
             );
 
             $activePool = $pool;
