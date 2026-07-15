@@ -10,16 +10,20 @@
 namespace PHPUnit\TextUI;
 
 use function assert;
+use function class_exists;
+use function explode;
 use function get_parent_class;
 use function gettype;
 use function is_array;
 use function is_object;
 use function is_resource;
+use function is_subclass_of;
 use function mt_srand;
 use function serialize;
 use function spl_object_id;
 use function usleep;
 use PHPUnit\Event;
+use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\IterativeTestSuite;
 use PHPUnit\Framework\PhptIterativeTestSuite;
 use PHPUnit\Framework\Test;
@@ -579,8 +583,11 @@ final class ParallelTestRunner
     }
 
     /**
-     * The test cases of a unit, with the test cases aggregated by an
-     * IterativeTestSuite member enumerated in its place.
+     * The test cases of a unit, with the test cases aggregated by a
+     * DataProviderTestSuite or IterativeTestSuite member enumerated in its
+     * place — including those of a retried or repeated data set, which sit
+     * one level deeper, in an IterativeTestSuite inside a
+     * DataProviderTestSuite.
      *
      * @return list<TestCase>
      */
@@ -589,20 +596,28 @@ final class ParallelTestRunner
         $testCases = [];
 
         foreach ($unit->tests() as $test) {
-            if ($test instanceof IterativeTestSuite) {
-                foreach ($test->tests() as $aggregated) {
-                    assert($aggregated instanceof TestCase);
-
-                    $testCases[] = $aggregated;
-                }
-
-                continue;
-            }
-
-            $testCases[] = $test;
+            $this->appendTestCasesOf($test, $testCases);
         }
 
         return $testCases;
+    }
+
+    /**
+     * @param list<TestCase> $testCases
+     */
+    private function appendTestCasesOf(Test $test, array &$testCases): void
+    {
+        if ($test instanceof TestCase) {
+            $testCases[] = $test;
+
+            return;
+        }
+
+        assert($test instanceof TestSuite);
+
+        foreach ($test->tests() as $aggregated) {
+            $this->appendTestCasesOf($aggregated, $testCases);
+        }
     }
 
     /**
@@ -716,7 +731,7 @@ final class ParallelTestRunner
      */
     private function collectUnits(TestSuite $suite, int &$index): array
     {
-        /** @var array<class-string<TestCase>, array{index: non-negative-int, tests: list<IterativeTestSuite|TestCase>}> $byClass */
+        /** @var array<class-string<TestCase>, array{index: non-negative-int, tests: list<DataProviderTestSuite|IterativeTestSuite|TestCase>}> $byClass */
         $byClass = [];
 
         /** @var list<array{index: non-negative-int, file: non-empty-string, conflicts: list<non-empty-string>}> $phpt */
@@ -747,10 +762,10 @@ final class ParallelTestRunner
     }
 
     /**
-     * @param array<class-string<TestCase>, array{index: non-negative-int, tests: list<IterativeTestSuite|TestCase>}> $byClass
-     * @param list<array{index: non-negative-int, file: non-empty-string, conflicts: list<non-empty-string>}>         $phpt
-     * @param list<array{index: non-negative-int, test: Test}>                                                        $standalone
-     * @param non-negative-int                                                                                        $index
+     * @param array<class-string<TestCase>, array{index: non-negative-int, tests: list<DataProviderTestSuite|IterativeTestSuite|TestCase>}> $byClass
+     * @param list<array{index: non-negative-int, file: non-empty-string, conflicts: list<non-empty-string>}>                               $phpt
+     * @param list<array{index: non-negative-int, test: Test}>                                                                              $standalone
+     * @param non-negative-int                                                                                                              $index
      */
     private function collect(TestSuite $suite, array &$byClass, array &$phpt, array &$standalone, int &$index): void
     {
@@ -780,6 +795,30 @@ final class ParallelTestRunner
                 assert($tests !== [] && $tests[0] instanceof TestCase);
 
                 $className = $tests[0]::class;
+
+                if (!isset($byClass[$className])) {
+                    $byClass[$className] = [
+                        'index' => $index,
+                        'tests' => [],
+                    ];
+
+                    $index++;
+                }
+
+                $byClass[$className]['tests'][] = $test;
+
+                continue;
+            }
+
+            // The tests of a data provider method travel as their
+            // DataProviderTestSuite so that the suite's "test suite started" /
+            // "test suite finished" envelope, which nests the tests in the
+            // logger output of a sequential run, is emitted inside the worker
+            // (or by the in-process run) in a parallel run, too.
+            if ($test instanceof DataProviderTestSuite) {
+                [$className] = explode('::', $test->name());
+
+                assert(class_exists($className) && is_subclass_of($className, TestCase::class));
 
                 if (!isset($byClass[$className])) {
                     $byClass[$className] = [
