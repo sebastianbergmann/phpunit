@@ -31,11 +31,15 @@ use PHPUnit\Event\EventCollection;
  * which is polled rather than waited on with stream_select() because the latter
  * does not work on the workers' output pipes on Windows.
  *
- * If a worker dies, the unit it was running is reported to the callback as a
- * crashed unit and the dead worker is dropped from the pool; the remaining
- * units are redistributed across the surviving workers. Should every worker
- * die, the units that were never started are likewise reported as crashed so
- * that the caller can account for all of them.
+ * If a worker dies, the unit it was running is retried once, on a fresh worker
+ * process booted in place of the dead one — the crash may have been caused by
+ * the state the dead process had accumulated, so the retry gets a pristine
+ * environment. A unit whose retry also crashes, or that cannot be retried
+ * because some of its results were already reported, is reported to the
+ * callback as a crashed unit; its worker stays dead and the remaining units
+ * are redistributed across the surviving workers. Should every worker die,
+ * the units that were never started are likewise reported as crashed so that
+ * the caller can account for all of them.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -71,6 +75,26 @@ final class WorkerPool
      * @var ?callable(WorkUnit, EventCollection):void
      */
     private $onStreamedEvents;
+
+    /**
+     * Whether a unit whose worker died may be re-run from scratch. The caller
+     * vetoes the retry when some of the unit's results have already been
+     * reported — re-running the unit would then report them twice — and uses
+     * the call to discard the unit's buffered results, so that the retry's
+     * results take their place.
+     *
+     * @var ?callable(WorkUnit): bool
+     */
+    private $onCrashedUnitRetry;
+
+    /**
+     * The indexes of the units that have already been retried after a crash,
+     * so that a unit whose retry crashes as well is reported as crashed
+     * instead of being retried forever.
+     *
+     * @var array<non-negative-int, true>
+     */
+    private array $retriedUnits = [];
 
     /**
      * The budget of concurrently executing units that the pool shares with the
@@ -113,10 +137,11 @@ final class WorkerPool
      * @param list<WorkUnit>                           $units
      * @param callable(CompletedWorkUnit):void         $onCompleted
      * @param callable(WorkUnit, EventCollection):void $onStreamedEvents
+     * @param callable(WorkUnit): bool                 $onCrashedUnitRetry
      */
-    public function run(array $units, callable $onCompleted, callable $onStreamedEvents): void
+    public function run(array $units, callable $onCompleted, callable $onStreamedEvents, callable $onCrashedUnitRetry): void
     {
-        $this->begin($units, $onCompleted, $onStreamedEvents);
+        $this->begin($units, $onCompleted, $onStreamedEvents, $onCrashedUnitRetry);
 
         while (!$this->isFinished()) {
             // Sleep briefly when a polling round did not progress so that
@@ -138,12 +163,15 @@ final class WorkerPool
      * @param list<WorkUnit>                           $units
      * @param callable(CompletedWorkUnit):void         $onCompleted
      * @param callable(WorkUnit, EventCollection):void $onStreamedEvents
+     * @param callable(WorkUnit): bool                 $onCrashedUnitRetry
      */
-    public function begin(array $units, callable $onCompleted, callable $onStreamedEvents): void
+    public function begin(array $units, callable $onCompleted, callable $onStreamedEvents, callable $onCrashedUnitRetry): void
     {
-        $this->queue            = $units;
-        $this->onCompleted      = $onCompleted;
-        $this->onStreamedEvents = $onStreamedEvents;
+        $this->queue              = $units;
+        $this->onCompleted        = $onCompleted;
+        $this->onStreamedEvents   = $onStreamedEvents;
+        $this->onCrashedUnitRetry = $onCrashedUnitRetry;
+        $this->retriedUnits       = [];
     }
 
     /**
@@ -189,13 +217,19 @@ final class WorkerPool
         foreach ($busy as $worker) {
             $completed = $worker->poll($onStreamedEvents);
 
-            if ($completed !== null) {
-                $this->budget->release();
-
-                $onCompleted($completed);
-
-                $progressed = true;
+            if ($completed === null) {
+                continue;
             }
+
+            $progressed = true;
+
+            $this->budget->release();
+
+            if ($completed->crashed() && $this->retry($worker, $completed->unit(), $onCompleted)) {
+                continue;
+            }
+
+            $onCompleted($completed);
         }
 
         return $progressed;
@@ -238,6 +272,60 @@ final class WorkerPool
         foreach ($this->workers as $worker) {
             $worker->stop();
         }
+    }
+
+    /**
+     * Retry a unit whose worker died, once, on a fresh worker process.
+     *
+     * The crash may have been caused by the state that the dead worker had
+     * accumulated while running its earlier units, so the retry runs in a
+     * pristine process, booted in place of the dead one. A unit is retried at
+     * most once, and only while none of its results have been reported yet:
+     * the retry re-runs all of the unit's tests, so it must not repeat any
+     * that were already shown. The caller-supplied callback makes that call
+     * and discards the results of the crashed attempt that were buffered.
+     *
+     * @param callable(CompletedWorkUnit):void $onCompleted
+     *
+     * @throws WorkerException
+     */
+    private function retry(PersistentWorker $worker, WorkUnit $unit, callable $onCompleted): bool
+    {
+        $onCrashedUnitRetry = $this->onCrashedUnitRetry;
+
+        assert($onCrashedUnitRetry !== null);
+
+        $index = $unit->index();
+
+        if (isset($this->retriedUnits[$index])) {
+            return false;
+        }
+
+        if (!$onCrashedUnitRetry($unit)) {
+            return false;
+        }
+
+        $this->retriedUnits[$index] = true;
+
+        $worker->restart();
+
+        $acquired = $this->budget->acquire();
+
+        assert($acquired);
+
+        try {
+            $worker->dispatch($unit);
+        } catch (WorkerException $e) {
+            // The unit was dispatched successfully once, so its data is known
+            // to be serializable; this cannot happen.
+            // @codeCoverageIgnoreStart
+            $this->budget->release();
+
+            $onCompleted(new CompletedWorkUnit($unit, '', null, true, $e->getMessage()));
+            // @codeCoverageIgnoreEnd
+        }
+
+        return true;
     }
 
     /**
