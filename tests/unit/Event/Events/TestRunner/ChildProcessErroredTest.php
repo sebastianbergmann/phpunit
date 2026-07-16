@@ -23,7 +23,7 @@ final class ChildProcessErroredTest extends AbstractEventTestCase
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = $this->telemetryInfo();
-        $reason        = ChildProcessReason::TestRequiringProcessIsolation;
+        $reason        = ChildProcessReason::ParallelWorker;
         $message       = 'message';
 
         $event = new ChildProcessErrored(
@@ -41,10 +41,10 @@ final class ChildProcessErroredTest extends AbstractEventTestCase
     {
         $event = new ChildProcessErrored(
             $this->telemetryInfo(),
-            ChildProcessReason::TestRequiringProcessIsolation,
+            ChildProcessReason::ParallelWorker,
             'message',
         );
 
-        $this->assertSame('Child Process Errored (test requiring process isolation)', $event->asString());
+        $this->assertSame('Child Process Errored (worker for parallel test execution)', $event->asString());
     }
 }
