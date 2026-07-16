@@ -23,16 +23,19 @@ final class ChildProcessFinishedTest extends AbstractEventTestCase
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = $this->telemetryInfo();
+        $reason        = ChildProcessReason::PhptTest;
         $stdout        = 'output';
         $stderr        = 'error';
 
         $event = new ChildProcessFinished(
             $telemetryInfo,
+            $reason,
             $stdout,
             $stderr,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
+        $this->assertSame($reason, $event->reason());
         $this->assertSame($stdout, $event->stdout());
         $this->assertSame($stderr, $event->stderr());
     }
@@ -41,10 +44,11 @@ final class ChildProcessFinishedTest extends AbstractEventTestCase
     {
         $event = new ChildProcessFinished(
             $this->telemetryInfo(),
+            ChildProcessReason::PhptTest,
             'output',
             'error',
         );
 
-        $this->assertSame('Child Process Finished', $event->asString());
+        $this->assertSame('Child Process Finished (FILE section of a PHPT test)', $event->asString());
     }
 }

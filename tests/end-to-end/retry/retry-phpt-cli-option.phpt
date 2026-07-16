@@ -28,8 +28,8 @@ Test Attempt Failed (%sRetryFlakyPhpt.phpt)
 Failed asserting that two strings are equal.
 Test Preparation Started (%sRetryFlakyPhpt.phpt (attempt 2 of 3))
 Test Prepared (%sRetryFlakyPhpt.phpt (attempt 2 of 3))
-Child Process Started
-Child Process Finished
+Child Process Started (FILE section of a PHPT test)
+Child Process Finished (FILE section of a PHPT test)
 Test Passed (%sRetryFlakyPhpt.phpt (attempt 2 of 3))
 Test Finished (%sRetryFlakyPhpt.phpt (attempt 2 of 3))
 Test Suite for Retried PHPT Finished (%sRetryFlakyPhpt.phpt, up to 3 attempts)

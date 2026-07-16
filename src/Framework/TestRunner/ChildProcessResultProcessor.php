@@ -22,6 +22,7 @@ use PHPUnit\Event\Code\ThrowableBuilder;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Event\EventCollection;
 use PHPUnit\Event\Facade;
+use PHPUnit\Event\TestRunner\ChildProcessReason;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\Test;
@@ -86,11 +87,11 @@ final readonly class ChildProcessResultProcessor
 
             if (strlen($serializedProcessResult) < $nonceLength ||
                 !hash_equals($processResultNonce, substr($serializedProcessResult, 0, $nonceLength))) {
-                $this->emitter->childProcessErrored();
+                $message = 'Test was run in child process and the result file was tampered with or written by an unexpected process';
 
-                $exception = new AssertionFailedError(
-                    'Test was run in child process and the result file was tampered with or written by an unexpected process',
-                );
+                $this->emitter->childProcessErrored(ChildProcessReason::TestRequiringProcessIsolation, $message);
+
+                $exception = new AssertionFailedError($message);
 
                 assert($test instanceof TestCase);
 
@@ -125,9 +126,11 @@ final readonly class ChildProcessResultProcessor
             !$childResult->status instanceof TestStatus ||
             !is_int($childResult->numAssertions) ||
             $childResult->numAssertions < 0) {
-            $this->emitter->childProcessErrored();
+            $message = 'Test was run in child process and ended unexpectedly';
 
-            $exception = new AssertionFailedError('Test was run in child process and ended unexpectedly');
+            $this->emitter->childProcessErrored(ChildProcessReason::TestRequiringProcessIsolation, $message);
+
+            $exception = new AssertionFailedError($message);
 
             assert($test instanceof TestCase);
 

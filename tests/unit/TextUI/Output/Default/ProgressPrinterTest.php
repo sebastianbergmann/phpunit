@@ -36,6 +36,7 @@ use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Event\TestRunner\ChildProcessErrored;
+use PHPUnit\Event\TestRunner\ChildProcessReason;
 use PHPUnit\Event\TestRunner\ExecutionStarted;
 use PHPUnit\Event\TestSuite\TestSuiteWithName;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -828,7 +829,11 @@ final class ProgressPrinterTest extends TestCase
 
     private function childProcessErroredEvent(): ChildProcessErrored
     {
-        return new ChildProcessErrored($this->telemetryInfo());
+        return new ChildProcessErrored(
+            $this->telemetryInfo(),
+            ChildProcessReason::TestRequiringProcessIsolation,
+            'message',
+        );
     }
 
     private function noticeEvent(bool $suppressed, bool $ignoredByBaseline): NoticeTriggered

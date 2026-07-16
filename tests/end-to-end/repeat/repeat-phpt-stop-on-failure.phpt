@@ -25,8 +25,8 @@ Test Suite Started (%sRepeatFailingPhpt.phpt, 3 tests)
 Test Suite for Repeated PHPT Started (%sRepeatFailingPhpt.phpt, 3 repetitions)
 Test Preparation Started (%sRepeatFailingPhpt.phpt (repetition 1 of 3))
 Test Prepared (%sRepeatFailingPhpt.phpt (repetition 1 of 3))
-Child Process Started
-Child Process Finished
+Child Process Started (FILE section of a PHPT test)
+Child Process Finished (FILE section of a PHPT test)
 Test Failed (%sRepeatFailingPhpt.phpt (repetition 1 of 3))
 Failed asserting that two strings are equal.
 Test Finished (%sRepeatFailingPhpt.phpt (repetition 1 of 3))

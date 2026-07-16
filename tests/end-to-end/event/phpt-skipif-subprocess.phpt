@@ -21,8 +21,8 @@ Test Runner Execution Started (1 test)
 Test Suite Started (%s%ephpt-skipif-exit-subprocess.phpt, 1 test)
 Test Preparation Started (%s%ephpt-skipif-exit-subprocess.phpt)
 Test Prepared (%s%ephpt-skipif-exit-subprocess.phpt)
-Child Process Started
-Child Process Finished
+Child Process Started (SKIPIF section of a PHPT test)
+Child Process Finished (SKIPIF section of a PHPT test)
 Test Skipped (%s%ephpt-skipif-exit-subprocess.phpt)
 is test
 Test Finished (%s%ephpt-skipif-exit-subprocess.phpt)

@@ -21,10 +21,10 @@ Test Runner Execution Started (1 test)
 Test Suite Started (%s%ephpt-ini-subprocess.phpt, 1 test)
 Test Preparation Started (%s%ephpt-ini-subprocess.phpt)
 Test Prepared (%s%ephpt-ini-subprocess.phpt)
-Child Process Started
-Child Process Finished
-Child Process Started
-Child Process Finished
+Child Process Started (SKIPIF section of a PHPT test)
+Child Process Finished (SKIPIF section of a PHPT test)
+Child Process Started (FILE section of a PHPT test)
+Child Process Finished (FILE section of a PHPT test)
 Test Passed (%s%ephpt-ini-subprocess.phpt)
 Test Finished (%s%ephpt-ini-subprocess.phpt)
 Test Suite Finished (%s%ephpt-ini-subprocess.phpt, 1 test)

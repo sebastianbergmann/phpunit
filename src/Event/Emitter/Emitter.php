@@ -14,6 +14,7 @@ use PHPUnit\Event\Code\ComparisonFailure;
 use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
+use PHPUnit\Event\TestRunner\ChildProcessReason;
 use PHPUnit\Event\TestSuite\TestSuite;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TextUI\Configuration\Configuration;
@@ -296,11 +297,14 @@ interface Emitter
 
     public function testSuiteFinished(TestSuite $testSuite): void;
 
-    public function childProcessStarted(): void;
+    public function childProcessStarted(ChildProcessReason $reason): void;
 
-    public function childProcessErrored(): void;
+    /**
+     * @param non-empty-string $message
+     */
+    public function childProcessErrored(ChildProcessReason $reason, string $message): void;
 
-    public function childProcessFinished(string $stdout, string $stderr): void;
+    public function childProcessFinished(ChildProcessReason $reason, string $stdout, string $stderr): void;
 
     public function testRunnerStartedStaticAnalysisForCodeCoverage(): void;
 

@@ -13,6 +13,7 @@ use function array_merge;
 use function stream_select;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Event\Facade;
+use PHPUnit\Event\TestRunner\ChildProcessReason;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -38,6 +39,7 @@ fwrite(STDOUT, 'out');
 fwrite(STDERR, 'err');
 
 EOT,
+                ChildProcessReason::TestRequiringProcessIsolation,
             ),
         );
 
@@ -62,6 +64,7 @@ EOT,
 fwrite(STDOUT, fgets(STDIN));
 
 EOT,
+                ChildProcessReason::TestRequiringProcessIsolation,
             ),
         );
 
@@ -83,6 +86,7 @@ fwrite(STDOUT, 'out-');
 fwrite(STDERR, 'err');
 
 EOT,
+                ChildProcessReason::TestRequiringProcessIsolation,
                 redirectErrors: true,
             ),
         );
@@ -146,6 +150,7 @@ usleep(50000);
 fwrite(STDOUT, '{$token}');
 
 EOT,
+            ChildProcessReason::TestRequiringProcessIsolation,
         );
     }
 

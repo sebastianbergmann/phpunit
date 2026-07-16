@@ -25,8 +25,8 @@ Test Runner Execution Started (1 test)
 Test Suite Started (%sInterruptPhptTest.phpt, 1 test)
 Test Preparation Started (%sInterruptPhptTest.phpt)
 Test Prepared (%sInterruptPhptTest.phpt)
-Child Process Started
-Child Process Finished
+Child Process Started (FILE section of a PHPT test)
+Child Process Finished (FILE section of a PHPT test)
 Test Finished (%sInterruptPhptTest.phpt)
 Test Suite Finished (%sInterruptPhptTest.phpt, 1 test)
 Test Runner Execution Finished

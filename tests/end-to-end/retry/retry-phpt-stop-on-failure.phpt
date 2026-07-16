@@ -28,8 +28,8 @@ Test Attempt Failed (%sRetryStopOnFailureFirstPhpt.phpt)
 Failed asserting that two strings are equal.
 Test Preparation Started (%sRetryStopOnFailureFirstPhpt.phpt (attempt 2 of 2))
 Test Prepared (%sRetryStopOnFailureFirstPhpt.phpt (attempt 2 of 2))
-Child Process Started
-Child Process Finished
+Child Process Started (FILE section of a PHPT test)
+Child Process Finished (FILE section of a PHPT test)
 Test Failed (%sRetryStopOnFailureFirstPhpt.phpt (attempt 2 of 2))
 Failed asserting that two strings are equal.
 Test Finished (%sRetryStopOnFailureFirstPhpt.phpt (attempt 2 of 2))

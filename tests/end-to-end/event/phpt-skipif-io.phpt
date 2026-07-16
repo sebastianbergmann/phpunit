@@ -23,8 +23,8 @@ Test Preparation Started (%s%ephpt-skipif-io.phpt)
 Test Prepared (%s%ephpt-skipif-io.phpt)
 Test Considered Risky (%s%ephpt-skipif-io.phpt)
 SKIPIF section does not produce output that could result in the test being skipped
-Child Process Started
-Child Process Finished
+Child Process Started (FILE section of a PHPT test)
+Child Process Finished (FILE section of a PHPT test)
 Test Passed (%s%ephpt-skipif-io.phpt)
 Test Finished (%s%ephpt-skipif-io.phpt)
 Test Suite Finished (%s%ephpt-skipif-io.phpt, 1 test)

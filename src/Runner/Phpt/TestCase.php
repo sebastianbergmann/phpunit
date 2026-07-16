@@ -44,6 +44,7 @@ use PHPUnit\Event\Code\Phpt;
 use PHPUnit\Event\Code\ThrowableBuilder;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Event\NoPreviousThrowableException;
+use PHPUnit\Event\TestRunner\ChildProcessReason;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ExecutionOrderDependency;
@@ -237,6 +238,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         $jobResult = JobRunnerRegistry::run(
             new Job(
                 $code,
+                ChildProcessReason::PhptTest,
                 $this->stringifyIni($phpSettings),
                 $environmentVariables,
                 $arguments,
@@ -245,7 +247,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
             ),
         );
 
-        EventFacade::emitter()->childProcessFinished($jobResult->stdout(), $jobResult->stderr());
+        EventFacade::emitter()->childProcessFinished(ChildProcessReason::PhptTest, $jobResult->stdout(), $jobResult->stderr());
 
         if (TestResultFacade::wasInterrupted()) {
             $this->runClean($sections, CodeCoverage::instance()->isActive());
@@ -489,13 +491,14 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
             $jobResult = JobRunnerRegistry::run(
                 new Job(
                     $skipIfCode,
+                    ChildProcessReason::PhptSkipIfSection,
                     $this->stringifyIni($settings),
                 ),
             );
 
             $output = $jobResult->stdout();
 
-            EventFacade::emitter()->childProcessFinished($output, $jobResult->stderr());
+            EventFacade::emitter()->childProcessFinished(ChildProcessReason::PhptSkipIfSection, $output, $jobResult->stderr());
         } else {
             $output = $this->runCodeInLocalSandbox($skipIfCode);
         }
@@ -606,13 +609,14 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
             $jobResult = JobRunnerRegistry::run(
                 new Job(
                     $cleanCode,
+                    ChildProcessReason::PhptCleanSection,
                     $this->settings($collectCoverage),
                 ),
             );
 
             $output = $jobResult->stdout();
 
-            EventFacade::emitter()->childProcessFinished($jobResult->stdout(), $jobResult->stderr());
+            EventFacade::emitter()->childProcessFinished(ChildProcessReason::PhptCleanSection, $jobResult->stdout(), $jobResult->stderr());
         } else {
             $output = $this->runCodeInLocalSandbox($cleanCode);
         }

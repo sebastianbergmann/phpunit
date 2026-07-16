@@ -23,6 +23,7 @@ use function unlink;
 use function var_export;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Event\NoPreviousThrowableException;
+use PHPUnit\Event\TestRunner\ChildProcessReason;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\ProcessIsolationException;
 use PHPUnit\Framework\TestCase;
@@ -164,7 +165,7 @@ final class SeparateProcessTestRunner
 
         assert($code !== '');
 
-        JobRunnerRegistry::runTestJob(new Job($code, requiresXdebug: $requiresXdebug), $processResultFile, $test, $processResultNonce);
+        JobRunnerRegistry::runTestJob(new Job($code, ChildProcessReason::TestRequiringProcessIsolation, requiresXdebug: $requiresXdebug), $processResultFile, $test, $processResultNonce);
 
         @unlink($serializedConfiguration);
     }

@@ -24,12 +24,12 @@ Test Attempt Errored (PHPUnit\TestFixture\Retry\RetryInSeparateProcessCrashTest:
 Test was run in child process and ended unexpectedly
 Test Attempt Errored (PHPUnit\TestFixture\Retry\RetryInSeparateProcessCrashTest::testOne (attempt 2 of 3))
 Test was run in child process and ended unexpectedly
-Child Process Started
-Child Process Errored
+Child Process Started (test requiring process isolation)
+Child Process Errored (test requiring process isolation)
 Test Errored (PHPUnit\TestFixture\Retry\RetryInSeparateProcessCrashTest::testOne (attempt 3 of 3))
 Test was run in child process and ended unexpectedly
 Test Finished (PHPUnit\TestFixture\Retry\RetryInSeparateProcessCrashTest::testOne (attempt 3 of 3))
-Child Process Finished
+Child Process Finished (test requiring process isolation)
 Test Suite for Retried Test Method Finished (PHPUnit\TestFixture\Retry\RetryInSeparateProcessCrashTest::testOne, up to 3 attempts)
 Test Suite Finished (PHPUnit\TestFixture\Retry\RetryInSeparateProcessCrashTest, 1 test)
 Test Runner Execution Finished

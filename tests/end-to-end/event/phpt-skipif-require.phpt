@@ -21,10 +21,10 @@ Test Runner Execution Started (1 test)
 Test Suite Started (%s%ephpt-skipif-require.phpt, 1 test)
 Test Preparation Started (%s%ephpt-skipif-require.phpt)
 Test Prepared (%s%ephpt-skipif-require.phpt)
-Child Process Started
-Child Process Finished
-Child Process Started
-Child Process Finished
+Child Process Started (SKIPIF section of a PHPT test)
+Child Process Finished (SKIPIF section of a PHPT test)
+Child Process Started (FILE section of a PHPT test)
+Child Process Finished (FILE section of a PHPT test)
 Test Passed (%s%ephpt-skipif-require.phpt)
 Test Finished (%s%ephpt-skipif-require.phpt)
 Test Suite Finished (%s%ephpt-skipif-require.phpt, 1 test)

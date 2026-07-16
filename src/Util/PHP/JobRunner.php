@@ -82,7 +82,7 @@ final readonly class JobRunner
             $processResultNonce,
         );
 
-        EventFacade::emitter()->childProcessFinished($result->stdout(), $result->stderr());
+        EventFacade::emitter()->childProcessFinished($job->reason(), $result->stdout(), $result->stderr());
     }
 
     /**
@@ -106,6 +106,7 @@ final readonly class JobRunner
 
             $job = new Job(
                 $job->input(),
+                $job->reason(),
                 $job->phpSettings(),
                 $job->environmentVariables(),
                 $job->arguments(),
@@ -224,7 +225,7 @@ final readonly class JobRunner
             // @codeCoverageIgnoreEnd
         }
 
-        Facade::emitter()->childProcessStarted();
+        Facade::emitter()->childProcessStarted($job->reason());
 
         return new RunningJob($process, $pipes, $mergedOutputStream, $temporaryFile);
     }

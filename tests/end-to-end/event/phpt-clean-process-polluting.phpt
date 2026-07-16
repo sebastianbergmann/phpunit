@@ -21,11 +21,11 @@ Test Runner Execution Started (1 test)
 Test Suite Started (%sphpt-clean-process-polluting.phpt, 1 test)
 Test Preparation Started (%sphpt-clean-process-polluting.phpt)
 Test Prepared (%sphpt-clean-process-polluting.phpt)
-Child Process Started
-Child Process Finished
+Child Process Started (FILE section of a PHPT test)
+Child Process Finished (FILE section of a PHPT test)
 Test Passed (%sphpt-clean-process-polluting.phpt)
-Child Process Started
-Child Process Finished
+Child Process Started (CLEAN section of a PHPT test)
+Child Process Finished (CLEAN section of a PHPT test)
 Test Finished (%sphpt-clean-process-polluting.phpt)
 Test Suite Finished (%sphpt-clean-process-polluting.phpt, 1 test)
 Test Runner Execution Finished

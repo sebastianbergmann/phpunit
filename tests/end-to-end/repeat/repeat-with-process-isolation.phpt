@@ -23,18 +23,18 @@ Test Suite Sorted
 Test Runner Execution Started (2 tests)
 Test Suite Started (PHPUnit\TestFixture\Repeat\ProcessIsolationSuccessTest, 2 tests)
 Test Suite for Repeated Test Method Started (PHPUnit\TestFixture\Repeat\ProcessIsolationSuccessTest::testOne, 2 repetitions)
-Child Process Started
+Child Process Started (test requiring process isolation)
 Test Preparation Started (PHPUnit\TestFixture\Repeat\ProcessIsolationSuccessTest::testOne (repetition 1 of 2))
 Test Prepared (PHPUnit\TestFixture\Repeat\ProcessIsolationSuccessTest::testOne (repetition 1 of 2))
 Test Passed (PHPUnit\TestFixture\Repeat\ProcessIsolationSuccessTest::testOne (repetition 1 of 2))
 Test Finished (PHPUnit\TestFixture\Repeat\ProcessIsolationSuccessTest::testOne (repetition 1 of 2))
-Child Process Finished
-Child Process Started
+Child Process Finished (test requiring process isolation)
+Child Process Started (test requiring process isolation)
 Test Preparation Started (PHPUnit\TestFixture\Repeat\ProcessIsolationSuccessTest::testOne (repetition 2 of 2))
 Test Prepared (PHPUnit\TestFixture\Repeat\ProcessIsolationSuccessTest::testOne (repetition 2 of 2))
 Test Passed (PHPUnit\TestFixture\Repeat\ProcessIsolationSuccessTest::testOne (repetition 2 of 2))
 Test Finished (PHPUnit\TestFixture\Repeat\ProcessIsolationSuccessTest::testOne (repetition 2 of 2))
-Child Process Finished
+Child Process Finished (test requiring process isolation)
 Test Suite for Repeated Test Method Finished (PHPUnit\TestFixture\Repeat\ProcessIsolationSuccessTest::testOne, 2 repetitions)
 Test Suite Finished (PHPUnit\TestFixture\Repeat\ProcessIsolationSuccessTest, 2 tests)
 Test Runner Execution Finished

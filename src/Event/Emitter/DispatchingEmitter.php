@@ -273,25 +273,36 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function childProcessStarted(): void
+    public function childProcessStarted(TestRunner\ChildProcessReason $reason): void
     {
         $this->dispatcher->dispatch(
-            new TestRunner\ChildProcessStarted($this->telemetryInfo()),
+            new TestRunner\ChildProcessStarted(
+                $this->telemetryInfo(),
+                $reason,
+            ),
         );
     }
 
-    public function childProcessErrored(): void
+    /**
+     * @param non-empty-string $message
+     */
+    public function childProcessErrored(TestRunner\ChildProcessReason $reason, string $message): void
     {
         $this->dispatcher->dispatch(
-            new TestRunner\ChildProcessErrored($this->telemetryInfo()),
+            new TestRunner\ChildProcessErrored(
+                $this->telemetryInfo(),
+                $reason,
+                $message,
+            ),
         );
     }
 
-    public function childProcessFinished(string $stdout, string $stderr): void
+    public function childProcessFinished(TestRunner\ChildProcessReason $reason, string $stdout, string $stderr): void
     {
         $this->dispatcher->dispatch(
             new TestRunner\ChildProcessFinished(
                 $this->telemetryInfo(),
+                $reason,
                 $stdout,
                 $stderr,
             ),

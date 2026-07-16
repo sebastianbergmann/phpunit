@@ -23,6 +23,7 @@ use PHPUnit\Event\TestRunner\ChildProcessErrored;
 use PHPUnit\Event\TestRunner\ChildProcessErroredSubscriber;
 use PHPUnit\Event\TestRunner\ChildProcessFinished;
 use PHPUnit\Event\TestRunner\ChildProcessFinishedSubscriber;
+use PHPUnit\Event\TestRunner\ChildProcessReason;
 use PHPUnit\Event\TestRunner\ChildProcessStarted;
 use PHPUnit\Event\TestRunner\ChildProcessStartedSubscriber;
 use PHPUnit\Event\TestRunner\DeprecationTriggered as TestRunnerDeprecationTriggered;
@@ -688,10 +689,16 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem,
         );
 
-        $emitter->childProcessStarted();
+        $reason = ChildProcessReason::TestRequiringProcessIsolation;
+
+        $emitter->childProcessStarted($reason);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(ChildProcessStarted::class, $subscriber->lastRecordedEvent());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(ChildProcessStarted::class, $event);
+        $this->assertSame($reason, $event->reason());
     }
 
     #[TestDox('childProcessErrored() emits TestRunner\ChildProcessErrored event')]
@@ -718,10 +725,18 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem,
         );
 
-        $emitter->childProcessErrored();
+        $reason  = ChildProcessReason::TestRequiringProcessIsolation;
+        $message = 'message';
+
+        $emitter->childProcessErrored($reason, $message);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(ChildProcessErrored::class, $subscriber->lastRecordedEvent());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(ChildProcessErrored::class, $event);
+        $this->assertSame($reason, $event->reason());
+        $this->assertSame($message, $event->message());
     }
 
     #[TestDox('childProcessFinished() emits TestRunner\ChildProcessFinished event')]
@@ -748,16 +763,18 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem,
         );
 
+        $reason = ChildProcessReason::PhptTest;
         $stdout = 'stdout';
         $stderr = 'stderr';
 
-        $emitter->childProcessFinished($stdout, $stderr);
+        $emitter->childProcessFinished($reason, $stdout, $stderr);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 
         $event = $subscriber->lastRecordedEvent();
 
         $this->assertInstanceOf(ChildProcessFinished::class, $event);
+        $this->assertSame($reason, $event->reason());
         $this->assertSame($stdout, $event->stdout());
         $this->assertSame($stderr, $event->stderr());
     }

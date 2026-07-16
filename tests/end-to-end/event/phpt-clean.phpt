@@ -21,8 +21,8 @@ Test Runner Execution Started (1 test)
 Test Suite Started (%sphpt-clean.phpt, 1 test)
 Test Preparation Started (%sphpt-clean.phpt)
 Test Prepared (%sphpt-clean.phpt)
-Child Process Started
-Child Process Finished
+Child Process Started (FILE section of a PHPT test)
+Child Process Finished (FILE section of a PHPT test)
 Test Passed (%sphpt-clean.phpt)
 Test Finished (%sphpt-clean.phpt)
 Test Suite Finished (%sphpt-clean.phpt, 1 test)

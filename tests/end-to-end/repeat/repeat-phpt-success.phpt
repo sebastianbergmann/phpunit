@@ -24,20 +24,20 @@ Test Suite Started (%sRepeatPassingPhpt.phpt, 3 tests)
 Test Suite for Repeated PHPT Started (%sRepeatPassingPhpt.phpt, 3 repetitions)
 Test Preparation Started (%sRepeatPassingPhpt.phpt (repetition 1 of 3))
 Test Prepared (%sRepeatPassingPhpt.phpt (repetition 1 of 3))
-Child Process Started
-Child Process Finished
+Child Process Started (FILE section of a PHPT test)
+Child Process Finished (FILE section of a PHPT test)
 Test Passed (%sRepeatPassingPhpt.phpt (repetition 1 of 3))
 Test Finished (%sRepeatPassingPhpt.phpt (repetition 1 of 3))
 Test Preparation Started (%sRepeatPassingPhpt.phpt (repetition 2 of 3))
 Test Prepared (%sRepeatPassingPhpt.phpt (repetition 2 of 3))
-Child Process Started
-Child Process Finished
+Child Process Started (FILE section of a PHPT test)
+Child Process Finished (FILE section of a PHPT test)
 Test Passed (%sRepeatPassingPhpt.phpt (repetition 2 of 3))
 Test Finished (%sRepeatPassingPhpt.phpt (repetition 2 of 3))
 Test Preparation Started (%sRepeatPassingPhpt.phpt (repetition 3 of 3))
 Test Prepared (%sRepeatPassingPhpt.phpt (repetition 3 of 3))
-Child Process Started
-Child Process Finished
+Child Process Started (FILE section of a PHPT test)
+Child Process Finished (FILE section of a PHPT test)
 Test Passed (%sRepeatPassingPhpt.phpt (repetition 3 of 3))
 Test Finished (%sRepeatPassingPhpt.phpt (repetition 3 of 3))
 Test Suite for Repeated PHPT Finished (%sRepeatPassingPhpt.phpt, 3 repetitions)

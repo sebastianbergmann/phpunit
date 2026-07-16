@@ -23,20 +23,24 @@ final class ChildProcessStartedTest extends AbstractEventTestCase
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = $this->telemetryInfo();
+        $reason        = ChildProcessReason::TestRequiringProcessIsolation;
 
         $event = new ChildProcessStarted(
             $telemetryInfo,
+            $reason,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
+        $this->assertSame($reason, $event->reason());
     }
 
     public function testCanBeRepresentedAsString(): void
     {
         $event = new ChildProcessStarted(
             $this->telemetryInfo(),
+            ChildProcessReason::TestRequiringProcessIsolation,
         );
 
-        $this->assertSame('Child Process Started', $event->asString());
+        $this->assertSame('Child Process Started (test requiring process isolation)', $event->asString());
     }
 }

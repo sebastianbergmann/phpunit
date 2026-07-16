@@ -12,6 +12,7 @@ namespace PHPUnit\Util\PHP;
 use Generator;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Event\Facade;
+use PHPUnit\Event\TestRunner\ChildProcessReason;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
@@ -37,7 +38,8 @@ final class JobRunnerTest extends TestCase
 <?php declare(strict_types=1);
 fwrite(STDOUT, 'test');
 
-EOT
+EOT,
+                ChildProcessReason::TestRequiringProcessIsolation,
             ),
         ];
 
@@ -48,7 +50,8 @@ EOT
 <?php declare(strict_types=1);
 fwrite(STDERR, 'test');
 
-EOT
+EOT,
+                ChildProcessReason::TestRequiringProcessIsolation,
             ),
         ];
 
@@ -60,7 +63,8 @@ EOT
 fwrite(STDOUT, 'test-stdout');
 fwrite(STDERR, 'test-stderr');
 
-EOT
+EOT,
+                ChildProcessReason::TestRequiringProcessIsolation,
             ),
         ];
 
@@ -72,6 +76,7 @@ EOT
 fwrite(STDERR, 'test');
 
 EOT,
+                ChildProcessReason::TestRequiringProcessIsolation,
                 redirectErrors: true,
             ),
         ];
@@ -84,6 +89,7 @@ EOT,
 print getenv('test');
 
 EOT,
+                ChildProcessReason::TestRequiringProcessIsolation,
                 environmentVariables: ['test' => 'test'],
             ),
         ];
@@ -96,6 +102,7 @@ EOT,
 print $argv[1];
 
 EOT,
+                ChildProcessReason::TestRequiringProcessIsolation,
                 arguments: ['test'],
             ),
         ];
@@ -108,6 +115,7 @@ EOT,
 print file_get_contents('php://stdin');
 
 EOT,
+                ChildProcessReason::TestRequiringProcessIsolation,
                 input: 'test',
             ),
         ];
@@ -122,6 +130,7 @@ EOT,
 print ini_get('highlight.string');
 
 EOT,
+                ChildProcessReason::TestRequiringProcessIsolation,
                 phpSettings: ['highlight.string=' . $obfuscationRegex],
             ),
         ];
@@ -134,6 +143,7 @@ EOT,
 print ini_get('highlight.string');
 
 EOT,
+                ChildProcessReason::TestRequiringProcessIsolation,
                 phpSettings: ['highlight.string'],
             ),
         ];
@@ -149,6 +159,7 @@ EOT,
 print ini_get('highlight.string');
 
 EOT,
+                ChildProcessReason::TestRequiringProcessIsolation,
                 phpSettings: ['highlight.string=' . $valueContainingEquals],
             ),
         ];
@@ -190,6 +201,7 @@ EOT,
 fwrite(STDOUT, fgets(STDIN));
 
 EOT,
+                ChildProcessReason::TestRequiringProcessIsolation,
             ),
         );
 
@@ -215,6 +227,7 @@ EOT,
 <?php declare(strict_types=1);
 
 EOT,
+            ChildProcessReason::TestRequiringProcessIsolation,
             phpSettings: ["highlight.string=foo\nauto_prepend_file=/tmp/evil.php"],
         );
 

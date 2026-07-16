@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Util\PHP;
 
+use PHPUnit\Event\TestRunner\ChildProcessReason;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
@@ -23,6 +24,7 @@ final class JobTest extends TestCase
 
         $job = new Job(
             $code,
+            ChildProcessReason::TestRequiringProcessIsolation,
             [],
             [],
             [],
@@ -37,12 +39,30 @@ final class JobTest extends TestCase
         $this->assertFalse($job->redirectErrors());
     }
 
+    public function testHasReason(): void
+    {
+        $reason = ChildProcessReason::PhptTest;
+
+        $job = new Job(
+            'the-code',
+            $reason,
+            [],
+            [],
+            [],
+            null,
+            false,
+        );
+
+        $this->assertSame($reason, $job->reason());
+    }
+
     public function testMayHavePhpSettings(): void
     {
         $phpSettings = ['foo' => 'bar'];
 
         $job = new Job(
             'the-code',
+            ChildProcessReason::TestRequiringProcessIsolation,
             $phpSettings,
             [],
             [],
@@ -63,6 +83,7 @@ final class JobTest extends TestCase
 
         $job = new Job(
             'the-code',
+            ChildProcessReason::TestRequiringProcessIsolation,
             [],
             $environmentVariables,
             [],
@@ -83,6 +104,7 @@ final class JobTest extends TestCase
 
         $job = new Job(
             'the-code',
+            ChildProcessReason::TestRequiringProcessIsolation,
             [],
             [],
             $arguments,
@@ -104,6 +126,7 @@ final class JobTest extends TestCase
 
         $job = new Job(
             'the-code',
+            ChildProcessReason::TestRequiringProcessIsolation,
             [],
             [],
             [],
@@ -122,6 +145,7 @@ final class JobTest extends TestCase
     {
         $job = new Job(
             'the-code',
+            ChildProcessReason::TestRequiringProcessIsolation,
             [],
             [],
             [],
@@ -140,6 +164,7 @@ final class JobTest extends TestCase
     {
         $job = new Job(
             'the-code',
+            ChildProcessReason::TestRequiringProcessIsolation,
             [],
             [],
             [],

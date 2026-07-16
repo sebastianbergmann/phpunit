@@ -27,12 +27,12 @@ Test Suite Started (PHPUnit\TestFixture\Retry\RetryTestsInSeparateProcessesTest,
 Test Suite for Retried Test Method Started (PHPUnit\TestFixture\Retry\RetryTestsInSeparateProcessesTest::testOne, up to 2 attempts)
 Test Attempt Failed (PHPUnit\TestFixture\Retry\RetryTestsInSeparateProcessesTest::testOne)
 Failed asserting that 1 is greater than 1.
-Child Process Started
+Child Process Started (test requiring process isolation)
 Test Preparation Started (PHPUnit\TestFixture\Retry\RetryTestsInSeparateProcessesTest::testOne (attempt 2 of 2))
 Test Prepared (PHPUnit\TestFixture\Retry\RetryTestsInSeparateProcessesTest::testOne (attempt 2 of 2))
 Test Passed (PHPUnit\TestFixture\Retry\RetryTestsInSeparateProcessesTest::testOne (attempt 2 of 2))
 Test Finished (PHPUnit\TestFixture\Retry\RetryTestsInSeparateProcessesTest::testOne (attempt 2 of 2))
-Child Process Finished
+Child Process Finished (test requiring process isolation)
 Test Suite for Retried Test Method Finished (PHPUnit\TestFixture\Retry\RetryTestsInSeparateProcessesTest::testOne, up to 2 attempts)
 Test Suite Finished (PHPUnit\TestFixture\Retry\RetryTestsInSeparateProcessesTest, 1 test)
 Test Runner Execution Finished
