@@ -29,6 +29,7 @@ use function unlink;
 use function var_export;
 use PHPUnit\Event\EventCollection;
 use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Event\TestRunner\ChildProcessReason;
 use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\RepeatTestSuite;
 use PHPUnit\Framework\RetryTestSuite;
@@ -164,7 +165,7 @@ final class PersistentWorker
         ];
 
         $this->job = $this->jobRunner->start(
-            new Job($this->buildWorkerCode(), [], $environmentVariables),
+            new Job($this->buildWorkerCode(), ChildProcessReason::ParallelWorker, [], $environmentVariables),
         );
     }
 
@@ -333,7 +334,7 @@ final class PersistentWorker
 
             $result = $this->job->wait();
 
-            EventFacade::emitter()->childProcessFinished($result->stdout(), $result->stderr());
+            EventFacade::emitter()->childProcessFinished(ChildProcessReason::ParallelWorker, $result->stdout(), $result->stderr());
 
             $this->job = null;
         }

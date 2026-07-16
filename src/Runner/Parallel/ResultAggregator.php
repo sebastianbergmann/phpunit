@@ -15,6 +15,7 @@ use function unserialize;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Event\EventCollection;
 use PHPUnit\Event\Facade;
+use PHPUnit\Event\TestRunner\ChildProcessReason;
 use PHPUnit\Framework\TestRunner\ChildProcessResultEnvelope;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TestRunner\TestResult\PassedTests;
@@ -288,7 +289,7 @@ final class ResultAggregator
                 );
             }
 
-            $this->emitter->childProcessErrored();
+            $this->emitter->childProcessErrored(ChildProcessReason::ParallelWorker, $message);
             $this->emitter->testRunnerTriggeredPhpunitWarning($message);
 
             return;
@@ -300,13 +301,13 @@ final class ResultAggregator
         );
 
         if ($serializedResult === null) {
-            $this->emitter->childProcessErrored();
-            $this->emitter->testRunnerTriggeredPhpunitWarning(
-                sprintf(
-                    'The result of the worker process running %s was tampered with or written by an unexpected process',
-                    $completed->unit()->name(),
-                ),
+            $message = sprintf(
+                'The result of the worker process running %s was tampered with or written by an unexpected process',
+                $completed->unit()->name(),
             );
+
+            $this->emitter->childProcessErrored(ChildProcessReason::ParallelWorker, $message);
+            $this->emitter->testRunnerTriggeredPhpunitWarning($message);
 
             return;
         }
@@ -318,13 +319,13 @@ final class ResultAggregator
             !property_exists($childResult, 'passedTests') ||
             !$childResult->events instanceof EventCollection ||
             !$childResult->passedTests instanceof PassedTests) {
-            $this->emitter->childProcessErrored();
-            $this->emitter->testRunnerTriggeredPhpunitWarning(
-                sprintf(
-                    'The worker process running %s ended unexpectedly',
-                    $completed->unit()->name(),
-                ),
+            $message = sprintf(
+                'The worker process running %s ended unexpectedly',
+                $completed->unit()->name(),
             );
+
+            $this->emitter->childProcessErrored(ChildProcessReason::ParallelWorker, $message);
+            $this->emitter->testRunnerTriggeredPhpunitWarning($message);
 
             return;
         }
