@@ -39,7 +39,7 @@ fwrite(STDOUT, 'out');
 fwrite(STDERR, 'err');
 
 EOT,
-                ChildProcessReason::TestRequiringProcessIsolation,
+                ChildProcessReason::ParallelWorker,
             ),
         );
 
@@ -111,7 +111,7 @@ EOT,
 fwrite(STDOUT, fgets(STDIN));
 
 EOT,
-                ChildProcessReason::TestRequiringProcessIsolation,
+                ChildProcessReason::ParallelWorker,
             ),
         );
 
@@ -197,7 +197,7 @@ usleep(50000);
 fwrite(STDOUT, '{$token}');
 
 EOT,
-            ChildProcessReason::TestRequiringProcessIsolation,
+            ChildProcessReason::ParallelWorker,
         );
     }
 
