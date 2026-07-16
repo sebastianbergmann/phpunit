@@ -260,7 +260,7 @@ EOT,
 fwrite(STDOUT, fgets(STDIN));
 
 EOT,
-                ChildProcessReason::TestRequiringProcessIsolation,
+                ChildProcessReason::ParallelWorker,
             ),
         );
 
