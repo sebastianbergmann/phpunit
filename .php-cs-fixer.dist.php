@@ -24,6 +24,8 @@ $finder = PhpCsFixer\Finder::create()
     ->notName('TestAttributeOnHookMethodsTest.php')
     // InvokableConstraintAndPipeOperatorTest.php uses PHP 8.5 syntax
     ->notName('InvokableConstraintAndPipeOperatorTest.php')
+    // TestDoubleAndPartialFunctionApplicationTest.php uses PHP 8.6 syntax
+    ->notName('TestDoubleAndPartialFunctionApplicationTest.php')
     // NoReturnTypeTest.php, RepeatAttributeWithoutReturnTypeTest.php, and RetryAttributeWithoutReturnTypeTest.php must have a method without a return type declaration
     ->notPath('repeat/_files/NoReturnTypeTest.php')
     ->notPath('repeat/_files/RepeatAttributeWithoutReturnTypeTest.php')
