@@ -496,6 +496,23 @@ final class CodeCoverage
         }
     }
 
+    public function warnAboutFilesThatCouldNotBeParsed(): void
+    {
+        if (!$this->isActive()) {
+            return;
+        }
+
+        foreach ($this->codeCoverage->parseErrors() as $file => $message) {
+            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                sprintf(
+                    'Cannot parse %s (%s), code coverage for this file is based on raw data reported by the code coverage driver',
+                    $file,
+                    $message,
+                ),
+            );
+        }
+    }
+
     public function warnIfFilterIsNotConfigured(CodeCoverageFilterRegistry $codeCoverageFilterRegistry, Configuration $configuration): void
     {
         if (!$codeCoverageFilterRegistry->get()->isEmpty()) {

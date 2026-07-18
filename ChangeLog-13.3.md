@@ -27,6 +27,7 @@ All notable changes of the PHPUnit 13.3 release series are documented in this fi
 ### Changed
 
 * [phpunit/php-code-coverage #1231](https://github.com/sebastianbergmann/php-code-coverage/pull/1231): Identify dead code using static analysis
+* [phpunit/php-code-coverage #1259](https://github.com/sebastianbergmann/php-code-coverage/pull/1259): Degrade gracefully when a source file cannot be parsed
 * The test runner no longer crashes when an attribute cannot be instantiated
 * Improved TestDox HTML report
 

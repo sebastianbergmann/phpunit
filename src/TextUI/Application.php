@@ -303,6 +303,8 @@ final readonly class Application
                 }
             }
 
+            CodeCoverage::instance()->warnAboutFilesThatCouldNotBeParsed();
+
             $result = TestResultFacade::result();
 
             if (TestResultFacade::wasInterrupted()) {
