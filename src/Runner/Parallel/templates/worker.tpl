@@ -92,7 +92,15 @@ function __phpunit_worker_build_test(string $className, object $descriptor): PHP
 {
     $test = new $className($descriptor->methodName);
 
-    $test->setData($descriptor->dataName, unserialize(base64_decode($descriptor->data)));
+    // A string data-set name travels base64-encoded because it is not
+    // required to be valid UTF-8; an integer name travels as-is.
+    $dataName = $descriptor->dataName;
+
+    if (is_string($dataName)) {
+        $dataName = base64_decode($dataName);
+    }
+
+    $test->setData($dataName, unserialize(base64_decode($descriptor->data)));
     $test->setDependencyInput(unserialize(base64_decode($descriptor->dependencyInput)));
     $test->setRepetition($descriptor->repetition, $descriptor->totalRepetitions);
     $test->setAttempt($descriptor->attempt, $descriptor->maxAttempts);
