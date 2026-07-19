@@ -2,7 +2,7 @@
     "require-dev": {
         "phpstan/phpstan": "^2.2.5",
         "phpstan/extension-installer": "^1.4.3",
-        "phpstan/phpstan-strict-rules": "^2.0.11",
+        "phpstan/phpstan-strict-rules": "^2.0.12",
         "tomasvotruba/type-coverage": "^2.2.2",
         "ergebnis/phpstan-rules": "^2.13.1"
     },
