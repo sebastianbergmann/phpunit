@@ -9,14 +9,30 @@
  */
 namespace PHPUnit\Runner\Parallel;
 
+use function array_pop;
+use function array_reverse;
+use function array_slice;
+use function assert;
 use function property_exists;
 use function sprintf;
 use function unserialize;
+use PHPUnit\Event\Code\TestMethod;
+use PHPUnit\Event\Code\TestMethodBuilder;
+use PHPUnit\Event\Code\ThrowableBuilder;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Event\EventCollection;
 use PHPUnit\Event\Facade;
+use PHPUnit\Event\Test\Finished as TestFinished;
 use PHPUnit\Event\TestRunner\ChildProcessReason;
+use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
+use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
+use PHPUnit\Event\TestSuite\TestSuite as TestSuiteValue;
+use PHPUnit\Event\TestSuite\TestSuiteBuilder;
+use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Test;
+use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestRunner\ChildProcessResultEnvelope;
+use PHPUnit\Framework\TestSuite as FrameworkTestSuite;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 use stdClass;
@@ -107,6 +123,27 @@ final class ResultAggregator
     private array $forwardedStreamedEvents = [];
 
     /**
+     * What the forwarded streamed frames of each in-flight unit have already
+     * reported: how many times each test finished (a repeated test finishes
+     * once per repetition), and the test-suite envelopes that were opened but
+     * not yet closed, outermost first.
+     *
+     * When a unit produces no trustworthy result — its worker died, or its
+     * result envelope failed verification — this is what tells the aggregator
+     * which of the unit's tests still have to be reported as errored and
+     * which envelopes still have to be closed, so that the event stream stays
+     * complete and balanced.
+     *
+     * @var array<non-negative-int, array<non-empty-string, positive-int>>
+     */
+    private array $forwardedFinishedTests = [];
+
+    /**
+     * @var array<non-negative-int, list<TestSuiteValue>>
+     */
+    private array $forwardedOpenSuites = [];
+
+    /**
      * @var non-negative-int
      */
     private int $nextIndex = 0;
@@ -165,7 +202,7 @@ final class ResultAggregator
         if ($index === $this->nextIndex && !($this->shouldStop)()) {
             $this->forwardedStreamedEvents[$index] = true;
 
-            $this->eventFacade->forward($events);
+            $this->forwardFrame($index, $events);
 
             return;
         }
@@ -266,10 +303,55 @@ final class ResultAggregator
         $this->forwardedStreamedEvents[$index] = true;
 
         foreach ($this->streamedEvents[$index] as $events) {
-            $this->eventFacade->forward($events);
+            $this->forwardFrame($index, $events);
         }
 
         unset($this->streamedEvents[$index]);
+    }
+
+    /**
+     * Forward one streamed frame, recording what it reports: which tests it
+     * finished, and which test-suite envelopes it opened or closed. Should
+     * the unit fail to produce a trustworthy result later, this record is
+     * what completes its event stream (see reportTestsWithoutResult()).
+     *
+     * @param non-negative-int $index
+     */
+    private function forwardFrame(int $index, EventCollection $events): void
+    {
+        if (!isset($this->forwardedFinishedTests[$index])) {
+            $this->forwardedFinishedTests[$index] = [];
+        }
+
+        if (!isset($this->forwardedOpenSuites[$index])) {
+            $this->forwardedOpenSuites[$index] = [];
+        }
+
+        foreach ($events as $event) {
+            if ($event instanceof TestFinished) {
+                $id = $event->test()->id();
+
+                if (!isset($this->forwardedFinishedTests[$index][$id])) {
+                    $this->forwardedFinishedTests[$index][$id] = 1;
+                } else {
+                    $this->forwardedFinishedTests[$index][$id]++;
+                }
+
+                continue;
+            }
+
+            if ($event instanceof TestSuiteStarted) {
+                $this->forwardedOpenSuites[$index][] = $event->testSuite();
+
+                continue;
+            }
+
+            if ($event instanceof TestSuiteFinished) {
+                array_pop($this->forwardedOpenSuites[$index]);
+            }
+        }
+
+        $this->eventFacade->forward($events);
     }
 
     private function forward(CompletedWorkUnit $completed): void
@@ -289,8 +371,7 @@ final class ResultAggregator
                 );
             }
 
-            $this->emitter->childProcessErrored(ChildProcessReason::ParallelWorker, $message);
-            $this->emitter->testRunnerTriggeredPhpunitWarning($message);
+            $this->reportTestsWithoutResult($completed, $message);
 
             return;
         }
@@ -306,8 +387,7 @@ final class ResultAggregator
                 $completed->unit()->name(),
             );
 
-            $this->emitter->childProcessErrored(ChildProcessReason::ParallelWorker, $message);
-            $this->emitter->testRunnerTriggeredPhpunitWarning($message);
+            $this->reportTestsWithoutResult($completed, $message);
 
             return;
         }
@@ -324,8 +404,7 @@ final class ResultAggregator
                 $completed->unit()->name(),
             );
 
-            $this->emitter->childProcessErrored(ChildProcessReason::ParallelWorker, $message);
-            $this->emitter->testRunnerTriggeredPhpunitWarning($message);
+            $this->reportTestsWithoutResult($completed, $message);
 
             return;
         }
@@ -334,5 +413,168 @@ final class ResultAggregator
         $this->passedTests->import($childResult->passedTests);
 
         ChildProcessResultEnvelope::mergeCodeCoverage($childResult, $this->codeCoverage);
+
+        unset($this->forwardedFinishedTests[$completed->unit()->index()], $this->forwardedOpenSuites[$completed->unit()->index()]);
+    }
+
+    /**
+     * Report every test of a unit whose result will never arrive, because the
+     * worker running it died or its result envelope failed verification.
+     *
+     * The tests that were already reported through the unit's forwarded
+     * streamed frames keep the results that were shown for them; every other
+     * test of the unit is reported as errored, the way the sequential runner
+     * reports a test whose child process ended unexpectedly. Without this,
+     * the unit's remaining tests would silently disappear from the results:
+     * loggers, the testdox report, and the counts in the summary would all
+     * miss them.
+     *
+     * The test-suite envelopes that the forwarded frames left open — at
+     * least the class-level envelope, when any frame was forwarded — are
+     * closed, so that consumers that reconstruct the suite hierarchy from
+     * paired Started/Finished events (JUnit XML, TeamCity) see a balanced
+     * stream. When nothing was forwarded, the class-level envelope is
+     * emitted here, around the errored tests, as it would have been by the
+     * unit itself.
+     *
+     * @param non-empty-string $message
+     */
+    private function reportTestsWithoutResult(CompletedWorkUnit $completed, string $message): void
+    {
+        $unit  = $completed->unit();
+        $index = $unit->index();
+
+        if (!$unit instanceof TestClassWorkUnit) {
+            // @codeCoverageIgnoreStart
+            return;
+            // @codeCoverageIgnoreEnd
+        }
+
+        $finished = [];
+
+        if (isset($this->forwardedFinishedTests[$index])) {
+            $finished = $this->forwardedFinishedTests[$index];
+        }
+
+        $openSuites = [];
+
+        if (isset($this->forwardedOpenSuites[$index])) {
+            $openSuites = $this->forwardedOpenSuites[$index];
+        }
+
+        if ($openSuites === []) {
+            $suite = FrameworkTestSuite::empty($unit->className());
+
+            foreach ($unit->tests() as $test) {
+                $suite->addTest($test);
+            }
+
+            $classSuite = TestSuiteBuilder::from($suite);
+
+            $this->emitter->testSuiteStarted($classSuite);
+        } else {
+            $classSuite = $openSuites[0];
+        }
+
+        $innerOpenSuites = array_slice($openSuites, 1);
+
+        $throwable = ThrowableBuilder::from(new AssertionFailedError($message));
+
+        $members  = [];
+        $anyStubs = false;
+
+        foreach ($unit->tests() as $test) {
+            $stubs = [];
+
+            $this->collectUnreportedLeavesOf($test, $finished, $stubs);
+
+            $members[] = ['test' => $test, 'stubs' => $stubs];
+
+            if ($stubs !== []) {
+                $anyStubs = true;
+            }
+        }
+
+        // Every test of the unit was already reported through its streamed
+        // frames; the child-process failure that cost the unit its result
+        // envelope is still signalled.
+        if (!$anyStubs) {
+            $this->emitter->childProcessErrored(ChildProcessReason::ParallelWorker, $message);
+        }
+
+        foreach ($members as $member) {
+            $test = $member['test'];
+
+            // A test whose result never arrived is reported with the same
+            // three events that the sequential runner emits for a test whose
+            // child process ended unexpectedly.
+            foreach ($member['stubs'] as $testMethod) {
+                $this->emitter->childProcessErrored(ChildProcessReason::ParallelWorker, $message);
+                $this->emitter->testErrored($testMethod, $throwable);
+                $this->emitter->testFinished($testMethod, 0);
+            }
+
+            // The member whose envelopes the streamed frames left open is the
+            // one that was executing when the results stopped coming. Its
+            // envelopes are closed right after its remaining tests have been
+            // reported, so that the tests of the members that follow it are
+            // not nested inside them.
+            if ($innerOpenSuites !== [] && !$test instanceof TestCase && $test->name() === $innerOpenSuites[0]->name()) {
+                foreach (array_reverse($innerOpenSuites) as $innerSuite) {
+                    $this->emitter->testSuiteFinished($innerSuite);
+                }
+
+                $innerOpenSuites = [];
+            }
+        }
+
+        foreach (array_reverse($innerOpenSuites) as $innerSuite) {
+            // @codeCoverageIgnoreStart
+            $this->emitter->testSuiteFinished($innerSuite);
+            // @codeCoverageIgnoreEnd
+        }
+
+        $this->emitter->testSuiteFinished($classSuite);
+
+        unset($this->forwardedFinishedTests[$index], $this->forwardedOpenSuites[$index]);
+    }
+
+    /**
+     * Collect the value objects of every test case of the given unit member
+     * that has not already finished. A member is a single test case or a
+     * suite (the tests of a data provider method, the repetitions of a
+     * repeated test method, the attempts of a retried test method) whose test
+     * cases are visited recursively.
+     *
+     * The record of already-finished tests counts how many times a test
+     * finished, and every visited test case consumes one of its finishes: the
+     * repetitions of a repeated test method share one test id, and each
+     * repetition that finished must excuse only one of them.
+     *
+     * @param array<non-empty-string, int> $finished
+     * @param list<TestMethod>             $stubs
+     */
+    private function collectUnreportedLeavesOf(Test $test, array &$finished, array &$stubs): void
+    {
+        if ($test instanceof TestCase) {
+            $testMethod = TestMethodBuilder::fromTestCase($test);
+            $id         = $testMethod->id();
+
+            if (isset($finished[$id]) && $finished[$id] > 0) {
+                $finished[$id]--;
+
+                return;
+            }
+
+            $stubs[] = $testMethod;
+
+            return;
+        }
+
+        assert($test instanceof FrameworkTestSuite);
+
+        foreach ($test->tests() as $member) {
+            $this->collectUnreportedLeavesOf($member, $finished, $stubs);
+        }
     }
 }
