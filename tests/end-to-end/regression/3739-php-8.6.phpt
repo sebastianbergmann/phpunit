@@ -1,9 +1,9 @@
 --TEST--
-https://github.com/sebastianbergmann/phpunit/issues/3739 (PHP < 8.6)
+https://github.com/sebastianbergmann/phpunit/issues/3739 (PHP >= 8.6)
 --SKIPIF--
 <?php declare(strict_types=1);
-if (PHP_VERSION_ID >= 80600) {
-    print 'Skip: PHP < 8.6 is required (unlink() warning message includes path)' . PHP_EOL;
+if (PHP_VERSION_ID < 80600) {
+    print 'Skip: PHP >= 8.6 is required (unlink() warning message does not include path)' . PHP_EOL;
 }
 --FILE--
 <?php declare(strict_types=1);
@@ -24,7 +24,7 @@ Time: %s, Memory: %s
 There was 1 error:
 
 1) Issue3739\Issue3739Test::testWithoutErrorSuppression
-unlink(%sDOES_NOT_EXIST): No such file or directory
+unlink(): No such file or directory
 
 %sIssue3739Test.php:%d
 %sIssue3739Test.php:%d
