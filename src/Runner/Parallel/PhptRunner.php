@@ -100,7 +100,6 @@ final class PhptRunner
      */
     private array $activeConflicts = [];
     private bool $exclusive        = false;
-    private int $nextId            = 0;
 
     /**
      * @var ?callable(non-negative-int, EventCollection): void
@@ -188,7 +187,6 @@ final class PhptRunner
         $this->active          = [];
         $this->activeConflicts = [];
         $this->exclusive       = false;
-        $this->nextId          = 0;
         $this->onCompleted     = $onCompleted;
     }
 
@@ -340,15 +338,13 @@ final class PhptRunner
 
             $this->reserve($unit);
 
-            $this->active[$this->nextId] = [
+            $this->active[] = [
                 'unit'         => $unit,
                 'interruption' => $interruption,
                 'generator'    => $generator,
                 'collector'    => $collector,
                 'job'          => $this->jobRunner->startAsync($generator->current()),
             ];
-
-            $this->nextId++;
         }
 
         return $progressed;
