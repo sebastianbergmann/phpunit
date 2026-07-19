@@ -31,7 +31,7 @@ final class CustomDriverWithFakeData extends Driver
 
     public function stop(): RawCodeCoverageData
     {
-        return RawCodeCoverageData::fromXdebugWithoutPathCoverage(
+        return RawCodeCoverageData::fromLineCoverage(
             [
                 realpath(__DIR__ . '/Foo.php') => [
                     16 => Driver::LINE_EXECUTED,

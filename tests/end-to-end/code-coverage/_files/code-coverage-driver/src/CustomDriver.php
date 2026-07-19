@@ -30,6 +30,6 @@ final class CustomDriver extends Driver
 
     public function stop(): RawCodeCoverageData
     {
-        return RawCodeCoverageData::fromXdebugWithoutPathCoverage([]);
+        return RawCodeCoverageData::fromLineCoverage([]);
     }
 }

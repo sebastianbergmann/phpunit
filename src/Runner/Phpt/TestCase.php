@@ -634,7 +634,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         /**
          * @phpstan-ignore staticMethod.internalClass
          */
-        $coverage = RawCodeCoverageData::fromXdebugWithoutPathCoverage([]);
+        $coverage = RawCodeCoverageData::fromLineCoverage([]);
         $files    = $this->coverageFiles();
 
         $buffer = false;
