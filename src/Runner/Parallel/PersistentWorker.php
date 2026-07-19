@@ -106,8 +106,6 @@ final class PersistentWorker
      */
     private ?string $currentNonce      = null;
     private ?string $currentResultFile = null;
-    private ?string $currentDoneFile   = null;
-    private ?string $currentStreamFile = null;
 
     /**
      * How many bytes of the current unit's event stream file have been
@@ -260,8 +258,6 @@ final class PersistentWorker
         $this->currentUnit          = $unit;
         $this->currentNonce         = $nonce;
         $this->currentResultFile    = $resultFile;
-        $this->currentDoneFile      = $doneFile;
-        $this->currentStreamFile    = $streamFile;
         $this->currentStreamOffset  = 0;
         $this->currentStreamTainted = false;
 
@@ -304,13 +300,12 @@ final class PersistentWorker
     public function poll(callable $onStreamedEvents): ?CompletedWorkUnit
     {
         assert($this->currentUnit !== null);
-        assert($this->currentDoneFile !== null);
 
         // Completion is snapshotted before the stream is drained: the done
         // file is created only after the last frame has been written, so a
         // stream that is drained after the done file was seen is known to have
         // been read in its entirety.
-        $done = is_file($this->currentDoneFile);
+        $done = is_file($this->currentDoneFile());
 
         foreach ($this->drainStreamedEvents($done) as $events) {
             $onStreamedEvents($this->currentUnit, $events);
@@ -341,17 +336,7 @@ final class PersistentWorker
             $this->job = null;
         }
 
-        if ($this->currentResultFile !== null) {
-            @unlink($this->currentResultFile);
-        }
-
-        if ($this->currentDoneFile !== null) {
-            @unlink($this->currentDoneFile);
-        }
-
-        if ($this->currentStreamFile !== null) {
-            @unlink($this->currentStreamFile);
-        }
+        $this->deleteCurrentUnitFiles();
 
         $this->clearCurrentUnit();
     }
@@ -396,13 +381,13 @@ final class PersistentWorker
      */
     private function drainStreamedEvents(bool $streamIsComplete): array
     {
-        assert($this->currentStreamFile !== null);
+        $streamFile = $this->currentStreamFile();
 
-        if ($this->currentStreamTainted || !is_file($this->currentStreamFile)) {
+        if ($this->currentStreamTainted || !is_file($streamFile)) {
             return [];
         }
 
-        $data = @file_get_contents($this->currentStreamFile, false, null, $this->currentStreamOffset);
+        $data = @file_get_contents($streamFile, false, null, $this->currentStreamOffset);
 
         if ($data === false || $data === '') {
             return [];
@@ -585,16 +570,14 @@ final class PersistentWorker
      */
     private function finished(): CompletedWorkUnit
     {
-        assert($this->currentUnit !== null);
+        $unit = $this->currentUnit;
+
+        assert($unit !== null);
         assert($this->currentResultFile !== null);
-        assert($this->currentDoneFile !== null);
-        assert($this->currentStreamFile !== null);
 
         $serializedResult = file_get_contents($this->currentResultFile);
 
-        @unlink($this->currentResultFile);
-        @unlink($this->currentDoneFile);
-        @unlink($this->currentStreamFile);
+        $this->deleteCurrentUnitFiles();
 
         if ($serializedResult === false) {
             // @codeCoverageIgnoreStart
@@ -619,14 +602,11 @@ final class PersistentWorker
                 $this->job = null;
             }
 
-            $completed = new CompletedWorkUnit(
-                $this->currentUnit,
-                '',
-                null,
-                true,
+            $completed = CompletedWorkUnit::fromCrash(
+                $unit,
                 sprintf(
                     'The event stream of the worker process running %s was tampered with or written by an unexpected process',
-                    $this->currentUnit->name(),
+                    $unit->name(),
                 ),
             );
 
@@ -635,11 +615,12 @@ final class PersistentWorker
             return $completed;
         }
 
-        $completed = new CompletedWorkUnit(
-            $this->currentUnit,
+        assert($this->currentNonce !== null);
+
+        $completed = CompletedWorkUnit::fromEnvelope(
+            $unit,
             $serializedResult,
             $this->currentNonce,
-            false,
         );
 
         $this->clearCurrentUnit();
@@ -653,21 +634,13 @@ final class PersistentWorker
      */
     private function crashed(): CompletedWorkUnit
     {
-        assert($this->currentUnit !== null);
+        $unit = $this->currentUnit;
 
-        if ($this->currentResultFile !== null) {
-            @unlink($this->currentResultFile);
-        }
+        assert($unit !== null);
 
-        if ($this->currentDoneFile !== null) {
-            @unlink($this->currentDoneFile);
-        }
+        $this->deleteCurrentUnitFiles();
 
-        if ($this->currentStreamFile !== null) {
-            @unlink($this->currentStreamFile);
-        }
-
-        $completed = new CompletedWorkUnit($this->currentUnit, '', null, true);
+        $completed = CompletedWorkUnit::fromCrash($unit);
 
         if ($this->job !== null) {
             $this->job->wait();
@@ -688,13 +661,42 @@ final class PersistentWorker
         return $this->id . '_' . bin2hex(random_bytes(16));
     }
 
+    /**
+     * The companion files of the current unit's result file: the worker
+     * creates the done file after it has fully written the result file, and
+     * appends the frames of streamed events to the stream file. Both names
+     * are derived from the result file's, so only that one is stored.
+     */
+    private function currentDoneFile(): string
+    {
+        assert($this->currentResultFile !== null);
+
+        return $this->currentResultFile . '.done';
+    }
+
+    private function currentStreamFile(): string
+    {
+        assert($this->currentResultFile !== null);
+
+        return $this->currentResultFile . '.stream';
+    }
+
+    private function deleteCurrentUnitFiles(): void
+    {
+        if ($this->currentResultFile === null) {
+            return;
+        }
+
+        @unlink($this->currentResultFile);
+        @unlink($this->currentDoneFile());
+        @unlink($this->currentStreamFile());
+    }
+
     private function clearCurrentUnit(): void
     {
         $this->currentUnit          = null;
         $this->currentNonce         = null;
         $this->currentResultFile    = null;
-        $this->currentDoneFile      = null;
-        $this->currentStreamFile    = null;
         $this->currentStreamOffset  = 0;
         $this->currentStreamTainted = false;
     }
