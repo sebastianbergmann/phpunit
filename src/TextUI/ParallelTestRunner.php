@@ -216,7 +216,8 @@ final class ParallelTestRunner
         $phptIsNeeded = false;
 
         foreach ($chunks as $chunk) {
-            $parallel = [];
+            $parallel  = [];
+            $inProcess = [];
 
             foreach ($chunk['units'] as $unit) {
                 if ($unit instanceof TestClassWorkUnit &&
@@ -229,13 +230,13 @@ final class ParallelTestRunner
                     // it in the main process at the moment that index comes up in
                     // the release sequence, which keeps the output in global
                     // suite order.
-                    $aggregator->registerInProcessUnit(
-                        $unit->index(),
-                        function () use ($unit): void
+                    $inProcess[] = [
+                        'index'  => $unit->index(),
+                        'runner' => function () use ($unit): void
                         {
                             $this->runInProcess($unit);
                         },
-                    );
+                    ];
 
                     continue;
                 }
@@ -246,13 +247,13 @@ final class ParallelTestRunner
             foreach ($chunk['standalone'] as $item) {
                 $test = $item['test'];
 
-                $aggregator->registerInProcessUnit(
-                    $item['index'],
-                    static function () use ($test): void
+                $inProcess[] = [
+                    'index'  => $item['index'],
+                    'runner' => static function () use ($test): void
                     {
                         $test->run();
                     },
-                );
+                ];
             }
 
             if ($parallel !== []) {
@@ -264,9 +265,10 @@ final class ParallelTestRunner
             }
 
             $runs[] = [
-                'suite'    => $chunk['suite'],
-                'parallel' => $scheduler->schedule($parallel),
-                'phpt'     => $scheduler->schedule($chunk['phpt']),
+                'suite'     => $chunk['suite'],
+                'parallel'  => $scheduler->schedule($parallel),
+                'phpt'      => $scheduler->schedule($chunk['phpt']),
+                'inProcess' => $inProcess,
             ];
         }
 
@@ -309,7 +311,7 @@ final class ParallelTestRunner
 
         try {
             foreach ($runs as $run) {
-                if ($this->runChunk($run['suite'], $run['parallel'], $run['phpt'], $pool, $phptRunner, $aggregator)) {
+                if ($this->runChunk($run['suite'], $run['parallel'], $run['phpt'], $run['inProcess'], $pool, $phptRunner, $aggregator)) {
                     // The run was stopped early; the remaining chunks are
                     // abandoned, exactly as the sequential runner does not
                     // start another test suite once it has decided to stop.
@@ -334,7 +336,15 @@ final class ParallelTestRunner
      * concurrently and their results and streamed events reach the parent the
      * moment they arrive. The in-process units interspersed among them run as
      * the release sequence reaches their indexes; the trailing flush releases
-     * those that sit between this chunk and the next.
+     * those that follow the chunk's last worker or PHPT unit.
+     *
+     * The chunk's in-process units are registered with the aggregator here,
+     * not before the chunks run: were the units of every chunk registered up
+     * front, the release sequence — which knows suite indexes but no chunk
+     * boundaries — would run a later chunk's leading in-process units the
+     * moment the last unit of an earlier chunk was released, inside that
+     * chunk's test-suite envelope and before their own suite's "test suite
+     * started" event.
      *
      * The chunk's results are wrapped in the "test suite started" / "test
      * suite finished" envelope that its suite would have emitted had it been
@@ -348,10 +358,11 @@ final class ParallelTestRunner
      * because the aggregator forwards in suite order and freezes as soon as
      * the stop condition holds.
      *
-     * @param list<WorkUnit>     $parallel
-     * @param list<PhptWorkUnit> $phpt
+     * @param list<WorkUnit>                                                 $parallel
+     * @param list<PhptWorkUnit>                                             $phpt
+     * @param list<array{index: non-negative-int, runner: callable(): void}> $inProcess
      */
-    private function runChunk(TestSuite $suite, array $parallel, array $phpt, ?WorkerPool $pool, ?PhptRunner $phptRunner, ResultAggregator $aggregator): bool
+    private function runChunk(TestSuite $suite, array $parallel, array $phpt, array $inProcess, ?WorkerPool $pool, ?PhptRunner $phptRunner, ResultAggregator $aggregator): bool
     {
         $suiteValueObject = Event\TestSuite\TestSuiteBuilder::from($suite);
 
@@ -364,6 +375,10 @@ final class ParallelTestRunner
 
         if (!$suiteEnvelopeIsEmittedByUnits) {
             Event\Facade::emitter()->testSuiteStarted($suiteValueObject);
+        }
+
+        foreach ($inProcess as $unit) {
+            $aggregator->registerInProcessUnit($unit['index'], $unit['runner']);
         }
 
         // Run the in-process units that precede the chunk's first worker or
