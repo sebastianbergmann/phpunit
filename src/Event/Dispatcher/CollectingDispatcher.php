@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Event;
 
-use function assert;
 use PHPUnit\Runner\DeprecationCollector\Facade as DeprecationCollector;
 use PHPUnit\Runner\DeprecationCollector\TestTriggeredDeprecationSubscriber;
 
@@ -20,9 +19,9 @@ use PHPUnit\Runner\DeprecationCollector\TestTriggeredDeprecationSubscriber;
  */
 final class CollectingDispatcher implements Dispatcher
 {
+    use CollectionWindow;
     private EventCollection $events;
     private DirectDispatcher $isolatedDirectDispatcher;
-    private ?EventCollection $collectedEvents = null;
 
     public function __construct(DirectDispatcher $directDispatcher)
     {
@@ -34,9 +33,7 @@ final class CollectingDispatcher implements Dispatcher
 
     public function dispatch(Event $event): void
     {
-        if ($this->collectedEvents !== null) {
-            $this->collectedEvents->add($event);
-
+        if ($this->collectDispatchedEvent($event)) {
             return;
         }
 
@@ -60,31 +57,6 @@ final class CollectingDispatcher implements Dispatcher
     public function registerSubscriber(Subscriber $subscriber): void
     {
         $this->isolatedDirectDispatcher->registerSubscriber($subscriber);
-    }
-
-    /**
-     * Open a collection window: until stopCollectingEvents() is called, events
-     * are diverted into a separate collection instead of being recorded and
-     * dispatched. This mirrors the collection window of the DeferringDispatcher
-     * so that a RetryTestSuite can suppress the events of a failed attempt when
-     * it runs in a process whose event facade was initialized for isolation.
-     */
-    public function startCollectingEvents(): void
-    {
-        assert($this->collectedEvents === null);
-
-        $this->collectedEvents = new EventCollection;
-    }
-
-    public function stopCollectingEvents(): EventCollection
-    {
-        assert($this->collectedEvents !== null);
-
-        $events = $this->collectedEvents;
-
-        $this->collectedEvents = null;
-
-        return $events;
     }
 
     public function flush(): EventCollection
