@@ -10,14 +10,8 @@
 namespace PHPUnit\Runner\Parallel;
 
 use const PHP_FLOAT_MAX;
-use function assert;
 use function usort;
-use PHPUnit\Framework\Test;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 use PHPUnit\Runner\ResultCache\ResultCache;
-use PHPUnit\Runner\ResultCache\ResultCacheId;
 
 /**
  * Orders the units of a chunk for dispatch: the longest first.
@@ -88,47 +82,12 @@ final readonly class Scheduler
 
     private function durationOf(WorkUnit $unit): float
     {
-        $duration = 0.0;
-
-        if ($unit instanceof TestClassWorkUnit) {
-            foreach ($unit->tests() as $test) {
-                $duration += $this->durationOfTest($test);
-            }
-        }
-
-        if ($unit instanceof PhptWorkUnit) {
-            $duration = $this->resultCache->time(
-                ResultCacheId::fromReorderable(new PhptTestCase($unit->file())),
-            );
-        }
+        $duration = $unit->duration($this->resultCache);
 
         // Nothing is recorded for this unit: its tests have not run before,
         // and their duration may be arbitrarily large.
         if ($duration === 0.0) {
             return PHP_FLOAT_MAX;
-        }
-
-        return $duration;
-    }
-
-    /**
-     * The recorded duration of one member of a unit, with the members of an
-     * aggregating suite — the tests of a data provider method, the attempts
-     * of a retried test method, the repetitions of a repeated test method —
-     * summed up recursively.
-     */
-    private function durationOfTest(Test $test): float
-    {
-        if ($test instanceof TestCase) {
-            return $this->resultCache->time(ResultCacheId::fromReorderable($test));
-        }
-
-        assert($test instanceof TestSuite);
-
-        $duration = 0.0;
-
-        foreach ($test->tests() as $aggregated) {
-            $duration += $this->durationOfTest($aggregated);
         }
 
         return $duration;

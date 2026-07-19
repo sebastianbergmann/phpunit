@@ -9,6 +9,10 @@
  */
 namespace PHPUnit\Runner\Parallel;
 
+use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
+use PHPUnit\Runner\ResultCache\ResultCache;
+use PHPUnit\Runner\ResultCache\ResultCacheId;
+
 /**
  * A unit of work for a single PHPT test, identified by the path of its .phpt
  * file. A PHPT test is not a PHPUnit\Framework\TestCase and carries no test
@@ -82,5 +86,12 @@ final readonly class PhptWorkUnit implements WorkUnit
     public function name(): string
     {
         return $this->file;
+    }
+
+    public function duration(ResultCache $resultCache): float
+    {
+        return $resultCache->time(
+            ResultCacheId::fromReorderable(new PhptTestCase($this->file)),
+        );
     }
 }

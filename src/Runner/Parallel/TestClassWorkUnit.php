@@ -9,9 +9,14 @@
  */
 namespace PHPUnit\Runner\Parallel;
 
+use function assert;
 use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\IterativeTestSuite;
+use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestSuite;
+use PHPUnit\Runner\ResultCache\ResultCache;
+use PHPUnit\Runner\ResultCache\ResultCacheId;
 
 /**
  * A unit of work that bundles all of the selected tests of a single test class,
@@ -86,5 +91,39 @@ final readonly class TestClassWorkUnit implements WorkUnit
     public function name(): string
     {
         return $this->className;
+    }
+
+    public function duration(ResultCache $resultCache): float
+    {
+        $duration = 0.0;
+
+        foreach ($this->tests as $test) {
+            $duration += $this->durationOf($test, $resultCache);
+        }
+
+        return $duration;
+    }
+
+    /**
+     * The recorded duration of one member of the unit, with the members of an
+     * aggregating suite — the tests of a data provider method, the attempts
+     * of a retried test method, the repetitions of a repeated test method —
+     * summed up recursively.
+     */
+    private function durationOf(Test $test, ResultCache $resultCache): float
+    {
+        if ($test instanceof TestCase) {
+            return $resultCache->time(ResultCacheId::fromReorderable($test));
+        }
+
+        assert($test instanceof TestSuite);
+
+        $duration = 0.0;
+
+        foreach ($test->tests() as $aggregated) {
+            $duration += $this->durationOf($aggregated, $resultCache);
+        }
+
+        return $duration;
     }
 }

@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Runner\Parallel;
 
+use PHPUnit\Runner\ResultCache\ResultCache;
+
 /**
  * A unit of work distributed to a worker process.
  *
@@ -29,4 +31,11 @@ interface WorkUnit
     public function index(): int;
 
     public function name(): string;
+
+    /**
+     * The duration recorded for this unit's tests by a previous run, in
+     * seconds; 0.0 when nothing is recorded. The scheduler dispatches the
+     * units of a chunk longest first (see Scheduler).
+     */
+    public function duration(ResultCache $resultCache): float;
 }

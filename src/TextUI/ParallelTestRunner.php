@@ -788,28 +788,22 @@ final class ParallelTestRunner
         $testCases = [];
 
         foreach ($unit->tests() as $test) {
-            $this->appendTestCasesOf($test, $testCases);
+            if ($test instanceof TestCase) {
+                $testCases[] = $test;
+
+                continue;
+            }
+
+            // A suite member of a class unit aggregates test cases of that
+            // class only, never a PHPT test.
+            foreach ($test->collect() as $collected) {
+                assert($collected instanceof TestCase);
+
+                $testCases[] = $collected;
+            }
         }
 
         return $testCases;
-    }
-
-    /**
-     * @param list<TestCase> $testCases
-     */
-    private function appendTestCasesOf(Test $test, array &$testCases): void
-    {
-        if ($test instanceof TestCase) {
-            $testCases[] = $test;
-
-            return;
-        }
-
-        assert($test instanceof TestSuite);
-
-        foreach ($test->tests() as $aggregated) {
-            $this->appendTestCasesOf($aggregated, $testCases);
-        }
     }
 
     /**
