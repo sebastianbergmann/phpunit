@@ -180,8 +180,13 @@ final class WorkerPool
      * harvest every worker that has finished its unit. Returns whether the
      * round made progress; a caller driving the pool in a loop is expected to
      * sleep briefly when it did not, so that polling does not spin the CPU.
+     *
+     * When the caller passes false for $mayDispatch, no queued unit is handed
+     * to a worker in this round: the units that are already executing are
+     * still polled and harvested, so the pool drains. This is how the caller
+     * makes room for a unit that must run alone (see ParallelTestRunner).
      */
-    public function tick(): bool
+    public function tick(bool $mayDispatch = true): bool
     {
         $onCompleted      = $this->onCompleted;
         $onStreamedEvents = $this->onStreamedEvents;
@@ -189,7 +194,9 @@ final class WorkerPool
         assert($onCompleted !== null);
         assert($onStreamedEvents !== null);
 
-        $this->dispatch();
+        if ($mayDispatch) {
+            $this->dispatch();
+        }
 
         $busy = $this->busyWorkers();
 
@@ -241,6 +248,14 @@ final class WorkerPool
     public function isFinished(): bool
     {
         return $this->queue === [] && $this->busyWorkers() === [];
+    }
+
+    /**
+     * Whether any worker is currently executing a unit.
+     */
+    public function hasExecutingUnits(): bool
+    {
+        return $this->busyWorkers() !== [];
     }
 
     /**

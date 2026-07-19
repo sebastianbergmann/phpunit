@@ -1,5 +1,7 @@
 --TEST--
 PHPT fixture that sleeps and has a CLEAN section, for the tests of the halted PhptRunner
+--INI--
+memory_limit=-1
 --FILE--
 <?php declare(strict_types=1);
 sleep(5);
