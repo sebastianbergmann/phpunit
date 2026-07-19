@@ -10,19 +10,15 @@
 namespace PHPUnit\Runner\Parallel;
 
 use function assert;
-use function base64_encode;
 use function bin2hex;
 use function clearstatcache;
-use function count;
 use function file_get_contents;
 use function filesize;
 use function hrtime;
 use function is_file;
-use function is_string;
 use function json_encode;
 use function json_last_error_msg;
 use function random_bytes;
-use function serialize;
 use function sprintf;
 use function strlen;
 use function sys_get_temp_dir;
@@ -31,12 +27,8 @@ use function unlink;
 use PHPUnit\Event\EventCollection;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Event\TestRunner\ChildProcessReason;
-use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\ProcessIsolationException;
-use PHPUnit\Framework\RepeatTestSuite;
-use PHPUnit\Framework\RetryTestSuite;
 use PHPUnit\Framework\Test;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestRunner\ChildProcessBootstrap;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Util\PHP\Job;
@@ -44,7 +36,6 @@ use PHPUnit\Util\PHP\JobRunner;
 use PHPUnit\Util\PHP\RunningJob;
 use ReflectionClass;
 use SebastianBergmann\Template\Template;
-use Throwable;
 
 /**
  * A worker process that boots PHPUnit once and then executes an arbitrary
@@ -235,7 +226,13 @@ final class PersistentWorker
         $doneFile   = $resultFile . '.done';
         $streamFile = $resultFile . '.stream';
 
-        $command = $this->testClassCommand($unit, $offset, $resultFile, $doneFile, $streamFile, $nonce);
+        try {
+            $command = $this->testClassCommand($unit, $offset, $resultFile, $doneFile, $streamFile, $nonce);
+        } catch (WorkerException $e) {
+            @unlink($resultFile);
+
+            throw $e;
+        }
 
         $encodedCommand = json_encode($command);
 
@@ -444,7 +441,7 @@ final class PersistentWorker
         $tests = [];
 
         foreach ($unit->tests() as $test) {
-            $tests[] = $this->memberDescriptor($test, $unit->className(), $resultFile);
+            $tests[] = TestDescriptor::encode($test, $unit->className());
         }
 
         return [
@@ -458,125 +455,6 @@ final class PersistentWorker
             'doneFile'          => $doneFile,
             'streamFile'        => $streamFile,
             'nonce'             => $nonce,
-        ];
-    }
-
-    /**
-     * The transportable description of one member of a unit: a single test
-     * case, the RetryTestSuite of a retried test method, the RepeatTestSuite
-     * of a repeated test method, or the DataProviderTestSuite of a data
-     * provider method, whose members are in turn described recursively.
-     *
-     * @param class-string     $className
-     * @param non-empty-string $resultFile
-     *
-     * @throws WorkerException
-     *
-     * @return array<string, mixed>
-     */
-    private function memberDescriptor(Test $test, string $className, string $resultFile): array
-    {
-        // The tests of a data provider method travel as their
-        // DataProviderTestSuite so that the suite's event envelope, which
-        // nests the tests in the logger output of a sequential run, is
-        // emitted inside the worker in a parallel run, too.
-        if ($test instanceof DataProviderTestSuite) {
-            $members = [];
-
-            foreach ($test->tests() as $member) {
-                $members[] = $this->memberDescriptor($member, $className, $resultFile);
-            }
-
-            return [
-                'type'  => 'dataProvider',
-                'name'  => $test->name(),
-                'tests' => $members,
-            ];
-        }
-
-        if ($test instanceof RetryTestSuite) {
-            $aggregated = $test->tests();
-
-            assert(count($aggregated) === 1 && $aggregated[0] instanceof TestCase);
-
-            return [
-                'type'        => 'retry',
-                'name'        => $test->name(),
-                'maxAttempts' => $test->maxAttempts(),
-                'test'        => $this->testDescriptor($aggregated[0], $className, $resultFile),
-            ];
-        }
-
-        if ($test instanceof RepeatTestSuite) {
-            $repetitions = [];
-
-            foreach ($test->tests() as $repetition) {
-                assert($repetition instanceof TestCase);
-
-                $repetitions[] = $this->testDescriptor($repetition, $className, $resultFile);
-            }
-
-            return [
-                'type'             => 'repeat',
-                'name'             => $test->name(),
-                'failureThreshold' => $test->failureThreshold(),
-                'tests'            => $repetitions,
-            ];
-        }
-
-        assert($test instanceof TestCase);
-
-        return $this->testDescriptor($test, $className, $resultFile);
-    }
-
-    /**
-     * The transportable description of a single test case, from which the
-     * worker reconstructs it.
-     *
-     * @param class-string     $className
-     * @param non-empty-string $resultFile
-     *
-     * @throws WorkerException
-     *
-     * @return array<string, mixed>
-     */
-    private function testDescriptor(TestCase $test, string $className, string $resultFile): array
-    {
-        try {
-            $data            = base64_encode(serialize($test->providedData()));
-            $dependencyInput = base64_encode(serialize($test->dependencyInput()));
-        } catch (Throwable $t) {
-            @unlink($resultFile);
-
-            throw new WorkerException(
-                sprintf(
-                    'The tests of class %s cannot be run in parallel because their data cannot be serialized: %s',
-                    $className,
-                    $t->getMessage(),
-                ),
-            );
-        }
-
-        // The name of a data set is chosen by the data provider and is not
-        // required to be valid UTF-8, which everything that travels in the
-        // JSON-encoded command must be. A string name is therefore
-        // base64-encoded for transport; an integer name needs no encoding.
-        $dataName = $test->dataName();
-
-        if (is_string($dataName)) {
-            $dataName = base64_encode($dataName);
-        }
-
-        return [
-            'type'             => 'test',
-            'methodName'       => $test->name(),
-            'data'             => $data,
-            'dataName'         => $dataName,
-            'dependencyInput'  => $dependencyInput,
-            'repetition'       => $test->repetition(),
-            'totalRepetitions' => $test->totalRepetitions(),
-            'attempt'          => $test->attempt(),
-            'maxAttempts'      => $test->maxAttempts(),
         ];
     }
 
