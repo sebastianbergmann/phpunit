@@ -88,6 +88,19 @@ final class PassedTestsTest extends TestCase
         $this->assertSame('imported', $passedTests->returnValue(self::class . '::testReplacesThePassOfATestMethodWithTheImportedOne'));
     }
 
+    public function testForgetsRecordedPassesWhenReset(): void
+    {
+        $passedTests = new PassedTests;
+
+        $passedTests->testClassPassed(self::class);
+
+        $this->assertTrue($passedTests->hasTestClassPassed(self::class));
+
+        $passedTests->reset();
+
+        $this->assertFalse($passedTests->hasTestClassPassed(self::class));
+    }
+
     private function testMethod(): TestMethod
     {
         return new TestMethod(

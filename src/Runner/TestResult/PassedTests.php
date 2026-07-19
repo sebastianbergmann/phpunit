@@ -71,6 +71,17 @@ final class PassedTests
     }
 
     /**
+     * Forget every recorded pass. Used by the parallel worker between two
+     * units of work, so that the result envelope of a unit carries only the
+     * passes that were recorded while running that unit.
+     */
+    public function reset(): void
+    {
+        $this->passedTestClasses = [];
+        $this->passedTestMethods = [];
+    }
+
+    /**
      * The passes are added to the ones recorded so far rather than merged
      * with them into new arrays: merging would copy every pass recorded so
      * far on each import, and the main process imports the passes of every
