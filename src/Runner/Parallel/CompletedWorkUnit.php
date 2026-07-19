@@ -15,7 +15,10 @@ namespace PHPUnit\Runner\Parallel;
  * nonce that authenticates the envelope.
  *
  * A unit whose worker died before reporting completion is marked as crashed;
- * the serialized envelope is then empty.
+ * the serialized envelope is then empty. The two outcomes are constructed
+ * through the named constructors fromEnvelope() and fromCrash(), which encode
+ * that a finished unit always carries an envelope and its nonce while a
+ * crashed unit carries neither.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -41,9 +44,22 @@ final readonly class CompletedWorkUnit
     private ?string $message;
 
     /**
+     * @param non-empty-string $nonce
+     */
+    public static function fromEnvelope(WorkUnit $unit, string $serializedResult, string $nonce): self
+    {
+        return new self($unit, $serializedResult, $nonce, false, null);
+    }
+
+    public static function fromCrash(WorkUnit $unit, ?string $message = null): self
+    {
+        return new self($unit, '', null, true, $message);
+    }
+
+    /**
      * @param ?non-empty-string $nonce
      */
-    public function __construct(WorkUnit $unit, string $serializedResult, ?string $nonce, bool $crashed, ?string $message = null)
+    private function __construct(WorkUnit $unit, string $serializedResult, ?string $nonce, bool $crashed, ?string $message)
     {
         $this->unit             = $unit;
         $this->serializedResult = $serializedResult;
