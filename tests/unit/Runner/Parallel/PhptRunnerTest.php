@@ -138,6 +138,108 @@ final class PhptRunnerTest extends TestCase
         $this->assertTrue($budget->acquire());
     }
 
+    public function testDoesNotStartATestWhenTheCallerDisallowsIt(): void
+    {
+        $budget = new ProcessBudget(1);
+
+        $runner = $this->runner(1, $budget);
+
+        $collected = [];
+
+        $runner->begin(
+            [
+                new PhptWorkUnit(0, __DIR__ . '/../../../_files/parallel-worker/worker.phpt'),
+            ],
+            static function (int $index, EventCollection $events) use (&$collected): void
+            {
+                $collected[$index] = $events;
+            },
+        );
+
+        // The caller makes room for a unit that must run alone: no queued
+        // test is started, so the runner drains instead of topping up.
+        $this->assertFalse($runner->tick(false));
+        $this->assertFalse($runner->hasRunningTests());
+        $this->assertFalse($runner->isFinished());
+        $this->assertSame([], $collected);
+
+        while (!$runner->isFinished()) {
+            if (!$runner->tick()) {
+                usleep(1000);
+            }
+        }
+
+        $this->assertCount(1, $collected);
+    }
+
+    public function testStartsATestThatConflictsWithAllOnlyWhenNothingElseIsExecuting(): void
+    {
+        $nothingElseIsExecuting = false;
+
+        $budget = new ProcessBudget(2);
+
+        $runner = $this->runner(
+            2,
+            $budget,
+            static function () use (&$nothingElseIsExecuting): bool
+            {
+                return $nothingElseIsExecuting;
+            },
+        );
+
+        $collected = [];
+
+        $runner->begin(
+            [
+                new PhptWorkUnit(0, __DIR__ . '/../../../_files/parallel-worker/worker.phpt'),
+                new PhptWorkUnit(1, __DIR__ . '/../../../_files/parallel-worker/worker.phpt', ['all']),
+            ],
+            static function (int $index, EventCollection $events) use (&$collected): void
+            {
+                $collected[$index] = $events;
+            },
+        );
+
+        // While another PHPT test is running, the test that must run
+        // entirely on its own is not started.
+        $runner->tick();
+
+        $this->assertTrue($runner->hasRunningTests());
+        $this->assertFalse($runner->isRunningExclusiveTest());
+
+        // The other test has finished, but a unit is still executing
+        // elsewhere — in the worker pool, in a real run — so the test that
+        // must run entirely on its own is still not started.
+        while ($collected === []) {
+            if (!$runner->tick()) {
+                usleep(1000);
+            }
+        }
+
+        $runner->tick();
+
+        $this->assertFalse($runner->hasRunningTests());
+        $this->assertFalse($runner->isFinished());
+
+        // Nothing is executing anywhere anymore: now the test starts, and it
+        // is the only one running.
+        $nothingElseIsExecuting = true;
+
+        $runner->tick();
+
+        $this->assertTrue($runner->hasRunningTests());
+        $this->assertTrue($runner->isRunningExclusiveTest());
+
+        while (!$runner->isFinished()) {
+            if (!$runner->tick()) {
+                usleep(1000);
+            }
+        }
+
+        $this->assertFalse($runner->isRunningExclusiveTest());
+        $this->assertCount(2, $collected);
+    }
+
     public function testRunsTheCleanSectionOfATerminatedTestWhenHalting(): void
     {
         $marker = sys_get_temp_dir() . '/phpunit-parallel-halt-clean.marker';
@@ -235,7 +337,7 @@ final class PhptRunnerTest extends TestCase
     /**
      * @param positive-int $concurrency
      */
-    private function runner(int $concurrency, ProcessBudget $budget): PhptRunner
+    private function runner(int $concurrency, ProcessBudget $budget, ?callable $nothingElseIsExecuting = null): PhptRunner
     {
         $processor = new ChildProcessResultProcessor(
             Facade::instance(),
@@ -244,7 +346,7 @@ final class PhptRunnerTest extends TestCase
             new CodeCoverage,
         );
 
-        return new PhptRunner(new JobRunner($processor), $concurrency, $budget);
+        return new PhptRunner(new JobRunner($processor), $concurrency, $budget, $nothingElseIsExecuting);
     }
 
     /**
