@@ -164,8 +164,24 @@ final class PersistentWorker
             'PHPUNIT_WORKER_TOKEN' => $this->token,
         ];
 
+        // The worker's standard output and standard error are redirected to a
+        // temporary file rather than pipes: the parent does not read a
+        // worker's output while units are executing (results travel through
+        // the filesystem, see dispatch() and poll()), and a pipe that is
+        // never read would fill its buffer and block the worker forever once
+        // a test writes enough to it — for instance with fwrite(STDERR, ...),
+        // which bypasses PHPUnit's output buffering. The accumulated output
+        // is harvested when the worker is stopped.
         $this->job = $this->jobRunner->start(
-            new Job($this->buildWorkerCode(), ChildProcessReason::ParallelWorker, [], $environmentVariables),
+            new Job(
+                $this->buildWorkerCode(),
+                ChildProcessReason::ParallelWorker,
+                [],
+                $environmentVariables,
+                [],
+                null,
+                true,
+            ),
         );
     }
 
