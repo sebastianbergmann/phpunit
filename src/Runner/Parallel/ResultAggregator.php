@@ -13,9 +13,7 @@ use function array_pop;
 use function array_reverse;
 use function array_slice;
 use function assert;
-use function property_exists;
 use function sprintf;
-use function unserialize;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\TestMethodBuilder;
 use PHPUnit\Event\Code\ThrowableBuilder;
@@ -35,7 +33,6 @@ use PHPUnit\Framework\TestRunner\ChildProcessResultEnvelope;
 use PHPUnit\Framework\TestSuite as FrameworkTestSuite;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TestRunner\TestResult\PassedTests;
-use stdClass;
 
 /**
  * Collects the results that the workers produce and replays them into the
@@ -452,13 +449,9 @@ final class ResultAggregator
             return;
         }
 
-        $childResult = @unserialize($serializedResult);
+        $childResult = ChildProcessResultEnvelope::decode($serializedResult);
 
-        if (!$childResult instanceof stdClass ||
-            !property_exists($childResult, 'events') ||
-            !property_exists($childResult, 'passedTests') ||
-            !$childResult->events instanceof EventCollection ||
-            !$childResult->passedTests instanceof PassedTests) {
+        if ($childResult === null) {
             $message = sprintf(
                 'The worker process running %s ended unexpectedly',
                 $completed->unit()->name(),
@@ -468,6 +461,9 @@ final class ResultAggregator
 
             return;
         }
+
+        assert($childResult->events instanceof EventCollection);
+        assert($childResult->passedTests instanceof PassedTests);
 
         $this->eventFacade->forward($childResult->events);
         $this->passedTests->import($childResult->passedTests);

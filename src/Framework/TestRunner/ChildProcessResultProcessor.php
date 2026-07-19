@@ -13,7 +13,6 @@ use function assert;
 use function is_int;
 use function property_exists;
 use function trim;
-use function unserialize;
 use PHPUnit\Event\Code\TestMethodBuilder;
 use PHPUnit\Event\Code\ThrowableBuilder;
 use PHPUnit\Event\Emitter;
@@ -28,7 +27,6 @@ use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
 use PHPUnit\TestRunner\TestResult\PassedTests;
-use stdClass;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -105,16 +103,12 @@ final readonly class ChildProcessResultProcessor
             return;
         }
 
-        $childResult = @unserialize($verifiedProcessResult);
+        $childResult = ChildProcessResultEnvelope::decode($verifiedProcessResult);
 
-        if (!$childResult instanceof stdClass ||
-            !property_exists($childResult, 'events') ||
-            !property_exists($childResult, 'passedTests') ||
+        if ($childResult === null ||
             !property_exists($childResult, 'testResult') ||
             !property_exists($childResult, 'status') ||
             !property_exists($childResult, 'numAssertions') ||
-            !$childResult->events instanceof EventCollection ||
-            !$childResult->passedTests instanceof PassedTests ||
             !$childResult->status instanceof TestStatus ||
             !is_int($childResult->numAssertions) ||
             $childResult->numAssertions < 0) {
@@ -140,6 +134,9 @@ final readonly class ChildProcessResultProcessor
 
             return;
         }
+
+        assert($childResult->events instanceof EventCollection);
+        assert($childResult->passedTests instanceof PassedTests);
 
         $this->eventFacade->forward($childResult->events);
         $this->passedTests->import($childResult->passedTests);
