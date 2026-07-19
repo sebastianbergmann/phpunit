@@ -11,6 +11,8 @@ namespace PHPUnit\Runner\Parallel;
 
 use function array_keys;
 use function ksort;
+use function sys_get_temp_dir;
+use function unlink;
 use function usleep;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Event\EventCollection;
@@ -134,6 +136,40 @@ final class PhptRunnerTest extends TestCase
         $this->assertTrue($runner->isFinished());
         $this->assertSame([], $collected);
         $this->assertTrue($budget->acquire());
+    }
+
+    public function testRunsTheCleanSectionOfATerminatedTestWhenHalting(): void
+    {
+        $marker = sys_get_temp_dir() . '/phpunit-parallel-halt-clean.marker';
+
+        @unlink($marker);
+
+        $budget = new ProcessBudget(1);
+
+        $runner = $this->runner(1, $budget);
+
+        $collected = [];
+
+        $runner->begin(
+            [
+                new PhptWorkUnit(0, __DIR__ . '/../../../_files/parallel-worker/worker-sleeping-with-clean.phpt'),
+            ],
+            static function (int $index, EventCollection $events) use (&$collected): void
+            {
+                $collected[$index] = $events;
+            },
+        );
+
+        $runner->tick();
+
+        $runner->halt();
+
+        // The terminated test's --CLEAN-- section ran even though the test
+        // itself was abandoned mid-sleep and nothing was reported for it.
+        $this->assertFileExists($marker);
+        $this->assertSame([], $collected);
+
+        @unlink($marker);
     }
 
     public function testWaitsForASlotOfTheSharedProcessBudgetBeforeStartingATest(): void
