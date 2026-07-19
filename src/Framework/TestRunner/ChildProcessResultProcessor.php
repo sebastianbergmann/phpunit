@@ -14,7 +14,6 @@ use function is_int;
 use function property_exists;
 use function sprintf;
 use function trim;
-use function unserialize;
 use PHPUnit\Event\Code\TestMethodBuilder;
 use PHPUnit\Event\Code\ThrowableBuilder;
 use PHPUnit\Event\Emitter;
@@ -29,7 +28,6 @@ use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
 use PHPUnit\TestRunner\TestResult\PassedTests;
-use stdClass;
 use Throwable;
 
 /**
@@ -108,7 +106,7 @@ final readonly class ChildProcessResultProcessor
         }
 
         try {
-            $childResult = @unserialize($verifiedProcessResult);
+            $childResult = ChildProcessResultEnvelope::decode($verifiedProcessResult);
         } catch (Throwable $t) {
             // An object can only be unserialized when its class exists in this
             // process: an object of a test double class, which only exists in
@@ -141,14 +139,10 @@ final readonly class ChildProcessResultProcessor
             return;
         }
 
-        if (!$childResult instanceof stdClass ||
-            !property_exists($childResult, 'events') ||
-            !property_exists($childResult, 'passedTests') ||
+        if ($childResult === null ||
             !property_exists($childResult, 'testResult') ||
             !property_exists($childResult, 'status') ||
             !property_exists($childResult, 'numAssertions') ||
-            !$childResult->events instanceof EventCollection ||
-            !$childResult->passedTests instanceof PassedTests ||
             !$childResult->status instanceof TestStatus ||
             !is_int($childResult->numAssertions) ||
             $childResult->numAssertions < 0) {
@@ -174,6 +168,9 @@ final readonly class ChildProcessResultProcessor
 
             return;
         }
+
+        assert($childResult->events instanceof EventCollection);
+        assert($childResult->passedTests instanceof PassedTests);
 
         $this->eventFacade->forward($childResult->events);
         $this->passedTests->import($childResult->passedTests);
