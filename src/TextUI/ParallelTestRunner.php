@@ -31,6 +31,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestRunner\ChildProcessResultProcessor;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Metadata\Api\Dependencies;
+use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\Exception as PhptException;
@@ -222,14 +223,20 @@ final class ParallelTestRunner
             $inProcess = [];
 
             foreach ($chunk['units'] as $unit) {
-                $mustNotRunInParallel = $unit instanceof TestClassWorkUnit && $this->mustNotRunInParallel($unit);
+                $testCases = [];
+
+                if ($unit instanceof TestClassWorkUnit) {
+                    $testCases = $this->testCasesOf($unit);
+                }
+
+                $mustNotRunInParallel = $unit instanceof TestClassWorkUnit && $this->mustNotRunInParallel($unit, $testCases);
 
                 if ($unit instanceof TestClassWorkUnit &&
                     ($processIsolation ||
                      $mustNotRunInParallel ||
-                     $this->requiresProcessIsolation($unit) ||
-                     $this->hasCrossClassDependencies($unit) ||
-                     !$this->canBeSerialized($unit))) {
+                     $this->requiresProcessIsolation($unit, $testCases) ||
+                     $this->hasCrossClassDependencies($unit, $testCases) ||
+                     !$this->canBeSerialized($testCases))) {
                     // The unit keeps its global suite index; the aggregator runs
                     // it in the main process at the moment that index comes up in
                     // the release sequence, which keeps the output in global
@@ -596,19 +603,21 @@ final class ParallelTestRunner
     }
 
     /**
-     * Whether every test of the unit carries data that survives serialization
-     * for transport to a worker process. A unit that does not must be run in
-     * the main process instead.
+     * Whether every one of the unit's test cases carries data that survives
+     * serialization for transport to a worker process. A unit that does not
+     * must be run in the main process instead.
      *
      * Two kinds of data do not survive: data that cannot be serialized at all
      * (a closure, for example), which makes serialize() throw; and a resource,
      * which serialize() silently turns into the integer 0 rather than rejecting
      * — a test would then receive 0 in place of its resource and fail in a way
      * that has nothing to do with the code under test.
+     *
+     * @param list<TestCase> $testCases
      */
-    private function canBeSerialized(TestClassWorkUnit $unit): bool
+    private function canBeSerialized(array $testCases): bool
     {
-        foreach ($this->testCasesOf($unit) as $test) {
+        foreach ($testCases as $test) {
             try {
                 serialize($test->providedData());
                 serialize($test->dependencyInput());
@@ -674,21 +683,42 @@ final class ParallelTestRunner
      * A work unit is the whole of a test class, so a single test method that is
      * attributed with #[DoNotRunInParallel] excludes its entire class from the
      * parallel phase.
+     *
+     * @param list<TestCase> $testCases
      */
-    private function mustNotRunInParallel(TestClassWorkUnit $unit): bool
+    private function mustNotRunInParallel(TestClassWorkUnit $unit, array $testCases): bool
+    {
+        return $this->unitHasMetadata(
+            $unit,
+            $testCases,
+            static fn (MetadataCollection $metadata): bool => $metadata->isDoNotRunInParallel()->isNotEmpty(),
+            static fn (MetadataCollection $metadata): bool => $metadata->isDoNotRunInParallel()->isNotEmpty(),
+        );
+    }
+
+    /**
+     * Whether the unit's test class — or one of its ancestors — carries class
+     * metadata matched by the first filter, or any of the unit's test methods
+     * carries method metadata matched by the second.
+     *
+     * @param list<TestCase>                     $testCases
+     * @param callable(MetadataCollection): bool $classMetadataMatches
+     * @param callable(MetadataCollection): bool $methodMetadataMatches
+     */
+    private function unitHasMetadata(TestClassWorkUnit $unit, array $testCases, callable $classMetadataMatches, callable $methodMetadataMatches): bool
     {
         $className = $unit->className();
 
         $class = $className;
 
         do {
-            if (MetadataRegistry::parser()->forClass($class)->isDoNotRunInParallel()->isNotEmpty()) {
+            if ($classMetadataMatches(MetadataRegistry::parser()->forClass($class))) {
                 return true;
             }
         } while (($class = get_parent_class($class)) !== false);
 
-        foreach ($this->testCasesOf($unit) as $test) {
-            if (MetadataRegistry::parser()->forMethod($className, $test->name())->isDoNotRunInParallel()->isNotEmpty()) {
+        foreach ($testCases as $test) {
+            if ($methodMetadataMatches(MetadataRegistry::parser()->forMethod($className, $test->name()))) {
                 return true;
             }
         }
@@ -705,12 +735,14 @@ final class ParallelTestRunner
      * index: by then, every unit that precedes it in suite order has been
      * released and the results its tests depend on have been imported —
      * exactly the state a sequential run would present to them.
+     *
+     * @param list<TestCase> $testCases
      */
-    private function hasCrossClassDependencies(TestClassWorkUnit $unit): bool
+    private function hasCrossClassDependencies(TestClassWorkUnit $unit, array $testCases): bool
     {
         $className = $unit->className();
 
-        foreach ($this->testCasesOf($unit) as $test) {
+        foreach ($testCases as $test) {
             foreach (Dependencies::dependencies($className, $test->name()) as $dependency) {
                 // An invalid dependency — one whose declaration does not name
                 // a test method — is not a cross-class dependency; the test
@@ -729,26 +761,17 @@ final class ParallelTestRunner
      * process. Such a test relies on process isolation that a shared worker
      * cannot provide; it is therefore run in the main process, where the test
      * runner spawns the isolated child process for it as usual.
+     *
+     * @param list<TestCase> $testCases
      */
-    private function requiresProcessIsolation(TestClassWorkUnit $unit): bool
+    private function requiresProcessIsolation(TestClassWorkUnit $unit, array $testCases): bool
     {
-        $className = $unit->className();
-
-        $class = $className;
-
-        do {
-            if (MetadataRegistry::parser()->forClass($class)->isRunTestsInSeparateProcesses()->isNotEmpty()) {
-                return true;
-            }
-        } while (($class = get_parent_class($class)) !== false);
-
-        foreach ($this->testCasesOf($unit) as $test) {
-            if (MetadataRegistry::parser()->forMethod($className, $test->name())->isRunInSeparateProcess()->isNotEmpty()) {
-                return true;
-            }
-        }
-
-        return false;
+        return $this->unitHasMetadata(
+            $unit,
+            $testCases,
+            static fn (MetadataCollection $metadata): bool => $metadata->isRunTestsInSeparateProcesses()->isNotEmpty(),
+            static fn (MetadataCollection $metadata): bool => $metadata->isRunInSeparateProcess()->isNotEmpty(),
+        );
     }
 
     /**

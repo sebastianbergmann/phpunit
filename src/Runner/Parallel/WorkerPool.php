@@ -9,8 +9,8 @@
  */
 namespace PHPUnit\Runner\Parallel;
 
-use function array_shift;
 use function assert;
+use function count;
 use function usleep;
 use PHPUnit\Event\EventCollection;
 
@@ -65,6 +65,15 @@ final class WorkerPool
      * @var list<WorkUnit>
      */
     private array $queue = [];
+
+    /**
+     * The position of the next unit to dispatch. Dispatching advances this
+     * cursor instead of shifting the queue, which would reindex all of the
+     * remaining units on every dispatch.
+     *
+     * @var non-negative-int
+     */
+    private int $queuePosition = 0;
 
     /**
      * @var ?callable(CompletedWorkUnit):void
@@ -168,6 +177,7 @@ final class WorkerPool
     public function begin(array $units, callable $onCompleted, callable $onStreamedEvents, callable $onCrashedUnitRetry): void
     {
         $this->queue              = $units;
+        $this->queuePosition      = 0;
         $this->onCompleted        = $onCompleted;
         $this->onStreamedEvents   = $onStreamedEvents;
         $this->onCrashedUnitRetry = $onCrashedUnitRetry;
@@ -206,12 +216,10 @@ final class WorkerPool
             // is exhausted by units executing elsewhere. Only the former is
             // terminal; the abandoned units are then accounted for so that the
             // caller does not silently lose them.
-            if ($this->queue !== [] && !$this->hasAliveWorkers()) {
-                foreach ($this->queue as $unit) {
-                    $onCompleted(CompletedWorkUnit::fromCrash($unit));
+            if ($this->hasQueuedUnits() && !$this->hasAliveWorkers()) {
+                while ($this->hasQueuedUnits()) {
+                    $onCompleted(CompletedWorkUnit::fromCrash($this->nextQueuedUnit()));
                 }
-
-                $this->queue = [];
 
                 return true;
             }
@@ -247,7 +255,7 @@ final class WorkerPool
      */
     public function isFinished(): bool
     {
-        return $this->queue === [] && $this->busyWorkers() === [];
+        return !$this->hasQueuedUnits() && $this->busyWorkers() === [];
     }
 
     /**
@@ -267,7 +275,8 @@ final class WorkerPool
      */
     public function halt(): void
     {
-        $this->queue = [];
+        $this->queue         = [];
+        $this->queuePosition = 0;
 
         foreach ($this->workers as $worker) {
             if (!$worker->isAlive() || !$worker->isBusy()) {
@@ -362,7 +371,7 @@ final class WorkerPool
                 continue;
             }
 
-            while ($this->queue !== []) {
+            while ($this->hasQueuedUnits()) {
                 // The idle worker may only be topped up while the shared
                 // process budget has a slot left; the slot is held until the
                 // dispatched unit finishes.
@@ -370,7 +379,7 @@ final class WorkerPool
                     return;
                 }
 
-                $unit = array_shift($this->queue);
+                $unit = $this->nextQueuedUnit();
 
                 try {
                     $worker->dispatch($unit);
@@ -385,6 +394,25 @@ final class WorkerPool
                 }
             }
         }
+    }
+
+    /**
+     * @phpstan-impure
+     */
+    private function hasQueuedUnits(): bool
+    {
+        return $this->queuePosition < count($this->queue);
+    }
+
+    private function nextQueuedUnit(): WorkUnit
+    {
+        assert(isset($this->queue[$this->queuePosition]));
+
+        $unit = $this->queue[$this->queuePosition];
+
+        $this->queuePosition++;
+
+        return $unit;
     }
 
     private function hasAliveWorkers(): bool
