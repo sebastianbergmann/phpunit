@@ -12,9 +12,11 @@ namespace PHPUnit\Runner\Parallel;
 use function assert;
 use function base64_encode;
 use function bin2hex;
+use function clearstatcache;
 use function count;
 use function defined;
 use function file_get_contents;
+use function filesize;
 use function get_include_path;
 use function hrtime;
 use function is_file;
@@ -109,11 +111,19 @@ final class PersistentWorker
 
     /**
      * How many bytes of the current unit's event stream file have been
-     * consumed by drainStreamedEvents() so far.
+     * consumed by drainStreamedEvents() so far, and how large the file was
+     * when it was last read. The size lets a poll skip reading and re-scanning
+     * the file — in particular a partially written frame at its tail — while
+     * it has not grown.
      *
      * @var non-negative-int
      */
     private int $currentStreamOffset = 0;
+
+    /**
+     * @var non-negative-int
+     */
+    private int $currentStreamSeenBytes = 0;
 
     /**
      * Whether the current unit's event stream failed verification: a frame
@@ -255,11 +265,12 @@ final class PersistentWorker
             );
         }
 
-        $this->currentUnit          = $unit;
-        $this->currentNonce         = $nonce;
-        $this->currentResultFile    = $resultFile;
-        $this->currentStreamOffset  = 0;
-        $this->currentStreamTainted = false;
+        $this->currentUnit            = $unit;
+        $this->currentNonce           = $nonce;
+        $this->currentResultFile      = $resultFile;
+        $this->currentStreamOffset    = 0;
+        $this->currentStreamSeenBytes = 0;
+        $this->currentStreamTainted   = false;
 
         $this->job->write($encodedCommand . "\n");
     }
@@ -385,6 +396,24 @@ final class PersistentWorker
 
         if ($this->currentStreamTainted || !is_file($streamFile)) {
             return [];
+        }
+
+        // While the worker is still running, the stream is only read when the
+        // file has grown since the previous poll: a poll then costs a stat
+        // rather than a re-read and re-scan of a partially written frame at
+        // the file's tail. Once the worker has signalled completion, the
+        // remainder is always read, so trailing bytes that never became a
+        // complete frame are detected.
+        clearstatcache(true, $streamFile);
+
+        $size = @filesize($streamFile);
+
+        if (!$streamIsComplete && ($size === false || $size <= $this->currentStreamSeenBytes)) {
+            return [];
+        }
+
+        if ($size !== false) {
+            $this->currentStreamSeenBytes = $size;
         }
 
         $data = @file_get_contents($streamFile, false, null, $this->currentStreamOffset);
@@ -694,11 +723,12 @@ final class PersistentWorker
 
     private function clearCurrentUnit(): void
     {
-        $this->currentUnit          = null;
-        $this->currentNonce         = null;
-        $this->currentResultFile    = null;
-        $this->currentStreamOffset  = 0;
-        $this->currentStreamTainted = false;
+        $this->currentUnit            = null;
+        $this->currentNonce           = null;
+        $this->currentResultFile      = null;
+        $this->currentStreamOffset    = 0;
+        $this->currentStreamSeenBytes = 0;
+        $this->currentStreamTainted   = false;
     }
 
     /**
