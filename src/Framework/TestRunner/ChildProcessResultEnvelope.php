@@ -10,10 +10,15 @@
 namespace PHPUnit\Framework\TestRunner;
 
 use function hash_equals;
+use function property_exists;
 use function strlen;
 use function substr;
+use function unserialize;
+use PHPUnit\Event\EventCollection;
 use PHPUnit\Runner\CodeCoverage;
+use PHPUnit\TestRunner\TestResult\PassedTests;
 use SebastianBergmann\CodeCoverage\CodeCoverage as CodeCoverageData;
+use stdClass;
 
 /**
  * The mechanics shared by the two consumers of the serialized result envelope
@@ -56,6 +61,29 @@ final class ChildProcessResultEnvelope
         }
 
         return substr($serialized, $length);
+    }
+
+    /**
+     * Decode a verified serialized result envelope into the shape that every
+     * consumer requires: an object that carries a collection of events and the
+     * tests that passed. Null is returned when the payload does not decode to
+     * that shape; each consumer reports that in its own way. A consumer that
+     * requires more of the envelope — the per-test result fields that only the
+     * process-isolation envelope carries — validates those on top.
+     */
+    public static function decode(string $serialized): ?stdClass
+    {
+        $result = @unserialize($serialized);
+
+        if (!$result instanceof stdClass ||
+            !property_exists($result, 'events') ||
+            !property_exists($result, 'passedTests') ||
+            !$result->events instanceof EventCollection ||
+            !$result->passedTests instanceof PassedTests) {
+            return null;
+        }
+
+        return $result;
     }
 
     /**
