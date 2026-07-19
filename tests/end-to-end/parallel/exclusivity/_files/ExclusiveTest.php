@@ -1,0 +1,35 @@
+<?php declare(strict_types=1);
+/*
+ * This file is part of PHPUnit.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+namespace PHPUnit\TestFixture\ParallelExclusivity;
+
+use function file_put_contents;
+use function microtime;
+use function sys_get_temp_dir;
+use function usleep;
+use PHPUnit\Framework\Attributes\DoNotRunInParallel;
+use PHPUnit\Framework\TestCase;
+
+#[DoNotRunInParallel]
+final class ExclusiveTest extends TestCase
+{
+    public function testThatRecordsWhenItRan(): void
+    {
+        $start = microtime(true);
+
+        usleep(100000);
+
+        file_put_contents(
+            sys_get_temp_dir() . '/phpunit-parallel-exclusivity-exclusive.interval',
+            $start . ' ' . microtime(true),
+        );
+
+        $this->assertTrue(true);
+    }
+}

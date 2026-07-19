@@ -165,8 +165,10 @@ final class ParallelTestRunner
      * at the moment its suite index comes up in the aggregator's release
      * sequence. A unit runs there when it is attributed with
      * #[DoNotRunInParallel] (the author has declared that its tests must not run
-     * alongside others, for instance because they share a process-global
-     * resource), when it is configured to run in a separate process (an
+     * alongside others, for instance because they share a machine-global
+     * resource — such a unit runs alone: the pool and the PHPT runner first
+     * finish the units they are executing and start nothing new until the
+     * unit is done), when it is configured to run in a separate process (an
      * isolation that a shared worker cannot provide but the main process can),
      * when one of its tests depends on a test of another class (whose result
      * is only available in the main process, once the unit it belongs to has
@@ -221,19 +223,24 @@ final class ParallelTestRunner
             $inProcess = [];
 
             foreach ($chunk['units'] as $unit) {
+                $mustNotRunInParallel = $unit instanceof TestClassWorkUnit && $this->mustNotRunInParallel($unit);
+
                 if ($unit instanceof TestClassWorkUnit &&
                     ($processIsolation ||
-                     $this->mustNotRunInParallel($unit) ||
+                     $mustNotRunInParallel ||
                      $this->requiresProcessIsolation($unit) ||
                      $this->hasCrossClassDependencies($unit) ||
                      !$this->canBeSerialized($unit))) {
                     // The unit keeps its global suite index; the aggregator runs
                     // it in the main process at the moment that index comes up in
                     // the release sequence, which keeps the output in global
-                    // suite order.
+                    // suite order. A unit whose class is attributed with
+                    // #[DoNotRunInParallel] additionally runs alone: nothing
+                    // else may be executing while it runs (see runChunk()).
                     $inProcess[] = [
-                        'index'  => $unit->index(),
-                        'runner' => function () use ($unit): void
+                        'index'     => $unit->index(),
+                        'exclusive' => $mustNotRunInParallel,
+                        'runner'    => function () use ($unit): void
                         {
                             $this->runInProcess($unit);
                         },
@@ -249,8 +256,9 @@ final class ParallelTestRunner
                 $test = $item['test'];
 
                 $inProcess[] = [
-                    'index'  => $item['index'],
-                    'runner' => static function () use ($test): void
+                    'index'     => $item['index'],
+                    'exclusive' => false,
+                    'runner'    => static function () use ($test): void
                     {
                         $test->run();
                     },
@@ -292,7 +300,21 @@ final class ParallelTestRunner
         $phptRunner = null;
 
         if ($phptIsNeeded) {
-            $phptRunner = $this->createPhptRunner($configuration, $budget);
+            // A PHPT test that conflicts with "all" runs entirely on its own;
+            // the PHPT runner therefore only starts one while no unit is
+            // executing in the worker pool.
+            $phptRunner = $this->createPhptRunner(
+                $configuration,
+                $budget,
+                static function () use ($pool): bool
+                {
+                    if ($pool === null) {
+                        return true;
+                    }
+
+                    return !$pool->hasExecutingUnits();
+                },
+            );
         }
 
         // When the suite was partitioned into chunks, the chunks are the
@@ -359,9 +381,9 @@ final class ParallelTestRunner
      * because the aggregator forwards in suite order and freezes as soon as
      * the stop condition holds.
      *
-     * @param list<WorkUnit>                                                 $parallel
-     * @param list<PhptWorkUnit>                                             $phpt
-     * @param list<array{index: non-negative-int, runner: callable(): void}> $inProcess
+     * @param list<WorkUnit>                                                                  $parallel
+     * @param list<PhptWorkUnit>                                                              $phpt
+     * @param list<array{index: non-negative-int, exclusive: bool, runner: callable(): void}> $inProcess
      */
     private function runChunk(TestSuite $suite, array $parallel, array $phpt, array $inProcess, ?WorkerPool $pool, ?PhptRunner $phptRunner, ResultAggregator $aggregator): bool
     {
@@ -379,7 +401,7 @@ final class ParallelTestRunner
         }
 
         foreach ($inProcess as $unit) {
-            $aggregator->registerInProcessUnit($unit['index'], $unit['runner']);
+            $aggregator->registerInProcessUnit($unit['index'], $unit['runner'], $unit['exclusive']);
         }
 
         // Run the in-process units that precede the chunk's first worker or
@@ -459,20 +481,43 @@ final class ParallelTestRunner
                 break;
             }
 
+            // A unit that must run alone — its class is attributed with
+            // #[DoNotRunInParallel] — has reached its turn in the release
+            // sequence: it runs once the pool and the PHPT runner have
+            // nothing executing anymore. Until then, neither starts new
+            // work, so that the units that are executing drain away.
+            $exclusiveUnitIsPending = $aggregator->hasPendingExclusiveUnit();
+
+            if ($exclusiveUnitIsPending &&
+                ($activePool === null || !$activePool->hasExecutingUnits()) &&
+                ($activePhptRunner === null || !$activePhptRunner->hasRunningTests())) {
+                $aggregator->runPendingExclusiveUnit();
+
+                continue;
+            }
+
+            // While a PHPT test that must run alone is running, the pool must
+            // not dispatch units alongside it.
+            $mayDispatch = !$exclusiveUnitIsPending &&
+                ($activePhptRunner === null || !$activePhptRunner->isRunningExclusiveTest());
+
             $progressed = false;
 
-            if ($activePool !== null && $activePool->tick()) {
+            if ($activePool !== null && $activePool->tick($mayDispatch)) {
                 $progressed = true;
             }
 
-            if ($activePhptRunner !== null && $activePhptRunner->tick()) {
+            if ($activePhptRunner !== null && $activePhptRunner->tick(!$exclusiveUnitIsPending)) {
                 $progressed = true;
             }
 
             $poolIsFinished       = $activePool === null || $activePool->isFinished();
             $phptRunnerIsFinished = $activePhptRunner === null || $activePhptRunner->isFinished();
 
-            if ($poolIsFinished && $phptRunnerIsFinished) {
+            // A unit that must run alone may have reached its turn during
+            // this round's final releases; the loop then goes around once
+            // more to run it instead of ending the chunk.
+            if ($poolIsFinished && $phptRunnerIsFinished && !$aggregator->hasPendingExclusiveUnit()) {
                 break;
             }
 
@@ -510,7 +555,10 @@ final class ParallelTestRunner
         return $aborted;
     }
 
-    private function createPhptRunner(Configuration $configuration, ProcessBudget $budget): PhptRunner
+    /**
+     * @param callable(): bool $nothingElseIsExecuting
+     */
+    private function createPhptRunner(Configuration $configuration, ProcessBudget $budget, callable $nothingElseIsExecuting): PhptRunner
     {
         $concurrency = $configuration->numberOfParallelWorkers();
 
@@ -528,7 +576,7 @@ final class ParallelTestRunner
             CodeCoverage::instance(),
         );
 
-        return new PhptRunner(new JobRunner($processor, Event\Facade::emitter()), $concurrency, $budget);
+        return new PhptRunner(new JobRunner($processor, Event\Facade::emitter()), $concurrency, $budget, $nothingElseIsExecuting);
     }
 
     /**
