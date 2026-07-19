@@ -166,6 +166,14 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
      * processes of independent PHPT tests run concurrently without any of them
      * being nested inside a worker process.
      *
+     * Through the optional interruption signal, the caller can declare that it
+     * has abandoned this test: its result is no longer of interest, and the
+     * generator, when driven to completion, runs only what must still run —
+     * the --CLEAN-- section, when the --FILE-- section has already run — and
+     * skips everything else. The parallel test runner interrupts its in-flight
+     * PHPT tests this way when the test runner stops early (--stop-on-*), so
+     * that a terminated test's cleanup still happens.
+     *
      * @throws \PHPUnit\Framework\Exception
      * @throws \SebastianBergmann\Template\InvalidArgumentException
      * @throws Exception
@@ -179,7 +187,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function execute(Emitter $emitter): Generator
+    public function execute(Emitter $emitter, ?Interruption $interruption = null): Generator
     {
         $parser = new Parser;
 
@@ -225,6 +233,16 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         }
 
         if (yield from $this->executeSkipIf($emitter, $sections, $phpSettings)) {
+            return;
+        }
+
+        // The run was interrupted, or the caller abandoned this test, while
+        // the --SKIPIF-- section was running: the --FILE-- section is not
+        // started anymore, and there is nothing to clean up, because it
+        // never ran.
+        if (TestResultFacade::wasInterrupted() || ($interruption !== null && $interruption->interrupted())) {
+            $emitter->testFinished($this->valueObjectForEvents(), 0);
+
             return;
         }
 
@@ -285,7 +303,8 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
 
         $emitter->childProcessFinished(ChildProcessReason::PhptTest, $jobResult->stdout(), $jobResult->stderr());
 
-        if (TestResultFacade::wasInterrupted()) {
+        /** @phpstan-ignore booleanOr.leftAlwaysFalse (the run may be interrupted while the yielded job executes) */
+        if (TestResultFacade::wasInterrupted() || ($interruption !== null && $interruption->interrupted())) {
             yield from $this->executeClean($emitter, $sections, CodeCoverage::instance()->isActive());
 
             $emitter->testFinished($this->valueObjectForEvents(), 0);
