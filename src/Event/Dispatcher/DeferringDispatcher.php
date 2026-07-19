@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Event;
 
-use function assert;
-
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -18,10 +16,10 @@ use function assert;
  */
 final class DeferringDispatcher implements SubscribableDispatcher
 {
+    use CollectionWindow;
     private readonly SubscribableDispatcher $dispatcher;
     private EventCollection $events;
-    private bool $recording                   = true;
-    private ?EventCollection $collectedEvents = null;
+    private bool $recording = true;
 
     public function __construct(SubscribableDispatcher $dispatcher)
     {
@@ -41,9 +39,7 @@ final class DeferringDispatcher implements SubscribableDispatcher
 
     public function dispatch(Event $event): void
     {
-        if ($this->collectedEvents !== null) {
-            $this->collectedEvents->add($event);
-
+        if ($this->collectDispatchedEvent($event)) {
             return;
         }
 
@@ -54,24 +50,6 @@ final class DeferringDispatcher implements SubscribableDispatcher
         }
 
         $this->dispatcher->dispatch($event);
-    }
-
-    public function startCollectingEvents(): void
-    {
-        assert($this->collectedEvents === null);
-
-        $this->collectedEvents = new EventCollection;
-    }
-
-    public function stopCollectingEvents(): EventCollection
-    {
-        assert($this->collectedEvents !== null);
-
-        $events = $this->collectedEvents;
-
-        $this->collectedEvents = null;
-
-        return $events;
     }
 
     public function flush(): void

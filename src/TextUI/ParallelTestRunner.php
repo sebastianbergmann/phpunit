@@ -11,6 +11,7 @@ namespace PHPUnit\TextUI;
 
 use function assert;
 use function class_exists;
+use function count;
 use function explode;
 use function get_parent_class;
 use function gettype;
@@ -18,7 +19,6 @@ use function is_array;
 use function is_object;
 use function is_resource;
 use function is_subclass_of;
-use function mt_srand;
 use function serialize;
 use function spl_object_id;
 use function usleep;
@@ -49,7 +49,6 @@ use PHPUnit\Runner\Parallel\WorkUnit;
 use PHPUnit\Runner\Phpt\Parser;
 use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 use PHPUnit\Runner\ResultCache\ResultCache;
-use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 use PHPUnit\TextUI\Configuration\Configuration;
@@ -91,58 +90,25 @@ final class ParallelTestRunner
      */
     public function run(Configuration $configuration, ResultCache $resultCache, TestSuite $suite): void
     {
-        try {
-            Event\Facade::emitter()->testRunnerStarted();
+        new TestRunnerLifecycle()->run(
+            $configuration,
+            $resultCache,
+            $suite,
+            function () use ($configuration, $resultCache, $suite): void
+            {
+                // The durations recorded by a previous run inform the
+                // scheduling of the units across the workers. When the
+                // lifecycle already loaded the result cache to reorder the
+                // suite, this reload is a no-op re-read of the same file.
+                $resultCache->load();
 
-            if ($configuration->executionOrder() === TestSuiteSorter::ORDER_RANDOMIZED) {
-                mt_srand($configuration->randomOrderSeed());
-            }
+                $chunks = $this->collectChunks($configuration, $suite);
 
-            // The durations recorded by a previous run inform both the
-            // optional reordering of the suite and the scheduling of the
-            // units across the workers.
-            $resultCache->load();
-
-            if ($configuration->executionOrder() !== TestSuiteSorter::ORDER_DEFAULT ||
-                $configuration->executionOrderDefects() !== TestSuiteSorter::ORDER_DEFAULT ||
-                $configuration->resolveDependencies()) {
-                new TestSuiteSorter($resultCache)->reorderTestsInSuite(
-                    $suite,
-                    $configuration->executionOrder(),
-                    $configuration->resolveDependencies(),
-                    $configuration->executionOrderDefects(),
-                );
-
-                Event\Facade::emitter()->testSuiteSorted(
-                    $configuration->executionOrder(),
-                    $configuration->executionOrderDefects(),
-                    $configuration->resolveDependencies(),
-                );
-            }
-
-            (new TestSuiteFilterProcessor)->process($configuration, $suite);
-
-            Event\Facade::emitter()->testRunnerExecutionStarted(
-                Event\TestSuite\TestSuiteBuilder::from($suite),
-            );
-
-            $chunks = $this->collectChunks($configuration, $suite);
-
-            if ($chunks !== []) {
-                $this->execute($configuration, $resultCache, $suite, $chunks);
-            }
-
-            Event\Facade::emitter()->testRunnerExecutionFinished();
-            Event\Facade::emitter()->testRunnerFinished();
-            // @codeCoverageIgnoreStart
-        } catch (Throwable $t) {
-            throw new RuntimeException(
-                $t->getMessage(),
-                (int) $t->getCode(),
-                $t,
-            );
-            // @codeCoverageIgnoreEnd
-        }
+                if ($chunks !== []) {
+                    $this->execute($configuration, $resultCache, $suite, $chunks);
+                }
+            },
+        );
     }
 
     /**
@@ -280,10 +246,11 @@ final class ParallelTestRunner
             }
 
             $runs[] = [
-                'suite'     => $chunk['suite'],
-                'parallel'  => $scheduler->schedule($parallel),
-                'phpt'      => $scheduler->schedule($chunk['phpt']),
-                'inProcess' => $inProcess,
+                'suite'                        => $chunk['suite'],
+                'parallel'                     => $scheduler->schedule($parallel),
+                'phpt'                         => $scheduler->schedule($chunk['phpt']),
+                'inProcess'                    => $inProcess,
+                'suiteEnvelopeIsEmittedByUnit' => $this->suiteEnvelopeIsEmittedByUnit($chunk),
             ];
         }
 
@@ -340,7 +307,7 @@ final class ParallelTestRunner
 
         try {
             foreach ($runs as $run) {
-                if ($this->runChunk($run['suite'], $run['parallel'], $run['phpt'], $run['inProcess'], $pool, $phptRunner, $aggregator)) {
+                if ($this->runChunk($run['suite'], $run['parallel'], $run['phpt'], $run['inProcess'], $run['suiteEnvelopeIsEmittedByUnit'], $pool, $phptRunner, $aggregator)) {
                     // The run was stopped early; the remaining chunks are
                     // abandoned, exactly as the sequential runner does not
                     // start another test suite once it has decided to stop.
@@ -391,16 +358,9 @@ final class ParallelTestRunner
      * @param list<PhptWorkUnit>                                                              $phpt
      * @param list<array{index: non-negative-int, exclusive: bool, runner: callable(): void}> $inProcess
      */
-    private function runChunk(TestSuite $suite, array $parallel, array $phpt, array $inProcess, ?WorkerPool $pool, ?PhptRunner $phptRunner, ResultAggregator $aggregator): bool
+    private function runChunk(TestSuite $suite, array $parallel, array $phpt, array $inProcess, bool $suiteEnvelopeIsEmittedByUnits, ?WorkerPool $pool, ?PhptRunner $phptRunner, ResultAggregator $aggregator): bool
     {
         $suiteValueObject = Event\TestSuite\TestSuiteBuilder::from($suite);
-
-        // A chunk whose suite is itself a test class suite — a single test
-        // class file given as the CLI argument — becomes one unit whose
-        // execution emits that very envelope: the worker replays it, or the
-        // in-process run emits it live. Emitting it here as well would nest
-        // the class suite inside itself.
-        $suiteEnvelopeIsEmittedByUnits = $suiteValueObject->isForTestClass();
 
         if (!$suiteEnvelopeIsEmittedByUnits) {
             Event\Facade::emitter()->testSuiteStarted($suiteValueObject);
@@ -804,6 +764,34 @@ final class ParallelTestRunner
         }
 
         return $testCases;
+    }
+
+    /**
+     * Whether the chunk's suite envelope is emitted by the execution of the
+     * chunk's one unit, so that the chunk must not emit it a second time.
+     *
+     * That is the case when the collection walk dissolved the chunk's suite
+     * into exactly one unit covering the very same suite node: a single test
+     * class file given as the CLI argument makes the chunk's suite the class
+     * suite itself, whose envelope the worker replays — or the in-process run
+     * emits live — when the unit runs. Emitting it around the chunk as well
+     * would nest the class suite inside itself.
+     *
+     * @param array{suite: TestSuite, units: list<WorkUnit>, phpt: list<PhptWorkUnit>, standalone: list<array{index: non-negative-int, test: Test}>} $chunk
+     */
+    private function suiteEnvelopeIsEmittedByUnit(array $chunk): bool
+    {
+        if ($chunk['phpt'] !== [] || $chunk['standalone'] !== []) {
+            return false;
+        }
+
+        if (count($chunk['units']) !== 1) {
+            return false;
+        }
+
+        $unit = $chunk['units'][0];
+
+        return $unit instanceof TestClassWorkUnit && $unit->className() === $chunk['suite']->name();
     }
 
     /**

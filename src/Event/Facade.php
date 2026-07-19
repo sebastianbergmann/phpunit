@@ -138,42 +138,21 @@ final class Facade
 
     public function forward(EventCollection $events): void
     {
-        if ($this->isolationDispatcher !== null) {
-            $dispatcher = $this->isolationDispatcher;
-        } else {
-            $dispatcher = $this->deferredDispatcher();
-        }
+        $dispatcher = $this->activeDispatcher();
 
         foreach ($events as $event) {
             $dispatcher->dispatch($event);
         }
     }
 
-    /**
-     * In a process whose event facade was initialized for isolation — a
-     * parallel test runner worker, for example — the collection window is
-     * opened on the isolation dispatcher, because that is the dispatcher the
-     * emitter dispatches to there; the deferring dispatcher is unused in such
-     * a process.
-     */
     public function startCollectingEvents(): void
     {
-        if ($this->isolationDispatcher !== null) {
-            $this->isolationDispatcher->startCollectingEvents();
-
-            return;
-        }
-
-        $this->deferredDispatcher()->startCollectingEvents();
+        $this->activeDispatcher()->startCollectingEvents();
     }
 
     public function stopCollectingEvents(): EventCollection
     {
-        if ($this->isolationDispatcher !== null) {
-            return $this->isolationDispatcher->stopCollectingEvents();
-        }
-
-        return $this->deferredDispatcher()->stopCollectingEvents();
+        return $this->activeDispatcher()->stopCollectingEvents();
     }
 
     public function seal(): void
@@ -183,6 +162,23 @@ final class Facade
         $this->sealed = true;
 
         $this->emitter->testRunnerEventFacadeSealed();
+    }
+
+    /**
+     * The dispatcher that events are processed by in this process: the
+     * isolation dispatcher in a process whose event facade was initialized
+     * for isolation — a parallel test runner worker, for example — because
+     * that is the dispatcher the emitter dispatches to there, and the
+     * deferring dispatcher everywhere else. Forwarded events and collection
+     * windows must go to this dispatcher, whichever it is.
+     */
+    private function activeDispatcher(): CollectingDispatcher|DeferringDispatcher
+    {
+        if ($this->isolationDispatcher !== null) {
+            return $this->isolationDispatcher;
+        }
+
+        return $this->deferredDispatcher();
     }
 
     private function createDispatchingEmitter(): DispatchingEmitter
