@@ -1,11 +1,9 @@
 <?php declare(strict_types=1);
 use PHPUnit\Event\Facade;
-use PHPUnit\Framework\DataProviderTestSuite;
-use PHPUnit\Framework\RepeatTestSuite;
-use PHPUnit\Framework\RetryTestSuite;
 use PHPUnit\Framework\TestRunner\ErrorHandlerBootstrapper;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\CodeCoverage;
+use PHPUnit\Runner\Parallel\TestDescriptor;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\PhpHandler;
@@ -36,82 +34,6 @@ ErrorHandlerBootstrapper::bootstrap($__phpunit_configuration);
 TestResultFacade::init();
 
 ob_end_clean();
-
-function __phpunit_worker_build_test(string $className, object $descriptor): PHPUnit\Framework\TestCase
-{
-    $test = new $className($descriptor->methodName);
-
-    // A string data-set name travels base64-encoded because it is not
-    // required to be valid UTF-8; an integer name travels as-is.
-    $dataName = $descriptor->dataName;
-
-    if (is_string($dataName)) {
-        $dataName = base64_decode($dataName);
-    }
-
-    $test->setData($dataName, unserialize(base64_decode($descriptor->data)));
-    $test->setDependencyInput(unserialize(base64_decode($descriptor->dependencyInput)));
-    $test->setRepetition($descriptor->repetition, $descriptor->totalRepetitions);
-    $test->setAttempt($descriptor->attempt, $descriptor->maxAttempts);
-
-    return $test;
-}
-
-function __phpunit_worker_build_member(string $className, object $descriptor): PHPUnit\Framework\Test
-{
-    // The tests of a data provider method travel as their
-    // DataProviderTestSuite so that the suite's event envelope, which nests
-    // the tests in the logger output of a sequential run, is emitted here,
-    // inside the worker, too. The suite is rebuilt exactly as TestBuilder
-    // builds it, so its "test suite started" event carries the same value.
-    if ($descriptor->type === 'dataProvider') {
-        $suite = DataProviderTestSuite::empty($descriptor->name);
-
-        foreach ($descriptor->tests as $member) {
-            $suite->addTest(__phpunit_worker_build_member($className, $member));
-        }
-
-        return $suite;
-    }
-
-    // A retried test method travels as its RetryTestSuite so that the
-    // retry orchestration runs inside the worker; additional attempts are
-    // built here, from the same descriptor as the first one.
-    if ($descriptor->type === 'retry') {
-        $testDescriptor = $descriptor->test;
-
-        $factory = static function () use ($className, $testDescriptor): PHPUnit\Framework\TestCase
-        {
-            return __phpunit_worker_build_test($className, $testDescriptor);
-        };
-
-        return RetryTestSuite::fromTestCase(
-            $descriptor->name,
-            $factory(),
-            $descriptor->maxAttempts,
-            $factory,
-        );
-    }
-
-    // A repeated test method travels as its RepeatTestSuite so that the
-    // repetition orchestration (failure threshold, skipping of remaining
-    // repetitions) runs inside the worker.
-    if ($descriptor->type === 'repeat') {
-        $repetitions = [];
-
-        foreach ($descriptor->tests as $repetition) {
-            $repetitions[] = __phpunit_worker_build_test($className, $repetition);
-        }
-
-        return RepeatTestSuite::fromTests(
-            $descriptor->name,
-            $repetitions,
-            $descriptor->failureThreshold,
-        );
-    }
-
-    return __phpunit_worker_build_test($className, $descriptor);
-}
 
 function __phpunit_worker_run_unit(object $command): string
 {
@@ -165,8 +87,10 @@ function __phpunit_worker_run_unit(object $command): string
 
     $suite = TestSuite::empty($command->className);
 
+    // Each member travels as the descriptor that TestDescriptor::encode()
+    // produced in the parent process; the same class rebuilds it here.
     foreach ($command->tests as $__phpunit_test) {
-        $suite->addTest(__phpunit_worker_build_member($command->className, $__phpunit_test));
+        $suite->addTest(TestDescriptor::decode($command->className, $__phpunit_test));
     }
 
     $suite->run();
