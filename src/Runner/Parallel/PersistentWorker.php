@@ -14,10 +14,8 @@ use function base64_encode;
 use function bin2hex;
 use function clearstatcache;
 use function count;
-use function defined;
 use function file_get_contents;
 use function filesize;
-use function get_include_path;
 use function hrtime;
 use function is_file;
 use function is_string;
@@ -30,18 +28,17 @@ use function strlen;
 use function sys_get_temp_dir;
 use function tempnam;
 use function unlink;
-use function var_export;
 use PHPUnit\Event\EventCollection;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Event\TestRunner\ChildProcessReason;
 use PHPUnit\Framework\DataProviderTestSuite;
+use PHPUnit\Framework\ProcessIsolationException;
 use PHPUnit\Framework\RepeatTestSuite;
 use PHPUnit\Framework\RetryTestSuite;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestRunner\ChildProcessBootstrap;
 use PHPUnit\Runner\CodeCoverage;
-use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
-use PHPUnit\TextUI\Configuration\SourceMapper;
 use PHPUnit\Util\PHP\Job;
 use PHPUnit\Util\PHP\JobRunner;
 use PHPUnit\Util\PHP\RunningJob;
@@ -83,11 +80,6 @@ final class PersistentWorker
 {
     private readonly JobRunner $jobRunner;
     private ?RunningJob $job = null;
-
-    /**
-     * @var list<string>
-     */
-    private array $temporaryFiles = [];
 
     /**
      * The unit currently being executed by this worker, together with the
@@ -368,12 +360,6 @@ final class PersistentWorker
 
             $this->job = null;
         }
-
-        foreach ($this->temporaryFiles as $temporaryFile) {
-            @unlink($temporaryFile);
-        }
-
-        $this->temporaryFiles = [];
     }
 
     /**
@@ -738,30 +724,6 @@ final class PersistentWorker
      */
     private function buildWorkerCode(): string
     {
-        $configuration = ConfigurationRegistry::get();
-
-        $bootstrap = '';
-
-        if ($configuration->hasBootstrap()) {
-            $bootstrap = $configuration->bootstrap();
-        }
-
-        if (defined('PHPUNIT_COMPOSER_INSTALL')) {
-            $composerAutoload = var_export(PHPUNIT_COMPOSER_INSTALL, true);
-        } else {
-            // @codeCoverageIgnoreStart
-            $composerAutoload = '\'\'';
-            // @codeCoverageIgnoreEnd
-        }
-
-        if (defined('__PHPUNIT_PHAR__')) {
-            // @codeCoverageIgnoreStart
-            $phar = var_export(__PHPUNIT_PHAR__, true);
-            // @codeCoverageIgnoreEnd
-        } else {
-            $phar = '\'\'';
-        }
-
         if (CodeCoverage::instance()->isActive()) {
             $coverage = 'true';
         } else {
@@ -770,21 +732,21 @@ final class PersistentWorker
             // @codeCoverageIgnoreEnd
         }
 
-        $includePath = var_export(get_include_path(), true);
-        $includePath = "'." . $includePath . ".'";
+        try {
+            $configurationFragment = ChildProcessBootstrap::configurationFragment();
+        } catch (ProcessIsolationException $e) {
+            // @codeCoverageIgnoreStart
+            throw new WorkerException('Unable to write the worker configuration to a temporary file');
+            // @codeCoverageIgnoreEnd
+        }
 
         $template = new Template(__DIR__ . '/templates/worker.tpl');
 
         $template->setVar(
             [
-                'composerAutoload'               => $composerAutoload,
-                'phar'                           => $phar,
+                'childProcessHead'               => ChildProcessBootstrap::headFragment(''),
+                'childProcessConfiguration'      => $configurationFragment,
                 'collectCodeCoverageInformation' => $coverage,
-                'iniSettings'                    => '',
-                'include_path'                   => $includePath,
-                'serializedConfiguration'        => $this->saveConfigurationForChildProcess(),
-                'sourceMapFile'                  => $this->sourceMapFileForChildProcess(),
-                'bootstrap'                      => $bootstrap,
             ],
         );
 
@@ -793,56 +755,5 @@ final class PersistentWorker
         assert($code !== '');
 
         return $code;
-    }
-
-    /**
-     * @throws WorkerException
-     */
-    private function saveConfigurationForChildProcess(): string
-    {
-        $path = tempnam(sys_get_temp_dir(), 'phpunit_');
-
-        if ($path === false) {
-            // @codeCoverageIgnoreStart
-            throw new WorkerException('Unable to create temporary file for the worker configuration');
-            // @codeCoverageIgnoreEnd
-        }
-
-        if (!ConfigurationRegistry::saveTo($path)) {
-            // @codeCoverageIgnoreStart
-            throw new WorkerException('Unable to write the worker configuration to a temporary file');
-            // @codeCoverageIgnoreEnd
-        }
-
-        $this->temporaryFiles[] = $path;
-
-        return $path;
-    }
-
-    private function sourceMapFileForChildProcess(): string
-    {
-        if (!ConfigurationRegistry::get()->source()->notEmpty()) {
-            // @codeCoverageIgnoreStart
-            return '';
-            // @codeCoverageIgnoreEnd
-        }
-
-        $path = tempnam(sys_get_temp_dir(), 'phpunit_');
-
-        if ($path === false) {
-            // @codeCoverageIgnoreStart
-            return '';
-            // @codeCoverageIgnoreEnd
-        }
-
-        if (!SourceMapper::saveTo($path, ConfigurationRegistry::get()->source())) {
-            // @codeCoverageIgnoreStart
-            return '';
-            // @codeCoverageIgnoreEnd
-        }
-
-        $this->temporaryFiles[] = $path;
-
-        return $path;
     }
 }
