@@ -11,12 +11,16 @@ namespace PHPUnit\Runner\Parallel;
 
 use const FILE_APPEND;
 use function assert;
+use function bin2hex;
 use function file_put_contents;
 use function is_file;
 use function is_string;
 use function pack;
+use function random_bytes;
 use function strlen;
 use function substr;
+use function sys_get_temp_dir;
+use function unlink;
 use function unserialize;
 use function usleep;
 use PHPUnit\Event\Emitter;
@@ -28,6 +32,7 @@ use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\Finished;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Large;
+use PHPUnit\Framework\Attributes\RequiresOperatingSystem;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestRunner\ChildProcessResultProcessor;
@@ -109,6 +114,66 @@ final class PersistentWorkerTest extends TestCase
         // order, so a pass imported ahead of its turn would let a test that
         // depends on it run where a sequential run would have skipped it.
         $this->assertFalse($this->passedTestsOf($second)->hasTestMethodPassed(WorkerFirstTest::class . '::testStartsTheProcessLocalCounter'));
+    }
+
+    public function testTransportsADataSetNameThatIsNotValidUtf8ToTheWorker(): void
+    {
+        $test = new WorkerFirstTest('testStartsTheProcessLocalCounter');
+
+        // A data provider may key its data sets with any string, including
+        // one that is not valid UTF-8; such a name must not break the
+        // JSON-encoded worker command.
+        $test->setData("\xC0binary", []);
+
+        $worker = $this->worker();
+
+        $worker->start();
+
+        $completed = $this->runToCompletion(
+            $worker,
+            new TestClassWorkUnit(0, WorkerFirstTest::class, [$test]),
+        );
+
+        $worker->stop();
+
+        $this->assertFalse($completed->crashed());
+        $this->assertFalse($this->failedOrErrored($completed));
+    }
+
+    #[RequiresOperatingSystem('Linux')]
+    public function testRejectsAUnitWhoseDispatchCommandCannotBeEncoded(): void
+    {
+        // A test class whose file path is not valid UTF-8 cannot travel in
+        // the JSON-encoded worker command; the dispatch must fail with a
+        // telling exception instead of aborting the run or feeding the
+        // worker a command it cannot decode.
+        $suffix    = bin2hex(random_bytes(4));
+        $className = 'BinaryPathTest_' . $suffix;
+        $file      = sys_get_temp_dir() . "/phpunit_\xC0_" . $suffix . '.php';
+
+        file_put_contents(
+            $file,
+            '<?php class ' . $className . ' extends PHPUnit\Framework\TestCase { public function testThatPasses(): void { $this->assertTrue(true); } }',
+        );
+
+        require $file;
+
+        $worker = $this->worker();
+
+        $worker->start();
+
+        try {
+            $this->expectException(WorkerException::class);
+            $this->expectExceptionMessageMatches('/cannot be encoded/');
+
+            $worker->dispatch(
+                new TestClassWorkUnit(0, $className, [new $className('testThatPasses')]),
+            );
+        } finally {
+            $worker->stop();
+
+            @unlink($file);
+        }
     }
 
     public function testReportsAFailingTestThroughTheResultEnvelopeRatherThanAsACrash(): void

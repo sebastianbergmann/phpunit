@@ -18,7 +18,9 @@ use function file_get_contents;
 use function get_include_path;
 use function hrtime;
 use function is_file;
+use function is_string;
 use function json_encode;
+use function json_last_error_msg;
 use function random_bytes;
 use function serialize;
 use function sprintf;
@@ -237,7 +239,23 @@ final class PersistentWorker
 
         $encodedCommand = json_encode($command);
 
-        assert($encodedCommand !== false);
+        // Everything under the unit's control that could carry arbitrary
+        // bytes is base64-encoded before it enters the command, so this can
+        // only fail for exotic reasons — a test file whose path is not valid
+        // UTF-8, for instance. Failing loudly here makes the unit report as
+        // crashed instead of aborting the run or feeding the worker a
+        // command it cannot decode.
+        if ($encodedCommand === false) {
+            @unlink($resultFile);
+
+            throw new WorkerException(
+                sprintf(
+                    'The tests of class %s cannot be run in parallel because the command that dispatches them to a worker cannot be encoded: %s',
+                    $unit->name(),
+                    json_last_error_msg(),
+                ),
+            );
+        }
 
         $this->currentUnit          = $unit;
         $this->currentNonce         = $nonce;
@@ -539,11 +557,21 @@ final class PersistentWorker
             );
         }
 
+        // The name of a data set is chosen by the data provider and is not
+        // required to be valid UTF-8, which everything that travels in the
+        // JSON-encoded command must be. A string name is therefore
+        // base64-encoded for transport; an integer name needs no encoding.
+        $dataName = $test->dataName();
+
+        if (is_string($dataName)) {
+            $dataName = base64_encode($dataName);
+        }
+
         return [
             'type'             => 'test',
             'methodName'       => $test->name(),
             'data'             => $data,
-            'dataName'         => $test->dataName(),
+            'dataName'         => $dataName,
             'dependencyInput'  => $dependencyInput,
             'repetition'       => $test->repetition(),
             'totalRepetitions' => $test->totalRepetitions(),
