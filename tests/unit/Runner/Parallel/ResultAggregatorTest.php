@@ -11,17 +11,28 @@ namespace PHPUnit\Runner\Parallel;
 
 use function hrtime;
 use function serialize;
+use PHPUnit\Event\Code\Test as CodeTest;
+use PHPUnit\Event\Code\TestMethodBuilder;
+use PHPUnit\Event\Code\Throwable as CodeThrowable;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Event\EventCollection;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Telemetry;
 use PHPUnit\Event\Telemetry\HRTime;
+use PHPUnit\Event\Test\Finished as TestFinished;
+use PHPUnit\Event\TestRunner\ChildProcessReason;
 use PHPUnit\Event\TestRunner\WarningTriggered;
 use PHPUnit\Event\TestRunner\WarningTriggeredSubscriber;
+use PHPUnit\Event\TestSuite\Finished as TestSuiteFinishedEvent;
+use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
+use PHPUnit\Event\TestSuite\TestSuite as TestSuiteValue;
+use PHPUnit\Event\TestSuite\TestSuiteBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\UsesClass;
+use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestSuite as FrameworkTestSuite;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TestFixture\ParallelWorker\WorkerFirstTest;
 use PHPUnit\TestFixture\ParallelWorker\WorkerSecondTest;
@@ -38,7 +49,7 @@ final class ResultAggregatorTest extends TestCase
         $emitter = $this->createMock(Emitter::class);
 
         $emitter->expects($this->never())->method('childProcessErrored');
-        $emitter->expects($this->never())->method('testRunnerTriggeredPhpunitWarning');
+        $emitter->expects($this->never())->method('testRunnerTriggeredPhpunitWarning')->seal();
 
         $aggregator = $this->aggregator($emitter);
 
@@ -54,17 +65,255 @@ final class ResultAggregatorTest extends TestCase
         );
     }
 
-    public function testReportsACrashedUnitAsAWarning(): void
+    public function testReportsTheTestsOfACrashedUnitAsErroredInsideASynthesizedSuiteEnvelope(): void
     {
         $emitter = $this->createMock(Emitter::class);
 
-        $emitter->expects($this->once())->method('childProcessErrored');
-        $emitter->expects($this->once())
-            ->method('testRunnerTriggeredPhpunitWarning')
-            ->with($this->stringContains('ended unexpectedly'));
+        // Each stubbed test is reported with the same three events that the
+        // sequential runner emits for a test whose child process ended
+        // unexpectedly: childProcessErrored, testErrored, testFinished.
+        $emitter->expects($this->exactly(2))
+            ->method('childProcessErrored')
+            ->with($this->anything(), $this->stringContains('ended unexpectedly'));
+        $emitter->expects($this->never())->method('testRunnerTriggeredPhpunitWarning');
+
+        // No event of the crashed unit was forwarded, so the class-level
+        // envelope is synthesized around the errored tests, as the unit
+        // itself would have emitted it.
+        $emitter->expects($this->once())->method('testSuiteStarted');
+        $emitter->expects($this->exactly(2))->method('testFinished');
+        $emitter->expects($this->once())->method('testSuiteFinished');
+
+        $errored = [];
+
+        $emitter->method('testErrored')->willReturnCallback(
+            static function (CodeTest $test, CodeThrowable $throwable) use (&$errored): void
+            {
+                $errored[] = $test->id();
+            },
+        )->seal();
 
         $this->aggregator($emitter)->add(
-            new CompletedWorkUnit(new TestClassWorkUnit(0, self::class, []), '', null, true),
+            new CompletedWorkUnit(
+                new TestClassWorkUnit(
+                    0,
+                    WorkerSecondTest::class,
+                    [
+                        new WorkerSecondTest('testSeesTheStateLeftBehindByTheFirstTest'),
+                        new WorkerSecondTest('testThatFails'),
+                    ],
+                ),
+                '',
+                null,
+                true,
+            ),
+        );
+
+        $this->assertSame(
+            [
+                WorkerSecondTest::class . '::testSeesTheStateLeftBehindByTheFirstTest',
+                WorkerSecondTest::class . '::testThatFails',
+            ],
+            $errored,
+        );
+    }
+
+    public function testClosesTheForwardedEnvelopeAndReportsOnlyTheUnreportedTestsOfACrashedUnit(): void
+    {
+        $reported   = new WorkerSecondTest('testSeesTheStateLeftBehindByTheFirstTest');
+        $unreported = new WorkerSecondTest('testThatFails');
+
+        $frameworkSuite = FrameworkTestSuite::empty(WorkerSecondTest::class);
+
+        $frameworkSuite->addTest($reported);
+        $frameworkSuite->addTest($unreported);
+
+        $suiteValue = TestSuiteBuilder::from($frameworkSuite);
+
+        $emitter = $this->createMock(Emitter::class);
+
+        // The class-level envelope was already opened by the forwarded frame,
+        // so it must not be opened a second time — but it must be closed, with
+        // the very suite that opened it.
+        $emitter->expects($this->never())->method('testSuiteStarted');
+        $emitter->expects($this->once())
+            ->method('testSuiteFinished')
+            ->with($this->identicalTo($suiteValue));
+        $emitter->expects($this->once())->method('childProcessErrored');
+        $emitter->expects($this->once())->method('testFinished');
+
+        $errored = [];
+
+        $emitter->method('testErrored')->willReturnCallback(
+            static function (CodeTest $test, CodeThrowable $throwable) use (&$errored): void
+            {
+                $errored[] = $test->id();
+            },
+        )->seal();
+
+        $forwarded = [];
+
+        $aggregator = $this->aggregatorObservedThrough($forwarded, $emitter);
+
+        // The unit at index 0 streams a frame in which its class-level suite
+        // envelope opens and its first test finishes; the frame is forwarded
+        // live. Then the worker dies before the second test finishes.
+        $frame = new EventCollection;
+
+        $frame->add(new TestSuiteStarted($this->telemetryInfo(), $suiteValue));
+        $frame->add(new TestFinished($this->telemetryInfo(), TestMethodBuilder::fromTestCase($reported), 1));
+
+        $aggregator->addStreamedEvents(0, $frame);
+
+        $aggregator->add(
+            new CompletedWorkUnit(
+                new TestClassWorkUnit(0, WorkerSecondTest::class, [$reported, $unreported]),
+                '',
+                null,
+                true,
+            ),
+        );
+
+        // Only the test whose result never arrived is reported as errored;
+        // the test that was already reported through the forwarded frame is
+        // not reported a second time.
+        $this->assertSame([WorkerSecondTest::class . '::testThatFails'], $errored);
+    }
+
+    public function testClosesTheOpenEnvelopeOfADataProviderMemberBeforeReportingTheTestsThatFollowIt(): void
+    {
+        // Two provider cases that share one test id: the frames report two
+        // finishes of that id, and each finish excuses exactly one of them.
+        $firstCase  = new WorkerSecondTest('testThatFails');
+        $secondCase = new WorkerSecondTest('testThatFails');
+
+        $providerSuite = DataProviderTestSuite::empty(WorkerSecondTest::class . '::testThatFails');
+
+        $providerSuite->addTest($firstCase);
+        $providerSuite->addTest($secondCase);
+
+        $trailingTest = new WorkerSecondTest('testSeesTheStateLeftBehindByTheFirstTest');
+
+        $frameworkSuite = FrameworkTestSuite::empty(WorkerSecondTest::class);
+
+        $frameworkSuite->addTest($providerSuite);
+        $frameworkSuite->addTest($trailingTest);
+
+        $classValue    = TestSuiteBuilder::from($frameworkSuite);
+        $providerValue = TestSuiteBuilder::from($providerSuite);
+
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter->expects($this->never())->method('testSuiteStarted');
+        $emitter->expects($this->once())->method('childProcessErrored');
+        $emitter->expects($this->once())->method('testFinished');
+
+        $errored = [];
+
+        $emitter->method('testErrored')->willReturnCallback(
+            static function (CodeTest $test, CodeThrowable $throwable) use (&$errored): void
+            {
+                $errored[] = $test->id();
+            },
+        );
+
+        $closed = [];
+
+        $emitter->method('testSuiteFinished')->willReturnCallback(
+            static function (TestSuiteValue $testSuite) use (&$closed): void
+            {
+                $closed[] = $testSuite->name();
+            },
+        )->seal();
+
+        $forwarded = [];
+
+        $aggregator = $this->aggregatorObservedThrough($forwarded, $emitter);
+
+        // The streamed frame opens the class-level and the data-provider
+        // envelopes and finishes both provider cases; the provider envelope's
+        // closing event never arrives because the worker dies before the
+        // trailing test finishes.
+        $frame = new EventCollection;
+
+        $frame->add(new TestSuiteStarted($this->telemetryInfo(), $classValue));
+        $frame->add(new TestSuiteStarted($this->telemetryInfo(), $providerValue));
+        $frame->add(new TestFinished($this->telemetryInfo(), TestMethodBuilder::fromTestCase($firstCase), 1));
+        $frame->add(new TestFinished($this->telemetryInfo(), TestMethodBuilder::fromTestCase($secondCase), 1));
+
+        $aggregator->addStreamedEvents(0, $frame);
+
+        $aggregator->add(
+            new CompletedWorkUnit(
+                new TestClassWorkUnit(0, WorkerSecondTest::class, [$providerSuite, $trailingTest]),
+                '',
+                null,
+                true,
+            ),
+        );
+
+        // Only the trailing test is reported as errored; the provider
+        // envelope is closed before it, so it is not nested inside the
+        // provider suite, and the class envelope is closed last.
+        $this->assertSame([WorkerSecondTest::class . '::testSeesTheStateLeftBehindByTheFirstTest'], $errored);
+        $this->assertSame(
+            [
+                WorkerSecondTest::class . '::testThatFails',
+                WorkerSecondTest::class,
+            ],
+            $closed,
+        );
+    }
+
+    public function testDoesNotCloseAnEnvelopeThatAForwardedFrameAlreadyClosed(): void
+    {
+        $providerCase = new WorkerSecondTest('testThatFails');
+
+        $providerSuite = DataProviderTestSuite::empty(WorkerSecondTest::class . '::testThatFails');
+
+        $providerSuite->addTest($providerCase);
+
+        $frameworkSuite = FrameworkTestSuite::empty(WorkerSecondTest::class);
+
+        $frameworkSuite->addTest($providerSuite);
+
+        $classValue    = TestSuiteBuilder::from($frameworkSuite);
+        $providerValue = TestSuiteBuilder::from($providerSuite);
+
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter->expects($this->never())->method('testSuiteStarted');
+        $emitter->expects($this->never())->method('testErrored');
+
+        // The unit's only test was already reported, so the crash is
+        // signalled without stubbing any test, and only the class envelope,
+        // which the frames left open, is closed.
+        $emitter->expects($this->once())->method('childProcessErrored');
+        $emitter->expects($this->once())
+            ->method('testSuiteFinished')
+            ->with($this->identicalTo($classValue))
+            ->seal();
+
+        $forwarded = [];
+
+        $aggregator = $this->aggregatorObservedThrough($forwarded, $emitter);
+
+        $frame = new EventCollection;
+
+        $frame->add(new TestSuiteStarted($this->telemetryInfo(), $classValue));
+        $frame->add(new TestSuiteStarted($this->telemetryInfo(), $providerValue));
+        $frame->add(new TestFinished($this->telemetryInfo(), TestMethodBuilder::fromTestCase($providerCase), 1));
+        $frame->add(new TestSuiteFinishedEvent($this->telemetryInfo(), $providerValue));
+
+        $aggregator->addStreamedEvents(0, $frame);
+
+        $aggregator->add(
+            new CompletedWorkUnit(
+                new TestClassWorkUnit(0, WorkerSecondTest::class, [$providerSuite]),
+                '',
+                null,
+                true,
+            ),
         );
     }
 
@@ -72,10 +321,12 @@ final class ResultAggregatorTest extends TestCase
     {
         $emitter = $this->createMock(Emitter::class);
 
-        $emitter->expects($this->once())->method('childProcessErrored');
         $emitter->expects($this->once())
-            ->method('testRunnerTriggeredPhpunitWarning')
-            ->with($this->stringContains('tampered with'));
+            ->method('childProcessErrored')
+            ->with($this->anything(), $this->stringContains('tampered with'));
+        $emitter->expects($this->never())->method('testRunnerTriggeredPhpunitWarning');
+        $emitter->expects($this->once())->method('testSuiteStarted');
+        $emitter->expects($this->once())->method('testSuiteFinished')->seal();
 
         $this->aggregator($emitter)->add(
             new CompletedWorkUnit(new TestClassWorkUnit(0, self::class, []), 'expected-nonce' . serialize((object) []), 'actual-nonce', false),
@@ -86,10 +337,12 @@ final class ResultAggregatorTest extends TestCase
     {
         $emitter = $this->createMock(Emitter::class);
 
-        $emitter->expects($this->once())->method('childProcessErrored');
         $emitter->expects($this->once())
-            ->method('testRunnerTriggeredPhpunitWarning')
-            ->with($this->stringContains('ended unexpectedly'));
+            ->method('childProcessErrored')
+            ->with($this->anything(), $this->stringContains('ended unexpectedly'));
+        $emitter->expects($this->never())->method('testRunnerTriggeredPhpunitWarning');
+        $emitter->expects($this->once())->method('testSuiteStarted');
+        $emitter->expects($this->once())->method('testSuiteFinished')->seal();
 
         $nonce = 'abc';
 
@@ -104,12 +357,14 @@ final class ResultAggregatorTest extends TestCase
 
         $emitter = $this->createMock(Emitter::class);
 
-        $emitter->method('testRunnerTriggeredPhpunitWarning')->willReturnCallback(
-            static function (string $message) use (&$messages): void
+        $emitter->method('testSuiteStarted');
+        $emitter->method('testSuiteFinished');
+        $emitter->method('childProcessErrored')->willReturnCallback(
+            static function (ChildProcessReason $reason, string $message) use (&$messages): void
             {
                 $messages[] = $message;
             },
-        );
+        )->seal();
 
         $aggregator = $this->aggregator($emitter);
 
@@ -133,12 +388,14 @@ final class ResultAggregatorTest extends TestCase
 
         $emitter = $this->createMock(Emitter::class);
 
-        $emitter->method('testRunnerTriggeredPhpunitWarning')->willReturnCallback(
-            static function (string $message) use (&$order): void
+        $emitter->method('testSuiteStarted');
+        $emitter->method('testSuiteFinished');
+        $emitter->method('childProcessErrored')->willReturnCallback(
+            static function (ChildProcessReason $reason, string $message) use (&$order): void
             {
                 $order[] = $message;
             },
-        );
+        )->seal();
 
         $aggregator = $this->aggregator($emitter);
 
@@ -209,12 +466,14 @@ final class ResultAggregatorTest extends TestCase
 
         $emitter = $this->createMock(Emitter::class);
 
-        $emitter->method('testRunnerTriggeredPhpunitWarning')->willReturnCallback(
-            static function (string $message) use (&$forwarded): void
+        $emitter->method('testSuiteStarted');
+        $emitter->method('testSuiteFinished');
+        $emitter->method('childProcessErrored')->willReturnCallback(
+            static function (ChildProcessReason $reason, string $message) use (&$forwarded): void
             {
                 $forwarded[] = $message;
             },
-        );
+        )->seal();
 
         $aggregator = $this->aggregatorObservedThrough($forwarded, $emitter);
 
@@ -224,7 +483,7 @@ final class ResultAggregatorTest extends TestCase
 
         $this->assertSame([], $forwarded);
 
-        // The unit at index 0 finishes (as a crash, whose warning marks its
+        // The unit at index 0 finishes (as a crash, whose report marks its
         // place in the forwarded sequence); the buffered events of the unit at
         // index 1 follow it immediately, and events the unit streams from now
         // on are forwarded live.
@@ -244,12 +503,14 @@ final class ResultAggregatorTest extends TestCase
 
         $emitter = $this->createMock(Emitter::class);
 
-        $emitter->method('testRunnerTriggeredPhpunitWarning')->willReturnCallback(
-            static function (string $message) use (&$forwarded): void
+        $emitter->method('testSuiteStarted');
+        $emitter->method('testSuiteFinished');
+        $emitter->method('childProcessErrored')->willReturnCallback(
+            static function (ChildProcessReason $reason, string $message) use (&$forwarded): void
             {
                 $forwarded[] = $message;
             },
-        );
+        )->seal();
 
         $aggregator = $this->aggregatorObservedThrough($forwarded, $emitter);
 
@@ -274,12 +535,14 @@ final class ResultAggregatorTest extends TestCase
 
         $emitter = $this->createMock(Emitter::class);
 
-        $emitter->method('testRunnerTriggeredPhpunitWarning')->willReturnCallback(
-            static function (string $message) use (&$forwarded): void
+        $emitter->method('testSuiteStarted');
+        $emitter->method('testSuiteFinished');
+        $emitter->method('childProcessErrored')->willReturnCallback(
+            static function (ChildProcessReason $reason, string $message) use (&$forwarded): void
             {
                 $forwarded[] = $message;
             },
-        );
+        )->seal();
 
         $aggregator = $this->aggregatorObservedThrough($forwarded, $emitter);
 
@@ -291,7 +554,7 @@ final class ResultAggregatorTest extends TestCase
         $this->assertTrue($aggregator->discardStreamedEventsFor(1));
 
         // The retry streams its own event and both units finish (as crashes,
-        // whose warnings mark their places in the forwarded sequence): the
+        // whose reports mark their places in the forwarded sequence): the
         // discarded event must not appear, the retry's event must.
         $aggregator->addStreamedEvents(1, $this->events('second attempt'));
 
@@ -324,12 +587,14 @@ final class ResultAggregatorTest extends TestCase
 
         $emitter = $this->createMock(Emitter::class);
 
-        $emitter->method('testRunnerTriggeredPhpunitWarning')->willReturnCallback(
-            static function (string $message) use (&$messages): void
+        $emitter->method('testSuiteStarted');
+        $emitter->method('testSuiteFinished');
+        $emitter->method('childProcessErrored')->willReturnCallback(
+            static function (ChildProcessReason $reason, string $message) use (&$messages): void
             {
                 $messages[] = $message;
             },
-        );
+        )->seal();
 
         $shouldStop = false;
 
@@ -403,8 +668,8 @@ final class ResultAggregatorTest extends TestCase
     /**
      * An aggregator whose forwarded events are observable: the message of
      * every forwarded test runner warning event is appended to $forwarded.
-     * Forwarding a crashed unit records its warning message through the
-     * emitter into the same array, so the order of events and crash reports
+     * Forwarding a crashed unit records its child-process-errored message
+     * through the emitter into the same array, so the order of events and crash reports
      * relative to each other is observable, too.
      *
      * @param list<string> $forwarded
@@ -460,31 +725,36 @@ final class ResultAggregatorTest extends TestCase
 
         $events->add(
             new WarningTriggered(
-                new Telemetry\Info(
-                    new Telemetry\Snapshot(
-                        HRTime::fromSecondsAndNanoseconds(...hrtime(false)),
-                        Telemetry\MemoryUsage::fromBytes(1000),
-                        Telemetry\MemoryUsage::fromBytes(2000),
-                        new Telemetry\GarbageCollectorStatus(0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, false, false, false, 0),
-                        Telemetry\CpuTime::fromSecondsAndNanoseconds(0, 0),
-                        Telemetry\CpuTime::fromSecondsAndNanoseconds(0, 0),
-                        Telemetry\CpuTime::fromSecondsAndNanoseconds(0, 0),
-                    ),
-                    Telemetry\Duration::fromSecondsAndNanoseconds(123, 456),
-                    Telemetry\MemoryUsage::fromBytes(2000),
-                    Telemetry\Duration::fromSecondsAndNanoseconds(234, 567),
-                    Telemetry\MemoryUsage::fromBytes(3000),
-                    Telemetry\CpuTime::fromSecondsAndNanoseconds(0, 0),
-                    Telemetry\CpuTime::fromSecondsAndNanoseconds(0, 0),
-                    Telemetry\CpuTime::fromSecondsAndNanoseconds(0, 0),
-                    Telemetry\CpuTime::fromSecondsAndNanoseconds(0, 0),
-                    Telemetry\CpuTime::fromSecondsAndNanoseconds(0, 0),
-                    Telemetry\CpuTime::fromSecondsAndNanoseconds(0, 0),
-                ),
+                $this->telemetryInfo(),
                 $message,
             ),
         );
 
         return $events;
+    }
+
+    private function telemetryInfo(): Telemetry\Info
+    {
+        return new Telemetry\Info(
+            new Telemetry\Snapshot(
+                HRTime::fromSecondsAndNanoseconds(...hrtime(false)),
+                Telemetry\MemoryUsage::fromBytes(1000),
+                Telemetry\MemoryUsage::fromBytes(2000),
+                new Telemetry\GarbageCollectorStatus(0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, false, false, false, 0),
+                Telemetry\CpuTime::fromSecondsAndNanoseconds(0, 0),
+                Telemetry\CpuTime::fromSecondsAndNanoseconds(0, 0),
+                Telemetry\CpuTime::fromSecondsAndNanoseconds(0, 0),
+            ),
+            Telemetry\Duration::fromSecondsAndNanoseconds(123, 456),
+            Telemetry\MemoryUsage::fromBytes(2000),
+            Telemetry\Duration::fromSecondsAndNanoseconds(234, 567),
+            Telemetry\MemoryUsage::fromBytes(3000),
+            Telemetry\CpuTime::fromSecondsAndNanoseconds(0, 0),
+            Telemetry\CpuTime::fromSecondsAndNanoseconds(0, 0),
+            Telemetry\CpuTime::fromSecondsAndNanoseconds(0, 0),
+            Telemetry\CpuTime::fromSecondsAndNanoseconds(0, 0),
+            Telemetry\CpuTime::fromSecondsAndNanoseconds(0, 0),
+            Telemetry\CpuTime::fromSecondsAndNanoseconds(0, 0),
+        );
     }
 }

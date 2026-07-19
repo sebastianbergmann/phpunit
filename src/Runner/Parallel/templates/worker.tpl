@@ -54,6 +54,21 @@ if ('{bootstrap}' !== '') {
     require_once '{bootstrap}';
 }
 
+$__phpunit_includeTestSuites = ConfigurationRegistry::get()->includeTestSuites();
+$__phpunit_excludeTestSuites = ConfigurationRegistry::get()->excludeTestSuites();
+
+foreach (ConfigurationRegistry::get()->bootstrapForTestSuite() as $__phpunit_testSuiteName => $__phpunit_bootstrapForTestSuite) {
+    if ($__phpunit_includeTestSuites !== [] && !in_array($__phpunit_testSuiteName, $__phpunit_includeTestSuites, true)) {
+        continue;
+    }
+
+    if ($__phpunit_excludeTestSuites !== [] && in_array($__phpunit_testSuiteName, $__phpunit_excludeTestSuites, true)) {
+        continue;
+    }
+
+    require_once $__phpunit_bootstrapForTestSuite;
+}
+
 $__phpunit_configuration = ConfigurationRegistry::get();
 
 if ({collectCodeCoverageInformation}) {
@@ -219,6 +234,15 @@ function __phpunit_worker_run_unit(object $command): string
     if (CodeCoverage::instance()->isActive()) {
         CodeCoverage::instance()->codeCoverage()->clear();
     }
+
+    // The passes recorded while running this unit ship with its envelope and
+    // are forgotten here, so that the envelope of the next unit executed by
+    // this worker carries only that unit's own passes. The parent imports a
+    // unit's passes at the moment its turn in suite order comes; a unit that
+    // ran earlier on this worker but comes later in suite order must not have
+    // its passes imported ahead of that turn, because a test that depends on
+    // one of them would then run where a sequential run would have skipped it.
+    PassedTests::instance()->reset();
 
     // Reset the stream that captures test output so that the next unit does
     // not inherit the output of the unit that has just finished.
