@@ -10,12 +10,22 @@
 namespace PHPUnit\Util\PHP;
 
 use function array_merge;
+use function file_get_contents;
+use function hrtime;
+use function sprintf;
 use function stream_select;
+use function sys_get_temp_dir;
+use function tempnam;
+use function unlink;
+use function usleep;
+use function var_export;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\TestRunner\ChildProcessReason;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Large;
+use PHPUnit\Framework\Attributes\RequiresOperatingSystem;
+use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestRunner\ChildProcessResultProcessor;
@@ -74,6 +84,69 @@ EOT,
 
         // Terminating a job that has already been reaped is a no-op.
         $job->terminate();
+    }
+
+    #[RequiresPhpExtension('pcntl')]
+    public function testForcesTerminationOfAJobThatIgnoresTheTerminationSignal(): void
+    {
+        $readyFile = tempnam(sys_get_temp_dir(), 'phpunit_');
+
+        $this->assertNotFalse($readyFile);
+
+        $job = $this->jobRunner()->start(
+            new Job(
+                sprintf(
+                    <<<'EOT'
+<?php declare(strict_types=1);
+pcntl_signal(SIGTERM, SIG_IGN);
+file_put_contents(%s, 'ready');
+sleep(60);
+
+EOT,
+                    var_export($readyFile, true),
+                ),
+                ChildProcessReason::ParallelWorker,
+            ),
+        );
+
+        // The job is terminated only once it has reported that it ignores the
+        // termination signal, so that the signal is guaranteed to be without
+        // effect and termination has to be forced.
+        while (file_get_contents($readyFile) !== 'ready') {
+            usleep(1000);
+        }
+
+        $job->terminate();
+
+        $this->assertFalse($job->isRunning());
+
+        @unlink($readyFile);
+    }
+
+    #[RequiresOperatingSystem('Linux|Darwin')]
+    public function testDoesNotWaitForAProcessThatInheritedTheOutputPipeWhenTerminatingAJob(): void
+    {
+        $job = $this->jobRunner()->start(
+            new Job(
+                <<<'EOT'
+<?php declare(strict_types=1);
+// The background process inherits this process' standard output and keeps
+// its write end open long after this process is gone; draining the pipe
+// until end-of-file would block until the background process exits.
+system('sleep 30 &');
+sleep(30);
+
+EOT,
+                ChildProcessReason::ParallelWorker,
+            ),
+        );
+
+        $start = hrtime(true);
+
+        $job->terminate();
+
+        $this->assertFalse($job->isRunning());
+        $this->assertLessThan(30, (hrtime(true) - $start) / 1000000000);
     }
 
     public function testReportsWhetherTheProcessIsStillRunning(): void
