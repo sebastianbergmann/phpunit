@@ -54,9 +54,10 @@ use PHPUnit\Util\PHP\RunningJob;
  * A test may declare conflict keys with a --CONFLICTS-- section: while a test
  * that conflicts with key K is running, no other test that conflicts with K is
  * started. The reserved key "all" conflicts with every other test, so a test
- * that declares it runs entirely on its own; such tests are ordered last and
- * run once the others have drained, mirroring how run-tests.php defers them
- * until a single worker remains.
+ * that declares it runs entirely on its own — not alongside another PHPT test,
+ * and not alongside a unit executing in the worker pool either. Such tests are
+ * ordered last and run once the others have drained, mirroring how
+ * run-tests.php defers them until a single worker remains.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -115,13 +116,26 @@ final class PhptRunner
     private readonly ProcessBudget $budget;
 
     /**
-     * @param positive-int $concurrency
+     * Whether nothing outside of this runner — the worker pool, in
+     * particular — is executing a unit right now. A test that conflicts with
+     * "all" must run entirely on its own, so it is only started while this
+     * reports true. When no predicate is given, only the runner's own tests
+     * are considered, as for a run without a worker pool.
+     *
+     * @var ?callable(): bool
      */
-    public function __construct(JobRunner $jobRunner, int $concurrency, ProcessBudget $budget)
+    private $nothingElseIsExecuting;
+
+    /**
+     * @param positive-int      $concurrency
+     * @param ?callable(): bool $nothingElseIsExecuting
+     */
+    public function __construct(JobRunner $jobRunner, int $concurrency, ProcessBudget $budget, ?callable $nothingElseIsExecuting = null)
     {
-        $this->jobRunner   = $jobRunner;
-        $this->concurrency = $concurrency;
-        $this->budget      = $budget;
+        $this->jobRunner              = $jobRunner;
+        $this->concurrency            = $concurrency;
+        $this->budget                 = $budget;
+        $this->nothingElseIsExecuting = $nothingElseIsExecuting;
     }
 
     /**
@@ -184,10 +198,19 @@ final class PhptRunner
      * finished. Returns whether the round made progress; a caller driving the
      * runner in a loop is expected to sleep briefly when it did not, so that
      * polling does not spin the CPU.
+     *
+     * When the caller passes false for $mayStart, no queued unit is started in
+     * this round: the tests that are already running are still advanced and
+     * harvested, so the runner drains. This is how the caller makes room for
+     * a unit that must run alone (see ParallelTestRunner).
      */
-    public function tick(): bool
+    public function tick(bool $mayStart = true): bool
     {
-        $progressed = $this->startRunnable();
+        $progressed = false;
+
+        if ($mayStart) {
+            $progressed = $this->startRunnable();
+        }
 
         if ($this->active === []) {
             return $progressed;
@@ -206,6 +229,25 @@ final class PhptRunner
     public function isFinished(): bool
     {
         return $this->queue === [] && $this->active === [];
+    }
+
+    /**
+     * Whether any test is currently running.
+     */
+    public function hasRunningTests(): bool
+    {
+        return $this->active !== [];
+    }
+
+    /**
+     * Whether the test that is currently running conflicts with "all" and
+     * must therefore run entirely on its own. While this reports true, the
+     * caller must not start any other work — the worker pool must not
+     * dispatch units — or the promised exclusivity would be broken.
+     */
+    public function isRunningExclusiveTest(): bool
+    {
+        return $this->exclusive;
     }
 
     /**
@@ -320,7 +362,18 @@ final class PhptRunner
     private function canStart(PhptWorkUnit $unit): bool
     {
         if (in_array('all', $unit->conflicts(), true)) {
-            return $this->active === [];
+            if ($this->active !== []) {
+                return false;
+            }
+
+            // A test that conflicts with every other test runs entirely on
+            // its own: not alongside another PHPT test, and not alongside a
+            // unit executing in the worker pool either.
+            if ($this->nothingElseIsExecuting !== null && !($this->nothingElseIsExecuting)()) {
+                return false;
+            }
+
+            return true;
         }
 
         foreach ($unit->conflicts() as $key) {

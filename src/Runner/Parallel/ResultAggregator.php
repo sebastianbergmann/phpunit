@@ -106,6 +106,17 @@ final class ResultAggregator
     private array $inProcessRunners = [];
 
     /**
+     * The indexes of the registered in-process units that must run alone —
+     * their test class is attributed with #[DoNotRunInParallel]. The release
+     * sequence does not run such a unit itself: it stops at the unit's index,
+     * hasPendingExclusiveUnit() reports the stop, and the runner invokes the
+     * unit through runPendingExclusiveUnit() once nothing else is executing.
+     *
+     * @var array<non-negative-int, true>
+     */
+    private array $exclusiveUnits = [];
+
+    /**
      * The events streamed by units that are still running, buffered per suite
      * index until their unit's turn in the release sequence comes.
      *
@@ -164,12 +175,54 @@ final class ResultAggregator
      * Register a unit that is to be run, in the main process, at the point its
      * suite index comes up in the release sequence.
      *
+     * An exclusive unit — one whose test class is attributed with
+     * #[DoNotRunInParallel] — additionally runs alone: the release sequence
+     * stops at its index instead of running it, and the runner invokes it
+     * through runPendingExclusiveUnit() once nothing else is executing.
+     *
      * @param non-negative-int $index
      * @param callable():void  $runner
      */
-    public function registerInProcessUnit(int $index, callable $runner): void
+    public function registerInProcessUnit(int $index, callable $runner, bool $exclusive = false): void
     {
         $this->inProcessRunners[$index] = $runner;
+
+        if ($exclusive) {
+            $this->exclusiveUnits[$index] = true;
+        }
+    }
+
+    /**
+     * Whether the release sequence has stopped at the index of an exclusive
+     * unit: everything that precedes the unit in suite order has been
+     * forwarded, and the unit waits to be run through
+     * runPendingExclusiveUnit() once nothing else is executing.
+     */
+    public function hasPendingExclusiveUnit(): bool
+    {
+        return isset($this->exclusiveUnits[$this->nextIndex], $this->inProcessRunners[$this->nextIndex]);
+    }
+
+    /**
+     * Run the exclusive unit that the release sequence has stopped at, then
+     * resume releasing. The caller is responsible for calling this only once
+     * nothing else is executing — that is what makes the unit's execution
+     * exclusive.
+     */
+    public function runPendingExclusiveUnit(): void
+    {
+        assert(isset($this->inProcessRunners[$this->nextIndex]));
+        assert(isset($this->exclusiveUnits[$this->nextIndex]));
+
+        $runner = $this->inProcessRunners[$this->nextIndex];
+
+        unset($this->inProcessRunners[$this->nextIndex], $this->exclusiveUnits[$this->nextIndex]);
+
+        $runner();
+
+        $this->nextIndex++;
+
+        $this->release();
     }
 
     /**
@@ -270,6 +323,13 @@ final class ResultAggregator
             }
 
             if (isset($this->inProcessRunners[$this->nextIndex])) {
+                // An exclusive unit is not run from here: the release
+                // sequence stops, and the runner invokes the unit through
+                // runPendingExclusiveUnit() once nothing else is executing.
+                if (isset($this->exclusiveUnits[$this->nextIndex])) {
+                    break;
+                }
+
                 $runner = $this->inProcessRunners[$this->nextIndex];
 
                 unset($this->inProcessRunners[$this->nextIndex]);
