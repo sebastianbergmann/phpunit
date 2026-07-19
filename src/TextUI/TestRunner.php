@@ -9,14 +9,9 @@
  */
 namespace PHPUnit\TextUI;
 
-use function mt_srand;
-use PHPUnit\Event;
 use PHPUnit\Framework\TestSuite;
-use PHPUnit\Runner\ExecutionOrder\ReorderPipeline;
 use PHPUnit\Runner\TestRunHistory\TestRunHistory;
-use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\Configuration\Configuration;
-use Throwable;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -30,48 +25,14 @@ final class TestRunner
      */
     public function run(Configuration $configuration, TestRunHistory $testRunHistory, TestSuite $suite): void
     {
-        try {
-            Event\Facade::emitter()->testRunnerStarted();
-
-            if ($configuration->executionOrder() === TestSuiteSorter::ORDER_RANDOMIZED) {
-                mt_srand($configuration->randomOrderSeed());
-            }
-
-            $testRunHistory->load();
-
-            $pipeline = ReorderPipeline::fromConfiguration(
-                $configuration->executionOrder(),
-                $configuration->executionOrderDefects(),
-                $configuration->resolveDependencies(),
-            );
-
-            if (!$pipeline->isEmpty()) {
-                new TestSuiteSorter($testRunHistory)->apply($suite, $pipeline);
-
-                Event\Facade::emitter()->testSuiteSorted(
-                    $configuration->executionOrder(),
-                    $configuration->executionOrderDefects(),
-                    $configuration->resolveDependencies(),
-                    $pipeline->describe(),
-                );
-            }
-
-            (new TestSuiteFilterProcessor)->process($configuration, $suite);
-
-            Event\Facade::emitter()->testRunnerExecutionStarted(
-                Event\TestSuite\TestSuiteBuilder::from($suite),
-            );
-
-            $suite->run();
-
-            Event\Facade::emitter()->testRunnerExecutionFinished();
-            Event\Facade::emitter()->testRunnerFinished();
-        } catch (Throwable $t) {
-            throw new RuntimeException(
-                $t->getMessage(),
-                (int) $t->getCode(),
-                $t,
-            );
-        }
+        new TestRunnerLifecycle()->run(
+            $configuration,
+            $testRunHistory,
+            $suite,
+            static function () use ($suite): void
+            {
+                $suite->run();
+            },
+        );
     }
 }
