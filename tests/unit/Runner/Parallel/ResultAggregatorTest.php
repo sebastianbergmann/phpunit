@@ -424,6 +424,45 @@ final class ResultAggregatorTest extends TestCase
         $this->assertStringContainsString(WorkerSecondTest::class, $order[2]);
     }
 
+    public function testStopsTheReleaseSequenceAtAnExclusiveUnitUntilItIsRunExplicitly(): void
+    {
+        $order = [];
+
+        $aggregator = $this->aggregator($this->createStub(Emitter::class));
+
+        $aggregator->registerInProcessUnit(
+            0,
+            static function () use (&$order): void
+            {
+                $order[] = 'exclusive';
+            },
+            true,
+        );
+
+        $aggregator->registerInProcessUnit(
+            1,
+            static function () use (&$order): void
+            {
+                $order[] = 'ordinary';
+            },
+        );
+
+        // The release sequence stops at the exclusive unit instead of running
+        // it — the unit must run alone, and only the caller knows when
+        // nothing else is executing. The ordinary unit behind it waits, too.
+        $aggregator->flush();
+
+        $this->assertSame([], $order);
+        $this->assertTrue($aggregator->hasPendingExclusiveUnit());
+
+        // Running the pending exclusive unit resumes the release sequence,
+        // which then releases the ordinary unit behind it.
+        $aggregator->runPendingExclusiveUnit();
+
+        $this->assertSame(['exclusive', 'ordinary'], $order);
+        $this->assertFalse($aggregator->hasPendingExclusiveUnit());
+    }
+
     public function testRunsRegisteredInProcessUnitsThatPrecedeAllWorkerUnitsOnFlush(): void
     {
         $order = [];

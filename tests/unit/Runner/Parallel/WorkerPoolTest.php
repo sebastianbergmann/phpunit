@@ -207,6 +207,58 @@ final class WorkerPoolTest extends TestCase
         $this->assertTrue($completed[0]->crashed());
     }
 
+    public function testDoesNotDispatchWhenTheCallerDisallowsIt(): void
+    {
+        $budget = new ProcessBudget(1);
+
+        $pool = $this->pool(1, $budget);
+
+        $pool->start();
+
+        try {
+            $completed = [];
+
+            $pool->begin(
+                [new TestClassWorkUnit(0, WorkerFirstTest::class, [new WorkerFirstTest('testStartsTheProcessLocalCounter')])],
+                static function (CompletedWorkUnit $unit) use (&$completed): void
+                {
+                    $completed[] = $unit;
+                },
+                static function (WorkUnit $unit, EventCollection $events): void
+                {
+                },
+                static function (WorkUnit $unit): bool
+                {
+                    return true;
+                },
+            );
+
+            // The caller makes room for a unit that must run alone: no queued
+            // unit is dispatched, so the pool drains instead of topping up.
+            $this->assertFalse($pool->tick(false));
+            $this->assertFalse($pool->hasExecutingUnits());
+            $this->assertFalse($pool->isFinished());
+            $this->assertSame([], $completed);
+
+            // Dispatching is allowed again; the queued unit is dispatched and
+            // runs to completion.
+            $pool->tick();
+
+            $this->assertTrue($pool->hasExecutingUnits());
+
+            while (!$pool->isFinished()) {
+                if (!$pool->tick()) {
+                    usleep(1000);
+                }
+            }
+
+            $this->assertFalse($pool->hasExecutingUnits());
+            $this->assertCount(1, $completed);
+        } finally {
+            $pool->stop();
+        }
+    }
+
     public function testWaitsForASlotOfTheSharedProcessBudgetBeforeDispatching(): void
     {
         $budget = new ProcessBudget(1);
