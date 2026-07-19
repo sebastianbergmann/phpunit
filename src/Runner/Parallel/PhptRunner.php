@@ -18,6 +18,7 @@ use Generator;
 use PHPUnit\Event\CollectingEmitter;
 use PHPUnit\Event\EventCollection;
 use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Runner\Phpt\Interruption;
 use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 use PHPUnit\Util\PHP\Job;
 use PHPUnit\Util\PHP\JobRunner;
@@ -85,7 +86,7 @@ final class PhptRunner
     private array $queue = [];
 
     /**
-     * @var array<int, array{unit: PhptWorkUnit, generator: Generator<int, Job, Result, void>, collector: CollectingEmitter, job: RunningJob}>
+     * @var array<int, array{unit: PhptWorkUnit, interruption: Interruption, generator: Generator<int, Job, Result, void>, collector: CollectingEmitter, job: RunningJob}>
      */
     private array $active = [];
 
@@ -212,13 +213,30 @@ final class PhptRunner
      * and the child processes of the running tests are terminated without
      * waiting for their results. Used when the test runner stops early,
      * because the results collected so far call for it (--stop-on-*).
+     *
+     * A terminated test's cleanup still happens: the test is marked as
+     * interrupted and its generator is driven to completion, which runs the
+     * --CLEAN-- section when the --FILE-- section has already run and skips
+     * everything else. The events the test emits while being driven go into
+     * its collector, which is discarded — the cleanup happens, no result is
+     * reported, exactly as when a sequential run is interrupted.
      */
     public function halt(): void
     {
         $this->queue = [];
 
         foreach ($this->active as $task) {
+            $task['interruption']->interrupt();
+
             $task['job']->terminate();
+
+            $generator = $task['generator'];
+
+            $generator->send($task['job']->wait());
+
+            while ($generator->valid()) {
+                $generator->send($this->jobRunner->run($generator->current()));
+            }
 
             // The slot that the abandoned test held goes back to the shared
             // process budget.
@@ -260,8 +278,9 @@ final class PhptRunner
 
             $progressed = true;
 
-            $collector = EventFacade::instance()->collectingEmitter();
-            $generator = new PhptTestCase($unit->file())->execute($collector->emitter());
+            $collector    = EventFacade::instance()->collectingEmitter();
+            $interruption = new Interruption;
+            $generator    = new PhptTestCase($unit->file())->execute($collector->emitter(), $interruption);
 
             $generator->rewind();
 
@@ -280,10 +299,11 @@ final class PhptRunner
             $this->reserve($unit);
 
             $this->active[$this->nextId] = [
-                'unit'      => $unit,
-                'generator' => $generator,
-                'collector' => $collector,
-                'job'       => $this->jobRunner->startAsync($generator->current()),
+                'unit'         => $unit,
+                'interruption' => $interruption,
+                'generator'    => $generator,
+                'collector'    => $collector,
+                'job'          => $this->jobRunner->startAsync($generator->current()),
             ];
 
             $this->nextId++;
