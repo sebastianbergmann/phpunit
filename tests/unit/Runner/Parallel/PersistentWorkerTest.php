@@ -292,8 +292,8 @@ final class PersistentWorkerTest extends TestCase
             new TestClassWorkUnit(0, WorkerFirstTest::class, [new WorkerFirstTest('testStartsTheProcessLocalCounter')]),
         );
 
-        $doneFile   = $this->privateString($worker, 'currentDoneFile');
-        $streamFile = $this->privateString($worker, 'currentStreamFile');
+        $doneFile   = $this->privateString($worker, 'currentResultFile') . '.done';
+        $streamFile = $this->privateString($worker, 'currentResultFile') . '.stream';
 
         while (!is_file($doneFile)) {
             usleep(1000);
