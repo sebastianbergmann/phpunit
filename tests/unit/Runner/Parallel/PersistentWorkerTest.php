@@ -238,6 +238,12 @@ final class PersistentWorkerTest extends TestCase
 
         $completed = $this->runToCompletion($worker, null);
 
+        // The worker whose event stream was interfered with must have been
+        // terminated and reaped: were it still alive with its job set, the
+        // pool's retry of the unit would trip over restart()'s precondition
+        // that the worker has no job, or leak the process.
+        $this->assertFalse($worker->isAlive());
+
         $worker->stop();
 
         return $completed;
