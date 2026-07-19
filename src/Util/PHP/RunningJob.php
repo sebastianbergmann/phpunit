@@ -21,6 +21,7 @@ use function rewind;
 use function stream_get_contents;
 use function stream_set_blocking;
 use function unlink;
+use function usleep;
 
 /**
  * Handle for a worker process that has been spawned by the JobRunner.
@@ -38,6 +39,23 @@ use function unlink;
  */
 final class RunningJob
 {
+    /**
+     * How long a terminated process is given to shut down on its own before
+     * its termination is forced, and the interval at which its liveness is
+     * polled while waiting.
+     */
+    private const int TERMINATION_GRACE_PERIOD_MICROSECONDS = 500000;
+
+    private const int TERMINATION_POLL_INTERVAL_MICROSECONDS = 1000;
+
+    /**
+     * The signal used to force termination when the process has not shut down
+     * within the grace period. Unlike the default SIGTERM, SIGKILL cannot be
+     * caught or ignored by the process. On Windows, where proc_terminate()
+     * always terminates the process forcefully, the signal is ignored.
+     */
+    private const int SIGKILL = 9;
+
     /**
      * @var resource
      */
@@ -173,6 +191,11 @@ final class RunningJob
      * Terminate the worker process instead of waiting for it to finish, then
      * reap it. Used when the test runner stops early and abandons the work
      * the process is doing.
+     *
+     * The process is given a grace period to shut down in response to the
+     * termination signal; if it is still running afterwards — because it,
+     * or code it runs, installed a signal handler — its termination is
+     * forced. This bounds how long stopping early can take.
      */
     public function terminate(): void
     {
@@ -183,6 +206,37 @@ final class RunningJob
         $this->closeStdin();
 
         proc_terminate($this->process);
+
+        $waited = 0;
+
+        while (proc_get_status($this->process)['running']) {
+            if ($waited >= self::TERMINATION_GRACE_PERIOD_MICROSECONDS) {
+                proc_terminate($this->process, self::SIGKILL);
+
+                break;
+            }
+
+            usleep(self::TERMINATION_POLL_INTERVAL_MICROSECONDS);
+
+            $waited += self::TERMINATION_POLL_INTERVAL_MICROSECONDS;
+        }
+
+        // The output pipes are closed without draining them: the process'
+        // work is being abandoned, so its output is of no interest, and the
+        // blocking read of a drain could wait forever on a pipe whose write
+        // end was inherited by a child of the terminated process that
+        // outlives it.
+        if (is_resource($this->stdout)) {
+            fclose($this->stdout);
+
+            $this->stdout = null;
+        }
+
+        if (is_resource($this->stderr)) {
+            fclose($this->stderr);
+
+            $this->stderr = null;
+        }
 
         $this->wait();
     }
