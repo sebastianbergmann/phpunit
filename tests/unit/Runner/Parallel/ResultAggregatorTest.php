@@ -56,11 +56,10 @@ final class ResultAggregatorTest extends TestCase
         $nonce = 'abc';
 
         $aggregator->add(
-            new CompletedWorkUnit(
+            CompletedWorkUnit::fromEnvelope(
                 new TestClassWorkUnit(0, self::class, []),
                 $nonce . serialize((object) ['codeCoverage' => null, 'events' => new EventCollection, 'passedTests' => new PassedTests]),
                 $nonce,
-                false,
             ),
         );
     }
@@ -94,7 +93,7 @@ final class ResultAggregatorTest extends TestCase
         )->seal();
 
         $this->aggregator($emitter)->add(
-            new CompletedWorkUnit(
+            CompletedWorkUnit::fromCrash(
                 new TestClassWorkUnit(
                     0,
                     WorkerSecondTest::class,
@@ -103,9 +102,6 @@ final class ResultAggregatorTest extends TestCase
                         new WorkerSecondTest('testThatFails'),
                     ],
                 ),
-                '',
-                null,
-                true,
             ),
         );
 
@@ -166,11 +162,8 @@ final class ResultAggregatorTest extends TestCase
         $aggregator->addStreamedEvents(0, $frame);
 
         $aggregator->add(
-            new CompletedWorkUnit(
+            CompletedWorkUnit::fromCrash(
                 new TestClassWorkUnit(0, WorkerSecondTest::class, [$reported, $unreported]),
-                '',
-                null,
-                true,
             ),
         );
 
@@ -244,11 +237,8 @@ final class ResultAggregatorTest extends TestCase
         $aggregator->addStreamedEvents(0, $frame);
 
         $aggregator->add(
-            new CompletedWorkUnit(
+            CompletedWorkUnit::fromCrash(
                 new TestClassWorkUnit(0, WorkerSecondTest::class, [$providerSuite, $trailingTest]),
-                '',
-                null,
-                true,
             ),
         );
 
@@ -308,11 +298,8 @@ final class ResultAggregatorTest extends TestCase
         $aggregator->addStreamedEvents(0, $frame);
 
         $aggregator->add(
-            new CompletedWorkUnit(
+            CompletedWorkUnit::fromCrash(
                 new TestClassWorkUnit(0, WorkerSecondTest::class, [$providerSuite]),
-                '',
-                null,
-                true,
             ),
         );
     }
@@ -329,7 +316,7 @@ final class ResultAggregatorTest extends TestCase
         $emitter->expects($this->once())->method('testSuiteFinished')->seal();
 
         $this->aggregator($emitter)->add(
-            new CompletedWorkUnit(new TestClassWorkUnit(0, self::class, []), 'expected-nonce' . serialize((object) []), 'actual-nonce', false),
+            CompletedWorkUnit::fromEnvelope(new TestClassWorkUnit(0, self::class, []), 'expected-nonce' . serialize((object) []), 'actual-nonce'),
         );
     }
 
@@ -347,7 +334,7 @@ final class ResultAggregatorTest extends TestCase
         $nonce = 'abc';
 
         $this->aggregator($emitter)->add(
-            new CompletedWorkUnit(new TestClassWorkUnit(0, self::class, []), $nonce . 'not-a-serialized-envelope', $nonce, false),
+            CompletedWorkUnit::fromEnvelope(new TestClassWorkUnit(0, self::class, []), $nonce . 'not-a-serialized-envelope', $nonce),
         );
     }
 
@@ -371,11 +358,11 @@ final class ResultAggregatorTest extends TestCase
         // The unit at index 1 finishes first; it must not be forwarded until
         // the unit at index 0, which precedes it in suite order, has been
         // forwarded.
-        $aggregator->add(new CompletedWorkUnit(new TestClassWorkUnit(1, WorkerSecondTest::class, []), '', null, true));
+        $aggregator->add(CompletedWorkUnit::fromCrash(new TestClassWorkUnit(1, WorkerSecondTest::class, [])));
 
         $this->assertSame([], $messages);
 
-        $aggregator->add(new CompletedWorkUnit(new TestClassWorkUnit(0, WorkerFirstTest::class, []), '', null, true));
+        $aggregator->add(CompletedWorkUnit::fromCrash(new TestClassWorkUnit(0, WorkerFirstTest::class, [])));
 
         $this->assertCount(2, $messages);
         $this->assertStringContainsString(WorkerFirstTest::class, $messages[0]);
@@ -410,13 +397,13 @@ final class ResultAggregatorTest extends TestCase
         );
 
         // The worker unit at index 2 finishes first and must be held back.
-        $aggregator->add(new CompletedWorkUnit(new TestClassWorkUnit(2, WorkerSecondTest::class, []), '', null, true));
+        $aggregator->add(CompletedWorkUnit::fromCrash(new TestClassWorkUnit(2, WorkerSecondTest::class, [])));
 
         $this->assertSame([], $order);
 
         // Once index 0 arrives, index 0 is forwarded, then the in-process unit
         // at index 1 is run in place, then index 2 is released — global order.
-        $aggregator->add(new CompletedWorkUnit(new TestClassWorkUnit(0, WorkerFirstTest::class, []), '', null, true));
+        $aggregator->add(CompletedWorkUnit::fromCrash(new TestClassWorkUnit(0, WorkerFirstTest::class, [])));
 
         $this->assertCount(3, $order);
         $this->assertStringContainsString(WorkerFirstTest::class, $order[0]);
@@ -526,7 +513,7 @@ final class ResultAggregatorTest extends TestCase
         // place in the forwarded sequence); the buffered events of the unit at
         // index 1 follow it immediately, and events the unit streams from now
         // on are forwarded live.
-        $aggregator->add(new CompletedWorkUnit(new TestClassWorkUnit(0, WorkerFirstTest::class, []), '', null, true));
+        $aggregator->add(CompletedWorkUnit::fromCrash(new TestClassWorkUnit(0, WorkerFirstTest::class, [])));
 
         $aggregator->addStreamedEvents(1, $this->events('second test of unit 1'));
 
@@ -556,11 +543,11 @@ final class ResultAggregatorTest extends TestCase
         // The unit at index 1 streams the events of a test that completed and
         // then crashes, all while the unit at index 0 is still running.
         $aggregator->addStreamedEvents(1, $this->events('completed test of unit 1'));
-        $aggregator->add(new CompletedWorkUnit(new TestClassWorkUnit(1, WorkerSecondTest::class, []), '', null, true));
+        $aggregator->add(CompletedWorkUnit::fromCrash(new TestClassWorkUnit(1, WorkerSecondTest::class, [])));
 
         $this->assertSame([], $forwarded);
 
-        $aggregator->add(new CompletedWorkUnit(new TestClassWorkUnit(0, WorkerFirstTest::class, []), '', null, true));
+        $aggregator->add(CompletedWorkUnit::fromCrash(new TestClassWorkUnit(0, WorkerFirstTest::class, [])));
 
         $this->assertCount(3, $forwarded);
         $this->assertStringContainsString(WorkerFirstTest::class, $forwarded[0]);
@@ -597,8 +584,8 @@ final class ResultAggregatorTest extends TestCase
         // discarded event must not appear, the retry's event must.
         $aggregator->addStreamedEvents(1, $this->events('second attempt'));
 
-        $aggregator->add(new CompletedWorkUnit(new TestClassWorkUnit(0, WorkerFirstTest::class, []), '', null, true));
-        $aggregator->add(new CompletedWorkUnit(new TestClassWorkUnit(1, WorkerSecondTest::class, []), '', null, true));
+        $aggregator->add(CompletedWorkUnit::fromCrash(new TestClassWorkUnit(0, WorkerFirstTest::class, [])));
+        $aggregator->add(CompletedWorkUnit::fromCrash(new TestClassWorkUnit(1, WorkerSecondTest::class, [])));
 
         $this->assertCount(3, $forwarded);
         $this->assertStringContainsString(WorkerFirstTest::class, $forwarded[0]);
@@ -645,7 +632,7 @@ final class ResultAggregatorTest extends TestCase
             },
         );
 
-        $aggregator->add(new CompletedWorkUnit(new TestClassWorkUnit(0, WorkerFirstTest::class, []), '', null, true));
+        $aggregator->add(CompletedWorkUnit::fromCrash(new TestClassWorkUnit(0, WorkerFirstTest::class, [])));
 
         $this->assertCount(1, $messages);
 
@@ -654,7 +641,7 @@ final class ResultAggregatorTest extends TestCase
         // a sequential run would not have run.
         $shouldStop = true;
 
-        $aggregator->add(new CompletedWorkUnit(new TestClassWorkUnit(1, WorkerSecondTest::class, []), '', null, true));
+        $aggregator->add(CompletedWorkUnit::fromCrash(new TestClassWorkUnit(1, WorkerSecondTest::class, [])));
         $aggregator->flush();
 
         $this->assertCount(1, $messages);
