@@ -82,6 +82,35 @@ final class PersistentWorkerTest extends TestCase
         $this->assertFalse($this->failedOrErrored($second));
     }
 
+    public function testShipsOnlyTheUnitsOwnPassesInItsResultEnvelope(): void
+    {
+        $worker = $this->worker();
+
+        $worker->start();
+
+        $first = $this->runToCompletion(
+            $worker,
+            new TestClassWorkUnit(0, WorkerFirstTest::class, [new WorkerFirstTest('testStartsTheProcessLocalCounter')]),
+        );
+
+        $second = $this->runToCompletion(
+            $worker,
+            new TestClassWorkUnit(1, WorkerSecondTest::class, [new WorkerSecondTest('testSeesTheStateLeftBehindByTheFirstTest')]),
+        );
+
+        $worker->stop();
+
+        $this->assertTrue($this->passedTestsOf($first)->hasTestMethodPassed(WorkerFirstTest::class . '::testStartsTheProcessLocalCounter'));
+        $this->assertTrue($this->passedTestsOf($second)->hasTestMethodPassed(WorkerSecondTest::class . '::testSeesTheStateLeftBehindByTheFirstTest'));
+
+        // The envelope of the second unit must not carry the passes of the
+        // first one: the parent imports a unit's passes at the moment its
+        // suite-order turn comes, and a worker may run units out of suite
+        // order, so a pass imported ahead of its turn would let a test that
+        // depends on it run where a sequential run would have skipped it.
+        $this->assertFalse($this->passedTestsOf($second)->hasTestMethodPassed(WorkerFirstTest::class . '::testStartsTheProcessLocalCounter'));
+    }
+
     public function testReportsAFailingTestThroughTheResultEnvelopeRatherThanAsACrash(): void
     {
         $worker = $this->worker();
@@ -308,6 +337,18 @@ final class PersistentWorkerTest extends TestCase
         }
 
         return false;
+    }
+
+    private function passedTestsOf(CompletedWorkUnit $completed): PassedTests
+    {
+        $nonce      = (string) $completed->nonce();
+        $serialized = substr($completed->serializedResult(), strlen($nonce));
+        $envelope   = unserialize($serialized);
+
+        $this->assertIsObject($envelope);
+        $this->assertInstanceOf(PassedTests::class, $envelope->passedTests);
+
+        return $envelope->passedTests;
     }
 
     private function eventsOf(CompletedWorkUnit $completed): EventCollection
