@@ -579,6 +579,18 @@ final class PersistentWorker
         // from the stream and the events in the envelope are two parts of one
         // result, and part of it was interfered with.
         if ($this->currentStreamTainted) {
+            // The worker process itself is not reusable either: something
+            // interfered with its communication channel, so nothing further
+            // that arrives through it can be trusted. Terminating and reaping
+            // it here makes the pool treat this worker like one that died —
+            // a retry of the unit, if one is allowed, boots a fresh worker
+            // process instead of asserting that this one has no job.
+            if ($this->job !== null) {
+                $this->job->terminate();
+
+                $this->job = null;
+            }
+
             $completed = new CompletedWorkUnit(
                 $this->currentUnit,
                 '',
