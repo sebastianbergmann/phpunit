@@ -208,7 +208,7 @@ final class WorkerPool
             // caller does not silently lose them.
             if ($this->queue !== [] && !$this->hasAliveWorkers()) {
                 foreach ($this->queue as $unit) {
-                    $onCompleted(new CompletedWorkUnit($unit, '', null, true));
+                    $onCompleted(CompletedWorkUnit::fromCrash($unit));
                 }
 
                 $this->queue = [];
@@ -336,7 +336,7 @@ final class WorkerPool
             // @codeCoverageIgnoreStart
             $this->budget->release();
 
-            $onCompleted(new CompletedWorkUnit($unit, '', null, true, $e->getMessage()));
+            $onCompleted(CompletedWorkUnit::fromCrash($unit, $e->getMessage()));
             // @codeCoverageIgnoreEnd
         }
 
@@ -381,7 +381,7 @@ final class WorkerPool
                     // it goes back to the budget right away.
                     $this->budget->release();
 
-                    $onCompleted(new CompletedWorkUnit($unit, '', null, true, $e->getMessage()));
+                    $onCompleted(CompletedWorkUnit::fromCrash($unit, $e->getMessage()));
                 }
             }
         }

@@ -958,16 +958,7 @@ final class ParallelTestRunner
 
                 $className = $tests[0]::class;
 
-                if (!isset($byClass[$className])) {
-                    $byClass[$className] = [
-                        'index' => $index,
-                        'tests' => [],
-                    ];
-
-                    $index++;
-                }
-
-                $byClass[$className]['tests'][] = $test;
+                $this->addToClassUnit($className, $test, $byClass, $index);
 
                 continue;
             }
@@ -982,16 +973,7 @@ final class ParallelTestRunner
 
                 assert(class_exists($className) && is_subclass_of($className, TestCase::class));
 
-                if (!isset($byClass[$className])) {
-                    $byClass[$className] = [
-                        'index' => $index,
-                        'tests' => [],
-                    ];
-
-                    $index++;
-                }
-
-                $byClass[$className]['tests'][] = $test;
+                $this->addToClassUnit($className, $test, $byClass, $index);
 
                 continue;
             }
@@ -1005,16 +987,7 @@ final class ParallelTestRunner
             if ($test instanceof TestCase) {
                 $className = $test::class;
 
-                if (!isset($byClass[$className])) {
-                    $byClass[$className] = [
-                        'index' => $index,
-                        'tests' => [],
-                    ];
-
-                    $index++;
-                }
-
-                $byClass[$className]['tests'][] = $test;
+                $this->addToClassUnit($className, $test, $byClass, $index);
 
                 continue;
             }
@@ -1048,6 +1021,29 @@ final class ParallelTestRunner
             $index++;
             // @codeCoverageIgnoreEnd
         }
+    }
+
+    /**
+     * Add a member — a single test case, or a suite that travels as one
+     * atomic member — to the work unit of its test class, creating the unit,
+     * with the next suite index, on the member's first appearance.
+     *
+     * @param class-string<TestCase>                                                                                                        $className
+     * @param array<class-string<TestCase>, array{index: non-negative-int, tests: list<DataProviderTestSuite|IterativeTestSuite|TestCase>}> $byClass
+     * @param non-negative-int                                                                                                              $index
+     */
+    private function addToClassUnit(string $className, DataProviderTestSuite|IterativeTestSuite|TestCase $test, array &$byClass, int &$index): void
+    {
+        if (!isset($byClass[$className])) {
+            $byClass[$className] = [
+                'index' => $index,
+                'tests' => [],
+            ];
+
+            $index++;
+        }
+
+        $byClass[$className]['tests'][] = $test;
     }
 
     /**
