@@ -541,7 +541,7 @@ final class CodeCoverage
 
         EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
             sprintf(
-                'Configured source filter (include-path: %s) does not match any files, code coverage will not be processed',
+                'No files to cover found in configured source filter (include-path: %s), code coverage will not be processed',
                 implode(', ', $paths),
             ),
         );
