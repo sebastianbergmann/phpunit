@@ -1,5 +1,7 @@
 --TEST--
 Order by defects (without result cache): Test methods with defects
+--CONFLICTS--
+all
 --FILE--
 <?php declare(strict_types=1);
 $testResultsFile = sys_get_temp_dir() . '/test-results';

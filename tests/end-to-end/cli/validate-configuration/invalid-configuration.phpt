@@ -1,5 +1,7 @@
 --TEST--
 phpunit --validate-configuration with invalid configuration file
+--CONFLICTS--
+all
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';

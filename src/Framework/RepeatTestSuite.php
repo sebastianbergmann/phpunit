@@ -47,6 +47,14 @@ final class RepeatTestSuite extends IterativeTestSuite
     }
 
     /**
+     * @return positive-int
+     */
+    public function failureThreshold(): int
+    {
+        return $this->failureThreshold;
+    }
+
+    /**
      * @param list<Test> $tests
      */
     protected function execute(array $tests, Event\Emitter $emitter): void

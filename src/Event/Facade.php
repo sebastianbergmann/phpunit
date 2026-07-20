@@ -24,9 +24,10 @@ final class Facade
 {
     private static ?self $instance = null;
     private Emitter $emitter;
-    private ?TypeMap $typeMap                         = null;
-    private ?DeferringDispatcher $deferringDispatcher = null;
-    private bool $sealed                              = false;
+    private ?TypeMap $typeMap                          = null;
+    private ?DeferringDispatcher $deferringDispatcher  = null;
+    private ?CollectingDispatcher $isolationDispatcher = null;
+    private bool $sealed                               = false;
 
     public static function instance(): self
     {
@@ -108,12 +109,36 @@ final class Facade
 
         $this->sealed = true;
 
+        $this->isolationDispatcher = $dispatcher;
+
         return $dispatcher;
+    }
+
+    /**
+     * Mint an emitter that collects its events into an independent collection,
+     * without sealing this facade or replacing its emitter. Unlike
+     * initForIsolation(), which can only establish one isolated emitter for the
+     * whole process, any number of these can be in use at once; the parallel
+     * test runner uses one per concurrently running PHPT test.
+     */
+    public function collectingEmitter(): CollectingEmitter
+    {
+        $dispatcher = new CollectingDispatcher(
+            new DirectDispatcher($this->typeMap()),
+        );
+
+        return new CollectingEmitter(
+            new DispatchingEmitter(
+                $dispatcher,
+                $this->createTelemetrySystem(),
+            ),
+            $dispatcher,
+        );
     }
 
     public function forward(EventCollection $events): void
     {
-        $dispatcher = $this->deferredDispatcher();
+        $dispatcher = $this->activeDispatcher();
 
         foreach ($events as $event) {
             $dispatcher->dispatch($event);
@@ -122,12 +147,12 @@ final class Facade
 
     public function startCollectingEvents(): void
     {
-        $this->deferredDispatcher()->startCollectingEvents();
+        $this->activeDispatcher()->startCollectingEvents();
     }
 
     public function stopCollectingEvents(): EventCollection
     {
-        return $this->deferredDispatcher()->stopCollectingEvents();
+        return $this->activeDispatcher()->stopCollectingEvents();
     }
 
     public function seal(): void
@@ -137,6 +162,23 @@ final class Facade
         $this->sealed = true;
 
         $this->emitter->testRunnerEventFacadeSealed();
+    }
+
+    /**
+     * The dispatcher that events are processed by in this process: the
+     * isolation dispatcher in a process whose event facade was initialized
+     * for isolation — a parallel test runner worker, for example — because
+     * that is the dispatcher the emitter dispatches to there, and the
+     * deferring dispatcher everywhere else. Forwarded events and collection
+     * windows must go to this dispatcher, whichever it is.
+     */
+    private function activeDispatcher(): CollectingDispatcher|DeferringDispatcher
+    {
+        if ($this->isolationDispatcher !== null) {
+            return $this->isolationDispatcher;
+        }
+
+        return $this->deferredDispatcher();
     }
 
     private function createDispatchingEmitter(): DispatchingEmitter

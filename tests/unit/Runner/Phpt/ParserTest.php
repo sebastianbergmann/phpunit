@@ -149,6 +149,44 @@ final class ParserTest extends TestCase
         $this->assertSame(['opcache.so', 'xdebug.so'], $result['zend_extension']);
     }
 
+    #[TestDox('parseConflictsSection() returns one key per line')]
+    public function testParseConflictsSectionReturnsOneKeyPerLine(): void
+    {
+        $parser = new Parser;
+
+        $this->assertSame(
+            ['shared-resource', 'another-resource'],
+            $parser->parseConflictsSection("shared-resource\nanother-resource"),
+        );
+    }
+
+    #[TestDox('parseConflictsSection() recognizes the reserved key all')]
+    public function testParseConflictsSectionRecognizesAll(): void
+    {
+        $parser = new Parser;
+
+        $this->assertSame(['all'], $parser->parseConflictsSection('all'));
+    }
+
+    #[TestDox('parseConflictsSection() strips comments and ignores blank lines')]
+    public function testParseConflictsSectionStripsCommentsAndBlankLines(): void
+    {
+        $parser = new Parser;
+
+        $this->assertSame(
+            ['shared-resource', 'another-resource'],
+            $parser->parseConflictsSection("# a comment\nshared-resource\n\n  # indented comment\nanother-resource\n"),
+        );
+    }
+
+    #[TestDox('parseConflictsSection() returns no keys for an empty section')]
+    public function testParseConflictsSectionReturnsNoKeysForEmptySection(): void
+    {
+        $parser = new Parser;
+
+        $this->assertSame([], $parser->parseConflictsSection("\n# only a comment\n"));
+    }
+
     #[TestDox('FILE_EXTERNAL sets FILE_EXTERNAL_PATH to resolved path of external file')]
     public function testFileExternalPathIsSet(): void
     {

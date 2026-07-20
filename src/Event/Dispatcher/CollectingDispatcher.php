@@ -19,6 +19,7 @@ use PHPUnit\Runner\DeprecationCollector\TestTriggeredDeprecationSubscriber;
  */
 final class CollectingDispatcher implements Dispatcher
 {
+    use CollectionWindow;
     private EventCollection $events;
     private DirectDispatcher $isolatedDirectDispatcher;
 
@@ -32,6 +33,10 @@ final class CollectingDispatcher implements Dispatcher
 
     public function dispatch(Event $event): void
     {
+        if ($this->collectDispatchedEvent($event)) {
+            return;
+        }
+
         $this->events->add($event);
 
         try {
@@ -39,6 +44,19 @@ final class CollectingDispatcher implements Dispatcher
         } catch (UnknownEventTypeException) {
             // Do nothing.
         }
+    }
+
+    /**
+     * Register a subscriber with the direct dispatcher that events are
+     * dispatched to as they are collected. The parallel test runner's worker
+     * uses this to observe, while a unit is running, the events that have
+     * become part of the unit's recorded stream — an event diverted by a
+     * collection window is not dispatched and thus not observed until the
+     * window's owner forwards it.
+     */
+    public function registerSubscriber(Subscriber $subscriber): void
+    {
+        $this->isolatedDirectDispatcher->registerSubscriber($subscriber);
     }
 
     public function flush(): EventCollection

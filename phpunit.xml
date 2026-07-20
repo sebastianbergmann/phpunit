@@ -35,6 +35,7 @@
             <directory suffix=".phpt">tests/end-to-end/logging/testdox</directory>
             <directory suffix=".phpt">tests/end-to-end/metadata</directory>
             <directory suffix=".phpt">tests/end-to-end/migration</directory>
+            <directory suffix=".phpt">tests/end-to-end/parallel</directory>
             <directory suffix=".phpt">tests/end-to-end/phpt</directory>
             <directory suffix=".phpt">tests/end-to-end/regression</directory>
             <directory suffix=".phpt">tests/end-to-end/repeat</directory>
@@ -48,6 +49,15 @@
             <exclude>tests/end-to-end/groups-from-configuration/_files</exclude>
             <exclude>tests/end-to-end/logging/_files</exclude>
             <exclude>tests/end-to-end/migration/_files</exclude>
+            <exclude>tests/end-to-end/parallel/phpt/_files</exclude>
+            <exclude>tests/end-to-end/parallel/phpt-coverage/_files</exclude>
+            <exclude>tests/end-to-end/parallel/phpt-conflicts/_files</exclude>
+            <exclude>tests/end-to-end/parallel/phpt-with-classes/_files</exclude>
+            <exclude>tests/end-to-end/parallel/logging/_files</exclude>
+            <exclude>tests/end-to-end/parallel/repeat-retry/_files</exclude>
+            <exclude>tests/end-to-end/parallel/stop-on/_files</exclude>
+            <exclude>tests/end-to-end/parallel/stop-on-clean/_files</exclude>
+            <exclude>tests/end-to-end/parallel/exclusivity/_files</exclude>
             <exclude>tests/end-to-end/repeat/_files</exclude>
             <exclude>tests/end-to-end/retry/_files</exclude>
             <exclude>tests/end-to-end/self-direct-indirect/_files</exclude>

@@ -11,6 +11,7 @@ namespace PHPUnit\Runner\ResultCache;
 
 use const DIRECTORY_SEPARATOR;
 use function sys_get_temp_dir;
+use function unlink;
 use Exception;
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Code\ThrowableBuilder;
@@ -88,6 +89,38 @@ final class ResultCacheHandlerTest extends AbstractEventTestCase
         $id = ResultCacheId::fromTest($test);
 
         $this->assertTrue($cache->status($id)->isSkipped());
+    }
+
+    public function testExecutionFinishedPersistsCache(): void
+    {
+        $cacheFile = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-persist-test.cache';
+
+        @unlink($cacheFile);
+
+        $cache   = new DefaultResultCache($cacheFile);
+        $handler = new ResultCacheHandler($cache, new Facade);
+
+        $test  = $this->testValueObject();
+        $event = new ConsideredRisky(
+            $this->telemetryInfo(),
+            $test,
+            'This test did not perform any assertions',
+        );
+
+        $handler->testConsideredRisky($event);
+
+        $this->assertFileDoesNotExist($cacheFile);
+
+        $handler->testRunnerExecutionFinished();
+
+        $this->assertFileExists($cacheFile);
+
+        $persistedCache = new DefaultResultCache($cacheFile);
+        $persistedCache->load();
+
+        $this->assertTrue($persistedCache->status(ResultCacheId::fromTest($test))->isRisky());
+
+        @unlink($cacheFile);
     }
 
     public function testSkippedWithoutPreparedRecordsZeroDuration(): void

@@ -20,6 +20,7 @@ use function is_file;
 use function is_readable;
 use function is_string;
 use function preg_match;
+use function preg_replace;
 use function realpath;
 use function rtrim;
 use function str_contains;
@@ -168,6 +169,33 @@ final readonly class Parser
         }
 
         return $ini;
+    }
+
+    /**
+     * The conflict keys declared by a --CONFLICTS-- section: one key per line,
+     * with "#" starting a comment and blank lines ignored.
+     *
+     * @return list<non-empty-string>
+     */
+    public function parseConflictsSection(string $content): array
+    {
+        $content = preg_replace('/#.*/', '', $content);
+
+        assert($content !== null);
+
+        $conflicts = [];
+
+        foreach (explode("\n", trim($content)) as $line) {
+            $key = trim($line);
+
+            if ($key === '') {
+                continue;
+            }
+
+            $conflicts[] = $key;
+        }
+
+        return $conflicts;
     }
 
     /**

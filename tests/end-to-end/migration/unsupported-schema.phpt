@@ -1,5 +1,7 @@
 --TEST--
 Configuration migration is not possible when the configuration file does not validate against any known schema
+--CONFLICTS--
+all
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';

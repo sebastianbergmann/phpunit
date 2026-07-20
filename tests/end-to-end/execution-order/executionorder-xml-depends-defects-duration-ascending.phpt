@@ -1,5 +1,7 @@
 --TEST--
 executionOrder="depends,defects,duration-ascending" in phpunit.xml (with result cache): Test methods with dependencies and defects
+--CONFLICTS--
+all
 --FILE--
 <?php declare(strict_types=1);
 $testResultsFile = sys_get_temp_dir() . '/test-results';
