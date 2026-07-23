@@ -282,11 +282,26 @@ final class TestSuiteSorter
      */
     private function cmpDuration(Test $a, Test $b): int
     {
-        if (!($a instanceof Reorderable && $b instanceof Reorderable)) {
-            return 0;
+        return $this->durationWeight($a) <=> $this->durationWeight($b);
+    }
+
+    private function durationWeight(Test $test): float
+    {
+        if ($test instanceof TestSuite) {
+            $sum = 0.0;
+
+            foreach ($test->tests() as $inner) {
+                $sum += $this->durationWeight($inner);
+            }
+
+            return $sum;
         }
 
-        return $this->cache->time(ResultCacheId::fromReorderable($a)) <=> $this->cache->time(ResultCacheId::fromReorderable($b));
+        if ($test instanceof Reorderable) {
+            return $this->cache->time(ResultCacheId::fromReorderable($test));
+        }
+
+        return 0.0;
     }
 
     /**
