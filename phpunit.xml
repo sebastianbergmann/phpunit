@@ -9,6 +9,7 @@
          failOnPhpunitDeprecation="true"
          failOnRisky="true"
          failOnWarning="true"
+         warnWhenPhpIsNotConfiguredForDevelopment="true"
          colors="true">
     <testsuites>
         <testsuite name="unit">
