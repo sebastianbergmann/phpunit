@@ -25,7 +25,6 @@ use const E_USER_NOTICE;
 use const E_USER_WARNING;
 use const E_WARNING;
 use function array_any;
-use function array_keys;
 use function array_reverse;
 use function array_slice;
 use function array_unshift;
@@ -769,29 +768,13 @@ final class ErrorHandler
 
         $trace = $this->errorStackTrace($ignoreArguments);
 
-        if ($this->deprecationTriggers === null) {
-            return array_values($trace);
+        $position = $this->deprecationTriggerFramePosition($trace);
+
+        if ($position === null) {
+            return $trace;
         }
 
-        foreach (array_keys($trace) as $frame) {
-            foreach ($this->deprecationTriggers['functions'] as $function) {
-                if ($this->frameIsFunction($trace[$frame], $function)) {
-                    unset($trace[$frame]);
-
-                    continue 2;
-                }
-            }
-
-            foreach ($this->deprecationTriggers['methods'] as $method) {
-                if ($this->frameIsMethod($trace[$frame], $method)) {
-                    unset($trace[$frame]);
-
-                    continue 2;
-                }
-            }
-        }
-
-        return array_values($trace);
+        return array_values(array_slice($trace, $position));
     }
 
     /**
@@ -799,33 +782,73 @@ final class ErrorHandler
      */
     private function guessDeprecationFrame(): ?array
     {
+        $trace = $this->errorStackTrace();
+
+        $position = $this->deprecationTriggerFramePosition($trace);
+
+        if ($position === null) {
+            return null;
+        }
+
+        return $trace[$position] ?? null;
+    }
+
+    /**
+     * Finds the frame of the outermost of the (consecutive) configured deprecation
+     * trigger functions and methods that the deprecation was triggered through.
+     *
+     * The file and line of this frame point to the code that called into the
+     * deprecation trigger, in other words the location where the deprecation
+     * was actually triggered.
+     *
+     * @param list<StackFrame> $trace
+     *
+     * @return ?non-negative-int
+     */
+    private function deprecationTriggerFramePosition(array $trace): ?int
+    {
         if ($this->deprecationTriggers === null) {
             return null;
         }
 
-        $trace = $this->errorStackTrace();
+        $position = null;
 
-        foreach ($trace as $frame) {
-            if (
-                array_any(
-                    $this->deprecationTriggers['functions'],
-                    /** @param non-empty-string $function */
-                    fn (string $function) => $this->frameIsFunction($frame, $function),
-                )) {
-                return $frame;
+        foreach ($trace as $currentPosition => $frame) {
+            if ($this->frameMatchesDeprecationTrigger($frame)) {
+                $position = $currentPosition;
+
+                continue;
             }
 
-            if (
-                array_any(
-                    $this->deprecationTriggers['methods'],
-                    /** @param DeprecationMethod $method */
-                    fn (array $method) => $this->frameIsMethod($frame, $method),
-                )) {
-                return $frame;
+            if ($position !== null) {
+                break;
             }
         }
 
-        return null;
+        return $position;
+    }
+
+    /**
+     * @param StackFrame $frame
+     */
+    private function frameMatchesDeprecationTrigger(array $frame): bool
+    {
+        assert($this->deprecationTriggers !== null);
+
+        if (
+            array_any(
+                $this->deprecationTriggers['functions'],
+                /** @param non-empty-string $function */
+                fn (string $function) => $this->frameIsFunction($frame, $function),
+            )) {
+            return true;
+        }
+
+        return array_any(
+            $this->deprecationTriggers['methods'],
+            /** @param DeprecationMethod $method */
+            fn (array $method) => $this->frameIsMethod($frame, $method),
+        );
     }
 
     /**
