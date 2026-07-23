@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 ### Fixed
 
 * [#6833](https://github.com/sebastianbergmann/phpunit/issues/6833): `assertArrayHasKey()` does not accept `ArrayAccess` implementations with a specific value type when test code is analysed with PHPStan at level 9
+* [#6854](https://github.com/sebastianbergmann/phpunit/issues/6854): Deprecation triggered in first-party code is wrongly classified as indirect when the first-party code is called from third-party code
 
 ## [12.5.31] - 2026-07-06
 
