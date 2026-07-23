@@ -38,7 +38,8 @@ final class GeneratorTest extends TestCase
          displayDetailsOnPhpunitDeprecations="true"
          failOnPhpunitDeprecation="true"
          failOnRisky="true"
-         failOnWarning="true">
+         failOnWarning="true"
+         warnWhenPhpIsNotConfiguredForDevelopment="true">
     <testsuites>
         <testsuite name="default">
             <directory>tests</directory>

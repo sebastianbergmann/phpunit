@@ -79,6 +79,12 @@ final readonly class Merger
             $cacheResult = $xmlConfiguration->phpunit()->cacheResult();
         }
 
+        if ($cliConfiguration->hasWarnWhenPhpIsNotConfiguredForDevelopment()) {
+            $warnWhenPhpIsNotConfiguredForDevelopment = $cliConfiguration->warnWhenPhpIsNotConfiguredForDevelopment();
+        } else {
+            $warnWhenPhpIsNotConfiguredForDevelopment = $xmlConfiguration->phpunit()->warnWhenPhpIsNotConfiguredForDevelopment();
+        }
+
         $cacheDirectory         = null;
         $coverageCacheDirectory = null;
 
@@ -1475,6 +1481,7 @@ final readonly class Merger
             $cliConfiguration->debug(),
             $cliConfiguration->withTelemetry(),
             $xmlConfiguration->phpunit()->shortenArraysForExportThreshold(),
+            $warnWhenPhpIsNotConfiguredForDevelopment,
         );
     }
 

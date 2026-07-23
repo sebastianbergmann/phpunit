@@ -33,6 +33,7 @@
          controlGarbageCollector="true"
          numberOfTestsBeforeGarbageCollection="1000"
          shortenArraysForExportThreshold="10"
+         warnWhenPhpIsNotConfiguredForDevelopment="true"
 >
     <testsuites>
         <testsuite name="My Test Suite">

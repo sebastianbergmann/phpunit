@@ -498,6 +498,7 @@ final class LoaderTest extends TestCase
         $this->assertTrue($phpunit->controlGarbageCollector());
         $this->assertSame(1000, $phpunit->numberOfTestsBeforeGarbageCollection());
         $this->assertSame(10, $phpunit->shortenArraysForExportThreshold());
+        $this->assertTrue($phpunit->warnWhenPhpIsNotConfiguredForDevelopment());
     }
 
     public function test_TestDox_configuration_is_parsed_correctly(): void

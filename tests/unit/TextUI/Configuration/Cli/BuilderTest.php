@@ -3190,6 +3190,35 @@ final class BuilderTest extends TestCase
         $this->assertFalse($configuration->checkPhpConfiguration());
     }
 
+    #[TestDox('--warn-when-php-is-not-configured-for-development')]
+    public function testWarnWhenPhpIsNotConfiguredForDevelopment(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--warn-when-php-is-not-configured-for-development']);
+
+        $this->assertTrue($configuration->hasWarnWhenPhpIsNotConfiguredForDevelopment());
+        $this->assertTrue($configuration->warnWhenPhpIsNotConfiguredForDevelopment());
+    }
+
+    #[TestDox('--do-not-warn-when-php-is-not-configured-for-development')]
+    public function testDoNotWarnWhenPhpIsNotConfiguredForDevelopment(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--do-not-warn-when-php-is-not-configured-for-development']);
+
+        $this->assertTrue($configuration->hasWarnWhenPhpIsNotConfiguredForDevelopment());
+        $this->assertFalse($configuration->warnWhenPhpIsNotConfiguredForDevelopment());
+    }
+
+    public function testWarnWhenPhpIsNotConfiguredForDevelopmentMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasWarnWhenPhpIsNotConfiguredForDevelopment());
+
+        $this->expectException(Exception::class);
+
+        $configuration->warnWhenPhpIsNotConfiguredForDevelopment();
+    }
+
     #[TestDox('--require-coverage-contribution')]
     public function testRequireCoverageContribution(): void
     {

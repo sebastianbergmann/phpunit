@@ -62,6 +62,7 @@ use PHPUnit\Runner\Extension\ExtensionFacade;
 use PHPUnit\Runner\Extension\PharLoader;
 use PHPUnit\Runner\GarbageCollection\GarbageCollectionHandler;
 use PHPUnit\Runner\IssueTriggerResolver\Resolver;
+use PHPUnit\Runner\PhpConfiguration\PhpConfigurationChecker;
 use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 use PHPUnit\Runner\ResultCache\DefaultResultCache;
 use PHPUnit\Runner\ResultCache\NullResultCache;
@@ -203,6 +204,8 @@ final readonly class Application
             }
 
             $baselineGenerator = $this->configureBaseline($configuration);
+
+            $this->checkPhpConfiguration($configuration);
 
             EventFacade::instance()->seal();
 
@@ -800,6 +803,28 @@ final readonly class Application
         }
 
         return null;
+    }
+
+    private function checkPhpConfiguration(Configuration $configuration): void
+    {
+        if (!$configuration->warnWhenPhpIsNotConfiguredForDevelopment()) {
+            return;
+        }
+
+        foreach ((new PhpConfigurationChecker)->check() as $result) {
+            if ($result->isOk()) {
+                continue;
+            }
+
+            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                sprintf(
+                    'PHP is not configured for development: %s should be %s, but is %s',
+                    $result->name(),
+                    $result->valueForConfiguration(),
+                    $result->actualValue(),
+                ),
+            );
+        }
     }
 
     /**

@@ -165,6 +165,14 @@
   [32m--cache-result                      [0m Write test results to cache file
   [32m--do-not-cache-result               [0m Do not write test results to cache file
 
+  [32m--warn-when-php-is-not-configured-for-development[0m
+                                       Trigger a test runner warning when PHP
+                                       is not configured for development
+  [32m--do-not-warn-when-php-is-not-configured-for-development[0m
+                                       Do not trigger a test runner warning
+                                       when PHP is not configured for
+                                       development
+
   [32m--order-by [36m<order>[0m                  [0m Run tests in order:
                                        default|defects|depends|duration-ascending|duration-descending|no-depends|random|reverse|size-ascending|size-descending
   [32m--resolve-dependencies              [0m Alias for "--order-by depends"

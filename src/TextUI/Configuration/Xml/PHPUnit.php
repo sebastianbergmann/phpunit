@@ -184,6 +184,7 @@ final readonly class PHPUnit
      * @var non-negative-int
      */
     private int $shortenArraysForExportThreshold;
+    private bool $warnWhenPhpIsNotConfiguredForDevelopment;
 
     /**
      * @param ?non-empty-string                         $cacheDirectory
@@ -209,7 +210,7 @@ final readonly class PHPUnit
      * @param non-negative-int                          $shortenArraysForExportThreshold
      * @param positive-int                              $diffContext
      */
-    public function __construct(?string $cacheDirectory, bool $cacheResult, int|string $columns, string $colors, bool $stderr, bool $displayDetailsOnAllIssues, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnPhpunitDeprecations, bool $displayDetailsOnPhpunitNotices, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $reverseDefectList, bool $requireCoverageMetadata, bool $requireSealedMockObjects, ?string $bootstrap, array $bootstrapForTestSuite, bool $processIsolation, bool $failOnAllIssues, bool $failOnDeprecation, bool $hasFailOnDeprecation, bool $failOnSelfDeprecation, bool $hasFailOnSelfDeprecation, bool $failOnDirectDeprecation, bool $hasFailOnDirectDeprecation, bool $failOnIndirectDeprecation, bool $hasFailOnIndirectDeprecation, bool $failOnPhpunitDeprecation, bool $hasFailOnPhpunitDeprecation, bool $failOnPhpunitNotice, bool $hasFailOnPhpunitNotice, bool $failOnPhpunitWarning, bool $hasFailOnPhpunitWarning, bool $failOnEmptyTestSuite, bool $hasFailOnEmptyTestSuite, bool $failOnIncomplete, bool $hasFailOnIncomplete, bool $failOnNotice, bool $hasFailOnNotice, bool $failOnRisky, bool $hasFailOnRisky, bool $failOnSkipped, bool $hasFailOnSkipped, bool $failOnWarning, bool $hasFailOnWarning, int $stopOnDefect, int $stopOnDeprecation, int $stopOnError, int $stopOnFailure, int $stopOnIncomplete, int $stopOnNotice, int $stopOnRisky, int $stopOnSkipped, int $stopOnWarning, ?string $extensionsDirectory, bool $beStrictAboutChangesToGlobalState, bool $beStrictAboutOutputDuringTests, bool $beStrictAboutTestsThatDoNotTestAnything, bool $beStrictAboutCoverageMetadata, bool $requireCoverageContribution, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, ?string $defaultTestSuite, int $executionOrder, bool $resolveDependencies, bool $defectsFirst, bool $backupGlobals, bool $backupStaticProperties, bool $testdoxPrinter, bool $testdoxPrinterSummary, bool $controlGarbageCollector, int $numberOfTestsBeforeGarbageCollection, int $shortenArraysForExportThreshold, int $diffContext)
+    public function __construct(?string $cacheDirectory, bool $cacheResult, int|string $columns, string $colors, bool $stderr, bool $displayDetailsOnAllIssues, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnPhpunitDeprecations, bool $displayDetailsOnPhpunitNotices, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $reverseDefectList, bool $requireCoverageMetadata, bool $requireSealedMockObjects, ?string $bootstrap, array $bootstrapForTestSuite, bool $processIsolation, bool $failOnAllIssues, bool $failOnDeprecation, bool $hasFailOnDeprecation, bool $failOnSelfDeprecation, bool $hasFailOnSelfDeprecation, bool $failOnDirectDeprecation, bool $hasFailOnDirectDeprecation, bool $failOnIndirectDeprecation, bool $hasFailOnIndirectDeprecation, bool $failOnPhpunitDeprecation, bool $hasFailOnPhpunitDeprecation, bool $failOnPhpunitNotice, bool $hasFailOnPhpunitNotice, bool $failOnPhpunitWarning, bool $hasFailOnPhpunitWarning, bool $failOnEmptyTestSuite, bool $hasFailOnEmptyTestSuite, bool $failOnIncomplete, bool $hasFailOnIncomplete, bool $failOnNotice, bool $hasFailOnNotice, bool $failOnRisky, bool $hasFailOnRisky, bool $failOnSkipped, bool $hasFailOnSkipped, bool $failOnWarning, bool $hasFailOnWarning, int $stopOnDefect, int $stopOnDeprecation, int $stopOnError, int $stopOnFailure, int $stopOnIncomplete, int $stopOnNotice, int $stopOnRisky, int $stopOnSkipped, int $stopOnWarning, ?string $extensionsDirectory, bool $beStrictAboutChangesToGlobalState, bool $beStrictAboutOutputDuringTests, bool $beStrictAboutTestsThatDoNotTestAnything, bool $beStrictAboutCoverageMetadata, bool $requireCoverageContribution, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, ?string $defaultTestSuite, int $executionOrder, bool $resolveDependencies, bool $defectsFirst, bool $backupGlobals, bool $backupStaticProperties, bool $testdoxPrinter, bool $testdoxPrinterSummary, bool $controlGarbageCollector, int $numberOfTestsBeforeGarbageCollection, int $shortenArraysForExportThreshold, int $diffContext, bool $warnWhenPhpIsNotConfiguredForDevelopment)
     {
         $this->cacheDirectory                               = $cacheDirectory;
         $this->cacheResult                                  = $cacheResult;
@@ -290,6 +291,7 @@ final readonly class PHPUnit
         $this->numberOfTestsBeforeGarbageCollection         = $numberOfTestsBeforeGarbageCollection;
         $this->shortenArraysForExportThreshold              = $shortenArraysForExportThreshold;
         $this->diffContext                                  = $diffContext;
+        $this->warnWhenPhpIsNotConfiguredForDevelopment     = $warnWhenPhpIsNotConfiguredForDevelopment;
     }
 
     /**
@@ -807,5 +809,10 @@ final readonly class PHPUnit
     public function diffContext(): int
     {
         return $this->diffContext;
+    }
+
+    public function warnWhenPhpIsNotConfiguredForDevelopment(): bool
+    {
+        return $this->warnWhenPhpIsNotConfiguredForDevelopment;
     }
 }

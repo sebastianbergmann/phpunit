@@ -100,6 +100,11 @@ Execution:
   --cache-result                       Write test results to cache file
   --do-not-cache-result                Do not write test results to cache file
 
+  --warn-when-php-is-not-configured-for-development
+                                       Trigger a test runner warning when PHP is not configured for development
+  --do-not-warn-when-php-is-not-configured-for-development
+                                       Do not trigger a test runner warning when PHP is not configured for development
+
   --order-by <order>                   Run tests in order: default|defects|depends|duration-ascending|duration-descending|no-depends|random|reverse|size-ascending|size-descending
   --resolve-dependencies               Alias for "--order-by depends"
   --ignore-dependencies                Alias for "--order-by no-depends"

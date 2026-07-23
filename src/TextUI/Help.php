@@ -273,6 +273,10 @@ final class Help
                 ['arg'    => '--do-not-cache-result', 'desc' => 'Do not write test results to cache file'],
                 ['spacer' => ''],
 
+                ['arg'    => '--warn-when-php-is-not-configured-for-development', 'desc' => 'Trigger a test runner warning when PHP is not configured for development'],
+                ['arg'    => '--do-not-warn-when-php-is-not-configured-for-development', 'desc' => 'Do not trigger a test runner warning when PHP is not configured for development'],
+                ['spacer' => ''],
+
                 ['arg' => '--order-by <order>', 'desc' => 'Run tests in order: default|defects|depends|duration-ascending|duration-descending|no-depends|random|reverse|size-ascending|size-descending'],
                 ['arg' => '--resolve-dependencies', 'desc' => 'Alias for "--order-by depends"'],
                 ['arg' => '--ignore-dependencies', 'desc' => 'Alias for "--order-by no-depends"'],
