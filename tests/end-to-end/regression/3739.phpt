@@ -1,10 +1,5 @@
 --TEST--
-https://github.com/sebastianbergmann/phpunit/issues/3739 (PHP < 8.6)
---SKIPIF--
-<?php declare(strict_types=1);
-if (PHP_VERSION_ID >= 80600) {
-    print 'Skip: PHP < 8.6 is required (unlink() warning message includes path)' . PHP_EOL;
-}
+https://github.com/sebastianbergmann/phpunit/issues/3739
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
