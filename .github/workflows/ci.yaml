@@ -522,7 +522,7 @@ jobs:
 
     env:
       PHP_EXTENSIONS: none, ctype, curl, dom, json, fileinfo, iconv, libxml, mbstring, phar, tokenizer, xmlwriter, pcntl
-      PHP_INI_VALUES: phar.readonly=0, zend.assertions=1
+      PHP_INI_VALUES: memory_limit=-1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On, display_startup_errors=On
 
     strategy:
       fail-fast: false
