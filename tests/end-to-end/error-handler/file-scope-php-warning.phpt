@@ -15,7 +15,7 @@ PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
 Event Facade Sealed
 Test Runner Triggered PHP Warning () in %sFileScopePhpWarningTest.php:%d
-file_get_contents(/nonexistent/file/for/phpunit/test): Failed to open stream: No such file or directory
+file_get_contents(%A): Failed to open stream: No such file or directory
 Test Suite Loaded (1 test)
 Test Runner Started
 Test Suite Sorted
