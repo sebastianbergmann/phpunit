@@ -413,7 +413,7 @@ jobs:
           php-version: ${{ env.PHP_VERSION }}
           coverage: xdebug
           extensions: none, curl, dom, json, libxml, mbstring, phar, soap, tokenizer, xmlwriter
-          ini-values: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
+          ini-values: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On, display_startup_errors=On
           tools: none
 
       - name: Get Composer cache directory
