@@ -2,7 +2,7 @@
 
 All notable changes of the PHPUnit 12.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
-## [12.5.32] - 2026-MM-DD
+## [12.5.32] - 2026-07-25
 
 ### Fixed
 
@@ -279,7 +279,7 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 * [#6380](https://github.com/sebastianbergmann/phpunit/pull/6380): Allow `Throwable` in `expectExceptionObject()`
 * A PHPUnit notice is now emitted for test methods that create a mock object but do not configure an expectation for it
 
-[12.5.32]: https://github.com/sebastianbergmann/phpunit/compare/12.5.31...12.5
+[12.5.32]: https://github.com/sebastianbergmann/phpunit/compare/12.5.31...12.5.32
 [12.5.31]: https://github.com/sebastianbergmann/phpunit/compare/12.5.30...12.5.31
 [12.5.30]: https://github.com/sebastianbergmann/phpunit/compare/12.5.29...12.5.30
 [12.5.29]: https://github.com/sebastianbergmann/phpunit/compare/12.5.28...12.5.29
