@@ -36,6 +36,10 @@ final readonly class NullTestFileSkipper implements TestFileSkipper
     {
     }
 
+    public function abortRecording(): void
+    {
+    }
+
     public function persist(): void
     {
     }

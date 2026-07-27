@@ -38,5 +38,13 @@ interface TestFileSkipper
 
     public function stopRecording(): void;
 
+    /**
+     * Called instead of stopRecording() when loading the file did not finish.
+     * Such a file is not remembered, and must not be: what it contains is not
+     * known, and a later run has to load it again in order to fail the same
+     * way.
+     */
+    public function abortRecording(): void;
+
     public function persist(): void;
 }

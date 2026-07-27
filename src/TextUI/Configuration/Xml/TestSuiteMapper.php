@@ -26,6 +26,7 @@ use PHPUnit\TextUI\RuntimeException;
 use PHPUnit\TextUI\TestDirectoryNotFoundException;
 use PHPUnit\TextUI\TestFileNotFoundException;
 use SebastianBergmann\FileIterator\Facade;
+use Throwable;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -119,7 +120,13 @@ final readonly class TestSuiteMapper
 
                         $this->skipper->startRecording($file);
 
-                        $testSuite->addTestFile($file, $groups, $numberOfRuns, $maxAttempts);
+                        try {
+                            $testSuite->addTestFile($file, $groups, $numberOfRuns, $maxAttempts);
+                        } catch (Throwable $t) {
+                            $this->skipper->abortRecording();
+
+                            throw $t;
+                        }
 
                         $this->skipper->stopRecording();
                     }
@@ -147,7 +154,13 @@ final readonly class TestSuiteMapper
 
                     $this->skipper->startRecording($file->path());
 
-                    $testSuite->addTestFile($file->path(), $file->groups(), $numberOfRuns, $maxAttempts);
+                    try {
+                        $testSuite->addTestFile($file->path(), $file->groups(), $numberOfRuns, $maxAttempts);
+                    } catch (Throwable $t) {
+                        $this->skipper->abortRecording();
+
+                        throw $t;
+                    }
 
                     $this->skipper->stopRecording();
                 }

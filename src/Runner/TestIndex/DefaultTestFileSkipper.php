@@ -125,6 +125,24 @@ final class DefaultTestFileSkipper implements TestFileSkipper
         }
     }
 
+    /**
+     * What was collected while the file was being loaded is still forwarded:
+     * the file is not indexed, but what PHPUnit had to say about it before
+     * loading it failed must not be swallowed. Leaving the event facade in the
+     * state it was in before is what makes a failure that is reported instead
+     * of ending the run harmless.
+     */
+    public function abortRecording(): void
+    {
+        if ($this->recording === null) {
+            return;
+        }
+
+        $this->recording = null;
+
+        EventFacade::instance()->forward(EventFacade::instance()->stopCollectingEvents());
+    }
+
     public function persist(): void
     {
         $this->index->persist();
