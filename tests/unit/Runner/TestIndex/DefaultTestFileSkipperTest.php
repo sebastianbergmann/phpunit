@@ -173,12 +173,12 @@ final class DefaultTestFileSkipperTest extends TestCase
         $skipper->record($file);
         $skipper->persist();
 
-        $before = file_get_contents($indexDirectory . DIRECTORY_SEPARATOR . '.phpunit.test-index');
+        $before = file_get_contents($indexDirectory . DIRECTORY_SEPARATOR . 'test-index');
 
         $skipper->record($file);
         $skipper->persist();
 
-        $this->assertSame($before, file_get_contents($indexDirectory . DIRECTORY_SEPARATOR . '.phpunit.test-index'));
+        $this->assertSame($before, file_get_contents($indexDirectory . DIRECTORY_SEPARATOR . 'test-index'));
     }
 
     public function testWritesTheIndex(): void
@@ -204,7 +204,7 @@ final class DefaultTestFileSkipperTest extends TestCase
      */
     private function entriesIn(string $directory): array
     {
-        $contents = file_get_contents($directory . DIRECTORY_SEPARATOR . '.phpunit.test-index');
+        $contents = file_get_contents($directory . DIRECTORY_SEPARATOR . 'test-index');
 
         $this->assertIsString($contents);
 

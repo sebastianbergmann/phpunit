@@ -1,0 +1,127 @@
+<?php declare(strict_types=1);
+
+/*
+ * This file is part of PHPUnit.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+/**
+ * Writes two test classes, in two groups, to a directory of their own so that
+ * they can be changed while the index for them exists.
+ */
+function setUpTestFiles(): string
+{
+    $directory = \sys_get_temp_dir() . \DIRECTORY_SEPARATOR . 'phpunit-test-index-' . \uniqid();
+
+    \mkdir($directory);
+    \mkdir($directory . '/tests');
+
+    /*
+     * The test files are selected through a test suite in an XML configuration
+     * file: that is the only way of selecting them that consults the index.
+     */
+    \file_put_contents(
+        $directory . '/phpunit.xml',
+        <<<'XML'
+            <?xml version="1.0" encoding="UTF-8"?>
+            <phpunit cacheDirectory="cache" recordTestRunHistory="false" cacheTestIndex="true">
+                <testsuites>
+                    <testsuite name="default">
+                        <directory>tests</directory>
+                    </testsuite>
+                </testsuites>
+            </phpunit>
+            XML,
+    );
+
+    writeTestClass($directory, 'One', 'a');
+    writeTestClass($directory, 'Two', 'b');
+
+    return $directory;
+}
+
+function writeTestClass(string $directory, string $name, string $group): void
+{
+    \file_put_contents(
+        $directory . '/tests/' . $name . 'Test.php',
+        <<<PHP
+            <?php declare(strict_types=1);
+            namespace PHPUnit\TestFixture\TestIndex;
+
+            use PHPUnit\Framework\Attributes\Group;
+            use PHPUnit\Framework\TestCase;
+
+            final class {$name}Test extends TestCase
+            {
+                #[Group('{$group}')]
+                public function testInGroup{$group}(): void
+                {
+                    \$this->assertTrue(true);
+                }
+            }
+            PHP,
+    );
+}
+
+/**
+ * Lists the tests in the given group, with the test index enabled.
+ */
+function listTests(string $directory, string $group): string
+{
+    $process = \proc_open(
+        [
+            \PHP_BINARY,
+            __DIR__ . '/../../../../../phpunit',
+            '--configuration',
+            $directory . '/phpunit.xml',
+            '--group',
+            $group,
+            '--list-tests',
+        ],
+        [
+            1 => ['pipe', 'w'],
+        ],
+        $pipes,
+    );
+
+    $output = \stream_get_contents($pipes[1]);
+
+    \fclose($pipes[1]);
+    \proc_close($process);
+
+    $tests = [];
+
+    foreach (\explode("\n", $output) as $line) {
+        if (\str_starts_with($line, ' - ')) {
+            $tests[] = $line;
+        }
+    }
+
+    \sort($tests);
+
+    return \implode("\n", $tests) . "\n";
+}
+
+function tearDownTestFiles(string $directory): void
+{
+    foreach (['/tests', '/cache', ''] as $subdirectory) {
+        $path = $directory . $subdirectory;
+
+        if (!\is_dir($path)) {
+            continue;
+        }
+
+        foreach (\scandir($path) as $entry) {
+            if ($entry === '.' || $entry === '..' || \is_dir($path . \DIRECTORY_SEPARATOR . $entry)) {
+                continue;
+            }
+
+            \unlink($path . \DIRECTORY_SEPARATOR . $entry);
+        }
+
+        \rmdir($path);
+    }
+}

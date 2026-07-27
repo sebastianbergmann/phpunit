@@ -65,6 +65,11 @@ use PHPUnit\Runner\GarbageCollection\GarbageCollectionHandler;
 use PHPUnit\Runner\IssueTriggerResolver\Resolver;
 use PHPUnit\Runner\PhpConfiguration\PhpConfigurationChecker;
 use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
+use PHPUnit\Runner\TestIndex\DefaultTestFileSkipper;
+use PHPUnit\Runner\TestIndex\GroupPruner;
+use PHPUnit\Runner\TestIndex\NullTestFileSkipper;
+use PHPUnit\Runner\TestIndex\TestFileSkipper;
+use PHPUnit\Runner\TestIndex\TestIndex;
 use PHPUnit\Runner\TestRunHistory\DefaultTestRunHistory;
 use PHPUnit\Runner\TestRunHistory\NullTestRunHistory;
 use PHPUnit\Runner\TestRunHistory\TestRunHistory;
@@ -430,7 +435,7 @@ final readonly class Application
     private function buildTestSuite(Configuration $configuration): TestSuite
     {
         try {
-            return (new TestSuiteBuilder)->build($configuration);
+            return new TestSuiteBuilder($this->initializeTestIndex($configuration))->build($configuration);
         } catch (Exception $e) {
             $this->exitWithErrorMessage($e->getMessage());
         }
@@ -750,6 +755,66 @@ final readonly class Application
         }
 
         return null;
+    }
+
+    /**
+     * The index is only usable when there is somewhere to keep it, and it can
+     * only save work when tests are selected by group: it answers whether a
+     * test file can contribute a test to the run, which is a question only a
+     * selection by group can answer without loading the file.
+     */
+    private function initializeTestIndex(Configuration $configuration): TestFileSkipper
+    {
+        if (!$configuration->cacheTestIndex() || !$configuration->hasCacheDirectory()) {
+            return new NullTestFileSkipper;
+        }
+
+        $index = new TestIndex($configuration->cacheDirectory());
+
+        $index->load();
+
+        return new DefaultTestFileSkipper(
+            $index,
+            new GroupPruner(
+                $this->includedGroups($configuration),
+                $configuration->hasExcludeGroups() ? $configuration->excludeGroups() : [],
+            ),
+        );
+    }
+
+    /**
+     * The virtual groups that back --covers, --uses and --requires-php-extension
+     * are named the way Metadata\Api\Groups names them.
+     *
+     * @return list<non-empty-string>
+     */
+    private function includedGroups(Configuration $configuration): array
+    {
+        $groups = [];
+
+        if ($configuration->hasGroups()) {
+            $groups = $configuration->groups();
+        }
+
+        if ($configuration->hasTestsCovering()) {
+            foreach ($configuration->testsCovering() as $name) {
+                $groups[] = '__phpunit_covers_' . $name;
+            }
+        }
+
+        if ($configuration->hasTestsUsing()) {
+            foreach ($configuration->testsUsing() as $name) {
+                $groups[] = '__phpunit_uses_' . $name;
+            }
+        }
+
+        if ($configuration->hasTestsRequiringPhpExtension()) {
+            foreach ($configuration->testsRequiringPhpExtension() as $name) {
+                $groups[] = '__phpunit_requires_php_extension' . $name;
+            }
+        }
+
+        return $groups;
     }
 
     private function initializeTestRunHistory(Configuration $configuration): TestRunHistory
