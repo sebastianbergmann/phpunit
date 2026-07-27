@@ -27,6 +27,14 @@ use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\Success;
+use PHPUnit\TestFixture\TestIndexEntry\InheritingTest;
+use PHPUnit\TestFixture\TestIndexEntry\ModifiedTest;
+use PHPUnit\TestFixture\TestIndexEntry\RemovedTest;
+use PHPUnit\TestFixture\TestIndexEntry\RootedTest;
+use PHPUnit\TestFixture\TestIndexEntry\SimpleTest;
+use PHPUnit\TestFixture\TestIndexEntry\UnchangedTest;
+use PHPUnit\TestFixture\TestIndexEntry\UnreadableTest;
+use PHPUnit\TestFixture\TestIndexEntry\WithHelperTest;
 use ReflectionClass;
 
 #[CoversClass(TestIndexEntry::class)]
@@ -65,10 +73,10 @@ final class TestIndexEntryTest extends TestCase
     public function testKnowsClassNameAndGroupsOfTestMethods(): void
     {
         $file  = $this->writeTestClass('Simple');
-        $entry = TestIndexEntry::for(new ReflectionClass('PHPUnit\TestFixture\TestIndexEntry\SimpleTest'), new FileHasher, false);
+        $entry = TestIndexEntry::for(new ReflectionClass(SimpleTest::class), new FileHasher, false);
 
         $this->assertNotNull($entry);
-        $this->assertSame('PHPUnit\TestFixture\TestIndexEntry\SimpleTest', $entry->className());
+        $this->assertSame(SimpleTest::class, $entry->className());
         $this->assertSame(['testOne'], array_keys($entry->groups()));
         $this->assertSame(['small', 'a-group'], $entry->groups()['testOne']);
         $this->assertArrayHasKey($file, $entry->dependencies());
@@ -79,7 +87,7 @@ final class TestIndexEntryTest extends TestCase
     {
         $this->writeTestClass('WithHelper', "    public function helper(): void\n    {\n    }\n");
 
-        $entry = TestIndexEntry::for(new ReflectionClass('PHPUnit\TestFixture\TestIndexEntry\WithHelperTest'), new FileHasher, false);
+        $entry = TestIndexEntry::for(new ReflectionClass(WithHelperTest::class), new FileHasher, false);
 
         $this->assertNotNull($entry);
         $this->assertArrayNotHasKey('helper', $entry->groups());
@@ -89,7 +97,7 @@ final class TestIndexEntryTest extends TestCase
     public function testDependsOnFileOfParentClassAndOnFileOfTrait(): void
     {
         $files = $this->writeTestClassWithParentAndTrait('Inheriting');
-        $entry = TestIndexEntry::for(new ReflectionClass('PHPUnit\TestFixture\TestIndexEntry\InheritingTest'), new FileHasher, false);
+        $entry = TestIndexEntry::for(new ReflectionClass(InheritingTest::class), new FileHasher, false);
 
         $this->assertNotNull($entry);
 
@@ -103,7 +111,7 @@ final class TestIndexEntryTest extends TestCase
     {
         $this->writeTestClass('Rooted');
 
-        $entry = TestIndexEntry::for(new ReflectionClass('PHPUnit\TestFixture\TestIndexEntry\RootedTest'), new FileHasher, false);
+        $entry = TestIndexEntry::for(new ReflectionClass(RootedTest::class), new FileHasher, false);
 
         $this->assertNotNull($entry);
         $this->assertArrayHasKey(new ReflectionClass(TestCase::class)->getFileName(), $entry->dependencies());
@@ -113,7 +121,7 @@ final class TestIndexEntryTest extends TestCase
     {
         $this->writeTestClass('Unchanged');
 
-        $entry = TestIndexEntry::for(new ReflectionClass('PHPUnit\TestFixture\TestIndexEntry\UnchangedTest'), new FileHasher, false);
+        $entry = TestIndexEntry::for(new ReflectionClass(UnchangedTest::class), new FileHasher, false);
 
         $this->assertNotNull($entry);
         $this->assertTrue($entry->isValid(new FileHasher));
@@ -123,7 +131,7 @@ final class TestIndexEntryTest extends TestCase
     {
         $file = $this->writeTestClass('Modified');
 
-        $entry = TestIndexEntry::for(new ReflectionClass('PHPUnit\TestFixture\TestIndexEntry\ModifiedTest'), new FileHasher, false);
+        $entry = TestIndexEntry::for(new ReflectionClass(ModifiedTest::class), new FileHasher, false);
 
         $this->assertNotNull($entry);
 
@@ -136,7 +144,7 @@ final class TestIndexEntryTest extends TestCase
     {
         $file = $this->writeTestClass('Removed');
 
-        $entry = TestIndexEntry::for(new ReflectionClass('PHPUnit\TestFixture\TestIndexEntry\RemovedTest'), new FileHasher, false);
+        $entry = TestIndexEntry::for(new ReflectionClass(RemovedTest::class), new FileHasher, false);
 
         $this->assertNotNull($entry);
 
@@ -150,7 +158,7 @@ final class TestIndexEntryTest extends TestCase
     {
         $file = $this->writeTestClass('Unreadable');
 
-        $class = new ReflectionClass('PHPUnit\TestFixture\TestIndexEntry\UnreadableTest');
+        $class = new ReflectionClass(UnreadableTest::class);
 
         unlink($file);
 
