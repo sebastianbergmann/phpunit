@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner\TestIndex;
 
+use function array_keys;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
@@ -141,9 +142,16 @@ final class GroupPrunerTest extends TestCase
      */
     private function entry(array $groups): TestIndexEntry
     {
+        $dataSets = [];
+
+        foreach (array_keys($groups) as $methodName) {
+            $dataSets[$methodName] = false;
+        }
+
         return TestIndexEntry::from(
             Success::class,
             $groups,
+            $dataSets,
             [__FILE__ => 'irrelevant'],
         );
     }

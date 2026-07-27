@@ -12,6 +12,7 @@ namespace PHPUnit\Runner\TestIndex;
 use function array_keys;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Api\Groups;
+use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Util\Reflection;
 use PHPUnit\Util\Test as TestUtil;
 use ReflectionClass;
@@ -34,6 +35,11 @@ final readonly class TestIndexEntry
      * @var array<non-empty-string, list<non-empty-string>>
      */
     private array $groups;
+
+    /**
+     * @var array<non-empty-string, bool>
+     */
+    private array $dataSets;
 
     /**
      * @var non-empty-array<non-empty-string, non-empty-string>
@@ -64,7 +70,8 @@ final readonly class TestIndexEntry
             return null;
         }
 
-        $groups = [];
+        $groups   = [];
+        $dataSets = [];
 
         foreach (Reflection::publicMethodsDeclaredDirectlyInTestClass($class) as $method) {
             if (!TestUtil::isTestMethod($method)) {
@@ -78,30 +85,44 @@ final readonly class TestIndexEntry
             }
 
             $groups[$methodName] = (new Groups)->groups($class->getName(), $methodName);
+
+            /*
+             * These are the same three kinds of metadata that
+             * Metadata\Api\DataProvider::providedData() looks for, so that
+             * what is recorded here cannot disagree with what a test run does.
+             */
+            $metadata = MetadataRegistry::parser()->forMethod($class->getName(), $methodName);
+
+            $dataSets[$methodName] = $metadata->isDataProvider()->isNotEmpty() ||
+                                     $metadata->isDataProviderClosure()->isNotEmpty() ||
+                                     $metadata->isTestWith()->isNotEmpty();
         }
 
-        return new self($class->getName(), $groups, $dependencies);
+        return new self($class->getName(), $groups, $dataSets, $dependencies);
     }
 
     /**
      * @param class-string<TestCase>                              $className
      * @param array<non-empty-string, list<non-empty-string>>     $groups
+     * @param array<non-empty-string, bool>                       $dataSets
      * @param non-empty-array<non-empty-string, non-empty-string> $dependencies
      */
-    public static function from(string $className, array $groups, array $dependencies): self
+    public static function from(string $className, array $groups, array $dataSets, array $dependencies): self
     {
-        return new self($className, $groups, $dependencies);
+        return new self($className, $groups, $dataSets, $dependencies);
     }
 
     /**
      * @param class-string<TestCase>                              $className
      * @param array<non-empty-string, list<non-empty-string>>     $groups
+     * @param array<non-empty-string, bool>                       $dataSets
      * @param non-empty-array<non-empty-string, non-empty-string> $dependencies
      */
-    private function __construct(string $className, array $groups, array $dependencies)
+    private function __construct(string $className, array $groups, array $dataSets, array $dependencies)
     {
         $this->className    = $className;
         $this->groups       = $groups;
+        $this->dataSets     = $dataSets;
         $this->dependencies = $dependencies;
     }
 
@@ -124,6 +145,21 @@ final readonly class TestIndexEntry
     public function groups(): array
     {
         return $this->groups;
+    }
+
+    /**
+     * Whether a test method has data sets, keyed by method name.
+     *
+     * The name of a test that has no data set is the name of its method, which
+     * makes it possible to decide whether a filter for the name of a test can
+     * select it. The name of a data set is only known once the data provider
+     * has been invoked, so a method that has data sets cannot be decided.
+     *
+     * @return array<non-empty-string, bool>
+     */
+    public function dataSets(): array
+    {
+        return $this->dataSets;
     }
 
     /**

@@ -20,24 +20,30 @@ use PHPUnit\Runner\TestSuiteLoader;
 final readonly class DefaultTestFileSkipper implements TestFileSkipper
 {
     private TestIndex $index;
-    private GroupPruner $pruner;
+    private GroupPruner $groupPruner;
+    private NameFilterPruner $nameFilterPruner;
 
-    public function __construct(TestIndex $index, GroupPruner $pruner)
+    public function __construct(TestIndex $index, GroupPruner $groupPruner, NameFilterPruner $nameFilterPruner)
     {
-        $this->index  = $index;
-        $this->pruner = $pruner;
+        $this->index            = $index;
+        $this->groupPruner      = $groupPruner;
+        $this->nameFilterPruner = $nameFilterPruner;
     }
 
     /**
      * A file is only skipped when it is indexed, the entry for it is still
      * valid, and none of the tests in it can be selected.
      *
+     * Either way of selecting tests is enough on its own to establish that:
+     * a test that is in no selected group is not run whether or not its name
+     * matches, and the other way round.
+     *
      * @param non-empty-string       $file
      * @param list<non-empty-string> $groupsFromConfiguration
      */
     public function canSkipLoading(string $file, array $groupsFromConfiguration): bool
     {
-        if (!$this->pruner->prunes()) {
+        if (!$this->groupPruner->prunes() && !$this->nameFilterPruner->prunes()) {
             return false;
         }
 
@@ -47,7 +53,11 @@ final readonly class DefaultTestFileSkipper implements TestFileSkipper
             return false;
         }
 
-        return $this->pruner->canSkip($entry, $groupsFromConfiguration);
+        if ($this->groupPruner->canSkip($entry, $groupsFromConfiguration)) {
+            return true;
+        }
+
+        return $this->nameFilterPruner->canSkip($entry);
     }
 
     /**

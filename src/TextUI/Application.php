@@ -67,6 +67,7 @@ use PHPUnit\Runner\PhpConfiguration\PhpConfigurationChecker;
 use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 use PHPUnit\Runner\TestIndex\DefaultTestFileSkipper;
 use PHPUnit\Runner\TestIndex\GroupPruner;
+use PHPUnit\Runner\TestIndex\NameFilterPruner;
 use PHPUnit\Runner\TestIndex\NullTestFileSkipper;
 use PHPUnit\Runner\TestIndex\TestFileSkipper;
 use PHPUnit\Runner\TestIndex\TestIndex;
@@ -773,12 +774,19 @@ final readonly class Application
 
         $index->load();
 
+        if ($configuration->hasFilter()) {
+            $nameFilterPruner = NameFilterPruner::fromFilter($configuration->filter());
+        } else {
+            $nameFilterPruner = NameFilterPruner::withoutFilter();
+        }
+
         return new DefaultTestFileSkipper(
             $index,
             new GroupPruner(
                 $this->includedGroups($configuration),
                 $configuration->hasExcludeGroups() ? $configuration->excludeGroups() : [],
             ),
+            $nameFilterPruner,
         );
     }
 

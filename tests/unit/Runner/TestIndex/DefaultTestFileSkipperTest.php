@@ -71,6 +71,7 @@ final class DefaultTestFileSkipperTest extends TestCase
         $skipper = new DefaultTestFileSkipper(
             new TestIndex($this->directory()),
             new GroupPruner(['other'], []),
+            NameFilterPruner::withoutFilter(),
         );
 
         $this->assertFalse($skipper->canSkipLoading($file, []));
@@ -84,6 +85,7 @@ final class DefaultTestFileSkipperTest extends TestCase
         $skipper = new DefaultTestFileSkipper(
             new TestIndex($this->directory()),
             new GroupPruner(['other'], []),
+            NameFilterPruner::withoutFilter(),
         );
 
         $skipper->record($file);
@@ -99,6 +101,7 @@ final class DefaultTestFileSkipperTest extends TestCase
         $skipper = new DefaultTestFileSkipper(
             new TestIndex($this->directory()),
             new GroupPruner(['a-group'], []),
+            NameFilterPruner::withoutFilter(),
         );
 
         $skipper->record($file);
@@ -114,6 +117,7 @@ final class DefaultTestFileSkipperTest extends TestCase
         $skipper = new DefaultTestFileSkipper(
             new TestIndex($this->directory()),
             new GroupPruner([], []),
+            NameFilterPruner::withoutFilter(),
         );
 
         $skipper->record($file);
@@ -129,6 +133,7 @@ final class DefaultTestFileSkipperTest extends TestCase
         $skipper = new DefaultTestFileSkipper(
             new TestIndex($this->directory()),
             new GroupPruner(['from-configuration'], []),
+            NameFilterPruner::withoutFilter(),
         );
 
         $skipper->record($file);
@@ -150,6 +155,7 @@ final class DefaultTestFileSkipperTest extends TestCase
         $skipper = new DefaultTestFileSkipper(
             new TestIndex($indexDirectory),
             new GroupPruner(['other'], []),
+            NameFilterPruner::withoutFilter(),
         );
 
         $skipper->record($file);
@@ -168,6 +174,7 @@ final class DefaultTestFileSkipperTest extends TestCase
         $skipper = new DefaultTestFileSkipper(
             new TestIndex($indexDirectory),
             new GroupPruner(['other'], []),
+            NameFilterPruner::withoutFilter(),
         );
 
         $skipper->record($file);
@@ -189,6 +196,7 @@ final class DefaultTestFileSkipperTest extends TestCase
         $skipper = new DefaultTestFileSkipper(
             new TestIndex($indexDirectory),
             new GroupPruner(['other'], []),
+            NameFilterPruner::withoutFilter(),
         );
 
         $skipper->record($file);

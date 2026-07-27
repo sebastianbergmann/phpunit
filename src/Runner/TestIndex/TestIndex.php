@@ -17,6 +17,7 @@ use function dirname;
 use function file_get_contents;
 use function file_put_contents;
 use function is_array;
+use function is_bool;
 use function is_dir;
 use function is_file;
 use function is_int;
@@ -46,7 +47,7 @@ use ReflectionClass;
  */
 final class TestIndex
 {
-    private const int VERSION                   = 1;
+    private const int VERSION                   = 2;
     private const string DEFAULT_INDEX_FILENAME = 'test-index';
     private readonly string $indexFilename;
     private readonly FileHasher $hasher;
@@ -208,6 +209,7 @@ final class TestIndex
             $entries[$file] = [
                 'class'        => $entry->className(),
                 'groups'       => $groups,
+                'dataSets'     => $entry->dataSets(),
                 'dependencies' => $entry->dependencies(),
             ];
         }
@@ -231,11 +233,11 @@ final class TestIndex
      */
     private static function entryFromArray(array $groupNames, mixed $entry): ?TestIndexEntry
     {
-        if (!is_array($entry) || !isset($entry['class'], $entry['groups'], $entry['dependencies'])) {
+        if (!is_array($entry) || !isset($entry['class'], $entry['groups'], $entry['dataSets'], $entry['dependencies'])) {
             return null;
         }
 
-        if (!is_string($entry['class']) || $entry['class'] === '' || !is_array($entry['groups']) || !is_array($entry['dependencies'])) {
+        if (!is_string($entry['class']) || $entry['class'] === '' || !is_array($entry['groups']) || !is_array($entry['dataSets']) || !is_array($entry['dependencies'])) {
             return null;
         }
 
@@ -257,6 +259,16 @@ final class TestIndex
             }
         }
 
+        $dataSets = [];
+
+        foreach ($entry['dataSets'] as $methodName => $hasDataSets) {
+            if (!is_string($methodName) || $methodName === '' || !is_bool($hasDataSets)) {
+                return null;
+            }
+
+            $dataSets[$methodName] = $hasDataSets;
+        }
+
         $dependencies = [];
 
         foreach ($entry['dependencies'] as $file => $hash) {
@@ -274,6 +286,6 @@ final class TestIndex
         /** @var class-string<TestCase> $className */
         $className = $entry['class'];
 
-        return TestIndexEntry::from($className, $groups, $dependencies);
+        return TestIndexEntry::from($className, $groups, $dataSets, $dependencies);
     }
 }
