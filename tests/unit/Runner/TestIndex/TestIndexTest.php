@@ -282,7 +282,7 @@ final class TestIndexTest extends TestCase
 
         $index->persist();
 
-        $contents = file_get_contents($indexDirectory . DIRECTORY_SEPARATOR . '.phpunit.test-index');
+        $contents = file_get_contents($indexDirectory . DIRECTORY_SEPARATOR . 'test-index');
 
         $this->assertIsString($contents);
 
@@ -303,7 +303,7 @@ final class TestIndexTest extends TestCase
         $index->record(new ReflectionClass('PHPUnit\TestFixture\TestIndex\OtherVersionTest'));
         $index->persist();
 
-        $indexFile = $indexDirectory . DIRECTORY_SEPARATOR . '.phpunit.test-index';
+        $indexFile = $indexDirectory . DIRECTORY_SEPARATOR . 'test-index';
         $contents  = file_get_contents($indexFile);
 
         $this->assertIsString($contents);
@@ -334,7 +334,7 @@ final class TestIndexTest extends TestCase
         $index->record(new ReflectionClass('PHPUnit\TestFixture\TestIndex\OtherFormatTest'));
         $index->persist();
 
-        $indexFile = $indexDirectory . DIRECTORY_SEPARATOR . '.phpunit.test-index';
+        $indexFile = $indexDirectory . DIRECTORY_SEPARATOR . 'test-index';
         $contents  = file_get_contents($indexFile);
 
         $this->assertIsString($contents);
@@ -357,7 +357,7 @@ final class TestIndexTest extends TestCase
     {
         $indexDirectory = $this->temporaryDirectory();
 
-        file_put_contents($indexDirectory . DIRECTORY_SEPARATOR . '.phpunit.test-index', 'not json');
+        file_put_contents($indexDirectory . DIRECTORY_SEPARATOR . 'test-index', 'not json');
 
         $index = new TestIndex($indexDirectory);
         $index->load();
@@ -380,7 +380,7 @@ final class TestIndexTest extends TestCase
         $indexDirectory = $this->temporaryDirectory();
 
         file_put_contents(
-            $indexDirectory . DIRECTORY_SEPARATOR . '.phpunit.test-index',
+            $indexDirectory . DIRECTORY_SEPARATOR . 'test-index',
             json_encode($data),
         );
 
@@ -398,7 +398,7 @@ final class TestIndexTest extends TestCase
         $index->record(new ReflectionClass('PHPUnit\TestFixture\TestIndex\EvaluatedTest'));
         $index->persist();
 
-        $contents = file_get_contents($indexDirectory . DIRECTORY_SEPARATOR . '.phpunit.test-index');
+        $contents = file_get_contents($indexDirectory . DIRECTORY_SEPARATOR . 'test-index');
 
         $this->assertIsString($contents);
 
@@ -431,7 +431,7 @@ final class TestIndexTest extends TestCase
 
         file_put_contents($file, '');
 
-        $index = new TestIndex($file . DIRECTORY_SEPARATOR . 'sub' . DIRECTORY_SEPARATOR . '.phpunit.test-index');
+        $index = new TestIndex($file . DIRECTORY_SEPARATOR . 'sub' . DIRECTORY_SEPARATOR . 'test-index');
 
         $this->expectException(DirectoryDoesNotExistException::class);
 

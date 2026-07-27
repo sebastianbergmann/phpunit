@@ -44,6 +44,8 @@ final class Builder
         'do-not-cache-result',
         'record-test-run-history',
         'do-not-record-test-run-history',
+        'cache-test-index',
+        'do-not-cache-test-index',
         'cache-directory=',
         'check-version',
         'check-php-configuration',
@@ -200,6 +202,7 @@ final class Builder
         ['--record-test-run-history', '--do-not-record-test-run-history'],
         ['--cache-result', '--do-not-record-test-run-history'],
         ['--record-test-run-history', '--do-not-cache-result'],
+        ['--cache-test-index', '--do-not-cache-test-index'],
         ['--warn-when-php-is-not-configured-for-development', '--do-not-warn-when-php-is-not-configured-for-development'],
         ['--fail-on-deprecation', '--do-not-fail-on-deprecation'],
         ['--fail-on-self-deprecation', '--do-not-fail-on-self-deprecation'],
@@ -285,6 +288,7 @@ final class Builder
         $bootstrap                                = null;
         $cacheDirectory                           = null;
         $recordTestRunHistory                     = null;
+        $cacheTestIndex                           = null;
         $checkPhpConfiguration                    = false;
         $checkVersion                             = false;
         $colors                                   = null;
@@ -478,6 +482,16 @@ final class Builder
 
                 case '--do-not-record-test-run-history':
                     $recordTestRunHistory = false;
+
+                    break;
+
+                case '--cache-test-index':
+                    $cacheTestIndex = true;
+
+                    break;
+
+                case '--do-not-cache-test-index':
+                    $cacheTestIndex = false;
 
                     break;
 
@@ -1602,6 +1616,7 @@ final class Builder
             $debug,
             $withTelemetry,
             $extensions,
+            $cacheTestIndex,
         );
     }
 

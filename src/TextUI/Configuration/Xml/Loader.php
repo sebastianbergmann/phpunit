@@ -1329,6 +1329,7 @@ final readonly class Loader
             $shortenArraysForExportThreshold,
             $this->parsePositiveIntegerAttribute($documentElement, 'diffContext', 3),
             $this->parseBooleanAttribute($documentElement, 'warnWhenPhpIsNotConfiguredForDevelopment', false),
+            $this->parseBooleanAttribute($documentElement, 'cacheTestIndex', false),
         );
     }
 

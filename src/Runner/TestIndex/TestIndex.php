@@ -47,7 +47,7 @@ use ReflectionClass;
 final class TestIndex
 {
     private const int VERSION                   = 1;
-    private const string DEFAULT_INDEX_FILENAME = '.phpunit.test-index';
+    private const string DEFAULT_INDEX_FILENAME = 'test-index';
     private readonly string $indexFilename;
     private readonly FileHasher $hasher;
 
