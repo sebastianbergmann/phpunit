@@ -23,6 +23,8 @@ use function trim;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Exception;
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\Runner\TestIndex\NullTestFileSkipper;
+use PHPUnit\Runner\TestIndex\TestFileSkipper;
 use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\TextUI\RuntimeException;
 use PHPUnit\TextUI\TestDirectoryNotFoundException;
@@ -37,6 +39,17 @@ use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
  */
 final readonly class TestSuiteBuilder
 {
+    private TestFileSkipper $skipper;
+
+    public function __construct(?TestFileSkipper $skipper = null)
+    {
+        if ($skipper === null) {
+            $skipper = new NullTestFileSkipper;
+        }
+
+        $this->skipper = $skipper;
+    }
+
     /**
      * @throws \PHPUnit\Framework\Exception
      * @throws RuntimeException
@@ -121,7 +134,7 @@ final readonly class TestSuiteBuilder
 
             assert($xmlConfigurationFile !== '');
 
-            $testSuite = (new TestSuiteMapper)->map(
+            $testSuite = new TestSuiteMapper($this->skipper)->map(
                 $xmlConfigurationFile,
                 $configuration->testSuite(),
                 $configuration->ignoreTestSelectionInXmlConfiguration() ? [] : $configuration->includeTestSuites(),
@@ -130,6 +143,12 @@ final readonly class TestSuiteBuilder
                 $maxAttempts,
             );
         }
+
+        /*
+         * The index is written once, after the test suite has been built, and
+         * not while it is being built.
+         */
+        $this->skipper->persist();
 
         EventFacade::emitter()->testSuiteLoaded(\PHPUnit\Event\TestSuite\TestSuiteBuilder::from($testSuite));
 
