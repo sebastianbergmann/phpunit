@@ -51,12 +51,12 @@ unlink($traceFile);
 [%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Test Preparation Started (PHPUnit\TestFixture\LogEventsText\Test::testExportArray)
 [%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Test Prepared (PHPUnit\TestFixture\LogEventsText\Test::testExportArray)
 [%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Assertion Succeeded (Constraint: is identical to Array &0 [
-                                                              0 => 1,
-                                                              'foo' => 2,
-                                                          ], Value: Array &0 [
-                                                              0 => 1,
-                                                              'foo' => 2,
-                                                          ])
+                                                         %s    0 => 1,
+                                                         %s    'foo' => 2,
+                                                         %s], Value: Array &0 [
+                                                         %s    0 => 1,
+                                                         %s    'foo' => 2,
+                                                         %s])
 [%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Test Passed (PHPUnit\TestFixture\LogEventsText\Test::testExportArray)
 [%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Test Finished (PHPUnit\TestFixture\LogEventsText\Test::testExportArray)
 [%s:%s:%s.%s / %s:%s:%s.%s] [%s bytes] Test Preparation Started (PHPUnit\TestFixture\LogEventsText\Test::testExportObject)
