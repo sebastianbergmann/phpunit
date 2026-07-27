@@ -131,13 +131,17 @@ final readonly class PhpHandler
 
     private function handleVariables(string $target, VariableCollection $variables): void
     {
-        if (!isset($GLOBALS[$target]) || !is_array($GLOBALS[$target])) {
-            $GLOBALS[$target] = [];
+        $values = [];
+
+        if (isset($GLOBALS[$target]) && is_array($GLOBALS[$target])) {
+            $values = $GLOBALS[$target];
         }
 
         foreach ($variables as $variable) {
-            $GLOBALS[$target][$variable->name()] = $variable->value();
+            $values[$variable->name()] = $variable->value();
         }
+
+        $GLOBALS[$target] = $values;
     }
 
     private function handleEnvVariables(VariableCollection $variables): void
