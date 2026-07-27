@@ -216,6 +216,34 @@ final class DefaultTestFileSkipperTest extends TestCase
         $this->assertSame([$file], array_keys($this->entriesIn($indexDirectory)));
     }
 
+    #[TestDox('Does not index a file that could not be loaded, and indexes the files after it')]
+    public function testDoesNotIndexFileThatCouldNotBeLoaded(): void
+    {
+        $aborted        = $this->writeTestClass('Aborted');
+        $loaded         = $this->writeTestClass('Loaded');
+        $indexDirectory = $this->directory();
+
+        $skipper = new DefaultTestFileSkipper(
+            new TestIndex($indexDirectory),
+            new GroupPruner(['other'], []),
+            NameFilterPruner::withoutFilter(),
+        );
+
+        $skipper->startRecording($aborted);
+        $skipper->abortRecording();
+
+        /*
+         * The events emitted while the next file is loaded are only collected
+         * when the collecting that was started for the file before it ended.
+         */
+        $skipper->startRecording($loaded);
+        $skipper->stopRecording();
+        $skipper->persist();
+
+        $this->assertFalse($skipper->canSkipLoading($aborted, []));
+        $this->assertSame([$loaded], array_keys($this->entriesIn($indexDirectory)));
+    }
+
     #[TestDox('Does not skip a file PHPUnit warned about while it was loaded')]
     public function testDoesNotSkipFileThatPhpUnitWarnedAbout(): void
     {

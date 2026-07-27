@@ -31,6 +31,7 @@ use PHPUnit\TextUI\TestDirectoryNotFoundException;
 use PHPUnit\TextUI\TestFileNotFoundException;
 use PHPUnit\TextUI\XmlConfiguration\TestSuiteMapper;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
+use Throwable;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -189,7 +190,13 @@ final readonly class TestSuiteBuilder
 
                 $this->skipper->startRecording($file);
 
-                $suite->addTestFile($file, [], $numberOfRuns, $maxAttempts);
+                try {
+                    $suite->addTestFile($file, [], $numberOfRuns, $maxAttempts);
+                } catch (Throwable $t) {
+                    $this->skipper->abortRecording();
+
+                    throw $t;
+                }
 
                 $this->skipper->stopRecording();
             }
@@ -217,19 +224,23 @@ final readonly class TestSuiteBuilder
 
         $this->skipper->startRecording($path);
 
-        if ($suite === null) {
-            $result = TestSuite::fromClassReflector($testClass, [], $numberOfRuns, $maxAttempts);
+        try {
+            if ($suite === null) {
+                $result = TestSuite::fromClassReflector($testClass, [], $numberOfRuns, $maxAttempts);
+            } else {
+                $suite->addTestSuite($testClass, [], $numberOfRuns, $maxAttempts);
 
-            $this->skipper->stopRecording();
+                $result = $suite;
+            }
+        } catch (Throwable $t) {
+            $this->skipper->abortRecording();
 
-            return $result;
+            throw $t;
         }
-
-        $suite->addTestSuite($testClass, [], $numberOfRuns, $maxAttempts);
 
         $this->skipper->stopRecording();
 
-        return $suite;
+        return $result;
     }
 
     /**
