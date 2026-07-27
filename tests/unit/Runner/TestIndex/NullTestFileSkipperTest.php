@@ -32,7 +32,8 @@ final class NullTestFileSkipperTest extends TestCase
     {
         $skipper = new NullTestFileSkipper;
 
-        $skipper->record(__FILE__);
+        $skipper->startRecording(__FILE__);
+        $skipper->stopRecording();
         $skipper->persist();
 
         $this->assertFalse($skipper->canSkipLoading(__FILE__, []));

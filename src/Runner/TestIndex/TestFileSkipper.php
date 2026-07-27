@@ -29,11 +29,14 @@ interface TestFileSkipper
     public function canSkipLoading(string $file, array $groupsFromConfiguration): bool;
 
     /**
-     * Remembers what a file that was loaded contains.
+     * Called around loading a test file, so that what the file contains, and
+     * whether loading it made PHPUnit warn about it, can be remembered.
      *
      * @param non-empty-string $file
      */
-    public function record(string $file): void;
+    public function startRecording(string $file): void;
+
+    public function stopRecording(): void;
 
     public function persist(): void;
 }

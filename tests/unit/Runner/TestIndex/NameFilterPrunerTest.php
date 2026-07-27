@@ -84,7 +84,8 @@ final class NameFilterPrunerTest extends TestCase
             Success::class,
             ['testOne' => [], 'testTwo' => []],
             ['testOne' => false, 'testTwo' => true],
-            [__FILE__  => 'irrelevant'],
+            false,
+            [__FILE__ => 'irrelevant'],
         );
 
         $this->assertFalse(NameFilterPruner::fromFilter('testSomethingElse')->canSkip($entry));
@@ -119,6 +120,7 @@ final class NameFilterPrunerTest extends TestCase
             Success::class,
             $groups,
             array_fill_keys(array_keys($groups), false),
+            false,
             [__FILE__ => 'irrelevant'],
         );
     }

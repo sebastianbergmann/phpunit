@@ -26,6 +26,8 @@ use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestSuite;
+use ReflectionClass;
 
 #[CoversClass(DefaultTestFileSkipper::class)]
 #[UsesClass(TestIndex::class)]
@@ -88,7 +90,8 @@ final class DefaultTestFileSkipperTest extends TestCase
             NameFilterPruner::withoutFilter(),
         );
 
-        $skipper->record($file);
+        $skipper->startRecording($file);
+        $skipper->stopRecording();
 
         $this->assertTrue($skipper->canSkipLoading($file, []));
     }
@@ -104,7 +107,8 @@ final class DefaultTestFileSkipperTest extends TestCase
             NameFilterPruner::withoutFilter(),
         );
 
-        $skipper->record($file);
+        $skipper->startRecording($file);
+        $skipper->stopRecording();
 
         $this->assertFalse($skipper->canSkipLoading($file, []));
     }
@@ -120,7 +124,8 @@ final class DefaultTestFileSkipperTest extends TestCase
             NameFilterPruner::withoutFilter(),
         );
 
-        $skipper->record($file);
+        $skipper->startRecording($file);
+        $skipper->stopRecording();
 
         $this->assertFalse($skipper->canSkipLoading($file, []));
     }
@@ -136,7 +141,8 @@ final class DefaultTestFileSkipperTest extends TestCase
             NameFilterPruner::withoutFilter(),
         );
 
-        $skipper->record($file);
+        $skipper->startRecording($file);
+        $skipper->stopRecording();
 
         $this->assertTrue($skipper->canSkipLoading($file, []));
         $this->assertFalse($skipper->canSkipLoading($file, ['from-configuration']));
@@ -158,7 +164,8 @@ final class DefaultTestFileSkipperTest extends TestCase
             NameFilterPruner::withoutFilter(),
         );
 
-        $skipper->record($file);
+        $skipper->startRecording($file);
+        $skipper->stopRecording();
         $skipper->persist();
 
         $this->assertFalse($skipper->canSkipLoading($file, []));
@@ -177,12 +184,14 @@ final class DefaultTestFileSkipperTest extends TestCase
             NameFilterPruner::withoutFilter(),
         );
 
-        $skipper->record($file);
+        $skipper->startRecording($file);
+        $skipper->stopRecording();
         $skipper->persist();
 
         $before = file_get_contents($indexDirectory . DIRECTORY_SEPARATOR . 'test-index');
 
-        $skipper->record($file);
+        $skipper->startRecording($file);
+        $skipper->stopRecording();
         $skipper->persist();
 
         $this->assertSame($before, file_get_contents($indexDirectory . DIRECTORY_SEPARATOR . 'test-index'));
@@ -199,10 +208,86 @@ final class DefaultTestFileSkipperTest extends TestCase
             NameFilterPruner::withoutFilter(),
         );
 
-        $skipper->record($file);
+        $skipper->startRecording($file);
+        $skipper->stopRecording();
         $skipper->persist();
 
         $this->assertSame([$file], array_keys($this->entriesIn($indexDirectory)));
+    }
+
+    #[TestDox('Does not skip a file PHPUnit warned about while it was loaded')]
+    public function testDoesNotSkipFileThatPhpUnitWarnedAbout(): void
+    {
+        $file = $this->writeTestClass('Warned');
+
+        require_once $file;
+
+        $index = new TestIndex($this->directory());
+        $index->record(new ReflectionClass('PHPUnit\TestFixture\TestFileSkipper\WarnedTest'), true);
+
+        $skipper = new DefaultTestFileSkipper(
+            $index,
+            new GroupPruner(['other'], []),
+            NameFilterPruner::withoutFilter(),
+        );
+
+        $this->assertFalse($skipper->canSkipLoading($file, []));
+    }
+
+    #[TestDox('Skips a file whose data providers were called while it was loaded')]
+    public function testSkipsFileWhoseDataProvidersWereCalled(): void
+    {
+        $file = $this->writeTestClassWithDataProvider('Provider');
+
+        $skipper = new DefaultTestFileSkipper(
+            new TestIndex($this->directory()),
+            new GroupPruner(['other'], []),
+            NameFilterPruner::withoutFilter(),
+        );
+
+        $skipper->startRecording($file);
+        TestSuite::empty('test')->addTestFile($file);
+        $skipper->stopRecording();
+
+        $this->assertTrue($skipper->canSkipLoading($file, []));
+    }
+
+    /**
+     * @param non-empty-string $name
+     *
+     * @return non-empty-string
+     */
+    private function writeTestClassWithDataProvider(string $name): string
+    {
+        $file = $this->directory() . DIRECTORY_SEPARATOR . $name . 'Test.php';
+
+        file_put_contents(
+            $file,
+            <<<PHP
+                <?php declare(strict_types=1);
+                namespace PHPUnit\TestFixture\TestFileSkipper;
+
+                use PHPUnit\Framework\Attributes\DataProvider;
+                use PHPUnit\Framework\Attributes\Group;
+                use PHPUnit\Framework\TestCase;
+
+                final class {$name}Test extends TestCase
+                {
+                    public static function provider(): array
+                    {
+                        return [[true]];
+                    }
+
+                    #[DataProvider('provider')]
+                    #[Group('a-group')]
+                    public function testOne(bool \$value): void
+                    {
+                    }
+                }
+                PHP,
+        );
+
+        return $file;
     }
 
     /**

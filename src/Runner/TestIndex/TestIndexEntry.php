@@ -40,6 +40,7 @@ final readonly class TestIndexEntry
      * @var array<non-empty-string, bool>
      */
     private array $dataSets;
+    private bool $madePhpUnitWarn;
 
     /**
      * @var non-empty-array<non-empty-string, non-empty-string>
@@ -52,7 +53,7 @@ final readonly class TestIndexEntry
      *
      * @param ReflectionClass<TestCase> $class
      */
-    public static function for(ReflectionClass $class, FileHasher $hasher): ?self
+    public static function for(ReflectionClass $class, FileHasher $hasher, bool $madePhpUnitWarn): ?self
     {
         $dependencies = [];
 
@@ -98,7 +99,7 @@ final readonly class TestIndexEntry
                                      $metadata->isTestWith()->isNotEmpty();
         }
 
-        return new self($class->getName(), $groups, $dataSets, $dependencies);
+        return new self($class->getName(), $groups, $dataSets, $madePhpUnitWarn, $dependencies);
     }
 
     /**
@@ -107,9 +108,9 @@ final readonly class TestIndexEntry
      * @param array<non-empty-string, bool>                       $dataSets
      * @param non-empty-array<non-empty-string, non-empty-string> $dependencies
      */
-    public static function from(string $className, array $groups, array $dataSets, array $dependencies): self
+    public static function from(string $className, array $groups, array $dataSets, bool $madePhpUnitWarn, array $dependencies): self
     {
-        return new self($className, $groups, $dataSets, $dependencies);
+        return new self($className, $groups, $dataSets, $madePhpUnitWarn, $dependencies);
     }
 
     /**
@@ -118,12 +119,13 @@ final readonly class TestIndexEntry
      * @param array<non-empty-string, bool>                       $dataSets
      * @param non-empty-array<non-empty-string, non-empty-string> $dependencies
      */
-    private function __construct(string $className, array $groups, array $dataSets, array $dependencies)
+    private function __construct(string $className, array $groups, array $dataSets, bool $madePhpUnitWarn, array $dependencies)
     {
-        $this->className    = $className;
-        $this->groups       = $groups;
-        $this->dataSets     = $dataSets;
-        $this->dependencies = $dependencies;
+        $this->className       = $className;
+        $this->groups          = $groups;
+        $this->dataSets        = $dataSets;
+        $this->madePhpUnitWarn = $madePhpUnitWarn;
+        $this->dependencies    = $dependencies;
     }
 
     /**
@@ -160,6 +162,18 @@ final readonly class TestIndexEntry
     public function dataSets(): array
     {
         return $this->dataSets;
+    }
+
+    /**
+     * Whether PHPUnit had something to say about this file when it was loaded.
+     *
+     * Such a file is never skipped: whether PHPUnit says it would otherwise
+     * depend on the state of the index, and the same command has to produce the
+     * same output twice.
+     */
+    public function madePhpUnitWarn(): bool
+    {
+        return $this->madePhpUnitWarn;
     }
 
     /**

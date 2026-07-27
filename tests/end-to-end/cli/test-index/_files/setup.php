@@ -99,6 +99,67 @@ function writeTestClassWithDataProvider(string $directory, string $name, string 
 }
 
 /**
+ * Writes a test class that makes PHPUnit warn about it while it is loaded.
+ */
+function writeTestClassThatWarns(string $directory, string $name, string $group): void
+{
+    \file_put_contents(
+        $directory . '/tests/' . $name . 'Test.php',
+        <<<PHP
+            <?php declare(strict_types=1);
+            namespace PHPUnit\TestFixture\TestIndex;
+
+            use PHPUnit\Framework\Attributes\Before;
+            use PHPUnit\Framework\Attributes\Group;
+            use PHPUnit\Framework\TestCase;
+
+            final class {$name}Test extends TestCase
+            {
+                #[Before]
+                #[Group('{$group}')]
+                public function testIsAlsoAHookMethod(): void
+                {
+                }
+
+                #[Group('{$group}')]
+                public function testInGroup{$group}(): void
+                {
+                    \$this->assertTrue(true);
+                }
+            }
+            PHP,
+    );
+}
+
+/**
+ * Reports what PHPUnit had to say about the run, without the parts of the
+ * output that differ from run to run.
+ */
+function warningsFor(string $directory, string $group): string
+{
+    $output = run(
+        [
+            '--configuration',
+            $directory . '/phpunit.xml',
+            '--group',
+            $group,
+            '--no-progress',
+        ],
+        false,
+    );
+
+    $lines = [];
+
+    foreach (\explode("\n", $output) as $line) {
+        if (\str_starts_with($line, 'Tests: ') || \str_starts_with($line, 'OK ') || \str_contains($line, 'test runner warning')) {
+            $lines[] = $line;
+        }
+    }
+
+    return \implode("\n", $lines) . "\n";
+}
+
+/**
  * Lists the tests whose name matches the given filter.
  */
 function listTestsMatching(string $directory, string $filter): string
@@ -156,7 +217,7 @@ function listTestsInDirectory(string $directory, string $group): string
 /**
  * @param list<string> $arguments
  */
-function run(array $arguments): string
+function run(array $arguments, bool $onlyTests = true): string
 {
     $process = \proc_open(
         [
@@ -174,6 +235,10 @@ function run(array $arguments): string
 
     \fclose($pipes[1]);
     \proc_close($process);
+
+    if (!$onlyTests) {
+        return $output;
+    }
 
     $tests = [];
 
