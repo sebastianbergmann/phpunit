@@ -9,8 +9,9 @@
  */
 namespace PHPUnit\Runner;
 
-use function array_diff;
+use function array_slice;
 use function basename;
+use function count;
 use function get_declared_classes;
 use function realpath;
 use function str_ends_with;
@@ -28,9 +29,9 @@ use ReflectionClass;
 final class TestSuiteLoader
 {
     /**
-     * @var list<class-string>
+     * @var ?non-negative-int
      */
-    private static array $declaredClasses = [];
+    private static ?int $numberOfDeclaredClasses = null;
 
     /**
      * @var array<non-empty-string, list<class-string>>
@@ -115,16 +116,20 @@ final class TestSuiteLoader
             return self::$fileToClassesMap[$suiteClassFile];
         }
 
-        if (self::$declaredClasses === []) {
-            self::$declaredClasses = get_declared_classes();
+        if (self::$numberOfDeclaredClasses === null) {
+            self::$numberOfDeclaredClasses = count(get_declared_classes());
         }
 
         require_once $suiteClassFile;
 
-        $loadedClasses = array_diff(
-            get_declared_classes(),
-            self::$declaredClasses,
-        );
+        $declaredClasses = get_declared_classes();
+
+        /*
+         * Classes are declared in the order in which they are encountered and
+         * they cannot be undeclared. The classes that were declared while the
+         * file was loaded are therefore at the end of the list.
+         */
+        $loadedClasses = array_slice($declaredClasses, self::$numberOfDeclaredClasses);
 
         foreach ($loadedClasses as $loadedClass) {
             /** @noinspection PhpUnhandledExceptionInspection */
@@ -143,10 +148,10 @@ final class TestSuiteLoader
             self::$fileToClassesMap[$fileName][] = $class->getName();
         }
 
-        self::$declaredClasses = get_declared_classes();
+        self::$numberOfDeclaredClasses = count($declaredClasses);
 
         if (!isset(self::$fileToClassesMap[$suiteClassFile])) {
-            return self::$declaredClasses;
+            return $declaredClasses;
         }
 
         return self::$fileToClassesMap[$suiteClassFile];
