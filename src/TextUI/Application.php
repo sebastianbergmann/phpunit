@@ -766,7 +766,15 @@ final readonly class Application
      */
     private function initializeTestIndex(Configuration $configuration): TestFileSkipper
     {
-        if (!$configuration->cacheTestIndex() || !$configuration->hasCacheDirectory()) {
+        if (!$configuration->cacheTestIndex()) {
+            return new NullTestFileSkipper;
+        }
+
+        if (!$configuration->hasCacheDirectory()) {
+            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                'Cannot cache the test index because no cache directory is configured',
+            );
+
             return new NullTestFileSkipper;
         }
 
