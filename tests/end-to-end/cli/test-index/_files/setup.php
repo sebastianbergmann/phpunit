@@ -67,6 +67,54 @@ function writeTestClass(string $directory, string $name, string $group): void
 }
 
 /**
+ * Writes a test class whose test method has a named data set. The name of that
+ * data set is not knowable without invoking the data provider.
+ */
+function writeTestClassWithDataProvider(string $directory, string $name, string $dataSetName): void
+{
+    \file_put_contents(
+        $directory . '/tests/' . $name . 'Test.php',
+        <<<PHP
+            <?php declare(strict_types=1);
+            namespace PHPUnit\TestFixture\TestIndex;
+
+            use PHPUnit\Framework\Attributes\DataProvider;
+            use PHPUnit\Framework\TestCase;
+
+            final class {$name}Test extends TestCase
+            {
+                public static function provider(): array
+                {
+                    return ['{$dataSetName}' => [true]];
+                }
+
+                #[DataProvider('provider')]
+                public function testWithDataSet(bool \$value): void
+                {
+                    \$this->assertTrue(\$value);
+                }
+            }
+            PHP,
+    );
+}
+
+/**
+ * Lists the tests whose name matches the given filter.
+ */
+function listTestsMatching(string $directory, string $filter): string
+{
+    return run(
+        [
+            '--configuration',
+            $directory . '/phpunit.xml',
+            '--filter',
+            $filter,
+            '--list-tests',
+        ],
+    );
+}
+
+/**
  * Lists the tests in the given group, selecting them through the test suite in
  * the XML configuration file.
  */

@@ -10,6 +10,7 @@
 namespace PHPUnit\Runner\TestIndex;
 
 use const DIRECTORY_SEPARATOR;
+use function array_merge;
 use function file_get_contents;
 use function file_put_contents;
 use function json_decode;
@@ -48,37 +49,54 @@ final class TestIndexTest extends TestCase
 
     public static function provideMalformedIndexData(): array
     {
-        $entry = [
-            'class'        => 'PHPUnit\TestFixture\Success',
-            'groups'       => ['testOne' => [0]],
-            'dependencies' => [__FILE__ => 'a-hash'],
-        ];
-
         $index = static function (mixed $groups, mixed $entries): array
         {
             return [
-                'version' => 1,
+                'version' => 2,
                 'phpunit' => Version::id(),
                 'groups'  => $groups,
                 'entries' => $entries,
             ];
         };
 
+        /**
+         * @param array<string, mixed> $overrides
+         */
+        $entry = static function (array $overrides): array
+        {
+            return array_merge(
+                [
+                    'class'        => 'A',
+                    'groups'       => [],
+                    'dataSets'     => [],
+                    'dependencies' => [__FILE__ => 'a-hash'],
+                ],
+                $overrides,
+            );
+        };
+
         return [
-            'not an array'                  => ['a string'],
-            'without keys'                  => [['version' => 1]],
-            'group table is not an array'   => [$index('a string', [])],
-            'group name is not a string'    => [$index([4711], [])],
-            'group name is empty'           => [$index([''], [])],
-            'entries is not an array'       => [$index([], 'a string')],
-            'entry is not an array'         => [$index([], [__FILE__ => 'a string'])],
-            'entry without keys'            => [$index([], [__FILE__ => ['class' => 'A']])],
-            'class name is empty'           => [$index(['a'], [__FILE__ => ['class' => '', 'groups' => [], 'dependencies' => [__FILE__ => 'h']]])],
-            'method name is empty'          => [$index(['a'], [__FILE__ => ['class' => 'A', 'groups' => ['' => [0]], 'dependencies' => [__FILE__ => 'h']]])],
-            'group index is unknown'        => [$index(['a'], [__FILE__ => ['class' => 'A', 'groups' => ['testOne' => [4711]], 'dependencies' => [__FILE__ => 'h']]])],
-            'group index is not an integer' => [$index(['a'], [__FILE__ => ['class' => 'A', 'groups' => ['testOne' => ['a']], 'dependencies' => [__FILE__ => 'h']]])],
-            'dependency hash is empty'      => [$index(['a'], [__FILE__ => ['class' => 'A', 'groups' => [], 'dependencies' => [__FILE__ => '']]])],
-            'without dependencies'          => [$index(['a'], [__FILE__ => ['class' => 'A', 'groups' => [], 'dependencies' => []]])],
+            'not an array'                   => ['a string'],
+            'without keys'                   => [['version' => 2]],
+            'written in a different format'  => [$index([], []) + ['version' => 4711]],
+            'group table is not an array'    => [$index('a string', [])],
+            'group name is not a string'     => [$index([4711], [])],
+            'group name is empty'            => [$index([''], [])],
+            'entries is not an array'        => [$index([], 'a string')],
+            'entry is not an array'          => [$index([], [__FILE__ => 'a string'])],
+            'entry without keys'             => [$index([], [__FILE__ => ['class' => 'A']])],
+            'class name is empty'            => [$index(['a'], [__FILE__ => $entry(['class' => ''])])],
+            'groups is not an array'         => [$index(['a'], [__FILE__ => $entry(['groups' => 'a string'])])],
+            'method name is empty'           => [$index(['a'], [__FILE__ => $entry(['groups' => ['' => [0]]])])],
+            'group list is not an array'     => [$index(['a'], [__FILE__ => $entry(['groups' => ['testOne' => 0]])])],
+            'group index is unknown'         => [$index(['a'], [__FILE__ => $entry(['groups' => ['testOne' => [4711]]])])],
+            'group index is not an integer'  => [$index(['a'], [__FILE__ => $entry(['groups' => ['testOne' => ['a']]])])],
+            'data sets is not an array'      => [$index(['a'], [__FILE__ => $entry(['dataSets' => 'a string'])])],
+            'data set method name is empty'  => [$index(['a'], [__FILE__ => $entry(['dataSets' => ['' => false]])])],
+            'data set flag is not a boolean' => [$index(['a'], [__FILE__ => $entry(['dataSets' => ['testOne' => 'yes']])])],
+            'dependencies is not an array'   => [$index(['a'], [__FILE__ => $entry(['dependencies' => 'a string'])])],
+            'dependency hash is empty'       => [$index(['a'], [__FILE__ => $entry(['dependencies' => [__FILE__ => '']])])],
+            'without dependencies'           => [$index(['a'], [__FILE__ => $entry(['dependencies' => []])])],
         ];
     }
 

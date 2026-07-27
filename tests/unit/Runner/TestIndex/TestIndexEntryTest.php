@@ -162,11 +162,13 @@ final class TestIndexEntryTest extends TestCase
         $entry = TestIndexEntry::from(
             Success::class,
             ['testOne' => ['a-group']],
+            ['testOne' => true],
             [__FILE__  => 'a-hash'],
         );
 
         $this->assertSame(Success::class, $entry->className());
         $this->assertSame(['testOne' => ['a-group']], $entry->groups());
+        $this->assertSame(['testOne' => true], $entry->dataSets());
         $this->assertSame([__FILE__ => 'a-hash'], $entry->dependencies());
     }
 
