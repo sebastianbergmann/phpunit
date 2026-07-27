@@ -27,6 +27,7 @@ use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\TestFixture\TestFileSkipper\WarnedTest;
 use ReflectionClass;
 
 #[CoversClass(DefaultTestFileSkipper::class)]
@@ -223,7 +224,7 @@ final class DefaultTestFileSkipperTest extends TestCase
         require_once $file;
 
         $index = new TestIndex($this->directory());
-        $index->record(new ReflectionClass('PHPUnit\TestFixture\TestFileSkipper\WarnedTest'), true);
+        $index->record(new ReflectionClass(WarnedTest::class), true);
 
         $skipper = new DefaultTestFileSkipper(
             $index,
