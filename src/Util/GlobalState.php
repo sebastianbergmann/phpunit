@@ -311,7 +311,7 @@ final readonly class GlobalState
                             '$GLOBALS[\'%s\'][\'%s\'] = %s;' . "\n",
                             $superGlobalArray,
                             $key,
-                            self::exportVariable($GLOBALS[$superGlobalArray][$key]),
+                            self::exportVariable($value),
                         );
                     } catch (Throwable) {
                         $skippedGlobals[] = ['name' => $name, 'reason' => 'is not serializable'];

@@ -140,17 +140,20 @@ final readonly class Requirements
             if ($metadata->isRequiresEnvironmentVariable()) {
                 assert($metadata instanceof RequiresEnvironmentVariable);
 
-                if (!array_key_exists($metadata->environmentVariableName(), $_ENV) ||
-                    $metadata->value() === null && $_ENV[$metadata->environmentVariableName()] === '') {
-                    $notSatisfied[] = sprintf('Environment variable "%s" is required.', $metadata->environmentVariableName());
+                $environmentVariableName = $metadata->environmentVariableName();
+                $environmentVariables    = $_ENV;
+
+                if (!array_key_exists($environmentVariableName, $environmentVariables) ||
+                    $metadata->value() === null && $environmentVariables[$environmentVariableName] === '') {
+                    $notSatisfied[] = sprintf('Environment variable "%s" is required.', $environmentVariableName);
 
                     continue;
                 }
 
-                if ($metadata->value() !== null && $_ENV[$metadata->environmentVariableName()] !== $metadata->value()) {
+                if ($metadata->value() !== null && $environmentVariables[$environmentVariableName] !== $metadata->value()) {
                     $notSatisfied[] = sprintf(
                         'Environment variable "%s" is required to be "%s".',
-                        $metadata->environmentVariableName(),
+                        $environmentVariableName,
                         $metadata->value(),
                     );
                 }
