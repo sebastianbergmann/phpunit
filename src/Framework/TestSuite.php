@@ -67,9 +67,14 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
     private string $name;
 
     /**
-     * @var array<non-empty-string, list<non-empty-string>>
+     * @var array<non-empty-string, list<PhptTestCase|TestCase>>
      */
-    private array $groups = [];
+    private array $groupedTests = [];
+
+    /**
+     * @var ?array<non-empty-string, list<non-empty-string>>
+     */
+    private ?array $groups = null;
 
     /**
      * @var ?list<ExecutionOrderDependency>
@@ -172,18 +177,14 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
         }
 
         if ($test instanceof TestCase) {
-            $id = $test->valueObjectForEvents()->id();
-
             $test->setGroups($groups);
-        } else {
-            $id = $test->valueObjectForEvents()->id();
         }
 
         foreach ($groups as $group) {
-            if (!isset($this->groups[$group])) {
-                $this->groups[$group] = [$id];
+            if (!isset($this->groupedTests[$group])) {
+                $this->groupedTests[$group] = [$test];
             } else {
-                $this->groups[$group][] = $id;
+                $this->groupedTests[$group][] = $test;
             }
         }
     }
@@ -324,10 +325,28 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
     }
 
     /**
+     * The identifiers of the tests are only determined when they are asked
+     * for, which is only the case when tests are filtered by group. A test
+     * that is run builds the event value object that provides its identifier
+     * anyway, and caches it, so determining the identifiers eagerly only adds
+     * work for tests that are never run.
+     *
      * @return array<non-empty-string, list<non-empty-string>>
      */
     public function groups(): array
     {
+        if ($this->groups !== null) {
+            return $this->groups;
+        }
+
+        $this->groups = [];
+
+        foreach ($this->groupedTests as $group => $tests) {
+            foreach ($tests as $test) {
+                $this->groups[$group][] = $test->valueObjectForEvents()->id();
+            }
+        }
+
         return $this->groups;
     }
 
@@ -663,8 +682,9 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             $tests[] = $test;
         }
 
-        $this->tests  = [];
-        $this->groups = [];
+        $this->tests        = [];
+        $this->groupedTests = [];
+        $this->groups       = null;
 
         return $tests;
     }
@@ -690,6 +710,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
 
     private function clearCaches(): void
     {
+        $this->groups        = null;
         $this->providedTests = null;
         $this->requiredTests = null;
     }
