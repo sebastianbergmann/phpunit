@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner;
 
+use function strtolower;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -70,9 +71,29 @@ final class HookMethodCollectionTest extends TestCase
         ];
     }
 
+    public static function defaultHookMethodProvider(): iterable
+    {
+        return [
+            [HookMethodCollection::defaultBeforeClass(), 'setUpBeforeClass'],
+            [HookMethodCollection::defaultBefore(), 'setUp'],
+            [HookMethodCollection::defaultPreCondition(), 'assertPreConditions'],
+            [HookMethodCollection::defaultPostCondition(), 'assertPostConditions'],
+            [HookMethodCollection::defaultAfter(), 'tearDown'],
+            [HookMethodCollection::defaultAfterClass(), 'tearDownAfterClass'],
+        ];
+    }
+
     #[DataProvider('provider')]
     public function testIterator(HookMethodCollection $hookMethodsCollection, array $expected): void
     {
         $this->assertSame($expected, $hookMethodsCollection->methodNamesSortedByPriority());
+    }
+
+    #[DataProvider('defaultHookMethodProvider')]
+    public function testKnowsWhetherMethodIsItsDefaultHookMethod(HookMethodCollection $hookMethodsCollection, string $defaultMethodName): void
+    {
+        $this->assertTrue($hookMethodsCollection->isDefaultHookMethod($defaultMethodName));
+        $this->assertTrue($hookMethodsCollection->isDefaultHookMethod(strtolower($defaultMethodName)));
+        $this->assertFalse($hookMethodsCollection->isDefaultHookMethod('someMethod'));
     }
 }
