@@ -228,18 +228,26 @@ final class TestIndex
             ];
         }
 
-        file_put_contents(
-            $this->indexFilename,
-            json_encode(
-                [
-                    'version' => self::VERSION,
-                    'phpunit' => Version::id(),
-                    'groups'  => $groupNames,
-                    'entries' => $entries,
-                ],
-            ),
-            LOCK_EX,
+        $json = json_encode(
+            [
+                'version' => self::VERSION,
+                'phpunit' => Version::id(),
+                'groups'  => $groupNames,
+                'entries' => $entries,
+            ],
         );
+
+        /*
+         * A group name or a file name that is not valid UTF-8 cannot be
+         * written as JSON. The index that is already there is kept in that
+         * case: it is what an earlier run learned, and every entry in it is
+         * checked against the files it was derived from before it is used.
+         */
+        if ($json === false) {
+            return;
+        }
+
+        file_put_contents($this->indexFilename, $json, LOCK_EX);
     }
 
     /**
