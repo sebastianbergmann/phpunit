@@ -25,6 +25,7 @@ use PHPUnit\Runner\TestSuiteLoader;
  */
 final class DefaultTestFileSkipper implements TestFileSkipper
 {
+    private readonly EventFacade $eventFacade;
     private readonly TestIndex $index;
     private readonly GroupPruner $groupPruner;
     private readonly NameFilterPruner $nameFilterPruner;
@@ -34,8 +35,9 @@ final class DefaultTestFileSkipper implements TestFileSkipper
      */
     private ?string $recording = null;
 
-    public function __construct(TestIndex $index, GroupPruner $groupPruner, NameFilterPruner $nameFilterPruner)
+    public function __construct(EventFacade $eventFacade, TestIndex $index, GroupPruner $groupPruner, NameFilterPruner $nameFilterPruner)
     {
+        $this->eventFacade      = $eventFacade;
         $this->index            = $index;
         $this->groupPruner      = $groupPruner;
         $this->nameFilterPruner = $nameFilterPruner;
@@ -98,7 +100,7 @@ final class DefaultTestFileSkipper implements TestFileSkipper
 
         $this->recording = $file;
 
-        EventFacade::instance()->startCollectingEvents();
+        $this->eventFacade->startCollectingEvents();
     }
 
     public function stopRecording(): void
@@ -110,9 +112,9 @@ final class DefaultTestFileSkipper implements TestFileSkipper
         $file            = $this->recording;
         $this->recording = null;
 
-        $events = EventFacade::instance()->stopCollectingEvents();
+        $events = $this->eventFacade->stopCollectingEvents();
 
-        EventFacade::instance()->forward($events);
+        $this->eventFacade->forward($events);
 
         try {
             $this->index->record((new TestSuiteLoader)->load($file), self::madePhpUnitWarn($events));
@@ -140,7 +142,7 @@ final class DefaultTestFileSkipper implements TestFileSkipper
 
         $this->recording = null;
 
-        EventFacade::instance()->forward(EventFacade::instance()->stopCollectingEvents());
+        $this->eventFacade->forward($this->eventFacade->stopCollectingEvents());
     }
 
     public function persist(): void
