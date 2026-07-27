@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Runner\TestIndex;
 
+use function is_file;
+use function str_ends_with;
 use PHPUnit\Event\EventCollection;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Event\Test\DataProviderMethodCalled;
@@ -78,10 +80,18 @@ final class DefaultTestFileSkipper implements TestFileSkipper
      * file is only handed out while it is still valid, so an entry that exists
      * describes the file as it is now.
      *
+     * A PHPT file is not a PHP file and is never loaded as one, so it is not
+     * indexed either. The condition for that is the one that TestSuite uses to
+     * decide whether a file is loaded as PHP.
+     *
      * @param non-empty-string $file
      */
     public function startRecording(string $file): void
     {
+        if (str_ends_with($file, '.phpt') && is_file($file)) {
+            return;
+        }
+
         if ($this->index->entryFor($file) !== null) {
             return;
         }

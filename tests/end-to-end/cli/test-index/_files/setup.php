@@ -99,6 +99,42 @@ function writeTestClassWithDataProvider(string $directory, string $name, string 
 }
 
 /**
+ * Writes a PHPT test file, and extends the test suite in the XML configuration
+ * file to select PHPT files as well. A PHPT file is not a PHP file: it must
+ * never be loaded as one, not even to index it.
+ */
+function writePhptFile(string $directory, string $name): void
+{
+    \file_put_contents(
+        $directory . '/tests/' . $name . '.phpt',
+        <<<'PHPT'
+            --TEST--
+            A PHPT test
+            --FILE--
+            <?php declare(strict_types=1);
+            print 'the PHPT test was run';
+            --EXPECT--
+            the PHPT test was run
+            PHPT,
+    );
+
+    \file_put_contents(
+        $directory . '/phpunit.xml',
+        <<<'XML'
+            <?xml version="1.0" encoding="UTF-8"?>
+            <phpunit cacheDirectory="cache" recordTestRunHistory="false" cacheTestIndex="true">
+                <testsuites>
+                    <testsuite name="default">
+                        <directory>tests</directory>
+                        <directory suffix=".phpt">tests</directory>
+                    </testsuite>
+                </testsuites>
+            </phpunit>
+            XML,
+    );
+}
+
+/**
  * Writes a test class that makes PHPUnit warn about it while it is loaded.
  */
 function writeTestClassThatWarns(string $directory, string $name, string $group): void
@@ -152,6 +188,32 @@ function warningsFor(string $directory, string $group): string
 
     foreach (\explode("\n", $output) as $line) {
         if (\str_starts_with($line, 'Tests: ') || \str_starts_with($line, 'OK ') || \str_contains($line, 'test runner warning')) {
+            $lines[] = $line;
+        }
+    }
+
+    return \implode("\n", $lines) . "\n";
+}
+
+/**
+ * Reports how running every test went, without the parts of the output that
+ * differ from run to run.
+ */
+function resultFor(string $directory): string
+{
+    $output = run(
+        [
+            '--configuration',
+            $directory . '/phpunit.xml',
+            '--no-progress',
+        ],
+        false,
+    );
+
+    $lines = [];
+
+    foreach (\explode("\n", $output) as $line) {
+        if (\str_starts_with($line, 'Tests: ') || \str_starts_with($line, 'OK ')) {
             $lines[] = $line;
         }
     }
