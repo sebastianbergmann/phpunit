@@ -67,19 +67,54 @@ function writeTestClass(string $directory, string $name, string $group): void
 }
 
 /**
- * Lists the tests in the given group, with the test index enabled.
+ * Lists the tests in the given group, selecting them through the test suite in
+ * the XML configuration file.
  */
 function listTests(string $directory, string $group): string
 {
-    $process = \proc_open(
+    return run(
         [
-            \PHP_BINARY,
-            __DIR__ . '/../../../../../phpunit',
             '--configuration',
             $directory . '/phpunit.xml',
             '--group',
             $group,
             '--list-tests',
+        ],
+    );
+}
+
+/**
+ * Lists the tests in the given group, selecting them by naming a directory on
+ * the command line instead of using the test suite in the XML configuration
+ * file.
+ */
+function listTestsInDirectory(string $directory, string $group): string
+{
+    return run(
+        [
+            '--no-configuration',
+            '--do-not-record-test-run-history',
+            '--cache-directory',
+            $directory . '/cache',
+            '--cache-test-index',
+            '--group',
+            $group,
+            $directory . '/tests',
+            '--list-tests',
+        ],
+    );
+}
+
+/**
+ * @param list<string> $arguments
+ */
+function run(array $arguments): string
+{
+    $process = \proc_open(
+        [
+            \PHP_BINARY,
+            __DIR__ . '/../../../../../phpunit',
+            ...$arguments,
         ],
         [
             1 => ['pipe', 'w'],
