@@ -20,12 +20,16 @@ use function scandir;
 use function sys_get_temp_dir;
 use function uniqid;
 use function unlink;
+use PHPUnit\Event\AbstractEventTestCase;
+use PHPUnit\Event\EventCollection;
+use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Event\TestRunner\WarningTriggered;
+use PHPUnit\Event\TestRunner\WarningTriggeredSubscriber;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\UsesClass;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\TestFixture\TestFileSkipper\WarnedTest;
 use ReflectionClass;
@@ -38,7 +42,7 @@ use ReflectionClass;
 #[Small]
 #[Group('test-runner')]
 #[Group('test-runner/test-index')]
-final class DefaultTestFileSkipperTest extends TestCase
+final class DefaultTestFileSkipperTest extends AbstractEventTestCase
 {
     /**
      * @var list<non-empty-string>
@@ -72,6 +76,7 @@ final class DefaultTestFileSkipperTest extends TestCase
         $file = $this->writeTestClass('NotIndexed');
 
         $skipper = new DefaultTestFileSkipper(
+            EventFacade::instance(),
             new TestIndex($this->directory()),
             new GroupPruner(['other'], []),
             NameFilterPruner::withoutFilter(),
@@ -86,6 +91,7 @@ final class DefaultTestFileSkipperTest extends TestCase
         $file = $this->writeTestClass('NotSelected');
 
         $skipper = new DefaultTestFileSkipper(
+            EventFacade::instance(),
             new TestIndex($this->directory()),
             new GroupPruner(['other'], []),
             NameFilterPruner::withoutFilter(),
@@ -103,6 +109,7 @@ final class DefaultTestFileSkipperTest extends TestCase
         $file = $this->writeTestClass('Selected');
 
         $skipper = new DefaultTestFileSkipper(
+            EventFacade::instance(),
             new TestIndex($this->directory()),
             new GroupPruner(['a-group'], []),
             NameFilterPruner::withoutFilter(),
@@ -120,6 +127,7 @@ final class DefaultTestFileSkipperTest extends TestCase
         $file = $this->writeTestClass('NoSelection');
 
         $skipper = new DefaultTestFileSkipper(
+            EventFacade::instance(),
             new TestIndex($this->directory()),
             new GroupPruner([], []),
             NameFilterPruner::withoutFilter(),
@@ -137,6 +145,7 @@ final class DefaultTestFileSkipperTest extends TestCase
         $file = $this->writeTestClass('FromConfiguration');
 
         $skipper = new DefaultTestFileSkipper(
+            EventFacade::instance(),
             new TestIndex($this->directory()),
             new GroupPruner(['from-configuration'], []),
             NameFilterPruner::withoutFilter(),
@@ -160,6 +169,7 @@ final class DefaultTestFileSkipperTest extends TestCase
         $indexDirectory = $this->directory();
 
         $skipper = new DefaultTestFileSkipper(
+            EventFacade::instance(),
             new TestIndex($indexDirectory),
             new GroupPruner(['other'], []),
             NameFilterPruner::withoutFilter(),
@@ -180,6 +190,7 @@ final class DefaultTestFileSkipperTest extends TestCase
         $indexDirectory = $this->directory();
 
         $skipper = new DefaultTestFileSkipper(
+            EventFacade::instance(),
             new TestIndex($indexDirectory),
             new GroupPruner(['other'], []),
             NameFilterPruner::withoutFilter(),
@@ -204,6 +215,7 @@ final class DefaultTestFileSkipperTest extends TestCase
         $indexDirectory = $this->directory();
 
         $skipper = new DefaultTestFileSkipper(
+            EventFacade::instance(),
             new TestIndex($indexDirectory),
             new GroupPruner(['other'], []),
             NameFilterPruner::withoutFilter(),
@@ -224,6 +236,7 @@ final class DefaultTestFileSkipperTest extends TestCase
         $indexDirectory = $this->directory();
 
         $skipper = new DefaultTestFileSkipper(
+            new EventFacade,
             new TestIndex($indexDirectory),
             new GroupPruner(['other'], []),
             NameFilterPruner::withoutFilter(),
@@ -244,6 +257,49 @@ final class DefaultTestFileSkipperTest extends TestCase
         $this->assertSame([$loaded], array_keys($this->entriesIn($indexDirectory)));
     }
 
+    #[TestDox('Forwards what was collected for a file that could not be loaded, and stops collecting')]
+    public function testForwardsCollectedEventsWhenFileCouldNotBeLoaded(): void
+    {
+        $subscriber = new class implements WarningTriggeredSubscriber
+        {
+            /**
+             * @var list<string>
+             */
+            public array $messages = [];
+
+            public function notify(WarningTriggered $event): void
+            {
+                $this->messages[] = $event->message();
+            }
+        };
+
+        $eventFacade = new EventFacade;
+        $eventFacade->registerSubscriber($subscriber);
+        $eventFacade->seal();
+
+        $skipper = new DefaultTestFileSkipper(
+            $eventFacade,
+            new TestIndex($this->directory()),
+            new GroupPruner(['other'], []),
+            NameFilterPruner::withoutFilter(),
+        );
+
+        $skipper->startRecording($this->writeTestClass('Collected'));
+
+        $eventFacade->forward($this->warning('while the file was being loaded'));
+
+        $this->assertSame([], $subscriber->messages);
+
+        $skipper->abortRecording();
+
+        $this->assertSame(['while the file was being loaded'], $subscriber->messages);
+
+        // what is emitted afterwards is no longer collected for a file that is no longer being loaded
+        $eventFacade->forward($this->warning('after loading the file failed'));
+
+        $this->assertSame(['while the file was being loaded', 'after loading the file failed'], $subscriber->messages);
+    }
+
     #[TestDox('Does not skip a file PHPUnit warned about while it was loaded')]
     public function testDoesNotSkipFileThatPhpUnitWarnedAbout(): void
     {
@@ -255,6 +311,7 @@ final class DefaultTestFileSkipperTest extends TestCase
         $index->record(new ReflectionClass(WarnedTest::class), true);
 
         $skipper = new DefaultTestFileSkipper(
+            EventFacade::instance(),
             $index,
             new GroupPruner(['other'], []),
             NameFilterPruner::withoutFilter(),
@@ -269,6 +326,7 @@ final class DefaultTestFileSkipperTest extends TestCase
         $file = $this->writeTestClassWithDataProvider('Provider');
 
         $skipper = new DefaultTestFileSkipper(
+            EventFacade::instance(),
             new TestIndex($this->directory()),
             new GroupPruner(['other'], []),
             NameFilterPruner::withoutFilter(),
@@ -317,6 +375,18 @@ final class DefaultTestFileSkipperTest extends TestCase
         );
 
         return $file;
+    }
+
+    /**
+     * @param non-empty-string $message
+     */
+    private function warning(string $message): EventCollection
+    {
+        $events = new EventCollection;
+
+        $events->add(new WarningTriggered($this->telemetryInfo(), $message));
+
+        return $events;
     }
 
     /**

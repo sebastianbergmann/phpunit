@@ -789,6 +789,7 @@ final readonly class Application
         }
 
         return new DefaultTestFileSkipper(
+            EventFacade::instance(),
             $index,
             new GroupPruner(
                 $this->includedGroups($configuration),
