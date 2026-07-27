@@ -182,8 +182,26 @@ final readonly class TestSuiteBuilder
                 $suite = TestSuite::empty('CLI Arguments');
             }
 
-            $suite->addTestFiles($files, $numberOfRuns, $maxAttempts);
+            foreach ($files as $file) {
+                if ($this->skipper->canSkipLoading($file, [])) {
+                    continue;
+                }
 
+                $suite->addTestFile($file, [], $numberOfRuns, $maxAttempts);
+
+                $this->skipper->record($file);
+            }
+
+            return $suite;
+        }
+
+        /*
+         * A file that was named on its own is loaded even when it cannot
+         * contribute a test to the run: not loading it would save nothing, and
+         * the test suite that is built for it is named after the test class in
+         * it, which is not known while the file is not loaded.
+         */
+        if ($suite !== null && $this->skipper->canSkipLoading($path, [])) {
             return $suite;
         }
 
@@ -194,6 +212,8 @@ final readonly class TestSuiteBuilder
 
             exit(1);
         }
+
+        $this->skipper->record($path);
 
         if ($suite === null) {
             return TestSuite::fromClassReflector($testClass, [], $numberOfRuns, $maxAttempts);
