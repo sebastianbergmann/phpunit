@@ -1,0 +1,314 @@
+<?php declare(strict_types=1);
+/*
+ * This file is part of PHPUnit.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+namespace PHPUnit\Runner\TestIndex;
+
+use const DIRECTORY_SEPARATOR;
+use function array_keys;
+use function file_get_contents;
+use function file_put_contents;
+use function mkdir;
+use function preg_replace;
+use function rmdir;
+use function scandir;
+use function sys_get_temp_dir;
+use function uniqid;
+use function unlink;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\Attributes\UsesClass;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\Success;
+use ReflectionClass;
+
+#[CoversClass(TestIndexEntry::class)]
+#[UsesClass(FileHasher::class)]
+#[Small]
+#[Group('test-runner')]
+#[Group('test-runner/test-index')]
+final class TestIndexEntryTest extends TestCase
+{
+    /**
+     * @var list<non-empty-string>
+     */
+    private array $directories = [];
+
+    protected function tearDown(): void
+    {
+        foreach ($this->directories as $directory) {
+            $entries = scandir($directory);
+
+            if ($entries !== false) {
+                foreach ($entries as $entry) {
+                    if ($entry === '.' || $entry === '..') {
+                        continue;
+                    }
+
+                    unlink($directory . DIRECTORY_SEPARATOR . $entry);
+                }
+            }
+
+            rmdir($directory);
+        }
+
+        $this->directories = [];
+    }
+
+    public function testKnowsClassNameAndGroupsOfTestMethods(): void
+    {
+        $file  = $this->writeTestClass('Simple');
+        $entry = TestIndexEntry::for(new ReflectionClass('PHPUnit\TestFixture\TestIndexEntry\SimpleTest'), new FileHasher);
+
+        $this->assertNotNull($entry);
+        $this->assertSame('PHPUnit\TestFixture\TestIndexEntry\SimpleTest', $entry->className());
+        $this->assertSame(['testOne'], array_keys($entry->groups()));
+        $this->assertSame(['small', 'a-group'], $entry->groups()['testOne']);
+        $this->assertArrayHasKey($file, $entry->dependencies());
+    }
+
+    #[TestDox('Does not record a method that is not a test method')]
+    public function testDoesNotRecordMethodThatIsNotTestMethod(): void
+    {
+        $this->writeTestClass('WithHelper', "    public function helper(): void\n    {\n    }\n");
+
+        $entry = TestIndexEntry::for(new ReflectionClass('PHPUnit\TestFixture\TestIndexEntry\WithHelperTest'), new FileHasher);
+
+        $this->assertNotNull($entry);
+        $this->assertArrayNotHasKey('helper', $entry->groups());
+    }
+
+    #[TestDox('Depends on the file of a parent class and on the file of a trait')]
+    public function testDependsOnFileOfParentClassAndOnFileOfTrait(): void
+    {
+        $files = $this->writeTestClassWithParentAndTrait('Inheriting');
+        $entry = TestIndexEntry::for(new ReflectionClass('PHPUnit\TestFixture\TestIndexEntry\InheritingTest'), new FileHasher);
+
+        $this->assertNotNull($entry);
+
+        foreach ($files as $file) {
+            $this->assertArrayHasKey($file, $entry->dependencies());
+        }
+    }
+
+    #[TestDox('Depends on the file of PHPUnit\Framework\TestCase')]
+    public function testDependsOnFileOfTestCase(): void
+    {
+        $this->writeTestClass('Rooted');
+
+        $entry = TestIndexEntry::for(new ReflectionClass('PHPUnit\TestFixture\TestIndexEntry\RootedTest'), new FileHasher);
+
+        $this->assertNotNull($entry);
+        $this->assertArrayHasKey(new ReflectionClass(TestCase::class)->getFileName(), $entry->dependencies());
+    }
+
+    public function testIsValidWhileSourceFilesAreUnchanged(): void
+    {
+        $this->writeTestClass('Unchanged');
+
+        $entry = TestIndexEntry::for(new ReflectionClass('PHPUnit\TestFixture\TestIndexEntry\UnchangedTest'), new FileHasher);
+
+        $this->assertNotNull($entry);
+        $this->assertTrue($entry->isValid(new FileHasher));
+    }
+
+    public function testIsNotValidWhenSourceFileChanged(): void
+    {
+        $file = $this->writeTestClass('Modified');
+
+        $entry = TestIndexEntry::for(new ReflectionClass('PHPUnit\TestFixture\TestIndexEntry\ModifiedTest'), new FileHasher);
+
+        $this->assertNotNull($entry);
+
+        $this->renameGroupIn($file);
+
+        $this->assertFalse($entry->isValid(new FileHasher));
+    }
+
+    public function testIsNotValidWhenSourceFileWasRemoved(): void
+    {
+        $file = $this->writeTestClass('Removed');
+
+        $entry = TestIndexEntry::for(new ReflectionClass('PHPUnit\TestFixture\TestIndexEntry\RemovedTest'), new FileHasher);
+
+        $this->assertNotNull($entry);
+
+        unlink($file);
+
+        $this->assertFalse($entry->isValid(new FileHasher));
+    }
+
+    #[TestDox('Cannot be created when a source file cannot be read')]
+    public function testCannotBeCreatedWhenSourceFileCannotBeRead(): void
+    {
+        $file = $this->writeTestClass('Unreadable');
+
+        $class = new ReflectionClass('PHPUnit\TestFixture\TestIndexEntry\UnreadableTest');
+
+        unlink($file);
+
+        $this->assertNull(TestIndexEntry::for($class, new FileHasher));
+    }
+
+    public function testCanBeCreatedFromRecordedValues(): void
+    {
+        $entry = TestIndexEntry::from(
+            Success::class,
+            ['testOne' => ['a-group']],
+            [__FILE__  => 'a-hash'],
+        );
+
+        $this->assertSame(Success::class, $entry->className());
+        $this->assertSame(['testOne' => ['a-group']], $entry->groups());
+        $this->assertSame([__FILE__ => 'a-hash'], $entry->dependencies());
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    private function directory(): string
+    {
+        $directory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-test-index-entry-' . uniqid();
+
+        mkdir($directory);
+
+        $this->directories[] = $directory;
+
+        return $directory;
+    }
+
+    /**
+     * @param non-empty-string $name
+     *
+     * @return non-empty-string
+     */
+    private function writeTestClass(string $name, string $additionalMethods = ''): string
+    {
+        $file = $this->directory() . DIRECTORY_SEPARATOR . $name . 'Test.php';
+
+        file_put_contents(
+            $file,
+            <<<PHP
+                <?php declare(strict_types=1);
+                namespace PHPUnit\TestFixture\TestIndexEntry;
+
+                use PHPUnit\Framework\Attributes\Group;
+                use PHPUnit\Framework\Attributes\Small;
+                use PHPUnit\Framework\TestCase;
+
+                #[Small]
+                final class {$name}Test extends TestCase
+                {
+                    #[Group('a-group')]
+                    public function testOne(): void
+                    {
+                    }
+
+                {$additionalMethods}}
+                PHP,
+        );
+
+        require_once $file;
+
+        return $file;
+    }
+
+    /**
+     * @param non-empty-string $name
+     *
+     * @return array{class: non-empty-string, parent: non-empty-string, trait: non-empty-string}
+     */
+    private function writeTestClassWithParentAndTrait(string $name): array
+    {
+        $directory  = $this->directory();
+        $traitFile  = $directory . DIRECTORY_SEPARATOR . $name . 'Trait.php';
+        $parentFile = $directory . DIRECTORY_SEPARATOR . $name . 'Parent.php';
+        $classFile  = $directory . DIRECTORY_SEPARATOR . $name . 'Test.php';
+
+        file_put_contents(
+            $traitFile,
+            <<<PHP
+                <?php declare(strict_types=1);
+                namespace PHPUnit\TestFixture\TestIndexEntry;
+
+                use PHPUnit\Framework\Attributes\Group;
+
+                trait {$name}Trait
+                {
+                    #[Group('from-trait')]
+                    public function testInTrait(): void
+                    {
+                    }
+                }
+                PHP,
+        );
+
+        file_put_contents(
+            $parentFile,
+            <<<PHP
+                <?php declare(strict_types=1);
+                namespace PHPUnit\TestFixture\TestIndexEntry;
+
+                use PHPUnit\Framework\Attributes\Group;
+                use PHPUnit\Framework\TestCase;
+
+                abstract class {$name}Parent extends TestCase
+                {
+                    #[Group('from-parent')]
+                    public function testInParent(): void
+                    {
+                    }
+                }
+                PHP,
+        );
+
+        file_put_contents(
+            $classFile,
+            <<<PHP
+                <?php declare(strict_types=1);
+                namespace PHPUnit\TestFixture\TestIndexEntry;
+
+                final class {$name}Test extends {$name}Parent
+                {
+                    use {$name}Trait;
+
+                    public function testInClass(): void
+                    {
+                    }
+                }
+                PHP,
+        );
+
+        require_once $traitFile;
+
+        require_once $parentFile;
+
+        require_once $classFile;
+
+        return ['class' => $classFile, 'parent' => $parentFile, 'trait' => $traitFile];
+    }
+
+    /**
+     * @param non-empty-string $file
+     */
+    private function renameGroupIn(string $file): void
+    {
+        $contents = file_get_contents($file);
+
+        $this->assertIsString($contents);
+
+        $changed = preg_replace('/Group\(\'./', "Group('z", $contents, 1, $count);
+
+        $this->assertIsString($changed);
+        $this->assertSame(1, $count);
+
+        file_put_contents($file, $changed);
+    }
+}
