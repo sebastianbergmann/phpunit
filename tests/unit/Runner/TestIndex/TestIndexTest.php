@@ -52,7 +52,7 @@ final class TestIndexTest extends TestCase
         $index = static function (mixed $groups, mixed $entries): array
         {
             return [
-                'version' => 2,
+                'version' => 3,
                 'phpunit' => Version::id(),
                 'groups'  => $groups,
                 'entries' => $entries,
@@ -69,6 +69,7 @@ final class TestIndexTest extends TestCase
                     'class'        => 'A',
                     'groups'       => [],
                     'dataSets'     => [],
+                    'warned'       => false,
                     'dependencies' => [__FILE__ => 'a-hash'],
                 ],
                 $overrides,
@@ -77,7 +78,7 @@ final class TestIndexTest extends TestCase
 
         return [
             'not an array'                   => ['a string'],
-            'without keys'                   => [['version' => 2]],
+            'without keys'                   => [['version' => 3]],
             'written in a different format'  => [$index([], []) + ['version' => 4711]],
             'group table is not an array'    => [$index('a string', [])],
             'group name is not a string'     => [$index([4711], [])],
@@ -94,6 +95,7 @@ final class TestIndexTest extends TestCase
             'data sets is not an array'      => [$index(['a'], [__FILE__ => $entry(['dataSets' => 'a string'])])],
             'data set method name is empty'  => [$index(['a'], [__FILE__ => $entry(['dataSets' => ['' => false]])])],
             'data set flag is not a boolean' => [$index(['a'], [__FILE__ => $entry(['dataSets' => ['testOne' => 'yes']])])],
+            'warned flag is not a boolean'   => [$index(['a'], [__FILE__ => $entry(['warned' => 'yes'])])],
             'dependencies is not an array'   => [$index(['a'], [__FILE__ => $entry(['dependencies' => 'a string'])])],
             'dependency hash is empty'       => [$index(['a'], [__FILE__ => $entry(['dependencies' => [__FILE__ => '']])])],
             'without dependencies'           => [$index(['a'], [__FILE__ => $entry(['dependencies' => []])])],
@@ -134,7 +136,7 @@ final class TestIndexTest extends TestCase
         $file      = $this->writePlainTestClass($directory, 'Plain');
 
         $index = new TestIndex($this->temporaryDirectory());
-        $index->record(new ReflectionClass('PHPUnit\TestFixture\TestIndex\PlainTest'));
+        $index->record(new ReflectionClass('PHPUnit\TestFixture\TestIndex\PlainTest'), false);
 
         $entry = $index->entryFor($file);
 
@@ -152,7 +154,7 @@ final class TestIndexTest extends TestCase
         $indexDirectory = $this->temporaryDirectory();
 
         $index = new TestIndex($indexDirectory);
-        $index->record(new ReflectionClass('PHPUnit\TestFixture\TestIndex\ChangedFileTest'));
+        $index->record(new ReflectionClass('PHPUnit\TestFixture\TestIndex\ChangedFileTest'), false);
         $index->persist();
 
         $this->assertNotNull($this->loadedIndex($indexDirectory)->entryFor($file));
@@ -171,7 +173,7 @@ final class TestIndexTest extends TestCase
         $indexDirectory = $this->temporaryDirectory();
 
         $index = new TestIndex($indexDirectory);
-        $index->record(new ReflectionClass('PHPUnit\TestFixture\TestIndex\ChangedParentTest'));
+        $index->record(new ReflectionClass('PHPUnit\TestFixture\TestIndex\ChangedParentTest'), false);
         $index->persist();
 
         $this->assertNotNull($this->loadedIndex($indexDirectory)->entryFor($files['class']));
@@ -190,7 +192,7 @@ final class TestIndexTest extends TestCase
         $indexDirectory = $this->temporaryDirectory();
 
         $index = new TestIndex($indexDirectory);
-        $index->record(new ReflectionClass('PHPUnit\TestFixture\TestIndex\ChangedTraitTest'));
+        $index->record(new ReflectionClass('PHPUnit\TestFixture\TestIndex\ChangedTraitTest'), false);
         $index->persist();
 
         $this->assertNotNull($this->loadedIndex($indexDirectory)->entryFor($files['class']));
@@ -207,7 +209,7 @@ final class TestIndexTest extends TestCase
         $files     = $this->writeTestClassWithParentAndTrait($directory, 'Inherited');
 
         $index = new TestIndex($this->temporaryDirectory());
-        $index->record(new ReflectionClass('PHPUnit\TestFixture\TestIndex\InheritedTest'));
+        $index->record(new ReflectionClass('PHPUnit\TestFixture\TestIndex\InheritedTest'), false);
 
         $entry = $index->entryFor($files['class']);
 
@@ -231,7 +233,7 @@ final class TestIndexTest extends TestCase
         $indexDirectory = $this->temporaryDirectory();
 
         $index = new TestIndex($indexDirectory);
-        $index->record(new ReflectionClass('PHPUnit\TestFixture\TestIndex\RemovedDependencyTest'));
+        $index->record(new ReflectionClass('PHPUnit\TestFixture\TestIndex\RemovedDependencyTest'), false);
         $index->persist();
 
         $this->assertNotNull($this->loadedIndex($indexDirectory)->entryFor($file));
@@ -248,7 +250,7 @@ final class TestIndexTest extends TestCase
         $indexDirectory = $this->temporaryDirectory();
 
         $index = new TestIndex($indexDirectory);
-        $index->record(new ReflectionClass('PHPUnit\TestFixture\TestIndex\PersistedTest'));
+        $index->record(new ReflectionClass('PHPUnit\TestFixture\TestIndex\PersistedTest'), false);
         $index->persist();
 
         $loaded = new TestIndex($indexDirectory);
@@ -270,14 +272,14 @@ final class TestIndexTest extends TestCase
         $indexDirectory = $this->temporaryDirectory();
 
         $index = new TestIndex($indexDirectory);
-        $index->record(new ReflectionClass('PHPUnit\TestFixture\TestIndex\SkippedTest'));
-        $index->record(new ReflectionClass('PHPUnit\TestFixture\TestIndex\RecordedTest'));
+        $index->record(new ReflectionClass('PHPUnit\TestFixture\TestIndex\SkippedTest'), false);
+        $index->record(new ReflectionClass('PHPUnit\TestFixture\TestIndex\RecordedTest'), false);
         $index->persist();
 
         // a later run that skipped one of the files and only recorded the other
         $second = new TestIndex($indexDirectory);
         $second->load();
-        $second->record(new ReflectionClass('PHPUnit\TestFixture\TestIndex\RecordedTest'));
+        $second->record(new ReflectionClass('PHPUnit\TestFixture\TestIndex\RecordedTest'), false);
         $second->persist();
 
         $third = new TestIndex($indexDirectory);
@@ -294,7 +296,7 @@ final class TestIndexTest extends TestCase
         $indexDirectory = $this->temporaryDirectory();
 
         $index = new TestIndex($indexDirectory);
-        $index->record(new ReflectionClass('PHPUnit\TestFixture\TestIndex\VanishedTest'));
+        $index->record(new ReflectionClass('PHPUnit\TestFixture\TestIndex\VanishedTest'), false);
 
         unlink($file);
 
@@ -318,7 +320,7 @@ final class TestIndexTest extends TestCase
         $indexDirectory = $this->temporaryDirectory();
 
         $index = new TestIndex($indexDirectory);
-        $index->record(new ReflectionClass('PHPUnit\TestFixture\TestIndex\OtherVersionTest'));
+        $index->record(new ReflectionClass('PHPUnit\TestFixture\TestIndex\OtherVersionTest'), false);
         $index->persist();
 
         $indexFile = $indexDirectory . DIRECTORY_SEPARATOR . 'test-index';
@@ -349,7 +351,7 @@ final class TestIndexTest extends TestCase
         $indexDirectory = $this->temporaryDirectory();
 
         $index = new TestIndex($indexDirectory);
-        $index->record(new ReflectionClass('PHPUnit\TestFixture\TestIndex\OtherFormatTest'));
+        $index->record(new ReflectionClass('PHPUnit\TestFixture\TestIndex\OtherFormatTest'), false);
         $index->persist();
 
         $indexFile = $indexDirectory . DIRECTORY_SEPARATOR . 'test-index';
@@ -413,7 +415,7 @@ final class TestIndexTest extends TestCase
         $indexDirectory = $this->temporaryDirectory();
 
         $index = new TestIndex($indexDirectory);
-        $index->record(new ReflectionClass('PHPUnit\TestFixture\TestIndex\EvaluatedTest'));
+        $index->record(new ReflectionClass('PHPUnit\TestFixture\TestIndex\EvaluatedTest'), false);
         $index->persist();
 
         $contents = file_get_contents($indexDirectory . DIRECTORY_SEPARATOR . 'test-index');
@@ -437,7 +439,7 @@ final class TestIndexTest extends TestCase
         unlink($file);
 
         $index = new TestIndex($this->temporaryDirectory());
-        $index->record($class);
+        $index->record($class, false);
 
         $this->assertNull($index->entryFor(__FILE__));
     }

@@ -28,7 +28,11 @@ final readonly class NullTestFileSkipper implements TestFileSkipper
     /**
      * @param non-empty-string $file
      */
-    public function record(string $file): void
+    public function startRecording(string $file): void
+    {
+    }
+
+    public function stopRecording(): void
     {
     }
 

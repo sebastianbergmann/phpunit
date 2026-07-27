@@ -187,9 +187,11 @@ final readonly class TestSuiteBuilder
                     continue;
                 }
 
+                $this->skipper->startRecording($file);
+
                 $suite->addTestFile($file, [], $numberOfRuns, $maxAttempts);
 
-                $this->skipper->record($file);
+                $this->skipper->stopRecording();
             }
 
             return $suite;
@@ -213,13 +215,19 @@ final readonly class TestSuiteBuilder
             exit(1);
         }
 
-        $this->skipper->record($path);
+        $this->skipper->startRecording($path);
 
         if ($suite === null) {
-            return TestSuite::fromClassReflector($testClass, [], $numberOfRuns, $maxAttempts);
+            $result = TestSuite::fromClassReflector($testClass, [], $numberOfRuns, $maxAttempts);
+
+            $this->skipper->stopRecording();
+
+            return $result;
         }
 
         $suite->addTestSuite($testClass, [], $numberOfRuns, $maxAttempts);
+
+        $this->skipper->stopRecording();
 
         return $suite;
     }

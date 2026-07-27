@@ -117,9 +117,11 @@ final readonly class TestSuiteMapper
                             continue;
                         }
 
+                        $this->skipper->startRecording($file);
+
                         $testSuite->addTestFile($file, $groups, $numberOfRuns, $maxAttempts);
 
-                        $this->skipper->record($file);
+                        $this->skipper->stopRecording();
                     }
                 }
 
@@ -143,9 +145,11 @@ final readonly class TestSuiteMapper
                         continue;
                     }
 
+                    $this->skipper->startRecording($file->path());
+
                     $testSuite->addTestFile($file->path(), $file->groups(), $numberOfRuns, $maxAttempts);
 
-                    $this->skipper->record($file->path());
+                    $this->skipper->stopRecording();
                 }
 
                 if (!$empty) {

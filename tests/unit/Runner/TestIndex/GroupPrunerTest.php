@@ -152,6 +152,7 @@ final class GroupPrunerTest extends TestCase
             Success::class,
             $groups,
             $dataSets,
+            false,
             [__FILE__ => 'irrelevant'],
         );
     }

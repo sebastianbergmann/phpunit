@@ -9,6 +9,10 @@
  */
 namespace PHPUnit\Runner\TestIndex;
 
+use PHPUnit\Event\EventCollection;
+use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Event\Test\DataProviderMethodCalled;
+use PHPUnit\Event\Test\DataProviderMethodFinished;
 use PHPUnit\Runner\Exception;
 use PHPUnit\Runner\TestSuiteLoader;
 
@@ -17,11 +21,16 @@ use PHPUnit\Runner\TestSuiteLoader;
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class DefaultTestFileSkipper implements TestFileSkipper
+final class DefaultTestFileSkipper implements TestFileSkipper
 {
-    private TestIndex $index;
-    private GroupPruner $groupPruner;
-    private NameFilterPruner $nameFilterPruner;
+    private readonly TestIndex $index;
+    private readonly GroupPruner $groupPruner;
+    private readonly NameFilterPruner $nameFilterPruner;
+
+    /**
+     * @var ?non-empty-string
+     */
+    private ?string $recording = null;
 
     public function __construct(TestIndex $index, GroupPruner $groupPruner, NameFilterPruner $nameFilterPruner)
     {
@@ -53,6 +62,10 @@ final readonly class DefaultTestFileSkipper implements TestFileSkipper
             return false;
         }
 
+        if ($entry->madePhpUnitWarn()) {
+            return false;
+        }
+
         if ($this->groupPruner->canSkip($entry, $groupsFromConfiguration)) {
             return true;
         }
@@ -67,14 +80,32 @@ final readonly class DefaultTestFileSkipper implements TestFileSkipper
      *
      * @param non-empty-string $file
      */
-    public function record(string $file): void
+    public function startRecording(string $file): void
     {
         if ($this->index->entryFor($file) !== null) {
             return;
         }
 
+        $this->recording = $file;
+
+        EventFacade::instance()->startCollectingEvents();
+    }
+
+    public function stopRecording(): void
+    {
+        if ($this->recording === null) {
+            return;
+        }
+
+        $file            = $this->recording;
+        $this->recording = null;
+
+        $events = EventFacade::instance()->stopCollectingEvents();
+
+        EventFacade::instance()->forward($events);
+
         try {
-            $this->index->record((new TestSuiteLoader)->load($file));
+            $this->index->record((new TestSuiteLoader)->load($file), self::madePhpUnitWarn($events));
         } catch (Exception $e) {
             /*
              * A file that does not contain a test class is not indexed and is
@@ -87,5 +118,28 @@ final readonly class DefaultTestFileSkipper implements TestFileSkipper
     public function persist(): void
     {
         $this->index->persist();
+    }
+
+    /**
+     * Loading a test file emits an event for every data provider method that
+     * was called. Any other event means PHPUnit had something to say about the
+     * file, and a file PHPUnit has something to say about is never skipped: it
+     * would otherwise depend on the state of the index whether that is said,
+     * and the same command would not produce the same output twice.
+     *
+     * Treating an unknown event as something to say keeps this true for events
+     * that do not exist yet.
+     */
+    private static function madePhpUnitWarn(EventCollection $events): bool
+    {
+        foreach ($events as $event) {
+            if ($event instanceof DataProviderMethodCalled || $event instanceof DataProviderMethodFinished) {
+                continue;
+            }
+
+            return true;
+        }
+
+        return false;
     }
 }
