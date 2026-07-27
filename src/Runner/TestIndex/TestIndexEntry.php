@@ -211,6 +211,14 @@ final readonly class TestIndexEntry
      * Interfaces are not considered: they cannot contribute a test method to a
      * concrete test class.
      *
+     * The walk stops at TestCase, which PHPUnit declares itself: Reflection::
+     * filterAndSortMethods() never treats a method declared by TestCase or by
+     * Assert, the class it extends, as a test method, so neither of them can
+     * contribute anything an entry is derived from. Leaving them out is what
+     * keeps a change to PHPUnit itself from invalidating every entry at once.
+     * That a different version of PHPUnit means a different index is already
+     * established by the version the index records.
+     *
      * @param ReflectionClass<TestCase> $class
      *
      * @return list<non-empty-string>
@@ -221,6 +229,10 @@ final readonly class TestIndexEntry
         $current = $class;
 
         while ($current !== false) {
+            if ($current->getName() === TestCase::class) {
+                break;
+            }
+
             self::collectSourceFilesOf($current, $files);
 
             $current = $current->getParentClass();

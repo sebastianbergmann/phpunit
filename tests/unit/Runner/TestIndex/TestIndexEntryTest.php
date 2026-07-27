@@ -106,15 +106,20 @@ final class TestIndexEntryTest extends TestCase
         }
     }
 
-    #[TestDox('Depends on the file of PHPUnit\Framework\TestCase')]
-    public function testDependsOnFileOfTestCase(): void
+    #[TestDox('Does not depend on the files of PHPUnit\Framework\TestCase and PHPUnit\Framework\Assert')]
+    public function testDoesNotDependOnFilesOfTestCaseAndAssert(): void
     {
-        $this->writeTestClass('Rooted');
+        $file = $this->writeTestClass('Rooted');
 
         $entry = TestIndexEntry::for(new ReflectionClass(RootedTest::class), new FileHasher, false);
 
         $this->assertNotNull($entry);
-        $this->assertArrayHasKey(new ReflectionClass(TestCase::class)->getFileName(), $entry->dependencies());
+
+        /*
+         * Neither of them can contribute a test method, so a change to PHPUnit
+         * itself must not invalidate every entry there is.
+         */
+        $this->assertSame([$file], array_keys($entry->dependencies()));
     }
 
     public function testIsValidWhileSourceFilesAreUnchanged(): void
