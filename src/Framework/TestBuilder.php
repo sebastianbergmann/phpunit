@@ -29,7 +29,7 @@ use PHPUnit\Metadata\PreserveGlobalState;
 use PHPUnit\Metadata\Repeat as RepeatMetadata;
 use PHPUnit\Metadata\Retry as RetryMetadata;
 use PHPUnit\Runner\ErrorHandler;
-use PHPUnit\Runner\Filter\MethodNameFilterCompiler;
+use PHPUnit\Runner\Filter\CompiledNameFilter;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use ReflectionClass;
 use ReflectionMethod;
@@ -536,13 +536,13 @@ final readonly class TestBuilder
             return false;
         }
 
-        $regularExpression = MethodNameFilterCompiler::compile($configuration->filter());
+        $filter = CompiledNameFilter::from($configuration->filter());
 
-        if ($regularExpression === null) {
+        if (!$filter->constrainsMethodName()) {
             return false;
         }
 
-        $result = @preg_match($regularExpression, $className . '::' . $methodName);
+        $result = @preg_match($filter->methodNameRegularExpression(), $className . '::' . $methodName);
 
         if ($result === false) {
             return false;
