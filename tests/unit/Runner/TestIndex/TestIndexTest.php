@@ -11,6 +11,7 @@ namespace PHPUnit\Runner\TestIndex;
 
 use const DIRECTORY_SEPARATOR;
 use function array_merge;
+use function array_search;
 use function file_get_contents;
 use function file_put_contents;
 use function json_decode;
@@ -263,6 +264,59 @@ final class TestIndexTest extends TestCase
         $this->assertSame(['small', 'a-group'], $entry->groups()['testOne']);
     }
 
+    #[TestDox('Persists and loads a group name that looks like a number')]
+    public function testPersistsAndLoadsNumericGroupName(): void
+    {
+        $directory      = $this->temporaryDirectory();
+        $file           = $this->writePlainTestClass($directory, 'NumericGroup', '6546');
+        $indexDirectory = $this->temporaryDirectory();
+
+        $index = new TestIndex($indexDirectory);
+        $index->record(new ReflectionClass('PHPUnit\TestFixture\TestIndex\NumericGroupTest'), false);
+        $index->persist();
+
+        $entry = $this->loadedIndex($indexDirectory)->entryFor($file);
+
+        $this->assertNotNull($entry);
+        $this->assertSame(['small', '6546'], $entry->groups()['testOne']);
+    }
+
+    #[TestDox('Keeps the entries that do not use a group name that cannot be read')]
+    public function testKeepsEntriesThatDoNotUseGroupNameThatCannotBeRead(): void
+    {
+        $directory      = $this->temporaryDirectory();
+        $usable         = $this->writePlainTestClass($directory, 'UsableGroup', 'usable');
+        $unusable       = $this->writePlainTestClass($directory, 'UnusableGroup', 'unusable');
+        $indexDirectory = $this->temporaryDirectory();
+
+        $index = new TestIndex($indexDirectory);
+        $index->record(new ReflectionClass('PHPUnit\TestFixture\TestIndex\UsableGroupTest'), false);
+        $index->record(new ReflectionClass('PHPUnit\TestFixture\TestIndex\UnusableGroupTest'), false);
+        $index->persist();
+
+        $indexFile = $indexDirectory . DIRECTORY_SEPARATOR . 'test-index';
+        $contents  = file_get_contents($indexFile);
+
+        $this->assertIsString($contents);
+
+        $data = json_decode($contents, true);
+
+        $this->assertIsArray($data);
+
+        $position = array_search('unusable', $data['groups'], true);
+
+        $this->assertIsInt($position);
+
+        $data['groups'][$position] = 4711;
+
+        file_put_contents($indexFile, json_encode($data));
+
+        $loaded = $this->loadedIndex($indexDirectory);
+
+        $this->assertNotNull($loaded->entryFor($usable));
+        $this->assertNull($loaded->entryFor($unusable));
+    }
+
     #[TestDox('Writes back entries that were not recorded again, so a run that skipped a file does not forget it')]
     public function testWritesBackEntriesThatWereNotRecordedAgain(): void
     {
@@ -490,10 +544,11 @@ final class TestIndexTest extends TestCase
     /**
      * @param non-empty-string $directory
      * @param non-empty-string $name
+     * @param non-empty-string $group
      *
      * @return non-empty-string
      */
-    private function writePlainTestClass(string $directory, string $name): string
+    private function writePlainTestClass(string $directory, string $name, string $group = 'a-group'): string
     {
         $file = $directory . DIRECTORY_SEPARATOR . $name . 'Test.php';
 
@@ -510,7 +565,7 @@ final class TestIndexTest extends TestCase
                 #[Small]
                 final class {$name}Test extends TestCase
                 {
-                    #[Group('a-group')]
+                    #[Group('{$group}')]
                     public function testOne(): void
                     {
                     }

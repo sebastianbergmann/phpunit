@@ -11,7 +11,6 @@ namespace PHPUnit\Runner\TestIndex;
 
 use const DIRECTORY_SEPARATOR;
 use const LOCK_EX;
-use function array_keys;
 use function count;
 use function dirname;
 use function file_get_contents;
@@ -151,12 +150,18 @@ final class TestIndex
 
         $groupNames = [];
 
-        foreach ($data['groups'] as $groupName) {
-            if (!is_string($groupName) || $groupName === '') {
-                return;
+        /*
+         * A group name that cannot be read is left out instead of discarding
+         * the index: the entries that do not use it are unaffected, and the
+         * ones that do are dropped when they are read. Leaving it out must not
+         * move the other names, which are referred to by their position.
+         */
+        foreach ($data['groups'] as $position => $groupName) {
+            if (!is_int($position) || !is_string($groupName) || $groupName === '') {
+                continue;
             }
 
-            $groupNames[] = $groupName;
+            $groupNames[$position] = $groupName;
         }
 
         foreach ($data['entries'] as $file => $entry) {
@@ -184,8 +189,15 @@ final class TestIndex
             throw new DirectoryDoesNotExistException(dirname($this->indexFilename));
         }
 
-        $groupNames = [];
-        $entries    = [];
+        /*
+         * The group names are collected in a list of their own, and not as the
+         * keys of the map that assigns a position to each of them: a group name
+         * such as "6546" would become an integer key, and would then be written
+         * as an integer and no longer be readable as a group name.
+         */
+        $groupNames     = [];
+        $groupPositions = [];
+        $entries        = [];
 
         foreach ($this->entries as $file => $entry) {
             if (!is_file($file)) {
@@ -198,11 +210,12 @@ final class TestIndex
                 $groups[$methodName] = [];
 
                 foreach ($groupNamesOfMethod as $groupName) {
-                    if (!isset($groupNames[$groupName])) {
-                        $groupNames[$groupName] = count($groupNames);
+                    if (!isset($groupPositions[$groupName])) {
+                        $groupPositions[$groupName] = count($groupNames);
+                        $groupNames[]               = $groupName;
                     }
 
-                    $groups[$methodName][] = $groupNames[$groupName];
+                    $groups[$methodName][] = $groupPositions[$groupName];
                 }
             }
 
@@ -221,7 +234,7 @@ final class TestIndex
                 [
                     'version' => self::VERSION,
                     'phpunit' => Version::id(),
-                    'groups'  => array_keys($groupNames),
+                    'groups'  => $groupNames,
                     'entries' => $entries,
                 ],
             ),
@@ -230,7 +243,7 @@ final class TestIndex
     }
 
     /**
-     * @param list<non-empty-string> $groupNames
+     * @param array<int, non-empty-string> $groupNames
      */
     private static function entryFromArray(array $groupNames, mixed $entry): ?TestIndexEntry
     {
