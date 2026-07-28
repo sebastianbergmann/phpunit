@@ -232,11 +232,13 @@ final readonly class TestSuiteBuilder
 
                 $result = $suite;
             }
+            // @codeCoverageIgnoreStart
         } catch (Throwable $t) {
             $this->skipper->abortRecording();
 
             throw $t;
         }
+        // @codeCoverageIgnoreEnd
 
         $this->skipper->stopRecording();
 
