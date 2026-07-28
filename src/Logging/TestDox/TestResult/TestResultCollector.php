@@ -12,6 +12,7 @@ namespace PHPUnit\Logging\TestDox;
 use function array_merge;
 use function assert;
 use function is_subclass_of;
+use function strnatcasecmp;
 use function uasort;
 use function uksort;
 use function usort;
@@ -135,8 +136,10 @@ final class TestResultCollector
                     return 0;
                 }
 
-                return $aList[0]->test()->testDox()->prettifiedClassName()
-                    <=> $bList[0]->test()->testDox()->prettifiedClassName();
+                return strnatcasecmp(
+                    $aList[0]->test()->testDox()->prettifiedClassName(),
+                    $bList[0]->test()->testDox()->prettifiedClassName(),
+                );
             },
         );
 
