@@ -32,8 +32,9 @@ use PHPUnit\Framework\TestStatus\TestStatus;
 final class TestRunHistoryHandler
 {
     private readonly TestRunHistory $testRunHistory;
-    private ?HRTime $time  = null;
-    private int $testSuite = 0;
+    private ?HRTime $time        = null;
+    private bool $testWasSkipped = false;
+    private int $testSuite       = 0;
 
     /**
      * A status loaded from a previous run must always be replaced by the
@@ -68,7 +69,8 @@ final class TestRunHistoryHandler
 
     public function testPrepared(Prepared $event): void
     {
-        $this->time = $event->telemetryInfo()->time();
+        $this->time           = $event->telemetryInfo()->time();
+        $this->testWasSkipped = false;
     }
 
     public function testMarkedIncomplete(MarkedIncomplete $event): void
@@ -114,10 +116,6 @@ final class TestRunHistoryHandler
         $this->testRunHistory->remove($id);
     }
 
-    /**
-     * @throws \PHPUnit\Event\InvalidArgumentException
-     * @throws InvalidArgumentException
-     */
     public function testSkipped(Skipped $event): void
     {
         $this->recordStatus(
@@ -125,7 +123,7 @@ final class TestRunHistoryHandler
             TestStatus::skipped($event->message()),
         );
 
-        $this->testRunHistory->setTime(TestRunHistoryId::fromTest($event->test()), $this->duration($event));
+        $this->testWasSkipped = true;
     }
 
     /**
@@ -134,9 +132,15 @@ final class TestRunHistoryHandler
      */
     public function testFinished(Finished $event): void
     {
-        $this->testRunHistory->setTime(TestRunHistoryId::fromTest($event->test()), $this->duration($event));
+        // The duration of a skipped test measures the time to reach the skip,
+        // not the cost of running the test; it must not replace a duration
+        // that was measured when the test actually ran
+        if (!$this->testWasSkipped) {
+            $this->testRunHistory->setTime(TestRunHistoryId::fromTest($event->test()), $this->duration($event));
+        }
 
-        $this->time = null;
+        $this->time           = null;
+        $this->testWasSkipped = false;
     }
 
     private function recordStatus(TestRunHistoryId $id, TestStatus $status): void

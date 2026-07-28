@@ -17,6 +17,7 @@ use PHPUnit\Event\Code\ThrowableBuilder;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\Failed;
+use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\MarkedIncomplete;
 use PHPUnit\Event\Test\Passed;
 use PHPUnit\Event\Test\Prepared;
@@ -204,7 +205,7 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
         $this->assertTrue($cache->status(TestRunHistoryId::fromTest($test))->isFailure());
     }
 
-    public function testSkippedWithoutPreparedRecordsZeroDuration(): void
+    public function testSkippedWithoutPreparedDoesNotRecordDuration(): void
     {
         $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-test.cache');
         $handler = new TestRunHistoryHandler($cache, new Facade);
@@ -222,5 +223,58 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
 
         $this->assertTrue($cache->status($id)->isSkipped());
         $this->assertSame(0.0, $cache->time($id));
+    }
+
+    public function testSkippedDoesNotOverwriteTimeFromPreviousRun(): void
+    {
+        $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-test.cache');
+        $handler = new TestRunHistoryHandler($cache, new Facade);
+
+        $test = $this->testValueObject();
+        $id   = TestRunHistoryId::fromTest($test);
+
+        $cache->setTime($id, 5.0);
+
+        $handler->testPrepared(new Prepared($this->telemetryInfo(), $test));
+        $handler->testSkipped(new Skipped($this->telemetryInfo(), $test, 'not applicable'));
+        $handler->testFinished(new Finished($this->telemetryInfo(), $test, 0));
+
+        $this->assertSame(5.0, $cache->time($id));
+    }
+
+    public function testFinishedRecordsTimeWhenTestWasNotSkipped(): void
+    {
+        $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-test.cache');
+        $handler = new TestRunHistoryHandler($cache, new Facade);
+
+        $test = $this->testValueObject();
+        $id   = TestRunHistoryId::fromTest($test);
+
+        $cache->setTime($id, 5.0);
+
+        $handler->testPrepared(new Prepared($this->telemetryInfo(), $test));
+        $handler->testFinished(new Finished($this->telemetryInfo(), $test, 1));
+
+        $this->assertLessThan(5.0, $cache->time($id));
+    }
+
+    public function testFinishedRecordsTimeForTestRunAfterSkippedTest(): void
+    {
+        $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-test.cache');
+        $handler = new TestRunHistoryHandler($cache, new Facade);
+
+        $test = $this->testValueObject();
+        $id   = TestRunHistoryId::fromTest($test);
+
+        $handler->testPrepared(new Prepared($this->telemetryInfo(), $test));
+        $handler->testSkipped(new Skipped($this->telemetryInfo(), $test, 'not applicable'));
+        $handler->testFinished(new Finished($this->telemetryInfo(), $test, 0));
+
+        $cache->setTime($id, 5.0);
+
+        $handler->testPrepared(new Prepared($this->telemetryInfo(), $test));
+        $handler->testFinished(new Finished($this->telemetryInfo(), $test, 1));
+
+        $this->assertLessThan(5.0, $cache->time($id));
     }
 }
