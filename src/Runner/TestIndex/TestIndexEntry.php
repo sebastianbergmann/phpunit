@@ -81,9 +81,11 @@ final readonly class TestIndexEntry
 
             $methodName = $method->getName();
 
+            // @codeCoverageIgnoreStart
             if ($methodName === '') {
                 continue;
             }
+            // @codeCoverageIgnoreEnd
 
             $groups[$methodName] = (new Groups)->groups($class->getName(), $methodName);
 

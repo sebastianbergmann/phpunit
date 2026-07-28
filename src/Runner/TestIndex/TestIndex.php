@@ -105,9 +105,11 @@ final class TestIndex
     {
         $file = $class->getFileName();
 
+        // @codeCoverageIgnoreStart
         if ($file === false || $file === '') {
             return;
         }
+        // @codeCoverageIgnoreEnd
 
         $entry = TestIndexEntry::for($class, $this->hasher, $madePhpUnitWarn);
 
