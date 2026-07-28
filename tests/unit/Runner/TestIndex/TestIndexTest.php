@@ -18,6 +18,7 @@ use function json_decode;
 use function json_encode;
 use function mkdir;
 use function preg_replace;
+use function realpath;
 use function rmdir;
 use function scandir;
 use function strlen;
@@ -578,9 +579,20 @@ final class TestIndexTest extends TestCase
 
         mkdir($directory);
 
-        $this->directories[] = $directory;
+        /*
+         * The path is resolved so that it is the path PHP itself reports for
+         * the files in this directory: sys_get_temp_dir() can return a path
+         * that is not resolved, a short (8.3) path on Windows for instance,
+         * while reflection always reports the resolved one.
+         */
+        $resolved = realpath($directory);
 
-        return $directory;
+        $this->assertIsString($resolved);
+        $this->assertNotSame('', $resolved);
+
+        $this->directories[] = $resolved;
+
+        return $resolved;
     }
 
     /**
