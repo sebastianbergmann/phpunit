@@ -7,7 +7,12 @@ if (extension_loaded('xdebug') || extension_loaded('pcov')) {
 }
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-record-test-run-history';
+$cacheDirectory = sys_get_temp_dir() . '/phpunit-coverage-missing-coverage-driver';
+
+@mkdir($cacheDirectory, 0777, true);
+
+$_SERVER['argv'][] = '--cache-directory';
+$_SERVER['argv'][] = $cacheDirectory;
 $_SERVER['argv'][] = '--colors=never';
 $_SERVER['argv'][] = '--coverage-html';
 $_SERVER['argv'][] = 'my_coverage_folder';
