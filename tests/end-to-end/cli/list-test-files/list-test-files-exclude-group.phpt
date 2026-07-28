@@ -2,7 +2,7 @@
 phpunit --list-test-files --exclude-group one ../../_files/listing-tests-and-groups
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--list-test-files';
 $_SERVER['argv'][] = '--exclude-group';
 $_SERVER['argv'][] = 'one';

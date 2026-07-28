@@ -2,7 +2,7 @@
 Test Runner exits with shell exit code indicating success when a test triggered a self deprecation and --fail-on-deprecation as well as --do-not-fail-on-self-deprecation are used
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/_files/deprecation-trigger/phpunit.xml';
 $_SERVER['argv'][] = '--debug';

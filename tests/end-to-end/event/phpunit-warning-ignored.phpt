@@ -2,7 +2,7 @@
 The right events are emitted in the right order for a test that runs code which triggers a PHPUnit warning
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = __DIR__ . '/_files/PhpunitWarningIgnoredTest.php';
 

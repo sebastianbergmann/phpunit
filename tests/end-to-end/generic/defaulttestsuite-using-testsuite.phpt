@@ -2,7 +2,7 @@
 phpunit --testdox --configuration=__DIR__.'/../_files/configuration.defaulttestsuite.xml' --testsuite 'First'
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-progress';
 $_SERVER['argv'][] = '--testdox';
 $_SERVER['argv'][] = '--configuration';

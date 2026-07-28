@@ -201,33 +201,33 @@ final class BuilderTest extends TestCase
         $configuration->cacheDirectory();
     }
 
-    #[TestDox('--cache-result')]
-    public function testCacheResult(): void
+    #[TestDox('--record-test-run-history')]
+    public function testRecordTestRunHistory(): void
     {
-        $configuration = (new Builder)->fromParameters(['--cache-result']);
+        $configuration = (new Builder)->fromParameters(['--record-test-run-history']);
 
-        $this->assertTrue($configuration->hasCacheResult());
-        $this->assertTrue($configuration->cacheResult());
+        $this->assertTrue($configuration->hasRecordTestRunHistory());
+        $this->assertTrue($configuration->recordTestRunHistory());
     }
 
-    #[TestDox('--do-not-cache-result')]
-    public function testDoNotCacheResult(): void
+    #[TestDox('--do-not-record-test-run-history')]
+    public function testDoNotRecordTestRunHistory(): void
     {
-        $configuration = (new Builder)->fromParameters(['--do-not-cache-result']);
+        $configuration = (new Builder)->fromParameters(['--do-not-record-test-run-history']);
 
-        $this->assertTrue($configuration->hasCacheResult());
-        $this->assertFalse($configuration->cacheResult());
+        $this->assertTrue($configuration->hasRecordTestRunHistory());
+        $this->assertFalse($configuration->recordTestRunHistory());
     }
 
-    public function testCacheResultMayNotBeConfigured(): void
+    public function testRecordTestRunHistoryMayNotBeConfigured(): void
     {
         $configuration = (new Builder)->fromParameters([]);
 
-        $this->assertFalse($configuration->hasCacheResult());
+        $this->assertFalse($configuration->hasRecordTestRunHistory());
 
         $this->expectException(Exception::class);
 
-        $configuration->cacheResult();
+        $configuration->recordTestRunHistory();
     }
 
     #[TestDox('--columns <n>')]

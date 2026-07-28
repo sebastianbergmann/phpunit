@@ -3,7 +3,7 @@ Test that depends on a retried test runs when a retry succeeds
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = __DIR__ . '/_files/DependsOnRetriedTest.php';
 

@@ -4,7 +4,7 @@ phpunit --testdox-text: Test classes whose prettified names collide are not merg
 <?php declare(strict_types=1);
 $output = tempnam(sys_get_temp_dir(), __FILE__);
 
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--no-output';
 $_SERVER['argv'][] = '--testdox-text';

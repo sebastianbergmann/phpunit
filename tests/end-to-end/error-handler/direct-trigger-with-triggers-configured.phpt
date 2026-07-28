@@ -2,7 +2,7 @@
 When triggers are configured but E_USER_DEPRECATED is triggered bypassing them, guessDeprecationFrame returns null
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/_files/direct-trigger-with-triggers-configured';

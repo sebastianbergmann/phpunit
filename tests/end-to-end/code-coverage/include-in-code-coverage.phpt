@@ -7,7 +7,7 @@ require __DIR__ . '/../../_files/skip-if-requires-code-coverage-driver.php';
 pcov.directory=tests/end-to-end/code-coverage/_files/include-in-code-coverage
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--colors=never';
 $_SERVER['argv'][] = '--coverage-text';
 $_SERVER['argv'][] = '--configuration';

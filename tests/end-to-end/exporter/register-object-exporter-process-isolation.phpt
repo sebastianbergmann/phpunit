@@ -2,7 +2,7 @@
 An object exporter registered using TestCase::registerObjectExporter() is used for failure output when the test is run in a separate process
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--bootstrap';
 $_SERVER['argv'][] = __DIR__ . '/_files/bootstrap.php';

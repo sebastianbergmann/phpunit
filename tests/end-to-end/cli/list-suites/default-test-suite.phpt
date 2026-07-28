@@ -2,7 +2,7 @@
 phpunit --configuration ../_files/multiple-testsuites/default-test-suite.xml --list-suites
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/../../_files/multiple-testsuites/default-test-suite.xml';
 $_SERVER['argv'][] = '--list-suites';

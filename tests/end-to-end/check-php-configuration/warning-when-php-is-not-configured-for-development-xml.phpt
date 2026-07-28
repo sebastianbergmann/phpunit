@@ -12,7 +12,7 @@ memory_limit=-1
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/_files/warn-when-php-is-not-configured-for-development/phpunit.xml';
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = __DIR__ . '/../_files/basic/SuccessTest.php';
 
 require_once __DIR__ . '/../../bootstrap.php';

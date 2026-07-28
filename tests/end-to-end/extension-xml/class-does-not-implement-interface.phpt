@@ -2,7 +2,7 @@
 Test runner exits with error when configured extension class does not implement the interface
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/_files/class-does-not-implement-interface/phpunit.xml';
 

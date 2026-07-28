@@ -2,7 +2,7 @@
 No test runner warning is emitted for failOnSelfDeprecation="false" when --do-not-fail-on-deprecation disables failing on deprecations
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = '--do-not-fail-on-deprecation';
 $_SERVER['argv'][] = '--configuration';

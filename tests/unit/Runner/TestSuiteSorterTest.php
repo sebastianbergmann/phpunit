@@ -16,8 +16,8 @@ use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Framework\TestSuite;
-use PHPUnit\Runner\ResultCache\DefaultResultCache;
-use PHPUnit\Runner\ResultCache\ResultCacheId;
+use PHPUnit\Runner\TestRunHistory\DefaultTestRunHistory;
+use PHPUnit\Runner\TestRunHistory\TestRunHistoryId;
 use PHPUnit\TestFixture\LargeGroupAttributesTest;
 use PHPUnit\TestFixture\MediumGroupAttributesTest;
 use PHPUnit\TestFixture\NonReorderableTest;
@@ -144,10 +144,10 @@ final class TestSuiteSorterTest extends TestCase
         $suite = TestSuite::empty('test');
         $suite->setTests([$small, $medium, $large]);
 
-        $cache = new DefaultResultCache(sys_get_temp_dir());
-        $cache->setTime(ResultCacheId::fromReorderable($small), 0.1);
-        $cache->setTime(ResultCacheId::fromReorderable($medium), 0.2);
-        $cache->setTime(ResultCacheId::fromReorderable($large), 0.3);
+        $cache = new DefaultTestRunHistory(sys_get_temp_dir());
+        $cache->setTime(TestRunHistoryId::fromReorderable($small), 0.1);
+        $cache->setTime(TestRunHistoryId::fromReorderable($medium), 0.2);
+        $cache->setTime(TestRunHistoryId::fromReorderable($large), 0.3);
 
         $sorter = new TestSuiteSorter($cache);
         $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_DEFAULT, false, TestSuiteSorter::ORDER_DEFECTS_FIRST);
@@ -168,8 +168,8 @@ final class TestSuiteSorterTest extends TestCase
         $suite = TestSuite::empty('test');
         $suite->setTests([$small, $medium, $large]);
 
-        $cache = new DefaultResultCache(sys_get_temp_dir());
-        $cache->setStatus(ResultCacheId::fromReorderable($large), TestStatus::skipped());
+        $cache = new DefaultTestRunHistory(sys_get_temp_dir());
+        $cache->setStatus(TestRunHistoryId::fromReorderable($large), TestStatus::skipped());
 
         $sorter = new TestSuiteSorter($cache);
         $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_DEFAULT, false, TestSuiteSorter::ORDER_DEFECTS_FIRST);
@@ -190,8 +190,8 @@ final class TestSuiteSorterTest extends TestCase
         $suite = TestSuite::empty('test');
         $suite->setTests([$small, $medium, $large]);
 
-        $cache = new DefaultResultCache(sys_get_temp_dir());
-        $cache->setStatus(ResultCacheId::fromReorderable($large), TestStatus::incomplete());
+        $cache = new DefaultTestRunHistory(sys_get_temp_dir());
+        $cache->setStatus(TestRunHistoryId::fromReorderable($large), TestStatus::incomplete());
 
         $sorter = new TestSuiteSorter($cache);
         $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_DEFAULT, false, TestSuiteSorter::ORDER_DEFECTS_FIRST);
@@ -212,8 +212,8 @@ final class TestSuiteSorterTest extends TestCase
         $suite = TestSuite::empty('test');
         $suite->setTests([$small, $medium, $large]);
 
-        $cache = new DefaultResultCache(sys_get_temp_dir());
-        $cache->setStatus(ResultCacheId::fromReorderable($large), TestStatus::failure());
+        $cache = new DefaultTestRunHistory(sys_get_temp_dir());
+        $cache->setStatus(TestRunHistoryId::fromReorderable($large), TestStatus::failure());
 
         $sorter = new TestSuiteSorter($cache);
         $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_DEFAULT, false, TestSuiteSorter::ORDER_DEFECTS_FIRST);
@@ -239,11 +239,11 @@ final class TestSuiteSorterTest extends TestCase
         $parent = TestSuite::empty('test');
         $parent->setTests([$unitSuite, $endToEndSuite]);
 
-        $cache = new DefaultResultCache(sys_get_temp_dir());
-        $cache->setStatus(ResultCacheId::fromReorderable($unitTest), TestStatus::failure());
-        $cache->setStatus(ResultCacheId::fromReorderable($endToEndTest), TestStatus::failure());
-        $cache->setTime(ResultCacheId::fromReorderable($unitTest), 0.01);
-        $cache->setTime(ResultCacheId::fromReorderable($endToEndTest), 10.0);
+        $cache = new DefaultTestRunHistory(sys_get_temp_dir());
+        $cache->setStatus(TestRunHistoryId::fromReorderable($unitTest), TestStatus::failure());
+        $cache->setStatus(TestRunHistoryId::fromReorderable($endToEndTest), TestStatus::failure());
+        $cache->setTime(TestRunHistoryId::fromReorderable($unitTest), 0.01);
+        $cache->setTime(TestRunHistoryId::fromReorderable($endToEndTest), 10.0);
 
         $sorter = new TestSuiteSorter($cache);
         $sorter->reorderTestsInSuite($parent, TestSuiteSorter::ORDER_DEFAULT, false, TestSuiteSorter::ORDER_DEFECTS_FIRST);
@@ -271,8 +271,8 @@ final class TestSuiteSorterTest extends TestCase
         $parent = TestSuite::empty('parent');
         $parent->setTests([$outerPassing, $outerFailing]);
 
-        $cache = new DefaultResultCache(sys_get_temp_dir());
-        $cache->setStatus(ResultCacheId::fromReorderable($failingTest), TestStatus::failure());
+        $cache = new DefaultTestRunHistory(sys_get_temp_dir());
+        $cache->setStatus(TestRunHistoryId::fromReorderable($failingTest), TestStatus::failure());
 
         $sorter = new TestSuiteSorter($cache);
         $sorter->reorderTestsInSuite($parent, TestSuiteSorter::ORDER_DEFAULT, false, TestSuiteSorter::ORDER_DEFECTS_FIRST);
@@ -308,8 +308,8 @@ final class TestSuiteSorterTest extends TestCase
         $parent = TestSuite::empty('parent');
         $parent->setTests([$passingClassSuite, $classSuite]);
 
-        $cache = new DefaultResultCache(sys_get_temp_dir());
-        $cache->setStatus(ResultCacheId::fromReorderable($failingDataSet), TestStatus::failure());
+        $cache = new DefaultTestRunHistory(sys_get_temp_dir());
+        $cache->setStatus(TestRunHistoryId::fromReorderable($failingDataSet), TestStatus::failure());
 
         $sorter = new TestSuiteSorter($cache);
         $sorter->reorderTestsInSuite($parent, TestSuiteSorter::ORDER_DEFAULT, false, TestSuiteSorter::ORDER_DEFECTS_FIRST);

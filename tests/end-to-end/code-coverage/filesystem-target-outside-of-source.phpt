@@ -2,7 +2,7 @@
 Filesystem code coverage targets that are outside of the code that is configured to be first-party code using <source> trigger a warning and are ignored
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--colors=never';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/_files/filesystem-target-outside-of-source';

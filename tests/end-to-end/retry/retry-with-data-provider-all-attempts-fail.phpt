@@ -3,7 +3,7 @@ A data set that exhausts all attempts is reported as a regular failure while oth
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = __DIR__ . '/_files/DataProviderAllAttemptsFailTest.php';
 
 require __DIR__ . '/../../bootstrap.php';

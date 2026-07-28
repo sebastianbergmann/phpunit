@@ -2,7 +2,7 @@
 Test runner warning is triggered when an exception is triggered in an extension's event subscriber
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/_files/exception-in-extension-subscriber/phpunit.xml';
 $_SERVER['argv'][] = '--extension';

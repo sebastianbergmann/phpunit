@@ -2,7 +2,7 @@
 phpunit --display-incomplete --display-skipped --display-deprecations --display-errors --display-notices --display-warnings ../_files/OutcomesAndIssuesTest
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--display-incomplete';
 $_SERVER['argv'][] = '--display-skipped';

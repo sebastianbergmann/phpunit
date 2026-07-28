@@ -2,7 +2,7 @@
 phpunit ../../_files/ActualOutputTest.php
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--disallow-test-output';
 $_SERVER['argv'][] = __DIR__ . '/../../_files/ActualOutputTest.php';

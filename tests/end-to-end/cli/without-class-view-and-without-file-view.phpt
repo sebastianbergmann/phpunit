@@ -2,7 +2,7 @@
 phpunit --without-class-view --without-file-view ../../_files/BankAccountTest.php
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--without-class-view';
 $_SERVER['argv'][] = '--without-file-view';

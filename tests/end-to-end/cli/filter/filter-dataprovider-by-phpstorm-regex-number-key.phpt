@@ -8,7 +8,7 @@ $process = proc_open(
     [
         PHP_BINARY,
         __DIR__ . '/../../../../phpunit',
-        '--do-not-cache-result',
+        '--do-not-record-test-run-history',
         '--no-configuration',
         '--filter',
         'PHPUnit\\\\TestFixture\\\\DataProviderFilterTest',
@@ -42,7 +42,7 @@ if (preg_match('#php_qn://(?:[A-Z]:)?[^:]*::\\\\(.*)#', $matches[1], $locationHi
 }
 
 // Simulate how PHPStorm runs an individual numbered test case
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--filter';
 $_SERVER['argv'][] = '/' . preg_quote($locationHintMatches[1], '/') . '$/';

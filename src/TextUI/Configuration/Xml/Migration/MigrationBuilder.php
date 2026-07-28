@@ -91,6 +91,10 @@ final readonly class MigrationBuilder
         '13.2' => [
             RenameExecutionOrderOptionsDurationAndSize::class,
         ],
+
+        '13.3' => [
+            RenameCacheResultAttribute::class,
+        ],
     ];
 
     /**

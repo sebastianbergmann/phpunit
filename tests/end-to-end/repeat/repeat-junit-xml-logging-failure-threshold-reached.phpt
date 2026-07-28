@@ -5,7 +5,7 @@
 $junitFile = tempnam(sys_get_temp_dir(), 'phpunit_repeat_junit_');
 
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-output';
 $_SERVER['argv'][] = '--log-junit';
 $_SERVER['argv'][] = $junitFile;

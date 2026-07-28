@@ -22,6 +22,7 @@ All notable changes of the PHPUnit 13.3 release series are documented in this fi
 * [phpunit/php-code-coverage #1140](https://github.com/sebastianbergmann/php-code-coverage/pull/1140): Class-oriented HTML report
 * [phpunit/php-code-coverage #1141](https://github.com/sebastianbergmann/php-code-coverage/pull/1141): Improve visualization of branch coverage and path coverage in the HTML report
 * [phpunit/php-code-coverage #1153](https://github.com/sebastianbergmann/php-code-coverage/pull/1153): Filter HTML code coverage report by test size
+* `--record-test-run-history` and `--do-not-record-test-run-history` CLI options as well as the `recordTestRunHistory` attribute for the XML configuration file to control whether the status and duration of each test are recorded for use by `--order-by defects` and `--order-by duration-*`
 * `--without-class-view` CLI option and `classView` attribute for the XML configuration file to disable the [class-oriented view](https://github.com/sebastianbergmann/php-code-coverage/pull/1140) in the HTML code coverage report
 * `--without-file-view` CLI option and `fileView` attribute for the XML configuration file to disable the file-oriented view in the HTML code coverage report
 
@@ -31,6 +32,15 @@ All notable changes of the PHPUnit 13.3 release series are documented in this fi
 * [phpunit/php-code-coverage #1259](https://github.com/sebastianbergmann/php-code-coverage/pull/1259): Degrade gracefully when a source file cannot be parsed
 * The test runner no longer crashes when an attribute cannot be instantiated
 * Improved TestDox HTML report
+* The feature formerly named "test result cache" is now named "test run history"; when a cache directory is configured, the file it is stored in is now named `test-run-history` instead of `test-results`
+
+### Deprecated
+
+* `--cache-result` CLI option, use `--record-test-run-history` instead
+* `--do-not-cache-result` CLI option, use `--do-not-record-test-run-history` instead
+* `cacheResult` XML configuration attribute, use `recordTestRunHistory` instead
+* `PHPUnit\TextUI\Configuration\Configuration::cacheResult()`, use `PHPUnit\TextUI\Configuration\Configuration::recordTestRunHistory()` instead
+* `PHPUnit\TextUI\Configuration\Configuration::testResultCacheFile()`, use `PHPUnit\TextUI\Configuration\Configuration::testRunHistoryFile()` instead
 
 ### Fixed
 

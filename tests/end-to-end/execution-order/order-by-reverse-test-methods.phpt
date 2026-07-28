@@ -3,7 +3,7 @@ Reverse order: Test methods
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--order-by';
 $_SERVER['argv'][] = 'reverse';
 $_SERVER['argv'][] = '--debug';

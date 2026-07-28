@@ -2,7 +2,7 @@
 phpunit --list-tests ../../_files/listing-tests-and-groups
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--list-tests';
 $_SERVER['argv'][] = __DIR__ . '/../../_files/listing-tests-and-groups';

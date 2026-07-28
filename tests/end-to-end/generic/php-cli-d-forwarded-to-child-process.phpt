@@ -9,7 +9,7 @@ $process = proc_open(
         '-d',
         'auto_prepend_file=' . __DIR__ . '/_files/auto_prepend_file.php',
         __DIR__ . '/../../../phpunit',
-        '--do-not-cache-result',
+        '--do-not-record-test-run-history',
         '--no-configuration',
         __DIR__ . '/_files/AutoPrependFileTest.php',
     ],

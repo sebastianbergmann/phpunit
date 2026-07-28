@@ -2,7 +2,7 @@
 Custom IssueTriggerResolver that returns null defers to next resolver in chain
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/_files/issue-trigger-resolver-skipped';

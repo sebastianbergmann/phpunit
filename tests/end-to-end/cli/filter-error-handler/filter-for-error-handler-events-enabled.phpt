@@ -2,7 +2,7 @@
 phpunit --configuration ../../_files/filter-error-handler/filter-enabled.xml
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/../../_files/filter-error-handler/filter-enabled.xml';
 $_SERVER['argv'][] = '--display-deprecations';

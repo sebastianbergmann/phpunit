@@ -2,7 +2,7 @@
 Mixing DataProvider and TestWith attributes triggers a warning
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = __DIR__ . '/../_files/data-provider/MixDataProviderAndTestWithTest.php';
 

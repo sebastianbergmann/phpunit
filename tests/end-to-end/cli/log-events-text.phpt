@@ -4,7 +4,7 @@ phpunit --no-output --log-events-text logfile.txt
 <?php declare(strict_types=1);
 $traceFile = tempnam(sys_get_temp_dir(), __FILE__);
 
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--no-output';
 $_SERVER['argv'][] = '--log-events-text';

@@ -4,7 +4,7 @@ https://github.com/sebastianbergmann/phpunit/issues/5258
 <?php declare(strict_types=1);
 $junitFile = tempnam(sys_get_temp_dir(), __FILE__);
 
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--log-junit';
 $_SERVER['argv'][] = $junitFile;

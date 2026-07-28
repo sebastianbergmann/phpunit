@@ -3,7 +3,7 @@ Test that depends on a retried test with data provider is skipped when a data se
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = __DIR__ . '/_files/DependsOnRetriedDataProviderFailureTest.php';
 

@@ -64,10 +64,10 @@ use PHPUnit\Runner\GarbageCollection\GarbageCollectionHandler;
 use PHPUnit\Runner\IssueTriggerResolver\Resolver;
 use PHPUnit\Runner\PhpConfiguration\PhpConfigurationChecker;
 use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
-use PHPUnit\Runner\ResultCache\DefaultResultCache;
-use PHPUnit\Runner\ResultCache\NullResultCache;
-use PHPUnit\Runner\ResultCache\ResultCache;
-use PHPUnit\Runner\ResultCache\ResultCacheHandler;
+use PHPUnit\Runner\TestRunHistory\DefaultTestRunHistory;
+use PHPUnit\Runner\TestRunHistory\NullTestRunHistory;
+use PHPUnit\Runner\TestRunHistory\TestRunHistory;
+use PHPUnit\Runner\TestRunHistory\TestRunHistoryHandler;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\Version;
 use PHPUnit\TestRunner\IssueFilter;
@@ -194,7 +194,7 @@ final readonly class Application
 
             $testDoxResultCollector = $this->testDoxResultCollector($configuration);
 
-            $resultCache = $this->initializeTestResultCache($configuration);
+            $testRunHistory = $this->initializeTestRunHistory($configuration);
 
             if ($configuration->controlGarbageCollector()) {
                 new GarbageCollectionHandler(
@@ -259,7 +259,7 @@ final readonly class Application
 
                 $runner->run(
                     $configuration,
-                    $resultCache,
+                    $testRunHistory,
                     $testSuite,
                 );
             }
@@ -759,17 +759,17 @@ final readonly class Application
         return null;
     }
 
-    private function initializeTestResultCache(Configuration $configuration): ResultCache
+    private function initializeTestRunHistory(Configuration $configuration): TestRunHistory
     {
-        if ($configuration->cacheResult()) {
-            $cache = new DefaultResultCache($configuration->testResultCacheFile());
+        if ($configuration->recordTestRunHistory()) {
+            $testRunHistory = new DefaultTestRunHistory($configuration->testRunHistoryFile());
 
-            new ResultCacheHandler($cache, EventFacade::instance());
+            new TestRunHistoryHandler($testRunHistory, EventFacade::instance());
 
-            return $cache;
+            return $testRunHistory;
         }
 
-        return new NullResultCache;
+        return new NullTestRunHistory;
     }
 
     private function configureBaseline(Configuration $configuration): ?BaselineGenerator

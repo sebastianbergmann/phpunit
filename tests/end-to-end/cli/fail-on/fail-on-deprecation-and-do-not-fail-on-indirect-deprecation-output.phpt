@@ -2,7 +2,7 @@
 Details for deprecations that do not cause the test run to fail are displayed when --fail-on-deprecation and --do-not-fail-on-indirect-deprecation are used
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/_files/deprecation-trigger/phpunit.xml';
 $_SERVER['argv'][] = '--fail-on-deprecation';

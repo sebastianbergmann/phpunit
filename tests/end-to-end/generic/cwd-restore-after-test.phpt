@@ -4,7 +4,7 @@ phpunit ../../_files/CwdRestoreTest.php
 <?php declare(strict_types=1);
 $cwd = getcwd();
 
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--no-output';
 $_SERVER['argv'][] = __DIR__ . '/../../_files/CwdRestoreTest.php';

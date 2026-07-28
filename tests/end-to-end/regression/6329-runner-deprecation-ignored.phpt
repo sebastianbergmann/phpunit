@@ -2,7 +2,7 @@
 https://github.com/sebastianbergmann/phpunit/issues/6329
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--display-phpunit-deprecations';
 $_SERVER['argv'][] = __DIR__ . '/6329/Issue6329DeprecationIgnoredTest.php';

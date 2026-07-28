@@ -7,7 +7,7 @@ $process = proc_open(
     [
         PHP_BINARY,
         __DIR__ . '/../../../phpunit',
-        '--do-not-cache-result',
+        '--do-not-record-test-run-history',
         '--no-configuration',
         '--filter',
         'testWithoutMessage',

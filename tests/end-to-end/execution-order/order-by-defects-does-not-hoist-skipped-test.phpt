@@ -1,14 +1,14 @@
 --TEST--
-Order by defects (with result cache): Skipped tests are not hoisted to the front
+Order by defects (with test run history): Skipped tests are not hoisted to the front
 --FILE--
 <?php declare(strict_types=1);
-$testResultsFile = sys_get_temp_dir() . '/test-results';
+$testRunHistoryFile = sys_get_temp_dir() . '/test-run-history';
 
-if (file_exists($testResultsFile)) {
-    unlink($testResultsFile);
+if (file_exists($testRunHistoryFile)) {
+    unlink($testRunHistoryFile);
 }
 
-copy(__DIR__ . '/fixture/test-methods-with-skipped-and-failing/test-results', $testResultsFile);
+copy(__DIR__ . '/fixture/test-methods-with-skipped-and-failing/test-run-history', $testRunHistoryFile);
 
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--cache-directory';
@@ -22,7 +22,7 @@ require __DIR__ . '/../../bootstrap.php';
 
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 
-unlink($testResultsFile);
+unlink($testRunHistoryFile);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured

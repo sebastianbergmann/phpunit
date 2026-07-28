@@ -162,8 +162,8 @@
   [32m--do-not-fail-on-incomplete         [0m Do not signal failure using shell exit
                                        code when a test was marked incomplete
 
-  [32m--cache-result                      [0m Write test results to cache file
-  [32m--do-not-cache-result               [0m Do not write test results to cache file
+  [32m--record-test-run-history           [0m Record test run history
+  [32m--do-not-record-test-run-history    [0m Do not record test run history
 
   [32m--warn-when-php-is-not-configured-for-development[0m
                                        Trigger a test runner warning when PHP

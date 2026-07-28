@@ -2,7 +2,7 @@
 The right events are emitted in the right order for a test that uses a deprecated PHPUnit feature
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = __DIR__ . '/_files/DeprecatedPhpunitFeatureTest.php';

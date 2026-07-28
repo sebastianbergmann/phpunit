@@ -4,7 +4,7 @@ https://github.com/sebastianbergmann/phpunit/issues/6294
 display_errors=1
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = __DIR__ . '/6294/IssueTest6294.php';
 

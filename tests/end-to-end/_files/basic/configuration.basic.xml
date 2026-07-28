@@ -2,7 +2,7 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="../../../../phpunit.xsd"
          colors="false"
-         cacheResult="false">
+         recordTestRunHistory="false">
     <testsuites>
         <testsuite name="basic">
             <directory suffix="Test.php">unit</directory>

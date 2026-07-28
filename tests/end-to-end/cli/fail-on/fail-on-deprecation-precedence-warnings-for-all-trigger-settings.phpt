@@ -2,7 +2,7 @@
 A test runner warning is emitted for each trigger-specific failOn*Deprecation setting that is explicitly set to "false" in the XML configuration file while failOnDeprecation="true" is configured
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/../../_files/fail-on-deprecation-precedence/phpunit-all-trigger-fail-on-false.xml';
 

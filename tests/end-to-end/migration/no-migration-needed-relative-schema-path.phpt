@@ -2,7 +2,7 @@
 Configuration migration is not possible when the configuration file uses a relative schema path and validates against the current schema
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--migrate-configuration';
 
 chdir(sys_get_temp_dir());

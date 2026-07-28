@@ -2,7 +2,7 @@
 phpunit --configuration _files/phpunit.xml --list-groups
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = \realpath(__DIR__ . '/_files/phpunit.xml');

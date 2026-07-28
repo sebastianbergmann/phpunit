@@ -7,7 +7,7 @@ $baseline = __DIR__ . '/../_files/baseline/generate-baseline/baseline.xml';
 $baseline = realpath($baseline);
 @unlink($baseline);
 
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--generate-baseline';
 $_SERVER['argv'][] = $baseline;
 $_SERVER['argv'][] = '--configuration';

@@ -269,8 +269,8 @@ final class Help
                 ['arg'    => '--do-not-fail-on-incomplete', 'desc' => 'Do not signal failure using shell exit code when a test was marked incomplete'],
                 ['spacer' => ''],
 
-                ['arg'    => '--cache-result', 'desc' => 'Write test results to cache file'],
-                ['arg'    => '--do-not-cache-result', 'desc' => 'Do not write test results to cache file'],
+                ['arg'    => '--record-test-run-history', 'desc' => 'Record test run history'],
+                ['arg'    => '--do-not-record-test-run-history', 'desc' => 'Do not record test run history'],
                 ['spacer' => ''],
 
                 ['arg'    => '--warn-when-php-is-not-configured-for-development', 'desc' => 'Trigger a test runner warning when PHP is not configured for development'],

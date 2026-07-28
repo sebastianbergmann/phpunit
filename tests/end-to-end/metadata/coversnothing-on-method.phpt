@@ -2,7 +2,7 @@
 #[CoversNothing] on a test method suppresses coverage for that method without warning when #[CoversClass] is used on the test class
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/../_files/code-coverage-targeting/phpunit.xml';
 $_SERVER['argv'][] = __DIR__ . '/../_files/code-coverage-targeting/tests/CoversClassMethodCoversNothingTest.php';

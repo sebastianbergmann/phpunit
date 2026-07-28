@@ -97,8 +97,8 @@ Execution:
   --do-not-fail-on-skipped             Do not signal failure using shell exit code when a test was skipped
   --do-not-fail-on-incomplete          Do not signal failure using shell exit code when a test was marked incomplete
 
-  --cache-result                       Write test results to cache file
-  --do-not-cache-result                Do not write test results to cache file
+  --record-test-run-history            Record test run history
+  --do-not-record-test-run-history     Do not record test run history
 
   --warn-when-php-is-not-configured-for-development
                                        Trigger a test runner warning when PHP is not configured for development

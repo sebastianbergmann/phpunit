@@ -2,7 +2,7 @@
 E_USER_DEPRECATED triggered inside array_map callback handles stack frames without file
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = __DIR__ . '/_files/UserDeprecationViaArrayMapTest.php';

@@ -42,6 +42,8 @@ final class Builder
         'bootstrap=',
         'cache-result',
         'do-not-cache-result',
+        'record-test-run-history',
+        'do-not-record-test-run-history',
         'cache-directory=',
         'check-version',
         'check-php-configuration',
@@ -194,6 +196,9 @@ final class Builder
      */
     private const array CONFLICTING_OPTIONS = [
         ['--cache-result', '--do-not-cache-result'],
+        ['--record-test-run-history', '--do-not-record-test-run-history'],
+        ['--cache-result', '--do-not-record-test-run-history'],
+        ['--record-test-run-history', '--do-not-cache-result'],
         ['--warn-when-php-is-not-configured-for-development', '--do-not-warn-when-php-is-not-configured-for-development'],
         ['--fail-on-deprecation', '--do-not-fail-on-deprecation'],
         ['--fail-on-self-deprecation', '--do-not-fail-on-self-deprecation'],
@@ -278,7 +283,7 @@ final class Builder
         $beStrictAboutChangesToGlobalState        = null;
         $bootstrap                                = null;
         $cacheDirectory                           = null;
-        $cacheResult                              = null;
+        $recordTestRunHistory                     = null;
         $checkPhpConfiguration                    = false;
         $checkVersion                             = false;
         $colors                                   = null;
@@ -447,12 +452,30 @@ final class Builder
                     break;
 
                 case '--cache-result':
-                    $cacheResult = true;
+                    $recordTestRunHistory = true;
+
+                    EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
+                        'The "--cache-result" CLI option is deprecated and will be removed in PHPUnit 14. Use "--record-test-run-history" instead.',
+                    );
+
+                    break;
+
+                case '--record-test-run-history':
+                    $recordTestRunHistory = true;
 
                     break;
 
                 case '--do-not-cache-result':
-                    $cacheResult = false;
+                    $recordTestRunHistory = false;
+
+                    EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
+                        'The "--do-not-cache-result" CLI option is deprecated and will be removed in PHPUnit 14. Use "--do-not-record-test-run-history" instead.',
+                    );
+
+                    break;
+
+                case '--do-not-record-test-run-history':
+                    $recordTestRunHistory = false;
 
                     break;
 
@@ -1433,7 +1456,7 @@ final class Builder
             $beStrictAboutChangesToGlobalState,
             $bootstrap,
             $cacheDirectory,
-            $cacheResult,
+            $recordTestRunHistory,
             $checkPhpConfiguration,
             $warnWhenPhpIsNotConfiguredForDevelopment,
             $checkVersion,

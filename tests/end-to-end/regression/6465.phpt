@@ -6,7 +6,7 @@ $_SERVER['REQUEST_TIME_FLOAT'] = 1.0;
 $_SERVER['REQUEST_TIME']       = 1;
 $_SERVER['SCRIPT_FILENAME']    = '/fake/parent/script.php';
 
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = __DIR__ . '/6465/Issue6465Test.php';
 

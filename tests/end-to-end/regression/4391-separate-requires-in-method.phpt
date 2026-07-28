@@ -4,7 +4,7 @@ https://github.com/sebastianbergmann/phpunit/issues/4391
 disable_functions=proc_open
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = __DIR__ . '/4391/RunInSeparateProcessMethodTest.php';
 

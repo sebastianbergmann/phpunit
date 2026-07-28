@@ -2,7 +2,7 @@
 A previously registered error handler that checks error_reporting() dynamically observes the unmasked error reporting level
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = __DIR__ . '/_files/PreviousErrorHandlerErrorReportingTest.php';

@@ -6,7 +6,7 @@ use function PHPUnit\TestFixture\validate_and_print;
 
 $logfile = tempnam(sys_get_temp_dir(), __FILE__);
 
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--no-output';
 $_SERVER['argv'][] = '--display-warnings';

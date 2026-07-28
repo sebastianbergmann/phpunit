@@ -4,7 +4,7 @@ todo
 <?php declare(strict_types=1);
 $baseline = sys_get_temp_dir() . '/phpunit-test-baseline-' . uniqid() . '.xml';
 
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = '--generate-baseline';

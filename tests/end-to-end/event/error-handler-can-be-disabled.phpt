@@ -2,7 +2,7 @@
 The right events are emitted in the right order when PHPUnit's error handler is disabled
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = '--fail-on-notice';
 $_SERVER['argv'][] = '--configuration';

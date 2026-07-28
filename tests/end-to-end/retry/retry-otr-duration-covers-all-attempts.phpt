@@ -5,7 +5,7 @@
 $logfile = tempnam(sys_get_temp_dir(), 'phpunit_retry_otr_duration_');
 
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-output';
 $_SERVER['argv'][] = '--log-otr';
 $_SERVER['argv'][] = $logfile;

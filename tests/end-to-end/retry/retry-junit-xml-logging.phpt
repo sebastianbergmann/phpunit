@@ -5,7 +5,7 @@
 $junitFile = tempnam(sys_get_temp_dir(), 'phpunit_retry_junit_');
 
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--log-junit';
 $_SERVER['argv'][] = $junitFile;
 $_SERVER['argv'][] = __DIR__ . '/_files/PassesOnSecondAttemptTest.php';

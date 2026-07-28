@@ -2,7 +2,7 @@
 phpunit --compact ../_files/OutcomesAndIssuesTest (default display flags)
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--compact';
 $_SERVER['argv'][] = __DIR__ . '/../_files/OutcomesAndIssuesTest.php';

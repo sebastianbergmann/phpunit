@@ -2,7 +2,7 @@
 Test Runner triggers a PHPUnit warning when --fail-on-self-deprecation and --do-not-fail-on-self-deprecation are used together
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = '--fail-on-self-deprecation';

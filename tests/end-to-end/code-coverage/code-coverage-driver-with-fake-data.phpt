@@ -2,7 +2,7 @@
 A custom code coverage driver provides coverage data that is used for the code coverage report
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-progress';
 $_SERVER['argv'][] = '--colors=never';
 $_SERVER['argv'][] = '--configuration';

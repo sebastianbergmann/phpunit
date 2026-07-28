@@ -2,7 +2,7 @@
 GH-5842: Failing output expectation must not skip tearDown and handler restoration
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = __DIR__ . '/5842/Issue5842Test.php';
 

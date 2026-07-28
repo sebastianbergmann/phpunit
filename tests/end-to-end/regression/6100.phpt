@@ -2,7 +2,7 @@
 https://github.com/sebastianbergmann/phpunit/issues/6100
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--fail-on-deprecation';
 $_SERVER['argv'][] = '--stop-on-deprecation';

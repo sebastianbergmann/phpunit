@@ -2,7 +2,7 @@
 phpunit --teamcity ../../basic/unit/StatusTest.php
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/../_files/teamcity-warning/phpunit.xml';
 $_SERVER['argv'][] = '--teamcity';

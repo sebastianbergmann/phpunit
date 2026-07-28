@@ -2,7 +2,7 @@
 Deprecation triggered in first-party code using a configured deprecation trigger function is classified as self even when the first-party code was called from third-party code
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/_files/deprecation-trigger-called-from-third-party-code';

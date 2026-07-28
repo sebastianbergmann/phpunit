@@ -2,7 +2,7 @@
 Details for deprecations are displayed when --fail-on-deprecation is used
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--fail-on-deprecation';
 $_SERVER['argv'][] = '--fail-on-phpunit-deprecation';

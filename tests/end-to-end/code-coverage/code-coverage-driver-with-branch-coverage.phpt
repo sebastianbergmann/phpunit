@@ -2,7 +2,7 @@
 A custom code coverage driver that supports branch coverage but not path coverage can be used when only branch coverage is requested
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-progress';
 $_SERVER['argv'][] = '--colors=never';
 $_SERVER['argv'][] = '--configuration';

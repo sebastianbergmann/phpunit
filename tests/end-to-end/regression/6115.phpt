@@ -2,7 +2,7 @@
 https://github.com/sebastianbergmann/phpunit/issues/6115
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--testdox';
 $_SERVER['argv'][] = __DIR__ . '/6115/Issue6115Test.php';

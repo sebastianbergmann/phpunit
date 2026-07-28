@@ -7,7 +7,7 @@ pcov.directory=tests/end-to-end/regression/5351/src/
 require __DIR__ . '/../../_files/skip-if-requires-code-coverage-driver.php';
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--colors=never';
 $_SERVER['argv'][] = '--coverage-text';
 $_SERVER['argv'][] = '--configuration';

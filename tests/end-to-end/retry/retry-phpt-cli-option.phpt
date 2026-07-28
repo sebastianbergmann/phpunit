@@ -5,7 +5,7 @@ The --retry CLI option attempts a PHPT test up to N times, stopping at the first
 @unlink(sys_get_temp_dir() . '/phpunit-e2e-phpt-retry.marker');
 
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--retry';
 $_SERVER['argv'][] = '3';
 $_SERVER['argv'][] = '--debug';

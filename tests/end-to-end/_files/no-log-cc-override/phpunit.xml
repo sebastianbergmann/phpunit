@@ -3,7 +3,7 @@
          xsi:noNamespaceSchemaLocation="../../../../phpunit.xsd"
          bootstrap="NoLogNoCc.php"
          colors="false"
-         cacheResult="false">
+         recordTestRunHistory="false">
     <!--
     <coverage>
         <report>

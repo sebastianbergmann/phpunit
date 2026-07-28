@@ -2,7 +2,7 @@
 #6744: WithEnvironmentVariable supports setting an environment variable to an empty string
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = __DIR__ . '/6744/Issue6744Test.php';
 

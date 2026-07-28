@@ -2,7 +2,7 @@
 --fail-on-all-issues takes precedence over failOnDeprecation="false" in the XML configuration file; a test runner warning is emitted for the setting that has no effect
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--fail-on-all-issues';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/../../_files/fail-on-all-issues-precedence/phpunit-fail-on-deprecation-false.xml';

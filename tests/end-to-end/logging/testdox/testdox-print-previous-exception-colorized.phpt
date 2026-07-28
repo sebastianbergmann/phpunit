@@ -8,7 +8,7 @@ if (stripos(\PHP_OS, 'WIN') === 0) {
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--display-errors';
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--no-progress';
 $_SERVER['argv'][] = '--testdox';

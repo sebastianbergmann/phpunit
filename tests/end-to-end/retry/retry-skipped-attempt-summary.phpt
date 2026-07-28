@@ -3,7 +3,7 @@ A test whose deciding attempt is skipped is still listed as a retried test so th
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = __DIR__ . '/_files/SkippedAttemptTest.php';
 
 require __DIR__ . '/../../bootstrap.php';

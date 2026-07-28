@@ -25,9 +25,9 @@ use PHPUnit\Framework\Reorderable;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
-use PHPUnit\Runner\ResultCache\NullResultCache;
-use PHPUnit\Runner\ResultCache\ResultCache;
-use PHPUnit\Runner\ResultCache\ResultCacheId;
+use PHPUnit\Runner\TestRunHistory\NullTestRunHistory;
+use PHPUnit\Runner\TestRunHistory\TestRunHistory;
+use PHPUnit\Runner\TestRunHistory\TestRunHistoryId;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -60,7 +60,7 @@ final class TestSuiteSorter
      */
     private array $defectSortOrder = [];
 
-    public function __construct(private readonly ResultCache $cache = new NullResultCache)
+    public function __construct(private readonly TestRunHistory $testRunHistory = new NullTestRunHistory)
     {
     }
 
@@ -158,7 +158,7 @@ final class TestSuiteSorter
             $sortId = $test->sortId();
 
             if (!isset($this->defectSortOrder[$sortId])) {
-                $this->defectSortOrder[$sortId] = $this->cache->status(ResultCacheId::fromReorderable($test))->sortWeight();
+                $this->defectSortOrder[$sortId] = $this->testRunHistory->status(TestRunHistoryId::fromReorderable($test))->sortWeight();
             }
 
             $max = max($max, $this->defectSortOrder[$sortId]);
@@ -305,7 +305,7 @@ final class TestSuiteSorter
         }
 
         if ($test instanceof Reorderable) {
-            return $this->cache->time(ResultCacheId::fromReorderable($test));
+            return $this->testRunHistory->time(TestRunHistoryId::fromReorderable($test));
         }
 
         return 0.0;

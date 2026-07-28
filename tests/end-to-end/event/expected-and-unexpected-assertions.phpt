@@ -2,7 +2,7 @@
 The right events are emitted in the right order when a test that is not expected to perform assertions does not perform assertions and when a test that is not expected to perform assertions does perform assertions
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = __DIR__ . '/_files/ExpectedAndUnexpectedAssertionsTest.php';

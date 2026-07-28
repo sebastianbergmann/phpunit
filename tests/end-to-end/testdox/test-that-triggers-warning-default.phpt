@@ -2,7 +2,7 @@
 TestDox: Test triggers warning and --display-warning is not used
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--no-progress';
 $_SERVER['argv'][] = '--testdox';

@@ -3,7 +3,7 @@ Multiple tests that passed after retrying are listed in the test result summary 
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = __DIR__ . '/_files/MultipleRetriedTestsTest.php';
 
 require __DIR__ . '/../../bootstrap.php';

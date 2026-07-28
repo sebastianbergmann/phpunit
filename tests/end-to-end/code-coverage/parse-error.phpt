@@ -2,7 +2,7 @@
 A warning is emitted for a file in the code coverage report that cannot be parsed for static analysis
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-progress';
 $_SERVER['argv'][] = '--colors=never';
 $_SERVER['argv'][] = '--configuration';

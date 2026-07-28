@@ -2,7 +2,7 @@
 Warning is triggered when extension is configured more than once on the command line
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/_files/extension-bootstrap/phpunit.xml';
 $_SERVER['argv'][] = '--extension';

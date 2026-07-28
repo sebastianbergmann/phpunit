@@ -3,7 +3,7 @@ https://github.com/sebastianbergmann/phpunit/issues/6391
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = '--static-backup';
 $_SERVER['argv'][] = __DIR__ . '/6391/tests/Issue6391Test.php';

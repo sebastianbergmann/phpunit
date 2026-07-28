@@ -2,7 +2,7 @@
 The right events are emitted in the right order for a test that creates a mock object using the Mock Builder API and does not configure expectations
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--bootstrap';
 $_SERVER['argv'][] = __DIR__ . '/_files/Example.php';

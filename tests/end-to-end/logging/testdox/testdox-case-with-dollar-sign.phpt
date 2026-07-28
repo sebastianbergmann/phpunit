@@ -2,7 +2,7 @@
 Testdox: output containing dollar signs in the value from data provider
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--testdox';
 $_SERVER['argv'][] = __DIR__ . '/../_files/CaseWithDollarSignTest.php';

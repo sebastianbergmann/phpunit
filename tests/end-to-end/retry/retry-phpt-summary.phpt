@@ -5,7 +5,7 @@ A PHPT test that passed after retrying is listed in the test result summary
 @unlink(sys_get_temp_dir() . '/phpunit-e2e-phpt-retry.marker');
 
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--retry';
 $_SERVER['argv'][] = '3';
 $_SERVER['argv'][] = realpath(__DIR__ . '/_files/RetryFlakyPhpt.phpt');

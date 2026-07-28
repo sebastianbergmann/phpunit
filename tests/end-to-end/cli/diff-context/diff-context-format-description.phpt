@@ -2,7 +2,7 @@
 phpunit --diff-context with format description matching
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--no-progress';
 $_SERVER['argv'][] = '--colors=never';

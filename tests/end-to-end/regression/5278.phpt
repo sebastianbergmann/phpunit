@@ -6,7 +6,7 @@ print 'skip: xdebug.mode=develop is enabled';
 }
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = __DIR__ . '/5278/Issue5278Test.php';
 

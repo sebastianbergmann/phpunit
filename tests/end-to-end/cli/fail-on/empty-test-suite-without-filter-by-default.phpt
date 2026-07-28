@@ -2,7 +2,7 @@
 Test Runner exits with shell exit code indicating success by default when no tests were run and no explicit test selection was used
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/_files/empty-directory/phpunit.xml';

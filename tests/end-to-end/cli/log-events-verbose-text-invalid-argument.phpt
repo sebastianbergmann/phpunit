@@ -4,7 +4,7 @@ Test fails with invalid path
 <?php declare(strict_types=1);
 $traceFile = sys_get_temp_dir() . '/invalid-directory/invalid.file';
 
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--no-output';
 $_SERVER['argv'][] = '--log-events-verbose-text';

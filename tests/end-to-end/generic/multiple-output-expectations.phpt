@@ -2,7 +2,7 @@
 expectOutputString() and expectOutputRegex() can be combined and repeated; conflicting exact strings trigger a PHPUnit warning
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = __DIR__ . '/../../_files/MultipleOutputExpectationsTest.php';
 

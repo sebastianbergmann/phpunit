@@ -6,7 +6,7 @@ phpunit --configuration ../_files/baseline/generate-baseline-with-relative-direc
 $baselineAbsolutePath = __DIR__ . '/../_files/baseline/generate-baseline-with-relative-directory/baseline.xml';
 $baseline = ltrim(str_replace(getcwd(), '', $baselineAbsolutePath), DIRECTORY_SEPARATOR);
 
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--generate-baseline';
 $_SERVER['argv'][] = $baseline;
 $_SERVER['argv'][] = '--configuration';

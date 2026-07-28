@@ -5,7 +5,7 @@ The right events are emitted in the right order for a test that has invalid code
 require __DIR__ . '/../../_files/skip-if-requires-pcov.php';
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/_files/invalid-coverage-metadata/phpunit.xml';
 $_SERVER['argv'][] = '--coverage-text';
