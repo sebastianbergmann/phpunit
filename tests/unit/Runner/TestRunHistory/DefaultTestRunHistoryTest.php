@@ -74,6 +74,28 @@ final class DefaultTestRunHistoryTest extends TestCase
         $this->assertTrue($cache->status($id)->isUnknown());
     }
 
+    public function testRemoveDeletesStatus(): void
+    {
+        $cache = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-test-remove.cache');
+        $id    = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testOne');
+
+        $cache->setStatus($id, TestStatus::failure('failure'));
+
+        $cache->remove($id);
+
+        $this->assertTrue($cache->status($id)->isUnknown());
+    }
+
+    public function testRemoveIgnoresUnknownId(): void
+    {
+        $cache = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-test-remove.cache');
+        $id    = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testOne');
+
+        $cache->remove($id);
+
+        $this->assertTrue($cache->status($id)->isUnknown());
+    }
+
     public function testLoadReturnsEarlyWhenFileDoesNotExist(): void
     {
         $cache = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-nonexistent-' . uniqid() . '.cache');

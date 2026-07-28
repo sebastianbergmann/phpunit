@@ -16,12 +16,15 @@ use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Code\ThrowableBuilder;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Test\ConsideredRisky;
+use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\MarkedIncomplete;
+use PHPUnit\Event\Test\Passed;
 use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\TestStatus\TestStatus;
 
 #[CoversClass(TestRunHistoryHandler::class)]
 #[Small]
@@ -88,6 +91,117 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
         $id = TestRunHistoryId::fromTest($test);
 
         $this->assertTrue($cache->status($id)->isSkipped());
+    }
+
+    public function testPassedRemovesStatusFromPreviousRun(): void
+    {
+        $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-test.cache');
+        $handler = new TestRunHistoryHandler($cache, new Facade);
+
+        $test = $this->testValueObject();
+        $id   = TestRunHistoryId::fromTest($test);
+
+        $cache->setStatus($id, TestStatus::failure('failed in previous run'));
+
+        $handler->testPassed(new Passed($this->telemetryInfo(), $test));
+
+        $this->assertTrue($cache->status($id)->isUnknown());
+    }
+
+    public function testPassedDoesNotRemoveStatusRecordedInCurrentRun(): void
+    {
+        $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-test.cache');
+        $handler = new TestRunHistoryHandler($cache, new Facade);
+
+        $test = $this->testValueObject();
+
+        $handler->testFailed(
+            new Failed(
+                $this->telemetryInfo(),
+                $test,
+                ThrowableBuilder::from(new Exception('failed repetition')),
+                null,
+            ),
+        );
+
+        $handler->testPassed(new Passed($this->telemetryInfo(), $test));
+
+        $this->assertTrue($cache->status(TestRunHistoryId::fromTest($test))->isFailure());
+    }
+
+    public function testStatusFromCurrentRunReplacesStatusFromPreviousRun(): void
+    {
+        $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-test.cache');
+        $handler = new TestRunHistoryHandler($cache, new Facade);
+
+        $test = $this->testValueObject();
+        $id   = TestRunHistoryId::fromTest($test);
+
+        $cache->setStatus($id, TestStatus::failure('failed in previous run'));
+
+        $handler->testConsideredRisky(
+            new ConsideredRisky(
+                $this->telemetryInfo(),
+                $test,
+                'This test did not perform any assertions',
+            ),
+        );
+
+        $this->assertTrue($cache->status($id)->isRisky());
+    }
+
+    public function testLessImportantStatusDoesNotReplaceStatusRecordedInCurrentRun(): void
+    {
+        $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-test.cache');
+        $handler = new TestRunHistoryHandler($cache, new Facade);
+
+        $test = $this->testValueObject();
+
+        $handler->testFailed(
+            new Failed(
+                $this->telemetryInfo(),
+                $test,
+                ThrowableBuilder::from(new Exception('assertion failed')),
+                null,
+            ),
+        );
+
+        $handler->testConsideredRisky(
+            new ConsideredRisky(
+                $this->telemetryInfo(),
+                $test,
+                'This test printed unexpected output',
+            ),
+        );
+
+        $this->assertTrue($cache->status(TestRunHistoryId::fromTest($test))->isFailure());
+    }
+
+    public function testMoreImportantStatusReplacesStatusRecordedInCurrentRun(): void
+    {
+        $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-test.cache');
+        $handler = new TestRunHistoryHandler($cache, new Facade);
+
+        $test = $this->testValueObject();
+
+        $handler->testConsideredRisky(
+            new ConsideredRisky(
+                $this->telemetryInfo(),
+                $test,
+                'This test did not perform any assertions',
+            ),
+        );
+
+        $handler->testFailed(
+            new Failed(
+                $this->telemetryInfo(),
+                $test,
+                ThrowableBuilder::from(new Exception('assertion failed')),
+                null,
+            ),
+        );
+
+        $this->assertTrue($cache->status(TestRunHistoryId::fromTest($test))->isFailure());
     }
 
     public function testSkippedWithoutPreparedRecordsZeroDuration(): void

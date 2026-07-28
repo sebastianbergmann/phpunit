@@ -18,6 +18,7 @@ use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\MarkedIncomplete;
+use PHPUnit\Event\Test\Passed;
 use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Framework\InvalidArgumentException;
@@ -33,6 +34,16 @@ final class TestRunHistoryHandler
     private readonly TestRunHistory $testRunHistory;
     private ?HRTime $time  = null;
     private int $testSuite = 0;
+
+    /**
+     * A status loaded from a previous run must always be replaced by the
+     * current run's first result for a test; after that, only a more
+     * important status may replace it, and a pass must not clear a defect
+     * recorded by an earlier repetition of the same test.
+     *
+     * @var array<string, TestStatus>
+     */
+    private array $statusesRecordedInThisRun = [];
 
     public function __construct(TestRunHistory $testRunHistory, Facade $facade)
     {
@@ -62,7 +73,7 @@ final class TestRunHistoryHandler
 
     public function testMarkedIncomplete(MarkedIncomplete $event): void
     {
-        $this->testRunHistory->setStatus(
+        $this->recordStatus(
             TestRunHistoryId::fromTest($event->test()),
             TestStatus::incomplete($event->throwable()->message()),
         );
@@ -70,7 +81,7 @@ final class TestRunHistoryHandler
 
     public function testConsideredRisky(ConsideredRisky $event): void
     {
-        $this->testRunHistory->setStatus(
+        $this->recordStatus(
             TestRunHistoryId::fromTest($event->test()),
             TestStatus::risky($event->message()),
         );
@@ -78,7 +89,7 @@ final class TestRunHistoryHandler
 
     public function testErrored(Errored $event): void
     {
-        $this->testRunHistory->setStatus(
+        $this->recordStatus(
             TestRunHistoryId::fromTest($event->test()),
             TestStatus::error($event->throwable()->message()),
         );
@@ -86,10 +97,21 @@ final class TestRunHistoryHandler
 
     public function testFailed(Failed $event): void
     {
-        $this->testRunHistory->setStatus(
+        $this->recordStatus(
             TestRunHistoryId::fromTest($event->test()),
             TestStatus::failure($event->throwable()->message()),
         );
+    }
+
+    public function testPassed(Passed $event): void
+    {
+        $id = TestRunHistoryId::fromTest($event->test());
+
+        if (isset($this->statusesRecordedInThisRun[$id->asString()])) {
+            return;
+        }
+
+        $this->testRunHistory->remove($id);
     }
 
     /**
@@ -98,7 +120,7 @@ final class TestRunHistoryHandler
      */
     public function testSkipped(Skipped $event): void
     {
-        $this->testRunHistory->setStatus(
+        $this->recordStatus(
             TestRunHistoryId::fromTest($event->test()),
             TestStatus::skipped($event->message()),
         );
@@ -115,6 +137,20 @@ final class TestRunHistoryHandler
         $this->testRunHistory->setTime(TestRunHistoryId::fromTest($event->test()), $this->duration($event));
 
         $this->time = null;
+    }
+
+    private function recordStatus(TestRunHistoryId $id, TestStatus $status): void
+    {
+        $key = $id->asString();
+
+        if (isset($this->statusesRecordedInThisRun[$key]) &&
+            !$status->isMoreImportantThan($this->statusesRecordedInThisRun[$key])) {
+            return;
+        }
+
+        $this->statusesRecordedInThisRun[$key] = $status;
+
+        $this->testRunHistory->setStatus($id, $status);
     }
 
     /**
@@ -140,6 +176,7 @@ final class TestRunHistoryHandler
             new TestConsideredRiskySubscriber($this),
             new TestErroredSubscriber($this),
             new TestFailedSubscriber($this),
+            new TestPassedSubscriber($this),
             new TestSkippedSubscriber($this),
             new TestFinishedSubscriber($this),
         );

@@ -22,6 +22,10 @@ final readonly class NullTestRunHistory implements TestRunHistory
     {
     }
 
+    public function remove(TestRunHistoryId $id): void
+    {
+    }
+
     public function status(TestRunHistoryId $id): TestStatus
     {
         return TestStatus::unknown();

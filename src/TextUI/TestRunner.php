@@ -36,11 +36,11 @@ final class TestRunner
                 mt_srand($configuration->randomOrderSeed());
             }
 
+            $testRunHistory->load();
+
             if ($configuration->executionOrder() !== TestSuiteSorter::ORDER_DEFAULT ||
                 $configuration->executionOrderDefects() !== TestSuiteSorter::ORDER_DEFAULT ||
                 $configuration->resolveDependencies()) {
-                $testRunHistory->load();
-
                 new TestSuiteSorter($testRunHistory)->reorderTestsInSuite(
                     $suite,
                     $configuration->executionOrder(),

@@ -20,6 +20,8 @@ interface TestRunHistory
 {
     public function setStatus(TestRunHistoryId $id, TestStatus $status): void;
 
+    public function remove(TestRunHistoryId $id): void;
+
     public function status(TestRunHistoryId $id): TestStatus;
 
     public function setTime(TestRunHistoryId $id, float $time): void;

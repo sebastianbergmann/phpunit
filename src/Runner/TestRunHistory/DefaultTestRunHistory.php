@@ -72,6 +72,11 @@ final class DefaultTestRunHistory implements TestRunHistory
         $this->defects[$id->asString()] = $status;
     }
 
+    public function remove(TestRunHistoryId $id): void
+    {
+        unset($this->defects[$id->asString()]);
+    }
+
     public function status(TestRunHistoryId $id): TestStatus
     {
         return $this->defects[$id->asString()] ?? TestStatus::unknown();
