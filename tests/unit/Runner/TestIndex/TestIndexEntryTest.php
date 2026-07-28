@@ -171,6 +171,16 @@ final class TestIndexEntryTest extends TestCase
         $this->assertNull(TestIndexEntry::for($class, new FileHasher, false));
     }
 
+    #[TestDox('Cannot be created for a class that has no source file of its own')]
+    public function testCannotBeCreatedForClassWithoutSourceFileOfItsOwn(): void
+    {
+        /*
+         * The walk over the source files a class is made of stops at
+         * PHPUnit\Framework\TestCase, so that class has none of its own.
+         */
+        $this->assertNull(TestIndexEntry::for(new ReflectionClass(TestCase::class), new FileHasher, false));
+    }
+
     public function testCanBeCreatedFromRecordedValues(): void
     {
         $entry = TestIndexEntry::from(
