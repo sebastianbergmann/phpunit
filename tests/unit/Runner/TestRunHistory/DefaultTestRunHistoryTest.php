@@ -265,6 +265,82 @@ final class DefaultTestRunHistoryTest extends TestCase
         $this->assertTrue($loaded->status($id)->isFailure());
     }
 
+    public function testPersistAndPruneDropsEntriesNotTouchedInThisRun(): void
+    {
+        $file                 = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-prune-' . uniqid() . '.cache';
+        $this->filesToClean[] = $file;
+
+        $idStale   = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testGone');
+        $idCurrent = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testStillExists');
+
+        $seed = new DefaultTestRunHistory($file);
+        $seed->setStatus($idStale, TestStatus::failure('failed before it was deleted'));
+        $seed->setTime($idStale, 1.0);
+        $seed->persist();
+
+        $cache = new DefaultTestRunHistory($file);
+        $cache->load();
+        $cache->setStatus($idCurrent, TestStatus::failure('still failing'));
+        $cache->setTime($idCurrent, 2.0);
+        $cache->persistAndPrune();
+
+        $loaded = new DefaultTestRunHistory($file);
+        $loaded->load();
+
+        $this->assertTrue($loaded->status($idStale)->isUnknown());
+        $this->assertSame(0.0, $loaded->time($idStale));
+        $this->assertTrue($loaded->status($idCurrent)->isFailure());
+        $this->assertSame(2.0, $loaded->time($idCurrent));
+    }
+
+    public function testPersistAndPruneKeepsTimeOfTestThatWasSkippedInThisRun(): void
+    {
+        $file                 = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-prune-' . uniqid() . '.cache';
+        $this->filesToClean[] = $file;
+
+        $id = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testSkippedThisTime');
+
+        $seed = new DefaultTestRunHistory($file);
+        $seed->setTime($id, 5.0);
+        $seed->persist();
+
+        $cache = new DefaultTestRunHistory($file);
+        $cache->load();
+        $cache->setStatus($id, TestStatus::skipped('not applicable'));
+        $cache->persistAndPrune();
+
+        $loaded = new DefaultTestRunHistory($file);
+        $loaded->load();
+
+        $this->assertTrue($loaded->status($id)->isSkipped());
+        $this->assertSame(5.0, $loaded->time($id));
+    }
+
+    public function testPersistAndPruneKeepsTimeOfTestThatPassedInThisRun(): void
+    {
+        $file                 = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-prune-' . uniqid() . '.cache';
+        $this->filesToClean[] = $file;
+
+        $id = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testFixed');
+
+        $seed = new DefaultTestRunHistory($file);
+        $seed->setStatus($id, TestStatus::failure('failed in previous run'));
+        $seed->setTime($id, 5.0);
+        $seed->persist();
+
+        $cache = new DefaultTestRunHistory($file);
+        $cache->load();
+        $cache->remove($id);
+        $cache->setTime($id, 1.0);
+        $cache->persistAndPrune();
+
+        $loaded = new DefaultTestRunHistory($file);
+        $loaded->load();
+
+        $this->assertTrue($loaded->status($id)->isUnknown());
+        $this->assertSame(1.0, $loaded->time($id));
+    }
+
     public function testMergeWithCombinesDefectsAndTimes(): void
     {
         $target = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-test-target.cache');

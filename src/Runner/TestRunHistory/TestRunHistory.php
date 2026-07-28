@@ -31,4 +31,6 @@ interface TestRunHistory
     public function load(): void;
 
     public function persist(): void;
+
+    public function persistAndPrune(): void;
 }

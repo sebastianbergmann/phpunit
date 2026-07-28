@@ -47,4 +47,8 @@ final readonly class NullTestRunHistory implements TestRunHistory
     public function persist(): void
     {
     }
+
+    public function persistAndPrune(): void
+    {
+    }
 }

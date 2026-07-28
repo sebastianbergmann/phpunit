@@ -33,7 +33,7 @@ final class SubscriberTest extends AbstractEventTestCase
     public function testMarkedIncompleteSubscriberForwardsToHandler(): void
     {
         $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-subscriber-test.cache');
-        $handler = new TestRunHistoryHandler($cache, new Facade);
+        $handler = new TestRunHistoryHandler($cache, new Facade, false);
 
         $test  = $this->testValueObject();
         $event = new MarkedIncomplete(
@@ -51,7 +51,7 @@ final class SubscriberTest extends AbstractEventTestCase
     public function testConsideredRiskySubscriberForwardsToHandler(): void
     {
         $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-subscriber-test.cache');
-        $handler = new TestRunHistoryHandler($cache, new Facade);
+        $handler = new TestRunHistoryHandler($cache, new Facade, false);
 
         $test  = $this->testValueObject();
         $event = new ConsideredRisky(
@@ -69,7 +69,7 @@ final class SubscriberTest extends AbstractEventTestCase
     public function testSkippedSubscriberForwardsToHandler(): void
     {
         $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-subscriber-test.cache');
-        $handler = new TestRunHistoryHandler($cache, new Facade);
+        $handler = new TestRunHistoryHandler($cache, new Facade, false);
 
         $test  = $this->testValueObject();
         $event = new Skipped(

@@ -11,6 +11,8 @@ namespace PHPUnit\Runner\TestRunHistory;
 
 use const DIRECTORY_SEPARATOR;
 use function sys_get_temp_dir;
+use function uniqid;
+use function unlink;
 use Exception;
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Code\ThrowableBuilder;
@@ -36,7 +38,7 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
     public function testMarkedIncompleteRecordsIncompleteStatus(): void
     {
         $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-test.cache');
-        $handler = new TestRunHistoryHandler($cache, new Facade);
+        $handler = new TestRunHistoryHandler($cache, new Facade, false);
 
         $test  = $this->testValueObject();
         $event = new MarkedIncomplete(
@@ -56,7 +58,7 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
     public function testConsideredRiskyRecordsRiskyStatus(): void
     {
         $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-test.cache');
-        $handler = new TestRunHistoryHandler($cache, new Facade);
+        $handler = new TestRunHistoryHandler($cache, new Facade, false);
 
         $test  = $this->testValueObject();
         $event = new ConsideredRisky(
@@ -75,7 +77,7 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
     public function testSkippedRecordsSkippedStatusAndTime(): void
     {
         $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-test.cache');
-        $handler = new TestRunHistoryHandler($cache, new Facade);
+        $handler = new TestRunHistoryHandler($cache, new Facade, false);
 
         $test = $this->testValueObject();
 
@@ -97,7 +99,7 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
     public function testPassedRemovesStatusFromPreviousRun(): void
     {
         $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-test.cache');
-        $handler = new TestRunHistoryHandler($cache, new Facade);
+        $handler = new TestRunHistoryHandler($cache, new Facade, false);
 
         $test = $this->testValueObject();
         $id   = TestRunHistoryId::fromTest($test);
@@ -112,7 +114,7 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
     public function testPassedDoesNotRemoveStatusRecordedInCurrentRun(): void
     {
         $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-test.cache');
-        $handler = new TestRunHistoryHandler($cache, new Facade);
+        $handler = new TestRunHistoryHandler($cache, new Facade, false);
 
         $test = $this->testValueObject();
 
@@ -133,7 +135,7 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
     public function testStatusFromCurrentRunReplacesStatusFromPreviousRun(): void
     {
         $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-test.cache');
-        $handler = new TestRunHistoryHandler($cache, new Facade);
+        $handler = new TestRunHistoryHandler($cache, new Facade, false);
 
         $test = $this->testValueObject();
         $id   = TestRunHistoryId::fromTest($test);
@@ -154,7 +156,7 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
     public function testLessImportantStatusDoesNotReplaceStatusRecordedInCurrentRun(): void
     {
         $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-test.cache');
-        $handler = new TestRunHistoryHandler($cache, new Facade);
+        $handler = new TestRunHistoryHandler($cache, new Facade, false);
 
         $test = $this->testValueObject();
 
@@ -181,7 +183,7 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
     public function testMoreImportantStatusReplacesStatusRecordedInCurrentRun(): void
     {
         $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-test.cache');
-        $handler = new TestRunHistoryHandler($cache, new Facade);
+        $handler = new TestRunHistoryHandler($cache, new Facade, false);
 
         $test = $this->testValueObject();
 
@@ -205,10 +207,85 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
         $this->assertTrue($cache->status(TestRunHistoryId::fromTest($test))->isFailure());
     }
 
+    public function testPersistsWithPruningWhenPruningIsEnabled(): void
+    {
+        $file = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-prune-' . uniqid() . '.cache';
+
+        $staleId = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testGone');
+
+        $seed = new DefaultTestRunHistory($file);
+        $seed->setStatus($staleId, TestStatus::failure('failed before it was deleted'));
+        $seed->persist();
+
+        $cache = new DefaultTestRunHistory($file);
+        $cache->load();
+
+        $handler = new TestRunHistoryHandler($cache, new Facade, true);
+
+        $test = $this->testValueObject();
+
+        $handler->testSuiteStarted();
+        $handler->testFailed(
+            new Failed(
+                $this->telemetryInfo(),
+                $test,
+                ThrowableBuilder::from(new Exception('assertion failed')),
+                null,
+            ),
+        );
+        $handler->testSuiteFinished();
+
+        $loaded = new DefaultTestRunHistory($file);
+        $loaded->load();
+
+        $this->assertTrue($loaded->status($staleId)->isUnknown());
+        $this->assertTrue($loaded->status(TestRunHistoryId::fromTest($test))->isFailure());
+
+        @unlink($file);
+    }
+
+    public function testDoesNotPruneWhenExecutionWasAborted(): void
+    {
+        $file = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-prune-' . uniqid() . '.cache';
+
+        $staleId = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testNotReached');
+
+        $seed = new DefaultTestRunHistory($file);
+        $seed->setStatus($staleId, TestStatus::failure('failed in previous run'));
+        $seed->persist();
+
+        $cache = new DefaultTestRunHistory($file);
+        $cache->load();
+
+        $handler = new TestRunHistoryHandler($cache, new Facade, true);
+
+        $test = $this->testValueObject();
+
+        $handler->testSuiteStarted();
+        $handler->testFailed(
+            new Failed(
+                $this->telemetryInfo(),
+                $test,
+                ThrowableBuilder::from(new Exception('assertion failed')),
+                null,
+            ),
+        );
+        $handler->testRunnerExecutionAborted();
+        $handler->testSuiteFinished();
+
+        $loaded = new DefaultTestRunHistory($file);
+        $loaded->load();
+
+        $this->assertTrue($loaded->status($staleId)->isFailure());
+        $this->assertTrue($loaded->status(TestRunHistoryId::fromTest($test))->isFailure());
+
+        @unlink($file);
+    }
+
     public function testSkippedWithoutPreparedDoesNotRecordDuration(): void
     {
         $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-test.cache');
-        $handler = new TestRunHistoryHandler($cache, new Facade);
+        $handler = new TestRunHistoryHandler($cache, new Facade, false);
 
         $test  = $this->testValueObject();
         $event = new Skipped(
@@ -228,7 +305,7 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
     public function testSkippedDoesNotOverwriteTimeFromPreviousRun(): void
     {
         $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-test.cache');
-        $handler = new TestRunHistoryHandler($cache, new Facade);
+        $handler = new TestRunHistoryHandler($cache, new Facade, false);
 
         $test = $this->testValueObject();
         $id   = TestRunHistoryId::fromTest($test);
@@ -245,7 +322,7 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
     public function testFinishedRecordsTimeWhenTestWasNotSkipped(): void
     {
         $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-test.cache');
-        $handler = new TestRunHistoryHandler($cache, new Facade);
+        $handler = new TestRunHistoryHandler($cache, new Facade, false);
 
         $test = $this->testValueObject();
         $id   = TestRunHistoryId::fromTest($test);
@@ -261,7 +338,7 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
     public function testFinishedRecordsTimeForTestRunAfterSkippedTest(): void
     {
         $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-test.cache');
-        $handler = new TestRunHistoryHandler($cache, new Facade);
+        $handler = new TestRunHistoryHandler($cache, new Facade, false);
 
         $test = $this->testValueObject();
         $id   = TestRunHistoryId::fromTest($test);

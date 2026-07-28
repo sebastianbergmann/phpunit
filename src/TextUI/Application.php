@@ -764,7 +764,11 @@ final readonly class Application
         if ($configuration->recordTestRunHistory()) {
             $testRunHistory = new DefaultTestRunHistory($configuration->testRunHistoryFile());
 
-            new TestRunHistoryHandler($testRunHistory, EventFacade::instance());
+            new TestRunHistoryHandler(
+                $testRunHistory,
+                EventFacade::instance(),
+                $this->testRunHistoryMayBePruned($configuration),
+            );
 
             return $testRunHistory;
         }
@@ -783,6 +787,45 @@ final readonly class Application
         }
 
         return new NullTestRunHistory;
+    }
+
+    /**
+     * Pruning drops all test run history entries that the current test run
+     * did not touch, so it is only safe when the current test run executes
+     * every test that exists: no test selection or filtering of any kind may
+     * be configured.
+     */
+    private function testRunHistoryMayBePruned(Configuration $configuration): bool
+    {
+        if ($configuration->hasCliArguments() || $configuration->hasTestFilesFile()) {
+            return false;
+        }
+
+        if ($configuration->hasFilter() || $configuration->hasExcludeFilter()) {
+            return false;
+        }
+
+        if ($configuration->hasTestIdFilter() || $configuration->hasTestIdFilterFile()) {
+            return false;
+        }
+
+        if ($configuration->hasGroups() || $configuration->hasExcludeGroups()) {
+            return false;
+        }
+
+        if ($configuration->hasTestsCovering() || $configuration->hasTestsUsing() || $configuration->hasTestsRequiringPhpExtension()) {
+            return false;
+        }
+
+        if ($configuration->includeTestSuites() !== [] || $configuration->excludeTestSuites() !== []) {
+            return false;
+        }
+
+        if ($configuration->hasDefaultTestSuite() && count($configuration->testSuite()) > 1) {
+            return false;
+        }
+
+        return true;
     }
 
     private function configureBaseline(Configuration $configuration): ?BaselineGenerator

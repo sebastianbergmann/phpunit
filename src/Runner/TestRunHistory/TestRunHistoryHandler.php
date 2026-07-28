@@ -32,6 +32,7 @@ use PHPUnit\Framework\TestStatus\TestStatus;
 final class TestRunHistoryHandler
 {
     private readonly TestRunHistory $testRunHistory;
+    private bool $pruneOnPersist;
     private ?HRTime $time        = null;
     private bool $testWasSkipped = false;
     private int $testSuite       = 0;
@@ -46,9 +47,10 @@ final class TestRunHistoryHandler
      */
     private array $statusesRecordedInThisRun = [];
 
-    public function __construct(TestRunHistory $testRunHistory, Facade $facade)
+    public function __construct(TestRunHistory $testRunHistory, Facade $facade, bool $pruneOnPersist)
     {
         $this->testRunHistory = $testRunHistory;
+        $this->pruneOnPersist = $pruneOnPersist;
 
         $this->registerSubscribers($facade);
     }
@@ -62,9 +64,22 @@ final class TestRunHistoryHandler
     {
         $this->testSuite--;
 
-        if ($this->testSuite === 0) {
+        if ($this->testSuite !== 0) {
+            return;
+        }
+
+        if ($this->pruneOnPersist) {
+            $this->testRunHistory->persistAndPrune();
+        } else {
             $this->testRunHistory->persist();
         }
+    }
+
+    public function testRunnerExecutionAborted(): void
+    {
+        // An aborted run did not execute every test that exists, so pruning
+        // would drop the entries of tests that were never reached
+        $this->pruneOnPersist = false;
     }
 
     public function testPrepared(Prepared $event): void
@@ -183,6 +198,7 @@ final class TestRunHistoryHandler
             new TestPassedSubscriber($this),
             new TestSkippedSubscriber($this),
             new TestFinishedSubscriber($this),
+            new TestRunnerExecutionAbortedSubscriber($this),
         );
     }
 }

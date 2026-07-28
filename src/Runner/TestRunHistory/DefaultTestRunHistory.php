@@ -156,6 +156,26 @@ final class DefaultTestRunHistory implements TestRunHistory
      */
     public function persist(): void
     {
+        $this->writeToFile(false);
+    }
+
+    /**
+     * Persists only the entries that were touched since load(). This drops
+     * the entries of tests that no longer exist and must only be used when
+     * the current test run executed every test that exists.
+     *
+     * @throws Exception
+     */
+    public function persistAndPrune(): void
+    {
+        $this->writeToFile(true);
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function writeToFile(bool $prune): void
+    {
         if (!Filesystem::createDirectory(dirname($this->filename))) {
             throw new DirectoryDoesNotExistException(dirname($this->filename));
         }
@@ -168,31 +188,52 @@ final class DefaultTestRunHistory implements TestRunHistory
 
         flock($handle, LOCK_EX);
 
-        // Another test run may have persisted its results between this run's
-        // load() and now; only overlaying this run's changes onto the current
-        // file contents keeps that run's results for tests this run did not
-        // execute
-        $parsed = $this->parse((string) stream_get_contents($handle));
+        if ($prune) {
+            $defects = [];
 
-        if ($parsed !== null) {
-            [$defects, $times] = $parsed;
-
-            foreach (array_keys($this->changedDefects) as $id) {
-                if (isset($this->defects[$id])) {
-                    $defects[$id] = $this->defects[$id];
-                } else {
-                    unset($defects[$id]);
+            foreach ($this->defects as $id => $status) {
+                if (isset($this->changedDefects[$id])) {
+                    $defects[$id] = $status;
                 }
             }
 
+            $times = [];
+
+            // A test whose status was recorded but whose time was not is a
+            // test that was skipped in this run; its previously recorded time
+            // must survive pruning
             foreach ($this->times as $id => $time) {
-                if (isset($this->changedTimes[$id])) {
+                if (isset($this->changedTimes[$id]) || isset($this->changedDefects[$id])) {
                     $times[$id] = $time;
                 }
             }
         } else {
-            $defects = $this->defects;
-            $times   = $this->times;
+            // Another test run may have persisted its results between this
+            // run's load() and now; only overlaying this run's changes onto
+            // the current file contents keeps that run's results for tests
+            // this run did not execute
+            $parsed = $this->parse((string) stream_get_contents($handle));
+
+            if ($parsed !== null) {
+                [$defects, $times] = $parsed;
+
+                foreach (array_keys($this->changedDefects) as $id) {
+                    if (isset($this->defects[$id])) {
+                        $defects[$id] = $this->defects[$id];
+                    } else {
+                        unset($defects[$id]);
+                    }
+                }
+
+                foreach ($this->times as $id => $time) {
+                    if (isset($this->changedTimes[$id])) {
+                        $times[$id] = $time;
+                    }
+                }
+            } else {
+                $defects = $this->defects;
+                $times   = $this->times;
+            }
         }
 
         $data = [
