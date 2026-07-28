@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 ### Fixed
 
 * [#6861](https://github.com/sebastianbergmann/phpunit/issues/6861): Hook methods run twice when a template method is marked with its corresponding attribute
+* Regression that stopped test methods from being sorted by source code location
 
 ## [12.5.32] - 2026-07-25
 
