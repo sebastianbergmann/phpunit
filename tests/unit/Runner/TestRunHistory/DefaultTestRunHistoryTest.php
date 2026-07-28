@@ -165,6 +165,106 @@ final class DefaultTestRunHistoryTest extends TestCase
         $cache->persist();
     }
 
+    public function testPersistKeepsResultsRecordedByConcurrentTestRun(): void
+    {
+        $file                 = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-concurrent-' . uniqid() . '.cache';
+        $this->filesToClean[] = $file;
+
+        $idA = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testA');
+        $idB = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testB');
+
+        $one = new DefaultTestRunHistory($file);
+        $one->load();
+        $one->setStatus($idA, TestStatus::failure('failure in A'));
+        $one->setTime($idA, 1.0);
+
+        $other = new DefaultTestRunHistory($file);
+        $other->setStatus($idB, TestStatus::error('error in B'));
+        $other->setTime($idB, 2.0);
+        $other->persist();
+
+        $one->persist();
+
+        $loaded = new DefaultTestRunHistory($file);
+        $loaded->load();
+
+        $this->assertTrue($loaded->status($idA)->isFailure());
+        $this->assertSame(1.0, $loaded->time($idA));
+        $this->assertTrue($loaded->status($idB)->isError());
+        $this->assertSame(2.0, $loaded->time($idB));
+    }
+
+    public function testPersistPropagatesRemovalsToConcurrentlyPersistedFile(): void
+    {
+        $file                 = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-concurrent-' . uniqid() . '.cache';
+        $this->filesToClean[] = $file;
+
+        $idA = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testA');
+        $idB = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testB');
+
+        $seed = new DefaultTestRunHistory($file);
+        $seed->setStatus($idA, TestStatus::failure('failed in previous run'));
+        $seed->persist();
+
+        $one = new DefaultTestRunHistory($file);
+        $one->load();
+        $one->remove($idA);
+
+        $other = new DefaultTestRunHistory($file);
+        $other->load();
+        $other->setStatus($idB, TestStatus::error('error in B'));
+        $other->persist();
+
+        $one->persist();
+
+        $loaded = new DefaultTestRunHistory($file);
+        $loaded->load();
+
+        $this->assertTrue($loaded->status($idA)->isUnknown());
+        $this->assertTrue($loaded->status($idB)->isError());
+    }
+
+    public function testPersistWritesMergedEntriesToNewFile(): void
+    {
+        $file                 = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-concurrent-' . uniqid() . '.cache';
+        $this->filesToClean[] = $file;
+
+        $id = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testA');
+
+        $other = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-test-other.cache');
+        $other->setStatus($id, TestStatus::failure('failure in A'));
+        $other->setTime($id, 1.0);
+
+        $target = new DefaultTestRunHistory($file);
+        $target->mergeWith($other);
+        $target->persist();
+
+        $loaded = new DefaultTestRunHistory($file);
+        $loaded->load();
+
+        $this->assertTrue($loaded->status($id)->isFailure());
+        $this->assertSame(1.0, $loaded->time($id));
+    }
+
+    public function testPersistOverwritesInvalidFileContents(): void
+    {
+        $file                 = tempnam(sys_get_temp_dir(), 'phpunit-cache-');
+        $this->filesToClean[] = $file;
+
+        file_put_contents($file, 'not valid json');
+
+        $id = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testA');
+
+        $cache = new DefaultTestRunHistory($file);
+        $cache->setStatus($id, TestStatus::failure('failure in A'));
+        $cache->persist();
+
+        $loaded = new DefaultTestRunHistory($file);
+        $loaded->load();
+
+        $this->assertTrue($loaded->status($id)->isFailure());
+    }
+
     public function testMergeWithCombinesDefectsAndTimes(): void
     {
         $target = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-test-target.cache');

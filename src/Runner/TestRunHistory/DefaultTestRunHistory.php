@@ -11,9 +11,15 @@ namespace PHPUnit\Runner\TestRunHistory;
 
 use const DIRECTORY_SEPARATOR;
 use const LOCK_EX;
+use const LOCK_UN;
+use function array_keys;
 use function dirname;
+use function fclose;
 use function file_get_contents;
-use function file_put_contents;
+use function flock;
+use function fopen;
+use function ftruncate;
+use function fwrite;
 use function is_array;
 use function is_dir;
 use function is_file;
@@ -22,6 +28,8 @@ use function is_int;
 use function is_string;
 use function json_decode;
 use function json_encode;
+use function rewind;
+use function stream_get_contents;
 use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Runner\DirectoryDoesNotExistException;
 use PHPUnit\Runner\Exception;
@@ -54,6 +62,16 @@ final class DefaultTestRunHistory implements TestRunHistory
      */
     private array $times = [];
 
+    /**
+     * @var array<string, true>
+     */
+    private array $changedDefects = [];
+
+    /**
+     * @var array<string, true>
+     */
+    private array $changedTimes = [];
+
     public function __construct(string $filepath)
     {
         if (is_dir($filepath)) {
@@ -69,12 +87,15 @@ final class DefaultTestRunHistory implements TestRunHistory
             return;
         }
 
-        $this->defects[$id->asString()] = $status;
+        $this->defects[$id->asString()]        = $status;
+        $this->changedDefects[$id->asString()] = true;
     }
 
     public function remove(TestRunHistoryId $id): void
     {
         unset($this->defects[$id->asString()]);
+
+        $this->changedDefects[$id->asString()] = true;
     }
 
     public function status(TestRunHistoryId $id): TestStatus
@@ -84,7 +105,8 @@ final class DefaultTestRunHistory implements TestRunHistory
 
     public function setTime(TestRunHistoryId $id, float $time): void
     {
-        $this->times[$id->asString()] = $time;
+        $this->times[$id->asString()]        = $time;
+        $this->changedTimes[$id->asString()] = true;
     }
 
     public function time(TestRunHistoryId $id): float
@@ -95,11 +117,13 @@ final class DefaultTestRunHistory implements TestRunHistory
     public function mergeWith(self $other): void
     {
         foreach ($other->defects as $id => $defect) {
-            $this->defects[$id] = $defect;
+            $this->defects[$id]        = $defect;
+            $this->changedDefects[$id] = true;
         }
 
         foreach ($other->times as $id => $time) {
-            $this->times[$id] = $time;
+            $this->times[$id]        = $time;
+            $this->changedTimes[$id] = true;
         }
     }
 
@@ -115,21 +139,104 @@ final class DefaultTestRunHistory implements TestRunHistory
             return;
         }
 
+        $parsed = $this->parse($contents);
+
+        if ($parsed === null) {
+            return;
+        }
+
+        [$this->defects, $this->times] = $parsed;
+
+        $this->changedDefects = [];
+        $this->changedTimes   = [];
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function persist(): void
+    {
+        if (!Filesystem::createDirectory(dirname($this->filename))) {
+            throw new DirectoryDoesNotExistException(dirname($this->filename));
+        }
+
+        $handle = fopen($this->filename, 'c+');
+
+        if ($handle === false) {
+            return;
+        }
+
+        flock($handle, LOCK_EX);
+
+        // Another test run may have persisted its results between this run's
+        // load() and now; only overlaying this run's changes onto the current
+        // file contents keeps that run's results for tests this run did not
+        // execute
+        $parsed = $this->parse((string) stream_get_contents($handle));
+
+        if ($parsed !== null) {
+            [$defects, $times] = $parsed;
+
+            foreach (array_keys($this->changedDefects) as $id) {
+                if (isset($this->defects[$id])) {
+                    $defects[$id] = $this->defects[$id];
+                } else {
+                    unset($defects[$id]);
+                }
+            }
+
+            foreach ($this->times as $id => $time) {
+                if (isset($this->changedTimes[$id])) {
+                    $times[$id] = $time;
+                }
+            }
+        } else {
+            $defects = $this->defects;
+            $times   = $this->times;
+        }
+
+        $data = [
+            'version' => self::VERSION,
+            'defects' => [],
+            'times'   => $times,
+        ];
+
+        foreach ($defects as $test => $status) {
+            $data['defects'][$test] = $status->asInt();
+        }
+
+        $json = json_encode($data);
+
+        if ($json !== false) {
+            ftruncate($handle, 0);
+            rewind($handle);
+            fwrite($handle, $json);
+        }
+
+        flock($handle, LOCK_UN);
+        fclose($handle);
+    }
+
+    /**
+     * @return ?array{0: array<string, TestStatus>, 1: array<string, float>}
+     */
+    private function parse(string $contents): ?array
+    {
         $data = json_decode(
             $contents,
             true,
         );
 
         if (!is_array($data)) {
-            return;
+            return null;
         }
 
         if (!isset($data['version']) || $data['version'] !== self::VERSION) {
-            return;
+            return null;
         }
 
         if (!isset($data['defects'], $data['times']) || !is_array($data['defects']) || !is_array($data['times'])) {
-            return;
+            return null;
         }
 
         $defects = [];
@@ -152,33 +259,6 @@ final class DefaultTestRunHistory implements TestRunHistory
             $times[$test] = (float) $time;
         }
 
-        $this->defects = $defects;
-        $this->times   = $times;
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function persist(): void
-    {
-        if (!Filesystem::createDirectory(dirname($this->filename))) {
-            throw new DirectoryDoesNotExistException(dirname($this->filename));
-        }
-
-        $data = [
-            'version' => self::VERSION,
-            'defects' => [],
-            'times'   => $this->times,
-        ];
-
-        foreach ($this->defects as $test => $status) {
-            $data['defects'][$test] = $status->asInt();
-        }
-
-        file_put_contents(
-            $this->filename,
-            json_encode($data),
-            LOCK_EX,
-        );
+        return [$defects, $times];
     }
 }
