@@ -321,6 +321,87 @@ final class DefaultTestFileSkipperTest extends AbstractEventTestCase
         $this->assertFalse($skipper->canSkipLoading($file, []));
     }
 
+    #[TestDox('Does not index a PHPT file, which must never be loaded as PHP')]
+    public function testDoesNotIndexPhptFile(): void
+    {
+        $file           = $this->writePhptFile('a-test');
+        $indexDirectory = $this->directory();
+
+        $skipper = new DefaultTestFileSkipper(
+            EventFacade::instance(),
+            new TestIndex($indexDirectory),
+            new GroupPruner(['other'], []),
+            NameFilterPruner::withoutFilter(),
+        );
+
+        $skipper->startRecording($file);
+        $skipper->stopRecording();
+        $skipper->persist();
+
+        $this->assertFalse($skipper->canSkipLoading($file, []));
+        $this->assertSame([], $this->entriesIn($indexDirectory));
+    }
+
+    #[TestDox('Does nothing when no test file is being loaded')]
+    public function testDoesNothingWhenNoTestFileIsBeingLoaded(): void
+    {
+        $subscriber = new class implements WarningTriggeredSubscriber
+        {
+            /**
+             * @var list<string>
+             */
+            public array $messages = [];
+
+            public function notify(WarningTriggered $event): void
+            {
+                $this->messages[] = $event->message();
+            }
+        };
+
+        $eventFacade = new EventFacade;
+        $eventFacade->registerSubscriber($subscriber);
+        $eventFacade->seal();
+
+        $skipper = new DefaultTestFileSkipper(
+            $eventFacade,
+            new TestIndex($this->directory()),
+            new GroupPruner(['other'], []),
+            NameFilterPruner::withoutFilter(),
+        );
+
+        $skipper->stopRecording();
+        $skipper->abortRecording();
+
+        // nothing is being collected, so what is emitted reaches its subscriber
+        $eventFacade->forward($this->warning('while no file was being loaded'));
+
+        $this->assertSame(['while no file was being loaded'], $subscriber->messages);
+    }
+
+    #[TestDox('Does not skip a file PHPUnit had something to say about while it was loaded')]
+    public function testDoesNotSkipFileThatPhpUnitHadSomethingToSayAbout(): void
+    {
+        $file = $this->writeTestClass('SomethingToSay');
+
+        $eventFacade = new EventFacade;
+        $eventFacade->seal();
+
+        $skipper = new DefaultTestFileSkipper(
+            $eventFacade,
+            new TestIndex($this->directory()),
+            new GroupPruner(['other'], []),
+            NameFilterPruner::withoutFilter(),
+        );
+
+        $skipper->startRecording($file);
+
+        $eventFacade->forward($this->warning('while the file was being loaded'));
+
+        $skipper->stopRecording();
+
+        $this->assertFalse($skipper->canSkipLoading($file, []));
+    }
+
     #[TestDox('Skips a file whose data providers were called while it was loaded')]
     public function testSkipsFileWhoseDataProvidersWereCalled(): void
     {
@@ -338,6 +419,31 @@ final class DefaultTestFileSkipperTest extends AbstractEventTestCase
         $skipper->stopRecording();
 
         $this->assertTrue($skipper->canSkipLoading($file, []));
+    }
+
+    /**
+     * @param non-empty-string $name
+     *
+     * @return non-empty-string
+     */
+    private function writePhptFile(string $name): string
+    {
+        $file = $this->directory() . DIRECTORY_SEPARATOR . $name . '.phpt';
+
+        file_put_contents(
+            $file,
+            <<<'PHPT'
+                --TEST--
+                A PHPT test
+                --FILE--
+                <?php declare(strict_types=1);
+                print 'the PHPT test was run';
+                --EXPECT--
+                the PHPT test was run
+                PHPT,
+        );
+
+        return $file;
     }
 
     /**

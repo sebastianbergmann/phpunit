@@ -27,13 +27,14 @@ final class NullTestFileSkipperTest extends TestCase
         $this->assertFalse((new NullTestFileSkipper)->canSkipLoading(__FILE__, ['a-group']));
     }
 
-    #[TestDox('Does nothing when a test file is recorded or the index is written')]
+    #[TestDox('Does nothing when a test file is recorded, when loading it fails, or when the index is written')]
     public function testDoesNothing(): void
     {
         $skipper = new NullTestFileSkipper;
 
         $skipper->startRecording(__FILE__);
         $skipper->stopRecording();
+        $skipper->abortRecording();
         $skipper->persist();
 
         $this->assertFalse($skipper->canSkipLoading(__FILE__, []));

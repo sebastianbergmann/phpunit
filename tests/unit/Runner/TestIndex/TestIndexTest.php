@@ -10,13 +10,17 @@
 namespace PHPUnit\Runner\TestIndex;
 
 use const DIRECTORY_SEPARATOR;
+use const PHP_OS_FAMILY;
 use function array_merge;
 use function array_search;
+use function chmod;
 use function file_get_contents;
 use function file_put_contents;
+use function is_readable;
 use function json_decode;
 use function json_encode;
 use function mkdir;
+use function octdec;
 use function preg_replace;
 use function realpath;
 use function rmdir;
@@ -48,6 +52,7 @@ use PHPUnit\TestFixture\TestIndex\PlainTest;
 use PHPUnit\TestFixture\TestIndex\RecordedTest;
 use PHPUnit\TestFixture\TestIndex\RemovedDependencyTest;
 use PHPUnit\TestFixture\TestIndex\SkippedTest;
+use PHPUnit\TestFixture\TestIndex\UnreadableIndexTest;
 use PHPUnit\TestFixture\TestIndex\UnreadableTest;
 use PHPUnit\TestFixture\TestIndex\UnusableGroupTest;
 use PHPUnit\TestFixture\TestIndex\UsableGroupTest;
@@ -480,6 +485,41 @@ final class TestIndexTest extends TestCase
         $index->load();
 
         $this->assertNull($index->entryFor(__FILE__));
+    }
+
+    #[TestDox('Ignores an index file whose contents cannot be read')]
+    public function testIgnoresIndexFileWhoseContentsCannotBeRead(): void
+    {
+        if (PHP_OS_FAMILY === 'Windows') {
+            $this->markTestSkipped('Cannot test this behaviour on Windows');
+        }
+
+        $directory      = $this->temporaryDirectory();
+        $file           = $this->writePlainTestClass($directory, 'UnreadableIndex');
+        $indexDirectory = $this->temporaryDirectory();
+
+        $index = new TestIndex($indexDirectory);
+        $index->record(new ReflectionClass(UnreadableIndexTest::class), false);
+        $index->persist();
+
+        $indexFile = $indexDirectory . DIRECTORY_SEPARATOR . 'test-index';
+
+        chmod($indexFile, octdec('0'));
+
+        if (is_readable($indexFile)) {
+            chmod($indexFile, octdec('644'));
+
+            $this->markTestSkipped('The index file can still be read');
+        }
+
+        $loaded = new TestIndex($indexDirectory);
+
+        // reading the index file warns, which is not what this test is about
+        @$loaded->load();
+
+        chmod($indexFile, octdec('644'));
+
+        $this->assertNull($loaded->entryFor($file));
     }
 
     public function testIgnoresIndexFileThatDoesNotExist(): void
