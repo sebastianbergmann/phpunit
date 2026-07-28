@@ -23,7 +23,12 @@ if (ini_get('xdebug.start_with_request') === '1') {
 }
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-record-test-run-history';
+$cacheDirectory = sys_get_temp_dir() . '/phpunit-regression-6105';
+
+@mkdir($cacheDirectory, 0777, true);
+
+$_SERVER['argv'][] = '--cache-directory';
+$_SERVER['argv'][] = $cacheDirectory;
 $_SERVER['argv'][] = '--colors=never';
 $_SERVER['argv'][] = __DIR__ . '/6105/IssueTest6105.php';
 
