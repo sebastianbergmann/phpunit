@@ -2,7 +2,12 @@
 Possibility to migrate XML configuration file from PHPUnit 9.5 format is detected
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-record-test-run-history';
+$cacheDirectory = sys_get_temp_dir() . '/phpunit-migration-from-95-detected';
+
+@mkdir($cacheDirectory, 0777, true);
+
+$_SERVER['argv'][] = '--cache-directory';
+$_SERVER['argv'][] = $cacheDirectory;
 $_SERVER['argv'][] = '--display-phpunit-deprecations';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/_files/possibility-to-migrate-from-95-is-detected/phpunit.xml';

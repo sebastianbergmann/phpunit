@@ -2,8 +2,13 @@
 #[Retry] works with --order-by=defects
 --FILE--
 <?php declare(strict_types=1);
+$cacheDirectory = sys_get_temp_dir() . '/phpunit-retry-order-by-defects';
+
+@mkdir($cacheDirectory, 0777, true);
+
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = '--do-not-record-test-run-history';
+$_SERVER['argv'][] = '--cache-directory';
+$_SERVER['argv'][] = $cacheDirectory;
 $_SERVER['argv'][] = '--order-by=defects';
 $_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = __DIR__ . '/_files/SuccessTest.php';

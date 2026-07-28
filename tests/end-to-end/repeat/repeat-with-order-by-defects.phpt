@@ -2,8 +2,13 @@
 --repeat works with --order-by=defects
 --FILE--
 <?php declare(strict_types=1);
+$cacheDirectory = sys_get_temp_dir() . '/phpunit-repeat-order-by-defects';
+
+@mkdir($cacheDirectory, 0777, true);
+
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = '--do-not-record-test-run-history';
+$_SERVER['argv'][] = '--cache-directory';
+$_SERVER['argv'][] = $cacheDirectory;
 $_SERVER['argv'][] = '--repeat';
 $_SERVER['argv'][] = '2';
 $_SERVER['argv'][] = '--order-by=defects';

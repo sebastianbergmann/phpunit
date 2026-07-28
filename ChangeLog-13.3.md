@@ -33,6 +33,7 @@ All notable changes of the PHPUnit 13.3 release series are documented in this fi
 * The test runner no longer crashes when an attribute cannot be instantiated
 * Improved TestDox HTML report
 * The feature formerly named "test result cache" is now named "test run history"; when a cache directory is configured, the file it is stored in is now named `test-run-history` instead of `test-results`
+* The test runner warns now when ordering by defects or duration is configured but recording of the test run history is disabled
 
 ### Deprecated
 

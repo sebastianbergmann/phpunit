@@ -9,7 +9,12 @@ if (!extension_loaded('xdebug')) {
 XDEBUG_MODE=debug
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][] = '--do-not-record-test-run-history';
+$cacheDirectory = sys_get_temp_dir() . '/phpunit-coverage-wrong-xdebug-mode';
+
+@mkdir($cacheDirectory, 0777, true);
+
+$_SERVER['argv'][] = '--cache-directory';
+$_SERVER['argv'][] = $cacheDirectory;
 $_SERVER['argv'][] = '--colors=never';
 $_SERVER['argv'][] = '--coverage-html';
 $_SERVER['argv'][] = 'my_coverage_folder';
