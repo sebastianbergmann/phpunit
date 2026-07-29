@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 13.2 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [13.2.7] - 2026-MM-DD
+
+### Fixed
+
+* [#6855](https://github.com/sebastianbergmann/phpunit/issues/6855): Suppressed (`@`) warnings/notices/deprecations replayed from data providers are reported as unsuppressed
+
 ## [13.2.6] - 2026-07-28
 
 ### Fixed
@@ -113,6 +119,7 @@ All notable changes of the PHPUnit 13.2 release series are documented in this fi
 * [#5851](https://github.com/sebastianbergmann/phpunit/issues/5851): Output buffer manipulation in tests causes incorrect capture, hangs, and silent failures
 * [#6582](https://github.com/sebastianbergmann/phpunit/issues/6582): `TestSuiteSorter::cmpSize()` does not handle `TestSuite` objects for `TestCase` classes
 
+[13.2.7]: https://github.com/sebastianbergmann/phpunit/compare/13.2.6...13.2
 [13.2.6]: https://github.com/sebastianbergmann/phpunit/compare/13.2.5...13.2.6
 [13.2.5]: https://github.com/sebastianbergmann/phpunit/compare/13.2.4...13.2.5
 [13.2.4]: https://github.com/sebastianbergmann/phpunit/compare/13.2.3...13.2.4

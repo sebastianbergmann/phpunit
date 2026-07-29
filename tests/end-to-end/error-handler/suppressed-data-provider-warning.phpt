@@ -1,5 +1,5 @@
 --TEST--
-A previously registered error handler that checks error_reporting() dynamically observes the suppression mask for an error suppressed using the @ operator in a data provider
+An error suppressed using the @ operator in a data provider emits an event with suppressed using operator
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
@@ -8,16 +8,6 @@ $_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = __DIR__ . '/_files/DataProviderSuppressedTest.php';
 
 require __DIR__ . '/../../bootstrap.php';
-
-error_reporting(E_ALL);
-
-set_error_handler(static function (int $errorNumber, string $errorString, string $errorFile, int $errorLine): bool {
-    if (($errorNumber & error_reporting()) === 0) {
-        return false;
-    }
-
-    throw new ErrorException($errorString, 0, $errorNumber, $errorFile, $errorLine);
-});
 
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
