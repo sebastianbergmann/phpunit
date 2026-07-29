@@ -156,7 +156,22 @@ final class ErrorHandler
             return false;
         }
 
-        $suppressed = (error_reporting() & ~self::INSUPPRESSIBLE_LEVELS) === 0;
+        /**
+         * An issue that was triggered in a test case context before the test case
+         * was run is replayed when the test case is prepared: whether it was
+         * suppressed using the @ operator must be determined from the error
+         * reporting level that was in effect when the error was triggered,
+         * not from the error reporting level that is in effect on replay.
+         *
+         * @see https://github.com/sebastianbergmann/phpunit/issues/6855
+         */
+        if ($this->deferredIssueErrorReportingLevel !== null) {
+            $errorReportingLevel = $this->deferredIssueErrorReportingLevel;
+        } else {
+            $errorReportingLevel = error_reporting();
+        }
+
+        $suppressed = ($errorReportingLevel & ~self::INSUPPRESSIBLE_LEVELS) === 0;
 
         if ($suppressed && $this->excludeList->isExcluded($errorFile)) {
             // @codeCoverageIgnoreStart
