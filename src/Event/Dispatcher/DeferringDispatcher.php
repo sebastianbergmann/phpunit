@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Event;
 
-use function assert;
-
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -56,16 +54,26 @@ final class DeferringDispatcher implements SubscribableDispatcher
         $this->dispatcher->dispatch($event);
     }
 
+    /**
+     * @throws EventsAreAlreadyBeingCollectedException
+     */
     public function startCollectingEvents(): void
     {
-        assert($this->collectedEvents === null);
+        if ($this->collectedEvents !== null) {
+            throw new EventsAreAlreadyBeingCollectedException;
+        }
 
         $this->collectedEvents = new EventCollection;
     }
 
+    /**
+     * @throws EventsAreNotBeingCollectedException
+     */
     public function stopCollectingEvents(): EventCollection
     {
-        assert($this->collectedEvents !== null);
+        if ($this->collectedEvents === null) {
+            throw new EventsAreNotBeingCollectedException;
+        }
 
         $events = $this->collectedEvents;
 

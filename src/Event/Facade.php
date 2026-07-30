@@ -120,11 +120,17 @@ final class Facade
         }
     }
 
+    /**
+     * @throws EventsAreAlreadyBeingCollectedException
+     */
     public function startCollectingEvents(): void
     {
         $this->deferredDispatcher()->startCollectingEvents();
     }
 
+    /**
+     * @throws EventsAreNotBeingCollectedException
+     */
     public function stopCollectingEvents(): EventCollection
     {
         return $this->deferredDispatcher()->stopCollectingEvents();

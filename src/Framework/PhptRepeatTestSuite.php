@@ -62,11 +62,7 @@ final class PhptRepeatTestSuite extends PhptIterativeTestSuite
                 continue;
             }
 
-            $facade->startCollectingEvents();
-
-            $test->run();
-
-            $events = $facade->stopCollectingEvents();
+            $events = $this->runCollectingEvents($test);
 
             $facade->forward($events);
 

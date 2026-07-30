@@ -100,11 +100,7 @@ final class RetryTestSuite extends IterativeTestSuite
 
             $test->setAttempt($attempt, $this->maxAttempts);
 
-            $facade->startCollectingEvents();
-
-            $test->run();
-
-            $events = $facade->stopCollectingEvents();
+            $events = $this->runCollectingEvents($test);
 
             $retryable = ($test->status()->isFailure() || $test->status()->isError()) &&
                          $attempt < $this->maxAttempts;

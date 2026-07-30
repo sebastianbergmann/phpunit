@@ -127,6 +127,40 @@ final class DeferringDispatcherTest extends TestCase
         $deferringDispatcher->dispatch($event);
     }
 
+    public function testCannotStartCollectingEventsWhileEventsAreAlreadyBeingCollected(): void
+    {
+        $subscribableDispatcher = $this->createMock(SubscribableDispatcher::class);
+
+        $subscribableDispatcher
+            ->expects($this->never())
+            ->method('dispatch')
+            ->seal();
+
+        $deferringDispatcher = new DeferringDispatcher($subscribableDispatcher);
+
+        $deferringDispatcher->startCollectingEvents();
+
+        $this->expectException(EventsAreAlreadyBeingCollectedException::class);
+
+        $deferringDispatcher->startCollectingEvents();
+    }
+
+    public function testCannotStopCollectingEventsWhileNoEventsAreBeingCollected(): void
+    {
+        $subscribableDispatcher = $this->createMock(SubscribableDispatcher::class);
+
+        $subscribableDispatcher
+            ->expects($this->never())
+            ->method('dispatch')
+            ->seal();
+
+        $deferringDispatcher = new DeferringDispatcher($subscribableDispatcher);
+
+        $this->expectException(EventsAreNotBeingCollectedException::class);
+
+        $deferringDispatcher->stopCollectingEvents();
+    }
+
     public function testSubscriberCanBeRegistered(): void
     {
         $subscriber = $this->createMock(DummySubscriber::class);

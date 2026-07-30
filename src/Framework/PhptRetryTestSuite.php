@@ -71,11 +71,7 @@ final class PhptRetryTestSuite extends PhptIterativeTestSuite
 
             $test = new PhptTestCase($this->filename, 1, 1, $attempt, $this->maxAttempts);
 
-            $facade->startCollectingEvents();
-
-            $test->run();
-
-            $events = $facade->stopCollectingEvents();
+            $events = $this->runCollectingEvents($test);
 
             if (!$this->failedOrErrored($events) || $attempt === $this->maxAttempts) {
                 $facade->forward($events);
