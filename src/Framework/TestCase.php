@@ -13,7 +13,6 @@ use const PHP_EOL;
 use function array_any;
 use function array_keys;
 use function array_merge;
-use function array_unshift;
 use function array_values;
 use function assert;
 use function chdir;
@@ -1296,9 +1295,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     final protected function registerObjectExporter(ObjectExporter $objectExporter): void
     {
-        array_unshift($this->customObjectExporters, $objectExporter);
+        Exporter::registerObjectExporter($objectExporter);
 
-        Exporter::registerObjectExporters($this->customObjectExporters);
+        $this->customObjectExporters[] = $objectExporter;
     }
 
     /**
@@ -1771,13 +1770,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     private function unregisterCustomObjectExporters(): void
     {
-        if ($this->customObjectExporters === []) {
-            return;
+        foreach ($this->customObjectExporters as $objectExporter) {
+            Exporter::unregisterObjectExporter($objectExporter);
         }
 
         $this->customObjectExporters = [];
-
-        Exporter::unregisterObjectExporters();
     }
 
     private function shouldRunInSeparateProcess(): bool
