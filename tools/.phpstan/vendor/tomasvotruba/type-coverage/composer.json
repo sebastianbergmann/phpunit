@@ -6,26 +6,30 @@
     "keywords": ["static analysis", "phpstan-extension"],
     "require": {
         "php": "^8.4",
-        "phpstan/phpstan": "^2.2"
+        "phpstan/phpstan": "^2.2",
+        "webmozart/assert": "^1.11 || ^2.1"
     },
     "require-dev": {
         "phpstan/extension-installer": "^1.4",
-        "phpunit/phpunit": "^12.5",
-        "symplify/easy-coding-standard": "^13.1",
-        "rector/rector": "^2.4",
+        "phpunit/phpunit": "^13.2",
+        "symplify/easy-coding-standard": "^13.2",
+        "rector/rector": "^2.5",
         "tracy/tracy": "^2.12",
         "tomasvotruba/unused-public": "^2.2",
         "rector/jack": "^1.0",
-        "shipmonk/composer-dependency-analyser": "^1.8"
+        "shipmonk/composer-dependency-analyser": "^1.8",
+        "symfony/dom-crawler": "^8.1"
     },
     "autoload": {
         "psr-4": {
-            "TomasVotruba\\TypeCoverage\\": "src"
+            "TomasVotruba\\TypeCoverage\\": "src",
+            "Rector\\TypePerfect\\": "packages/type-perfect/src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "TomasVotruba\\TypeCoverage\\Tests\\": "tests"
+            "TomasVotruba\\TypeCoverage\\Tests\\": "tests",
+            "Rector\\TypePerfect\\Tests\\": "packages/type-perfect/tests"
         }
     },
     "scripts": {
@@ -43,7 +47,8 @@
     "extra": {
         "phpstan": {
             "includes": [
-                "config/extension.neon"
+                "config/extension.neon",
+                "packages/type-perfect/config/extension.neon"
             ]
         }
     }
