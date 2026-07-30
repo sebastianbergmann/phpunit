@@ -13,6 +13,7 @@ use const PHP_EOL;
 use function array_any;
 use function array_keys;
 use function array_merge;
+use function array_unshift;
 use function array_values;
 use function assert;
 use function chdir;
@@ -1295,7 +1296,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     final protected function registerObjectExporter(ObjectExporter $objectExporter): void
     {
-        $this->customObjectExporters[] = $objectExporter;
+        array_unshift($this->customObjectExporters, $objectExporter);
 
         Exporter::registerObjectExporters($this->customObjectExporters);
     }
