@@ -71,10 +71,15 @@ final readonly class TestBuilder
             $numberOfRuns     = $metadata->times();
             $failureThreshold = $metadata->failureThreshold();
 
-            // a method-level #[Repeat] attribute takes precedence over the --retry CLI option
-            $maxAttempts = 1;
+            // an attribute that does not ask for more than one run does not select
+            // repetition, so it neither conflicts with --retry nor makes the
+            // eligibility of the method relevant
+            if ($numberOfRuns > 1) {
+                // a method-level #[Repeat] attribute takes precedence over the --retry CLI option
+                $maxAttempts = 1;
 
-            $this->warnWhenMethodIsIneligible('Repeat', 'repeated', $theClass, $className, $methodName);
+                $this->warnWhenMethodIsIneligible('Repeat', 'repeated', $theClass, $className, $methodName);
+            }
         }
 
         $retryMetadata = MetadataRegistry::parser()->forMethod($className, $methodName)->isRetry();
@@ -95,7 +100,9 @@ final readonly class TestBuilder
 
                 $maxAttempts = $metadata->maxAttempts();
 
-                $this->warnWhenMethodIsIneligible('Retry', 'retried', $theClass, $className, $methodName);
+                if ($maxAttempts > 1) {
+                    $this->warnWhenMethodIsIneligible('Retry', 'retried', $theClass, $className, $methodName);
+                }
             }
         }
 

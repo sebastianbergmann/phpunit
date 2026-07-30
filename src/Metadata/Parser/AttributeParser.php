@@ -973,6 +973,8 @@ final readonly class AttributeParser implements Parser
                             ),
                         );
 
+                        $result[] = Metadata::repeat(1, 1);
+
                         break;
                     }
 
@@ -985,6 +987,8 @@ final readonly class AttributeParser implements Parser
                                 $attributeInstance->failureThreshold(),
                             ),
                         );
+
+                        $result[] = Metadata::repeat(1, 1);
 
                         break;
                     }
@@ -1008,6 +1012,8 @@ final readonly class AttributeParser implements Parser
                                 $attributeInstance->maxAttempts(),
                             ),
                         );
+
+                        $result[] = Metadata::retry(1);
 
                         break;
                     }
