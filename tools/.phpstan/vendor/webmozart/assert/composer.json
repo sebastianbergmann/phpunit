@@ -1,0 +1,71 @@
+{
+    "name": "webmozart/assert",
+    "description": "Assertions to validate method input/output with nice error messages.",
+    "license": "MIT",
+    "keywords": [
+        "assert",
+        "check",
+        "validate"
+    ],
+    "authors": [
+        {
+            "name": "Bernhard Schussek",
+            "email": "bschussek@gmail.com"
+        },
+        {
+            "name": "Woody Gilk",
+            "email": "woody.gilk@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "ext-ctype": "*",
+        "ext-date": "*",
+        "ext-filter": "*"
+    },
+    "suggest": {
+        "ext-intl": "",
+        "ext-simplexml": "",
+        "ext-spl": ""
+    },
+    "autoload": {
+        "psr-4": {
+            "Webmozart\\Assert\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Webmozart\\Assert\\Bin\\": "bin/src",
+            "Webmozart\\Assert\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "psalm": {
+            "pluginClass": "Webmozart\\Assert\\PsalmPlugin"
+        },
+        "branch-alias": {
+            "dev-feature/2-0": "2.0-dev",
+            "dev-master": "2.0-dev"
+        }
+    },
+    "scripts": {
+        "install-tools": [
+            "composer --working-dir=tools/php-cs-fixer install",
+            "composer --working-dir=tools/phpunit install",
+            "composer --working-dir=tools/psalm install",
+            "composer --working-dir=tools/roave-bc-check install"
+        ],
+        "update-tools": [
+            "composer --working-dir=tools/php-cs-fixer update",
+            "composer --working-dir=tools/phpunit update",
+            "composer --working-dir=tools/psalm update",
+            "composer --working-dir=tools/roave-bc-check update"
+        ],
+        "generate-mixin": "php bin/generate.php",
+        "bc-check": "./tools/roave-bc-check/vendor/bin/roave-backward-compatibility-check",
+        "cs-check" : "./tools/php-cs-fixer/vendor/bin/php-cs-fixer check",
+        "cs-fix": "./tools/php-cs-fixer/vendor/bin/php-cs-fixer fix",
+        "static-analysis": "./tools/psalm/vendor/bin/psalm --threads=4 --root=$(pwd)",
+        "test": "./tools/phpunit/vendor/bin/phpunit"
+    }
+}
