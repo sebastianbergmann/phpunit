@@ -107,8 +107,8 @@ final class SeparateProcessTestRunner
         $includePath     = var_export(get_include_path(), true);
         // must do these fixes because TestCaseMethod.tpl has unserialize('{data}') in it, and we can't break BC
         // the lines above used to use addcslashes() rather than var_export(), which breaks null byte escape sequences
+        // $dataName is not quoted in the template so that an integer data set name does not become a string
         $data                    = "'." . $data . ".'";
-        $dataName                = "'.(" . $dataName . ").'";
         $dependencyInput         = "'." . $dependencyInput . ".'";
         $includePath             = "'." . $includePath . ".'";
         $offset                  = hrtime();

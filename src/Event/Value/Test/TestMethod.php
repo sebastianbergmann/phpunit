@@ -13,6 +13,7 @@ use function is_int;
 use function sprintf;
 use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Metadata\MetadataCollection;
+use PHPUnit\Util\Sanitizer;
 
 /**
  * @immutable
@@ -263,7 +264,7 @@ final readonly class TestMethod extends Test
             } else {
                 $name .= sprintf(
                     ' with data set "%s"',
-                    $dataSetName,
+                    Sanitizer::sanitizeBidirectionalControlCharacters($dataSetName),
                 );
             }
         }

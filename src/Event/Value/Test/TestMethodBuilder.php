@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Event\Code;
 
-use function is_numeric;
 use PHPUnit\Event\TestData\DataFromDataProvider;
 use PHPUnit\Event\TestData\DataFromTestDependency;
 use PHPUnit\Event\TestData\TestDataCollection;
@@ -65,14 +64,8 @@ final readonly class TestMethodBuilder
         $testData = [];
 
         if ($testCase->usesDataProvider()) {
-            $dataSetName = $testCase->dataName();
-
-            if (is_numeric($dataSetName)) {
-                $dataSetName = (int) $dataSetName;
-            }
-
             $testData[] = DataFromDataProvider::from(
-                $dataSetName,
+                $testCase->dataName(),
                 Exporter::shortenedRecursiveExport($testCase->providedData()),
                 $testCase->dataSetAsStringWithData(),
             );
