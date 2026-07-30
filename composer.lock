@@ -247,12 +247,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "08191137c1df3f6f7539d7fe7ed1395be306b661"
+                "reference": "c6c2daeb26647c047f412e39fd55791e64459361"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/08191137c1df3f6f7539d7fe7ed1395be306b661",
-                "reference": "08191137c1df3f6f7539d7fe7ed1395be306b661",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/c6c2daeb26647c047f412e39fd55791e64459361",
+                "reference": "c6c2daeb26647c047f412e39fd55791e64459361",
                 "shasum": ""
             },
             "require": {
@@ -330,7 +330,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-25T09:28:56+00:00"
+            "time": "2026-07-30T00:44:33+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -700,12 +700,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/comparator.git",
-                "reference": "9ea18e98d3cb65dd78c5cefa399302afe4f45053"
+                "reference": "60488f202d81c9761e9c1d37c07dec2a7eb49c7c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/9ea18e98d3cb65dd78c5cefa399302afe4f45053",
-                "reference": "9ea18e98d3cb65dd78c5cefa399302afe4f45053",
+                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/60488f202d81c9761e9c1d37c07dec2a7eb49c7c",
+                "reference": "60488f202d81c9761e9c1d37c07dec2a7eb49c7c",
                 "shasum": ""
             },
             "require": {
@@ -785,7 +785,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-27T00:51:26+00:00"
+            "time": "2026-07-30T01:38:08+00:00"
         },
         {
             "name": "sebastian/complexity",
@@ -1018,12 +1018,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/exporter.git",
-                "reference": "d3ff5fec0e41d2e2b5ffa06594925d02356a03c0"
+                "reference": "5f9dc382bff11d789c813d42f211735019611751"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/exporter/zipball/d3ff5fec0e41d2e2b5ffa06594925d02356a03c0",
-                "reference": "d3ff5fec0e41d2e2b5ffa06594925d02356a03c0",
+                "url": "https://api.github.com/repos/sebastianbergmann/exporter/zipball/5f9dc382bff11d789c813d42f211735019611751",
+                "reference": "5f9dc382bff11d789c813d42f211735019611751",
                 "shasum": ""
             },
             "require": {
@@ -1101,7 +1101,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-27T02:14:17+00:00"
+            "time": "2026-07-30T05:56:57+00:00"
         },
         {
             "name": "sebastian/file-filter",
