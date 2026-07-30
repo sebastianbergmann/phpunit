@@ -216,6 +216,40 @@ final readonly class TestMethod extends Test
      */
     public function name(): string
     {
+        $name = $this->nameWithDataSet();
+
+        if ($this->totalRepetitions > 1) {
+            $name .= sprintf(
+                ' (repetition %d of %d)',
+                $this->repetition,
+                $this->totalRepetitions,
+            );
+        }
+
+        if ($this->attempt > 1) {
+            $name .= sprintf(
+                ' (attempt %d of %d)',
+                $this->attempt,
+                $this->maxAttempts,
+            );
+        }
+
+        return $name;
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    public function sortId(): string
+    {
+        return $this->className . '::' . $this->nameWithDataSet();
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    private function nameWithDataSet(): string
+    {
         $name = $this->methodName;
 
         if ($this->testData->hasDataFromDataProvider()) {
@@ -232,22 +266,6 @@ final readonly class TestMethod extends Test
                     $dataSetName,
                 );
             }
-        }
-
-        if ($this->totalRepetitions > 1) {
-            $name .= sprintf(
-                ' (repetition %d of %d)',
-                $this->repetition,
-                $this->totalRepetitions,
-            );
-        }
-
-        if ($this->attempt > 1) {
-            $name .= sprintf(
-                ' (attempt %d of %d)',
-                $this->attempt,
-                $this->maxAttempts,
-            );
         }
 
         return $name;

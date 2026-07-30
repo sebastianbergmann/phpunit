@@ -64,4 +64,13 @@ abstract readonly class Test
      * @return non-empty-string
      */
     abstract public function name(): string;
+
+    /**
+     * Identifier that is stable across repetitions and attempts of the same test.
+     *
+     * This has to be kept in sync with PHPUnit\Framework\Reorderable::sortId().
+     *
+     * @return non-empty-string
+     */
+    abstract public function sortId(): string;
 }

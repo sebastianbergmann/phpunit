@@ -121,6 +121,14 @@ final readonly class Phpt extends Test
     }
 
     /**
+     * @return non-empty-string
+     */
+    public function sortId(): string
+    {
+        return $this->file();
+    }
+
+    /**
      * @param non-empty-string $buffer
      *
      * @return non-empty-string
