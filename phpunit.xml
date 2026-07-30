@@ -12,6 +12,10 @@
          warnWhenPhpIsNotConfiguredForDevelopment="true"
          colors="true">
     <testsuites>
+        <testsuite name="self-test">
+            <directory>tests/self-test</directory>
+        </testsuite>
+
         <testsuite name="unit">
             <directory>tests/unit</directory>
         </testsuite>
