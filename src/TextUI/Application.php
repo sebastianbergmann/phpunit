@@ -231,7 +231,13 @@ final readonly class Application
 
             $this->executeCommandsThatRequireTheTestSuite($configuration, $cliConfiguration, $testSuite);
 
-            if ($testSuite->isEmpty() && !$configuration->hasCliArguments() && $configuration->testSuite()->isEmpty()) {
+            /*
+             * The help is only shown when no tests were selected at all. Tests
+             * that were selected but did not end up in the test suite are not
+             * the same thing: naming a file that contains no test, or a test
+             * file that does not have to be loaded, is not a usage error.
+             */
+            if ($testSuite->isEmpty() && !$configuration->hasCliArguments() && !$configuration->hasTestFilesFile() && $configuration->testSuite()->isEmpty()) {
                 $this->execute(new ShowHelpCommand(Result::FAILURE));
             }
 
