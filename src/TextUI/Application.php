@@ -47,6 +47,7 @@ use PHPUnit\Logging\TeamCity\TeamCityLogger;
 use PHPUnit\Logging\TestDox\HtmlRenderer as TestDoxHtmlRenderer;
 use PHPUnit\Logging\TestDox\PlainTextRenderer as TestDoxTextRenderer;
 use PHPUnit\Logging\TestDox\TestResultCollector as TestDoxResultCollector;
+use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Runner\Baseline\CannotLoadBaselineException;
 use PHPUnit\Runner\Baseline\Generator as BaselineGenerator;
 use PHPUnit\Runner\Baseline\Reader;
@@ -806,8 +807,9 @@ final readonly class Application
     }
 
     /**
-     * The virtual groups that back --covers, --uses and --requires-php-extension
-     * are named the way Metadata\Api\Groups names them.
+     * The groups a test has to be in for it to be selected. These are the same
+     * groups TestSuiteFilterProcessor selects by: the index only saves work as
+     * long as it prunes exactly what the filter would have removed.
      *
      * @return list<non-empty-string>
      */
@@ -821,19 +823,19 @@ final readonly class Application
 
         if ($configuration->hasTestsCovering()) {
             foreach ($configuration->testsCovering() as $name) {
-                $groups[] = '__phpunit_covers_' . $name;
+                $groups[] = Groups::virtualGroupForCovers($name);
             }
         }
 
         if ($configuration->hasTestsUsing()) {
             foreach ($configuration->testsUsing() as $name) {
-                $groups[] = '__phpunit_uses_' . $name;
+                $groups[] = Groups::virtualGroupForUses($name);
             }
         }
 
         if ($configuration->hasTestsRequiringPhpExtension()) {
             foreach ($configuration->testsRequiringPhpExtension() as $name) {
-                $groups[] = '__phpunit_requires_php_extension' . $name;
+                $groups[] = Groups::virtualGroupForRequiredPhpExtension($name);
             }
         }
 

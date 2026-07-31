@@ -38,6 +38,35 @@ final class Groups
     private static array $groupCache = [];
 
     /**
+     * The metadata that backs --covers, --uses and --requires-php-extension is
+     * mapped to a group of its own so that these options can be implemented as
+     * a selection by group. Everything that selects tests this way has to name
+     * these groups the same way, which is why they are only named here.
+     *
+     * @return non-empty-string
+     */
+    public static function virtualGroupForCovers(string $name): string
+    {
+        return '__phpunit_covers_' . self::canonicalizeName($name);
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    public static function virtualGroupForUses(string $name): string
+    {
+        return '__phpunit_uses_' . self::canonicalizeName($name);
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    public static function virtualGroupForRequiredPhpExtension(string $name): string
+    {
+        return '__phpunit_requires_php_extension' . self::canonicalizeName($name);
+    }
+
+    /**
      * @param class-string     $className
      * @param non-empty-string $methodName
      *
@@ -67,7 +96,7 @@ final class Groups
             if ($metadata->isCoversClass()) {
                 assert($metadata instanceof CoversClass);
 
-                $groups[] = '__phpunit_covers_' . $this->canonicalizeName($metadata->className());
+                $groups[] = self::virtualGroupForCovers($metadata->className());
 
                 continue;
             }
@@ -75,7 +104,7 @@ final class Groups
             if ($metadata->isCoversFunction()) {
                 assert($metadata instanceof CoversFunction);
 
-                $groups[] = '__phpunit_covers_' . $this->canonicalizeName($metadata->functionName());
+                $groups[] = self::virtualGroupForCovers($metadata->functionName());
 
                 continue;
             }
@@ -83,7 +112,7 @@ final class Groups
             if ($metadata->isUsesClass()) {
                 assert($metadata instanceof UsesClass);
 
-                $groups[] = '__phpunit_uses_' . $this->canonicalizeName($metadata->className());
+                $groups[] = self::virtualGroupForUses($metadata->className());
 
                 continue;
             }
@@ -91,7 +120,7 @@ final class Groups
             if ($metadata->isUsesFunction()) {
                 assert($metadata instanceof UsesFunction);
 
-                $groups[] = '__phpunit_uses_' . $this->canonicalizeName($metadata->functionName());
+                $groups[] = self::virtualGroupForUses($metadata->functionName());
 
                 continue;
             }
@@ -99,7 +128,7 @@ final class Groups
             if ($metadata->isRequiresPhpExtension()) {
                 assert($metadata instanceof RequiresPhpExtension);
 
-                $groups[] = '__phpunit_requires_php_extension' . $this->canonicalizeName($metadata->extension());
+                $groups[] = self::virtualGroupForRequiredPhpExtension($metadata->extension());
             }
         }
 
@@ -129,7 +158,7 @@ final class Groups
         return TestSize::unknown();
     }
 
-    private function canonicalizeName(string $name): string
+    private static function canonicalizeName(string $name): string
     {
         return strtolower(trim($name, '\\'));
     }
