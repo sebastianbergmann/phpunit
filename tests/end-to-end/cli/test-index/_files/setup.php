@@ -257,6 +257,46 @@ function issuesForFile(string $directory, string $name): string
 }
 
 /**
+ * Reports how a run went that selects the test files through a file that lists
+ * them, without the parts of the output that differ from run to run. Such a run
+ * has no CLI arguments and no test suite from an XML configuration file, and is
+ * still a run for which tests were selected.
+ */
+function resultForTestFilesFile(string $directory, string $group): string
+{
+    \file_put_contents(
+        $directory . '/files.txt',
+        $directory . '/tests/OneTest.php' . "\n" . $directory . '/tests/TwoTest.php' . "\n",
+    );
+
+    $output = run(
+        [
+            '--no-configuration',
+            '--do-not-record-test-run-history',
+            '--cache-directory',
+            $directory . '/cache',
+            '--cache-test-index',
+            '--test-files-file',
+            $directory . '/files.txt',
+            '--group',
+            $group,
+            '--no-progress',
+        ],
+        false,
+    );
+
+    $lines = [];
+
+    foreach (\explode("\n", $output) as $line) {
+        if (\str_starts_with($line, 'Tests: ') || \str_starts_with($line, 'OK ') || \str_starts_with($line, 'No tests executed!')) {
+            $lines[] = $line;
+        }
+    }
+
+    return \implode("\n", $lines) . "\n";
+}
+
+/**
  * Reports how running every test went, without the parts of the output that
  * differ from run to run.
  */
