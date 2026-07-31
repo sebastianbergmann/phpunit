@@ -196,6 +196,67 @@ function warningsFor(string $directory, string $group): string
 }
 
 /**
+ * Writes a test class whose file triggers a deprecation while it is being
+ * loaded, and not while a test in it is being run.
+ */
+function writeTestClassThatDeprecatesWhileItIsLoaded(string $directory, string $name, string $group): void
+{
+    \file_put_contents(
+        $directory . '/tests/' . $name . 'Test.php',
+        <<<PHP
+            <?php declare(strict_types=1);
+            namespace PHPUnit\TestFixture\TestIndex;
+
+            use PHPUnit\Framework\Attributes\Group;
+            use PHPUnit\Framework\TestCase;
+
+            \\trigger_error('deprecation from the file itself', \\E_USER_DEPRECATED);
+
+            final class {$name}Test extends TestCase
+            {
+                #[Group('{$group}')]
+                public function testInGroup{$group}(): void
+                {
+                    \$this->assertTrue(true);
+                }
+            }
+            PHP,
+    );
+}
+
+/**
+ * Reports what PHPUnit had to say about a test file that is named on its own on
+ * the command line, without the parts of the output that differ from run to
+ * run. The index this uses is the one the runs that use the XML configuration
+ * file use.
+ */
+function issuesForFile(string $directory, string $name): string
+{
+    $output = run(
+        [
+            '--no-configuration',
+            '--do-not-record-test-run-history',
+            '--cache-directory',
+            $directory . '/cache',
+            '--cache-test-index',
+            '--no-progress',
+            $directory . '/tests/' . $name . 'Test.php',
+        ],
+        false,
+    );
+
+    $lines = [];
+
+    foreach (\explode("\n", $output) as $line) {
+        if (\str_starts_with($line, 'Tests: ') || \str_starts_with($line, 'OK ') || \str_contains($line, 'test runner warning')) {
+            $lines[] = $line;
+        }
+    }
+
+    return \implode("\n", $lines) . "\n";
+}
+
+/**
  * Reports how running every test went, without the parts of the output that
  * differ from run to run.
  */
