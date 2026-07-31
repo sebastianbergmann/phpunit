@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Runner\TestIndex;
 
+use Closure;
+use Throwable;
+
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -26,18 +29,18 @@ final readonly class NullTestFileSkipper implements TestFileSkipper
     }
 
     /**
+     * @template T
+     *
      * @param non-empty-string $file
+     * @param Closure(): T     $load
+     *
+     * @throws Throwable
+     *
+     * @return T
      */
-    public function startRecording(string $file): void
+    public function record(string $file, Closure $load): mixed
     {
-    }
-
-    public function stopRecording(): void
-    {
-    }
-
-    public function abortRecording(): void
-    {
+        return $load();
     }
 
     public function persist(): void

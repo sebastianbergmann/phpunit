@@ -31,7 +31,6 @@ use PHPUnit\TextUI\TestDirectoryNotFoundException;
 use PHPUnit\TextUI\TestFileNotFoundException;
 use PHPUnit\TextUI\XmlConfiguration\TestSuiteMapper;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
-use Throwable;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -188,17 +187,13 @@ final readonly class TestSuiteBuilder
                     continue;
                 }
 
-                $this->skipper->startRecording($file);
-
-                try {
-                    $suite->addTestFile($file, [], $numberOfRuns, $maxAttempts);
-                } catch (Throwable $t) {
-                    $this->skipper->abortRecording();
-
-                    throw $t;
-                }
-
-                $this->skipper->stopRecording();
+                $this->skipper->record(
+                    $file,
+                    static function () use ($suite, $file, $numberOfRuns, $maxAttempts): void
+                    {
+                        $suite->addTestFile($file, [], $numberOfRuns, $maxAttempts);
+                    },
+                );
             }
 
             return $suite;
@@ -214,37 +209,27 @@ final readonly class TestSuiteBuilder
             return $suite;
         }
 
-        $this->skipper->startRecording($path);
+        return $this->skipper->record(
+            $path,
+            static function () use ($path, $suite, $numberOfRuns, $maxAttempts): TestSuite
+            {
+                try {
+                    $testClass = (new TestSuiteLoader)->load($path);
+                } catch (Exception $e) {
+                    print $e->getMessage() . PHP_EOL;
 
-        try {
-            $testClass = (new TestSuiteLoader)->load($path);
-        } catch (Exception $e) {
-            $this->skipper->abortRecording();
+                    exit(1);
+                }
 
-            print $e->getMessage() . PHP_EOL;
+                if ($suite === null) {
+                    return TestSuite::fromClassReflector($testClass, [], $numberOfRuns, $maxAttempts);
+                }
 
-            exit(1);
-        }
-
-        try {
-            if ($suite === null) {
-                $result = TestSuite::fromClassReflector($testClass, [], $numberOfRuns, $maxAttempts);
-            } else {
                 $suite->addTestSuite($testClass, [], $numberOfRuns, $maxAttempts);
 
-                $result = $suite;
-            }
-            // @codeCoverageIgnoreStart
-        } catch (Throwable $t) {
-            $this->skipper->abortRecording();
-
-            throw $t;
-        }
-        // @codeCoverageIgnoreEnd
-
-        $this->skipper->stopRecording();
-
-        return $result;
+                return $suite;
+            },
+        );
     }
 
     /**

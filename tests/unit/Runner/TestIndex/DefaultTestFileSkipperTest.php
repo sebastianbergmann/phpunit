@@ -34,6 +34,7 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\TestFixture\TestFileSkipper\WarnedTest;
 use ReflectionClass;
+use RuntimeException;
 
 #[CoversClass(DefaultTestFileSkipper::class)]
 #[UsesClass(TestIndex::class)]
@@ -98,8 +99,8 @@ final class DefaultTestFileSkipperTest extends AbstractEventTestCase
             NameFilterPruner::withoutFilter(),
         );
 
-        $skipper->startRecording($file);
-        $skipper->stopRecording();
+        $skipper->record($file, static function (): void
+        {});
 
         $this->assertTrue($skipper->canSkipLoading($file, []));
     }
@@ -116,8 +117,8 @@ final class DefaultTestFileSkipperTest extends AbstractEventTestCase
             NameFilterPruner::withoutFilter(),
         );
 
-        $skipper->startRecording($file);
-        $skipper->stopRecording();
+        $skipper->record($file, static function (): void
+        {});
 
         $this->assertFalse($skipper->canSkipLoading($file, []));
     }
@@ -134,8 +135,8 @@ final class DefaultTestFileSkipperTest extends AbstractEventTestCase
             NameFilterPruner::withoutFilter(),
         );
 
-        $skipper->startRecording($file);
-        $skipper->stopRecording();
+        $skipper->record($file, static function (): void
+        {});
 
         $this->assertFalse($skipper->canSkipLoading($file, []));
     }
@@ -152,8 +153,8 @@ final class DefaultTestFileSkipperTest extends AbstractEventTestCase
             NameFilterPruner::withoutFilter(),
         );
 
-        $skipper->startRecording($file);
-        $skipper->stopRecording();
+        $skipper->record($file, static function (): void
+        {});
 
         $this->assertTrue($skipper->canSkipLoading($file, []));
         $this->assertFalse($skipper->canSkipLoading($file, ['from-configuration']));
@@ -176,8 +177,8 @@ final class DefaultTestFileSkipperTest extends AbstractEventTestCase
             NameFilterPruner::withoutFilter(),
         );
 
-        $skipper->startRecording($file);
-        $skipper->stopRecording();
+        $skipper->record($file, static function (): void
+        {});
         $skipper->persist();
 
         $this->assertFalse($skipper->canSkipLoading($file, []));
@@ -197,14 +198,14 @@ final class DefaultTestFileSkipperTest extends AbstractEventTestCase
             NameFilterPruner::withoutFilter(),
         );
 
-        $skipper->startRecording($file);
-        $skipper->stopRecording();
+        $skipper->record($file, static function (): void
+        {});
         $skipper->persist();
 
         $before = file_get_contents($indexDirectory . DIRECTORY_SEPARATOR . 'test-index');
 
-        $skipper->startRecording($file);
-        $skipper->stopRecording();
+        $skipper->record($file, static function (): void
+        {});
         $skipper->persist();
 
         $this->assertSame($before, file_get_contents($indexDirectory . DIRECTORY_SEPARATOR . 'test-index'));
@@ -222,8 +223,8 @@ final class DefaultTestFileSkipperTest extends AbstractEventTestCase
             NameFilterPruner::withoutFilter(),
         );
 
-        $skipper->startRecording($file);
-        $skipper->stopRecording();
+        $skipper->record($file, static function (): void
+        {});
         $skipper->persist();
 
         $this->assertSame([$file], array_keys($this->entriesIn($indexDirectory)));
@@ -243,15 +244,20 @@ final class DefaultTestFileSkipperTest extends AbstractEventTestCase
             NameFilterPruner::withoutFilter(),
         );
 
-        $skipper->startRecording($aborted);
-        $skipper->abortRecording();
+        try {
+            $skipper->record($aborted, static function (): void
+            {
+                throw new RuntimeException('the file cannot be loaded');
+            });
+        } catch (RuntimeException) {
+        }
 
         /*
          * The events emitted while the next file is loaded are only collected
          * when the collecting that was started for the file before it ended.
          */
-        $skipper->startRecording($loaded);
-        $skipper->stopRecording();
+        $skipper->record($loaded, static function (): void
+        {});
         $skipper->persist();
 
         $this->assertFalse($skipper->canSkipLoading($aborted, []));
@@ -285,13 +291,17 @@ final class DefaultTestFileSkipperTest extends AbstractEventTestCase
             NameFilterPruner::withoutFilter(),
         );
 
-        $skipper->startRecording($this->writeTestClass('Collected'));
+        try {
+            $skipper->record($this->writeTestClass('Collected'), function () use ($eventFacade, $subscriber): void
+            {
+                $eventFacade->forward($this->warning('while the file was being loaded'));
 
-        $eventFacade->forward($this->warning('while the file was being loaded'));
+                $this->assertSame([], $subscriber->messages);
 
-        $this->assertSame([], $subscriber->messages);
-
-        $skipper->abortRecording();
+                throw new RuntimeException('the file cannot be loaded');
+            });
+        } catch (RuntimeException) {
+        }
 
         $this->assertSame(['while the file was being loaded'], $subscriber->messages);
 
@@ -334,16 +344,16 @@ final class DefaultTestFileSkipperTest extends AbstractEventTestCase
             NameFilterPruner::withoutFilter(),
         );
 
-        $skipper->startRecording($file);
-        $skipper->stopRecording();
+        $skipper->record($file, static function (): void
+        {});
         $skipper->persist();
 
         $this->assertFalse($skipper->canSkipLoading($file, []));
         $this->assertSame([], $this->entriesIn($indexDirectory));
     }
 
-    #[TestDox('Does nothing when no test file is being loaded')]
-    public function testDoesNothingWhenNoTestFileIsBeingLoaded(): void
+    #[TestDox('Does not collect events for a file it does not index')]
+    public function testDoesNotCollectEventsForFileItDoesNotIndex(): void
     {
         $subscriber = new class implements WarningTriggeredSubscriber
         {
@@ -369,8 +379,17 @@ final class DefaultTestFileSkipperTest extends AbstractEventTestCase
             NameFilterPruner::withoutFilter(),
         );
 
-        $skipper->stopRecording();
-        $skipper->abortRecording();
+        // a PHPT file is never indexed, so nothing is collected while it is loaded
+        $skipper->record($this->writePhptFile('a-test'), static function (): void
+        {});
+
+        try {
+            $skipper->record($this->writePhptFile('another-test'), static function (): void
+            {
+                throw new RuntimeException('the file cannot be loaded');
+            });
+        } catch (RuntimeException) {
+        }
 
         // nothing is being collected, so what is emitted reaches its subscriber
         $eventFacade->forward($this->warning('while no file was being loaded'));
@@ -393,11 +412,10 @@ final class DefaultTestFileSkipperTest extends AbstractEventTestCase
             NameFilterPruner::withoutFilter(),
         );
 
-        $skipper->startRecording($file);
-
-        $eventFacade->forward($this->warning('while the file was being loaded'));
-
-        $skipper->stopRecording();
+        $skipper->record($file, function () use ($eventFacade): void
+        {
+            $eventFacade->forward($this->warning('while the file was being loaded'));
+        });
 
         $this->assertFalse($skipper->canSkipLoading($file, []));
     }
@@ -414,9 +432,10 @@ final class DefaultTestFileSkipperTest extends AbstractEventTestCase
             NameFilterPruner::withoutFilter(),
         );
 
-        $skipper->startRecording($file);
-        TestSuite::empty('test')->addTestFile($file);
-        $skipper->stopRecording();
+        $skipper->record($file, static function () use ($file): void
+        {
+            TestSuite::empty('test')->addTestFile($file);
+        });
 
         $this->assertTrue($skipper->canSkipLoading($file, []));
     }

@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Runner\TestIndex;
 
+use Closure;
+use Throwable;
+
 /**
  * Decides whether a test file has to be loaded while the test suite is built.
  *
@@ -29,27 +32,28 @@ interface TestFileSkipper
     public function canSkipLoading(string $file, array $groupsFromConfiguration): bool;
 
     /**
-     * Called around loading a test file, so that what the file contains, and
-     * whether loading it made PHPUnit warn about it, can be remembered.
+     * Loads a test file, and remembers what it contains and whether PHPUnit had
+     * something to say about it while it was being loaded.
      *
-     * This must be called before the file is loaded, and not merely before the
-     * test suite for it is built: what PHPUnit has to say about a file is said
-     * while the file itself is being executed, and a file PHPUnit has something
-     * to say about must never be remembered as one it does not.
+     * Loading the file is what this is given, and not something the caller does
+     * around it, because what PHPUnit has to say about a file is said while the
+     * file itself is being executed: a file that is loaded before this is told
+     * about it would be remembered as one PHPUnit says nothing about.
+     *
+     * A file that could not be loaded is not remembered, and must not be: what
+     * it contains is not known, and a later run has to load it again in order
+     * to fail the same way.
+     *
+     * @template T
      *
      * @param non-empty-string $file
+     * @param Closure(): T     $load
+     *
+     * @throws Throwable
+     *
+     * @return T
      */
-    public function startRecording(string $file): void;
-
-    public function stopRecording(): void;
-
-    /**
-     * Called instead of stopRecording() when loading the file did not finish.
-     * Such a file is not remembered, and must not be: what it contains is not
-     * known, and a later run has to load it again in order to fail the same
-     * way.
-     */
-    public function abortRecording(): void;
+    public function record(string $file, Closure $load): mixed;
 
     public function persist(): void;
 }
