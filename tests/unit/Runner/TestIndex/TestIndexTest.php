@@ -11,6 +11,7 @@ namespace PHPUnit\Runner\TestIndex;
 
 use const DIRECTORY_SEPARATOR;
 use const PHP_OS_FAMILY;
+use const PHP_VERSION_ID;
 use function array_merge;
 use function array_search;
 use function chmod;
@@ -46,6 +47,7 @@ use PHPUnit\TestFixture\TestIndex\InheritedTest;
 use PHPUnit\TestFixture\TestIndex\InvalidGroupTest;
 use PHPUnit\TestFixture\TestIndex\NumericGroupTest;
 use PHPUnit\TestFixture\TestIndex\OtherFormatTest;
+use PHPUnit\TestFixture\TestIndex\OtherPhpVersionTest;
 use PHPUnit\TestFixture\TestIndex\OtherVersionTest;
 use PHPUnit\TestFixture\TestIndex\PersistedTest;
 use PHPUnit\TestFixture\TestIndex\PlainTest;
@@ -78,8 +80,9 @@ final class TestIndexTest extends TestCase
         $index = static function (mixed $groups, mixed $entries): array
         {
             return [
-                'version' => 3,
+                'version' => 4,
                 'phpunit' => Version::id(),
+                'php'     => PHP_VERSION_ID,
                 'groups'  => $groups,
                 'entries' => $entries,
             ];
@@ -104,7 +107,7 @@ final class TestIndexTest extends TestCase
 
         return [
             'not an array'                   => ['a string'],
-            'without keys'                   => [['version' => 3]],
+            'without keys'                   => [['version' => 4]],
             'written in a different format'  => [$index([], []) + ['version' => 4711]],
             'group table is not an array'    => [$index('a string', [])],
             'group name is not a string'     => [$index([4711], [])],
@@ -436,6 +439,41 @@ final class TestIndexTest extends TestCase
         $this->assertSame(Version::id(), $data['phpunit']);
 
         $data['phpunit'] = $data['phpunit'] . '-not-really';
+
+        file_put_contents($indexFile, json_encode($data));
+
+        $loaded = new TestIndex($indexDirectory);
+        $loaded->load();
+
+        $this->assertNull($loaded->entryFor($file));
+    }
+
+    #[TestDox('Discards an index that was written by a different version of PHP')]
+    public function testDiscardsIndexWrittenByDifferentVersionOfPhp(): void
+    {
+        $directory      = $this->temporaryDirectory();
+        $file           = $this->writePlainTestClass($directory, 'OtherPhpVersion');
+        $indexDirectory = $this->temporaryDirectory();
+
+        $index = new TestIndex($indexDirectory);
+        $index->record(new ReflectionClass(OtherPhpVersionTest::class), false);
+        $index->persist();
+
+        $indexFile = $indexDirectory . DIRECTORY_SEPARATOR . 'test-index';
+        $contents  = file_get_contents($indexFile);
+
+        $this->assertIsString($contents);
+
+        $data = json_decode($contents, true);
+
+        $this->assertIsArray($data);
+        $this->assertSame(PHP_VERSION_ID, $data['php']);
+
+        /*
+         * The file the entry was derived from is unchanged: only the version of
+         * PHP that read it is a different one.
+         */
+        $data['php'] = $data['php'] + 100;
 
         file_put_contents($indexFile, json_encode($data));
 
