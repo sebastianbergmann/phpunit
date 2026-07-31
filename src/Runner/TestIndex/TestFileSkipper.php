@@ -32,6 +32,11 @@ interface TestFileSkipper
      * Called around loading a test file, so that what the file contains, and
      * whether loading it made PHPUnit warn about it, can be remembered.
      *
+     * This must be called before the file is loaded, and not merely before the
+     * test suite for it is built: what PHPUnit has to say about a file is said
+     * while the file itself is being executed, and a file PHPUnit has something
+     * to say about must never be remembered as one it does not.
+     *
      * @param non-empty-string $file
      */
     public function startRecording(string $file): void;

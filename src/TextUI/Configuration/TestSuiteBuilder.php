@@ -214,15 +214,17 @@ final readonly class TestSuiteBuilder
             return $suite;
         }
 
+        $this->skipper->startRecording($path);
+
         try {
             $testClass = (new TestSuiteLoader)->load($path);
         } catch (Exception $e) {
+            $this->skipper->abortRecording();
+
             print $e->getMessage() . PHP_EOL;
 
             exit(1);
         }
-
-        $this->skipper->startRecording($path);
 
         try {
             if ($suite === null) {
