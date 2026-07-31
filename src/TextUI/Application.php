@@ -795,12 +795,18 @@ final readonly class Application
             $nameFilterPruner = NameFilterPruner::withoutFilter();
         }
 
+        if ($configuration->hasExcludeGroups()) {
+            $excludedGroups = $configuration->excludeGroups();
+        } else {
+            $excludedGroups = [];
+        }
+
         return new DefaultTestFileSkipper(
             EventFacade::instance(),
             $index,
             new GroupPruner(
                 $this->includedGroups($configuration),
-                $configuration->hasExcludeGroups() ? $configuration->excludeGroups() : [],
+                $excludedGroups,
             ),
             $nameFilterPruner,
         );
