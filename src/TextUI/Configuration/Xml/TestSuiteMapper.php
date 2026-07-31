@@ -26,7 +26,6 @@ use PHPUnit\TextUI\RuntimeException;
 use PHPUnit\TextUI\TestDirectoryNotFoundException;
 use PHPUnit\TextUI\TestFileNotFoundException;
 use SebastianBergmann\FileIterator\Facade;
-use Throwable;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -118,17 +117,13 @@ final readonly class TestSuiteMapper
                             continue;
                         }
 
-                        $this->skipper->startRecording($file);
-
-                        try {
-                            $testSuite->addTestFile($file, $groups, $numberOfRuns, $maxAttempts);
-                        } catch (Throwable $t) {
-                            $this->skipper->abortRecording();
-
-                            throw $t;
-                        }
-
-                        $this->skipper->stopRecording();
+                        $this->skipper->record(
+                            $file,
+                            static function () use ($testSuite, $file, $groups, $numberOfRuns, $maxAttempts): void
+                            {
+                                $testSuite->addTestFile($file, $groups, $numberOfRuns, $maxAttempts);
+                            },
+                        );
                     }
                 }
 
@@ -152,17 +147,13 @@ final readonly class TestSuiteMapper
                         continue;
                     }
 
-                    $this->skipper->startRecording($file->path());
-
-                    try {
-                        $testSuite->addTestFile($file->path(), $file->groups(), $numberOfRuns, $maxAttempts);
-                    } catch (Throwable $t) {
-                        $this->skipper->abortRecording();
-
-                        throw $t;
-                    }
-
-                    $this->skipper->stopRecording();
+                    $this->skipper->record(
+                        $file->path(),
+                        static function () use ($testSuite, $file, $numberOfRuns, $maxAttempts): void
+                        {
+                            $testSuite->addTestFile($file->path(), $file->groups(), $numberOfRuns, $maxAttempts);
+                        },
+                    );
                 }
 
                 if (!$empty) {

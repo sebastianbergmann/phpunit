@@ -18,6 +18,7 @@ use function scandir;
 use function sys_get_temp_dir;
 use function uniqid;
 use function unlink;
+use Closure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
@@ -88,7 +89,7 @@ final class TestSuiteBuilderTest extends TestCase
 
         $skipper
             ->expects($this->never())
-            ->method('startRecording');
+            ->method('record');
 
         $skipper
             ->expects($this->once())
@@ -100,8 +101,8 @@ final class TestSuiteBuilderTest extends TestCase
         $this->assertSame(0, $testSuite->count());
     }
 
-    #[TestDox('Stops recording when a test file cannot be loaded')]
-    public function testStopsRecordingWhenTestFileCannotBeLoaded(): void
+    #[TestDox('Loads a test file through the test file skipper, so that a file that cannot be loaded is not remembered')]
+    public function testLoadsTestFileThroughTestFileSkipper(): void
     {
         $directory = $this->directory();
 
@@ -116,15 +117,8 @@ final class TestSuiteBuilderTest extends TestCase
 
         $skipper
             ->expects($this->once())
-            ->method('startRecording');
-
-        $skipper
-            ->expects($this->once())
-            ->method('abortRecording');
-
-        $skipper
-            ->expects($this->never())
-            ->method('stopRecording')
+            ->method('record')
+            ->willReturnCallback(static fn (string $file, Closure $load): mixed => $load())
             ->seal();
 
         $this->expectException(RuntimeException::class);

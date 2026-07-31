@@ -11,12 +11,14 @@ namespace PHPUnit\Runner\TestIndex;
 
 use function is_file;
 use function str_ends_with;
+use Closure;
 use PHPUnit\Event\EventCollection;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Event\Test\DataProviderMethodCalled;
 use PHPUnit\Event\Test\DataProviderMethodFinished;
 use PHPUnit\Runner\Exception;
 use PHPUnit\Runner\TestSuiteLoader;
+use Throwable;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -78,6 +80,38 @@ final class DefaultTestFileSkipper implements TestFileSkipper
     }
 
     /**
+     * @template T
+     *
+     * @param non-empty-string $file
+     * @param Closure(): T     $load
+     *
+     * @throws Throwable
+     *
+     * @return T
+     */
+    public function record(string $file, Closure $load): mixed
+    {
+        $this->startRecording($file);
+
+        try {
+            $result = $load();
+        } catch (Throwable $t) {
+            $this->abortRecording();
+
+            throw $t;
+        }
+
+        $this->stopRecording();
+
+        return $result;
+    }
+
+    public function persist(): void
+    {
+        $this->index->persist();
+    }
+
+    /**
      * Files that are already indexed are not indexed again: the entry for a
      * file is only handed out while it is still valid, so an entry that exists
      * describes the file as it is now.
@@ -88,7 +122,7 @@ final class DefaultTestFileSkipper implements TestFileSkipper
      *
      * @param non-empty-string $file
      */
-    public function startRecording(string $file): void
+    private function startRecording(string $file): void
     {
         if (str_ends_with($file, '.phpt') && is_file($file)) {
             return;
@@ -103,7 +137,7 @@ final class DefaultTestFileSkipper implements TestFileSkipper
         $this->eventFacade->startCollectingEvents();
     }
 
-    public function stopRecording(): void
+    private function stopRecording(): void
     {
         if ($this->recording === null) {
             return;
@@ -134,7 +168,7 @@ final class DefaultTestFileSkipper implements TestFileSkipper
      * state it was in before is what makes a failure that is reported instead
      * of ending the run harmless.
      */
-    public function abortRecording(): void
+    private function abortRecording(): void
     {
         if ($this->recording === null) {
             return;
@@ -143,11 +177,6 @@ final class DefaultTestFileSkipper implements TestFileSkipper
         $this->recording = null;
 
         $this->eventFacade->forward($this->eventFacade->stopCollectingEvents());
-    }
-
-    public function persist(): void
-    {
-        $this->index->persist();
     }
 
     /**

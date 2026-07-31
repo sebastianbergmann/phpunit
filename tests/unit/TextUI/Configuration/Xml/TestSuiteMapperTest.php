@@ -19,6 +19,7 @@ use function scandir;
 use function sys_get_temp_dir;
 use function uniqid;
 use function unlink;
+use Closure;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
@@ -207,7 +208,7 @@ final class TestSuiteMapperTest extends TestCase
 
         $skipper
             ->expects($this->never())
-            ->method('startRecording')
+            ->method('record')
             ->seal();
 
         $testSuite = new TestSuiteMapper($skipper)->map(
@@ -225,8 +226,8 @@ final class TestSuiteMapperTest extends TestCase
         $this->assertSame(0, $testSuite->count());
     }
 
-    #[TestDox('Stops recording when a test file in a directory cannot be loaded')]
-    public function testStopsRecordingWhenTestFileInDirectoryCannotBeLoaded(): void
+    #[TestDox('Loads a test file in a directory through the test file skipper, so that a file that cannot be loaded is not remembered')]
+    public function testLoadsTestFileInDirectoryThroughTestFileSkipper(): void
     {
         $directory = $this->directory();
 
@@ -241,15 +242,8 @@ final class TestSuiteMapperTest extends TestCase
 
         $skipper
             ->expects($this->once())
-            ->method('startRecording');
-
-        $skipper
-            ->expects($this->once())
-            ->method('abortRecording');
-
-        $skipper
-            ->expects($this->never())
-            ->method('stopRecording')
+            ->method('record')
+            ->willReturnCallback(static fn (string $file, Closure $load): mixed => $load())
             ->seal();
 
         $this->expectException(RuntimeException::class);
@@ -277,7 +271,7 @@ final class TestSuiteMapperTest extends TestCase
 
         $skipper
             ->expects($this->never())
-            ->method('startRecording')
+            ->method('record')
             ->seal();
 
         $testSuite = new TestSuiteMapper($skipper)->map(
@@ -291,8 +285,8 @@ final class TestSuiteMapperTest extends TestCase
         $this->assertSame(0, $testSuite->count());
     }
 
-    #[TestDox('Stops recording when a test file cannot be loaded')]
-    public function testStopsRecordingWhenTestFileCannotBeLoaded(): void
+    #[TestDox('Loads a test file through the test file skipper, so that a file that cannot be loaded is not remembered')]
+    public function testLoadsTestFileThroughTestFileSkipper(): void
     {
         $file = $this->writeTestFileThatCannotBeLoaded($this->directory(), 'BrokenFile');
 
@@ -305,15 +299,8 @@ final class TestSuiteMapperTest extends TestCase
 
         $skipper
             ->expects($this->once())
-            ->method('startRecording');
-
-        $skipper
-            ->expects($this->once())
-            ->method('abortRecording');
-
-        $skipper
-            ->expects($this->never())
-            ->method('stopRecording')
+            ->method('record')
+            ->willReturnCallback(static fn (string $file, Closure $load): mixed => $load())
             ->seal();
 
         $this->expectException(RuntimeException::class);

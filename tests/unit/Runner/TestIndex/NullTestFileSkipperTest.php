@@ -14,6 +14,7 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
 #[CoversClass(NullTestFileSkipper::class)]
 #[Small]
@@ -27,16 +28,28 @@ final class NullTestFileSkipperTest extends TestCase
         $this->assertFalse((new NullTestFileSkipper)->canSkipLoading(__FILE__, ['a-group']));
     }
 
-    #[TestDox('Does nothing when a test file is recorded, when loading it fails, or when the index is written')]
-    public function testDoesNothing(): void
+    #[TestDox('Loads a test file without remembering anything about it')]
+    public function testLoadsTestFileWithoutRememberingAnythingAboutIt(): void
     {
         $skipper = new NullTestFileSkipper;
 
-        $skipper->startRecording(__FILE__);
-        $skipper->stopRecording();
-        $skipper->abortRecording();
+        $this->assertSame('loaded', $skipper->record(__FILE__, static fn (): string => 'loaded'));
+
         $skipper->persist();
 
         $this->assertFalse($skipper->canSkipLoading(__FILE__, []));
+    }
+
+    #[TestDox('Does not swallow a test file that cannot be loaded')]
+    public function testDoesNotSwallowTestFileThatCannotBeLoaded(): void
+    {
+        $skipper = new NullTestFileSkipper;
+
+        $this->expectException(RuntimeException::class);
+
+        $skipper->record(__FILE__, static function (): void
+        {
+            throw new RuntimeException('the file cannot be loaded');
+        });
     }
 }
