@@ -58,6 +58,13 @@ final class DefaultTestFileSkipper implements TestFileSkipper
      */
     public function canSkipLoading(string $file, array $groupsFromConfiguration): bool
     {
+        /*
+         * Both pruners answer this on their own as well. Asking them here keeps
+         * a run that selects tests neither by group nor by name from looking up
+         * the entry for every test file: no file can be skipped then, and
+         * finding out whether an entry is still valid means hashing every file
+         * it was derived from.
+         */
         if (!$this->groupPruner->prunes() && !$this->nameFilterPruner->prunes()) {
             return false;
         }
