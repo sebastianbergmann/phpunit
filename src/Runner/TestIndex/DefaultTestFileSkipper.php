@@ -152,11 +152,13 @@ final class DefaultTestFileSkipper implements TestFileSkipper
 
         try {
             $this->index->record((new TestSuiteLoader)->load($file), self::madePhpUnitWarn($events));
-        } catch (Exception $e) {
+        } catch (Exception) {
             /*
              * A file that does not contain a test class is not indexed and is
              * therefore always loaded, which keeps the warning PHPUnit emits
-             * for it.
+             * for it. Loading it is also the only way of finding that out: the
+             * test suite the file was added to reports it as a warning instead
+             * of letting it end the run.
              */
         }
     }
