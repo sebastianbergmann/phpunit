@@ -11,6 +11,7 @@ namespace PHPUnit\Runner\TestIndex;
 
 use const DIRECTORY_SEPARATOR;
 use const LOCK_EX;
+use const PHP_VERSION_ID;
 use function count;
 use function dirname;
 use function file_get_contents;
@@ -37,8 +38,11 @@ use ReflectionClass;
  * The index makes it possible to decide that a test file cannot contribute a
  * test to a run before the file is loaded. An entry is only handed out while
  * every source file it was derived from is unchanged, and the index as a whole
- * is discarded when it was written by a different version of PHPUnit, as the
- * meaning of the metadata it stores is defined by that version.
+ * is discarded when it was written by a different version of PHPUnit, or by a
+ * different version of PHP, as the meaning of the metadata it stores is defined
+ * by both: a test class can be declared conditionally, and the metadata for it
+ * can depend on the version of PHP that reads the file, while the file itself is
+ * unchanged.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -46,7 +50,7 @@ use ReflectionClass;
  */
 final class TestIndex
 {
-    private const int VERSION                   = 3;
+    private const int VERSION                   = 4;
     private const string DEFAULT_INDEX_FILENAME = 'test-index';
     private readonly string $indexFilename;
     private readonly FileHasher $hasher;
@@ -138,11 +142,11 @@ final class TestIndex
             return;
         }
 
-        if (!isset($data['version'], $data['phpunit'], $data['groups'], $data['entries'])) {
+        if (!isset($data['version'], $data['phpunit'], $data['php'], $data['groups'], $data['entries'])) {
             return;
         }
 
-        if ($data['version'] !== self::VERSION || $data['phpunit'] !== Version::id()) {
+        if ($data['version'] !== self::VERSION || $data['phpunit'] !== Version::id() || $data['php'] !== PHP_VERSION_ID) {
             return;
         }
 
@@ -234,6 +238,7 @@ final class TestIndex
             [
                 'version' => self::VERSION,
                 'phpunit' => Version::id(),
+                'php'     => PHP_VERSION_ID,
                 'groups'  => $groupNames,
                 'entries' => $entries,
             ],
