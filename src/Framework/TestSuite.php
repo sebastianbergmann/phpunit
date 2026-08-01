@@ -67,12 +67,16 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
     private string $name;
 
     /**
-     * @var array<non-empty-string, list<PhptTestCase|TestCase>>
+     * The name of a group that is a number is an integer key.
+     *
+     * @var array<int|non-empty-string, list<PhptTestCase|TestCase>>
      */
     private array $groupedTests = [];
 
     /**
-     * @var ?array<non-empty-string, list<non-empty-string>>
+     * The name of a group that is a number is an integer key.
+     *
+     * @var ?array<int|non-empty-string, list<non-empty-string>>
      */
     private ?array $groups = null;
 
@@ -331,7 +335,9 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
      * anyway, and caches it, so determining the identifiers eagerly only adds
      * work for tests that are never run.
      *
-     * @return array<non-empty-string, list<non-empty-string>>
+     * The name of a group that is a number is an integer key.
+     *
+     * @return array<int|non-empty-string, list<non-empty-string>>
      */
     public function groups(): array
     {

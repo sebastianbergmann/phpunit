@@ -47,6 +47,14 @@ final class IncludeGroupFilterIteratorTest extends TestCase
         );
     }
 
+    public function testAcceptsTestsThatAreInTheSelectedGroupWhoseNameIsANumber(): void
+    {
+        $this->assertSame(
+            [BankAccountTest::class . '::testBalanceCannotBecomeNegative'],
+            $this->idsOfAcceptedTests(['5']),
+        );
+    }
+
     public function testDoesNotAcceptTestsThatAreNotInTheSelectedGroup(): void
     {
         $this->assertSame([], $this->idsOfAcceptedTests(['group-without-tests']));
@@ -94,7 +102,7 @@ final class IncludeGroupFilterIteratorTest extends TestCase
         $suite = TestSuite::empty('test suite name');
 
         $suite->addTest(new BankAccountTest('testBalanceIsInitiallyZero'), ['one']);
-        $suite->addTest(new BankAccountTest('testBalanceCannotBecomeNegative'), ['two']);
+        $suite->addTest(new BankAccountTest('testBalanceCannotBecomeNegative'), ['two', '5']);
         $suite->addTest(new BankAccountTest('testBalanceCannotBecomeNegative2'), ['one', 'two']);
 
         $factory = new Factory;

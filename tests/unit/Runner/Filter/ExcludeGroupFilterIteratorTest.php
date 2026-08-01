@@ -37,6 +37,17 @@ final class ExcludeGroupFilterIteratorTest extends TestCase
         $this->assertSame([], $this->idsOfAcceptedTests(['one', 'two']));
     }
 
+    public function testDoesNotAcceptTestsThatAreInTheExcludedGroupWhoseNameIsANumber(): void
+    {
+        $this->assertSame(
+            [
+                BankAccountTest::class . '::testBalanceIsInitiallyZero',
+                BankAccountTest::class . '::testBalanceCannotBecomeNegative2',
+            ],
+            $this->idsOfAcceptedTests(['5']),
+        );
+    }
+
     public function testAcceptsAllTestsWhenNoTestIsInTheExcludedGroup(): void
     {
         $this->assertSame(
@@ -59,7 +70,7 @@ final class ExcludeGroupFilterIteratorTest extends TestCase
         $suite = TestSuite::empty('test suite name');
 
         $suite->addTest(new BankAccountTest('testBalanceIsInitiallyZero'), ['one']);
-        $suite->addTest(new BankAccountTest('testBalanceCannotBecomeNegative'), ['two']);
+        $suite->addTest(new BankAccountTest('testBalanceCannotBecomeNegative'), ['two', '5']);
         $suite->addTest(new BankAccountTest('testBalanceCannotBecomeNegative2'), ['one', 'two']);
 
         $factory = new Factory;

@@ -44,7 +44,8 @@ abstract class GroupFilterIterator extends RecursiveFilterIterator
         $groupTests = [];
 
         foreach ($suite->groups() as $group => $tests) {
-            if (!in_array($group, $groups, true)) {
+            // the name of a group that is a number is an integer key
+            if (!in_array((string) $group, $groups, true)) {
                 continue;
             }
 
