@@ -700,12 +700,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/comparator.git",
-                "reference": "60488f202d81c9761e9c1d37c07dec2a7eb49c7c"
+                "reference": "afb00830f0baccfec70719d368f29b379b2bf0f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/60488f202d81c9761e9c1d37c07dec2a7eb49c7c",
-                "reference": "60488f202d81c9761e9c1d37c07dec2a7eb49c7c",
+                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/afb00830f0baccfec70719d368f29b379b2bf0f4",
+                "reference": "afb00830f0baccfec70719d368f29b379b2bf0f4",
                 "shasum": ""
             },
             "require": {
@@ -785,7 +785,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-30T01:38:08+00:00"
+            "time": "2026-08-01T08:05:47+00:00"
         },
         {
             "name": "sebastian/complexity",
@@ -1018,12 +1018,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/exporter.git",
-                "reference": "1ff285c572780c1c80dbafeaf6fbdeab6b097850"
+                "reference": "642e2bbda79545ad3ed7e0b0e5d1a4b7cec8b7c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/exporter/zipball/1ff285c572780c1c80dbafeaf6fbdeab6b097850",
-                "reference": "1ff285c572780c1c80dbafeaf6fbdeab6b097850",
+                "url": "https://api.github.com/repos/sebastianbergmann/exporter/zipball/642e2bbda79545ad3ed7e0b0e5d1a4b7cec8b7c0",
+                "reference": "642e2bbda79545ad3ed7e0b0e5d1a4b7cec8b7c0",
                 "shasum": ""
             },
             "require": {
@@ -1101,7 +1101,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-08-01T07:27:34+00:00"
+            "time": "2026-08-01T07:45:25+00:00"
         },
         {
             "name": "sebastian/file-filter",
