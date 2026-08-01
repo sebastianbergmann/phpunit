@@ -482,8 +482,20 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
         if ($this->providedTests === null) {
             $this->providedTests = [];
 
+            /**
+             * The targets that were provided so far are tracked separately so
+             * that adding a test to the result is not more expensive for the
+             * last test of a large test suite than it is for the first one.
+             *
+             * @var array<string, true> $targets
+             */
+            $targets = [];
+
             if (is_callable($this->sortId(), true)) {
-                $this->providedTests[] = new ExecutionOrderDependency($this->sortId());
+                $dependency = new ExecutionOrderDependency($this->sortId());
+
+                $this->providedTests[]             = $dependency;
+                $targets[$dependency->getTarget()] = true;
             }
 
             foreach ($this->tests as $test) {
@@ -493,7 +505,16 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                     // @codeCoverageIgnoreEnd
                 }
 
-                $this->providedTests = ExecutionOrderDependency::mergeUnique($this->providedTests, $test->provides());
+                foreach ($test->provides() as $dependency) {
+                    $target = $dependency->getTarget();
+
+                    if (isset($targets[$target])) {
+                        continue;
+                    }
+
+                    $targets[$target]      = true;
+                    $this->providedTests[] = $dependency;
+                }
             }
         }
 
@@ -508,6 +529,22 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
         if ($this->requiredTests === null) {
             $this->requiredTests = [];
 
+            /**
+             * @see provides()
+             *
+             * @var array<string, true> $targets
+             */
+            $targets = [];
+
+            /**
+             * A dependency that does not name both a class and a method is
+             * dropped as soon as another test contributes its dependencies,
+             * so only the one of the test that contributes last is kept.
+             *
+             * @var list<ExecutionOrderDependency> $invalid
+             */
+            $invalid = [];
+
             foreach ($this->tests as $test) {
                 if (!$test instanceof Reorderable) {
                     // @codeCoverageIgnoreStart
@@ -515,13 +552,32 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                     // @codeCoverageIgnoreEnd
                 }
 
-                $this->requiredTests = ExecutionOrderDependency::mergeUnique(
-                    ExecutionOrderDependency::filterInvalid($this->requiredTests),
-                    $test->requires(),
-                );
+                $invalid = [];
+
+                foreach ($test->requires() as $dependency) {
+                    $target = $dependency->getTarget();
+
+                    if ($target === '') {
+                        if ($invalid === []) {
+                            $invalid[] = $dependency;
+                        }
+
+                        continue;
+                    }
+
+                    if (isset($targets[$target])) {
+                        continue;
+                    }
+
+                    $targets[$target]      = true;
+                    $this->requiredTests[] = $dependency;
+                }
             }
 
-            $this->requiredTests = ExecutionOrderDependency::diff($this->requiredTests, $this->provides());
+            $this->requiredTests = ExecutionOrderDependency::diff(
+                array_merge($this->requiredTests, $invalid),
+                $this->provides(),
+            );
         }
 
         return $this->requiredTests;

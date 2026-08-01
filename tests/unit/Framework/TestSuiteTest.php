@@ -52,6 +52,21 @@ final class TestSuiteTest extends TestCase
         $this->assertSame([], $suite->requires());
     }
 
+    public function testProvidedDependenciesAreDeduplicated(): void
+    {
+        $suite = TestSuite::empty('SomeName');
+        $suite->addTestSuite(new ReflectionClass(DependencySuccessTest::class));
+        $suite->addTestSuite(new ReflectionClass(DependencySuccessTest::class));
+
+        $this->assertEquals([
+            'SomeName::class',
+            DependencySuccessTest::class . '::class',
+            DependencySuccessTest::class . '::testOne',
+            DependencySuccessTest::class . '::testTwo',
+            DependencySuccessTest::class . '::testThree',
+        ], $suite->provides());
+    }
+
     public function testDetectMissingDependenciesBetweenTestSuites(): void
     {
         $suite = TestSuite::fromClassReflector(
