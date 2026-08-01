@@ -117,7 +117,18 @@ final class TestSuiteLoader
         }
 
         if (self::$numberOfDeclaredClasses === null) {
-            self::$numberOfDeclaredClasses = count(get_declared_classes());
+            /*
+             * Classes that were declared before the first test class file was
+             * loaded, by the bootstrap script for instance, are mapped to the
+             * files that declare them as well. Without this, a test class file
+             * whose class has already been declared would have to be searched
+             * for among all declared classes.
+             */
+            $declaredClasses = get_declared_classes();
+
+            self::mapClassesToTheFilesThatDeclareThem($declaredClasses);
+
+            self::$numberOfDeclaredClasses = count($declaredClasses);
         }
 
         require_once $suiteClassFile;
@@ -129,24 +140,9 @@ final class TestSuiteLoader
          * they cannot be undeclared. The classes that were declared while the
          * file was loaded are therefore at the end of the list.
          */
-        $loadedClasses = array_slice($declaredClasses, self::$numberOfDeclaredClasses);
-
-        foreach ($loadedClasses as $loadedClass) {
-            /** @noinspection PhpUnhandledExceptionInspection */
-            $class = new ReflectionClass($loadedClass);
-
-            $fileName = $class->getFileName();
-
-            if ($fileName === false || $fileName === '') {
-                continue;
-            }
-
-            if (!isset(self::$fileToClassesMap[$fileName])) {
-                self::$fileToClassesMap[$fileName] = [];
-            }
-
-            self::$fileToClassesMap[$fileName][] = $class->getName();
-        }
+        self::mapClassesToTheFilesThatDeclareThem(
+            array_slice($declaredClasses, self::$numberOfDeclaredClasses),
+        );
 
         self::$numberOfDeclaredClasses = count($declaredClasses);
 
@@ -155,5 +151,22 @@ final class TestSuiteLoader
         }
 
         return self::$fileToClassesMap[$suiteClassFile];
+    }
+
+    /**
+     * @param array<class-string> $classes
+     */
+    private static function mapClassesToTheFilesThatDeclareThem(array $classes): void
+    {
+        foreach ($classes as $class) {
+            /** @noinspection PhpUnhandledExceptionInspection */
+            $fileName = new ReflectionClass($class)->getFileName();
+
+            if ($fileName === false || $fileName === '') {
+                continue;
+            }
+
+            self::$fileToClassesMap[$fileName][] = $class;
+        }
     }
 }
