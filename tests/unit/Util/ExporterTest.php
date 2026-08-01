@@ -12,6 +12,7 @@ namespace PHPUnit\Util;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
+use SebastianBergmann\Exporter\ExportContext;
 use SebastianBergmann\Exporter\Exporter as OriginalExporter;
 use SebastianBergmann\Exporter\ObjectExporter;
 use stdClass;
@@ -98,7 +99,7 @@ final class ExporterTest extends TestCase
                 return $object instanceof stdClass;
             }
 
-            public function export(object $object, OriginalExporter $exporter, int $indentation): string
+            public function export(object $object, OriginalExporter $exporter, int $indentation, ExportContext $context): string
             {
                 return $this->representation;
             }

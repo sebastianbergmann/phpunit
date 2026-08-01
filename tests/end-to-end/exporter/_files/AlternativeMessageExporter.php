@@ -11,6 +11,7 @@ namespace PHPUnit\TestFixture\ObjectExporter;
 
 use function assert;
 use function sprintf;
+use SebastianBergmann\Exporter\ExportContext;
 use SebastianBergmann\Exporter\Exporter;
 use SebastianBergmann\Exporter\ObjectExporter;
 
@@ -25,7 +26,7 @@ final class AlternativeMessageExporter implements ObjectExporter
         return $object->text() === 'hello';
     }
 
-    public function export(object $object, Exporter $exporter, int $indentation): string
+    public function export(object $object, Exporter $exporter, int $indentation, ExportContext $context): string
     {
         assert($object instanceof Message);
 
