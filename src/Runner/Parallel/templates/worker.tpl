@@ -3,7 +3,7 @@ use PHPUnit\Event\Facade;
 use PHPUnit\Framework\TestRunner\ErrorHandlerBootstrapper;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\CodeCoverage;
-use PHPUnit\Runner\Parallel\TestDescriptor;
+use PHPUnit\Runner\Parallel\CommandStream;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\PhpHandler;
@@ -35,12 +35,12 @@ TestResultFacade::init();
 
 ob_end_clean();
 
-function __phpunit_worker_run_unit(object $command): string
+function __phpunit_worker_run_unit(array $command): string
 {
     $dispatcher = Facade::instance()->initForIsolation(
         PHPUnit\Event\Telemetry\HRTime::fromSecondsAndNanoseconds(
-            $command->offsetSeconds,
-            $command->offsetNanoseconds
+            $command['offsetSeconds'],
+            $command['offsetNanoseconds']
         ),
     );
 
@@ -56,7 +56,7 @@ function __phpunit_worker_run_unit(object $command): string
     // window and not dispatched to subscribers, so a frame can never carry
     // events that a RetryTestSuite may yet decide to suppress.
     $dispatcher->registerSubscriber(
-        new class($dispatcher, $command->streamFile, $command->nonce) implements PHPUnit\Event\Test\FinishedSubscriber
+        new class($dispatcher, $command['streamFile'], $command['nonce']) implements PHPUnit\Event\Test\FinishedSubscriber
         {
             public function __construct(
                 private readonly PHPUnit\Event\CollectingDispatcher $dispatcher,
@@ -83,14 +83,15 @@ function __phpunit_worker_run_unit(object $command): string
         },
     );
 
-    require_once $command->file;
+    require_once $command['file'];
 
-    $suite = TestSuite::empty($command->className);
+    $suite = TestSuite::empty($command['className']);
 
-    // Each member travels as the descriptor that TestDescriptor::encode()
-    // produced in the parent process; the same class rebuilds it here.
-    foreach ($command->tests as $__phpunit_test) {
-        $suite->addTest(TestDescriptor::decode($command->className, $__phpunit_test));
+    // Each member of the unit arrived as the descriptor that
+    // TestDescriptor::from() produced in the parent process; the descriptor
+    // turns back into the member it describes here.
+    foreach ($command['tests'] as $__phpunit_test) {
+        $suite->addTest($__phpunit_test->test($command['className']));
     }
 
     $suite->run();
@@ -101,7 +102,7 @@ function __phpunit_worker_run_unit(object $command): string
         $codeCoverage = CodeCoverage::instance()->codeCoverage();
     }
 
-    $result = $command->nonce . serialize(
+    $result = $command['nonce'] . serialize(
         (object) [
             'codeCoverage' => $codeCoverage,
             'events'       => $dispatcher->flush(),
@@ -143,20 +144,28 @@ while (($__phpunit_line = fgets($__phpunit_input)) !== false) {
         continue;
     }
 
-    $__phpunit_command = json_decode($__phpunit_line);
+    $__phpunit_command = CommandStream::decode($__phpunit_line);
 
-    if ($__phpunit_command->command === 'stop') {
+    // A line that does not decode to a command was not written by the parent
+    // process. Nothing that arrives on this channel can be trusted after that,
+    // so the worker stops; the parent detects the dead process and reports the
+    // unit it was running as crashed.
+    if ($__phpunit_command === null) {
+        break;
+    }
+
+    if ($__phpunit_command['command'] === 'stop') {
         break;
     }
 
     $__phpunit_result = __phpunit_worker_run_unit($__phpunit_command);
 
-    file_put_contents($__phpunit_command->resultFile, $__phpunit_result);
+    file_put_contents($__phpunit_command['resultFile'], $__phpunit_result);
 
     // Signal completion through the filesystem rather than standard output: the
     // parent polls for this file, and because it is created only after the
     // result file has been fully written, its presence means the result is
     // ready to be read. This avoids the parent having to read the worker's
     // output pipe, which cannot be done without blocking on Windows.
-    file_put_contents($__phpunit_command->doneFile, $__phpunit_command->nonce);
+    file_put_contents($__phpunit_command['doneFile'], $__phpunit_command['nonce']);
 }
