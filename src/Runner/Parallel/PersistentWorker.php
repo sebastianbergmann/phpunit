@@ -16,8 +16,6 @@ use function file_get_contents;
 use function filesize;
 use function hrtime;
 use function is_file;
-use function json_encode;
-use function json_last_error_msg;
 use function random_bytes;
 use function sprintf;
 use function strlen;
@@ -234,25 +232,7 @@ final class PersistentWorker
             throw $e;
         }
 
-        $encodedCommand = json_encode($command);
-
-        // Everything under the unit's control that could carry arbitrary
-        // bytes is base64-encoded before it enters the command, so this can
-        // only fail for exotic reasons — a test file whose path is not valid
-        // UTF-8, for instance. Failing loudly here makes the unit report as
-        // crashed instead of aborting the run or feeding the worker a
-        // command it cannot decode.
-        if ($encodedCommand === false) {
-            @unlink($resultFile);
-
-            throw new WorkerException(
-                sprintf(
-                    'The tests of class %s cannot be run in parallel because the command that dispatches them to a worker cannot be encoded: %s',
-                    $unit->name(),
-                    json_last_error_msg(),
-                ),
-            );
-        }
+        $encodedCommand = CommandStream::encode($command);
 
         $this->currentUnit            = $unit;
         $this->currentNonce           = $nonce;
@@ -344,11 +324,7 @@ final class PersistentWorker
     public function stop(): void
     {
         if ($this->job !== null) {
-            $encodedCommand = json_encode(['command' => 'stop']);
-
-            assert($encodedCommand !== false);
-
-            $this->job->write($encodedCommand . "\n");
+            $this->job->write(CommandStream::encode(['command' => 'stop']) . "\n");
             $this->job->closeStdin();
 
             $result = $this->job->wait();
@@ -441,7 +417,7 @@ final class PersistentWorker
         $tests = [];
 
         foreach ($unit->tests() as $test) {
-            $tests[] = TestDescriptor::encode($test, $unit->className());
+            $tests[] = TestDescriptor::from($test, $unit->className());
         }
 
         return [
