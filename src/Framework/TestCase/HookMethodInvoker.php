@@ -15,7 +15,8 @@ use PHPUnit\Framework\SkippedTest;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Api\HookMethods;
 use PHPUnit\Runner\HookMethodCollection;
-use ReflectionObject;
+use PHPUnit\Util\Reflection;
+use ReflectionClass;
 use Throwable;
 
 /**
@@ -174,11 +175,11 @@ final readonly class HookMethodInvoker
      */
     private static function doInvoke(TestCase $test, HookMethodCollection $hookMethods, Event\Emitter $emitter, Event\Code\TestMethod|string $eventTest, string $calledMethod, string $erroredMethod, string $failedMethod, string $finishedMethod): void
     {
-        $reflector      = new ReflectionObject($test);
+        $reflector      = new ReflectionClass($test::class);
         $methodsInvoked = [];
 
         foreach ($hookMethods->methodNamesSortedByPriority() as $methodName) {
-            if (self::methodDoesNotExistOrIsDeclaredInTestCase($reflector, $methodName)) {
+            if (Reflection::methodDoesNotExistOrIsDeclaredInTestCase($reflector, $methodName)) {
                 continue;
             }
 
@@ -229,14 +230,5 @@ final readonly class HookMethodInvoker
         if (isset($t)) {
             throw $t;
         }
-    }
-
-    /**
-     * @param non-empty-string $methodName
-     */
-    private static function methodDoesNotExistOrIsDeclaredInTestCase(ReflectionObject $reflector, string $methodName): bool
-    {
-        return !$reflector->hasMethod($methodName) ||
-               $reflector->getMethod($methodName)->getDeclaringClass()->getName() === TestCase::class;
     }
 }

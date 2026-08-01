@@ -87,16 +87,7 @@ final readonly class TestSuiteMapper
                     $groups = $directory->groups();
 
                     foreach ($files as $file) {
-                        if (isset($processed[$file])) {
-                            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
-                                sprintf(
-                                    'Cannot add file %s to test suite "%s" as it was already added to test suite "%s"',
-                                    $file,
-                                    $testSuiteName,
-                                    $processed[$file],
-                                ),
-                            );
-
+                        if ($this->wasAlreadyAddedToAnotherTestSuite($processed, $file, $testSuiteName)) {
                             continue;
                         }
 
@@ -116,16 +107,7 @@ final readonly class TestSuiteMapper
                         continue;
                     }
 
-                    if (isset($processed[$file->path()])) {
-                        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
-                            sprintf(
-                                'Cannot add file %s to test suite "%s" as it was already added to test suite "%s"',
-                                $file->path(),
-                                $testSuiteName,
-                                $processed[$file->path()],
-                            ),
-                        );
-
+                    if ($this->wasAlreadyAddedToAnotherTestSuite($processed, $file->path(), $testSuiteName)) {
                         continue;
                     }
 
@@ -148,5 +130,28 @@ final readonly class TestSuiteMapper
                 $e,
             );
         }
+    }
+
+    /**
+     * @param array<non-empty-string, non-empty-string> $processed
+     * @param non-empty-string                          $file
+     * @param non-empty-string                          $testSuiteName
+     */
+    private function wasAlreadyAddedToAnotherTestSuite(array $processed, string $file, string $testSuiteName): bool
+    {
+        if (!isset($processed[$file])) {
+            return false;
+        }
+
+        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+            sprintf(
+                'Cannot add file %s to test suite "%s" as it was already added to test suite "%s"',
+                $file,
+                $testSuiteName,
+                $processed[$file],
+            ),
+        );
+
+        return true;
     }
 }

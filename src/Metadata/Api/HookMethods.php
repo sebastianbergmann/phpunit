@@ -20,6 +20,7 @@ use PHPUnit\Metadata\After;
 use PHPUnit\Metadata\AfterClass;
 use PHPUnit\Metadata\Before;
 use PHPUnit\Metadata\BeforeClass;
+use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry;
 use PHPUnit\Metadata\PostCondition;
 use PHPUnit\Metadata\PreCondition;
@@ -66,84 +67,14 @@ final class HookMethods
             $metadata           = Registry::parser()->forMethod($className, $methodName);
 
             if ($method->isStatic()) {
-                if ($metadata->isBeforeClass()->isNotEmpty()) {
-                    $beforeClass = $metadata->isBeforeClass()->asArray()[0];
-                    assert($beforeClass instanceof BeforeClass);
-
-                    $this->addHookMethod(
-                        $hookMethods['beforeClass'],
-                        $declaringClassName,
-                        $methodName,
-                        $beforeClass->priority(),
-                        'BeforeClass',
-                    );
-                }
-
-                if ($metadata->isAfterClass()->isNotEmpty()) {
-                    $afterClass = $metadata->isAfterClass()->asArray()[0];
-                    assert($afterClass instanceof AfterClass);
-
-                    $this->addHookMethod(
-                        $hookMethods['afterClass'],
-                        $declaringClassName,
-                        $methodName,
-                        $afterClass->priority(),
-                        'AfterClass',
-                    );
-                }
+                $this->addHookMethod($hookMethods['beforeClass'], $metadata->isBeforeClass(), $declaringClassName, $methodName, 'BeforeClass');
+                $this->addHookMethod($hookMethods['afterClass'], $metadata->isAfterClass(), $declaringClassName, $methodName, 'AfterClass');
             }
 
-            if ($metadata->isBefore()->isNotEmpty()) {
-                $before = $metadata->isBefore()->asArray()[0];
-                assert($before instanceof Before);
-
-                $this->addHookMethod(
-                    $hookMethods['before'],
-                    $declaringClassName,
-                    $methodName,
-                    $before->priority(),
-                    'Before',
-                );
-            }
-
-            if ($metadata->isPreCondition()->isNotEmpty()) {
-                $preCondition = $metadata->isPreCondition()->asArray()[0];
-                assert($preCondition instanceof PreCondition);
-
-                $this->addHookMethod(
-                    $hookMethods['preCondition'],
-                    $declaringClassName,
-                    $methodName,
-                    $preCondition->priority(),
-                    'PreCondition',
-                );
-            }
-
-            if ($metadata->isPostCondition()->isNotEmpty()) {
-                $postCondition = $metadata->isPostCondition()->asArray()[0];
-                assert($postCondition instanceof PostCondition);
-
-                $this->addHookMethod(
-                    $hookMethods['postCondition'],
-                    $declaringClassName,
-                    $methodName,
-                    $postCondition->priority(),
-                    'PostCondition',
-                );
-            }
-
-            if ($metadata->isAfter()->isNotEmpty()) {
-                $after = $metadata->isAfter()->asArray()[0];
-                assert($after instanceof After);
-
-                $this->addHookMethod(
-                    $hookMethods['after'],
-                    $declaringClassName,
-                    $methodName,
-                    $after->priority(),
-                    'After',
-                );
-            }
+            $this->addHookMethod($hookMethods['before'], $metadata->isBefore(), $declaringClassName, $methodName, 'Before');
+            $this->addHookMethod($hookMethods['preCondition'], $metadata->isPreCondition(), $declaringClassName, $methodName, 'PreCondition');
+            $this->addHookMethod($hookMethods['postCondition'], $metadata->isPostCondition(), $declaringClassName, $methodName, 'PostCondition');
+            $this->addHookMethod($hookMethods['after'], $metadata->isAfter(), $declaringClassName, $methodName, 'After');
         }
 
         self::$hookMethods[$className] = $hookMethods;
@@ -181,8 +112,23 @@ final class HookMethods
      * @param non-empty-string $methodName
      * @param non-empty-string $attributeName
      */
-    private function addHookMethod(HookMethodCollection $hookMethods, string $declaringClassName, string $methodName, int $priority, string $attributeName): void
+    private function addHookMethod(HookMethodCollection $hookMethods, MetadataCollection $metadata, string $declaringClassName, string $methodName, string $attributeName): void
     {
+        if ($metadata->isEmpty()) {
+            return;
+        }
+
+        $hookMethod = $metadata->asArray()[0];
+
+        assert(
+            $hookMethod instanceof After ||
+            $hookMethod instanceof AfterClass ||
+            $hookMethod instanceof Before ||
+            $hookMethod instanceof BeforeClass ||
+            $hookMethod instanceof PostCondition ||
+            $hookMethod instanceof PreCondition,
+        );
+
         if ($hookMethods->isDefaultHookMethod($methodName)) {
             EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
                 sprintf(
@@ -196,7 +142,7 @@ final class HookMethods
             return;
         }
 
-        $hookMethods->add(new HookMethod($methodName, $priority));
+        $hookMethods->add(new HookMethod($methodName, $hookMethod->priority()));
     }
 
     /**

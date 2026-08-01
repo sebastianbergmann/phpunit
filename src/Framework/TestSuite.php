@@ -785,16 +785,6 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
         return array_all($groups, static fn (string $group) => str_starts_with($group, '__phpunit_'));
     }
 
-    private function methodDoesNotExistOrIsDeclaredInTestCase(string $methodName): bool
-    {
-        /** @var class-string $className */
-        $className = $this->name;
-        $reflector = new ReflectionClass($className);
-
-        return !$reflector->hasMethod($methodName) ||
-               $reflector->getMethod($methodName)->getDeclaringClass()->getName() === TestCase::class;
-    }
-
     /**
      * @throws Exception
      */
@@ -824,12 +814,13 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
         }
 
         $methods         = (new HookMethods)->hookMethods($this->name)['beforeClass']->methodNamesSortedByPriority();
+        $reflector       = new ReflectionClass($this->name);
         $calledMethods   = [];
         $emitCalledEvent = true;
         $result          = true;
 
         foreach ($methods as $method) {
-            if ($this->methodDoesNotExistOrIsDeclaredInTestCase($method)) {
+            if (Reflection::methodDoesNotExistOrIsDeclaredInTestCase($reflector, $method)) {
                 continue;
             }
 
@@ -915,10 +906,11 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
         }
 
         $methods       = (new HookMethods)->hookMethods($this->name)['afterClass']->methodNamesSortedByPriority();
+        $reflector     = new ReflectionClass($this->name);
         $calledMethods = [];
 
         foreach ($methods as $method) {
-            if ($this->methodDoesNotExistOrIsDeclaredInTestCase($method)) {
+            if (Reflection::methodDoesNotExistOrIsDeclaredInTestCase($reflector, $method)) {
                 continue;
             }
 

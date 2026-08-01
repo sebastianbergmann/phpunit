@@ -53,6 +53,19 @@ final readonly class Reflection
     }
 
     /**
+     * A hook method that is not declared by the test class, or that is only
+     * declared by TestCase itself, must not be invoked as a hook method.
+     *
+     * @param ReflectionClass<TestCase> $class
+     * @param non-empty-string          $methodName
+     */
+    public static function methodDoesNotExistOrIsDeclaredInTestCase(ReflectionClass $class, string $methodName): bool
+    {
+        return !$class->hasMethod($methodName) ||
+               $class->getMethod($methodName)->getDeclaringClass()->getName() === TestCase::class;
+    }
+
+    /**
      * @param ReflectionClass<TestCase> $class
      *
      * @return list<ReflectionMethod>
