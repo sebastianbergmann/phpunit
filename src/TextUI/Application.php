@@ -123,8 +123,6 @@ final readonly class Application
      */
     public function run(array $argv): int
     {
-        $this->preload();
-
         try {
             EventFacade::emitter()->applicationStarted();
 
@@ -132,6 +130,10 @@ final readonly class Application
             $pathToXmlConfigurationFile = (new XmlConfigurationFileFinder)->find($cliConfiguration);
 
             $this->executeCommandsThatOnlyRequireCliConfiguration($cliConfiguration, $pathToXmlConfigurationFile);
+
+            // the commands above end the process; preloading is therefore only
+            // worthwhile once it is known that tests are going to be run
+            $this->preload();
 
             $xmlConfiguration = $this->loadXmlConfiguration($pathToXmlConfigurationFile);
 
