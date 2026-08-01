@@ -58,6 +58,7 @@ use PHPUnit\Runner\DeprecationFilter;
 use PHPUnit\Runner\DirectoryDoesNotExistException;
 use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\Runner\Extension\ExtensionBootstrapper;
+use PHPUnit\Runner\Extension\ExtensionCapabilities;
 use PHPUnit\Runner\Extension\ExtensionFacade;
 use PHPUnit\Runner\Extension\PharLoader;
 use PHPUnit\Runner\GarbageCollection\GarbageCollectionHandler;
@@ -154,11 +155,8 @@ final readonly class Application
 
             $this->executeCommandsThatDoNotRequireTheTestSuite($configuration, $cliConfiguration);
 
-            $pharExtensions                          = null;
-            $extensionRequiresCodeCoverageCollection = false;
-            $extensionReplacesOutput                 = false;
-            $extensionReplacesProgressOutput         = false;
-            $extensionReplacesResultOutput           = false;
+            $pharExtensions        = null;
+            $extensionCapabilities = ExtensionCapabilities::none();
 
             if (!$configuration->noExtensions()) {
                 if ($configuration->hasPharExtensionDirectory()) {
@@ -167,17 +165,12 @@ final readonly class Application
                     );
                 }
 
-                $bootstrappedExtensions                  = $this->bootstrapExtensions($configuration);
-                $extensionRequiresCodeCoverageCollection = $bootstrappedExtensions['requiresCodeCoverageCollection'];
-                $extensionReplacesOutput                 = $bootstrappedExtensions['replacesOutput'];
-                $extensionReplacesProgressOutput         = $bootstrappedExtensions['replacesProgressOutput'];
-                $extensionReplacesResultOutput           = $bootstrappedExtensions['replacesResultOutput'];
+                $extensionCapabilities = $this->bootstrapExtensions($configuration);
             }
 
             $printer = OutputFacade::init(
                 $configuration,
-                $extensionReplacesProgressOutput,
-                $extensionReplacesResultOutput,
+                $extensionCapabilities,
             );
 
             if ($configuration->debug()) {
@@ -239,10 +232,10 @@ final readonly class Application
             $coverageInitializationStatus = CodeCoverage::instance()->init(
                 $configuration,
                 CodeCoverageFilterRegistry::instance(),
-                $extensionRequiresCodeCoverageCollection,
+                $extensionCapabilities->requiresCodeCoverageCollection(),
             );
 
-            if (!$configuration->debug() && !$extensionReplacesOutput) {
+            if (!$configuration->debug() && !$extensionCapabilities->replacesOutput()) {
                 $this->writeRuntimeInformation($printer, $configuration);
                 $this->writePharExtensionInformation($printer, $pharExtensions);
                 $this->writeRandomSeedInformation($printer, $configuration);
@@ -313,18 +306,18 @@ final readonly class Application
             $result = TestResultFacade::result();
 
             if (TestResultFacade::wasInterrupted()) {
-                if (!$extensionReplacesResultOutput && !$configuration->debug()) {
+                if (!$extensionCapabilities->replacesResultOutput() && !$configuration->debug()) {
                     $printer->print(PHP_EOL . PHP_EOL);
                 }
 
                 $printer->print('Test execution was interrupted by a signal.');
 
-                if ($extensionReplacesResultOutput || $configuration->debug()) {
+                if ($extensionCapabilities->replacesResultOutput() || $configuration->debug()) {
                     $printer->print(PHP_EOL);
                 }
             }
 
-            if (!$extensionReplacesResultOutput && !$configuration->debug()) {
+            if (!$extensionCapabilities->replacesResultOutput() && !$configuration->debug()) {
                 OutputFacade::printResult(
                     $result,
                     $testDoxResult,
@@ -441,10 +434,7 @@ final readonly class Application
         }
     }
 
-    /**
-     * @return array{requiresCodeCoverageCollection: bool, replacesOutput: bool, replacesProgressOutput: bool, replacesResultOutput: bool}
-     */
-    private function bootstrapExtensions(Configuration $configuration): array
+    private function bootstrapExtensions(Configuration $configuration): ExtensionCapabilities
     {
         $facade = new ExtensionFacade;
 
@@ -460,12 +450,7 @@ final readonly class Application
             );
         }
 
-        return [
-            'requiresCodeCoverageCollection' => $facade->requiresCodeCoverageCollection(),
-            'replacesOutput'                 => $facade->replacesOutput(),
-            'replacesProgressOutput'         => $facade->replacesProgressOutput(),
-            'replacesResultOutput'           => $facade->replacesResultOutput(),
-        ];
+        return $facade->capabilities();
     }
 
     private function executeCommandsThatOnlyRequireCliConfiguration(CliConfiguration $cliConfiguration, false|string $configurationFile): void

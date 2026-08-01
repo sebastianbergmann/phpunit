@@ -15,6 +15,7 @@ use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Logging\TeamCity\TeamCityLogger;
 use PHPUnit\Logging\TestDox\TestResultCollection;
 use PHPUnit\Runner\DirectoryDoesNotExistException;
+use PHPUnit\Runner\Extension\ExtensionCapabilities;
 use PHPUnit\TestRunner\TestResult\TestResult;
 use PHPUnit\TextUI\CannotOpenSocketException;
 use PHPUnit\TextUI\Configuration\Configuration;
@@ -42,7 +43,7 @@ final class Facade
     private static ?SummaryPrinter $summaryPrinter             = null;
     private static bool $defaultProgressPrinter                = false;
 
-    public static function init(Configuration $configuration, bool $extensionReplacesProgressOutput, bool $extensionReplacesResultOutput): Printer
+    public static function init(Configuration $configuration, ExtensionCapabilities $extensionCapabilities): Printer
     {
         self::createPrinter($configuration);
 
@@ -72,14 +73,12 @@ final class Facade
                 EventFacade::instance(),
             );
         } else {
-            if (!$extensionReplacesProgressOutput) {
+            if (!$extensionCapabilities->replacesProgressOutput()) {
                 self::createProgressPrinter($configuration);
             }
 
-            if (!$extensionReplacesResultOutput) {
-                self::createResultPrinter($configuration);
-                self::createSummaryPrinter($configuration);
-            }
+            self::createResultPrinter($configuration);
+            self::createSummaryPrinter($configuration);
 
             if ($configuration->outputIsTeamCity()) {
                 new TeamCityLogger(

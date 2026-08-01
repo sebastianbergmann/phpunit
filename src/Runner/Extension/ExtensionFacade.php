@@ -92,4 +92,14 @@ final class ExtensionFacade implements Facade
     {
         return $this->requiresCodeCoverageCollection;
     }
+
+    public function capabilities(): ExtensionCapabilities
+    {
+        return ExtensionCapabilities::from(
+            $this->requiresCodeCoverageCollection(),
+            $this->replacesOutput(),
+            $this->replacesProgressOutput(),
+            $this->replacesResultOutput(),
+        );
+    }
 }

@@ -100,4 +100,42 @@ final class ExtensionFacadeTest extends TestCase
 
         $this->assertTrue($facade->requiresCodeCoverageCollection());
     }
+
+    public function testCapabilitiesAreEmptyByDefault(): void
+    {
+        $capabilities = (new ExtensionFacade)->capabilities();
+
+        $this->assertFalse($capabilities->requiresCodeCoverageCollection());
+        $this->assertFalse($capabilities->replacesOutput());
+        $this->assertFalse($capabilities->replacesProgressOutput());
+        $this->assertFalse($capabilities->replacesResultOutput());
+    }
+
+    public function testCapabilitiesReflectWhatExtensionsRequested(): void
+    {
+        $facade = new ExtensionFacade;
+
+        $facade->requireCodeCoverageCollection();
+        $facade->replaceProgressOutput();
+
+        $capabilities = $facade->capabilities();
+
+        $this->assertTrue($capabilities->requiresCodeCoverageCollection());
+        $this->assertFalse($capabilities->replacesOutput());
+        $this->assertTrue($capabilities->replacesProgressOutput());
+        $this->assertFalse($capabilities->replacesResultOutput());
+    }
+
+    public function testCapabilitiesRetainThatReplacingOutputReplacesProgressAndResultOutput(): void
+    {
+        $facade = new ExtensionFacade;
+
+        $facade->replaceOutput();
+
+        $capabilities = $facade->capabilities();
+
+        $this->assertTrue($capabilities->replacesOutput());
+        $this->assertTrue($capabilities->replacesProgressOutput());
+        $this->assertTrue($capabilities->replacesResultOutput());
+    }
 }
