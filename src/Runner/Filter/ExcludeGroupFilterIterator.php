@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Runner\Filter;
 
-use function in_array;
-
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -19,11 +17,11 @@ use function in_array;
 final class ExcludeGroupFilterIterator extends GroupFilterIterator
 {
     /**
-     * @param non-empty-string       $id
-     * @param list<non-empty-string> $groupTests
+     * @param non-empty-string              $id
+     * @param array<non-empty-string, true> $groupTests
      */
     protected function doAccept(string $id, array $groupTests): bool
     {
-        return !in_array($id, $groupTests, true);
+        return !isset($groupTests[$id]);
     }
 }
