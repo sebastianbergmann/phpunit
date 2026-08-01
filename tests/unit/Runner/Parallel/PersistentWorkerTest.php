@@ -141,12 +141,11 @@ final class PersistentWorkerTest extends TestCase
     }
 
     #[RequiresOperatingSystem('Linux')]
-    public function testRejectsAUnitWhoseDispatchCommandCannotBeEncoded(): void
+    public function testRunsAUnitWhoseTestClassFileHasAPathThatIsNotValidUtf8(): void
     {
-        // A test class whose file path is not valid UTF-8 cannot travel in
-        // the JSON-encoded worker command; the dispatch must fail with a
-        // telling exception instead of aborting the run or feeding the
-        // worker a command it cannot decode.
+        // A file path that is not valid UTF-8 is legal on Linux. The command
+        // that dispatches a unit to a worker is serialized, so such a path
+        // travels to the worker like any other.
         $suffix    = bin2hex(random_bytes(4));
         $className = 'BinaryPathTest_' . $suffix;
         $file      = sys_get_temp_dir() . "/phpunit_\xC0_" . $suffix . '.php';
@@ -163,10 +162,8 @@ final class PersistentWorkerTest extends TestCase
         $worker->start();
 
         try {
-            $this->expectException(WorkerException::class);
-            $this->expectExceptionMessageMatches('/cannot be encoded/');
-
-            $worker->dispatch(
+            $completed = $this->runToCompletion(
+                $worker,
                 new TestClassWorkUnit(0, $className, [new $className('testThatPasses')]),
             );
         } finally {
@@ -174,6 +171,9 @@ final class PersistentWorkerTest extends TestCase
 
             @unlink($file);
         }
+
+        $this->assertFalse($completed->crashed());
+        $this->assertFalse($this->failedOrErrored($completed));
     }
 
     public function testReportsAFailingTestThroughTheResultEnvelopeRatherThanAsACrash(): void
