@@ -9,12 +9,14 @@
  */
 namespace PHPUnit\Framework\TestCase;
 
+use function array_pop;
 use function assert;
-use function fclose;
+use function ftruncate;
 use function ini_get;
 use function ini_set;
 use function is_writable;
 use function preg_replace;
+use function rewind;
 use function stream_get_contents;
 use function stream_get_meta_data;
 use function tmpfile;
@@ -29,12 +31,22 @@ use PHPUnit\Runner\ShutdownHandler;
  */
 final class ErrorLogCapture
 {
-    private bool $expectErrorLog = false;
+    /**
+     * Creating and removing the temporary file that error_log() is redirected
+     * to is expensive and would otherwise have to be done for every test. A
+     * file is therefore reused once the capture it was created for has been
+     * stopped. A capture that is started while another one is still active
+     * gets a file of its own.
+     *
+     * @var list<array{handle: resource, path: non-empty-string}>
+     */
+    private static array $unusedCaptureFiles = [];
+    private bool $expectErrorLog             = false;
 
     /**
-     * @var false|resource
+     * @var ?array{handle: resource, path: non-empty-string}
      */
-    private mixed $captureHandle            = false;
+    private ?array $captureFile             = null;
     private false|string $previousLogTarget = false;
 
     public function expect(): void
@@ -50,30 +62,14 @@ final class ErrorLogCapture
             );
         }
 
-        $captureHandle = tmpfile();
+        $captureFile = self::captureFile();
 
-        // @codeCoverageIgnoreStart
-        if ($captureHandle === false) {
-            return;
-        }
-        // @codeCoverageIgnoreEnd
-
-        $meta = stream_get_meta_data($captureHandle);
-
-        // @codeCoverageIgnoreStart
-        if (!isset($meta['uri'])) {
-            return;
-        }
-        // @codeCoverageIgnoreEnd
-
-        $capturePath = $meta['uri'];
-
-        if (!@is_writable($capturePath)) {
+        if ($captureFile === null) {
             return;
         }
 
-        $this->captureHandle     = $captureHandle;
-        $this->previousLogTarget = ini_set('error_log', $capturePath);
+        $this->captureFile       = $captureFile;
+        $this->previousLogTarget = ini_set('error_log', $captureFile['path']);
     }
 
     /**
@@ -82,7 +78,7 @@ final class ErrorLogCapture
     public function verify(): void
     {
         // @codeCoverageIgnoreStart
-        if ($this->captureHandle === false) {
+        if ($this->captureFile === null) {
             if ($this->expectErrorLog) {
                 throw new ErrorLogNotWritableException;
             }
@@ -91,7 +87,7 @@ final class ErrorLogCapture
         }
         // @codeCoverageIgnoreEnd
 
-        $errorLogOutput = stream_get_contents($this->captureHandle);
+        $errorLogOutput = stream_get_contents($this->captureFile['handle']);
 
         if ($this->expectErrorLog) {
             Assert::assertNotEmpty($errorLogOutput, 'error_log() was not called');
@@ -110,7 +106,7 @@ final class ErrorLogCapture
 
     public function handleError(): void
     {
-        if ($this->captureHandle === false) {
+        if ($this->captureFile === null) {
             return;
         }
 
@@ -118,7 +114,7 @@ final class ErrorLogCapture
             return;
         }
 
-        $errorLogOutput = stream_get_contents($this->captureHandle);
+        $errorLogOutput = stream_get_contents($this->captureFile['handle']);
 
         if ($errorLogOutput !== false) {
             print self::stripDateFromErrorLog($errorLogOutput);
@@ -127,15 +123,15 @@ final class ErrorLogCapture
 
     public function stop(): void
     {
-        if ($this->captureHandle === false) {
+        if ($this->captureFile === null) {
             return;
         }
 
         ShutdownHandler::resetMessage();
 
-        fclose($this->captureHandle);
+        self::$unusedCaptureFiles[] = $this->captureFile;
 
-        $this->captureHandle = false;
+        $this->captureFile = null;
 
         // @codeCoverageIgnoreStart
         if ($this->previousLogTarget === false) {
@@ -146,6 +142,48 @@ final class ErrorLogCapture
         ini_set('error_log', $this->previousLogTarget);
 
         $this->previousLogTarget = false;
+    }
+
+    /**
+     * @return ?array{handle: resource, path: non-empty-string}
+     */
+    private static function captureFile(): ?array
+    {
+        $captureFile = array_pop(self::$unusedCaptureFiles);
+
+        if ($captureFile !== null) {
+            ftruncate($captureFile['handle'], 0);
+            rewind($captureFile['handle']);
+
+            return $captureFile;
+        }
+
+        $handle = tmpfile();
+
+        // @codeCoverageIgnoreStart
+        if ($handle === false) {
+            return null;
+        }
+        // @codeCoverageIgnoreEnd
+
+        $meta = stream_get_meta_data($handle);
+
+        // @codeCoverageIgnoreStart
+        if (!isset($meta['uri']) || $meta['uri'] === '') {
+            return null;
+        }
+        // @codeCoverageIgnoreEnd
+
+        $path = $meta['uri'];
+
+        if (!@is_writable($path)) {
+            return null;
+        }
+
+        return [
+            'handle' => $handle,
+            'path'   => $path,
+        ];
     }
 
     private static function stripDateFromErrorLog(string $log): string

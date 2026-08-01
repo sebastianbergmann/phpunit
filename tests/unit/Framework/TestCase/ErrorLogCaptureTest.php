@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\TestCase;
 
+use const PHP_EOL;
 use function error_log;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
@@ -82,6 +83,31 @@ final class ErrorLogCaptureTest extends TestCase
         $capture->start();
 
         error_log('something went wrong');
+
+        $capture->verify();
+        $capture->stop();
+    }
+
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testDoesNotPrintWhatWasCapturedForACaptureThatHasStopped(): void
+    {
+        $this->expectOutputString('something went wrong' . PHP_EOL . 'something else went wrong' . PHP_EOL);
+
+        $capture = new ErrorLogCapture;
+
+        $capture->start();
+
+        error_log('something went wrong');
+
+        $capture->verify();
+        $capture->stop();
+
+        $capture = new ErrorLogCapture;
+
+        $capture->start();
+
+        error_log('something else went wrong');
 
         $capture->verify();
         $capture->stop();
