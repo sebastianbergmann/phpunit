@@ -73,7 +73,7 @@ class Timestamps
             $pos += 4;
 
             // update timestamp to a fixed value
-            $timeStampBytes = pack('L', $timestamp);
+            $timeStampBytes = pack('V', $timestamp);
             $this->contents[$pos + 0] = $timeStampBytes[0];
             $this->contents[$pos + 1] = $timeStampBytes[1];
             $this->contents[$pos + 2] = $timeStampBytes[2];
@@ -120,7 +120,7 @@ class Timestamps
         //           signature
         $signature = hash($algo, substr($this->contents, 0, $pos), true)
             // sig type
-            . pack('L', $signatureAlgo)
+            . pack('V', $signatureAlgo)
             // ohai Greg & Marcus
             . 'GBMB';
 
