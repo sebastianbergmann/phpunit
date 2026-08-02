@@ -240,6 +240,48 @@ final class PhptRunnerTest extends TestCase
         $this->assertCount(2, $collected);
     }
 
+    public function testStartsATestOnlyWhenNoOtherRunningTestHoldsAConflictKeyOfIts(): void
+    {
+        $file = __DIR__ . '/../../../_files/parallel-worker/worker.phpt';
+
+        $budget = new ProcessBudget(2);
+
+        $runner = $this->runner(2, $budget);
+
+        $collected = [];
+
+        $runner->begin(
+            [
+                new PhptWorkUnit(0, $file, ['database']),
+                new PhptWorkUnit(1, $file, ['database']),
+            ],
+            static function (int $index, EventCollection $events) use (&$collected): void
+            {
+                $collected[$index] = $events;
+            },
+        );
+
+        $runner->tick();
+
+        // Neither the concurrency limit nor the process budget keeps the
+        // second test from starting alongside the first one: the conflict key
+        // the two share does. One slot of the budget is therefore still free.
+        $this->assertTrue($runner->hasRunningTests());
+        $this->assertTrue($budget->acquire());
+
+        $budget->release();
+
+        while (!$runner->isFinished()) {
+            if (!$runner->tick()) {
+                usleep(1000);
+            }
+        }
+
+        // The key is released once the test holding it has finished, so the
+        // second test ran after the first one rather than not at all.
+        $this->assertSame([0, 1], array_keys($collected));
+    }
+
     public function testRunsTheCleanSectionOfATerminatedTestWhenHalting(): void
     {
         $marker = sys_get_temp_dir() . '/phpunit-parallel-halt-clean.marker';
