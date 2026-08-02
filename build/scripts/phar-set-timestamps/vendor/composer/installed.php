@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => 'dev-main',
-        'version' => 'dev-main',
-        'reference' => '18f2f8a69976091e13fbc52ad211fd85b0c3f6df',
+        'pretty_version' => '13.2.x-dev',
+        'version' => '13.2.9999999.9999999-dev',
+        'reference' => 'c238f6f5a0816deef17d4d2ad7b2ef4554dabdf7',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,18 +11,18 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => 'dev-main',
-            'version' => 'dev-main',
-            'reference' => '18f2f8a69976091e13fbc52ad211fd85b0c3f6df',
+            'pretty_version' => '13.2.x-dev',
+            'version' => '13.2.9999999.9999999-dev',
+            'reference' => 'c238f6f5a0816deef17d4d2ad7b2ef4554dabdf7',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
         'seld/phar-utils' => array(
-            'pretty_version' => '1.2.1',
-            'version' => '1.2.1.0',
-            'reference' => 'ea2f4014f163c1be4c601b9b7bd6af81ba8d701c',
+            'pretty_version' => '1.2.2',
+            'version' => '1.2.2.0',
+            'reference' => '990bbd0e92caa216d52eca0935f6e35e589bfaa5',
             'type' => 'library',
             'install_path' => __DIR__ . '/../seld/phar-utils',
             'aliases' => array(),
