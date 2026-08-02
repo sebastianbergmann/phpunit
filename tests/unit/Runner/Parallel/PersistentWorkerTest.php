@@ -39,6 +39,7 @@ use PHPUnit\Framework\TestRunner\ChildProcessResultProcessor;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TestFixture\ParallelWorker\WorkerFirstTest;
 use PHPUnit\TestFixture\ParallelWorker\WorkerSecondTest;
+use PHPUnit\TestFixture\ParallelWorker\WorkerStreamingTest;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 use PHPUnit\Util\PHP\Job;
 use PHPUnit\Util\PHP\JobRunner;
@@ -273,6 +274,70 @@ final class PersistentWorkerTest extends TestCase
         // that were emitted after the last test finished.
         $this->assertTrue($this->streamedEventsContainAFinishedTest());
         $this->assertFalse($this->eventsContainAFinishedTest($this->eventsOf($completed)->asArray()));
+    }
+
+    public function testDoesNotReportTheEventsOfAFinishedTestAgainWhenNothingWasStreamedSinceTheLastPoll(): void
+    {
+        $worker = $this->worker();
+
+        $worker->start();
+
+        // The first test of the unit finishes right away and its events are
+        // streamed; the second one keeps the unit running while the parent
+        // polls again.
+        $worker->dispatch(
+            new TestClassWorkUnit(
+                0,
+                WorkerStreamingTest::class,
+                [
+                    new WorkerStreamingTest('testThatFinishesRightAway'),
+                    new WorkerStreamingTest('testThatSleeps'),
+                ],
+            ),
+        );
+
+        $collect = function (WorkUnit $unit, EventCollection $events): void
+        {
+            $this->streamedEvents[] = $events;
+        };
+
+        $this->streamedEvents = [];
+
+        while ($this->streamedEvents === []) {
+            $this->assertNull($worker->poll($collect));
+
+            usleep(1000);
+        }
+
+        $streamedSoFar = $this->streamedEvents;
+
+        // The unit is still running and has not streamed anything since the
+        // previous poll, so this poll must report no events at all rather than
+        // the ones it has already reported.
+        $this->assertNull($worker->poll($collect));
+        $this->assertSame($streamedSoFar, $this->streamedEvents);
+
+        $worker->kill();
+        $worker->stop();
+    }
+
+    public function testKillingAWorkerThatIsNotRunningAUnitTerminatesItAllTheSame(): void
+    {
+        $worker = $this->worker();
+
+        $worker->start();
+
+        $this->assertTrue($worker->isAlive());
+
+        // The pool kills the workers that are busy when a run is abandoned,
+        // but a worker that never received a unit has no unit files to clean
+        // up and must be killed just the same.
+        $worker->kill();
+
+        $this->assertFalse($worker->isAlive());
+        $this->assertFalse($worker->isBusy());
+
+        $worker->stop();
     }
 
     /**

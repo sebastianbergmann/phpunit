@@ -9,11 +9,17 @@
  */
 namespace PHPUnit\Runner\Parallel;
 
+use function sys_get_temp_dir;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
+use PHPUnit\Runner\TestRunHistory\DefaultTestRunHistory;
+use PHPUnit\Runner\TestRunHistory\TestRunHistoryId;
 
 #[CoversClass(PhptWorkUnit::class)]
+#[UsesClass(PhptTestCase::class)]
 #[Small]
 final class PhptWorkUnitTest extends TestCase
 {
@@ -44,8 +50,31 @@ final class PhptWorkUnitTest extends TestCase
         $this->assertSame(['all'], $unit->conflicts());
     }
 
+    public function testHasTheDurationRecordedForItsTest(): void
+    {
+        $testRunHistory = $this->testRunHistory();
+
+        $testRunHistory->setTime(TestRunHistoryId::fromReorderable(new PhptTestCase('/path/to/test.phpt')), 2.5);
+
+        $this->assertSame(2.5, $this->unit()->duration($testRunHistory));
+    }
+
+    public function testHasNoDurationWhenItsTestHasNotRunBefore(): void
+    {
+        $this->assertSame(0.0, $this->unit()->duration($this->testRunHistory()));
+    }
+
     private function unit(): PhptWorkUnit
     {
         return new PhptWorkUnit(5, '/path/to/test.phpt');
+    }
+
+    /**
+     * A test run history that is never loaded from or persisted to its file:
+     * the tests only use the times set on the instance.
+     */
+    private function testRunHistory(): DefaultTestRunHistory
+    {
+        return new DefaultTestRunHistory(sys_get_temp_dir() . '/phpunit-phpt-work-unit-test.result.cache');
     }
 }
