@@ -9,10 +9,15 @@
  */
 namespace PHPUnit\Runner\Parallel;
 
+use function sys_get_temp_dir;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Runner\TestRunHistory\DefaultTestRunHistory;
+use PHPUnit\Runner\TestRunHistory\TestRunHistoryId;
 use PHPUnit\TestFixture\ParallelWorker\WorkerFirstTest;
+use PHPUnit\TestFixture\ParallelWorker\WorkerSecondTest;
 
 #[CoversClass(TestClassWorkUnit::class)]
 #[Small]
@@ -41,6 +46,49 @@ final class TestClassWorkUnitTest extends TestCase
         $this->assertSame(WorkerFirstTest::class, $this->unit()->name());
     }
 
+    public function testHasTheSummedDurationsRecordedForItsTests(): void
+    {
+        $testRunHistory = $this->testRunHistory();
+
+        $testRunHistory->setTime(TestRunHistoryId::fromTestClassAndMethodName(WorkerSecondTest::class, 'testThatFails'), 0.25);
+        $testRunHistory->setTime(TestRunHistoryId::fromTestClassAndMethodName(WorkerSecondTest::class, 'testThatKillsTheWorkerProcess'), 0.75);
+
+        $unit = new TestClassWorkUnit(
+            0,
+            WorkerSecondTest::class,
+            [
+                new WorkerSecondTest('testThatFails'),
+                new WorkerSecondTest('testThatKillsTheWorkerProcess'),
+            ],
+        );
+
+        $this->assertSame(1.0, $unit->duration($testRunHistory));
+    }
+
+    public function testSumsTheDurationsRecordedForTheTestsThatAnAggregatingSuiteContains(): void
+    {
+        $testRunHistory = $this->testRunHistory();
+
+        $testRunHistory->setTime(TestRunHistoryId::fromTestClassAndMethodName(WorkerFirstTest::class, 'testStartsTheProcessLocalCounter'), 0.5);
+
+        // The tests of a data provider method travel as one member of the
+        // unit; what the unit is estimated to cost is what all of them cost
+        // together.
+        $suite = DataProviderTestSuite::empty(WorkerFirstTest::class . '::testStartsTheProcessLocalCounter');
+
+        $suite->addTest(new WorkerFirstTest('testStartsTheProcessLocalCounter'));
+        $suite->addTest(new WorkerFirstTest('testStartsTheProcessLocalCounter'));
+
+        $unit = new TestClassWorkUnit(0, WorkerFirstTest::class, [$suite]);
+
+        $this->assertSame(1.0, $unit->duration($testRunHistory));
+    }
+
+    public function testHasNoDurationWhenItsTestsHaveNotRunBefore(): void
+    {
+        $this->assertSame(0.0, $this->unit()->duration($this->testRunHistory()));
+    }
+
     private function unit(): TestClassWorkUnit
     {
         return new TestClassWorkUnit(
@@ -48,5 +96,14 @@ final class TestClassWorkUnitTest extends TestCase
             WorkerFirstTest::class,
             [new WorkerFirstTest('testStartsTheProcessLocalCounter')],
         );
+    }
+
+    /**
+     * A test run history that is never loaded from or persisted to its file:
+     * the tests only use the times set on the instance.
+     */
+    private function testRunHistory(): DefaultTestRunHistory
+    {
+        return new DefaultTestRunHistory(sys_get_temp_dir() . '/phpunit-test-class-work-unit-test.result.cache');
     }
 }
