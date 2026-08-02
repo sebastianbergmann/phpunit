@@ -358,6 +358,52 @@ final class WorkerPoolTest extends TestCase
         }
     }
 
+    public function testHaltLeavesTheWorkersThatAreNotExecutingAUnitAlone(): void
+    {
+        $budget = new ProcessBudget(2);
+
+        $pool = $this->pool(2, $budget);
+
+        $pool->start();
+
+        try {
+            $completed = [];
+
+            // One unit for two workers: the second worker is started but
+            // never becomes busy.
+            $pool->begin(
+                [
+                    new TestClassWorkUnit(0, WorkerSleepingTest::class, [new WorkerSleepingTest('testThatSleeps')]),
+                ],
+                static function (CompletedWorkUnit $unit) use (&$completed): void
+                {
+                    $completed[] = $unit;
+                },
+                static function (WorkUnit $unit, EventCollection $events): void
+                {
+                },
+                static function (WorkUnit $unit): bool
+                {
+                    return true;
+                },
+            );
+
+            $pool->tick();
+
+            $pool->halt();
+
+            // Only the busy worker was terminated, and only the slot its unit
+            // held went back to the budget: the idle worker holds no slot, so
+            // halting must not give one back on its behalf.
+            $this->assertTrue($pool->isFinished());
+            $this->assertSame([], $completed);
+            $this->assertTrue($budget->acquire());
+            $this->assertTrue($budget->acquire());
+        } finally {
+            $pool->stop();
+        }
+    }
+
     public function testATickOnAFinishedPoolReportsNoProgress(): void
     {
         $pool = $this->pool(1);
