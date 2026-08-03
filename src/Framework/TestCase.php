@@ -1471,15 +1471,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         $testArguments = array_merge($this->data, array_values($this->dependencyInput));
 
-        $this->errorLogCapture->start();
-
         try {
             $testResult = $this->invokeTestMethod($this->methodName, $testArguments);
 
             $this->errorLogCapture->verify();
         } catch (Throwable $exception) {
-            $this->errorLogCapture->handleError();
-
             if (!$this->exceptionExpectation->shouldBeVerifiedFor($exception)) {
                 throw $exception;
             }

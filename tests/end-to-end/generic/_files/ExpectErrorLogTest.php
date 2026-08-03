@@ -28,7 +28,8 @@ final class ExpectErrorLogTest extends TestCase
     {
         $foo = new Foo;
 
-        $this->assertSame('', $foo->doFoo());
         $this->expectErrorLog();
+
+        $this->assertSame('', $foo->doFoo());
     }
 }

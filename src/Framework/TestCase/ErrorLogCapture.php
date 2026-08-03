@@ -9,12 +9,10 @@
  */
 namespace PHPUnit\Framework\TestCase;
 
-use function assert;
 use function fclose;
 use function ini_get;
 use function ini_set;
 use function is_writable;
-use function preg_replace;
 use function stream_get_contents;
 use function stream_get_meta_data;
 use function tmpfile;
@@ -39,10 +37,59 @@ final class ErrorLogCapture
 
     public function expect(): void
     {
+        if ($this->expectErrorLog) {
+            return;
+        }
+
         $this->expectErrorLog = true;
+
+        $this->start();
     }
 
-    public function start(): void
+    /**
+     * @throws ErrorLogNotWritableException
+     */
+    public function verify(): void
+    {
+        if (!$this->expectErrorLog) {
+            return;
+        }
+
+        // @codeCoverageIgnoreStart
+        if ($this->captureHandle === false) {
+            throw new ErrorLogNotWritableException;
+        }
+        // @codeCoverageIgnoreEnd
+
+        $errorLogOutput = stream_get_contents($this->captureHandle);
+
+        Assert::assertNotEmpty($errorLogOutput, 'error_log() was not called');
+    }
+
+    public function stop(): void
+    {
+        if ($this->captureHandle === false) {
+            return;
+        }
+
+        ShutdownHandler::resetMessage();
+
+        fclose($this->captureHandle);
+
+        $this->captureHandle = false;
+
+        // @codeCoverageIgnoreStart
+        if ($this->previousLogTarget === false) {
+            return;
+        }
+        // @codeCoverageIgnoreEnd
+
+        ini_set('error_log', $this->previousLogTarget);
+
+        $this->previousLogTarget = false;
+    }
+
+    private function start(): void
     {
         if (ini_get('display_errors') === '0') {
             ShutdownHandler::setMessage(
@@ -74,87 +121,5 @@ final class ErrorLogCapture
 
         $this->captureHandle     = $captureHandle;
         $this->previousLogTarget = ini_set('error_log', $capturePath);
-    }
-
-    /**
-     * @throws ErrorLogNotWritableException
-     */
-    public function verify(): void
-    {
-        // @codeCoverageIgnoreStart
-        if ($this->captureHandle === false) {
-            if ($this->expectErrorLog) {
-                throw new ErrorLogNotWritableException;
-            }
-
-            return;
-        }
-        // @codeCoverageIgnoreEnd
-
-        $errorLogOutput = stream_get_contents($this->captureHandle);
-
-        if ($this->expectErrorLog) {
-            Assert::assertNotEmpty($errorLogOutput, 'error_log() was not called');
-
-            return;
-        }
-
-        // @codeCoverageIgnoreStart
-        if ($errorLogOutput === false) {
-            return;
-        }
-        // @codeCoverageIgnoreEnd
-
-        print self::stripDateFromErrorLog($errorLogOutput);
-    }
-
-    public function handleError(): void
-    {
-        if ($this->captureHandle === false) {
-            return;
-        }
-
-        if ($this->expectErrorLog) {
-            return;
-        }
-
-        $errorLogOutput = stream_get_contents($this->captureHandle);
-
-        if ($errorLogOutput !== false) {
-            print self::stripDateFromErrorLog($errorLogOutput);
-        }
-    }
-
-    public function stop(): void
-    {
-        if ($this->captureHandle === false) {
-            return;
-        }
-
-        ShutdownHandler::resetMessage();
-
-        fclose($this->captureHandle);
-
-        $this->captureHandle = false;
-
-        // @codeCoverageIgnoreStart
-        if ($this->previousLogTarget === false) {
-            return;
-        }
-        // @codeCoverageIgnoreEnd
-
-        ini_set('error_log', $this->previousLogTarget);
-
-        $this->previousLogTarget = false;
-    }
-
-    private static function stripDateFromErrorLog(string $log): string
-    {
-        // https://github.com/php/php-src/blob/c696087e323263e941774ebbf902ac249774ec9f/main/main.c#L905
-        $result = preg_replace('/\[\d+-\w+-\d+ \d+:\d+:\d+ [^\r\n[\]]+?\] /', '', $log);
-
-        assert($result !== null);
-
-        return $result;
     }
 }

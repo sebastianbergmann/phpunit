@@ -10,18 +10,22 @@
 namespace PHPUnit\Framework\TestCase;
 
 use function error_log;
+use function ini_set;
+use function sys_get_temp_dir;
+use function tempnam;
+use function unlink;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\Small;
-use PHPUnit\Framework\ErrorLogNotWritableException;
+use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(ErrorLogCapture::class)]
 #[Small]
 final class ErrorLogCaptureTest extends TestCase
 {
-    public function testVerifyDoesNothingWhenCaptureNeverStartedAndNoExpectation(): void
+    public function testVerifyDoesNothingWhenErrorLogOutputWasNotExpected(): void
     {
         $capture = new ErrorLogCapture;
 
@@ -30,43 +34,10 @@ final class ErrorLogCaptureTest extends TestCase
         $this->expectNotToPerformAssertions();
     }
 
-    public function testVerifyThrowsWhenExpectedAndCaptureCouldNotBeStarted(): void
+    public function testStopIsNoOpWhenCaptureWasNeverStarted(): void
     {
         $capture = new ErrorLogCapture;
 
-        $capture->expect();
-
-        $this->expectException(ErrorLogNotWritableException::class);
-
-        $capture->verify();
-    }
-
-    public function testHandleErrorIsNoOpWhenCaptureNeverStarted(): void
-    {
-        $capture = new ErrorLogCapture;
-
-        $capture->handleError();
-
-        $this->expectNotToPerformAssertions();
-    }
-
-    public function testStopIsNoOpWhenCaptureNeverStarted(): void
-    {
-        $capture = new ErrorLogCapture;
-
-        $capture->stop();
-
-        $this->expectNotToPerformAssertions();
-    }
-
-    #[RunInSeparateProcess]
-    #[PreserveGlobalState(false)]
-    public function testStartStopRoundtripIsCleanWhenNoErrorWasLogged(): void
-    {
-        $capture = new ErrorLogCapture;
-
-        $capture->start();
-        $capture->verify();
         $capture->stop();
 
         $this->expectNotToPerformAssertions();
@@ -79,11 +50,56 @@ final class ErrorLogCaptureTest extends TestCase
         $capture = new ErrorLogCapture;
 
         $capture->expect();
-        $capture->start();
 
         error_log('something went wrong');
 
         $capture->verify();
         $capture->stop();
+    }
+
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testVerifyFailsWhenErrorLogWasExpectedButNotCalled(): void
+    {
+        $capture = new ErrorLogCapture;
+
+        $capture->expect();
+
+        try {
+            $capture->verify();
+
+            $this->fail('ExpectationFailedException was not raised');
+        } catch (ExpectationFailedException) {
+        } finally {
+            $capture->stop();
+        }
+    }
+
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testErrorLogOutputWrittenBeforeExpectationIsNotConsidered(): void
+    {
+        $logTarget = tempnam(sys_get_temp_dir(), 'phpunit_');
+
+        $this->assertNotFalse($logTarget);
+
+        ini_set('error_log', $logTarget);
+
+        error_log('logged before the expectation');
+
+        $capture = new ErrorLogCapture;
+
+        $capture->expect();
+
+        try {
+            $capture->verify();
+
+            $this->fail('ExpectationFailedException was not raised');
+        } catch (ExpectationFailedException) {
+        } finally {
+            $capture->stop();
+
+            unlink($logTarget);
+        }
     }
 }

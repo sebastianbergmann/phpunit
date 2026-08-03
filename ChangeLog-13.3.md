@@ -34,6 +34,9 @@ All notable changes of the PHPUnit 13.3 release series are documented in this fi
 * Improved TestDox HTML report
 * The feature formerly named "test result cache" is now named "test run history"; when a cache directory is configured, the file it is stored in is now named `test-run-history` instead of `test-results`
 * The test runner warns now when ordering by defects or duration is configured but recording of the test run history is disabled
+* `TestCase` no longer captures `error_log()` output for tests that do not use `expectErrorLog()`, avoiding the cost of setting up error log redirection for every test
+* `error_log()` output from tests without an expectation is no longer echoed (date-stripped) to PHPUnit's output; it goes to the configured error log again, as it did before capture was introduced
+* A test running in process isolation that calls `error_log()` without `expectErrorLog()` now produces stderr output in the child process, which the test runner reports as a test error
 
 ### Deprecated
 
@@ -46,5 +49,6 @@ All notable changes of the PHPUnit 13.3 release series are documented in this fi
 ### Fixed
 
 * Doubling a class with a property that declares both a final and a non-final hook no longer triggers a fatal error
+* `expectErrorLog()` now only considers `error_log()` output written after it was called; previously, the expectation was also satisfied by output written before `expectErrorLog()` was called
 
 [13.3.0]: https://github.com/sebastianbergmann/phpunit/compare/13.2...main
