@@ -163,6 +163,51 @@ EOT,
                 phpSettings: ['highlight.string=' . $valueContainingEquals],
             ),
         ];
+
+        $valueContainingTilde = 'C:\Users\RUNNER~1\AppData\Local\Temp';
+
+        yield 'PHP setting value containing tilde' => [
+            new Result($valueContainingTilde, ''),
+            new Job(
+                <<<'EOT'
+<?php declare(strict_types=1);
+print ini_get('highlight.string');
+
+EOT,
+                ChildProcessReason::TestRequiringProcessIsolation,
+                phpSettings: ['highlight.string=' . $valueContainingTilde],
+            ),
+        ];
+
+        $valueContainingParentheses = 'C:\Program Files (x86)\PHP';
+
+        yield 'PHP setting value containing parentheses' => [
+            new Result($valueContainingParentheses, ''),
+            new Job(
+                <<<'EOT'
+<?php declare(strict_types=1);
+print ini_get('highlight.string');
+
+EOT,
+                ChildProcessReason::TestRequiringProcessIsolation,
+                phpSettings: ['highlight.string=' . $valueContainingParentheses],
+            ),
+        ];
+
+        $valueContainingConsecutiveBackslashes = '\\\\server\\share (x86)';
+
+        yield 'PHP setting value containing consecutive backslashes' => [
+            new Result($valueContainingConsecutiveBackslashes, ''),
+            new Job(
+                <<<'EOT'
+<?php declare(strict_types=1);
+print ini_get('highlight.string');
+
+EOT,
+                ChildProcessReason::TestRequiringProcessIsolation,
+                phpSettings: ['highlight.string=' . $valueContainingConsecutiveBackslashes],
+            ),
+        ];
     }
 
     #[DataProvider('provider')]

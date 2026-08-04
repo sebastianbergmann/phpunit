@@ -25,6 +25,7 @@ use function is_array;
 use function is_file;
 use function is_resource;
 use function is_string;
+use function preg_match;
 use function proc_open;
 use function sprintf;
 use function str_contains;
@@ -379,10 +380,12 @@ final readonly class JobRunner
      * controlled sequence of directives.
      *
      * Otherwise quotes the value portion only when it contains characters
-     * PHP's INI parser would interpret as metacharacters (`;` starts a
+     * PHP's INI parser would interpret as metacharacters: `;` starts a
      * comment, `"` is a string delimiter, `=` is the assignment operator
-     * that would otherwise be parsed as starting a new directive and
-     * trigger `PHP: syntax error, unexpected '='`).
+     * that would otherwise be parsed as starting a new directive, `$` starts
+     * `${...}` variable interpolation, and `{}|&~![()^]` are operators in
+     * unquoted values (a Windows short path such as `C:\Users\RUNNER~1`
+     * would otherwise trigger `PHP: syntax error, unexpected '~'`).
      *
      * Quoting is avoided for plain values so that boolean keywords such as
      * `On` / `Off` keep their special INI semantics; wrapping them in quotes
@@ -410,10 +413,12 @@ final readonly class JobRunner
             );
         }
 
-        if (!str_contains($value, ';') && !str_contains($value, '"') && !str_contains($value, '=')) {
+        if (preg_match('/[;"=${}|&~!\[()^\]]/', $value) !== 1) {
             return $setting;
         }
 
-        return $name . '="' . str_replace('"', '\\"', $value) . '"';
+        // Inside a double-quoted INI value, \\ collapses to \ and \" to ",
+        // so both characters must be escaped to survive the round-trip
+        return $name . '="' . str_replace(['\\', '"'], ['\\\\', '\\"'], $value) . '"';
     }
 }
