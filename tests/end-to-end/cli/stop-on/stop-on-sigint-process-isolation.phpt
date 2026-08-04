@@ -2,8 +2,11 @@
 Stopping test execution on SIGINT while process isolation test is running does not report the test as failed
 --SKIPIF--
 <?php declare(strict_types=1);
-if (!extension_loaded('pcntl')) echo 'skip: Extension pcntl is required';
-if (!extension_loaded('posix')) echo 'skip: Extension posix is required';
+if (!extension_loaded('pcntl')) {
+    echo 'skip: Extension pcntl is required';
+} elseif (!extension_loaded('posix')) {
+    echo 'skip: Extension posix is required';
+}
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-record-test-run-history';
