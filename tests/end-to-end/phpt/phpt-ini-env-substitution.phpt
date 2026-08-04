@@ -1,23 +1,20 @@
 --TEST--
-Don't run tests when coverage driver is not loaded
---SKIPIF--
-<?php declare(strict_types=1);
-if (extension_loaded('xdebug') || extension_loaded('pcov')) {
-    print 'skip: No debug driver should be loaded.';
-}
+PHPT runner substitutes {ENV:...} in the INI section when the environment variable is set
 --FILE--
 <?php declare(strict_types=1);
+\putenv('PHPT_INI_ENV_SUBSTITUTION=phpt-ini-env-substitution-value');
+
 $_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = \realpath(__DIR__ . '/../../_files/coverage/coverage-no-tests-when-missing-coverage-driver.phpt');
+$_SERVER['argv'][] = __DIR__ . '/../_files/phpt-ini-env-substitution.phpt';
 
-require_once __DIR__ . '/../../../bootstrap.php';
+require_once __DIR__ . '/../../bootstrap.php';
 
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-Runtime: %s
+Runtime:       %s
 
 .                                                                   1 / 1 (100%)
 

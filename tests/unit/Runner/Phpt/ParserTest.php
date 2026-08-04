@@ -21,7 +21,10 @@ use PHPUnit\Framework\TestCase;
 
 #[CoversClass(Parser::class)]
 #[CoversClass(CannotLoadPhptFileException::class)]
+#[CoversClass(ConflictingPhptSectionsException::class)]
+#[CoversClass(DuplicatePhptSectionException::class)]
 #[CoversClass(PhptExternalFileCannotBeLoadedException::class)]
+#[CoversClass(UnknownPhptSectionException::class)]
 #[Small]
 #[Group('test-runner')]
 #[Group('test-runner/phpt')]
@@ -90,6 +93,46 @@ final class ParserTest extends TestCase
         $this->assertArrayHasKey('FILE', $sections);
         $this->assertArrayNotHasKey('FILEEOF', $sections);
         $this->assertStringContainsString('echo "hello"', $sections['FILE']);
+    }
+
+    public function testRejectsUnknownSections(): void
+    {
+        $parser = new Parser;
+
+        $this->expectException(UnknownPhptSectionException::class);
+        $this->expectExceptionMessage('--SKIPFI-- is not a valid PHPT section');
+
+        $parser->parse(__DIR__ . '/../../../_files/phpt/unknown-section.phpt');
+    }
+
+    public function testRejectsDuplicateSections(): void
+    {
+        $parser = new Parser;
+
+        $this->expectException(DuplicatePhptSectionException::class);
+        $this->expectExceptionMessage('--EXPECT-- section occurs more than once');
+
+        $parser->parse(__DIR__ . '/../../../_files/phpt/duplicate-section.phpt');
+    }
+
+    public function testRejectsConflictingFileSections(): void
+    {
+        $parser = new Parser;
+
+        $this->expectException(ConflictingPhptSectionsException::class);
+        $this->expectExceptionMessage('PHPT file must not contain more than one of the sections --FILE--, --FILEEOF--');
+
+        $parser->parse(__DIR__ . '/../../../_files/phpt/conflicting-file-sections.phpt');
+    }
+
+    public function testRejectsConflictingExpectationSections(): void
+    {
+        $parser = new Parser;
+
+        $this->expectException(ConflictingPhptSectionsException::class);
+        $this->expectExceptionMessage('PHPT file must not contain more than one of the sections --EXPECT--, --EXPECTF--');
+
+        $parser->parse(__DIR__ . '/../../../_files/phpt/conflicting-expectation-sections.phpt');
     }
 
     public function testRejectsExternalFileThatDoesNotExist(): void

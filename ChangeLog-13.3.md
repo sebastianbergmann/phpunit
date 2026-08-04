@@ -25,6 +25,10 @@ All notable changes of the PHPUnit 13.3 release series are documented in this fi
 * `--record-test-run-history` and `--do-not-record-test-run-history` CLI options as well as the `recordTestRunHistory` attribute for the XML configuration file to control whether the status and duration of each test are recorded for use by `--order-by defects` and `--order-by duration-*`
 * `--without-class-view` CLI option and `classView` attribute for the XML configuration file to disable the [class-oriented view](https://github.com/sebastianbergmann/php-code-coverage/pull/1140) in the HTML code coverage report
 * `--without-file-view` CLI option and `fileView` attribute for the XML configuration file to disable the file-oriented view in the HTML code coverage report
+* `{PWD}` is now substituted with the directory of the PHPT test file in `--ENV--` and `--INI--` sections of PHPT test files
+* `{TMP}` (system directory for temporary files) and `{ENV:name}` (value of environment variable `name`) are now substituted in `--INI--` sections of PHPT test files
+* A PHPT test whose `--INI--` section references an environment variable that is not set is now skipped
+* A `--SKIPIF--` section of a PHPT test file that prints `xfail <reason>` now marks the test as expected to fail, as if the PHPT test file had an `--XFAIL--` section with that reason
 
 ### Changed
 
@@ -37,6 +41,10 @@ All notable changes of the PHPUnit 13.3 release series are documented in this fi
 * `TestCase` no longer captures `error_log()` output for tests that do not use `expectErrorLog()`, avoiding the cost of setting up error log redirection for every test
 * `error_log()` output from tests without an expectation is no longer echoed (date-stripped) to PHPUnit's output; it goes to the configured error log again, as it did before capture was introduced
 * A test running in process isolation that calls `error_log()` without `expectErrorLog()` now produces stderr output in the child process, which the test runner reports as a test error
+* A PHPT test that is expected to fail (`--XFAIL--` section or `xfail` output from the `--SKIPIF--` section) but passes is now considered risky; this usually means the expected-failure marker is stale and should be removed
+* A PHPT test whose `--SKIPIF--` section produces output that is not recognized is now considered risky; this usually means the skip check itself is broken. The keywords understood by PHP's own test runner that have no PHPUnit counterpart (`info`, `warn`, `xleak`, `flaky`, and `nocache`) are tolerated and do not make the test risky
+* PHPT tests now run with additional INI defaults for deterministic output (`date.timezone=UTC`, `display_startup_errors=1`, `fatal_error_backtraces=Off`, `ignore_repeated_errors=0`, `precision=14`,
+  `serialize_precision=-1`), consistent with PHP's own test runner; all of them can be overridden per test using the `--INI--` section
 
 ### Deprecated
 
@@ -50,5 +58,8 @@ All notable changes of the PHPUnit 13.3 release series are documented in this fi
 
 * Doubling a class with a property that declares both a final and a non-final hook no longer triggers a fatal error
 * `expectErrorLog()` now only considers `error_log()` output written after it was called; previously, the expectation was also satisfied by output written before `expectErrorLog()` was called
+* PHPT test files with an unknown section, a duplicated section, more than one of the `--FILE--`, `--FILEEOF--`, and `--FILE_EXTERNAL--` sections, or more than one expectation section (`--EXPECT--`, `--EXPECTF--`, `--EXPECTREGEX--`, and their `_EXTERNAL` variants) are now rejected; previously, misspelled sections were silently ignored and duplicated sections silently overwrote each other
+* The regular expression from an `--EXPECTREGEX--` section must now match the PHPT test's entire output, and `.` now matches newline characters, consistent with PHP's own test runner; previously, a match on a substring of the output was sufficient for the test to pass
+* The reason printed by a `--SKIPIF--` section of a PHPT test is no longer mangled when it follows the `skip <reason>` convention used by PHP's own test suite; previously, the first two characters of the reason were stripped unless the `skip: <reason>` or `skip - <reason>` convention was used
 
 [13.3.0]: https://github.com/sebastianbergmann/phpunit/compare/13.2...main

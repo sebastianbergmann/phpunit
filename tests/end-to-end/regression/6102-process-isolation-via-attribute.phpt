@@ -1,7 +1,5 @@
 --TEST--
 https://github.com/sebastianbergmann/phpunit/issues/6102
---XFAIL--
-https://github.com/sebastianbergmann/phpunit/issues/6102
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-record-test-run-history';

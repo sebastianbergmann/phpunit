@@ -21,6 +21,7 @@ use function explode;
 use function extension_loaded;
 use function file_exists;
 use function file_get_contents;
+use function getenv;
 use function in_array;
 use function is_array;
 use function is_file;
@@ -30,6 +31,7 @@ use function ob_get_clean;
 use function ob_start;
 use function preg_match;
 use function preg_replace;
+use function preg_replace_callback;
 use function realpath;
 use function sprintf;
 use function str_contains;
@@ -37,6 +39,7 @@ use function str_replace;
 use function str_starts_with;
 use function strncasecmp;
 use function substr;
+use function sys_get_temp_dir;
 use function trim;
 use function unlink;
 use function unserialize;
@@ -179,11 +182,56 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         $emitter->testPrepared($this->valueObjectForEvents());
 
         if (isset($sections['INI'])) {
-            $phpSettings = $parser->parseIniSection($sections['INI'], $phpSettings);
+            $ini = str_replace(
+                ['{PWD}', '{TMP}'],
+                [dirname($this->filename), sys_get_temp_dir()],
+                $sections['INI'],
+            );
+
+            $unsetEnvironmentVariable = null;
+
+            $ini = preg_replace_callback(
+                '/{ENV:(\S+)}/',
+                static function (array $matches) use (&$unsetEnvironmentVariable): string
+                {
+                    $value = getenv($matches[1]);
+
+                    if ($value === false) {
+                        if ($unsetEnvironmentVariable === null) {
+                            $unsetEnvironmentVariable = $matches[1];
+                        }
+
+                        return '';
+                    }
+
+                    return $value;
+                },
+                $ini,
+            );
+
+            assert($ini !== null);
+
+            if ($unsetEnvironmentVariable !== null) {
+                $emitter->testSkipped(
+                    $this->valueObjectForEvents(),
+                    sprintf(
+                        'Environment variable %s is not set',
+                        $unsetEnvironmentVariable,
+                    ),
+                );
+
+                $emitter->testFinished($this->valueObjectForEvents(), 0);
+
+                return;
+            }
+
+            $phpSettings = $parser->parseIniSection($ini, $phpSettings);
         }
 
         if (isset($sections['ENV'])) {
-            $environmentVariables = $parser->parseEnvSection($sections['ENV']);
+            $environmentVariables = $parser->parseEnvSection(
+                str_replace('{PWD}', dirname($this->filename), $sections['ENV']),
+            );
         }
 
         if ($this->shouldTestBeSkipped($sections, $phpSettings)) {
@@ -355,6 +403,13 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         }
 
         if ($passed) {
+            if ($xfail !== false) {
+                $emitter->testConsideredRisky(
+                    $this->valueObjectForEvents(),
+                    'Test is expected to fail (XFAIL section) but passed',
+                );
+            }
+
             $emitter->testPassed($this->valueObjectForEvents());
         }
 
@@ -464,7 +519,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
                 $expected = $sectionContent;
 
                 if ($sectionName === 'EXPECTREGEX') {
-                    $expected = "/{$sectionContent}/";
+                    $expected = '/^' . $sectionContent . '$/s';
                 }
 
                 /** @phpstan-ignore staticMethod.dynamicName */
@@ -476,10 +531,14 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
     }
 
     /**
+     * A SKIPIF section that prints "xfail <reason>" declares an expected
+     * failure at runtime; it is treated as if the PHPT file contained an
+     * XFAIL section with that reason.
+     *
      * @param array<non-empty-string, string>               $sections
      * @param array<non-empty-string, array<string>|string> $settings
      */
-    private function shouldTestBeSkipped(array $sections, array $settings): bool
+    private function shouldTestBeSkipped(array &$sections, array $settings): bool
     {
         if (!isset($sections['SKIPIF']) || $sections['SKIPIF'] === '') {
             return false;
@@ -508,8 +567,8 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         if (strncasecmp('skip', ltrim($output), 4) === 0) {
             $message = '';
 
-            if (preg_match('/^\s*skip\s*(.+)\s*/i', $output, $skipMatch) === 1) {
-                $message = substr($skipMatch[1], 2);
+            if (preg_match('/^\s*skip\s*(?:[-:]\s*)?(.+)/i', $output, $skipMatch) === 1) {
+                $message = trim($skipMatch[1]);
             }
 
             if ($message === '') {
@@ -526,11 +585,38 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
             return true;
         }
 
+        if (strncasecmp('xfail', ltrim($output), 5) === 0) {
+            $sections['XFAIL'] = trim(substr(ltrim($output), 5));
+
+            return false;
+        }
+
+        // Keywords understood by PHP's run-tests.php that have no PHPUnit
+        // counterpart: no leak checking (xleak), no dynamic per-test retry
+        // (flaky), no skip cache (nocache), no per-test annotations (info,
+        // warn)
+        if (preg_match('/^\s*(?:info|warn|xleak|flaky|nocache)\b/i', $output) === 1) {
+            return false;
+        }
+
+        if (trim($output) !== '') {
+            if (!str_contains($output, 'Parse error:') &&
+                !str_contains($output, 'Fatal error:')) {
+                EventFacade::emitter()->testConsideredRisky(
+                    $this->valueObjectForEvents(),
+                    sprintf(
+                        'SKIPIF section produced unrecognized output: %s',
+                        trim($output),
+                    ),
+                );
+            }
+
+            return false;
+        }
+
         $sideEffects = (new SideEffectsDetector)->getSideEffects($skipIfCode);
 
-        if (!str_contains($output, 'Parse error:') &&
-            !str_contains($output, 'Fatal error:') &&
-            !in_array(SideEffect::STANDARD_OUTPUT, $sideEffects, true) &&
+        if (!in_array(SideEffect::STANDARD_OUTPUT, $sideEffects, true) &&
             !in_array(SideEffect::SCOPE_POLLUTION, $sideEffects, true)) {
             EventFacade::emitter()->testConsideredRisky(
                 $this->valueObjectForEvents(),
@@ -848,19 +934,25 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
             'allow_url_fopen=1',
             'auto_append_file=',
             'auto_prepend_file=',
+            'date.timezone=UTC',
             'disable_functions=',
             'display_errors=1',
+            'display_startup_errors=1',
             'docref_ext=.html',
             'docref_root=',
             'error_append_string=',
             'error_prepend_string=',
             'error_reporting=-1',
+            'fatal_error_backtraces=Off',
             'html_errors=0',
+            'ignore_repeated_errors=0',
             'log_errors=0',
             'open_basedir=',
             'output_buffering=Off',
             'output_handler=',
+            'precision=14',
             'report_zend_debug=0',
+            'serialize_precision=-1',
         ];
 
         // @codeCoverageIgnoreStart

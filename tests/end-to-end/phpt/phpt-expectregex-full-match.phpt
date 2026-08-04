@@ -1,10 +1,10 @@
 --TEST--
-PHPT runner handles EXPECTREGEX failure
+PHPT runner rejects output that only partially matches an EXPECTREGEX section
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = \realpath(__DIR__ . '/../_files/phpt-expectregex-failure.phpt');
+$_SERVER['argv'][] = __DIR__ . '/../_files/phpt-expectregex-substring.phpt';
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -20,10 +20,10 @@ Time: %s, Memory: %s
 
 There was 1 failure:
 
-1) %sphpt-expectregex-failure.phpt
-Failed asserting that 'this does not match' matches PCRE pattern "/^completely different pattern [0-9]+$/s".
+1) %sphpt-expectregex-substring.phpt
+Failed asserting that 'prefix match 123 suffix' matches PCRE pattern "/^match [0-9]+$/s".
 
-%sphpt-expectregex-failure.phpt:%d
+%sphpt-expectregex-substring.phpt:%d
 
 FAILURES!
 Tests: 1, Assertions: 1, Failures: 1.
