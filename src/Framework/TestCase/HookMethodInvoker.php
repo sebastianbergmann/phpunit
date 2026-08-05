@@ -232,7 +232,8 @@ final readonly class HookMethodInvoker
     }
 
     /**
-     * @param non-empty-string $methodName
+     * @param ReflectionObject<TestCase> $reflector
+     * @param non-empty-string           $methodName
      */
     private static function methodDoesNotExistOrIsDeclaredInTestCase(ReflectionObject $reflector, string $methodName): bool
     {
