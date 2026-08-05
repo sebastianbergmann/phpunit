@@ -25,6 +25,7 @@ Test Suite for Repeated PHPT Started (%sRepeatErroringPhpt.phpt, 3 repetitions)
 Test Preparation Started (%sRepeatErroringPhpt.phpt (repetition 1 of 3))
 Test Prepared (%sRepeatErroringPhpt.phpt (repetition 1 of 3))
 Test Errored (%sRepeatErroringPhpt.phpt (repetition 1 of 3))
+PHPT file must not contain text before its first section (line 1)
 Test Finished (%sRepeatErroringPhpt.phpt (repetition 1 of 3))
 Test Skipped (%sRepeatErroringPhpt.phpt (repetition 2 of 3))
 Remaining repetition skipped after failure in repetition 1

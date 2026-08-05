@@ -162,9 +162,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
             return;
         }
 
-        if (!isset($sections['FILE']) || $sections['FILE'] === '') {
-            throw new InvalidPhptFileException;
-        }
+        assert(isset($sections['FILE']) && $sections['FILE'] !== '');
 
         $fileExternalPath = $this->filename;
 

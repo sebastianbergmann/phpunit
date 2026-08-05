@@ -23,6 +23,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(CannotLoadPhptFileException::class)]
 #[CoversClass(ConflictingPhptSectionsException::class)]
 #[CoversClass(DuplicatePhptSectionException::class)]
+#[CoversClass(InvalidPhptFileException::class)]
 #[CoversClass(PhptExternalFileCannotBeLoadedException::class)]
 #[CoversClass(UnknownPhptSectionException::class)]
 #[Small]
@@ -83,6 +84,66 @@ final class ParserTest extends TestCase
         $this->expectException(InvalidPhptFileException::class);
 
         $parser->parse($file);
+    }
+
+    public function testRejectsTextBeforeFirstSection(): void
+    {
+        $parser = new Parser;
+
+        $this->expectException(InvalidPhptFileException::class);
+        $this->expectExceptionMessage('PHPT file must not contain text before its first section (line 1)');
+
+        $parser->parse(__DIR__ . '/../../../_files/phpt/invalid/content-before-section.phpt');
+    }
+
+    public function testRejectsFileWithoutCodeSection(): void
+    {
+        $parser = new Parser;
+
+        $this->expectException(InvalidPhptFileException::class);
+        $this->expectExceptionMessage('PHPT file must contain one of the sections --FILE--, --FILEEOF--, --FILE_EXTERNAL--');
+
+        $parser->parse(__DIR__ . '/../../../_files/phpt/invalid/no-test-code.phpt');
+    }
+
+    public function testRejectsFileWithoutExpectationSection(): void
+    {
+        $parser = new Parser;
+
+        $this->expectException(InvalidPhptFileException::class);
+        $this->expectExceptionMessage('PHPT file must contain one of the sections --EXPECT--, --EXPECT_EXTERNAL--, --EXPECTF--, --EXPECTF_EXTERNAL--, --EXPECTREGEX--, --EXPECTREGEX_EXTERNAL--');
+
+        $parser->parse(__DIR__ . '/../../../_files/phpt/invalid/no-expectation-code.phpt');
+    }
+
+    public function testRejectsEmptyFileSection(): void
+    {
+        $parser = new Parser;
+
+        $this->expectException(InvalidPhptFileException::class);
+        $this->expectExceptionMessage('--FILE-- section is empty');
+
+        $parser->parse(__DIR__ . '/../../../_files/phpt/invalid/empty-file-section.phpt');
+    }
+
+    public function testRejectsEmptyFileeofSection(): void
+    {
+        $parser = new Parser;
+
+        $this->expectException(InvalidPhptFileException::class);
+        $this->expectExceptionMessage('--FILEEOF-- section is empty');
+
+        $parser->parse(__DIR__ . '/../../../_files/phpt/invalid/empty-fileeof-section.phpt');
+    }
+
+    public function testRejectsFileExternalSectionThatReferencesEmptyFile(): void
+    {
+        $parser = new Parser;
+
+        $this->expectException(InvalidPhptFileException::class);
+        $this->expectExceptionMessage('File referenced by --FILE_EXTERNAL-- section is empty');
+
+        $parser->parse(__DIR__ . '/../../../_files/phpt/invalid/empty-file-external-section.phpt');
     }
 
     public function testParsesFileeofSection(): void

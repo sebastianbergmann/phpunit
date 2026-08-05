@@ -61,5 +61,7 @@ All notable changes of the PHPUnit 13.3 release series are documented in this fi
 * PHPT test files with an unknown section, a duplicated section, more than one of the `--FILE--`, `--FILEEOF--`, and `--FILE_EXTERNAL--` sections, or more than one expectation section (`--EXPECT--`, `--EXPECTF--`, `--EXPECTREGEX--`, and their `_EXTERNAL` variants) are now rejected; previously, misspelled sections were silently ignored and duplicated sections silently overwrote each other
 * The regular expression from an `--EXPECTREGEX--` section must now match the PHPT test's entire output, and `.` now matches newline characters, consistent with PHP's own test runner; previously, a match on a substring of the output was sufficient for the test to pass
 * The reason printed by a `--SKIPIF--` section of a PHPT test is no longer mangled when it follows the `skip <reason>` convention used by PHP's own test suite; previously, the first two characters of the reason were stripped unless the `skip: <reason>` or `skip - <reason>` convention was used
+* The test runner no longer aborts with an uncaught `PHPUnit\Runner\Phpt\InvalidPhptFileException` when a PHPT test file has an empty `--FILE--` or `--FILEEOF--` section or a `--FILE_EXTERNAL--` section that references an empty file; such a file is now rejected while it is parsed and reported as an errored test
+* `PHPUnit\Runner\Phpt\InvalidPhptFileException` now has a message that explains why the PHPT test file was rejected
 
 [13.3.0]: https://github.com/sebastianbergmann/phpunit/compare/13.2...main

@@ -16,6 +16,7 @@ use function dirname;
 use function explode;
 use function file;
 use function file_get_contents;
+use function implode;
 use function in_array;
 use function is_array;
 use function is_file;
@@ -24,6 +25,7 @@ use function is_string;
 use function preg_match;
 use function realpath;
 use function rtrim;
+use function sprintf;
 use function str_contains;
 use function trim;
 use PHPUnit\Runner\Exception;
@@ -138,7 +140,12 @@ final readonly class Parser
             }
 
             if ($section === '') {
-                throw new InvalidPhptFileException;
+                throw new InvalidPhptFileException(
+                    sprintf(
+                        'PHPT file must not contain text before its first section (line %d)',
+                        $lineNr,
+                    ),
+                );
             }
 
             assert(isset($sections[$section]));
@@ -146,7 +153,8 @@ final readonly class Parser
             $sections[$section] .= $line;
         }
 
-        $this->ensureExactlyOneSectionOf($sections, self::FILE_SECTIONS);
+        $codeSection = $this->ensureExactlyOneSectionOf($sections, self::FILE_SECTIONS);
+
         $this->ensureExactlyOneSectionOf($sections, self::EXPECTATION_SECTIONS);
 
         if (isset($sections['FILEEOF'])) {
@@ -162,6 +170,8 @@ final readonly class Parser
                 throw new UnsupportedPhptSectionException($unsupportedSection);
             }
         }
+
+        $this->ensureCodeIsNotEmpty($sections, $codeSection);
 
         return $sections;
     }
@@ -259,7 +269,6 @@ final readonly class Parser
                 $contents     = file_get_contents($externalPath);
 
                 assert($contents !== false);
-                assert($contents !== '');
 
                 $sections[$section] = $contents;
 
@@ -276,13 +285,15 @@ final readonly class Parser
     }
 
     /**
-     * @param array<non-empty-string, string> $sections
-     * @param list<non-empty-string>          $sectionFamily
+     * @param array<non-empty-string, string>  $sections
+     * @param non-empty-list<non-empty-string> $sectionFamily
      *
      * @throws ConflictingPhptSectionsException
      * @throws InvalidPhptFileException
+     *
+     * @return non-empty-string
      */
-    private function ensureExactlyOneSectionOf(array $sections, array $sectionFamily): void
+    private function ensureExactlyOneSectionOf(array $sections, array $sectionFamily): string
     {
         $found = [];
 
@@ -293,11 +304,44 @@ final readonly class Parser
         }
 
         if ($found === []) {
-            throw new InvalidPhptFileException;
+            throw new InvalidPhptFileException(
+                sprintf(
+                    'PHPT file must contain one of the sections --%s--',
+                    implode('--, --', $sectionFamily),
+                ),
+            );
         }
 
         if (count($found) > 1) {
             throw new ConflictingPhptSectionsException($found);
         }
+
+        return $found[0];
+    }
+
+    /**
+     * @param array<non-empty-string, string> $sections
+     * @param non-empty-string                $codeSection
+     *
+     * @throws InvalidPhptFileException
+     */
+    private function ensureCodeIsNotEmpty(array $sections, string $codeSection): void
+    {
+        if (isset($sections['FILE']) && $sections['FILE'] !== '') {
+            return;
+        }
+
+        if ($codeSection === 'FILE_EXTERNAL') {
+            throw new InvalidPhptFileException(
+                'File referenced by --FILE_EXTERNAL-- section is empty',
+            );
+        }
+
+        throw new InvalidPhptFileException(
+            sprintf(
+                '--%s-- section is empty',
+                $codeSection,
+            ),
+        );
     }
 }

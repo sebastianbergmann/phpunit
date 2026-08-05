@@ -19,4 +19,11 @@ use RuntimeException;
  */
 final class InvalidPhptFileException extends RuntimeException implements RunnerException
 {
+    /**
+     * @param non-empty-string $reason
+     */
+    public function __construct(string $reason)
+    {
+        parent::__construct($reason);
+    }
 }
