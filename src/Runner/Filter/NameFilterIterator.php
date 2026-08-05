@@ -14,12 +14,14 @@ use function preg_match;
 use function sprintf;
 use function substr;
 use PHPUnit\Framework\Test;
+use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
-use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 use RecursiveFilterIterator;
 use RecursiveIterator;
 
 /**
+ * @extends RecursiveFilterIterator<int, Test, RecursiveIterator<int, Test>>
+ *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -56,7 +58,7 @@ abstract class NameFilterIterator extends RecursiveFilterIterator
             return true;
         }
 
-        if ($test instanceof PhptTestCase) {
+        if (!$test instanceof TestCase) {
             return false;
         }
 
