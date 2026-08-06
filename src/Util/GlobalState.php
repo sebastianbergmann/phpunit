@@ -224,7 +224,9 @@ final readonly class GlobalState
             }
 
             if ($prefix !== false && str_starts_with($file, $prefix)) {
+                // @codeCoverageIgnoreStart
                 continue;
+                // @codeCoverageIgnoreEnd
             }
 
             // Skip virtual file system protocols

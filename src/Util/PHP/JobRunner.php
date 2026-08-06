@@ -298,11 +298,13 @@ final readonly class JobRunner
         $command = array_merge($command, $this->settingsToParameters(array_values($phpSettings)));
 
         if (PHP_SAPI === 'phpdbg') {
+            // @codeCoverageIgnoreStart
             $command[] = '-qrr';
 
             if ($file === null) {
                 $command[] = 's=';
             }
+            // @codeCoverageIgnoreEnd
         }
 
         if ($file !== null) {

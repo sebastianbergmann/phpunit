@@ -207,7 +207,9 @@ final class ExcludeList
             $directory = new ReflectionClass($className)->getFileName();
 
             if ($directory === false) {
+                // @codeCoverageIgnoreStart
                 continue;
+                // @codeCoverageIgnoreEnd
             }
 
             for ($i = 0; $i < $parent; $i++) {

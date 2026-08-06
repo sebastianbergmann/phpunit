@@ -99,7 +99,9 @@ final readonly class Json
             $json = (array) $json;
             ksort($json, SORT_STRING);
         } elseif (!is_array($json)) {
+            // @codeCoverageIgnoreStart
             return;
+            // @codeCoverageIgnoreEnd
         }
 
         foreach ($json as &$value) {

@@ -73,7 +73,9 @@ final readonly class Filter
         $excludeList = new ExcludeList;
 
         if (defined('__PHPUNIT_PHAR_ROOT__') && is_string(__PHPUNIT_PHAR_ROOT__)) {
+            // @codeCoverageIgnoreStart
             $prefix = __PHPUNIT_PHAR_ROOT__;
+            // @codeCoverageIgnoreEnd
         }
 
         foreach ($frames as $frame) {
