@@ -51,7 +51,6 @@ use Throwable;
  */
 final class TestRunner
 {
-    private ?bool $timeLimitCanBeEnforced = null;
     private readonly Configuration $configuration;
 
     public function __construct()
@@ -313,13 +312,7 @@ final class TestRunner
 
     private function canTimeLimitBeEnforced(): bool
     {
-        if ($this->timeLimitCanBeEnforced !== null) {
-            return $this->timeLimitCanBeEnforced;
-        }
-
-        $this->timeLimitCanBeEnforced = (new Invoker)->canInvokeWithTimeout();
-
-        return $this->timeLimitCanBeEnforced;
+        return (new Invoker)->canInvokeWithTimeout();
     }
 
     private function shouldTimeLimitBeEnforced(TestCase $test): bool

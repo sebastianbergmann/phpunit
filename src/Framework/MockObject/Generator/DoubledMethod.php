@@ -18,7 +18,6 @@ use function is_object;
 use function is_string;
 use function preg_match;
 use function preg_replace;
-use function str_contains;
 use function strlen;
 use function strpos;
 use function strtolower;
@@ -210,9 +209,7 @@ EOT;
 
         $argumentsCount = 0;
 
-        if (str_contains($this->argumentsForCall, '...')) {
-            $argumentsCount = null;
-        } elseif ($this->argumentsForCall !== '') {
+        if ($this->argumentsForCall !== '') {
             $argumentsCount = substr_count($this->argumentsForCall, ',') + 1;
         }
 
