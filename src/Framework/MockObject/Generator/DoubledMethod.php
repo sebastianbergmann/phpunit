@@ -371,9 +371,12 @@ EOT;
 
             $pos = strpos($parameterAsString, '<optional> ');
 
+            // a parameter that has a default value is always rendered as optional
+            // @codeCoverageIgnoreStart
             if ($pos === false) {
                 return 'null';
             }
+            // @codeCoverageIgnoreEnd
 
             $parts = explode(
                 ' = ',
@@ -391,8 +394,11 @@ EOT;
                 return $parts[1];
             }
 
-            return 'null';
+            // neither the fallback below nor the exception handling can be
+            // reached: a parameter that has a default value is always rendered
+            // together with that default value
             // @codeCoverageIgnoreStart
+            return 'null';
         } catch (\ReflectionException $e) {
             throw new ReflectionException(
                 $e->getMessage(),

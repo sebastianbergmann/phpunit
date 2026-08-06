@@ -63,11 +63,22 @@ final class PhptRetryTestSuite extends PhptIterativeTestSuite
         $facade = EventFacade::instance();
 
         for ($attempt = 1; $attempt <= $this->maxAttempts; $attempt++) {
+            /*
+             * The events of an attempt are only forwarded when no further
+             * attempt is made, so the test result of an attempt cannot make
+             * the test runner stop before the next attempt is made. And a
+             * PHPT test that interrupts the test runner does not fail, so it
+             * is not retried. This makes the check below unreachable, but it
+             * is kept so that this class does not silently ignore a reason to
+             * stop that a future change may introduce.
+             */
+            // @codeCoverageIgnoreStart
             if (TestResultFacade::shouldStop()) {
                 $emitter->testRunnerExecutionAborted();
 
                 return;
             }
+            // @codeCoverageIgnoreEnd
 
             $test = new PhptTestCase($this->filename, 1, 1, $attempt, $this->maxAttempts);
 
