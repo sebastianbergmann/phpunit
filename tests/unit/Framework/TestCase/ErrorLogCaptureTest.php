@@ -20,6 +20,8 @@ use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Runner\ShutdownHandler;
+use ReflectionProperty;
 
 #[CoversClass(ErrorLogCapture::class)]
 #[Small]
@@ -55,6 +57,41 @@ final class ErrorLogCaptureTest extends TestCase
 
         $capture->verify();
         $capture->stop();
+    }
+
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testExpectingErrorLogOutputMoreThanOnceHasNoEffect(): void
+    {
+        $capture = new ErrorLogCapture;
+
+        $capture->expect();
+        $capture->expect();
+
+        error_log('something went wrong');
+
+        $capture->verify();
+        $capture->stop();
+    }
+
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testConfiguresShutdownMessageWhenDisplayErrorsIsDisabled(): void
+    {
+        ini_set('display_errors', '0');
+
+        $capture = new ErrorLogCapture;
+
+        $capture->expect();
+
+        try {
+            $this->assertStringContainsString(
+                'Premature end of PHPUnit\'s PHP process',
+                new ReflectionProperty(ShutdownHandler::class, 'message')->getValue(),
+            );
+        } finally {
+            $capture->stop();
+        }
     }
 
     #[RunInSeparateProcess]

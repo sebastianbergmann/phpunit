@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="../../../../../phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         cacheDirectory=".phpunit.cache.require-coverage-contribution"
+         requireCoverageContribution="true">
+    <testsuites>
+        <testsuite name="default">
+            <file>tests/PassingTest.php</file>
+        </testsuite>
+    </testsuites>
+
+    <source>
+        <include>
+            <file>src/Covered.php</file>
+        </include>
+    </source>
+
+    <coverage driver="PHPUnit\TestFixture\TestRunner\FakeDriverWithoutContribution">
+        <report>
+            <text outputFile="php://stdout"/>
+        </report>
+    </coverage>
+</phpunit>

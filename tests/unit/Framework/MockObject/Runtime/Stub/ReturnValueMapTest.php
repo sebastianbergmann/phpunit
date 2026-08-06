@@ -51,6 +51,15 @@ final class ReturnValueMapTest extends TestCase
         $this->assertSame('correct', $result);
     }
 
+    public function testSkipsEntryWithParameterKeyThatDoesNotExistInInvocation(): void
+    {
+        $stub   = $this->createStub(AnInterface::class);
+        $map    = new ReturnValueMap([[0 => 'a', 2 => 'b', 3 => 'skipped'], ['a', 'b', 'used']]);
+        $result = $map->invoke(new Invocation(AnInterface::class, 'doSomething', ['a', 'b'], 'bool', $stub));
+
+        $this->assertSame('used', $result);
+    }
+
     public function testMatchesUsingConstraint(): void
     {
         $stub   = $this->createStub(AnInterface::class);

@@ -91,6 +91,45 @@ final class ErrorHandlerBootstrapperTest extends TestCase
         }
     }
 
+    #[TestDox('Ignores a configured method deprecation trigger that does not have a class name or a method name')]
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testIgnoresMethodDeprecationTriggerThatIsNotClassNameAndMethodName(): void
+    {
+        ErrorHandlerBootstrapper::bootstrap($this->configurationFromFixture('with-invalid-method-triggers.xml'));
+
+        $this->assertSame(
+            ['functions' => [], 'methods' => []],
+            $this->reflectProperty('deprecationTriggers'),
+        );
+    }
+
+    #[TestDox('Ignores a configured issue trigger resolver class that does not exist')]
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testIgnoresNonexistentIssueTriggerResolverClass(): void
+    {
+        ErrorHandlerBootstrapper::bootstrap($this->configurationFromFixture('with-nonexistent-issue-trigger-resolver.xml'));
+
+        $resolvers = $this->reflectProperty('issueTriggerResolvers');
+
+        $this->assertCount(1, $resolvers);
+        $this->assertInstanceOf(DefaultResolver::class, $resolvers[0]);
+    }
+
+    #[TestDox('Ignores a configured issue trigger resolver class that does not implement the interface')]
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testIgnoresIssueTriggerResolverNotImplementingTheInterface(): void
+    {
+        ErrorHandlerBootstrapper::bootstrap($this->configurationFromFixture('with-invalid-issue-trigger-resolver.xml'));
+
+        $resolvers = $this->reflectProperty('issueTriggerResolvers');
+
+        $this->assertCount(1, $resolvers);
+        $this->assertInstanceOf(DefaultResolver::class, $resolvers[0]);
+    }
+
     #[TestDox('Leaves no deprecation filters registered when configuration is empty')]
     #[RunInSeparateProcess]
     #[PreserveGlobalState(false)]

@@ -49,4 +49,11 @@ final class MethodNameConstraintTest extends TestCase
 
         $this->assertFalse($constraint->evaluate('bar', returnResult: true));
     }
+
+    public function testDoesNotMatchValueThatIsNotString(): void
+    {
+        $constraint = new MethodNameConstraint('foo');
+
+        $this->assertFalse($constraint->evaluate(1, returnResult: true));
+    }
 }

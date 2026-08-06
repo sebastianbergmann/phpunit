@@ -9,18 +9,40 @@
  */
 namespace PHPUnit\Framework;
 
+use function realpath;
 use PHPUnit\Event\EventsAreNotBeingCollectedException;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 use PHPUnit\TestFixture\ConcreteIterativeTestSuite;
 use PHPUnit\TestFixture\TestThatThrowsWhenRun;
+use ReflectionProperty;
 use RuntimeException;
 
 #[CoversClass(IterativeTestSuite::class)]
 #[Small]
 final class IterativeTestSuiteTest extends TestCase
 {
+    public function testDoesNotSetDependenciesOnTestThatIsNotTestCase(): void
+    {
+        $filename = realpath(__DIR__ . '/../../end-to-end/_files/phpt-expect-location-hint-example.phpt');
+
+        $this->assertNotFalse($filename);
+
+        $suite = ConcreteIterativeTestSuite::empty('the-name');
+        $suite->addTest(new PhptTestCase($filename));
+
+        $dependencies = [new ExecutionOrderDependency('PHPUnit\TestFixture\ExampleTest::testOne')];
+
+        $suite->setDependencies($dependencies);
+
+        $this->assertSame(
+            $dependencies,
+            new ReflectionProperty(IterativeTestSuite::class, 'dependencies')->getValue($suite),
+        );
+    }
+
     public function testStopsCollectingEventsWhenRunningTheTestThrows(): void
     {
         $suite = ConcreteIterativeTestSuite::empty('the-name');

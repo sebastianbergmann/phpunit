@@ -15,6 +15,8 @@ use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\MockObject\Invocation;
+use PHPUnit\Framework\MockObject\StubInternal;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\AnInterface;
 use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
@@ -58,6 +60,30 @@ final class ParametersTest extends TestCase
         $this->expectExceptionMessageIsOrContains('withAnyParameters');
 
         $double->doSomething();
+    }
+
+    public function testCachedFailureResultIsRethrownOnVerify(): void
+    {
+        $double = $this->createStub(AnInterface::class);
+
+        $this->assertInstanceOf(StubInternal::class, $double);
+
+        $rule = new Parameters([new IsEqual(1)]);
+
+        $invocation = new Invocation(AnInterface::class, 'doSomething', [2], 'bool', $double);
+
+        try {
+            $rule->apply($invocation);
+
+            $this->fail('ExpectationFailedException was not raised');
+        } catch (ExpectationFailedException $e) {
+            $this->assertStringContainsString('does not match expected value', $e->getMessage());
+        }
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIsOrContains('does not match expected value');
+
+        $rule->verify();
     }
 
     public function testCachedSuccessResultIsReusedOnVerify(): void
