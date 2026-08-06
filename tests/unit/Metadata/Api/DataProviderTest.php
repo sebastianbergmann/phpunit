@@ -11,6 +11,7 @@ namespace PHPUnit\Metadata\Api;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Framework\TestCase;
@@ -190,6 +191,7 @@ final class DataProviderTest extends TestCase
         (new DataProvider)->providedData(EmptyStringKeyDataProviderTest::class, 'test');
     }
 
+    #[RequiresPhp('^8.5')]
     public function testWithEmptyStringKeyDataProviderClosure(): void
     {
         $this->expectException(InvalidDataProviderException::class);
