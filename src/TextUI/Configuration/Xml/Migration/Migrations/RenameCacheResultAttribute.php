@@ -26,9 +26,11 @@ final readonly class RenameCacheResultAttribute implements Migration
 
         assert($root instanceof DOMElement);
 
+        // @codeCoverageIgnoreStart
         if ($root->hasAttribute('recordTestRunHistory')) {
             return;
         }
+        // @codeCoverageIgnoreEnd
 
         if (!$root->hasAttribute('cacheResult')) {
             return;

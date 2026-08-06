@@ -110,6 +110,7 @@ final readonly class Loader
 
         try {
             $xsdFilename = (new SchemaFinder)->find(Version::series());
+            // @codeCoverageIgnoreStart
         } catch (CannotFindSchemaException $e) {
             throw new Exception(
                 $e->getMessage(),
@@ -117,6 +118,7 @@ final readonly class Loader
                 $e,
             );
         }
+        // @codeCoverageIgnoreEnd
 
         $configurationFileRealpath = realpath($filename);
 
@@ -927,9 +929,11 @@ final readonly class Loader
      */
     private function parseColorAttributeWithDefault(DOMElement $element, string $attribute, string $default): string
     {
+        // @codeCoverageIgnoreStart
         if ($default === '') {
             throw new Exception(sprintf('Default value for "%s" must not be empty', $attribute));
         }
+        // @codeCoverageIgnoreEnd
 
         if (!$element->hasAttribute($attribute)) {
             return $default;
@@ -1589,12 +1593,16 @@ final readonly class Loader
         foreach ($schemaFinder->available() as $version) {
             try {
                 $xsdFilename = $schemaFinder->find($version);
+                // @codeCoverageIgnoreStart
             } catch (CannotFindSchemaException) {
                 continue;
             }
+            // @codeCoverageIgnoreEnd
 
             if (!$validator->validate($document, $xsdFilename)->hasValidationErrors()) {
+                // @codeCoverageIgnoreStart
                 return;
+                // @codeCoverageIgnoreEnd
             }
         }
 

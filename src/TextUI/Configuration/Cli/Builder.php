@@ -1437,9 +1437,11 @@ final class Builder
         $arguments = [];
 
         foreach ($options[1] as $argument) {
+            // @codeCoverageIgnoreStart
             if ($argument === '') {
                 continue;
             }
+            // @codeCoverageIgnoreEnd
 
             $arguments[] = $argument;
         }

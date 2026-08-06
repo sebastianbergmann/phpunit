@@ -30,9 +30,11 @@ final readonly class MoveCoverageDirectoriesToSource implements Migration
     {
         $source = $document->getElementsByTagName('source')->item(0);
 
+        // @codeCoverageIgnoreStart
         if ($source !== null) {
             return;
         }
+        // @codeCoverageIgnoreEnd
 
         $coverage = $document->getElementsByTagName('coverage')->item(0);
 

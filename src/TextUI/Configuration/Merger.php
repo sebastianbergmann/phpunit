@@ -94,9 +94,11 @@ final readonly class Merger
             $cacheDirectory = realpath($xmlConfiguration->phpunit()->cacheDirectory());
         }
 
+        // @codeCoverageIgnoreStart
         if ($cacheDirectory === false) {
             $cacheDirectory = null;
         }
+        // @codeCoverageIgnoreEnd
 
         if ($cacheDirectory !== null) {
             $coverageCacheDirectory = $cacheDirectory . DIRECTORY_SEPARATOR . 'code-coverage';
@@ -109,9 +111,11 @@ final readonly class Merger
 
                 if ($configurationFileRealpath !== false) {
                     $testRunHistoryFile = dirname($configurationFileRealpath) . DIRECTORY_SEPARATOR . '.phpunit.result.cache';
+                    // @codeCoverageIgnoreStart
                 } else {
                     $testRunHistoryFile = '.phpunit.result.cache';
                 }
+                // @codeCoverageIgnoreEnd
             } else {
                 $phpSelf = null;
 
@@ -1259,9 +1263,11 @@ final readonly class Merger
         $normalizedGroups = [];
 
         foreach ($groups as $group) {
+            // @codeCoverageIgnoreStart
             if ($group === '') {
                 continue;
             }
+            // @codeCoverageIgnoreEnd
 
             $normalizedGroups[] = $group;
         }
@@ -1271,9 +1277,11 @@ final readonly class Merger
         $normalizedExcludeGroups = [];
 
         foreach ($excludeGroups as $excludeGroup) {
+            // @codeCoverageIgnoreStart
             if ($excludeGroup === '') {
                 continue;
             }
+            // @codeCoverageIgnoreEnd
 
             $normalizedExcludeGroups[] = $excludeGroup;
         }
@@ -1504,9 +1512,11 @@ final readonly class Merger
      */
     private function requireNonEmptyString(string $value, string $context): string
     {
+        // @codeCoverageIgnoreStart
         if ($value === '') {
             throw new LogicException(sprintf('"%s" must not be empty', $context));
         }
+        // @codeCoverageIgnoreEnd
 
         return $value;
     }

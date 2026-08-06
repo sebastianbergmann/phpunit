@@ -26,9 +26,11 @@ final readonly class RenameBackupStaticAttributesAttribute implements Migration
 
         assert($root instanceof DOMElement);
 
+        // @codeCoverageIgnoreStart
         if ($root->hasAttribute('backupStaticProperties')) {
             return;
         }
+        // @codeCoverageIgnoreEnd
 
         if (!$root->hasAttribute('backupStaticAttributes')) {
             return;

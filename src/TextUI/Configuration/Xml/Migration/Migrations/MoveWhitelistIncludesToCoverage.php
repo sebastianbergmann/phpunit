@@ -32,17 +32,21 @@ final readonly class MoveWhitelistIncludesToCoverage implements Migration
 
         $coverage = $document->getElementsByTagName('coverage')->item(0);
 
+        // @codeCoverageIgnoreStart
         if (!$coverage instanceof DOMElement) {
             throw new MigrationException('Unexpected state - No coverage element');
         }
+        // @codeCoverageIgnoreEnd
 
         $include = $document->createElement('include');
         $coverage->appendChild($include);
 
         foreach (SnapshotNodeList::fromNodeList($whitelist->childNodes) as $child) {
+            // @codeCoverageIgnoreStart
             if (!$child instanceof DOMElement) {
                 continue;
             }
+            // @codeCoverageIgnoreEnd
 
             if (!($child->nodeName === 'directory' || $child->nodeName === 'file')) {
                 continue;

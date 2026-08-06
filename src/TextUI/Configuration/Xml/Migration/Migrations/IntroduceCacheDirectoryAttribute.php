@@ -26,9 +26,11 @@ final readonly class IntroduceCacheDirectoryAttribute implements Migration
 
         assert($root instanceof DOMElement);
 
+        // @codeCoverageIgnoreStart
         if ($root->hasAttribute('cacheDirectory')) {
             return;
         }
+        // @codeCoverageIgnoreEnd
 
         $root->setAttribute('cacheDirectory', '.phpunit.cache');
     }

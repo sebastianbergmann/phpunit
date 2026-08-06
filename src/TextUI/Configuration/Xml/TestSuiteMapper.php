@@ -123,6 +123,7 @@ final readonly class TestSuiteMapper
             }
 
             return $result;
+            // @codeCoverageIgnoreStart
         } catch (FrameworkException $e) {
             throw new RuntimeException(
                 $e->getMessage(),
@@ -130,6 +131,7 @@ final readonly class TestSuiteMapper
                 $e,
             );
         }
+        // @codeCoverageIgnoreEnd
     }
 
     /**

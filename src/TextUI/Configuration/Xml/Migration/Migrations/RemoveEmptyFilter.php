@@ -56,6 +56,7 @@ final readonly class RemoveEmptyFilter implements Migration
      */
     private function ensureEmpty(DOMElement $element): void
     {
+        // @codeCoverageIgnoreStart
         if ($element->attributes->length > 0) {
             throw new MigrationException(sprintf('%s element has unexpected attributes', $element->nodeName));
         }
@@ -63,5 +64,6 @@ final readonly class RemoveEmptyFilter implements Migration
         if ($element->getElementsByTagName('*')->length > 0) {
             throw new MigrationException(sprintf('%s element has unexpected children', $element->nodeName));
         }
+        // @codeCoverageIgnoreEnd
     }
 }

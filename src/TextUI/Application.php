@@ -371,8 +371,10 @@ final readonly class Application
                 $resultCollectedFromEvents = TestResultFacade::result();
 
                 $errored = $resultCollectedFromEvents->hasTestTriggeredPhpunitErrorEvents();
+                // @codeCoverageIgnoreStart
             } catch (EventFacadeIsSealedException|UnknownSubscriberTypeException) {
             }
+            // @codeCoverageIgnoreEnd
         }
 
         print Version::getVersionString() . PHP_EOL . PHP_EOL;
@@ -466,9 +468,11 @@ final readonly class Application
 
             $resolved = realpath($configurationFile);
 
+            // @codeCoverageIgnoreStart
             if ($resolved === false) {
                 $this->exitWithErrorMessage('Configuration file cannot be migrated');
             }
+            // @codeCoverageIgnoreEnd
 
             $this->execute(new MigrateConfigurationCommand($resolved));
         }
@@ -480,9 +484,11 @@ final readonly class Application
 
             $resolved = realpath($configurationFile);
 
+            // @codeCoverageIgnoreStart
             if ($resolved === false) {
                 $this->exitWithErrorMessage('Configuration file cannot be validated');
             }
+            // @codeCoverageIgnoreEnd
 
             $this->execute(new ValidateConfigurationCommand($resolved));
         }
@@ -808,9 +814,11 @@ final readonly class Application
             return false;
         }
 
+        // @codeCoverageIgnoreStart
         if ($configuration->hasDefaultTestSuite() && count($configuration->testSuite()) > 1) {
             return false;
         }
+        // @codeCoverageIgnoreEnd
 
         return true;
     }
@@ -833,9 +841,11 @@ final readonly class Application
             } catch (CannotLoadBaselineException $e) {
                 $message = $e->getMessage();
 
+                // @codeCoverageIgnoreStart
                 if ($message === '') {
                     $message = 'Cannot load baseline';
                 }
+                // @codeCoverageIgnoreEnd
 
                 EventFacade::emitter()->testRunnerTriggeredPhpunitWarning($message);
             }
@@ -1097,26 +1107,34 @@ final readonly class Application
 
         $composerInstall = PHPUNIT_COMPOSER_INSTALL;
 
+        // @codeCoverageIgnoreStart
         if (!is_string($composerInstall)) {
             return;
         }
+        // @codeCoverageIgnoreEnd
 
         $classMapFile = dirname($composerInstall) . '/composer/autoload_classmap.php';
 
+        // @codeCoverageIgnoreStart
         if (!is_file($classMapFile)) {
             return;
         }
+        // @codeCoverageIgnoreEnd
 
         $classMap = require $classMapFile;
 
+        // @codeCoverageIgnoreStart
         if (!is_array($classMap)) {
             return;
         }
+        // @codeCoverageIgnoreEnd
 
         foreach ($classMap as $codeUnitName => $sourceCodeFile) {
+            // @codeCoverageIgnoreStart
             if (!is_string($codeUnitName) || !is_string($sourceCodeFile)) {
                 continue;
             }
+            // @codeCoverageIgnoreEnd
 
             if (!str_starts_with($codeUnitName, 'PHPUnit\\') &&
                 !str_starts_with($codeUnitName, 'SebastianBergmann\\')) {

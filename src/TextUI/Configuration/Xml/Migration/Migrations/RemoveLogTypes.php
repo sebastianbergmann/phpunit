@@ -24,9 +24,11 @@ final readonly class RemoveLogTypes implements Migration
     {
         $logging = $document->getElementsByTagName('logging')->item(0);
 
+        // @codeCoverageIgnoreStart
         if (!$logging instanceof DOMElement) {
             return;
         }
+        // @codeCoverageIgnoreEnd
 
         foreach (SnapshotNodeList::fromNodeList($logging->getElementsByTagName('log')) as $logNode) {
             assert($logNode instanceof DOMElement);

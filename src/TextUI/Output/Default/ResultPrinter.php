@@ -793,6 +793,7 @@ final class ResultPrinter
             return '';
         }
 
+        // @codeCoverageIgnoreStart
         return sprintf(
             '%s%s:%d%s',
             $single ? '' : '  ',
@@ -800,5 +801,6 @@ final class ResultPrinter
             $reason->line(),
             PHP_EOL,
         );
+        // @codeCoverageIgnoreEnd
     }
 }

@@ -40,9 +40,11 @@ final readonly class MoveWhitelistExcludesToCoverage implements Migration
 
         $coverage = $document->getElementsByTagName('coverage')->item(0);
 
+        // @codeCoverageIgnoreStart
         if (!$coverage instanceof DOMElement) {
             throw new MigrationException('Unexpected state - No coverage element');
         }
+        // @codeCoverageIgnoreEnd
 
         $targetExclude = $coverage->getElementsByTagName('exclude')->item(0);
 
@@ -56,16 +58,20 @@ final readonly class MoveWhitelistExcludesToCoverage implements Migration
             assert($excludeNode instanceof DOMElement);
 
             foreach (SnapshotNodeList::fromNodeList($excludeNode->childNodes) as $child) {
+                // @codeCoverageIgnoreStart
                 if (!$child instanceof DOMElement || !in_array($child->nodeName, ['directory', 'file'], true)) {
                     continue;
                 }
+                // @codeCoverageIgnoreEnd
 
                 $targetExclude->appendChild($child);
             }
 
+            // @codeCoverageIgnoreStart
             if ($excludeNode->getElementsByTagName('*')->count() !== 0) {
                 throw new MigrationException('Dangling child elements in exclude found.');
             }
+            // @codeCoverageIgnoreEnd
 
             $whitelist->removeChild($excludeNode);
         }

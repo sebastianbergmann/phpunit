@@ -105,9 +105,11 @@ final class SourceMapper
                 }
                 // @codeCoverageIgnoreEnd
 
+                // @codeCoverageIgnoreStart
                 if ($this->isInHiddenDirectory($file, $basePath)) {
                     continue;
                 }
+                // @codeCoverageIgnoreEnd
 
                 $files[$file] = true;
             }

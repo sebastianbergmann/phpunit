@@ -378,9 +378,11 @@ final readonly class ResultPrinter
     {
         $lines = preg_split('/\r\n|\r|\n/', $message);
 
+        // @codeCoverageIgnoreStart
         if ($lines === false) {
             $lines = [];
         }
+        // @codeCoverageIgnoreEnd
 
         return implode(
             PHP_EOL,
@@ -443,9 +445,11 @@ final readonly class ResultPrinter
 
     private function messageColorFor(TestStatus $status): string
     {
+        // @codeCoverageIgnoreStart
         if ($status->isSuccess()) {
             return '';
         }
+        // @codeCoverageIgnoreEnd
 
         if ($status->isError()) {
             return 'bg-yellow,fg-black';

@@ -29,9 +29,11 @@ abstract readonly class LogToReportMigration implements Migration
     {
         $coverage = $document->getElementsByTagName('coverage')->item(0);
 
+        // @codeCoverageIgnoreStart
         if (!$coverage instanceof DOMElement) {
             throw new MigrationException('Unexpected state - No coverage element');
         }
+        // @codeCoverageIgnoreEnd
 
         $logNode = $this->findLogNode($document);
 

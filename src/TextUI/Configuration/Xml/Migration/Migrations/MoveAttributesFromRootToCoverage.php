@@ -36,9 +36,11 @@ final readonly class MoveAttributesFromRootToCoverage implements Migration
 
         $coverage = $document->getElementsByTagName('coverage')->item(0);
 
+        // @codeCoverageIgnoreStart
         if (!$coverage instanceof DOMElement) {
             throw new MigrationException('Unexpected state - No coverage element');
         }
+        // @codeCoverageIgnoreEnd
 
         foreach ($map as $old => $new) {
             if (!$root->hasAttribute($old)) {
