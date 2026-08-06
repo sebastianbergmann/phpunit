@@ -9,6 +9,11 @@
  */
 namespace PHPUnit\TextUI\Output\Default;
 
+use function fclose;
+use function fread;
+use function stream_socket_accept;
+use function stream_socket_get_name;
+use function stream_socket_server;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Medium;
@@ -18,6 +23,8 @@ use PHPUnit\TextUI\InvalidSocketException;
 use PHPUnit\TextUI\Output\DefaultPrinter;
 
 #[CoversClass(DefaultPrinter::class)]
+#[CoversClass(CannotOpenSocketException::class)]
+#[CoversClass(InvalidSocketException::class)]
 #[Medium]
 final class DefaultPrinterTest extends TestCase
 {
@@ -50,5 +57,66 @@ final class DefaultPrinterTest extends TestCase
     {
         $this->expectException(InvalidSocketException::class);
         DefaultPrinter::from('socket://hostname:port:wrong');
+    }
+
+    public function testCanBeCreatedForStandardOutput(): void
+    {
+        $this->expectOutputString('');
+
+        $printer = DefaultPrinter::standardOutput();
+
+        $printer->flush();
+    }
+
+    public function testCanBeCreatedForStandardError(): void
+    {
+        $this->expectOutputString('');
+
+        $printer = DefaultPrinter::standardError();
+
+        $printer->flush();
+    }
+
+    public function testCanWriteToSocket(): void
+    {
+        $server = stream_socket_server('tcp://127.0.0.1:0', $errorNumber, $errorMessage);
+
+        $this->assertIsResource($server);
+
+        $address = stream_socket_get_name($server, false);
+
+        $this->assertIsString($address);
+
+        $printer = DefaultPrinter::from('socket://' . $address);
+
+        $printer->print('message');
+        $printer->flush();
+
+        $connection = stream_socket_accept($server);
+
+        $this->assertIsResource($connection);
+
+        $this->assertSame('message', fread($connection, 7));
+
+        fclose($connection);
+        fclose($server);
+    }
+
+    public function testCannotBeCreatedWhenSocketCannotBeOpened(): void
+    {
+        $server = stream_socket_server('tcp://127.0.0.1:0', $errorNumber, $errorMessage);
+
+        $this->assertIsResource($server);
+
+        $address = stream_socket_get_name($server, false);
+
+        $this->assertIsString($address);
+
+        fclose($server);
+
+        $this->expectException(CannotOpenSocketException::class);
+        $this->expectExceptionMessage('Cannot open socket ' . $address);
+
+        DefaultPrinter::from('socket://' . $address);
     }
 }

@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
+use const DIRECTORY_SEPARATOR;
+use function realpath;
+use function str_replace;
 use Generator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -531,5 +534,23 @@ final class SourceMapperTest extends AbstractSourceFilterTestCase
     public function testMapForCodeCoverage(array $expected, Source $source): void
     {
         $this->assertEquals($expected, (new SourceMapper)->mapForCodeCoverage($source));
+    }
+
+    public function testDoesNotMapFilesInHiddenDirectories(): void
+    {
+        $path = realpath(__DIR__ . '/../..') . '/_files/source-mapper-hidden-directory';
+
+        $source = self::createSource(
+            includeDirectories: FilterDirectoryCollection::fromArray([
+                new FilterDirectory($path, '', '.php'),
+            ]),
+        );
+
+        $this->assertSame(
+            [
+                str_replace('/', DIRECTORY_SEPARATOR, $path . '/Visible.php') => true,
+            ],
+            (new SourceMapper)->map($source),
+        );
     }
 }

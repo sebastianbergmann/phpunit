@@ -9,13 +9,21 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
+use const DIRECTORY_SEPARATOR;
+use const PATH_SEPARATOR;
+use function dirname;
+use function realpath;
 use function uniqid;
+use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TextUI\CliArguments\Builder;
+use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
+use PHPUnit\TextUI\Configuration\Configuration as MergedConfiguration;
 use PHPUnit\TextUI\Configuration\Merger;
+use ReflectionProperty;
 
 #[CoversClass(Merger::class)]
 #[Medium]
@@ -202,6 +210,191 @@ final class MergerTest extends TestCase
         $this->assertSame($phpCoverage, $mergedConfig->coveragePhp());
     }
 
+    public function testLoggingConfigurationIsCarriedOverFromXmlConfiguration(): void
+    {
+        $fromFile = (new Loader)->load(TEST_FILES_PATH . 'configuration_logging.xml');
+
+        $mergedConfig = (new Merger)->merge((new Builder)->fromParameters([]), $fromFile);
+
+        $this->assertTrue($mergedConfig->hasLogfileTeamcity());
+        $this->assertStringEndsWith('teamcity.txt', $mergedConfig->logfileTeamcity());
+
+        $this->assertTrue($mergedConfig->hasLogfileJunit());
+        $this->assertStringEndsWith('junit.xml', $mergedConfig->logfileJunit());
+
+        $this->assertTrue($mergedConfig->hasLogfileOtr());
+        $this->assertStringEndsWith('otr.xml', $mergedConfig->logfileOtr());
+        $this->assertTrue($mergedConfig->includeGitInformationInOtrLogfile());
+
+        $this->assertTrue($mergedConfig->hasLogfileTestdoxHtml());
+        $this->assertStringEndsWith('testdox.html', $mergedConfig->logfileTestdoxHtml());
+
+        $this->assertTrue($mergedConfig->hasLogfileTestdoxText());
+        $this->assertStringEndsWith('testdox.txt', $mergedConfig->logfileTestdoxText());
+    }
+
+    public function testCodeCoverageReportsCanBeConfiguredFromCli(): void
+    {
+        $fromFile = (new Loader)->load(TEST_FILES_PATH . 'configuration_empty.xml');
+
+        $fromCli = (new Builder)->fromParameters([
+            '--path-coverage',
+            '--disable-coverage-ignore',
+            '--coverage-clover',
+            'clover.xml',
+            '--coverage-cobertura',
+            'cobertura.xml',
+            '--coverage-crap4j',
+            'crap4j.xml',
+            '--coverage-html',
+            'html',
+            '--coverage-openclover',
+            'openclover.xml',
+            '--coverage-text=coverage.txt',
+            '--show-uncovered-for-coverage-text',
+            '--only-summary-for-coverage-text',
+            '--coverage-xml',
+            'xml',
+            '--exclude-source-from-xml-coverage',
+            '--strict-coverage',
+            '--require-coverage-contribution',
+        ]);
+
+        $mergedConfig = (new Merger)->merge($fromCli, $fromFile);
+
+        $this->assertTrue($mergedConfig->pathCoverage());
+        $this->assertTrue($mergedConfig->disableCodeCoverageIgnore());
+        $this->assertSame('clover.xml', $mergedConfig->coverageClover());
+        $this->assertSame('cobertura.xml', $mergedConfig->coverageCobertura());
+        $this->assertSame('crap4j.xml', $mergedConfig->coverageCrap4j());
+        $this->assertSame('html', $mergedConfig->coverageHtml());
+        $this->assertSame('openclover.xml', $mergedConfig->coverageOpenClover());
+        $this->assertSame('coverage.txt', $mergedConfig->coverageText());
+        $this->assertTrue($mergedConfig->coverageTextShowUncoveredFiles());
+        $this->assertTrue($mergedConfig->coverageTextShowOnlySummary());
+        $this->assertSame('xml', $mergedConfig->coverageXml());
+        $this->assertFalse($mergedConfig->coverageXmlIncludeSource());
+        $this->assertTrue($mergedConfig->strictCoverage());
+        $this->assertTrue($mergedConfig->requireCoverageContribution());
+    }
+
+    public function testMiscellaneousOptionsCanBeConfiguredFromCli(): void
+    {
+        $fromFile = (new Loader)->load(TEST_FILES_PATH . 'configuration_empty.xml');
+
+        $fromCli = (new Builder)->fromParameters([
+            '--stderr',
+            '--no-extensions',
+            '--fail-on-phpunit-warning',
+            '--display-phpunit-notices',
+            '--colors=always',
+            '--include-path',
+            '.' . PATH_SEPARATOR,
+            '--default-time-limit=-1',
+        ]);
+
+        $mergedConfig = (new Merger)->merge($fromCli, $fromFile);
+
+        $this->assertTrue($mergedConfig->outputToStandardErrorStream());
+        $this->assertTrue($mergedConfig->noExtensions());
+        $this->assertTrue($mergedConfig->failOnPhpunitWarning());
+        $this->assertTrue($mergedConfig->displayDetailsOnPhpunitNotices());
+        $this->assertTrue($mergedConfig->colors());
+        $this->assertCount(1, $mergedConfig->php()->includePaths());
+        $this->assertSame(0, $mergedConfig->defaultTimeLimit());
+    }
+
+    public function testInvalidRandomOrderSeedIsReplacedWithSmallestValidSeed(): void
+    {
+        $fromFile = (new Loader)->load(TEST_FILES_PATH . 'configuration_empty.xml');
+
+        $fromCli = (new Builder)->fromParameters([
+            '--order-by=random',
+            '--random-order-seed=0',
+        ]);
+
+        $mergedConfig = (new Merger)->merge($fromCli, $fromFile);
+
+        $this->assertSame(1, $mergedConfig->randomOrderSeed());
+    }
+
+    public function testIncludePathsAreCarriedOverFromXmlConfiguration(): void
+    {
+        $fromFile = (new Loader)->load(TEST_FILES_PATH . 'configuration_edge_case_values.xml');
+
+        $mergedConfig = (new Merger)->merge((new Builder)->fromParameters([]), $fromFile);
+
+        $this->assertCount(2, $mergedConfig->php()->includePaths());
+    }
+
+    public function testColorsCanBeEnabledFromXmlConfiguration(): void
+    {
+        $fromFile = (new Loader)->load(TEST_FILES_PATH . 'configuration.colors.true.xml');
+
+        $mergedConfig = (new Merger)->merge((new Builder)->fromParameters([]), $fromFile);
+
+        $this->assertTrue($mergedConfig->colors());
+    }
+
+    public function testThresholdsForHtmlCodeCoverageReportAreResetWhenTheyAreInconsistent(): void
+    {
+        $fromFile = (new Loader)->load(TEST_FILES_PATH . 'configuration_codecoverage_html_custom.xml');
+
+        $this->assertSame(90, $fromFile->codeCoverage()->html()->lowUpperBound());
+        $this->assertSame(50, $fromFile->codeCoverage()->html()->highLowerBound());
+
+        $mergedConfig = (new Merger)->merge((new Builder)->fromParameters([]), $fromFile);
+
+        $this->assertLessThanOrEqual(
+            $mergedConfig->coverageHtmlHighLowerBound(),
+            $mergedConfig->coverageHtmlLowUpperBound(),
+        );
+    }
+
+    public function testCustomCssFileForHtmlCodeCoverageReportIsCarriedOverFromXmlConfiguration(): void
+    {
+        $fromFile = (new Loader)->load(TEST_FILES_PATH . 'configuration_codecoverage_html_custom.xml');
+
+        $mergedConfig = (new Merger)->merge((new Builder)->fromParameters([]), $fromFile);
+
+        $this->assertTrue($mergedConfig->hasCoverageHtmlCustomCssFile());
+        $this->assertStringEndsWith('custom.css', $mergedConfig->coverageHtmlCustomCssFile());
+    }
+
+    public function testWarningIsTriggeredWhenIssueTriggerIdentificationIsDisabledButNeeded(): void
+    {
+        $fromFile = (new Loader)->load(TEST_FILES_PATH . 'configuration_source_without_issue_trigger_identification.xml');
+
+        $this->assertTrue($fromFile->source()->ignoreSelfDeprecations());
+        $this->assertFalse($fromFile->source()->identifyIssueTrigger());
+
+        $mergedConfig = $this->mergeWithThrowAwayEventFacade(
+            (new Builder)->fromParameters([]),
+            $fromFile,
+        );
+
+        $this->assertTrue($mergedConfig->source()->ignoreSelfDeprecations());
+    }
+
+    public function testTestRunHistoryFileIsLocatedNextToTheScriptThatIsRunning(): void
+    {
+        $mergedConfig = $this->mergeWithPhpSelf(
+            'vendor' . DIRECTORY_SEPARATOR . 'autoload.php',
+        );
+
+        $this->assertSame(
+            dirname(realpath(__DIR__ . '/../../../../vendor/autoload.php')) . DIRECTORY_SEPARATOR . '.phpunit.result.cache',
+            $mergedConfig->testRunHistoryFile(),
+        );
+    }
+
+    public function testTestRunHistoryFileIsLocatedInTheCurrentWorkingDirectoryWhenTheScriptThatIsRunningIsUnknown(): void
+    {
+        $mergedConfig = $this->mergeWithPhpSelf(null);
+
+        $this->assertSame('.phpunit.result.cache', $mergedConfig->testRunHistoryFile());
+    }
+
     #[Group('regression')]
     #[Group('regression/6340')]
     public function testIssue6340(): void
@@ -317,5 +510,53 @@ final class MergerTest extends TestCase
         $this->assertTrue($mergedConfig->failOnIndirectDeprecation());
 
         $this->assertTrue($mergedConfig->displayDetailsOnTestsThatTriggerDeprecations());
+    }
+
+    private function mergeWithPhpSelf(?string $phpSelf): MergedConfiguration
+    {
+        $backup = null;
+
+        if (isset($_SERVER['PHP_SELF'])) {
+            $backup = $_SERVER['PHP_SELF'];
+        }
+
+        if ($phpSelf === null) {
+            unset($_SERVER['PHP_SELF']);
+        } else {
+            $_SERVER['PHP_SELF'] = $phpSelf;
+        }
+
+        try {
+            return (new Merger)->merge(
+                (new Builder)->fromParameters([]),
+                DefaultConfiguration::create(),
+            );
+        } finally {
+            if ($backup === null) {
+                unset($_SERVER['PHP_SELF']);
+            } else {
+                $_SERVER['PHP_SELF'] = $backup;
+            }
+        }
+    }
+
+    /*
+     * Merger emits test runner warnings for configurations that are
+     * inconsistent. These must not end up in the result of the test run that
+     * exercises Merger, so they are emitted into a throw-away event facade
+     * that is never forwarded.
+     */
+    private function mergeWithThrowAwayEventFacade(CliConfiguration $cliConfiguration, Configuration $xmlConfiguration): MergedConfiguration
+    {
+        $property = new ReflectionProperty(EventFacade::class, 'instance');
+        $facade   = $property->getValue();
+
+        $property->setValue(null, new EventFacade);
+
+        try {
+            return (new Merger)->merge($cliConfiguration, $xmlConfiguration);
+        } finally {
+            $property->setValue(null, $facade);
+        }
     }
 }

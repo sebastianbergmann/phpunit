@@ -31,6 +31,7 @@ use PHPUnit\Event\Test\ErrorTriggered;
 use PHPUnit\Event\Test\NoticeTriggered;
 use PHPUnit\Event\Test\PhpDeprecationTriggered;
 use PHPUnit\Event\Test\PhpNoticeTriggered;
+use PHPUnit\Event\Test\PhpunitNoticeTriggered;
 use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\WarningTriggered;
@@ -50,6 +51,8 @@ use PHPUnit\TextUI\Configuration\Source;
 use PHPUnit\TextUI\Output\Printer;
 
 #[CoversClass(ProgressPrinter::class)]
+#[CoversClass(TestTriggeredErrorSubscriber::class)]
+#[CoversClass(TestTriggeredPhpunitNoticeSubscriber::class)]
 #[Small]
 final class ProgressPrinterTest extends TestCase
 {
@@ -525,6 +528,42 @@ final class ProgressPrinterTest extends TestCase
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
         $progress->testPrepared();
         $progress->testTriggeredPhpunitNotice();
+        $progress->testFinished();
+
+        $this->assertStringStartsWith('N', $buffer());
+    }
+
+    public function testTestTriggeredErrorSubscriberForwardsEventToProgressPrinter(): void
+    {
+        [$printer, $buffer] = $this->printer();
+        $progress           = $this->progressPrinter($printer);
+
+        $progress->testRunnerExecutionStarted($this->executionStarted(1));
+        $progress->testPrepared();
+
+        new TestTriggeredErrorSubscriber($progress)->notify($this->errorTriggeredEvent(false));
+
+        $progress->testFinished();
+
+        $this->assertStringStartsWith('E', $buffer());
+    }
+
+    public function testTestTriggeredPhpunitNoticeSubscriberForwardsEventToProgressPrinter(): void
+    {
+        [$printer, $buffer] = $this->printer();
+        $progress           = $this->progressPrinter($printer);
+
+        $progress->testRunnerExecutionStarted($this->executionStarted(1));
+        $progress->testPrepared();
+
+        new TestTriggeredPhpunitNoticeSubscriber($progress)->notify(
+            new PhpunitNoticeTriggered(
+                $this->telemetryInfo(),
+                $this->testMethod(),
+                'message',
+            ),
+        );
+
         $progress->testFinished();
 
         $this->assertStringStartsWith('N', $buffer());

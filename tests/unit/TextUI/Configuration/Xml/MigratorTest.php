@@ -25,6 +25,10 @@ final class MigratorTest extends TestCase
     public static function provider(): array
     {
         return [
+            'PHPUnit 8.5' => [
+                __DIR__ . '/../../../../_files/XmlConfigurationMigration/output-8.5.xml',
+                __DIR__ . '/../../../../_files/XmlConfigurationMigration/input-8.5.xml',
+            ],
             'PHPUnit 9.2' => [
                 __DIR__ . '/../../../../_files/XmlConfigurationMigration/output-9.2.xml',
                 __DIR__ . '/../../../../_files/XmlConfigurationMigration/input-9.2.xml',
@@ -32,6 +36,18 @@ final class MigratorTest extends TestCase
             'PHPUnit 9.5' => [
                 __DIR__ . '/../../../../_files/XmlConfigurationMigration/output-9.5.xml',
                 __DIR__ . '/../../../../_files/XmlConfigurationMigration/input-9.5.xml',
+            ],
+            'PHPUnit 9.6' => [
+                __DIR__ . '/../../../../_files/XmlConfigurationMigration/output-9.6.xml',
+                __DIR__ . '/../../../../_files/XmlConfigurationMigration/input-9.6.xml',
+            ],
+            'PHPUnit 11.0' => [
+                __DIR__ . '/../../../../_files/XmlConfigurationMigration/output-11.0.xml',
+                __DIR__ . '/../../../../_files/XmlConfigurationMigration/input-11.0.xml',
+            ],
+            'Log Without Type' => [
+                __DIR__ . '/../../../../_files/XmlConfigurationMigration/output-log-without-type.xml',
+                __DIR__ . '/../../../../_files/XmlConfigurationMigration/input-log-without-type.xml',
             ],
             'Relative Path' => [
                 __DIR__ . '/../../../../_files/XmlConfigurationMigration/output-relative-schema-path.xml',

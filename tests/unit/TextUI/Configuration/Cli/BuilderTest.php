@@ -3246,4 +3246,38 @@ final class BuilderTest extends TestCase
 
         (new Builder)->fromParameters(['--check-version', '--help']);
     }
+
+    public function testEmptyArgumentsAreIgnored(): void
+    {
+        $configuration = (new Builder)->fromParameters(['command', '', 'argument']);
+
+        $this->assertSame(['argument'], $configuration->arguments());
+    }
+
+    #[TestDox('--group requires a non-empty value')]
+    public function testOptionThatRequiresNonEmptyValueRejectsEmptyValue(): void
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessageIs('Option --group requires a non-empty value');
+
+        (new Builder)->fromParameters(['--group', '']);
+    }
+
+    #[TestDox('--diff-context requires a numeric value')]
+    public function testOptionThatRequiresPositiveIntegerValueRejectsValueThatIsNotNumeric(): void
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessageIs('Option --diff-context requires a positive integer value');
+
+        (new Builder)->fromParameters(['--diff-context', 'not-a-number']);
+    }
+
+    #[TestDox('--diff-context requires a positive value')]
+    public function testOptionThatRequiresPositiveIntegerValueRejectsValueThatIsNotPositive(): void
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessageIs('Option --diff-context requires a positive integer value');
+
+        (new Builder)->fromParameters(['--diff-context', '0']);
+    }
 }

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="../../phpunit.xsd"
+         executionOrder="no-depends"
+         backupStaticProperties="true"
+         shortenArraysForExportThreshold="-1"
+         timeoutForMediumTests="0">
+    <source>
+        <include>
+            <directory prefix="Fixture" suffix=".php">/path/to/files</directory>
+            <directory></directory>
+        </include>
+
+        <deprecationTrigger>
+            <function>PHPUnit\TestFixture\DeprecationTrigger\trigger_deprecation</function>
+            <function></function>
+            <method>PHPUnit\TestFixture\DeprecationTrigger\DeprecationTrigger::triggerDeprecation</method>
+            <method></method>
+        </deprecationTrigger>
+
+        <issueTriggerResolvers>
+            <issueTriggerResolver className=""/>
+        </issueTriggerResolvers>
+    </source>
+
+    <coverage>
+        <report>
+            <html outputDirectory="coverage"
+                  lowUpperBound="-1"
+                  customCssFile=""
+                  colorSuccessLow="#123456"
+                  colorSuccessLowDark=""/>
+        </report>
+    </coverage>
+
+    <groups>
+        <include>
+            <group>name</group>
+            <group></group>
+        </include>
+
+        <exclude>
+            <group>name</group>
+            <group></group>
+        </exclude>
+    </groups>
+
+    <php>
+        <includePath>.</includePath>
+        <includePath>/path/to/lib</includePath>
+        <ini name="foo" value="bar"/>
+        <ini name="" value="bar"/>
+        <const name="foo" value="bar"/>
+        <const name="" value="bar"/>
+        <var name="foo" value="bar"/>
+        <var name="" value="bar"/>
+    </php>
+
+    <testsuites>
+        <testsuite name="Suite">
+            <directory groups="first,,second">/path/to/files</directory>
+            <directory></directory>
+            <file groups="first,,second">/path/to/file.php</file>
+            <file></file>
+        </testsuite>
+    </testsuites>
+</phpunit>

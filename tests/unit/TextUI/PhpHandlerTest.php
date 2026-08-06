@@ -17,12 +17,14 @@ use function getenv;
 use function ini_get;
 use function ini_set;
 use function putenv;
+use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
+use ReflectionProperty;
 
 #[CoversClass(PhpHandler::class)]
 #[Medium]
@@ -126,6 +128,80 @@ final class PhpHandlerTest extends TestCase
         $this->assertSame(PHP_EOL, ini_get('highlight.keyword'));
 
         ini_set('highlight.keyword', $savedIniHighlightKeyword);
+    }
+
+    public function testWarningIsTriggeredWhenIniSettingCannotBeSet(): void
+    {
+        $savedIniMemoryLimit = ini_get('memory_limit');
+
+        $this->handleWithThrowAwayEventFacade(
+            $this->php(
+                IniSettingCollection::fromArray([
+                    new IniSetting('memory_limit', 'not-a-memory-limit'),
+                ]),
+            ),
+        );
+
+        $this->assertSame($savedIniMemoryLimit, ini_get('memory_limit'));
+    }
+
+    #[BackupGlobals(true)]
+    public function testEnvironmentVariableWithValueThatIsNotScalarIsIgnored(): void
+    {
+        $this->handleWithThrowAwayEventFacade(
+            $this->php(
+                envVariables: VariableCollection::fromArray([
+                    new Variable('foo_not_scalar', ['bar'], false),
+                ]),
+            ),
+        );
+
+        $this->assertFalse(getenv('foo_not_scalar'));
+    }
+
+    /*
+     * PhpHandler emits a test runner warning when an INI setting cannot be
+     * set. This must not end up in the result of the test run that exercises
+     * PhpHandler, so it is emitted into a throw-away event facade that is
+     * never forwarded.
+     */
+    private function handleWithThrowAwayEventFacade(Php $php): void
+    {
+        $property = new ReflectionProperty(EventFacade::class, 'instance');
+        $facade   = $property->getValue();
+
+        $property->setValue(null, new EventFacade);
+
+        try {
+            (new PhpHandler)->handle($php);
+        } finally {
+            $property->setValue(null, $facade);
+        }
+    }
+
+    private function php(?IniSettingCollection $iniSettings = null, ?VariableCollection $envVariables = null): Php
+    {
+        if ($iniSettings === null) {
+            $iniSettings = IniSettingCollection::fromArray([]);
+        }
+
+        if ($envVariables === null) {
+            $envVariables = VariableCollection::fromArray([]);
+        }
+
+        return new Php(
+            DirectoryCollection::fromArray([]),
+            $iniSettings,
+            ConstantCollection::fromArray([]),
+            VariableCollection::fromArray([]),
+            $envVariables,
+            VariableCollection::fromArray([]),
+            VariableCollection::fromArray([]),
+            VariableCollection::fromArray([]),
+            VariableCollection::fromArray([]),
+            VariableCollection::fromArray([]),
+            VariableCollection::fromArray([]),
+        );
     }
 
     private function handle(): void

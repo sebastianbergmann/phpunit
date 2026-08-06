@@ -431,6 +431,14 @@ final class ConfigurationTest extends TestCase
         $this->assertSame(30, $configuration->coverageCrap4jThreshold());
     }
 
+    public function testReturnsDefaultValuesForCoverageHtmlReportViews(): void
+    {
+        $configuration = $this->defaultConfiguration();
+
+        $this->assertTrue($configuration->coverageHtmlClassView());
+        $this->assertTrue($configuration->coverageHtmlFileView());
+    }
+
     public function testReturnsDefaultValuesForCoverageHtmlReportColors(): void
     {
         $configuration = $this->defaultConfiguration();

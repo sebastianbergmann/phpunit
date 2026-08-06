@@ -10,8 +10,11 @@
 namespace PHPUnit\TextUI\XmlConfiguration;
 
 use function count;
+use function define;
+use function realpath;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\Version;
@@ -41,5 +44,13 @@ final class SchemaFinderTest extends TestCase
         $this->expectException(CannotFindSchemaException::class);
 
         (new SchemaFinder)->find('0.0');
+    }
+
+    #[RunInSeparateProcess]
+    public function testFindsSchemaThatIsShippedInPhar(): void
+    {
+        define('__PHPUNIT_PHAR_ROOT__', realpath(__DIR__ . '/../../../../..'));
+
+        $this->assertFileExists((new SchemaFinder)->find((new Version)->series()));
     }
 }

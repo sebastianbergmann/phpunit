@@ -10,6 +10,7 @@
 namespace PHPUnit\TextUI\Output\Compact\ProgressPrinter;
 
 use function hrtime;
+use AssertionError;
 use Closure;
 use Exception;
 use LogicException;
@@ -17,6 +18,7 @@ use PHPUnit\Event\Code\ClassMethod;
 use PHPUnit\Event\Code\TestDoxBuilder;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\ThrowableBuilder;
+use PHPUnit\Event\Event;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Event\Telemetry\CpuTime;
 use PHPUnit\Event\Telemetry\Duration;
@@ -43,6 +45,13 @@ use PHPUnit\TextUI\Output\Printer;
 use RuntimeException;
 
 #[CoversClass(ProgressPrinter::class)]
+#[CoversClass(Subscriber::class)]
+#[CoversClass(AfterLastTestMethodErroredSubscriber::class)]
+#[CoversClass(AfterLastTestMethodFailedSubscriber::class)]
+#[CoversClass(BeforeFirstTestMethodErroredSubscriber::class)]
+#[CoversClass(BeforeFirstTestMethodFailedSubscriber::class)]
+#[CoversClass(TestErroredSubscriber::class)]
+#[CoversClass(TestFailedSubscriber::class)]
 #[Medium]
 final class ProgressPrinterTest extends TestCase
 {
@@ -89,6 +98,21 @@ final class ProgressPrinterTest extends TestCase
                             self::telemetryInfo(),
                             self::testMethod(),
                             ThrowableBuilder::from(new ExpectationFailedException('Failed asserting that false is true.')),
+                            null,
+                        ),
+                    );
+                },
+            ],
+
+            'failed test with assertion error' => [
+                'failed_test_with_assertion_error.txt',
+                static function (ProgressPrinter $printer): void
+                {
+                    $printer->testFailed(
+                        new Failed(
+                            self::telemetryInfo(),
+                            self::testMethod(),
+                            ThrowableBuilder::from(new AssertionError('Failed asserting that false is true.')),
                             null,
                         ),
                     );
@@ -170,6 +194,90 @@ final class ProgressPrinterTest extends TestCase
                 },
             ],
         ];
+    }
+
+    /**
+     * @return array<string,array{0: class-string<Subscriber>, 1: Event}>
+     */
+    public static function subscriberProvider(): array
+    {
+        return [
+            'test errored' => [
+                TestErroredSubscriber::class,
+                new Errored(
+                    self::telemetryInfo(),
+                    self::testMethod(),
+                    ThrowableBuilder::from(new Exception('message')),
+                ),
+            ],
+
+            'test failed' => [
+                TestFailedSubscriber::class,
+                new Failed(
+                    self::telemetryInfo(),
+                    self::testMethod(),
+                    ThrowableBuilder::from(new ExpectationFailedException('Failed asserting that false is true.')),
+                    null,
+                ),
+            ],
+
+            'before first test method errored' => [
+                BeforeFirstTestMethodErroredSubscriber::class,
+                new BeforeFirstTestMethodErrored(
+                    self::telemetryInfo(),
+                    'FooTest',
+                    new ClassMethod('FooTest', 'setUpBeforeClass'),
+                    ThrowableBuilder::from(new Exception('message')),
+                ),
+            ],
+
+            'before first test method failed' => [
+                BeforeFirstTestMethodFailedSubscriber::class,
+                new BeforeFirstTestMethodFailed(
+                    self::telemetryInfo(),
+                    'FooTest',
+                    new ClassMethod('FooTest', 'setUpBeforeClass'),
+                    ThrowableBuilder::from(new ExpectationFailedException('Failed asserting that false is true.')),
+                ),
+            ],
+
+            'after last test method errored' => [
+                AfterLastTestMethodErroredSubscriber::class,
+                new AfterLastTestMethodErrored(
+                    self::telemetryInfo(),
+                    'FooTest',
+                    new ClassMethod('FooTest', 'tearDownAfterClass'),
+                    ThrowableBuilder::from(new Exception('message')),
+                ),
+            ],
+
+            'after last test method failed' => [
+                AfterLastTestMethodFailedSubscriber::class,
+                new AfterLastTestMethodFailed(
+                    self::telemetryInfo(),
+                    'FooTest',
+                    new ClassMethod('FooTest', 'tearDownAfterClass'),
+                    ThrowableBuilder::from(new ExpectationFailedException('Failed asserting that false is true.')),
+                ),
+            ],
+        ];
+    }
+
+    /**
+     * @param class-string<Subscriber> $subscriberClassName
+     */
+    #[DataProvider('subscriberProvider')]
+    public function testSubscriberForwardsEventToProgressPrinter(string $subscriberClassName, Event $event): void
+    {
+        $printer         = $this->printer();
+        $progressPrinter = new ProgressPrinter($printer, new EventFacade);
+
+        $subscriber = new $subscriberClassName($progressPrinter);
+
+        $subscriber->notify($event);
+
+        /* @noinspection PhpPossiblePolymorphicInvocationInspection */
+        $this->assertNotSame('', $printer->buffer());
     }
 
     #[DataProvider('provider')]
