@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Util;
 
+use function assert;
+use function ini_get;
+use function ini_set;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
@@ -48,5 +51,23 @@ final class SanitizerTest extends TestCase
     public function testSanitizesBidirectionalControlCharacters(string $input, string $expected): void
     {
         $this->assertSame($expected, Sanitizer::sanitizeBidirectionalControlCharacters($input));
+    }
+
+    public function testReturnsValueUnchangedWhenSanitizationFails(): void
+    {
+        $backtrackLimit = ini_get('pcre.backtrack_limit');
+
+        assert($backtrackLimit !== false);
+
+        ini_set('pcre.backtrack_limit', '1');
+
+        try {
+            $this->assertSame(
+                "a\u{202A}b",
+                Sanitizer::sanitizeBidirectionalControlCharacters("a\u{202A}b"),
+            );
+        } finally {
+            ini_set('pcre.backtrack_limit', $backtrackLimit);
+        }
     }
 }

@@ -16,6 +16,7 @@ use PHPUnit\Event\TestRunner\ChildProcessReason;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestRunner\ChildProcessResultProcessor;
@@ -194,6 +195,19 @@ EOT,
             ),
         ];
 
+        yield 'PHP setting that configures xdebug.mode' => [
+            new Result('test', ''),
+            new Job(
+                <<<'EOT'
+<?php declare(strict_types=1);
+print 'test';
+
+EOT,
+                ChildProcessReason::TestRequiringProcessIsolation,
+                phpSettings: ['xdebug.mode=off'],
+            ),
+        ];
+
         $valueContainingConsecutiveBackslashes = '\\\\server\\share (x86)';
 
         yield 'PHP setting value containing consecutive backslashes' => [
@@ -254,6 +268,43 @@ EOT,
         $running->closeStdin();
 
         $this->assertSame("echoed\n", $running->wait()->stdout());
+    }
+
+    #[TestDox('Server variables that cannot be represented as environment variables are not forwarded')]
+    public function testDoesNotForwardServerVariablesThatAreNotEnvironmentVariables(): void
+    {
+        $server = $_SERVER;
+
+        $_SERVER[0]                     = 'value for non-string key';
+        $_SERVER['__test_array_value']  = ['value'];
+        $_SERVER['__test_string_value'] = 'value';
+
+        try {
+            $jobRunner = new JobRunner(
+                new ChildProcessResultProcessor(
+                    new Facade,
+                    $this->createStub(Emitter::class),
+                    new PassedTests,
+                    new CodeCoverage,
+                ),
+            );
+
+            $result = $jobRunner->run(
+                new Job(
+                    <<<'EOT'
+<?php declare(strict_types=1);
+var_dump(getenv('__test_array_value'), getenv('__test_string_value'));
+
+EOT,
+                    ChildProcessReason::TestRequiringProcessIsolation,
+                    environmentVariables: ['test' => 'test'],
+                ),
+            );
+
+            $this->assertSame("bool(false)\nstring(5) \"value\"\n", $result->stdout());
+        } finally {
+            $_SERVER = $server;
+        }
     }
 
     public function testRejectsPhpSettingValueContainingLineBreak(): void

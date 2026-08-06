@@ -28,6 +28,9 @@ final class JsonTest extends TestCase
             ['{"name":"John","age":"35"}', '{"age":"35","name":"John"}', false],
             ['{"name":"John","age":"35","kids":[{"name":"Petr","age":"5"}]}', '{"age":"35","kids":[{"age":"5","name":"Petr"}],"name":"John"}', false],
             ['"name":"John","age":"35"}', '{"age":"35","name":"John"}', true],
+
+            // 1e999 decodes to INF, which cannot be encoded as JSON
+            ['1e999', '', true],
         ];
     }
 

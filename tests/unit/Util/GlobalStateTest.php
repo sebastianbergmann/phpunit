@@ -13,6 +13,7 @@ use function sprintf;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 #[CoversClass(GlobalState::class)]
 #[CoversClass(GlobalStateResult::class)]
@@ -85,6 +86,59 @@ final class GlobalStateTest extends TestCase
             }
         } finally {
             unset($GLOBALS['__test_scalar']);
+        }
+    }
+
+    public function testNestedArrayGlobalIsPreserved(): void
+    {
+        $GLOBALS['__test_nested_array'] = ['outer' => ['inner' => 'value']];
+
+        try {
+            $result = GlobalState::exportGlobals();
+
+            $this->assertStringContainsString('__test_nested_array', $result->globalsString());
+            $this->assertStringContainsString("'value'", $result->globalsString());
+
+            foreach ($result->skippedGlobals() as $skipped) {
+                $this->assertStringNotContainsString('__test_nested_array', $skipped['name']);
+            }
+        } finally {
+            unset($GLOBALS['__test_nested_array']);
+        }
+    }
+
+    public function testClosureInSuperGlobalArrayIsSkippedAndReported(): void
+    {
+        $_ENV['__test_closure'] = static function (): string
+        {
+            return 'test';
+        };
+
+        try {
+            $result = GlobalState::exportGlobals();
+
+            $this->assertStringNotContainsString('__test_closure', $result->globalsString());
+            $this->assertTrue($result->hasSkippedGlobals());
+            $this->assertSkippedGlobal($result, '$GLOBALS[\'_ENV\'][\'__test_closure\']', 'is a Closure');
+        } finally {
+            unset($_ENV['__test_closure']);
+        }
+    }
+
+    public function testUnserializableValueInSuperGlobalArrayIsSkippedAndReported(): void
+    {
+        $value                         = new stdClass;
+        $value->closure                = static fn (): int => 1;
+        $_ENV['__test_unserializable'] = $value;
+
+        try {
+            $result = GlobalState::exportGlobals();
+
+            $this->assertStringNotContainsString('__test_unserializable', $result->globalsString());
+            $this->assertTrue($result->hasSkippedGlobals());
+            $this->assertSkippedGlobal($result, '$GLOBALS[\'_ENV\'][\'__test_unserializable\']', 'is not serializable');
+        } finally {
+            unset($_ENV['__test_unserializable']);
         }
     }
 
