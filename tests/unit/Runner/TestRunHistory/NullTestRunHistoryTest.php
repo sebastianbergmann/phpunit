@@ -31,6 +31,16 @@ final class NullTestRunHistoryTest extends TestCase
         $this->assertTrue($cache->status($id)->isUnknown());
     }
 
+    public function testRemoveIsNoOp(): void
+    {
+        $cache = new NullTestRunHistory;
+        $id    = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testOne');
+
+        $cache->remove($id);
+
+        $this->assertTrue($cache->status($id)->isUnknown());
+    }
+
     public function testStatusReturnsUnknown(): void
     {
         $cache = new NullTestRunHistory;
@@ -71,6 +81,15 @@ final class NullTestRunHistoryTest extends TestCase
         $cache = new NullTestRunHistory;
 
         $cache->persist();
+
+        $this->assertTrue($cache->status(TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testOne'))->isUnknown());
+    }
+
+    public function testPersistAndPruneIsNoOp(): void
+    {
+        $cache = new NullTestRunHistory;
+
+        $cache->persistAndPrune();
 
         $this->assertTrue($cache->status(TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testOne'))->isUnknown());
     }

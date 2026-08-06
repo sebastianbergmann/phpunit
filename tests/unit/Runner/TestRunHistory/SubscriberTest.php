@@ -18,6 +18,7 @@ use PHPUnit\Event\Facade;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\MarkedIncomplete;
 use PHPUnit\Event\Test\Skipped;
+use PHPUnit\Event\TestRunner\ExecutionAborted;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
@@ -25,6 +26,7 @@ use PHPUnit\Framework\Attributes\Small;
 #[CoversClass(TestMarkedIncompleteSubscriber::class)]
 #[CoversClass(TestConsideredRiskySubscriber::class)]
 #[CoversClass(TestSkippedSubscriber::class)]
+#[CoversClass(TestRunnerExecutionAbortedSubscriber::class)]
 #[Small]
 #[Group('test-runner')]
 #[Group('test-runner/test-run-history')]
@@ -82,5 +84,27 @@ final class SubscriberTest extends AbstractEventTestCase
         $subscriber->notify($event);
 
         $this->assertTrue($cache->status(TestRunHistoryId::fromTest($test))->isSkipped());
+    }
+
+    public function testRunnerExecutionAbortedSubscriberForwardsToHandler(): void
+    {
+        $cache = $this->createMock(TestRunHistory::class);
+
+        $cache
+            ->expects($this->once())
+            ->method('persist');
+
+        $cache
+            ->expects($this->never())
+            ->method('persistAndPrune')
+            ->seal();
+
+        $handler = new TestRunHistoryHandler($cache, new Facade, true);
+
+        $subscriber = new TestRunnerExecutionAbortedSubscriber($handler);
+        $subscriber->notify(new ExecutionAborted($this->telemetryInfo()));
+
+        $handler->testSuiteStarted();
+        $handler->testSuiteFinished();
     }
 }

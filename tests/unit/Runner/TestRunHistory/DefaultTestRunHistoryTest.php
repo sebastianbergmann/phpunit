@@ -152,6 +152,52 @@ final class DefaultTestRunHistoryTest extends TestCase
         $this->assertTrue($cache->status($id)->isUnknown());
     }
 
+    public function testLoadReturnsEarlyWhenDefectsOrTimesAreMissing(): void
+    {
+        $file                 = tempnam(sys_get_temp_dir(), 'phpunit-cache-');
+        $this->filesToClean[] = $file;
+
+        file_put_contents($file, json_encode(['version' => 2]));
+
+        $cache = new DefaultTestRunHistory($file);
+        $cache->load();
+
+        $id = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testOne');
+
+        $this->assertTrue($cache->status($id)->isUnknown());
+    }
+
+    public function testLoadIgnoresEntriesThatHaveUnexpectedTypes(): void
+    {
+        $file                 = tempnam(sys_get_temp_dir(), 'phpunit-cache-');
+        $this->filesToClean[] = $file;
+
+        $id = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testOne');
+
+        file_put_contents(
+            $file,
+            json_encode(
+                [
+                    'version' => 2,
+                    'defects' => [
+                        $id->asString() => 'not an integer',
+                        0               => 4,
+                    ],
+                    'times' => [
+                        $id->asString() => 'not a float',
+                        0               => 1.5,
+                    ],
+                ],
+            ),
+        );
+
+        $cache = new DefaultTestRunHistory($file);
+        $cache->load();
+
+        $this->assertTrue($cache->status($id)->isUnknown());
+        $this->assertSame(0.0, $cache->time($id));
+    }
+
     public function testPersistThrowsExceptionWhenDirectoryCannotBeCreated(): void
     {
         $file                 = tempnam(sys_get_temp_dir(), 'phpunit-cache-');

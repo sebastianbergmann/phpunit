@@ -354,4 +354,17 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
 
         $this->assertLessThan(5.0, $cache->time($id));
     }
+
+    public function testFinishedWithoutPreparedRecordsZeroDuration(): void
+    {
+        $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-test.cache');
+        $handler = new TestRunHistoryHandler($cache, new Facade, false);
+
+        $test = $this->testValueObject();
+        $id   = TestRunHistoryId::fromTest($test);
+
+        $handler->testFinished(new Finished($this->telemetryInfo(), $test, 1));
+
+        $this->assertSame(0.0, $cache->time($id));
+    }
 }

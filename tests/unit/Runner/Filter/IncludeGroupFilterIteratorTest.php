@@ -10,12 +10,15 @@
 namespace PHPUnit\Runner\Filter;
 
 use function assert;
+use function iterator_to_array;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\TestFixture\BankAccountTest;
+use PHPUnit\TestFixture\TestThatIsNeitherTestCaseNorPhptTestCase;
+use RecursiveArrayIterator;
 
 #[CoversClass(IncludeGroupFilterIterator::class)]
 #[CoversClass(GroupFilterIterator::class)]
@@ -92,9 +95,18 @@ final class IncludeGroupFilterIteratorTest extends TestCase
         $this->assertSame([BankAccountTest::class . '::testBalanceIsInitiallyZero'], $ids);
     }
 
+    public function testAcceptsTestThatIsNeitherTestCaseNorPhptTestCase(): void
+    {
+        $iterator = new IncludeGroupFilterIterator(
+            new RecursiveArrayIterator([new TestThatIsNeitherTestCaseNorPhptTestCase]),
+            ['one'],
+            TestSuite::empty('test suite name'),
+        );
+
+        $this->assertCount(1, iterator_to_array($iterator));
+    }
+
     /**
-     * @param list<non-empty-string> $groups
-     *
      * @return list<non-empty-string>
      */
     private function idsOfAcceptedTests(array $groups): array

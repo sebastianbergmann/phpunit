@@ -10,6 +10,7 @@
 namespace PHPUnit\Runner\Filter;
 
 use function assert;
+use function iterator_to_array;
 use Iterator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
@@ -18,6 +19,8 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\TestSuiteIterator;
 use PHPUnit\TestFixture\BankAccountTest;
+use PHPUnit\TestFixture\TestThatIsNeitherTestCaseNorPhptTestCase;
+use RecursiveArrayIterator;
 
 #[CoversClass(TestIdFilterIterator::class)]
 #[CoversClass(TestSuiteIterator::class)]
@@ -35,6 +38,16 @@ final class TestIdFilterIteratorTest extends TestCase
 
             $this->assertSame($id, $test->valueObjectForEvents()->id());
         }
+    }
+
+    public function testRejectsTestThatIsNeitherTestCaseNorPhptTestCase(): void
+    {
+        $iterator = new TestIdFilterIterator(
+            new RecursiveArrayIterator([new TestThatIsNeitherTestCaseNorPhptTestCase]),
+            ['PHPUnit\TestFixture\BankAccountTest::testBalanceIsInitiallyZero'],
+        );
+
+        $this->assertSame([], iterator_to_array($iterator));
     }
 
     /**
