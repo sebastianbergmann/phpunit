@@ -92,7 +92,9 @@ final readonly class Reader
                 $lineElements = $xpath->query('line', $fileElement);
 
                 if ($lineElements === false) {
+                    // @codeCoverageIgnoreStart
                     continue;
+                    // @codeCoverageIgnoreEnd
                 }
 
                 foreach ($lineElements as $lineElement) {
@@ -104,7 +106,9 @@ final readonly class Reader
                     $issueElements = $xpath->query('issue', $lineElement);
 
                     if ($issueElements === false) {
+                        // @codeCoverageIgnoreStart
                         continue;
+                        // @codeCoverageIgnoreEnd
                     }
 
                     foreach ($issueElements as $issueElement) {

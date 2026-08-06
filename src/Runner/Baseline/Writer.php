@@ -53,7 +53,9 @@ final readonly class Writer
 
             foreach ($lines as $line => $issues) {
                 if (!isset($issues[0])) {
+                    // @codeCoverageIgnoreStart
                     continue;
+                    // @codeCoverageIgnoreEnd
                 }
 
                 $writer->startElement('line');

@@ -122,11 +122,15 @@ final readonly class PharLoader
             $version = $manifest->getVersion()->getVersionString();
 
             if ($name === '') {
+                // @codeCoverageIgnoreStart
                 $name = 'unknown';
+                // @codeCoverageIgnoreEnd
             }
 
             if ($version === '') {
+                // @codeCoverageIgnoreStart
                 $version = 'unknown';
+                // @codeCoverageIgnoreEnd
             }
 
             $loadedExtensions[] = $name . ' ' . $version;

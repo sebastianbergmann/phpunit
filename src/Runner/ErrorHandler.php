@@ -309,8 +309,14 @@ final class ErrorHandler
 
                 throw new ErrorException('E_USER_ERROR was triggered');
 
+                /**
+                 * No other error type that can be handled by a user-defined
+                 * error handler is raised by PHP 8.
+                 */
+                // @codeCoverageIgnoreStart
             default:
                 return $handledByPreviousErrorHandler;
+                // @codeCoverageIgnoreEnd
         }
 
         return $handledByPreviousErrorHandler;
@@ -449,6 +455,13 @@ final class ErrorHandler
 
                 break;
 
+                /**
+                 * E_USER_ERROR is not part of the error types this error handler
+                 * is registered for; PHP terminates the script when it is raised.
+                 * This case only applies when a previously registered error
+                 * handler delegates such an error here.
+                 */
+                // @codeCoverageIgnoreStart
             case E_USER_ERROR:
                 Event\Facade::emitter()->testRunnerTriggeredError(
                     $errorString,
@@ -458,6 +471,7 @@ final class ErrorHandler
                 );
 
                 break;
+                // @codeCoverageIgnoreEnd
         }
 
         return true;

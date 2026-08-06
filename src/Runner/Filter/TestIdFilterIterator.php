@@ -57,8 +57,10 @@ final class TestIdFilterIterator extends RecursiveFilterIterator
 
         try {
             return in_array($test->valueObjectForEvents()->id(), $this->testIds, true);
+            // @codeCoverageIgnoreStart
         } catch (NoDataSetFromDataProviderException) {
             return false;
+            // @codeCoverageIgnoreEnd
         }
     }
 }

@@ -136,7 +136,9 @@ final class DefaultTestRunHistory implements TestRunHistory
         $contents = file_get_contents($this->filename);
 
         if ($contents === false) {
+            // @codeCoverageIgnoreStart
             return;
+            // @codeCoverageIgnoreEnd
         }
 
         $parsed = $this->parse($contents);
@@ -183,7 +185,9 @@ final class DefaultTestRunHistory implements TestRunHistory
         $handle = fopen($this->filename, 'c+');
 
         if ($handle === false) {
+            // @codeCoverageIgnoreStart
             return;
+            // @codeCoverageIgnoreEnd
         }
 
         flock($handle, LOCK_EX);
