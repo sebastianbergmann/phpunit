@@ -80,7 +80,7 @@ final class CodeCoverage
 
     public function init(Configuration $configuration, CodeCoverageFilterRegistry $codeCoverageFilterRegistry, bool $extensionRequiresCodeCoverageCollection): CodeCoverageInitializationStatus
     {
-        $codeCoverageFilterRegistry->init($configuration);
+        $codeCoverageFilterRegistry->init($configuration, $extensionRequiresCodeCoverageCollection);
 
         if (!$configuration->hasCoverageReport() && !$extensionRequiresCodeCoverageCollection) {
             return CodeCoverageInitializationStatus::NOT_REQUESTED;
