@@ -32,6 +32,18 @@ final class HtmlRendererTest extends TestCase
         );
     }
 
+    public function test_Test_class_without_test_results_is_not_rendered(): void
+    {
+        $tests = [
+            'FooTest' => TestResultCollection::fromArray([]),
+        ];
+
+        $this->assertStringEqualsFile(
+            __DIR__ . '/expectations/html/empty.html',
+            (new HtmlRenderer)->render($tests),
+        );
+    }
+
     public function test_Successful_test_method_is_marked_as_success(): void
     {
         $tests = [

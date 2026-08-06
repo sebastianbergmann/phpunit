@@ -181,6 +181,11 @@ final class NamePrettifierTest extends TestCase
                 false,
             ],
             [
+                "This is a custom test description with placeholders \e[36marray\e[0m \e[36mtrue\e[0m \e[36m0.0\e[0m \e[36m1\e[0m \e[36mstring\e[0m \e[36mobject\e[2m·\e[22mas\e[2m·\e[22mstring\e[0m \e[36mstdClass\e[0m \e[36mTest\e[0m \e[36mtest\e[0m \e[36mnull\e[0m \e[36;2;4mempty\e[0m \e[36mdefault\e[0m",
+                $testWithDataAndTestDoxPlaceholders,
+                true,
+            ],
+            [
                 'This is a custom description: 2025-07-09',
                 $testWithTestDoxFormatter,
                 false,
