@@ -161,22 +161,8 @@ final class NamePrettifier
 
         $buffer = preg_replace_callback_array(
             [
-                '/(?!^)([A-Z])/' => static function (array $matches): string
-                {
-                    if (!isset($matches[1]) || !is_string($matches[1])) {
-                        return ' ';
-                    }
-
-                    return ' ' . strtolower($matches[1]);
-                },
-                '/(\d+)/' => static function (array $matches): string
-                {
-                    if (!isset($matches[1]) || !is_string($matches[1])) {
-                        return ' ';
-                    }
-
-                    return ' ' . $matches[1];
-                },
+                '/(?!^)([A-Z])/' => self::separateUppercaseLetter(...),
+                '/(\d+)/'        => self::separateNumber(...),
             ],
             $name,
         );
@@ -488,5 +474,21 @@ final class NamePrettifier
 
             return [$this->prettifyTestMethodName($test->name()), false];
         }
+    }
+
+    /**
+     * @param array{string, string} $matches
+     */
+    private static function separateUppercaseLetter(array $matches): string
+    {
+        return ' ' . strtolower($matches[1]);
+    }
+
+    /**
+     * @param array{string, string} $matches
+     */
+    private static function separateNumber(array $matches): string
+    {
+        return ' ' . $matches[1];
     }
 }

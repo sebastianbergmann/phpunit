@@ -105,15 +105,7 @@ final class TestResultCollector
                  */
                 static function (string $a, string $b): int
                 {
-                    if (is_subclass_of($b, $a)) {
-                        return -1;
-                    }
-
-                    if (is_subclass_of($a, $b)) {
-                        return 1;
-                    }
-
-                    return 0;
+                    return is_subclass_of($a, $b) <=> is_subclass_of($b, $a);
                 },
             );
 
@@ -133,9 +125,7 @@ final class TestResultCollector
                 $aList = $a->asArray();
                 $bList = $b->asArray();
 
-                if ($aList === [] || $bList === []) {
-                    return 0;
-                }
+                assert($aList !== [] && $bList !== []);
 
                 return strnatcasecmp(
                     $aList[0]->test()->testDox()->prettifiedClassName(),
