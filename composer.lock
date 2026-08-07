@@ -700,12 +700,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/comparator.git",
-                "reference": "afb00830f0baccfec70719d368f29b379b2bf0f4"
+                "reference": "f4365199a2b1f0050b3cc48482f0edc4485167b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/afb00830f0baccfec70719d368f29b379b2bf0f4",
-                "reference": "afb00830f0baccfec70719d368f29b379b2bf0f4",
+                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/f4365199a2b1f0050b3cc48482f0edc4485167b4",
+                "reference": "f4365199a2b1f0050b3cc48482f0edc4485167b4",
                 "shasum": ""
             },
             "require": {
@@ -785,7 +785,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-08-01T08:05:47+00:00"
+            "time": "2026-08-07T04:33:09+00:00"
         },
         {
             "name": "sebastian/complexity",
@@ -1018,18 +1018,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/exporter.git",
-                "reference": "642e2bbda79545ad3ed7e0b0e5d1a4b7cec8b7c0"
+                "reference": "2fc6126f053042a4d83917307b43b7448cd6e146"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/exporter/zipball/642e2bbda79545ad3ed7e0b0e5d1a4b7cec8b7c0",
-                "reference": "642e2bbda79545ad3ed7e0b0e5d1a4b7cec8b7c0",
+                "url": "https://api.github.com/repos/sebastianbergmann/exporter/zipball/2fc6126f053042a4d83917307b43b7448cd6e146",
+                "reference": "2fc6126f053042a4d83917307b43b7448cd6e146",
                 "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
                 "php": ">=8.4",
-                "sebastian/recursion-context": "^8.0"
+                "sebastian/recursion-context": "^8.0.1"
             },
             "require-dev": {
                 "phpunit/phpunit": "^13.3"
@@ -1101,7 +1101,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-08-01T07:45:25+00:00"
+            "time": "2026-08-05T02:12:04+00:00"
         },
         {
             "name": "sebastian/file-filter",
