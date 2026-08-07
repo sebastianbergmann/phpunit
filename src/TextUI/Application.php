@@ -47,6 +47,7 @@ use PHPUnit\Logging\TeamCity\TeamCityLogger;
 use PHPUnit\Logging\TestDox\HtmlRenderer as TestDoxHtmlRenderer;
 use PHPUnit\Logging\TestDox\PlainTextRenderer as TestDoxTextRenderer;
 use PHPUnit\Logging\TestDox\TestResultCollector as TestDoxResultCollector;
+use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Runner\Baseline\CannotLoadBaselineException;
 use PHPUnit\Runner\Baseline\Generator as BaselineGenerator;
 use PHPUnit\Runner\Baseline\Reader;
@@ -65,6 +66,12 @@ use PHPUnit\Runner\GarbageCollection\GarbageCollectionHandler;
 use PHPUnit\Runner\IssueTriggerResolver\Resolver;
 use PHPUnit\Runner\PhpConfiguration\PhpConfigurationChecker;
 use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
+use PHPUnit\Runner\TestIndex\DefaultTestFileSkipper;
+use PHPUnit\Runner\TestIndex\GroupPruner;
+use PHPUnit\Runner\TestIndex\NameFilterPruner;
+use PHPUnit\Runner\TestIndex\NullTestFileSkipper;
+use PHPUnit\Runner\TestIndex\TestFileSkipper;
+use PHPUnit\Runner\TestIndex\TestIndex;
 use PHPUnit\Runner\TestRunHistory\DefaultTestRunHistory;
 use PHPUnit\Runner\TestRunHistory\NullTestRunHistory;
 use PHPUnit\Runner\TestRunHistory\TestRunHistory;
@@ -225,7 +232,13 @@ final readonly class Application
 
             $this->executeCommandsThatRequireTheTestSuite($configuration, $cliConfiguration, $testSuite);
 
-            if ($testSuite->isEmpty() && !$configuration->hasCliArguments() && $configuration->testSuite()->isEmpty()) {
+            /*
+             * The help is only shown when no tests were selected at all. Tests
+             * that were selected but did not end up in the test suite are not
+             * the same thing: naming a file that contains no test, or a test
+             * file that does not have to be loaded, is not a usage error.
+             */
+            if ($testSuite->isEmpty() && !$configuration->hasCliArguments() && !$configuration->hasTestFilesFile() && $configuration->testSuite()->isEmpty()) {
                 $this->execute(new ShowHelpCommand(Result::FAILURE));
             }
 
@@ -430,7 +443,7 @@ final readonly class Application
     private function buildTestSuite(Configuration $configuration): TestSuite
     {
         try {
-            return (new TestSuiteBuilder)->build($configuration);
+            return new TestSuiteBuilder($this->initializeTestIndex($configuration))->build($configuration);
         } catch (Exception $e) {
             $this->exitWithErrorMessage($e->getMessage());
         }
@@ -750,6 +763,89 @@ final readonly class Application
         }
 
         return null;
+    }
+
+    /**
+     * The index is only usable when there is somewhere to keep it, and it can
+     * only save work when tests are selected by group: it answers whether a
+     * test file can contribute a test to the run, which is a question only a
+     * selection by group can answer without loading the file.
+     */
+    private function initializeTestIndex(Configuration $configuration): TestFileSkipper
+    {
+        if (!$configuration->cacheTestIndex()) {
+            return new NullTestFileSkipper;
+        }
+
+        if (!$configuration->hasCacheDirectory()) {
+            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                'Cannot cache the test index because no cache directory is configured',
+            );
+
+            return new NullTestFileSkipper;
+        }
+
+        $index = new TestIndex($configuration->cacheDirectory());
+
+        $index->load();
+
+        if ($configuration->hasFilter()) {
+            $nameFilterPruner = NameFilterPruner::fromFilter($configuration->filter());
+        } else {
+            $nameFilterPruner = NameFilterPruner::withoutFilter();
+        }
+
+        if ($configuration->hasExcludeGroups()) {
+            $excludedGroups = $configuration->excludeGroups();
+        } else {
+            $excludedGroups = [];
+        }
+
+        return new DefaultTestFileSkipper(
+            EventFacade::instance(),
+            $index,
+            new GroupPruner(
+                $this->includedGroups($configuration),
+                $excludedGroups,
+            ),
+            $nameFilterPruner,
+        );
+    }
+
+    /**
+     * The groups a test has to be in for it to be selected. These are the same
+     * groups TestSuiteFilterProcessor selects by: the index only saves work as
+     * long as it prunes exactly what the filter would have removed.
+     *
+     * @return list<non-empty-string>
+     */
+    private function includedGroups(Configuration $configuration): array
+    {
+        $groups = [];
+
+        if ($configuration->hasGroups()) {
+            $groups = $configuration->groups();
+        }
+
+        if ($configuration->hasTestsCovering()) {
+            foreach ($configuration->testsCovering() as $name) {
+                $groups[] = Groups::virtualGroupForCovers($name);
+            }
+        }
+
+        if ($configuration->hasTestsUsing()) {
+            foreach ($configuration->testsUsing() as $name) {
+                $groups[] = Groups::virtualGroupForUses($name);
+            }
+        }
+
+        if ($configuration->hasTestsRequiringPhpExtension()) {
+            foreach ($configuration->testsRequiringPhpExtension() as $name) {
+                $groups[] = Groups::virtualGroupForRequiredPhpExtension($name);
+            }
+        }
+
+        return $groups;
     }
 
     private function initializeTestRunHistory(Configuration $configuration): TestRunHistory

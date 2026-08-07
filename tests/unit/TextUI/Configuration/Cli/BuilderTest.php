@@ -230,6 +230,35 @@ final class BuilderTest extends TestCase
         $configuration->recordTestRunHistory();
     }
 
+    #[TestDox('--cache-test-index')]
+    public function testCacheTestIndex(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--cache-test-index']);
+
+        $this->assertTrue($configuration->hasCacheTestIndex());
+        $this->assertTrue($configuration->cacheTestIndex());
+    }
+
+    #[TestDox('--do-not-cache-test-index')]
+    public function testDoNotCacheTestIndex(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--do-not-cache-test-index']);
+
+        $this->assertTrue($configuration->hasCacheTestIndex());
+        $this->assertFalse($configuration->cacheTestIndex());
+    }
+
+    public function testCacheTestIndexMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasCacheTestIndex());
+
+        $this->expectException(Exception::class);
+
+        $configuration->cacheTestIndex();
+    }
+
     #[TestDox('--columns <n>')]
     public function testColumnsNumber(): void
     {

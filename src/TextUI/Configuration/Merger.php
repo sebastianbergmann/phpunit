@@ -79,6 +79,12 @@ final readonly class Merger
             $recordTestRunHistory = $xmlConfiguration->phpunit()->recordTestRunHistory();
         }
 
+        if ($cliConfiguration->hasCacheTestIndex()) {
+            $cacheTestIndex = $cliConfiguration->cacheTestIndex();
+        } else {
+            $cacheTestIndex = $xmlConfiguration->phpunit()->cacheTestIndex();
+        }
+
         if ($cliConfiguration->hasWarnWhenPhpIsNotConfiguredForDevelopment()) {
             $warnWhenPhpIsNotConfiguredForDevelopment = $cliConfiguration->warnWhenPhpIsNotConfiguredForDevelopment();
         } else {
@@ -1490,6 +1496,7 @@ final readonly class Merger
             $cliConfiguration->withTelemetry(),
             $xmlConfiguration->phpunit()->shortenArraysForExportThreshold(),
             $warnWhenPhpIsNotConfiguredForDevelopment,
+            $cacheTestIndex,
         );
     }
 

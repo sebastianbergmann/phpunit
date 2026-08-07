@@ -19,6 +19,8 @@ use function version_compare;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\Exception as FrameworkException;
 use PHPUnit\Framework\TestSuite as TestSuiteObject;
+use PHPUnit\Runner\TestIndex\NullTestFileSkipper;
+use PHPUnit\Runner\TestIndex\TestFileSkipper;
 use PHPUnit\TextUI\Configuration\TestSuiteCollection;
 use PHPUnit\TextUI\RuntimeException;
 use PHPUnit\TextUI\TestDirectoryNotFoundException;
@@ -32,6 +34,17 @@ use SebastianBergmann\FileIterator\Facade;
  */
 final readonly class TestSuiteMapper
 {
+    private TestFileSkipper $skipper;
+
+    public function __construct(?TestFileSkipper $skipper = null)
+    {
+        if ($skipper === null) {
+            $skipper = new NullTestFileSkipper;
+        }
+
+        $this->skipper = $skipper;
+    }
+
     /**
      * @param non-empty-string       $xmlConfigurationFile
      * @param list<non-empty-string> $includeTestSuites
@@ -91,10 +104,26 @@ final readonly class TestSuiteMapper
                             continue;
                         }
 
+                        /*
+                         * A file that is not loaded is bookkept as if it were:
+                         * whether a file was already added to another test
+                         * suite, and whether a test suite has files at all,
+                         * must not depend on whether the file has to be loaded.
+                         */
                         $processed[$file] = $testSuiteName;
                         $empty            = false;
 
-                        $testSuite->addTestFile($file, $groups, $numberOfRuns, $maxAttempts);
+                        if ($this->skipper->canSkipLoading($file, $groups)) {
+                            continue;
+                        }
+
+                        $this->skipper->record(
+                            $file,
+                            static function () use ($testSuite, $file, $groups, $numberOfRuns, $maxAttempts): void
+                            {
+                                $testSuite->addTestFile($file, $groups, $numberOfRuns, $maxAttempts);
+                            },
+                        );
                     }
                 }
 
@@ -114,7 +143,17 @@ final readonly class TestSuiteMapper
                     $processed[$file->path()] = $testSuiteName;
                     $empty                    = false;
 
-                    $testSuite->addTestFile($file->path(), $file->groups(), $numberOfRuns, $maxAttempts);
+                    if ($this->skipper->canSkipLoading($file->path(), $file->groups())) {
+                        continue;
+                    }
+
+                    $this->skipper->record(
+                        $file->path(),
+                        static function () use ($testSuite, $file, $numberOfRuns, $maxAttempts): void
+                        {
+                            $testSuite->addTestFile($file->path(), $file->groups(), $numberOfRuns, $maxAttempts);
+                        },
+                    );
                 }
 
                 if (!$empty) {

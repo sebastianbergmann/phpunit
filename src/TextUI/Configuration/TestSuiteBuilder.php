@@ -23,6 +23,8 @@ use function trim;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Exception;
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\Runner\TestIndex\NullTestFileSkipper;
+use PHPUnit\Runner\TestIndex\TestFileSkipper;
 use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\TextUI\RuntimeException;
 use PHPUnit\TextUI\TestDirectoryNotFoundException;
@@ -37,6 +39,17 @@ use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
  */
 final readonly class TestSuiteBuilder
 {
+    private TestFileSkipper $skipper;
+
+    public function __construct(?TestFileSkipper $skipper = null)
+    {
+        if ($skipper === null) {
+            $skipper = new NullTestFileSkipper;
+        }
+
+        $this->skipper = $skipper;
+    }
+
     /**
      * @throws \PHPUnit\Framework\Exception
      * @throws RuntimeException
@@ -121,7 +134,7 @@ final readonly class TestSuiteBuilder
 
             assert($xmlConfigurationFile !== '');
 
-            $testSuite = (new TestSuiteMapper)->map(
+            $testSuite = new TestSuiteMapper($this->skipper)->map(
                 $xmlConfigurationFile,
                 $configuration->testSuite(),
                 $configuration->ignoreTestSelectionInXmlConfiguration() ? [] : $configuration->includeTestSuites(),
@@ -130,6 +143,12 @@ final readonly class TestSuiteBuilder
                 $maxAttempts,
             );
         }
+
+        /*
+         * The index is written once, after the test suite has been built, and
+         * not while it is being built.
+         */
+        $this->skipper->persist();
 
         EventFacade::emitter()->testSuiteLoaded(\PHPUnit\Event\TestSuite\TestSuiteBuilder::from($testSuite));
 
@@ -163,26 +182,54 @@ final readonly class TestSuiteBuilder
                 $suite = TestSuite::empty('CLI Arguments');
             }
 
-            $suite->addTestFiles($files, $numberOfRuns, $maxAttempts);
+            foreach ($files as $file) {
+                if ($this->skipper->canSkipLoading($file, [])) {
+                    continue;
+                }
+
+                $this->skipper->record(
+                    $file,
+                    static function () use ($suite, $file, $numberOfRuns, $maxAttempts): void
+                    {
+                        $suite->addTestFile($file, [], $numberOfRuns, $maxAttempts);
+                    },
+                );
+            }
 
             return $suite;
         }
 
-        try {
-            $testClass = (new TestSuiteLoader)->load($path);
-        } catch (Exception $e) {
-            print $e->getMessage() . PHP_EOL;
-
-            exit(1);
+        /*
+         * A file that was named on its own is loaded even when it cannot
+         * contribute a test to the run: not loading it would save nothing, and
+         * the test suite that is built for it is named after the test class in
+         * it, which is not known while the file is not loaded.
+         */
+        if ($suite !== null && $this->skipper->canSkipLoading($path, [])) {
+            return $suite;
         }
 
-        if ($suite === null) {
-            return TestSuite::fromClassReflector($testClass, [], $numberOfRuns, $maxAttempts);
-        }
+        return $this->skipper->record(
+            $path,
+            static function () use ($path, $suite, $numberOfRuns, $maxAttempts): TestSuite
+            {
+                try {
+                    $testClass = (new TestSuiteLoader)->load($path);
+                } catch (Exception $e) {
+                    print $e->getMessage() . PHP_EOL;
 
-        $suite->addTestSuite($testClass, [], $numberOfRuns, $maxAttempts);
+                    exit(1);
+                }
 
-        return $suite;
+                if ($suite === null) {
+                    return TestSuite::fromClassReflector($testClass, [], $numberOfRuns, $maxAttempts);
+                }
+
+                $suite->addTestSuite($testClass, [], $numberOfRuns, $maxAttempts);
+
+                return $suite;
+            },
+        );
     }
 
     /**

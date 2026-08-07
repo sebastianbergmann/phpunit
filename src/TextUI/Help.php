@@ -271,6 +271,8 @@ final class Help
 
                 ['arg'    => '--record-test-run-history', 'desc' => 'Record test run history'],
                 ['arg'    => '--do-not-record-test-run-history', 'desc' => 'Do not record test run history'],
+                ['arg'    => '--cache-test-index', 'desc' => 'Write test index to cache file'],
+                ['arg'    => '--do-not-cache-test-index', 'desc' => 'Do not write test index to cache file'],
                 ['spacer' => ''],
 
                 ['arg'    => '--warn-when-php-is-not-configured-for-development', 'desc' => 'Trigger a test runner warning when PHP is not configured for development'],
