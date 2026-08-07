@@ -64,4 +64,4 @@ All notable changes of the PHPUnit 13.3 release series are documented in this fi
 * The test runner no longer aborts with an uncaught `PHPUnit\Runner\Phpt\InvalidPhptFileException` when a PHPT test file has an empty `--FILE--` or `--FILEEOF--` section or a `--FILE_EXTERNAL--` section that references an empty file; such a file is now rejected while it is parsed and reported as an errored test
 * `PHPUnit\Runner\Phpt\InvalidPhptFileException` now has a message that explains why the PHPT test file was rejected
 
-[13.3.0]: https://github.com/sebastianbergmann/phpunit/compare/13.2...main
+[13.3.0]: https://github.com/sebastianbergmann/phpunit/compare/13.2.6...13.3.0
