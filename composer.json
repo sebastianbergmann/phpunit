@@ -36,6 +36,7 @@
         "ext-libxml": "*",
         "ext-mbstring": "*",
         "ext-xmlwriter": "*",
+        "fidry/cpu-core-counter": "^1.3",
         "myclabs/deep-copy": "^1.14.0",
         "phar-io/manifest": "^2.0.4",
         "phar-io/version": "^3.2.1",
