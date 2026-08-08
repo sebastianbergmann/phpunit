@@ -20,6 +20,7 @@ use function is_numeric;
 use function max;
 use function sprintf;
 use function strtolower;
+use Fidry\CpuCoreCounter\CpuCoreCounter;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Util\Filesystem;
@@ -898,12 +899,18 @@ final class Builder
                     break;
 
                 case '--parallel':
+                    if ($option[1] === 'auto') {
+                        $numberOfParallelWorkers = (new CpuCoreCounter)->getAvailableForParallelisation()->availableCpus;
+
+                        break;
+                    }
+
                     if (!is_numeric($option[1]) ||
                         (string) (int) $option[1] !== $option[1] ||
                         (int) $option[1] < 1) {
                         EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
                             sprintf(
-                                'Option "--parallel %s" ignored because "%s" is not a positive integer',
+                                'Option "--parallel %s" ignored because "%s" is neither a positive integer nor "auto"',
                                 $option[1],
                                 $option[1],
                             ),

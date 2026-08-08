@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\CliArguments;
 
+use Fidry\CpuCoreCounter\CpuCoreCounter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
@@ -1520,6 +1521,18 @@ final class BuilderTest extends TestCase
 
         $this->assertTrue($configuration->hasNumberOfParallelWorkers());
         $this->assertSame(4, $configuration->numberOfParallelWorkers());
+    }
+
+    #[TestDox('--parallel auto')]
+    public function testParallelAuto(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--parallel', 'auto']);
+
+        $this->assertTrue($configuration->hasNumberOfParallelWorkers());
+        $this->assertSame(
+            (new CpuCoreCounter)->getAvailableForParallelisation()->availableCpus,
+            $configuration->numberOfParallelWorkers(),
+        );
     }
 
     public function testNumberOfParallelWorkersMayNotBeConfigured(): void
