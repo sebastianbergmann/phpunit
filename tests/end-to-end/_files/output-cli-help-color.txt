@@ -63,6 +63,9 @@
 [33mExecution:[0m
 
   [32m--process-isolation                 [0m Run each test in a separate PHP process
+  [32m--parallel [36m<n>[0m                      [0m Run test classes in parallel using <n>
+                                       worker processes ("auto" for one worker
+                                       process per available CPU core)
   [32m--globals-backup                    [0m Backup and restore $GLOBALS for each
                                        test
   [32m--static-backup                     [0m Backup and restore static properties for

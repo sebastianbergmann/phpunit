@@ -224,7 +224,6 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
 
         $test = $this->testValueObject();
 
-        $handler->testSuiteStarted();
         $handler->testFailed(
             new Failed(
                 $this->telemetryInfo(),
@@ -233,7 +232,7 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
                 null,
             ),
         );
-        $handler->testSuiteFinished();
+        $handler->testRunnerExecutionFinished();
 
         $loaded = new DefaultTestRunHistory($file);
         $loaded->load();
@@ -261,7 +260,6 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
 
         $test = $this->testValueObject();
 
-        $handler->testSuiteStarted();
         $handler->testFailed(
             new Failed(
                 $this->telemetryInfo(),
@@ -271,13 +269,46 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
             ),
         );
         $handler->testRunnerExecutionAborted();
-        $handler->testSuiteFinished();
+        $handler->testRunnerExecutionFinished();
 
         $loaded = new DefaultTestRunHistory($file);
         $loaded->load();
 
         $this->assertTrue($loaded->status($staleId)->isFailure());
         $this->assertTrue($loaded->status(TestRunHistoryId::fromTest($test))->isFailure());
+
+        @unlink($file);
+    }
+
+    public function testExecutionFinishedPersistsTestRunHistory(): void
+    {
+        $file = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-persist-' . uniqid() . '.cache';
+
+        @unlink($file);
+
+        $cache   = new DefaultTestRunHistory($file);
+        $handler = new TestRunHistoryHandler($cache, new Facade, false);
+
+        $test = $this->testValueObject();
+
+        $handler->testConsideredRisky(
+            new ConsideredRisky(
+                $this->telemetryInfo(),
+                $test,
+                'This test did not perform any assertions',
+            ),
+        );
+
+        $this->assertFileDoesNotExist($file);
+
+        $handler->testRunnerExecutionFinished();
+
+        $this->assertFileExists($file);
+
+        $loaded = new DefaultTestRunHistory($file);
+        $loaded->load();
+
+        $this->assertTrue($loaded->status(TestRunHistoryId::fromTest($test))->isRisky());
 
         @unlink($file);
     }
