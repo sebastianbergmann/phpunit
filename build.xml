@@ -325,6 +325,13 @@
         <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Stmt/PropertyProperty.php"/>
         <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Stmt/StaticVar.php"/>
         <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Stmt/UseUse.php"/>
+
+        <copy file="${basedir}/vendor/fidry/cpu-core-counter/LICENSE.md" tofile="${basedir}/build/tmp/phar/fidry-cpu-core-counter/LICENSE.md"/>
+        <copy todir="${basedir}/build/tmp/phar/fidry-cpu-core-counter">
+            <fileset dir="${basedir}/vendor/fidry/cpu-core-counter/src">
+                <include name="**/*.php" />
+            </fileset>
+        </copy>
     </target>
 
     <target name="-phar-build" depends="-phar-determine-version">
