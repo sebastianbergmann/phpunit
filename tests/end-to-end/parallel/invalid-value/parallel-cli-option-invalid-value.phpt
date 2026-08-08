@@ -1,5 +1,5 @@
 --TEST--
---parallel with a value that is not a positive integer triggers a warning and falls back to sequential execution
+--parallel with a value that is neither a positive integer nor "auto" triggers a warning and falls back to sequential execution
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--no-configuration';
@@ -14,7 +14,7 @@ require __DIR__ . '/../../../bootstrap.php';
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
-Test Runner Triggered PHPUnit Warning (Option "--parallel 0" ignored because "0" is not a positive integer)
+Test Runner Triggered PHPUnit Warning (Option "--parallel 0" ignored because "0" is neither a positive integer nor "auto")
 Test Runner Configured
 Event Facade Sealed
 Test Suite Loaded (1 test)
