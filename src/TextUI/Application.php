@@ -217,7 +217,7 @@ final readonly class Application
 
             ErrorHandler::instance()->registerForNonTestCaseContext();
 
-            $testSuite = $this->buildTestSuite($configuration);
+            $testSuite = $this->buildTestSuite($configuration, $cliConfiguration);
 
             if ($configuration->hasTestIdFilterFile() && !is_file($configuration->testIdFilterFile())) {
                 $this->exitWithErrorMessage(
@@ -440,10 +440,10 @@ final readonly class Application
         }
     }
 
-    private function buildTestSuite(Configuration $configuration): TestSuite
+    private function buildTestSuite(Configuration $configuration, CliConfiguration $cliConfiguration): TestSuite
     {
         try {
-            return new TestSuiteBuilder($this->initializeTestIndex($configuration))->build($configuration);
+            return new TestSuiteBuilder($this->initializeTestIndex($configuration, $cliConfiguration))->build($configuration);
         } catch (Exception $e) {
             $this->exitWithErrorMessage($e->getMessage());
         }
@@ -771,9 +771,19 @@ final readonly class Application
      * test file can contribute a test to the run, which is a question only a
      * selection by group can answer without loading the file.
      */
-    private function initializeTestIndex(Configuration $configuration): TestFileSkipper
+    private function initializeTestIndex(Configuration $configuration, CliConfiguration $cliConfiguration): TestFileSkipper
     {
         if (!$configuration->cacheTestIndex()) {
+            return new NullTestFileSkipper;
+        }
+
+        /*
+         * --list-suites reports how many tests each test suite has, and does so
+         * for every test the suite has: it ignores the options that select
+         * tests. Pruning test files by those very options would make it report
+         * a different number of tests once the index exists.
+         */
+        if ($cliConfiguration->listSuites()) {
             return new NullTestFileSkipper;
         }
 

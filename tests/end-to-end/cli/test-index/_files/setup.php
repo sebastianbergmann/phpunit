@@ -356,6 +356,24 @@ function listTests(string $directory, string $group): string
 }
 
 /**
+ * Lists the test suites in the XML configuration file, with the number of tests
+ * each of them has. The group is ignored by --list-suites, and must therefore
+ * not change the number of tests that is reported.
+ */
+function listSuites(string $directory, string $group): string
+{
+    return run(
+        [
+            '--configuration',
+            $directory . '/phpunit.xml',
+            '--group',
+            $group,
+            '--list-suites',
+        ],
+    );
+}
+
+/**
  * Lists the tests in the given group, selecting them by naming a directory on
  * the command line instead of using the test suite in the XML configuration
  * file.
