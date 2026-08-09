@@ -192,11 +192,18 @@ final class DefaultTestFileSkipper implements TestFileSkipper
      * Loading a test file emits an event for every data provider method that
      * was called. Any other event means PHPUnit had something to say about the
      * file, and a file PHPUnit has something to say about is never skipped: it
-     * would otherwise depend on the state of the index whether that is said,
-     * and the same command would not produce the same output twice.
+     * would otherwise depend on the state of the index whether that is said.
      *
      * Treating an unknown event as something to say keeps this true for events
      * that do not exist yet.
+     *
+     * What this keeps the same is what PHPUnit reports about a run and which
+     * tests it runs, not the events the run emits. A skipped file runs none of
+     * its data provider methods, so the events for them are not emitted either.
+     * The number of tests a test suite has before it is filtered depends on the
+     * index as well, and does so for every skipped file rather than only for
+     * the ones that have a data provider. Both are visible to --debug and to
+     * the event loggers.
      */
     private static function madePhpUnitWarn(EventCollection $events): bool
     {
