@@ -823,9 +823,19 @@ final readonly class Application
     }
 
     /**
-     * The groups a test has to be in for it to be selected. These are the same
-     * groups TestSuiteFilterProcessor selects by: the index only saves work as
-     * long as it prunes exactly what the filter would have removed.
+     * The groups a test can be in for its test file to be worth loading.
+     *
+     * TestSuiteFilterProcessor selects by these same groups, but it adds a
+     * filter of its own for --group, for --covers, for --uses, and for
+     * --requires-php-extension: a test has to be in a group from every one of
+     * the options that were used. The pruner has them all in one list and asks
+     * only whether a test is in any of them, so it keeps files that the filters
+     * go on to take every test from.
+     *
+     * That is the direction in which the index has to be wrong: leaving work
+     * for the filters costs no more than the time it takes, while pruning a
+     * file that has a test the filters would select would change which tests
+     * are run.
      *
      * @return list<non-empty-string>
      */
