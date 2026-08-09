@@ -396,6 +396,19 @@ function listTestsInDirectory(string $directory, string $group): string
 }
 
 /**
+ * Runs PHPUnit with the given arguments in a process of its own so that the
+ * index those arguments need exists afterwards. Application::run() ends the
+ * process it runs in: the run that writes the index can therefore never be the
+ * run that uses it.
+ *
+ * @param list<string> $arguments
+ */
+function warmTestIndex(array $arguments): void
+{
+    run($arguments);
+}
+
+/**
  * @param list<string> $arguments
  */
 function run(array $arguments, bool $onlyTests = true): string

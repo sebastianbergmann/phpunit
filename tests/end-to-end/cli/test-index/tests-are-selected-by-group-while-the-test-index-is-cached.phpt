@@ -2,6 +2,8 @@
 Selecting tests by group works while the test index is cached and no filter for the name of a test is used
 --FILE--
 <?php declare(strict_types=1);
+require __DIR__ . '/_files/setup.php';
+
 $cacheDirectory = \sys_get_temp_dir() . \DIRECTORY_SEPARATOR . 'phpunit-test-index-' . \uniqid();
 
 \register_shutdown_function(
@@ -22,15 +24,24 @@ $cacheDirectory = \sys_get_temp_dir() . \DIRECTORY_SEPARATOR . 'phpunit-test-ind
     },
 );
 
-$_SERVER['argv'][] = '--do-not-record-test-run-history';
-$_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = '--cache-directory';
-$_SERVER['argv'][] = $cacheDirectory;
-$_SERVER['argv'][] = '--cache-test-index';
-$_SERVER['argv'][] = '--group';
-$_SERVER['argv'][] = 'a-group';
-$_SERVER['argv'][] = '--list-tests';
-$_SERVER['argv'][] = __DIR__ . '/_files/selection';
+$arguments = [
+    '--do-not-record-test-run-history',
+    '--no-configuration',
+    '--cache-directory',
+    $cacheDirectory,
+    '--cache-test-index',
+    '--group',
+    'a-group',
+    '--list-tests',
+    __DIR__ . '/_files/selection',
+];
+
+// The run below is the one that has an index to skip test files by
+warmTestIndex($arguments);
+
+foreach ($arguments as $argument) {
+    $_SERVER['argv'][] = $argument;
+}
 
 require_once __DIR__ . '/../../../bootstrap.php';
 
