@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a0a0616a76252803f4fa3a6bdf0f5a20",
+    "content-hash": "b9d7c4c1bfb02ba614f9a5f61711d266",
     "packages": [
         {
             "name": "myclabs/deep-copy",
@@ -333,23 +333,23 @@
         },
         {
             "name": "phpunit/php-file-iterator",
-            "version": "7.0.0",
+            "version": "7.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-file-iterator.git",
-                "reference": "6e5aa1fb0a95b1703d83e721299ee18bb4e2de50"
+                "reference": "3ccaa29123548190af12fee7af078dcd7f3ddfab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-file-iterator/zipball/6e5aa1fb0a95b1703d83e721299ee18bb4e2de50",
-                "reference": "6e5aa1fb0a95b1703d83e721299ee18bb4e2de50",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-file-iterator/zipball/3ccaa29123548190af12fee7af078dcd7f3ddfab",
+                "reference": "3ccaa29123548190af12fee7af078dcd7f3ddfab",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.4"
             },
             "require-dev": {
-                "phpunit/phpunit": "^13.0"
+                "phpunit/phpunit": "^13.3.0"
             },
             "type": "library",
             "extra": {
@@ -382,7 +382,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-file-iterator/issues",
                 "security": "https://github.com/sebastianbergmann/php-file-iterator/security/policy",
-                "source": "https://github.com/sebastianbergmann/php-file-iterator/tree/7.0.0"
+                "source": "https://github.com/sebastianbergmann/php-file-iterator/tree/7.0.1"
             },
             "funding": [
                 {
@@ -402,7 +402,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-02-06T04:33:26+00:00"
+            "time": "2026-08-10T06:43:12+00:00"
         },
         {
             "name": "phpunit/php-invoker",
@@ -1598,23 +1598,23 @@
         },
         {
             "name": "sebastian/type",
-            "version": "7.0.1",
+            "version": "7.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/type.git",
-                "reference": "fee0309275847fefd7636167085e379c1dbf6990"
+                "reference": "bd1df467864cb95140414059a535b2d906173fcf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/type/zipball/fee0309275847fefd7636167085e379c1dbf6990",
-                "reference": "fee0309275847fefd7636167085e379c1dbf6990",
+                "url": "https://api.github.com/repos/sebastianbergmann/type/zipball/bd1df467864cb95140414059a535b2d906173fcf",
+                "reference": "bd1df467864cb95140414059a535b2d906173fcf",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.4"
             },
             "require-dev": {
-                "phpunit/phpunit": "^13.1.10"
+                "phpunit/phpunit": "^13.3.0"
             },
             "type": "library",
             "extra": {
@@ -1643,7 +1643,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/type/issues",
                 "security": "https://github.com/sebastianbergmann/type/security/policy",
-                "source": "https://github.com/sebastianbergmann/type/tree/7.0.1"
+                "source": "https://github.com/sebastianbergmann/type/tree/7.0.2"
             },
             "funding": [
                 {
@@ -1663,7 +1663,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-20T06:49:11+00:00"
+            "time": "2026-08-10T08:00:57+00:00"
         },
         {
             "name": "sebastian/version",
