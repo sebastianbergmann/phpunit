@@ -15,11 +15,13 @@ final class ClosureComparisonTest extends TestCase
 {
     public function testClosureComparison(): void
     {
-        $factory = static fn (): callable => static function (): int
+        // The closure created by this factory captures state so that PHP does
+        // not reuse a single closure object for all invocations of the factory
+        $factory = static fn (int $value): callable => static function () use ($value): int
         {
-            return 1;
+            return $value;
         };
 
-        $this->assertEquals($factory(), $factory());
+        $this->assertEquals($factory(1), $factory(1));
     }
 }

@@ -34,7 +34,6 @@ use function sprintf;
 use function str_contains;
 use function str_starts_with;
 use AssertionError;
-use DeepCopy\DeepCopy;
 use PHPUnit\Event;
 use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\MockObject\Exception as MockObjectException;
@@ -51,6 +50,7 @@ use PHPUnit\Framework\MockObject\Rule\InvokedCount as InvokedCountMatcher;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\MockObject\Stub\Exception as ExceptionStub;
 use PHPUnit\Framework\MockObject\TestStubBuilder;
+use PHPUnit\Framework\TestCase\Cloner;
 use PHPUnit\Framework\TestCase\ErrorLogCapture;
 use PHPUnit\Framework\TestCase\ExceptionExpectation;
 use PHPUnit\Framework\TestCase\GlobalStateCapture;
@@ -1647,10 +1647,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $returnValue = $passedTests->returnValue($dependencyTarget);
 
                 if ($dependency->deepClone()) {
-                    $deepCopy = new DeepCopy;
-                    $deepCopy->skipUncloneable(false);
-
-                    $this->dependencyInput[$dependencyTarget] = $deepCopy->copy($returnValue);
+                    $this->dependencyInput[$dependencyTarget] = Cloner::deepClone($returnValue);
                 } elseif ($dependency->shallowClone() && is_object($returnValue)) {
                     $this->dependencyInput[$dependencyTarget] = clone $returnValue;
                 } else {
