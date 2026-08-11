@@ -2,7 +2,7 @@
 
 All notable changes of the PHPUnit 9.6 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
-## [9.6.36] - 2026-MM-DD
+## [9.6.36] - 2026-08-11
 
 ### Changed
 
