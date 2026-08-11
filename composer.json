@@ -49,7 +49,7 @@
         "sebastian/comparator": "^4.0.10",
         "sebastian/diff": "^4.0.6",
         "sebastian/environment": "^5.1.5",
-        "sebastian/exporter": "^4.0.8",
+        "sebastian/exporter": "^4.0.9",
         "sebastian/global-state": "^5.0.8",
         "sebastian/object-enumerator": "^4.0.4",
         "sebastian/resource-operations": "^3.0.4",

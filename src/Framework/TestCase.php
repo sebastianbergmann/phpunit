@@ -2208,7 +2208,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                     $deepCopy = new DeepCopy;
                     $deepCopy->skipUncloneable(false);
 
-                    $this->dependencyInput[$dependencyTarget] = $deepCopy->copy($passed[$dependencyTarget]['result']);
+                    // The diagnostics are suppressed because myclabs/deep-copy uses spl_object_hash(), which is deprecated since PHP 8.6
+                    $this->dependencyInput[$dependencyTarget] = @$deepCopy->copy($passed[$dependencyTarget]['result']);
                 } elseif ($dependency->useShallowClone()) {
                     $this->dependencyInput[$dependencyTarget] = clone $passed[$dependencyTarget]['result'];
                 } else {
