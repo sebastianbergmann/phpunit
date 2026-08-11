@@ -2173,7 +2173,8 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
                         $deepCopy = new DeepCopy;
                         $deepCopy->skipUncloneable(false);
 
-                        $this->dependencyInput[$dependency] = $deepCopy->copy($passed[$dependency]['result']);
+                        // The diagnostics are suppressed because myclabs/deep-copy uses spl_object_hash(), which is deprecated since PHP 8.6
+                        $this->dependencyInput[$dependency] = @$deepCopy->copy($passed[$dependency]['result']);
                     } elseif ($shallowClone) {
                         $this->dependencyInput[$dependency] = clone $passed[$dependency]['result'];
                     } else {

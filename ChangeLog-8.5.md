@@ -2,6 +2,13 @@
 
 All notable changes of the PHPUnit 8.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [8.5.54] - 2026-MM-DD
+
+### Changed
+
+* Use `spl_object_id()` instead of `spl_object_hash()` (which will be deprecated in PHP 8.6)
+* Use the error suppression operator (`@`) when calling `DeepCopy\DeepCopy::copy()` because it uses `spl_object_hash()` (which will be deprecated in PHP 8.6)
+
 ## [8.5.53] - 2026-07-06
 
 ### Changed
@@ -386,6 +393,7 @@ All notable changes of the PHPUnit 8.5 release series are documented in this fil
 * [#3967](https://github.com/sebastianbergmann/phpunit/issues/3967): Cannot double interface that extends interface that extends `\Throwable`
 * [#3968](https://github.com/sebastianbergmann/phpunit/pull/3968): Test class run in a separate PHP process are passing when `exit` called inside
 
+[8.5.54]: https://github.com/sebastianbergmann/phpunit/compare/8.5.53...8.5
 [8.5.53]: https://github.com/sebastianbergmann/phpunit/compare/8.5.52...8.5.53
 [8.5.52]: https://github.com/sebastianbergmann/phpunit/compare/8.5.51...8.5.52
 [8.5.51]: https://github.com/sebastianbergmann/phpunit/compare/8.5.50...8.5.51
