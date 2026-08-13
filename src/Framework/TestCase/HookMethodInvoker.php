@@ -188,8 +188,14 @@ final readonly class HookMethodInvoker
                 $methodName,
             );
 
+            $hookMethod = $reflector->getMethod($methodName);
+
             try {
-                $reflector->getMethod($methodName)->invoke($test);
+                if ($hookMethod->isStatic()) {
+                    $hookMethod->invoke(null);
+                } else {
+                    $hookMethod->invoke($test);
+                }
             } catch (Throwable $t) {
             }
 
