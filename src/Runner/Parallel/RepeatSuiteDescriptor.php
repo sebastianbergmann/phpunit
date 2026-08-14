@@ -49,7 +49,11 @@ final readonly class RepeatSuiteDescriptor extends TestDescriptor
     {
         $repetitions = [];
 
-        foreach ($suite->tests() as $repetition) {
+        // The suite is iterated, not asked for its tests: iterating applies
+        // the filter that test selection (--filter, --group, …) injected into
+        // it, so that only the repetitions a sequential run would have run
+        // travel to the worker.
+        foreach ($suite as $repetition) {
             assert($repetition instanceof TestCase);
 
             $repetitions[] = TestCaseDescriptor::fromTestCase($repetition, $className);
