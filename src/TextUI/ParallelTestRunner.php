@@ -938,6 +938,14 @@ final class ParallelTestRunner
     private function collect(TestSuite $suite, array &$byClass, array &$phpt, array &$standalone, int &$index): void
     {
         foreach ($suite as $test) {
+            // A suite that test selection (--filter, --group, …) has emptied
+            // runs nothing in a sequential run: TestSuite::run() returns early
+            // for an empty suite. It must therefore become neither a unit of
+            // its own nor a member of a class unit here.
+            if ($test instanceof TestSuite && $test->isEmpty()) {
+                continue;
+            }
+
             // The repetitions of a repeated PHPT test and the attempts of a
             // retried PHPT test are orchestrated by their suite's runTests()
             // method and must run sequentially, so the suite runs as one unit
