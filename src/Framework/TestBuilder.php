@@ -191,6 +191,29 @@ final readonly class TestBuilder
     }
 
     /**
+     * Applies to a test case the configuration that build() derives from the
+     * metadata of the test method and from the configuration of the test
+     * runner: process isolation, the preservation of global state, and the
+     * backup of global variables and static properties.
+     *
+     * This is for test cases that are not built here but recreated from their
+     * description, in a worker process of a parallel test run, so that such a
+     * test case is configured exactly as it would be in a sequential run.
+     *
+     * @param class-string<TestCase> $className
+     * @param non-empty-string       $methodName
+     */
+    public function configure(TestCase $test, string $className, string $methodName): void
+    {
+        $this->configureTestCase(
+            $test,
+            $this->shouldTestMethodBeRunInSeparateProcess($className, $methodName),
+            $this->shouldGlobalStateBePreserved($className, $methodName),
+            $this->backupSettings($className, $methodName),
+        );
+    }
+
+    /**
      * @param non-empty-string       $methodName
      * @param class-string<TestCase> $className
      * @param array<ProvidedData>    $data
