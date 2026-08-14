@@ -14,6 +14,7 @@ use function is_array;
 use function serialize;
 use function sprintf;
 use function unserialize;
+use PHPUnit\Framework\TestBuilder;
 use PHPUnit\Framework\TestCase;
 use Throwable;
 
@@ -137,6 +138,11 @@ final readonly class TestCaseDescriptor extends TestDescriptor
         $test->setDependencyInput($dependencyInput);
         $test->setRepetition($this->repetition, $this->totalRepetitions);
         $test->setAttempt($this->attempt, $this->maxAttempts);
+
+        // The settings that TestBuilder derives from metadata and configuration
+        // do not travel with the descriptor: they are derived again here, from
+        // the same sources, which are available in the worker process as well.
+        (new TestBuilder)->configure($test, $className, $this->methodName);
 
         return $test;
     }
