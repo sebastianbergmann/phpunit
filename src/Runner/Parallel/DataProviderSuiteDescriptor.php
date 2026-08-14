@@ -43,7 +43,11 @@ final readonly class DataProviderSuiteDescriptor extends TestDescriptor
     {
         $members = [];
 
-        foreach ($suite->tests() as $member) {
+        // The suite is iterated, not asked for its tests: iterating applies
+        // the filter that test selection (--filter, --group, …) injected into
+        // it, so that only the tests a sequential run would have run travel to
+        // the worker.
+        foreach ($suite as $member) {
             $members[] = TestDescriptor::from($member, $className);
         }
 
