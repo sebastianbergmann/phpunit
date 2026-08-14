@@ -11,6 +11,7 @@ namespace PHPUnit\Runner\Parallel;
 
 use function assert;
 use function count;
+use function iterator_to_array;
 use PHPUnit\Framework\RetryTestSuite;
 use PHPUnit\Framework\TestCase;
 
@@ -44,7 +45,11 @@ final readonly class RetrySuiteDescriptor extends TestDescriptor
      */
     public static function fromTestSuite(RetryTestSuite $suite, string $className): self
     {
-        $aggregated = $suite->tests();
+        // The suite is iterated, not asked for its tests: iterating applies
+        // the filter that test selection (--filter, --group, …) injected into
+        // it, so that a test the selection excluded does not travel to the
+        // worker.
+        $aggregated = iterator_to_array($suite, false);
 
         assert(count($aggregated) === 1 && $aggregated[0] instanceof TestCase);
 
