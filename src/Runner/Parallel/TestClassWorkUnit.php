@@ -120,7 +120,11 @@ final readonly class TestClassWorkUnit implements WorkUnit
 
         $duration = 0.0;
 
-        foreach ($test->tests() as $aggregated) {
+        // The suite is iterated, not asked for its tests: iterating applies
+        // the filter that test selection (--filter, --group, …) injected into
+        // it, so that the estimate covers the tests the unit will actually run
+        // and the scheduler orders the units by what they cost.
+        foreach ($test as $aggregated) {
             $duration += $this->durationOf($aggregated, $testRunHistory);
         }
 
