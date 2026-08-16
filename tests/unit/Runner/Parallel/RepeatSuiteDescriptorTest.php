@@ -14,6 +14,7 @@ use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\RepeatTestSuite;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\TestFixture\ParallelWorker\WorkerFirstTest;
 
 #[CoversClass(RepeatSuiteDescriptor::class)]
@@ -51,6 +52,23 @@ final class RepeatSuiteDescriptorTest extends TestCase
         }
     }
 
+    public function testDescribesEveryRepetitionOfATestThatTestSelectionSelected(): void
+    {
+        // The repetitions of a test method share one name and one test id, so
+        // test selection takes either all of them or none of them. A suite the
+        // selection emptied is not described at all: it is skipped where the
+        // members of a unit are collected.
+        $suite = $this->suiteFor('the data set');
+
+        $factory = new Factory;
+
+        $factory->addIncludeNameFilter('testStartsTheProcessLocalCounter#the data set');
+
+        $suite->injectFilter($factory);
+
+        $this->assertCount(3, $this->rebuild($suite)->tests());
+    }
+
     public function testCannotDescribeASuiteWhoseRepetitionsCarryDataThatCannotBeSerialized(): void
     {
         // A closure cannot be serialized, so a suite whose repetitions carry
@@ -76,10 +94,22 @@ final class RepeatSuiteDescriptorTest extends TestCase
 
     private function suite(): RepeatTestSuite
     {
+        return $this->suiteFor(null);
+    }
+
+    /**
+     * @param ?non-empty-string $dataName
+     */
+    private function suiteFor(?string $dataName): RepeatTestSuite
+    {
         $repetitions = [];
 
         for ($repetition = 1; $repetition <= 3; $repetition++) {
             $test = new WorkerFirstTest('testStartsTheProcessLocalCounter');
+
+            if ($dataName !== null) {
+                $test->setData($dataName, [$repetition]);
+            }
 
             $test->setRepetition($repetition, 3);
 

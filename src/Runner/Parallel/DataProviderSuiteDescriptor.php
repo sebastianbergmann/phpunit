@@ -11,6 +11,7 @@ namespace PHPUnit\Runner\Parallel;
 
 use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestSuite;
 
 /**
  * The descriptor of the suite that aggregates the tests of a data provider
@@ -48,6 +49,15 @@ final readonly class DataProviderSuiteDescriptor extends TestDescriptor
         // it, so that only the tests a sequential run would have run travel to
         // the worker.
         foreach ($suite as $member) {
+            // The filter accepts every suite and applies the selection to the
+            // tests inside it, so a member suite the selection has emptied —
+            // the attempts of a retried data set, the repetitions of a
+            // repeated one — is still yielded here. It runs nothing in a
+            // sequential run and must therefore not travel to the worker.
+            if ($member instanceof TestSuite && $member->isEmpty()) {
+                continue;
+            }
+
             $members[] = TestDescriptor::from($member, $className);
         }
 
