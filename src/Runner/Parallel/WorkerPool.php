@@ -339,10 +339,10 @@ final class WorkerPool
 
         try {
             $worker->dispatch($unit);
-        } catch (WorkerException $e) {
             // The unit was dispatched successfully once, so its data is known
             // to be serializable; this cannot happen.
             // @codeCoverageIgnoreStart
+        } catch (WorkerException $e) {
             $this->budget->release();
 
             $onCompleted(CompletedWorkUnit::fromCrash($unit, $e->getMessage()));
