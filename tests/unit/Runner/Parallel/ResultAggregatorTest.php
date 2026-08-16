@@ -69,9 +69,11 @@ final class ResultAggregatorTest extends TestCase
     {
         $emitter = $this->createMock(Emitter::class);
 
-        // Each stubbed test is reported with the same three events that the
+        // Each stubbed test is reported with the same four events that the
         // sequential runner emits for a test whose child process ended
-        // unexpectedly: childProcessErrored, testErrored, testFinished.
+        // unexpectedly: testPrepared, childProcessErrored, testErrored,
+        // testFinished.
+        $emitter->expects($this->exactly(2))->method('testPrepared');
         $emitter->expects($this->exactly(2))
             ->method('childProcessErrored')
             ->with($this->anything(), $this->stringContains('ended unexpectedly'));
@@ -115,6 +117,46 @@ final class ResultAggregatorTest extends TestCase
         );
     }
 
+    public function testAnnouncesATestOfACrashedUnitAsPreparedBeforeReportingItAsErrored(): void
+    {
+        // A consumer that is told about a test only when it errors reports it
+        // as a test of its own; the sequential runner prepares such a test
+        // before its child process ends unexpectedly, and so must this one.
+        $sequence = [];
+
+        $record = static function (string $event) use (&$sequence): callable
+        {
+            return static function (CodeTest $test) use ($event, &$sequence): void
+            {
+                $sequence[] = $event . ': ' . $test->id();
+            };
+        };
+
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter->expects($this->once())->method('testSuiteStarted');
+        $emitter->expects($this->once())->method('testSuiteFinished');
+        $emitter->expects($this->once())->method('childProcessErrored');
+        $emitter->method('testPrepared')->willReturnCallback($record('prepared'));
+        $emitter->method('testErrored')->willReturnCallback($record('errored'));
+        $emitter->method('testFinished')->willReturnCallback($record('finished'))->seal();
+
+        $this->aggregator($emitter)->add(
+            CompletedWorkUnit::fromCrash(
+                new TestClassWorkUnit(0, WorkerSecondTest::class, [new WorkerSecondTest('testThatFails')]),
+            ),
+        );
+
+        $this->assertSame(
+            [
+                'prepared: ' . WorkerSecondTest::class . '::testThatFails',
+                'errored: ' . WorkerSecondTest::class . '::testThatFails',
+                'finished: ' . WorkerSecondTest::class . '::testThatFails',
+            ],
+            $sequence,
+        );
+    }
+
     public function testDoesNotReportATestThatTestSelectionExcludedFromACrashedUnit(): void
     {
         // The unit dispatched only the tests that test selection selected, so
@@ -142,6 +184,7 @@ final class ResultAggregatorTest extends TestCase
 
         $emitter = $this->createMock(Emitter::class);
 
+        $emitter->expects($this->once())->method('testPrepared');
         $emitter->expects($this->once())->method('childProcessErrored');
         $emitter->expects($this->once())->method('testSuiteStarted');
         $emitter->expects($this->once())->method('testFinished');
@@ -189,6 +232,7 @@ final class ResultAggregatorTest extends TestCase
         $emitter->expects($this->once())
             ->method('testSuiteFinished')
             ->with($this->identicalTo($suiteValue));
+        $emitter->expects($this->once())->method('testPrepared');
         $emitter->expects($this->once())->method('childProcessErrored');
         $emitter->expects($this->once())->method('testFinished');
 
@@ -252,6 +296,7 @@ final class ResultAggregatorTest extends TestCase
         $emitter = $this->createMock(Emitter::class);
 
         $emitter->expects($this->never())->method('testSuiteStarted');
+        $emitter->expects($this->once())->method('testPrepared');
         $emitter->expects($this->once())->method('childProcessErrored');
         $emitter->expects($this->once())->method('testFinished');
 
