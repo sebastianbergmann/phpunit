@@ -172,7 +172,7 @@ final class SeparateProcessTestRunner
             return self::$sourceMapFile;
         }
 
-        if (!ConfigurationRegistry::get()->source()->notEmpty()) {
+        if (!ConfigurationRegistry::get()->source()->notEmpty() || !ConfigurationRegistry::get()->source()->identifyIssueTrigger()) {
             self::$sourceMapFile = '';
 
             return self::$sourceMapFile;
