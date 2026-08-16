@@ -14,6 +14,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\TestRunHistory\DefaultTestRunHistory;
 use PHPUnit\Runner\TestRunHistory\TestRunHistoryId;
 use PHPUnit\TestFixture\ParallelWorker\WorkerFirstTest;
@@ -82,6 +83,40 @@ final class TestClassWorkUnitTest extends TestCase
         $unit = new TestClassWorkUnit(0, WorkerFirstTest::class, [$suite]);
 
         $this->assertSame(1.0, $unit->duration($testRunHistory));
+    }
+
+    public function testSumsTheDurationsRecordedOnlyForTheTestsThatTestSelectionSelected(): void
+    {
+        // What the unit is estimated to cost is what the tests it will
+        // actually run cost: the test that test selection excluded is not
+        // dispatched and must not be counted.
+        $suite = DataProviderTestSuite::empty(WorkerFirstTest::class . '::testStartsTheProcessLocalCounter');
+
+        $first = new WorkerFirstTest('testStartsTheProcessLocalCounter');
+
+        $first->setData('first data set', [1]);
+
+        $second = new WorkerFirstTest('testStartsTheProcessLocalCounter');
+
+        $second->setData('second data set', [2]);
+
+        $suite->addTest($first);
+        $suite->addTest($second);
+
+        $testRunHistory = $this->testRunHistory();
+
+        $testRunHistory->setTime(TestRunHistoryId::fromReorderable($first), 0.25);
+        $testRunHistory->setTime(TestRunHistoryId::fromReorderable($second), 0.5);
+
+        $factory = new Factory;
+
+        $factory->addIncludeNameFilter('testStartsTheProcessLocalCounter#second data set');
+
+        $suite->injectFilter($factory);
+
+        $unit = new TestClassWorkUnit(0, WorkerFirstTest::class, [$suite]);
+
+        $this->assertSame(0.5, $unit->duration($testRunHistory));
     }
 
     public function testHasNoDurationWhenItsTestsHaveNotRunBefore(): void
