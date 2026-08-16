@@ -588,8 +588,8 @@ final class PersistentWorker
 
         try {
             $configurationFragment = ChildProcessBootstrap::configurationFragment();
-        } catch (ProcessIsolationException $e) {
             // @codeCoverageIgnoreStart
+        } catch (ProcessIsolationException $e) {
             throw new WorkerException('Unable to write the worker configuration to a temporary file');
             // @codeCoverageIgnoreEnd
         }
