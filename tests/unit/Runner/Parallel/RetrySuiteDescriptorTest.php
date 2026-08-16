@@ -16,6 +16,7 @@ use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\RetryTestSuite;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\TestFixture\ParallelWorker\WorkerFirstTest;
 use ReflectionProperty;
 
@@ -60,6 +61,22 @@ final class RetrySuiteDescriptorTest extends TestCase
         $this->assertSame('testStartsTheProcessLocalCounter', $furtherAttempt->name());
         $this->assertSame(['the data set'], $furtherAttempt->providedData());
         $this->assertNotSame($suite->tests()[0], $furtherAttempt);
+    }
+
+    public function testDescribesTheFirstAttemptOfATestThatTestSelectionSelected(): void
+    {
+        // Only the first attempt is in the suite, so test selection takes
+        // either it or nothing. A suite the selection emptied is not described
+        // at all: it is skipped where the members of a unit are collected.
+        $suite = $this->suite();
+
+        $factory = new Factory;
+
+        $factory->addIncludeNameFilter('testStartsTheProcessLocalCounter#0');
+
+        $suite->injectFilter($factory);
+
+        $this->assertCount(1, $this->rebuild($suite)->tests());
     }
 
     public function testCannotDescribeASuiteWhoseTestCarriesDataThatCannotBeSerialized(): void
