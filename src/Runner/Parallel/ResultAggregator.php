@@ -629,7 +629,12 @@ final class ResultAggregator
 
         assert($test instanceof FrameworkTestSuite);
 
-        foreach ($test->tests() as $member) {
+        // The suite is iterated, not asked for its tests: iterating applies
+        // the filter that test selection (--filter, --group, …) injected into
+        // it, so that a test the selection excluded — a test the worker was
+        // never asked to run — is not reported as a test the worker failed to
+        // run.
+        foreach ($test as $member) {
             $this->collectUnreportedLeavesOf($member, $finished, $stubs);
         }
     }
