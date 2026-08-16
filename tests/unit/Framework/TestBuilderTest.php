@@ -40,6 +40,7 @@ final class TestBuilderTest extends TestCase
             'with method-level metadata for isolation'          => [TestWithMethodLevelIsolationAttributes::class, 'testOne'],
             'with inherited class-level metadata for isolation' => [TestWithInheritedClassLevelIsolationAttributes::class, 'testOne'],
             'with metadata for excluding global state'          => [TestWithBackupExcludeListAttributes::class, 'testOne'],
+            'with metadata for preserving global state'         => [TestWithPreserveGlobalStateAttribute::class, 'testOne'],
             'with data provider'                                => [TestWithDataProvider::class, 'testOne'],
         ];
     }
@@ -193,6 +194,15 @@ final class TestBuilderTest extends TestCase
             [TestWithBackupExcludeListAttributes::class => ['firstProperty', 'secondProperty']],
             new ReflectionProperty(GlobalStateCapture::class, 'backupStaticPropertiesExcludeList')->getValue($globalStateCapture),
         );
+    }
+
+    public function testConfiguresTestWithMetadataForPreservingGlobalState(): void
+    {
+        $test = new TestWithPreserveGlobalStateAttribute('testOne');
+
+        new TestBuilder($this->createStub(Emitter::class))->configure($test, TestWithPreserveGlobalStateAttribute::class, 'testOne');
+
+        $this->assertTrue(new ReflectionProperty(TestCase::class, 'preserveGlobalState')->getValue($test));
     }
 
     /**
