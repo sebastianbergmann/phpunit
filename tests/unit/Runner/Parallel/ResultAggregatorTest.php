@@ -34,6 +34,7 @@ use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite as FrameworkTestSuite;
 use PHPUnit\Runner\CodeCoverage;
+use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\TestFixture\ParallelWorker\WorkerFirstTest;
 use PHPUnit\TestFixture\ParallelWorker\WorkerSecondTest;
 use PHPUnit\TestRunner\TestResult\PassedTests;
@@ -110,6 +111,59 @@ final class ResultAggregatorTest extends TestCase
                 WorkerSecondTest::class . '::testSeesTheStateLeftBehindByTheFirstTest',
                 WorkerSecondTest::class . '::testThatFails',
             ],
+            $errored,
+        );
+    }
+
+    public function testDoesNotReportATestThatTestSelectionExcludedFromACrashedUnit(): void
+    {
+        // The unit dispatched only the tests that test selection selected, so
+        // only those can be missing a result: a test the selection excluded was
+        // never asked of the worker and must not be reported as one the worker
+        // failed to run.
+        $selected = new WorkerSecondTest('testThatFails');
+
+        $selected->setData('selected data set', ['selected']);
+
+        $excluded = new WorkerSecondTest('testThatFails');
+
+        $excluded->setData('excluded data set', ['excluded']);
+
+        $providerSuite = DataProviderTestSuite::empty(WorkerSecondTest::class . '::testThatFails');
+
+        $providerSuite->addTest($selected);
+        $providerSuite->addTest($excluded);
+
+        $factory = new Factory;
+
+        $factory->addIncludeNameFilter('testThatFails#selected data set');
+
+        $providerSuite->injectFilter($factory);
+
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter->expects($this->once())->method('childProcessErrored');
+        $emitter->expects($this->once())->method('testSuiteStarted');
+        $emitter->expects($this->once())->method('testFinished');
+        $emitter->expects($this->once())->method('testSuiteFinished');
+
+        $errored = [];
+
+        $emitter->method('testErrored')->willReturnCallback(
+            static function (CodeTest $test, CodeThrowable $throwable) use (&$errored): void
+            {
+                $errored[] = $test->id();
+            },
+        )->seal();
+
+        $this->aggregator($emitter)->add(
+            CompletedWorkUnit::fromCrash(
+                new TestClassWorkUnit(0, WorkerSecondTest::class, [$providerSuite]),
+            ),
+        );
+
+        $this->assertSame(
+            [WorkerSecondTest::class . '::testThatFails#selected data set'],
             $errored,
         );
     }
