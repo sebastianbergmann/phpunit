@@ -562,9 +562,13 @@ final class ResultAggregator
             $test = $member['test'];
 
             // A test whose result never arrived is reported with the same
-            // three events that the sequential runner emits for a test whose
-            // child process ended unexpectedly.
+            // events that the sequential runner emits for a test whose child
+            // process ended unexpectedly. The test is announced as prepared
+            // before it is reported as errored: a consumer that is told about
+            // a test only when it errors reports it as a test of its own,
+            // which would list the test twice.
             foreach ($member['stubs'] as $testMethod) {
+                $this->emitter->testPrepared($testMethod);
                 $this->emitter->childProcessErrored(ChildProcessReason::ParallelWorker, $message);
                 $this->emitter->testErrored($testMethod, $throwable);
                 $this->emitter->testFinished($testMethod, 0);
