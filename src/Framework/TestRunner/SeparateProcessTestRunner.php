@@ -15,6 +15,7 @@ use function defined;
 use function get_include_path;
 use function hrtime;
 use function random_bytes;
+use function register_shutdown_function;
 use function serialize;
 use function sprintf;
 use function sys_get_temp_dir;
@@ -121,7 +122,7 @@ final class SeparateProcessTestRunner
         $includePath             = "'." . $includePath . ".'";
         $offset                  = hrtime();
         $serializedConfiguration = $this->saveConfigurationForChildProcess();
-        $processResultFile       = $this->pathForCachedSourceMap();
+        $processResultFile       = $this->createTemporaryFile();
 
         if ($processResultFile === false || $processResultFile === '') {
             // @codeCoverageIgnoreStart
@@ -199,7 +200,7 @@ final class SeparateProcessTestRunner
             return self::$sourceMapFile;
         }
 
-        $path = $this->pathForCachedSourceMap();
+        $path = $this->createTemporaryFile();
 
         if ($path === false) {
             // @codeCoverageIgnoreStart
@@ -217,6 +218,19 @@ final class SeparateProcessTestRunner
             // @codeCoverageIgnoreEnd
         }
 
+        // the source map is written once per test run and shared by all child
+        // processes, so it can only be removed when the test run has ended
+        register_shutdown_function(
+            static function () use ($path): void
+            {
+                // this runs during PHP's shutdown sequence, after code coverage
+                // data has been collected
+                // @codeCoverageIgnoreStart
+                @unlink($path);
+                // @codeCoverageIgnoreEnd
+            },
+        );
+
         self::$sourceMapFile = $path;
 
         return self::$sourceMapFile;
@@ -227,7 +241,7 @@ final class SeparateProcessTestRunner
      */
     private function saveConfigurationForChildProcess(): string
     {
-        $path = $this->pathForCachedSourceMap();
+        $path = $this->createTemporaryFile();
 
         if ($path === false) {
             // @codeCoverageIgnoreStart
@@ -244,7 +258,7 @@ final class SeparateProcessTestRunner
         return $path;
     }
 
-    private function pathForCachedSourceMap(): false|string
+    private function createTemporaryFile(): false|string
     {
         return tempnam(sys_get_temp_dir(), 'phpunit_');
     }
