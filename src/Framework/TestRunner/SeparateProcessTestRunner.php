@@ -178,6 +178,15 @@ final class SeparateProcessTestRunner
             return self::$sourceMapFile;
         }
 
+        // the child process only needs the source map for the identification of
+        // issue triggers and for the code coverage filter
+        if (!ConfigurationRegistry::get()->source()->identifyIssueTrigger() &&
+            !CodeCoverage::instance()->isActive()) {
+            self::$sourceMapFile = '';
+
+            return self::$sourceMapFile;
+        }
+
         $path = $this->pathForCachedSourceMap();
 
         if ($path === false) {
