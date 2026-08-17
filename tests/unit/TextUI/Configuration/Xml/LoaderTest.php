@@ -303,6 +303,9 @@ final class LoaderTest extends TestCase
         $this->assertTrue($codeCoverage->hasCrap4j());
         $this->assertSame(TEST_FILES_PATH . 'crap4j.xml', $codeCoverage->crap4j()->target()->path());
 
+        $this->assertTrue($codeCoverage->hasJsonl());
+        $this->assertSame(TEST_FILES_PATH . 'coverage-jsonl', $codeCoverage->jsonl()->target()->path());
+
         $defaultColors     = Colors::default();
         $defaultThresholds = Thresholds::default();
 

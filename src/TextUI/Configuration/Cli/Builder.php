@@ -60,6 +60,7 @@ final class Builder
         'coverage-html=',
         'without-class-view',
         'without-file-view',
+        'coverage-jsonl=',
         'coverage-openclover=',
         'coverage-php=',
         'coverage-text==',
@@ -297,6 +298,7 @@ final class Builder
         $coverageHtml                             = null;
         $withoutClassView                         = null;
         $withoutFileView                          = null;
+        $coverageJsonl                            = null;
         $coverageOpenClover                       = null;
         $coveragePhp                              = null;
         $coverageText                             = null;
@@ -526,6 +528,11 @@ final class Builder
 
                 case '--without-file-view':
                     $withoutFileView = true;
+
+                    break;
+
+                case '--coverage-jsonl':
+                    $coverageJsonl = $option[1];
 
                     break;
 
@@ -1471,6 +1478,7 @@ final class Builder
             $coverageHtml,
             $withoutClassView,
             $withoutFileView,
+            $coverageJsonl,
             $coverageOpenClover,
             $coveragePhp,
             $coverageText,

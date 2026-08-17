@@ -562,6 +562,7 @@ final readonly class Merger
         $coverageHtmlColorBreadcrumbs       = $defaultColors->breadcrumbs();
         $coverageHtmlColorBreadcrumbsDark   = $defaultColors->breadcrumbsDark();
         $coverageHtmlCustomCssFile          = null;
+        $coverageJsonl                      = null;
         $coverageOpenClover                 = null;
         $coveragePhp                        = null;
         $coverageText                       = null;
@@ -655,6 +656,12 @@ final readonly class Merger
 
             $coverageHtmlClassView = true;
             $coverageHtmlFileView  = true;
+        }
+
+        if ($cliConfiguration->hasCoverageJsonl()) {
+            $coverageJsonl = $cliConfiguration->coverageJsonl();
+        } elseif ($coverageFromXmlConfiguration && $xmlConfiguration->codeCoverage()->hasJsonl()) {
+            $coverageJsonl = $xmlConfiguration->codeCoverage()->jsonl()->target()->path();
         }
 
         if ($cliConfiguration->hasCoverageOpenClover()) {
@@ -1238,6 +1245,7 @@ final readonly class Merger
         $coverageHtmlColorDangerBarDark     = $this->requireNonEmptyString($coverageHtmlColorDangerBarDark, 'coverage HTML color "danger bar dark"');
         $coverageHtmlColorBreadcrumbs       = $this->requireNonEmptyString($coverageHtmlColorBreadcrumbs, 'coverage HTML color "breadcrumbs"');
         $coverageHtmlColorBreadcrumbsDark   = $this->requireNonEmptyString($coverageHtmlColorBreadcrumbsDark, 'coverage HTML color "breadcrumbs dark"');
+        $coverageJsonl                      = $this->nullableNonEmptyString($coverageJsonl);
         $coverageOpenClover                 = $this->nullableNonEmptyString($coverageOpenClover);
         $coveragePhp                        = $this->nullableNonEmptyString($coveragePhp);
         $coverageText                       = $this->nullableNonEmptyString($coverageText);
@@ -1350,6 +1358,7 @@ final readonly class Merger
             $coverageHtmlColorBreadcrumbs,
             $coverageHtmlColorBreadcrumbsDark,
             $coverageHtmlCustomCssFile,
+            $coverageJsonl,
             $coverageOpenClover,
             $coveragePhp,
             $coverageText,

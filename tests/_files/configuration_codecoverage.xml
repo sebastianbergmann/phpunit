@@ -34,6 +34,7 @@
             <cobertura outputFile="cobertura.xml"/>
             <crap4j outputFile="crap4j.xml" threshold="30"/>
             <html outputDirectory="coverage" lowUpperBound="50" highLowerBound="90"/>
+            <jsonl outputDirectory="coverage-jsonl"/>
             <openclover outputFile="openclover.xml"/>
             <php outputFile="coverage.php"/>
             <text outputFile="coverage.txt" showUncoveredFiles="false" showOnlySummary="true"/>

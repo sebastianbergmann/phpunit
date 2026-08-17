@@ -166,6 +166,7 @@ Code Coverage:
   --coverage-html <dir>                Write code coverage report in HTML format to directory
   --without-class-view                 Render code coverage report in HTML format without class view
   --without-file-view                  Render code coverage report in HTML format without file view
+  --coverage-jsonl <dir>               Write code coverage report in JSONL format to directory
   --coverage-php <file>                Write serialized code coverage data to file
   --coverage-text=<file>               Write code coverage report in text format to file [default: standard output]
   --only-summary-for-coverage-text     Option for code coverage report in text format: only show summary

@@ -183,6 +183,7 @@ final class MergerTest extends TestCase
         $this->assertTrue($fromFile->codeCoverage()->hasCobertura());
         $this->assertTrue($fromFile->codeCoverage()->hasCrap4j());
         $this->assertTrue($fromFile->codeCoverage()->hasHtml());
+        $this->assertTrue($fromFile->codeCoverage()->hasJsonl());
         $this->assertTrue($fromFile->codeCoverage()->hasOpenClover());
         $this->assertTrue($fromFile->codeCoverage()->hasText());
         $this->assertTrue($fromFile->codeCoverage()->hasXml());
@@ -202,6 +203,7 @@ final class MergerTest extends TestCase
         $this->assertFalse($mergedConfig->hasCoverageCobertura());
         $this->assertFalse($mergedConfig->hasCoverageCrap4j());
         $this->assertFalse($mergedConfig->hasCoverageHtml());
+        $this->assertFalse($mergedConfig->hasCoverageJsonl());
         $this->assertFalse($mergedConfig->hasCoverageOpenClover());
         $this->assertFalse($mergedConfig->hasCoverageText());
         $this->assertFalse($mergedConfig->hasCoverageXml());
@@ -248,6 +250,8 @@ final class MergerTest extends TestCase
             'crap4j.xml',
             '--coverage-html',
             'html',
+            '--coverage-jsonl',
+            'jsonl',
             '--coverage-openclover',
             'openclover.xml',
             '--coverage-text=coverage.txt',
@@ -268,6 +272,7 @@ final class MergerTest extends TestCase
         $this->assertSame('cobertura.xml', $mergedConfig->coverageCobertura());
         $this->assertSame('crap4j.xml', $mergedConfig->coverageCrap4j());
         $this->assertSame('html', $mergedConfig->coverageHtml());
+        $this->assertSame('jsonl', $mergedConfig->coverageJsonl());
         $this->assertSame('openclover.xml', $mergedConfig->coverageOpenClover());
         $this->assertSame('coverage.txt', $mergedConfig->coverageText());
         $this->assertTrue($mergedConfig->coverageTextShowUncoveredFiles());

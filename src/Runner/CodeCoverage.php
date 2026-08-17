@@ -353,6 +353,18 @@ final class CodeCoverage
             }
         }
 
+        if ($configuration->hasCoverageJsonl()) {
+            $this->codeCoverageGenerationStart($printer, 'JSONL');
+
+            try {
+                $facade->renderJsonl($configuration->coverageJsonl());
+
+                $this->codeCoverageGenerationSucceeded($printer);
+            } catch (CodeCoverageException $e) {
+                $this->codeCoverageGenerationFailed($printer, $e);
+            }
+        }
+
         if ($configuration->hasCoverageOpenClover()) {
             $this->codeCoverageGenerationStart($printer, 'OpenClover XML');
 

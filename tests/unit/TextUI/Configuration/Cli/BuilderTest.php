@@ -343,6 +343,26 @@ final class BuilderTest extends TestCase
         $configuration->coverageCobertura();
     }
 
+    #[TestDox('--coverage-jsonl directory')]
+    public function testCoverageJsonl(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--coverage-jsonl', 'directory']);
+
+        $this->assertTrue($configuration->hasCoverageJsonl());
+        $this->assertSame('directory', $configuration->coverageJsonl());
+    }
+
+    public function testCoverageJsonlMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasCoverageJsonl());
+
+        $this->expectException(Exception::class);
+
+        $configuration->coverageJsonl();
+    }
+
     #[TestDox('--coverage-crap4j file')]
     public function testCoverageCrap4j(): void
     {

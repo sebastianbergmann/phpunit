@@ -82,6 +82,18 @@ final class CodeCoverageTest extends TestCase
         $codeCoverage->html();
     }
 
+    public function testMayNotHaveJsonlReport(): void
+    {
+        $codeCoverage = $this->codeCoverage();
+
+        $this->assertFalse($codeCoverage->hasJsonl());
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Code Coverage report "JSONL" has not been configured');
+
+        $codeCoverage->jsonl();
+    }
+
     public function testMayNotHaveOpenCloverReport(): void
     {
         $codeCoverage = $this->codeCoverage();
@@ -139,6 +151,7 @@ final class CodeCoverageTest extends TestCase
             false,
             false,
             false,
+            null,
             null,
             null,
             null,
