@@ -38,11 +38,12 @@ final class PhptRunnerTest extends TestCase
 {
     public function testRunsPhptTestsConcurrentlyAndReportsEachWithItsCollectedEvents(): void
     {
-        $file = __DIR__ . '/../../../_files/parallel-worker/worker.phpt';
-
+        // Two different files: the temporary files that a PHPT test writes
+        // next to itself when code coverage is collected are named after its
+        // file, so two tests that run at the same time must not share one.
         $units = [
-            new PhptWorkUnit(0, $file),
-            new PhptWorkUnit(1, $file),
+            new PhptWorkUnit(0, __DIR__ . '/../../../_files/parallel-worker/worker.phpt'),
+            new PhptWorkUnit(1, __DIR__ . '/../../../_files/parallel-worker/worker-other.phpt'),
         ];
 
         $collected = $this->execute($units, 2);
@@ -279,6 +280,49 @@ final class PhptRunnerTest extends TestCase
 
         // The key is released once the test holding it has finished, so the
         // second test ran after the first one rather than not at all.
+        $this->assertSame([0, 1], array_keys($collected));
+    }
+
+    public function testStartsATestOnlyWhenNoOtherRunningTestRunsTheSameFile(): void
+    {
+        $file = __DIR__ . '/../../../_files/parallel-worker/worker.phpt';
+
+        $budget = new ProcessBudget(2);
+
+        $runner = $this->runner(2, $budget);
+
+        $collected = [];
+
+        $runner->begin(
+            [
+                new PhptWorkUnit(0, $file),
+                new PhptWorkUnit(1, $file),
+            ],
+            static function (int $index, EventCollection $events) use (&$collected): void
+            {
+                $collected[$index] = $events;
+            },
+        );
+
+        $runner->tick();
+
+        // The two units run the same file, whose temporary files they would
+        // share while code coverage is collected: the second one is therefore
+        // not started alongside the first one, which leaves one slot of the
+        // budget free.
+        $this->assertTrue($runner->hasRunningTests());
+        $this->assertTrue($budget->acquire());
+
+        $budget->release();
+
+        while (!$runner->isFinished()) {
+            if (!$runner->tick()) {
+                usleep(1000);
+            }
+        }
+
+        // The file is released once the test running it has finished, so the
+        // second unit ran after the first one rather than not at all.
         $this->assertSame([0, 1], array_keys($collected));
     }
 

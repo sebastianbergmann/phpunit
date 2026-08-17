@@ -59,6 +59,13 @@ use PHPUnit\Util\PHP\RunningJob;
  * ordered last and run once the others have drained, mirroring how
  * run-tests.php defers them until a single worker remains.
  *
+ * A test's own file is an implicit conflict key of its own: when code coverage
+ * is collected, the temporary files that a PHPT test writes next to itself —
+ * the file its child process executes and the file that child writes its
+ * coverage data to — are named after the test's file, and are removed when the
+ * test has finished. Two units of the same file would therefore share those
+ * files, so no unit is started while another unit of its file is running.
+ *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -100,6 +107,14 @@ final class PhptRunner
      */
     private array $activeConflicts = [];
     private bool $exclusive        = false;
+
+    /**
+     * The files of the tests that are currently running, so that no two units
+     * of the same file run at the same time.
+     *
+     * @var array<non-empty-string, true>
+     */
+    private array $activeFiles = [];
 
     /**
      * @var ?callable(non-negative-int, EventCollection): void
@@ -186,6 +201,7 @@ final class PhptRunner
         $this->queue           = array_merge($queue, $deferred);
         $this->active          = [];
         $this->activeConflicts = [];
+        $this->activeFiles     = [];
         $this->exclusive       = false;
         $this->onCompleted     = $onCompleted;
     }
@@ -285,6 +301,7 @@ final class PhptRunner
 
         $this->active          = [];
         $this->activeConflicts = [];
+        $this->activeFiles     = [];
         $this->exclusive       = false;
     }
 
@@ -353,10 +370,15 @@ final class PhptRunner
     /**
      * Whether the unit may be started right now: a unit that conflicts with
      * "all" may start only when nothing else is running, and any other unit may
-     * start only when none of its conflict keys are currently held.
+     * start only when neither its file nor any of its conflict keys is
+     * currently held by a running test.
      */
     private function canStart(PhptWorkUnit $unit): bool
     {
+        if (isset($this->activeFiles[$unit->file()])) {
+            return false;
+        }
+
         if (in_array('all', $unit->conflicts(), true)) {
             if ($this->active !== []) {
                 return false;
@@ -382,12 +404,15 @@ final class PhptRunner
     }
 
     /**
-     * Record the conflict keys the unit holds while it runs. The reserved key
-     * "all" is tracked through the exclusive flag rather than the key map,
-     * because it blocks every other test rather than one sharing its key.
+     * Record the file and the conflict keys the unit holds while it runs. The
+     * reserved key "all" is tracked through the exclusive flag rather than the
+     * key map, because it blocks every other test rather than one sharing its
+     * key.
      */
     private function reserve(PhptWorkUnit $unit): void
     {
+        $this->activeFiles[$unit->file()] = true;
+
         foreach ($unit->conflicts() as $key) {
             if ($key === 'all') {
                 $this->exclusive = true;
@@ -400,10 +425,13 @@ final class PhptRunner
     }
 
     /**
-     * Release the conflict keys the unit held once it has finished.
+     * Release the file and the conflict keys the unit held once it has
+     * finished.
      */
     private function release(PhptWorkUnit $unit): void
     {
+        unset($this->activeFiles[$unit->file()]);
+
         foreach ($unit->conflicts() as $key) {
             if ($key === 'all') {
                 $this->exclusive = false;
