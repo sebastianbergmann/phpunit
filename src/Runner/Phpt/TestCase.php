@@ -383,6 +383,14 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
 
         /** @phpstan-ignore booleanOr.leftAlwaysFalse (the run may be interrupted while the yielded job executes) */
         if (TestResultFacade::wasInterrupted() || ($interruption !== null && $interruption->interrupted())) {
+            if (CodeCoverage::instance()->isActive()) {
+                // the test's result is not collected anymore, but the temporary
+                // files it was given must not be left behind
+                // @codeCoverageIgnoreStart
+                $this->removeCoverageFiles();
+                // @codeCoverageIgnoreEnd
+            }
+
             yield from $this->executeClean($emitter, $sections, CodeCoverage::instance()->isActive());
 
             $emitter->testFinished($this->valueObjectForEvents(), 0);
@@ -843,11 +851,19 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
             }
         }
 
-        foreach ($files as $file) {
-            @unlink($file);
-        }
+        $this->removeCoverageFiles();
 
         return $coverage;
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    private function removeCoverageFiles(): void
+    {
+        foreach ($this->coverageFiles as $file) {
+            @unlink($file);
+        }
     }
 
     /**
