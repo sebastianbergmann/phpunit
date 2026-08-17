@@ -12,8 +12,10 @@ namespace PHPUnit\Framework\TestRunner;
 use function assert;
 use function defined;
 use function get_include_path;
+use function register_shutdown_function;
 use function sys_get_temp_dir;
 use function tempnam;
+use function unlink;
 use function var_export;
 use PHPUnit\Framework\ProcessIsolationException;
 use PHPUnit\Runner\CodeCoverage;
@@ -120,7 +122,7 @@ final class ChildProcessBootstrap
             return self::$configurationFile;
         }
 
-        $path = tempnam(sys_get_temp_dir(), 'phpunit_');
+        $path = self::createTemporaryFile();
 
         if ($path === false) {
             // @codeCoverageIgnoreStart
@@ -162,7 +164,7 @@ final class ChildProcessBootstrap
             return self::$sourceMapFile;
         }
 
-        $path = tempnam(sys_get_temp_dir(), 'phpunit_');
+        $path = self::createTemporaryFile();
 
         if ($path === false) {
             // @codeCoverageIgnoreStart
@@ -185,5 +187,34 @@ final class ChildProcessBootstrap
         self::$sourceMapFile = $path;
 
         return self::$sourceMapFile;
+    }
+
+    /**
+     * The configuration and the source map are written once per test run and
+     * shared by all child processes, so they can only be removed when the test
+     * run has ended.
+     */
+    private static function createTemporaryFile(): false|string
+    {
+        $path = tempnam(sys_get_temp_dir(), 'phpunit_');
+
+        if ($path === false) {
+            // @codeCoverageIgnoreStart
+            return false;
+            // @codeCoverageIgnoreEnd
+        }
+
+        register_shutdown_function(
+            static function () use ($path): void
+            {
+                // this runs during PHP's shutdown sequence, after code coverage
+                // data has been collected
+                // @codeCoverageIgnoreStart
+                @unlink($path);
+                // @codeCoverageIgnoreEnd
+            },
+        );
+
+        return $path;
     }
 }
