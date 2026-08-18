@@ -22,7 +22,7 @@ use Throwable;
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class Facade
+final class Facade implements EventCollector
 {
     private static ?self $instance = null;
     private DispatchingEmitter $emitter;
