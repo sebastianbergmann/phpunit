@@ -18,6 +18,11 @@ use PHPUnit\Runner\TestRunHistory\TestRunHistoryId;
  * file. A PHPT test is not a PHPUnit\Framework\TestCase and carries no test
  * data, so the worker reconstructs it from nothing more than this file path.
  *
+ * A repeated or retried PHPT test is one unit as well: its repetitions and its
+ * attempts must run one after another and are orchestrated by the suite that
+ * aggregates them, which the unit carries the shape of so that the runner can
+ * reconstruct that suite.
+ *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -40,15 +45,51 @@ final readonly class PhptWorkUnit implements WorkUnit
     private array $conflicts;
 
     /**
+     * @var positive-int
+     */
+    private int $numberOfRuns;
+
+    /**
+     * @var positive-int
+     */
+    private int $maxAttempts;
+
+    /**
      * @param non-negative-int       $index
      * @param non-empty-string       $file
      * @param list<non-empty-string> $conflicts
+     * @param positive-int           $numberOfRuns
+     * @param positive-int           $maxAttempts
      */
-    public function __construct(int $index, string $file, array $conflicts = [])
+    public function __construct(int $index, string $file, array $conflicts = [], int $numberOfRuns = 1, int $maxAttempts = 1)
     {
-        $this->index     = $index;
-        $this->file      = $file;
-        $this->conflicts = $conflicts;
+        $this->index        = $index;
+        $this->file         = $file;
+        $this->conflicts    = $conflicts;
+        $this->numberOfRuns = $numberOfRuns;
+        $this->maxAttempts  = $maxAttempts;
+    }
+
+    /**
+     * How often the test is run in a row, each run reported on its own; more
+     * than once when --repeat was used.
+     *
+     * @return positive-int
+     */
+    public function numberOfRuns(): int
+    {
+        return $this->numberOfRuns;
+    }
+
+    /**
+     * How often the test may be attempted before a failure is reported as its
+     * result; more than once when --retry was used.
+     *
+     * @return positive-int
+     */
+    public function maxAttempts(): int
+    {
+        return $this->maxAttempts;
     }
 
     /**
