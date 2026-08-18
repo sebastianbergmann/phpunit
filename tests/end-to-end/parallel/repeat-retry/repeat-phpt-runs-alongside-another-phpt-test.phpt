@@ -54,6 +54,7 @@ foreach ($intervalFiles as $intervalFile) {
 PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime:       %s
+Parallel:      2 workers
 
 ....                                                                4 / 4 (100%)
 
