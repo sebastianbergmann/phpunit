@@ -30,6 +30,8 @@ final class NarrowReturnObjectTypeRuleTest extends RuleTestCase
     {
         yield [__DIR__ . '/Fixture/SkipSpecificReturnType.php', []];
         yield [__DIR__ . '/Fixture/SkipSomeContract.php', []];
+        yield [__DIR__ . '/Fixture/SkipArrayCollection.php', []];
+        yield [__DIR__ . '/Fixture/SkipSymfonyForm.php', []];
 
         $errorMessage = sprintf(NarrowReturnObjectTypeRule::ERROR_MESSAGE, SpecificControl::class);
         yield [__DIR__ . '/Fixture/SomeAbstractReturnType.php', [[$errorMessage, 12]]];
