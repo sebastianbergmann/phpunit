@@ -659,6 +659,17 @@ final readonly class Application
                 $configuration->configurationFile(),
             );
         }
+
+        if ($configuration->numberOfParallelWorkers() > 1) {
+            $this->writeMessage(
+                $printer,
+                'Parallel',
+                sprintf(
+                    '%d workers',
+                    $configuration->numberOfParallelWorkers(),
+                ),
+            );
+        }
     }
 
     private function writeMessage(Printer $printer, string $type, string $message): void

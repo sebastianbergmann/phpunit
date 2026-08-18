@@ -15,6 +15,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime:       %s
 Configuration: %s
+Parallel:      2 workers
 
 ..                                                                  2 / 2 (100%)
 
