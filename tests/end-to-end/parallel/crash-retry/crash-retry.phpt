@@ -21,6 +21,7 @@ require_once __DIR__ . '/../../../bootstrap.php';
 PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime:       %s
+Parallel:      2 workers
 
 ..                                                                  2 / 2 (100%)
 
