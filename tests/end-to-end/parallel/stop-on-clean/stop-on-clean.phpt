@@ -31,6 +31,7 @@ var_dump(is_file($cleaned), is_file($dirty), is_file($fileRan));
 PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime:       %s
+Parallel:      3 workers
 
 F
 
