@@ -401,13 +401,7 @@ final class ParallelTestRunner
                 $phpt,
                 static function (int $index, Event\EventCollection $events) use ($aggregator): void
                 {
-                    $aggregator->registerInProcessUnit(
-                        $index,
-                        static function () use ($events): void
-                        {
-                            Event\Facade::instance()->forward($events);
-                        },
-                    );
+                    $aggregator->registerCollectedUnit($index, $events);
 
                     // Release everything that has become contiguous in suite
                     // order, so that progress is reported as the PHPT tests
