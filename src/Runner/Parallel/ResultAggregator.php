@@ -190,6 +190,36 @@ final class ResultAggregator
     }
 
     /**
+     * Register the events that a unit which has already run in the main
+     * process — a PHPT test, run by the PHPT runner — collected, to be
+     * forwarded when the unit's turn in the release sequence comes.
+     *
+     * They are forwarded in the groups that the unit's tests form, and the
+     * groups that follow the one whose results call for the run to stop are
+     * dropped: their tests are ones that a sequential run would not have run.
+     * This is what the events a worker streams are subject to as well, frame
+     * by frame, and it is why the repetitions of a repeated PHPT test that
+     * follow a failed one are not reported when a --stop-on-* option applies,
+     * even though the unit ran to its end before its events were released.
+     *
+     * The suite envelopes that the dropped groups would have closed are still
+     * forwarded, so that the loggers which reconstruct the suite hierarchy
+     * from these events do not see an envelope left open.
+     *
+     * @param non-negative-int $index
+     */
+    public function registerCollectedUnit(int $index, EventCollection $events): void
+    {
+        $this->registerInProcessUnit(
+            $index,
+            function () use ($events): void
+            {
+                $this->forwardCollectedEvents($events);
+            },
+        );
+    }
+
+    /**
      * Whether the release sequence has stopped at the index of an exclusive
      * unit: everything that precedes the unit in suite order has been
      * forwarded, and the unit waits to be run through
@@ -364,6 +394,62 @@ final class ResultAggregator
         }
 
         unset($this->streamedEvents[$index]);
+    }
+
+    /**
+     * Forward the events a unit collected while it ran in the main process,
+     * one group of events per test of the unit, stopping at the group after
+     * which the collected results call for the run to stop (see
+     * registerCollectedUnit()).
+     */
+    private function forwardCollectedEvents(EventCollection $events): void
+    {
+        $group      = new EventCollection;
+        $closing    = new EventCollection;
+        $openSuites = 0;
+        $stopped    = false;
+
+        foreach ($events as $event) {
+            if ($stopped) {
+                // Everything the run would not have shown is dropped, except
+                // for the envelopes that the forwarded events left open.
+                if ($event instanceof TestSuiteFinished && $openSuites > 0) {
+                    $openSuites--;
+
+                    $closing->add($event);
+                }
+
+                continue;
+            }
+
+            $group->add($event);
+
+            if ($event instanceof TestSuiteStarted) {
+                $openSuites++;
+            }
+
+            if ($event instanceof TestSuiteFinished) {
+                $openSuites--;
+            }
+
+            if (!$event instanceof TestFinished) {
+                continue;
+            }
+
+            $this->eventFacade->forward($group);
+
+            $group = new EventCollection;
+
+            $stopped = ($this->shouldStop)();
+        }
+
+        if (!$stopped) {
+            $this->eventFacade->forward($group);
+
+            return;
+        }
+
+        $this->eventFacade->forward($closing);
     }
 
     /**
