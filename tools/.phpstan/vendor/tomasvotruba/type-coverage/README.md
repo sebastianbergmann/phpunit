@@ -83,6 +83,16 @@ The package is available on PHP 7.2+.
 
 With [PHPStan extension installer](https://github.com/phpstan/extension-installer), everything is ready to run.
 
+Without it, include the config manually:
+
+```yaml
+# phpstan.neon
+includes:
+    - vendor/tomasvotruba/type-coverage/config/extension.neon
+```
+
+<br>
+
 Enable each item on their own:
 
 ```yaml
@@ -167,14 +177,13 @@ These rules ship with the package [installed above](#install), there is nothing 
 
 Every rule is opt-in and disabled by default, so you can pick the ones that fit your project. See [Configure](#configure) below for the full list.
 
-The 3 checks below are the simplest ones to start with:
+The 2 checks below are the simplest ones to start with:
 
 ```yaml
 parameters:
     type_perfect:
         no_isset_on_object: true
         no_empty_on_object: true
-        no_array_access_on_object: true
         no_param_type_removal: true
 ```
 
@@ -211,29 +220,7 @@ if (! $this->someType instanceof SomeType) {
 
 <br>
 
-Second rule (`no_array_access_on_object`) checks we use explicit object methods over magic array access:
-
-```php
-$article = new Article();
-
-$id = $article['id'];
-// we have no idea, what the type is
-```
-
-:no_good:
-
-↓
-
-```php
-$id = $article->getId();
-// we know the type is int
-```
-
-:heavy_check_mark:
-
-<br>
-
-Last rule (`no_param_type_removal`) checks that all interface implementations follow the same method signature as the interface:
+Second rule (`no_param_type_removal`) checks that all interface implementations follow the same method signature as the interface:
 
 ```php
 interface SomeInterface
@@ -271,10 +258,9 @@ You can enable them all at once:
 ```yaml
 parameters:
     type_perfect:
-        # the 3 checks above
+        # the 2 checks above
         no_isset_on_object: true
         no_empty_on_object: true
-        no_array_access_on_object: true
         no_param_type_removal: true
 
         no_mixed_property: true
