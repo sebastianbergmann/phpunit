@@ -23,7 +23,7 @@ namespace PHPUnit\Event;
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class CollectingEmitter
+final readonly class CollectingEmitter implements EventCollector
 {
     private Emitter $emitter;
     private CollectingDispatcher $dispatcher;
@@ -42,5 +42,33 @@ final readonly class CollectingEmitter
     public function flush(): EventCollection
     {
         return $this->dispatcher->flush();
+    }
+
+    /**
+     * @throws EventsAreAlreadyBeingCollectedException
+     */
+    public function startCollectingEvents(): void
+    {
+        $this->dispatcher->startCollectingEvents();
+    }
+
+    /**
+     * @throws EventsAreNotBeingCollectedException
+     */
+    public function stopCollectingEvents(): EventCollection
+    {
+        return $this->dispatcher->stopCollectingEvents();
+    }
+
+    /**
+     * Add the given events to the collection, as if they had been emitted
+     * through this emitter: this is how the events of a run that was diverted
+     * through a collection window become part of the collection after all.
+     */
+    public function forward(EventCollection $events): void
+    {
+        foreach ($events as $event) {
+            $this->dispatcher->dispatch($event);
+        }
     }
 }

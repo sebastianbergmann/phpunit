@@ -50,6 +50,28 @@ final class PhptWorkUnitTest extends TestCase
         $this->assertSame(['all'], $unit->conflicts());
     }
 
+    public function testIsRunOnceAndAttemptedOnceByDefault(): void
+    {
+        $this->assertSame(1, $this->unit()->numberOfRuns());
+        $this->assertSame(1, $this->unit()->maxAttempts());
+    }
+
+    public function testHasTheNumberOfRunsOfARepeatedTest(): void
+    {
+        $unit = new PhptWorkUnit(5, '/path/to/test.phpt', [], 3);
+
+        $this->assertSame(3, $unit->numberOfRuns());
+        $this->assertSame(1, $unit->maxAttempts());
+    }
+
+    public function testHasTheMaximumNumberOfAttemptsOfARetriedTest(): void
+    {
+        $unit = new PhptWorkUnit(5, '/path/to/test.phpt', [], 1, 2);
+
+        $this->assertSame(1, $unit->numberOfRuns());
+        $this->assertSame(2, $unit->maxAttempts());
+    }
+
     public function testHasTheDurationRecordedForItsTest(): void
     {
         $testRunHistory = $this->testRunHistory();
