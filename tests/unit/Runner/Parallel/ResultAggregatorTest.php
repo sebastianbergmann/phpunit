@@ -10,6 +10,7 @@
 namespace PHPUnit\Runner\Parallel;
 
 use function hrtime;
+use function in_array;
 use function serialize;
 use PHPUnit\Event\Code\Test as CodeTest;
 use PHPUnit\Event\Code\TestMethodBuilder;
@@ -24,7 +25,9 @@ use PHPUnit\Event\TestRunner\ChildProcessReason;
 use PHPUnit\Event\TestRunner\WarningTriggered;
 use PHPUnit\Event\TestRunner\WarningTriggeredSubscriber;
 use PHPUnit\Event\TestSuite\Finished as TestSuiteFinishedEvent;
+use PHPUnit\Event\TestSuite\FinishedSubscriber as TestSuiteFinishedSubscriber;
 use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
+use PHPUnit\Event\TestSuite\StartedSubscriber as TestSuiteStartedSubscriber;
 use PHPUnit\Event\TestSuite\TestSuite as TestSuiteValue;
 use PHPUnit\Event\TestSuite\TestSuiteBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -706,6 +709,49 @@ final class ResultAggregatorTest extends TestCase
         $this->assertFalse($aggregator->discardStreamedEventsFor(0));
     }
 
+    public function testForwardsAllEventsACollectedUnitProducedWhileTheRunGoesOn(): void
+    {
+        $forwarded = [];
+
+        $aggregator = $this->aggregatorObservingForwardedEvents($forwarded);
+
+        $aggregator->registerCollectedUnit(0, $this->collectedUnitEvents());
+
+        $aggregator->flush();
+
+        $this->assertSame(
+            ['suite started', 'first test', 'second test', 'suite finished'],
+            $forwarded,
+        );
+    }
+
+    public function testForwardsTheEventsOfACollectedUnitOnlyUpToTheTestAfterWhichTheRunStops(): void
+    {
+        $forwarded = [];
+
+        // The results collected so far call for the run to stop as soon as the
+        // unit's first test has been forwarded.
+        $aggregator = $this->aggregatorObservingForwardedEvents(
+            $forwarded,
+            static function () use (&$forwarded): bool
+            {
+                return in_array('first test', $forwarded, true);
+            },
+        );
+
+        $aggregator->registerCollectedUnit(0, $this->collectedUnitEvents());
+
+        $aggregator->flush();
+
+        // The second test of the unit is one that a sequential run would not
+        // have run, so it is not reported — but the envelope that the
+        // forwarded events opened is still closed.
+        $this->assertSame(
+            ['suite started', 'first test', 'suite finished'],
+            $forwarded,
+        );
+    }
+
     public function testFreezesTheReleaseSequenceWhenTheCollectedResultsCallForTheRunToStop(): void
     {
         $messages = [];
@@ -842,6 +888,132 @@ final class ResultAggregatorTest extends TestCase
             new CodeCoverage,
             $shouldStop,
         );
+    }
+
+    /**
+     * An aggregator whose forwarded events are observable by name: the message
+     * of every forwarded test runner warning event and the suite envelopes
+     * around them are appended to $forwarded, so that both what was forwarded
+     * and in which order is observable.
+     *
+     * @param list<string> $forwarded
+     */
+    private function aggregatorObservingForwardedEvents(array &$forwarded, ?callable $shouldStop = null): ResultAggregator
+    {
+        if ($shouldStop === null) {
+            $shouldStop = static function (): bool
+            {
+                return false;
+            };
+        }
+
+        $facade = new Facade;
+
+        $facade->registerSubscriber(
+            new class($forwarded) implements WarningTriggeredSubscriber
+            {
+                /**
+                 * @var list<string>
+                 */
+                private array $forwarded;
+
+                /**
+                 * @param list<string> $forwarded
+                 */
+                public function __construct(array &$forwarded)
+                {
+                    $this->forwarded = &$forwarded;
+                }
+
+                public function notify(WarningTriggered $event): void
+                {
+                    $this->forwarded[] = $event->message();
+                }
+            },
+        );
+
+        $facade->registerSubscriber(
+            new class($forwarded) implements TestSuiteStartedSubscriber
+            {
+                /**
+                 * @var list<string>
+                 */
+                private array $forwarded;
+
+                /**
+                 * @param list<string> $forwarded
+                 */
+                public function __construct(array &$forwarded)
+                {
+                    $this->forwarded = &$forwarded;
+                }
+
+                public function notify(TestSuiteStarted $event): void
+                {
+                    $this->forwarded[] = 'suite started';
+                }
+            },
+        );
+
+        $facade->registerSubscriber(
+            new class($forwarded) implements TestSuiteFinishedSubscriber
+            {
+                /**
+                 * @var list<string>
+                 */
+                private array $forwarded;
+
+                /**
+                 * @param list<string> $forwarded
+                 */
+                public function __construct(array &$forwarded)
+                {
+                    $this->forwarded = &$forwarded;
+                }
+
+                public function notify(TestSuiteFinishedEvent $event): void
+                {
+                    $this->forwarded[] = 'suite finished';
+                }
+            },
+        );
+
+        $facade->seal();
+
+        return new ResultAggregator(
+            $facade,
+            $this->createStub(Emitter::class),
+            new PassedTests,
+            new CodeCoverage,
+            $shouldStop,
+        );
+    }
+
+    /**
+     * The events of a unit that ran in the main process and collected them —
+     * a repeated PHPT test, whose two runs are wrapped in the envelope of the
+     * suite that aggregates them.
+     */
+    private function collectedUnitEvents(): EventCollection
+    {
+        $test = new WorkerFirstTest('testStartsTheProcessLocalCounter');
+
+        $frameworkSuite = FrameworkTestSuite::empty(WorkerFirstTest::class);
+
+        $frameworkSuite->addTest($test);
+
+        $events = new EventCollection;
+
+        $events->add(new TestSuiteStarted($this->telemetryInfo(), TestSuiteBuilder::from($frameworkSuite)));
+
+        foreach (['first test', 'second test'] as $message) {
+            $events->add(new WarningTriggered($this->telemetryInfo(), $message));
+            $events->add(new TestFinished($this->telemetryInfo(), TestMethodBuilder::fromTestCase($test), 1));
+        }
+
+        $events->add(new TestSuiteFinishedEvent($this->telemetryInfo(), TestSuiteBuilder::from($frameworkSuite)));
+
+        return $events;
     }
 
     private function events(string $message): EventCollection
