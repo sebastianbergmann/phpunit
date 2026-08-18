@@ -24,6 +24,7 @@ var_dump(is_file($marker));
 PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime:       %s
+Parallel:      2 workers
 
 F
 
