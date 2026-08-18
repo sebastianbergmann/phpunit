@@ -26,6 +26,8 @@ use PHPUnit\Event;
 use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\IterativeTestSuite;
 use PHPUnit\Framework\PhptIterativeTestSuite;
+use PHPUnit\Framework\PhptRepeatTestSuite;
+use PHPUnit\Framework\PhptRetryTestSuite;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestRunner\ChildProcessResultProcessor;
@@ -896,7 +898,7 @@ final class ParallelTestRunner
         /** @var array<class-string<TestCase>, array{index: non-negative-int, tests: list<DataProviderTestSuite|IterativeTestSuite|TestCase>}> $byClass */
         $byClass = [];
 
-        /** @var list<array{index: non-negative-int, file: non-empty-string, conflicts: list<non-empty-string>}> $phpt */
+        /** @var list<array{index: non-negative-int, file: non-empty-string, conflicts: list<non-empty-string>, numberOfRuns: positive-int, maxAttempts: positive-int}> $phpt */
         $phpt = [];
 
         /** @var list<array{index: non-negative-int, test: Test}> $standalone */
@@ -913,7 +915,13 @@ final class ParallelTestRunner
         $phptUnits = [];
 
         foreach ($phpt as $item) {
-            $phptUnits[] = new PhptWorkUnit($item['index'], $item['file'], $item['conflicts']);
+            $phptUnits[] = new PhptWorkUnit(
+                $item['index'],
+                $item['file'],
+                $item['conflicts'],
+                $item['numberOfRuns'],
+                $item['maxAttempts'],
+            );
         }
 
         return [
@@ -924,10 +932,10 @@ final class ParallelTestRunner
     }
 
     /**
-     * @param array<class-string<TestCase>, array{index: non-negative-int, tests: list<DataProviderTestSuite|IterativeTestSuite|TestCase>}> $byClass
-     * @param list<array{index: non-negative-int, file: non-empty-string, conflicts: list<non-empty-string>}>                               $phpt
-     * @param list<array{index: non-negative-int, test: Test}>                                                                              $standalone
-     * @param non-negative-int                                                                                                              $index
+     * @param array<class-string<TestCase>, array{index: non-negative-int, tests: list<DataProviderTestSuite|IterativeTestSuite|TestCase>}>                          $byClass
+     * @param list<array{index: non-negative-int, file: non-empty-string, conflicts: list<non-empty-string>, numberOfRuns: positive-int, maxAttempts: positive-int}> $phpt
+     * @param list<array{index: non-negative-int, test: Test}>                                                                                                       $standalone
+     * @param non-negative-int                                                                                                                                       $index
      */
     private function collect(TestSuite $suite, array &$byClass, array &$phpt, array &$standalone, int &$index): void
     {
@@ -941,13 +949,32 @@ final class ParallelTestRunner
             }
 
             // The repetitions of a repeated PHPT test and the attempts of a
-            // retried PHPT test are orchestrated by their suite's runTests()
-            // method and must run sequentially, so the suite runs as one unit
-            // in the main process at its suite index.
+            // retried PHPT test must run one after another, so the suite that
+            // orchestrates them becomes one PHPT unit rather than one unit per
+            // run: the runner rebuilds the suite from the unit and advances it
+            // as a whole, alongside the other PHPT tests.
             if ($test instanceof PhptIterativeTestSuite) {
-                $standalone[] = [
-                    'index' => $index,
-                    'test'  => $test,
+                $file = $test->name();
+
+                assert($file !== '');
+
+                $numberOfRuns = 1;
+                $maxAttempts  = 1;
+
+                if ($test instanceof PhptRepeatTestSuite) {
+                    $numberOfRuns = $test->numberOfRuns();
+                } else {
+                    assert($test instanceof PhptRetryTestSuite);
+
+                    $maxAttempts = $test->maxAttempts();
+                }
+
+                $phpt[] = [
+                    'index'        => $index,
+                    'file'         => $file,
+                    'conflicts'    => $this->phptConflicts($file),
+                    'numberOfRuns' => $numberOfRuns,
+                    'maxAttempts'  => $maxAttempts,
                 ];
 
                 $index++;
@@ -1008,9 +1035,11 @@ final class ParallelTestRunner
                 // --CONFLICTS-- section. The runner honours those conflict keys
                 // while running the PHPT tests concurrently in the main process.
                 $phpt[] = [
-                    'index'     => $index,
-                    'file'      => $file,
-                    'conflicts' => $this->phptConflicts($file),
+                    'index'        => $index,
+                    'file'         => $file,
+                    'conflicts'    => $this->phptConflicts($file),
+                    'numberOfRuns' => 1,
+                    'maxAttempts'  => 1,
                 ];
 
                 $index++;
