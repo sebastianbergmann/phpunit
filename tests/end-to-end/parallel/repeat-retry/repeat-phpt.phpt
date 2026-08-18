@@ -1,5 +1,5 @@
 --TEST--
-phpunit --repeat 2 --parallel=2 runs the repetitions of a PHPT test sequentially in the main process and skips the remaining repetitions after a failure
+phpunit --repeat 2 --parallel=2 runs the repetitions of a PHPT test one after another within the unit they form and skips the remaining ones after a failure
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-record-test-run-history';
