@@ -20,7 +20,7 @@ use PHPUnit\Runner\DeprecationCollector\Facade as DeprecationCollector;
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class Facade
+final class Facade implements EventCollector
 {
     private static ?self $instance = null;
     private Emitter $emitter;

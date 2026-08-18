@@ -587,9 +587,9 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function markSkippedForRepeatAbort(int $failedRepetition): void
+    public function markSkippedForRepeatAbort(Emitter $emitter, int $failedRepetition): void
     {
-        EventFacade::emitter()->testSkipped(
+        $emitter->testSkipped(
             $this->valueObjectForEvents(),
             sprintf(
                 'Remaining repetition skipped after failure in repetition %d',
