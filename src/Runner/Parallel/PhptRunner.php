@@ -18,6 +18,8 @@ use Generator;
 use PHPUnit\Event\CollectingEmitter;
 use PHPUnit\Event\EventCollection;
 use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Framework\PhptRepeatTestSuite;
+use PHPUnit\Framework\PhptRetryTestSuite;
 use PHPUnit\Runner\Phpt\Interruption;
 use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 use PHPUnit\Util\PHP\Job;
@@ -337,7 +339,7 @@ final class PhptRunner
 
             $collector    = EventFacade::instance()->collectingEmitter();
             $interruption = new Interruption;
-            $generator    = new PhptTestCase($unit->file())->execute($collector->emitter(), $interruption);
+            $generator    = $this->generatorFor($unit, $collector, $interruption);
 
             $generator->rewind();
 
@@ -365,6 +367,35 @@ final class PhptRunner
         }
 
         return $progressed;
+    }
+
+    /**
+     * The generator that advances the unit: the sections of a single PHPT
+     * test, or the repetitions or attempts of a repeated or retried one, which
+     * the suite that aggregates them orchestrates as one generator so that
+     * they run one after another within the unit.
+     *
+     * @return Generator<int, Job, Result, void>
+     */
+    private function generatorFor(PhptWorkUnit $unit, CollectingEmitter $collector, Interruption $interruption): Generator
+    {
+        if ($unit->numberOfRuns() > 1) {
+            return PhptRepeatTestSuite::for($unit->file(), $unit->numberOfRuns())->executeInterleaved(
+                $collector->emitter(),
+                $collector,
+                $interruption,
+            );
+        }
+
+        if ($unit->maxAttempts() > 1) {
+            return PhptRetryTestSuite::for($unit->file(), $unit->maxAttempts())->executeInterleaved(
+                $collector->emitter(),
+                $collector,
+                $interruption,
+            );
+        }
+
+        return new PhptTestCase($unit->file())->execute($collector->emitter(), $interruption);
     }
 
     /**

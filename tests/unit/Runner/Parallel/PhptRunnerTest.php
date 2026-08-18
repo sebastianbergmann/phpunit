@@ -17,8 +17,12 @@ use function usleep;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Event\EventCollection;
 use PHPUnit\Event\Facade;
+use PHPUnit\Event\Test\AttemptFailed;
+use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\Passed;
 use PHPUnit\Event\Test\Skipped;
+use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
+use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -53,6 +57,64 @@ final class PhptRunnerTest extends TestCase
         foreach ($collected as $events) {
             $this->assertTrue($this->contains($events, Passed::class));
         }
+    }
+
+    public function testRunsTheRepetitionsOfARepeatedPhptTestOneAfterAnotherWithinItsUnit(): void
+    {
+        $units = [
+            new PhptWorkUnit(0, __DIR__ . '/../../../_files/parallel-worker/worker.phpt', [], 2),
+        ];
+
+        $collected = $this->execute($units, 2);
+
+        $this->assertSame([0], array_keys($collected));
+
+        // The repetitions are reported as the tests of the suite that
+        // aggregates them, exactly as a sequential run reports them.
+        $this->assertSame(1, $this->numberOf($collected[0], TestSuiteStarted::class));
+        $this->assertSame(2, $this->numberOf($collected[0], Passed::class));
+        $this->assertSame(1, $this->numberOf($collected[0], TestSuiteFinished::class));
+    }
+
+    public function testSkipsTheRemainingRepetitionsOfARepeatedPhptTestAfterAFailedOne(): void
+    {
+        $units = [
+            new PhptWorkUnit(0, __DIR__ . '/../../../_files/parallel-worker/worker-failing.phpt', [], 3),
+        ];
+
+        $collected = $this->execute($units, 2);
+
+        $this->assertSame(1, $this->numberOf($collected[0], Failed::class));
+        $this->assertSame(2, $this->numberOf($collected[0], Skipped::class));
+    }
+
+    public function testRunsAFurtherAttemptOfARetriedPhptTestThatFailed(): void
+    {
+        @unlink(sys_get_temp_dir() . '/phpunit-parallel-phpt-retry.marker');
+
+        $units = [
+            new PhptWorkUnit(0, __DIR__ . '/../../../_files/parallel-worker/worker-flaky.phpt', [], 1, 2),
+        ];
+
+        $collected = $this->execute($units, 2);
+
+        // The failed first attempt is reported as an attempt, and only the
+        // second attempt's events become the test's result.
+        $this->assertSame(1, $this->numberOf($collected[0], AttemptFailed::class));
+        $this->assertSame(0, $this->numberOf($collected[0], Failed::class));
+        $this->assertSame(1, $this->numberOf($collected[0], Passed::class));
+    }
+
+    public function testReportsTheFailureOfARetriedPhptTestWhoseAttemptsAllFailed(): void
+    {
+        $units = [
+            new PhptWorkUnit(0, __DIR__ . '/../../../_files/parallel-worker/worker-failing.phpt', [], 1, 2),
+        ];
+
+        $collected = $this->execute($units, 2);
+
+        $this->assertSame(1, $this->numberOf($collected[0], AttemptFailed::class));
+        $this->assertSame(1, $this->numberOf($collected[0], Failed::class));
     }
 
     public function testRunsAPhptTestWhoseSectionsEachNeedTheirOwnChildProcess(): void
@@ -134,6 +196,36 @@ final class PhptRunnerTest extends TestCase
         // was terminated without being waited for: the runner is finished,
         // nothing was reported, and the slot the terminated test held has
         // been given back to the shared budget.
+        $this->assertTrue($runner->isFinished());
+        $this->assertSame([], $collected);
+        $this->assertTrue($budget->acquire());
+    }
+
+    public function testHaltDoesNotRunTheRemainingRepetitionsOfARepeatedTest(): void
+    {
+        $budget = new ProcessBudget(1);
+
+        $runner = $this->runner(1, $budget);
+
+        $collected = [];
+
+        $runner->begin(
+            [
+                new PhptWorkUnit(0, __DIR__ . '/../../../_files/parallel-worker/worker-sleeping.phpt', [], 3),
+            ],
+            static function (int $index, EventCollection $events) use (&$collected): void
+            {
+                $collected[$index] = $events;
+            },
+        );
+
+        $runner->tick();
+
+        $runner->halt();
+
+        // The repetition that was running was terminated and the repetitions
+        // that had not started are not run: the unit is abandoned as a whole,
+        // and nothing is reported for it.
         $this->assertTrue($runner->isFinished());
         $this->assertSame([], $collected);
         $this->assertTrue($budget->acquire());
@@ -440,12 +532,24 @@ final class PhptRunnerTest extends TestCase
      */
     private function contains(EventCollection $events, string $eventClass): bool
     {
+        return $this->numberOf($events, $eventClass) > 0;
+    }
+
+    /**
+     * @param class-string $eventClass
+     *
+     * @return non-negative-int
+     */
+    private function numberOf(EventCollection $events, string $eventClass): int
+    {
+        $count = 0;
+
         foreach ($events as $event) {
             if ($event instanceof $eventClass) {
-                return true;
+                $count++;
             }
         }
 
-        return false;
+        return $count;
     }
 }
