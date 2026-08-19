@@ -19,6 +19,7 @@ use PHPUnit\TestFixture\TestBuilder\TestWithDataProvider;
 use PHPUnit\TestFixture\TestBuilder\TestWithInheritedClassLevelIsolationAttributes;
 use PHPUnit\TestFixture\TestBuilder\TestWithMethodLevelIsolationAttributes;
 use PHPUnit\TestFixture\TestBuilder\TestWithoutIsolationAttributes;
+use PHPUnit\TestFixture\TestBuilder\TestWithPreserveGlobalStateAttribute;
 use ReflectionClass;
 use ReflectionProperty;
 
@@ -111,6 +112,17 @@ final class TestBuilderTest extends TestCase
             [TestWithBackupExcludeListAttributes::class => ['firstProperty', 'secondProperty']],
             new ReflectionProperty(GlobalStateCapture::class, 'backupStaticPropertiesExcludeList')->getValue($globalStateCapture),
         );
+    }
+
+    public function testBuildsTestWithMetadataForPreservingGlobalState(): void
+    {
+        $test = (new TestBuilder)->build(
+            new ReflectionClass(TestWithPreserveGlobalStateAttribute::class),
+            'testOne',
+        );
+
+        $this->assertInstanceOf(TestWithPreserveGlobalStateAttribute::class, $test);
+        $this->assertTrue(new ReflectionProperty(TestCase::class, 'preserveGlobalState')->getValue($test));
     }
 
     public function testBuildsTestWithDataProvider(): void
