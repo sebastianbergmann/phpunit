@@ -45,7 +45,8 @@ use SebastianBergmann\Template\Template;
  */
 final class SeparateProcessTestRunner
 {
-    private static ?string $sourceMapFile = null;
+    private static ?string $configurationFile = null;
+    private static ?string $sourceMapFile     = null;
 
     /**
      * @throws \PHPUnit\Runner\Exception
@@ -121,7 +122,7 @@ final class SeparateProcessTestRunner
         $dependencyInput         = "'." . $dependencyInput . ".'";
         $includePath             = "'." . $includePath . ".'";
         $offset                  = hrtime();
-        $serializedConfiguration = $this->saveConfigurationForChildProcess();
+        $serializedConfiguration = $this->configurationFileForChildProcess();
         $processResultFile       = $this->createTemporaryFile();
 
         if ($processResultFile === false || $processResultFile === '') {
@@ -175,8 +176,6 @@ final class SeparateProcessTestRunner
         assert($code !== '');
 
         JobRunnerRegistry::runTestJob(new Job($code, ChildProcessReason::TestRequiringProcessIsolation, requiresXdebug: $requiresXdebug), $processResultFile, $test, $processResultNonce);
-
-        @unlink($serializedConfiguration);
     }
 
     private function sourceMapFileForChildProcess(): string
@@ -200,7 +199,7 @@ final class SeparateProcessTestRunner
             return self::$sourceMapFile;
         }
 
-        $path = $this->createTemporaryFile();
+        $path = $this->createTemporaryFileSharedByChildProcesses();
 
         if ($path === false) {
             // @codeCoverageIgnoreStart
@@ -218,19 +217,6 @@ final class SeparateProcessTestRunner
             // @codeCoverageIgnoreEnd
         }
 
-        // the source map is written once per test run and shared by all child
-        // processes, so it can only be removed when the test run has ended
-        register_shutdown_function(
-            static function () use ($path): void
-            {
-                // this runs during PHP's shutdown sequence, after code coverage
-                // data has been collected
-                // @codeCoverageIgnoreStart
-                @unlink($path);
-                // @codeCoverageIgnoreEnd
-            },
-        );
-
         self::$sourceMapFile = $path;
 
         return self::$sourceMapFile;
@@ -239,9 +225,13 @@ final class SeparateProcessTestRunner
     /**
      * @throws ProcessIsolationException
      */
-    private function saveConfigurationForChildProcess(): string
+    private function configurationFileForChildProcess(): string
     {
-        $path = $this->createTemporaryFile();
+        if (self::$configurationFile !== null) {
+            return self::$configurationFile;
+        }
+
+        $path = $this->createTemporaryFileSharedByChildProcesses();
 
         if ($path === false) {
             // @codeCoverageIgnoreStart
@@ -255,11 +245,42 @@ final class SeparateProcessTestRunner
             // @codeCoverageIgnoreEnd
         }
 
-        return $path;
+        self::$configurationFile = $path;
+
+        return self::$configurationFile;
     }
 
     private function createTemporaryFile(): false|string
     {
         return tempnam(sys_get_temp_dir(), 'phpunit_');
+    }
+
+    /**
+     * The configuration and the source map do not change while the test run is
+     * in progress: each is written once and shared by all child processes, so
+     * neither can be removed before the test run has ended.
+     */
+    private function createTemporaryFileSharedByChildProcesses(): false|string
+    {
+        $path = $this->createTemporaryFile();
+
+        if ($path === false) {
+            // @codeCoverageIgnoreStart
+            return false;
+            // @codeCoverageIgnoreEnd
+        }
+
+        register_shutdown_function(
+            static function () use ($path): void
+            {
+                // this runs during PHP's shutdown sequence, after code coverage
+                // data has been collected
+                // @codeCoverageIgnoreStart
+                @unlink($path);
+                // @codeCoverageIgnoreEnd
+            },
+        );
+
+        return $path;
     }
 }
