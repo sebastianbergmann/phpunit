@@ -14,6 +14,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
+use ReflectionMethod;
+use ReflectionProperty;
 
 #[CoversClass(Facade::class)]
 #[Small]
@@ -28,6 +30,27 @@ final class FacadeTest extends TestCase
             new class implements Subscriber
             {},
         );
+    }
+
+    public function testUsesTheIsolationDispatcherOfAFacadeThatWasInitializedForIsolation(): void
+    {
+        // In a process whose event facade was initialized for isolation — the
+        // worker process of a parallel test run, for example — the emitter
+        // dispatches to the isolation dispatcher, so the collection windows
+        // must be opened on that dispatcher and not on the deferring one.
+        $facade = new Facade;
+
+        $dispatcher = new CollectingDispatcher(
+            new DirectDispatcher(new ReflectionMethod(Facade::class, 'typeMap')->invoke($facade)),
+        );
+
+        new ReflectionProperty(Facade::class, 'isolationDispatcher')->setValue($facade, $dispatcher);
+
+        $facade->startCollectingEvents();
+
+        $this->expectException(EventsAreAlreadyBeingCollectedException::class);
+
+        $dispatcher->startCollectingEvents();
     }
 
     public function testTracerRegistrationDoesNotWorkWhenEventFacadeIsSealed(): void

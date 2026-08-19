@@ -725,7 +725,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem,
         );
 
-        $reason  = ChildProcessReason::TestRequiringProcessIsolation;
+        $reason  = ChildProcessReason::ParallelWorker;
         $message = 'message';
 
         $emitter->childProcessErrored($reason, $message);
