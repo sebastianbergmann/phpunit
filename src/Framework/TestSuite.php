@@ -425,7 +425,18 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
     }
 
     /**
-     * Returns the tests as an enumeration.
+     * Returns the tests aggregated by this test suite: all of them, and not
+     * only those that the test selection has selected.
+     *
+     * The test selection that --filter, --group, --exclude-group, and
+     * --filter-test-id configure is a filter iterator that injectFilter()
+     * puts on the test suite, so it only takes effect while the test suite is
+     * iterated. Iterate the test suite wherever the selected tests are
+     * wanted, as count(), isEmpty(), and the takeTests() that run() uses do.
+     *
+     * The filter accepts every test suite it is asked about and applies the
+     * selection to the tests inside it, so iterating can yield a test suite
+     * that the selection has emptied.
      *
      * @return list<Test>
      */
