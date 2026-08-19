@@ -104,7 +104,6 @@ final class SubscriberTest extends AbstractEventTestCase
         $subscriber = new TestRunnerExecutionAbortedSubscriber($handler);
         $subscriber->notify(new ExecutionAborted($this->telemetryInfo()));
 
-        $handler->testSuiteStarted();
-        $handler->testSuiteFinished();
+        $handler->testRunnerExecutionFinished();
     }
 }

@@ -224,7 +224,6 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
 
         $test = $this->testValueObject();
 
-        $handler->testSuiteStarted();
         $handler->testFailed(
             new Failed(
                 $this->telemetryInfo(),
@@ -233,7 +232,7 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
                 null,
             ),
         );
-        $handler->testSuiteFinished();
+        $handler->testRunnerExecutionFinished();
 
         $loaded = new DefaultTestRunHistory($file);
         $loaded->load();
@@ -261,7 +260,6 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
 
         $test = $this->testValueObject();
 
-        $handler->testSuiteStarted();
         $handler->testFailed(
             new Failed(
                 $this->telemetryInfo(),
@@ -271,7 +269,7 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
             ),
         );
         $handler->testRunnerExecutionAborted();
-        $handler->testSuiteFinished();
+        $handler->testRunnerExecutionFinished();
 
         $loaded = new DefaultTestRunHistory($file);
         $loaded->load();
