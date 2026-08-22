@@ -251,17 +251,17 @@
         },
         {
             "name": "tomasvotruba/type-coverage",
-            "version": "2.3.0",
-            "version_normalized": "2.3.0.0",
+            "version": "2.3.4",
+            "version_normalized": "2.3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TomasVotruba/type-coverage.git",
-                "reference": "7ba48c1bf3bbb7ffe99caacc7017bae5ee72d644"
+                "reference": "7b4aec57af15514dac9a3c5a9671da501444ecd0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TomasVotruba/type-coverage/zipball/7ba48c1bf3bbb7ffe99caacc7017bae5ee72d644",
-                "reference": "7ba48c1bf3bbb7ffe99caacc7017bae5ee72d644",
+                "url": "https://api.github.com/repos/TomasVotruba/type-coverage/zipball/7b4aec57af15514dac9a3c5a9671da501444ecd0",
+                "reference": "7b4aec57af15514dac9a3c5a9671da501444ecd0",
                 "shasum": ""
             },
             "require": {
@@ -270,23 +270,24 @@
                 "webmozart/assert": "^1.11 || ^2.1"
             },
             "require-dev": {
+                "doctrine/collections": "^2.3",
                 "phpstan/extension-installer": "^1.4",
                 "phpunit/phpunit": "^13.2",
-                "rector/jack": "^1.0",
+                "rector/jack": "^1.1",
                 "rector/rector": "^2.5",
                 "shipmonk/composer-dependency-analyser": "^1.8",
                 "symfony/dom-crawler": "^8.1",
+                "symfony/form": "^8.1",
                 "symplify/easy-coding-standard": "^13.2",
                 "tomasvotruba/unused-public": "^2.2",
                 "tracy/tracy": "^2.12"
             },
-            "time": "2026-07-29T20:32:37+00:00",
+            "time": "2026-08-18T07:48:32+00:00",
             "type": "phpstan-extension",
             "extra": {
                 "phpstan": {
                     "includes": [
-                        "config/extension.neon",
-                        "packages/type-perfect/config/extension.neon"
+                        "config/extension.neon"
                     ]
                 }
             },
@@ -308,7 +309,7 @@
             ],
             "support": {
                 "issues": "https://github.com/TomasVotruba/type-coverage/issues",
-                "source": "https://github.com/TomasVotruba/type-coverage/tree/2.3.0"
+                "source": "https://github.com/TomasVotruba/type-coverage/tree/2.3.4"
             },
             "funding": [
                 {
