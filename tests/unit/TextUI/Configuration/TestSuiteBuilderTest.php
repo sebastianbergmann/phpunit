@@ -22,7 +22,6 @@ use Closure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
-use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\TestIndex\TestFileSkipper;
 use PHPUnit\TextUI\CliArguments\Builder as CliConfigurationBuilder;
@@ -61,7 +60,6 @@ final class TestSuiteBuilderTest extends TestCase
         $this->directories = [];
     }
 
-    #[TestDox('Loads every test file when no test file skipper is used')]
     public function testLoadsEveryTestFileWhenNoTestFileSkipperIsUsed(): void
     {
         $directory = $this->directory();
@@ -73,8 +71,7 @@ final class TestSuiteBuilderTest extends TestCase
         $this->assertSame(1, $testSuite->count());
     }
 
-    #[TestDox('Does not load a test file that cannot contribute a test to the run')]
-    public function testDoesNotLoadTestFileThatCanBeSkipped(): void
+    public function testDoesNotLoadATestFileThatCannotContributeATestToTheRun(): void
     {
         $directory = $this->directory();
 
@@ -101,8 +98,35 @@ final class TestSuiteBuilderTest extends TestCase
         $this->assertSame(0, $testSuite->count());
     }
 
-    #[TestDox('Loads a test file through the test file skipper, so that a file that cannot be loaded is not remembered')]
-    public function testLoadsTestFileThroughTestFileSkipper(): void
+    public function testDoesNotLoadATestFileThatIsNamedOnTheCommandLineNextToAnotherOneAndCannotContributeATestToTheRun(): void
+    {
+        $directory = $this->directory();
+
+        $loaded  = $this->writeTestClass($directory, 'LoadedByBuilder');
+        $skipped = $this->writeTestClass($directory, 'SkippedByBuilder');
+
+        $skipper = $this->createMock(TestFileSkipper::class);
+
+        $skipper
+            ->method('canSkipLoading')
+            ->willReturnCallback(static fn (string $file): bool => $file === $skipped);
+
+        $skipper
+            ->expects($this->once())
+            ->method('record')
+            ->willReturnCallback(static fn (string $file, Closure $load): mixed => $load());
+
+        $skipper
+            ->expects($this->once())
+            ->method('persist')
+            ->seal();
+
+        $testSuite = new TestSuiteBuilder($skipper)->build($this->configurationFor($loaded, $skipped));
+
+        $this->assertSame(1, $testSuite->count());
+    }
+
+    public function testLoadsATestFileThroughTheTestFileSkipperSoThatAFileThatCannotBeLoadedIsNotRemembered(): void
     {
         $directory = $this->directory();
 
@@ -128,13 +152,13 @@ final class TestSuiteBuilderTest extends TestCase
     }
 
     /**
-     * @param non-empty-string $directory
+     * @param non-empty-string ...$paths
      */
-    private function configurationFor(string $directory): Configuration
+    private function configurationFor(string ...$paths): Configuration
     {
         return (new Merger)->merge(
             // the first parameter is the name of the script that was invoked
-            (new CliConfigurationBuilder)->fromParameters(['phpunit', $directory]),
+            (new CliConfigurationBuilder)->fromParameters(['phpunit', ...$paths]),
             DefaultConfiguration::create(),
         );
     }
