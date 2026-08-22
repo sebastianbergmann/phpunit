@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 13.4 release series are documented in this fi
 
 ### Added
 
+* [#6863](https://github.com/sebastianbergmann/phpunit/issues/6863): Cache which tests a test file contains
 * `--coverage-jsonl` CLI option and `<jsonl>` element for the XML configuration file to write a code coverage report in JSONL format, one JSON object per line, that reports uncovered code rather than every executable line
 
 [13.4.0]: https://github.com/sebastianbergmann/phpunit/compare/13.3...main
