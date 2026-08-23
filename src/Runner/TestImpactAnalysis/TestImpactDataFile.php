@@ -13,6 +13,7 @@ use const DIRECTORY_SEPARATOR;
 use const LOCK_EX;
 use const PHP_VERSION_ID;
 use function array_key_exists;
+use function array_search;
 use function assert;
 use function count;
 use function dirname;
@@ -25,6 +26,7 @@ use function is_int;
 use function is_string;
 use function json_decode;
 use function json_encode;
+use function sort;
 use PHPUnit\Runner\DirectoryDoesNotExistException;
 use PHPUnit\Runner\Exception;
 use PHPUnit\Runner\TestIndex\FileHasher;
@@ -73,6 +75,53 @@ final class TestImpactDataFile
         }
 
         $this->hasher = $hasher;
+    }
+
+    /**
+     * The tests that are recorded as having executed the source file.
+     *
+     * A file that cannot be hashed, because it is no longer there, is treated
+     * as a file that changed: every test that executed it executed a version
+     * of it that no longer exists.
+     *
+     * @param non-empty-string $file
+     */
+    public function testsThatExecuted(string $file): RecordedTests
+    {
+        [$files, $versions, $tests] = $this->read();
+
+        $position = array_search($file, $files, true);
+
+        if ($position === false) {
+            return RecordedTests::from([], []);
+        }
+
+        $hash                                  = $this->hasher->hash($file);
+        $thatExecutedTheFileAsItIsNow          = [];
+        $thatExecutedAnEarlierVersionOfTheFile = [];
+
+        foreach ($tests as $test => $versionsOfTest) {
+            foreach ($versionsOfTest as $versionPosition) {
+                assert(isset($versions[$versionPosition]));
+
+                if ($versions[$versionPosition][0] !== $position) {
+                    continue;
+                }
+
+                if ($hash !== null && $versions[$versionPosition][1] === $hash) {
+                    $thatExecutedTheFileAsItIsNow[] = $test;
+                } else {
+                    $thatExecutedAnEarlierVersionOfTheFile[] = $test;
+                }
+
+                break;
+            }
+        }
+
+        sort($thatExecutedTheFileAsItIsNow);
+        sort($thatExecutedAnEarlierVersionOfTheFile);
+
+        return RecordedTests::from($thatExecutedTheFileAsItIsNow, $thatExecutedAnEarlierVersionOfTheFile);
     }
 
     /**
