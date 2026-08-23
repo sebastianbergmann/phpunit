@@ -34,24 +34,35 @@ final readonly class RecordedTests
      * @var list<non-empty-string>
      */
     private array $thatExecutedAnEarlierVersionOfTheFile;
+    private Provenance $provenance;
 
     /**
      * @param list<non-empty-string> $thatExecutedTheFileAsItIsNow
      * @param list<non-empty-string> $thatExecutedAnEarlierVersionOfTheFile
      */
-    public static function from(array $thatExecutedTheFileAsItIsNow, array $thatExecutedAnEarlierVersionOfTheFile): self
+    public static function from(array $thatExecutedTheFileAsItIsNow, array $thatExecutedAnEarlierVersionOfTheFile, Provenance $provenance): self
     {
-        return new self($thatExecutedTheFileAsItIsNow, $thatExecutedAnEarlierVersionOfTheFile);
+        return new self($thatExecutedTheFileAsItIsNow, $thatExecutedAnEarlierVersionOfTheFile, $provenance);
     }
 
     /**
      * @param list<non-empty-string> $thatExecutedTheFileAsItIsNow
      * @param list<non-empty-string> $thatExecutedAnEarlierVersionOfTheFile
      */
-    private function __construct(array $thatExecutedTheFileAsItIsNow, array $thatExecutedAnEarlierVersionOfTheFile)
+    private function __construct(array $thatExecutedTheFileAsItIsNow, array $thatExecutedAnEarlierVersionOfTheFile, Provenance $provenance)
     {
         $this->thatExecutedTheFileAsItIsNow          = $thatExecutedTheFileAsItIsNow;
         $this->thatExecutedAnEarlierVersionOfTheFile = $thatExecutedAnEarlierVersionOfTheFile;
+        $this->provenance                            = $provenance;
+    }
+
+    /**
+     * Whether these tests were derived from the code coverage targets the
+     * tests declare instead of from what the tests were observed to execute.
+     */
+    public function wereDerivedFromCoverageTargets(): bool
+    {
+        return $this->provenance === Provenance::CoverageTargets;
     }
 
     /**
