@@ -9,11 +9,19 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
+use const DIRECTORY_SEPARATOR;
+use function array_diff;
+use function array_keys;
+use function basename;
+use function dirname;
 use function file_get_contents;
 use function file_put_contents;
 use function is_array;
+use function is_dir;
 use function realpath;
+use function scandir;
 use function serialize;
+use function str_starts_with;
 use function unserialize;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 use SplObjectStorage;
@@ -77,10 +85,12 @@ final class SourceMapper
 
         $files = [];
 
-        $directories = $this->aggregateDirectories($source->includeDirectories());
+        $directories         = $this->aggregateDirectories($source->includeDirectories());
+        $excludedDirectories = $this->aggregateDirectories($source->excludeDirectories());
+        $doNotSearch         = $this->directoriesThatDoNotHaveToBeSearched($excludedDirectories, $directories);
 
         foreach ($directories as $path => [$prefixes, $suffixes]) {
-            foreach ((new FileIteratorFacade)->getFilesAsArray($path, $suffixes, $prefixes) as $file) {
+            foreach ((new FileIteratorFacade)->getFilesAsArray($path, $suffixes, $prefixes, $doNotSearch) as $file) {
                 $file = realpath($file);
 
                 if (!$file) {
@@ -101,9 +111,11 @@ final class SourceMapper
             $files[$file] = true;
         }
 
-        $directories = $this->aggregateDirectories($source->excludeDirectories());
+        foreach ($excludedDirectories as $path => [$prefixes, $suffixes]) {
+            if (!$this->hasFilesIn($files, $path)) {
+                continue;
+            }
 
-        foreach ($directories as $path => [$prefixes, $suffixes]) {
             foreach ((new FileIteratorFacade)->getFilesAsArray($path, $suffixes, $prefixes) as $file) {
                 $file = realpath($file);
 
@@ -136,6 +148,106 @@ final class SourceMapper
         self::$files[$source] = $files;
 
         return $files;
+    }
+
+    /**
+     * @param array<string,array{list<string>,list<string>}> $excludedDirectories
+     * @param array<string,array{list<string>,list<string>}> $includedDirectories
+     *
+     * @return list<string>
+     */
+    private function directoriesThatDoNotHaveToBeSearched(array $excludedDirectories, array $includedDirectories): array
+    {
+        $directories = [];
+
+        foreach ($excludedDirectories as $path => [$excludedPrefixes, $excludedSuffixes]) {
+            $path = realpath($path);
+
+            if ($path === false) {
+                continue;
+            }
+
+            foreach ($includedDirectories as [$prefixes, $suffixes]) {
+                if (!$this->excludesAll($excludedPrefixes, $prefixes) || !$this->excludesAll($excludedSuffixes, $suffixes)) {
+                    continue 2;
+                }
+            }
+
+            if ($this->hasSiblingWithSameNamePrefix($path)) {
+                continue;
+            }
+
+            $directories[] = $path;
+        }
+
+        return $directories;
+    }
+
+    /**
+     * @param list<string> $excludedFilters
+     * @param list<string> $includedFilters
+     */
+    private function excludesAll(array $excludedFilters, array $includedFilters): bool
+    {
+        if ($excludedFilters === []) {
+            return true;
+        }
+
+        if ($includedFilters === []) {
+            return false;
+        }
+
+        return array_diff($includedFilters, $excludedFilters) === [];
+    }
+
+    /**
+     * @param array<non-empty-string, true> $files
+     */
+    private function hasFilesIn(array $files, string $directory): bool
+    {
+        $directory = realpath($directory);
+
+        if ($directory === false) {
+            return false;
+        }
+
+        $directory .= DIRECTORY_SEPARATOR;
+
+        foreach (array_keys($files) as $file) {
+            if (str_starts_with($file, $directory)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Directories are excluded by path prefix, so excluding "tests" would exclude "tests-integration" as well.
+     */
+    private function hasSiblingWithSameNamePrefix(string $directory): bool
+    {
+        $entries = scandir(dirname($directory));
+
+        // @codeCoverageIgnoreStart
+        if ($entries === false) {
+            return true;
+        }
+        // @codeCoverageIgnoreEnd
+
+        $name = basename($directory);
+
+        foreach ($entries as $entry) {
+            if ($entry === $name || $entry === '.' || $entry === '..') {
+                continue;
+            }
+
+            if (str_starts_with($entry, $name) && is_dir(dirname($directory) . DIRECTORY_SEPARATOR . $entry)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 ### Fixed
 
 * [#6904](https://github.com/sebastianbergmann/phpunit/issues/6904): `SourceMap` is built in child process even though `identifyIssueTrigger` is disabled
+* Directories that are excluded from the source are searched when the source map is built, which aborts the test run when such a directory cannot be read
 
 ## [12.5.33] - 2026-07-28
 
