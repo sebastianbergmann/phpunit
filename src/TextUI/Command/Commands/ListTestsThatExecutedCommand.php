@@ -53,10 +53,21 @@ final readonly class ListTestsThatExecutedCommand implements Command
 
         $tests = $this->testImpactDataFile->testsThatExecuted($file);
 
+        /*
+         * What was recorded from the code coverage targets a test declares is
+         * not an observation, and must not be reported as one.
+         */
+        $what = 'that executed';
+
+        if ($tests->wereDerivedFromCoverageTargets()) {
+            $what = 'whose code coverage targets name';
+        }
+
         if ($tests->isEmpty()) {
             return Result::from(
                 sprintf(
-                    'No test that executed %s is recorded' . PHP_EOL,
+                    'No test %s %s is recorded' . PHP_EOL,
+                    $what,
                     $file,
                 ),
             );
@@ -64,11 +75,11 @@ final readonly class ListTestsThatExecutedCommand implements Command
 
         return Result::from(
             $this->listOf(
-                sprintf('Tests that executed %s as it is now:', $file),
+                sprintf('Tests %s %s as it is now:', $what, $file),
                 $tests->thatExecutedTheFileAsItIsNow(),
             ) .
             $this->listOf(
-                sprintf('Tests that executed an earlier version of %s:', $file),
+                sprintf('Tests %s an earlier version of %s:', $what, $file),
                 $tests->thatExecutedAnEarlierVersionOfTheFile(),
             ),
         );
