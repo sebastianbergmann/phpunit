@@ -170,6 +170,7 @@
   [32m--do-not-cache-test-index           [0m Do not write test index to cache file
   [32m--record-test-impact-data           [0m Record test impact data
   [32m--do-not-record-test-impact-data    [0m Do not record test impact data
+  [32m--list-tests-that-executed [36m<file>[0m   [0m List tests that executed <file>
 
   [32m--warn-when-php-is-not-configured-for-development[0m
                                        Trigger a test runner warning when PHP

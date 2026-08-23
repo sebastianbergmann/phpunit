@@ -277,6 +277,26 @@ final class BuilderTest extends TestCase
         $configuration->recordTestImpactData();
     }
 
+    #[TestDox('--list-tests-that-executed <file>')]
+    public function testListTestsThatExecuted(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--list-tests-that-executed', 'src/Foo.php']);
+
+        $this->assertTrue($configuration->hasListTestsThatExecuted());
+        $this->assertSame('src/Foo.php', $configuration->listTestsThatExecuted());
+    }
+
+    public function testListTestsThatExecutedMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasListTestsThatExecuted());
+
+        $this->expectException(Exception::class);
+
+        $configuration->listTestsThatExecuted();
+    }
+
     public function testCacheTestIndexMayNotBeConfigured(): void
     {
         $configuration = (new Builder)->fromParameters([]);
