@@ -67,7 +67,11 @@ use PHPUnit\Runner\GarbageCollection\GarbageCollectionHandler;
 use PHPUnit\Runner\IssueTriggerResolver\Resolver;
 use PHPUnit\Runner\PhpConfiguration\PhpConfigurationChecker;
 use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
+use PHPUnit\Runner\TestImpactAnalysis\DefaultTestImpactData;
+use PHPUnit\Runner\TestImpactAnalysis\Provenance;
+use PHPUnit\Runner\TestImpactAnalysis\TestImpactData;
 use PHPUnit\Runner\TestImpactAnalysis\TestImpactDataFile;
+use PHPUnit\Runner\TestImpactAnalysis\TestImpactDataFromCoverageTargets;
 use PHPUnit\Runner\TestIndex\DefaultTestFileSkipper;
 use PHPUnit\Runner\TestIndex\GroupPruner;
 use PHPUnit\Runner\TestIndex\NameFilterPruner;
@@ -247,6 +251,8 @@ final readonly class Application
 
             $this->warnAboutTestImpactDataThatCannotBeRecorded($configuration);
 
+            $testImpactData = $this->deriveTestImpactDataFromCoverageTargets($configuration, $testSuite);
+
             $coverageInitializationStatus = CodeCoverage::instance()->init(
                 $configuration,
                 CodeCoverageFilterRegistry::instance(),
@@ -279,7 +285,7 @@ final readonly class Application
 
             $duration = $timer->stop();
 
-            $this->persistTestImpactData($configuration);
+            $this->persistTestImpactData($configuration, $testImpactData);
 
             $testDoxResult = null;
 
@@ -800,16 +806,64 @@ final readonly class Application
         );
     }
 
-    private function persistTestImpactData(Configuration $configuration): void
+    /**
+     * What each test depends on is worked out from the code coverage targets it
+     * declares before the tests are run: it does not depend on running them,
+     * and it is worked out for every test that was selected for this run, and
+     * not only for the tests that end up being executed.
+     */
+    private function deriveTestImpactDataFromCoverageTargets(Configuration $configuration, TestSuite $testSuite): ?TestImpactData
     {
+        if (!$configuration->deriveTestImpactDataFromCoverageTargets() || !$configuration->hasCacheDirectory()) {
+            return null;
+        }
+
+        if (!$configuration->strictCoverage()) {
+            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                'Test impact data derived from code coverage targets is only as complete as those targets are, ' .
+                'and they are not checked because tests that execute code they do not declare are not considered risky',
+            );
+        }
+
+        CodeCoverageFilterRegistry::instance()->init($configuration, true);
+
+        $staticAnalysisCacheDirectory = null;
+
+        if ($configuration->hasCoverageCacheDirectory()) {
+            $staticAnalysisCacheDirectory = $configuration->coverageCacheDirectory();
+        }
+
+        $testImpactData = new DefaultTestImpactData;
+
+        TestImpactDataFromCoverageTargets::using(
+            CodeCoverageFilterRegistry::instance()->get(),
+            $staticAnalysisCacheDirectory,
+            !$configuration->disableCodeCoverageIgnore(),
+            $configuration->ignoreDeprecatedCodeUnitsFromCodeCoverage(),
+        )->record($testSuite->collect(), $testImpactData);
+
+        return $testImpactData;
+    }
+
+    private function persistTestImpactData(Configuration $configuration, ?TestImpactData $testImpactData): void
+    {
+        if ($testImpactData !== null) {
+            $this->persist($configuration, $testImpactData, Provenance::CoverageTargets);
+
+            return;
+        }
+
         if (!CodeCoverage::instance()->isRecordingTestImpactData()) {
             return;
         }
 
+        $this->persist($configuration, CodeCoverage::instance()->testImpactData(), Provenance::ObservedExecution);
+    }
+
+    private function persist(Configuration $configuration, TestImpactData $testImpactData, Provenance $provenance): void
+    {
         try {
-            new TestImpactDataFile($configuration->cacheDirectory())->persist(
-                CodeCoverage::instance()->testImpactData(),
-            );
+            new TestImpactDataFile($configuration->cacheDirectory())->persist($testImpactData, $provenance);
         } catch (RunnerException $e) {
             $message = $e->getMessage();
 

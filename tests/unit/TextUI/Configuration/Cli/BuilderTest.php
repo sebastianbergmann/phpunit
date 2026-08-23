@@ -277,6 +277,35 @@ final class BuilderTest extends TestCase
         $configuration->recordTestImpactData();
     }
 
+    #[TestDox('--derive-test-impact-data-from-coverage-targets')]
+    public function testDeriveTestImpactDataFromCoverageTargets(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--derive-test-impact-data-from-coverage-targets']);
+
+        $this->assertTrue($configuration->hasDeriveTestImpactDataFromCoverageTargets());
+        $this->assertTrue($configuration->deriveTestImpactDataFromCoverageTargets());
+    }
+
+    #[TestDox('--do-not-derive-test-impact-data-from-coverage-targets')]
+    public function testDoNotDeriveTestImpactDataFromCoverageTargets(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--do-not-derive-test-impact-data-from-coverage-targets']);
+
+        $this->assertTrue($configuration->hasDeriveTestImpactDataFromCoverageTargets());
+        $this->assertFalse($configuration->deriveTestImpactDataFromCoverageTargets());
+    }
+
+    public function testDeriveTestImpactDataFromCoverageTargetsMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasDeriveTestImpactDataFromCoverageTargets());
+
+        $this->expectException(Exception::class);
+
+        $configuration->deriveTestImpactDataFromCoverageTargets();
+    }
+
     #[TestDox('--list-tests-that-executed <file>')]
     public function testListTestsThatExecuted(): void
     {

@@ -49,35 +49,39 @@ final class TestImpactDataFileTest extends TestCase
     public static function provideUnusableData(): array
     {
         $usable = [
-            'version'  => 1,
-            'phpunit'  => Version::id(),
-            'php'      => PHP_VERSION_ID,
-            'files'    => ['/src/Foo.php'],
-            'versions' => [[0, 'a-hash']],
-            'tests'    => ['FooTest::testOne' => [0]],
+            'version'    => 2,
+            'phpunit'    => Version::id(),
+            'php'        => PHP_VERSION_ID,
+            'provenance' => 'observed-execution',
+            'files'      => ['/src/Foo.php'],
+            'versions'   => [[0, 'a-hash']],
+            'tests'      => ['FooTest::testOne' => [0]],
         ];
 
         return [
-            'written by another version of PHPUnit' => [['phpunit' => 'another-version'] + $usable],
-            'written by another version of PHP'     => [['php' => PHP_VERSION_ID - 1] + $usable],
-            'written in another format'             => [['version' => 0] + $usable],
-            'without files'                         => [self::withoutKey($usable, 'files')],
-            'without versions'                      => [self::withoutKey($usable, 'versions')],
-            'without tests'                         => [self::withoutKey($usable, 'tests')],
-            'with files that are not an array'      => [['files' => 'not-an-array'] + $usable],
-            'with versions that are not an array'   => [['versions' => 'not-an-array'] + $usable],
-            'with tests that are not an array'      => [['tests' => 'not-an-array'] + $usable],
-            'with files that are not a list'        => [['files' => ['a-key' => '/src/Foo.php']] + $usable],
-            'with a file that is not a string'      => [['files' => [1]] + $usable],
-            'with an empty file name'               => [['files' => ['']] + $usable],
-            'with a version that is not a pair'     => [['versions' => [[0]]] + $usable],
-            'with a version of an unknown file'     => [['versions' => [[1, 'a-hash']]] + $usable],
-            'with a hash that is not a string'      => [['versions' => [[0, 1]]] + $usable],
-            'with an empty hash'                    => [['versions' => [[0, '']]] + $usable],
-            'with an empty test name'               => [['tests' => ['' => [0]]] + $usable],
-            'with a test that is not a list'        => [['tests' => ['FooTest::testOne' => 0]] + $usable],
-            'with an unknown version'               => [['tests' => ['FooTest::testOne' => [1]]] + $usable],
-            'with a version that is not an integer' => [['tests' => ['FooTest::testOne' => ['0']]] + $usable],
+            'written by another version of PHPUnit'  => [['phpunit' => 'another-version'] + $usable],
+            'written by another version of PHP'      => [['php' => PHP_VERSION_ID - 1] + $usable],
+            'written in another format'              => [['version' => 0] + $usable],
+            'without a provenance'                   => [self::withoutKey($usable, 'provenance')],
+            'with a provenance that is not a string' => [['provenance' => 1] + $usable],
+            'with an unknown provenance'             => [['provenance' => 'guesswork'] + $usable],
+            'without files'                          => [self::withoutKey($usable, 'files')],
+            'without versions'                       => [self::withoutKey($usable, 'versions')],
+            'without tests'                          => [self::withoutKey($usable, 'tests')],
+            'with files that are not an array'       => [['files' => 'not-an-array'] + $usable],
+            'with versions that are not an array'    => [['versions' => 'not-an-array'] + $usable],
+            'with tests that are not an array'       => [['tests' => 'not-an-array'] + $usable],
+            'with files that are not a list'         => [['files' => ['a-key' => '/src/Foo.php']] + $usable],
+            'with a file that is not a string'       => [['files' => [1]] + $usable],
+            'with an empty file name'                => [['files' => ['']] + $usable],
+            'with a version that is not a pair'      => [['versions' => [[0]]] + $usable],
+            'with a version of an unknown file'      => [['versions' => [[1, 'a-hash']]] + $usable],
+            'with a hash that is not a string'       => [['versions' => [[0, 1]]] + $usable],
+            'with an empty hash'                     => [['versions' => [[0, '']]] + $usable],
+            'with an empty test name'                => [['tests' => ['' => [0]]] + $usable],
+            'with a test that is not a list'         => [['tests' => ['FooTest::testOne' => 0]] + $usable],
+            'with an unknown version'                => [['tests' => ['FooTest::testOne' => [1]]] + $usable],
+            'with a version that is not an integer'  => [['tests' => ['FooTest::testOne' => ['0']]] + $usable],
         ];
     }
 
@@ -110,11 +114,11 @@ final class TestImpactDataFileTest extends TestCase
         $data = new DefaultTestImpactData;
         $data->record('FooTest::testOne', [$file]);
 
-        new TestImpactDataFile($directory)->persist($data);
+        new TestImpactDataFile($directory)->persist($data, Provenance::ObservedExecution);
 
         $persisted = $this->persistedData($directory);
 
-        $this->assertSame(1, $persisted['version']);
+        $this->assertSame(2, $persisted['version']);
         $this->assertSame(Version::id(), $persisted['phpunit']);
         $this->assertSame(PHP_VERSION_ID, $persisted['php']);
         $this->assertSame([$file], $persisted['files']);
@@ -129,7 +133,7 @@ final class TestImpactDataFileTest extends TestCase
         $data = new DefaultTestImpactData;
         $data->record('FooTest::testOne', [$file]);
 
-        new TestImpactDataFile($directory)->persist($data);
+        new TestImpactDataFile($directory)->persist($data, Provenance::ObservedExecution);
 
         $this->assertSame($directory . DIRECTORY_SEPARATOR . 'Foo.php', $this->persistedData($directory)['files'][0]);
     }
@@ -142,7 +146,7 @@ final class TestImpactDataFileTest extends TestCase
         $data = new DefaultTestImpactData;
         $data->record('FooTest::testOne', [$file]);
 
-        new TestImpactDataFile($directory . DIRECTORY_SEPARATOR . 'named-file')->persist($data);
+        new TestImpactDataFile($directory . DIRECTORY_SEPARATOR . 'named-file')->persist($data, Provenance::ObservedExecution);
 
         $this->assertFileExists($directory . DIRECTORY_SEPARATOR . 'named-file');
         $this->assertFileDoesNotExist($directory . DIRECTORY_SEPARATOR . 'test-impact-data');
@@ -158,12 +162,12 @@ final class TestImpactDataFileTest extends TestCase
         $first->record('FooTest::testOne', [$foo]);
         $first->record('BarTest::testOne', [$bar]);
 
-        new TestImpactDataFile($directory)->persist($first);
+        new TestImpactDataFile($directory)->persist($first, Provenance::ObservedExecution);
 
         $second = new DefaultTestImpactData;
         $second->record('BarTest::testOne', [$bar, $foo]);
 
-        new TestImpactDataFile($directory)->persist($second);
+        new TestImpactDataFile($directory)->persist($second, Provenance::ObservedExecution);
 
         $this->assertSame(
             [
@@ -184,14 +188,14 @@ final class TestImpactDataFileTest extends TestCase
         $first->record('FooTest::testOne', [$foo]);
         $first->record('BarTest::testOne', [$foo]);
 
-        new TestImpactDataFile($directory)->persist($first);
+        new TestImpactDataFile($directory)->persist($first, Provenance::ObservedExecution);
 
         $this->writeSourceFile($directory, 'Foo', 'second');
 
         $second = new DefaultTestImpactData;
         $second->record('BarTest::testOne', [$foo]);
 
-        new TestImpactDataFile($directory)->persist($second);
+        new TestImpactDataFile($directory)->persist($second, Provenance::ObservedExecution);
 
         $persisted = $this->persistedData($directory);
 
@@ -212,14 +216,14 @@ final class TestImpactDataFileTest extends TestCase
         $first = new DefaultTestImpactData;
         $first->record('FooTest::testOne', [$foo]);
 
-        new TestImpactDataFile($directory)->persist($first);
+        new TestImpactDataFile($directory)->persist($first, Provenance::ObservedExecution);
 
         $this->writeSourceFile($directory, 'Foo', 'second');
 
         $second = new DefaultTestImpactData;
         $second->record('FooTest::testOne', [$foo]);
 
-        new TestImpactDataFile($directory)->persist($second);
+        new TestImpactDataFile($directory)->persist($second, Provenance::ObservedExecution);
 
         $this->assertCount(1, $this->persistedData($directory)['versions']);
         $this->assertCount(1, $this->persistedData($directory)['files']);
@@ -233,12 +237,12 @@ final class TestImpactDataFileTest extends TestCase
         $first = new DefaultTestImpactData;
         $first->record('FooTest::testOne', [$foo]);
 
-        new TestImpactDataFile($directory)->persist($first);
+        new TestImpactDataFile($directory)->persist($first, Provenance::ObservedExecution);
 
         $second = new DefaultTestImpactData;
         $second->record('FooTest::testOne', [$foo, $directory . DIRECTORY_SEPARATOR . 'DoesNotExist.php']);
 
-        new TestImpactDataFile($directory)->persist($second);
+        new TestImpactDataFile($directory)->persist($second, Provenance::ObservedExecution);
 
         $this->assertSame([], $this->persistedData($directory)['tests']);
     }
@@ -253,7 +257,7 @@ final class TestImpactDataFileTest extends TestCase
         $data = new DefaultTestImpactData;
         $data->record('FooTest::testOne', [$foo]);
 
-        new TestImpactDataFile($directory)->persist($data);
+        new TestImpactDataFile($directory)->persist($data, Provenance::ObservedExecution);
 
         $this->assertSame([['FooTest::testOne', 'Foo.php']], $this->dependencies($this->persistedData($directory)));
     }
@@ -269,7 +273,7 @@ final class TestImpactDataFileTest extends TestCase
         $data = new DefaultTestImpactData;
         $data->record('FooTest::testOne', [$foo]);
 
-        new TestImpactDataFile($directory)->persist($data);
+        new TestImpactDataFile($directory)->persist($data, Provenance::ObservedExecution);
 
         $this->assertSame([['FooTest::testOne', 'Foo.php']], $this->dependencies($this->persistedData($directory)));
     }
@@ -281,7 +285,42 @@ final class TestImpactDataFileTest extends TestCase
 
         $this->expectException(DirectoryDoesNotExistException::class);
 
-        new TestImpactDataFile($file . DIRECTORY_SEPARATOR . 'test-impact-data')->persist(new DefaultTestImpactData);
+        new TestImpactDataFile($file . DIRECTORY_SEPARATOR . 'test-impact-data')->persist(new DefaultTestImpactData, Provenance::ObservedExecution);
+    }
+
+    public function testDiscardsWhatWasRecordedFromSomethingElseThanWhatIsBeingRecorded(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $foo       = $this->writeSourceFile($directory, 'Foo', 'first');
+        $bar       = $this->writeSourceFile($directory, 'Bar', 'first');
+
+        $observed = new DefaultTestImpactData;
+        $observed->record('FooTest::testOne', [$foo]);
+
+        new TestImpactDataFile($directory)->persist($observed, Provenance::ObservedExecution);
+
+        $declared = new DefaultTestImpactData;
+        $declared->record('BarTest::testOne', [$bar]);
+
+        new TestImpactDataFile($directory)->persist($declared, Provenance::CoverageTargets);
+
+        $persisted = $this->persistedData($directory);
+
+        $this->assertSame('coverage-targets', $persisted['provenance']);
+        $this->assertSame([['BarTest::testOne', 'Bar.php']], $this->dependencies($persisted));
+    }
+
+    public function testKnowsThatWhatIsRecordedWasDerivedFromCoverageTargets(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $foo       = $this->writeSourceFile($directory, 'Foo', 'first');
+
+        $data = new DefaultTestImpactData;
+        $data->record('FooTest::testOne', [$foo]);
+
+        new TestImpactDataFile($directory)->persist($data, Provenance::CoverageTargets);
+
+        $this->assertTrue(new TestImpactDataFile($directory)->testsThatExecuted($foo)->wereDerivedFromCoverageTargets());
     }
 
     public function testKnowsNoTestExecutedASourceFileThatWasNeverRecorded(): void
@@ -303,7 +342,7 @@ final class TestImpactDataFileTest extends TestCase
         $data->record('BarTest::testOne', [$bar]);
         $data->record('BothTest::testOne', [$foo, $bar]);
 
-        new TestImpactDataFile($directory)->persist($data);
+        new TestImpactDataFile($directory)->persist($data, Provenance::ObservedExecution);
 
         $tests = new TestImpactDataFile($directory)->testsThatExecuted($foo);
 
@@ -320,14 +359,14 @@ final class TestImpactDataFileTest extends TestCase
         $first->record('FooTest::testOne', [$foo]);
         $first->record('BarTest::testOne', [$foo]);
 
-        new TestImpactDataFile($directory)->persist($first);
+        new TestImpactDataFile($directory)->persist($first, Provenance::ObservedExecution);
 
         $this->writeSourceFile($directory, 'Foo', 'second');
 
         $second = new DefaultTestImpactData;
         $second->record('BarTest::testOne', [$foo]);
 
-        new TestImpactDataFile($directory)->persist($second);
+        new TestImpactDataFile($directory)->persist($second, Provenance::ObservedExecution);
 
         $tests = new TestImpactDataFile($directory)->testsThatExecuted($foo);
 
@@ -343,7 +382,7 @@ final class TestImpactDataFileTest extends TestCase
         $data = new DefaultTestImpactData;
         $data->record('FooTest::testOne', [$foo]);
 
-        new TestImpactDataFile($directory)->persist($data);
+        new TestImpactDataFile($directory)->persist($data, Provenance::ObservedExecution);
 
         unlink($foo);
 

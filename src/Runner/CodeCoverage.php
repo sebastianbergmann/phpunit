@@ -94,8 +94,14 @@ final class CodeCoverage
          * records, though, which is why it is only switched on here when there
          * is a cache directory; the test runner warns about the missing cache
          * directory before this is reached.
+         *
+         * Working out what each test depends on from the code coverage targets
+         * it declares needs no driver at all, and must therefore not be a
+         * reason for collecting code coverage.
          */
-        $this->recordTestImpactData = $configuration->recordTestImpactData() && $configuration->hasCacheDirectory();
+        $this->recordTestImpactData = $configuration->recordTestImpactData() &&
+                                      $configuration->hasCacheDirectory() &&
+                                      !$configuration->deriveTestImpactDataFromCoverageTargets();
 
         $codeCoverageFilterRegistry->init(
             $configuration,
