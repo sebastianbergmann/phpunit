@@ -106,13 +106,14 @@ function __phpunit_run_isolated_test()
         '{processResultFile}',
         '{processResultNonce}' . serialize(
             (object)[
-                'testResult'    => $test->result(),
-                'status'        => $test->status(),
-                'codeCoverage'  => $codeCoverage,
-                'numAssertions' => $test->numberOfAssertionsPerformed(),
-                'output'        => $output,
-                'events'        => $dispatcher->flush(),
-                'passedTests'   => PassedTests::instance()
+                'testResult'     => $test->result(),
+                'status'         => $test->status(),
+                'codeCoverage'   => $codeCoverage,
+                'testImpactData' => CodeCoverage::instance()->testImpactData()->recorded(),
+                'numAssertions'  => $test->numberOfAssertionsPerformed(),
+                'output'         => $output,
+                'events'         => $dispatcher->flush(),
+                'passedTests'    => PassedTests::instance()
             ]
         )
     );

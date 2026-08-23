@@ -48,6 +48,8 @@ final class Builder
         'do-not-record-test-run-history',
         'cache-test-index',
         'do-not-cache-test-index',
+        'record-test-impact-data',
+        'do-not-record-test-impact-data',
         'cache-directory=',
         'check-version',
         'check-php-configuration',
@@ -208,6 +210,7 @@ final class Builder
         ['--cache-result', '--do-not-record-test-run-history'],
         ['--record-test-run-history', '--do-not-cache-result'],
         ['--cache-test-index', '--do-not-cache-test-index'],
+        ['--record-test-impact-data', '--do-not-record-test-impact-data'],
         ['--warn-when-php-is-not-configured-for-development', '--do-not-warn-when-php-is-not-configured-for-development'],
         ['--fail-on-deprecation', '--do-not-fail-on-deprecation'],
         ['--fail-on-self-deprecation', '--do-not-fail-on-self-deprecation'],
@@ -301,6 +304,7 @@ final class Builder
         $cacheDirectory                           = null;
         $recordTestRunHistory                     = null;
         $cacheTestIndex                           = null;
+        $recordTestImpactData                     = null;
         $checkPhpConfiguration                    = false;
         $checkVersion                             = false;
         $colors                                   = null;
@@ -507,6 +511,16 @@ final class Builder
 
                 case '--do-not-cache-test-index':
                     $cacheTestIndex = false;
+
+                    break;
+
+                case '--record-test-impact-data':
+                    $recordTestImpactData = true;
+
+                    break;
+
+                case '--do-not-record-test-impact-data':
+                    $recordTestImpactData = false;
 
                     break;
 
@@ -1623,6 +1637,7 @@ final class Builder
             $withTelemetry,
             $extensions,
             $cacheTestIndex,
+            $recordTestImpactData,
         );
     }
 
