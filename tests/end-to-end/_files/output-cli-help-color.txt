@@ -168,6 +168,8 @@
   [32m--do-not-record-test-run-history    [0m Do not record test run history
   [32m--cache-test-index                  [0m Write test index to cache file
   [32m--do-not-cache-test-index           [0m Do not write test index to cache file
+  [32m--record-test-impact-data           [0m Record test impact data
+  [32m--do-not-record-test-impact-data    [0m Do not record test impact data
 
   [32m--warn-when-php-is-not-configured-for-development[0m
                                        Trigger a test runner warning when PHP

@@ -1284,6 +1284,7 @@ final readonly class Loader
             $this->parsePositiveIntegerAttribute($documentElement, 'diffContext', 3),
             $this->parseBooleanAttribute($documentElement, 'warnWhenPhpIsNotConfiguredForDevelopment', false),
             $this->parseBooleanAttribute($documentElement, 'cacheTestIndex', false),
+            $this->parseBooleanAttribute($documentElement, 'recordTestImpactData', false),
         );
     }
 
