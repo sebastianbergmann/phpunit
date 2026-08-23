@@ -18,6 +18,10 @@ use function sys_get_temp_dir;
 use DateTimeImmutable;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Runner\TestImpactAnalysis\DefaultTestImpactData;
+use PHPUnit\Runner\TestImpactAnalysis\ExecutedFiles;
+use PHPUnit\Runner\TestImpactAnalysis\NullTestImpactData;
+use PHPUnit\Runner\TestImpactAnalysis\TestImpactData;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Output\Printer;
@@ -68,6 +72,8 @@ final class CodeCoverage
     private bool $lastTestContributedToCoverage = false;
     private bool $collectsBranchCoverage        = false;
     private bool $collectsPathCoverage          = false;
+    private bool $recordTestImpactData          = false;
+    private ?TestImpactData $testImpactData     = null;
 
     public static function instance(): self
     {
@@ -80,9 +86,23 @@ final class CodeCoverage
 
     public function init(Configuration $configuration, CodeCoverageFilterRegistry $codeCoverageFilterRegistry, bool $extensionRequiresCodeCoverageCollection): CodeCoverageInitializationStatus
     {
-        $codeCoverageFilterRegistry->init($configuration, $extensionRequiresCodeCoverageCollection);
+        /*
+         * Recording which source files each test executed needs the code
+         * coverage driver, and nothing else: it is a reason of its own for
+         * collecting code coverage, and does not require a code coverage
+         * report to be generated. It does need somewhere to keep what it
+         * records, though, which is why it is only switched on here when there
+         * is a cache directory; the test runner warns about the missing cache
+         * directory before this is reached.
+         */
+        $this->recordTestImpactData = $configuration->recordTestImpactData() && $configuration->hasCacheDirectory();
 
-        if (!$configuration->hasCoverageReport() && !$extensionRequiresCodeCoverageCollection) {
+        $codeCoverageFilterRegistry->init(
+            $configuration,
+            $extensionRequiresCodeCoverageCollection || $this->recordTestImpactData,
+        );
+
+        if (!$configuration->hasCoverageReport() && !$extensionRequiresCodeCoverageCollection && !$this->recordTestImpactData) {
             return CodeCoverageInitializationStatus::NOT_REQUESTED;
         }
 
@@ -100,6 +120,8 @@ final class CodeCoverage
         );
 
         if (!$this->isActive()) {
+            $this->recordTestImpactData = false;
+
             return CodeCoverageInitializationStatus::FAILED;
         }
 
@@ -278,6 +300,10 @@ final class CodeCoverage
 
         $rawData = $this->codeCoverage->stop($append, $status, $covers, $uses, $time);
 
+        if ($this->recordTestImpactData) {
+            $this->recordTestImpactDataFor($this->test);
+        }
+
         if ($this->requireCoverageContribution) {
             $this->lastTestContributedToCoverage = false;
 
@@ -295,6 +321,20 @@ final class CodeCoverage
         }
 
         $this->test = null;
+    }
+
+    public function isRecordingTestImpactData(): bool
+    {
+        return $this->recordTestImpactData;
+    }
+
+    public function testImpactData(): TestImpactData
+    {
+        if ($this->testImpactData === null) {
+            $this->testImpactData = new NullTestImpactData;
+        }
+
+        return $this->testImpactData;
     }
 
     public function lastTestContributedToCoverage(): bool
@@ -561,6 +601,28 @@ final class CodeCoverage
         $this->deactivate();
     }
 
+    /**
+     * A test that was skipped, or that was marked incomplete, stopped before
+     * it executed the code it would have executed. What was collected for it
+     * is not what it depends on, and recording it would make the test look as
+     * if it depended on less than it does.
+     */
+    private function recordTestImpactDataFor(TestCase $test): void
+    {
+        $status = $test->status();
+
+        if ($status->isSkipped() || $status->isIncomplete()) {
+            return;
+        }
+
+        assert($this->codeCoverage !== null);
+
+        $this->testImpactData()->record(
+            $test->valueObjectForEvents()->id(),
+            ExecutedFiles::in($this->codeCoverage->dataNotFilteredUsingTargets()),
+        );
+    }
+
     private function activate(Filter $filter, bool $branchCoverage, bool $pathCoverage, ?string $driverClass = null): void
     {
         try {
@@ -585,6 +647,12 @@ final class CodeCoverage
                 $this->driver,
                 $filter,
             );
+
+            if ($this->recordTestImpactData) {
+                $this->codeCoverage->enableCollectionOfDataNotFilteredUsingTargets();
+
+                $this->testImpactData = new DefaultTestImpactData;
+            }
 
             $this->collectsBranchCoverage = $branchCoverage;
             $this->collectsPathCoverage   = $pathCoverage;

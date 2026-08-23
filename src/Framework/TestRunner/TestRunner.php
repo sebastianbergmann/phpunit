@@ -114,6 +114,21 @@ final class TestRunner
         $collectCodeCoverage = CodeCoverage::instance()->isActive() &&
                                $shouldCodeCoverageBeCollected;
 
+        /*
+         * A test that declares that it covers nothing still executes code, and
+         * what it executed is what test impact analysis has to know about.
+         * What is collected for it must not reach the code coverage report,
+         * though, which is what passing false instead of the code coverage
+         * targets of the test achieves.
+         */
+        if (!$collectCodeCoverage &&
+            CodeCoverage::instance()->isActive() &&
+            CodeCoverage::instance()->isRecordingTestImpactData()) {
+            $collectCodeCoverage = true;
+            $coversTargets       = false;
+            $usesTargets         = null;
+        }
+
         if ($collectCodeCoverage) {
             CodeCoverage::instance()->start($test);
         }

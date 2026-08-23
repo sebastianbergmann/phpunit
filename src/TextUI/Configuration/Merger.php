@@ -85,6 +85,12 @@ final readonly class Merger
             $cacheTestIndex = $xmlConfiguration->phpunit()->cacheTestIndex();
         }
 
+        if ($cliConfiguration->hasRecordTestImpactData()) {
+            $recordTestImpactData = $cliConfiguration->recordTestImpactData();
+        } else {
+            $recordTestImpactData = $xmlConfiguration->phpunit()->recordTestImpactData();
+        }
+
         if ($cliConfiguration->hasWarnWhenPhpIsNotConfiguredForDevelopment()) {
             $warnWhenPhpIsNotConfiguredForDevelopment = $cliConfiguration->warnWhenPhpIsNotConfiguredForDevelopment();
         } else {
@@ -1512,6 +1518,7 @@ final readonly class Merger
             $xmlConfiguration->phpunit()->shortenArraysForExportThreshold(),
             $warnWhenPhpIsNotConfiguredForDevelopment,
             $cacheTestIndex,
+            $recordTestImpactData,
         );
     }
 

@@ -248,6 +248,35 @@ final class BuilderTest extends TestCase
         $this->assertFalse($configuration->cacheTestIndex());
     }
 
+    #[TestDox('--record-test-impact-data')]
+    public function testRecordTestImpactData(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--record-test-impact-data']);
+
+        $this->assertTrue($configuration->hasRecordTestImpactData());
+        $this->assertTrue($configuration->recordTestImpactData());
+    }
+
+    #[TestDox('--do-not-record-test-impact-data')]
+    public function testDoNotRecordTestImpactData(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--do-not-record-test-impact-data']);
+
+        $this->assertTrue($configuration->hasRecordTestImpactData());
+        $this->assertFalse($configuration->recordTestImpactData());
+    }
+
+    public function testRecordTestImpactDataMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasRecordTestImpactData());
+
+        $this->expectException(Exception::class);
+
+        $configuration->recordTestImpactData();
+    }
+
     public function testCacheTestIndexMayNotBeConfigured(): void
     {
         $configuration = (new Builder)->fromParameters([]);
