@@ -284,6 +284,75 @@ final class TestImpactDataFileTest extends TestCase
         new TestImpactDataFile($file . DIRECTORY_SEPARATOR . 'test-impact-data')->persist(new DefaultTestImpactData);
     }
 
+    public function testKnowsNoTestExecutedASourceFileThatWasNeverRecorded(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $foo       = $this->writeSourceFile($directory, 'Foo', 'first');
+
+        $this->assertTrue(new TestImpactDataFile($directory)->testsThatExecuted($foo)->isEmpty());
+    }
+
+    public function testKnowsWhichTestsExecutedASourceFileAsItIsNow(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $foo       = $this->writeSourceFile($directory, 'Foo', 'first');
+        $bar       = $this->writeSourceFile($directory, 'Bar', 'first');
+
+        $data = new DefaultTestImpactData;
+        $data->record('FooTest::testOne', [$foo]);
+        $data->record('BarTest::testOne', [$bar]);
+        $data->record('BothTest::testOne', [$foo, $bar]);
+
+        new TestImpactDataFile($directory)->persist($data);
+
+        $tests = new TestImpactDataFile($directory)->testsThatExecuted($foo);
+
+        $this->assertSame(['BothTest::testOne', 'FooTest::testOne'], $tests->thatExecutedTheFileAsItIsNow());
+        $this->assertSame([], $tests->thatExecutedAnEarlierVersionOfTheFile());
+    }
+
+    public function testKnowsWhichTestsExecutedAnEarlierVersionOfASourceFile(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $foo       = $this->writeSourceFile($directory, 'Foo', 'first');
+
+        $first = new DefaultTestImpactData;
+        $first->record('FooTest::testOne', [$foo]);
+        $first->record('BarTest::testOne', [$foo]);
+
+        new TestImpactDataFile($directory)->persist($first);
+
+        $this->writeSourceFile($directory, 'Foo', 'second');
+
+        $second = new DefaultTestImpactData;
+        $second->record('BarTest::testOne', [$foo]);
+
+        new TestImpactDataFile($directory)->persist($second);
+
+        $tests = new TestImpactDataFile($directory)->testsThatExecuted($foo);
+
+        $this->assertSame(['BarTest::testOne'], $tests->thatExecutedTheFileAsItIsNow());
+        $this->assertSame(['FooTest::testOne'], $tests->thatExecutedAnEarlierVersionOfTheFile());
+    }
+
+    public function testKnowsEveryTestExecutedAnEarlierVersionOfASourceFileThatIsNoLongerThere(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $foo       = $this->writeSourceFile($directory, 'Foo', 'first');
+
+        $data = new DefaultTestImpactData;
+        $data->record('FooTest::testOne', [$foo]);
+
+        new TestImpactDataFile($directory)->persist($data);
+
+        unlink($foo);
+
+        $tests = new TestImpactDataFile($directory)->testsThatExecuted($foo);
+
+        $this->assertSame([], $tests->thatExecutedTheFileAsItIsNow());
+        $this->assertSame(['FooTest::testOne'], $tests->thatExecutedAnEarlierVersionOfTheFile());
+    }
+
     /**
      * @return array{version: int, phpunit: string, php: int, files: list<string>, versions: list<array{0: int, 1: string}>, tests: array<string, list<int>>}
      */
