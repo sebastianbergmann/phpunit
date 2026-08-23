@@ -275,6 +275,7 @@ final class Help
                 ['arg' => '--do-not-cache-test-index', 'desc' => 'Do not write test index to cache file'],
                 ['arg' => '--record-test-impact-data', 'desc' => 'Record test impact data'],
                 ['arg' => '--do-not-record-test-impact-data', 'desc' => 'Do not record test impact data'],
+                ['arg' => '--list-tests-that-executed <file>', 'desc' => 'List tests that executed <file>'],
                 ['spacer' => ''],
 
                 ['arg' => '--warn-when-php-is-not-configured-for-development', 'desc' => 'Trigger a test runner warning when PHP is not configured for development'],
