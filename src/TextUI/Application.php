@@ -59,6 +59,7 @@ use PHPUnit\Runner\DeprecationCollector\Facade as DeprecationCollector;
 use PHPUnit\Runner\DeprecationFilter;
 use PHPUnit\Runner\DirectoryDoesNotExistException;
 use PHPUnit\Runner\ErrorHandler;
+use PHPUnit\Runner\Exception as RunnerException;
 use PHPUnit\Runner\Extension\ExtensionBootstrapper;
 use PHPUnit\Runner\Extension\ExtensionCapabilities;
 use PHPUnit\Runner\Extension\ExtensionFacade;
@@ -67,6 +68,7 @@ use PHPUnit\Runner\GarbageCollection\GarbageCollectionHandler;
 use PHPUnit\Runner\IssueTriggerResolver\Resolver;
 use PHPUnit\Runner\PhpConfiguration\PhpConfigurationChecker;
 use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
+use PHPUnit\Runner\TestImpactAnalysis\TestImpactDataFile;
 use PHPUnit\Runner\TestIndex\DefaultTestFileSkipper;
 use PHPUnit\Runner\TestIndex\GroupPruner;
 use PHPUnit\Runner\TestIndex\NameFilterPruner;
@@ -251,6 +253,8 @@ final readonly class Application
                 $this->execute(new ShowHelpCommand(Result::FAILURE));
             }
 
+            $this->warnAboutTestImpactDataThatCannotBeRecorded($configuration);
+
             $coverageInitializationStatus = CodeCoverage::instance()->init(
                 $configuration,
                 CodeCoverageFilterRegistry::instance(),
@@ -282,6 +286,8 @@ final readonly class Application
             }
 
             $duration = $timer->stop();
+
+            $this->persistTestImpactData($configuration);
 
             $testDoxResult = null;
 
@@ -773,6 +779,42 @@ final readonly class Application
         }
 
         return null;
+    }
+
+    /**
+     * What each test executed is only worth recording when there is somewhere
+     * to keep it.
+     */
+    private function warnAboutTestImpactDataThatCannotBeRecorded(Configuration $configuration): void
+    {
+        if (!$configuration->recordTestImpactData() || $configuration->hasCacheDirectory()) {
+            return;
+        }
+
+        $this->emitter->testRunnerTriggeredPhpunitWarning(
+            'Cannot record test impact data because no cache directory is configured',
+        );
+    }
+
+    private function persistTestImpactData(Configuration $configuration): void
+    {
+        if (!CodeCoverage::instance()->isRecordingTestImpactData()) {
+            return;
+        }
+
+        try {
+            new TestImpactDataFile($configuration->cacheDirectory())->persist(
+                CodeCoverage::instance()->testImpactData(),
+            );
+        } catch (RunnerException $e) {
+            $message = $e->getMessage();
+
+            if ($message === '') {
+                $message = 'Cannot persist test impact data'; // @codeCoverageIgnore
+            }
+
+            $this->emitter->testRunnerTriggeredPhpunitWarning($message);
+        }
     }
 
     /**

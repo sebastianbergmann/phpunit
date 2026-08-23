@@ -101,6 +101,8 @@ Execution:
   --do-not-record-test-run-history     Do not record test run history
   --cache-test-index                   Write test index to cache file
   --do-not-cache-test-index            Do not write test index to cache file
+  --record-test-impact-data            Record test impact data
+  --do-not-record-test-impact-data     Do not record test impact data
 
   --warn-when-php-is-not-configured-for-development
                                        Trigger a test runner warning when PHP is not configured for development
