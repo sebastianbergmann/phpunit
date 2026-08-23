@@ -188,6 +188,7 @@ final readonly class DefaultConfiguration extends Configuration
                 0,
                 false,
                 false,
+                false,
                 0,
             ),
             TestSuiteCollection::fromArray([]),
