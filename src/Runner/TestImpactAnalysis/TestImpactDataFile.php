@@ -43,6 +43,11 @@ use PHPUnit\Util\Filesystem;
  * refers to a version that no longer exists executed code that has changed
  * since.
  *
+ * The file also records where what is in it comes from: what a test executed
+ * and what a test declares that it covers and uses are different claims, and
+ * the file is discarded rather than added to when it was written from the
+ * other one.
+ *
  * The file is written for the machine it was written on and cannot be shared
  * with another machine: the source files are named by their absolute path, and
  * the file records the version of PHPUnit and the version of PHP it was
@@ -57,7 +62,7 @@ use PHPUnit\Util\Filesystem;
  */
 final class TestImpactDataFile
 {
-    private const int VERSION             = 1;
+    private const int VERSION             = 2;
     private const string DEFAULT_FILENAME = 'test-impact-data';
     private readonly string $filename;
     private readonly FileHasher $hasher;
@@ -88,12 +93,16 @@ final class TestImpactDataFile
      */
     public function testsThatExecuted(string $file): RecordedTests
     {
-        [$files, $versions, $tests] = $this->read();
+        [$files, $versions, $tests, $provenance] = $this->read();
+
+        if ($provenance === null) {
+            $provenance = Provenance::ObservedExecution;
+        }
 
         $position = array_search($file, $files, true);
 
         if ($position === false) {
-            return RecordedTests::from([], []);
+            return RecordedTests::from([], [], $provenance);
         }
 
         $hash                                  = $this->hasher->hash($file);
@@ -121,7 +130,7 @@ final class TestImpactDataFile
         sort($thatExecutedTheFileAsItIsNow);
         sort($thatExecutedAnEarlierVersionOfTheFile);
 
-        return RecordedTests::from($thatExecutedTheFileAsItIsNow, $thatExecutedAnEarlierVersionOfTheFile);
+        return RecordedTests::from($thatExecutedTheFileAsItIsNow, $thatExecutedAnEarlierVersionOfTheFile, $provenance);
     }
 
     /**
@@ -132,9 +141,15 @@ final class TestImpactDataFile
      *
      * @throws Exception
      */
-    public function persist(TestImpactData $data): void
+    public function persist(TestImpactData $data, Provenance $provenance): void
     {
-        [$files, $versions, $tests] = $this->read();
+        [$files, $versions, $tests, $provenanceOfWhatIsThere] = $this->read();
+
+        if ($provenanceOfWhatIsThere !== null && $provenanceOfWhatIsThere !== $provenance) {
+            $files    = [];
+            $versions = [];
+            $tests    = [];
+        }
 
         $filePositions = [];
 
@@ -193,7 +208,7 @@ final class TestImpactDataFile
             $tests[$test] = $versionsOfTest;
         }
 
-        $this->write($files, $versions, $tests);
+        $this->write($files, $versions, $tests, $provenance);
     }
 
     /**
@@ -207,7 +222,7 @@ final class TestImpactDataFile
      *
      * @throws Exception
      */
-    private function write(array $files, array $versions, array $tests): void
+    private function write(array $files, array $versions, array $tests, Provenance $provenance): void
     {
         if (!Filesystem::createDirectory(dirname($this->filename))) {
             throw new DirectoryDoesNotExistException(dirname($this->filename));
@@ -249,12 +264,13 @@ final class TestImpactDataFile
 
         $json = json_encode(
             [
-                'version'  => self::VERSION,
-                'phpunit'  => Version::id(),
-                'php'      => PHP_VERSION_ID,
-                'files'    => $keptFiles,
-                'versions' => $keptVersions,
-                'tests'    => $keptTests,
+                'version'    => self::VERSION,
+                'phpunit'    => Version::id(),
+                'php'        => PHP_VERSION_ID,
+                'provenance' => $provenance->value,
+                'files'      => $keptFiles,
+                'versions'   => $keptVersions,
+                'tests'      => $keptTests,
             ],
         );
 
@@ -277,11 +293,11 @@ final class TestImpactDataFile
      * cannot be read, or when it was written by a different version of PHPUnit
      * or of PHP.
      *
-     * @return array{0: list<non-empty-string>, 1: list<VersionType>, 2: array<non-empty-string, list<int>>}
+     * @return array{0: list<non-empty-string>, 1: list<VersionType>, 2: array<non-empty-string, list<int>>, 3: ?Provenance}
      */
     private function read(): array
     {
-        $empty = [[], [], []];
+        $empty = [[], [], [], null];
 
         if (!is_file($this->filename)) {
             return $empty;
@@ -299,7 +315,17 @@ final class TestImpactDataFile
             return $empty;
         }
 
-        if (!isset($data['version'], $data['phpunit'], $data['php'], $data['files'], $data['versions'], $data['tests'])) {
+        if (!isset($data['version'], $data['phpunit'], $data['php'], $data['provenance'], $data['files'], $data['versions'], $data['tests'])) {
+            return $empty;
+        }
+
+        if (!is_string($data['provenance'])) {
+            return $empty;
+        }
+
+        $provenance = Provenance::tryFrom($data['provenance']);
+
+        if ($provenance === null) {
             return $empty;
         }
 
@@ -355,6 +381,6 @@ final class TestImpactDataFile
             $tests[$test] = $versionsOfSingleTest;
         }
 
-        return [$files, $versions, $tests];
+        return [$files, $versions, $tests, $provenance];
     }
 }
