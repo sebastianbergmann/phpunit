@@ -50,6 +50,7 @@ final class Builder
         'do-not-cache-test-index',
         'record-test-impact-data',
         'do-not-record-test-impact-data',
+        'list-tests-that-executed=',
         'cache-directory=',
         'check-version',
         'check-php-configuration',
@@ -301,6 +302,7 @@ final class Builder
         $recordTestRunHistory                     = null;
         $cacheTestIndex                           = null;
         $recordTestImpactData                     = null;
+        $listTestsThatExecuted                    = null;
         $checkPhpConfiguration                    = false;
         $checkVersion                             = false;
         $colors                                   = null;
@@ -514,6 +516,11 @@ final class Builder
 
                 case '--do-not-record-test-impact-data':
                     $recordTestImpactData = false;
+
+                    break;
+
+                case '--list-tests-that-executed':
+                    $listTestsThatExecuted = $option[1];
 
                     break;
 
@@ -1581,6 +1588,7 @@ final class Builder
             $extensions,
             $cacheTestIndex,
             $recordTestImpactData,
+            $listTestsThatExecuted,
         );
     }
 
