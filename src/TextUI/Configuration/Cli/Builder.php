@@ -49,6 +49,8 @@ final class Builder
         'do-not-cache-test-index',
         'record-test-impact-data',
         'do-not-record-test-impact-data',
+        'derive-test-impact-data-from-coverage-targets',
+        'do-not-derive-test-impact-data-from-coverage-targets',
         'list-tests-that-executed=',
         'cache-directory=',
         'check-version',
@@ -207,6 +209,7 @@ final class Builder
         ['--record-test-run-history', '--do-not-record-test-run-history'],
         ['--cache-test-index', '--do-not-cache-test-index'],
         ['--record-test-impact-data', '--do-not-record-test-impact-data'],
+        ['--derive-test-impact-data-from-coverage-targets', '--do-not-derive-test-impact-data-from-coverage-targets'],
         ['--warn-when-php-is-not-configured-for-development', '--do-not-warn-when-php-is-not-configured-for-development'],
         ['--fail-on-deprecation', '--do-not-fail-on-deprecation'],
         ['--fail-on-self-deprecation', '--do-not-fail-on-self-deprecation'],
@@ -301,6 +304,7 @@ final class Builder
         $recordTestRunHistory                     = null;
         $cacheTestIndex                           = null;
         $recordTestImpactData                     = null;
+        $deriveTestImpactDataFromCoverageTargets  = null;
         $listTestsThatExecuted                    = null;
         $checkPhpConfiguration                    = false;
         $checkVersion                             = false;
@@ -498,6 +502,16 @@ final class Builder
 
                 case '--do-not-record-test-impact-data':
                     $recordTestImpactData = false;
+
+                    break;
+
+                case '--derive-test-impact-data-from-coverage-targets':
+                    $deriveTestImpactDataFromCoverageTargets = true;
+
+                    break;
+
+                case '--do-not-derive-test-impact-data-from-coverage-targets':
+                    $deriveTestImpactDataFromCoverageTargets = false;
 
                     break;
 
@@ -1579,6 +1593,7 @@ final class Builder
             $extensions,
             $cacheTestIndex,
             $recordTestImpactData,
+            $deriveTestImpactDataFromCoverageTargets,
             $listTestsThatExecuted,
         );
     }

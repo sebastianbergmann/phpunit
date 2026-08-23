@@ -25,6 +25,7 @@ use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\TestImpactAnalysis\DefaultTestImpactData;
+use PHPUnit\Runner\TestImpactAnalysis\Provenance;
 use PHPUnit\Runner\TestImpactAnalysis\RecordedTests;
 use PHPUnit\Runner\TestImpactAnalysis\TestImpactDataFile;
 
@@ -96,7 +97,7 @@ final class ListTestsThatExecutedCommandTest extends TestCase
         $data->record('FooTest::testOne', [$file]);
         $data->record('BarTest::testOne', [$file]);
 
-        new TestImpactDataFile($directory)->persist($data);
+        new TestImpactDataFile($directory)->persist($data, Provenance::ObservedExecution);
 
         $result = new ListTestsThatExecutedCommand(new TestImpactDataFile($directory), $file)->execute();
 
@@ -118,14 +119,14 @@ final class ListTestsThatExecutedCommandTest extends TestCase
         $first = new DefaultTestImpactData;
         $first->record('FooTest::testOne', [$file]);
 
-        new TestImpactDataFile($directory)->persist($first);
+        new TestImpactDataFile($directory)->persist($first, Provenance::ObservedExecution);
 
         $this->writeSourceFile($directory, 'Foo', 'second');
 
         $second = new DefaultTestImpactData;
         $second->record('BarTest::testOne', [$file]);
 
-        new TestImpactDataFile($directory)->persist($second);
+        new TestImpactDataFile($directory)->persist($second, Provenance::ObservedExecution);
 
         $result = new ListTestsThatExecutedCommand(new TestImpactDataFile($directory), $file)->execute();
 
@@ -134,6 +135,44 @@ final class ListTestsThatExecutedCommandTest extends TestCase
             ' - BarTest::testOne' . PHP_EOL . PHP_EOL .
             'Tests that executed an earlier version of ' . $file . ':' . PHP_EOL .
             ' - FooTest::testOne' . PHP_EOL . PHP_EOL,
+            $result->output(),
+        );
+    }
+
+    public function testReportsWhatWasDerivedFromCoverageTargetsAsSuch(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $file      = $this->writeSourceFile($directory, 'Foo', 'first');
+
+        $data = new DefaultTestImpactData;
+        $data->record('FooTest::testOne', [$file]);
+
+        new TestImpactDataFile($directory)->persist($data, Provenance::CoverageTargets);
+
+        $result = new ListTestsThatExecutedCommand(new TestImpactDataFile($directory), $file)->execute();
+
+        $this->assertSame(
+            'Tests whose code coverage targets name ' . $file . ' as it is now:' . PHP_EOL .
+            ' - FooTest::testOne' . PHP_EOL . PHP_EOL,
+            $result->output(),
+        );
+    }
+
+    public function testReportsThatNoTestDeclaresTheSourceFileAsATarget(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $file      = $this->writeSourceFile($directory, 'Foo', 'first');
+        $other     = $this->writeSourceFile($directory, 'Bar', 'first');
+
+        $data = new DefaultTestImpactData;
+        $data->record('FooTest::testOne', [$other]);
+
+        new TestImpactDataFile($directory)->persist($data, Provenance::CoverageTargets);
+
+        $result = new ListTestsThatExecutedCommand(new TestImpactDataFile($directory), $file)->execute();
+
+        $this->assertSame(
+            'No test whose code coverage targets name ' . $file . ' is recorded' . PHP_EOL,
             $result->output(),
         );
     }
