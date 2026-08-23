@@ -275,6 +275,8 @@ final class Help
                 ['arg' => '--do-not-cache-test-index', 'desc' => 'Do not write test index to cache file'],
                 ['arg' => '--record-test-impact-data', 'desc' => 'Record test impact data'],
                 ['arg' => '--do-not-record-test-impact-data', 'desc' => 'Do not record test impact data'],
+                ['arg' => '--derive-test-impact-data-from-coverage-targets', 'desc' => 'Derive test impact data from code coverage targets'],
+                ['arg' => '--do-not-derive-test-impact-data-from-coverage-targets', 'desc' => 'Do not derive test impact data from code coverage targets'],
                 ['arg' => '--list-tests-that-executed <file>', 'desc' => 'List tests that executed <file>'],
                 ['spacer' => ''],
 

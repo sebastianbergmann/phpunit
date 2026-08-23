@@ -1285,6 +1285,7 @@ final readonly class Loader
             $this->parseBooleanAttribute($documentElement, 'warnWhenPhpIsNotConfiguredForDevelopment', false),
             $this->parseBooleanAttribute($documentElement, 'cacheTestIndex', false),
             $this->parseBooleanAttribute($documentElement, 'recordTestImpactData', false),
+            $this->parseBooleanAttribute($documentElement, 'deriveTestImpactDataFromCoverageTargets', false),
         );
     }
 

@@ -91,6 +91,21 @@ final readonly class Merger
             $recordTestImpactData = $xmlConfiguration->phpunit()->recordTestImpactData();
         }
 
+        if ($cliConfiguration->hasDeriveTestImpactDataFromCoverageTargets()) {
+            $deriveTestImpactDataFromCoverageTargets = $cliConfiguration->deriveTestImpactDataFromCoverageTargets();
+        } else {
+            $deriveTestImpactDataFromCoverageTargets = $xmlConfiguration->phpunit()->deriveTestImpactDataFromCoverageTargets();
+        }
+
+        /*
+         * Working out what each test depends on from the code coverage targets
+         * it declares is a way of recording test impact data, and not
+         * something that is done in addition to recording it.
+         */
+        if ($deriveTestImpactDataFromCoverageTargets) {
+            $recordTestImpactData = true;
+        }
+
         if ($cliConfiguration->hasWarnWhenPhpIsNotConfiguredForDevelopment()) {
             $warnWhenPhpIsNotConfiguredForDevelopment = $cliConfiguration->warnWhenPhpIsNotConfiguredForDevelopment();
         } else {
@@ -1513,6 +1528,7 @@ final readonly class Merger
             $warnWhenPhpIsNotConfiguredForDevelopment,
             $cacheTestIndex,
             $recordTestImpactData,
+            $deriveTestImpactDataFromCoverageTargets,
         );
     }
 

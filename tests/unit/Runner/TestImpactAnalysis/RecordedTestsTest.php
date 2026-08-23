@@ -24,7 +24,7 @@ final class RecordedTestsTest extends TestCase
     {
         $this->assertSame(
             ['FooTest::testOne'],
-            RecordedTests::from(['FooTest::testOne'], ['BarTest::testOne'])->thatExecutedTheFileAsItIsNow(),
+            RecordedTests::from(['FooTest::testOne'], ['BarTest::testOne'], Provenance::ObservedExecution)->thatExecutedTheFileAsItIsNow(),
         );
     }
 
@@ -32,22 +32,28 @@ final class RecordedTestsTest extends TestCase
     {
         $this->assertSame(
             ['BarTest::testOne'],
-            RecordedTests::from(['FooTest::testOne'], ['BarTest::testOne'])->thatExecutedAnEarlierVersionOfTheFile(),
+            RecordedTests::from(['FooTest::testOne'], ['BarTest::testOne'], Provenance::ObservedExecution)->thatExecutedAnEarlierVersionOfTheFile(),
         );
     }
 
     public function testIsEmptyWhenNoTestIsRecordedForTheFile(): void
     {
-        $this->assertTrue(RecordedTests::from([], [])->isEmpty());
+        $this->assertTrue(RecordedTests::from([], [], Provenance::ObservedExecution)->isEmpty());
     }
 
     public function testIsNotEmptyWhenATestExecutedTheFileAsItIsNow(): void
     {
-        $this->assertFalse(RecordedTests::from(['FooTest::testOne'], [])->isEmpty());
+        $this->assertFalse(RecordedTests::from(['FooTest::testOne'], [], Provenance::ObservedExecution)->isEmpty());
+    }
+
+    public function testKnowsWhenItWasDerivedFromCoverageTargets(): void
+    {
+        $this->assertTrue(RecordedTests::from([], [], Provenance::CoverageTargets)->wereDerivedFromCoverageTargets());
+        $this->assertFalse(RecordedTests::from([], [], Provenance::ObservedExecution)->wereDerivedFromCoverageTargets());
     }
 
     public function testIsNotEmptyWhenATestExecutedAnEarlierVersionOfTheFile(): void
     {
-        $this->assertFalse(RecordedTests::from([], ['FooTest::testOne'])->isEmpty());
+        $this->assertFalse(RecordedTests::from([], ['FooTest::testOne'], Provenance::ObservedExecution)->isEmpty());
     }
 }
