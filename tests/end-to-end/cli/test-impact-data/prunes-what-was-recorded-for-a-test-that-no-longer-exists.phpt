@@ -28,7 +28,7 @@ function phpunit(array $additionalArguments): string
 
 function run(array $additionalArguments = []): void
 {
-    foreach (explode("\n", phpunit($additionalArguments)) as $line) {
+    foreach (explode(PHP_EOL, phpunit($additionalArguments)) as $line) {
         if (str_starts_with($line, 'OK') || str_starts_with($line, 'FAILURES') || str_starts_with($line, 'No tests executed')) {
             print $line . PHP_EOL;
         }
@@ -39,7 +39,7 @@ function listTestsThatDependOnCalculator(): void
 {
     $listed = false;
 
-    foreach (explode("\n", phpunit(['--list-tests-that-depend-on', __DIR__ . '/_files/src/Calculator.php'])) as $line) {
+    foreach (explode(PHP_EOL, phpunit(['--list-tests-that-depend-on', __DIR__ . '/_files/src/Calculator.php'])) as $line) {
         if (str_starts_with($line, ' - ')) {
             print $line . PHP_EOL;
 
