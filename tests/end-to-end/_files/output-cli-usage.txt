@@ -109,6 +109,7 @@ Execution:
                                        Do not derive test impact data from code coverage targets
   --list-tests-that-depend-on <file>   List tests that depend on <file>
   --only-impacted                      Only run tests affected by what changed
+  --impacted-by <path>                 Only run tests affected by <path>
 
   --warn-when-php-is-not-configured-for-development
                                        Trigger a test runner warning when PHP is not configured for development

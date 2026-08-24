@@ -178,6 +178,7 @@
                                        coverage targets
   [32m--list-tests-that-depend-on [36m<file>[0m  [0m List tests that depend on <file>
   [32m--only-impacted                     [0m Only run tests affected by what changed
+  [32m--impacted-by [36m<path>[0m                [0m Only run tests affected by <path>
 
   [32m--warn-when-php-is-not-configured-for-development[0m
                                        Trigger a test runner warning when PHP
