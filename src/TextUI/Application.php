@@ -210,7 +210,7 @@ final readonly class Application
 
             $testDoxResultCollector = $this->testDoxResultCollector($configuration);
 
-            $testRunHistory = $this->initializeTestRunHistory($configuration);
+            $testRunHistory = $this->initializeTestRunHistory($configuration, $cliConfiguration);
 
             if ($configuration->controlGarbageCollector()) {
                 new GarbageCollectionHandler(
@@ -302,7 +302,11 @@ final readonly class Application
 
             $duration = $timer->stop();
 
-            $this->persistTestImpactData($configuration, $testImpactData);
+            $this->persistTestImpactData(
+                $configuration,
+                $testImpactData,
+                $this->testImpactDataMayBePruned($configuration, $cliConfiguration),
+            );
 
             $testDoxResult = null;
 
@@ -1028,10 +1032,10 @@ final readonly class Application
         return Assumptions::from($configurationFile, $configuration->source());
     }
 
-    private function persistTestImpactData(Configuration $configuration, ?TestImpactData $testImpactData): void
+    private function persistTestImpactData(Configuration $configuration, ?TestImpactData $testImpactData, bool $prune): void
     {
         if ($testImpactData !== null) {
-            $this->persist($configuration, $testImpactData, Provenance::CoverageTargets);
+            $this->persist($configuration, $testImpactData, Provenance::CoverageTargets, $prune);
 
             return;
         }
@@ -1040,17 +1044,27 @@ final readonly class Application
             return;
         }
 
-        $this->persist($configuration, CodeCoverage::instance()->testImpactData(), Provenance::ObservedExecution);
+        $this->persist($configuration, CodeCoverage::instance()->testImpactData(), Provenance::ObservedExecution, $prune);
     }
 
-    private function persist(Configuration $configuration, TestImpactData $testImpactData, Provenance $provenance): void
+    private function persist(Configuration $configuration, TestImpactData $testImpactData, Provenance $provenance, bool $prune): void
     {
+        $testImpactDataFile = new TestImpactDataFile($configuration->cacheDirectory(), $this->assumptionsOf($configuration));
+
         try {
-            new TestImpactDataFile($configuration->cacheDirectory(), $this->assumptionsOf($configuration))->persist(
-                $testImpactData,
-                $provenance,
-                $this->sourceFiles(),
-            );
+            if ($prune) {
+                $testImpactDataFile->persistAndPrune(
+                    $testImpactData,
+                    $provenance,
+                    $this->sourceFiles(),
+                );
+            } else {
+                $testImpactDataFile->persist(
+                    $testImpactData,
+                    $provenance,
+                    $this->sourceFiles(),
+                );
+            }
         } catch (RunnerException $e) {
             $message = $e->getMessage();
 
@@ -1171,7 +1185,7 @@ final readonly class Application
         return $groups;
     }
 
-    private function initializeTestRunHistory(Configuration $configuration): TestRunHistory
+    private function initializeTestRunHistory(Configuration $configuration, CliConfiguration $cliConfiguration): TestRunHistory
     {
         if ($configuration->recordTestRunHistory()) {
             $testRunHistory = new DefaultTestRunHistory($configuration->testRunHistoryFile());
@@ -1179,7 +1193,7 @@ final readonly class Application
             new TestRunHistoryHandler(
                 $testRunHistory,
                 EventFacade::instance(),
-                $this->testRunHistoryMayBePruned($configuration),
+                $this->everyTestThatExistsIsRun($configuration, $cliConfiguration),
             );
 
             return $testRunHistory;
@@ -1202,13 +1216,45 @@ final readonly class Application
     }
 
     /**
-     * Pruning drops all test run history entries that the current test run
-     * did not touch, so it is only safe when the current test run executes
-     * every test that exists: no test selection or filtering of any kind may
-     * be configured.
+     * Whether what the current test run did not record may be dropped.
+     *
+     * A run that ran only some of the tests recorded nothing for the others,
+     * and what a test that was not run leaves behind looks exactly like what a
+     * test that is no longer there leaves behind. Only a run that ran every
+     * test there is can tell the two apart, and only such a run may prune.
      */
-    private function testRunHistoryMayBePruned(Configuration $configuration): bool
+    private function testImpactDataMayBePruned(Configuration $configuration, CliConfiguration $cliConfiguration): bool
     {
+        /*
+         * A test run that stopped early did not reach every test. Asking
+         * whether it should stop is asking the very question that stopped it,
+         * and asking it once the run is over answers it for the run as a
+         * whole.
+         */
+        if (TestResultFacade::shouldStop()) {
+            return false;
+        }
+
+        return $this->everyTestThatExistsIsRun($configuration, $cliConfiguration);
+    }
+
+    /**
+     * Whether the test run runs every test there is: no test selection or
+     * filtering of any kind is configured.
+     *
+     * Both the test run history and the test impact data are pruned by
+     * dropping what the current test run did not touch, which is only what a
+     * test that no longer exists leaves behind when every test that does exist
+     * was run.
+     */
+    private function everyTestThatExistsIsRun(Configuration $configuration, CliConfiguration $cliConfiguration): bool
+    {
+        if ($cliConfiguration->onlyImpacted() ||
+            $cliConfiguration->hasImpactedBy() ||
+            $cliConfiguration->hasImpactedByFile()) {
+            return false;
+        }
+
         if ($configuration->hasCliArguments() || $configuration->hasTestFilesFile()) {
             return false;
         }
