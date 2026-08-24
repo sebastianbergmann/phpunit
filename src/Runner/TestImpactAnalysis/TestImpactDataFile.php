@@ -159,19 +159,56 @@ final class TestImpactDataFile
      * anything about it and must not cause what is known about it to be
      * forgotten.
      *
-     * @throws Exception
-     */
-    /**
      * @param list<non-empty-string> $sourceFiles the files that are subject to code coverage analysis
+     *
+     * @throws Exception
      */
     public function persist(TestImpactData $data, Provenance $provenance, array $sourceFiles): void
     {
-        [$files, $versions, $tests, $provenanceOfWhatIsThere] = $this->read();
+        $this->record($data, $provenance, $sourceFiles, false);
+    }
 
-        if ($provenanceOfWhatIsThere !== null && $provenanceOfWhatIsThere !== $provenance) {
-            $files    = [];
-            $versions = [];
-            $tests    = [];
+    /**
+     * Keeps only what this test run recorded, so that the entry of a test that
+     * no longer exists is forgotten instead of being kept for ever.
+     *
+     * This must only be used when the test run ran every test there is: what
+     * is dropped is everything the run did not record, and nothing tells a
+     * test that is gone apart from a test that was merely not run.
+     *
+     * @param list<non-empty-string> $sourceFiles the files that are subject to code coverage analysis
+     *
+     * @throws Exception
+     */
+    public function persistAndPrune(TestImpactData $data, Provenance $provenance, array $sourceFiles): void
+    {
+        $this->record($data, $provenance, $sourceFiles, true);
+    }
+
+    /**
+     * @param list<non-empty-string> $sourceFiles the files that are subject to code coverage analysis
+     *
+     * @throws Exception
+     */
+    private function record(TestImpactData $data, Provenance $provenance, array $sourceFiles, bool $prune): void
+    {
+        $files    = [];
+        $versions = [];
+        $tests    = [];
+
+        /*
+         * Pruning is what makes what is there beside the point: everything
+         * that is written is what this test run recorded, and reading what an
+         * earlier one recorded would only bring back what pruning is for.
+         */
+        if (!$prune) {
+            [$files, $versions, $tests, $provenanceOfWhatIsThere] = $this->read();
+
+            if ($provenanceOfWhatIsThere !== null && $provenanceOfWhatIsThere !== $provenance) {
+                $files    = [];
+                $versions = [];
+                $tests    = [];
+            }
         }
 
         $filePositions = [];
