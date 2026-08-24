@@ -203,6 +203,96 @@ final class SelectorTest extends TestCase
         );
     }
 
+    public function testRunsTheTestsThatDependOnAPathThatIsNamed(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $money     = $this->writeSourceFile($directory, 'Money', 'first');
+        $formatter = $this->writeSourceFile($directory, 'Formatter', 'first');
+
+        $selector = $this->selectorFor(
+            $directory,
+            [
+                SelectionTest::class . '::testProducesMoney'    => [$money],
+                SelectionTest::class . '::testConsumesMoney'    => [$money],
+                UnrelatedSelectionTest::class . '::testFormats' => [$formatter],
+            ],
+            [$money, $formatter],
+        );
+
+        $selection = $selector->select($this->tests(), [$money, $formatter], [$formatter]);
+
+        $this->assertSame(
+            $this->sorted([UnrelatedSelectionTest::class . '::testFormats', $this->phpt()]),
+            $this->sorted($selection->tests()),
+        );
+    }
+
+    public function testRunsTheTestsThatDependOnAnythingBeneathADirectoryThatIsNamed(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $money     = $this->writeSourceFile($directory, 'Money', 'first');
+        $formatter = $this->writeSourceFile($directory, 'Formatter', 'first');
+
+        $selector = $this->selectorFor(
+            $directory,
+            [
+                SelectionTest::class . '::testProducesMoney'    => [$money],
+                SelectionTest::class . '::testConsumesMoney'    => [$money],
+                UnrelatedSelectionTest::class . '::testFormats' => [$formatter],
+            ],
+            [$money, $formatter],
+        );
+
+        $selection = $selector->select($this->tests(), [$money, $formatter], [$directory]);
+
+        $this->assertCount(4, $selection->tests());
+    }
+
+    public function testDoesNotWorkOutWhatChangedWhenItIsNamed(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $money     = $this->writeSourceFile($directory, 'Money', 'first');
+        $formatter = $this->writeSourceFile($directory, 'Formatter', 'first');
+
+        $selector = $this->selectorFor(
+            $directory,
+            [
+                SelectionTest::class . '::testProducesMoney'    => [$money],
+                SelectionTest::class . '::testConsumesMoney'    => [$money],
+                UnrelatedSelectionTest::class . '::testFormats' => [$formatter],
+            ],
+            [$money, $formatter],
+        );
+
+        /*
+         * The file that changed is not the file that is named: what is named
+         * is what the selection is made from.
+         */
+        $this->writeSourceFile($directory, 'Money', 'second');
+
+        $selection = $selector->select($this->tests(), [$money, $formatter], [$formatter]);
+
+        $this->assertSame(
+            $this->sorted([UnrelatedSelectionTest::class . '::testFormats', $this->phpt()]),
+            $this->sorted($selection->tests()),
+        );
+    }
+
+    public function testRunsEveryTestWhenAPathThatIsNamedWasNotRecorded(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $money     = $this->writeSourceFile($directory, 'Money', 'first');
+
+        $selection = $this->selectorFor($directory, $this->everyTestDependsOn($money), [$money])->select(
+            $this->tests(),
+            [$money],
+            [$directory . DIRECTORY_SEPARATOR . 'NotRecorded.php'],
+        );
+
+        $this->assertTrue($selection->isEverything());
+        $this->assertStringContainsString('NotRecorded.php is not among the files that were recorded', $selection->reason());
+    }
+
     public function testRunsEveryTestWhenASourceFileThatWasNotRecordedIsThere(): void
     {
         $directory = $this->temporaryDirectory();

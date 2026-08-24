@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI;
 
+use const DIRECTORY_SEPARATOR;
 use const PHP_EOL;
 use const PHP_VERSION;
 use const SIGINT;
@@ -20,6 +21,7 @@ use function defined;
 use function dirname;
 use function explode;
 use function function_exists;
+use function getcwd;
 use function getmypid;
 use function is_array;
 use function is_file;
@@ -867,7 +869,7 @@ final readonly class Application
      */
     private function selectTests(Configuration $configuration, CliConfiguration $cliConfiguration, TestSuite $testSuite, TestRunHistory $testRunHistory): ?Selection
     {
-        if (!$cliConfiguration->onlyImpacted()) {
+        if (!$cliConfiguration->onlyImpacted() && !$cliConfiguration->hasImpactedBy()) {
             return null;
         }
 
@@ -883,10 +885,57 @@ final readonly class Application
 
         $testRunHistory->load();
 
+        $changedPaths = null;
+
+        if ($cliConfiguration->hasImpactedBy()) {
+            $changedPaths = $this->resolve($cliConfiguration->impactedBy());
+        }
+
         return new Selector(
             new TestImpactDataFile($configuration->cacheDirectory(), $this->assumptionsOf($configuration)),
             $testRunHistory,
-        )->select($testSuite->collect(), $this->sourceFiles());
+        )->select($testSuite->collect(), $this->sourceFiles(), $changedPaths);
+    }
+
+    /**
+     * A path that was named on the command line is resolved against the
+     * working directory, and not against the configuration file: it comes from
+     * the shell, and usually from version control, which names what changed
+     * relative to where the command is run.
+     *
+     * A path that is not there is resolved all the same: a source file that
+     * was deleted is a change like any other, and what was recorded for it is
+     * recorded under the name it had.
+     *
+     * @param non-empty-list<non-empty-string> $paths
+     *
+     * @return non-empty-list<non-empty-string>
+     */
+    private function resolve(array $paths): array
+    {
+        $resolved = [];
+
+        foreach ($paths as $path) {
+            $absolutePath = realpath($path);
+
+            if ($absolutePath === false) {
+                $absolutePath = $path;
+
+                if (!str_starts_with($path, DIRECTORY_SEPARATOR)) {
+                    $workingDirectory = getcwd();
+
+                    if ($workingDirectory !== false) {
+                        $absolutePath = $workingDirectory . DIRECTORY_SEPARATOR . $path;
+                    }
+                    // @codeCoverageIgnoreStart
+                }
+                // @codeCoverageIgnoreEnd
+            }
+
+            $resolved[] = $absolutePath;
+        }
+
+        return $resolved;
     }
 
     private function writeTestSelectionInformation(Printer $printer, ?Selection $selection): void

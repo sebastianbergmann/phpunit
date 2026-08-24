@@ -279,6 +279,7 @@ final class Help
                 ['arg' => '--do-not-derive-test-impact-data-from-coverage-targets', 'desc' => 'Do not derive test impact data from code coverage targets'],
                 ['arg' => '--list-tests-that-depend-on <file>', 'desc' => 'List tests that depend on <file>'],
                 ['arg' => '--only-impacted', 'desc' => 'Only run tests affected by what changed'],
+                ['arg' => '--impacted-by <path>', 'desc' => 'Only run tests affected by <path>'],
                 ['spacer' => ''],
 
                 ['arg' => '--warn-when-php-is-not-configured-for-development', 'desc' => 'Trigger a test runner warning when PHP is not configured for development'],

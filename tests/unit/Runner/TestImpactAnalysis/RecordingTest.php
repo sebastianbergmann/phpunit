@@ -102,6 +102,48 @@ final class RecordingTest extends TestCase
         );
     }
 
+    public function testKnowsWhichTestsDependOnAPathThatIsNamed(): void
+    {
+        $recording = Recording::from(
+            ['/src/Foo.php', '/src/Bar.php'],
+            [[0, 'a-hash'], [1, 'another-hash']],
+            [
+                'FooTest::testOne' => [0],
+                'BarTest::testOne' => [1],
+            ],
+            [],
+        );
+
+        $this->assertSame(['FooTest::testOne' => true], $recording->testsThatDependOnAnyOf(['/src/Foo.php']));
+    }
+
+    public function testKnowsWhichTestsDependOnSomethingBeneathADirectoryThatIsNamed(): void
+    {
+        $recording = Recording::from(
+            ['/src/nested/Foo.php', '/src/Bar.php'],
+            [[0, 'a-hash'], [1, 'another-hash']],
+            [
+                'FooTest::testOne' => [0],
+                'BarTest::testOne' => [1],
+            ],
+            [],
+        );
+
+        $this->assertSame(['FooTest::testOne' => true], $recording->testsThatDependOnAnyOf(['/src/nested']));
+    }
+
+    public function testKnowsThatAPathThatIsNamedWasNotRecorded(): void
+    {
+        $recording = Recording::from(['/src/Foo.php'], [[0, 'a-hash']], ['FooTest::testOne' => [0]], []);
+
+        $this->assertNull($recording->pathNothingIsKnownAbout(['/src/Foo.php']));
+
+        $this->assertStringContainsString(
+            '/src/Bar.php is not among the files that were recorded',
+            (string) $recording->pathNothingIsKnownAbout(['/src/Bar.php']),
+        );
+    }
+
     public function testKnowsThatASourceFileThatWasNotRecordedIsAChangeNothingIsKnownAbout(): void
     {
         $recording = Recording::from(['/src/Foo.php'], [[0, 'a-hash']], ['FooTest::testOne' => [0]], []);
