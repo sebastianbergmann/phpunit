@@ -52,10 +52,10 @@ require __DIR__ . '/../../../_files/delete_directory.php';
 delete_directory(__DIR__ . '/_files/.phpunit.cache');
 --EXPECT--
 Recorded:
-PHPUnit\TestFixture\TestImpactData\CalculatorTest::testAdds => Calculator.php, Rounder.php
-PHPUnit\TestFixture\TestImpactData\IsolatedCalculatorTest::testAddsInAnotherProcess => Calculator.php, Rounder.php
-PHPUnit\TestFixture\TestImpactData\NothingCoveredTest::testAdds => Calculator.php, Rounder.php
+PHPUnit\TestFixture\TestImpactData\CalculatorTest::testAdds => Calculator.php, CalculatorTest.php, Rounder.php
+PHPUnit\TestFixture\TestImpactData\IsolatedCalculatorTest::testAddsInAnotherProcess => Calculator.php, IsolatedCalculatorTest.php, Rounder.php
+PHPUnit\TestFixture\TestImpactData\NothingCoveredTest::testAdds => Calculator.php, NothingCoveredTest.php, Rounder.php
 
 Recorded after more code became first-party code:
-PHPUnit\TestFixture\TestImpactData\CalculatorTest::testAdds => Calculator.php, Rounder.php
-PHPUnit\TestFixture\TestImpactData\IsolatedCalculatorTest::testAddsInAnotherProcess => Calculator.php, Rounder.php
+PHPUnit\TestFixture\TestImpactData\CalculatorTest::testAdds => Calculator.php, CalculatorTest.php, Rounder.php
+PHPUnit\TestFixture\TestImpactData\IsolatedCalculatorTest::testAddsInAnotherProcess => Calculator.php, IsolatedCalculatorTest.php, Rounder.php
