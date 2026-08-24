@@ -41,4 +41,4 @@ OK, but there were issues!
 Tests: 1, Assertions: 1, PHPUnit Warnings: 1.
 
 Recorded:
-PHPUnit\TestFixture\TestImpactData\SumTest::testAdds#0 => Calculator.php, sums.csv
+PHPUnit\TestFixture\TestImpactData\SumTest::testAdds#0 => Calculator.php, SumTest.php, sums.csv

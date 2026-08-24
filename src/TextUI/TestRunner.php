@@ -29,14 +29,17 @@ final class TestRunner
     }
 
     /**
+     * @param ?list<non-empty-string> $selectedTests
+     *
      * @throws RuntimeException
      */
-    public function run(Configuration $configuration, TestRunHistory $testRunHistory, TestSuite $suite): void
+    public function run(Configuration $configuration, TestRunHistory $testRunHistory, TestSuite $suite, ?array $selectedTests = null): void
     {
         new TestRunnerLifecycle($this->emitter)->run(
             $configuration,
             $testRunHistory,
             $suite,
+            $selectedTests,
             static function () use ($suite): void
             {
                 $suite->run();

@@ -42,11 +42,12 @@ final readonly class TestRunnerLifecycle
     }
 
     /**
-     * @param callable(): void $execution
+     * @param ?list<non-empty-string> $selectedTests
+     * @param callable(): void        $execution
      *
      * @throws RuntimeException
      */
-    public function run(Configuration $configuration, TestRunHistory $testRunHistory, TestSuite $suite, callable $execution): void
+    public function run(Configuration $configuration, TestRunHistory $testRunHistory, TestSuite $suite, ?array $selectedTests, callable $execution): void
     {
         try {
             $this->emitter->testRunnerStarted();
@@ -71,7 +72,7 @@ final readonly class TestRunnerLifecycle
                 $this->emitter->testSuiteSorted($pipeline->describe());
             }
 
-            new TestSuiteFilterProcessor($this->emitter)->process($configuration, $suite);
+            new TestSuiteFilterProcessor($this->emitter)->process($configuration, $suite, $selectedTests);
 
             $this->emitter->testRunnerExecutionStarted(
                 Event\TestSuite\TestSuiteBuilder::from($suite),

@@ -13,6 +13,8 @@ use function array_keys;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Api\CodeCoverage as CodeCoverageMetadataApi;
 use PHPUnit\Metadata\Api\Fixtures;
+use PHPUnit\Runner\TestIndex\TestFiles;
+use ReflectionClass;
 use SebastianBergmann\CodeCoverage\Filter;
 use SebastianBergmann\CodeCoverage\StaticAnalysis\Registry;
 use SebastianBergmann\CodeCoverage\Test\Target\MapBuilder;
@@ -102,6 +104,24 @@ final class TestImpactDataFromCoverageTargets
 
             foreach ($this->fixtures->for($test::class, $test->name()) as $fixture) {
                 $files[] = $fixture;
+            }
+
+            $filesOfTest = TestFiles::of(new ReflectionClass($test));
+
+            /*
+             * A test that changed is a test that has to be run, and the files
+             * the test itself is made of are what a change to it is seen in.
+             * They are recorded here, and not looked up in the test index
+             * later, because the index is written at a different moment: what
+             * is recorded has to describe the code as it was when it was
+             * recorded.
+             */
+            if ($filesOfTest === null) {
+                continue;
+            }
+
+            foreach ($filesOfTest as $file) {
+                $files[] = $file;
             }
 
             $data->record($test->valueObjectForEvents()->id(), $files);
