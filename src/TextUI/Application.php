@@ -727,9 +727,10 @@ final readonly class Application
     {
         $printer->print(
             sprintf(
-                "%-15s%s\n",
+                '%-15s%s%s',
                 $type . ':',
                 $message,
+                PHP_EOL,
             ),
         );
     }
