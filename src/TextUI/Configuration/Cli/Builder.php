@@ -55,6 +55,7 @@ final class Builder
         'do-not-derive-test-impact-data-from-coverage-targets',
         'list-tests-that-depend-on=',
         'only-impacted',
+        'impacted-by=',
         'cache-directory=',
         'check-version',
         'check-php-configuration',
@@ -317,6 +318,7 @@ final class Builder
         $deriveTestImpactDataFromCoverageTargets  = null;
         $listTestsThatDependOn                    = null;
         $onlyImpacted                             = false;
+        $impactedBy                               = null;
         $checkPhpConfiguration                    = false;
         $checkVersion                             = false;
         $colors                                   = null;
@@ -540,6 +542,17 @@ final class Builder
 
                 case '--only-impacted':
                     $onlyImpacted = true;
+
+                    break;
+
+                case '--impacted-by':
+                    if ($impactedBy === null) {
+                        $impactedBy = [];
+                    }
+
+                    $impactedBy[] = $this->requireNonEmptyValue($option[1], '--impacted-by');
+
+                    $optionAllowedMultipleTimes = true;
 
                     break;
 
@@ -1747,6 +1760,7 @@ final class Builder
             $deriveTestImpactDataFromCoverageTargets,
             $listTestsThatDependOn,
             $onlyImpacted,
+            $impactedBy,
             $numberOfParallelWorkers,
             $numberOfTestClassesBeforeWorkerRecycling,
         );
