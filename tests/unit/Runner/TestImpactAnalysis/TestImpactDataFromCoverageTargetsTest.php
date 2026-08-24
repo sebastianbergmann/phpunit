@@ -22,6 +22,8 @@ use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 use PHPUnit\TestFixture\TestImpactAnalysis\FormatterMethodTest;
 use PHPUnit\TestFixture\TestImpactAnalysis\FormatterThatCoversNothingTest;
 use PHPUnit\TestFixture\TestImpactAnalysis\InvoiceThatUsesMoneyTest;
+use PHPUnit\TestFixture\TestImpactAnalysis\TestThatCoversNothingAndUsesFixtures;
+use PHPUnit\TestFixture\TestImpactAnalysis\TestThatUsesFixtures;
 use SebastianBergmann\CodeCoverage\Filter;
 
 #[CoversClass(TestImpactDataFromCoverageTargets::class)]
@@ -60,6 +62,27 @@ final class TestImpactDataFromCoverageTargetsTest extends TestCase
         $data = new DefaultTestImpactData;
 
         $this->coverageTargets()->record([new FormatterThatCoversNothingTest('testFormatsAmount')], $data);
+
+        $this->assertSame([], $data->recorded());
+    }
+
+    public function testRecordsTheFixturesATestDeclares(): void
+    {
+        $data = new DefaultTestImpactData;
+
+        $this->coverageTargets()->record([new TestThatUsesFixtures('testDeclaredOnTheMethod')], $data);
+
+        $this->assertSame(
+            [TestThatUsesFixtures::class . '::testDeclaredOnTheMethod' => ['Money.php', 'one.txt', 'scenarios']],
+            $this->baseNames($data),
+        );
+    }
+
+    public function testDoesNotRecordATestThatDeclaresFixturesButCoversNothing(): void
+    {
+        $data = new DefaultTestImpactData;
+
+        $this->coverageTargets()->record([new TestThatCoversNothingAndUsesFixtures('testFormatsAmount')], $data);
 
         $this->assertSame([], $data->recorded());
     }

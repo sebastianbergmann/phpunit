@@ -306,24 +306,24 @@ final class BuilderTest extends TestCase
         $configuration->deriveTestImpactDataFromCoverageTargets();
     }
 
-    #[TestDox('--list-tests-that-executed <file>')]
-    public function testListTestsThatExecuted(): void
+    #[TestDox('--list-tests-that-depend-on <file>')]
+    public function testListTestsThatDependOn(): void
     {
-        $configuration = (new Builder)->fromParameters(['--list-tests-that-executed', 'src/Foo.php']);
+        $configuration = (new Builder)->fromParameters(['--list-tests-that-depend-on', 'src/Foo.php']);
 
-        $this->assertTrue($configuration->hasListTestsThatExecuted());
-        $this->assertSame('src/Foo.php', $configuration->listTestsThatExecuted());
+        $this->assertTrue($configuration->hasListTestsThatDependOn());
+        $this->assertSame('src/Foo.php', $configuration->listTestsThatDependOn());
     }
 
-    public function testListTestsThatExecutedMayNotBeConfigured(): void
+    public function testListTestsThatDependOnMayNotBeConfigured(): void
     {
         $configuration = (new Builder)->fromParameters([]);
 
-        $this->assertFalse($configuration->hasListTestsThatExecuted());
+        $this->assertFalse($configuration->hasListTestsThatDependOn());
 
         $this->expectException(Exception::class);
 
-        $configuration->listTestsThatExecuted();
+        $configuration->listTestsThatDependOn();
     }
 
     public function testCacheTestIndexMayNotBeConfigured(): void
