@@ -28,13 +28,16 @@ use RecursiveIterator;
 final class TestIdFilterIterator extends RecursiveFilterIterator
 {
     /**
-     * @var non-empty-list<non-empty-string>
+     * An empty list matches no test: a selection of tests that selected
+     * nothing is not the same as no selection at all.
+     *
+     * @var list<non-empty-string>
      */
     private readonly array $testIds;
 
     /**
-     * @param RecursiveIterator<int, Test>     $iterator
-     * @param non-empty-list<non-empty-string> $testIds
+     * @param RecursiveIterator<int, Test> $iterator
+     * @param list<non-empty-string>       $testIds
      */
     public function __construct(RecursiveIterator $iterator, array $testIds)
     {

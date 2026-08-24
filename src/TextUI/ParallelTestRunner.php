@@ -110,14 +110,17 @@ final class ParallelTestRunner
     private array $inProcessUnits = [];
 
     /**
+     * @param ?list<non-empty-string> $selectedTests
+     *
      * @throws RuntimeException
      */
-    public function run(Configuration $configuration, TestRunHistory $testRunHistory, TestSuite $suite): void
+    public function run(Configuration $configuration, TestRunHistory $testRunHistory, TestSuite $suite, ?array $selectedTests = null): void
     {
         new TestRunnerLifecycle(Event\Facade::emitter())->run(
             $configuration,
             $testRunHistory,
             $suite,
+            $selectedTests,
             function () use ($configuration, $testRunHistory, $suite): void
             {
                 // The chunks are handed to execute() without a variable that

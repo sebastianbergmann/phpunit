@@ -54,6 +54,7 @@ final class TestRunnerLifecycleTest extends TestCase
                 $configuration,
                 new NullTestRunHistory,
                 TestSuite::empty('test suite', $this->createStub(Emitter::class)),
+                null,
                 static function (): void
                 {
                     throw new Exception('the execution failed', 23);

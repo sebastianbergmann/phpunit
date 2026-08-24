@@ -45,6 +45,6 @@ PHPUnit\TestFixture\TestImpactData\Calculator
   Methods: 100.00%% ( 1/ 1)   Lines: 100.00%% (  1/  1)
 
 Recorded:
-PHPUnit\TestFixture\TestImpactData\CalculatorTest::testAdds => Calculator.php, Rounder.php
-PHPUnit\TestFixture\TestImpactData\IsolatedCalculatorTest::testAddsInAnotherProcess => Calculator.php, Rounder.php
-PHPUnit\TestFixture\TestImpactData\NothingCoveredTest::testAdds => Calculator.php, Rounder.php
+PHPUnit\TestFixture\TestImpactData\CalculatorTest::testAdds => Calculator.php, CalculatorTest.php, Rounder.php
+PHPUnit\TestFixture\TestImpactData\IsolatedCalculatorTest::testAddsInAnotherProcess => Calculator.php, IsolatedCalculatorTest.php, Rounder.php
+PHPUnit\TestFixture\TestImpactData\NothingCoveredTest::testAdds => Calculator.php, NothingCoveredTest.php, Rounder.php
