@@ -119,8 +119,10 @@ final class RecordingTest extends TestCase
 
     public function testKnowsWhichTestsDependOnSomethingBeneathADirectoryThatIsNamed(): void
     {
+        $directory = DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'nested';
+
         $recording = Recording::from(
-            ['/src/nested/Foo.php', '/src/Bar.php'],
+            [$directory . DIRECTORY_SEPARATOR . 'Foo.php', DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Bar.php'],
             [[0, 'a-hash'], [1, 'another-hash']],
             [
                 'FooTest::testOne' => [0],
@@ -129,7 +131,7 @@ final class RecordingTest extends TestCase
             [],
         );
 
-        $this->assertSame(['FooTest::testOne' => true], $recording->testsThatDependOnAnyOf(['/src/nested']));
+        $this->assertSame(['FooTest::testOne' => true], $recording->testsThatDependOnAnyOf([$directory]));
     }
 
     public function testKnowsThatAPathThatIsNamedWasNotRecorded(): void
