@@ -30,6 +30,7 @@ use PHPUnit\Framework\ProcessIsolationException;
 use PHPUnit\Framework\SkippedTest;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Api\CodeCoverage as CodeCoverageMetadataApi;
+use PHPUnit\Metadata\Api\Fixtures;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\ErrorHandler;
@@ -128,6 +129,7 @@ final class TestRunner
         }
 
         $this->performSanityChecks($test, $coversTargets, $usesTargets, $coversNothingContradiction);
+        $this->warnAboutFixturesThatCannotBeUsed($test);
 
         $error      = false;
         $failure    = false;
@@ -331,6 +333,24 @@ final class TestRunner
         }
 
         return $this->configuration->requireCoverageMetadata();
+    }
+
+    /**
+     * A fixture that is not there cannot be compared to what it will be later,
+     * and the attribute that names it is therefore ignored, just as a code
+     * coverage target that cannot be used is ignored.
+     */
+    private function warnAboutFixturesThatCannotBeUsed(TestCase $test): void
+    {
+        foreach ((new Fixtures)->thatCannotBeResolved($test::class, $test->name()) as $path) {
+            $this->emitter->testTriggeredPhpunitWarning(
+                $test->valueObjectForEvents(),
+                sprintf(
+                    'Fixture %s does not exist, the attribute is ignored',
+                    $path,
+                ),
+            );
+        }
     }
 
     /**

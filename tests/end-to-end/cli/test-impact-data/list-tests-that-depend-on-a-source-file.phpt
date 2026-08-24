@@ -16,7 +16,7 @@ $argumentsForQuery = [
     '--colors=never',
     '--configuration',
     __DIR__ . '/_files/phpunit.xml',
-    '--list-tests-that-executed',
+    '--list-tests-that-depend-on',
     __DIR__ . '/_files/src/Rounder.php',
 ];
 
@@ -45,7 +45,9 @@ Tests: 4, Assertions: 3, Skipped: 1.
 
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-Tests that executed %sRounder.php as it is now:
+Recorded from what the tests executed.
+
+Tests that depend on %sRounder.php as it is now:
  - PHPUnit\TestFixture\TestImpactData\CalculatorTest::testAdds
  - PHPUnit\TestFixture\TestImpactData\IsolatedCalculatorTest::testAddsInAnotherProcess
  - PHPUnit\TestFixture\TestImpactData\NothingCoveredTest::testAdds

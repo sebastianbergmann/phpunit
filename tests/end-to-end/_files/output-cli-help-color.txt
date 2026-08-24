@@ -176,7 +176,7 @@
   [32m--do-not-derive-test-impact-data-from-coverage-targets[0m
                                        Do not derive test impact data from code
                                        coverage targets
-  [32m--list-tests-that-executed [36m<file>[0m   [0m List tests that executed <file>
+  [32m--list-tests-that-depend-on [36m<file>[0m  [0m List tests that depend on <file>
 
   [32m--warn-when-php-is-not-configured-for-development[0m
                                        Trigger a test runner warning when PHP

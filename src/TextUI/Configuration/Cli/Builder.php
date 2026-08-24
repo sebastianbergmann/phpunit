@@ -52,7 +52,7 @@ final class Builder
         'do-not-record-test-impact-data',
         'derive-test-impact-data-from-coverage-targets',
         'do-not-derive-test-impact-data-from-coverage-targets',
-        'list-tests-that-executed=',
+        'list-tests-that-depend-on=',
         'cache-directory=',
         'check-version',
         'check-php-configuration',
@@ -306,7 +306,7 @@ final class Builder
         $cacheTestIndex                           = null;
         $recordTestImpactData                     = null;
         $deriveTestImpactDataFromCoverageTargets  = null;
-        $listTestsThatExecuted                    = null;
+        $listTestsThatDependOn                    = null;
         $checkPhpConfiguration                    = false;
         $checkVersion                             = false;
         $colors                                   = null;
@@ -533,8 +533,8 @@ final class Builder
 
                     break;
 
-                case '--list-tests-that-executed':
-                    $listTestsThatExecuted = $option[1];
+                case '--list-tests-that-depend-on':
+                    $listTestsThatDependOn = $option[1];
 
                     break;
 
@@ -1603,7 +1603,7 @@ final class Builder
             $cacheTestIndex,
             $recordTestImpactData,
             $deriveTestImpactDataFromCoverageTargets,
-            $listTestsThatExecuted,
+            $listTestsThatDependOn,
         );
     }
 

@@ -75,6 +75,7 @@ use PHPUnit\Framework\Attributes\UsesClassesThatImplementInterface;
 use PHPUnit\Framework\Attributes\UsesDirectory;
 use PHPUnit\Framework\Attributes\UsesDirectoryRecursively;
 use PHPUnit\Framework\Attributes\UsesFile;
+use PHPUnit\Framework\Attributes\UsesFixture;
 use PHPUnit\Framework\Attributes\UsesFunction;
 use PHPUnit\Framework\Attributes\UsesMethod;
 use PHPUnit\Framework\Attributes\UsesNamespace;
@@ -151,6 +152,7 @@ use PHPUnit\Metadata\InvalidAttribute;
 #[CoversClass(UsesDirectory::class)]
 #[CoversClass(UsesDirectoryRecursively::class)]
 #[CoversClass(UsesFile::class)]
+#[CoversClass(UsesFixture::class)]
 #[CoversClass(UsesFunction::class)]
 #[CoversClass(UsesMethod::class)]
 #[CoversClass(UsesNamespace::class)]

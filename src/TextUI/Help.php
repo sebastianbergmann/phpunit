@@ -277,7 +277,7 @@ final class Help
                 ['arg' => '--do-not-record-test-impact-data', 'desc' => 'Do not record test impact data'],
                 ['arg' => '--derive-test-impact-data-from-coverage-targets', 'desc' => 'Derive test impact data from code coverage targets'],
                 ['arg' => '--do-not-derive-test-impact-data-from-coverage-targets', 'desc' => 'Do not derive test impact data from code coverage targets'],
-                ['arg' => '--list-tests-that-executed <file>', 'desc' => 'List tests that executed <file>'],
+                ['arg' => '--list-tests-that-depend-on <file>', 'desc' => 'List tests that depend on <file>'],
                 ['spacer' => ''],
 
                 ['arg' => '--warn-when-php-is-not-configured-for-development', 'desc' => 'Trigger a test runner warning when PHP is not configured for development'],
