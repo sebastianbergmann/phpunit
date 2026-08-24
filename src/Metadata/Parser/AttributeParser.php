@@ -94,6 +94,7 @@ use PHPUnit\Framework\Attributes\UsesClassesThatImplementInterface;
 use PHPUnit\Framework\Attributes\UsesDirectory;
 use PHPUnit\Framework\Attributes\UsesDirectoryRecursively;
 use PHPUnit\Framework\Attributes\UsesFile;
+use PHPUnit\Framework\Attributes\UsesFixture;
 use PHPUnit\Framework\Attributes\UsesFunction;
 use PHPUnit\Framework\Attributes\UsesMethod;
 use PHPUnit\Framework\Attributes\UsesNamespace;
@@ -270,6 +271,13 @@ final class AttributeParser implements Parser
                     assert($attributeInstance instanceof CoversFile);
 
                     $result[] = Metadata::coversFile($attributeInstance->path());
+
+                    break;
+
+                case UsesFixture::class:
+                    assert($attributeInstance instanceof UsesFixture);
+
+                    $result[] = Metadata::usesFixtureOnClass($attributeInstance->path());
 
                     break;
 
@@ -844,6 +852,13 @@ final class AttributeParser implements Parser
 
                         $result[] = Metadata::groupOnMethod($attributeInstance->name());
                     }
+
+                    break;
+
+                case UsesFixture::class:
+                    assert($attributeInstance instanceof UsesFixture);
+
+                    $result[] = Metadata::usesFixtureOnMethod($attributeInstance->path());
 
                     break;
 
