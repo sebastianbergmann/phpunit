@@ -70,6 +70,8 @@ use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 use PHPUnit\Runner\TestImpactAnalysis\Assumptions;
 use PHPUnit\Runner\TestImpactAnalysis\DefaultTestImpactData;
 use PHPUnit\Runner\TestImpactAnalysis\Provenance;
+use PHPUnit\Runner\TestImpactAnalysis\Selection;
+use PHPUnit\Runner\TestImpactAnalysis\Selector;
 use PHPUnit\Runner\TestImpactAnalysis\TestImpactData;
 use PHPUnit\Runner\TestImpactAnalysis\TestImpactDataFile;
 use PHPUnit\Runner\TestImpactAnalysis\TestImpactDataFromCoverageTargets;
@@ -260,10 +262,13 @@ final readonly class Application
                 $extensionCapabilities->requiresCodeCoverageCollection(),
             );
 
+            $selection = $this->selectTests($configuration, $cliConfiguration, $testSuite, $testRunHistory);
+
             if (!$configuration->debug() && !$extensionCapabilities->replacesOutput()) {
                 $this->writeRuntimeInformation($printer, $configuration);
                 $this->writePharExtensionInformation($printer, $pharExtensions);
                 $this->writeRandomSeedInformation($printer, $configuration);
+                $this->writeTestSelectionInformation($printer, $selection);
 
                 $printer->print(PHP_EOL);
             }
@@ -277,10 +282,17 @@ final readonly class Application
                 $coverageInitializationStatus === CodeCoverageInitializationStatus::SUCCEEDED) {
                 $runner = new TestRunner;
 
+                $selectedTests = null;
+
+                if ($selection !== null && !$selection->isEverything()) {
+                    $selectedTests = $selection->tests();
+                }
+
                 $runner->run(
                     $configuration,
                     $testRunHistory,
                     $testSuite,
+                    $selectedTests,
                 );
             }
 
@@ -849,6 +861,77 @@ final readonly class Application
         return $testImpactData;
     }
 
+    /**
+     * Which tests can be affected by what changed, or null when the tests are
+     * not selected by what changed.
+     */
+    private function selectTests(Configuration $configuration, CliConfiguration $cliConfiguration, TestSuite $testSuite, TestRunHistory $testRunHistory): ?Selection
+    {
+        if (!$cliConfiguration->onlyImpacted()) {
+            return null;
+        }
+
+        if (!$configuration->hasCacheDirectory()) {
+            $this->exitWithErrorMessage('Cannot run only the tests that are affected by what changed because no cache directory is configured');
+        }
+
+        if (!$configuration->recordTestRunHistory()) {
+            $this->exitWithErrorMessage('Cannot run only the tests that are affected by what changed because the test run history is not recorded');
+        }
+
+        CodeCoverageFilterRegistry::instance()->init($configuration, true);
+
+        $testRunHistory->load();
+
+        return new Selector(
+            new TestImpactDataFile($configuration->cacheDirectory(), $this->assumptionsOf($configuration)),
+            $testRunHistory,
+        )->select($testSuite->collect(), $this->sourceFiles());
+    }
+
+    private function writeTestSelectionInformation(Printer $printer, ?Selection $selection): void
+    {
+        if ($selection === null) {
+            return;
+        }
+
+        if ($selection->isEverything()) {
+            $printer->print(
+                sprintf(
+                    'Impact:        every test is run: %s%s',
+                    $selection->reason(),
+                    PHP_EOL,
+                ),
+            );
+
+            return;
+        }
+
+        $printer->print(
+            sprintf(
+                'Impact:        %s; %d test%s not run%s',
+                $selection->reason(),
+                $selection->numberOfTestsThatAreNotRun(),
+                $selection->numberOfTestsThatAreNotRun() === 1 ? ' is' : 's are',
+                PHP_EOL,
+            ),
+        );
+    }
+
+    /**
+     * @return list<non-empty-string>
+     */
+    private function sourceFiles(): array
+    {
+        $sourceFiles = [];
+
+        foreach (CodeCoverageFilterRegistry::instance()->get()->files() as $file) {
+            $sourceFiles[] = $file;
+        }
+
+        return $sourceFiles;
+    }
+
     private function assumptionsOf(Configuration $configuration): Assumptions
     {
         $configurationFile = null;
@@ -878,7 +961,11 @@ final readonly class Application
     private function persist(Configuration $configuration, TestImpactData $testImpactData, Provenance $provenance): void
     {
         try {
-            new TestImpactDataFile($configuration->cacheDirectory(), $this->assumptionsOf($configuration))->persist($testImpactData, $provenance);
+            new TestImpactDataFile($configuration->cacheDirectory(), $this->assumptionsOf($configuration))->persist(
+                $testImpactData,
+                $provenance,
+                $this->sourceFiles(),
+            );
         } catch (RunnerException $e) {
             $message = $e->getMessage();
 

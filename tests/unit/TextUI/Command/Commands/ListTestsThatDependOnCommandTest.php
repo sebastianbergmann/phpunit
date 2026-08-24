@@ -101,7 +101,7 @@ final class ListTestsThatDependOnCommandTest extends TestCase
         $data->record('FooTest::testOne', [$file]);
         $data->record('BarTest::testOne', [$file]);
 
-        new TestImpactDataFile($directory, $this->assumptions())->persist($data, Provenance::ObservedExecution);
+        new TestImpactDataFile($directory, $this->assumptions())->persist($data, Provenance::ObservedExecution, []);
 
         $result = new ListTestsThatDependOnCommand(new TestImpactDataFile($directory, $this->assumptions()), $file)->execute();
 
@@ -124,14 +124,14 @@ final class ListTestsThatDependOnCommandTest extends TestCase
         $first = new DefaultTestImpactData;
         $first->record('FooTest::testOne', [$file]);
 
-        new TestImpactDataFile($directory, $this->assumptions())->persist($first, Provenance::ObservedExecution);
+        new TestImpactDataFile($directory, $this->assumptions())->persist($first, Provenance::ObservedExecution, []);
 
         $this->writeSourceFile($directory, 'Foo', 'second');
 
         $second = new DefaultTestImpactData;
         $second->record('BarTest::testOne', [$file]);
 
-        new TestImpactDataFile($directory, $this->assumptions())->persist($second, Provenance::ObservedExecution);
+        new TestImpactDataFile($directory, $this->assumptions())->persist($second, Provenance::ObservedExecution, []);
 
         $result = new ListTestsThatDependOnCommand(new TestImpactDataFile($directory, $this->assumptions()), $file)->execute();
 
@@ -153,7 +153,7 @@ final class ListTestsThatDependOnCommandTest extends TestCase
         $data = new DefaultTestImpactData;
         $data->record('FooTest::testOne', [$file]);
 
-        new TestImpactDataFile($directory, $this->assumptions())->persist($data, Provenance::CoverageTargets);
+        new TestImpactDataFile($directory, $this->assumptions())->persist($data, Provenance::CoverageTargets, []);
 
         $result = new ListTestsThatDependOnCommand(new TestImpactDataFile($directory, $this->assumptions()), $file)->execute();
 
@@ -174,7 +174,7 @@ final class ListTestsThatDependOnCommandTest extends TestCase
         $data = new DefaultTestImpactData;
         $data->record('FooTest::testOne', [$other]);
 
-        new TestImpactDataFile($directory, $this->assumptions())->persist($data, Provenance::CoverageTargets);
+        new TestImpactDataFile($directory, $this->assumptions())->persist($data, Provenance::CoverageTargets, []);
 
         $result = new ListTestsThatDependOnCommand(new TestImpactDataFile($directory, $this->assumptions()), $file)->execute();
 

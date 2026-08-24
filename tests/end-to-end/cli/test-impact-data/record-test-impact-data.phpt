@@ -33,6 +33,6 @@ OK, but some tests were skipped!
 Tests: 4, Assertions: 3, Skipped: 1.
 
 Recorded:
-PHPUnit\TestFixture\TestImpactData\CalculatorTest::testAdds => Calculator.php, Rounder.php
-PHPUnit\TestFixture\TestImpactData\IsolatedCalculatorTest::testAddsInAnotherProcess => Calculator.php, Rounder.php
-PHPUnit\TestFixture\TestImpactData\NothingCoveredTest::testAdds => Calculator.php, Rounder.php
+PHPUnit\TestFixture\TestImpactData\CalculatorTest::testAdds => Calculator.php, CalculatorTest.php, Rounder.php
+PHPUnit\TestFixture\TestImpactData\IsolatedCalculatorTest::testAddsInAnotherProcess => Calculator.php, IsolatedCalculatorTest.php, Rounder.php
+PHPUnit\TestFixture\TestImpactData\NothingCoveredTest::testAdds => Calculator.php, NothingCoveredTest.php, Rounder.php
