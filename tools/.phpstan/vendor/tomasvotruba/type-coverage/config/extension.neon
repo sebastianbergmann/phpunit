@@ -1,3 +1,6 @@
+includes:
+    - ../packages/type-perfect/config/extension.neon
+
 parametersSchema:
     # see https://doc.nette.org/en/schema for configuration
     type_coverage: structure([
