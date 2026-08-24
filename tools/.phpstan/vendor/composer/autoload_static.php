@@ -11,18 +11,6 @@ class ComposerStaticInitf9e7218f71d5874b5632927df4f72bd7
     );
 
     public static $prefixLengthsPsr4 = array (
-        'W' =>
-        array (
-            'Webmozart\\Assert\\' => 17,
-        ),
-        'T' =>
-        array (
-            'TomasVotruba\\TypeCoverage\\' => 26,
-        ),
-        'R' =>
-        array (
-            'Rector\\TypePerfect\\' => 19,
-        ),
         'P' =>
         array (
             'PHPStan\\ExtensionInstaller\\' => 27,
@@ -35,18 +23,6 @@ class ComposerStaticInitf9e7218f71d5874b5632927df4f72bd7
     );
 
     public static $prefixDirsPsr4 = array (
-        'Webmozart\\Assert\\' =>
-        array (
-            0 => __DIR__ . '/..' . '/webmozart/assert/src',
-        ),
-        'TomasVotruba\\TypeCoverage\\' =>
-        array (
-            0 => __DIR__ . '/..' . '/tomasvotruba/type-coverage/src',
-        ),
-        'Rector\\TypePerfect\\' =>
-        array (
-            0 => __DIR__ . '/..' . '/tomasvotruba/type-coverage/packages/type-perfect/src',
-        ),
         'PHPStan\\ExtensionInstaller\\' =>
         array (
             0 => __DIR__ . '/..' . '/phpstan/extension-installer/src',
