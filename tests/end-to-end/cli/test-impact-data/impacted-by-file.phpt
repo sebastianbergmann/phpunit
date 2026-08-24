@@ -34,7 +34,7 @@ function run(array $additionalArguments = [], ?string $standardInput = null): vo
     fclose($pipes[1]);
     proc_close($process);
 
-    foreach (explode(PHP_EOL, $output) as $line) {
+    foreach (preg_split('/\R/', $output) as $line) {
         if (str_starts_with($line, 'Impact:') || str_starts_with($line, 'OK') || str_starts_with($line, 'Tests:') || str_starts_with($line, 'No tests executed') || str_starts_with($line, 'Cannot read')) {
             print $line . PHP_EOL;
         }
