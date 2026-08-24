@@ -25,6 +25,7 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\TestImpactAnalysis\TestThatUsesFixtures;
+use PHPUnit\TestFixture\TestImpactAnalysis\TestWithAMissingDataProviderClass;
 
 #[CoversClass(Fixtures::class)]
 #[Small]
@@ -77,6 +78,11 @@ final class FixturesTest extends TestCase
             ['fixtures/does-not-exist.csv'],
             (new Fixtures)->thatCannotBeResolved(TestThatUsesFixtures::class, 'testDeclaredButNotThere'),
         );
+    }
+
+    public function testResolvesNoPathThroughADataProviderWhoseClassCannotBeFound(): void
+    {
+        $this->assertSame([], (new Fixtures)->for(TestWithAMissingDataProviderClass::class, 'testOne'));
     }
 
     public function testReportsNoPathWhenEveryPathCanBeResolved(): void
