@@ -65,6 +65,7 @@ use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 use PHPUnit\Runner\Receipt\Invocation;
 use PHPUnit\Runner\Receipt\InvocationBuilder;
 use PHPUnit\Runner\Receipt\OutcomeBuilder;
+use PHPUnit\Runner\TestImpactAnalysis\Assumptions;
 use PHPUnit\Runner\TestImpactAnalysis\DefaultTestImpactData;
 use PHPUnit\Runner\TestImpactAnalysis\Provenance;
 use PHPUnit\Runner\TestImpactAnalysis\TestImpactData;
@@ -620,7 +621,10 @@ final readonly class Application
 
             $this->execute(
                 new ListTestsThatDependOnCommand(
-                    new TestImpactDataFile($configuration->cacheDirectory()),
+                    new TestImpactDataFile(
+                        $configuration->cacheDirectory(),
+                        $this->assumptionsOf($configuration),
+                    ),
                     $cliConfiguration->listTestsThatDependOn(),
                 ),
             );
@@ -953,6 +957,17 @@ final readonly class Application
         return $testImpactData;
     }
 
+    private function assumptionsOf(Configuration $configuration): Assumptions
+    {
+        $configurationFile = null;
+
+        if ($configuration->hasConfigurationFile()) {
+            $configurationFile = $configuration->configurationFile();
+        }
+
+        return Assumptions::from($configurationFile, $configuration->source());
+    }
+
     private function persistTestImpactData(Configuration $configuration, ?TestImpactData $testImpactData): void
     {
         if ($testImpactData !== null) {
@@ -971,7 +986,7 @@ final readonly class Application
     private function persist(Configuration $configuration, TestImpactData $testImpactData, Provenance $provenance): void
     {
         try {
-            new TestImpactDataFile($configuration->cacheDirectory())->persist($testImpactData, $provenance);
+            new TestImpactDataFile($configuration->cacheDirectory(), $this->assumptionsOf($configuration))->persist($testImpactData, $provenance);
         } catch (RunnerException $e) {
             $message = $e->getMessage();
 
