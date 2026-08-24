@@ -9,9 +9,11 @@
  */
 namespace PHPUnit\Runner\TestImpactAnalysis;
 
+use const DIRECTORY_SEPARATOR;
 use function array_flip;
 use function assert;
 use function sprintf;
+use function str_starts_with;
 
 /**
  * What an earlier test run recorded, asked the questions that deciding which
@@ -113,6 +115,63 @@ final readonly class Recording
     }
 
     /**
+     * The tests that executed, or that declared that they depend on, one of
+     * the paths.
+     *
+     * A path that names a directory stands for everything that was recorded
+     * beneath it.
+     *
+     * @param list<non-empty-string> $paths
+     *
+     * @return array<non-empty-string, true>
+     */
+    public function testsThatDependOnAnyOf(array $paths): array
+    {
+        $positions = $this->positionsOf($paths);
+        $affected  = [];
+
+        foreach ($this->tests as $test => $versionsOfTest) {
+            foreach ($versionsOfTest as $version) {
+                assert(isset($this->versions[$version]));
+
+                if (!isset($positions[$this->versions[$version][0]])) {
+                    continue;
+                }
+
+                $affected[$test] = true;
+
+                break;
+            }
+        }
+
+        return $affected;
+    }
+
+    /**
+     * A path that nothing that was recorded accounts for, or null when there
+     * is none.
+     *
+     * @param list<non-empty-string> $paths
+     *
+     * @return ?non-empty-string the reason why nothing is known about it
+     */
+    public function pathNothingIsKnownAbout(array $paths): ?string
+    {
+        foreach ($paths as $path) {
+            if ($this->positionsOf([$path]) !== []) {
+                continue;
+            }
+
+            return sprintf(
+                '%s is not among the files that were recorded',
+                $path,
+            );
+        }
+
+        return null;
+    }
+
+    /**
      * A change that nothing that was recorded accounts for, or null when there
      * is none.
      *
@@ -167,6 +226,28 @@ final readonly class Recording
         }
 
         return null;
+    }
+
+    /**
+     * @param list<non-empty-string> $paths
+     *
+     * @return array<int, true>
+     */
+    private function positionsOf(array $paths): array
+    {
+        $positions = [];
+
+        foreach ($this->files as $position => $file) {
+            foreach ($paths as $path) {
+                if ($file === $path || str_starts_with($file, $path . DIRECTORY_SEPARATOR)) {
+                    $positions[$position] = true;
+
+                    break;
+                }
+            }
+        }
+
+        return $positions;
     }
 
     /**

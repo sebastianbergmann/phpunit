@@ -48,10 +48,16 @@ final class Selector
     }
 
     /**
-     * @param list<PhptTestCase|TestCase> $tests       the tests that would be run
-     * @param list<non-empty-string>      $sourceFiles the files that are subject to code coverage analysis
+     * What changed is worked out from what was recorded, unless it is named:
+     * a developer who knows what they changed, and asks version control for
+     * it, knows something PHPUnit cannot work out for itself, such as which of
+     * the files that differ from what was recorded are their own doing.
+     *
+     * @param list<PhptTestCase|TestCase> $tests        the tests that would be run
+     * @param list<non-empty-string>      $sourceFiles  the files that are subject to code coverage analysis
+     * @param ?list<non-empty-string>     $changedPaths the files and directories that changed, when they are named
      */
-    public function select(array $tests, array $sourceFiles): Selection
+    public function select(array $tests, array $sourceFiles, ?array $changedPaths = null): Selection
     {
         $recording = $this->testImpactDataFile->recording();
 
@@ -59,13 +65,22 @@ final class Selector
             return Selection::everything('no test impact data has been recorded');
         }
 
-        $change = $recording->changeNothingIsKnownAbout($this->hasher, $sourceFiles);
+        if ($changedPaths === null) {
+            $change = $recording->changeNothingIsKnownAbout($this->hasher, $sourceFiles);
+        } else {
+            $change = $recording->pathNothingIsKnownAbout($changedPaths);
+        }
 
         if ($change !== null) {
             return Selection::everything($change);
         }
 
-        $affected = $recording->testsAffectedByWhatChanged($this->hasher);
+        if ($changedPaths === null) {
+            $affected = $recording->testsAffectedByWhatChanged($this->hasher);
+        } else {
+            $affected = $recording->testsThatDependOnAnyOf($changedPaths);
+        }
+
         $selected = [];
 
         foreach ($tests as $test) {
