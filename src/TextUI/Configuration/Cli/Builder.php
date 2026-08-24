@@ -53,6 +53,7 @@ final class Builder
         'derive-test-impact-data-from-coverage-targets',
         'do-not-derive-test-impact-data-from-coverage-targets',
         'list-tests-that-depend-on=',
+        'only-impacted',
         'cache-directory=',
         'check-version',
         'check-php-configuration',
@@ -301,6 +302,7 @@ final class Builder
         $recordTestImpactData                     = null;
         $deriveTestImpactDataFromCoverageTargets  = null;
         $listTestsThatDependOn                    = null;
+        $onlyImpacted                             = false;
         $checkPhpConfiguration                    = false;
         $checkVersion                             = false;
         $colors                                   = null;
@@ -529,6 +531,11 @@ final class Builder
 
                 case '--list-tests-that-depend-on':
                     $listTestsThatDependOn = $option[1];
+
+                    break;
+
+                case '--only-impacted':
+                    $onlyImpacted = true;
 
                     break;
 
@@ -1598,6 +1605,7 @@ final class Builder
             $recordTestImpactData,
             $deriveTestImpactDataFromCoverageTargets,
             $listTestsThatDependOn,
+            $onlyImpacted,
         );
     }
 

@@ -64,7 +64,7 @@ use PHPUnit\Util\Filesystem;
  */
 final class TestImpactDataFile
 {
-    private const int VERSION             = 3;
+    private const int VERSION             = 4;
     private const string DEFAULT_FILENAME = 'test-impact-data';
     private readonly string $filename;
     private readonly Assumptions $assumptions;
@@ -139,6 +139,21 @@ final class TestImpactDataFile
     }
 
     /**
+     * What was recorded, in the form the selection of tests needs it, or null
+     * when there is nothing usable.
+     */
+    public function recording(): ?Recording
+    {
+        [$files, $versions, $tests, $provenance, $sourceFiles] = $this->read();
+
+        if ($provenance === null) {
+            return null;
+        }
+
+        return Recording::from($files, $versions, $tests, $sourceFiles);
+    }
+
+    /**
      * What an earlier test run recorded for a test that was not run again is
      * written back unchanged: a run that did not run a test did not learn
      * anything about it and must not cause what is known about it to be
@@ -146,7 +161,10 @@ final class TestImpactDataFile
      *
      * @throws Exception
      */
-    public function persist(TestImpactData $data, Provenance $provenance): void
+    /**
+     * @param list<non-empty-string> $sourceFiles the files that are subject to code coverage analysis
+     */
+    public function persist(TestImpactData $data, Provenance $provenance, array $sourceFiles): void
     {
         [$files, $versions, $tests, $provenanceOfWhatIsThere] = $this->read();
 
@@ -213,7 +231,25 @@ final class TestImpactDataFile
             $tests[$test] = $versionsOfTest;
         }
 
-        $this->write($files, $versions, $tests, $provenance);
+        /*
+         * The source files are recorded whether or not a test executed them:
+         * a change to a source file no test executed is a change nothing is
+         * known about, and knowing what such a file was is what makes it
+         * possible to notice that it changed at all.
+         */
+        $hashesOfSourceFiles = [];
+
+        foreach ($sourceFiles as $sourceFile) {
+            $hash = $this->hasher->hash($sourceFile);
+
+            if ($hash === null) {
+                continue; // @codeCoverageIgnore
+            }
+
+            $hashesOfSourceFiles[$sourceFile] = $hash;
+        }
+
+        $this->write($files, $versions, $tests, $provenance, $hashesOfSourceFiles);
     }
 
     /**
@@ -221,13 +257,14 @@ final class TestImpactDataFile
      * what is left is numbered again: a source file that is recorded with a
      * new hash on every run would otherwise make the file grow without bound.
      *
-     * @param list<non-empty-string>             $files
-     * @param list<VersionType>                  $versions
-     * @param array<non-empty-string, list<int>> $tests
+     * @param list<non-empty-string>                    $files
+     * @param list<VersionType>                         $versions
+     * @param array<non-empty-string, list<int>>        $tests
+     * @param array<non-empty-string, non-empty-string> $hashesOfSourceFiles
      *
      * @throws Exception
      */
-    private function write(array $files, array $versions, array $tests, Provenance $provenance): void
+    private function write(array $files, array $versions, array $tests, Provenance $provenance, array $hashesOfSourceFiles): void
     {
         if (!Filesystem::createDirectory(dirname($this->filename))) {
             throw new DirectoryDoesNotExistException(dirname($this->filename));
@@ -267,6 +304,17 @@ final class TestImpactDataFile
             $keptTests[$test] = $keptVersionsOfTest;
         }
 
+        $sourceFiles = [];
+
+        foreach ($hashesOfSourceFiles as $sourceFile => $hash) {
+            if (!isset($keptFilePositions[$sourceFile])) {
+                $keptFilePositions[$sourceFile] = count($keptFiles);
+                $keptFiles[]                    = $sourceFile;
+            }
+
+            $sourceFiles[] = [$keptFilePositions[$sourceFile], $hash];
+        }
+
         $json = json_encode(
             [
                 'version'     => self::VERSION,
@@ -275,6 +323,7 @@ final class TestImpactDataFile
                 'provenance'  => $provenance->value,
                 'assumptions' => $this->assumptions->asArray(),
                 'files'       => $keptFiles,
+                'sourceFiles' => $sourceFiles,
                 'versions'    => $keptVersions,
                 'tests'       => $keptTests,
             ],
@@ -299,11 +348,11 @@ final class TestImpactDataFile
      * cannot be read, or when it was written by a different version of PHPUnit
      * or of PHP.
      *
-     * @return array{0: list<non-empty-string>, 1: list<VersionType>, 2: array<non-empty-string, list<int>>, 3: ?Provenance}
+     * @return array{0: list<non-empty-string>, 1: list<VersionType>, 2: array<non-empty-string, list<int>>, 3: ?Provenance, 4: array<int, non-empty-string>}
      */
     private function read(): array
     {
-        $empty = [[], [], [], null];
+        $empty = [[], [], [], null, []];
 
         if (!is_file($this->filename)) {
             return $empty;
@@ -321,7 +370,7 @@ final class TestImpactDataFile
             return $empty;
         }
 
-        if (!isset($data['version'], $data['phpunit'], $data['php'], $data['provenance'], $data['assumptions'], $data['files'], $data['versions'], $data['tests'])) {
+        if (!isset($data['version'], $data['phpunit'], $data['php'], $data['provenance'], $data['assumptions'], $data['files'], $data['sourceFiles'], $data['versions'], $data['tests'])) {
             return $empty;
         }
 
@@ -349,7 +398,7 @@ final class TestImpactDataFile
             return $empty;
         }
 
-        if (!is_array($data['files']) || !is_array($data['versions']) || !is_array($data['tests'])) {
+        if (!is_array($data['files']) || !is_array($data['sourceFiles']) || !is_array($data['versions']) || !is_array($data['tests'])) {
             return $empty;
         }
 
@@ -377,6 +426,20 @@ final class TestImpactDataFile
             $versions[] = [$version[0], $version[1]];
         }
 
+        $sourceFiles = [];
+
+        foreach ($data['sourceFiles'] as $sourceFile) {
+            if (!is_array($sourceFile) || !array_key_exists(0, $sourceFile) || !array_key_exists(1, $sourceFile)) {
+                return $empty;
+            }
+
+            if (!is_int($sourceFile[0]) || !isset($files[$sourceFile[0]]) || !is_string($sourceFile[1]) || $sourceFile[1] === '') {
+                return $empty;
+            }
+
+            $sourceFiles[$sourceFile[0]] = $sourceFile[1];
+        }
+
         $tests = [];
 
         foreach ($data['tests'] as $test => $versionsOfTest) {
@@ -397,6 +460,6 @@ final class TestImpactDataFile
             $tests[$test] = $versionsOfSingleTest;
         }
 
-        return [$files, $versions, $tests, $provenance];
+        return [$files, $versions, $tests, $provenance, $sourceFiles];
     }
 }

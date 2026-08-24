@@ -23,6 +23,7 @@ use PHPUnit\Runner\TestImpactAnalysis\DefaultTestImpactData;
 use PHPUnit\Runner\TestImpactAnalysis\ExecutedFiles;
 use PHPUnit\Runner\TestImpactAnalysis\NullTestImpactData;
 use PHPUnit\Runner\TestImpactAnalysis\TestImpactData;
+use PHPUnit\Runner\TestIndex\TestFiles;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Output\Printer;
@@ -632,6 +633,22 @@ final class CodeCoverage
          */
         foreach ((new Fixtures)->for($test::class, $test->name()) as $fixture) {
             $files[] = $fixture;
+        }
+
+        /*
+         * A test that changed is a test that has to be run, and the files the
+         * test itself is made of are what a change to it is seen in. They
+         * cannot be observed: a test file is not code that is subject to code
+         * coverage analysis.
+         */
+        $filesOfTest = TestFiles::of(new ReflectionClass($test));
+
+        if ($filesOfTest === null) {
+            return;
+        }
+
+        foreach ($filesOfTest as $file) {
+            $files[] = $file;
         }
 
         $this->testImpactData()->record($test->valueObjectForEvents()->id(), $files);
