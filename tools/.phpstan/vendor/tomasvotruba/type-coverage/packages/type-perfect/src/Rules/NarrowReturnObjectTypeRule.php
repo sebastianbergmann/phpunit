@@ -28,6 +28,23 @@ final readonly class NarrowReturnObjectTypeRule implements Rule
 {
     public const string ERROR_MESSAGE = 'Provide more specific return type "%s" over abstract one';
 
+    /**
+     * These concrete classes are commonly returned behind an abstract interface/type on purpose,
+     * so narrowing to them would break the intended contract.
+     *
+     * @var string[]
+     */
+    private const array SKIPPED_RETURN_CLASSES = [
+        'Doctrine\Common\Collections\ArrayCollection',
+        'Doctrine\Common\Collections\Collection',
+        'Symfony\Component\Form\Form',
+        'Symfony\Component\Form\FormInterface',
+        'DateTime',
+        'DateTimeImmutable',
+        'SplObjectStorage',
+        'Doctrine\DBAL\Schema\AbstractSchemaManager',
+    ];
+
     public function __construct(
         private ReturnNodeFinder $returnNodeFinder,
         private MethodNodeAnalyser $methodNodeAnalyser,
@@ -131,6 +148,11 @@ final readonly class NarrowReturnObjectTypeRule implements Rule
         }
 
         if (count($type->getObjectClassReflections()) !== 1) {
+            return true;
+        }
+
+        // skip concrete classes that are expected to be returned behind an abstract interface/type
+        if (in_array($type->getObjectClassNames()[0], self::SKIPPED_RETURN_CLASSES, true)) {
             return true;
         }
 
