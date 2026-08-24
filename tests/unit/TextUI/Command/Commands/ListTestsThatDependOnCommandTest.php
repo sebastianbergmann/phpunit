@@ -24,10 +24,14 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Runner\TestImpactAnalysis\Assumptions;
 use PHPUnit\Runner\TestImpactAnalysis\DefaultTestImpactData;
 use PHPUnit\Runner\TestImpactAnalysis\Provenance;
 use PHPUnit\Runner\TestImpactAnalysis\RecordedTests;
 use PHPUnit\Runner\TestImpactAnalysis\TestImpactDataFile;
+use PHPUnit\TextUI\Configuration\FilterDirectoryCollection;
+use PHPUnit\TextUI\Configuration\FilterFileCollection;
+use PHPUnit\TextUI\Configuration\Source;
 
 #[CoversClass(ListTestsThatDependOnCommand::class)]
 #[UsesClass(DefaultTestImpactData::class)]
@@ -69,7 +73,7 @@ final class ListTestsThatDependOnCommandTest extends TestCase
         $directory = $this->temporaryDirectory();
 
         $result = new ListTestsThatDependOnCommand(
-            new TestImpactDataFile($directory),
+            new TestImpactDataFile($directory, $this->assumptions()),
             $directory . DIRECTORY_SEPARATOR . 'DoesNotExist.php',
         )->execute();
 
@@ -82,7 +86,7 @@ final class ListTestsThatDependOnCommandTest extends TestCase
         $directory = $this->temporaryDirectory();
         $file      = $this->writeSourceFile($directory, 'Foo', 'first');
 
-        $result = new ListTestsThatDependOnCommand(new TestImpactDataFile($directory), $file)->execute();
+        $result = new ListTestsThatDependOnCommand(new TestImpactDataFile($directory, $this->assumptions()), $file)->execute();
 
         $this->assertSame('No test that depends on ' . $file . ' is recorded' . PHP_EOL, $result->output());
         $this->assertSame(Result::SUCCESS, $result->shellExitCode());
@@ -97,9 +101,9 @@ final class ListTestsThatDependOnCommandTest extends TestCase
         $data->record('FooTest::testOne', [$file]);
         $data->record('BarTest::testOne', [$file]);
 
-        new TestImpactDataFile($directory)->persist($data, Provenance::ObservedExecution);
+        new TestImpactDataFile($directory, $this->assumptions())->persist($data, Provenance::ObservedExecution);
 
-        $result = new ListTestsThatDependOnCommand(new TestImpactDataFile($directory), $file)->execute();
+        $result = new ListTestsThatDependOnCommand(new TestImpactDataFile($directory, $this->assumptions()), $file)->execute();
 
         $this->assertSame(
             'Recorded from what the tests executed.' . PHP_EOL . PHP_EOL .
@@ -120,16 +124,16 @@ final class ListTestsThatDependOnCommandTest extends TestCase
         $first = new DefaultTestImpactData;
         $first->record('FooTest::testOne', [$file]);
 
-        new TestImpactDataFile($directory)->persist($first, Provenance::ObservedExecution);
+        new TestImpactDataFile($directory, $this->assumptions())->persist($first, Provenance::ObservedExecution);
 
         $this->writeSourceFile($directory, 'Foo', 'second');
 
         $second = new DefaultTestImpactData;
         $second->record('BarTest::testOne', [$file]);
 
-        new TestImpactDataFile($directory)->persist($second, Provenance::ObservedExecution);
+        new TestImpactDataFile($directory, $this->assumptions())->persist($second, Provenance::ObservedExecution);
 
-        $result = new ListTestsThatDependOnCommand(new TestImpactDataFile($directory), $file)->execute();
+        $result = new ListTestsThatDependOnCommand(new TestImpactDataFile($directory, $this->assumptions()), $file)->execute();
 
         $this->assertSame(
             'Recorded from what the tests executed.' . PHP_EOL . PHP_EOL .
@@ -149,9 +153,9 @@ final class ListTestsThatDependOnCommandTest extends TestCase
         $data = new DefaultTestImpactData;
         $data->record('FooTest::testOne', [$file]);
 
-        new TestImpactDataFile($directory)->persist($data, Provenance::CoverageTargets);
+        new TestImpactDataFile($directory, $this->assumptions())->persist($data, Provenance::CoverageTargets);
 
-        $result = new ListTestsThatDependOnCommand(new TestImpactDataFile($directory), $file)->execute();
+        $result = new ListTestsThatDependOnCommand(new TestImpactDataFile($directory, $this->assumptions()), $file)->execute();
 
         $this->assertSame(
             'Recorded from the code coverage targets the tests declare.' . PHP_EOL . PHP_EOL .
@@ -170,13 +174,45 @@ final class ListTestsThatDependOnCommandTest extends TestCase
         $data = new DefaultTestImpactData;
         $data->record('FooTest::testOne', [$other]);
 
-        new TestImpactDataFile($directory)->persist($data, Provenance::CoverageTargets);
+        new TestImpactDataFile($directory, $this->assumptions())->persist($data, Provenance::CoverageTargets);
 
-        $result = new ListTestsThatDependOnCommand(new TestImpactDataFile($directory), $file)->execute();
+        $result = new ListTestsThatDependOnCommand(new TestImpactDataFile($directory, $this->assumptions()), $file)->execute();
 
         $this->assertSame(
             'No test that depends on ' . $file . ' is recorded' . PHP_EOL,
             $result->output(),
+        );
+    }
+
+    private function assumptions(): Assumptions
+    {
+        return Assumptions::from(
+            null,
+            new Source(
+                null,
+                false,
+                FilterDirectoryCollection::fromArray([]),
+                FilterFileCollection::fromArray([]),
+                FilterDirectoryCollection::fromArray([]),
+                FilterFileCollection::fromArray([]),
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                [
+                    'functions' => [],
+                    'methods'   => [],
+                ],
+                false,
+                false,
+                false,
+                true,
+            ),
         );
     }
 
