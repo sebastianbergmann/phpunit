@@ -12,6 +12,7 @@ namespace PHPUnit\Runner\TestImpactAnalysis;
 use function array_keys;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Api\CodeCoverage as CodeCoverageMetadataApi;
+use PHPUnit\Metadata\Api\Fixtures;
 use SebastianBergmann\CodeCoverage\Filter;
 use SebastianBergmann\CodeCoverage\StaticAnalysis\Registry;
 use SebastianBergmann\CodeCoverage\Test\Target\MapBuilder;
@@ -48,6 +49,7 @@ final class TestImpactDataFromCoverageTargets
      */
     private readonly Mapper $mapper;
     private readonly CodeCoverageMetadataApi $metadata;
+    private readonly Fixtures $fixtures;
 
     /**
      * @param ?non-empty-string $staticAnalysisCacheDirectory
@@ -71,6 +73,7 @@ final class TestImpactDataFromCoverageTargets
     {
         $this->mapper   = $mapper;
         $this->metadata = new CodeCoverageMetadataApi;
+        $this->fixtures = new Fixtures;
     }
 
     /**
@@ -88,8 +91,17 @@ final class TestImpactDataFromCoverageTargets
 
             $files = $this->filesFor($test::class, $test->name());
 
+            /*
+             * A test that names no source file is a test nothing is known
+             * about, and the fixtures it declares do not change that: they add
+             * to what a test depends on, they do not establish it.
+             */
             if ($files === []) {
                 continue;
+            }
+
+            foreach ($this->fixtures->for($test::class, $test->name()) as $fixture) {
+                $files[] = $fixture;
             }
 
             $data->record($test->valueObjectForEvents()->id(), $files);

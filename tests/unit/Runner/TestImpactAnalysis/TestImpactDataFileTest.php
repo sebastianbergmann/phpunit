@@ -320,7 +320,7 @@ final class TestImpactDataFileTest extends TestCase
 
         new TestImpactDataFile($directory)->persist($data, Provenance::CoverageTargets);
 
-        $this->assertTrue(new TestImpactDataFile($directory)->testsThatExecuted($foo)->wereDerivedFromCoverageTargets());
+        $this->assertTrue(new TestImpactDataFile($directory)->testsThatDependOn($foo)->wereDerivedFromCoverageTargets());
     }
 
     public function testKnowsNoTestExecutedASourceFileThatWasNeverRecorded(): void
@@ -328,7 +328,7 @@ final class TestImpactDataFileTest extends TestCase
         $directory = $this->temporaryDirectory();
         $foo       = $this->writeSourceFile($directory, 'Foo', 'first');
 
-        $this->assertTrue(new TestImpactDataFile($directory)->testsThatExecuted($foo)->isEmpty());
+        $this->assertTrue(new TestImpactDataFile($directory)->testsThatDependOn($foo)->isEmpty());
     }
 
     public function testKnowsWhichTestsExecutedASourceFileAsItIsNow(): void
@@ -344,10 +344,10 @@ final class TestImpactDataFileTest extends TestCase
 
         new TestImpactDataFile($directory)->persist($data, Provenance::ObservedExecution);
 
-        $tests = new TestImpactDataFile($directory)->testsThatExecuted($foo);
+        $tests = new TestImpactDataFile($directory)->testsThatDependOn($foo);
 
-        $this->assertSame(['BothTest::testOne', 'FooTest::testOne'], $tests->thatExecutedTheFileAsItIsNow());
-        $this->assertSame([], $tests->thatExecutedAnEarlierVersionOfTheFile());
+        $this->assertSame(['BothTest::testOne', 'FooTest::testOne'], $tests->thatDependOnTheFileAsItIsNow());
+        $this->assertSame([], $tests->thatDependOnAnEarlierVersionOfTheFile());
     }
 
     public function testKnowsWhichTestsExecutedAnEarlierVersionOfASourceFile(): void
@@ -368,10 +368,10 @@ final class TestImpactDataFileTest extends TestCase
 
         new TestImpactDataFile($directory)->persist($second, Provenance::ObservedExecution);
 
-        $tests = new TestImpactDataFile($directory)->testsThatExecuted($foo);
+        $tests = new TestImpactDataFile($directory)->testsThatDependOn($foo);
 
-        $this->assertSame(['BarTest::testOne'], $tests->thatExecutedTheFileAsItIsNow());
-        $this->assertSame(['FooTest::testOne'], $tests->thatExecutedAnEarlierVersionOfTheFile());
+        $this->assertSame(['BarTest::testOne'], $tests->thatDependOnTheFileAsItIsNow());
+        $this->assertSame(['FooTest::testOne'], $tests->thatDependOnAnEarlierVersionOfTheFile());
     }
 
     public function testKnowsEveryTestExecutedAnEarlierVersionOfASourceFileThatIsNoLongerThere(): void
@@ -386,10 +386,10 @@ final class TestImpactDataFileTest extends TestCase
 
         unlink($foo);
 
-        $tests = new TestImpactDataFile($directory)->testsThatExecuted($foo);
+        $tests = new TestImpactDataFile($directory)->testsThatDependOn($foo);
 
-        $this->assertSame([], $tests->thatExecutedTheFileAsItIsNow());
-        $this->assertSame(['FooTest::testOne'], $tests->thatExecutedAnEarlierVersionOfTheFile());
+        $this->assertSame([], $tests->thatDependOnTheFileAsItIsNow());
+        $this->assertSame(['FooTest::testOne'], $tests->thatDependOnAnEarlierVersionOfTheFile());
     }
 
     /**
