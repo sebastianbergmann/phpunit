@@ -11,7 +11,7 @@ function run(array $additionalArguments = []): void
             '--no-progress',
             '--colors=never',
             '--configuration',
-            __DIR__ . '/_files/phpunit-from-coverage-targets.xml',
+            __DIR__ . '/_files/phpunit-impacted-by.xml',
             ...$additionalArguments,
         ],
         [1 => ['pipe', 'w']],
@@ -24,7 +24,7 @@ function run(array $additionalArguments = []): void
     proc_close($process);
 
     foreach (explode("\n", $output) as $line) {
-        if (str_starts_with($line, 'Impact:') || str_starts_with($line, 'Tests:') || str_starts_with($line, 'No tests executed')) {
+        if (str_starts_with($line, 'Impact:') || str_starts_with($line, 'OK') || str_starts_with($line, 'Tests:') || str_starts_with($line, 'No tests executed')) {
             print $line . PHP_EOL;
         }
     }
@@ -32,24 +32,41 @@ function run(array $additionalArguments = []): void
 
 run();
 
-print 'Rounder.php named:' . PHP_EOL;
+print PHP_EOL . 'Rounder.php named:' . PHP_EOL;
 
 run(['--impacted-by', __DIR__ . '/_files/src/Rounder.php']);
 
+print PHP_EOL . 'Calculator.php named:' . PHP_EOL;
+
+run(['--impacted-by', __DIR__ . '/_files/src/Calculator.php']);
+
+print PHP_EOL . 'Both named:' . PHP_EOL;
+
+run(['--impacted-by', __DIR__ . '/_files/src/Rounder.php', '--impacted-by', __DIR__ . '/_files/src/Calculator.php']);
+
 print PHP_EOL . 'A path nothing knows about named:' . PHP_EOL;
 
-run(['--impacted-by', __DIR__ . '/_files/phpunit-from-coverage-targets.xml']);
+run(['--impacted-by', __DIR__ . '/_files/phpunit-impacted-by.xml']);
 --CLEAN--
 <?php declare(strict_types=1);
 require __DIR__ . '/../../../_files/delete_directory.php';
 
-delete_directory(__DIR__ . '/_files/.phpunit.cache.from-coverage-targets');
+delete_directory(__DIR__ . '/_files/.phpunit.cache.impacted-by');
 --EXPECTF--
-Tests: 4, Assertions: 3, Skipped: 1.
+OK (2 tests, 2 assertions)
+
 Rounder.php named:
-Impact:        2 of 4 tests can be affected by what changed; 2 tests are not run
-Tests: 2, Assertions: 1, Skipped: 1.
+Impact:        1 of 2 tests can be affected by what changed; 1 test is not run
+OK (1 test, 1 assertion)
+
+Calculator.php named:
+Impact:        1 of 2 tests can be affected by what changed; 1 test is not run
+OK (1 test, 1 assertion)
+
+Both named:
+Impact:        2 of 2 tests can be affected by what changed; 0 tests are not run
+OK (2 tests, 2 assertions)
 
 A path nothing knows about named:
 Impact:        every test is run: %s is not among the files that were recorded
-Tests: 4, Assertions: 3, Skipped: 1.
+OK (2 tests, 2 assertions)
