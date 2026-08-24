@@ -110,6 +110,7 @@ Execution:
   --list-tests-that-depend-on <file>   List tests that depend on <file>
   --only-impacted                      Only run tests affected by what changed
   --impacted-by <path>                 Only run tests affected by <path>
+  --impacted-by-file <file>            Only run tests affected by the paths listed in <file> ("-" for standard input)
 
   --warn-when-php-is-not-configured-for-development
                                        Trigger a test runner warning when PHP is not configured for development
