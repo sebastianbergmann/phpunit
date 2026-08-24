@@ -195,6 +195,70 @@ final class TestImpactDataFileTest extends TestCase
         );
     }
 
+    public function testForgetsWhatWasRecordedForATestThatWasNotRunAgainWhenPruning(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $foo       = $this->writeSourceFile($directory, 'Foo', 'first');
+        $bar       = $this->writeSourceFile($directory, 'Bar', 'first');
+
+        $first = new DefaultTestImpactData;
+        $first->record('FooTest::testOne', [$foo]);
+        $first->record('BarTest::testOne', [$bar]);
+
+        new TestImpactDataFile($directory, $this->assumptions())->persist($first, Provenance::ObservedExecution, []);
+
+        $second = new DefaultTestImpactData;
+        $second->record('BarTest::testOne', [$bar]);
+
+        new TestImpactDataFile($directory, $this->assumptions())->persistAndPrune($second, Provenance::ObservedExecution, []);
+
+        $this->assertSame(
+            [
+                ['BarTest::testOne', 'Bar.php'],
+            ],
+            $this->dependencies($this->persistedData($directory)),
+        );
+    }
+
+    public function testForgetsTheSourceFilesOnlyAForgottenTestReferredTo(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $foo       = $this->writeSourceFile($directory, 'Foo', 'first');
+        $bar       = $this->writeSourceFile($directory, 'Bar', 'first');
+
+        $first = new DefaultTestImpactData;
+        $first->record('FooTest::testOne', [$foo]);
+        $first->record('BarTest::testOne', [$bar]);
+
+        new TestImpactDataFile($directory, $this->assumptions())->persist($first, Provenance::ObservedExecution, []);
+
+        $second = new DefaultTestImpactData;
+        $second->record('BarTest::testOne', [$bar]);
+
+        new TestImpactDataFile($directory, $this->assumptions())->persistAndPrune($second, Provenance::ObservedExecution, []);
+
+        $this->assertSame([$bar], $this->persistedData($directory)['files']);
+    }
+
+    public function testKeepsTheSourceFilesThatAreSubjectToCodeCoverageAnalysisWhenPruning(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $foo       = $this->writeSourceFile($directory, 'Foo', 'first');
+
+        $first = new DefaultTestImpactData;
+        $first->record('FooTest::testOne', [$foo]);
+
+        new TestImpactDataFile($directory, $this->assumptions())->persist($first, Provenance::ObservedExecution, [$foo]);
+
+        new TestImpactDataFile($directory, $this->assumptions())->persistAndPrune(new DefaultTestImpactData, Provenance::ObservedExecution, [$foo]);
+
+        $persisted = $this->persistedData($directory);
+
+        $this->assertSame([], $persisted['tests']);
+        $this->assertCount(1, $persisted['sourceFiles']);
+        $this->assertSame($foo, $persisted['files'][$persisted['sourceFiles'][0][0]]);
+    }
+
     public function testRecordsTheVersionOfASourceFileThatATestExecuted(): void
     {
         $directory = $this->temporaryDirectory();
