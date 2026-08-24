@@ -13,6 +13,7 @@ use const DIRECTORY_SEPARATOR;
 use const PHP_EOL;
 use const PHP_VERSION;
 use const SIGINT;
+use function array_merge;
 use function array_reverse;
 use function assert;
 use function class_exists;
@@ -70,6 +71,7 @@ use PHPUnit\Runner\IssueTriggerResolver\Resolver;
 use PHPUnit\Runner\PhpConfiguration\PhpConfigurationChecker;
 use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 use PHPUnit\Runner\TestImpactAnalysis\Assumptions;
+use PHPUnit\Runner\TestImpactAnalysis\ChangedPaths;
 use PHPUnit\Runner\TestImpactAnalysis\DefaultTestImpactData;
 use PHPUnit\Runner\TestImpactAnalysis\Provenance;
 use PHPUnit\Runner\TestImpactAnalysis\Selection;
@@ -869,7 +871,9 @@ final readonly class Application
      */
     private function selectTests(Configuration $configuration, CliConfiguration $cliConfiguration, TestSuite $testSuite, TestRunHistory $testRunHistory): ?Selection
     {
-        if (!$cliConfiguration->onlyImpacted() && !$cliConfiguration->hasImpactedBy()) {
+        if (!$cliConfiguration->onlyImpacted() &&
+            !$cliConfiguration->hasImpactedBy() &&
+            !$cliConfiguration->hasImpactedByFile()) {
             return null;
         }
 
@@ -887,14 +891,46 @@ final readonly class Application
 
         $changedPaths = null;
 
-        if ($cliConfiguration->hasImpactedBy()) {
-            $changedPaths = $this->resolve($cliConfiguration->impactedBy());
+        if ($cliConfiguration->hasImpactedBy() || $cliConfiguration->hasImpactedByFile()) {
+            $changedPaths = $this->changedPaths($cliConfiguration);
         }
 
         return new Selector(
             new TestImpactDataFile($configuration->cacheDirectory(), $this->assumptionsOf($configuration)),
             $testRunHistory,
         )->select($testSuite->collect(), $this->sourceFiles(), $changedPaths);
+    }
+
+    /**
+     * The files and directories that changed, named on the command line, read
+     * from a file, or both.
+     *
+     * @return list<non-empty-string>
+     */
+    private function changedPaths(CliConfiguration $cliConfiguration): array
+    {
+        $changedPaths = [];
+
+        if ($cliConfiguration->hasImpactedBy()) {
+            $changedPaths = $this->resolve($cliConfiguration->impactedBy());
+        }
+
+        if ($cliConfiguration->hasImpactedByFile()) {
+            $paths = ChangedPaths::readFrom($cliConfiguration->impactedByFile());
+
+            if ($paths === null) {
+                $this->exitWithErrorMessage(
+                    sprintf(
+                        'Cannot read the files and directories that changed from %s',
+                        $cliConfiguration->impactedByFile(),
+                    ),
+                );
+            }
+
+            $changedPaths = array_merge($changedPaths, $this->resolve($paths));
+        }
+
+        return $changedPaths;
     }
 
     /**
@@ -907,9 +943,9 @@ final readonly class Application
      * was deleted is a change like any other, and what was recorded for it is
      * recorded under the name it had.
      *
-     * @param non-empty-list<non-empty-string> $paths
+     * @param list<non-empty-string> $paths
      *
-     * @return non-empty-list<non-empty-string>
+     * @return list<non-empty-string>
      */
     private function resolve(array $paths): array
     {

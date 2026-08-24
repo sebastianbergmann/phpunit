@@ -280,6 +280,7 @@ final class Help
                 ['arg' => '--list-tests-that-depend-on <file>', 'desc' => 'List tests that depend on <file>'],
                 ['arg' => '--only-impacted', 'desc' => 'Only run tests affected by what changed'],
                 ['arg' => '--impacted-by <path>', 'desc' => 'Only run tests affected by <path>'],
+                ['arg' => '--impacted-by-file <file>', 'desc' => 'Only run tests affected by the paths listed in <file> ("-" for standard input)'],
                 ['spacer' => ''],
 
                 ['arg' => '--warn-when-php-is-not-configured-for-development', 'desc' => 'Trigger a test runner warning when PHP is not configured for development'],
