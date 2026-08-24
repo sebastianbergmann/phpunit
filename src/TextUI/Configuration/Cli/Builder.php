@@ -54,6 +54,7 @@ final class Builder
         'list-tests-that-depend-on=',
         'only-impacted',
         'impacted-by=',
+        'impacted-by-file=',
         'cache-directory=',
         'check-version',
         'check-php-configuration',
@@ -310,6 +311,7 @@ final class Builder
         $listTestsThatDependOn                    = null;
         $onlyImpacted                             = false;
         $impactedBy                               = null;
+        $impactedByFile                           = null;
         $checkPhpConfiguration                    = false;
         $checkVersion                             = false;
         $colors                                   = null;
@@ -537,6 +539,11 @@ final class Builder
                     $impactedBy[] = $this->requireNonEmptyValue($option[1], '--impacted-by');
 
                     $optionAllowedMultipleTimes = true;
+
+                    break;
+
+                case '--impacted-by-file':
+                    $impactedByFile = $this->requireNonEmptyValue($option[1], '--impacted-by-file');
 
                     break;
 
@@ -1617,6 +1624,7 @@ final class Builder
             $listTestsThatDependOn,
             $onlyImpacted,
             $impactedBy,
+            $impactedByFile,
         );
     }
 
