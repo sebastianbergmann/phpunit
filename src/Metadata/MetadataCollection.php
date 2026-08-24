@@ -258,6 +258,16 @@ final readonly class MetadataCollection implements Countable, IteratorAggregate
         );
     }
 
+    public function isUsesFixture(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isUsesFixture(),
+            ),
+        );
+    }
+
     public function isCoversDirectory(): self
     {
         return new self(

@@ -98,7 +98,7 @@ use PHPUnit\TextUI\Command\ListTestFilesCommand;
 use PHPUnit\TextUI\Command\ListTestIdsCommand;
 use PHPUnit\TextUI\Command\ListTestsAsTextCommand;
 use PHPUnit\TextUI\Command\ListTestsAsXmlCommand;
-use PHPUnit\TextUI\Command\ListTestsThatExecutedCommand;
+use PHPUnit\TextUI\Command\ListTestsThatDependOnCommand;
 use PHPUnit\TextUI\Command\ListTestSuitesCommand;
 use PHPUnit\TextUI\Command\MigrateConfigurationCommand;
 use PHPUnit\TextUI\Command\Result;
@@ -546,15 +546,15 @@ final readonly class Application
             $this->execute(new WarmCodeCoverageCacheCommand($configuration, CodeCoverageFilterRegistry::instance()));
         }
 
-        if ($cliConfiguration->hasListTestsThatExecuted()) {
+        if ($cliConfiguration->hasListTestsThatDependOn()) {
             if (!$configuration->hasCacheDirectory()) {
                 $this->exitWithErrorMessage('Cannot list tests that executed a source file because no cache directory is configured');
             }
 
             $this->execute(
-                new ListTestsThatExecutedCommand(
+                new ListTestsThatDependOnCommand(
                     new TestImpactDataFile($configuration->cacheDirectory()),
-                    $cliConfiguration->listTestsThatExecuted(),
+                    $cliConfiguration->listTestsThatDependOn(),
                 ),
             );
         }

@@ -28,31 +28,31 @@ final readonly class RecordedTests
     /**
      * @var list<non-empty-string>
      */
-    private array $thatExecutedTheFileAsItIsNow;
+    private array $thatDependOnTheFileAsItIsNow;
 
     /**
      * @var list<non-empty-string>
      */
-    private array $thatExecutedAnEarlierVersionOfTheFile;
+    private array $thatDependOnAnEarlierVersionOfTheFile;
     private Provenance $provenance;
 
     /**
-     * @param list<non-empty-string> $thatExecutedTheFileAsItIsNow
-     * @param list<non-empty-string> $thatExecutedAnEarlierVersionOfTheFile
+     * @param list<non-empty-string> $thatDependOnTheFileAsItIsNow
+     * @param list<non-empty-string> $thatDependOnAnEarlierVersionOfTheFile
      */
-    public static function from(array $thatExecutedTheFileAsItIsNow, array $thatExecutedAnEarlierVersionOfTheFile, Provenance $provenance): self
+    public static function from(array $thatDependOnTheFileAsItIsNow, array $thatDependOnAnEarlierVersionOfTheFile, Provenance $provenance): self
     {
-        return new self($thatExecutedTheFileAsItIsNow, $thatExecutedAnEarlierVersionOfTheFile, $provenance);
+        return new self($thatDependOnTheFileAsItIsNow, $thatDependOnAnEarlierVersionOfTheFile, $provenance);
     }
 
     /**
-     * @param list<non-empty-string> $thatExecutedTheFileAsItIsNow
-     * @param list<non-empty-string> $thatExecutedAnEarlierVersionOfTheFile
+     * @param list<non-empty-string> $thatDependOnTheFileAsItIsNow
+     * @param list<non-empty-string> $thatDependOnAnEarlierVersionOfTheFile
      */
-    private function __construct(array $thatExecutedTheFileAsItIsNow, array $thatExecutedAnEarlierVersionOfTheFile, Provenance $provenance)
+    private function __construct(array $thatDependOnTheFileAsItIsNow, array $thatDependOnAnEarlierVersionOfTheFile, Provenance $provenance)
     {
-        $this->thatExecutedTheFileAsItIsNow          = $thatExecutedTheFileAsItIsNow;
-        $this->thatExecutedAnEarlierVersionOfTheFile = $thatExecutedAnEarlierVersionOfTheFile;
+        $this->thatDependOnTheFileAsItIsNow          = $thatDependOnTheFileAsItIsNow;
+        $this->thatDependOnAnEarlierVersionOfTheFile = $thatDependOnAnEarlierVersionOfTheFile;
         $this->provenance                            = $provenance;
     }
 
@@ -68,21 +68,21 @@ final readonly class RecordedTests
     /**
      * @return list<non-empty-string>
      */
-    public function thatExecutedTheFileAsItIsNow(): array
+    public function thatDependOnTheFileAsItIsNow(): array
     {
-        return $this->thatExecutedTheFileAsItIsNow;
+        return $this->thatDependOnTheFileAsItIsNow;
     }
 
     /**
      * @return list<non-empty-string>
      */
-    public function thatExecutedAnEarlierVersionOfTheFile(): array
+    public function thatDependOnAnEarlierVersionOfTheFile(): array
     {
-        return $this->thatExecutedAnEarlierVersionOfTheFile;
+        return $this->thatDependOnAnEarlierVersionOfTheFile;
     }
 
     public function isEmpty(): bool
     {
-        return $this->thatExecutedTheFileAsItIsNow === [] && $this->thatExecutedAnEarlierVersionOfTheFile === [];
+        return $this->thatDependOnTheFileAsItIsNow === [] && $this->thatDependOnAnEarlierVersionOfTheFile === [];
     }
 }

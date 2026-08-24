@@ -107,7 +107,7 @@ Execution:
                                        Derive test impact data from code coverage targets
   --do-not-derive-test-impact-data-from-coverage-targets
                                        Do not derive test impact data from code coverage targets
-  --list-tests-that-executed <file>    List tests that executed <file>
+  --list-tests-that-depend-on <file>   List tests that depend on <file>
 
   --warn-when-php-is-not-configured-for-development
                                        Trigger a test runner warning when PHP is not configured for development

@@ -18,6 +18,7 @@ use function sys_get_temp_dir;
 use DateTimeImmutable;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Metadata\Api\Fixtures;
 use PHPUnit\Runner\TestImpactAnalysis\DefaultTestImpactData;
 use PHPUnit\Runner\TestImpactAnalysis\ExecutedFiles;
 use PHPUnit\Runner\TestImpactAnalysis\NullTestImpactData;
@@ -623,10 +624,17 @@ final class CodeCoverage
 
         assert($this->codeCoverage !== null);
 
-        $this->testImpactData()->record(
-            $test->valueObjectForEvents()->id(),
-            ExecutedFiles::in($this->codeCoverage->dataNotFilteredUsingTargets()),
-        );
+        $files = ExecutedFiles::in($this->codeCoverage->dataNotFilteredUsingTargets());
+
+        /*
+         * Reading a file is not executing code, so what a test declares that
+         * it uses as a fixture cannot be observed and has to be added here.
+         */
+        foreach ((new Fixtures)->for($test::class, $test->name()) as $fixture) {
+            $files[] = $fixture;
+        }
+
+        $this->testImpactData()->record($test->valueObjectForEvents()->id(), $files);
     }
 
     private function activate(Filter $filter, bool $branchCoverage, bool $pathCoverage, ?string $driverClass = null): void
