@@ -28,7 +28,9 @@ use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\Success;
+use PHPUnit\TestFixture\TestIndexEntry\ExternallyProvidedTest;
 use PHPUnit\TestFixture\TestIndexEntry\InheritingTest;
+use PHPUnit\TestFixture\TestIndexEntry\MissingProviderTest;
 use PHPUnit\TestFixture\TestIndexEntry\ModifiedTest;
 use PHPUnit\TestFixture\TestIndexEntry\RemovedTest;
 use PHPUnit\TestFixture\TestIndexEntry\RootedTest;
@@ -105,6 +107,27 @@ final class TestIndexEntryTest extends TestCase
         foreach ($files as $file) {
             $this->assertArrayHasKey($file, $entry->dependencies());
         }
+    }
+
+    #[TestDox('Depends on the file of a data provider that is a method of another class')]
+    public function testDependsOnFileOfDataProviderThatIsMethodOfAnotherClass(): void
+    {
+        $files = $this->writeTestClassWithExternalDataProvider('ExternallyProvided');
+        $entry = TestIndexEntry::for(new ReflectionClass(ExternallyProvidedTest::class), new FileHasher, false);
+
+        $this->assertNotNull($entry);
+        $this->assertArrayHasKey($files['provider'], $entry->dependencies());
+        $this->assertArrayHasKey($files['providerParent'], $entry->dependencies());
+    }
+
+    #[TestDox('Is not recorded when the class a data provider is a method of does not exist')]
+    public function testIsNotRecordedWhenClassOfDataProviderDoesNotExist(): void
+    {
+        $this->writeTestClassWithMissingDataProviderClass('MissingProvider');
+
+        $this->assertNull(
+            TestIndexEntry::for(new ReflectionClass(MissingProviderTest::class), new FileHasher, false),
+        );
     }
 
     #[TestDox('Does not depend on the files of PHPUnit\Framework\TestCase and PHPUnit\Framework\Assert')]
@@ -264,6 +287,103 @@ final class TestIndexEntryTest extends TestCase
      *
      * @return array{class: non-empty-string, parent: non-empty-string, trait: non-empty-string}
      */
+    /**
+     * @return array{class: non-empty-string, provider: non-empty-string, providerParent: non-empty-string}
+     */
+    private function writeTestClassWithExternalDataProvider(string $name): array
+    {
+        $directory    = $this->directory();
+        $parentFile   = $directory . DIRECTORY_SEPARATOR . $name . 'ProviderParent.php';
+        $providerFile = $directory . DIRECTORY_SEPARATOR . $name . 'Provider.php';
+        $classFile    = $directory . DIRECTORY_SEPARATOR . $name . 'Test.php';
+
+        file_put_contents(
+            $parentFile,
+            <<<PHP
+                <?php declare(strict_types=1);
+                namespace PHPUnit\TestFixture\TestIndexEntry;
+
+                abstract class {$name}ProviderParent
+                {
+                }
+                PHP,
+        );
+
+        file_put_contents(
+            $providerFile,
+            <<<PHP
+                <?php declare(strict_types=1);
+                namespace PHPUnit\TestFixture\TestIndexEntry;
+
+                final class {$name}Provider extends {$name}ProviderParent
+                {
+                    public static function provide(): array
+                    {
+                        return [[1]];
+                    }
+                }
+                PHP,
+        );
+
+        file_put_contents(
+            $classFile,
+            <<<PHP
+                <?php declare(strict_types=1);
+                namespace PHPUnit\TestFixture\TestIndexEntry;
+
+                use PHPUnit\Framework\Attributes\DataProviderExternal;
+                use PHPUnit\Framework\TestCase;
+
+                final class {$name}Test extends TestCase
+                {
+                    #[DataProviderExternal({$name}Provider::class, 'provide')]
+                    public function testOne(int \$value): void
+                    {
+                    }
+                }
+                PHP,
+        );
+
+        require_once $parentFile;
+
+        require_once $providerFile;
+
+        require_once $classFile;
+
+        return ['class' => $classFile, 'provider' => $providerFile, 'providerParent' => $parentFile];
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    private function writeTestClassWithMissingDataProviderClass(string $name): string
+    {
+        $file = $this->directory() . DIRECTORY_SEPARATOR . $name . 'Test.php';
+
+        file_put_contents(
+            $file,
+            <<<PHP
+                <?php declare(strict_types=1);
+                namespace PHPUnit\TestFixture\TestIndexEntry;
+
+                use PHPUnit\Framework\Attributes\DataProviderExternal;
+                use PHPUnit\Framework\TestCase;
+
+                final class {$name}Test extends TestCase
+                {
+                    #[DataProviderExternal('PHPUnit\\TestFixture\\TestIndexEntry\\ThereIsNoSuchProvider', 'provide')]
+                    public function testOne(int \$value): void
+                    {
+                    }
+                }
+                PHP,
+        );
+
+        require_once $file;
+
+        return $file;
+    }
+
     private function writeTestClassWithParentAndTrait(string $name): array
     {
         $directory  = $this->directory();
