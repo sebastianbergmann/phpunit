@@ -14,6 +14,7 @@ use const PHP_EOL;
 use const PHP_VERSION;
 use const SIGINT;
 use function array_merge;
+use function assert;
 use function count;
 use function defined;
 use function dirname;
@@ -25,9 +26,11 @@ use function is_file;
 use function is_string;
 use function pcntl_async_signals;
 use function pcntl_signal;
+use function preg_match;
 use function printf;
 use function realpath;
 use function sprintf;
+use function str_replace;
 use function str_starts_with;
 use function trim;
 use function unlink;
@@ -1065,12 +1068,14 @@ final readonly class Application
         $resolved = [];
 
         foreach ($paths as $path) {
+            $path = $this->withNativeDirectorySeparators($path);
+
             $absolutePath = realpath($path);
 
             if ($absolutePath === false) {
                 $absolutePath = $path;
 
-                if (!str_starts_with($path, DIRECTORY_SEPARATOR)) {
+                if (!$this->isAbsolute($path)) {
                     $workingDirectory = getcwd();
 
                     if ($workingDirectory !== false) {
@@ -1085,6 +1090,51 @@ final readonly class Application
         }
 
         return $resolved;
+    }
+
+    /**
+     * Version control names a path with '/' as the directory separator, on
+     * every platform, whereas what was recorded names it the way the platform
+     * does.
+     *
+     * @param non-empty-string $path
+     *
+     * @return non-empty-string
+     */
+    private function withNativeDirectorySeparators(string $path): string
+    {
+        if (DIRECTORY_SEPARATOR === '/') {
+            return $path;
+        }
+
+        // @codeCoverageIgnoreStart
+        $path = str_replace('/', DIRECTORY_SEPARATOR, $path);
+
+        assert($path !== '');
+
+        return $path;
+        // @codeCoverageIgnoreEnd
+    }
+
+    /**
+     * A path that names where it is from the root of a file system, or from
+     * the root of the drive it is on, and not from the working directory.
+     *
+     * @param non-empty-string $path
+     */
+    private function isAbsolute(string $path): bool
+    {
+        if (str_starts_with($path, DIRECTORY_SEPARATOR)) {
+            return true;
+        }
+
+        if (DIRECTORY_SEPARATOR === '/') {
+            return false;
+        }
+
+        // @codeCoverageIgnoreStart
+        return preg_match('/^[A-Za-z]:\\\\/', $path) === 1;
+        // @codeCoverageIgnoreEnd
     }
 
     private function writeTestSelectionInformation(Printer $printer, ?Selection $selection): void
