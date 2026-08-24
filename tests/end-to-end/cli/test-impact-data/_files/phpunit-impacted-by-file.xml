@@ -7,7 +7,7 @@
          beStrictAboutCoverageMetadata="true">
     <testsuites>
         <testsuite name="default">
-            <directory>tests-for-impacted-by-file</directory>
+            <directory>tests-that-cover-different-classes</directory>
         </testsuite>
     </testsuites>
 
