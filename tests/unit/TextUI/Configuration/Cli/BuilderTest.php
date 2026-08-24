@@ -342,6 +342,26 @@ final class BuilderTest extends TestCase
         $configuration->impactedBy();
     }
 
+    #[TestDox('--impacted-by-file <file>')]
+    public function testImpactedByFile(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--impacted-by-file', 'changed.txt']);
+
+        $this->assertTrue($configuration->hasImpactedByFile());
+        $this->assertSame('changed.txt', $configuration->impactedByFile());
+    }
+
+    public function testImpactedByFileMayNotBeConfigured(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters([]);
+
+        $this->assertFalse($configuration->hasImpactedByFile());
+
+        $this->expectException(Exception::class);
+
+        $configuration->impactedByFile();
+    }
+
     public function testOnlyImpactedIsNotTheDefault(): void
     {
         $this->assertFalse(new Builder($this->createStub(Emitter::class))->fromParameters([])->onlyImpacted());
