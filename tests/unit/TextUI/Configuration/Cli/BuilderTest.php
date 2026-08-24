@@ -322,6 +322,26 @@ final class BuilderTest extends TestCase
         $this->assertTrue(new Builder($this->createStub(Emitter::class))->fromParameters(['--only-impacted'])->onlyImpacted());
     }
 
+    #[TestDox('--impacted-by <path>')]
+    public function testImpactedBy(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--impacted-by', 'src/Foo.php', '--impacted-by', 'src/Bar.php']);
+
+        $this->assertTrue($configuration->hasImpactedBy());
+        $this->assertSame(['src/Foo.php', 'src/Bar.php'], $configuration->impactedBy());
+    }
+
+    public function testImpactedByMayNotBeConfigured(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters([]);
+
+        $this->assertFalse($configuration->hasImpactedBy());
+
+        $this->expectException(Exception::class);
+
+        $configuration->impactedBy();
+    }
+
     public function testOnlyImpactedIsNotTheDefault(): void
     {
         $this->assertFalse(new Builder($this->createStub(Emitter::class))->fromParameters([])->onlyImpacted());
