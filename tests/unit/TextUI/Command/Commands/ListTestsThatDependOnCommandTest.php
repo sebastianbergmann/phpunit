@@ -29,14 +29,14 @@ use PHPUnit\Runner\TestImpactAnalysis\Provenance;
 use PHPUnit\Runner\TestImpactAnalysis\RecordedTests;
 use PHPUnit\Runner\TestImpactAnalysis\TestImpactDataFile;
 
-#[CoversClass(ListTestsThatExecutedCommand::class)]
+#[CoversClass(ListTestsThatDependOnCommand::class)]
 #[UsesClass(DefaultTestImpactData::class)]
 #[UsesClass(RecordedTests::class)]
 #[UsesClass(TestImpactDataFile::class)]
 #[Small]
 #[Group('textui')]
 #[Group('textui/commands')]
-final class ListTestsThatExecutedCommandTest extends TestCase
+final class ListTestsThatDependOnCommandTest extends TestCase
 {
     /**
      * @var list<non-empty-string>
@@ -68,7 +68,7 @@ final class ListTestsThatExecutedCommandTest extends TestCase
     {
         $directory = $this->temporaryDirectory();
 
-        $result = new ListTestsThatExecutedCommand(
+        $result = new ListTestsThatDependOnCommand(
             new TestImpactDataFile($directory),
             $directory . DIRECTORY_SEPARATOR . 'DoesNotExist.php',
         )->execute();
@@ -82,13 +82,13 @@ final class ListTestsThatExecutedCommandTest extends TestCase
         $directory = $this->temporaryDirectory();
         $file      = $this->writeSourceFile($directory, 'Foo', 'first');
 
-        $result = new ListTestsThatExecutedCommand(new TestImpactDataFile($directory), $file)->execute();
+        $result = new ListTestsThatDependOnCommand(new TestImpactDataFile($directory), $file)->execute();
 
-        $this->assertSame('No test that executed ' . $file . ' is recorded' . PHP_EOL, $result->output());
+        $this->assertSame('No test that depends on ' . $file . ' is recorded' . PHP_EOL, $result->output());
         $this->assertSame(Result::SUCCESS, $result->shellExitCode());
     }
 
-    public function testListsTheTestsThatExecutedTheSourceFileAsItIsNow(): void
+    public function testListsTheTestsThatDependOnTheFileAsItIsNow(): void
     {
         $directory = $this->temporaryDirectory();
         $file      = $this->writeSourceFile($directory, 'Foo', 'first');
@@ -99,10 +99,11 @@ final class ListTestsThatExecutedCommandTest extends TestCase
 
         new TestImpactDataFile($directory)->persist($data, Provenance::ObservedExecution);
 
-        $result = new ListTestsThatExecutedCommand(new TestImpactDataFile($directory), $file)->execute();
+        $result = new ListTestsThatDependOnCommand(new TestImpactDataFile($directory), $file)->execute();
 
         $this->assertSame(
-            'Tests that executed ' . $file . ' as it is now:' . PHP_EOL .
+            'Recorded from what the tests executed.' . PHP_EOL . PHP_EOL .
+            'Tests that depend on ' . $file . ' as it is now:' . PHP_EOL .
             ' - BarTest::testOne' . PHP_EOL .
             ' - FooTest::testOne' . PHP_EOL . PHP_EOL,
             $result->output(),
@@ -111,7 +112,7 @@ final class ListTestsThatExecutedCommandTest extends TestCase
         $this->assertSame(Result::SUCCESS, $result->shellExitCode());
     }
 
-    public function testListsTheTestsThatExecutedAnEarlierVersionOfTheSourceFileSeparately(): void
+    public function testListsTheTestsThatDependOnAnEarlierVersionOfTheFileSeparately(): void
     {
         $directory = $this->temporaryDirectory();
         $file      = $this->writeSourceFile($directory, 'Foo', 'first');
@@ -128,12 +129,13 @@ final class ListTestsThatExecutedCommandTest extends TestCase
 
         new TestImpactDataFile($directory)->persist($second, Provenance::ObservedExecution);
 
-        $result = new ListTestsThatExecutedCommand(new TestImpactDataFile($directory), $file)->execute();
+        $result = new ListTestsThatDependOnCommand(new TestImpactDataFile($directory), $file)->execute();
 
         $this->assertSame(
-            'Tests that executed ' . $file . ' as it is now:' . PHP_EOL .
+            'Recorded from what the tests executed.' . PHP_EOL . PHP_EOL .
+            'Tests that depend on ' . $file . ' as it is now:' . PHP_EOL .
             ' - BarTest::testOne' . PHP_EOL . PHP_EOL .
-            'Tests that executed an earlier version of ' . $file . ':' . PHP_EOL .
+            'Tests that depend on an earlier version of ' . $file . ':' . PHP_EOL .
             ' - FooTest::testOne' . PHP_EOL . PHP_EOL,
             $result->output(),
         );
@@ -149,10 +151,11 @@ final class ListTestsThatExecutedCommandTest extends TestCase
 
         new TestImpactDataFile($directory)->persist($data, Provenance::CoverageTargets);
 
-        $result = new ListTestsThatExecutedCommand(new TestImpactDataFile($directory), $file)->execute();
+        $result = new ListTestsThatDependOnCommand(new TestImpactDataFile($directory), $file)->execute();
 
         $this->assertSame(
-            'Tests whose code coverage targets name ' . $file . ' as it is now:' . PHP_EOL .
+            'Recorded from the code coverage targets the tests declare.' . PHP_EOL . PHP_EOL .
+            'Tests that depend on ' . $file . ' as it is now:' . PHP_EOL .
             ' - FooTest::testOne' . PHP_EOL . PHP_EOL,
             $result->output(),
         );
@@ -169,10 +172,10 @@ final class ListTestsThatExecutedCommandTest extends TestCase
 
         new TestImpactDataFile($directory)->persist($data, Provenance::CoverageTargets);
 
-        $result = new ListTestsThatExecutedCommand(new TestImpactDataFile($directory), $file)->execute();
+        $result = new ListTestsThatDependOnCommand(new TestImpactDataFile($directory), $file)->execute();
 
         $this->assertSame(
-            'No test whose code coverage targets name ' . $file . ' is recorded' . PHP_EOL,
+            'No test that depends on ' . $file . ' is recorded' . PHP_EOL,
             $result->output(),
         );
     }
@@ -182,7 +185,7 @@ final class ListTestsThatExecutedCommandTest extends TestCase
      */
     private function temporaryDirectory(): string
     {
-        $directory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-list-tests-that-executed-' . uniqid();
+        $directory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-list-tests-that-depend-on-' . uniqid();
 
         mkdir($directory);
 
