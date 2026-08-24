@@ -9,8 +9,12 @@
  */
 namespace PHPUnit\Runner\TestIndex;
 
+use function array_keys;
+use function assert;
+use function class_exists;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Api\Groups;
+use PHPUnit\Metadata\DataProvider as DataProviderMetadata;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Util\Reflection;
 use PHPUnit\Util\Test as TestUtil;
@@ -54,31 +58,9 @@ final readonly class TestIndexEntry
      */
     public static function for(ReflectionClass $class, FileHasher $hasher, bool $madePhpUnitWarn): ?self
     {
-        $dependencies = [];
-
-        /*
-         * The source files a test class is made of are what decides whether an
-         * entry is still valid. PHPUnit's own files are not among them, which
-         * is what keeps a change to PHPUnit itself from invalidating every
-         * entry at once. That a different version of PHPUnit means a different
-         * index is already established by the version the index records.
-         */
-        foreach (Reflection::sourceFilesOf($class) as $file) {
-            $hash = $hasher->hash($file);
-
-            if ($hash === null) {
-                return null;
-            }
-
-            $dependencies[$file] = $hash;
-        }
-
-        if ($dependencies === []) {
-            return null;
-        }
-
-        $groups   = [];
-        $dataSets = [];
+        $groups        = [];
+        $dataSets      = [];
+        $providerFiles = [];
 
         foreach (Reflection::publicMethodsDeclaredDirectlyInTestClass($class) as $method) {
             if (!TestUtil::isTestMethod($method)) {
@@ -105,6 +87,50 @@ final readonly class TestIndexEntry
             $dataSets[$methodName] = $metadata->isDataProvider()->isNotEmpty() ||
                                      $metadata->isDataProviderClosure()->isNotEmpty() ||
                                      $metadata->isTestWith()->isNotEmpty();
+
+            /*
+             * A data provider that is a method of another class is code the
+             * test class does not contain: the data sets of a test change when
+             * that class changes, and the entry must not survive that. A data
+             * provider that is a method of the test class itself needs nothing
+             * here, as the file of the test class is part of the entry anyway.
+             */
+            foreach ($metadata->isDataProvider() as $dataProvider) {
+                assert($dataProvider instanceof DataProviderMetadata);
+
+                $files = self::sourceFilesOfDataProvider($dataProvider->className());
+
+                if ($files === null) {
+                    return null;
+                }
+
+                foreach ($files as $file) {
+                    $providerFiles[$file] = true;
+                }
+            }
+        }
+
+        $dependencies = [];
+
+        /*
+         * The source files a test class is made of are what decides whether an
+         * entry is still valid. PHPUnit's own files are not among them, which
+         * is what keeps a change to PHPUnit itself from invalidating every
+         * entry at once. That a different version of PHPUnit means a different
+         * index is already established by the version the index records.
+         */
+        foreach ([...Reflection::sourceFilesOf($class), ...array_keys($providerFiles)] as $file) {
+            $hash = $hasher->hash($file);
+
+            if ($hash === null) {
+                return null;
+            }
+
+            $dependencies[$file] = $hash;
+        }
+
+        if ($dependencies === []) {
+            return null;
         }
 
         return new self($class->getName(), $groups, $dataSets, $madePhpUnitWarn, $dependencies);
@@ -207,5 +233,33 @@ final readonly class TestIndexEntry
         }
 
         return true;
+    }
+
+    /**
+     * The files a data provider that is a method of another class is declared
+     * in, including the files of the parent classes and traits that class is
+     * made of.
+     *
+     * Returns null when the class cannot be reflected, in which case the test
+     * file must not be skipped on a later run: the data provider does not work
+     * as things are, and what would make it work is not known.
+     *
+     * @param class-string $className
+     *
+     * @return ?list<non-empty-string>
+     */
+    private static function sourceFilesOfDataProvider(string $className): ?array
+    {
+        if (!class_exists($className)) {
+            return null;
+        }
+
+        $files = Reflection::sourceFilesOf(new ReflectionClass($className));
+
+        if ($files === []) {
+            return null; // @codeCoverageIgnore
+        }
+
+        return $files;
     }
 }
