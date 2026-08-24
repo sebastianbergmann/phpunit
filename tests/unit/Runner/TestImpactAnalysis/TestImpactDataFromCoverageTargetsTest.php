@@ -24,6 +24,7 @@ use PHPUnit\TestFixture\TestImpactAnalysis\FormatterThatCoversNothingTest;
 use PHPUnit\TestFixture\TestImpactAnalysis\InvoiceThatUsesMoneyTest;
 use PHPUnit\TestFixture\TestImpactAnalysis\TestThatCoversNothingAndUsesFixtures;
 use PHPUnit\TestFixture\TestImpactAnalysis\TestThatUsesFixtures;
+use PHPUnit\TestFixture\TestImpactAnalysis\TestWithAMissingDataProviderClass;
 use SebastianBergmann\CodeCoverage\Filter;
 
 #[CoversClass(TestImpactDataFromCoverageTargets::class)]
@@ -40,7 +41,7 @@ final class TestImpactDataFromCoverageTargetsTest extends TestCase
         $this->coverageTargets()->record([new InvoiceThatUsesMoneyTest('testTotalIsTheSumOfItsItems')], $data);
 
         $this->assertSame(
-            [InvoiceThatUsesMoneyTest::class . '::testTotalIsTheSumOfItsItems' => ['Invoice.php', 'Money.php']],
+            [InvoiceThatUsesMoneyTest::class . '::testTotalIsTheSumOfItsItems' => ['Invoice.php', 'InvoiceThatUsesMoneyTest.php', 'Money.php']],
             $this->baseNames($data),
         );
     }
@@ -52,7 +53,7 @@ final class TestImpactDataFromCoverageTargetsTest extends TestCase
         $this->coverageTargets()->record([new FormatterMethodTest('testFormatsAmount')], $data);
 
         $this->assertSame(
-            [FormatterMethodTest::class . '::testFormatsAmount' => ['Formatter.php']],
+            [FormatterMethodTest::class . '::testFormatsAmount' => ['Formatter.php', 'FormatterMethodTest.php']],
             $this->baseNames($data),
         );
     }
@@ -73,7 +74,7 @@ final class TestImpactDataFromCoverageTargetsTest extends TestCase
         $this->coverageTargets()->record([new TestThatUsesFixtures('testDeclaredOnTheMethod')], $data);
 
         $this->assertSame(
-            [TestThatUsesFixtures::class . '::testDeclaredOnTheMethod' => ['Money.php', 'one.txt', 'scenarios']],
+            [TestThatUsesFixtures::class . '::testDeclaredOnTheMethod' => ['Money.php', 'TestThatUsesFixtures.php', 'one.txt', 'scenarios']],
             $this->baseNames($data),
         );
     }
@@ -83,6 +84,15 @@ final class TestImpactDataFromCoverageTargetsTest extends TestCase
         $data = new DefaultTestImpactData;
 
         $this->coverageTargets()->record([new TestThatCoversNothingAndUsesFixtures('testFormatsAmount')], $data);
+
+        $this->assertSame([], $data->recorded());
+    }
+
+    public function testDoesNotRecordATestWhoseDataProviderClassCannotBeFound(): void
+    {
+        $data = new DefaultTestImpactData;
+
+        $this->coverageTargets()->record([new TestWithAMissingDataProviderClass('testOne')], $data);
 
         $this->assertSame([], $data->recorded());
     }

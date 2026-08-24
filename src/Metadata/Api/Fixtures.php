@@ -12,6 +12,7 @@ namespace PHPUnit\Metadata\Api;
 use const DIRECTORY_SEPARATOR;
 use function array_keys;
 use function assert;
+use function class_exists;
 use function defined;
 use function dirname;
 use function is_dir;
@@ -110,6 +111,15 @@ final class Fixtures
         }
 
         foreach ($this->dataProviders($className, $methodName) as [$providerClassName, $providerMethodName]) {
+            /*
+             * A data provider can name a class that does not exist. The test
+             * does not work as things are, and it does not have fixtures that
+             * can be resolved either.
+             */
+            if (!class_exists($providerClassName)) {
+                continue;
+            }
+
             foreach ($this->declaredOnClass($providerClassName) as $path => $directory) {
                 $paths[$path] = $directory;
             }

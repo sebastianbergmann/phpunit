@@ -39,11 +39,15 @@ final readonly class TestSuiteFilterProcessor
      * @throws FilterNotConfiguredException
      * @throws RuntimeException
      */
-    public function process(Configuration $configuration, TestSuite $suite): void
+    /**
+     * @param ?list<non-empty-string> $selectedTests the tests that test impact analysis selected, when it selected any
+     */
+    public function process(Configuration $configuration, TestSuite $suite, ?array $selectedTests = null): void
     {
         $factory = new Factory;
 
-        if (!$configuration->hasFilter() &&
+        if ($selectedTests === null &&
+            !$configuration->hasFilter() &&
             !$configuration->hasExcludeFilter() &&
             !$configuration->hasTestIdFilterFile() &&
             !$configuration->hasTestIdFilter() &&
@@ -116,6 +120,10 @@ final readonly class TestSuiteFilterProcessor
 
         if ($configuration->hasTestIdFilter()) {
             $factory->addTestIdFilter([$configuration->testIdFilter()]);
+        }
+
+        if ($selectedTests !== null) {
+            $factory->addTestIdFilter($selectedTests);
         }
 
         if ($configuration->hasExcludeFilter()) {
