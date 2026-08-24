@@ -47,11 +47,14 @@ use PHPUnit\Util\Filesystem;
  * the file is discarded rather than added to when it was written from the
  * other one.
  *
+ * The file records what everything in it rests on as well: the version of
+ * PHPUnit and the version of PHP, which decide what the data means, and the
+ * assumptions about the configuration, the code that is first-party code, and
+ * the packages that are installed. The file is discarded, and not merged with,
+ * when any of them does not match.
+ *
  * The file is written for the machine it was written on and cannot be shared
- * with another machine: the source files are named by their absolute path, and
- * the file records the version of PHPUnit and the version of PHP it was
- * written by, which decide what the data means. The file is discarded, and not
- * merged with, when any of them does not match.
+ * with another machine: the source files are named by their absolute path.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -61,13 +64,16 @@ use PHPUnit\Util\Filesystem;
  */
 final class TestImpactDataFile
 {
-    private const int VERSION             = 2;
+    private const int VERSION             = 3;
     private const string DEFAULT_FILENAME = 'test-impact-data';
     private readonly string $filename;
+    private readonly Assumptions $assumptions;
     private readonly PathHasher $hasher;
 
-    public function __construct(string $filepath, ?PathHasher $hasher = null)
+    public function __construct(string $filepath, Assumptions $assumptions, ?PathHasher $hasher = null)
     {
+        $this->assumptions = $assumptions;
+
         if (is_dir($filepath)) {
             $filepath .= DIRECTORY_SEPARATOR . self::DEFAULT_FILENAME;
         }
@@ -263,13 +269,14 @@ final class TestImpactDataFile
 
         $json = json_encode(
             [
-                'version'    => self::VERSION,
-                'phpunit'    => Version::id(),
-                'php'        => PHP_VERSION_ID,
-                'provenance' => $provenance->value,
-                'files'      => $keptFiles,
-                'versions'   => $keptVersions,
-                'tests'      => $keptTests,
+                'version'     => self::VERSION,
+                'phpunit'     => Version::id(),
+                'php'         => PHP_VERSION_ID,
+                'provenance'  => $provenance->value,
+                'assumptions' => $this->assumptions->asArray(),
+                'files'       => $keptFiles,
+                'versions'    => $keptVersions,
+                'tests'       => $keptTests,
             ],
         );
 
@@ -314,7 +321,17 @@ final class TestImpactDataFile
             return $empty;
         }
 
-        if (!isset($data['version'], $data['phpunit'], $data['php'], $data['provenance'], $data['files'], $data['versions'], $data['tests'])) {
+        if (!isset($data['version'], $data['phpunit'], $data['php'], $data['provenance'], $data['assumptions'], $data['files'], $data['versions'], $data['tests'])) {
+            return $empty;
+        }
+
+        $assumptions = Assumptions::fromArray($data['assumptions']);
+
+        /*
+         * What was recorded under other assumptions describes a state of
+         * affairs that no longer exists, and is discarded rather than added to.
+         */
+        if ($assumptions === null || !$assumptions->equals($this->assumptions)) {
             return $empty;
         }
 
