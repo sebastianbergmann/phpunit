@@ -16,9 +16,11 @@
         "rector/rector": "^2.5",
         "tracy/tracy": "^2.12",
         "tomasvotruba/unused-public": "^2.2",
-        "rector/jack": "^1.0",
+        "rector/jack": "^1.1",
         "shipmonk/composer-dependency-analyser": "^1.8",
-        "symfony/dom-crawler": "^8.1"
+        "symfony/dom-crawler": "^8.1",
+        "doctrine/collections": "^2.3",
+        "symfony/form": "^8.1"
     },
     "autoload": {
         "psr-4": {
@@ -30,7 +32,10 @@
         "psr-4": {
             "TomasVotruba\\TypeCoverage\\Tests\\": "tests",
             "Rector\\TypePerfect\\Tests\\": "packages/type-perfect/tests"
-        }
+        },
+        "classmap": [
+            "stubs"
+        ]
     },
     "scripts": {
         "check-cs": "vendor/bin/ecs check --ansi",
@@ -47,8 +52,7 @@
     "extra": {
         "phpstan": {
             "includes": [
-                "config/extension.neon",
-                "packages/type-perfect/config/extension.neon"
+                "config/extension.neon"
             ]
         }
     }
