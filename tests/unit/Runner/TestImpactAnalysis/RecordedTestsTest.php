@@ -20,19 +20,19 @@ use PHPUnit\Framework\TestCase;
 #[Group('test-runner/test-impact-analysis')]
 final class RecordedTestsTest extends TestCase
 {
-    public function testKnowsTheTestsThatExecutedTheFileAsItIsNow(): void
+    public function testKnowsTheTestsThatDependOnTheFileAsItIsNow(): void
     {
         $this->assertSame(
             ['FooTest::testOne'],
-            RecordedTests::from(['FooTest::testOne'], ['BarTest::testOne'], Provenance::ObservedExecution)->thatExecutedTheFileAsItIsNow(),
+            RecordedTests::from(['FooTest::testOne'], ['BarTest::testOne'], Provenance::ObservedExecution)->thatDependOnTheFileAsItIsNow(),
         );
     }
 
-    public function testKnowsTheTestsThatExecutedAnEarlierVersionOfTheFile(): void
+    public function testKnowsTheTestsThatDependOnAnEarlierVersionOfTheFile(): void
     {
         $this->assertSame(
             ['BarTest::testOne'],
-            RecordedTests::from(['FooTest::testOne'], ['BarTest::testOne'], Provenance::ObservedExecution)->thatExecutedAnEarlierVersionOfTheFile(),
+            RecordedTests::from(['FooTest::testOne'], ['BarTest::testOne'], Provenance::ObservedExecution)->thatDependOnAnEarlierVersionOfTheFile(),
         );
     }
 
