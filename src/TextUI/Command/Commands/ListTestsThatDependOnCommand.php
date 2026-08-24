@@ -26,7 +26,7 @@ use PHPUnit\Runner\TestImpactAnalysis\TestImpactDataFile;
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class ListTestsThatExecutedCommand implements Command
+final readonly class ListTestsThatDependOnCommand implements Command
 {
     private TestImpactDataFile $testImpactDataFile;
     private string $file;
@@ -44,43 +44,46 @@ final readonly class ListTestsThatExecutedCommand implements Command
         if ($file === false) {
             return Result::from(
                 sprintf(
-                    'Source file "%s" does not exist' . PHP_EOL,
+                    '"%s" does not exist' . PHP_EOL,
                     $this->file,
                 ),
                 Result::FAILURE,
             );
         }
 
-        $tests = $this->testImpactDataFile->testsThatExecuted($file);
-
-        /*
-         * What was recorded from the code coverage targets a test declares is
-         * not an observation, and must not be reported as one.
-         */
-        $what = 'that executed';
-
-        if ($tests->wereDerivedFromCoverageTargets()) {
-            $what = 'whose code coverage targets name';
-        }
+        $tests = $this->testImpactDataFile->testsThatDependOn($file);
 
         if ($tests->isEmpty()) {
             return Result::from(
                 sprintf(
-                    'No test %s %s is recorded' . PHP_EOL,
-                    $what,
+                    'No test that depends on %s is recorded' . PHP_EOL,
                     $file,
                 ),
             );
         }
 
+        /*
+         * What a test depends on is not always something it was observed to
+         * execute: it can have been worked out from the code coverage targets
+         * the test declares, and a fixture is never executed at all. Where
+         * what is reported comes from is therefore said once, instead of
+         * being claimed again in each heading.
+         */
+        $provenance = 'Recorded from what the tests executed.';
+
+        if ($tests->wereDerivedFromCoverageTargets()) {
+            $provenance = 'Recorded from the code coverage targets the tests declare.';
+        }
+
         return Result::from(
+            $provenance . PHP_EOL . PHP_EOL .
             $this->listOf(
-                sprintf('Tests %s %s as it is now:', $what, $file),
-                $tests->thatExecutedTheFileAsItIsNow(),
+                sprintf('Tests that depend on %s as it is now:', $file),
+                $tests->thatDependOnTheFileAsItIsNow(),
             ) .
             $this->listOf(
-                sprintf('Tests %s an earlier version of %s:', $what, $file),
-                $tests->thatExecutedAnEarlierVersionOfTheFile(),
+                sprintf('Tests that depend on an earlier version of %s:', $file),
+                $tests->thatDependOnAnEarlierVersionOfTheFile(),
             ),
         );
     }

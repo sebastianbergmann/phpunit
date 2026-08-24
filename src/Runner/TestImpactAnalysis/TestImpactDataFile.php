@@ -29,7 +29,6 @@ use function json_encode;
 use function sort;
 use PHPUnit\Runner\DirectoryDoesNotExistException;
 use PHPUnit\Runner\Exception;
-use PHPUnit\Runner\TestIndex\FileHasher;
 use PHPUnit\Runner\Version;
 use PHPUnit\Util\Filesystem;
 
@@ -65,9 +64,9 @@ final class TestImpactDataFile
     private const int VERSION             = 2;
     private const string DEFAULT_FILENAME = 'test-impact-data';
     private readonly string $filename;
-    private readonly FileHasher $hasher;
+    private readonly PathHasher $hasher;
 
-    public function __construct(string $filepath, ?FileHasher $hasher = null)
+    public function __construct(string $filepath, ?PathHasher $hasher = null)
     {
         if (is_dir($filepath)) {
             $filepath .= DIRECTORY_SEPARATOR . self::DEFAULT_FILENAME;
@@ -76,7 +75,7 @@ final class TestImpactDataFile
         $this->filename = $filepath;
 
         if ($hasher === null) {
-            $hasher = new FileHasher;
+            $hasher = new PathHasher;
         }
 
         $this->hasher = $hasher;
@@ -91,7 +90,7 @@ final class TestImpactDataFile
      *
      * @param non-empty-string $file
      */
-    public function testsThatExecuted(string $file): RecordedTests
+    public function testsThatDependOn(string $file): RecordedTests
     {
         [$files, $versions, $tests, $provenance] = $this->read();
 
@@ -106,8 +105,8 @@ final class TestImpactDataFile
         }
 
         $hash                                  = $this->hasher->hash($file);
-        $thatExecutedTheFileAsItIsNow          = [];
-        $thatExecutedAnEarlierVersionOfTheFile = [];
+        $thatDependOnTheFileAsItIsNow          = [];
+        $thatDependOnAnEarlierVersionOfTheFile = [];
 
         foreach ($tests as $test => $versionsOfTest) {
             foreach ($versionsOfTest as $versionPosition) {
@@ -118,19 +117,19 @@ final class TestImpactDataFile
                 }
 
                 if ($hash !== null && $versions[$versionPosition][1] === $hash) {
-                    $thatExecutedTheFileAsItIsNow[] = $test;
+                    $thatDependOnTheFileAsItIsNow[] = $test;
                 } else {
-                    $thatExecutedAnEarlierVersionOfTheFile[] = $test;
+                    $thatDependOnAnEarlierVersionOfTheFile[] = $test;
                 }
 
                 break;
             }
         }
 
-        sort($thatExecutedTheFileAsItIsNow);
-        sort($thatExecutedAnEarlierVersionOfTheFile);
+        sort($thatDependOnTheFileAsItIsNow);
+        sort($thatDependOnAnEarlierVersionOfTheFile);
 
-        return RecordedTests::from($thatExecutedTheFileAsItIsNow, $thatExecutedAnEarlierVersionOfTheFile, $provenance);
+        return RecordedTests::from($thatDependOnTheFileAsItIsNow, $thatDependOnAnEarlierVersionOfTheFile, $provenance);
     }
 
     /**
