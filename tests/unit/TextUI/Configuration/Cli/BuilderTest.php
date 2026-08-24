@@ -316,6 +316,17 @@ final class BuilderTest extends TestCase
         $this->assertSame('src/Foo.php', $configuration->listTestsThatDependOn());
     }
 
+    #[TestDox('--only-impacted')]
+    public function testOnlyImpacted(): void
+    {
+        $this->assertTrue(new Builder($this->createStub(Emitter::class))->fromParameters(['--only-impacted'])->onlyImpacted());
+    }
+
+    public function testOnlyImpactedIsNotTheDefault(): void
+    {
+        $this->assertFalse(new Builder($this->createStub(Emitter::class))->fromParameters([])->onlyImpacted());
+    }
+
     public function testListTestsThatDependOnMayNotBeConfigured(): void
     {
         $configuration = new Builder($this->createStub(Emitter::class))->fromParameters([]);
