@@ -346,9 +346,14 @@ final class CodeCoverage
         $this->test = null;
     }
 
+    /**
+     * Recording depends on the code coverage driver, so it stops when the
+     * driver does: the source filter that matches no files, for instance,
+     * deactivates code coverage after it was activated.
+     */
     public function isRecordingTestImpactData(): bool
     {
-        return $this->recordTestImpactData;
+        return $this->recordTestImpactData && $this->isActive();
     }
 
     public function testImpactData(): TestImpactData
