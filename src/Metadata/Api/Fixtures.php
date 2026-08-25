@@ -246,7 +246,7 @@ final class Fixtures
     private function directoryOfMethod(string $className, string $methodName): ?string
     {
         try {
-            $file = new ReflectionMethod($className, $methodName)->getDeclaringClass()->getFileName();
+            $file = new ReflectionMethod($className, $methodName)->getFileName();
             // @codeCoverageIgnoreStart
         } catch (ReflectionException) {
             return null;
