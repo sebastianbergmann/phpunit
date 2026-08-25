@@ -10,12 +10,14 @@
 namespace PHPUnit\Metadata\Api;
 
 use const DIRECTORY_SEPARATOR;
+use const PHP_EOL;
 use function array_map;
 use function basename;
 use function file_put_contents;
 use function mkdir;
 use function realpath;
 use function rmdir;
+use function scandir;
 use function sort;
 use function sys_get_temp_dir;
 use function uniqid;
@@ -32,6 +34,32 @@ use PHPUnit\TestFixture\TestImpactAnalysis\TestWithAMissingDataProviderClass;
 #[Group('metadata')]
 final class FixturesTest extends TestCase
 {
+    /**
+     * @var list<non-empty-string>
+     */
+    private array $directories = [];
+
+    protected function tearDown(): void
+    {
+        foreach ($this->directories as $directory) {
+            $entries = scandir($directory);
+
+            if ($entries !== false) {
+                foreach ($entries as $entry) {
+                    if ($entry === '.' || $entry === '..') {
+                        continue;
+                    }
+
+                    unlink($directory . DIRECTORY_SEPARATOR . $entry);
+                }
+            }
+
+            rmdir($directory);
+        }
+
+        $this->directories = [];
+    }
+
     public function testResolvesAPathThatIsDeclaredOnTheTestClass(): void
     {
         $this->assertContains(
@@ -136,6 +164,115 @@ final class FixturesTest extends TestCase
             unlink($classFile);
             rmdir($resolvedDirectory);
         }
+    }
+
+    public function testResolvesAPathWhoseNameIsANumber(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $fixture   = $directory . DIRECTORY_SEPARATOR . '2024';
+
+        file_put_contents($fixture, 'a');
+
+        $className = $this->writeTestClass(
+            $directory,
+            'TestThatUsesAFixtureNamedByANumber',
+            "#[UsesFixture('2024')]",
+            '',
+        );
+
+        $this->assertSame([$fixture], (new Fixtures)->for($className, 'testOne'));
+    }
+
+    public function testResolvesTheSamePathDeclaredInTwoDirectories(): void
+    {
+        $directoryOfTheTest     = $this->temporaryDirectory();
+        $directoryOfTheProvider = $this->temporaryDirectory();
+
+        $fixtureOfTheTest     = $directoryOfTheTest . DIRECTORY_SEPARATOR . 'data.txt';
+        $fixtureOfTheProvider = $directoryOfTheProvider . DIRECTORY_SEPARATOR . 'data.txt';
+
+        file_put_contents($fixtureOfTheTest, 'a');
+        file_put_contents($fixtureOfTheProvider, 'b');
+
+        $provider = $this->writeTestClass(
+            $directoryOfTheProvider,
+            'ProviderThatUsesAFixture',
+            "#[UsesFixture('data.txt')]",
+            'public static function provide(): array { return [[1]]; }',
+        );
+
+        $className = $this->writeTestClass(
+            $directoryOfTheTest,
+            'TestThatUsesTheSameFixturePath',
+            "#[UsesFixture('data.txt')]",
+            "#[DataProviderExternal(\\{$provider}::class, 'provide')]" . PHP_EOL . '    public function testTwo(int $a): void {}',
+        );
+
+        $fixtures = (new Fixtures)->for($className, 'testTwo');
+
+        sort($fixtures);
+
+        $expected = [$fixtureOfTheProvider, $fixtureOfTheTest];
+
+        sort($expected);
+
+        $this->assertSame($expected, $fixtures);
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    private function temporaryDirectory(): string
+    {
+        $directory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-fixtures-' . uniqid();
+
+        mkdir($directory);
+
+        $resolved = realpath($directory);
+
+        $this->assertIsString($resolved);
+        $this->assertNotSame('', $resolved);
+
+        $this->directories[] = $resolved;
+
+        return $resolved;
+    }
+
+    /**
+     * @param non-empty-string $directory
+     * @param non-empty-string $name
+     *
+     * @return class-string
+     */
+    private function writeTestClass(string $directory, string $name, string $attribute, string $body): string
+    {
+        $className = $name . uniqid();
+        $file      = $directory . DIRECTORY_SEPARATOR . $className . '.php';
+
+        file_put_contents(
+            $file,
+            <<<PHP
+                <?php declare(strict_types=1);
+                use PHPUnit\Framework\Attributes\DataProviderExternal;
+                use PHPUnit\Framework\Attributes\UsesFixture;
+                use PHPUnit\Framework\TestCase;
+
+                {$attribute}
+                final class {$className} extends TestCase
+                {
+                    public function testOne(): void
+                    {
+                    }
+
+                    {$body}
+                }
+                PHP,
+        );
+
+        require_once $file;
+
+        /** @var class-string $className */
+        return $className;
     }
 
     /**
