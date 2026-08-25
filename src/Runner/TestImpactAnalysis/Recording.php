@@ -96,13 +96,24 @@ final readonly class Recording
      */
     public function testsAffectedByWhatChanged(PathHasher $hasher): array
     {
+        /*
+         * Whether a version is what its file is now is a question about that
+         * version, and it is answered once for each of them rather than once
+         * for every test that refers to it: many tests refer to the same file.
+         */
+        $current = [];
+
+        foreach ($this->versions as $position => $version) {
+            $current[$position] = $this->isCurrent($version, $hasher);
+        }
+
         $affected = [];
 
         foreach ($this->tests as $test => $versionsOfTest) {
             foreach ($versionsOfTest as $version) {
-                assert(isset($this->versions[$version]));
+                assert(isset($current[$version]));
 
-                if ($this->isCurrent($this->versions[$version], $hasher)) {
+                if ($current[$version]) {
                     continue;
                 }
 
