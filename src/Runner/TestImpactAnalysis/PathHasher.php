@@ -37,6 +37,10 @@ final class PathHasher
     private readonly FileHasher $fileHasher;
 
     /**
+     * Asking whether a path is a directory is a question about the file
+     * system, and it is asked once per path rather than once per test that
+     * refers to it.
+     *
      * @var array<non-empty-string, ?non-empty-string>
      */
     private array $hashes = [];
@@ -60,17 +64,19 @@ final class PathHasher
      */
     public function hash(string $path): ?string
     {
-        if (!is_dir($path)) {
-            return $this->fileHasher->hash($path);
-        }
-
         if (array_key_exists($path, $this->hashes)) {
             return $this->hashes[$path];
         }
 
-        $this->hashes[$path] = $this->hashOfDirectory($path);
+        if (is_dir($path)) {
+            $hash = $this->hashOfDirectory($path);
+        } else {
+            $hash = $this->fileHasher->hash($path);
+        }
 
-        return $this->hashes[$path];
+        $this->hashes[$path] = $hash;
+
+        return $hash;
     }
 
     /**
