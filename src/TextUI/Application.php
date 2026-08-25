@@ -14,16 +14,19 @@ use const PHP_EOL;
 use const PHP_VERSION;
 use const SIGINT;
 use function array_merge;
+use function array_pop;
 use function array_reverse;
 use function assert;
 use function class_exists;
 use function count;
 use function defined;
 use function dirname;
+use function end;
 use function explode;
 use function function_exists;
 use function getcwd;
 use function getmypid;
+use function implode;
 use function is_array;
 use function is_file;
 use function is_string;
@@ -972,15 +975,57 @@ final readonly class Application
                     if ($workingDirectory !== false) {
                         $absolutePath = $workingDirectory . DIRECTORY_SEPARATOR . $path;
                     }
-                    // @codeCoverageIgnoreStart
                 }
-                // @codeCoverageIgnoreEnd
+
+                $absolutePath = $this->withoutRelativeSegments($absolutePath);
             }
 
             $resolved[] = $absolutePath;
         }
 
         return $resolved;
+    }
+
+    /**
+     * The '.' and '..' that name where a path is are worked out here for a
+     * path that is not there: realpath() works them out for a path that is,
+     * and what was recorded names a file the way realpath() does.
+     *
+     * @param non-empty-string $path
+     *
+     * @return non-empty-string
+     */
+    private function withoutRelativeSegments(string $path): string
+    {
+        $segments = [];
+
+        foreach (explode(DIRECTORY_SEPARATOR, $path) as $position => $segment) {
+            if ($segment === '.') {
+                continue;
+            }
+
+            if ($segment === '' && $position > 0) {
+                continue;
+            }
+
+            if ($segment === '..' && $segments !== [] && end($segments) !== '..') {
+                array_pop($segments);
+
+                continue;
+            }
+
+            $segments[] = $segment;
+        }
+
+        $result = implode(DIRECTORY_SEPARATOR, $segments);
+
+        // @codeCoverageIgnoreStart
+        if ($result === '') {
+            return DIRECTORY_SEPARATOR;
+        }
+        // @codeCoverageIgnoreEnd
+
+        return $result;
     }
 
     /**
