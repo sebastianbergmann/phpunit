@@ -1080,24 +1080,33 @@ final readonly class Application
         }
 
         if ($selection->isEverything()) {
-            $printer->print(
+            $this->writeMessage(
+                $printer,
+                'Impact',
                 sprintf(
-                    'Impact:        every test is run: %s%s',
+                    'every test is run: %s',
                     $selection->reason(),
-                    PHP_EOL,
                 ),
             );
 
             return;
         }
 
-        $printer->print(
+        $numberOfTestsThatAreNotRun = $selection->numberOfTestsThatAreNotRun();
+
+        if ($numberOfTestsThatAreNotRun === 1) {
+            $tests = '1 test is not run';
+        } else {
+            $tests = sprintf('%d tests are not run', $numberOfTestsThatAreNotRun);
+        }
+
+        $this->writeMessage(
+            $printer,
+            'Impact',
             sprintf(
-                'Impact:        %s; %d test%s not run%s',
+                '%s; %s',
                 $selection->reason(),
-                $selection->numberOfTestsThatAreNotRun(),
-                $selection->numberOfTestsThatAreNotRun() === 1 ? ' is' : 's are',
-                PHP_EOL,
+                $tests,
             ),
         );
     }
@@ -1107,13 +1116,7 @@ final readonly class Application
      */
     private function sourceFiles(): array
     {
-        $sourceFiles = [];
-
-        foreach (CodeCoverageFilterRegistry::instance()->get()->files() as $file) {
-            $sourceFiles[] = $file;
-        }
-
-        return $sourceFiles;
+        return CodeCoverageFilterRegistry::instance()->get()->files();
     }
 
     private function assumptionsOf(Configuration $configuration): Assumptions
