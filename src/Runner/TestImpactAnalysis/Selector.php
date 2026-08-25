@@ -10,6 +10,8 @@
 namespace PHPUnit\Runner\TestImpactAnalysis;
 
 use function array_keys;
+use function array_pop;
+use function assert;
 use function count;
 use function sprintf;
 use PHPUnit\Framework\TestCase;
@@ -128,7 +130,11 @@ final class Selector
 
     /**
      * A test that is selected and that depends on another test cannot be run
-     * without the test it depends on: it would error instead of being run.
+     * without the test it depends on: it would error, or be skipped, instead
+     * of being run.
+     *
+     * What a selected test depends on may itself depend on something else,
+     * which is why what is selected is followed until nothing is added.
      *
      * @param list<PhptTestCase|TestCase>   $tests
      * @param array<non-empty-string, true> $selected
@@ -137,60 +143,77 @@ final class Selector
      */
     private function withTestsThatAreDependedUpon(array $tests, array $selected): array
     {
-        do {
-            $added = false;
+        $providers = [];
+        $pending   = [];
 
-            foreach ($tests as $test) {
-                if (!$test instanceof TestCase) {
-                    continue;
-                }
-
-                $id = $test->valueObjectForEvents()->id();
-
-                if (isset($selected[$id])) {
-                    continue;
-                }
-
-                if (!$this->provides($test, $tests, $selected)) {
-                    continue;
-                }
-
-                $selected[$id] = true;
-                $added         = true;
+        foreach ($tests as $test) {
+            if (!$test instanceof TestCase) {
+                continue;
             }
-        } while ($added);
+
+            foreach ($this->targetsProvidedBy($test) as $target) {
+                $providers[$target][] = $test;
+            }
+
+            if (isset($selected[$test->valueObjectForEvents()->id()])) {
+                $pending[] = $test;
+            }
+        }
+
+        while ($pending !== []) {
+            $test = array_pop($pending);
+
+            assert($test instanceof TestCase);
+
+            foreach ($test->requires() as $required) {
+                $target = $required->getTarget();
+
+                if (!isset($providers[$target])) {
+                    continue;
+                }
+
+                foreach ($providers[$target] as $provider) {
+                    $id = $provider->valueObjectForEvents()->id();
+
+                    if (isset($selected[$id])) {
+                        continue;
+                    }
+
+                    $selected[$id] = true;
+                    $pending[]     = $provider;
+                }
+            }
+        }
 
         return $selected;
     }
 
     /**
-     * @param list<PhptTestCase|TestCase>   $tests
-     * @param array<non-empty-string, true> $selected
+     * What a test can be depended upon as.
+     *
+     * A test is depended upon by name, and as one of the tests of the class it
+     * belongs to: a test that declares that it depends on a class depends on
+     * every test of that class having passed, and is skipped when they were
+     * not run.
+     *
+     * @return list<non-empty-string>
      */
-    private function provides(TestCase $test, array $tests, array $selected): bool
+    private function targetsProvidedBy(TestCase $test): array
     {
-        $provided = [];
+        $targets = [];
 
         foreach ($test->provides() as $dependency) {
-            $provided[$dependency->getTarget()] = true;
+            $target = $dependency->getTarget();
+
+            if ($target === '') {
+                continue; // @codeCoverageIgnore
+            }
+
+            $targets[] = $target;
         }
 
-        foreach ($tests as $other) {
-            if (!$other instanceof TestCase) {
-                continue;
-            }
+        $targets[] = $test::class . '::class';
 
-            if (!isset($selected[$other->valueObjectForEvents()->id()])) {
-                continue;
-            }
-
-            foreach ($other->requires() as $required) {
-                if (isset($provided[$required->getTarget()])) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+        return $targets;
     }
 }
