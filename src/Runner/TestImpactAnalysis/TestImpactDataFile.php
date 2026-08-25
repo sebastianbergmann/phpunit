@@ -192,9 +192,10 @@ final class TestImpactDataFile
      */
     private function record(TestImpactData $data, Provenance $provenance, array $sourceFiles, bool $prune): void
     {
-        $files    = [];
-        $versions = [];
-        $tests    = [];
+        $files                  = [];
+        $versions               = [];
+        $tests                  = [];
+        $hashesThatWereRecorded = [];
 
         /*
          * Pruning is what makes what is there beside the point: everything
@@ -202,12 +203,18 @@ final class TestImpactDataFile
          * earlier one recorded would only bring back what pruning is for.
          */
         if (!$prune) {
-            [$files, $versions, $tests, $provenanceOfWhatIsThere] = $this->read();
+            [$files, $versions, $tests, $provenanceOfWhatIsThere, $sourceFilesThatAreThere] = $this->read();
 
             if ($provenanceOfWhatIsThere !== null && $provenanceOfWhatIsThere !== $provenance) {
                 $files    = [];
                 $versions = [];
                 $tests    = [];
+            } else {
+                foreach ($sourceFilesThatAreThere as $position => $hash) {
+                    assert(isset($files[$position]));
+
+                    $hashesThatWereRecorded[$files[$position]] = $hash;
+                }
             }
         }
 
@@ -273,10 +280,22 @@ final class TestImpactDataFile
          * a change to a source file no test executed is a change nothing is
          * known about, and knowing what such a file was is what makes it
          * possible to notice that it changed at all.
+         *
+         * What such a file was is what a change to it is noticed against, and
+         * only a test run that ran every test there is may say that it is what
+         * it is now: a run that ran some of the tests did not assess a change
+         * to a file no test refers to, and recording the file as it is now
+         * would say that it did.
          */
         $hashesOfSourceFiles = [];
 
         foreach ($sourceFiles as $sourceFile) {
+            if (isset($hashesThatWereRecorded[$sourceFile])) {
+                $hashesOfSourceFiles[$sourceFile] = $hashesThatWereRecorded[$sourceFile];
+
+                continue;
+            }
+
             $hash = $this->hasher->hash($sourceFile);
 
             if ($hash === null) {
