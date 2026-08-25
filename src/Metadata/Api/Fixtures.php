@@ -10,7 +10,7 @@
 namespace PHPUnit\Metadata\Api;
 
 use const DIRECTORY_SEPARATOR;
-use function array_keys;
+use function array_values;
 use function assert;
 use function class_exists;
 use function defined;
@@ -59,17 +59,17 @@ final class Fixtures
     {
         $paths = [];
 
-        foreach ($this->declaredPaths($className, $methodName) as $path => $directory) {
+        foreach ($this->declaredPaths($className, $methodName) as [$path, $directory]) {
             $resolved = $this->resolve($path, $directory);
 
             if ($resolved === null) {
                 continue;
             }
 
-            $paths[$resolved] = true;
+            $paths[$resolved] = $resolved;
         }
 
-        return array_keys($paths);
+        return array_values($paths);
     }
 
     /**
@@ -82,32 +82,36 @@ final class Fixtures
     {
         $paths = [];
 
-        foreach ($this->declaredPaths($className, $methodName) as $path => $directory) {
+        foreach ($this->declaredPaths($className, $methodName) as [$path, $directory]) {
             if ($this->resolve($path, $directory) !== null) {
                 continue;
             }
 
-            $paths[$path] = true;
+            $paths[$path] = $path;
         }
 
-        return array_keys($paths);
+        return array_values($paths);
     }
 
     /**
-     * The path as it was declared, mapped to the directory of the file it was
-     * declared in.
+     * The path as it was declared, together with the directory of the file it
+     * was declared in.
+     *
+     * The same path declared in two files names two different files, which is
+     * why what a declaration is remembered by is the path and the directory
+     * together, and not the path alone.
      *
      * @param class-string     $className
      * @param non-empty-string $methodName
      *
-     * @return array<non-empty-string, non-empty-string>
+     * @return list<array{0: non-empty-string, 1: non-empty-string}>
      */
     private function declaredPaths(string $className, string $methodName): array
     {
         $paths = $this->declaredOnClass($className);
 
-        foreach ($this->declaredOnMethod($className, $methodName) as $path => $directory) {
-            $paths[$path] = $directory;
+        foreach ($this->declaredOnMethod($className, $methodName) as $key => $declaration) {
+            $paths[$key] = $declaration;
         }
 
         foreach ($this->dataProviders($className, $methodName) as [$providerClassName, $providerMethodName]) {
@@ -120,37 +124,40 @@ final class Fixtures
                 continue;
             }
 
-            foreach ($this->declaredOnClass($providerClassName) as $path => $directory) {
-                $paths[$path] = $directory;
+            foreach ($this->declaredOnClass($providerClassName) as $key => $declaration) {
+                $paths[$key] = $declaration;
             }
 
-            foreach ($this->declaredOnMethod($providerClassName, $providerMethodName) as $path => $directory) {
-                $paths[$path] = $directory;
+            foreach ($this->declaredOnMethod($providerClassName, $providerMethodName) as $key => $declaration) {
+                $paths[$key] = $declaration;
             }
         }
 
-        return $paths;
+        return array_values($paths);
     }
 
     /**
      * @param class-string $className
      *
-     * @return array<non-empty-string, non-empty-string>
+     * @return array<non-empty-string, array{0: non-empty-string, 1: non-empty-string}>
      */
     private function declaredOnClass(string $className): array
     {
-        $paths = [];
+        $paths     = [];
+        $directory = null;
 
         foreach (Registry::parser()->forClass($className)->isUsesFixture() as $metadata) {
             assert($metadata instanceof UsesFixture);
 
-            $directory = $this->directoryOf($className);
+            if ($directory === null) {
+                $directory = $this->directoryOf($className);
+            }
 
             if ($directory === null) {
                 continue; // @codeCoverageIgnore
             }
 
-            $paths[$metadata->path()] = $directory;
+            $paths[$metadata->path() . "\0" . $directory] = [$metadata->path(), $directory];
         }
 
         return $paths;
@@ -165,22 +172,25 @@ final class Fixtures
      * @param class-string     $className
      * @param non-empty-string $methodName
      *
-     * @return array<non-empty-string, non-empty-string>
+     * @return array<non-empty-string, array{0: non-empty-string, 1: non-empty-string}>
      */
     private function declaredOnMethod(string $className, string $methodName): array
     {
-        $paths = [];
+        $paths     = [];
+        $directory = null;
 
         foreach (Registry::parser()->forMethod($className, $methodName)->isUsesFixture() as $metadata) {
             assert($metadata instanceof UsesFixture);
 
-            $directory = $this->directoryOfMethod($className, $methodName);
+            if ($directory === null) {
+                $directory = $this->directoryOfMethod($className, $methodName);
+            }
 
             if ($directory === null) {
                 continue; // @codeCoverageIgnore
             }
 
-            $paths[$metadata->path()] = $directory;
+            $paths[$metadata->path() . "\0" . $directory] = [$metadata->path(), $directory];
         }
 
         return $paths;
