@@ -1143,15 +1143,17 @@ final readonly class Application
                     $this->sourceFiles(),
                 );
             }
+            // @codeCoverageIgnoreStart
         } catch (RunnerException $e) {
             $message = $e->getMessage();
 
             if ($message === '') {
-                $message = 'Cannot persist test impact data'; // @codeCoverageIgnore
+                $message = 'Cannot persist test impact data';
             }
 
             $this->emitter->testRunnerTriggeredPhpunitWarning($message);
         }
+        // @codeCoverageIgnoreEnd
     }
 
     /**
