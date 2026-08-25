@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Runner\Filter;
 
-use function in_array;
+use function array_fill_keys;
 use PHPUnit\Event\TestData\NoDataSetFromDataProviderException;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
@@ -31,7 +31,12 @@ final class TestIdFilterIterator extends RecursiveFilterIterator
      * An empty list matches no test: a selection of tests that selected
      * nothing is not the same as no selection at all.
      *
-     * @var list<non-empty-string>
+     * The identifiers are kept as the keys of an array because there can be as
+     * many of them as there are tests: test impact analysis hands the whole
+     * selection to this filter, and looking each test up in a list would take
+     * as long as the number of tests times the number of identifiers.
+     *
+     * @var array<non-empty-string, true>
      */
     private readonly array $testIds;
 
@@ -43,7 +48,7 @@ final class TestIdFilterIterator extends RecursiveFilterIterator
     {
         parent::__construct($iterator);
 
-        $this->testIds = $testIds;
+        $this->testIds = array_fill_keys($testIds, true);
     }
 
     public function accept(): bool
@@ -59,7 +64,7 @@ final class TestIdFilterIterator extends RecursiveFilterIterator
         }
 
         try {
-            return in_array($test->valueObjectForEvents()->id(), $this->testIds, true);
+            return isset($this->testIds[$test->valueObjectForEvents()->id()]);
             // @codeCoverageIgnoreStart
         } catch (NoDataSetFromDataProviderException) {
             return false;
