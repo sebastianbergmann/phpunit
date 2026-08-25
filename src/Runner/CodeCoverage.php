@@ -128,7 +128,22 @@ final class CodeCoverage
         );
 
         if (!$this->isActive()) {
+            /*
+             * Recording which source files each test executed is a reason of
+             * its own for collecting code coverage, but it is not a reason for
+             * not running the tests: a run that cannot record what the tests
+             * executed still has to run them. A run that was asked for a code
+             * coverage report, on the other hand, cannot deliver it and fails.
+             */
+            $onlyRequestedForTestImpactData = $this->recordTestImpactData &&
+                                              !$configuration->hasCoverageReport() &&
+                                              !$extensionRequiresCodeCoverageCollection;
+
             $this->recordTestImpactData = false;
+
+            if ($onlyRequestedForTestImpactData) {
+                return CodeCoverageInitializationStatus::NOT_REQUESTED;
+            }
 
             return CodeCoverageInitializationStatus::FAILED;
         }
