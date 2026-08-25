@@ -123,12 +123,15 @@ final class TestRunner
          * though, which is what passing false instead of the code coverage
          * targets of the test achieves.
          */
+        $collectCodeCoverageForTestImpactDataOnly = false;
+
         if (!$collectCodeCoverage &&
             CodeCoverage::instance()->isActive() &&
             CodeCoverage::instance()->isRecordingTestImpactData()) {
-            $collectCodeCoverage = true;
-            $coversTargets       = false;
-            $usesTargets         = null;
+            $collectCodeCoverage                      = true;
+            $collectCodeCoverageForTestImpactDataOnly = true;
+            $coversTargets                            = false;
+            $usesTargets                              = null;
         }
 
         if ($collectCodeCoverage) {
@@ -224,7 +227,14 @@ final class TestRunner
                 $e = $e ?? $cce;
             }
 
+            /*
+             * A test that is only collected so that what it executed can be
+             * recorded is a test that opted out of code coverage. Whether it
+             * contributes to code coverage is not asked of such a test: it did
+             * not contribute before test impact data was recorded either.
+             */
             if ($append && !$error && !$failure && !$coveredUnintentionally &&
+                !$collectCodeCoverageForTestImpactDataOnly &&
                 $this->configuration->requireCoverageContribution() &&
                 !CodeCoverage::instance()->lastTestContributedToCoverage()) {
                 Facade::emitter()->testConsideredRisky(
