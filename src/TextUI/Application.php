@@ -307,7 +307,7 @@ final readonly class Application
             $this->persistTestImpactData(
                 $configuration,
                 $testImpactData,
-                $this->testImpactDataMayBePruned($configuration, $cliConfiguration),
+                $this->testImpactDataMayBePruned($configuration, $cliConfiguration, $selection),
             );
 
             $testDoxResult = null;
@@ -1275,7 +1275,7 @@ final readonly class Application
      * test that is no longer there leaves behind. Only a run that ran every
      * test there is can tell the two apart, and only such a run may prune.
      */
-    private function testImpactDataMayBePruned(Configuration $configuration, CliConfiguration $cliConfiguration): bool
+    private function testImpactDataMayBePruned(Configuration $configuration, CliConfiguration $cliConfiguration, ?Selection $selection): bool
     {
         /*
          * A test run that stopped early did not reach every test. Asking
@@ -1285,6 +1285,21 @@ final readonly class Application
          */
         if (TestResultFacade::shouldStop()) {
             return false;
+        }
+
+        /*
+         * Test impact analysis that selected every test there is kept no test
+         * from being run: such a run ran every test there is, just as a run
+         * that was never asked to select tests does, and what it did not
+         * record is what is no longer there.
+         *
+         * This is what makes a run that falls back to running every test
+         * settle what it fell back for: a change to a source file no test
+         * refers to is assessed by that run, and is not reported again by the
+         * next one.
+         */
+        if ($selection !== null && $selection->isEverything()) {
+            return $this->noFilteringIsConfigured($configuration);
         }
 
         return $this->everyTestThatExistsIsRun($configuration, $cliConfiguration);
@@ -1307,6 +1322,15 @@ final readonly class Application
             return false;
         }
 
+        return $this->noFilteringIsConfigured($configuration);
+    }
+
+    /**
+     * Whether anything other than test impact analysis keeps a test from being
+     * run.
+     */
+    private function noFilteringIsConfigured(Configuration $configuration): bool
+    {
         if ($configuration->hasCliArguments() || $configuration->hasTestFilesFile()) {
             return false;
         }
