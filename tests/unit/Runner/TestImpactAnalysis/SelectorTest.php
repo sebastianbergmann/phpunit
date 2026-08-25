@@ -33,6 +33,7 @@ use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 use PHPUnit\Runner\TestRunHistory\DefaultTestRunHistory;
 use PHPUnit\Runner\TestRunHistory\TestRunHistory;
 use PHPUnit\Runner\TestRunHistory\TestRunHistoryId;
+use PHPUnit\TestFixture\TestImpactAnalysis\ClassDependentSelectionTest;
 use PHPUnit\TestFixture\TestImpactAnalysis\SelectionTest;
 use PHPUnit\TestFixture\TestImpactAnalysis\UnrelatedSelectionTest;
 use PHPUnit\TextUI\Configuration\FilterDirectoryCollection;
@@ -158,6 +159,42 @@ final class SelectorTest extends TestCase
                 SelectionTest::class . '::testProducesMoney',
                 $this->phpt(),
             ]),
+            $this->sorted($selection->tests()),
+        );
+    }
+
+    public function testRunsTheTestsOfATestClassThatASelectedTestDependsOn(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $money     = $this->writeSourceFile($directory, 'Money', 'first');
+        $formatter = $this->writeSourceFile($directory, 'Formatter', 'first');
+
+        $dependent  = ClassDependentSelectionTest::class . '::testFormatsAsWell';
+        $dependedOn = UnrelatedSelectionTest::class . '::testFormats';
+
+        $file = new TestImpactDataFile($directory, $this->assumptions());
+        $data = new DefaultTestImpactData;
+
+        $data->record($dependent, [$formatter, $this->fileOf(ClassDependentSelectionTest::class)]);
+        $data->record($dependedOn, [$money, $this->fileOf(UnrelatedSelectionTest::class)]);
+
+        $file->persist($data, Provenance::ObservedExecution, [$money, $formatter]);
+
+        /*
+         * Only the test that declares that it depends on the other test class
+         * depends on the file that changes; the class it depends on has to be
+         * run anyway, because a test that depends on a class is skipped when
+         * the tests of that class were not run.
+         */
+        $this->writeSourceFile($directory, 'Formatter', 'second');
+
+        $selection = new Selector($file, new DefaultTestRunHistory($directory . DIRECTORY_SEPARATOR . 'history'))->select(
+            $this->testsOf(ClassDependentSelectionTest::class, UnrelatedSelectionTest::class),
+            [$money, $formatter],
+        );
+
+        $this->assertSame(
+            $this->sorted([$dependent, $dependedOn]),
             $this->sorted($selection->tests()),
         );
     }
@@ -363,6 +400,39 @@ final class SelectorTest extends TestCase
         }
 
         return new Selector($file, $testRunHistory);
+    }
+
+    /**
+     * @param class-string $className
+     *
+     * @return non-empty-string
+     */
+    private function fileOf(string $className): string
+    {
+        $file = new ReflectionClass($className)->getFileName();
+
+        $this->assertIsString($file);
+        $this->assertNotSame('', $file);
+
+        return $file;
+    }
+
+    /**
+     * @param class-string ...$classNames
+     *
+     * @return list<PhptTestCase|TestCase>
+     */
+    private function testsOf(string ...$classNames): array
+    {
+        $tests = [];
+
+        foreach ($classNames as $className) {
+            foreach (TestSuite::fromClassReflector(new ReflectionClass($className))->collect() as $test) {
+                $tests[] = $test;
+            }
+        }
+
+        return $tests;
     }
 
     /**
