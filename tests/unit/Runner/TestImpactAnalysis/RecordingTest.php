@@ -146,6 +146,24 @@ final class RecordingTest extends TestCase
         );
     }
 
+    public function testKnowsThatAPathThatIsNamedIsRecordedButThatNoTestDependsOnIt(): void
+    {
+        $recording = Recording::from(
+            ['/src/Foo.php', '/src/Untested.php'],
+            [[0, 'a-hash']],
+            ['FooTest::testOne' => [0]],
+            [
+                0 => 'a-hash',
+                1 => 'another-hash',
+            ],
+        );
+
+        $this->assertStringContainsString(
+            '/src/Untested.php is recorded, but no test is recorded as depending on it',
+            (string) $recording->pathNothingIsKnownAbout(['/src/Untested.php']),
+        );
+    }
+
     public function testKnowsThatASourceFileThatWasNotRecordedIsAChangeNothingIsKnownAbout(): void
     {
         $recording = Recording::from(['/src/Foo.php'], [[0, 'a-hash']], ['FooTest::testOne' => [0]], []);
