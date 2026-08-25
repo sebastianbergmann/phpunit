@@ -26,6 +26,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\TestImpactAnalysis\Nested\TestThatUsesAFixtureOfATrait;
 use PHPUnit\TestFixture\TestImpactAnalysis\TestThatUsesFixtures;
 use PHPUnit\TestFixture\TestImpactAnalysis\TestWithAMissingDataProviderClass;
 
@@ -164,6 +165,18 @@ final class FixturesTest extends TestCase
             unlink($classFile);
             rmdir($resolvedDirectory);
         }
+    }
+
+    public function testResolvesAPathThatIsDeclaredOnAMethodOfATraitRelativeToTheTrait(): void
+    {
+        $fixture = realpath(__DIR__ . '/../../../_files/TestImpactAnalysis/fixtures/one.txt');
+
+        $this->assertIsString($fixture);
+
+        $this->assertSame(
+            [$fixture],
+            (new Fixtures)->for(TestThatUsesAFixtureOfATrait::class, 'testDeclaredOnAMethodOfATrait'),
+        );
     }
 
     public function testResolvesAPathWhoseNameIsANumber(): void
