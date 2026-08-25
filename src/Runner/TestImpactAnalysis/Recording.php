@@ -11,6 +11,7 @@ namespace PHPUnit\Runner\TestImpactAnalysis;
 
 use const DIRECTORY_SEPARATOR;
 use function array_flip;
+use function array_keys;
 use function assert;
 use function sprintf;
 use function str_starts_with;
@@ -151,21 +152,42 @@ final readonly class Recording
      * A path that nothing that was recorded accounts for, or null when there
      * is none.
      *
+     * A path that is not among the files that were recorded was not there, or
+     * was not first-party code, when the recording was made. A path that was
+     * recorded but that no test refers to is a path nothing is known about
+     * just the same: that no test executed it does not mean that no test is
+     * affected by it, only that executing the tests did not show it.
+     *
      * @param list<non-empty-string> $paths
      *
      * @return ?non-empty-string the reason why nothing is known about it
      */
     public function pathNothingIsKnownAbout(array $paths): ?string
     {
+        $filesTestsRefersTo = $this->filesTestsRefersTo();
+
         foreach ($paths as $path) {
-            if ($this->positionsOf([$path]) !== []) {
-                continue;
+            $positions = $this->positionsOf([$path]);
+
+            if ($positions === []) {
+                return sprintf(
+                    '%s is not among the files that were recorded',
+                    $path,
+                );
             }
 
-            return sprintf(
-                '%s is not among the files that were recorded',
-                $path,
-            );
+            foreach (array_keys($positions) as $position) {
+                if (isset($filesTestsRefersTo[$position])) {
+                    continue;
+                }
+
+                assert(isset($this->files[$position]));
+
+                return sprintf(
+                    '%s is recorded, but no test is recorded as depending on it',
+                    $this->files[$position],
+                );
+            }
         }
 
         return null;
@@ -198,15 +220,7 @@ final readonly class Recording
             }
         }
 
-        $filesTestsRefersTo = [];
-
-        foreach ($this->tests as $versionsOfTest) {
-            foreach ($versionsOfTest as $version) {
-                assert(isset($this->versions[$version]));
-
-                $filesTestsRefersTo[$this->versions[$version][0]] = true;
-            }
-        }
+        $filesTestsRefersTo = $this->filesTestsRefersTo();
 
         foreach ($this->sourceFiles as $position => $hash) {
             if (isset($filesTestsRefersTo[$position])) {
@@ -226,6 +240,27 @@ final readonly class Recording
         }
 
         return null;
+    }
+
+    /**
+     * The positions of the files that a test executed, or that a test declared
+     * that it depends on.
+     *
+     * @return array<int, true>
+     */
+    private function filesTestsRefersTo(): array
+    {
+        $files = [];
+
+        foreach ($this->tests as $versionsOfTest) {
+            foreach ($versionsOfTest as $version) {
+                assert(isset($this->versions[$version]));
+
+                $files[$this->versions[$version][0]] = true;
+            }
+        }
+
+        return $files;
     }
 
     /**
