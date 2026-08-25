@@ -12,12 +12,12 @@ namespace PHPUnit\Runner\TestImpactAnalysis;
 use function array_key_exists;
 use function hash;
 use function is_dir;
-use function iterator_to_array;
 use function ksort;
 use PHPUnit\Runner\TestIndex\FileHasher;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use SplFileInfo;
+use UnexpectedValueException;
 
 /**
  * Hashes what a test depends on, which is not always a file.
@@ -80,9 +80,15 @@ final class PathHasher
      */
     private function hashOfDirectory(string $directory): ?string
     {
+        $filesInDirectory = $this->filesIn($directory);
+
+        if ($filesInDirectory === null) {
+            return null;
+        }
+
         $files = [];
 
-        foreach ($this->filesIn($directory) as $file) {
+        foreach ($filesInDirectory as $file) {
             $hash = $this->fileHasher->hash($file);
 
             if ($hash === null) {
@@ -104,31 +110,42 @@ final class PathHasher
     }
 
     /**
+     * Returns null when the directory, or one of the directories beneath it,
+     * cannot be read: what is in a directory that cannot be opened is not
+     * known, and a hash of the rest of the directory would say that it did not
+     * change when it may well have.
+     *
      * @param non-empty-string $directory
      *
-     * @return list<non-empty-string>
+     * @return ?list<non-empty-string>
      */
-    private function filesIn(string $directory): array
+    private function filesIn(string $directory): ?array
     {
         $files = [];
 
-        $iterator = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($directory, RecursiveDirectoryIterator::SKIP_DOTS),
-        );
+        try {
+            $iterator = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($directory, RecursiveDirectoryIterator::SKIP_DOTS),
+            );
 
-        foreach (iterator_to_array($iterator) as $file) {
-            if (!$file instanceof SplFileInfo || !$file->isFile()) {
-                continue; // @codeCoverageIgnore
+            foreach ($iterator as $file) {
+                if (!$file instanceof SplFileInfo || !$file->isFile()) {
+                    continue; // @codeCoverageIgnore
+                }
+
+                $path = $file->getPathname();
+
+                if ($path === '') {
+                    continue; // @codeCoverageIgnore
+                }
+
+                $files[] = $path;
             }
-
-            $path = $file->getPathname();
-
-            if ($path === '') {
-                continue; // @codeCoverageIgnore
-            }
-
-            $files[] = $path;
+            // @codeCoverageIgnoreStart
+        } catch (UnexpectedValueException) {
+            return null;
         }
+        // @codeCoverageIgnoreEnd
 
         return $files;
     }
