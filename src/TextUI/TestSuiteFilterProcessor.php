@@ -28,12 +28,11 @@ use PHPUnit\TextUI\Configuration\FilterNotConfiguredException;
 final readonly class TestSuiteFilterProcessor
 {
     /**
+     * @param ?list<non-empty-string> $selectedTests the tests that test impact analysis selected, when it selected any
+     *
      * @throws Event\RuntimeException
      * @throws FilterNotConfiguredException
      * @throws RuntimeException
-     */
-    /**
-     * @param ?list<non-empty-string> $selectedTests the tests that test impact analysis selected, when it selected any
      */
     public function process(Configuration $configuration, TestSuite $suite, ?array $selectedTests = null): void
     {
