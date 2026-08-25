@@ -741,12 +741,6 @@ final class TestIndexTest extends TestCase
      * @param non-empty-string $directory
      * @param non-empty-string $name
      *
-     * @return array{class: non-empty-string, parent: non-empty-string, trait: non-empty-string}
-     */
-    /**
-     * @param non-empty-string $directory
-     * @param non-empty-string $name
-     *
      * @return array{class: non-empty-string, provider: non-empty-string}
      */
     private function writeTestClassWithExternalDataProvider(string $directory, string $name): array
@@ -797,6 +791,12 @@ final class TestIndexTest extends TestCase
         return ['class' => $classFile, 'provider' => $providerFile];
     }
 
+    /**
+     * @param non-empty-string $directory
+     * @param non-empty-string $name
+     *
+     * @return array{class: non-empty-string, parent: non-empty-string, trait: non-empty-string}
+     */
     private function writeTestClassWithParentAndTrait(string $directory, string $name): array
     {
         $traitFile = $directory . DIRECTORY_SEPARATOR . $name . 'Trait.php';
