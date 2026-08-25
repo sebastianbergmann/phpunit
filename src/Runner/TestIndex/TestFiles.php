@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner\TestIndex;
 
+use function array_key_exists;
 use function array_keys;
 use function assert;
 use function class_exists;
@@ -38,6 +39,17 @@ use ReflectionClass;
 final class TestFiles
 {
     /**
+     * What a test class is made of is decided by the class, and not by which
+     * of its test methods is being asked about, so the answer is remembered:
+     * a test class with a hundred test methods would otherwise be walked, with
+     * its parents, its traits and the metadata of every one of its methods, a
+     * hundred times.
+     *
+     * @var array<class-string, ?non-empty-list<non-empty-string>>
+     */
+    private static array $files = [];
+
+    /**
      * Returns null when a class a data provider is a method of cannot be
      * found: what the test does is then not known, and must not be treated as
      * known.
@@ -47,6 +59,24 @@ final class TestFiles
      * @return ?non-empty-list<non-empty-string>
      */
     public static function of(ReflectionClass $class): ?array
+    {
+        $className = $class->getName();
+
+        if (array_key_exists($className, self::$files)) {
+            return self::$files[$className];
+        }
+
+        self::$files[$className] = self::filesOf($class);
+
+        return self::$files[$className];
+    }
+
+    /**
+     * @param ReflectionClass<TestCase> $class
+     *
+     * @return ?non-empty-list<non-empty-string>
+     */
+    private static function filesOf(ReflectionClass $class): ?array
     {
         $files = [];
 
