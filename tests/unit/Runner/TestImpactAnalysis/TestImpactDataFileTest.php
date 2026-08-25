@@ -259,6 +259,57 @@ final class TestImpactDataFileTest extends TestCase
         $this->assertSame($foo, $persisted['files'][$persisted['sourceFiles'][0][0]]);
     }
 
+    public function testKeepsWhatASourceFileWasWhenNotPruning(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $covered   = $this->writeSourceFile($directory, 'Covered', 'first');
+        $untested  = $this->writeSourceFile($directory, 'Untested', 'first');
+
+        $data = new DefaultTestImpactData;
+        $data->record('FooTest::testOne', [$covered]);
+
+        new TestImpactDataFile($directory, $this->assumptions())->persistAndPrune($data, Provenance::ObservedExecution, [$covered, $untested]);
+
+        $hashOfWhatWasRecorded = $this->hashOfSourceFile($this->persistedData($directory), $untested);
+
+        $this->writeSourceFile($directory, 'Untested', 'second');
+
+        /*
+         * A test run that did not run every test there is did not assess the
+         * change to the file no test refers to, and must not record it as if
+         * it had.
+         */
+        new TestImpactDataFile($directory, $this->assumptions())->persist($data, Provenance::ObservedExecution, [$covered, $untested]);
+
+        $this->assertSame(
+            $hashOfWhatWasRecorded,
+            $this->hashOfSourceFile($this->persistedData($directory), $untested),
+        );
+    }
+
+    public function testRecordsWhatASourceFileIsNowWhenPruning(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $covered   = $this->writeSourceFile($directory, 'Covered', 'first');
+        $untested  = $this->writeSourceFile($directory, 'Untested', 'first');
+
+        $data = new DefaultTestImpactData;
+        $data->record('FooTest::testOne', [$covered]);
+
+        new TestImpactDataFile($directory, $this->assumptions())->persistAndPrune($data, Provenance::ObservedExecution, [$covered, $untested]);
+
+        $hashOfWhatWasRecorded = $this->hashOfSourceFile($this->persistedData($directory), $untested);
+
+        $this->writeSourceFile($directory, 'Untested', 'second');
+
+        new TestImpactDataFile($directory, $this->assumptions())->persistAndPrune($data, Provenance::ObservedExecution, [$covered, $untested]);
+
+        $this->assertNotSame(
+            $hashOfWhatWasRecorded,
+            $this->hashOfSourceFile($this->persistedData($directory), $untested),
+        );
+    }
+
     public function testRecordsTheVersionOfASourceFileThatATestExecuted(): void
     {
         $directory = $this->temporaryDirectory();
@@ -556,6 +607,30 @@ final class TestImpactDataFileTest extends TestCase
         $this->assertIsArray($data);
 
         return $data;
+    }
+
+    /**
+     * What a source file was recorded as being, looked up without knowing how
+     * the files were numbered.
+     *
+     * @param non-empty-string $file
+     *
+     * @return non-empty-string
+     */
+    private function hashOfSourceFile(array $persisted, string $file): string
+    {
+        foreach ($persisted['sourceFiles'] as [$position, $hash]) {
+            if ($persisted['files'][$position] !== $file) {
+                continue;
+            }
+
+            $this->assertIsString($hash);
+            $this->assertNotSame('', $hash);
+
+            return $hash;
+        }
+
+        $this->fail($file . ' was not recorded as a source file');
     }
 
     /**
