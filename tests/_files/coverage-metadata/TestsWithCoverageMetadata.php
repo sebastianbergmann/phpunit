@@ -12,6 +12,9 @@ namespace PHPUnit\TestFixture\CoverageMetadata;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversClassesThatExtendClass;
 use PHPUnit\Framework\Attributes\CoversClassesThatImplementInterface;
+use PHPUnit\Framework\Attributes\CoversDirectory;
+use PHPUnit\Framework\Attributes\CoversDirectoryRecursively;
+use PHPUnit\Framework\Attributes\CoversFile;
 use PHPUnit\Framework\Attributes\CoversFunction;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\CoversNamespace;
@@ -69,6 +72,30 @@ final class TestWithCoversMethod extends TestCase
 
 #[CoversFunction('PHPUnit\TestFixture\CoverageMetadata\covered_function')]
 final class TestWithCoversFunction extends TestCase
+{
+    public function testOne(): void
+    {
+    }
+}
+
+#[CoversFile(__DIR__ . '/CoverageTargets.php')]
+final class TestWithCoversFile extends TestCase
+{
+    public function testOne(): void
+    {
+    }
+}
+
+#[CoversDirectory(__DIR__)]
+final class TestWithCoversDirectory extends TestCase
+{
+    public function testOne(): void
+    {
+    }
+}
+
+#[CoversDirectoryRecursively(__DIR__)]
+final class TestWithCoversDirectoryRecursively extends TestCase
 {
     public function testOne(): void
     {

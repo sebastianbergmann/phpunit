@@ -273,53 +273,11 @@ final class TestRunner
      */
     private function hasCoverageMetadata(string $className, string $methodName): bool
     {
-        foreach (MetadataRegistry::parser()->forClassAndMethod($className, $methodName) as $metadata) {
-            if ($metadata->isCoversNamespace()) {
-                return true;
-            }
-
-            if ($metadata->isCoversTrait()) {
-                return true;
-            }
-
-            if ($metadata->isCoversClass()) {
-                return true;
-            }
-
-            if ($metadata->isCoversClassesThatExtendClass()) {
-                return true;
-            }
-
-            if ($metadata->isCoversClassesThatImplementInterface()) {
-                return true;
-            }
-
-            if ($metadata->isCoversMethod()) {
-                return true;
-            }
-
-            if ($metadata->isCoversFunction()) {
-                return true;
-            }
-
-            if ($metadata->isCoversFile()) {
-                return true;
-            }
-
-            if ($metadata->isCoversDirectory()) {
-                return true;
-            }
-
-            if ($metadata->isCoversDirectoryRecursively()) {
-                return true;
-            }
-
-            if ($metadata->isCoversNothing()) {
-                return true;
-            }
+        if (MetadataRegistry::parser()->forClassAndMethod($className, $methodName)->isCoversNothing()->isNotEmpty()) {
+            return true;
         }
 
-        return false;
+        return (new CodeCoverageMetadataApi)->coversTargets($className, $methodName)->isNotEmpty();
     }
 
     private function canTimeLimitBeEnforced(): bool

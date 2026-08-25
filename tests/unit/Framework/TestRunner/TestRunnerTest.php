@@ -17,6 +17,9 @@ use PHPUnit\Framework\TestRunner\TestRunner;
 use PHPUnit\TestFixture\CoverageMetadata\TestWithCoversClass;
 use PHPUnit\TestFixture\CoverageMetadata\TestWithCoversClassesThatExtendClass;
 use PHPUnit\TestFixture\CoverageMetadata\TestWithCoversClassesThatImplementInterface;
+use PHPUnit\TestFixture\CoverageMetadata\TestWithCoversDirectory;
+use PHPUnit\TestFixture\CoverageMetadata\TestWithCoversDirectoryRecursively;
+use PHPUnit\TestFixture\CoverageMetadata\TestWithCoversFile;
 use PHPUnit\TestFixture\CoverageMetadata\TestWithCoversFunction;
 use PHPUnit\TestFixture\CoverageMetadata\TestWithCoversMethod;
 use PHPUnit\TestFixture\CoverageMetadata\TestWithCoversNamespace;
@@ -42,6 +45,9 @@ final class TestRunnerTest extends TestCase
             [TestWithCoversClassesThatImplementInterface::class],
             [TestWithCoversMethod::class],
             [TestWithCoversFunction::class],
+            [TestWithCoversFile::class],
+            [TestWithCoversDirectory::class],
+            [TestWithCoversDirectoryRecursively::class],
             [TestWithCoversNothing::class],
         ];
     }
