@@ -17,6 +17,7 @@ use PHPUnit\Runner\TestIndex\TestFiles;
 use ReflectionClass;
 use SebastianBergmann\CodeCoverage\Filter;
 use SebastianBergmann\CodeCoverage\StaticAnalysis\Registry;
+use SebastianBergmann\CodeCoverage\Test\Target\InvalidCodeCoverageTargetException;
 use SebastianBergmann\CodeCoverage\Test\Target\MapBuilder;
 use SebastianBergmann\CodeCoverage\Test\Target\Mapper;
 use SebastianBergmann\CodeCoverage\Test\Target\TargetCollection;
@@ -96,9 +97,13 @@ final class TestImpactDataFromCoverageTargets
             /*
              * A test that names no source file is a test nothing is known
              * about, and the fixtures it declares do not change that: they add
-             * to what a test depends on, they do not establish it.
+             * to what a test depends on, they do not establish it. A test that
+             * declares a target that cannot be resolved is a test nothing is
+             * known about as well: what it names cannot be answered for, and
+             * answering for the rest would say that it depends on less than it
+             * does.
              */
-            if ($files === []) {
+            if ($files === null || $files === []) {
                 continue;
             }
 
@@ -129,17 +134,25 @@ final class TestImpactDataFromCoverageTargets
     }
 
     /**
+     * Returns null when a target cannot be resolved to the files it stands
+     * for: a target that names code that is not there, or that is not first-
+     * party code, is a target no answer can be given for.
+     *
      * @param class-string     $className
      * @param non-empty-string $methodName
      *
-     * @return list<non-empty-string>
+     * @return ?list<non-empty-string>
      */
-    private function filesFor(string $className, string $methodName): array
+    private function filesFor(string $className, string $methodName): ?array
     {
         $files = [];
 
         foreach ([$this->metadata->coversTargets($className, $methodName), $this->metadata->usesTargets($className, $methodName)] as $targets) {
             $files = $this->addFilesOf($targets, $files);
+
+            if ($files === null) {
+                return null;
+            }
         }
 
         return array_keys($files);
@@ -148,16 +161,22 @@ final class TestImpactDataFromCoverageTargets
     /**
      * @param array<non-empty-string, true> $files
      *
-     * @return array<non-empty-string, true>
+     * @return ?array<non-empty-string, true>
      */
-    private function addFilesOf(TargetCollection $targets, array $files): array
+    private function addFilesOf(TargetCollection $targets, array $files): ?array
     {
         if ($targets->isEmpty()) {
             return $files;
         }
 
-        /** @phpstan-ignore method.internalClass */
-        foreach (array_keys($this->mapper->mapTargets($targets)) as $file) {
+        try {
+            /** @phpstan-ignore method.internalClass */
+            $mapped = $this->mapper->mapTargets($targets);
+        } catch (InvalidCodeCoverageTargetException) {
+            return null;
+        }
+
+        foreach (array_keys($mapped) as $file) {
             $files[$file] = true;
         }
 
