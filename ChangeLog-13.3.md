@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 13.3 release series are documented in this fi
 ### Fixed
 
 * [#6904](https://github.com/sebastianbergmann/phpunit/issues/6904): `SourceMap` is built in child process even though `identifyIssueTrigger` is disabled
+* [#6924](https://github.com/sebastianbergmann/phpunit/issues/6924): `#[CoversFile]` attribute is not considered for risky test check
 
 ## [13.3.1] - 2026-08-13
 

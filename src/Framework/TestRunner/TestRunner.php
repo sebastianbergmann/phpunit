@@ -302,6 +302,18 @@ final class TestRunner
                 return true;
             }
 
+            if ($metadata->isCoversFile()) {
+                return true;
+            }
+
+            if ($metadata->isCoversDirectory()) {
+                return true;
+            }
+
+            if ($metadata->isCoversDirectoryRecursively()) {
+                return true;
+            }
+
             if ($metadata->isCoversNothing()) {
                 return true;
             }
