@@ -88,6 +88,22 @@ final class TestImpactDataFromCoverageTargetsTest extends TestCase
         $this->assertSame([], $data->recorded());
     }
 
+    public function testDoesNotRecordATestThatDeclaresATargetThatCannotBeUsed(): void
+    {
+        $filter = new Filter;
+
+        $filter->includeFiles([realpath(__DIR__ . '/../../../_files/TestImpactAnalysis/Money.php')]);
+
+        $data = new DefaultTestImpactData;
+
+        TestImpactDataFromCoverageTargets::using($filter, null, true, false)->record(
+            [new FormatterMethodTest('testFormatsAmount')],
+            $data,
+        );
+
+        $this->assertSame([], $data->recorded());
+    }
+
     public function testDoesNotRecordATestWhoseDataProviderClassCannotBeFound(): void
     {
         $data = new DefaultTestImpactData;
