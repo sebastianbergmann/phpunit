@@ -522,6 +522,36 @@ final class MergerTest extends TestCase
         $this->assertTrue($mergedConfig->displayDetailsOnTestsThatTriggerDeprecations());
     }
 
+    /**
+     * Working out what each test depends on from the code coverage targets it
+     * declares is a way of recording test impact data, and not something that
+     * is done in addition to recording it.
+     */
+    public function testDerivingTestImpactDataFromCoverageTargetsCanBeRequestedOnTheCommandLine(): void
+    {
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge(
+            new Builder($this->createStub(Emitter::class))->fromParameters(['--derive-test-impact-data-from-coverage-targets']),
+            DefaultConfiguration::create(),
+        );
+
+        $this->assertTrue($mergedConfig->deriveTestImpactDataFromCoverageTargets());
+        $this->assertTrue($mergedConfig->recordTestImpactData());
+    }
+
+    public function testDerivingTestImpactDataFromCoverageTargetsCanBeDeclinedOnTheCommandLine(): void
+    {
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge(
+            new Builder($this->createStub(Emitter::class))->fromParameters([
+                '--record-test-impact-data',
+                '--do-not-derive-test-impact-data-from-coverage-targets',
+            ]),
+            DefaultConfiguration::create(),
+        );
+
+        $this->assertFalse($mergedConfig->deriveTestImpactDataFromCoverageTargets());
+        $this->assertTrue($mergedConfig->recordTestImpactData());
+    }
+
     private function mergeWithPhpSelf(?string $phpSelf): MergedConfiguration
     {
         $backup = null;
