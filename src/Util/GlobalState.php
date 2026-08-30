@@ -235,7 +235,7 @@ final readonly class GlobalState
             }
 
             if (!$excludeList->isExcluded($file) && is_file($file)) {
-                $result = 'require_once \'' . $file . "';\n" . $result;
+                $result = 'require_once ' . var_export($file, true) . ";\n" . $result;
             }
         }
 

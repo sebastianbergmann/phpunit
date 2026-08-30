@@ -9,7 +9,11 @@
  */
 namespace PHPUnit\Util;
 
+use function file_put_contents;
 use function sprintf;
+use function sys_get_temp_dir;
+use function unlink;
+use function var_export;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
@@ -36,6 +40,30 @@ final class GlobalStateTest extends TestCase
             "require_once 'file://" . $dir . "/XmlTest.php';\n",
             GlobalState::processIncludedFilesAsString($files),
         );
+    }
+
+    public function testIncludedFilesAsStringEscapesSpecialCharactersInPaths(): void
+    {
+        $path = sys_get_temp_dir() . "/A' . file_put_contents('x', 'y') . 'Test.php";
+
+        file_put_contents($path, '<?php');
+
+        try {
+            $result = GlobalState::processIncludedFilesAsString(['phpunit', $path]);
+
+            $this->assertSame(
+                'require_once ' . var_export($path, true) . ";\n",
+                $result,
+            );
+
+            $extracted = null;
+
+            eval('$extracted = ' . var_export($path, true) . ';');
+
+            $this->assertSame($path, $extracted);
+        } finally {
+            unlink($path);
+        }
     }
 
     public function testClosureGlobalIsSkippedAndReported(): void
