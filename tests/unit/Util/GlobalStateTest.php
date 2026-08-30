@@ -34,9 +34,9 @@ final class GlobalStateTest extends TestCase
             'file://' . $dir . '/XmlTest.php',
         ];
 
-        $this->assertEquals(
-            "require_once '" . $dir . "/GlobalStateTest.php';\n" .
-            "require_once 'file://" . $dir . "/XmlTest.php';\n",
+        $this->assertSame(
+            'require_once ' . var_export($dir . '/GlobalStateTest.php', true) . ";\n" .
+            'require_once ' . var_export('file://' . $dir . '/XmlTest.php', true) . ";\n",
             GlobalState::processIncludedFilesAsString($files),
         );
     }
