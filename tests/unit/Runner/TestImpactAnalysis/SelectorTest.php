@@ -199,6 +199,35 @@ final class SelectorTest extends TestCase
         );
     }
 
+    public function testRunsATestThatDependsOnATestClassThatIsNotAmongTheTests(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $formatter = $this->writeSourceFile($directory, 'Formatter', 'first');
+
+        $dependent = ClassDependentSelectionTest::class . '::testFormatsAsWell';
+
+        $file = new TestImpactDataFile($directory, $this->assumptions());
+        $data = new DefaultTestImpactData;
+
+        $data->record($dependent, [$formatter, $this->fileOf(ClassDependentSelectionTest::class)]);
+
+        $file->persist($data, Provenance::ObservedExecution, [$formatter]);
+
+        $this->writeSourceFile($directory, 'Formatter', 'second');
+
+        /*
+         * The test class the selected test declares that it depends on is not
+         * among the tests that would be run, so there is nothing to add for
+         * it.
+         */
+        $selection = new Selector($file, new DefaultTestRunHistory($directory . DIRECTORY_SEPARATOR . 'history'))->select(
+            $this->testsOf(ClassDependentSelectionTest::class),
+            [$formatter],
+        );
+
+        $this->assertSame([$dependent], $selection->tests());
+    }
+
     public function testRunsATestThatWasNeverRecorded(): void
     {
         $directory = $this->temporaryDirectory();
