@@ -49,7 +49,7 @@ jobs:
 
       - name: Announce release
         id: mastodon
-        uses: cbrgm/mastodon-github-action@7fcc3650150fc062d707eeffb50e8f7a2704fd0f # v2.2.3
+        uses: cbrgm/mastodon-github-action@9ba8763f1daa436d73fb76abbc3e8b2ac8dfa943 # v2.2.4
         with:
           access-token: ${{ secrets.MASTODON_ACCESS_TOKEN }}
           url: ${{ secrets.MASTODON_URL }}
