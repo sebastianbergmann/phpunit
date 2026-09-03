@@ -26,18 +26,21 @@ final class SortedTest extends AbstractEventTestCase
         $executionOrder        = 9001;
         $executionOrderDefects = 5;
         $resolveDependencies   = true;
+        $pipeline              = ['duration-ascending', 'defects', 'depends'];
 
         $event = new Sorted(
             $telemetryInfo,
             $executionOrder,
             $executionOrderDefects,
             $resolveDependencies,
+            $pipeline,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
         $this->assertSame($executionOrder, $event->executionOrder());
         $this->assertSame($executionOrderDefects, $event->executionOrderDefects());
         $this->assertSame($resolveDependencies, $event->resolveDependencies());
+        $this->assertSame($pipeline, $event->pipeline());
     }
 
     public function testCanBeRepresentedAsString(): void
@@ -47,6 +50,7 @@ final class SortedTest extends AbstractEventTestCase
             9001,
             5,
             true,
+            ['duration-ascending', 'defects', 'depends'],
         );
 
         $this->assertSame('Test Suite Sorted', $event->asString());

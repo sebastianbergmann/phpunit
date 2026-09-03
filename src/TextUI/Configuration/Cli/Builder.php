@@ -22,6 +22,7 @@ use function sprintf;
 use function strtolower;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Runner\TestSuiteSorter;
+use PHPUnit\TextUI\Configuration\ExecutionOrderParser;
 use PHPUnit\Util\Filesystem;
 use SebastianBergmann\CliParser\Exception as CliParserException;
 use SebastianBergmann\CliParser\Parser as CliParser;
@@ -121,6 +122,7 @@ final class Builder
         'no-progress',
         'no-results',
         'order-by=',
+        'explain-order',
         'process-isolation',
         'do-not-report-useless-tests',
         'random-order',
@@ -425,6 +427,7 @@ final class Builder
         $printerTestDox                           = null;
         $printerTestDoxSummary                    = null;
         $debug                                    = false;
+        $explainOrder                             = false;
         $withTelemetry                            = false;
         $extensions                               = [];
         $warnWhenPhpIsNotConfiguredForDevelopment = null;
@@ -827,87 +830,33 @@ final class Builder
                 case '--order-by':
                     assert($option[1] !== null);
 
-                    foreach (explode(',', $option[1]) as $order) {
-                        switch ($order) {
-                            case 'default':
-                                $executionOrder        = TestSuiteSorter::ORDER_DEFAULT;
-                                $executionOrderDefects = TestSuiteSorter::ORDER_DEFAULT;
-                                $resolveDependencies   = true;
+                    $parsedExecutionOrder = (new ExecutionOrderParser)->parse(
+                        $option[1],
+                        '--order-by',
+                        $executionOrder,
+                        $executionOrderDefects,
+                        $resolveDependencies,
+                    );
 
-                                break;
+                    $unknownTokens = $parsedExecutionOrder->unknownTokens();
 
-                            case 'defects':
-                                $executionOrderDefects = TestSuiteSorter::ORDER_DEFECTS_FIRST;
-
-                                break;
-
-                            case 'depends':
-                                $resolveDependencies = true;
-
-                                break;
-
-                            case 'duration':
-                                $executionOrder = TestSuiteSorter::ORDER_DURATION_ASCENDING;
-
-                                EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
-                                    'Using "duration" for --order-by is deprecated and will be removed in PHPUnit 14. Use "duration-ascending" instead.',
-                                );
-
-                                break;
-
-                            case 'duration-ascending':
-                                $executionOrder = TestSuiteSorter::ORDER_DURATION_ASCENDING;
-
-                                break;
-
-                            case 'duration-descending':
-                                $executionOrder = TestSuiteSorter::ORDER_DURATION_DESCENDING;
-
-                                break;
-
-                            case 'no-depends':
-                                $resolveDependencies = false;
-
-                                break;
-
-                            case 'random':
-                                $executionOrder = TestSuiteSorter::ORDER_RANDOMIZED;
-
-                                break;
-
-                            case 'reverse':
-                                $executionOrder = TestSuiteSorter::ORDER_REVERSED;
-
-                                break;
-
-                            case 'size':
-                                $executionOrder = TestSuiteSorter::ORDER_SIZE_ASCENDING;
-
-                                EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
-                                    'Using "size" for --order-by is deprecated and will be removed in PHPUnit 14. Use "size-ascending" instead.',
-                                );
-
-                                break;
-
-                            case 'size-ascending':
-                                $executionOrder = TestSuiteSorter::ORDER_SIZE_ASCENDING;
-
-                                break;
-
-                            case 'size-descending':
-                                $executionOrder = TestSuiteSorter::ORDER_SIZE_DESCENDING;
-
-                                break;
-
-                            default:
-                                throw new Exception(
-                                    sprintf(
-                                        'unrecognized --order-by option: %s',
-                                        $order,
-                                    ),
-                                );
-                        }
+                    if ($unknownTokens !== []) {
+                        throw new Exception(
+                            sprintf(
+                                'unrecognized --order-by option: %s',
+                                $unknownTokens[0],
+                            ),
+                        );
                     }
+
+                    $executionOrder        = $parsedExecutionOrder->executionOrder();
+                    $executionOrderDefects = $parsedExecutionOrder->executionOrderDefects();
+                    $resolveDependencies   = $parsedExecutionOrder->resolveDependencies();
+
+                    break;
+
+                case '--explain-order':
+                    $explainOrder = true;
 
                     break;
 
@@ -1614,6 +1563,7 @@ final class Builder
             $printerTestDox,
             $printerTestDoxSummary,
             $debug,
+            $explainOrder,
             $withTelemetry,
             $extensions,
             $cacheTestIndex,

@@ -286,18 +286,4 @@ final class TestStatusTest extends TestCase
         $this->assertTrue(TestStatus::error()->isMoreImportantThan(TestStatus::failure()));
         $this->assertFalse(TestStatus::failure()->isMoreImportantThan(TestStatus::error()));
     }
-
-    public function testHasSortWeight(): void
-    {
-        $this->assertSame(0, TestStatus::unknown()->sortWeight());
-        $this->assertSame(0, TestStatus::success()->sortWeight());
-        $this->assertSame(0, TestStatus::skipped()->sortWeight());
-        $this->assertSame(0, TestStatus::incomplete()->sortWeight());
-        $this->assertSame(0, TestStatus::notice()->sortWeight());
-        $this->assertSame(0, TestStatus::deprecation()->sortWeight());
-        $this->assertSame(0, TestStatus::risky()->sortWeight());
-        $this->assertSame(0, TestStatus::warning()->sortWeight());
-        $this->assertSame(7, TestStatus::failure()->sortWeight());
-        $this->assertSame(8, TestStatus::error()->sortWeight());
-    }
 }

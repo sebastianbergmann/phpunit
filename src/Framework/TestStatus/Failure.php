@@ -32,12 +32,4 @@ final readonly class Failure extends Known
     {
         return 'failure';
     }
-
-    /**
-     * @return non-negative-int
-     */
-    public function sortWeight(): int
-    {
-        return 7;
-    }
 }

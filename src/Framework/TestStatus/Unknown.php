@@ -32,12 +32,4 @@ final readonly class Unknown extends TestStatus
     {
         return 'unknown';
     }
-
-    /**
-     * @return non-negative-int
-     */
-    public function sortWeight(): int
-    {
-        return 0;
-    }
 }

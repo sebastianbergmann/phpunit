@@ -191,6 +191,38 @@ final class LoaderTest extends TestCase
         @unlink($tmpFilename);
     }
 
+    public function testShouldParseXmlConfigurationExecutionOrderWithDefectsAfterOrder(): void
+    {
+        $tmpFilename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit.' . uniqid('', true) . '.xml';
+        $xml         = "<phpunit executionOrder='depends,duration-ascending,defects'></phpunit>" . PHP_EOL;
+        file_put_contents($tmpFilename, $xml);
+
+        $configuration = (new Loader)->load($tmpFilename);
+
+        $this->assertFalse($configuration->hasValidationErrors());
+
+        $this->assertEquals(TestSuiteSorter::ORDER_DURATION_ASCENDING, $configuration->phpunit()->executionOrder());
+        $this->assertTrue($configuration->phpunit()->defectsFirst());
+        $this->assertTrue($configuration->phpunit()->resolveDependencies());
+
+        @unlink($tmpFilename);
+    }
+
+    #[IgnorePhpunitDeprecations]
+    public function testShouldIgnoreUnknownExecutionOrderToken(): void
+    {
+        $tmpFilename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit.' . uniqid('', true) . '.xml';
+        $xml         = "<phpunit executionOrder='reverse,does-not-exist'></phpunit>" . PHP_EOL;
+        file_put_contents($tmpFilename, $xml);
+
+        $configuration = (new Loader)->load($tmpFilename);
+
+        $this->assertTrue($configuration->hasValidationErrors());
+        $this->assertEquals(TestSuiteSorter::ORDER_REVERSED, $configuration->phpunit()->executionOrder());
+
+        @unlink($tmpFilename);
+    }
+
     public function testSourceConfigurationIsReadCorrectly(): void
     {
         $source = $this->configuration('configuration_codecoverage.xml')->source();

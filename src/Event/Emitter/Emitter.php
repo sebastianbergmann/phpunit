@@ -59,7 +59,10 @@ interface Emitter
 
     public function testSuiteFiltered(TestSuite $testSuite): void;
 
-    public function testSuiteSorted(int $executionOrder, int $executionOrderDefects, bool $resolveDependencies): void;
+    /**
+     * @param list<non-empty-string> $pipeline
+     */
+    public function testSuiteSorted(int $executionOrder, int $executionOrderDefects, bool $resolveDependencies, array $pipeline): void;
 
     public function testRunnerEventFacadeSealed(): void;
 

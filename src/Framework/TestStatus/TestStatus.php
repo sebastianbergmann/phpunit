@@ -192,14 +192,4 @@ abstract readonly class TestStatus
     abstract public function asInt(): int;
 
     abstract public function asString(): string;
-
-    /**
-     * The weight used when sorting tests with "defects first". Only
-     * failure and error return a non-zero weight; every other status
-     * (including notice, deprecation, risky, and warning) returns 0 so
-     * that those tests are not hoisted to the front.
-     *
-     * @return non-negative-int
-     */
-    abstract public function sortWeight(): int;
 }

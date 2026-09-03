@@ -32,12 +32,4 @@ final readonly class Incomplete extends Known
     {
         return 'incomplete';
     }
-
-    /**
-     * @return non-negative-int
-     */
-    public function sortWeight(): int
-    {
-        return 0;
-    }
 }

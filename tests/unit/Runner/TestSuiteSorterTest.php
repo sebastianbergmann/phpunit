@@ -12,10 +12,17 @@ namespace PHPUnit\Runner;
 use function sys_get_temp_dir;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\Runner\ExecutionOrder\Context;
+use PHPUnit\Runner\ExecutionOrder\DefaultDefectWeightPolicy;
+use PHPUnit\Runner\ExecutionOrder\ReorderPipeline;
+use PHPUnit\Runner\ExecutionOrder\Stage\ByDuration;
+use PHPUnit\Runner\ExecutionOrder\Stage\BySize;
+use PHPUnit\Runner\ExecutionOrder\Stage\DefectsFirst;
 use PHPUnit\Runner\TestRunHistory\DefaultTestRunHistory;
 use PHPUnit\Runner\TestRunHistory\TestRunHistoryId;
 use PHPUnit\TestFixture\LargeGroupAttributesTest;
@@ -26,7 +33,13 @@ use PHPUnit\TestFixture\SmallTestWithDataProvider;
 use ReflectionClass;
 
 #[CoversClass(TestSuiteSorter::class)]
+#[CoversClass(ByDuration::class)]
+#[CoversClass(BySize::class)]
+#[CoversClass(Context::class)]
 #[CoversClass(DataProviderTestSuite::class)]
+#[CoversClass(DefaultDefectWeightPolicy::class)]
+#[CoversClass(DefectsFirst::class)]
+#[UsesClass(ReorderPipeline::class)]
 #[Small]
 final class TestSuiteSorterTest extends TestCase
 {
@@ -40,7 +53,7 @@ final class TestSuiteSorterTest extends TestCase
         $suite->setTests([$large, $small, $medium]);
 
         $sorter = new TestSuiteSorter;
-        $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_SIZE_ASCENDING, false, TestSuiteSorter::ORDER_DEFAULT);
+        $sorter->apply($suite, ReorderPipeline::fromConfiguration(TestSuiteSorter::ORDER_SIZE_ASCENDING, TestSuiteSorter::ORDER_DEFAULT, false));
 
         $tests = $suite->tests();
 
@@ -59,7 +72,7 @@ final class TestSuiteSorterTest extends TestCase
         $suite->setTests([$large, $small, $medium]);
 
         $sorter = new TestSuiteSorter;
-        $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_SIZE_DESCENDING, false, TestSuiteSorter::ORDER_DEFAULT);
+        $sorter->apply($suite, ReorderPipeline::fromConfiguration(TestSuiteSorter::ORDER_SIZE_DESCENDING, TestSuiteSorter::ORDER_DEFAULT, false));
 
         $tests = $suite->tests();
 
@@ -91,7 +104,7 @@ final class TestSuiteSorterTest extends TestCase
         $suite->setTests([$large, $dataProviderTestSuite]);
 
         $sorter = new TestSuiteSorter;
-        $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_SIZE_ASCENDING, false, TestSuiteSorter::ORDER_DEFAULT);
+        $sorter->apply($suite, ReorderPipeline::fromConfiguration(TestSuiteSorter::ORDER_SIZE_ASCENDING, TestSuiteSorter::ORDER_DEFAULT, false));
 
         $tests = $suite->tests();
 
@@ -108,7 +121,7 @@ final class TestSuiteSorterTest extends TestCase
         $suite->setTests([$nonReorderable, $testCase]);
 
         $sorter = new TestSuiteSorter;
-        $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_DURATION_ASCENDING, false, TestSuiteSorter::ORDER_DEFAULT);
+        $sorter->apply($suite, ReorderPipeline::fromConfiguration(TestSuiteSorter::ORDER_DURATION_ASCENDING, TestSuiteSorter::ORDER_DEFAULT, false));
 
         $tests = $suite->tests();
 
@@ -126,7 +139,7 @@ final class TestSuiteSorterTest extends TestCase
         $suite->setTests([$nonReorderable, $testCase]);
 
         $sorter = new TestSuiteSorter;
-        $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_DURATION_DESCENDING, false, TestSuiteSorter::ORDER_DEFAULT);
+        $sorter->apply($suite, ReorderPipeline::fromConfiguration(TestSuiteSorter::ORDER_DURATION_DESCENDING, TestSuiteSorter::ORDER_DEFAULT, false));
 
         $tests = $suite->tests();
 
@@ -150,7 +163,7 @@ final class TestSuiteSorterTest extends TestCase
         $cache->setTime(TestRunHistoryId::fromReorderable($large), 0.3);
 
         $sorter = new TestSuiteSorter($cache);
-        $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_DEFAULT, false, TestSuiteSorter::ORDER_DEFECTS_FIRST);
+        $sorter->apply($suite, ReorderPipeline::fromConfiguration(TestSuiteSorter::ORDER_DEFAULT, TestSuiteSorter::ORDER_DEFECTS_FIRST, false));
 
         $tests = $suite->tests();
 
@@ -172,7 +185,7 @@ final class TestSuiteSorterTest extends TestCase
         $cache->setStatus(TestRunHistoryId::fromReorderable($large), TestStatus::skipped());
 
         $sorter = new TestSuiteSorter($cache);
-        $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_DEFAULT, false, TestSuiteSorter::ORDER_DEFECTS_FIRST);
+        $sorter->apply($suite, ReorderPipeline::fromConfiguration(TestSuiteSorter::ORDER_DEFAULT, TestSuiteSorter::ORDER_DEFECTS_FIRST, false));
 
         $tests = $suite->tests();
 
@@ -194,7 +207,7 @@ final class TestSuiteSorterTest extends TestCase
         $cache->setStatus(TestRunHistoryId::fromReorderable($large), TestStatus::incomplete());
 
         $sorter = new TestSuiteSorter($cache);
-        $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_DEFAULT, false, TestSuiteSorter::ORDER_DEFECTS_FIRST);
+        $sorter->apply($suite, ReorderPipeline::fromConfiguration(TestSuiteSorter::ORDER_DEFAULT, TestSuiteSorter::ORDER_DEFECTS_FIRST, false));
 
         $tests = $suite->tests();
 
@@ -216,7 +229,7 @@ final class TestSuiteSorterTest extends TestCase
         $cache->setStatus(TestRunHistoryId::fromReorderable($large), TestStatus::failure());
 
         $sorter = new TestSuiteSorter($cache);
-        $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_DEFAULT, false, TestSuiteSorter::ORDER_DEFECTS_FIRST);
+        $sorter->apply($suite, ReorderPipeline::fromConfiguration(TestSuiteSorter::ORDER_DEFAULT, TestSuiteSorter::ORDER_DEFECTS_FIRST, false));
 
         $tests = $suite->tests();
 
@@ -246,7 +259,7 @@ final class TestSuiteSorterTest extends TestCase
         $cache->setTime(TestRunHistoryId::fromReorderable($endToEndTest), 10.0);
 
         $sorter = new TestSuiteSorter($cache);
-        $sorter->reorderTestsInSuite($parent, TestSuiteSorter::ORDER_DEFAULT, false, TestSuiteSorter::ORDER_DEFECTS_FIRST);
+        $sorter->apply($parent, ReorderPipeline::fromConfiguration(TestSuiteSorter::ORDER_DEFAULT, TestSuiteSorter::ORDER_DEFECTS_FIRST, false));
 
         $tests = $parent->tests();
 
@@ -275,7 +288,7 @@ final class TestSuiteSorterTest extends TestCase
         $cache->setStatus(TestRunHistoryId::fromReorderable($failingTest), TestStatus::failure());
 
         $sorter = new TestSuiteSorter($cache);
-        $sorter->reorderTestsInSuite($parent, TestSuiteSorter::ORDER_DEFAULT, false, TestSuiteSorter::ORDER_DEFECTS_FIRST);
+        $sorter->apply($parent, ReorderPipeline::fromConfiguration(TestSuiteSorter::ORDER_DEFAULT, TestSuiteSorter::ORDER_DEFECTS_FIRST, false));
 
         $tests = $parent->tests();
 
@@ -312,7 +325,7 @@ final class TestSuiteSorterTest extends TestCase
         $cache->setStatus(TestRunHistoryId::fromReorderable($failingDataSet), TestStatus::failure());
 
         $sorter = new TestSuiteSorter($cache);
-        $sorter->reorderTestsInSuite($parent, TestSuiteSorter::ORDER_DEFAULT, false, TestSuiteSorter::ORDER_DEFECTS_FIRST);
+        $sorter->apply($parent, ReorderPipeline::fromConfiguration(TestSuiteSorter::ORDER_DEFAULT, TestSuiteSorter::ORDER_DEFECTS_FIRST, false));
 
         $tests = $parent->tests();
 
@@ -329,7 +342,7 @@ final class TestSuiteSorterTest extends TestCase
         $parent->setTests([$suiteA, $suiteB]);
 
         $sorter = new TestSuiteSorter;
-        $sorter->reorderTestsInSuite($parent, TestSuiteSorter::ORDER_SIZE_ASCENDING, false, TestSuiteSorter::ORDER_DEFAULT);
+        $sorter->apply($parent, ReorderPipeline::fromConfiguration(TestSuiteSorter::ORDER_SIZE_ASCENDING, TestSuiteSorter::ORDER_DEFAULT, false));
 
         $tests = $parent->tests();
 

@@ -32,12 +32,4 @@ final readonly class Warning extends Known
     {
         return 'warning';
     }
-
-    /**
-     * @return non-negative-int
-     */
-    public function sortWeight(): int
-    {
-        return 0;
-    }
 }

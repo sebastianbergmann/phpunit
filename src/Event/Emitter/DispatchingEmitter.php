@@ -209,10 +209,12 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
+     * @param list<non-empty-string> $pipeline
+     *
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
-    public function testSuiteSorted(int $executionOrder, int $executionOrderDefects, bool $resolveDependencies): void
+    public function testSuiteSorted(int $executionOrder, int $executionOrderDefects, bool $resolveDependencies, array $pipeline): void
     {
         $this->dispatcher->dispatch(
             new TestSuiteSorted(
@@ -220,6 +222,7 @@ final class DispatchingEmitter implements Emitter
                 $executionOrder,
                 $executionOrderDefects,
                 $resolveDependencies,
+                $pipeline,
             ),
         );
     }

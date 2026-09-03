@@ -187,6 +187,7 @@
   [32m--retry [36m<N>[0m                         [0m Attempt each test up to N times,
                                        stopping at the first success
   [32m--reverse-order                     [0m Alias for "--order-by reverse"
+  [32m--explain-order                     [0m Explain how tests are reordered
 
 [33mReporting:[0m
 

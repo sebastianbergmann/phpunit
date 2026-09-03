@@ -500,6 +500,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $executionOrder        = 9001;
         $executionOrderDefects = 5;
         $resolveDependencies   = true;
+        $pipeline              = ['duration-ascending', 'defects', 'depends'];
 
         $subscriber = new class extends RecordingSubscriber implements TestSuiteSortedSubscriber
         {
@@ -526,6 +527,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $executionOrder,
             $executionOrderDefects,
             $resolveDependencies,
+            $pipeline,
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
@@ -537,6 +539,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($executionOrder, $event->executionOrder());
         $this->assertSame($executionOrderDefects, $event->executionOrderDefects());
         $this->assertSame($resolveDependencies, $event->resolveDependencies());
+        $this->assertSame($pipeline, $event->pipeline());
     }
 
     #[TestDox('testRunnerEventFacadeSealed() emits TestRunner\EventFacadeSealed event')]

@@ -21,6 +21,7 @@ use function dirname;
 use function explode;
 use function function_exists;
 use function getmypid;
+use function implode;
 use function is_array;
 use function is_file;
 use function is_string;
@@ -58,6 +59,7 @@ use PHPUnit\Runner\DeprecationCollector\Facade as DeprecationCollector;
 use PHPUnit\Runner\DeprecationFilter;
 use PHPUnit\Runner\DirectoryDoesNotExistException;
 use PHPUnit\Runner\ErrorHandler;
+use PHPUnit\Runner\ExecutionOrder\ReorderPipeline;
 use PHPUnit\Runner\Extension\ExtensionBootstrapper;
 use PHPUnit\Runner\Extension\ExtensionCapabilities;
 use PHPUnit\Runner\Extension\ExtensionFacade;
@@ -252,6 +254,7 @@ final readonly class Application
                 $this->writeRuntimeInformation($printer, $configuration);
                 $this->writePharExtensionInformation($printer, $pharExtensions);
                 $this->writeRandomSeedInformation($printer, $configuration);
+                $this->writeExecutionOrderInformation($printer, $configuration);
 
                 $printer->print(PHP_EOL);
             }
@@ -661,6 +664,27 @@ final readonly class Application
                 (string) $configuration->randomOrderSeed(),
             );
         }
+    }
+
+    private function writeExecutionOrderInformation(Printer $printer, Configuration $configuration): void
+    {
+        if (!$configuration->explainOrder()) {
+            return;
+        }
+
+        $stages = ReorderPipeline::fromConfiguration(
+            $configuration->executionOrder(),
+            $configuration->executionOrderDefects(),
+            $configuration->resolveDependencies(),
+        )->describe();
+
+        if ($stages === []) {
+            $this->writeMessage($printer, 'Order', 'default');
+
+            return;
+        }
+
+        $this->writeMessage($printer, 'Order', implode(', ', $stages));
     }
 
     private function registerLogfileWriters(Configuration $configuration): void

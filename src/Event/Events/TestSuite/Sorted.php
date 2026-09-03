@@ -25,14 +25,22 @@ final readonly class Sorted implements Event
     private bool $resolveDependencies;
 
     /**
+     * @var list<non-empty-string>
+     */
+    private array $pipeline;
+
+    /**
+     * @param list<non-empty-string> $pipeline
+     *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function __construct(Telemetry\Info $telemetryInfo, int $executionOrder, int $executionOrderDefects, bool $resolveDependencies)
+    public function __construct(Telemetry\Info $telemetryInfo, int $executionOrder, int $executionOrderDefects, bool $resolveDependencies, array $pipeline)
     {
         $this->telemetryInfo         = $telemetryInfo;
         $this->executionOrder        = $executionOrder;
         $this->executionOrderDefects = $executionOrderDefects;
         $this->resolveDependencies   = $resolveDependencies;
+        $this->pipeline              = $pipeline;
     }
 
     public function telemetryInfo(): Telemetry\Info
@@ -53,6 +61,18 @@ final readonly class Sorted implements Event
     public function resolveDependencies(): bool
     {
         return $this->resolveDependencies;
+    }
+
+    /**
+     * The stages of the reordering pipeline that was applied, named after the
+     * configuration tokens they correspond to, in the order in which they were
+     * applied.
+     *
+     * @return list<non-empty-string>
+     */
+    public function pipeline(): array
+    {
+        return $this->pipeline;
     }
 
     /**

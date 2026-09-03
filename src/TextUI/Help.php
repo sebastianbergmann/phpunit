@@ -287,6 +287,7 @@ final class Help
                 ['arg' => '--repeat <N>', 'desc' => 'Run each test N times, stopping at the first failure'],
                 ['arg' => '--retry <N>', 'desc' => 'Attempt each test up to N times, stopping at the first success'],
                 ['arg' => '--reverse-order', 'desc' => 'Alias for "--order-by reverse"'],
+                ['arg' => '--explain-order', 'desc' => 'Explain how tests are reordered'],
             ],
 
             'Reporting' => [

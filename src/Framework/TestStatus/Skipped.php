@@ -32,12 +32,4 @@ final readonly class Skipped extends Known
     {
         return 'skipped';
     }
-
-    /**
-     * @return non-negative-int
-     */
-    public function sortWeight(): int
-    {
-        return 0;
-    }
 }
