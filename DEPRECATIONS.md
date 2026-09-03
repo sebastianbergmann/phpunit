@@ -12,6 +12,7 @@ This functionality is currently [soft-deprecated](https://phpunit.de/backward-co
 |-------------------------------------------------------------------|---------------------------------------------------|--------|-------------------------------------------------------------------------|
 | [#6537](https://github.com/sebastianbergmann/phpunit/issues/6537) | `id()` and `after()` for mock object expectations | 13.1.0 |                                                                         |
 | [#6560](https://github.com/sebastianbergmann/phpunit/issues/6560) | `expectExceptionMessage()`                        | 13.2.0 | `expectExceptionMessageIsOrContains()`                                  |
+| [#6686](https://github.com/sebastianbergmann/phpunit/issues/6686) | `Constraint::failureDescriptionInContext()`       | 13.4.0 | Override `Constraint::negatedFailureDescription()` in your constraint   |
 | [#6686](https://github.com/sebastianbergmann/phpunit/issues/6686) | `LogicalNot::negate()`                            | 13.4.0 | Override `Constraint::negatedToString()` in your constraint             |
 
 ## Hard Deprecations

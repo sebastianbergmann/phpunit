@@ -12,6 +12,6 @@ All notable changes of the PHPUnit 13.4 release series are documented in this fi
 
 ### Deprecated
 
-* [#6686](https://github.com/sebastianbergmann/phpunit/issues/6686): `LogicalNot::negate()`
+* [#6686](https://github.com/sebastianbergmann/phpunit/issues/6686): `Constraint::failureDescriptionInContext()` and `LogicalNot::negate()`
 
 [13.4.0]: https://github.com/sebastianbergmann/phpunit/compare/13.3...main

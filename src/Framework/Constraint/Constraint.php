@@ -219,6 +219,8 @@ abstract class Constraint implements Countable, SelfDescribing
      * customization by itself.
      *
      * For the LogicalNot case, override negatedFailureDescription() instead.
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/6686
      */
     protected function failureDescriptionInContext(Operator $operator, mixed $role, mixed $other): string
     {
