@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\Constraint;
 
 use function count;
+use PHPUnit\Util\Exporter;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -103,13 +104,13 @@ abstract class UnaryOperator extends Operator
      */
     protected function operandFailureDescription(Constraint $constraint, mixed $other): string
     {
-        $string = $constraint->failureDescriptionInContext($this, 0, $other);
+        $string = $constraint->toStringInContext($this, 0);
 
         if ($string === '') {
             return $this->transformString($constraint->failureDescription($other));
         }
 
-        return $string;
+        return Exporter::export($other) . ' ' . $string;
     }
 
     /**
@@ -119,7 +120,7 @@ abstract class UnaryOperator extends Operator
      *
      * The method may be overwritten in a subclass to apply default
      * transformation in case the operand constraint does not provide its own
-     * custom strings via toStringInContext() or failureDescriptionInContext().
+     * custom strings via toStringInContext().
      */
     protected function transformString(string $string): string
     {
