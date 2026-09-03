@@ -78,6 +78,18 @@ final class ExceptionMessageMatchesRegularExpressionTest extends TestCase
         $this->assertSame('exception message matches \'/.*/\'', new ExceptionMessageMatchesRegularExpression('/.*/')->toString());
     }
 
+    public function testCanBeNegated(): void
+    {
+        $constraint = new LogicalNot(new ExceptionMessageMatchesRegularExpression('/message/'));
+
+        $this->assertSame("exception message does not match '/message/'", $constraint->toString());
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs("Failed asserting that exception message 'message' does not match '/message/'.");
+
+        $constraint->evaluate('message');
+    }
+
     public function testIsCountable(): void
     {
         $this->assertCount(1, (new ExceptionMessageMatchesRegularExpression('/.*/')));

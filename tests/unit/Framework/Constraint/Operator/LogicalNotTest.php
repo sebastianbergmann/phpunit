@@ -204,9 +204,53 @@ final class LogicalNotTest extends TestCase
         $this->assertSame('is true', $operator->toString());
     }
 
+    public function testDefaultOperandToStringUsesContextStringOfWrappedConstraint(): void
+    {
+        $constraint = new class extends Constraint
+        {
+            public function toString(): string
+            {
+                return 'fallback string';
+            }
+
+            public function toStringInContext(Operator $operator, mixed $role): string
+            {
+                return 'context-aware string';
+            }
+        };
+
+        $operator = new class($constraint) extends UnaryOperator
+        {
+            public function operator(): string
+            {
+                return 'identity';
+            }
+
+            public function precedence(): int
+            {
+                return 1;
+            }
+        };
+
+        $this->assertSame('context-aware string', $operator->toString());
+    }
+
     public function testNegatesAffirmativeFailureDescriptionOfConstraintWithoutContextString(): void
     {
-        $constraint = new LogicalNot(new IsAnything);
+        $constraint = new LogicalNot(
+            new class extends Constraint
+            {
+                public function toString(): string
+                {
+                    return 'is anything';
+                }
+
+                protected function matches(mixed $other): bool
+                {
+                    return true;
+                }
+            },
+        );
 
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessageIs("Failed asserting that 'value' is not anything.");

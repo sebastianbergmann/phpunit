@@ -103,4 +103,107 @@ final class ConstraintTest extends TestCase
 
         $this->assertSame('context-aware string', new LogicalNot($constraint)->toString());
     }
+
+    public function testNegatedToStringIsUsedWhenConstraintAuthorsItsNegation(): void
+    {
+        $constraint = new class extends Constraint
+        {
+            public function toString(): string
+            {
+                return 'is fresh';
+            }
+
+            public function negatedToString(): string
+            {
+                return 'is stale';
+            }
+
+            protected function matches(mixed $other): bool
+            {
+                return true;
+            }
+        };
+
+        $this->assertSame('is stale', new LogicalNot($constraint)->toString());
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs("Failed asserting that 'value' is stale.");
+
+        new LogicalNot($constraint)->evaluate('value');
+    }
+
+    public function testNegatedFailureDescriptionIsUsedWhenConstraintAuthorsIt(): void
+    {
+        $constraint = new class extends Constraint
+        {
+            public function toString(): string
+            {
+                return 'is fresh';
+            }
+
+            public function negatedFailureDescription(mixed $other): string
+            {
+                return 'the cache entry is stale';
+            }
+
+            protected function matches(mixed $other): bool
+            {
+                return true;
+            }
+        };
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs('Failed asserting that the cache entry is stale.');
+
+        new LogicalNot($constraint)->evaluate('value');
+    }
+
+    public function testNegationIsRewrittenWhenConstraintDoesNotAuthorIt(): void
+    {
+        $constraint = new class extends Constraint
+        {
+            public function toString(): string
+            {
+                return 'is fresh';
+            }
+
+            protected function matches(mixed $other): bool
+            {
+                return true;
+            }
+        };
+
+        $this->assertSame('is not fresh', new LogicalNot($constraint)->toString());
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs("Failed asserting that 'value' is not fresh.");
+
+        new LogicalNot($constraint)->evaluate('value');
+    }
+
+    public function testNegatedToStringIsNotUsedByBinaryOperators(): void
+    {
+        $constraint = new class extends Constraint
+        {
+            public function toString(): string
+            {
+                return 'is fresh';
+            }
+
+            public function negatedToString(): string
+            {
+                return 'is stale';
+            }
+
+            protected function matches(mixed $other): bool
+            {
+                return true;
+            }
+        };
+
+        $this->assertSame(
+            'is fresh and is fresh',
+            LogicalAnd::fromConstraints($constraint, $constraint)->toString(),
+        );
+    }
 }

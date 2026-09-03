@@ -67,6 +67,18 @@ final class ExceptionCodeTest extends TestCase
         $this->assertSame('exception code is 1234', new ExceptionCode(1234)->toString());
     }
 
+    public function testCanBeNegated(): void
+    {
+        $constraint = new LogicalNot(new ExceptionCode(1234));
+
+        $this->assertSame('exception code is not 1234', $constraint->toString());
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs('Failed asserting that 1234 is not equal to expected exception code 1234.');
+
+        $constraint->evaluate(1234);
+    }
+
     public function testIsCountable(): void
     {
         $this->assertCount(1, (new ExceptionCode(1234)));

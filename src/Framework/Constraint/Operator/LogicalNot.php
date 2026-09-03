@@ -23,6 +23,8 @@ use PHPUnit\Framework\ExpectationFailedException;
 final class LogicalNot extends UnaryOperator
 {
     /**
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/6686
+     *
      * @return non-empty-string
      */
     public static function negate(string $string): string
@@ -126,12 +128,45 @@ final class LogicalNot extends UnaryOperator
     }
 
     /**
-     * Applies additional transformation to strings returned by toString() or
-     * failureDescription().
+     * Returns the string representation of $constraint in context of this
+     * operator.
      */
-    protected function transformString(string $string): string
+    protected function operandToString(Constraint $constraint): string
     {
-        return self::negate($string);
+        $string = $constraint->negatedToString();
+
+        if ($string !== '') {
+            return $string;
+        }
+
+        $string = $constraint->toStringInContext($this, 0);
+
+        if ($string !== '') {
+            return $string;
+        }
+
+        return self::negate($constraint->toString());
+    }
+
+    /**
+     * Returns the failure description of $constraint in context of this
+     * operator.
+     */
+    protected function operandFailureDescription(Constraint $constraint, mixed $other): string
+    {
+        $string = $constraint->negatedFailureDescription($other);
+
+        if ($string !== '') {
+            return $string;
+        }
+
+        $string = $constraint->failureDescriptionInContext($this, 0, $other);
+
+        if ($string !== '') {
+            return $string;
+        }
+
+        return self::negate($constraint->failureDescription($other));
     }
 
     /**

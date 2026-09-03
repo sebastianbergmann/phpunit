@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function assert;
 use function is_string;
 use function sprintf;
 use PHPUnit\Util\Exporter;
@@ -34,6 +35,18 @@ final class ExceptionMessageIs extends Constraint
         }
 
         return 'exception message is ' . Exporter::export($this->expectedMessage);
+    }
+
+    /**
+     * Returns the negated string representation of the constraint.
+     */
+    protected function negatedToString(): string
+    {
+        if ($this->expectedMessage === '') {
+            return 'exception message is not empty';
+        }
+
+        return 'exception message is not ' . Exporter::export($this->expectedMessage);
     }
 
     protected function matches(mixed $other): bool
@@ -69,6 +82,24 @@ final class ExceptionMessageIs extends Constraint
         return sprintf(
             "exception message '%s' is '%s'",
             $message,
+            $this->expectedMessage,
+        );
+    }
+
+    protected function negatedFailureDescription(mixed $other): string
+    {
+        assert(is_string($other));
+
+        if ($this->expectedMessage === '') {
+            return sprintf(
+                "exception message is not empty but is '%s'",
+                $other,
+            );
+        }
+
+        return sprintf(
+            "exception message '%s' is not '%s'",
+            $other,
             $this->expectedMessage,
         );
     }

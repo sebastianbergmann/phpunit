@@ -90,16 +90,10 @@ final class IsIdentical extends Constraint
     }
 
     /**
-     * Returns the negated description when this constraint is wrapped in a
-     * LogicalNot operator. The guard ensures that LogicalAnd, LogicalOr, and
-     * LogicalXor keep using the affirmative toString().
+     * Returns the negated string representation of the constraint.
      */
-    protected function toStringInContext(Operator $operator, mixed $role): string
+    protected function negatedToString(): string
     {
-        if (!$operator instanceof LogicalNot) {
-            return '';
-        }
-
         return 'is not identical to ' . $this->valueAsString();
     }
 
@@ -130,14 +124,8 @@ final class IsIdentical extends Constraint
         return parent::failureDescription($other);
     }
 
-    protected function failureDescriptionInContext(Operator $operator, mixed $role, mixed $other): string
+    protected function negatedFailureDescription(mixed $other): string
     {
-        // @codeCoverageIgnoreStart
-        if (!$operator instanceof LogicalNot) {
-            return '';
-        }
-        // @codeCoverageIgnoreEnd
-
         if (is_object($this->value) && is_object($other)) {
             return 'two variables do not reference the same object';
         }
@@ -154,7 +142,7 @@ final class IsIdentical extends Constraint
             return 'two arrays are not identical';
         }
 
-        return Exporter::export($other) . ' ' . $this->toStringInContext($operator, $role);
+        return Exporter::export($other) . ' ' . $this->negatedToString();
     }
 
     private function valueAsString(): string

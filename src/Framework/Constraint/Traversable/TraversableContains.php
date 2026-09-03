@@ -34,16 +34,10 @@ abstract class TraversableContains extends Constraint
     }
 
     /**
-     * Returns the negated description when this constraint is wrapped in a
-     * LogicalNot operator. The guard ensures that LogicalAnd, LogicalOr, and
-     * LogicalXor keep using the affirmative toString().
+     * Returns the negated string representation of the constraint.
      */
-    protected function toStringInContext(Operator $operator, mixed $role): string
+    protected function negatedToString(): string
     {
-        if (!$operator instanceof LogicalNot) {
-            return '';
-        }
-
         return 'does not contain ' . Exporter::export($this->value);
     }
 
@@ -62,18 +56,12 @@ abstract class TraversableContains extends Constraint
         );
     }
 
-    protected function failureDescriptionInContext(Operator $operator, mixed $role, mixed $other): string
+    protected function negatedFailureDescription(mixed $other): string
     {
-        // @codeCoverageIgnoreStart
-        if (!$operator instanceof LogicalNot) {
-            return '';
-        }
-        // @codeCoverageIgnoreEnd
-
         return sprintf(
             '%s %s',
             is_array($other) ? 'an array' : 'a traversable',
-            $this->toStringInContext($operator, $role),
+            $this->negatedToString(),
         );
     }
 

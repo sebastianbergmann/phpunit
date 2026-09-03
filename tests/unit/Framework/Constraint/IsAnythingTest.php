@@ -12,6 +12,7 @@ namespace PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(IsAnything::class)]
@@ -29,6 +30,18 @@ final class IsAnythingTest extends TestCase
     public function testCanBeRepresentedAsString(): void
     {
         $this->assertSame('is anything', (new IsAnything)->toString());
+    }
+
+    public function testCanBeNegated(): void
+    {
+        $constraint = new LogicalNot(new IsAnything);
+
+        $this->assertSame('is not anything', $constraint->toString());
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs("Failed asserting that 'value' is not anything.");
+
+        $constraint->evaluate('value');
     }
 
     public function testIsCountable(): void

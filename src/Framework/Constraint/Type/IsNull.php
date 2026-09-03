@@ -27,16 +27,10 @@ final class IsNull extends Constraint
     }
 
     /**
-     * Returns the negated description when this constraint is wrapped in a
-     * LogicalNot operator. The guard ensures that LogicalAnd, LogicalOr, and
-     * LogicalXor keep using the affirmative toString().
+     * Returns the negated string representation of the constraint.
      */
-    protected function toStringInContext(Operator $operator, mixed $role): string
+    protected function negatedToString(): string
     {
-        if (!$operator instanceof LogicalNot) {
-            return '';
-        }
-
         return 'is not null';
     }
 

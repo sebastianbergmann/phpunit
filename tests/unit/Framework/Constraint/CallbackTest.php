@@ -43,6 +43,18 @@ final class CallbackTest extends TestCase
         $this->assertSame('is accepted by specified callback', $this->acceptingCallbackConstraint()->toString());
     }
 
+    public function testCanBeNegated(): void
+    {
+        $constraint = new LogicalNot($this->acceptingCallbackConstraint());
+
+        $this->assertSame('is not accepted by specified callback', $constraint->toString());
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs("Failed asserting that 'value' is not accepted by specified callback.");
+
+        $constraint->evaluate('value');
+    }
+
     public function testIsCountable(): void
     {
         $this->assertCount(1, $this->acceptingCallbackConstraint());

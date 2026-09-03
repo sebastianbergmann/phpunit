@@ -53,28 +53,18 @@ final class StringContains extends Constraint
     }
 
     /**
-     * Returns the negated description when this constraint is wrapped in a
-     * LogicalNot operator. Authoring the negation here keeps the needle and the
-     * haystack out of the negation entirely. The guard ensures that LogicalAnd,
-     * LogicalOr, and LogicalXor keep using the affirmative toString().
+     * Returns the negated string representation of the constraint.
+     *
+     * Authoring the negation here keeps the needle and the haystack out of
+     * the negation entirely.
      */
-    protected function toStringInContext(Operator $operator, mixed $role): string
+    protected function negatedToString(): string
     {
-        if (!$operator instanceof LogicalNot) {
-            return '';
-        }
-
         return 'does not contain ' . $this->needleAsString();
     }
 
-    protected function failureDescriptionInContext(Operator $operator, mixed $role, mixed $other): string
+    protected function negatedFailureDescription(mixed $other): string
     {
-        // @codeCoverageIgnoreStart
-        if (!$operator instanceof LogicalNot) {
-            return '';
-        }
-        // @codeCoverageIgnoreEnd
-
         return $this->haystackAsString($other) . 'does not contain ' . $this->needleAsString();
     }
 

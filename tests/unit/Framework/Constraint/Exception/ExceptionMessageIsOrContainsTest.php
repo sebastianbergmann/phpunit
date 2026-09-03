@@ -82,6 +82,30 @@ final class ExceptionMessageIsOrContainsTest extends TestCase
         $this->assertSame('exception message is empty', new ExceptionMessageIsOrContains('')->toString());
     }
 
+    public function testCanBeNegated(): void
+    {
+        $constraint = new LogicalNot(new ExceptionMessageIsOrContains('message'));
+
+        $this->assertSame("exception message does not contain 'message'", $constraint->toString());
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs("Failed asserting that exception message 'message' does not contain 'message'.");
+
+        $constraint->evaluate('message');
+    }
+
+    public function testCanBeNegatedWhenEmptyMessageIsExpected(): void
+    {
+        $constraint = new LogicalNot(new ExceptionMessageIsOrContains(''));
+
+        $this->assertSame('exception message is not empty', $constraint->toString());
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs("Failed asserting that exception message is not empty but is ''.");
+
+        $constraint->evaluate('');
+    }
+
     public function testIsCountable(): void
     {
         $this->assertCount(1, (new ExceptionMessageIsOrContains('message')));

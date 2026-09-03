@@ -41,17 +41,13 @@ final class StringEndsWith extends Constraint
     }
 
     /**
-     * Returns the negated description when this constraint is wrapped in a
-     * LogicalNot operator. Authoring the negation here keeps the suffix out of
-     * the negation entirely. The guard ensures that LogicalAnd, LogicalOr, and
-     * LogicalXor keep using the affirmative toString().
+     * Returns the negated string representation of the constraint.
+     *
+     * Authoring the negation here keeps the suffix out of the negation
+     * entirely.
      */
-    protected function toStringInContext(Operator $operator, mixed $role): string
+    protected function negatedToString(): string
     {
-        if (!$operator instanceof LogicalNot) {
-            return '';
-        }
-
         return 'does not end with "' . $this->suffix . '"';
     }
 

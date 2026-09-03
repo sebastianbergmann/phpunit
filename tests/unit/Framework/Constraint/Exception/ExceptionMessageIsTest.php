@@ -89,6 +89,30 @@ final class ExceptionMessageIsTest extends TestCase
         $this->assertSame('exception message is empty', new ExceptionMessageIs('')->toString());
     }
 
+    public function testCanBeNegated(): void
+    {
+        $constraint = new LogicalNot(new ExceptionMessageIs('message'));
+
+        $this->assertSame("exception message is not 'message'", $constraint->toString());
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs("Failed asserting that exception message 'message' is not 'message'.");
+
+        $constraint->evaluate('message');
+    }
+
+    public function testCanBeNegatedWhenEmptyMessageIsExpected(): void
+    {
+        $constraint = new LogicalNot(new ExceptionMessageIs(''));
+
+        $this->assertSame('exception message is not empty', $constraint->toString());
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs("Failed asserting that exception message is not empty but is ''.");
+
+        $constraint->evaluate('');
+    }
+
     public function testIsCountable(): void
     {
         $this->assertCount(1, (new ExceptionMessageIs('message')));

@@ -30,16 +30,10 @@ final class IsEmpty extends Constraint
     }
 
     /**
-     * Returns the negated description when this constraint is wrapped in a
-     * LogicalNot operator. The guard ensures that LogicalAnd, LogicalOr, and
-     * LogicalXor keep using the affirmative toString().
+     * Returns the negated string representation of the constraint.
      */
-    protected function toStringInContext(Operator $operator, mixed $role): string
+    protected function negatedToString(): string
     {
-        if (!$operator instanceof LogicalNot) {
-            return '';
-        }
-
         return 'is not empty';
     }
 
@@ -72,15 +66,9 @@ final class IsEmpty extends Constraint
         return $this->describe($other, $this->toString());
     }
 
-    protected function failureDescriptionInContext(Operator $operator, mixed $role, mixed $other): string
+    protected function negatedFailureDescription(mixed $other): string
     {
-        // @codeCoverageIgnoreStart
-        if (!$operator instanceof LogicalNot) {
-            return '';
-        }
-        // @codeCoverageIgnoreEnd
-
-        return $this->describe($other, $this->toStringInContext($operator, $role));
+        return $this->describe($other, $this->negatedToString());
     }
 
     private function describe(mixed $other, string $description): string

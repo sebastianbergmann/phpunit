@@ -17,6 +17,7 @@ use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
+use stdClass;
 
 #[CoversClass(Exception::class)]
 #[CoversClass(Constraint::class)]
@@ -74,6 +75,28 @@ final class ExceptionTest extends TestCase
     public function testCanBeRepresentedAsString(): void
     {
         $this->assertSame('exception of type "Exception"', new Exception(\Exception::class)->toString());
+    }
+
+    public function testCanBeNegated(): void
+    {
+        $constraint = new LogicalNot(new Exception(RuntimeException::class));
+
+        $this->assertSame('exception of type "RuntimeException" is not thrown', $constraint->toString());
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIsOrContains('Failed asserting that exception of type "RuntimeException" does not match expected exception "RuntimeException". Message was: "message" at');
+
+        $constraint->evaluate(new RuntimeException('message'));
+    }
+
+    public function testCanBeNegatedForValueThatIsNotAThrowable(): void
+    {
+        $constraint = new LogicalNot(new Exception(stdClass::class));
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs('Failed asserting that exception of type "stdClass" is not thrown.');
+
+        $constraint->evaluate(new stdClass);
     }
 
     public function testIsCountable(): void
