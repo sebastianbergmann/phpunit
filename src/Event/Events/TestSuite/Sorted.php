@@ -64,9 +64,8 @@ final readonly class Sorted implements Event
     }
 
     /**
-     * The stages of the reordering pipeline that was applied, named after the
-     * configuration tokens they correspond to, in the order in which they were
-     * applied.
+     * The stages of the reordering pipeline that was applied, in the order in
+     * which they were applied.
      *
      * @return list<non-empty-string>
      */

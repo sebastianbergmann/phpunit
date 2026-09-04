@@ -279,9 +279,9 @@ final class Help
                 ['arg' => '--do-not-warn-when-php-is-not-configured-for-development', 'desc' => 'Do not trigger a test runner warning when PHP is not configured for development'],
                 ['spacer' => ''],
 
-                ['arg' => '--order-by <order>', 'desc' => 'Run tests in order: default|defects|depends|duration-ascending|duration-descending|no-depends|random|reverse|size-ascending|size-descending'],
-                ['arg' => '--resolve-dependencies', 'desc' => 'Alias for "--order-by depends"'],
-                ['arg' => '--ignore-dependencies', 'desc' => 'Alias for "--order-by no-depends"'],
+                ['arg' => '--order-by <order>', 'desc' => 'Run tests in order: default|defects|duration-ascending|duration-descending|random|reverse|size-ascending|size-descending'],
+                ['arg' => '--resolve-dependencies', 'desc' => 'Reorder tests to resolve dependencies between them (default)'],
+                ['arg' => '--ignore-dependencies', 'desc' => 'Do not reorder tests to resolve dependencies between them'],
                 ['arg' => '--random-order', 'desc' => 'Alias for "--order-by random"'],
                 ['arg' => '--random-order-seed <N>', 'desc' => 'Use the specified random seed when running tests in random order'],
                 ['arg' => '--repeat <N>', 'desc' => 'Run each test N times, stopping at the first failure'],

@@ -75,6 +75,6 @@ final readonly class ResolveDependencies implements ReorderStage
      */
     public function name(): string
     {
-        return 'depends';
+        return 'resolve-dependencies';
     }
 }

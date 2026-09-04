@@ -23,6 +23,7 @@ use ReflectionProperty;
 
 #[CoversClass(ExecutionOrderParser::class)]
 #[CoversClass(ExecutionOrder::class)]
+#[CoversClass(ExecutionOrderSource::class)]
 #[Medium]
 final class ExecutionOrderParserTest extends TestCase
 {
@@ -103,12 +104,31 @@ final class ExecutionOrderParserTest extends TestCase
         );
     }
 
-    #[TestDox('Deprecates "depends" and "no-depends" being used together')]
-    public function testDeprecatesDependsAndNoDependsBeingUsedTogether(): void
+    #[TestDox('Deprecates the "depends" token in favor of the dedicated option')]
+    public function testDeprecatesTheDependsTokenInFavorOfTheDedicatedOption(): void
     {
         $this->assertSame(
-            ['Using both "depends" and "no-depends" for --order-by is deprecated and will be an error in PHPUnit 14.'],
-            $this->deprecationsTriggeredBy('depends,no-depends'),
+            ['Using "depends" for --order-by is deprecated and will be removed in PHPUnit 14. Use the --resolve-dependencies CLI option instead.'],
+            $this->deprecationsTriggeredBy('depends'),
+        );
+
+        $this->assertSame(
+            ['Using "depends" for the executionOrder attribute is deprecated and will be removed in PHPUnit 14. Use the resolveDependencies="true" XML configuration attribute instead.'],
+            $this->deprecationsTriggeredBy('depends', ExecutionOrderSource::XmlAttribute),
+        );
+    }
+
+    #[TestDox('Deprecates the "no-depends" token in favor of the dedicated option')]
+    public function testDeprecatesTheNoDependsTokenInFavorOfTheDedicatedOption(): void
+    {
+        $this->assertSame(
+            ['Using "no-depends" for --order-by is deprecated and will be removed in PHPUnit 14. Use the --ignore-dependencies CLI option instead.'],
+            $this->deprecationsTriggeredBy('no-depends'),
+        );
+
+        $this->assertSame(
+            ['Using "no-depends" for the executionOrder attribute is deprecated and will be removed in PHPUnit 14. Use the resolveDependencies="false" XML configuration attribute instead.'],
+            $this->deprecationsTriggeredBy('no-depends', ExecutionOrderSource::XmlAttribute),
         );
     }
 
@@ -152,23 +172,20 @@ final class ExecutionOrderParserTest extends TestCase
     {
         $this->assertSame(
             ['Using "size" for the executionOrder attribute is deprecated and will be removed in PHPUnit 14. Use "size-ascending" instead.'],
-            $this->deprecationsTriggeredBy('size', 'the executionOrder attribute'),
+            $this->deprecationsTriggeredBy('size', ExecutionOrderSource::XmlAttribute),
         );
     }
 
-    /**
-     * @param non-empty-string $subject
-     */
-    private function parse(string $value, string $subject = '--order-by'): ExecutionOrder
+    private function parse(string $value, ExecutionOrderSource $source = ExecutionOrderSource::CommandLineOption): ExecutionOrder
     {
         $result = null;
 
         $this->withThrowAwayEventFacade(
-            static function () use (&$result, $value, $subject): void
+            static function () use (&$result, $value, $source): void
             {
                 $result = (new ExecutionOrderParser)->parse(
                     $value,
-                    $subject,
+                    $source,
                     TestSuiteSorter::ORDER_DEFAULT,
                     TestSuiteSorter::ORDER_DEFAULT,
                     false,
@@ -182,11 +199,9 @@ final class ExecutionOrderParserTest extends TestCase
     }
 
     /**
-     * @param non-empty-string $subject
-     *
      * @return list<string>
      */
-    private function deprecationsTriggeredBy(string $value, string $subject = '--order-by'): array
+    private function deprecationsTriggeredBy(string $value, ExecutionOrderSource $source = ExecutionOrderSource::CommandLineOption): array
     {
         $tracer = new class implements Tracer
         {
@@ -204,11 +219,11 @@ final class ExecutionOrderParserTest extends TestCase
         };
 
         $this->withThrowAwayEventFacade(
-            static function () use ($value, $subject): void
+            static function () use ($value, $source): void
             {
                 (new ExecutionOrderParser)->parse(
                     $value,
-                    $subject,
+                    $source,
                     TestSuiteSorter::ORDER_DEFAULT,
                     TestSuiteSorter::ORDER_DEFAULT,
                     false,

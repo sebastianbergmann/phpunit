@@ -16,7 +16,8 @@ All notable changes of the PHPUnit 13.4 release series are documented in this fi
 ### Deprecated
 
 * [#6585](https://github.com/sebastianbergmann/phpunit/issues/6585): Writing `defects` before the order for `--order-by` and `executionOrder`, which will change meaning in PHPUnit 14
-* [#6585](https://github.com/sebastianbergmann/phpunit/issues/6585): Configuring more than one order, or both `depends` and `no-depends`, for `--order-by` and `executionOrder`
+* [#6585](https://github.com/sebastianbergmann/phpunit/issues/6585): `depends` and `no-depends` for `--order-by` and `executionOrder`
+* [#6585](https://github.com/sebastianbergmann/phpunit/issues/6585): Configuring more than one order for `--order-by` and `executionOrder`
 * [#6585](https://github.com/sebastianbergmann/phpunit/issues/6585): Unknown values for the `executionOrder` XML configuration attribute, which are currently ignored
 * [#6686](https://github.com/sebastianbergmann/phpunit/issues/6686): `Constraint::failureDescriptionInContext()` and `LogicalNot::negate()`
 

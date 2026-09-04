@@ -26,7 +26,7 @@ final class SortedTest extends AbstractEventTestCase
         $executionOrder        = 9001;
         $executionOrderDefects = 5;
         $resolveDependencies   = true;
-        $pipeline              = ['duration-ascending', 'defects', 'depends'];
+        $pipeline              = ['duration-ascending', 'defects', 'resolve-dependencies'];
 
         $event = new Sorted(
             $telemetryInfo,
@@ -50,7 +50,7 @@ final class SortedTest extends AbstractEventTestCase
             9001,
             5,
             true,
-            ['duration-ascending', 'defects', 'depends'],
+            ['duration-ascending', 'defects', 'resolve-dependencies'],
         );
 
         $this->assertSame('Test Suite Sorted', $event->asString());

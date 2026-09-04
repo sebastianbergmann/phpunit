@@ -5,8 +5,7 @@
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--cache-directory';
 $_SERVER['argv'][] = sys_get_temp_dir();
-$_SERVER['argv'][] = '--order-by';
-$_SERVER['argv'][] = 'no-depends';
+$_SERVER['argv'][] = '--ignore-dependencies';
 $_SERVER['argv'][] = '--explain-order';
 $_SERVER['argv'][] = __DIR__ . '/fixture/test-methods-with-sizes';
 

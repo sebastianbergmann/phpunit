@@ -1270,6 +1270,7 @@ final class BuilderTest extends TestCase
         $this->assertFalse($configuration->hasResolveDependencies());
     }
 
+    #[IgnorePhpunitDeprecations]
     #[TestDox('--order-by depends')]
     public function testOrderByDepends(): void
     {
@@ -1370,6 +1371,7 @@ final class BuilderTest extends TestCase
         $this->assertFalse($configuration->hasResolveDependencies());
     }
 
+    #[IgnorePhpunitDeprecations]
     #[TestDox('--order-by depends,defects')]
     public function testOrderByDependsDefects(): void
     {
@@ -1393,6 +1395,7 @@ final class BuilderTest extends TestCase
         $this->assertTrue($configuration->hasResolveDependencies());
     }
 
+    #[IgnorePhpunitDeprecations]
     #[TestDox('--order-by depends,random')]
     public function testOrderByDependsRandom(): void
     {
@@ -1404,6 +1407,7 @@ final class BuilderTest extends TestCase
         $this->assertTrue($configuration->hasResolveDependencies());
     }
 
+    #[IgnorePhpunitDeprecations]
     #[TestDox('--order-by depends,reverse')]
     public function testOrderByDependsReverse(): void
     {
@@ -1427,6 +1431,7 @@ final class BuilderTest extends TestCase
         $this->assertTrue($configuration->hasResolveDependencies());
     }
 
+    #[IgnorePhpunitDeprecations]
     #[TestDox('--order-by no-depends')]
     public function testOrderByNoDepends(): void
     {
@@ -1438,6 +1443,7 @@ final class BuilderTest extends TestCase
         $this->assertFalse($configuration->resolveDependencies());
     }
 
+    #[IgnorePhpunitDeprecations]
     #[TestDox('--order-by no-depends,defects')]
     public function testOrderByNoDependsDefects(): void
     {
@@ -1463,6 +1469,7 @@ final class BuilderTest extends TestCase
         $this->assertFalse($configuration->resolveDependencies());
     }
 
+    #[IgnorePhpunitDeprecations]
     #[TestDox('--order-by no-depends,random')]
     public function testOrderByNoDependsRandom(): void
     {
@@ -1475,6 +1482,7 @@ final class BuilderTest extends TestCase
         $this->assertFalse($configuration->resolveDependencies());
     }
 
+    #[IgnorePhpunitDeprecations]
     #[TestDox('--order-by no-depends,reverse')]
     public function testOrderByNoDependsReverse(): void
     {

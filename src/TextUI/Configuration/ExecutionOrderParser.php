@@ -48,28 +48,25 @@ final readonly class ExecutionOrderParser
     ];
 
     /**
-     * @param string           $value   the configured value; every token it does
-     *                                  not give meaning to, including the empty
-     *                                  token, is reported back to the caller
-     * @param non-empty-string $subject how the configuration surface is named in diagnostics
+     * @param string $value the configured value; every token it does not give
+     *                      meaning to, including the empty token, is reported
+     *                      back to the caller
      */
-    public function parse(string $value, string $subject, ?int $executionOrder, ?int $executionOrderDefects, ?bool $resolveDependencies): ExecutionOrder
+    public function parse(string $value, ExecutionOrderSource $source, ?int $executionOrder, ?int $executionOrderDefects, ?bool $resolveDependencies): ExecutionOrder
     {
         $unknownTokens = [];
 
         $previousMainOrderToken = null;
         $defectsSeen            = false;
-        $dependsSeen            = false;
-        $noDependsSeen          = false;
 
         foreach (explode(',', $value) as $token) {
             if (in_array($token, self::MAIN_ORDER_TOKENS, true)) {
                 if ($previousMainOrderToken !== null) {
-                    $this->deprecateMultipleOrders($subject, $previousMainOrderToken, $token);
+                    $this->deprecateMultipleOrders($source, $previousMainOrderToken, $token);
                 }
 
                 if ($defectsSeen && $token !== 'default') {
-                    $this->deprecateDefectsBeforeOrder($subject, $token);
+                    $this->deprecateDefectsBeforeOrder($source, $token);
 
                     $defectsSeen = false;
                 }
@@ -83,8 +80,6 @@ final readonly class ExecutionOrderParser
                     $executionOrderDefects = TestSuiteSorter::ORDER_DEFAULT;
                     $resolveDependencies   = true;
                     $defectsSeen           = false;
-                    $dependsSeen           = false;
-                    $noDependsSeen         = false;
 
                     break;
 
@@ -96,20 +91,22 @@ final readonly class ExecutionOrderParser
 
                 case 'depends':
                     $resolveDependencies = true;
-                    $dependsSeen         = true;
+
+                    $this->deprecateDependencyToken($source, 'depends', $source->resolveDependencies());
 
                     break;
 
                 case 'no-depends':
                     $resolveDependencies = false;
-                    $noDependsSeen       = true;
+
+                    $this->deprecateDependencyToken($source, 'no-depends', $source->ignoreDependencies());
 
                     break;
 
                 case 'duration':
                     $executionOrder = TestSuiteSorter::ORDER_DURATION_ASCENDING;
 
-                    $this->deprecateRenamedToken($subject, 'duration', 'duration-ascending');
+                    $this->deprecateRenamedToken($source, 'duration', 'duration-ascending');
 
                     break;
 
@@ -136,7 +133,7 @@ final readonly class ExecutionOrderParser
                 case 'size':
                     $executionOrder = TestSuiteSorter::ORDER_SIZE_ASCENDING;
 
-                    $this->deprecateRenamedToken($subject, 'size', 'size-ascending');
+                    $this->deprecateRenamedToken($source, 'size', 'size-ascending');
 
                     break;
 
@@ -155,15 +152,6 @@ final readonly class ExecutionOrderParser
             }
         }
 
-        if ($dependsSeen && $noDependsSeen) {
-            EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
-                sprintf(
-                    'Using both "depends" and "no-depends" for %s is deprecated and will be an error in PHPUnit 14.',
-                    $subject,
-                ),
-            );
-        }
-
         return new ExecutionOrder(
             $executionOrder,
             $executionOrderDefects,
@@ -173,33 +161,50 @@ final readonly class ExecutionOrderParser
     }
 
     /**
-     * @param non-empty-string $subject
      * @param non-empty-string $token
      * @param non-empty-string $replacement
      */
-    private function deprecateRenamedToken(string $subject, string $token, string $replacement): void
+    private function deprecateRenamedToken(ExecutionOrderSource $source, string $token, string $replacement): void
     {
         EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
             sprintf(
                 'Using "%s" for %s is deprecated and will be removed in PHPUnit 14. Use "%s" instead.',
                 $token,
-                $subject,
+                $source->subject(),
                 $replacement,
             ),
         );
     }
 
     /**
-     * @param non-empty-string $subject
+     * Whether dependencies between tests are resolved is not an ordering
+     * strategy, and it has had a dedicated configuration option all along.
+     *
+     * @param non-empty-string $token
+     * @param non-empty-string $replacement
+     */
+    private function deprecateDependencyToken(ExecutionOrderSource $source, string $token, string $replacement): void
+    {
+        EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
+            sprintf(
+                'Using "%s" for %s is deprecated and will be removed in PHPUnit 14. Use %s instead.',
+                $token,
+                $source->subject(),
+                $replacement,
+            ),
+        );
+    }
+
+    /**
      * @param non-empty-string $previousToken
      * @param non-empty-string $token
      */
-    private function deprecateMultipleOrders(string $subject, string $previousToken, string $token): void
+    private function deprecateMultipleOrders(ExecutionOrderSource $source, string $previousToken, string $token): void
     {
         EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
             sprintf(
                 'Using more than one order for %s is deprecated and will be an error in PHPUnit 14. "%s" overrides "%s".',
-                $subject,
+                $source->subject(),
                 $token,
                 $previousToken,
             ),
@@ -207,16 +212,15 @@ final readonly class ExecutionOrderParser
     }
 
     /**
-     * @param non-empty-string $subject
      * @param non-empty-string $token
      */
-    private function deprecateDefectsBeforeOrder(string $subject, string $token): void
+    private function deprecateDefectsBeforeOrder(ExecutionOrderSource $source, string $token): void
     {
         EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
             sprintf(
                 'Using "defects" before "%s" for %s is deprecated and will change meaning in PHPUnit 14, where tests are reordered in the order in which the tokens are written. Use "%s,defects" instead.',
                 $token,
-                $subject,
+                $source->subject(),
                 $this->canonicalOrderToken($token),
             ),
         );

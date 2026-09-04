@@ -175,6 +175,7 @@ final class LoaderTest extends TestCase
         @unlink($tmpFilename);
     }
 
+    #[IgnorePhpunitDeprecations]
     public function testShouldParseXmlConfigurationExecutionOrderCombined(): void
     {
         $tmpFilename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit.' . uniqid('', true) . '.xml';
@@ -194,7 +195,7 @@ final class LoaderTest extends TestCase
     public function testShouldParseXmlConfigurationExecutionOrderWithDefectsAfterOrder(): void
     {
         $tmpFilename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit.' . uniqid('', true) . '.xml';
-        $xml         = "<phpunit executionOrder='depends,duration-ascending,defects'></phpunit>" . PHP_EOL;
+        $xml         = "<phpunit executionOrder='duration-ascending,defects'></phpunit>" . PHP_EOL;
         file_put_contents($tmpFilename, $xml);
 
         $configuration = (new Loader)->load($tmpFilename);

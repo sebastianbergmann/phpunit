@@ -23,6 +23,7 @@ use function strtolower;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\Configuration\ExecutionOrderParser;
+use PHPUnit\TextUI\Configuration\ExecutionOrderSource;
 use PHPUnit\Util\Filesystem;
 use SebastianBergmann\CliParser\Exception as CliParserException;
 use SebastianBergmann\CliParser\Parser as CliParser;
@@ -832,7 +833,7 @@ final class Builder
 
                     $parsedExecutionOrder = (new ExecutionOrderParser)->parse(
                         $option[1],
-                        '--order-by',
+                        ExecutionOrderSource::CommandLineOption,
                         $executionOrder,
                         $executionOrderDefects,
                         $resolveDependencies,

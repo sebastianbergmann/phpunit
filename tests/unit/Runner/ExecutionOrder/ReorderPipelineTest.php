@@ -49,7 +49,7 @@ final class ReorderPipelineTest extends TestCase
             ],
 
             'dependency resolution only' => [
-                ['depends'],
+                ['resolve-dependencies'],
                 TestSuiteSorter::ORDER_DEFAULT,
                 TestSuiteSorter::ORDER_DEFAULT,
                 true,
@@ -105,7 +105,7 @@ final class ReorderPipelineTest extends TestCase
             ],
 
             'everything' => [
-                ['duration-ascending', 'defects', 'depends'],
+                ['duration-ascending', 'defects', 'resolve-dependencies'],
                 TestSuiteSorter::ORDER_DURATION_ASCENDING,
                 TestSuiteSorter::ORDER_DEFECTS_FIRST,
                 true,
@@ -134,6 +134,6 @@ final class ReorderPipelineTest extends TestCase
             true,
         )->describe();
 
-        $this->assertSame('depends', $stages[array_key_last($stages)]);
+        $this->assertSame('resolve-dependencies', $stages[array_key_last($stages)]);
     }
 }

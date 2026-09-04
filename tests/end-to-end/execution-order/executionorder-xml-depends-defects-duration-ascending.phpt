@@ -23,6 +23,7 @@ require __DIR__ . '/../../bootstrap.php';
 unlink($testRunHistoryFile);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
+Test Runner Triggered PHPUnit Deprecation (Using "depends" for the executionOrder attribute is deprecated and will be removed in PHPUnit 14. Use the resolveDependencies="true" XML configuration attribute instead.)
 Test Runner Triggered PHPUnit Deprecation (Using "defects" before "duration-ascending" for the executionOrder attribute is deprecated and will change meaning in PHPUnit 14, where tests are reordered in the order in which the tokens are written. Use "duration-ascending,defects" instead.)
 Test Runner Configured
 Event Facade Sealed

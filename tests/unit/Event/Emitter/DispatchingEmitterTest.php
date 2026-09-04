@@ -500,7 +500,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $executionOrder        = 9001;
         $executionOrderDefects = 5;
         $resolveDependencies   = true;
-        $pipeline              = ['duration-ascending', 'defects', 'depends'];
+        $pipeline              = ['duration-ascending', 'defects', 'resolve-dependencies'];
 
         $subscriber = new class extends RecordingSubscriber implements TestSuiteSortedSubscriber
         {

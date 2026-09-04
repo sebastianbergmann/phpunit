@@ -28,7 +28,7 @@ interface ReorderStage
     public function apply(array $tests, Context $context): array;
 
     /**
-     * The configuration token this stage is configured with.
+     * How this stage is named in diagnostics.
      *
      * @return non-empty-string
      */

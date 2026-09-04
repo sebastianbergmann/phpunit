@@ -17,7 +17,7 @@ require __DIR__ . '/../../bootstrap.php';
 PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime:       %s
-Order:         size-ascending, defects, depends
+Order:         size-ascending, defects, resolve-dependencies
 
 ...                                                                 3 / 3 (100%)
 

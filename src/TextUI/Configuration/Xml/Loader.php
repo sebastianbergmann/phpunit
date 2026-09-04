@@ -41,6 +41,7 @@ use PHPUnit\TextUI\Configuration\ConstantCollection;
 use PHPUnit\TextUI\Configuration\Directory;
 use PHPUnit\TextUI\Configuration\DirectoryCollection;
 use PHPUnit\TextUI\Configuration\ExecutionOrderParser;
+use PHPUnit\TextUI\Configuration\ExecutionOrderSource;
 use PHPUnit\TextUI\Configuration\ExtensionBootstrap;
 use PHPUnit\TextUI\Configuration\ExtensionBootstrapCollection;
 use PHPUnit\TextUI\Configuration\File;
@@ -1124,7 +1125,7 @@ final readonly class Loader
         if ($configuredExecutionOrder !== null) {
             $parsedExecutionOrder = (new ExecutionOrderParser)->parse(
                 $configuredExecutionOrder,
-                'the executionOrder attribute',
+                ExecutionOrderSource::XmlAttribute,
                 $executionOrder,
                 TestSuiteSorter::ORDER_DEFAULT,
                 $resolveDependencies,
