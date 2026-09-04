@@ -46,19 +46,13 @@ final class TestRunner
 
             $pipeline = ReorderPipeline::fromConfiguration(
                 $configuration->executionOrder(),
-                $configuration->executionOrderDefects(),
                 $configuration->resolveDependencies(),
             );
 
             if (!$pipeline->isEmpty()) {
                 new TestSuiteSorter($testRunHistory)->apply($suite, $pipeline);
 
-                $this->emitter->testSuiteSorted(
-                    $configuration->executionOrder(),
-                    $configuration->executionOrderDefects(),
-                    $configuration->resolveDependencies(),
-                    $pipeline->describe(),
-                );
+                $this->emitter->testSuiteSorted($pipeline->describe());
             }
 
             new TestSuiteFilterProcessor($this->emitter)->process($configuration, $suite);

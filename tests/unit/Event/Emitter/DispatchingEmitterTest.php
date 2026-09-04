@@ -499,10 +499,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
     #[TestDox('testSuiteSorted() emits TestSuite\Sorted event')]
     public function testTestSuiteSortedEmitsTestSuiteSortedEvent(): void
     {
-        $executionOrder        = 9001;
-        $executionOrderDefects = 5;
-        $resolveDependencies   = true;
-        $pipeline              = ['duration-ascending', 'defects', 'resolve-dependencies'];
+        $pipeline = ['duration-ascending', 'defects', 'resolve-dependencies'];
 
         $subscriber = new class extends RecordingSubscriber implements TestSuiteSortedSubscriber
         {
@@ -525,12 +522,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem,
         );
 
-        $emitter->testSuiteSorted(
-            $executionOrder,
-            $executionOrderDefects,
-            $resolveDependencies,
-            $pipeline,
-        );
+        $emitter->testSuiteSorted($pipeline);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 
@@ -538,9 +530,6 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertInstanceOf(TestSuiteSorted::class, $event);
 
-        $this->assertSame($executionOrder, $event->executionOrder());
-        $this->assertSame($executionOrderDefects, $event->executionOrderDefects());
-        $this->assertSame($resolveDependencies, $event->resolveDependencies());
         $this->assertSame($pipeline, $event->pipeline());
     }
 

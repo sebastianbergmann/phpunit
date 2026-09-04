@@ -18,6 +18,7 @@ use function assert;
 use function dirname;
 use function explode;
 use function getenv;
+use function in_array;
 use function is_int;
 use function is_string;
 use function realpath;
@@ -25,7 +26,7 @@ use function sprintf;
 use function time;
 use LogicException;
 use PHPUnit\Event\Emitter;
-use PHPUnit\Runner\TestSuiteSorter;
+use PHPUnit\Runner\ExecutionOrder\Order;
 use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
 use PHPUnit\TextUI\CliArguments\Exception;
 use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
@@ -868,14 +869,6 @@ final readonly class Merger
             $executionOrder = $xmlConfiguration->phpunit()->executionOrder();
         }
 
-        $executionOrderDefects = TestSuiteSorter::ORDER_DEFAULT;
-
-        if ($cliConfiguration->hasExecutionOrderDefects()) {
-            $executionOrderDefects = $cliConfiguration->executionOrderDefects();
-        } elseif ($xmlConfiguration->phpunit()->defectsFirst()) {
-            $executionOrderDefects = TestSuiteSorter::ORDER_DEFECTS_FIRST;
-        }
-
         if ($cliConfiguration->hasResolveDependencies()) {
             $resolveDependencies = $cliConfiguration->resolveDependencies();
         } else {
@@ -1064,7 +1057,7 @@ final readonly class Merger
 
         $excludeGroups = array_diff($excludeGroups, $groups);
 
-        $seedRandomNumberGenerators = $executionOrder === TestSuiteSorter::ORDER_RANDOMIZED;
+        $seedRandomNumberGenerators = in_array(Order::Random, $executionOrder, true);
 
         if ($cliConfiguration->hasRandomSeed()) {
             $randomSeed                 = $cliConfiguration->randomSeed();
@@ -1468,7 +1461,6 @@ final readonly class Merger
             $noResults,
             $noOutput,
             $executionOrder,
-            $executionOrderDefects,
             $resolveDependencies,
             $logfileTeamcity,
             $logfileJunit,

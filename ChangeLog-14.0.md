@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 14.0 release series are documented in this fi
 
 ## [14.0.0] - 2027-02-05
 
+### Changed
+
+* [#6956](https://github.com/sebastianbergmann/phpunit/issues/6956): Redesign the test reordering subsystem
+
 ### Removed
 
 * [#6491](https://github.com/sebastianbergmann/phpunit/issues/6491): Support for PHP 8.4

@@ -14,7 +14,7 @@ require __DIR__ . '/../../bootstrap.php';
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
 Test Runner Configured
-Test Runner Triggered PHPUnit Warning (Tests cannot be ordered by defects because recording of the test run history is disabled)
+Test Runner Triggered PHPUnit Warning (Tests cannot be ordered by "defects" because recording of the test run history is disabled)
 Event Facade Sealed
 Test Suite Loaded (1 test)
 Test Runner Started

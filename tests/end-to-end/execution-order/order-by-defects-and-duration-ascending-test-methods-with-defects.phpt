@@ -1,5 +1,5 @@
 --TEST--
-Order by defects,duration-ascending (with test run history): Test methods with defects
+Order by defects,duration-ascending (with test run history): the duration sort discards the defect hoist that precedes it
 --FILE--
 <?php declare(strict_types=1);
 $testRunHistoryFile = sys_get_temp_dir() . '/test-run-history';
@@ -25,7 +25,6 @@ require __DIR__ . '/../../bootstrap.php';
 unlink($testRunHistoryFile);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
-Test Runner Triggered PHPUnit Deprecation (Using "defects" before "duration-ascending" for --order-by is deprecated and will change meaning in PHPUnit 14, where tests are reordered in the order in which the tokens are written. Use "duration-ascending,defects" instead.)
 Test Runner Configured
 Event Facade Sealed
 Test Suite Loaded (4 tests)
@@ -34,16 +33,6 @@ Test Suite Sorted
 Test Runner Execution Started (4 tests)
 Test Suite Started (CLI Arguments, 4 tests)
 Test Suite Started (PHPUnit\TestFixture\ExecutionOrder\Defects\FooTest, 4 tests)
-Test Preparation Started (PHPUnit\TestFixture\ExecutionOrder\Defects\FooTest::testThree)
-Test Prepared (PHPUnit\TestFixture\ExecutionOrder\Defects\FooTest::testThree)
-Test Errored (PHPUnit\TestFixture\ExecutionOrder\Defects\FooTest::testThree)
-message
-Test Finished (PHPUnit\TestFixture\ExecutionOrder\Defects\FooTest::testThree)
-Test Preparation Started (PHPUnit\TestFixture\ExecutionOrder\Defects\FooTest::testTwo)
-Test Prepared (PHPUnit\TestFixture\ExecutionOrder\Defects\FooTest::testTwo)
-Test Failed (PHPUnit\TestFixture\ExecutionOrder\Defects\FooTest::testTwo)
-Failed asserting that false is true.
-Test Finished (PHPUnit\TestFixture\ExecutionOrder\Defects\FooTest::testTwo)
 Test Preparation Started (PHPUnit\TestFixture\ExecutionOrder\Defects\FooTest::testOne)
 Test Prepared (PHPUnit\TestFixture\ExecutionOrder\Defects\FooTest::testOne)
 Test Passed (PHPUnit\TestFixture\ExecutionOrder\Defects\FooTest::testOne)
@@ -52,6 +41,16 @@ Test Preparation Started (PHPUnit\TestFixture\ExecutionOrder\Defects\FooTest::te
 Test Prepared (PHPUnit\TestFixture\ExecutionOrder\Defects\FooTest::testFour)
 Test Passed (PHPUnit\TestFixture\ExecutionOrder\Defects\FooTest::testFour)
 Test Finished (PHPUnit\TestFixture\ExecutionOrder\Defects\FooTest::testFour)
+Test Preparation Started (PHPUnit\TestFixture\ExecutionOrder\Defects\FooTest::testTwo)
+Test Prepared (PHPUnit\TestFixture\ExecutionOrder\Defects\FooTest::testTwo)
+Test Failed (PHPUnit\TestFixture\ExecutionOrder\Defects\FooTest::testTwo)
+Failed asserting that false is true.
+Test Finished (PHPUnit\TestFixture\ExecutionOrder\Defects\FooTest::testTwo)
+Test Preparation Started (PHPUnit\TestFixture\ExecutionOrder\Defects\FooTest::testThree)
+Test Prepared (PHPUnit\TestFixture\ExecutionOrder\Defects\FooTest::testThree)
+Test Errored (PHPUnit\TestFixture\ExecutionOrder\Defects\FooTest::testThree)
+message
+Test Finished (PHPUnit\TestFixture\ExecutionOrder\Defects\FooTest::testThree)
 Test Suite Finished (PHPUnit\TestFixture\ExecutionOrder\Defects\FooTest, 4 tests)
 Test Suite Finished (CLI Arguments, 4 tests)
 Test Runner Execution Finished

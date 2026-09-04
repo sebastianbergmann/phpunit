@@ -17,17 +17,15 @@ use PHPUnit\Runner\ExecutionOrder\Stage\DefectsFirst;
 use PHPUnit\Runner\ExecutionOrder\Stage\Randomize;
 use PHPUnit\Runner\ExecutionOrder\Stage\ResolveDependencies;
 use PHPUnit\Runner\ExecutionOrder\Stage\Reverse;
-use PHPUnit\Runner\InvalidOrderException;
-use PHPUnit\Runner\TestSuiteSorter;
 
 /**
  * An ordered list of reordering stages that is applied to the tests of every
  * test suite.
  *
- * The stage order is currently derived from the configuration in a fixed way:
- * the main order first, then the "defects first" overlay, then dependency
- * resolution. PHPUnit 14 will derive the stage order from the order in which
- * the configuration tokens are written instead.
+ * The stages are applied in the order in which they were configured. Resolving
+ * dependencies between tests is not a reordering strategy and is not configured
+ * through that list; it is always applied last, because any stage applied after
+ * it would undo the order it establishes.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -41,27 +39,14 @@ final readonly class ReorderPipeline
     private array $stages;
 
     /**
-     * Dependency resolution is always the last stage: any stage applied after
-     * it would undo the order it establishes.
-     *
-     * @throws InvalidOrderException
+     * @param list<Order> $order
      */
-    public static function fromConfiguration(int $order, int $orderDefects, bool $resolveDependencies): self
+    public static function fromConfiguration(array $order, bool $resolveDependencies): self
     {
         $stages = [];
 
-        $mainOrder = self::mainOrderStage($order);
-
-        if ($mainOrder !== null) {
-            $stages[] = $mainOrder;
-        }
-
-        if ($orderDefects === TestSuiteSorter::ORDER_DEFECTS_FIRST) {
-            $stages[] = new DefectsFirst(new DefaultDefectWeightPolicy);
-        } elseif ($orderDefects !== TestSuiteSorter::ORDER_DEFAULT) {
-            // @codeCoverageIgnoreStart
-            throw new InvalidOrderException;
-            // @codeCoverageIgnoreEnd
+        foreach ($order as $element) {
+            $stages[] = self::stageFor($element);
         }
 
         if ($resolveDependencies) {
@@ -85,8 +70,8 @@ final readonly class ReorderPipeline
     }
 
     /**
-     * The configuration tokens of the stages of this pipeline, in the order in
-     * which they are applied.
+     * The names of the stages of this pipeline, in the order in which they are
+     * applied.
      *
      * @return list<non-empty-string>
      */
@@ -115,49 +100,18 @@ final readonly class ReorderPipeline
         return $tests;
     }
 
-    /**
-     * @throws InvalidOrderException
-     */
-    private static function mainOrderStage(int $order): ?ReorderStage
+    private static function stageFor(Order $order): ReorderStage
     {
-        if ($order === TestSuiteSorter::ORDER_DEFAULT) {
-            return null;
-        }
-
-        if ($order === TestSuiteSorter::ORDER_REVERSED) {
-            return new Reverse;
-        }
-
-        if ($order === TestSuiteSorter::ORDER_RANDOMIZED) {
-            return new Randomize;
-        }
-
-        if ($order === TestSuiteSorter::ORDER_DURATION_ASCENDING) {
-            return new ByDuration(Direction::Ascending);
-        }
-
-        if ($order === TestSuiteSorter::ORDER_DURATION_DESCENDING) {
-            return new ByDuration(Direction::Descending);
-        }
-
-        if ($order === TestSuiteSorter::ORDER_SIZE_ASCENDING) {
-            return new BySize(Direction::Ascending);
-        }
-
-        if ($order === TestSuiteSorter::ORDER_SIZE_DESCENDING) {
-            return new BySize(Direction::Descending);
-        }
-
-        if ($order === TestSuiteSorter::ORDER_MODIFIED_ASCENDING) {
-            return new ByModificationTime(Direction::Ascending);
-        }
-
-        if ($order === TestSuiteSorter::ORDER_MODIFIED_DESCENDING) {
-            return new ByModificationTime(Direction::Descending);
-        }
-
-        // @codeCoverageIgnoreStart
-        throw new InvalidOrderException;
-        // @codeCoverageIgnoreEnd
+        return match ($order) {
+            Order::Defects            => new DefectsFirst(new DefaultDefectWeightPolicy),
+            Order::DurationAscending  => new ByDuration(Direction::Ascending),
+            Order::DurationDescending => new ByDuration(Direction::Descending),
+            Order::ModifiedAscending  => new ByModificationTime(Direction::Ascending),
+            Order::ModifiedDescending => new ByModificationTime(Direction::Descending),
+            Order::Random             => new Randomize,
+            Order::Reverse            => new Reverse,
+            Order::SizeAscending      => new BySize(Direction::Ascending),
+            Order::SizeDescending     => new BySize(Direction::Descending),
+        };
     }
 }

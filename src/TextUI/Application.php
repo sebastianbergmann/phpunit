@@ -76,7 +76,6 @@ use PHPUnit\Runner\TestRunHistory\DefaultTestRunHistory;
 use PHPUnit\Runner\TestRunHistory\NullTestRunHistory;
 use PHPUnit\Runner\TestRunHistory\TestRunHistory;
 use PHPUnit\Runner\TestRunHistory\TestRunHistoryHandler;
-use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\TimeLimit\TimeLimitHandler;
 use PHPUnit\Runner\Version;
 use PHPUnit\TestRunner\IssueFilter;
@@ -913,16 +912,16 @@ final readonly class Application
             return $testRunHistory;
         }
 
-        if ($configuration->executionOrderDefects() === TestSuiteSorter::ORDER_DEFECTS_FIRST) {
-            $this->emitter->testRunnerTriggeredPhpunitWarning(
-                'Tests cannot be ordered by defects because recording of the test run history is disabled',
-            );
-        }
+        foreach ($configuration->executionOrder() as $order) {
+            if (!$order->requiresTestRunHistory()) {
+                continue;
+            }
 
-        if ($configuration->executionOrder() === TestSuiteSorter::ORDER_DURATION_ASCENDING ||
-            $configuration->executionOrder() === TestSuiteSorter::ORDER_DURATION_DESCENDING) {
             $this->emitter->testRunnerTriggeredPhpunitWarning(
-                'Tests cannot be ordered by duration because recording of the test run history is disabled',
+                sprintf(
+                    'Tests cannot be ordered by "%s" because recording of the test run history is disabled',
+                    $order->token(),
+                ),
             );
         }
 

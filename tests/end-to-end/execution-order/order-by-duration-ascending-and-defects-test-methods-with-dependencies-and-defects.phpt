@@ -1,5 +1,5 @@
 --TEST--
-Order by depends,defects,duration-ascending (with test run history): Test methods with dependencies and defects
+Order by duration-ascending,defects with --resolve-dependencies (with test run history): Test methods with dependencies and defects
 --FILE--
 <?php declare(strict_types=1);
 $testRunHistoryFile = sys_get_temp_dir() . '/test-run-history';
@@ -14,7 +14,8 @@ $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--cache-directory';
 $_SERVER['argv'][] = sys_get_temp_dir();
 $_SERVER['argv'][] = '--order-by';
-$_SERVER['argv'][] = 'depends,defects,duration-ascending';
+$_SERVER['argv'][] = 'duration-ascending,defects';
+$_SERVER['argv'][] = '--resolve-dependencies';
 $_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = __DIR__ . '/fixture/test-methods-with-dependencies-and-defects';
 
@@ -25,8 +26,6 @@ require __DIR__ . '/../../bootstrap.php';
 unlink($testRunHistoryFile);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
-Test Runner Triggered PHPUnit Deprecation (Using "depends" for --order-by is deprecated and will be removed in PHPUnit 14. Use the --resolve-dependencies CLI option instead.)
-Test Runner Triggered PHPUnit Deprecation (Using "defects" before "duration-ascending" for --order-by is deprecated and will change meaning in PHPUnit 14, where tests are reordered in the order in which the tokens are written. Use "duration-ascending,defects" instead.)
 Test Runner Configured
 Event Facade Sealed
 Test Suite Loaded (3 tests)

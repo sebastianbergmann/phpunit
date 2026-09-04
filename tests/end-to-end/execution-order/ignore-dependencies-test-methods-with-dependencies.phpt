@@ -4,8 +4,7 @@ Default order: Test methods with dependencies
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--do-not-record-test-run-history';
-$_SERVER['argv'][] = '--order-by';
-$_SERVER['argv'][] = 'no-depends';
+$_SERVER['argv'][] = '--ignore-dependencies';
 $_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = __DIR__ . '/fixture/test-methods-with-dependencies/FooTest.php';
 
@@ -14,7 +13,6 @@ require __DIR__ . '/../../bootstrap.php';
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
-Test Runner Triggered PHPUnit Deprecation (Using "no-depends" for --order-by is deprecated and will be removed in PHPUnit 14. Use the --ignore-dependencies CLI option instead.)
 Test Runner Configured
 Event Facade Sealed
 Test Suite Loaded (2 tests)

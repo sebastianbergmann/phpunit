@@ -12,11 +12,10 @@ namespace PHPUnit\TextUI\CliArguments;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
-use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Runner\TestSuiteSorter;
+use PHPUnit\Runner\ExecutionOrder\Order;
 
 #[CoversClass(Builder::class)]
 #[CoversClass(Configuration::class)]
@@ -1225,10 +1224,8 @@ final class BuilderTest extends TestCase
         $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--order-by', 'default']);
 
         $this->assertTrue($configuration->hasExecutionOrder());
-        $this->assertSame(TestSuiteSorter::ORDER_DEFAULT, $configuration->executionOrder());
-        $this->assertTrue($configuration->hasExecutionOrderDefects());
-        $this->assertSame(TestSuiteSorter::ORDER_DEFAULT, $configuration->executionOrderDefects());
-        $this->assertTrue($configuration->resolveDependencies());
+        $this->assertSame([], $configuration->executionOrder());
+        $this->assertFalse($configuration->hasResolveDependencies());
     }
 
     #[TestDox('--order-by defects')]
@@ -1236,32 +1233,7 @@ final class BuilderTest extends TestCase
     {
         $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--order-by', 'defects']);
 
-        $this->assertFalse($configuration->hasExecutionOrder());
-        $this->assertTrue($configuration->hasExecutionOrderDefects());
-        $this->assertSame(TestSuiteSorter::ORDER_DEFECTS_FIRST, $configuration->executionOrderDefects());
-        $this->assertFalse($configuration->hasResolveDependencies());
-    }
-
-    #[IgnorePhpunitDeprecations]
-    #[TestDox('--order-by depends')]
-    public function testOrderByDepends(): void
-    {
-        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--order-by', 'depends']);
-
-        $this->assertFalse($configuration->hasExecutionOrder());
-        $this->assertFalse($configuration->hasExecutionOrderDefects());
-        $this->assertTrue($configuration->hasResolveDependencies());
-    }
-
-    #[IgnorePhpunitDeprecations]
-    #[TestDox('--order-by duration')]
-    public function testOrderByDuration(): void
-    {
-        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--order-by', 'duration']);
-
-        $this->assertTrue($configuration->hasExecutionOrder());
-        $this->assertSame(TestSuiteSorter::ORDER_DURATION_ASCENDING, $configuration->executionOrder());
-        $this->assertFalse($configuration->hasExecutionOrderDefects());
+        $this->assertSame([Order::Defects], $configuration->executionOrder());
         $this->assertFalse($configuration->hasResolveDependencies());
     }
 
@@ -1270,10 +1242,7 @@ final class BuilderTest extends TestCase
     {
         $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--order-by', 'duration-ascending']);
 
-        $this->assertTrue($configuration->hasExecutionOrder());
-        $this->assertSame(TestSuiteSorter::ORDER_DURATION_ASCENDING, $configuration->executionOrder());
-        $this->assertFalse($configuration->hasExecutionOrderDefects());
-        $this->assertFalse($configuration->hasResolveDependencies());
+        $this->assertSame([Order::DurationAscending], $configuration->executionOrder());
     }
 
     #[TestDox('--order-by duration-descending')]
@@ -1281,10 +1250,7 @@ final class BuilderTest extends TestCase
     {
         $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--order-by', 'duration-descending']);
 
-        $this->assertTrue($configuration->hasExecutionOrder());
-        $this->assertSame(TestSuiteSorter::ORDER_DURATION_DESCENDING, $configuration->executionOrder());
-        $this->assertFalse($configuration->hasExecutionOrderDefects());
-        $this->assertFalse($configuration->hasResolveDependencies());
+        $this->assertSame([Order::DurationDescending], $configuration->executionOrder());
     }
 
     #[TestDox('--order-by modified-ascending')]
@@ -1292,10 +1258,7 @@ final class BuilderTest extends TestCase
     {
         $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--order-by', 'modified-ascending']);
 
-        $this->assertTrue($configuration->hasExecutionOrder());
-        $this->assertSame(TestSuiteSorter::ORDER_MODIFIED_ASCENDING, $configuration->executionOrder());
-        $this->assertFalse($configuration->hasExecutionOrderDefects());
-        $this->assertFalse($configuration->hasResolveDependencies());
+        $this->assertSame([Order::ModifiedAscending], $configuration->executionOrder());
     }
 
     #[TestDox('--order-by modified-descending')]
@@ -1303,10 +1266,7 @@ final class BuilderTest extends TestCase
     {
         $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--order-by', 'modified-descending']);
 
-        $this->assertTrue($configuration->hasExecutionOrder());
-        $this->assertSame(TestSuiteSorter::ORDER_MODIFIED_DESCENDING, $configuration->executionOrder());
-        $this->assertFalse($configuration->hasExecutionOrderDefects());
-        $this->assertFalse($configuration->hasResolveDependencies());
+        $this->assertSame([Order::ModifiedDescending], $configuration->executionOrder());
     }
 
     #[TestDox('--order-by random')]
@@ -1314,10 +1274,7 @@ final class BuilderTest extends TestCase
     {
         $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--order-by', 'random']);
 
-        $this->assertTrue($configuration->hasExecutionOrder());
-        $this->assertSame(TestSuiteSorter::ORDER_RANDOMIZED, $configuration->executionOrder());
-        $this->assertFalse($configuration->hasExecutionOrderDefects());
-        $this->assertFalse($configuration->hasResolveDependencies());
+        $this->assertSame([Order::Random], $configuration->executionOrder());
     }
 
     #[TestDox('--order-by reverse')]
@@ -1325,22 +1282,7 @@ final class BuilderTest extends TestCase
     {
         $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--order-by', 'reverse']);
 
-        $this->assertTrue($configuration->hasExecutionOrder());
-        $this->assertSame(TestSuiteSorter::ORDER_REVERSED, $configuration->executionOrder());
-        $this->assertFalse($configuration->hasExecutionOrderDefects());
-        $this->assertFalse($configuration->hasResolveDependencies());
-    }
-
-    #[IgnorePhpunitDeprecations]
-    #[TestDox('--order-by size')]
-    public function testOrderBySize(): void
-    {
-        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--order-by', 'size']);
-
-        $this->assertTrue($configuration->hasExecutionOrder());
-        $this->assertSame(TestSuiteSorter::ORDER_SIZE_ASCENDING, $configuration->executionOrder());
-        $this->assertFalse($configuration->hasExecutionOrderDefects());
-        $this->assertFalse($configuration->hasResolveDependencies());
+        $this->assertSame([Order::Reverse], $configuration->executionOrder());
     }
 
     #[TestDox('--order-by size-ascending')]
@@ -1348,10 +1290,7 @@ final class BuilderTest extends TestCase
     {
         $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--order-by', 'size-ascending']);
 
-        $this->assertTrue($configuration->hasExecutionOrder());
-        $this->assertSame(TestSuiteSorter::ORDER_SIZE_ASCENDING, $configuration->executionOrder());
-        $this->assertFalse($configuration->hasExecutionOrderDefects());
-        $this->assertFalse($configuration->hasResolveDependencies());
+        $this->assertSame([Order::SizeAscending], $configuration->executionOrder());
     }
 
     #[TestDox('--order-by size-descending')]
@@ -1359,156 +1298,75 @@ final class BuilderTest extends TestCase
     {
         $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--order-by', 'size-descending']);
 
-        $this->assertTrue($configuration->hasExecutionOrder());
-        $this->assertSame(TestSuiteSorter::ORDER_SIZE_DESCENDING, $configuration->executionOrder());
-        $this->assertFalse($configuration->hasExecutionOrderDefects());
-        $this->assertFalse($configuration->hasResolveDependencies());
+        $this->assertSame([Order::SizeDescending], $configuration->executionOrder());
     }
 
-    #[IgnorePhpunitDeprecations]
-    #[TestDox('--order-by depends,defects')]
-    public function testOrderByDependsDefects(): void
+    #[TestDox('--order-by applies the strategies in the order in which they are written')]
+    public function testOrderByAppliesTheStrategiesInTheOrderInWhichTheyAreWritten(): void
     {
-        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--order-by', 'depends,defects']);
+        $this->assertSame(
+            [Order::DurationAscending, Order::Defects],
+            new Builder($this->createStub(Emitter::class))->fromParameters(['--order-by', 'duration-ascending,defects'])->executionOrder(),
+        );
 
-        $this->assertFalse($configuration->hasExecutionOrder());
-        $this->assertTrue($configuration->hasExecutionOrderDefects());
-        $this->assertSame(TestSuiteSorter::ORDER_DEFECTS_FIRST, $configuration->executionOrderDefects());
-        $this->assertTrue($configuration->hasResolveDependencies());
-    }
-
-    #[IgnorePhpunitDeprecations]
-    #[TestDox('--order-by depends,duration')]
-    public function testOrderByDependsDuration(): void
-    {
-        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--order-by', 'depends,duration']);
-
-        $this->assertTrue($configuration->hasExecutionOrder());
-        $this->assertSame(TestSuiteSorter::ORDER_DURATION_ASCENDING, $configuration->executionOrder());
-        $this->assertFalse($configuration->hasExecutionOrderDefects());
-        $this->assertTrue($configuration->hasResolveDependencies());
-    }
-
-    #[IgnorePhpunitDeprecations]
-    #[TestDox('--order-by depends,random')]
-    public function testOrderByDependsRandom(): void
-    {
-        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--order-by', 'depends,random']);
-
-        $this->assertTrue($configuration->hasExecutionOrder());
-        $this->assertSame(TestSuiteSorter::ORDER_RANDOMIZED, $configuration->executionOrder());
-        $this->assertFalse($configuration->hasExecutionOrderDefects());
-        $this->assertTrue($configuration->hasResolveDependencies());
-    }
-
-    #[IgnorePhpunitDeprecations]
-    #[TestDox('--order-by depends,reverse')]
-    public function testOrderByDependsReverse(): void
-    {
-        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--order-by', 'depends,reverse']);
-
-        $this->assertTrue($configuration->hasExecutionOrder());
-        $this->assertSame(TestSuiteSorter::ORDER_REVERSED, $configuration->executionOrder());
-        $this->assertFalse($configuration->hasExecutionOrderDefects());
-        $this->assertTrue($configuration->hasResolveDependencies());
-    }
-
-    #[IgnorePhpunitDeprecations]
-    #[TestDox('--order-by depends,size')]
-    public function testOrderByDependsSize(): void
-    {
-        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--order-by', 'depends,size']);
-
-        $this->assertTrue($configuration->hasExecutionOrder());
-        $this->assertSame(TestSuiteSorter::ORDER_SIZE_ASCENDING, $configuration->executionOrder());
-        $this->assertFalse($configuration->hasExecutionOrderDefects());
-        $this->assertTrue($configuration->hasResolveDependencies());
-    }
-
-    #[IgnorePhpunitDeprecations]
-    #[TestDox('--order-by no-depends')]
-    public function testOrderByNoDepends(): void
-    {
-        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--order-by', 'no-depends']);
-
-        $this->assertFalse($configuration->hasExecutionOrder());
-        $this->assertFalse($configuration->hasExecutionOrderDefects());
-        $this->assertTrue($configuration->hasResolveDependencies());
-        $this->assertFalse($configuration->resolveDependencies());
-    }
-
-    #[IgnorePhpunitDeprecations]
-    #[TestDox('--order-by no-depends,defects')]
-    public function testOrderByNoDependsDefects(): void
-    {
-        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--order-by', 'no-depends,defects']);
-
-        $this->assertFalse($configuration->hasExecutionOrder());
-        $this->assertTrue($configuration->hasExecutionOrderDefects());
-        $this->assertSame(TestSuiteSorter::ORDER_DEFECTS_FIRST, $configuration->executionOrderDefects());
-        $this->assertTrue($configuration->hasResolveDependencies());
-        $this->assertFalse($configuration->resolveDependencies());
-    }
-
-    #[IgnorePhpunitDeprecations]
-    #[TestDox('--order-by no-depends,duration')]
-    public function testOrderByNoDependsDuration(): void
-    {
-        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--order-by', 'no-depends,duration']);
-
-        $this->assertTrue($configuration->hasExecutionOrder());
-        $this->assertSame(TestSuiteSorter::ORDER_DURATION_ASCENDING, $configuration->executionOrder());
-        $this->assertFalse($configuration->hasExecutionOrderDefects());
-        $this->assertTrue($configuration->hasResolveDependencies());
-        $this->assertFalse($configuration->resolveDependencies());
-    }
-
-    #[IgnorePhpunitDeprecations]
-    #[TestDox('--order-by no-depends,random')]
-    public function testOrderByNoDependsRandom(): void
-    {
-        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--order-by', 'no-depends,random']);
-
-        $this->assertTrue($configuration->hasExecutionOrder());
-        $this->assertSame(TestSuiteSorter::ORDER_RANDOMIZED, $configuration->executionOrder());
-        $this->assertFalse($configuration->hasExecutionOrderDefects());
-        $this->assertTrue($configuration->hasResolveDependencies());
-        $this->assertFalse($configuration->resolveDependencies());
-    }
-
-    #[IgnorePhpunitDeprecations]
-    #[TestDox('--order-by no-depends,reverse')]
-    public function testOrderByNoDependsReverse(): void
-    {
-        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--order-by', 'no-depends,reverse']);
-
-        $this->assertTrue($configuration->hasExecutionOrder());
-        $this->assertSame(TestSuiteSorter::ORDER_REVERSED, $configuration->executionOrder());
-        $this->assertFalse($configuration->hasExecutionOrderDefects());
-        $this->assertTrue($configuration->hasResolveDependencies());
-        $this->assertFalse($configuration->resolveDependencies());
-    }
-
-    #[IgnorePhpunitDeprecations]
-    #[TestDox('--order-by no-depends,size')]
-    public function testOrderByNoDependsSize(): void
-    {
-        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--order-by', 'no-depends,size']);
-
-        $this->assertTrue($configuration->hasExecutionOrder());
-        $this->assertSame(TestSuiteSorter::ORDER_SIZE_ASCENDING, $configuration->executionOrder());
-        $this->assertFalse($configuration->hasExecutionOrderDefects());
-        $this->assertTrue($configuration->hasResolveDependencies());
-        $this->assertFalse($configuration->resolveDependencies());
+        $this->assertSame(
+            [Order::Defects, Order::DurationAscending],
+            new Builder($this->createStub(Emitter::class))->fromParameters(['--order-by', 'defects,duration-ascending'])->executionOrder(),
+        );
     }
 
     #[TestDox('--order-by invalid')]
     public function testOrderByInvalid(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessageIs('unrecognized --order-by option: invalid');
+        $this->expectExceptionMessageIs('Unknown value "invalid" for --order-by');
 
         new Builder($this->createStub(Emitter::class))->fromParameters(['--order-by', 'invalid']);
+    }
+
+    #[TestDox('--order-by depends')]
+    public function testOrderByDepends(): void
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessageIs('"depends" is no longer supported for --order-by, use the --resolve-dependencies CLI option instead');
+
+        new Builder($this->createStub(Emitter::class))->fromParameters(['--order-by', 'depends']);
+    }
+
+    #[TestDox('--order-by no-depends')]
+    public function testOrderByNoDepends(): void
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessageIs('"no-depends" is no longer supported for --order-by, use the --ignore-dependencies CLI option instead');
+
+        new Builder($this->createStub(Emitter::class))->fromParameters(['--order-by', 'no-depends']);
+    }
+
+    #[TestDox('--order-by duration')]
+    public function testOrderByDuration(): void
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessageIs('"duration" is no longer supported for --order-by, use "duration-ascending" instead');
+
+        new Builder($this->createStub(Emitter::class))->fromParameters(['--order-by', 'duration']);
+    }
+
+    #[TestDox('--order-by size')]
+    public function testOrderBySize(): void
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessageIs('"size" is no longer supported for --order-by, use "size-ascending" instead');
+
+        new Builder($this->createStub(Emitter::class))->fromParameters(['--order-by', 'size']);
+    }
+
+    #[TestDox('--order-by with more than one order')]
+    public function testOrderByWithMoreThanOneOrder(): void
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessageIs('Cannot use more than one order for --order-by: "random" and "reverse"');
+
+        new Builder($this->createStub(Emitter::class))->fromParameters(['--order-by', 'random,reverse']);
     }
 
     public function testExecutionOrderMayNotBeConfigured(): void
@@ -1520,17 +1378,6 @@ final class BuilderTest extends TestCase
         $this->expectException(Exception::class);
 
         $configuration->executionOrder();
-    }
-
-    public function testExecutionOrderDefectsMayNotBeConfigured(): void
-    {
-        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters([]);
-
-        $this->assertFalse($configuration->hasExecutionOrderDefects());
-
-        $this->expectException(Exception::class);
-
-        $configuration->executionOrderDefects();
     }
 
     public function testResolveDependenciesMayNotBeConfigured(): void
@@ -3077,7 +2924,7 @@ final class BuilderTest extends TestCase
         $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--random-order']);
 
         $this->assertTrue($configuration->hasExecutionOrder());
-        $this->assertSame(TestSuiteSorter::ORDER_RANDOMIZED, $configuration->executionOrder());
+        $this->assertSame([Order::Random], $configuration->executionOrder());
     }
 
     #[TestDox('--resolve-dependencies')]
@@ -3104,7 +2951,7 @@ final class BuilderTest extends TestCase
         $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--reverse-order']);
 
         $this->assertTrue($configuration->hasExecutionOrder());
-        $this->assertSame(TestSuiteSorter::ORDER_REVERSED, $configuration->executionOrder());
+        $this->assertSame([Order::Reverse], $configuration->executionOrder());
     }
 
     #[TestDox('--random-seed')]
