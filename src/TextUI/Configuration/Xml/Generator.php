@@ -27,7 +27,7 @@ final readonly class Generator
          xsi:noNamespaceSchemaLocation="{schema_location}"
          bootstrap="{bootstrap_script}"
          cacheDirectory="{cache_directory}"
-         executionOrder="depends,defects"
+         executionOrder="defects"
          requireCoverageMetadata="true"
          beStrictAboutCoverageMetadata="true"
          beStrictAboutOutputDuringTests="true"
