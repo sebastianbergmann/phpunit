@@ -61,6 +61,7 @@ use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\Exception;
 use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
+use PHPUnit\Util\Filesystem;
 use PHPUnit\Util\PHP\Job;
 use PHPUnit\Util\PHP\JobRunnerRegistry;
 use SebastianBergmann\CodeCoverage\Data\RawCodeCoverageData;
@@ -115,6 +116,17 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
     private array $coverageFiles;
 
     /**
+     * The directory the temporary files that are used to collect code coverage
+     * for a PHPT test are created in.
+     *
+     * @return non-empty-string
+     */
+    public static function coverageFilesDirectory(): string
+    {
+        return sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-phpt';
+    }
+
+    /**
      * @param non-empty-string $filename
      * @param positive-int     $repetition
      * @param positive-int     $totalRepetitions
@@ -130,10 +142,15 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         $this->maxAttempts      = $maxAttempts;
 
         // The temporary files that are used to collect code coverage for a
-        // PHPT test are created in the system's temporary directory so that
+        // PHPT test are created below the system's temporary directory so that
         // running a PHPT test does not modify the directory the PHPT file is
-        // located in
-        $prefix = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit_phpt_' . bin2hex(random_bytes(16));
+        // located in.
+        //
+        // They are created in a directory of their own, and not in the
+        // system's temporary directory itself, so that a PHPT test that
+        // restricts open_basedir can allow access to them without also
+        // allowing access to the system's temporary directory.
+        $prefix = self::coverageFilesDirectory() . DIRECTORY_SEPARATOR . 'phpunit_phpt_' . bin2hex(random_bytes(16));
 
         $this->coverageFiles = [
             'coverage' => $prefix . '.coverage',
@@ -282,6 +299,8 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
             if (ConfigurationRegistry::get()->hasBootstrap()) {
                 $bootstrap = ConfigurationRegistry::get()->bootstrap();
             }
+
+            Filesystem::createDirectory(self::coverageFilesDirectory());
 
             (new Renderer)->renderForCoverage(
                 $code,

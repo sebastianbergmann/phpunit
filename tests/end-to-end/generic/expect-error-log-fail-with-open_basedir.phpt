@@ -17,9 +17,22 @@ $_SERVER['argv'][] = __DIR__ . '/_files/ExpectErrorLogFailTest.php';
  * could not be created (because of open_basedir php.ini in effect, readonly filesystem...).
  */
 
-ini_set('open_basedir', (ini_get('open_basedir') ? ini_get('open_basedir') . PATH_SEPARATOR : '') . dirname(__DIR__, 3));
-
 require_once __DIR__ . '/../../bootstrap.php';
+
+/*
+ * The directory PHPUnit creates the temporary files in that are used to
+ * collect code coverage for a PHPT test is allowed so that this test also
+ * works when it is run with code coverage collection enabled. The system's
+ * temporary directory itself is not allowed: tmpfile(), which is what
+ * TestCase::expectErrorLog() relies on, must still fail.
+ */
+$openBasedir = dirname(__DIR__, 3) . PATH_SEPARATOR . PHPUnit\Runner\Phpt\TestCase::coverageFilesDirectory();
+
+if (ini_get('open_basedir')) {
+    $openBasedir = ini_get('open_basedir') . PATH_SEPARATOR . $openBasedir;
+}
+
+ini_set('open_basedir', $openBasedir);
 
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
