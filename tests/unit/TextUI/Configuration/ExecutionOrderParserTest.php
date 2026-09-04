@@ -41,10 +41,13 @@ final class ExecutionOrderParserTest extends TestCase
             'reverse'             => ['reverse', TestSuiteSorter::ORDER_REVERSED, TestSuiteSorter::ORDER_DEFAULT, false],
             'duration-ascending'  => ['duration-ascending', TestSuiteSorter::ORDER_DURATION_ASCENDING, TestSuiteSorter::ORDER_DEFAULT, false],
             'duration-descending' => ['duration-descending', TestSuiteSorter::ORDER_DURATION_DESCENDING, TestSuiteSorter::ORDER_DEFAULT, false],
+            'modified-ascending'  => ['modified-ascending', TestSuiteSorter::ORDER_MODIFIED_ASCENDING, TestSuiteSorter::ORDER_DEFAULT, false],
+            'modified-descending' => ['modified-descending', TestSuiteSorter::ORDER_MODIFIED_DESCENDING, TestSuiteSorter::ORDER_DEFAULT, false],
             'size-ascending'      => ['size-ascending', TestSuiteSorter::ORDER_SIZE_ASCENDING, TestSuiteSorter::ORDER_DEFAULT, false],
             'size-descending'     => ['size-descending', TestSuiteSorter::ORDER_SIZE_DESCENDING, TestSuiteSorter::ORDER_DEFAULT, false],
 
             'main order and defects'          => ['size-ascending,defects', TestSuiteSorter::ORDER_SIZE_ASCENDING, TestSuiteSorter::ORDER_DEFECTS_FIRST, false],
+            'modification time and defects'   => ['modified-descending,defects', TestSuiteSorter::ORDER_MODIFIED_DESCENDING, TestSuiteSorter::ORDER_DEFECTS_FIRST, false],
             'dependencies and main order'     => ['depends,reverse', TestSuiteSorter::ORDER_REVERSED, TestSuiteSorter::ORDER_DEFAULT, true],
             'dependencies, order, defects'    => ['depends,duration-ascending,defects', TestSuiteSorter::ORDER_DURATION_ASCENDING, TestSuiteSorter::ORDER_DEFECTS_FIRST, true],
             'no dependencies, order, defects' => ['no-depends,random,defects', TestSuiteSorter::ORDER_RANDOMIZED, TestSuiteSorter::ORDER_DEFECTS_FIRST, false],

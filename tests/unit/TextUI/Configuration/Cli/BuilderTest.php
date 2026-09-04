@@ -1315,6 +1315,28 @@ final class BuilderTest extends TestCase
         $this->assertFalse($configuration->hasResolveDependencies());
     }
 
+    #[TestDox('--order-by modified-ascending')]
+    public function testOrderByModifiedAscending(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--order-by', 'modified-ascending']);
+
+        $this->assertTrue($configuration->hasExecutionOrder());
+        $this->assertSame(TestSuiteSorter::ORDER_MODIFIED_ASCENDING, $configuration->executionOrder());
+        $this->assertFalse($configuration->hasExecutionOrderDefects());
+        $this->assertFalse($configuration->hasResolveDependencies());
+    }
+
+    #[TestDox('--order-by modified-descending')]
+    public function testOrderByModifiedDescending(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--order-by', 'modified-descending']);
+
+        $this->assertTrue($configuration->hasExecutionOrder());
+        $this->assertSame(TestSuiteSorter::ORDER_MODIFIED_DESCENDING, $configuration->executionOrder());
+        $this->assertFalse($configuration->hasExecutionOrderDefects());
+        $this->assertFalse($configuration->hasResolveDependencies());
+    }
+
     #[TestDox('--order-by random')]
     public function testOrderByRandom(): void
     {

@@ -50,6 +50,8 @@ final class LoaderTest extends TestCase
             'executionOrder reverse'             => ['executionOrder', 'reverse', TestSuiteSorter::ORDER_REVERSED],
             'executionOrder duration-ascending'  => ['executionOrder', 'duration-ascending', TestSuiteSorter::ORDER_DURATION_ASCENDING],
             'executionOrder duration-descending' => ['executionOrder', 'duration-descending', TestSuiteSorter::ORDER_DURATION_DESCENDING],
+            'executionOrder modified-ascending'  => ['executionOrder', 'modified-ascending', TestSuiteSorter::ORDER_MODIFIED_ASCENDING],
+            'executionOrder modified-descending' => ['executionOrder', 'modified-descending', TestSuiteSorter::ORDER_MODIFIED_DESCENDING],
             'executionOrder size-ascending'      => ['executionOrder', 'size-ascending', TestSuiteSorter::ORDER_SIZE_ASCENDING],
             'executionOrder size-descending'     => ['executionOrder', 'size-descending', TestSuiteSorter::ORDER_SIZE_DESCENDING],
             'cacheDirectory absolute path'       => ['cacheDirectory', '/path/to/cache', '/path/to/cache'],
