@@ -14,12 +14,11 @@ use const DIRECTORY_SEPARATOR;
 use function array_filter;
 use function array_values;
 use function assert;
-use function basename;
+use function bin2hex;
 use function debug_backtrace;
 use function dirname;
 use function explode;
 use function extension_loaded;
-use function file_exists;
 use function file_get_contents;
 use function getenv;
 use function in_array;
@@ -32,6 +31,7 @@ use function ob_start;
 use function preg_match;
 use function preg_replace;
 use function preg_replace_callback;
+use function random_bytes;
 use function realpath;
 use function sprintf;
 use function str_contains;
@@ -58,7 +58,6 @@ use PHPUnit\Framework\Reorderable;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\Test;
 use PHPUnit\Runner\CodeCoverage;
-use PHPUnit\Runner\CodeCoverageFileExistsException;
 use PHPUnit\Runner\Exception;
 use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
@@ -111,6 +110,11 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
     private int $maxAttempts;
 
     /**
+     * @var CoverageFiles
+     */
+    private array $coverageFiles;
+
+    /**
      * @param non-empty-string $filename
      * @param positive-int     $repetition
      * @param positive-int     $totalRepetitions
@@ -125,7 +129,16 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         $this->attempt          = $attempt;
         $this->maxAttempts      = $maxAttempts;
 
-        $this->ensureCoverageFileDoesNotExist();
+        // The temporary files that are used to collect code coverage for a
+        // PHPT test are created in the system's temporary directory so that
+        // running a PHPT test does not modify the directory the PHPT file is
+        // located in
+        $prefix = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit_phpt_' . bin2hex(random_bytes(16));
+
+        $this->coverageFiles = [
+            'coverage' => $prefix . '.coverage',
+            'job'      => $prefix . '.php',
+        ];
     }
 
     public function count(): int
@@ -276,7 +289,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
                 CodeCoverage::instance()->collectsPathCoverage(),
                 $codeCoverageCacheDirectory,
                 $bootstrap,
-                $this->coverageFiles(),
+                $this->coverageFiles,
             );
             // @codeCoverageIgnoreEnd
         }
@@ -719,7 +732,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
          * @phpstan-ignore staticMethod.internalClass
          */
         $coverage = RawCodeCoverageData::fromLineCoverage([]);
-        $files    = $this->coverageFiles();
+        $files    = $this->coverageFiles;
 
         $buffer = false;
 
@@ -749,26 +762,6 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         }
 
         return $coverage;
-    }
-
-    /**
-     * @return CoverageFiles
-     */
-    private function coverageFiles(): array
-    {
-        $realPath = realpath($this->filename);
-
-        if ($realPath === false) {
-            $realPath = $this->filename;
-        }
-
-        $baseDir  = dirname($realPath) . DIRECTORY_SEPARATOR;
-        $basename = basename($this->filename, 'phpt');
-
-        return [
-            'coverage' => $baseDir . $basename . 'coverage',
-            'job'      => $baseDir . $basename . 'php',
-        ];
     }
 
     /**
@@ -1004,23 +997,5 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         assert(isset($sections[$key]));
 
         return (int) $sections[$key];
-    }
-
-    /**
-     * @throws CodeCoverageFileExistsException
-     */
-    private function ensureCoverageFileDoesNotExist(): void
-    {
-        $files = $this->coverageFiles();
-
-        if (file_exists($files['coverage'])) {
-            throw new CodeCoverageFileExistsException(
-                sprintf(
-                    'File %s exists, PHPT test %s will not be executed',
-                    $files['coverage'],
-                    $this->filename,
-                ),
-            );
-        }
     }
 }
