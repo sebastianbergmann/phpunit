@@ -25,6 +25,7 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
+use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\Configuration\Configuration;
@@ -176,7 +177,8 @@ final class LoaderTest extends TestCase
     }
 
     #[IgnorePhpunitDeprecations]
-    public function testShouldParseXmlConfigurationExecutionOrderCombined(): void
+    #[TestDox('Parses the deprecated executionOrder="depends,defects" spelling')]
+    public function testShouldParseDeprecatedExecutionOrderCombined(): void
     {
         $tmpFilename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit.' . uniqid('', true) . '.xml';
         $xml         = "<phpunit executionOrder='depends,defects'></phpunit>" . PHP_EOL;
@@ -184,7 +186,7 @@ final class LoaderTest extends TestCase
 
         $configuration = (new Loader)->load($tmpFilename);
 
-        $this->assertFalse($configuration->hasValidationErrors());
+        $this->assertTrue($configuration->hasValidationErrors());
 
         $this->assertTrue($configuration->phpunit()->defectsFirst());
         $this->assertTrue($configuration->phpunit()->resolveDependencies());

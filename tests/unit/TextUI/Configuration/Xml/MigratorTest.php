@@ -73,6 +73,18 @@ final class MigratorTest extends TestCase
                 __DIR__ . '/../../../../_files/XmlConfigurationMigration/output-execution-order-duration.xml',
                 __DIR__ . '/../../../../_files/XmlConfigurationMigration/input-execution-order-duration.xml',
             ],
+            'Execution Order Defects' => [
+                __DIR__ . '/../../../../_files/XmlConfigurationMigration/output-execution-order-defects.xml',
+                __DIR__ . '/../../../../_files/XmlConfigurationMigration/input-execution-order-defects.xml',
+            ],
+            'Execution Order Defects Without Dependency Resolution' => [
+                __DIR__ . '/../../../../_files/XmlConfigurationMigration/output-execution-order-defects-without-dependency-resolution.xml',
+                __DIR__ . '/../../../../_files/XmlConfigurationMigration/input-execution-order-defects-without-dependency-resolution.xml',
+            ],
+            'Execution Order No Depends' => [
+                __DIR__ . '/../../../../_files/XmlConfigurationMigration/output-execution-order-no-depends.xml',
+                __DIR__ . '/../../../../_files/XmlConfigurationMigration/input-execution-order-no-depends.xml',
+            ],
             'Execution Order Size' => [
                 __DIR__ . '/../../../../_files/XmlConfigurationMigration/output-execution-order-size.xml',
                 __DIR__ . '/../../../../_files/XmlConfigurationMigration/input-execution-order-size.xml',

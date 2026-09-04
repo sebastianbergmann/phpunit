@@ -95,6 +95,11 @@ final readonly class MigrationBuilder
         '13.3' => [
             RenameCacheResultAttribute::class,
         ],
+
+        '13.4' => [
+            MoveDependencyResolutionOutOfExecutionOrder::class,
+            MoveDefectsAfterOrderInExecutionOrder::class,
+        ],
     ];
 
     /**
