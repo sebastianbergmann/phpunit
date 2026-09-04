@@ -15,15 +15,17 @@ use function basename;
 use function count;
 use function explode;
 use function getcwd;
+use function in_array;
 use function is_file;
 use function is_numeric;
 use function max;
 use function sprintf;
 use function strtolower;
 use PHPUnit\Event\Facade as EventFacade;
-use PHPUnit\Runner\TestSuiteSorter;
+use PHPUnit\Runner\ExecutionOrder\Order;
 use PHPUnit\TextUI\Configuration\ExecutionOrderParser;
 use PHPUnit\TextUI\Configuration\ExecutionOrderSource;
+use PHPUnit\TextUI\Configuration\InvalidExecutionOrderException;
 use PHPUnit\Util\Filesystem;
 use SebastianBergmann\CliParser\Exception as CliParserException;
 use SebastianBergmann\CliParser\Parser as CliParser;
@@ -331,7 +333,6 @@ final class Builder
         $enforceTimeLimit                         = null;
         $excludeGroups                            = null;
         $executionOrder                           = null;
-        $executionOrderDefects                    = null;
         $failOnAllIssues                          = null;
         $failOnDeprecation                        = null;
         $failOnSelfDeprecation                    = null;
@@ -829,28 +830,14 @@ final class Builder
                 case '--order-by':
                     assert($option[1] !== null);
 
-                    $parsedExecutionOrder = (new ExecutionOrderParser)->parse(
-                        $option[1],
-                        ExecutionOrderSource::CommandLineOption,
-                        $executionOrder,
-                        $executionOrderDefects,
-                        $resolveDependencies,
-                    );
-
-                    $unknownTokens = $parsedExecutionOrder->unknownTokens();
-
-                    if ($unknownTokens !== []) {
-                        throw new Exception(
-                            sprintf(
-                                'unrecognized --order-by option: %s',
-                                $unknownTokens[0],
-                            ),
+                    try {
+                        $executionOrder = (new ExecutionOrderParser)->parse(
+                            $option[1],
+                            ExecutionOrderSource::CommandLineOption,
                         );
+                    } catch (InvalidExecutionOrderException $e) {
+                        throw new Exception($e->getMessage());
                     }
-
-                    $executionOrder        = $parsedExecutionOrder->executionOrder();
-                    $executionOrderDefects = $parsedExecutionOrder->executionOrderDefects();
-                    $resolveDependencies   = $parsedExecutionOrder->resolveDependencies();
 
                     break;
 
@@ -1265,7 +1252,7 @@ final class Builder
                     break;
 
                 case '--random-order':
-                    $executionOrder = TestSuiteSorter::ORDER_RANDOMIZED;
+                    $executionOrder = [Order::Random];
 
                     break;
 
@@ -1323,7 +1310,7 @@ final class Builder
                     break;
 
                 case '--reverse-order':
-                    $executionOrder = TestSuiteSorter::ORDER_REVERSED;
+                    $executionOrder = [Order::Reverse];
 
                     break;
 
@@ -1392,7 +1379,7 @@ final class Builder
 
         $this->warnAboutConflictingOptions();
 
-        if ($randomOrderSeed !== null && $executionOrder !== TestSuiteSorter::ORDER_RANDOMIZED) {
+        if ($randomOrderSeed !== null && ($executionOrder === null || !in_array(Order::Random, $executionOrder, true))) {
             EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
                 '--random-order-seed is only used when execution order is "random" (use --order-by random or --random-order)',
             );
@@ -1454,7 +1441,6 @@ final class Builder
             $enforceTimeLimit,
             $excludeGroups,
             $executionOrder,
-            $executionOrderDefects,
             $failOnAllIssues,
             $failOnDeprecation,
             $failOnSelfDeprecation,

@@ -9,259 +9,170 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
-use PHPUnit\Event\Event;
-use PHPUnit\Event\Facade;
-use PHPUnit\Event\TestRunner\DeprecationTriggered;
-use PHPUnit\Event\Tracer\Tracer;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Medium;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Runner\TestSuiteSorter;
-use ReflectionProperty;
+use PHPUnit\Runner\ExecutionOrder\Order;
 
 #[CoversClass(ExecutionOrderParser::class)]
-#[CoversClass(ExecutionOrder::class)]
 #[CoversClass(ExecutionOrderSource::class)]
-#[Medium]
+#[CoversClass(InvalidExecutionOrderException::class)]
+#[UsesClass(Order::class)]
+#[Small]
 final class ExecutionOrderParserTest extends TestCase
 {
     /**
-     * @return non-empty-list<array{non-empty-string, int, int, bool}>
+     * @return non-empty-list<array{non-empty-string, list<Order>}>
      */
     public static function provider(): array
     {
         return [
-            'default'             => ['default', TestSuiteSorter::ORDER_DEFAULT, TestSuiteSorter::ORDER_DEFAULT, true],
-            'defects'             => ['defects', TestSuiteSorter::ORDER_DEFAULT, TestSuiteSorter::ORDER_DEFECTS_FIRST, false],
-            'depends'             => ['depends', TestSuiteSorter::ORDER_DEFAULT, TestSuiteSorter::ORDER_DEFAULT, true],
-            'no-depends'          => ['no-depends', TestSuiteSorter::ORDER_DEFAULT, TestSuiteSorter::ORDER_DEFAULT, false],
-            'random'              => ['random', TestSuiteSorter::ORDER_RANDOMIZED, TestSuiteSorter::ORDER_DEFAULT, false],
-            'reverse'             => ['reverse', TestSuiteSorter::ORDER_REVERSED, TestSuiteSorter::ORDER_DEFAULT, false],
-            'duration-ascending'  => ['duration-ascending', TestSuiteSorter::ORDER_DURATION_ASCENDING, TestSuiteSorter::ORDER_DEFAULT, false],
-            'duration-descending' => ['duration-descending', TestSuiteSorter::ORDER_DURATION_DESCENDING, TestSuiteSorter::ORDER_DEFAULT, false],
-            'modified-ascending'  => ['modified-ascending', TestSuiteSorter::ORDER_MODIFIED_ASCENDING, TestSuiteSorter::ORDER_DEFAULT, false],
-            'modified-descending' => ['modified-descending', TestSuiteSorter::ORDER_MODIFIED_DESCENDING, TestSuiteSorter::ORDER_DEFAULT, false],
-            'size-ascending'      => ['size-ascending', TestSuiteSorter::ORDER_SIZE_ASCENDING, TestSuiteSorter::ORDER_DEFAULT, false],
-            'size-descending'     => ['size-descending', TestSuiteSorter::ORDER_SIZE_DESCENDING, TestSuiteSorter::ORDER_DEFAULT, false],
+            'default'             => ['default', []],
+            'defects'             => ['defects', [Order::Defects]],
+            'random'              => ['random', [Order::Random]],
+            'reverse'             => ['reverse', [Order::Reverse]],
+            'duration-ascending'  => ['duration-ascending', [Order::DurationAscending]],
+            'duration-descending' => ['duration-descending', [Order::DurationDescending]],
+            'modified-ascending'  => ['modified-ascending', [Order::ModifiedAscending]],
+            'modified-descending' => ['modified-descending', [Order::ModifiedDescending]],
+            'size-ascending'      => ['size-ascending', [Order::SizeAscending]],
+            'size-descending'     => ['size-descending', [Order::SizeDescending]],
 
-            'main order and defects'          => ['size-ascending,defects', TestSuiteSorter::ORDER_SIZE_ASCENDING, TestSuiteSorter::ORDER_DEFECTS_FIRST, false],
-            'modification time and defects'   => ['modified-descending,defects', TestSuiteSorter::ORDER_MODIFIED_DESCENDING, TestSuiteSorter::ORDER_DEFECTS_FIRST, false],
-            'dependencies and main order'     => ['depends,reverse', TestSuiteSorter::ORDER_REVERSED, TestSuiteSorter::ORDER_DEFAULT, true],
-            'dependencies, order, defects'    => ['depends,duration-ascending,defects', TestSuiteSorter::ORDER_DURATION_ASCENDING, TestSuiteSorter::ORDER_DEFECTS_FIRST, true],
-            'no dependencies, order, defects' => ['no-depends,random,defects', TestSuiteSorter::ORDER_RANDOMIZED, TestSuiteSorter::ORDER_DEFECTS_FIRST, false],
+            'order then defects' => ['size-ascending,defects', [Order::SizeAscending, Order::Defects]],
+            'defects then order' => ['defects,size-ascending', [Order::Defects, Order::SizeAscending]],
+
+            'default resets what precedes it'     => ['random,defects,default', []],
+            'default does not reset what follows' => ['random,default,reverse', [Order::Reverse]],
         ];
     }
 
+    /**
+     * @param non-empty-string $value
+     * @param list<Order>      $expected
+     */
     #[DataProvider('provider')]
-    public function testResolvesTokensToConfiguration(string $value, int $expectedOrder, int $expectedOrderDefects, bool $expectedResolveDependencies): void
+    public function testResolvesTokensToOrder(string $value, array $expected): void
     {
-        $result = $this->parse($value);
-
-        $this->assertSame($expectedOrder, $result->executionOrder());
-        $this->assertSame($expectedOrderDefects, $result->executionOrderDefects());
-        $this->assertSame($expectedResolveDependencies, $result->resolveDependencies());
-        $this->assertSame([], $result->unknownTokens());
+        $this->assertSame($expected, $this->parse($value));
     }
 
-    public function testCollectsUnknownTokensInsteadOfIgnoringThem(): void
-    {
-        $result = $this->parse('reverse,does-not-exist,also-does-not-exist');
-
-        $this->assertSame(['does-not-exist', 'also-does-not-exist'], $result->unknownTokens());
-        $this->assertSame(TestSuiteSorter::ORDER_REVERSED, $result->executionOrder());
-    }
-
-    #[TestDox('The "default" token resets every knob')]
-    public function testDefaultTokenResetsEveryKnob(): void
-    {
-        $result = $this->parse('no-depends,defects,size-descending,default');
-
-        $this->assertSame(TestSuiteSorter::ORDER_DEFAULT, $result->executionOrder());
-        $this->assertSame(TestSuiteSorter::ORDER_DEFAULT, $result->executionOrderDefects());
-        $this->assertTrue($result->resolveDependencies());
-    }
-
-    public function testDeprecatesRenamedDurationToken(): void
+    #[TestDox('Tokens are applied in the order in which they are written')]
+    public function testTokensAreAppliedInTheOrderInWhichTheyAreWritten(): void
     {
         $this->assertSame(
-            ['Using "duration" for --order-by is deprecated and will be removed in PHPUnit 14. Use "duration-ascending" instead.'],
-            $this->deprecationsTriggeredBy('duration'),
-        );
-    }
-
-    public function testDeprecatesRenamedSizeToken(): void
-    {
-        $this->assertSame(
-            ['Using "size" for --order-by is deprecated and will be removed in PHPUnit 14. Use "size-ascending" instead.'],
-            $this->deprecationsTriggeredBy('size'),
-        );
-    }
-
-    public function testDeprecatesMoreThanOneOrder(): void
-    {
-        $this->assertSame(
-            ['Using more than one order for --order-by is deprecated and will be an error in PHPUnit 14. "duration-descending" overrides "duration-ascending".'],
-            $this->deprecationsTriggeredBy('duration-ascending,duration-descending'),
-        );
-    }
-
-    #[TestDox('Deprecates the "depends" token in favor of the dedicated option')]
-    public function testDeprecatesTheDependsTokenInFavorOfTheDedicatedOption(): void
-    {
-        $this->assertSame(
-            ['Using "depends" for --order-by is deprecated and will be removed in PHPUnit 14. Use the --resolve-dependencies CLI option instead.'],
-            $this->deprecationsTriggeredBy('depends'),
+            [Order::DurationAscending, Order::Defects],
+            $this->parse('duration-ascending,defects'),
         );
 
         $this->assertSame(
-            ['Using "depends" for the executionOrder attribute is deprecated and will be removed in PHPUnit 14. Use the resolveDependencies="true" XML configuration attribute instead.'],
-            $this->deprecationsTriggeredBy('depends', ExecutionOrderSource::XmlAttribute),
+            [Order::Defects, Order::DurationAscending],
+            $this->parse('defects,duration-ascending'),
         );
     }
 
-    #[TestDox('Deprecates the "no-depends" token in favor of the dedicated option')]
-    public function testDeprecatesTheNoDependsTokenInFavorOfTheDedicatedOption(): void
+    public function testRejectsMoreThanOneOrder(): void
     {
-        $this->assertSame(
-            ['Using "no-depends" for --order-by is deprecated and will be removed in PHPUnit 14. Use the --ignore-dependencies CLI option instead.'],
-            $this->deprecationsTriggeredBy('no-depends'),
-        );
+        $this->expectException(InvalidExecutionOrderException::class);
+        $this->expectExceptionMessageIsOrContains('Cannot use more than one order for --order-by: "duration-ascending" and "duration-descending"');
 
-        $this->assertSame(
-            ['Using "no-depends" for the executionOrder attribute is deprecated and will be removed in PHPUnit 14. Use the resolveDependencies="false" XML configuration attribute instead.'],
-            $this->deprecationsTriggeredBy('no-depends', ExecutionOrderSource::XmlAttribute),
-        );
+        $this->parse('duration-ascending,duration-descending');
     }
 
-    #[TestDox('Deprecates "defects" being written before the order')]
-    public function testDeprecatesDefectsBeingWrittenBeforeTheOrder(): void
+    public function testRejectsTheSameTokenTwice(): void
     {
-        $this->assertSame(
-            ['Using "defects" before "duration-ascending" for --order-by is deprecated and will change meaning in PHPUnit 14, where tests are reordered in the order in which the tokens are written. Use "duration-ascending,defects" instead.'],
-            $this->deprecationsTriggeredBy('defects,duration-ascending'),
-        );
+        $this->expectException(InvalidExecutionOrderException::class);
+        $this->expectExceptionMessageIsOrContains('Cannot use "defects" more than once for --order-by');
+
+        $this->parse('defects,defects');
     }
 
-    #[TestDox('Never suggests a deprecated token as the replacement')]
-    public function testNeverSuggestsADeprecatedTokenAsTheReplacement(): void
+    public function testRejectsUnknownToken(): void
     {
-        $this->assertSame(
-            [
-                'Using "defects" before "size" for --order-by is deprecated and will change meaning in PHPUnit 14, where tests are reordered in the order in which the tokens are written. Use "size-ascending,defects" instead.',
-                'Using "size" for --order-by is deprecated and will be removed in PHPUnit 14. Use "size-ascending" instead.',
-            ],
-            $this->deprecationsTriggeredBy('defects,size'),
-        );
+        $this->expectException(InvalidExecutionOrderException::class);
+        $this->expectExceptionMessageIsOrContains('Unknown value "does-not-exist" for --order-by');
 
-        $this->assertSame(
-            [
-                'Using "defects" before "duration" for --order-by is deprecated and will change meaning in PHPUnit 14, where tests are reordered in the order in which the tokens are written. Use "duration-ascending,defects" instead.',
-                'Using "duration" for --order-by is deprecated and will be removed in PHPUnit 14. Use "duration-ascending" instead.',
-            ],
-            $this->deprecationsTriggeredBy('defects,duration'),
-        );
+        $this->parse('does-not-exist');
     }
 
-    #[TestDox('Does not deprecate "defects" being written after the order')]
-    public function testDoesNotDeprecateDefectsBeingWrittenAfterTheOrder(): void
+    public function testRejectsEmptyToken(): void
     {
-        $this->assertSame([], $this->deprecationsTriggeredBy('duration-ascending,defects'));
+        $this->expectException(InvalidExecutionOrderException::class);
+        $this->expectExceptionMessageIsOrContains('Unknown value "" for --order-by');
+
+        $this->parse('reverse,');
+    }
+
+    #[TestDox('Explains where dependency resolution is configured instead of "depends"')]
+    public function testExplainsWhereDependencyResolutionIsConfiguredInsteadOfDepends(): void
+    {
+        $this->expectException(InvalidExecutionOrderException::class);
+        $this->expectExceptionMessageIsOrContains('"depends" is no longer supported for --order-by, use the --resolve-dependencies CLI option instead');
+
+        $this->parse('depends');
+    }
+
+    #[TestDox('Explains where dependency resolution is configured in the XML configuration file')]
+    public function testExplainsWhereDependencyResolutionIsConfiguredInTheXmlConfigurationFile(): void
+    {
+        $this->expectException(InvalidExecutionOrderException::class);
+        $this->expectExceptionMessageIsOrContains('"depends" is no longer supported for the executionOrder attribute, use the resolveDependencies="true" XML configuration attribute instead');
+
+        $this->parse('depends', ExecutionOrderSource::XmlAttribute);
+    }
+
+    #[TestDox('Explains where dependency resolution is configured instead of "no-depends"')]
+    public function testExplainsWhereDependencyResolutionIsConfiguredInsteadOfNoDepends(): void
+    {
+        $this->expectException(InvalidExecutionOrderException::class);
+        $this->expectExceptionMessageIsOrContains('"no-depends" is no longer supported for the executionOrder attribute, use the resolveDependencies="false" XML configuration attribute instead');
+
+        $this->parse('no-depends', ExecutionOrderSource::XmlAttribute);
+    }
+
+    #[TestDox('Explains how to skip dependency resolution on the command line')]
+    public function testExplainsHowToSkipDependencyResolutionOnTheCommandLine(): void
+    {
+        $this->expectException(InvalidExecutionOrderException::class);
+        $this->expectExceptionMessageIsOrContains('"no-depends" is no longer supported for --order-by, use the --ignore-dependencies CLI option instead');
+
+        $this->parse('no-depends');
+    }
+
+    #[TestDox('Explains what replaces the removed "duration" token')]
+    public function testExplainsWhatReplacesTheRemovedDurationToken(): void
+    {
+        $this->expectException(InvalidExecutionOrderException::class);
+        $this->expectExceptionMessageIsOrContains('"duration" is no longer supported for --order-by, use "duration-ascending" instead');
+
+        $this->parse('duration');
+    }
+
+    #[TestDox('Explains what replaces the removed "size" token')]
+    public function testExplainsWhatReplacesTheRemovedSizeToken(): void
+    {
+        $this->expectException(InvalidExecutionOrderException::class);
+        $this->expectExceptionMessageIsOrContains('"size" is no longer supported for the executionOrder attribute, use "size-ascending" instead');
+
+        $this->parse('size', ExecutionOrderSource::XmlAttribute);
     }
 
     #[TestDox('Names the configuration surface the value came from')]
     public function testNamesTheConfigurationSurfaceTheValueCameFrom(): void
     {
-        $this->assertSame(
-            ['Using "size" for the executionOrder attribute is deprecated and will be removed in PHPUnit 14. Use "size-ascending" instead.'],
-            $this->deprecationsTriggeredBy('size', ExecutionOrderSource::XmlAttribute),
-        );
-    }
+        $this->expectException(InvalidExecutionOrderException::class);
+        $this->expectExceptionMessageIsOrContains('Unknown value "does-not-exist" for the executionOrder attribute');
 
-    private function parse(string $value, ExecutionOrderSource $source = ExecutionOrderSource::CommandLineOption): ExecutionOrder
-    {
-        $result = null;
-
-        $this->withThrowAwayEventFacade(
-            static function () use (&$result, $value, $source): void
-            {
-                $result = (new ExecutionOrderParser)->parse(
-                    $value,
-                    $source,
-                    TestSuiteSorter::ORDER_DEFAULT,
-                    TestSuiteSorter::ORDER_DEFAULT,
-                    false,
-                );
-            },
-        );
-
-        $this->assertInstanceOf(ExecutionOrder::class, $result);
-
-        return $result;
+        $this->parse('does-not-exist', ExecutionOrderSource::XmlAttribute);
     }
 
     /**
-     * @return list<string>
+     * @return list<Order>
      */
-    private function deprecationsTriggeredBy(string $value, ExecutionOrderSource $source = ExecutionOrderSource::CommandLineOption): array
+    private function parse(string $value, ExecutionOrderSource $source = ExecutionOrderSource::CommandLineOption): array
     {
-        $tracer = new class implements Tracer
-        {
-            /**
-             * @var list<string>
-             */
-            public array $messages = [];
-
-            public function trace(Event $event): void
-            {
-                if ($event instanceof DeprecationTriggered) {
-                    $this->messages[] = $event->message();
-                }
-            }
-        };
-
-        $this->withThrowAwayEventFacade(
-            static function () use ($value, $source): void
-            {
-                (new ExecutionOrderParser)->parse(
-                    $value,
-                    $source,
-                    TestSuiteSorter::ORDER_DEFAULT,
-                    TestSuiteSorter::ORDER_DEFAULT,
-                    false,
-                );
-            },
-            $tracer,
-        );
-
-        return $tracer->messages;
-    }
-
-    /**
-     * The parser emits PHPUnit deprecations. These must not end up in the
-     * result of the test run that exercises the parser, so they are emitted
-     * into a throw-away event facade.
-     */
-    private function withThrowAwayEventFacade(callable $callable, ?Tracer $tracer = null): void
-    {
-        $facade = new Facade;
-
-        if ($tracer !== null) {
-            $facade->registerTracer($tracer);
-        }
-
-        $facade->seal();
-
-        $property = new ReflectionProperty(Facade::class, 'instance');
-        $instance = $property->getValue();
-
-        $property->setValue(null, $facade);
-
-        try {
-            $callable();
-        } finally {
-            $property->setValue(null, $instance);
-        }
+        return (new ExecutionOrderParser)->parse($value, $source);
     }
 }

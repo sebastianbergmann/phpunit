@@ -27,7 +27,7 @@ use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Runner\TestSuiteSorter;
+use PHPUnit\Runner\ExecutionOrder\Order;
 use PHPUnit\TextUI\Configuration\Configuration;
 use SebastianBergmann\CodeCoverage\Report\Html\Colors;
 use SebastianBergmann\CodeCoverage\Report\Thresholds;
@@ -45,15 +45,15 @@ final class LoaderTest extends TestCase
     public static function configurationRootOptionsProvider(): array
     {
         return [
-            'executionOrder default'             => ['executionOrder', 'default', TestSuiteSorter::ORDER_DEFAULT],
-            'executionOrder random'              => ['executionOrder', 'random', TestSuiteSorter::ORDER_RANDOMIZED],
-            'executionOrder reverse'             => ['executionOrder', 'reverse', TestSuiteSorter::ORDER_REVERSED],
-            'executionOrder duration-ascending'  => ['executionOrder', 'duration-ascending', TestSuiteSorter::ORDER_DURATION_ASCENDING],
-            'executionOrder duration-descending' => ['executionOrder', 'duration-descending', TestSuiteSorter::ORDER_DURATION_DESCENDING],
-            'executionOrder modified-ascending'  => ['executionOrder', 'modified-ascending', TestSuiteSorter::ORDER_MODIFIED_ASCENDING],
-            'executionOrder modified-descending' => ['executionOrder', 'modified-descending', TestSuiteSorter::ORDER_MODIFIED_DESCENDING],
-            'executionOrder size-ascending'      => ['executionOrder', 'size-ascending', TestSuiteSorter::ORDER_SIZE_ASCENDING],
-            'executionOrder size-descending'     => ['executionOrder', 'size-descending', TestSuiteSorter::ORDER_SIZE_DESCENDING],
+            'executionOrder default'             => ['executionOrder', 'default', []],
+            'executionOrder random'              => ['executionOrder', 'random', [Order::Random]],
+            'executionOrder reverse'             => ['executionOrder', 'reverse', [Order::Reverse]],
+            'executionOrder duration-ascending'  => ['executionOrder', 'duration-ascending', [Order::DurationAscending]],
+            'executionOrder duration-descending' => ['executionOrder', 'duration-descending', [Order::DurationDescending]],
+            'executionOrder modified-ascending'  => ['executionOrder', 'modified-ascending', [Order::ModifiedAscending]],
+            'executionOrder modified-descending' => ['executionOrder', 'modified-descending', [Order::ModifiedDescending]],
+            'executionOrder size-ascending'      => ['executionOrder', 'size-ascending', [Order::SizeAscending]],
+            'executionOrder size-descending'     => ['executionOrder', 'size-descending', [Order::SizeDescending]],
             'cacheDirectory absolute path'       => ['cacheDirectory', '/path/to/cache', '/path/to/cache'],
             'recordTestRunHistory=false'         => ['recordTestRunHistory', 'false', false],
             'recordTestRunHistory=true'          => ['recordTestRunHistory', 'true', true],
@@ -69,6 +69,39 @@ final class LoaderTest extends TestCase
             'processIsolation'                   => ['processIsolation', 'true', true],
             'reverseDefectList'                  => ['reverseDefectList', 'true', true],
             'diffContext'                        => ['diffContext', '5', 5],
+        ];
+    }
+
+    /**
+     * @return non-empty-list<array{non-empty-string, non-empty-string}>
+     */
+    public static function rejectedExecutionOrderProvider(): array
+    {
+        return [
+            'unknown value' => [
+                'does-not-exist',
+                'Unknown value "does-not-exist" for the executionOrder attribute',
+            ],
+            'depends' => [
+                'depends',
+                '"depends" is no longer supported for the executionOrder attribute, use the resolveDependencies="true" XML configuration attribute instead',
+            ],
+            'no-depends' => [
+                'no-depends',
+                '"no-depends" is no longer supported for the executionOrder attribute, use the resolveDependencies="false" XML configuration attribute instead',
+            ],
+            'duration' => [
+                'duration',
+                '"duration" is no longer supported for the executionOrder attribute, use "duration-ascending" instead',
+            ],
+            'size' => [
+                'size',
+                '"size" is no longer supported for the executionOrder attribute, use "size-ascending" instead',
+            ],
+            'more than one order' => [
+                'random,reverse',
+                'Cannot use more than one order for the executionOrder attribute: "random" and "reverse"',
+            ],
         ];
     }
 
@@ -133,7 +166,7 @@ final class LoaderTest extends TestCase
 
     #[DataProvider('configurationRootOptionsProvider')]
     #[IgnorePhpunitDeprecations]
-    public function testShouldParseXmlConfigurationRootAttributes(string $optionName, string $optionValue, bool|int|string $expected): void
+    public function testShouldParseXmlConfigurationRootAttributes(string $optionName, string $optionValue, array|bool|int|string $expected): void
     {
         $tmpFilename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit.' . $optionName . uniqid('', true) . '.xml';
         $xml         = "<phpunit {$optionName}='{$optionValue}'></phpunit>" . PHP_EOL;
@@ -148,54 +181,6 @@ final class LoaderTest extends TestCase
         @unlink($tmpFilename);
     }
 
-    #[IgnorePhpunitDeprecations]
-    public function testShouldParseDeprecatedExecutionOrderDuration(): void
-    {
-        $tmpFilename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit.' . uniqid('', true) . '.xml';
-        $xml         = "<phpunit executionOrder='duration'></phpunit>" . PHP_EOL;
-        file_put_contents($tmpFilename, $xml);
-
-        $configuration = (new Loader)->load($tmpFilename);
-
-        $this->assertTrue($configuration->hasValidationErrors());
-        $this->assertEquals(TestSuiteSorter::ORDER_DURATION_ASCENDING, $configuration->phpunit()->executionOrder());
-
-        @unlink($tmpFilename);
-    }
-
-    #[IgnorePhpunitDeprecations]
-    public function testShouldParseDeprecatedExecutionOrderSize(): void
-    {
-        $tmpFilename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit.' . uniqid('', true) . '.xml';
-        $xml         = "<phpunit executionOrder='size'></phpunit>" . PHP_EOL;
-        file_put_contents($tmpFilename, $xml);
-
-        $configuration = (new Loader)->load($tmpFilename);
-
-        $this->assertTrue($configuration->hasValidationErrors());
-        $this->assertEquals(TestSuiteSorter::ORDER_SIZE_ASCENDING, $configuration->phpunit()->executionOrder());
-
-        @unlink($tmpFilename);
-    }
-
-    #[IgnorePhpunitDeprecations]
-    #[TestDox('Parses the deprecated executionOrder="depends,defects" spelling')]
-    public function testShouldParseDeprecatedExecutionOrderCombined(): void
-    {
-        $tmpFilename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit.' . uniqid('', true) . '.xml';
-        $xml         = "<phpunit executionOrder='depends,defects'></phpunit>" . PHP_EOL;
-        file_put_contents($tmpFilename, $xml);
-
-        $configuration = (new Loader)->load($tmpFilename);
-
-        $this->assertTrue($configuration->hasValidationErrors());
-
-        $this->assertTrue($configuration->phpunit()->defectsFirst());
-        $this->assertTrue($configuration->phpunit()->resolveDependencies());
-
-        @unlink($tmpFilename);
-    }
-
     public function testShouldParseXmlConfigurationExecutionOrderWithDefectsAfterOrder(): void
     {
         $tmpFilename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit.' . uniqid('', true) . '.xml';
@@ -206,26 +191,50 @@ final class LoaderTest extends TestCase
 
         $this->assertFalse($configuration->hasValidationErrors());
 
-        $this->assertEquals(TestSuiteSorter::ORDER_DURATION_ASCENDING, $configuration->phpunit()->executionOrder());
-        $this->assertTrue($configuration->phpunit()->defectsFirst());
-        $this->assertTrue($configuration->phpunit()->resolveDependencies());
+        $this->assertSame(
+            [Order::DurationAscending, Order::Defects],
+            $configuration->phpunit()->executionOrder(),
+        );
 
         @unlink($tmpFilename);
     }
 
-    #[IgnorePhpunitDeprecations]
-    public function testShouldIgnoreUnknownExecutionOrderToken(): void
+    #[TestDox('Applies the strategies in the order in which they are written')]
+    public function testAppliesTheStrategiesInTheOrderInWhichTheyAreWritten(): void
     {
         $tmpFilename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit.' . uniqid('', true) . '.xml';
-        $xml         = "<phpunit executionOrder='reverse,does-not-exist'></phpunit>" . PHP_EOL;
+        $xml         = "<phpunit executionOrder='defects,duration-ascending'></phpunit>" . PHP_EOL;
         file_put_contents($tmpFilename, $xml);
 
         $configuration = (new Loader)->load($tmpFilename);
 
-        $this->assertTrue($configuration->hasValidationErrors());
-        $this->assertEquals(TestSuiteSorter::ORDER_REVERSED, $configuration->phpunit()->executionOrder());
+        $this->assertSame(
+            [Order::Defects, Order::DurationAscending],
+            $configuration->phpunit()->executionOrder(),
+        );
 
         @unlink($tmpFilename);
+    }
+
+    /**
+     * @param non-empty-string $value
+     * @param non-empty-string $message
+     */
+    #[DataProvider('rejectedExecutionOrderProvider')]
+    public function testRejectsUnsupportedExecutionOrder(string $value, string $message): void
+    {
+        $tmpFilename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit.' . uniqid('', true) . '.xml';
+        $xml         = "<phpunit executionOrder='" . $value . "'></phpunit>" . PHP_EOL;
+        file_put_contents($tmpFilename, $xml);
+
+        try {
+            $this->expectException(Exception::class);
+            $this->expectExceptionMessageIsOrContains($message);
+
+            (new Loader)->load($tmpFilename);
+        } finally {
+            @unlink($tmpFilename);
+        }
     }
 
     public function testSourceConfigurationIsReadCorrectly(): void
@@ -643,8 +652,7 @@ final class LoaderTest extends TestCase
         $this->assertFalse($phpunit->failOnRisky());
         $this->assertFalse($phpunit->failOnSkipped());
         $this->assertFalse($phpunit->failOnWarning());
-        $this->assertSame(TestSuiteSorter::ORDER_DEFAULT, $phpunit->executionOrder());
-        $this->assertFalse($phpunit->defectsFirst());
+        $this->assertSame([], $phpunit->executionOrder());
         $this->assertTrue($phpunit->resolveDependencies());
         $this->assertTrue($phpunit->controlGarbageCollector());
         $this->assertSame(1000, $phpunit->numberOfTestsBeforeGarbageCollection());
