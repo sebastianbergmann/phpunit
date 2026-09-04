@@ -1,5 +1,5 @@
 --TEST--
-executionOrder="depends,defects,duration-ascending" in phpunit.xml (with test run history): Test methods with dependencies and defects
+executionOrder="duration-ascending,defects" in phpunit.xml (with test run history): Test methods with dependencies and defects
 --FILE--
 <?php declare(strict_types=1);
 $testRunHistoryFile = sys_get_temp_dir() . '/test-run-history';
@@ -8,10 +8,10 @@ if (file_exists($testRunHistoryFile)) {
     unlink($testRunHistoryFile);
 }
 
-copy(__DIR__ . '/fixture/xml-depends-defects-duration-ascending/test-run-history', $testRunHistoryFile);
+copy(__DIR__ . '/fixture/xml-duration-ascending-defects/test-run-history', $testRunHistoryFile);
 
 $_SERVER['argv'][] = '--configuration';
-$_SERVER['argv'][] = __DIR__ . '/fixture/xml-depends-defects-duration-ascending/phpunit.xml';
+$_SERVER['argv'][] = __DIR__ . '/fixture/xml-duration-ascending-defects/phpunit.xml';
 $_SERVER['argv'][] = '--cache-directory';
 $_SERVER['argv'][] = sys_get_temp_dir();
 $_SERVER['argv'][] = '--debug';
@@ -23,9 +23,6 @@ require __DIR__ . '/../../bootstrap.php';
 unlink($testRunHistoryFile);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
-Test Runner Triggered PHPUnit Deprecation (Using "depends" for the executionOrder attribute is deprecated and will be removed in PHPUnit 14. Use the resolveDependencies="true" XML configuration attribute instead.)
-Test Runner Triggered PHPUnit Deprecation (Using "defects" before "duration-ascending" for the executionOrder attribute is deprecated and will change meaning in PHPUnit 14, where tests are reordered in the order in which the tokens are written. Use "duration-ascending,defects" instead.)
-Test Runner Triggered PHPUnit Deprecation (Your XML configuration validates against a deprecated schema. Migrate your XML configuration using "--migrate-configuration"!)
 Test Runner Configured
 Event Facade Sealed
 Test Suite Loaded (3 tests)

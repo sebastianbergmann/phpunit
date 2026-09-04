@@ -12,8 +12,7 @@ namespace PHPUnit\TextUI\Configuration;
 use function explode;
 use function in_array;
 use function sprintf;
-use PHPUnit\Event\Facade as EventFacade;
-use PHPUnit\Runner\TestSuiteSorter;
+use PHPUnit\Runner\ExecutionOrder\Order;
 
 /**
  * Parses the comma-separated list of tokens that the --order-by CLI option and
@@ -21,7 +20,12 @@ use PHPUnit\Runner\TestSuiteSorter;
  *
  * This is the single place where those tokens are given meaning, so that both
  * configuration surfaces agree on how a value is interpreted and on which
- * values are diagnosed.
+ * values are rejected.
+ *
+ * Tokens are applied in the order in which they are written, so
+ * "duration-ascending,defects" sorts the tests by duration and then hoists the
+ * defective ones, while "defects,duration-ascending" does the opposite and lets
+ * the duration sort discard the hoist.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -30,232 +34,107 @@ use PHPUnit\Runner\TestSuiteSorter;
 final readonly class ExecutionOrderParser
 {
     /**
-     * Tokens that select the order in which tests are sorted. At most one of
-     * them is meaningful.
+     * Values that were supported by earlier versions of PHPUnit, mapped to what
+     * to tell the user to write instead.
      *
-     * @var non-empty-list<non-empty-string>
+     * @var non-empty-array<non-empty-string, non-empty-string>
      */
-    private const array MAIN_ORDER_TOKENS = [
-        'default',
-        'duration',
-        'duration-ascending',
-        'duration-descending',
-        'modified-ascending',
-        'modified-descending',
-        'random',
-        'reverse',
-        'size',
-        'size-ascending',
-        'size-descending',
+    private const array RENAMED = [
+        'duration' => '"duration-ascending"',
+        'size'     => '"size-ascending"',
     ];
 
     /**
-     * @param string $value the configured value; every token it does not give
-     *                      meaning to, including the empty token, is reported
-     *                      back to the caller
+     * @param string $value the configured value
+     *
+     * @throws InvalidExecutionOrderException
+     *
+     * @return list<Order>
      */
-    public function parse(string $value, ExecutionOrderSource $source, ?int $executionOrder, ?int $executionOrderDefects, ?bool $resolveDependencies): ExecutionOrder
+    public function parse(string $value, ExecutionOrderSource $source): array
     {
-        $unknownTokens = [];
-
-        $previousMainOrderToken = null;
-        $defectsSeen            = false;
+        $order = [];
 
         foreach (explode(',', $value) as $token) {
-            if (in_array($token, self::MAIN_ORDER_TOKENS, true)) {
-                if ($previousMainOrderToken !== null) {
-                    $this->deprecateMultipleOrders($source, $previousMainOrderToken, $token);
-                }
+            if ($token === 'default') {
+                $order = [];
 
-                if ($defectsSeen && $token !== 'default') {
-                    $this->deprecateDefectsBeforeOrder($source, $token);
-
-                    $defectsSeen = false;
-                }
-
-                $previousMainOrderToken = $token;
+                continue;
             }
 
-            switch ($token) {
-                case 'default':
-                    $executionOrder        = TestSuiteSorter::ORDER_DEFAULT;
-                    $executionOrderDefects = TestSuiteSorter::ORDER_DEFAULT;
-                    $resolveDependencies   = true;
-                    $defectsSeen           = false;
+            $element = Order::fromToken($token);
 
-                    break;
-
-                case 'defects':
-                    $executionOrderDefects = TestSuiteSorter::ORDER_DEFECTS_FIRST;
-                    $defectsSeen           = true;
-
-                    break;
-
-                case 'depends':
-                    $resolveDependencies = true;
-
-                    $this->deprecateDependencyToken($source, 'depends', $source->resolveDependencies());
-
-                    break;
-
-                case 'no-depends':
-                    $resolveDependencies = false;
-
-                    $this->deprecateDependencyToken($source, 'no-depends', $source->ignoreDependencies());
-
-                    break;
-
-                case 'duration':
-                    $executionOrder = TestSuiteSorter::ORDER_DURATION_ASCENDING;
-
-                    $this->deprecateRenamedToken($source, 'duration', 'duration-ascending');
-
-                    break;
-
-                case 'duration-ascending':
-                    $executionOrder = TestSuiteSorter::ORDER_DURATION_ASCENDING;
-
-                    break;
-
-                case 'duration-descending':
-                    $executionOrder = TestSuiteSorter::ORDER_DURATION_DESCENDING;
-
-                    break;
-
-                case 'modified-ascending':
-                    $executionOrder = TestSuiteSorter::ORDER_MODIFIED_ASCENDING;
-
-                    break;
-
-                case 'modified-descending':
-                    $executionOrder = TestSuiteSorter::ORDER_MODIFIED_DESCENDING;
-
-                    break;
-
-                case 'random':
-                    $executionOrder = TestSuiteSorter::ORDER_RANDOMIZED;
-
-                    break;
-
-                case 'reverse':
-                    $executionOrder = TestSuiteSorter::ORDER_REVERSED;
-
-                    break;
-
-                case 'size':
-                    $executionOrder = TestSuiteSorter::ORDER_SIZE_ASCENDING;
-
-                    $this->deprecateRenamedToken($source, 'size', 'size-ascending');
-
-                    break;
-
-                case 'size-ascending':
-                    $executionOrder = TestSuiteSorter::ORDER_SIZE_ASCENDING;
-
-                    break;
-
-                case 'size-descending':
-                    $executionOrder = TestSuiteSorter::ORDER_SIZE_DESCENDING;
-
-                    break;
-
-                default:
-                    $unknownTokens[] = $token;
+            if ($element === null) {
+                throw new InvalidExecutionOrderException(
+                    $this->messageForUnsupportedToken($token, $source),
+                );
             }
+
+            if (in_array($element, $order, true)) {
+                throw new InvalidExecutionOrderException(
+                    sprintf(
+                        'Cannot use "%s" more than once for %s',
+                        $element->token(),
+                        $source->subject(),
+                    ),
+                );
+            }
+
+            if ($element->isSortingStrategy()) {
+                foreach ($order as $configured) {
+                    if ($configured->isSortingStrategy()) {
+                        throw new InvalidExecutionOrderException(
+                            sprintf(
+                                'Cannot use more than one order for %s: "%s" and "%s"',
+                                $source->subject(),
+                                $configured->token(),
+                                $element->token(),
+                            ),
+                        );
+                    }
+                }
+            }
+
+            $order[] = $element;
         }
 
-        return new ExecutionOrder(
-            $executionOrder,
-            $executionOrderDefects,
-            $resolveDependencies,
-            $unknownTokens,
-        );
+        return $order;
     }
 
     /**
-     * @param non-empty-string $token
-     * @param non-empty-string $replacement
-     */
-    private function deprecateRenamedToken(ExecutionOrderSource $source, string $token, string $replacement): void
-    {
-        EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
-            sprintf(
-                'Using "%s" for %s is deprecated and will be removed in PHPUnit 14. Use "%s" instead.',
-                $token,
-                $source->subject(),
-                $replacement,
-            ),
-        );
-    }
-
-    /**
-     * Whether dependencies between tests are resolved is not an ordering
-     * strategy, and it has had a dedicated configuration option all along.
-     *
-     * @param non-empty-string $token
-     * @param non-empty-string $replacement
-     */
-    private function deprecateDependencyToken(ExecutionOrderSource $source, string $token, string $replacement): void
-    {
-        EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
-            sprintf(
-                'Using "%s" for %s is deprecated and will be removed in PHPUnit 14. Use %s instead.',
-                $token,
-                $source->subject(),
-                $replacement,
-            ),
-        );
-    }
-
-    /**
-     * @param non-empty-string $previousToken
-     * @param non-empty-string $token
-     */
-    private function deprecateMultipleOrders(ExecutionOrderSource $source, string $previousToken, string $token): void
-    {
-        EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
-            sprintf(
-                'Using more than one order for %s is deprecated and will be an error in PHPUnit 14. "%s" overrides "%s".',
-                $source->subject(),
-                $token,
-                $previousToken,
-            ),
-        );
-    }
-
-    /**
-     * @param non-empty-string $token
-     */
-    private function deprecateDefectsBeforeOrder(ExecutionOrderSource $source, string $token): void
-    {
-        EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
-            sprintf(
-                'Using "defects" before "%s" for %s is deprecated and will change meaning in PHPUnit 14, where tests are reordered in the order in which the tokens are written. Use "%s,defects" instead.',
-                $token,
-                $source->subject(),
-                $this->canonicalOrderToken($token),
-            ),
-        );
-    }
-
-    /**
-     * The replacement suggested by a diagnostic must never be a token that is
-     * itself deprecated.
-     *
-     * @param non-empty-string $token
-     *
      * @return non-empty-string
      */
-    private function canonicalOrderToken(string $token): string
+    private function messageForUnsupportedToken(string $token, ExecutionOrderSource $source): string
     {
-        if ($token === 'duration') {
-            return 'duration-ascending';
+        if ($token === 'depends') {
+            return sprintf(
+                '"depends" is no longer supported for %s, use %s instead',
+                $source->subject(),
+                $source->resolveDependencies(),
+            );
         }
 
-        if ($token === 'size') {
-            return 'size-ascending';
+        if ($token === 'no-depends') {
+            return sprintf(
+                '"no-depends" is no longer supported for %s, use %s instead',
+                $source->subject(),
+                $source->ignoreDependencies(),
+            );
         }
 
-        return $token;
+        if (isset(self::RENAMED[$token])) {
+            return sprintf(
+                '"%s" is no longer supported for %s, use %s instead',
+                $token,
+                $source->subject(),
+                self::RENAMED[$token],
+            );
+        }
+
+        return sprintf(
+            'Unknown value "%s" for %s',
+            $token,
+            $source->subject(),
+        );
     }
 }

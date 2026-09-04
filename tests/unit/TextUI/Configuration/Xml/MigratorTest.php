@@ -77,9 +77,9 @@ final class MigratorTest extends TestCase
                 __DIR__ . '/../../../../_files/XmlConfigurationMigration/output-execution-order-defects.xml',
                 __DIR__ . '/../../../../_files/XmlConfigurationMigration/input-execution-order-defects.xml',
             ],
-            'Execution Order Defects Without Dependency Resolution' => [
-                __DIR__ . '/../../../../_files/XmlConfigurationMigration/output-execution-order-defects-without-dependency-resolution.xml',
-                __DIR__ . '/../../../../_files/XmlConfigurationMigration/input-execution-order-defects-without-dependency-resolution.xml',
+            'Execution Order Without Dependency Resolution' => [
+                __DIR__ . '/../../../../_files/XmlConfigurationMigration/output-execution-order-without-dependency-resolution.xml',
+                __DIR__ . '/../../../../_files/XmlConfigurationMigration/input-execution-order-without-dependency-resolution.xml',
             ],
             'Execution Order No Depends' => [
                 __DIR__ . '/../../../../_files/XmlConfigurationMigration/output-execution-order-no-depends.xml',

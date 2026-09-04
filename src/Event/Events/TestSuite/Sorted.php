@@ -20,9 +20,6 @@ use PHPUnit\Event\Telemetry;
 final readonly class Sorted implements Event
 {
     private Telemetry\Info $telemetryInfo;
-    private int $executionOrder;
-    private int $executionOrderDefects;
-    private bool $resolveDependencies;
 
     /**
      * @var list<non-empty-string>
@@ -34,33 +31,15 @@ final readonly class Sorted implements Event
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function __construct(Telemetry\Info $telemetryInfo, int $executionOrder, int $executionOrderDefects, bool $resolveDependencies, array $pipeline)
+    public function __construct(Telemetry\Info $telemetryInfo, array $pipeline)
     {
-        $this->telemetryInfo         = $telemetryInfo;
-        $this->executionOrder        = $executionOrder;
-        $this->executionOrderDefects = $executionOrderDefects;
-        $this->resolveDependencies   = $resolveDependencies;
-        $this->pipeline              = $pipeline;
+        $this->telemetryInfo = $telemetryInfo;
+        $this->pipeline      = $pipeline;
     }
 
     public function telemetryInfo(): Telemetry\Info
     {
         return $this->telemetryInfo;
-    }
-
-    public function executionOrder(): int
-    {
-        return $this->executionOrder;
-    }
-
-    public function executionOrderDefects(): int
-    {
-        return $this->executionOrderDefects;
-    }
-
-    public function resolveDependencies(): bool
-    {
-        return $this->resolveDependencies;
     }
 
     /**

@@ -214,14 +214,11 @@ final class DispatchingEmitter implements Emitter
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
-    public function testSuiteSorted(int $executionOrder, int $executionOrderDefects, bool $resolveDependencies, array $pipeline): void
+    public function testSuiteSorted(array $pipeline): void
     {
         $this->dispatcher->dispatch(
             new TestSuiteSorted(
                 $this->telemetryInfo(),
-                $executionOrder,
-                $executionOrderDefects,
-                $resolveDependencies,
                 $pipeline,
             ),
         );
