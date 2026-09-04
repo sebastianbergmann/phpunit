@@ -115,7 +115,6 @@ Execution:
   --repeat <N>                         Run each test N times, stopping at the first failure
   --retry <N>                          Attempt each test up to N times, stopping at the first success
   --reverse-order                      Alias for "--order-by reverse"
-  --explain-order                      Explain how tests are reordered
 
 Reporting:
 

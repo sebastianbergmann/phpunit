@@ -123,7 +123,6 @@ final class Builder
         'no-progress',
         'no-results',
         'order-by=',
-        'explain-order',
         'process-isolation',
         'do-not-report-useless-tests',
         'random-order',
@@ -428,7 +427,6 @@ final class Builder
         $printerTestDox                           = null;
         $printerTestDoxSummary                    = null;
         $debug                                    = false;
-        $explainOrder                             = false;
         $withTelemetry                            = false;
         $extensions                               = [];
         $warnWhenPhpIsNotConfiguredForDevelopment = null;
@@ -853,11 +851,6 @@ final class Builder
                     $executionOrder        = $parsedExecutionOrder->executionOrder();
                     $executionOrderDefects = $parsedExecutionOrder->executionOrderDefects();
                     $resolveDependencies   = $parsedExecutionOrder->resolveDependencies();
-
-                    break;
-
-                case '--explain-order':
-                    $explainOrder = true;
 
                     break;
 
@@ -1564,7 +1557,6 @@ final class Builder
             $printerTestDox,
             $printerTestDoxSummary,
             $debug,
-            $explainOrder,
             $withTelemetry,
             $extensions,
             $cacheTestIndex,

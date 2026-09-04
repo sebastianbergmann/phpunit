@@ -6,7 +6,6 @@ All notable changes of the PHPUnit 13.4 release series are documented in this fi
 
 ### Added
 
-* [#6585](https://github.com/sebastianbergmann/phpunit/issues/6585): `--explain-order` CLI option for printing the effective test reordering pipeline
 * [#6585](https://github.com/sebastianbergmann/phpunit/issues/6585): `executionOrder` attribute values and `--order-by` token lists that spell the order before `defects`, for example `duration-ascending,defects`
 * [#6585](https://github.com/sebastianbergmann/phpunit/issues/6585): `pipeline()` on the `TestSuite\Sorted` event for inspecting which reordering stages were applied
 * [#6686](https://github.com/sebastianbergmann/phpunit/issues/6686): `Constraint::negatedToString()` and `Constraint::negatedFailureDescription()` for authoring the description of a constraint that is wrapped in `LogicalNot`
