@@ -40,6 +40,8 @@ final readonly class ExecutionOrderParser
         'duration',
         'duration-ascending',
         'duration-descending',
+        'modified-ascending',
+        'modified-descending',
         'random',
         'reverse',
         'size',
@@ -117,6 +119,16 @@ final readonly class ExecutionOrderParser
 
                 case 'duration-descending':
                     $executionOrder = TestSuiteSorter::ORDER_DURATION_DESCENDING;
+
+                    break;
+
+                case 'modified-ascending':
+                    $executionOrder = TestSuiteSorter::ORDER_MODIFIED_ASCENDING;
+
+                    break;
+
+                case 'modified-descending':
+                    $executionOrder = TestSuiteSorter::ORDER_MODIFIED_DESCENDING;
 
                     break;
 

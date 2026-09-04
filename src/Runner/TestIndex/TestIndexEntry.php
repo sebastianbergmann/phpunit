@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Runner\TestIndex;
 
-use function array_keys;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
@@ -57,7 +56,14 @@ final readonly class TestIndexEntry
     {
         $dependencies = [];
 
-        foreach (self::sourceFilesOf($class) as $file) {
+        /*
+         * The source files a test class is made of are what decides whether an
+         * entry is still valid. PHPUnit's own files are not among them, which
+         * is what keeps a change to PHPUnit itself from invalidating every
+         * entry at once. That a different version of PHPUnit means a different
+         * index is already established by the version the index records.
+         */
+        foreach (Reflection::sourceFilesOf($class) as $file) {
             $hash = $hasher->hash($file);
 
             if ($hash === null) {
@@ -201,62 +207,5 @@ final readonly class TestIndexEntry
         }
 
         return true;
-    }
-
-    /**
-     * Which test methods a test class has, and which metadata they carry, is
-     * not decided by the file that declares the class alone: test methods are
-     * collected from parent classes as well, see Reflection::
-     * filterAndSortMethods(), and both classes and traits may contribute them.
-     * The file that declares each of those is therefore part of the entry.
-     *
-     * Interfaces are not considered: they cannot contribute a test method to a
-     * concrete test class.
-     *
-     * The walk stops at TestCase, which PHPUnit declares itself: Reflection::
-     * filterAndSortMethods() never treats a method declared by TestCase or by
-     * Assert, the class it extends, as a test method, so neither of them can
-     * contribute anything an entry is derived from. Leaving them out is what
-     * keeps a change to PHPUnit itself from invalidating every entry at once.
-     * That a different version of PHPUnit means a different index is already
-     * established by the version the index records.
-     *
-     * @param ReflectionClass<TestCase> $class
-     *
-     * @return list<non-empty-string>
-     */
-    private static function sourceFilesOf(ReflectionClass $class): array
-    {
-        $files   = [];
-        $current = $class;
-
-        while ($current !== false) {
-            if ($current->getName() === TestCase::class) {
-                break;
-            }
-
-            self::collectSourceFilesOf($current, $files);
-
-            $current = $current->getParentClass();
-        }
-
-        return array_keys($files);
-    }
-
-    /**
-     * @param ReflectionClass<object>       $class
-     * @param array<non-empty-string, true> $files
-     */
-    private static function collectSourceFilesOf(ReflectionClass $class, array &$files): void
-    {
-        $file = $class->getFileName();
-
-        if ($file !== false && $file !== '') {
-            $files[$file] = true;
-        }
-
-        foreach ($class->getTraits() as $trait) {
-            self::collectSourceFilesOf($trait, $files);
-        }
     }
 }

@@ -464,6 +464,16 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         return $this->filename;
     }
 
+    /**
+     * The file that declares this test.
+     *
+     * @return non-empty-string
+     */
+    public function file(): string
+    {
+        return $this->filename;
+    }
+
     public function sortId(): string
     {
         return $this->filename;

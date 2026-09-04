@@ -17,6 +17,7 @@ use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\ExecutionOrder\Stage\ByDuration;
+use PHPUnit\Runner\ExecutionOrder\Stage\ByModificationTime;
 use PHPUnit\Runner\ExecutionOrder\Stage\BySize;
 use PHPUnit\Runner\ExecutionOrder\Stage\DefectsFirst;
 use PHPUnit\Runner\ExecutionOrder\Stage\Randomize;
@@ -26,6 +27,7 @@ use PHPUnit\Runner\TestSuiteSorter;
 
 #[CoversClass(ReorderPipeline::class)]
 #[UsesClass(ByDuration::class)]
+#[UsesClass(ByModificationTime::class)]
 #[UsesClass(BySize::class)]
 #[UsesClass(DefaultDefectWeightPolicy::class)]
 #[UsesClass(DefectsFirst::class)]
@@ -86,6 +88,20 @@ final class ReorderPipelineTest extends TestCase
             'duration descending' => [
                 ['duration-descending'],
                 TestSuiteSorter::ORDER_DURATION_DESCENDING,
+                TestSuiteSorter::ORDER_DEFAULT,
+                false,
+            ],
+
+            'modified ascending' => [
+                ['modified-ascending'],
+                TestSuiteSorter::ORDER_MODIFIED_ASCENDING,
+                TestSuiteSorter::ORDER_DEFAULT,
+                false,
+            ],
+
+            'modified descending' => [
+                ['modified-descending'],
+                TestSuiteSorter::ORDER_MODIFIED_DESCENDING,
                 TestSuiteSorter::ORDER_DEFAULT,
                 false,
             ],

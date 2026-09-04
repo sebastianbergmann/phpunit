@@ -11,6 +11,7 @@ namespace PHPUnit\Runner\ExecutionOrder;
 
 use PHPUnit\Framework\Test;
 use PHPUnit\Runner\ExecutionOrder\Stage\ByDuration;
+use PHPUnit\Runner\ExecutionOrder\Stage\ByModificationTime;
 use PHPUnit\Runner\ExecutionOrder\Stage\BySize;
 use PHPUnit\Runner\ExecutionOrder\Stage\DefectsFirst;
 use PHPUnit\Runner\ExecutionOrder\Stage\Randomize;
@@ -145,6 +146,14 @@ final readonly class ReorderPipeline
 
         if ($order === TestSuiteSorter::ORDER_SIZE_DESCENDING) {
             return new BySize(Direction::Descending);
+        }
+
+        if ($order === TestSuiteSorter::ORDER_MODIFIED_ASCENDING) {
+            return new ByModificationTime(Direction::Ascending);
+        }
+
+        if ($order === TestSuiteSorter::ORDER_MODIFIED_DESCENDING) {
+            return new ByModificationTime(Direction::Descending);
         }
 
         // @codeCoverageIgnoreStart

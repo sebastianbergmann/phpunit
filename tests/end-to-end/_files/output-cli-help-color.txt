@@ -176,7 +176,7 @@
                                        development
 
   [32m--order-by [36m<order>[0m                  [0m Run tests in order:
-                                       default|defects|duration-ascending|duration-descending|random|reverse|size-ascending|size-descending
+                                       default|defects|duration-ascending|duration-descending|modified-ascending|modified-descending|random|reverse|size-ascending|size-descending
   [32m--resolve-dependencies              [0m Reorder tests to resolve dependencies
                                        between them (default)
   [32m--ignore-dependencies               [0m Do not reorder tests to resolve

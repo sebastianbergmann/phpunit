@@ -36,6 +36,8 @@ final class TestSuiteSorter
     public const int ORDER_SIZE_ASCENDING      = 5;
     public const int ORDER_DURATION_DESCENDING = 6;
     public const int ORDER_SIZE_DESCENDING     = 7;
+    public const int ORDER_MODIFIED_ASCENDING  = 8;
+    public const int ORDER_MODIFIED_DESCENDING = 9;
     private readonly TestRunHistory $testRunHistory;
 
     public function __construct(TestRunHistory $testRunHistory = new NullTestRunHistory)

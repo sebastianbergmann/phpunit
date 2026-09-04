@@ -107,7 +107,7 @@ Execution:
   --do-not-warn-when-php-is-not-configured-for-development
                                        Do not trigger a test runner warning when PHP is not configured for development
 
-  --order-by <order>                   Run tests in order: default|defects|duration-ascending|duration-descending|random|reverse|size-ascending|size-descending
+  --order-by <order>                   Run tests in order: default|defects|duration-ascending|duration-descending|modified-ascending|modified-descending|random|reverse|size-ascending|size-descending
   --resolve-dependencies               Reorder tests to resolve dependencies between them (default)
   --ignore-dependencies                Do not reorder tests to resolve dependencies between them
   --random-order                       Alias for "--order-by random"
