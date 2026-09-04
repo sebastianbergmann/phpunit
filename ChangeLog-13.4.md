@@ -11,6 +11,7 @@ All notable changes of the PHPUnit 13.4 release series are documented in this fi
 * [#6686](https://github.com/sebastianbergmann/phpunit/issues/6686): `Constraint::negatedToString()` and `Constraint::negatedFailureDescription()` for authoring the description of a constraint that is wrapped in `LogicalNot`
 * [#6863](https://github.com/sebastianbergmann/phpunit/issues/6863): Cache which tests a test file contains
 * [#6957](https://github.com/sebastianbergmann/phpunit/issues/6957): Allow ordering tests by the time their source files were last modified
+* [#6958](https://github.com/sebastianbergmann/phpunit/issues/6958): Select the tests that are in all of several groups
 * `--coverage-jsonl` CLI option and `<jsonl>` element for the XML configuration file to write a code coverage report in JSONL format, one JSON object per line, that reports uncovered code rather than every executable line
 
 ### Deprecated

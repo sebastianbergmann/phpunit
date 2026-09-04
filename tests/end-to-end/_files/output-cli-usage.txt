@@ -27,8 +27,8 @@ Selection:
   --testsuite <name>                   Only run tests from the specified test suite(s)
   --exclude-testsuite <name>           Exclude tests from the specified test suite(s)
   --list-groups                        List available test groups
-  --group <name>                       Only run tests from the specified group(s)
-  --exclude-group <name>               Exclude tests from the specified group(s)
+  --group <name>                       Only run tests from the specified group(s); use "a+b" for the tests that are in group "a" and in group "b"
+  --exclude-group <name>               Exclude tests from the specified group(s); use "a+b" for the tests that are in group "a" and in group "b"
   --covers <name>                      Only run tests that intend to cover <name>
   --uses <name>                        Only run tests that intend to use <name>
   --requires-php-extension <name>      Only run tests that require PHP extension <name>

@@ -16,10 +16,12 @@ use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Runner\Filter\CompiledGroupFilter;
 use PHPUnit\TestFixture\Success;
 
 #[CoversClass(GroupPruner::class)]
 #[UsesClass(TestIndexEntry::class)]
+#[UsesClass(CompiledGroupFilter::class)]
 #[Small]
 #[Group('test-runner')]
 #[Group('test-runner/test-index')]
@@ -76,6 +78,48 @@ final class GroupPrunerTest extends TestCase
         $pruner = new GroupPruner(['a'], ['b']);
 
         $this->assertFalse($pruner->canSkip($this->entry(['testOne' => ['a', 'b'], 'testTwo' => ['a']])));
+    }
+
+    #[TestDox('Skips a file without a test that is in every group of an included conjunction')]
+    public function testSkipsFileWithoutTestInEveryGroupOfIncludedConjunction(): void
+    {
+        $pruner = new GroupPruner(['a+b'], []);
+
+        $this->assertTrue($pruner->canSkip($this->entry(['testOne' => ['a'], 'testTwo' => ['b']])));
+    }
+
+    #[TestDox('Does not skip a file with a test that is in every group of an included conjunction')]
+    public function testDoesNotSkipFileWithTestInEveryGroupOfIncludedConjunction(): void
+    {
+        $pruner = new GroupPruner(['a+b'], []);
+
+        $this->assertFalse($pruner->canSkip($this->entry(['testOne' => ['a'], 'testTwo' => ['a', 'b']])));
+    }
+
+    #[TestDox('Skips a file where every test is in every group of an excluded conjunction')]
+    public function testSkipsFileWhereEveryTestIsInEveryGroupOfExcludedConjunction(): void
+    {
+        $pruner = new GroupPruner([], ['a+b']);
+
+        $this->assertTrue($pruner->canSkip($this->entry(['testOne' => ['a', 'b'], 'testTwo' => ['a', 'b', 'c']])));
+    }
+
+    #[TestDox('Does not skip a file with a test that is in only one group of an excluded conjunction')]
+    public function testDoesNotSkipFileWithTestInOnlyOneGroupOfExcludedConjunction(): void
+    {
+        $pruner = new GroupPruner([], ['a+b']);
+
+        $this->assertFalse($pruner->canSkip($this->entry(['testOne' => ['a', 'b'], 'testTwo' => ['a']])));
+    }
+
+    #[TestDox('Considers a conjunction of the group configured for a test file and a group of a test')]
+    public function testConsidersConjunctionOfGroupFromConfigurationAndGroupOfTest(): void
+    {
+        $pruner = new GroupPruner(['a+from-configuration'], []);
+        $entry  = $this->entry(['testOne' => ['a']]);
+
+        $this->assertTrue($pruner->canSkip($entry));
+        $this->assertFalse($pruner->canSkip($entry, ['from-configuration']));
     }
 
     #[TestDox('Treats a test that is in no group as being in the default group')]

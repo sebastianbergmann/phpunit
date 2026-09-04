@@ -827,10 +827,16 @@ final readonly class Application
      *
      * TestSuiteFilterProcessor selects by these same groups, but it adds a
      * filter of its own for --group, for --covers, for --uses, and for
-     * --requires-php-extension: a test has to be in a group from every one of
-     * the options that were used. The pruner has them all in one list and asks
-     * only whether a test is in any of them, so it keeps files that the filters
-     * go on to take every test from.
+     * --requires-php-extension: a test has to be selected by every one of the
+     * options that were used. The pruner has them all in one list and asks only
+     * whether a test is selected by any of them, so it keeps files that the
+     * filters go on to take every test from.
+     *
+     * A value of --group that names several groups is one entry of that list
+     * and keeps requiring all of them, which is what the filter for --group
+     * requires as well. The list is therefore no less precise for that option
+     * than the filter is, and still less precise than the filters are taken
+     * together.
      *
      * That is the direction in which the index has to be wrong: leaving work
      * for the filters costs no more than the time it takes, while pruning a

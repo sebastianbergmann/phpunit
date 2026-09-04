@@ -19,6 +19,7 @@ use function version_compare;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\Exception as FrameworkException;
 use PHPUnit\Framework\TestSuite as TestSuiteObject;
+use PHPUnit\Runner\Filter\CompiledGroupFilter;
 use PHPUnit\Runner\TestIndex\NullTestFileSkipper;
 use PHPUnit\Runner\TestIndex\TestFileSkipper;
 use PHPUnit\TextUI\Configuration\TestSuiteCollection;
@@ -99,6 +100,8 @@ final readonly class TestSuiteMapper
 
                     $groups = $directory->groups();
 
+                    $this->warnAboutGroupNamesThatCannotBeSelected($groups, $directory->path());
+
                     foreach ($files as $file) {
                         if ($this->wasAlreadyAddedToAnotherTestSuite($processed, $file, $testSuiteName)) {
                             continue;
@@ -143,6 +146,8 @@ final readonly class TestSuiteMapper
                     $processed[$file->path()] = $testSuiteName;
                     $empty                    = false;
 
+                    $this->warnAboutGroupNamesThatCannotBeSelected($file->groups(), $file->path());
+
                     if ($this->skipper->canSkipLoading($file->path(), $file->groups())) {
                         continue;
                     }
@@ -171,6 +176,33 @@ final readonly class TestSuiteMapper
             );
         }
         // @codeCoverageIgnoreEnd
+    }
+
+    /**
+     * The name of a group that the --group and --exclude-group CLI options
+     * parse as a conjunction of the names of other groups cannot be used to
+     * select the tests in it, see CompiledGroupFilter. The group is still
+     * assigned to the tests: dropping it would take them out of a group the
+     * test suite is expected to have.
+     *
+     * @param list<non-empty-string> $groups
+     * @param non-empty-string       $path
+     */
+    private function warnAboutGroupNamesThatCannotBeSelected(array $groups, string $path): void
+    {
+        foreach ($groups as $group) {
+            if (!CompiledGroupFilter::isConjunction($group)) {
+                continue;
+            }
+
+            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                sprintf(
+                    'Group name "%s" configured for %s cannot be used to select tests: "+" combines several group names into a selection of the tests that are in all of them',
+                    $group,
+                    $path,
+                ),
+            );
+        }
     }
 
     /**

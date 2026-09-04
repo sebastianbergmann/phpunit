@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Runner\Filter;
 
-use function in_array;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
@@ -27,9 +26,9 @@ use RecursiveIterator;
 abstract class GroupFilterIterator extends RecursiveFilterIterator
 {
     /**
-     * The identifiers of the tests that are in one of the selected groups are
-     * used as keys so that looking one up does not become more expensive as
-     * more tests are selected.
+     * The identifiers of the tests that the selection selects are used as keys
+     * so that looking one up does not become more expensive as more tests are
+     * selected.
      *
      * @var array<non-empty-string, true>
      */
@@ -43,15 +42,36 @@ abstract class GroupFilterIterator extends RecursiveFilterIterator
     {
         parent::__construct($iterator);
 
-        $groupTests = [];
+        $filter = CompiledGroupFilter::from($groups);
+
+        /*
+         * Only the groups the selection names can make a difference to it, so
+         * only the tests in those groups are looked at. A test that is in none
+         * of them cannot be selected, and the conjunction it would have to
+         * match to be selected cannot be evaluated without knowing which of
+         * those groups it is in.
+         *
+         * @var array<non-empty-string, non-empty-list<non-empty-string>>
+         */
+        $selectedGroupsOfTest = [];
 
         foreach ($suite->groups() as $group => $tests) {
             // the name of a group that is a number is an integer key
-            if (!in_array((string) $group, $groups, true)) {
+            $group = (string) $group;
+
+            if (!$filter->mentions($group)) {
                 continue;
             }
 
             foreach ($tests as $test) {
+                $selectedGroupsOfTest[$test][] = $group;
+            }
+        }
+
+        $groupTests = [];
+
+        foreach ($selectedGroupsOfTest as $test => $groupsOfTest) {
+            if ($filter->matches($groupsOfTest)) {
                 $groupTests[$test] = true;
             }
         }
