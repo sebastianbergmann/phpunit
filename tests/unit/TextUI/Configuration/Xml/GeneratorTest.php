@@ -31,7 +31,7 @@ final class GeneratorTest extends TestCase
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/X.Y/phpunit.xsd"
          bootstrap="vendor/autoload.php"
          cacheDirectory=".phpunit.cache"
-         executionOrder="depends,defects"
+         executionOrder="defects"
          requireCoverageMetadata="true"
          beStrictAboutCoverageMetadata="true"
          beStrictAboutOutputDuringTests="true"
