@@ -13,12 +13,15 @@ use function assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\TestFixture\BankAccountTest;
 
 #[CoversClass(ExcludeGroupFilterIterator::class)]
 #[CoversClass(GroupFilterIterator::class)]
+#[UsesClass(CompiledGroupFilter::class)]
 #[Small]
 #[Group('test-runner')]
 #[Group('test-runner/filter')]
@@ -45,6 +48,30 @@ final class ExcludeGroupFilterIteratorTest extends TestCase
                 BankAccountTest::class . '::testBalanceCannotBecomeNegative2',
             ],
             $this->idsOfAcceptedTests(['5']),
+        );
+    }
+
+    public function testDoesNotAcceptTestsThatAreInEveryGroupOfAConjunction(): void
+    {
+        $this->assertSame(
+            [
+                BankAccountTest::class . '::testBalanceIsInitiallyZero',
+                BankAccountTest::class . '::testBalanceCannotBecomeNegative',
+            ],
+            $this->idsOfAcceptedTests(['one+two']),
+        );
+    }
+
+    #[TestDox('Accepts a test that is in only one group of an excluded conjunction')]
+    public function testAcceptsTestThatIsInOnlyOneGroupOfAnExcludedConjunction(): void
+    {
+        $this->assertSame(
+            [
+                BankAccountTest::class . '::testBalanceIsInitiallyZero',
+                BankAccountTest::class . '::testBalanceCannotBecomeNegative',
+                BankAccountTest::class . '::testBalanceCannotBecomeNegative2',
+            ],
+            $this->idsOfAcceptedTests(['one+group-without-tests']),
         );
     }
 

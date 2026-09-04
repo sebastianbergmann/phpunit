@@ -104,6 +104,7 @@ use PHPUnit\Metadata\Metadata;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Version\InvalidVersionRequirement;
 use PHPUnit\Metadata\Version\Requirement;
+use PHPUnit\Runner\Filter\CompiledGroupFilter;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -292,6 +293,8 @@ final readonly class AttributeParser implements Parser
                     assert($attributeInstance instanceof Group);
 
                     if (!$this->isSizeGroup($attributeInstance->name(), $className)) {
+                        $this->warnAboutGroupNameThatCannotBeSelected($attributeInstance->name(), $className);
+
                         $result[] = Metadata::groupOnClass($attributeInstance->name());
                     }
 
@@ -796,6 +799,8 @@ final readonly class AttributeParser implements Parser
                     assert($attributeInstance instanceof Group);
 
                     if (!$this->isSizeGroup($attributeInstance->name(), $className, $methodName)) {
+                        $this->warnAboutGroupNameThatCannotBeSelected($attributeInstance->name(), $className, $methodName);
+
                         $result[] = Metadata::groupOnMethod($attributeInstance->name());
                     }
 
@@ -1131,6 +1136,36 @@ final readonly class AttributeParser implements Parser
         );
 
         return true;
+    }
+
+    /**
+     * The name of a group that the --group and --exclude-group CLI options
+     * parse as a conjunction of the names of other groups cannot be used to
+     * select the tests in it, see CompiledGroupFilter. The group is still
+     * declared: dropping it would take the tests out of a group the test suite
+     * is expected to have.
+     *
+     * The warning also keeps a test file that declares such a group from being
+     * skipped by the test index, which never skips a file that PHPUnit had
+     * something to say about while it was loaded.
+     *
+     * @param non-empty-string  $groupName
+     * @param class-string      $testClassName
+     * @param ?non-empty-string $testMethodName
+     */
+    private function warnAboutGroupNameThatCannotBeSelected(string $groupName, string $testClassName, ?string $testMethodName = null): void
+    {
+        if (!CompiledGroupFilter::isConjunction($groupName)) {
+            return;
+        }
+
+        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+            sprintf(
+                'Group name "%s" for %s cannot be used to select tests: "+" combines several group names into a selection of the tests that are in all of them',
+                $groupName,
+                $this->testAsString($testClassName, $testMethodName),
+            ),
+        );
     }
 
     /**

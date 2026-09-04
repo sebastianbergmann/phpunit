@@ -35,9 +35,11 @@
                                        suite(s)
   [32m--list-groups                       [0m List available test groups
   [32m--group [36m<name>[0m                      [0m Only run tests from the specified
-                                       group(s)
+                                       group(s); use "a+b" for the tests that
+                                       are in group "a" and in group "b"
   [32m--exclude-group [36m<name>[0m              [0m Exclude tests from the specified
-                                       group(s)
+                                       group(s); use "a+b" for the tests that
+                                       are in group "a" and in group "b"
   [32m--covers [36m<name>[0m                     [0m Only run tests that intend to cover
                                        <name>
   [32m--uses [36m<name>[0m                       [0m Only run tests that intend to use <name>

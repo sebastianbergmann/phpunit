@@ -9,9 +9,9 @@
  */
 namespace PHPUnit\Runner\TestIndex;
 
-use function array_intersect;
 use function array_merge;
 use function str_starts_with;
+use PHPUnit\Runner\Filter\CompiledGroupFilter;
 
 /**
  * Decides whether a test file can be skipped for a run that selects tests by
@@ -24,21 +24,19 @@ use function str_starts_with;
  * and their groups is therefore enough to know that none of the tests in it can
  * be selected.
  *
+ * That remains true for a selection that requires a test to be in several
+ * groups: which groups a test is in is known either way. The selection is
+ * evaluated by CompiledGroupFilter, which the group filter iterators use as
+ * well, so that this cannot decide it differently than the filters do.
+ *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final readonly class GroupPruner
 {
-    /**
-     * @var list<non-empty-string>
-     */
-    private array $includedGroups;
-
-    /**
-     * @var list<non-empty-string>
-     */
-    private array $excludedGroups;
+    private CompiledGroupFilter $includedGroups;
+    private CompiledGroupFilter $excludedGroups;
 
     /**
      * The included groups are expected to already contain the virtual groups
@@ -49,8 +47,8 @@ final readonly class GroupPruner
      */
     public function __construct(array $includedGroups, array $excludedGroups)
     {
-        $this->includedGroups = $includedGroups;
-        $this->excludedGroups = $excludedGroups;
+        $this->includedGroups = CompiledGroupFilter::from($includedGroups);
+        $this->excludedGroups = CompiledGroupFilter::from($excludedGroups);
     }
 
     /**
@@ -58,7 +56,7 @@ final readonly class GroupPruner
      */
     public function prunes(): bool
     {
-        return $this->includedGroups !== [] || $this->excludedGroups !== [];
+        return !$this->includedGroups->isEmpty() || !$this->excludedGroups->isEmpty();
     }
 
     /**
@@ -92,18 +90,18 @@ final readonly class GroupPruner
 
     /**
      * Mirrors the composition of the group filters in TestSuiteFilterProcessor:
-     * a test is run when it is in one of the included groups, if any are
-     * selected, and in none of the excluded groups.
+     * a test is run when the included groups select it, if any are selected,
+     * and the excluded groups do not.
      *
      * @param list<non-empty-string> $groups
      */
     private function selects(array $groups): bool
     {
-        if ($this->includedGroups !== [] && array_intersect($groups, $this->includedGroups) === []) {
+        if (!$this->includedGroups->isEmpty() && !$this->includedGroups->matches($groups)) {
             return false;
         }
 
-        return array_intersect($groups, $this->excludedGroups) === [];
+        return !$this->excludedGroups->matches($groups);
     }
 
     /**

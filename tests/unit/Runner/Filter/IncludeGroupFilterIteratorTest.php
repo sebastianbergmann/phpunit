@@ -14,6 +14,8 @@ use function iterator_to_array;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\TestFixture\BankAccountTest;
@@ -22,6 +24,7 @@ use RecursiveArrayIterator;
 
 #[CoversClass(IncludeGroupFilterIterator::class)]
 #[CoversClass(GroupFilterIterator::class)]
+#[UsesClass(CompiledGroupFilter::class)]
 #[Small]
 #[Group('test-runner')]
 #[Group('test-runner/filter')]
@@ -55,6 +58,40 @@ final class IncludeGroupFilterIteratorTest extends TestCase
         $this->assertSame(
             [BankAccountTest::class . '::testBalanceCannotBecomeNegative'],
             $this->idsOfAcceptedTests(['5']),
+        );
+    }
+
+    public function testAcceptsTestsThatAreInEveryGroupOfAConjunction(): void
+    {
+        $this->assertSame(
+            [BankAccountTest::class . '::testBalanceCannotBecomeNegative2'],
+            $this->idsOfAcceptedTests(['one+two']),
+        );
+    }
+
+    public function testDoesNotAcceptTestThatIsInOnlyOneGroupOfAConjunction(): void
+    {
+        $this->assertSame([], $this->idsOfAcceptedTests(['one+group-without-tests']));
+    }
+
+    #[TestDox('Accepts tests that are in every group of a conjunction or in another selected group')]
+    public function testAcceptsTestsThatAreInEveryGroupOfAConjunctionOrInAnotherSelectedGroup(): void
+    {
+        $this->assertSame(
+            [
+                BankAccountTest::class . '::testBalanceCannotBecomeNegative',
+                BankAccountTest::class . '::testBalanceCannotBecomeNegative2',
+            ],
+            $this->idsOfAcceptedTests(['one+two', '5']),
+        );
+    }
+
+    #[TestDox('Accepts tests that are in the selected group whose name contains "+" but is not a conjunction')]
+    public function testAcceptsTestsThatAreInTheSelectedGroupWhoseNameContainsTheSeparator(): void
+    {
+        $this->assertSame(
+            [BankAccountTest::class . '::testBalanceIsInitiallyZero'],
+            $this->idsOfAcceptedTests(['+one']),
         );
     }
 
@@ -113,7 +150,7 @@ final class IncludeGroupFilterIteratorTest extends TestCase
     {
         $suite = TestSuite::empty('test suite name');
 
-        $suite->addTest(new BankAccountTest('testBalanceIsInitiallyZero'), ['one']);
+        $suite->addTest(new BankAccountTest('testBalanceIsInitiallyZero'), ['one', '+one']);
         $suite->addTest(new BankAccountTest('testBalanceCannotBecomeNegative'), ['two', '5']);
         $suite->addTest(new BankAccountTest('testBalanceCannotBecomeNegative2'), ['one', 'two']);
 
