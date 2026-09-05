@@ -285,7 +285,11 @@ final class TestImpactDataFile
          * only a test run that ran every test there is may say that it is what
          * it is now: a run that ran some of the tests did not assess a change
          * to a file no test refers to, and recording the file as it is now
-         * would say that it did.
+         * would say that it did. Such a run therefore writes back what was
+         * recorded for a file before, and records nothing for a file that was
+         * not recorded before: a source file nothing is known about is what
+         * makes the next run that selects tests fall back to running every
+         * test, which is what settles it.
          */
         $hashesOfSourceFiles = [];
 
@@ -293,6 +297,10 @@ final class TestImpactDataFile
             if (isset($hashesThatWereRecorded[$sourceFile])) {
                 $hashesOfSourceFiles[$sourceFile] = $hashesThatWereRecorded[$sourceFile];
 
+                continue;
+            }
+
+            if (!$prune) {
                 continue;
             }
 
