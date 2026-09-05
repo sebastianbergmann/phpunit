@@ -17,4 +17,10 @@ use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 interface MockObject extends Stub
 {
     public function expects(InvocationOrder $invocationRule): InvocationMocker;
+
+    /**
+     * @param ?non-empty-string                         $label
+     * @param array<non-empty-string, non-empty-string> $methodLabels
+     */
+    public function recordInvocationsIn(InvocationJournal $journal, ?string $label = null, array $methodLabels = []): void;
 }

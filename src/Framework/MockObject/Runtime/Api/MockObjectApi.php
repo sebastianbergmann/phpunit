@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use function assert;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 
 /**
@@ -43,8 +44,29 @@ trait MockObjectApi
 
     abstract public function __phpunit_unsetInvocationMocker(): void;
 
+    public function __phpunit_recordsInvocations(): bool
+    {
+        return $this->__phpunit_getInvocationHandler()->recordsInvocations();
+    }
+
     public function expects(InvocationOrder $matcher): InvocationMocker
     {
         return $this->__phpunit_getInvocationHandler()->expects($matcher);
+    }
+
+    /**
+     * @param ?non-empty-string                         $label
+     * @param array<non-empty-string, non-empty-string> $methodLabels
+     *
+     * @throws EmptyInvocationJournalLabelException
+     * @throws InvocationJournalAlreadyRegisteredException
+     * @throws MethodCannotBeConfiguredException
+     * @throws TestDoubleSealedException
+     */
+    public function recordInvocationsIn(InvocationJournal $journal, ?string $label = null, array $methodLabels = []): void
+    {
+        assert($journal instanceof InvocationJournalInternal);
+
+        $this->__phpunit_getInvocationHandler()->recordInvocationsIn($journal, $label, $methodLabels);
     }
 }

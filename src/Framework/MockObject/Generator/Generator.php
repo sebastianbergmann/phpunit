@@ -80,6 +80,7 @@ final class Generator
      * @param ?list<non-empty-string> $methods
      * @param array<mixed>            $arguments
      * @param list<non-empty-string>  $doubledProperties
+     * @param ?non-empty-string       $displayName
      *
      * @throws ClassIsAnonymousException
      * @throws ClassIsEnumerationException
@@ -92,7 +93,7 @@ final class Generator
      * @throws RuntimeException
      * @throws UnknownTypeException
      */
-    public function testDouble(string $type, bool $mockObject, ?array $methods = [], array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $returnValueGeneration = true, array $doubledProperties = []): MockObject|Stub
+    public function testDouble(string $type, bool $mockObject, ?array $methods = [], array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $returnValueGeneration = true, array $doubledProperties = [], ?string $displayName = null): MockObject|Stub
     {
         if ($type === Traversable::class) {
             $type = Iterator::class;
@@ -119,6 +120,7 @@ final class Generator
             $arguments,
             $returnValueGeneration,
             $mockObject,
+            $displayName,
         );
 
         assert($object instanceof $type);
@@ -196,6 +198,7 @@ final class Generator
             $intersectionName,
             $mockObject,
             returnValueGeneration: $returnValueGeneration,
+            displayName: implode('&', $interfaces),
         );
     }
 
@@ -294,12 +297,13 @@ final class Generator
     }
 
     /**
-     * @param array<mixed> $arguments
+     * @param array<mixed>      $arguments
+     * @param ?non-empty-string $displayName
      *
      * @throws ReflectionException
      * @throws RuntimeException
      */
-    private function instantiate(DoubledClass $mockClass, string $type, bool $callOriginalConstructor, array $arguments, bool $returnValueGeneration, bool $isMockObject): object
+    private function instantiate(DoubledClass $mockClass, string $type, bool $callOriginalConstructor, array $arguments, bool $returnValueGeneration, bool $isMockObject, ?string $displayName = null): object
     {
         $className = $mockClass->generate();
 
@@ -324,7 +328,7 @@ final class Generator
          */
         $reflector->getProperty('__phpunit_state')->setValue(
             $object,
-            new TestDoubleState($mockClass->configurableMethods(), $type, $returnValueGeneration, $isMockObject),
+            new TestDoubleState($mockClass->configurableMethods(), $type, $returnValueGeneration, $isMockObject, $displayName),
         );
 
         if ($callOriginalConstructor && $reflector->getConstructor() !== null) {
@@ -353,6 +357,7 @@ final class Generator
      * @throws ClassIsEnumerationException
      * @throws ClassIsFinalException
      * @throws MethodNamedMethodException
+     * @throws MethodNamedRecordInvocationsInException
      * @throws ReflectionException
      * @throws RuntimeException
      */
@@ -505,6 +510,11 @@ final class Generator
 
         if ($mockMethods->hasMethod('method') || $class->hasMethod('method')) {
             throw new MethodNamedMethodException;
+        }
+
+        if ($mockObject &&
+            ($mockMethods->hasMethod('recordInvocationsIn') || $class->hasMethod('recordInvocationsIn'))) {
+            throw new MethodNamedRecordInvocationsInException;
         }
 
         $traits[] = Method::class;
