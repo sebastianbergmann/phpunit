@@ -17,6 +17,7 @@ use function defined;
 use function dirname;
 use function is_dir;
 use function is_file;
+use function method_exists;
 use function preg_match;
 use function realpath;
 use function str_starts_with;
@@ -116,11 +117,16 @@ final class Fixtures
 
         foreach ($this->dataProviders($className, $methodName) as [$providerClassName, $providerMethodName]) {
             /*
-             * A data provider can name a class that does not exist. The test
-             * does not work as things are, and it does not have fixtures that
-             * can be resolved either.
+             * A data provider can name a class that does not exist, and it
+             * can name a method that does not exist. The test does not work
+             * as things are, and it does not have fixtures that can be
+             * resolved either.
              */
             if (!class_exists($providerClassName)) {
+                continue;
+            }
+
+            if (!method_exists($providerClassName, $providerMethodName)) {
                 continue;
             }
 
