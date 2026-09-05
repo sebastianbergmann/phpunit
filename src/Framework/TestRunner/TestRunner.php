@@ -317,9 +317,17 @@ final class TestRunner
      * A fixture that is not there cannot be compared to what it will be later,
      * and the attribute that names it is therefore ignored, just as a code
      * coverage target that cannot be used is ignored.
+     *
+     * What a test declares that it uses is only looked at when the run records
+     * test impact data, which is why the metadata of a test is not parsed for
+     * fixtures when that is switched off.
      */
     private function warnAboutFixturesThatCannotBeUsed(TestCase $test): void
     {
+        if (!$this->configuration->recordTestImpactData()) {
+            return;
+        }
+
         foreach ((new Fixtures)->thatCannotBeResolved($test::class, $test->name()) as $path) {
             Facade::emitter()->testTriggeredPhpunitWarning(
                 $test->valueObjectForEvents(),
