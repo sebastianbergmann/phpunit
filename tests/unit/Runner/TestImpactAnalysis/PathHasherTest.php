@@ -14,12 +14,14 @@ use const PHP_OS_FAMILY;
 use function chmod;
 use function file_put_contents;
 use function is_dir;
+use function is_link;
 use function is_readable;
 use function mkdir;
 use function octdec;
 use function realpath;
 use function rmdir;
 use function scandir;
+use function symlink;
 use function sys_get_temp_dir;
 use function uniqid;
 use function unlink;
@@ -122,6 +124,81 @@ final class PathHasherTest extends TestCase
         $this->assertNotSame($before, (new PathHasher)->hash($directory));
     }
 
+    public function testHashesTheFilesInADirectoryThatIsLinkedTo(): void
+    {
+        if (PHP_OS_FAMILY === 'Windows') {
+            $this->markTestSkipped('Cannot test this behaviour on Windows');
+        }
+
+        $directory = $this->temporaryDirectory();
+        $fixtures  = $directory . DIRECTORY_SEPARATOR . 'fixtures';
+        $shared    = $directory . DIRECTORY_SEPARATOR . 'shared';
+
+        mkdir($fixtures);
+        mkdir($shared);
+
+        $this->writeFile($shared, 'a.txt', 'first');
+
+        symlink($shared, $fixtures . DIRECTORY_SEPARATOR . 'linked');
+
+        $before = (new PathHasher)->hash($fixtures);
+
+        $this->assertIsString($before);
+
+        $this->writeFile($shared, 'a.txt', 'second');
+
+        $this->assertNotSame($before, (new PathHasher)->hash($fixtures));
+    }
+
+    public function testHashesADirectoryDifferentlyWhenAFileIsAddedToADirectoryThatIsLinkedTo(): void
+    {
+        if (PHP_OS_FAMILY === 'Windows') {
+            $this->markTestSkipped('Cannot test this behaviour on Windows');
+        }
+
+        $directory = $this->temporaryDirectory();
+        $fixtures  = $directory . DIRECTORY_SEPARATOR . 'fixtures';
+        $shared    = $directory . DIRECTORY_SEPARATOR . 'shared';
+
+        mkdir($fixtures);
+        mkdir($shared);
+
+        $this->writeFile($shared, 'a.txt', 'first');
+
+        symlink($shared, $fixtures . DIRECTORY_SEPARATOR . 'linked');
+
+        $before = (new PathHasher)->hash($fixtures);
+
+        $this->writeFile($shared, 'b.txt', 'first');
+
+        $this->assertNotSame($before, (new PathHasher)->hash($fixtures));
+    }
+
+    public function testDoesNotFollowALinkThatLeadsBackToADirectoryTheWalkCameThrough(): void
+    {
+        if (PHP_OS_FAMILY === 'Windows') {
+            $this->markTestSkipped('Cannot test this behaviour on Windows');
+        }
+
+        $directory = $this->temporaryDirectory();
+        $fixtures  = $directory . DIRECTORY_SEPARATOR . 'fixtures';
+
+        mkdir($fixtures);
+
+        $this->writeFile($fixtures, 'a.txt', 'first');
+
+        symlink($fixtures, $fixtures . DIRECTORY_SEPARATOR . 'linked');
+        symlink($fixtures, $fixtures . DIRECTORY_SEPARATOR . 'also-linked');
+
+        $before = (new PathHasher)->hash($fixtures);
+
+        $this->assertIsString($before);
+
+        $this->writeFile($fixtures, 'a.txt', 'second');
+
+        $this->assertNotSame($before, (new PathHasher)->hash($fixtures));
+    }
+
     public function testHashesNothingOfADirectoryThatCannotBeRead(): void
     {
         if (PHP_OS_FAMILY === 'Windows') {
@@ -141,6 +218,31 @@ final class PathHasherTest extends TestCase
         }
 
         $hash = (new PathHasher)->hash($nested);
+
+        chmod($nested, octdec('755'));
+
+        $this->assertNull($hash);
+    }
+
+    public function testHashesNothingOfADirectoryWithADirectoryBeneathItThatCannotBeRead(): void
+    {
+        if (PHP_OS_FAMILY === 'Windows') {
+            $this->markTestSkipped('Cannot test this behaviour on Windows');
+        }
+
+        $directory = $this->temporaryDirectory();
+        $nested    = $directory . DIRECTORY_SEPARATOR . 'nested';
+
+        mkdir($nested);
+        chmod($nested, octdec('0'));
+
+        if (is_readable($nested)) {
+            chmod($nested, octdec('755'));
+
+            $this->markTestSkipped('The directory can still be read');
+        }
+
+        $hash = (new PathHasher)->hash($directory);
 
         chmod($nested, octdec('755'));
 
@@ -202,6 +304,12 @@ final class PathHasherTest extends TestCase
                 }
 
                 $path = $directory . DIRECTORY_SEPARATOR . $entry;
+
+                if (is_link($path)) {
+                    unlink($path);
+
+                    continue;
+                }
 
                 if (is_dir($path)) {
                     $this->deleteDirectory($path);

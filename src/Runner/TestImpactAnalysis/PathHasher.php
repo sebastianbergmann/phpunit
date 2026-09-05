@@ -11,11 +11,12 @@ namespace PHPUnit\Runner\TestImpactAnalysis;
 
 use function array_key_exists;
 use function hash;
+use function in_array;
 use function is_dir;
 use function ksort;
+use function realpath;
+use FilesystemIterator;
 use PHPUnit\Runner\TestIndex\FileHasher;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
 use SplFileInfo;
 use UnexpectedValueException;
 
@@ -121,37 +122,76 @@ final class PathHasher
      * known, and a hash of the rest of the directory would say that it did not
      * change when it may well have.
      *
-     * @param non-empty-string $directory
+     * Symbolic links are followed, the way the filter that decides which files
+     * are first-party code follows them: a directory that is linked to is part
+     * of the fixture, and a change to what is in it is a change to the fixture.
+     *
+     * A link that leads back to a directory the walk came through is not
+     * followed. What it leads to has been seen already, and following it does
+     * not end: the file system stops a path with more than a few dozen links
+     * in it, which is not a limit that is reached before the number of paths
+     * that lead to the same file has become unreasonable.
+     *
+     * @param non-empty-string       $directory
+     * @param list<non-empty-string> $directoriesTheWalkCameThrough
      *
      * @return ?list<non-empty-string>
      */
-    private function filesIn(string $directory): ?array
+    private function filesIn(string $directory, array $directoriesTheWalkCameThrough = []): ?array
     {
-        $files = [];
+        $resolved = realpath($directory);
+
+        if ($resolved === false) {
+            return null; // @codeCoverageIgnore
+        }
+
+        if (in_array($resolved, $directoriesTheWalkCameThrough, true)) {
+            return [];
+        }
+
+        $directoriesTheWalkCameThrough[] = $resolved;
 
         try {
-            $iterator = new RecursiveIteratorIterator(
-                new RecursiveDirectoryIterator($directory, RecursiveDirectoryIterator::SKIP_DOTS),
-            );
-
-            foreach ($iterator as $file) {
-                if (!$file instanceof SplFileInfo || !$file->isFile()) {
-                    continue; // @codeCoverageIgnore
-                }
-
-                $path = $file->getPathname();
-
-                if ($path === '') {
-                    continue; // @codeCoverageIgnore
-                }
-
-                $files[] = $path;
-            }
+            $iterator = new FilesystemIterator($directory, FilesystemIterator::CURRENT_AS_FILEINFO | FilesystemIterator::SKIP_DOTS);
             // @codeCoverageIgnoreStart
         } catch (UnexpectedValueException) {
             return null;
         }
         // @codeCoverageIgnoreEnd
+
+        $files = [];
+
+        foreach ($iterator as $entry) {
+            if (!$entry instanceof SplFileInfo) {
+                continue; // @codeCoverageIgnore
+            }
+
+            $path = $entry->getPathname();
+
+            if ($path === '') {
+                continue; // @codeCoverageIgnore
+            }
+
+            if ($entry->isDir()) {
+                $filesInDirectory = $this->filesIn($path, $directoriesTheWalkCameThrough);
+
+                if ($filesInDirectory === null) {
+                    return null;
+                }
+
+                foreach ($filesInDirectory as $file) {
+                    $files[] = $file;
+                }
+
+                continue;
+            }
+
+            if (!$entry->isFile()) {
+                continue; // @codeCoverageIgnore
+            }
+
+            $files[] = $path;
+        }
 
         return $files;
     }
