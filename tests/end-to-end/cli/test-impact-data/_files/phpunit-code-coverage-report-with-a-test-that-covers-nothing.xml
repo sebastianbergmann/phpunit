@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="../../../../../phpunit.xsd"
+         bootstrap="lazily-loaded-autoload.php"
+         cacheDirectory=".phpunit.cache.with-a-test-that-covers-nothing"
+         recordTestImpactData="true">
+    <testsuites>
+        <testsuite name="default">
+            <directory>tests-with-one-that-covers-nothing</directory>
+        </testsuite>
+    </testsuites>
+
+    <source>
+        <include>
+            <directory>lazily-loaded-source</directory>
+        </include>
+    </source>
+
+    <coverage includeUncoveredFiles="false"
+              driver="PHPUnit\TestFixture\TestImpactData\DriverThatReportsWhatHasBeenLoaded">
+        <report>
+            <text outputFile="php://stdout"/>
+        </report>
+    </coverage>
+</phpunit>
