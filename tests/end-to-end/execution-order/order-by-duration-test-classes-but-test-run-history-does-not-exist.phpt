@@ -1,5 +1,7 @@
 --TEST--
 Order by duration (without test run history)
+--CONFLICTS--
+all
 --FILE--
 <?php declare(strict_types=1);
 $testRunHistoryFile = sys_get_temp_dir() . '/test-run-history';
