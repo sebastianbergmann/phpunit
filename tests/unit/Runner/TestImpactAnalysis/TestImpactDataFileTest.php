@@ -53,7 +53,7 @@ final class TestImpactDataFileTest extends TestCase
     public static function provideUnusableData(): array
     {
         $usable = [
-            'version'     => 4,
+            'version'     => 5,
             'phpunit'     => Version::id(),
             'php'         => PHP_VERSION_ID,
             'provenance'  => 'observed-execution',
@@ -134,7 +134,7 @@ final class TestImpactDataFileTest extends TestCase
 
         $persisted = $this->persistedData($directory);
 
-        $this->assertSame(4, $persisted['version']);
+        $this->assertSame(5, $persisted['version']);
         $this->assertSame(Version::id(), $persisted['phpunit']);
         $this->assertSame(PHP_VERSION_ID, $persisted['php']);
         $this->assertSame([$file], $persisted['files']);
@@ -590,6 +590,7 @@ final class TestImpactDataFileTest extends TestCase
                 false,
                 true,
             ),
+            [],
         );
     }
 
