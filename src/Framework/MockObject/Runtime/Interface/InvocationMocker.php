@@ -41,6 +41,15 @@ interface InvocationMocker extends InvocationStubber
     /**
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
+     * @param ?non-empty-string $label
+     *
+     * @return $this
+     */
+    public function recordIn(InvocationJournal $journal, ?string $label = null): self;
+
+    /**
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
      * @param non-empty-string $id
      *
      * @return $this
