@@ -213,6 +213,7 @@ final class ListTestsThatDependOnCommandTest extends TestCase
                 false,
                 true,
             ),
+            [],
         );
     }
 
