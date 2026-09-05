@@ -560,6 +560,7 @@ final class SelectorTest extends TestCase
                 false,
                 true,
             ),
+            [],
         );
     }
 

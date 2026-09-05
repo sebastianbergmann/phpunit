@@ -27,10 +27,11 @@ use PHPUnit\TextUI\Configuration\Source;
  * What everything that was recorded rests on.
  *
  * A test run answers what a test depends on for one configuration of PHPUnit,
- * of the code that is first-party code, and of the packages that are
- * installed. When any of those is not what it was, what was recorded describes
- * a state of affairs that no longer exists, and the answer is not that some
- * entries are stale: it is that none of them can be relied on.
+ * for one bootstrap of the test suite, for one idea of which code is
+ * first-party code, and for one set of installed packages. When any of those
+ * is not what it was, what was recorded describes a state of affairs that no
+ * longer exists, and the answer is not that some entries are stale: it is that
+ * none of them can be relied on.
  *
  * The code that is first-party code is not taken from the configuration file
  * alone: --coverage-filter widens it from the command line without the file
@@ -52,6 +53,11 @@ final readonly class Assumptions
     private ?string $configuration;
 
     /**
+     * @var ?non-empty-string
+     */
+    private ?string $bootstrap;
+
+    /**
      * @var non-empty-string
      */
     private string $source;
@@ -68,9 +74,10 @@ final readonly class Assumptions
      * lock file having changed: a project that does not have one, or that is
      * tested with a PHAR, is not a project whose data has to be discarded.
      *
-     * @param ?non-empty-string $configurationFile
+     * @param ?non-empty-string      $configurationFile
+     * @param list<non-empty-string> $bootstrapFiles
      */
-    public static function from(?string $configurationFile, Source $source, ?FileHasher $hasher = null): self
+    public static function from(?string $configurationFile, Source $source, array $bootstrapFiles, ?FileHasher $hasher = null): self
     {
         if ($hasher === null) {
             $hasher = new FileHasher;
@@ -90,7 +97,12 @@ final readonly class Assumptions
             $installedPackages = $hasher->hash($lockFile);
         }
 
-        return new self($configuration, self::hashOf($source), $installedPackages);
+        return new self(
+            $configuration,
+            self::hashOfBootstrapFiles($bootstrapFiles, $hasher),
+            self::hashOf($source),
+            $installedPackages,
+        );
     }
 
     /**
@@ -98,15 +110,20 @@ final readonly class Assumptions
      */
     public static function fromArray(mixed $data): ?self
     {
-        if (!is_array($data) || !array_key_exists('configuration', $data) || !array_key_exists('source', $data) || !array_key_exists('installedPackages', $data)) {
+        if (!is_array($data) || !array_key_exists('configuration', $data) || !array_key_exists('bootstrap', $data) || !array_key_exists('source', $data) || !array_key_exists('installedPackages', $data)) {
             return null;
         }
 
         $configuration     = $data['configuration'];
+        $bootstrap         = $data['bootstrap'];
         $source            = $data['source'];
         $installedPackages = $data['installedPackages'];
 
         if ($configuration !== null && (!is_string($configuration) || $configuration === '')) {
+            return null;
+        }
+
+        if ($bootstrap !== null && (!is_string($bootstrap) || $bootstrap === '')) {
             return null;
         }
 
@@ -118,28 +135,31 @@ final readonly class Assumptions
             return null;
         }
 
-        return new self($configuration, $source, $installedPackages);
+        return new self($configuration, $bootstrap, $source, $installedPackages);
     }
 
     /**
      * @param ?non-empty-string $configuration
+     * @param ?non-empty-string $bootstrap
      * @param non-empty-string  $source
      * @param ?non-empty-string $installedPackages
      */
-    private function __construct(?string $configuration, string $source, ?string $installedPackages)
+    private function __construct(?string $configuration, ?string $bootstrap, string $source, ?string $installedPackages)
     {
         $this->configuration     = $configuration;
+        $this->bootstrap         = $bootstrap;
         $this->source            = $source;
         $this->installedPackages = $installedPackages;
     }
 
     /**
-     * @return array{configuration: ?non-empty-string, source: non-empty-string, installedPackages: ?non-empty-string}
+     * @return array{configuration: ?non-empty-string, bootstrap: ?non-empty-string, source: non-empty-string, installedPackages: ?non-empty-string}
      */
     public function asArray(): array
     {
         return [
             'configuration'     => $this->configuration,
+            'bootstrap'         => $this->bootstrap,
             'source'            => $this->source,
             'installedPackages' => $this->installedPackages,
         ];
@@ -148,8 +168,53 @@ final readonly class Assumptions
     public function equals(self $other): bool
     {
         return $this->configuration === $other->configuration &&
+               $this->bootstrap === $other->bootstrap &&
                $this->source === $other->source &&
                $this->installedPackages === $other->installedPackages;
+    }
+
+    /**
+     * A bootstrap script registers autoloaders, defines constants, and sets up
+     * global state: it can change what every test does without any of the
+     * files a test executed changing, and it is not code that is subject to
+     * code coverage analysis, so nothing else notices when it changes. Which
+     * script is used is part of the configuration, what it does is not, which
+     * is why the contents of the scripts are hashed here.
+     *
+     * The order the scripts are named in does not matter: a bootstrap script
+     * that is named for a test suite is named in the configuration file, and
+     * that file is hashed as well.
+     *
+     * A script that cannot be read is passed over: a run whose bootstrap
+     * script is not there does not get as far as recording anything.
+     *
+     * @param list<non-empty-string> $files
+     *
+     * @return ?non-empty-string
+     */
+    private static function hashOfBootstrapFiles(array $files, FileHasher $hasher): ?string
+    {
+        $hashes = [];
+
+        foreach ($files as $file) {
+            $hash = $hasher->hash($file);
+
+            if ($hash === null) {
+                continue;
+            }
+
+            $hashes[] = $hash;
+        }
+
+        if ($hashes === []) {
+            return null;
+        }
+
+        $hashes = array_unique($hashes);
+
+        sort($hashes);
+
+        return hash('xxh128', implode("\n", $hashes));
     }
 
     /**
