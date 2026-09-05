@@ -421,7 +421,7 @@ final class SelectorTest extends TestCase
                 $data->record($test, array_merge($filesOfTest, $this->fileOfTestClassOf($test)));
             }
 
-            $file->persist($data, Provenance::ObservedExecution, $sourceFiles);
+            $file->persistAndPrune($data, Provenance::ObservedExecution, $sourceFiles);
         }
 
         if ($testRunHistory === null) {
