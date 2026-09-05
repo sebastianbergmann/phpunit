@@ -13,6 +13,7 @@ use function array_any;
 use function array_unique;
 use function array_values;
 use function in_array;
+use function sprintf;
 use function strtolower;
 use Exception;
 use PHPUnit\Framework\AssertionFailedError;
@@ -47,19 +48,41 @@ final class InvocationHandler
      * @var class-string
      */
     private readonly string $className;
+
+    /**
+     * @var non-empty-string
+     */
+    private readonly string $displayName;
     private readonly bool $returnValueGeneration;
     private readonly bool $isMockObject;
     private bool $sealed                            = false;
     private ?AssertionFailedError $assertionFailure = null;
+    private ?InvocationJournalInternal $journal     = null;
+
+    /**
+     * @var ?non-empty-string
+     */
+    private ?string $journalLabel = null;
+
+    /**
+     * @var array<non-empty-string, non-empty-string>
+     */
+    private array $journalMethodLabels = [];
 
     /**
      * @param list<ConfigurableMethod> $configurableMethods
      * @param class-string             $className
+     * @param ?non-empty-string        $displayName
      */
-    public function __construct(array $configurableMethods, string $className, bool $returnValueGeneration, bool $isMockObject = false)
+    public function __construct(array $configurableMethods, string $className, bool $returnValueGeneration, bool $isMockObject = false, ?string $displayName = null)
     {
+        if ($displayName === null) {
+            $displayName = $className;
+        }
+
         $this->configurableMethods   = $configurableMethods;
         $this->className             = $className;
+        $this->displayName           = $displayName;
         $this->returnValueGeneration = $returnValueGeneration;
         $this->isMockObject          = $isMockObject;
     }
@@ -67,6 +90,53 @@ final class InvocationHandler
     public function isMockObject(): bool
     {
         return $this->isMockObject;
+    }
+
+    /**
+     * @param ?non-empty-string                         $label
+     * @param array<non-empty-string, non-empty-string> $methodLabels
+     *
+     * @throws EmptyInvocationJournalLabelException
+     * @throws InvocationJournalAlreadyRegisteredException
+     * @throws MethodCannotBeConfiguredException
+     * @throws TestDoubleSealedException
+     */
+    public function recordInvocationsIn(InvocationJournalInternal $journal, ?string $label, array $methodLabels): void
+    {
+        if ($this->sealed) {
+            throw new TestDoubleSealedException;
+        }
+
+        if ($this->journal !== null) {
+            throw new InvocationJournalAlreadyRegisteredException;
+        }
+
+        if ($label === '') {
+            throw new EmptyInvocationJournalLabelException;
+        }
+
+        foreach ($methodLabels as $methodName => $methodLabel) {
+            if ($methodLabel === '') {
+                throw new EmptyInvocationJournalLabelException;
+            }
+
+            if (!$this->hasConfigurableMethod($methodName)) {
+                throw new MethodCannotBeConfiguredException($methodName);
+            }
+        }
+
+        if ($label === null) {
+            $label = $this->displayName;
+        }
+
+        $this->journal             = $journal;
+        $this->journalLabel        = $label;
+        $this->journalMethodLabels = $methodLabels;
+    }
+
+    public function recordsInvocations(): bool
+    {
+        return $this->journal !== null;
     }
 
     public function hasInvocationCountRule(): bool
@@ -145,6 +215,10 @@ final class InvocationHandler
      */
     public function invoke(Invocation $invocation): mixed
     {
+        if ($this->journal !== null) {
+            $this->journal->record($this->journalLabelFor($invocation->methodName()));
+        }
+
         $exception      = null;
         $hasReturnValue = false;
         $returnValue    = null;
@@ -283,5 +357,34 @@ final class InvocationHandler
         }
 
         return array_values(array_unique($names));
+    }
+
+    /**
+     * @param non-empty-string $methodName
+     *
+     * @return non-empty-string
+     */
+    private function journalLabelFor(string $methodName): string
+    {
+        if (isset($this->journalMethodLabels[$methodName])) {
+            return $this->journalMethodLabels[$methodName];
+        }
+
+        return sprintf(
+            '%s::%s()',
+            $this->journalLabel,
+            $methodName,
+        );
+    }
+
+    /**
+     * @param non-empty-string $methodName
+     */
+    private function hasConfigurableMethod(string $methodName): bool
+    {
+        return array_any(
+            $this->configurableMethods,
+            static fn (ConfigurableMethod $method): bool => $method->name() === $methodName,
+        );
     }
 }

@@ -12,6 +12,7 @@ namespace PHPUnit\Framework\MockObject;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\TestFixture\MockObject\InterfaceWithMethodNamedRecordInvocationsIn;
 
 #[Group('test-doubles')]
 #[Group('test-doubles/test-stub')]
@@ -19,6 +20,14 @@ use PHPUnit\Framework\Attributes\TestDox;
 #[TestDox('Test Stub')]
 final class StubTest extends TestDoubleTestCase
 {
+    #[TestDox('Interface with method named recordInvocationsIn() can be doubled because invocation journals are only available for mock objects')]
+    public function testCanDoubleInterfaceWithMethodNamedRecordInvocationsIn(): void
+    {
+        $double = $this->createStub(InterfaceWithMethodNamedRecordInvocationsIn::class);
+
+        $this->assertFalse($double->recordInvocationsIn());
+    }
+
     /**
      * @param class-string $type
      */

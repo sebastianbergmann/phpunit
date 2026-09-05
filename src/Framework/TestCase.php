@@ -1567,6 +1567,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             if (!$mockObject->__phpunit_hasInvocationCountRule()) {
                 if (!$mockObject->__phpunit_hasParametersRule() &&
+                    !$mockObject->__phpunit_recordsInvocations() &&
                     !$allowsMockObjectsWithoutExpectations &&
                     !$isPhpunitTestSuite) {
                     Event\Facade::emitter()->testTriggeredPhpunitNotice(

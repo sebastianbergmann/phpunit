@@ -38,16 +38,10 @@ final class Matcher
     /**
      * @var ?non-empty-string
      */
-    private ?string $afterMatchBuilderId              = null;
-    private ?MethodName $methodNameRule               = null;
-    private ?ParametersRule $parametersRule           = null;
-    private ?Stub $stub                               = null;
-    private ?InvocationJournalImplementation $journal = null;
-
-    /**
-     * @var ?non-empty-string
-     */
-    private ?string $journalLabel = null;
+    private ?string $afterMatchBuilderId    = null;
+    private ?MethodName $methodNameRule     = null;
+    private ?ParametersRule $parametersRule = null;
+    private ?Stub $stub                     = null;
 
     /**
      * @param class-string $className
@@ -115,15 +109,6 @@ final class Matcher
     }
 
     /**
-     * @param ?non-empty-string $label
-     */
-    public function recordIn(InvocationJournalImplementation $journal, ?string $label): void
-    {
-        $this->journal      = $journal;
-        $this->journalLabel = $label;
-    }
-
-    /**
      * @throws Exception
      * @throws ExpectationFailedException
      * @throws MatchBuilderNotFoundException
@@ -132,8 +117,6 @@ final class Matcher
      */
     public function invoked(Invocation $invocation): mixed
     {
-        $this->recordInvocation($invocation);
-
         if ($this->methodNameRule === null) {
             throw new MethodNameNotConfiguredException;
         }
@@ -275,24 +258,5 @@ final class Matcher
                 );
             }
         }
-    }
-
-    private function recordInvocation(Invocation $invocation): void
-    {
-        if ($this->journal === null) {
-            return;
-        }
-
-        $label = $this->journalLabel;
-
-        if ($label === null) {
-            $label = sprintf(
-                '%s::%s()',
-                $invocation->className(),
-                $invocation->methodName(),
-            );
-        }
-
-        $this->journal->record($label);
     }
 }

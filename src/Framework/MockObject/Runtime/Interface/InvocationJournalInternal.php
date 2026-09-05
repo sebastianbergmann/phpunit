@@ -14,13 +14,10 @@ namespace PHPUnit\Framework\MockObject;
  *
  * @internal This interface is not covered by the backward compatibility promise for PHPUnit
  */
-interface MockObjectInternal extends MockObject, StubInternal
+interface InvocationJournalInternal extends InvocationJournal
 {
-    public function __phpunit_hasInvocationCountRule(): bool;
-
-    public function __phpunit_hasParametersRule(): bool;
-
-    public function __phpunit_recordsInvocations(): bool;
-
-    public function __phpunit_verify(bool $unsetInvocationMocker = true): void;
+    /**
+     * @param non-empty-string $label
+     */
+    public function record(string $label): void;
 }
