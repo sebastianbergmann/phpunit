@@ -39,6 +39,8 @@ use PHPUnit\Event;
 use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\MockObject\Exception as MockObjectException;
 use PHPUnit\Framework\MockObject\Generator\Generator as MockGenerator;
+use PHPUnit\Framework\MockObject\InvocationJournal;
+use PHPUnit\Framework\MockObject\InvocationJournalImplementation;
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\MockObjectInternal;
@@ -1368,6 +1370,15 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * Creates a journal that the invocations of methods of mock objects can be
+     * recorded in, in the order in which they happen.
+     */
+    final protected function createInvocationJournal(): InvocationJournal
+    {
+        return new InvocationJournalImplementation;
+    }
+
+    /**
      * Creates (and configures) a mock object for the specified interface or class.
      *
      * @template RealInstanceType of object
@@ -1556,6 +1567,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             if (!$mockObject->__phpunit_hasInvocationCountRule()) {
                 if (!$mockObject->__phpunit_hasParametersRule() &&
+                    !$mockObject->__phpunit_recordsInvocations() &&
                     !$allowsMockObjectsWithoutExpectations &&
                     !$isPhpunitTestSuite) {
                     Event\Facade::emitter()->testTriggeredPhpunitNotice(

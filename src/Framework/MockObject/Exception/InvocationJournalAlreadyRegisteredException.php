@@ -7,17 +7,19 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Framework\MockObject\Generator;
+namespace PHPUnit\Framework\MockObject;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class MethodNamedMethodException extends \PHPUnit\Framework\Exception implements Exception
+final class InvocationJournalAlreadyRegisteredException extends \PHPUnit\Framework\Exception implements Exception
 {
     public function __construct()
     {
-        parent::__construct('Doubling interfaces (or classes) that have a method named "method" is not supported.');
+        parent::__construct(
+            'An invocation journal has already been registered for this test double',
+        );
     }
 }

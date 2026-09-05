@@ -14,10 +14,10 @@ namespace PHPUnit\Framework\MockObject\Generator;
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class MethodNamedMethodException extends \PHPUnit\Framework\Exception implements Exception
+final class MethodNamedRecordInvocationsInException extends \PHPUnit\Framework\Exception implements Exception
 {
     public function __construct()
     {
-        parent::__construct('Doubling interfaces (or classes) that have a method named "method" is not supported.');
+        parent::__construct('Doubling interfaces (or classes) that have a method named "recordInvocationsIn" is not supported.');
     }
 }
