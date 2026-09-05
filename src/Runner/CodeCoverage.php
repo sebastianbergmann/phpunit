@@ -29,11 +29,13 @@ use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Output\Printer;
 use PHPUnit\Util\Filesystem;
 use ReflectionClass;
+use SebastianBergmann\CodeCoverage\Data\RawCodeCoverageData;
 use SebastianBergmann\CodeCoverage\Driver\Driver;
 use SebastianBergmann\CodeCoverage\Driver\Granularity;
 use SebastianBergmann\CodeCoverage\Driver\Selector;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
 use SebastianBergmann\CodeCoverage\Filter;
+use SebastianBergmann\CodeCoverage\FilterProcessor;
 use SebastianBergmann\CodeCoverage\Report\Facade as ReportFacade;
 use SebastianBergmann\CodeCoverage\Report\Html\Colors;
 use SebastianBergmann\CodeCoverage\Report\Html\CustomCssFile;
@@ -75,6 +77,7 @@ final class CodeCoverage
     private bool $collectsBranchCoverage        = false;
     private bool $collectsPathCoverage          = false;
     private bool $recordTestImpactData          = false;
+    private bool $collectForTestImpactDataOnly  = false;
     private ?TestImpactData $testImpactData     = null;
 
     public static function instance(): self
@@ -244,11 +247,19 @@ final class CodeCoverage
         return $nameAndVersion;
     }
 
-    public function start(TestCase $test): void
+    /**
+     * A test that opted out of code coverage is only collected so that the
+     * source files it executed can be recorded. Nothing it executed may reach
+     * the code coverage report, which is why the driver is used directly for
+     * such a test and the code coverage object never sees its data.
+     */
+    public function start(TestCase $test, bool $forTestImpactDataOnly = false): void
     {
         if ($this->collecting) {
             return;
         }
+
+        $this->collectForTestImpactDataOnly = $forTestImpactDataOnly;
 
         $size = TestSize::Unknown;
 
@@ -264,10 +275,17 @@ final class CodeCoverage
 
         assert($this->codeCoverage !== null);
 
-        $this->codeCoverage->start(
-            $test->valueObjectForEvents()->id(),
-            $size,
-        );
+        if ($this->collectForTestImpactDataOnly) {
+            assert($this->driver !== null);
+
+            /** @phpstan-ignore method.internalClass */
+            $this->driver->start();
+        } else {
+            $this->codeCoverage->start(
+                $test->valueObjectForEvents()->id(),
+                $size,
+            );
+        }
 
         $this->collecting = true;
 
@@ -284,8 +302,15 @@ final class CodeCoverage
         assert($this->test !== null);
 
         $time             = $this->timer()->stop()->asSeconds();
-        $status           = TestStatus::Unknown;
         $this->collecting = false;
+
+        if ($this->collectForTestImpactDataOnly) {
+            $this->stopCollectingForTestImpactDataOnly();
+
+            return;
+        }
+
+        $status = TestStatus::Unknown;
 
         if ($this->test->status()->isSuccess()) {
             $status = TestStatus::Success;
@@ -326,7 +351,10 @@ final class CodeCoverage
         $rawData = $this->codeCoverage->stop($append, $status, $covers, $uses, $time);
 
         if ($this->recordTestImpactData) {
-            $this->recordTestImpactDataFor($this->test);
+            $this->recordTestImpactDataFor(
+                $this->test,
+                $this->codeCoverage->dataNotFilteredUsingTargets(),
+            );
         }
 
         if ($this->requireCoverageContribution) {
@@ -632,12 +660,41 @@ final class CodeCoverage
     }
 
     /**
+     * The data of a test that opted out of code coverage must not reach the
+     * code coverage report, and not appending it is not enough: the files a
+     * test executed are added to the report as files no test covered before
+     * the data of a test that covers nothing is discarded. The data is
+     * therefore taken from the driver, and only the source filter that the
+     * code coverage report is based on is applied to it.
+     */
+    private function stopCollectingForTestImpactDataOnly(): void
+    {
+        assert($this->codeCoverage !== null);
+        assert($this->driver !== null);
+        assert($this->test !== null);
+
+        /** @phpstan-ignore method.internalClass */
+        $data = $this->driver->stop();
+
+        /** @phpstan-ignore new.internalClass, method.internalClass */
+        (new FilterProcessor)->applyFilter($data, $this->codeCoverage->filter());
+
+        if ($this->recordTestImpactData) {
+            $this->recordTestImpactDataFor($this->test, $data);
+        }
+
+        $this->test = null;
+    }
+
+    /**
      * A test that was skipped, or that was marked incomplete, stopped before
      * it executed the code it would have executed. What was collected for it
      * is not what it depends on, and recording it would make the test look as
      * if it depended on less than it does.
+     *
+     * @phpstan-ignore parameter.internalClass
      */
-    private function recordTestImpactDataFor(TestCase $test): void
+    private function recordTestImpactDataFor(TestCase $test, RawCodeCoverageData $data): void
     {
         $status = $test->status();
 
@@ -645,9 +702,7 @@ final class CodeCoverage
             return;
         }
 
-        assert($this->codeCoverage !== null);
-
-        $files = ExecutedFiles::in($this->codeCoverage->dataNotFilteredUsingTargets());
+        $files = ExecutedFiles::in($data);
 
         /*
          * Reading a file is not executing code, so what a test declares that
