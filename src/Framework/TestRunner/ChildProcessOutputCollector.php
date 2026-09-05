@@ -16,6 +16,8 @@ use function stream_get_contents;
 use PHPUnit\Framework\TestCase;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final readonly class ChildProcessOutputCollector
