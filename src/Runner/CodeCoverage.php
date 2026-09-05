@@ -120,25 +120,27 @@ final class CodeCoverage
             $coverageDriver = $configuration->coverageDriver();
         }
 
+        /*
+         * Recording which source files each test executed is a reason of its
+         * own for collecting code coverage, but it is not a reason for not
+         * running the tests: a run that cannot record what the tests executed
+         * still has to run them, and must not be warned that a driver it never
+         * asked for is missing. A run that was asked for a code coverage
+         * report, on the other hand, cannot deliver it and fails.
+         */
+        $onlyRequestedForTestImpactData = $this->recordTestImpactData &&
+                                          !$configuration->hasCoverageReport() &&
+                                          !$extensionRequiresCodeCoverageCollection;
+
         $this->activate(
             $codeCoverageFilterRegistry->get(),
             $configuration->branchCoverage(),
             $configuration->pathCoverage(),
             $coverageDriver,
+            $onlyRequestedForTestImpactData,
         );
 
         if (!$this->isActive()) {
-            /*
-             * Recording which source files each test executed is a reason of
-             * its own for collecting code coverage, but it is not a reason for
-             * not running the tests: a run that cannot record what the tests
-             * executed still has to run them. A run that was asked for a code
-             * coverage report, on the other hand, cannot deliver it and fails.
-             */
-            $onlyRequestedForTestImpactData = $this->recordTestImpactData &&
-                                              !$configuration->hasCoverageReport() &&
-                                              !$extensionRequiresCodeCoverageCollection;
-
             $this->recordTestImpactData = false;
 
             if ($onlyRequestedForTestImpactData) {
@@ -674,7 +676,7 @@ final class CodeCoverage
         $this->testImpactData()->record($test->valueObjectForEvents()->id(), $files);
     }
 
-    private function activate(Filter $filter, bool $branchCoverage, bool $pathCoverage, ?string $driverClass = null): void
+    private function activate(Filter $filter, bool $branchCoverage, bool $pathCoverage, ?string $driverClass, bool $onlyRequestedForTestImpactData): void
     {
         try {
             $granularity = Granularity::Line;
@@ -708,6 +710,10 @@ final class CodeCoverage
             $this->collectsBranchCoverage = $branchCoverage;
             $this->collectsPathCoverage   = $pathCoverage;
         } catch (CodeCoverageException $e) {
+            if ($onlyRequestedForTestImpactData) {
+                return;
+            }
+
             $message = $e->getMessage();
 
             if ($message === '') {
