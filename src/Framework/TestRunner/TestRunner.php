@@ -168,7 +168,7 @@ final class TestRunner
         }
 
         if ($collectCodeCoverage) {
-            CodeCoverage::instance()->start($test);
+            CodeCoverage::instance()->start($test, $collectCodeCoverageForTestImpactDataOnly);
         }
 
         try {
