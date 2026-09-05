@@ -101,6 +101,16 @@ Execution:
   --do-not-record-test-run-history     Do not record test run history
   --cache-test-index                   Write test index to cache file
   --do-not-cache-test-index            Do not write test index to cache file
+  --record-test-impact-data            Record test impact data
+  --do-not-record-test-impact-data     Do not record test impact data
+  --derive-test-impact-data-from-coverage-targets
+                                       Derive test impact data from code coverage targets
+  --do-not-derive-test-impact-data-from-coverage-targets
+                                       Do not derive test impact data from code coverage targets
+  --list-tests-that-depend-on <file>   List tests that depend on <file>
+  --only-impacted                      Only run tests affected by what changed
+  --impacted-by <path>                 Only run tests affected by <path>
+  --impacted-by-file <file>            Only run tests affected by the paths listed in <file> ("-" for standard input)
 
   --warn-when-php-is-not-configured-for-development
                                        Trigger a test runner warning when PHP is not configured for development

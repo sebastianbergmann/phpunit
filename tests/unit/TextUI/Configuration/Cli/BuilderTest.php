@@ -248,6 +248,135 @@ final class BuilderTest extends TestCase
         $this->assertFalse($configuration->cacheTestIndex());
     }
 
+    #[TestDox('--record-test-impact-data')]
+    public function testRecordTestImpactData(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--record-test-impact-data']);
+
+        $this->assertTrue($configuration->hasRecordTestImpactData());
+        $this->assertTrue($configuration->recordTestImpactData());
+    }
+
+    #[TestDox('--do-not-record-test-impact-data')]
+    public function testDoNotRecordTestImpactData(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--do-not-record-test-impact-data']);
+
+        $this->assertTrue($configuration->hasRecordTestImpactData());
+        $this->assertFalse($configuration->recordTestImpactData());
+    }
+
+    public function testRecordTestImpactDataMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasRecordTestImpactData());
+
+        $this->expectException(Exception::class);
+
+        $configuration->recordTestImpactData();
+    }
+
+    #[TestDox('--derive-test-impact-data-from-coverage-targets')]
+    public function testDeriveTestImpactDataFromCoverageTargets(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--derive-test-impact-data-from-coverage-targets']);
+
+        $this->assertTrue($configuration->hasDeriveTestImpactDataFromCoverageTargets());
+        $this->assertTrue($configuration->deriveTestImpactDataFromCoverageTargets());
+    }
+
+    #[TestDox('--do-not-derive-test-impact-data-from-coverage-targets')]
+    public function testDoNotDeriveTestImpactDataFromCoverageTargets(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--do-not-derive-test-impact-data-from-coverage-targets']);
+
+        $this->assertTrue($configuration->hasDeriveTestImpactDataFromCoverageTargets());
+        $this->assertFalse($configuration->deriveTestImpactDataFromCoverageTargets());
+    }
+
+    public function testDeriveTestImpactDataFromCoverageTargetsMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasDeriveTestImpactDataFromCoverageTargets());
+
+        $this->expectException(Exception::class);
+
+        $configuration->deriveTestImpactDataFromCoverageTargets();
+    }
+
+    #[TestDox('--list-tests-that-depend-on <file>')]
+    public function testListTestsThatDependOn(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--list-tests-that-depend-on', 'src/Foo.php']);
+
+        $this->assertTrue($configuration->hasListTestsThatDependOn());
+        $this->assertSame('src/Foo.php', $configuration->listTestsThatDependOn());
+    }
+
+    #[TestDox('--only-impacted')]
+    public function testOnlyImpacted(): void
+    {
+        $this->assertTrue((new Builder)->fromParameters(['--only-impacted'])->onlyImpacted());
+    }
+
+    #[TestDox('--impacted-by <path>')]
+    public function testImpactedBy(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--impacted-by', 'src/Foo.php', '--impacted-by', 'src/Bar.php']);
+
+        $this->assertTrue($configuration->hasImpactedBy());
+        $this->assertSame(['src/Foo.php', 'src/Bar.php'], $configuration->impactedBy());
+    }
+
+    public function testImpactedByMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasImpactedBy());
+
+        $this->expectException(Exception::class);
+
+        $configuration->impactedBy();
+    }
+
+    #[TestDox('--impacted-by-file <file>')]
+    public function testImpactedByFile(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--impacted-by-file', 'changed.txt']);
+
+        $this->assertTrue($configuration->hasImpactedByFile());
+        $this->assertSame('changed.txt', $configuration->impactedByFile());
+    }
+
+    public function testImpactedByFileMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasImpactedByFile());
+
+        $this->expectException(Exception::class);
+
+        $configuration->impactedByFile();
+    }
+
+    public function testOnlyImpactedIsNotTheDefault(): void
+    {
+        $this->assertFalse((new Builder)->fromParameters([])->onlyImpacted());
+    }
+
+    public function testListTestsThatDependOnMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasListTestsThatDependOn());
+
+        $this->expectException(Exception::class);
+
+        $configuration->listTestsThatDependOn();
+    }
+
     public function testCacheTestIndexMayNotBeConfigured(): void
     {
         $configuration = (new Builder)->fromParameters([]);

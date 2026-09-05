@@ -251,6 +251,14 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isCoversFile());
     }
 
+    public function test_Can_be_filtered_for_UsesFixture(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isUsesFixture();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isUsesFixture());
+    }
+
     public function test_Can_be_filtered_for_CoversDirectory(): void
     {
         $collection = $this->collectionWithOneOfEach()->isCoversDirectory();
@@ -667,6 +675,7 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::coversFunction(''),
                 Metadata::coversMethod('', ''),
                 Metadata::coversFile(''),
+                Metadata::usesFixtureOnClass(''),
                 Metadata::coversDirectory(''),
                 Metadata::coversDirectoryRecursively(''),
                 Metadata::coversNothingOnClass(),

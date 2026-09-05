@@ -9,28 +9,36 @@
  */
 namespace PHPUnit\TextUI;
 
+use const DIRECTORY_SEPARATOR;
 use const PHP_EOL;
 use const PHP_VERSION;
 use const SIGINT;
+use function array_merge;
+use function array_pop;
 use function array_reverse;
 use function assert;
 use function class_exists;
 use function count;
 use function defined;
 use function dirname;
+use function end;
 use function explode;
 use function function_exists;
+use function getcwd;
 use function getmypid;
+use function implode;
 use function is_array;
 use function is_file;
 use function is_string;
 use function method_exists;
 use function pcntl_async_signals;
 use function pcntl_signal;
+use function preg_match;
 use function printf;
 use function realpath;
 use function sprintf;
 use function str_contains;
+use function str_replace;
 use function str_starts_with;
 use function trim;
 use function unlink;
@@ -58,6 +66,7 @@ use PHPUnit\Runner\DeprecationCollector\Facade as DeprecationCollector;
 use PHPUnit\Runner\DeprecationFilter;
 use PHPUnit\Runner\DirectoryDoesNotExistException;
 use PHPUnit\Runner\ErrorHandler;
+use PHPUnit\Runner\Exception as RunnerException;
 use PHPUnit\Runner\Extension\ExtensionBootstrapper;
 use PHPUnit\Runner\Extension\ExtensionCapabilities;
 use PHPUnit\Runner\Extension\ExtensionFacade;
@@ -66,6 +75,15 @@ use PHPUnit\Runner\GarbageCollection\GarbageCollectionHandler;
 use PHPUnit\Runner\IssueTriggerResolver\Resolver;
 use PHPUnit\Runner\PhpConfiguration\PhpConfigurationChecker;
 use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
+use PHPUnit\Runner\TestImpactAnalysis\Assumptions;
+use PHPUnit\Runner\TestImpactAnalysis\ChangedPaths;
+use PHPUnit\Runner\TestImpactAnalysis\DefaultTestImpactData;
+use PHPUnit\Runner\TestImpactAnalysis\Provenance;
+use PHPUnit\Runner\TestImpactAnalysis\Selection;
+use PHPUnit\Runner\TestImpactAnalysis\Selector;
+use PHPUnit\Runner\TestImpactAnalysis\TestImpactData;
+use PHPUnit\Runner\TestImpactAnalysis\TestImpactDataFile;
+use PHPUnit\Runner\TestImpactAnalysis\TestImpactDataFromCoverageTargets;
 use PHPUnit\Runner\TestIndex\DefaultTestFileSkipper;
 use PHPUnit\Runner\TestIndex\GroupPruner;
 use PHPUnit\Runner\TestIndex\NameFilterPruner;
@@ -92,6 +110,7 @@ use PHPUnit\TextUI\Command\ListTestFilesCommand;
 use PHPUnit\TextUI\Command\ListTestIdsCommand;
 use PHPUnit\TextUI\Command\ListTestsAsTextCommand;
 use PHPUnit\TextUI\Command\ListTestsAsXmlCommand;
+use PHPUnit\TextUI\Command\ListTestsThatDependOnCommand;
 use PHPUnit\TextUI\Command\ListTestSuitesCommand;
 use PHPUnit\TextUI\Command\MigrateConfigurationCommand;
 use PHPUnit\TextUI\Command\Result;
@@ -196,7 +215,7 @@ final readonly class Application
 
             $testDoxResultCollector = $this->testDoxResultCollector($configuration);
 
-            $testRunHistory = $this->initializeTestRunHistory($configuration);
+            $testRunHistory = $this->initializeTestRunHistory($configuration, $cliConfiguration);
 
             if ($configuration->controlGarbageCollector()) {
                 new GarbageCollectionHandler(
@@ -242,16 +261,23 @@ final readonly class Application
                 $this->execute(new ShowHelpCommand(Result::FAILURE));
             }
 
+            $this->warnAboutTestImpactDataThatCannotBeRecorded($configuration);
+
+            $testImpactData = $this->deriveTestImpactDataFromCoverageTargets($configuration, $testSuite);
+
             $coverageInitializationStatus = CodeCoverage::instance()->init(
                 $configuration,
                 CodeCoverageFilterRegistry::instance(),
                 $extensionCapabilities->requiresCodeCoverageCollection(),
             );
 
+            $selection = $this->selectTests($configuration, $cliConfiguration, $testSuite, $testRunHistory);
+
             if (!$configuration->debug() && !$extensionCapabilities->replacesOutput()) {
                 $this->writeRuntimeInformation($printer, $configuration);
                 $this->writePharExtensionInformation($printer, $pharExtensions);
                 $this->writeRandomSeedInformation($printer, $configuration);
+                $this->writeTestSelectionInformation($printer, $selection);
 
                 $printer->print(PHP_EOL);
             }
@@ -265,14 +291,27 @@ final readonly class Application
                 $coverageInitializationStatus === CodeCoverageInitializationStatus::SUCCEEDED) {
                 $runner = new TestRunner;
 
+                $selectedTests = null;
+
+                if ($selection !== null && !$selection->isEverything()) {
+                    $selectedTests = $selection->tests();
+                }
+
                 $runner->run(
                     $configuration,
                     $testRunHistory,
                     $testSuite,
+                    $selectedTests,
                 );
             }
 
             $duration = $timer->stop();
+
+            $this->persistTestImpactData(
+                $configuration,
+                $testImpactData,
+                $this->testImpactDataMayBePruned($configuration, $cliConfiguration, $selection),
+            );
 
             $testDoxResult = null;
 
@@ -532,6 +571,22 @@ final readonly class Application
         if ($cliConfiguration->warmCoverageCache()) {
             $this->execute(new WarmCodeCoverageCacheCommand($configuration, CodeCoverageFilterRegistry::instance()));
         }
+
+        if ($cliConfiguration->hasListTestsThatDependOn()) {
+            if (!$configuration->hasCacheDirectory()) {
+                $this->exitWithErrorMessage('Cannot list tests that executed a source file because no cache directory is configured');
+            }
+
+            $this->execute(
+                new ListTestsThatDependOnCommand(
+                    new TestImpactDataFile(
+                        $configuration->cacheDirectory(),
+                        $this->assumptionsOf($configuration),
+                    ),
+                    $cliConfiguration->listTestsThatDependOn(),
+                ),
+            );
+        }
     }
 
     private function executeCommandsThatRequireTheTestSuite(Configuration $configuration, CliConfiguration $cliConfiguration, TestSuite $testSuite): void
@@ -645,9 +700,10 @@ final readonly class Application
     {
         $printer->print(
             sprintf(
-                "%-15s%s\n",
+                '%-15s%s%s',
                 $type . ':',
                 $message,
+                PHP_EOL,
             ),
         );
     }
@@ -766,6 +822,361 @@ final readonly class Application
     }
 
     /**
+     * What each test executed is only worth recording when there is somewhere
+     * to keep it.
+     */
+    private function warnAboutTestImpactDataThatCannotBeRecorded(Configuration $configuration): void
+    {
+        if (!$configuration->recordTestImpactData() || $configuration->hasCacheDirectory()) {
+            return;
+        }
+
+        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+            'Cannot record test impact data because no cache directory is configured',
+        );
+    }
+
+    /**
+     * What each test depends on is worked out from the code coverage targets it
+     * declares before the tests are run: it does not depend on running them,
+     * and it is worked out for every test that was selected for this run, and
+     * not only for the tests that end up being executed.
+     */
+    private function deriveTestImpactDataFromCoverageTargets(Configuration $configuration, TestSuite $testSuite): ?TestImpactData
+    {
+        if (!$configuration->deriveTestImpactDataFromCoverageTargets() || !$configuration->hasCacheDirectory()) {
+            return null;
+        }
+
+        if (!$configuration->strictCoverage()) {
+            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                'Test impact data derived from code coverage targets is only as complete as those targets are, ' .
+                'and they are not checked because tests that execute code they do not declare are not considered risky',
+            );
+        }
+
+        CodeCoverageFilterRegistry::instance()->init($configuration, true);
+
+        $staticAnalysisCacheDirectory = null;
+
+        if ($configuration->hasCoverageCacheDirectory()) {
+            $staticAnalysisCacheDirectory = $configuration->coverageCacheDirectory();
+        }
+
+        $testImpactData = new DefaultTestImpactData;
+
+        TestImpactDataFromCoverageTargets::using(
+            CodeCoverageFilterRegistry::instance()->get(),
+            $staticAnalysisCacheDirectory,
+            !$configuration->disableCodeCoverageIgnore(),
+            $configuration->ignoreDeprecatedCodeUnitsFromCodeCoverage(),
+        )->record($testSuite->collect(), $testImpactData);
+
+        return $testImpactData;
+    }
+
+    /**
+     * Which tests can be affected by what changed, or null when the tests are
+     * not selected by what changed.
+     */
+    private function selectTests(Configuration $configuration, CliConfiguration $cliConfiguration, TestSuite $testSuite, TestRunHistory $testRunHistory): ?Selection
+    {
+        if (!$cliConfiguration->onlyImpacted() &&
+            !$cliConfiguration->hasImpactedBy() &&
+            !$cliConfiguration->hasImpactedByFile()) {
+            return null;
+        }
+
+        if (!$configuration->hasCacheDirectory()) {
+            $this->exitWithErrorMessage('Cannot run only the tests that are affected by what changed because no cache directory is configured');
+        }
+
+        if (!$configuration->recordTestRunHistory()) {
+            $this->exitWithErrorMessage('Cannot run only the tests that are affected by what changed because the test run history is not recorded');
+        }
+
+        CodeCoverageFilterRegistry::instance()->init($configuration, true);
+
+        $testRunHistory->load();
+
+        $changedPaths = null;
+
+        if ($cliConfiguration->hasImpactedBy() || $cliConfiguration->hasImpactedByFile()) {
+            $changedPaths = $this->changedPaths($cliConfiguration);
+        }
+
+        return new Selector(
+            new TestImpactDataFile($configuration->cacheDirectory(), $this->assumptionsOf($configuration)),
+            $testRunHistory,
+        )->select($testSuite->collect(), $this->sourceFiles(), $changedPaths);
+    }
+
+    /**
+     * The files and directories that changed, named on the command line, read
+     * from a file, or both.
+     *
+     * @return list<non-empty-string>
+     */
+    private function changedPaths(CliConfiguration $cliConfiguration): array
+    {
+        $changedPaths = [];
+
+        if ($cliConfiguration->hasImpactedBy()) {
+            $changedPaths = $this->resolve($cliConfiguration->impactedBy());
+        }
+
+        if ($cliConfiguration->hasImpactedByFile()) {
+            $paths = ChangedPaths::readFrom($cliConfiguration->impactedByFile());
+
+            if ($paths === null) {
+                $this->exitWithErrorMessage(
+                    sprintf(
+                        'Cannot read the files and directories that changed from %s',
+                        $cliConfiguration->impactedByFile(),
+                    ),
+                );
+            }
+
+            $changedPaths = array_merge($changedPaths, $this->resolve($paths));
+        }
+
+        return $changedPaths;
+    }
+
+    /**
+     * A path that was named on the command line is resolved against the
+     * working directory, and not against the configuration file: it comes from
+     * the shell, and usually from version control, which names what changed
+     * relative to where the command is run.
+     *
+     * A path that is not there is resolved all the same: a source file that
+     * was deleted is a change like any other, and what was recorded for it is
+     * recorded under the name it had.
+     *
+     * @param list<non-empty-string> $paths
+     *
+     * @return list<non-empty-string>
+     */
+    private function resolve(array $paths): array
+    {
+        $resolved = [];
+
+        foreach ($paths as $path) {
+            $path = $this->withNativeDirectorySeparators($path);
+
+            $absolutePath = realpath($path);
+
+            if ($absolutePath === false) {
+                $absolutePath = $path;
+
+                if (!$this->isAbsolute($path)) {
+                    $workingDirectory = getcwd();
+
+                    if ($workingDirectory !== false) {
+                        $absolutePath = $workingDirectory . DIRECTORY_SEPARATOR . $path;
+                    }
+                }
+
+                $absolutePath = $this->withoutRelativeSegments($absolutePath);
+            }
+
+            $resolved[] = $absolutePath;
+        }
+
+        return $resolved;
+    }
+
+    /**
+     * The '.' and '..' that name where a path is are worked out here for a
+     * path that is not there: realpath() works them out for a path that is,
+     * and what was recorded names a file the way realpath() does.
+     *
+     * @param non-empty-string $path
+     *
+     * @return non-empty-string
+     */
+    private function withoutRelativeSegments(string $path): string
+    {
+        $segments = [];
+
+        foreach (explode(DIRECTORY_SEPARATOR, $path) as $position => $segment) {
+            if ($segment === '.') {
+                continue;
+            }
+
+            if ($segment === '' && $position > 0) {
+                continue;
+            }
+
+            if ($segment === '..' && $segments !== [] && end($segments) !== '..') {
+                array_pop($segments);
+
+                continue;
+            }
+
+            $segments[] = $segment;
+        }
+
+        $result = implode(DIRECTORY_SEPARATOR, $segments);
+
+        // @codeCoverageIgnoreStart
+        if ($result === '') {
+            return DIRECTORY_SEPARATOR;
+        }
+        // @codeCoverageIgnoreEnd
+
+        return $result;
+    }
+
+    /**
+     * Version control names a path with '/' as the directory separator, on
+     * every platform, whereas what was recorded names it the way the platform
+     * does.
+     *
+     * @param non-empty-string $path
+     *
+     * @return non-empty-string
+     */
+    private function withNativeDirectorySeparators(string $path): string
+    {
+        if (DIRECTORY_SEPARATOR === '/') {
+            return $path;
+        }
+
+        // @codeCoverageIgnoreStart
+        $path = str_replace('/', DIRECTORY_SEPARATOR, $path);
+
+        assert($path !== '');
+
+        return $path;
+        // @codeCoverageIgnoreEnd
+    }
+
+    /**
+     * A path that names where it is from the root of a file system, or from
+     * the root of the drive it is on, and not from the working directory.
+     *
+     * @param non-empty-string $path
+     */
+    private function isAbsolute(string $path): bool
+    {
+        if (str_starts_with($path, DIRECTORY_SEPARATOR)) {
+            return true;
+        }
+
+        if (DIRECTORY_SEPARATOR === '/') {
+            return false;
+        }
+
+        // @codeCoverageIgnoreStart
+        return preg_match('/^[A-Za-z]:\\\\/', $path) === 1;
+        // @codeCoverageIgnoreEnd
+    }
+
+    private function writeTestSelectionInformation(Printer $printer, ?Selection $selection): void
+    {
+        if ($selection === null) {
+            return;
+        }
+
+        if ($selection->isEverything()) {
+            $this->writeMessage(
+                $printer,
+                'Impact',
+                sprintf(
+                    'every test is run: %s',
+                    $selection->reason(),
+                ),
+            );
+
+            return;
+        }
+
+        $numberOfTestsThatAreNotRun = $selection->numberOfTestsThatAreNotRun();
+
+        if ($numberOfTestsThatAreNotRun === 1) {
+            $tests = '1 test is not run';
+        } else {
+            $tests = sprintf('%d tests are not run', $numberOfTestsThatAreNotRun);
+        }
+
+        $this->writeMessage(
+            $printer,
+            'Impact',
+            sprintf(
+                '%s; %s',
+                $selection->reason(),
+                $tests,
+            ),
+        );
+    }
+
+    /**
+     * @return list<non-empty-string>
+     */
+    private function sourceFiles(): array
+    {
+        return CodeCoverageFilterRegistry::instance()->get()->files();
+    }
+
+    private function assumptionsOf(Configuration $configuration): Assumptions
+    {
+        $configurationFile = null;
+
+        if ($configuration->hasConfigurationFile()) {
+            $configurationFile = $configuration->configurationFile();
+        }
+
+        return Assumptions::from($configurationFile, $configuration->source());
+    }
+
+    private function persistTestImpactData(Configuration $configuration, ?TestImpactData $testImpactData, bool $prune): void
+    {
+        if ($testImpactData !== null) {
+            $this->persist($configuration, $testImpactData, Provenance::CoverageTargets, $prune);
+
+            return;
+        }
+
+        if (!CodeCoverage::instance()->isRecordingTestImpactData()) {
+            return;
+        }
+
+        $this->persist($configuration, CodeCoverage::instance()->testImpactData(), Provenance::ObservedExecution, $prune);
+    }
+
+    private function persist(Configuration $configuration, TestImpactData $testImpactData, Provenance $provenance, bool $prune): void
+    {
+        $testImpactDataFile = new TestImpactDataFile($configuration->cacheDirectory(), $this->assumptionsOf($configuration));
+
+        try {
+            if ($prune) {
+                $testImpactDataFile->persistAndPrune(
+                    $testImpactData,
+                    $provenance,
+                    $this->sourceFiles(),
+                );
+            } else {
+                $testImpactDataFile->persist(
+                    $testImpactData,
+                    $provenance,
+                    $this->sourceFiles(),
+                );
+            }
+            // @codeCoverageIgnoreStart
+        } catch (RunnerException $e) {
+            $message = $e->getMessage();
+
+            if ($message === '') {
+                $message = 'Cannot persist test impact data';
+            }
+
+            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning($message);
+        }
+        // @codeCoverageIgnoreEnd
+    }
+
+    /**
      * The index is only usable when there is somewhere to keep it, and it can
      * only save work when tests are selected by group: it answers whether a
      * test file can contribute a test to the run, which is a question only a
@@ -874,7 +1285,7 @@ final readonly class Application
         return $groups;
     }
 
-    private function initializeTestRunHistory(Configuration $configuration): TestRunHistory
+    private function initializeTestRunHistory(Configuration $configuration, CliConfiguration $cliConfiguration): TestRunHistory
     {
         if ($configuration->recordTestRunHistory()) {
             $testRunHistory = new DefaultTestRunHistory($configuration->testRunHistoryFile());
@@ -882,7 +1293,7 @@ final readonly class Application
             new TestRunHistoryHandler(
                 $testRunHistory,
                 EventFacade::instance(),
-                $this->testRunHistoryMayBePruned($configuration),
+                $this->everyTestThatExistsIsRun($configuration, $cliConfiguration),
             );
 
             return $testRunHistory;
@@ -905,12 +1316,68 @@ final readonly class Application
     }
 
     /**
-     * Pruning drops all test run history entries that the current test run
-     * did not touch, so it is only safe when the current test run executes
-     * every test that exists: no test selection or filtering of any kind may
-     * be configured.
+     * Whether what the current test run did not record may be dropped.
+     *
+     * A run that ran only some of the tests recorded nothing for the others,
+     * and what a test that was not run leaves behind looks exactly like what a
+     * test that is no longer there leaves behind. Only a run that ran every
+     * test there is can tell the two apart, and only such a run may prune.
      */
-    private function testRunHistoryMayBePruned(Configuration $configuration): bool
+    private function testImpactDataMayBePruned(Configuration $configuration, CliConfiguration $cliConfiguration, ?Selection $selection): bool
+    {
+        /*
+         * A test run that stopped early did not reach every test. Asking
+         * whether it should stop is asking the very question that stopped it,
+         * and asking it once the run is over answers it for the run as a
+         * whole.
+         */
+        if (TestResultFacade::shouldStop()) {
+            return false;
+        }
+
+        /*
+         * Test impact analysis that selected every test there is kept no test
+         * from being run: such a run ran every test there is, just as a run
+         * that was never asked to select tests does, and what it did not
+         * record is what is no longer there.
+         *
+         * This is what makes a run that falls back to running every test
+         * settle what it fell back for: a change to a source file no test
+         * refers to is assessed by that run, and is not reported again by the
+         * next one.
+         */
+        if ($selection !== null && $selection->isEverything()) {
+            return $this->noFilteringIsConfigured($configuration);
+        }
+
+        return $this->everyTestThatExistsIsRun($configuration, $cliConfiguration);
+    }
+
+    /**
+     * Whether the test run runs every test there is: no test selection or
+     * filtering of any kind is configured.
+     *
+     * Both the test run history and the test impact data are pruned by
+     * dropping what the current test run did not touch, which is only what a
+     * test that no longer exists leaves behind when every test that does exist
+     * was run.
+     */
+    private function everyTestThatExistsIsRun(Configuration $configuration, CliConfiguration $cliConfiguration): bool
+    {
+        if ($cliConfiguration->onlyImpacted() ||
+            $cliConfiguration->hasImpactedBy() ||
+            $cliConfiguration->hasImpactedByFile()) {
+            return false;
+        }
+
+        return $this->noFilteringIsConfigured($configuration);
+    }
+
+    /**
+     * Whether anything other than test impact analysis keeps a test from being
+     * run.
+     */
+    private function noFilteringIsConfigured(Configuration $configuration): bool
     {
         if ($configuration->hasCliArguments() || $configuration->hasTestFilesFile()) {
             return false;

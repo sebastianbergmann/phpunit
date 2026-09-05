@@ -138,6 +138,22 @@ abstract readonly class Metadata
     }
 
     /**
+     * @param non-empty-string $path
+     */
+    public static function usesFixtureOnClass(string $path): UsesFixture
+    {
+        return new UsesFixture(Level::CLASS_LEVEL, $path);
+    }
+
+    /**
+     * @param non-empty-string $path
+     */
+    public static function usesFixtureOnMethod(string $path): UsesFixture
+    {
+        return new UsesFixture(Level::METHOD_LEVEL, $path);
+    }
+
+    /**
      * @param non-empty-string $directory
      */
     public static function coversDirectory(string $directory): CoversDirectory
@@ -785,6 +801,14 @@ abstract readonly class Metadata
      * @phpstan-assert-if-true CoversFile $this
      */
     public function isCoversFile(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true UsesFixture $this
+     */
+    public function isUsesFixture(): bool
     {
         return false;
     }

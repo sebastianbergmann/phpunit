@@ -186,6 +186,8 @@ final readonly class PHPUnit
     private int $shortenArraysForExportThreshold;
     private bool $warnWhenPhpIsNotConfiguredForDevelopment;
     private bool $cacheTestIndex;
+    private bool $recordTestImpactData;
+    private bool $deriveTestImpactDataFromCoverageTargets;
 
     /**
      * @param ?non-empty-string                         $cacheDirectory
@@ -211,7 +213,7 @@ final readonly class PHPUnit
      * @param non-negative-int                          $shortenArraysForExportThreshold
      * @param positive-int                              $diffContext
      */
-    public function __construct(?string $cacheDirectory, bool $recordTestRunHistory, int|string $columns, string $colors, bool $stderr, bool $displayDetailsOnAllIssues, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnPhpunitDeprecations, bool $displayDetailsOnPhpunitNotices, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $reverseDefectList, bool $requireCoverageMetadata, bool $requireSealedMockObjects, ?string $bootstrap, array $bootstrapForTestSuite, bool $processIsolation, bool $failOnAllIssues, bool $failOnDeprecation, bool $hasFailOnDeprecation, bool $failOnSelfDeprecation, bool $hasFailOnSelfDeprecation, bool $failOnDirectDeprecation, bool $hasFailOnDirectDeprecation, bool $failOnIndirectDeprecation, bool $hasFailOnIndirectDeprecation, bool $failOnPhpunitDeprecation, bool $hasFailOnPhpunitDeprecation, bool $failOnPhpunitNotice, bool $hasFailOnPhpunitNotice, bool $failOnPhpunitWarning, bool $hasFailOnPhpunitWarning, bool $failOnEmptyTestSuite, bool $hasFailOnEmptyTestSuite, bool $failOnIncomplete, bool $hasFailOnIncomplete, bool $failOnNotice, bool $hasFailOnNotice, bool $failOnRisky, bool $hasFailOnRisky, bool $failOnSkipped, bool $hasFailOnSkipped, bool $failOnWarning, bool $hasFailOnWarning, int $stopOnDefect, int $stopOnDeprecation, int $stopOnError, int $stopOnFailure, int $stopOnIncomplete, int $stopOnNotice, int $stopOnRisky, int $stopOnSkipped, int $stopOnWarning, ?string $extensionsDirectory, bool $beStrictAboutChangesToGlobalState, bool $beStrictAboutOutputDuringTests, bool $beStrictAboutTestsThatDoNotTestAnything, bool $beStrictAboutCoverageMetadata, bool $requireCoverageContribution, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, ?string $defaultTestSuite, int $executionOrder, bool $resolveDependencies, bool $defectsFirst, bool $backupGlobals, bool $backupStaticProperties, bool $testdoxPrinter, bool $testdoxPrinterSummary, bool $controlGarbageCollector, int $numberOfTestsBeforeGarbageCollection, int $shortenArraysForExportThreshold, int $diffContext, bool $warnWhenPhpIsNotConfiguredForDevelopment, bool $cacheTestIndex)
+    public function __construct(?string $cacheDirectory, bool $recordTestRunHistory, int|string $columns, string $colors, bool $stderr, bool $displayDetailsOnAllIssues, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnPhpunitDeprecations, bool $displayDetailsOnPhpunitNotices, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $reverseDefectList, bool $requireCoverageMetadata, bool $requireSealedMockObjects, ?string $bootstrap, array $bootstrapForTestSuite, bool $processIsolation, bool $failOnAllIssues, bool $failOnDeprecation, bool $hasFailOnDeprecation, bool $failOnSelfDeprecation, bool $hasFailOnSelfDeprecation, bool $failOnDirectDeprecation, bool $hasFailOnDirectDeprecation, bool $failOnIndirectDeprecation, bool $hasFailOnIndirectDeprecation, bool $failOnPhpunitDeprecation, bool $hasFailOnPhpunitDeprecation, bool $failOnPhpunitNotice, bool $hasFailOnPhpunitNotice, bool $failOnPhpunitWarning, bool $hasFailOnPhpunitWarning, bool $failOnEmptyTestSuite, bool $hasFailOnEmptyTestSuite, bool $failOnIncomplete, bool $hasFailOnIncomplete, bool $failOnNotice, bool $hasFailOnNotice, bool $failOnRisky, bool $hasFailOnRisky, bool $failOnSkipped, bool $hasFailOnSkipped, bool $failOnWarning, bool $hasFailOnWarning, int $stopOnDefect, int $stopOnDeprecation, int $stopOnError, int $stopOnFailure, int $stopOnIncomplete, int $stopOnNotice, int $stopOnRisky, int $stopOnSkipped, int $stopOnWarning, ?string $extensionsDirectory, bool $beStrictAboutChangesToGlobalState, bool $beStrictAboutOutputDuringTests, bool $beStrictAboutTestsThatDoNotTestAnything, bool $beStrictAboutCoverageMetadata, bool $requireCoverageContribution, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, ?string $defaultTestSuite, int $executionOrder, bool $resolveDependencies, bool $defectsFirst, bool $backupGlobals, bool $backupStaticProperties, bool $testdoxPrinter, bool $testdoxPrinterSummary, bool $controlGarbageCollector, int $numberOfTestsBeforeGarbageCollection, int $shortenArraysForExportThreshold, int $diffContext, bool $warnWhenPhpIsNotConfiguredForDevelopment, bool $cacheTestIndex, bool $recordTestImpactData, bool $deriveTestImpactDataFromCoverageTargets)
     {
         $this->cacheDirectory                               = $cacheDirectory;
         $this->recordTestRunHistory                         = $recordTestRunHistory;
@@ -294,6 +296,8 @@ final readonly class PHPUnit
         $this->diffContext                                  = $diffContext;
         $this->warnWhenPhpIsNotConfiguredForDevelopment     = $warnWhenPhpIsNotConfiguredForDevelopment;
         $this->cacheTestIndex                               = $cacheTestIndex;
+        $this->recordTestImpactData                         = $recordTestImpactData;
+        $this->deriveTestImpactDataFromCoverageTargets      = $deriveTestImpactDataFromCoverageTargets;
     }
 
     /**
@@ -326,6 +330,16 @@ final readonly class PHPUnit
     public function cacheTestIndex(): bool
     {
         return $this->cacheTestIndex;
+    }
+
+    public function recordTestImpactData(): bool
+    {
+        return $this->recordTestImpactData;
+    }
+
+    public function deriveTestImpactDataFromCoverageTargets(): bool
+    {
+        return $this->deriveTestImpactDataFromCoverageTargets;
     }
 
     public function columns(): int|string

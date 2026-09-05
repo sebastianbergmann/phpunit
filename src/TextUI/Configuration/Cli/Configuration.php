@@ -218,6 +218,20 @@ final readonly class Configuration
      */
     private ?array $extensions;
     private ?bool $cacheTestIndex;
+    private ?bool $recordTestImpactData;
+    private ?bool $deriveTestImpactDataFromCoverageTargets;
+    private ?string $listTestsThatDependOn;
+    private bool $onlyImpacted;
+
+    /**
+     * @var ?non-empty-list<non-empty-string>
+     */
+    private ?array $impactedBy;
+
+    /**
+     * @var ?non-empty-string
+     */
+    private ?string $impactedByFile;
 
     /**
      * @param list<non-empty-string>                               $arguments
@@ -233,8 +247,10 @@ final readonly class Configuration
      * @param ?non-empty-list<non-empty-string>                    $testSuffixes
      * @param ?non-empty-list<non-empty-string>                    $coverageFilter
      * @param ?non-empty-list<non-empty-string>                    $extensions
+     * @param ?non-empty-list<non-empty-string>                    $impactedBy
+     * @param ?non-empty-string                                    $impactedByFile
      */
-    public function __construct(array $arguments, ?string $testFilesFile, ?string $testIdFile, ?string $testIdFilter, ?bool $all, ?string $atLeastVersion, ?bool $backupGlobals, ?bool $backupStaticProperties, ?bool $beStrictAboutChangesToGlobalState, ?string $bootstrap, ?string $cacheDirectory, ?bool $recordTestRunHistory, bool $checkPhpConfiguration, ?bool $warnWhenPhpIsNotConfiguredForDevelopment, bool $checkVersion, ?string $colors, null|int|string $columns, ?string $configurationFile, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4J, ?string $coverageHtml, ?bool $withoutClassView, ?bool $withoutFileView, ?string $coverageJsonl, ?string $coverageOpenClover, ?string $coveragePhp, ?string $coverageText, ?bool $coverageTextShowUncoveredFiles, ?bool $coverageTextShowOnlySummary, ?string $coverageXml, ?bool $coverageXmlIncludeSource, ?bool $pathCoverage, ?bool $branchCoverage, bool $warmCoverageCache, ?int $defaultTimeLimit, ?int $diffContext, ?bool $disableCodeCoverageIgnore, ?bool $disableCoverageTargeting, ?bool $disallowTestOutput, ?bool $enforceTimeLimit, ?array $excludeGroups, ?int $executionOrder, ?int $executionOrderDefects, ?bool $failOnAllIssues, ?bool $failOnDeprecation, ?bool $failOnSelfDeprecation, ?bool $failOnDirectDeprecation, ?bool $failOnIndirectDeprecation, ?bool $failOnPhpunitDeprecation, ?bool $failOnPhpunitNotice, ?bool $failOnPhpunitWarning, ?bool $failOnEmptyTestSuite, ?bool $failOnIncomplete, ?bool $failOnNotice, ?bool $failOnRisky, ?bool $failOnSkipped, ?bool $failOnWarning, ?bool $doNotFailOnDeprecation, ?bool $doNotFailOnSelfDeprecation, ?bool $doNotFailOnDirectDeprecation, ?bool $doNotFailOnIndirectDeprecation, ?bool $doNotFailOnPhpunitDeprecation, ?bool $doNotFailOnPhpunitNotice, ?bool $doNotFailOnPhpunitWarning, ?bool $doNotFailOnEmptyTestSuite, ?bool $doNotFailOnIncomplete, ?bool $doNotFailOnNotice, ?bool $doNotFailOnRisky, ?bool $doNotFailOnSkipped, ?bool $doNotFailOnWarning, ?int $stopOnDefect, ?int $stopOnDeprecation, ?string $specificDeprecationToStopOn, ?int $stopOnError, ?int $stopOnFailure, ?int $stopOnIncomplete, ?int $stopOnNotice, ?int $stopOnRisky, ?int $stopOnSkipped, ?int $stopOnWarning, ?string $filter, ?string $excludeFilter, ?string $generateBaseline, ?string $useBaseline, bool $ignoreBaseline, bool $generateConfiguration, bool $migrateConfiguration, bool $validateConfiguration, ?array $groups, ?array $testsCovering, ?array $testsUsing, ?array $testsRequiringPhpExtension, bool $help, ?string $includePath, ?array $iniSettings, ?string $junitLogfile, ?string $otrLogfile, ?bool $includeGitInformation, bool $listGroups, bool $listSuites, bool $listTestFiles, bool $listTestIds, bool $listTests, ?string $listTestsXml, ?bool $noCoverage, ?bool $noExtensions, ?bool $noOutput, ?bool $noProgress, ?bool $noResults, ?bool $noLogging, ?bool $processIsolation, ?int $randomOrderSeed, ?int $repeat, ?int $retry, ?bool $reportUselessTests, ?bool $resolveDependencies, ?bool $reverseList, ?bool $stderr, ?bool $strictCoverage, ?bool $requireCoverageContribution, ?string $teamcityLogfile, ?string $testdoxHtmlFile, ?string $testdoxTextFile, ?array $testSuffixes, ?string $testSuite, ?string $excludeTestSuite, bool $useDefaultConfiguration, ?bool $displayDetailsOnAllIssues, ?bool $displayDetailsOnIncompleteTests, ?bool $displayDetailsOnSkippedTests, ?bool $displayDetailsOnTestsThatTriggerDeprecations, ?bool $displayDetailsOnPhpunitDeprecations, ?bool $displayDetailsOnPhpunitNotices, ?bool $displayDetailsOnTestsThatTriggerErrors, ?bool $displayDetailsOnTestsThatTriggerNotices, ?bool $displayDetailsOnTestsThatTriggerWarnings, bool $version, ?array $coverageFilter, ?string $logEventsText, ?string $logEventsVerboseText, ?bool $printerCompact, ?bool $printerTeamCity, ?bool $testdoxPrinter, ?bool $testdoxPrinterSummary, bool $debug, bool $withTelemetry, ?array $extensions, ?bool $cacheTestIndex)
+    public function __construct(array $arguments, ?string $testFilesFile, ?string $testIdFile, ?string $testIdFilter, ?bool $all, ?string $atLeastVersion, ?bool $backupGlobals, ?bool $backupStaticProperties, ?bool $beStrictAboutChangesToGlobalState, ?string $bootstrap, ?string $cacheDirectory, ?bool $recordTestRunHistory, bool $checkPhpConfiguration, ?bool $warnWhenPhpIsNotConfiguredForDevelopment, bool $checkVersion, ?string $colors, null|int|string $columns, ?string $configurationFile, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4J, ?string $coverageHtml, ?bool $withoutClassView, ?bool $withoutFileView, ?string $coverageJsonl, ?string $coverageOpenClover, ?string $coveragePhp, ?string $coverageText, ?bool $coverageTextShowUncoveredFiles, ?bool $coverageTextShowOnlySummary, ?string $coverageXml, ?bool $coverageXmlIncludeSource, ?bool $pathCoverage, ?bool $branchCoverage, bool $warmCoverageCache, ?int $defaultTimeLimit, ?int $diffContext, ?bool $disableCodeCoverageIgnore, ?bool $disableCoverageTargeting, ?bool $disallowTestOutput, ?bool $enforceTimeLimit, ?array $excludeGroups, ?int $executionOrder, ?int $executionOrderDefects, ?bool $failOnAllIssues, ?bool $failOnDeprecation, ?bool $failOnSelfDeprecation, ?bool $failOnDirectDeprecation, ?bool $failOnIndirectDeprecation, ?bool $failOnPhpunitDeprecation, ?bool $failOnPhpunitNotice, ?bool $failOnPhpunitWarning, ?bool $failOnEmptyTestSuite, ?bool $failOnIncomplete, ?bool $failOnNotice, ?bool $failOnRisky, ?bool $failOnSkipped, ?bool $failOnWarning, ?bool $doNotFailOnDeprecation, ?bool $doNotFailOnSelfDeprecation, ?bool $doNotFailOnDirectDeprecation, ?bool $doNotFailOnIndirectDeprecation, ?bool $doNotFailOnPhpunitDeprecation, ?bool $doNotFailOnPhpunitNotice, ?bool $doNotFailOnPhpunitWarning, ?bool $doNotFailOnEmptyTestSuite, ?bool $doNotFailOnIncomplete, ?bool $doNotFailOnNotice, ?bool $doNotFailOnRisky, ?bool $doNotFailOnSkipped, ?bool $doNotFailOnWarning, ?int $stopOnDefect, ?int $stopOnDeprecation, ?string $specificDeprecationToStopOn, ?int $stopOnError, ?int $stopOnFailure, ?int $stopOnIncomplete, ?int $stopOnNotice, ?int $stopOnRisky, ?int $stopOnSkipped, ?int $stopOnWarning, ?string $filter, ?string $excludeFilter, ?string $generateBaseline, ?string $useBaseline, bool $ignoreBaseline, bool $generateConfiguration, bool $migrateConfiguration, bool $validateConfiguration, ?array $groups, ?array $testsCovering, ?array $testsUsing, ?array $testsRequiringPhpExtension, bool $help, ?string $includePath, ?array $iniSettings, ?string $junitLogfile, ?string $otrLogfile, ?bool $includeGitInformation, bool $listGroups, bool $listSuites, bool $listTestFiles, bool $listTestIds, bool $listTests, ?string $listTestsXml, ?bool $noCoverage, ?bool $noExtensions, ?bool $noOutput, ?bool $noProgress, ?bool $noResults, ?bool $noLogging, ?bool $processIsolation, ?int $randomOrderSeed, ?int $repeat, ?int $retry, ?bool $reportUselessTests, ?bool $resolveDependencies, ?bool $reverseList, ?bool $stderr, ?bool $strictCoverage, ?bool $requireCoverageContribution, ?string $teamcityLogfile, ?string $testdoxHtmlFile, ?string $testdoxTextFile, ?array $testSuffixes, ?string $testSuite, ?string $excludeTestSuite, bool $useDefaultConfiguration, ?bool $displayDetailsOnAllIssues, ?bool $displayDetailsOnIncompleteTests, ?bool $displayDetailsOnSkippedTests, ?bool $displayDetailsOnTestsThatTriggerDeprecations, ?bool $displayDetailsOnPhpunitDeprecations, ?bool $displayDetailsOnPhpunitNotices, ?bool $displayDetailsOnTestsThatTriggerErrors, ?bool $displayDetailsOnTestsThatTriggerNotices, ?bool $displayDetailsOnTestsThatTriggerWarnings, bool $version, ?array $coverageFilter, ?string $logEventsText, ?string $logEventsVerboseText, ?bool $printerCompact, ?bool $printerTeamCity, ?bool $testdoxPrinter, ?bool $testdoxPrinterSummary, bool $debug, bool $withTelemetry, ?array $extensions, ?bool $cacheTestIndex, ?bool $recordTestImpactData, ?bool $deriveTestImpactDataFromCoverageTargets, ?string $listTestsThatDependOn, bool $onlyImpacted, ?array $impactedBy, ?string $impactedByFile)
     {
         $this->arguments                                    = $arguments;
         $this->testFilesFile                                = $testFilesFile;
@@ -385,6 +401,12 @@ final readonly class Configuration
         $this->withTelemetry                                = $withTelemetry;
         $this->extensions                                   = $extensions;
         $this->cacheTestIndex                               = $cacheTestIndex;
+        $this->recordTestImpactData                         = $recordTestImpactData;
+        $this->deriveTestImpactDataFromCoverageTargets      = $deriveTestImpactDataFromCoverageTargets;
+        $this->listTestsThatDependOn                        = $listTestsThatDependOn;
+        $this->onlyImpacted                                 = $onlyImpacted;
+        $this->impactedBy                                   = $impactedBy;
+        $this->impactedByFile                               = $impactedByFile;
     }
 
     /**
@@ -613,6 +635,130 @@ final readonly class Configuration
         }
 
         return $this->cacheTestIndex;
+    }
+
+    /**
+     * @phpstan-assert-if-true !null $this->recordTestImpactData
+     */
+    public function hasRecordTestImpactData(): bool
+    {
+        return $this->recordTestImpactData !== null;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function recordTestImpactData(): bool
+    {
+        if (!$this->hasRecordTestImpactData()) {
+            throw new Exception;
+        }
+
+        return $this->recordTestImpactData;
+    }
+
+    /**
+     * @phpstan-assert-if-true !null $this->deriveTestImpactDataFromCoverageTargets
+     */
+    public function hasDeriveTestImpactDataFromCoverageTargets(): bool
+    {
+        return $this->deriveTestImpactDataFromCoverageTargets !== null;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function deriveTestImpactDataFromCoverageTargets(): bool
+    {
+        if (!$this->hasDeriveTestImpactDataFromCoverageTargets()) {
+            throw new Exception;
+        }
+
+        return $this->deriveTestImpactDataFromCoverageTargets;
+    }
+
+    /**
+     * @phpstan-assert-if-true !null $this->listTestsThatDependOn
+     */
+    public function hasListTestsThatDependOn(): bool
+    {
+        return $this->listTestsThatDependOn !== null;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function listTestsThatDependOn(): string
+    {
+        if (!$this->hasListTestsThatDependOn()) {
+            throw new Exception;
+        }
+
+        return $this->listTestsThatDependOn;
+    }
+
+    /**
+     * Whether only the tests that can be affected by what changed are to be
+     * run. This is never configured in the XML configuration file: running
+     * only some of the tests is a decision that is made for one test run, and
+     * not one that a project makes for every test run it will ever have.
+     */
+    public function onlyImpacted(): bool
+    {
+        return $this->onlyImpacted;
+    }
+
+    /**
+     * @phpstan-assert-if-true !null $this->impactedBy
+     */
+    public function hasImpactedBy(): bool
+    {
+        return $this->impactedBy !== null;
+    }
+
+    /**
+     * The files and directories that changed, as they were named on the
+     * command line. Naming them is a way of asking for only the tests that
+     * they can affect to be run.
+     *
+     * @throws Exception
+     *
+     * @return non-empty-list<non-empty-string>
+     */
+    public function impactedBy(): array
+    {
+        if (!$this->hasImpactedBy()) {
+            throw new Exception;
+        }
+
+        return $this->impactedBy;
+    }
+
+    /**
+     * @phpstan-assert-if-true !null $this->impactedByFile
+     */
+    public function hasImpactedByFile(): bool
+    {
+        return $this->impactedByFile !== null;
+    }
+
+    /**
+     * The file that the files and directories that changed are listed in, one
+     * per line, or "-" when they are read from standard input. Naming such a
+     * file is a way of asking for only the tests that they can affect to be
+     * run.
+     *
+     * @throws Exception
+     *
+     * @return non-empty-string
+     */
+    public function impactedByFile(): string
+    {
+        if (!$this->hasImpactedByFile()) {
+            throw new Exception;
+        }
+
+        return $this->impactedByFile;
     }
 
     /**

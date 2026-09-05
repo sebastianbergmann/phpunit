@@ -28,6 +28,7 @@ use PHPUnit\Framework\IncompleteTestError;
 use PHPUnit\Framework\SkippedTest;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Api\CodeCoverage as CodeCoverageMetadataApi;
+use PHPUnit\Metadata\Api\Fixtures;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\ErrorHandler;
@@ -96,6 +97,7 @@ final class TestRunner
         }
 
         $this->performSanityChecks($test, $coversTargets, $usesTargets, $coversNothingContradiction);
+        $this->warnAboutFixturesThatCannotBeUsed($test);
 
         $error      = false;
         $failure    = false;
@@ -113,6 +115,24 @@ final class TestRunner
 
         $collectCodeCoverage = CodeCoverage::instance()->isActive() &&
                                $shouldCodeCoverageBeCollected;
+
+        /*
+         * A test that declares that it covers nothing still executes code, and
+         * what it executed is what test impact analysis has to know about.
+         * What is collected for it must not reach the code coverage report,
+         * though, which is what passing false instead of the code coverage
+         * targets of the test achieves.
+         */
+        $collectCodeCoverageForTestImpactDataOnly = false;
+
+        if (!$collectCodeCoverage &&
+            CodeCoverage::instance()->isActive() &&
+            CodeCoverage::instance()->isRecordingTestImpactData()) {
+            $collectCodeCoverage                      = true;
+            $collectCodeCoverageForTestImpactDataOnly = true;
+            $coversTargets                            = false;
+            $usesTargets                              = null;
+        }
 
         if ($collectCodeCoverage) {
             CodeCoverage::instance()->start($test);
@@ -207,7 +227,14 @@ final class TestRunner
                 $e = $e ?? $cce;
             }
 
+            /*
+             * A test that is only collected so that what it executed can be
+             * recorded is a test that opted out of code coverage. Whether it
+             * contributes to code coverage is not asked of such a test: it did
+             * not contribute before test impact data was recorded either.
+             */
             if ($append && !$error && !$failure && !$coveredUnintentionally &&
+                !$collectCodeCoverageForTestImpactDataOnly &&
                 $this->configuration->requireCoverageContribution() &&
                 !CodeCoverage::instance()->lastTestContributedToCoverage()) {
                 Facade::emitter()->testConsideredRisky(
@@ -263,6 +290,24 @@ final class TestRunner
             Facade::emitter()->testFinished(
                 $test->valueObjectForEvents(),
                 $test->numberOfAssertionsPerformed(),
+            );
+        }
+    }
+
+    /**
+     * A fixture that is not there cannot be compared to what it will be later,
+     * and the attribute that names it is therefore ignored, just as a code
+     * coverage target that cannot be used is ignored.
+     */
+    private function warnAboutFixturesThatCannotBeUsed(TestCase $test): void
+    {
+        foreach ((new Fixtures)->thatCannotBeResolved($test::class, $test->name()) as $path) {
+            Facade::emitter()->testTriggeredPhpunitWarning(
+                $test->valueObjectForEvents(),
+                sprintf(
+                    'Fixture %s does not exist, the attribute is ignored',
+                    $path,
+                ),
             );
         }
     }
