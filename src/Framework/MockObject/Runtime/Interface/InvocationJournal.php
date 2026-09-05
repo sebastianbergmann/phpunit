@@ -14,7 +14,7 @@ use IteratorAggregate;
 
 /**
  * Records, in the order in which they happen, the invocations of methods of
- * test doubles that were registered using Stub::recordInvocationsIn().
+ * mock objects that were registered using MockObject::recordInvocationsIn().
  *
  * @template-extends IteratorAggregate<non-negative-int, non-empty-string>
  *
