@@ -1127,7 +1127,17 @@ final readonly class Application
             $configurationFile = $configuration->configurationFile();
         }
 
-        return Assumptions::from($configurationFile, $configuration->source());
+        $bootstrapFiles = [];
+
+        if ($configuration->hasBootstrap()) {
+            $bootstrapFiles[] = $configuration->bootstrap();
+        }
+
+        foreach ($configuration->bootstrapForTestSuite() as $bootstrapFile) {
+            $bootstrapFiles[] = $bootstrapFile;
+        }
+
+        return Assumptions::from($configurationFile, $configuration->source(), $bootstrapFiles);
     }
 
     private function persistTestImpactData(Configuration $configuration, ?TestImpactData $testImpactData, bool $prune): void

@@ -64,7 +64,7 @@ use PHPUnit\Util\Filesystem;
  */
 final class TestImpactDataFile
 {
-    private const int VERSION             = 4;
+    private const int VERSION             = 5;
     private const string DEFAULT_FILENAME = 'test-impact-data';
     private readonly string $filename;
     private readonly Assumptions $assumptions;
