@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use function assert;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\Exception;
 
@@ -85,6 +86,20 @@ final class InvocationMockerImplementation extends AbstractInvocationImplementat
         $this->emitDeprecationWhenCreatedWithoutExplicitExpects();
 
         $this->matcher->setParametersRule(new Rule\AnyParameters);
+
+        return $this;
+    }
+
+    /**
+     * @param ?non-empty-string $label
+     *
+     * @return $this
+     */
+    public function recordIn(InvocationJournal $journal, ?string $label = null): InvocationMocker
+    {
+        assert($journal instanceof InvocationJournalImplementation);
+
+        $this->matcher->recordIn($journal, $label);
 
         return $this;
     }

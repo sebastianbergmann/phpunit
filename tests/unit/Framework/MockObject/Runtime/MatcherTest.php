@@ -16,6 +16,7 @@ use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount;
+use PHPUnit\Framework\MockObject\Rule\InvokedCount;
 use PHPUnit\Framework\MockObject\Rule\MethodName;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\AnInterface;
@@ -102,6 +103,35 @@ final class MatcherTest extends TestCase
         $this->expectException(MethodNameNotConfiguredException::class);
 
         $matcher->verify();
+    }
+
+    public function testRecordsInvocationInJournalUsingDefaultLabel(): void
+    {
+        $journal = new InvocationJournalImplementation;
+        $matcher = new Matcher(new AnyInvokedCount, AnInterface::class);
+
+        $matcher->setMethodNameRule(new MethodName('doSomething'));
+        $matcher->recordIn($journal, null);
+
+        $matcher->invoked($this->invocation());
+
+        $this->assertSame([AnInterface::class . '::doSomething()'], $journal->invocations());
+    }
+
+    public function testRecordsInvocationInJournalBeforeInvocationCountRuleIsApplied(): void
+    {
+        $journal = new InvocationJournalImplementation;
+        $matcher = new Matcher(new InvokedCount(0), AnInterface::class);
+
+        $matcher->setMethodNameRule(new MethodName('doSomething'));
+        $matcher->recordIn($journal, 'doSomething');
+
+        try {
+            $matcher->invoked($this->invocation());
+        } catch (ExpectationFailedException) {
+        }
+
+        $this->assertSame(['doSomething'], $journal->invocations());
     }
 
     private function invocation(): Invocation

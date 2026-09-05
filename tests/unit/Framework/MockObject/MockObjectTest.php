@@ -1086,6 +1086,143 @@ EOT,
         $double->method($this->stringContains('do'))->willReturn(null);
     }
 
+    public function testInvocationsOfMethodsCanBeRecordedInJournal(): void
+    {
+        $journal = $this->createInvocationJournal();
+
+        $double = $this->createMock(InterfaceWithImplicitProtocol::class);
+
+        $double->expects($this->once())->method('one')->recordIn($journal);
+        $double->expects($this->once())->method('two')->recordIn($journal);
+
+        $double->two();
+        $double->one();
+
+        $this->assertSame(
+            [
+                InterfaceWithImplicitProtocol::class . '::two()',
+                InterfaceWithImplicitProtocol::class . '::one()',
+            ],
+            $journal->invocations(),
+        );
+    }
+
+    public function testInvocationsOfMethodsCanBeRecordedInJournalUsingCustomLabels(): void
+    {
+        $journal = $this->createInvocationJournal();
+
+        $double = $this->createMock(InterfaceWithImplicitProtocol::class);
+
+        $double->expects($this->once())->method('one')->recordIn($journal, 'first');
+        $double->expects($this->once())->method('two')->recordIn($journal, 'second');
+
+        $double->one();
+        $double->two();
+
+        $this->assertSame(['first', 'second'], $journal->invocations());
+    }
+
+    public function testInvocationsOfMethodsOfMultipleMockObjectsCanBeRecordedInSameJournal(): void
+    {
+        $journal = $this->createInvocationJournal();
+
+        $first  = $this->createMock(InterfaceWithImplicitProtocol::class);
+        $second = $this->createMock(AnInterface::class);
+
+        $first->expects($this->once())->method('one')->recordIn($journal);
+        $second->expects($this->once())->method('doSomething')->recordIn($journal)->willReturn(true);
+        $first->expects($this->once())->method('two')->recordIn($journal);
+
+        $first->one();
+
+        $this->assertTrue($second->doSomething());
+
+        $first->two();
+
+        $this->assertSame(
+            [
+                InterfaceWithImplicitProtocol::class . '::one()',
+                AnInterface::class . '::doSomething()',
+                InterfaceWithImplicitProtocol::class . '::two()',
+            ],
+            $journal->invocations(),
+        );
+    }
+
+    public function testNestedInvocationsAreRecordedAfterTheInvocationThatCausedThem(): void
+    {
+        $journal = $this->createInvocationJournal();
+
+        $inner = $this->createMock(AnInterface::class);
+
+        $inner->expects($this->once())->method('doSomething')->recordIn($journal, 'inner')->willReturn(true);
+
+        $outer = $this->createMock(InterfaceWithImplicitProtocol::class);
+
+        $outer->expects($this->once())->method('one')->recordIn($journal, 'outer')->willReturnCallback(
+            static function () use ($inner): void
+            {
+                $inner->doSomething();
+            },
+        );
+
+        $outer->one();
+
+        $this->assertSame(['outer', 'inner'], $journal->invocations());
+    }
+
+    public function testMethodInvocationsAreNotRecordedWhenNoJournalIsConfigured(): void
+    {
+        $journal = $this->createInvocationJournal();
+
+        $double = $this->createMock(InterfaceWithImplicitProtocol::class);
+
+        $double->expects($this->once())->method('one')->recordIn($journal);
+        $double->expects($this->once())->method('two');
+
+        $double->one();
+        $double->two();
+
+        $this->assertSame([InterfaceWithImplicitProtocol::class . '::one()'], $journal->invocations());
+    }
+
+    #[TestDox('recordIn() can be combined with expects(), with(), and willReturn()')]
+    public function testInvocationsCanBeRecordedInJournalWhileExpectationIsVerified(): void
+    {
+        $journal = $this->createInvocationJournal();
+
+        $double = $this->createMock(InterfaceWithReturnTypeDeclaration::class);
+
+        $double->expects($this->once())
+            ->method('doSomethingElse')
+            ->with(1)
+            ->recordIn($journal)
+            ->willReturn(2);
+
+        $this->assertSame(2, $double->doSomethingElse(1));
+
+        $this->assertCount(1, $journal);
+
+        $this->assertSame(
+            [InterfaceWithReturnTypeDeclaration::class . '::doSomethingElse()'],
+            $journal->invocations(),
+        );
+    }
+
+    #[TestDox('recordIn() can be used before method()')]
+    public function testInvocationsCanBeRecordedInJournalConfiguredBeforeMethodName(): void
+    {
+        $journal = $this->createInvocationJournal();
+
+        $double = $this->createMock(InterfaceWithImplicitProtocol::class);
+
+        $double->expects($this->once())->recordIn($journal)->method('one');
+
+        $double->one();
+
+        $this->assertSame([InterfaceWithImplicitProtocol::class . '::one()'], $journal->invocations());
+    }
+
     /**
      * @param class-string $type
      */
