@@ -29,6 +29,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\TestImpactAnalysis\Nested\TestThatUsesAFixtureOfATrait;
 use PHPUnit\TestFixture\TestImpactAnalysis\TestThatUsesFixtures;
 use PHPUnit\TestFixture\TestImpactAnalysis\TestWithAMissingDataProviderClass;
+use PHPUnit\TestFixture\TestImpactAnalysis\TestWithAMissingDataProviderMethod;
 
 #[CoversClass(Fixtures::class)]
 #[Small]
@@ -112,6 +113,11 @@ final class FixturesTest extends TestCase
     public function testResolvesNoPathThroughADataProviderWhoseClassCannotBeFound(): void
     {
         $this->assertSame([], (new Fixtures)->for(TestWithAMissingDataProviderClass::class, 'testOne'));
+    }
+
+    public function testResolvesNoPathThroughADataProviderWhoseMethodCannotBeFound(): void
+    {
+        $this->assertSame([], (new Fixtures)->for(TestWithAMissingDataProviderMethod::class, 'testOne'));
     }
 
     public function testReportsNoPathWhenEveryPathCanBeResolved(): void
