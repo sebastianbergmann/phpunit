@@ -66,7 +66,7 @@ final class AssumptionsTest extends TestCase
     public function testAreTheSameWhenNothingChanged(): void
     {
         $this->assertTrue(
-            Assumptions::from(null, $this->source())->equals(Assumptions::from(null, $this->source())),
+            Assumptions::from(null, $this->source(), [])->equals(Assumptions::from(null, $this->source(), [])),
         );
     }
 
@@ -75,11 +75,11 @@ final class AssumptionsTest extends TestCase
         $directory         = $this->temporaryDirectory();
         $configurationFile = $this->writeFile($directory, 'phpunit.xml', 'first');
 
-        $before = Assumptions::from($configurationFile, $this->source());
+        $before = Assumptions::from($configurationFile, $this->source(), []);
 
         $this->writeFile($directory, 'phpunit.xml', 'second');
 
-        $this->assertFalse($before->equals(Assumptions::from($configurationFile, $this->source())));
+        $this->assertFalse($before->equals(Assumptions::from($configurationFile, $this->source(), [])));
     }
 
     public function testAreNotTheSameWhenThereIsNoConfigurationFileAnyLonger(): void
@@ -88,21 +88,78 @@ final class AssumptionsTest extends TestCase
         $configurationFile = $this->writeFile($directory, 'phpunit.xml', 'first');
 
         $this->assertFalse(
-            Assumptions::from($configurationFile, $this->source())->equals(Assumptions::from(null, $this->source())),
+            Assumptions::from($configurationFile, $this->source(), [])->equals(Assumptions::from(null, $this->source(), [])),
+        );
+    }
+
+    public function testAreNotTheSameWhenTheBootstrapScriptChanged(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $bootstrap = $this->writeFile($directory, 'bootstrap.php', 'first');
+
+        $before = Assumptions::from(null, $this->source(), [$bootstrap]);
+
+        $this->writeFile($directory, 'bootstrap.php', 'second');
+
+        $this->assertFalse($before->equals(Assumptions::from(null, $this->source(), [$bootstrap])));
+    }
+
+    public function testAreNotTheSameWhenThereIsNoBootstrapScriptAnyLonger(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $bootstrap = $this->writeFile($directory, 'bootstrap.php', 'first');
+
+        $this->assertFalse(
+            Assumptions::from(null, $this->source(), [$bootstrap])->equals(Assumptions::from(null, $this->source(), [])),
+        );
+    }
+
+    public function testAreNotTheSameWhenAnotherBootstrapScriptIsUsedForATestSuite(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $bootstrap = $this->writeFile($directory, 'bootstrap.php', 'first');
+        $forSuite  = $this->writeFile($directory, 'bootstrap-for-suite.php', 'second');
+
+        $this->assertFalse(
+            Assumptions::from(null, $this->source(), [$bootstrap])->equals(
+                Assumptions::from(null, $this->source(), [$bootstrap, $forSuite]),
+            ),
+        );
+    }
+
+    public function testAreTheSameWhenTheBootstrapScriptsAreNamedInAnotherOrder(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $first     = $this->writeFile($directory, 'first.php', 'first');
+        $second    = $this->writeFile($directory, 'second.php', 'second');
+
+        $this->assertTrue(
+            Assumptions::from(null, $this->source(), [$first, $second])->equals(
+                Assumptions::from(null, $this->source(), [$second, $first]),
+            ),
+        );
+    }
+
+    public function testAreTheSameWhenABootstrapScriptThatIsNotThereIsNamed(): void
+    {
+        $this->assertTrue(
+            Assumptions::from(null, $this->source(), [__DIR__ . '/does-not-exist.php'])->equals(
+                Assumptions::from(null, $this->source(), []),
+            ),
         );
     }
 
     public function testAreNotTheSameWhenAnotherDirectoryIsFirstPartyCode(): void
     {
         $this->assertFalse(
-            Assumptions::from(null, $this->source('src'))->equals(Assumptions::from(null, $this->source('lib'))),
+            Assumptions::from(null, $this->source('src'), [])->equals(Assumptions::from(null, $this->source('lib'), [])),
         );
     }
 
     public function testAreNotTheSameWhenAFileIsNoLongerFirstPartyCode(): void
     {
-        $before = Assumptions::from(null, $this->source('src'));
-        $after  = Assumptions::from(null, $this->source('src', 'src/Excluded.php'));
+        $before = Assumptions::from(null, $this->source('src'), []);
+        $after  = Assumptions::from(null, $this->source('src', 'src/Excluded.php'), []);
 
         $this->assertFalse($before->equals($after));
     }
@@ -110,8 +167,8 @@ final class AssumptionsTest extends TestCase
     public function testAreTheSameWhenTheSameDirectoriesAreFirstPartyCodeInAnotherOrder(): void
     {
         $this->assertTrue(
-            Assumptions::from(null, $this->source('src', null, ['a', 'b']))->equals(
-                Assumptions::from(null, $this->source('src', null, ['b', 'a'])),
+            Assumptions::from(null, $this->source('src', null, ['a', 'b']), [])->equals(
+                Assumptions::from(null, $this->source('src', null, ['b', 'a']), []),
             ),
         );
     }
@@ -119,8 +176,8 @@ final class AssumptionsTest extends TestCase
     public function testAreTheSameWhenADirectoryThatIsAlreadyFirstPartyCodeIsNamedAgain(): void
     {
         $this->assertTrue(
-            Assumptions::from(null, $this->source('src'))->equals(
-                Assumptions::from(null, $this->source('src', null, ['src'])),
+            Assumptions::from(null, $this->source('src'), [])->equals(
+                Assumptions::from(null, $this->source('src', null, ['src']), []),
             ),
         );
     }
@@ -132,11 +189,11 @@ final class AssumptionsTest extends TestCase
 
         $this->writeFile($directory, 'composer.lock', 'first');
 
-        $before = Assumptions::from($configurationFile, $this->source());
+        $before = Assumptions::from($configurationFile, $this->source(), []);
 
         $this->writeFile($directory, 'composer.lock', 'second');
 
-        $this->assertFalse($before->equals(Assumptions::from($configurationFile, $this->source())));
+        $this->assertFalse($before->equals(Assumptions::from($configurationFile, $this->source(), [])));
     }
 
     public function testAreNotTheSameWhenThereIsALockFileWhereThereWasNone(): void
@@ -144,16 +201,16 @@ final class AssumptionsTest extends TestCase
         $directory         = $this->temporaryDirectory();
         $configurationFile = $this->writeFile($directory, 'phpunit.xml', 'first');
 
-        $before = Assumptions::from($configurationFile, $this->source());
+        $before = Assumptions::from($configurationFile, $this->source(), []);
 
         $this->writeFile($directory, 'composer.lock', 'first');
 
-        $this->assertFalse($before->equals(Assumptions::from($configurationFile, $this->source())));
+        $this->assertFalse($before->equals(Assumptions::from($configurationFile, $this->source(), [])));
     }
 
     public function testSurviveBeingWrittenAndReadAgain(): void
     {
-        $assumptions = Assumptions::from(null, $this->source('src'));
+        $assumptions = Assumptions::from(null, $this->source('src'), []);
 
         $this->assertTrue($assumptions->equals(Assumptions::fromArray($assumptions->asArray())));
     }
@@ -170,9 +227,10 @@ final class AssumptionsTest extends TestCase
 
     public function testCannotBeReadWhenAValueIsNotUsable(): void
     {
-        $this->assertNull(Assumptions::fromArray(['configuration' => 1, 'source' => 'a-hash', 'installedPackages' => null]));
-        $this->assertNull(Assumptions::fromArray(['configuration' => null, 'source' => '', 'installedPackages' => null]));
-        $this->assertNull(Assumptions::fromArray(['configuration' => null, 'source' => 'a-hash', 'installedPackages' => 1]));
+        $this->assertNull(Assumptions::fromArray(['configuration' => 1, 'bootstrap' => null, 'source' => 'a-hash', 'installedPackages' => null]));
+        $this->assertNull(Assumptions::fromArray(['configuration' => null, 'bootstrap' => 1, 'source' => 'a-hash', 'installedPackages' => null]));
+        $this->assertNull(Assumptions::fromArray(['configuration' => null, 'bootstrap' => null, 'source' => '', 'installedPackages' => null]));
+        $this->assertNull(Assumptions::fromArray(['configuration' => null, 'bootstrap' => null, 'source' => 'a-hash', 'installedPackages' => 1]));
     }
 
     /**
