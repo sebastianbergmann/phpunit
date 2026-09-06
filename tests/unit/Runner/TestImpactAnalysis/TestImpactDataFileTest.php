@@ -478,7 +478,7 @@ final class TestImpactDataFileTest extends TestCase
 
     public function testHasNoRecordingWhenNothingWasPersisted(): void
     {
-        $this->assertNull(new TestImpactDataFile($this->temporaryDirectory(), $this->assumptions())->recording());
+        $this->assertNull(new TestImpactDataFile($this->temporaryDirectory(), $this->assumptions())->recording(Provenance::ObservedExecution));
     }
 
     public function testHasARecordingOfWhatWasPersisted(): void
@@ -491,10 +491,44 @@ final class TestImpactDataFileTest extends TestCase
 
         new TestImpactDataFile($directory, $this->assumptions())->persist($data, Provenance::ObservedExecution, [$covered]);
 
-        $recording = new TestImpactDataFile($directory, $this->assumptions())->recording();
+        $recording = new TestImpactDataFile($directory, $this->assumptions())->recording(Provenance::ObservedExecution);
 
         $this->assertNotNull($recording);
         $this->assertTrue($recording->knows('FooTest::testOne'));
+    }
+
+    public function testHasNoRecordingOfWhatWasRecordedFromSomethingElse(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $covered   = $this->writeSourceFile($directory, 'Covered', 'first');
+
+        $data = new DefaultTestImpactData;
+        $data->record('FooTest::testOne', [$covered]);
+
+        new TestImpactDataFile($directory, $this->assumptions())->persist($data, Provenance::CoverageTargets, [$covered]);
+
+        $this->assertNull(new TestImpactDataFile($directory, $this->assumptions())->recording(Provenance::ObservedExecution));
+    }
+
+    public function testKnowsWhereWhatIsRecordedComesFrom(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $covered   = $this->writeSourceFile($directory, 'Covered', 'first');
+
+        $data = new DefaultTestImpactData;
+        $data->record('FooTest::testOne', [$covered]);
+
+        new TestImpactDataFile($directory, $this->assumptions())->persist($data, Provenance::CoverageTargets, [$covered]);
+
+        $this->assertSame(
+            Provenance::CoverageTargets,
+            new TestImpactDataFile($directory, $this->assumptions())->provenance(),
+        );
+    }
+
+    public function testKnowsThatNothingWasRecorded(): void
+    {
+        $this->assertNull(new TestImpactDataFile($this->temporaryDirectory(), $this->assumptions())->provenance());
     }
 
     public function testDiscardsWhatWasRecordedFromSomethingElseThanWhatIsBeingRecorded(): void

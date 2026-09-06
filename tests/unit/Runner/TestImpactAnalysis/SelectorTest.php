@@ -188,7 +188,7 @@ final class SelectorTest extends TestCase
          */
         $this->writeSourceFile($directory, 'Formatter', 'second');
 
-        $selection = new Selector($file, new DefaultTestRunHistory($directory . DIRECTORY_SEPARATOR . 'history'))->select(
+        $selection = new Selector($file, Provenance::ObservedExecution, new DefaultTestRunHistory($directory . DIRECTORY_SEPARATOR . 'history'))->select(
             $this->testsOf(ClassDependentSelectionTest::class, UnrelatedSelectionTest::class),
             [$money, $formatter],
         );
@@ -220,7 +220,7 @@ final class SelectorTest extends TestCase
          * among the tests that would be run, so there is nothing to add for
          * it.
          */
-        $selection = new Selector($file, new DefaultTestRunHistory($directory . DIRECTORY_SEPARATOR . 'history'))->select(
+        $selection = new Selector($file, Provenance::ObservedExecution, new DefaultTestRunHistory($directory . DIRECTORY_SEPARATOR . 'history'))->select(
             $this->testsOf(ClassDependentSelectionTest::class),
             [$formatter],
         );
@@ -371,6 +371,41 @@ final class SelectorTest extends TestCase
         $this->assertStringContainsString('Added.php was not there', $selection->reason());
     }
 
+    public function testRunsEveryTestWhenWhatIsRecordedWasDerivedFromCoverageTargets(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $money     = $this->writeSourceFile($directory, 'Money', 'first');
+
+        $selection = $this->selectorFor(
+            $directory,
+            $this->everyTestDependsOn($money),
+            [$money],
+            null,
+            Provenance::CoverageTargets,
+        )->select($this->tests(), [$money]);
+
+        $this->assertTrue($selection->isEverything());
+        $this->assertStringContainsString('recorded from the code coverage targets the tests declare', $selection->reason());
+    }
+
+    public function testRunsEveryTestWhenWhatIsRecordedWasObservedWhileThisTestRunDerivesFromCoverageTargets(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $money     = $this->writeSourceFile($directory, 'Money', 'first');
+
+        $selection = $this->selectorFor(
+            $directory,
+            $this->everyTestDependsOn($money),
+            [$money],
+            null,
+            Provenance::ObservedExecution,
+            Provenance::CoverageTargets,
+        )->select($this->tests(), [$money]);
+
+        $this->assertTrue($selection->isEverything());
+        $this->assertStringContainsString('recorded from what the tests executed', $selection->reason());
+    }
+
     public function testRunsEveryTestWhenAFileNoTestDependsOnChanged(): void
     {
         $directory = $this->temporaryDirectory();
@@ -409,8 +444,10 @@ final class SelectorTest extends TestCase
      *
      * @param array<non-empty-string, list<non-empty-string>> $dependencies
      * @param list<non-empty-string>                          $sourceFiles
+     * @param Provenance                                      $recorded     where what an earlier test run recorded comes from
+     * @param Provenance                                      $records      where what this test run records comes from
      */
-    private function selectorFor(string $directory, array $dependencies, array $sourceFiles = [], ?TestRunHistory $testRunHistory = null): Selector
+    private function selectorFor(string $directory, array $dependencies, array $sourceFiles = [], ?TestRunHistory $testRunHistory = null, Provenance $recorded = Provenance::ObservedExecution, Provenance $records = Provenance::ObservedExecution): Selector
     {
         $file = new TestImpactDataFile($directory, $this->assumptions());
 
@@ -421,14 +458,14 @@ final class SelectorTest extends TestCase
                 $data->record($test, array_merge($filesOfTest, $this->fileOfTestClassOf($test)));
             }
 
-            $file->persistAndPrune($data, Provenance::ObservedExecution, $sourceFiles);
+            $file->persistAndPrune($data, $recorded, $sourceFiles);
         }
 
         if ($testRunHistory === null) {
             $testRunHistory = new DefaultTestRunHistory($directory . DIRECTORY_SEPARATOR . 'history');
         }
 
-        return new Selector($file, $testRunHistory);
+        return new Selector($file, $records, $testRunHistory);
     }
 
     /**
