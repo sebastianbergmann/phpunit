@@ -100,8 +100,15 @@ final readonly class Merger
         /*
          * Working out what each test depends on from the code coverage targets
          * it declares is a way of recording test impact data, and not
-         * something that is done in addition to recording it.
+         * something that is done in addition to recording it. Saying on the
+         * command line that test impact data must not be recorded therefore
+         * says that it must not be worked out that way either, whatever the
+         * configuration file asks for.
          */
+        if ($cliConfiguration->hasRecordTestImpactData() && !$cliConfiguration->recordTestImpactData()) {
+            $deriveTestImpactDataFromCoverageTargets = false;
+        }
+
         if ($deriveTestImpactDataFromCoverageTargets) {
             $recordTestImpactData = true;
         }

@@ -215,6 +215,7 @@ final class Builder
         ['--cache-test-index', '--do-not-cache-test-index'],
         ['--record-test-impact-data', '--do-not-record-test-impact-data'],
         ['--derive-test-impact-data-from-coverage-targets', '--do-not-derive-test-impact-data-from-coverage-targets'],
+        ['--derive-test-impact-data-from-coverage-targets', '--do-not-record-test-impact-data'],
         ['--only-impacted', '--impacted-by'],
         ['--only-impacted', '--impacted-by-file'],
         ['--warn-when-php-is-not-configured-for-development', '--do-not-warn-when-php-is-not-configured-for-development'],

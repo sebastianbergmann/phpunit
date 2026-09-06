@@ -547,6 +547,28 @@ final class MergerTest extends TestCase
         $this->assertTrue($mergedConfig->recordTestImpactData());
     }
 
+    public function testRecordingTestImpactDataCanBeDeclinedOnTheCommandLineWhenTheConfigurationFileAsksForItToBeDerived(): void
+    {
+        $mergedConfig = (new Merger)->merge(
+            (new Builder)->fromParameters(['--do-not-record-test-impact-data']),
+            (new Loader)->load(TEST_FILES_PATH . 'configuration-derive-test-impact-data-from-coverage-targets.xml'),
+        );
+
+        $this->assertFalse($mergedConfig->deriveTestImpactDataFromCoverageTargets());
+        $this->assertFalse($mergedConfig->recordTestImpactData());
+    }
+
+    public function testDerivingTestImpactDataFromCoverageTargetsIsRequestedByTheConfigurationFile(): void
+    {
+        $mergedConfig = (new Merger)->merge(
+            (new Builder)->fromParameters([]),
+            (new Loader)->load(TEST_FILES_PATH . 'configuration-derive-test-impact-data-from-coverage-targets.xml'),
+        );
+
+        $this->assertTrue($mergedConfig->deriveTestImpactDataFromCoverageTargets());
+        $this->assertTrue($mergedConfig->recordTestImpactData());
+    }
+
     private function mergeWithPhpSelf(?string $phpSelf): MergedConfiguration
     {
         $backup = null;
