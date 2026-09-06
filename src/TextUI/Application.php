@@ -277,7 +277,7 @@ final readonly class Application
                 $this->writeRuntimeInformation($printer, $configuration);
                 $this->writePharExtensionInformation($printer, $pharExtensions);
                 $this->writeRandomSeedInformation($printer, $configuration);
-                $this->writeTestSelectionInformation($printer, $selection);
+                $this->writeTestSelectionInformation($printer, $configuration, $selection);
 
                 $printer->print(PHP_EOL);
             }
@@ -1103,18 +1103,44 @@ final readonly class Application
         // @codeCoverageIgnoreEnd
     }
 
-    private function writeTestSelectionInformation(Printer $printer, ?Selection $selection): void
+    private function writeTestSelectionInformation(Printer $printer, Configuration $configuration, ?Selection $selection): void
     {
         if ($selection === null) {
             return;
         }
 
+        /*
+         * What test impact analysis selected is not what is run when tests are
+         * filtered as well: how many of them are run, and whether any of them
+         * is, is decided after this. Saying how many tests are not run would
+         * be saying something this test run does not know.
+         */
+        $testsAreFilteredAsWell = $this->testsAreFilteredAsWell($configuration);
+
         if ($selection->isEverything()) {
+            $message = sprintf(
+                'every test is run: %s',
+                $selection->reason(),
+            );
+
+            if ($testsAreFilteredAsWell) {
+                $message = sprintf(
+                    'no test is kept from being run by what changed: %s',
+                    $selection->reason(),
+                );
+            }
+
+            $this->writeMessage($printer, 'Impact', $message);
+
+            return;
+        }
+
+        if ($testsAreFilteredAsWell) {
             $this->writeMessage(
                 $printer,
                 'Impact',
                 sprintf(
-                    'every test is run: %s',
+                    '%s; the tests that are run are filtered as well',
                     $selection->reason(),
                 ),
             );
@@ -1139,6 +1165,25 @@ final readonly class Application
                 $tests,
             ),
         );
+    }
+
+    /**
+     * Whether tests are kept from being run by something other than test
+     * impact analysis: what such a test run runs is not what test impact
+     * analysis selected, but what is left of it once the test suite has been
+     * filtered.
+     */
+    private function testsAreFilteredAsWell(Configuration $configuration): bool
+    {
+        return $configuration->hasFilter() ||
+               $configuration->hasExcludeFilter() ||
+               $configuration->hasTestIdFilter() ||
+               $configuration->hasTestIdFilterFile() ||
+               $configuration->hasGroups() ||
+               $configuration->hasExcludeGroups() ||
+               $configuration->hasTestsCovering() ||
+               $configuration->hasTestsUsing() ||
+               $configuration->hasTestsRequiringPhpExtension();
     }
 
     /**
