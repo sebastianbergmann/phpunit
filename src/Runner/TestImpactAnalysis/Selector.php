@@ -98,7 +98,15 @@ final class Selector
                 continue;
             }
 
-            if (!$recording->knows($id)) {
+            /*
+             * The repetitions of a repeated test, and the attempts of a
+             * retried test, are recorded as the test they are repetitions and
+             * attempts of: what such a test depends on does not depend on
+             * which repetition of it was run.
+             */
+            $recordedId = $test->valueObjectForEvents()->idWithoutRepetitionAndAttempt();
+
+            if (!$recording->knows($recordedId)) {
                 $selected[$id] = true;
 
                 continue;
@@ -110,7 +118,7 @@ final class Selector
                 continue;
             }
 
-            if (isset($affected[$id])) {
+            if (isset($affected[$recordedId])) {
                 $selected[$id] = true;
             }
         }
