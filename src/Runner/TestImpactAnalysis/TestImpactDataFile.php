@@ -11,14 +11,19 @@ namespace PHPUnit\Runner\TestImpactAnalysis;
 
 use const DIRECTORY_SEPARATOR;
 use const LOCK_EX;
+use const LOCK_UN;
 use const PHP_VERSION_ID;
 use function array_key_exists;
 use function array_search;
 use function assert;
 use function count;
 use function dirname;
+use function fclose;
 use function file_get_contents;
-use function file_put_contents;
+use function flock;
+use function fopen;
+use function ftruncate;
+use function fwrite;
 use function is_array;
 use function is_dir;
 use function is_file;
@@ -26,7 +31,9 @@ use function is_int;
 use function is_string;
 use function json_decode;
 use function json_encode;
+use function rewind;
 use function sort;
+use function stream_get_contents;
 use PHPUnit\Runner\DirectoryDoesNotExistException;
 use PHPUnit\Runner\Exception;
 use PHPUnit\Runner\Version;
@@ -205,6 +212,43 @@ final class TestImpactDataFile
      */
     private function record(TestImpactData $data, Provenance $provenance, array $sourceFiles, bool $prune): void
     {
+        if (!Filesystem::createDirectory(dirname($this->filename))) {
+            throw new DirectoryDoesNotExistException(dirname($this->filename));
+        }
+
+        /*
+         * What is there is read again while the file is locked, and the file
+         * stays locked until what this test run recorded has been written onto
+         * it: another test run that shares the cache directory may have
+         * written what it recorded since, and reading, merging and writing
+         * without holding the file would throw that away.
+         */
+        $handle = fopen($this->filename, 'c+');
+
+        if ($handle === false) {
+            // @codeCoverageIgnoreStart
+            return;
+            // @codeCoverageIgnoreEnd
+        }
+
+        flock($handle, LOCK_EX);
+
+        try {
+            $this->recordWhileTheFileIsLocked($handle, $data, $provenance, $sourceFiles, $prune);
+        } finally {
+            flock($handle, LOCK_UN);
+            fclose($handle);
+        }
+    }
+
+    /**
+     * @param resource               $handle
+     * @param list<non-empty-string> $sourceFiles
+     *
+     * @throws Exception
+     */
+    private function recordWhileTheFileIsLocked($handle, TestImpactData $data, Provenance $provenance, array $sourceFiles, bool $prune): void
+    {
         $files                  = [];
         $versions               = [];
         $tests                  = [];
@@ -216,7 +260,7 @@ final class TestImpactDataFile
          * earlier one recorded would only bring back what pruning is for.
          */
         if (!$prune) {
-            [$files, $versions, $tests, $provenanceOfWhatIsThere, $sourceFilesThatAreThere] = $this->read();
+            [$files, $versions, $tests, $provenanceOfWhatIsThere, $sourceFilesThatAreThere] = $this->parse((string) stream_get_contents($handle));
 
             if ($provenanceOfWhatIsThere !== null && $provenanceOfWhatIsThere !== $provenance) {
                 $files    = [];
@@ -326,7 +370,7 @@ final class TestImpactDataFile
             $hashesOfSourceFiles[$sourceFile] = $hash;
         }
 
-        $this->write($files, $versions, $tests, $provenance, $hashesOfSourceFiles);
+        $this->write($handle, $files, $versions, $tests, $provenance, $hashesOfSourceFiles);
     }
 
     /**
@@ -334,19 +378,14 @@ final class TestImpactDataFile
      * what is left is numbered again: a source file that is recorded with a
      * new hash on every run would otherwise make the file grow without bound.
      *
+     * @param resource                                  $handle
      * @param list<non-empty-string>                    $files
      * @param list<VersionType>                         $versions
      * @param array<non-empty-string, list<int>>        $tests
      * @param array<non-empty-string, non-empty-string> $hashesOfSourceFiles
-     *
-     * @throws Exception
      */
-    private function write(array $files, array $versions, array $tests, Provenance $provenance, array $hashesOfSourceFiles): void
+    private function write($handle, array $files, array $versions, array $tests, Provenance $provenance, array $hashesOfSourceFiles): void
     {
-        if (!Filesystem::createDirectory(dirname($this->filename))) {
-            throw new DirectoryDoesNotExistException(dirname($this->filename));
-        }
-
         $keptFiles            = [];
         $keptFilePositions    = [];
         $keptVersions         = [];
@@ -417,7 +456,9 @@ final class TestImpactDataFile
             return; // @codeCoverageIgnore
         }
 
-        file_put_contents($this->filename, $json, LOCK_EX);
+        ftruncate($handle, 0);
+        rewind($handle);
+        fwrite($handle, $json);
     }
 
     /**
@@ -440,6 +481,18 @@ final class TestImpactDataFile
         if ($contents === false) {
             return $empty; // @codeCoverageIgnore
         }
+
+        return $this->parse($contents);
+    }
+
+    /**
+     * Returns empty data when what was read cannot be used: see read().
+     *
+     * @return array{0: list<non-empty-string>, 1: list<VersionType>, 2: array<non-empty-string, list<int>>, 3: ?Provenance, 4: array<int, non-empty-string>}
+     */
+    private function parse(string $contents): array
+    {
+        $empty = [[], [], [], null, []];
 
         $data = json_decode($contents, true);
 
