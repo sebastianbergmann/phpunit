@@ -275,6 +275,14 @@ final readonly class Recording
     }
 
     /**
+     * The positions of the recorded files a named path is about.
+     *
+     * A named path is about a recorded file when it is that file, and when it
+     * is a directory that file is in. It is about it as well when what was
+     * recorded is a directory the named path is in: what a test declares that
+     * it uses can be a directory, whereas what version control names is always
+     * a file.
+     *
      * @param list<non-empty-string> $paths
      *
      * @return array<int, true>
@@ -285,7 +293,9 @@ final readonly class Recording
 
         foreach ($this->files as $position => $file) {
             foreach ($paths as $path) {
-                if ($file === $path || str_starts_with($file, $path . DIRECTORY_SEPARATOR)) {
+                if ($file === $path ||
+                    str_starts_with($file, $path . DIRECTORY_SEPARATOR) ||
+                    str_starts_with($path, $file . DIRECTORY_SEPARATOR)) {
                     $positions[$position] = true;
 
                     break;
