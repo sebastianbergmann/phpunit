@@ -70,9 +70,12 @@ final readonly class Assumptions
     /**
      * The lock file of the package manager is looked for next to the
      * configuration file, and in the working directory when there is no
-     * configuration file. That there is no lock file is not the same as the
-     * lock file having changed: a project that does not have one, or that is
-     * tested with a PHAR, is not a project whose data has to be discarded.
+     * configuration file, and then in the directories above it: a
+     * configuration file that is kept in a directory of its own is not next to
+     * the lock file of the project it configures the tests of. That there is
+     * no lock file is not the same as the lock file having changed: a project
+     * that does not have one, or that is tested with a PHAR, is not a project
+     * whose data has to be discarded.
      *
      * @param ?non-empty-string      $configurationFile
      * @param list<non-empty-string> $bootstrapFiles
@@ -89,7 +92,7 @@ final readonly class Assumptions
             $configuration = $hasher->hash($configurationFile);
         }
 
-        $lockFile = self::composerLockFileNextTo($configurationFile);
+        $lockFile = self::composerLockFileNearest($configurationFile);
 
         $installedPackages = null;
 
@@ -253,11 +256,17 @@ final readonly class Assumptions
     }
 
     /**
+     * The nearest lock file is the one that answers for the packages the tests
+     * are run with: one that is further up is the lock file of something the
+     * project is itself a part of, and taking it would only mean that what was
+     * recorded is discarded when it does not have to be, which is the safe way
+     * to be wrong.
+     *
      * @param ?non-empty-string $configurationFile
      *
      * @return ?non-empty-string
      */
-    private static function composerLockFileNextTo(?string $configurationFile): ?string
+    private static function composerLockFileNearest(?string $configurationFile): ?string
     {
         if ($configurationFile !== null) {
             $directory = dirname($configurationFile);
@@ -269,12 +278,20 @@ final readonly class Assumptions
             }
         }
 
-        $candidate = $directory . DIRECTORY_SEPARATOR . self::COMPOSER_LOCK_FILENAME;
+        while (true) {
+            $candidate = $directory . DIRECTORY_SEPARATOR . self::COMPOSER_LOCK_FILENAME;
 
-        if (!is_file($candidate)) {
-            return null;
+            if (is_file($candidate)) {
+                return $candidate;
+            }
+
+            $parent = dirname($directory);
+
+            if ($parent === $directory) {
+                return null;
+            }
+
+            $directory = $parent;
         }
-
-        return $candidate;
     }
 }
