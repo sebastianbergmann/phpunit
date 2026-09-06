@@ -574,6 +574,31 @@ final class MergerTest extends TestCase
         $this->assertTrue($mergedConfig->recordTestImpactData());
     }
 
+    /**
+     * Recording which source files each test executed is collecting code
+     * coverage, whatever is done with what is collected.
+     */
+    public function testRecordingTestImpactDataIsDeclinedByNotCollectingCodeCoverage(): void
+    {
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge(
+            new Builder($this->createStub(Emitter::class))->fromParameters(['--no-coverage']),
+            new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration-record-test-impact-data.xml'),
+        );
+
+        $this->assertFalse($mergedConfig->recordTestImpactData());
+    }
+
+    public function testDerivingTestImpactDataFromCoverageTargetsIsNotDeclinedByNotCollectingCodeCoverage(): void
+    {
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge(
+            new Builder($this->createStub(Emitter::class))->fromParameters(['--no-coverage']),
+            new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration-derive-test-impact-data-from-coverage-targets.xml'),
+        );
+
+        $this->assertTrue($mergedConfig->deriveTestImpactDataFromCoverageTargets());
+        $this->assertTrue($mergedConfig->recordTestImpactData());
+    }
+
     private function mergeWithPhpSelf(?string $phpSelf): MergedConfiguration
     {
         $backup = null;
