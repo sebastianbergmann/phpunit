@@ -134,6 +134,40 @@ final class RecordingTest extends TestCase
         $this->assertSame(['FooTest::testOne' => true], $recording->testsThatDependOnAnyOf([$directory]));
     }
 
+    public function testKnowsWhichTestsDependOnADirectoryAFileThatIsNamedIsIn(): void
+    {
+        $directory = DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR . 'fixtures';
+
+        $recording = Recording::from(
+            [$directory, DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Bar.php'],
+            [[0, 'a-hash'], [1, 'another-hash']],
+            [
+                'FooTest::testOne' => [0],
+                'BarTest::testOne' => [1],
+            ],
+            [],
+        );
+
+        $this->assertSame(
+            ['FooTest::testOne' => true],
+            $recording->testsThatDependOnAnyOf([$directory . DIRECTORY_SEPARATOR . 'one.txt']),
+        );
+    }
+
+    public function testKnowsThatAFileInADirectoryThatWasRecordedIsAccountedFor(): void
+    {
+        $directory = DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR . 'fixtures';
+
+        $recording = Recording::from(
+            [$directory],
+            [[0, 'a-hash']],
+            ['FooTest::testOne' => [0]],
+            [],
+        );
+
+        $this->assertNull($recording->pathNothingIsKnownAbout([$directory . DIRECTORY_SEPARATOR . 'one.txt']));
+    }
+
     public function testKnowsThatAPathThatIsNamedWasNotRecorded(): void
     {
         $recording = Recording::from(['/src/Foo.php'], [[0, 'a-hash']], ['FooTest::testOne' => [0]], []);
