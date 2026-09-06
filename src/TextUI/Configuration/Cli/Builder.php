@@ -537,7 +537,7 @@ final class Builder
                     break;
 
                 case '--list-tests-that-depend-on':
-                    $listTestsThatDependOn = $option[1];
+                    $listTestsThatDependOn = $this->requireNonEmptyValue($option[1], '--list-tests-that-depend-on');
 
                     break;
 

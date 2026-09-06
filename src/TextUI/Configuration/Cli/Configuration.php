@@ -220,6 +220,10 @@ final readonly class Configuration
     private ?bool $cacheTestIndex;
     private ?bool $recordTestImpactData;
     private ?bool $deriveTestImpactDataFromCoverageTargets;
+
+    /**
+     * @var ?non-empty-string
+     */
     private ?string $listTestsThatDependOn;
     private bool $onlyImpacted;
 
@@ -247,6 +251,7 @@ final readonly class Configuration
      * @param ?non-empty-list<non-empty-string>                    $testSuffixes
      * @param ?non-empty-list<non-empty-string>                    $coverageFilter
      * @param ?non-empty-list<non-empty-string>                    $extensions
+     * @param ?non-empty-string                                    $listTestsThatDependOn
      * @param ?non-empty-list<non-empty-string>                    $impactedBy
      * @param ?non-empty-string                                    $impactedByFile
      */
@@ -686,7 +691,12 @@ final readonly class Configuration
     }
 
     /**
+     * The source file the tests that are recorded as having executed it are
+     * listed for.
+     *
      * @throws Exception
+     *
+     * @return non-empty-string
      */
     public function listTestsThatDependOn(): string
     {
