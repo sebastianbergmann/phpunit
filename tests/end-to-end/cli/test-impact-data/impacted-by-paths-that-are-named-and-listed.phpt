@@ -43,11 +43,15 @@ $_SERVER['argv'][] = $listOfPaths;
 require __DIR__ . '/../../../bootstrap.php';
 
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv'], false);
-
-unlink($listOfPaths);
 --CLEAN--
 <?php declare(strict_types=1);
 require __DIR__ . '/../../../_files/delete_directory.php';
+
+$listOfPaths = __DIR__ . '/_files/paths-that-changed.txt';
+
+if (is_file($listOfPaths)) {
+    unlink($listOfPaths);
+}
 
 delete_directory(__DIR__ . '/_files/.phpunit.cache.selection');
 --EXPECTF--

@@ -62,11 +62,15 @@ run(['--impacted-by-file', '-'], '');
 print PHP_EOL . 'A list that is not there:' . PHP_EOL;
 
 run(['--impacted-by-file', __DIR__ . '/_files/does-not-exist.txt']);
-
-unlink($listOfPaths);
 --CLEAN--
 <?php declare(strict_types=1);
 require __DIR__ . '/../../../_files/delete_directory.php';
+
+$listOfPaths = __DIR__ . '/_files/changed-paths.txt';
+
+if (is_file($listOfPaths)) {
+    unlink($listOfPaths);
+}
 
 delete_directory(__DIR__ . '/_files/.phpunit.cache.impacted-by-file');
 --EXPECTF--
