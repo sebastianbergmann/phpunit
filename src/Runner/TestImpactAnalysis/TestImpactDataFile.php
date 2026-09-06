@@ -141,16 +141,29 @@ final class TestImpactDataFile
     /**
      * What was recorded, in the form the selection of tests needs it, or null
      * when there is nothing usable.
+     *
+     * What a test executed and what a test declares that it covers and uses
+     * are different claims, and one cannot answer for the other: what was
+     * recorded from the one is of no use to a test run that records the other,
+     * which is also why such a test run discards it instead of adding to it.
      */
-    public function recording(): ?Recording
+    public function recording(Provenance $provenance): ?Recording
     {
-        [$files, $versions, $tests, $provenance, $sourceFiles] = $this->read();
+        [$files, $versions, $tests, $provenanceOfWhatIsThere, $sourceFiles] = $this->read();
 
-        if ($provenance === null) {
+        if ($provenanceOfWhatIsThere === null || $provenanceOfWhatIsThere !== $provenance) {
             return null;
         }
 
         return Recording::from($files, $versions, $tests, $sourceFiles);
+    }
+
+    /**
+     * Where what is recorded comes from, or null when nothing is recorded.
+     */
+    public function provenance(): ?Provenance
+    {
+        return $this->read()[3];
     }
 
     /**

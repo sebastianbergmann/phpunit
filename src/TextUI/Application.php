@@ -915,8 +915,15 @@ final readonly class Application
             $changedPaths = $this->changedPaths($cliConfiguration);
         }
 
+        $provenance = Provenance::ObservedExecution;
+
+        if ($configuration->deriveTestImpactDataFromCoverageTargets()) {
+            $provenance = Provenance::CoverageTargets;
+        }
+
         return new Selector(
             new TestImpactDataFile($configuration->cacheDirectory(), $this->assumptionsOf($configuration)),
+            $provenance,
             $testRunHistory,
         )->select($testSuite->collect(), $this->sourceFiles(), $changedPaths);
     }
