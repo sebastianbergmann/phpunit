@@ -51,7 +51,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime:       %s
 Configuration: %s
-Impact:        every test is run: /deleted.php is not among the files that were recorded
+Impact:        every test is run: %edeleted.php is not among the files that were recorded
 
 Time: %s, Memory: %s
 
