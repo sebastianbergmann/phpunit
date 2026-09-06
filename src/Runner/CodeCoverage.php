@@ -728,7 +728,7 @@ final class CodeCoverage
             $files[] = $file;
         }
 
-        $this->testImpactData()->record($test->valueObjectForEvents()->id(), $files);
+        $this->testImpactData()->record($test->valueObjectForEvents()->idWithoutRepetitionAndAttempt(), $files);
     }
 
     private function activate(Filter $filter, bool $branchCoverage, bool $pathCoverage, ?string $driverClass, bool $onlyRequestedForTestImpactData): void

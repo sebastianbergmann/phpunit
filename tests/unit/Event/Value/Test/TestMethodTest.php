@@ -191,6 +191,50 @@ final class TestMethodTest extends TestCase
         $this->assertSame('FooTest::testBar#0 (repetition 2 of 3)', $test->id());
     }
 
+    public function testHasAnIdWithoutTheRepetitionAndTheDataSetItIs(): void
+    {
+        $test = new TestMethod(
+            'FooTest',
+            'testBar',
+            'FooTest.php',
+            1,
+            TestDoxBuilder::fromClassNameAndMethodName('Foo', 'bar'),
+            MetadataCollection::fromArray([]),
+            TestDataCollection::fromArray(
+                [
+                    DataFromDataProvider::from(
+                        0,
+                        'data',
+                        'data as string for result output',
+                    ),
+                ],
+            ),
+            2,
+            3,
+        );
+
+        $this->assertSame('FooTest::testBar#0', $test->idWithoutRepetitionAndAttempt());
+    }
+
+    public function testHasAnIdWithoutTheAttemptItIs(): void
+    {
+        $test = new TestMethod(
+            'FooTest',
+            'testBar',
+            'FooTest.php',
+            1,
+            TestDoxBuilder::fromClassNameAndMethodName('Foo', 'bar'),
+            MetadataCollection::fromArray([]),
+            TestDataCollection::fromArray([]),
+            1,
+            1,
+            2,
+            3,
+        );
+
+        $this->assertSame('FooTest::testBar', $test->idWithoutRepetitionAndAttempt());
+    }
+
     public function testNameReturnsNameWhenTestDoesNotHaveDataFromDataProvider(): void
     {
         $test = new TestMethod(
