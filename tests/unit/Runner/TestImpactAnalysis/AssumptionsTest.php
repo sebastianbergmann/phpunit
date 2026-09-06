@@ -11,6 +11,7 @@ namespace PHPUnit\Runner\TestImpactAnalysis;
 
 use const DIRECTORY_SEPARATOR;
 use function file_put_contents;
+use function is_dir;
 use function mkdir;
 use function realpath;
 use function rmdir;
@@ -45,19 +46,7 @@ final class AssumptionsTest extends TestCase
     protected function tearDown(): void
     {
         foreach ($this->directories as $directory) {
-            $entries = scandir($directory);
-
-            if ($entries !== false) {
-                foreach ($entries as $entry) {
-                    if ($entry === '.' || $entry === '..') {
-                        continue;
-                    }
-
-                    unlink($directory . DIRECTORY_SEPARATOR . $entry);
-                }
-            }
-
-            rmdir($directory);
+            $this->deleteDirectory($directory);
         }
 
         $this->directories = [];
@@ -208,6 +197,24 @@ final class AssumptionsTest extends TestCase
         $this->assertFalse($before->equals(Assumptions::from($configurationFile, $this->source(), [])));
     }
 
+    public function testAreNotTheSameWhenTheLockFileOfThePackageManagerAboveTheConfigurationFileChanged(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $build     = $directory . DIRECTORY_SEPARATOR . 'build';
+
+        mkdir($build);
+
+        $configurationFile = $this->writeFile($build, 'phpunit.xml', 'first');
+
+        $this->writeFile($directory, 'composer.lock', 'first');
+
+        $before = Assumptions::from($configurationFile, $this->source(), []);
+
+        $this->writeFile($directory, 'composer.lock', 'second');
+
+        $this->assertFalse($before->equals(Assumptions::from($configurationFile, $this->source(), [])));
+    }
+
     public function testSurviveBeingWrittenAndReadAgain(): void
     {
         $assumptions = Assumptions::from(null, $this->source('src'), []);
@@ -310,5 +317,30 @@ final class AssumptionsTest extends TestCase
         file_put_contents($file, $contents);
 
         return $file;
+    }
+
+    private function deleteDirectory(string $directory): void
+    {
+        $entries = scandir($directory);
+
+        if ($entries !== false) {
+            foreach ($entries as $entry) {
+                if ($entry === '.' || $entry === '..') {
+                    continue;
+                }
+
+                $path = $directory . DIRECTORY_SEPARATOR . $entry;
+
+                if (is_dir($path)) {
+                    $this->deleteDirectory($path);
+
+                    continue;
+                }
+
+                unlink($path);
+            }
+        }
+
+        rmdir($directory);
     }
 }
