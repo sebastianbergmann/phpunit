@@ -75,6 +75,17 @@ final readonly class Selection
     }
 
     /**
+     * Whether no test can be affected by what changed.
+     *
+     * There is nothing to run, which is not the same as there being no test to
+     * run: the tests are there, and what changed cannot affect them.
+     */
+    public function isNothing(): bool
+    {
+        return !$this->isEverything() && $this->tests === [];
+    }
+
+    /**
      * @return list<non-empty-string>
      */
     public function tests(): array
