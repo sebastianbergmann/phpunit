@@ -40,6 +40,8 @@ use function sprintf;
 use function str_contains;
 use function str_replace;
 use function str_starts_with;
+use function strlen;
+use function substr;
 use function trim;
 use function unlink;
 use PHPUnit\Event\EventFacadeIsSealedException;
@@ -1027,35 +1029,69 @@ final readonly class Application
      */
     private function withoutRelativeSegments(string $path): string
     {
+        $root     = $this->rootOf($path);
         $segments = [];
 
-        foreach (explode(DIRECTORY_SEPARATOR, $path) as $position => $segment) {
-            if ($segment === '.') {
+        foreach (explode(DIRECTORY_SEPARATOR, substr($path, strlen($root))) as $segment) {
+            if ($segment === '' || $segment === '.') {
                 continue;
             }
 
-            if ($segment === '' && $position > 0) {
-                continue;
-            }
+            if ($segment === '..') {
+                if ($segments !== [] && end($segments) !== '..') {
+                    array_pop($segments);
 
-            if ($segment === '..' && $segments !== [] && end($segments) !== '..') {
-                array_pop($segments);
+                    continue;
+                }
 
-                continue;
+                /*
+                 * A path that names where it is from a root does not name
+                 * anything above that root: there is nothing there, and a path
+                 * that climbed out of it would name something else entirely.
+                 */
+                if ($root !== '') {
+                    continue;
+                }
             }
 
             $segments[] = $segment;
         }
 
-        $result = implode(DIRECTORY_SEPARATOR, $segments);
+        $result = $root . implode(DIRECTORY_SEPARATOR, $segments);
 
-        // @codeCoverageIgnoreStart
         if ($result === '') {
-            return DIRECTORY_SEPARATOR;
+            return DIRECTORY_SEPARATOR; // @codeCoverageIgnore
+        }
+
+        return $result;
+    }
+
+    /**
+     * What a path names where it is from, when it names where it is from
+     * anything: the root of a file system, the root of a drive, or the server
+     * and share a UNC path is on.
+     *
+     * @param non-empty-string $path
+     */
+    private function rootOf(string $path): string
+    {
+        // @codeCoverageIgnoreStart
+        if (DIRECTORY_SEPARATOR !== '/') {
+            if (str_starts_with($path, DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR)) {
+                return DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR;
+            }
+
+            if (preg_match('/^[A-Za-z]:\\\\/', $path) === 1) {
+                return substr($path, 0, 3);
+            }
         }
         // @codeCoverageIgnoreEnd
 
-        return $result;
+        if (str_starts_with($path, DIRECTORY_SEPARATOR)) {
+            return DIRECTORY_SEPARATOR;
+        }
+
+        return '';
     }
 
     /**
