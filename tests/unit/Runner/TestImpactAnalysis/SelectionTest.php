@@ -39,6 +39,13 @@ final class SelectionTest extends TestCase
         $this->assertSame('a reason', $selection->reason());
     }
 
+    public function testKnowsThatNoTestCanBeAffectedByWhatChanged(): void
+    {
+        $this->assertTrue(Selection::of([], 'nothing changed', 2)->isNothing());
+        $this->assertFalse(Selection::of(['FooTest::testOne'], 'something changed', 2)->isNothing());
+        $this->assertFalse(Selection::everything('nothing is known')->isNothing());
+    }
+
     public function testKnowsHowManyTestsAreNotRun(): void
     {
         $this->assertSame(2, Selection::of(['FooTest::testOne'], 'a reason', 3)->numberOfTestsThatAreNotRun());
