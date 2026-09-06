@@ -5,6 +5,8 @@ A test run that runs every test there is assesses a change to a source file no t
 $sourceFile = __DIR__ . '/_files/source-file-no-test-refers-to/src/Untested.php';
 $contents   = file_get_contents($sourceFile);
 
+copy($sourceFile, $sourceFile . '.backup');
+
 function run(array $additionalArguments = []): void
 {
     $process = proc_open(
@@ -44,11 +46,17 @@ run(['--only-impacted']);
 print PHP_EOL . 'Untested.php changed, and the test run that ran every test there is assessed it:' . PHP_EOL;
 
 run(['--only-impacted']);
-
-file_put_contents($sourceFile, $contents);
 --CLEAN--
 <?php declare(strict_types=1);
 require __DIR__ . '/../../../_files/delete_directory.php';
+
+$sourceFile = __DIR__ . '/_files/source-file-no-test-refers-to/src/Untested.php';
+$backup     = $sourceFile . '.backup';
+
+if (is_file($backup)) {
+    copy($backup, $sourceFile);
+    unlink($backup);
+}
 
 delete_directory(__DIR__ . '/_files/source-file-no-test-refers-to/.phpunit.cache');
 --EXPECTF--
