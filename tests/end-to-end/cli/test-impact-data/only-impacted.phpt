@@ -6,6 +6,8 @@ $configuration = __DIR__ . '/_files/phpunit.xml';
 $sourceFile    = __DIR__ . '/_files/src/Rounder.php';
 $contents      = file_get_contents($sourceFile);
 
+copy($sourceFile, $sourceFile . '.backup');
+
 function run(array $additionalArguments = []): void
 {
     $process = proc_open(
@@ -45,11 +47,17 @@ file_put_contents($sourceFile, $contents . PHP_EOL);
 print PHP_EOL . 'Rounder.php changed:' . PHP_EOL;
 
 run(['--only-impacted']);
-
-file_put_contents($sourceFile, $contents);
 --CLEAN--
 <?php declare(strict_types=1);
 require __DIR__ . '/../../../_files/delete_directory.php';
+
+$sourceFile = __DIR__ . '/_files/src/Rounder.php';
+$backup     = $sourceFile . '.backup';
+
+if (is_file($backup)) {
+    copy($backup, $sourceFile);
+    unlink($backup);
+}
 
 delete_directory(__DIR__ . '/_files/.phpunit.cache');
 --EXPECT--
