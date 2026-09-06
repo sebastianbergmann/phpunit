@@ -129,7 +129,7 @@ final class TestImpactDataFromCoverageTargets
                 $files[] = $file;
             }
 
-            $data->record($test->valueObjectForEvents()->id(), $files);
+            $data->record($test->valueObjectForEvents()->idWithoutRepetitionAndAttempt(), $files);
         }
     }
 
