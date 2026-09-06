@@ -34,12 +34,17 @@ use PHPUnit\Runner\TestRunHistory\TestRunHistoryId;
 final class Selector
 {
     private readonly TestImpactDataFile $testImpactDataFile;
+    private readonly Provenance $provenance;
     private readonly TestRunHistory $testRunHistory;
     private readonly PathHasher $hasher;
 
-    public function __construct(TestImpactDataFile $testImpactDataFile, TestRunHistory $testRunHistory, ?PathHasher $hasher = null)
+    /**
+     * @param Provenance $provenance where what this test run records comes from
+     */
+    public function __construct(TestImpactDataFile $testImpactDataFile, Provenance $provenance, TestRunHistory $testRunHistory, ?PathHasher $hasher = null)
     {
         $this->testImpactDataFile = $testImpactDataFile;
+        $this->provenance         = $provenance;
         $this->testRunHistory     = $testRunHistory;
 
         if ($hasher === null) {
@@ -61,10 +66,10 @@ final class Selector
      */
     public function select(array $tests, array $sourceFiles, ?array $changedPaths = null): Selection
     {
-        $recording = $this->testImpactDataFile->recording();
+        $recording = $this->testImpactDataFile->recording($this->provenance);
 
         if ($recording === null || $recording->isEmpty()) {
-            return Selection::everything('no test impact data has been recorded');
+            return Selection::everything($this->reasonNothingCanBeSelectedFrom());
         }
 
         if ($changedPaths === null) {
@@ -134,6 +139,29 @@ final class Selector
             ),
             count($tests),
         );
+    }
+
+    /**
+     * What was recorded by a test run of the other kind is there, but it does
+     * not answer what this test run asks, and saying that nothing has been
+     * recorded would send the developer looking for a recording that is right
+     * in front of them.
+     *
+     * @return non-empty-string
+     */
+    private function reasonNothingCanBeSelectedFrom(): string
+    {
+        $provenanceOfWhatIsThere = $this->testImpactDataFile->provenance();
+
+        if ($provenanceOfWhatIsThere === null || $provenanceOfWhatIsThere === $this->provenance) {
+            return 'no test impact data has been recorded';
+        }
+
+        if ($provenanceOfWhatIsThere === Provenance::CoverageTargets) {
+            return 'what is known was recorded from the code coverage targets the tests declare, and this test run records what the tests execute';
+        }
+
+        return 'what is known was recorded from what the tests executed, and this test run records the code coverage targets the tests declare';
     }
 
     /**
