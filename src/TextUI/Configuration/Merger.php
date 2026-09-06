@@ -109,6 +109,17 @@ final readonly class Merger
             $deriveTestImpactDataFromCoverageTargets = false;
         }
 
+        /*
+         * Recording which source files each test executed is collecting code
+         * coverage, whatever is done with what is collected: a test run that
+         * is told to collect none does not record it either. Working out what
+         * each test depends on from the code coverage targets it declares
+         * collects nothing, and is not affected.
+         */
+        if ($cliConfiguration->hasNoCoverage() && $cliConfiguration->noCoverage()) {
+            $recordTestImpactData = false;
+        }
+
         if ($deriveTestImpactDataFromCoverageTargets) {
             $recordTestImpactData = true;
         }
