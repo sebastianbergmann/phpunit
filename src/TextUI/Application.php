@@ -396,9 +396,16 @@ final readonly class Application
                 }
             }
 
+            $noTestCanBeAffectedByWhatChanged = false;
+
+            if ($selection !== null && $selection->isNothing()) {
+                $noTestCanBeAffectedByWhatChanged = true;
+            }
+
             $shellExitCode = (new ShellExitCodeCalculator)->calculate(
                 $configuration,
                 $result,
+                $noTestCanBeAffectedByWhatChanged,
             );
 
             EventFacade::emitter()->applicationFinished($shellExitCode);

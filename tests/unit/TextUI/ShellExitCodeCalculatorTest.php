@@ -62,6 +62,29 @@ final class ShellExitCodeCalculatorTest extends TestCase
         );
     }
 
+    public function testFailsOnEmptyTestSuiteWhenRequested(): void
+    {
+        $this->assertSame(
+            1,
+            (new ShellExitCodeCalculator)->calculate(
+                $this->configuration(['--fail-on-empty-test-suite']),
+                $this->testResultWithoutTests(),
+            ),
+        );
+    }
+
+    public function testDoesNotFailOnEmptyTestSuiteWhenNoTestCanBeAffectedByWhatChanged(): void
+    {
+        $this->assertSame(
+            0,
+            (new ShellExitCodeCalculator)->calculate(
+                $this->configuration(['--fail-on-empty-test-suite']),
+                $this->testResultWithoutTests(),
+                true,
+            ),
+        );
+    }
+
     /**
      * @param list<non-empty-string> $parameters
      */
@@ -70,6 +93,49 @@ final class ShellExitCodeCalculatorTest extends TestCase
         return (new Merger)->merge(
             (new CliBuilder)->fromParameters($parameters),
             DefaultConfiguration::create(),
+        );
+    }
+
+    private function testResultWithoutTests(): TestResult
+    {
+        return new TestResult(
+            0,
+            0,
+            0,
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            0,
+            [
+                'self'     => 0,
+                'direct'   => 0,
+                'indirect' => 0,
+                'unknown'  => 0,
+            ],
         );
     }
 
