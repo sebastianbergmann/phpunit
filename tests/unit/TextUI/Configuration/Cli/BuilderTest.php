@@ -316,6 +316,15 @@ final class BuilderTest extends TestCase
         $this->assertSame('src/Foo.php', $configuration->listTestsThatDependOn());
     }
 
+    #[TestDox('--list-tests-that-depend-on requires a non-empty value')]
+    public function testListTestsThatDependOnRejectsEmptyValue(): void
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessageIs('Option --list-tests-that-depend-on requires a non-empty value');
+
+        new Builder($this->createStub(Emitter::class))->fromParameters(['--list-tests-that-depend-on', '']);
+    }
+
     #[TestDox('--only-impacted')]
     public function testOnlyImpacted(): void
     {
