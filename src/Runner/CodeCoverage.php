@@ -193,7 +193,7 @@ final class CodeCoverage
 
         $this->requireCoverageContribution = $configuration->requireCoverageContribution();
 
-        $this->warnIfFilterIsNotConfigured($codeCoverageFilterRegistry, $configuration);
+        $this->warnIfFilterIsNotConfigured($codeCoverageFilterRegistry, $configuration, $onlyRequestedForTestImpactData);
 
         if (isset($coverageCacheDirectory) && $configuration->includeUncoveredFiles()) {
             EventFacade::emitter()->testRunnerStartedStaticAnalysisForCodeCoverage();
@@ -623,15 +623,28 @@ final class CodeCoverage
         }
     }
 
-    public function warnIfFilterIsNotConfigured(CodeCoverageFilterRegistry $codeCoverageFilterRegistry, Configuration $configuration): void
+    /**
+     * Which files are first-party code is what test impact analysis records
+     * what each test depends on in terms of, just as it is what code coverage
+     * is processed for. A run that only needs the source filter for test
+     * impact data is therefore told what it will not get, and not told about
+     * code coverage it never asked for.
+     */
+    public function warnIfFilterIsNotConfigured(CodeCoverageFilterRegistry $codeCoverageFilterRegistry, Configuration $configuration, bool $forTestImpactDataOnly = false): void
     {
         if (!$codeCoverageFilterRegistry->get()->isEmpty()) {
             return;
         }
 
+        $consequence = 'code coverage will not be processed';
+
+        if ($forTestImpactDataOnly) {
+            $consequence = 'test impact data will not be recorded';
+        }
+
         if (!$codeCoverageFilterRegistry->configured()) {
             EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
-                'No filter is configured, code coverage will not be processed',
+                'No filter is configured, ' . $consequence,
             );
 
             $this->deactivate();
@@ -651,8 +664,9 @@ final class CodeCoverage
 
         EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
             sprintf(
-                'Configured source filter (include-path: %s) does not match any files, code coverage will not be processed',
+                'Configured source filter (include-path: %s) does not match any files, %s',
                 implode(', ', $paths),
+                $consequence,
             ),
         );
 

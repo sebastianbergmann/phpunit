@@ -857,6 +857,22 @@ final readonly class Application
 
         CodeCoverageFilterRegistry::instance()->init($configuration, true);
 
+        /*
+         * The code coverage targets a test declares are resolved to the files
+         * they name, and which files those are is what the source filter says.
+         * Nothing can be worked out when it says nothing, and writing what was
+         * worked out from it would say that no test depends on anything.
+         */
+        if (CodeCoverageFilterRegistry::instance()->get()->isEmpty()) {
+            CodeCoverage::instance()->warnIfFilterIsNotConfigured(
+                CodeCoverageFilterRegistry::instance(),
+                $configuration,
+                true,
+            );
+
+            return null;
+        }
+
         $staticAnalysisCacheDirectory = null;
 
         if ($configuration->hasCoverageCacheDirectory()) {
