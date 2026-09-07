@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
+use PHPUnit\Runner\ExecutionOrder\Order;
+
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -161,9 +163,12 @@ final readonly class PHPUnit
      * @var ?non-empty-string
      */
     private ?string $defaultTestSuite;
-    private int $executionOrder;
+
+    /**
+     * @var list<Order>
+     */
+    private array $executionOrder;
     private bool $resolveDependencies;
-    private bool $defectsFirst;
     private bool $backupGlobals;
     private bool $backupStaticProperties;
     private bool $testdoxPrinter;
@@ -207,11 +212,12 @@ final readonly class PHPUnit
      * @param positive-int                              $timeoutForMediumTests
      * @param positive-int                              $timeoutForLargeTests
      * @param ?non-empty-string                         $defaultTestSuite
+     * @param list<Order>                               $executionOrder
      * @param positive-int                              $numberOfTestsBeforeGarbageCollection
      * @param non-negative-int                          $shortenArraysForExportThreshold
      * @param positive-int                              $diffContext
      */
-    public function __construct(?string $cacheDirectory, bool $recordTestRunHistory, int|string $columns, string $colors, bool $stderr, bool $displayDetailsOnAllIssues, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnPhpunitDeprecations, bool $displayDetailsOnPhpunitNotices, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $reverseDefectList, bool $requireCoverageMetadata, bool $requireSealedMockObjects, ?string $bootstrap, array $bootstrapForTestSuite, bool $processIsolation, bool $failOnAllIssues, bool $failOnDeprecation, bool $hasFailOnDeprecation, bool $failOnSelfDeprecation, bool $hasFailOnSelfDeprecation, bool $failOnDirectDeprecation, bool $hasFailOnDirectDeprecation, bool $failOnIndirectDeprecation, bool $hasFailOnIndirectDeprecation, bool $failOnPhpunitDeprecation, bool $hasFailOnPhpunitDeprecation, bool $failOnPhpunitNotice, bool $hasFailOnPhpunitNotice, bool $failOnPhpunitWarning, bool $hasFailOnPhpunitWarning, bool $failOnEmptyTestSuite, bool $hasFailOnEmptyTestSuite, bool $failOnIncomplete, bool $hasFailOnIncomplete, bool $failOnNotice, bool $hasFailOnNotice, bool $failOnRisky, bool $hasFailOnRisky, bool $failOnSkipped, bool $hasFailOnSkipped, bool $failOnWarning, bool $hasFailOnWarning, int $stopOnDefect, int $stopOnDeprecation, int $stopOnError, int $stopOnFailure, int $stopOnIncomplete, int $stopOnNotice, int $stopOnRisky, int $stopOnSkipped, int $stopOnWarning, ?string $extensionsDirectory, bool $beStrictAboutChangesToGlobalState, bool $beStrictAboutOutputDuringTests, bool $beStrictAboutTestsThatDoNotTestAnything, bool $beStrictAboutCoverageMetadata, bool $requireCoverageContribution, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, ?string $defaultTestSuite, int $executionOrder, bool $resolveDependencies, bool $defectsFirst, bool $backupGlobals, bool $backupStaticProperties, bool $testdoxPrinter, bool $testdoxPrinterSummary, bool $controlGarbageCollector, int $numberOfTestsBeforeGarbageCollection, int $shortenArraysForExportThreshold, int $diffContext, bool $warnWhenPhpIsNotConfiguredForDevelopment, bool $cacheTestIndex)
+    public function __construct(?string $cacheDirectory, bool $recordTestRunHistory, int|string $columns, string $colors, bool $stderr, bool $displayDetailsOnAllIssues, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnPhpunitDeprecations, bool $displayDetailsOnPhpunitNotices, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $reverseDefectList, bool $requireCoverageMetadata, bool $requireSealedMockObjects, ?string $bootstrap, array $bootstrapForTestSuite, bool $processIsolation, bool $failOnAllIssues, bool $failOnDeprecation, bool $hasFailOnDeprecation, bool $failOnSelfDeprecation, bool $hasFailOnSelfDeprecation, bool $failOnDirectDeprecation, bool $hasFailOnDirectDeprecation, bool $failOnIndirectDeprecation, bool $hasFailOnIndirectDeprecation, bool $failOnPhpunitDeprecation, bool $hasFailOnPhpunitDeprecation, bool $failOnPhpunitNotice, bool $hasFailOnPhpunitNotice, bool $failOnPhpunitWarning, bool $hasFailOnPhpunitWarning, bool $failOnEmptyTestSuite, bool $hasFailOnEmptyTestSuite, bool $failOnIncomplete, bool $hasFailOnIncomplete, bool $failOnNotice, bool $hasFailOnNotice, bool $failOnRisky, bool $hasFailOnRisky, bool $failOnSkipped, bool $hasFailOnSkipped, bool $failOnWarning, bool $hasFailOnWarning, int $stopOnDefect, int $stopOnDeprecation, int $stopOnError, int $stopOnFailure, int $stopOnIncomplete, int $stopOnNotice, int $stopOnRisky, int $stopOnSkipped, int $stopOnWarning, ?string $extensionsDirectory, bool $beStrictAboutChangesToGlobalState, bool $beStrictAboutOutputDuringTests, bool $beStrictAboutTestsThatDoNotTestAnything, bool $beStrictAboutCoverageMetadata, bool $requireCoverageContribution, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, ?string $defaultTestSuite, array $executionOrder, bool $resolveDependencies, bool $backupGlobals, bool $backupStaticProperties, bool $testdoxPrinter, bool $testdoxPrinterSummary, bool $controlGarbageCollector, int $numberOfTestsBeforeGarbageCollection, int $shortenArraysForExportThreshold, int $diffContext, bool $warnWhenPhpIsNotConfiguredForDevelopment, bool $cacheTestIndex)
     {
         $this->cacheDirectory                               = $cacheDirectory;
         $this->recordTestRunHistory                         = $recordTestRunHistory;
@@ -283,7 +289,6 @@ final readonly class PHPUnit
         $this->defaultTestSuite                             = $defaultTestSuite;
         $this->executionOrder                               = $executionOrder;
         $this->resolveDependencies                          = $resolveDependencies;
-        $this->defectsFirst                                 = $defectsFirst;
         $this->backupGlobals                                = $backupGlobals;
         $this->backupStaticProperties                       = $backupStaticProperties;
         $this->testdoxPrinter                               = $testdoxPrinter;
@@ -754,7 +759,10 @@ final readonly class PHPUnit
         return $this->defaultTestSuite;
     }
 
-    public function executionOrder(): int
+    /**
+     * @return list<Order>
+     */
+    public function executionOrder(): array
     {
         return $this->executionOrder;
     }
@@ -762,11 +770,6 @@ final readonly class PHPUnit
     public function resolveDependencies(): bool
     {
         return $this->resolveDependencies;
-    }
-
-    public function defectsFirst(): bool
-    {
-        return $this->defectsFirst;
     }
 
     public function backupGlobals(): bool

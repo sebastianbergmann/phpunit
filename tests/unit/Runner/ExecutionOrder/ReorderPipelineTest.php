@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Runner\ExecutionOrder;
 
-use function array_key_last;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
@@ -23,9 +22,9 @@ use PHPUnit\Runner\ExecutionOrder\Stage\DefectsFirst;
 use PHPUnit\Runner\ExecutionOrder\Stage\Randomize;
 use PHPUnit\Runner\ExecutionOrder\Stage\ResolveDependencies;
 use PHPUnit\Runner\ExecutionOrder\Stage\Reverse;
-use PHPUnit\Runner\TestSuiteSorter;
 
 #[CoversClass(ReorderPipeline::class)]
+#[CoversClass(Order::class)]
 #[UsesClass(ByDuration::class)]
 #[UsesClass(ByModificationTime::class)]
 #[UsesClass(BySize::class)]
@@ -38,92 +37,86 @@ use PHPUnit\Runner\TestSuiteSorter;
 final class ReorderPipelineTest extends TestCase
 {
     /**
-     * @return non-empty-list<array{list<non-empty-string>, int, int, bool}>
+     * @return non-empty-list<array{list<non-empty-string>, list<Order>, bool}>
      */
     public static function provider(): array
     {
         return [
             'nothing configured' => [
                 [],
-                TestSuiteSorter::ORDER_DEFAULT,
-                TestSuiteSorter::ORDER_DEFAULT,
+                [],
                 false,
             ],
 
             'dependency resolution only' => [
                 ['resolve-dependencies'],
-                TestSuiteSorter::ORDER_DEFAULT,
-                TestSuiteSorter::ORDER_DEFAULT,
+                [],
                 true,
             ],
 
             'defects only' => [
                 ['defects'],
-                TestSuiteSorter::ORDER_DEFAULT,
-                TestSuiteSorter::ORDER_DEFECTS_FIRST,
+                [Order::Defects],
                 false,
             ],
 
             'reverse' => [
                 ['reverse'],
-                TestSuiteSorter::ORDER_REVERSED,
-                TestSuiteSorter::ORDER_DEFAULT,
+                [Order::Reverse],
                 false,
             ],
 
             'random' => [
                 ['random'],
-                TestSuiteSorter::ORDER_RANDOMIZED,
-                TestSuiteSorter::ORDER_DEFAULT,
+                [Order::Random],
                 false,
             ],
 
             'duration ascending' => [
                 ['duration-ascending'],
-                TestSuiteSorter::ORDER_DURATION_ASCENDING,
-                TestSuiteSorter::ORDER_DEFAULT,
+                [Order::DurationAscending],
                 false,
             ],
 
             'duration descending' => [
                 ['duration-descending'],
-                TestSuiteSorter::ORDER_DURATION_DESCENDING,
-                TestSuiteSorter::ORDER_DEFAULT,
+                [Order::DurationDescending],
                 false,
             ],
 
             'modified ascending' => [
                 ['modified-ascending'],
-                TestSuiteSorter::ORDER_MODIFIED_ASCENDING,
-                TestSuiteSorter::ORDER_DEFAULT,
+                [Order::ModifiedAscending],
                 false,
             ],
 
             'modified descending' => [
                 ['modified-descending'],
-                TestSuiteSorter::ORDER_MODIFIED_DESCENDING,
-                TestSuiteSorter::ORDER_DEFAULT,
+                [Order::ModifiedDescending],
                 false,
             ],
 
             'size ascending' => [
                 ['size-ascending'],
-                TestSuiteSorter::ORDER_SIZE_ASCENDING,
-                TestSuiteSorter::ORDER_DEFAULT,
+                [Order::SizeAscending],
                 false,
             ],
 
             'size descending' => [
                 ['size-descending'],
-                TestSuiteSorter::ORDER_SIZE_DESCENDING,
-                TestSuiteSorter::ORDER_DEFAULT,
+                [Order::SizeDescending],
                 false,
             ],
 
-            'everything' => [
+            'order then defects' => [
                 ['duration-ascending', 'defects', 'resolve-dependencies'],
-                TestSuiteSorter::ORDER_DURATION_ASCENDING,
-                TestSuiteSorter::ORDER_DEFECTS_FIRST,
+                [Order::DurationAscending, Order::Defects],
+                true,
+            ],
+
+            'defects then order' => [
+                ['defects', 'duration-ascending', 'resolve-dependencies'],
+                [Order::Defects, Order::DurationAscending],
                 true,
             ],
         ];
@@ -131,25 +124,39 @@ final class ReorderPipelineTest extends TestCase
 
     /**
      * @param list<non-empty-string> $expected
+     * @param list<Order>            $order
      */
     #[DataProvider('provider')]
-    public function testCompilesConfigurationToStages(array $expected, int $order, int $orderDefects, bool $resolveDependencies): void
+    public function testCompilesConfigurationToStages(array $expected, array $order, bool $resolveDependencies): void
     {
-        $pipeline = ReorderPipeline::fromConfiguration($order, $orderDefects, $resolveDependencies);
+        $pipeline = ReorderPipeline::fromConfiguration($order, $resolveDependencies);
 
         $this->assertSame($expected, $pipeline->describe());
         $this->assertSame($expected === [], $pipeline->isEmpty());
+    }
+
+    #[TestDox('Stages are applied in the order in which they were configured')]
+    public function testStagesAreAppliedInTheOrderInWhichTheyWereConfigured(): void
+    {
+        $this->assertSame(
+            ['defects', 'size-ascending'],
+            ReorderPipeline::fromConfiguration([Order::Defects, Order::SizeAscending], false)->describe(),
+        );
+
+        $this->assertSame(
+            ['size-ascending', 'defects'],
+            ReorderPipeline::fromConfiguration([Order::SizeAscending, Order::Defects], false)->describe(),
+        );
     }
 
     #[TestDox('Dependency resolution is always the last stage')]
     public function testDependencyResolutionIsAlwaysTheLastStage(): void
     {
         $stages = ReorderPipeline::fromConfiguration(
-            TestSuiteSorter::ORDER_SIZE_DESCENDING,
-            TestSuiteSorter::ORDER_DEFECTS_FIRST,
+            [Order::Defects, Order::SizeDescending],
             true,
         )->describe();
 
-        $this->assertSame('resolve-dependencies', $stages[array_key_last($stages)]);
+        $this->assertSame(['defects', 'size-descending', 'resolve-dependencies'], $stages);
     }
 }

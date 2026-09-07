@@ -22,24 +22,15 @@ final class SortedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
-        $telemetryInfo         = $this->telemetryInfo();
-        $executionOrder        = 9001;
-        $executionOrderDefects = 5;
-        $resolveDependencies   = true;
-        $pipeline              = ['duration-ascending', 'defects', 'resolve-dependencies'];
+        $telemetryInfo = $this->telemetryInfo();
+        $pipeline      = ['duration-ascending', 'defects', 'resolve-dependencies'];
 
         $event = new Sorted(
             $telemetryInfo,
-            $executionOrder,
-            $executionOrderDefects,
-            $resolveDependencies,
             $pipeline,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
-        $this->assertSame($executionOrder, $event->executionOrder());
-        $this->assertSame($executionOrderDefects, $event->executionOrderDefects());
-        $this->assertSame($resolveDependencies, $event->resolveDependencies());
         $this->assertSame($pipeline, $event->pipeline());
     }
 
@@ -47,9 +38,6 @@ final class SortedTest extends AbstractEventTestCase
     {
         $event = new Sorted(
             $this->telemetryInfo(),
-            9001,
-            5,
-            true,
             ['duration-ascending', 'defects', 'resolve-dependencies'],
         );
 

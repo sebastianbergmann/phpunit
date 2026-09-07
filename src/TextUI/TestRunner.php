@@ -9,9 +9,11 @@
  */
 namespace PHPUnit\TextUI;
 
+use function in_array;
 use function mt_srand;
 use PHPUnit\Event;
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\Runner\ExecutionOrder\Order;
 use PHPUnit\Runner\ExecutionOrder\ReorderPipeline;
 use PHPUnit\Runner\TestRunHistory\TestRunHistory;
 use PHPUnit\Runner\TestSuiteSorter;
@@ -33,7 +35,7 @@ final class TestRunner
         try {
             Event\Facade::emitter()->testRunnerStarted();
 
-            if ($configuration->executionOrder() === TestSuiteSorter::ORDER_RANDOMIZED) {
+            if (in_array(Order::Random, $configuration->executionOrder(), true)) {
                 mt_srand($configuration->randomOrderSeed());
             }
 
@@ -41,19 +43,13 @@ final class TestRunner
 
             $pipeline = ReorderPipeline::fromConfiguration(
                 $configuration->executionOrder(),
-                $configuration->executionOrderDefects(),
                 $configuration->resolveDependencies(),
             );
 
             if (!$pipeline->isEmpty()) {
                 new TestSuiteSorter($testRunHistory)->apply($suite, $pipeline);
 
-                Event\Facade::emitter()->testSuiteSorted(
-                    $configuration->executionOrder(),
-                    $configuration->executionOrderDefects(),
-                    $configuration->resolveDependencies(),
-                    $pipeline->describe(),
-                );
+                Event\Facade::emitter()->testSuiteSorted($pipeline->describe());
             }
 
             (new TestSuiteFilterProcessor)->process($configuration, $suite);

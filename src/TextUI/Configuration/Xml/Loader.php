@@ -33,7 +33,6 @@ use DOMNode;
 use DOMNodeList;
 use DOMXPath;
 use PHPUnit\Event\Facade as EventFacade;
-use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\Version;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\Constant;
@@ -54,6 +53,7 @@ use PHPUnit\TextUI\Configuration\Group;
 use PHPUnit\TextUI\Configuration\GroupCollection;
 use PHPUnit\TextUI\Configuration\IniSetting;
 use PHPUnit\TextUI\Configuration\IniSettingCollection;
+use PHPUnit\TextUI\Configuration\InvalidExecutionOrderException;
 use PHPUnit\TextUI\Configuration\Php;
 use PHPUnit\TextUI\Configuration\Source;
 use PHPUnit\TextUI\Configuration\TestDirectory;
@@ -149,6 +149,15 @@ final readonly class Loader
                 $this->php($configurationFileRealpath, $xpath),
                 $this->phpunit($configurationFileRealpath, $document, $xpath),
                 $this->testSuite($configurationFileRealpath, $xpath),
+            );
+        } catch (InvalidExecutionOrderException $e) {
+            throw new Exception(
+                sprintf(
+                    'Cannot load XML configuration file %s: %s',
+                    $configurationFileRealpath,
+                    $e->getMessage(),
+                ),
+                previous: $e,
             );
         } catch (Throwable $t) {
             $message = sprintf(
@@ -1116,36 +1125,16 @@ final readonly class Loader
 
         assert($documentElement !== null);
 
-        $executionOrder      = TestSuiteSorter::ORDER_DEFAULT;
-        $defectsFirst        = false;
+        $executionOrder      = [];
         $resolveDependencies = $this->parseBooleanAttribute($documentElement, 'resolveDependencies', true);
 
         $configuredExecutionOrder = $this->parseStringAttribute($documentElement, 'executionOrder');
 
         if ($configuredExecutionOrder !== null) {
-            $parsedExecutionOrder = (new ExecutionOrderParser)->parse(
+            $executionOrder = (new ExecutionOrderParser)->parse(
                 $configuredExecutionOrder,
                 ExecutionOrderSource::XmlAttribute,
-                $executionOrder,
-                TestSuiteSorter::ORDER_DEFAULT,
-                $resolveDependencies,
             );
-
-            foreach ($parsedExecutionOrder->unknownTokens() as $unknownToken) {
-                EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
-                    sprintf(
-                        'Using "%s" for the executionOrder attribute is deprecated and will be an error in PHPUnit 14. The value is ignored.',
-                        $unknownToken,
-                    ),
-                );
-            }
-
-            $executionOrder      = $parsedExecutionOrder->executionOrder();
-            $defectsFirst        = $parsedExecutionOrder->executionOrderDefects() === TestSuiteSorter::ORDER_DEFECTS_FIRST;
-            $resolveDependencies = $parsedExecutionOrder->resolveDependencies();
-
-            assert($executionOrder !== null);
-            assert($resolveDependencies !== null);
         }
 
         $cacheDirectory = $this->parseStringAttribute($documentElement, 'cacheDirectory');
@@ -1273,7 +1262,6 @@ final readonly class Loader
             $this->parseNullableNonEmptyStringAttribute($documentElement, 'defaultTestSuite'),
             $executionOrder,
             $resolveDependencies,
-            $defectsFirst,
             $this->parseBooleanAttribute($documentElement, 'backupGlobals', false),
             $backupStaticProperties,
             $this->parseBooleanAttribute($documentElement, 'testdox', false),

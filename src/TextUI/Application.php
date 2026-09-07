@@ -21,6 +21,7 @@ use function dirname;
 use function explode;
 use function function_exists;
 use function getmypid;
+use function in_array;
 use function is_array;
 use function is_file;
 use function is_string;
@@ -58,6 +59,7 @@ use PHPUnit\Runner\DeprecationCollector\Facade as DeprecationCollector;
 use PHPUnit\Runner\DeprecationFilter;
 use PHPUnit\Runner\DirectoryDoesNotExistException;
 use PHPUnit\Runner\ErrorHandler;
+use PHPUnit\Runner\ExecutionOrder\Order;
 use PHPUnit\Runner\Extension\ExtensionBootstrapper;
 use PHPUnit\Runner\Extension\ExtensionCapabilities;
 use PHPUnit\Runner\Extension\ExtensionFacade;
@@ -76,7 +78,6 @@ use PHPUnit\Runner\TestRunHistory\DefaultTestRunHistory;
 use PHPUnit\Runner\TestRunHistory\NullTestRunHistory;
 use PHPUnit\Runner\TestRunHistory\TestRunHistory;
 use PHPUnit\Runner\TestRunHistory\TestRunHistoryHandler;
-use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\Version;
 use PHPUnit\TestRunner\IssueFilter;
 use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
@@ -654,7 +655,7 @@ final readonly class Application
 
     private function writeRandomSeedInformation(Printer $printer, Configuration $configuration): void
     {
-        if ($configuration->executionOrder() === TestSuiteSorter::ORDER_RANDOMIZED) {
+        if (in_array(Order::Random, $configuration->executionOrder(), true)) {
             $this->writeMessage(
                 $printer,
                 'Random Seed',
@@ -713,12 +714,18 @@ final readonly class Application
         }
 
         if ($configuration->hasLogfileOtr()) {
+            $randomOrderSeed = null;
+
+            if (in_array(Order::Random, $configuration->executionOrder(), true)) {
+                $randomOrderSeed = $configuration->randomOrderSeed();
+            }
+
             try {
                 new OtrXmlLogger(
                     EventFacade::instance(),
                     $configuration->logfileOtr(),
                     $configuration->includeGitInformationInOtrLogfile(),
-                    $configuration->executionOrder() === TestSuiteSorter::ORDER_RANDOMIZED ? $configuration->randomOrderSeed() : null,
+                    $randomOrderSeed,
                 );
             } catch (CannotOpenUriForWritingException $e) {
                 EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
@@ -888,16 +895,16 @@ final readonly class Application
             return $testRunHistory;
         }
 
-        if ($configuration->executionOrderDefects() === TestSuiteSorter::ORDER_DEFECTS_FIRST) {
-            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
-                'Tests cannot be ordered by defects because recording of the test run history is disabled',
-            );
-        }
+        foreach ($configuration->executionOrder() as $order) {
+            if (!$order->requiresTestRunHistory()) {
+                continue;
+            }
 
-        if ($configuration->executionOrder() === TestSuiteSorter::ORDER_DURATION_ASCENDING ||
-            $configuration->executionOrder() === TestSuiteSorter::ORDER_DURATION_DESCENDING) {
             EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
-                'Tests cannot be ordered by duration because recording of the test run history is disabled',
+                sprintf(
+                    'Tests cannot be ordered by "%s" because recording of the test run history is disabled',
+                    $order->token(),
+                ),
             );
         }
 

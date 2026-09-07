@@ -129,24 +129,7 @@
     </xs:simpleType>
     <xs:simpleType name="executionOrderType">
         <xs:restriction base="xs:string">
-            <xs:enumeration value="default"/>
-            <xs:enumeration value="defects"/>
-            <xs:enumeration value="duration-ascending"/>
-            <xs:enumeration value="duration-ascending,defects"/>
-            <xs:enumeration value="duration-descending"/>
-            <xs:enumeration value="duration-descending,defects"/>
-            <xs:enumeration value="modified-ascending"/>
-            <xs:enumeration value="modified-ascending,defects"/>
-            <xs:enumeration value="modified-descending"/>
-            <xs:enumeration value="modified-descending,defects"/>
-            <xs:enumeration value="random"/>
-            <xs:enumeration value="random,defects"/>
-            <xs:enumeration value="reverse"/>
-            <xs:enumeration value="reverse,defects"/>
-            <xs:enumeration value="size-ascending"/>
-            <xs:enumeration value="size-ascending,defects"/>
-            <xs:enumeration value="size-descending"/>
-            <xs:enumeration value="size-descending,defects"/>
+            <xs:pattern value="(default|defects|duration-ascending|duration-descending|modified-ascending|modified-descending|random|reverse|size-ascending|size-descending)(,(default|defects|duration-ascending|duration-descending|modified-ascending|modified-descending|random|reverse|size-ascending|size-descending))*"/>
         </xs:restriction>
     </xs:simpleType>
     <xs:complexType name="phpType">
