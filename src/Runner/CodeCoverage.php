@@ -127,9 +127,10 @@ final class CodeCoverage
          * Recording which source files each test executed is a reason of its
          * own for collecting code coverage, but it is not a reason for not
          * running the tests: a run that cannot record what the tests executed
-         * still has to run them, and must not be warned that a driver it never
-         * asked for is missing. A run that was asked for a code coverage
-         * report, on the other hand, cannot deliver it and fails.
+         * still has to run them, and is warned that it will not get what it
+         * asked for instead of being told about code coverage it never asked
+         * for. A run that was asked for a code coverage report, on the other
+         * hand, cannot deliver it and fails.
          */
         $onlyRequestedForTestImpactData = $this->recordTestImpactData &&
                                           !$configuration->hasCoverageReport() &&
@@ -779,14 +780,19 @@ final class CodeCoverage
             $this->collectsBranchCoverage = $branchCoverage;
             $this->collectsPathCoverage   = $pathCoverage;
         } catch (CodeCoverageException $e) {
-            if ($onlyRequestedForTestImpactData) {
-                return;
-            }
-
             $message = $e->getMessage();
 
             if ($message === '') {
                 $message = 'Code coverage cannot be initialized';
+            }
+
+            /*
+             * A run that only collects code coverage so that it can record
+             * what the tests executed is told what it will not get, and not
+             * told about code coverage it never asked for.
+             */
+            if ($onlyRequestedForTestImpactData) {
+                $message .= ', test impact data will not be recorded';
             }
 
             EventFacade::emitter()->testRunnerTriggeredPhpunitWarning($message);
