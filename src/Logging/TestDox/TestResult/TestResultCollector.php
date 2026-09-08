@@ -161,13 +161,11 @@ final class TestResultCollector
         $this->status    = TestStatus::error($event->throwable()->message());
         $this->throwable = $event->throwable();
 
-        if (!$this->prepared) {
-            $test = $event->test();
+        $test = $event->test();
 
-            assert($test instanceof TestMethod);
+        assert($test instanceof TestMethod);
 
-            $this->process($test);
-        }
+        $this->recordTestThatNeverStarted($test);
     }
 
     public function testFailed(Failed $event): void
@@ -196,6 +194,12 @@ final class TestResultCollector
         }
 
         $this->updateTestStatus(TestStatus::skipped($event->message()));
+
+        $test = $event->test();
+
+        assert($test instanceof TestMethod);
+
+        $this->recordTestThatNeverStarted($test);
     }
 
     public function testMarkedIncomplete(MarkedIncomplete $event): void
@@ -207,6 +211,12 @@ final class TestResultCollector
         $this->updateTestStatus(TestStatus::incomplete($event->throwable()->message()));
 
         $this->throwable = $event->throwable();
+
+        $test = $event->test();
+
+        assert($test instanceof TestMethod);
+
+        $this->recordTestThatNeverStarted($test);
     }
 
     public function testConsideredRisky(ConsideredRisky $event): void
@@ -412,6 +422,31 @@ final class TestResultCollector
     private function process(TestMethod $test): void
     {
         $this->record($test, $this->status, $this->throwable);
+    }
+
+    /**
+     * A test that is skipped, marked incomplete, or errored before it starts
+     * - because a test it depends on did not pass, because a requirement it
+     * declares is not met, or because setUp() decided so - never emits the
+     * event that ends a test, which is what every other test is recorded on.
+     * It is recorded here instead.
+     *
+     * What it was recorded with must not be carried over to the next test
+     * that never starts: nothing resets it in between, and a status that is
+     * kept would be the more important one of two unrelated tests.
+     */
+    private function recordTestThatNeverStarted(TestMethod $test): void
+    {
+        if ($this->prepared) {
+            return;
+        }
+
+        assert($this->status !== null);
+
+        $this->record($test, $this->status, $this->throwable);
+
+        $this->status    = null;
+        $this->throwable = null;
     }
 
     private function record(TestMethod $test, TestStatus $status, ?Throwable $throwable): void
