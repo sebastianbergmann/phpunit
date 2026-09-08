@@ -359,6 +359,10 @@ final class Collector
     public function testMarkedIncomplete(MarkedIncomplete $event): void
     {
         $this->testMarkedIncompleteEvents[] = $event;
+
+        if (!$this->prepared) {
+            $this->numberOfTestsRun++;
+        }
     }
 
     public function testSkipped(TestSkipped $event): void
