@@ -1178,6 +1178,24 @@ final readonly class Loader
             $requireCoverageMetadata = $this->parseBooleanAttribute($documentElement, 'requireCoverageMetadata', false);
         }
 
+        $requireCoverageMetadataOnSmallTests = $requireCoverageMetadata;
+
+        if ($documentElement->hasAttribute('requireCoverageMetadataOnSmallTests')) {
+            $requireCoverageMetadataOnSmallTests = $this->parseBooleanAttribute($documentElement, 'requireCoverageMetadataOnSmallTests', false);
+        }
+
+        $requireCoverageMetadataOnMediumTests = $requireCoverageMetadata;
+
+        if ($documentElement->hasAttribute('requireCoverageMetadataOnMediumTests')) {
+            $requireCoverageMetadataOnMediumTests = $this->parseBooleanAttribute($documentElement, 'requireCoverageMetadataOnMediumTests', false);
+        }
+
+        $requireCoverageMetadataOnLargeTests = $requireCoverageMetadata;
+
+        if ($documentElement->hasAttribute('requireCoverageMetadataOnLargeTests')) {
+            $requireCoverageMetadataOnLargeTests = $this->parseBooleanAttribute($documentElement, 'requireCoverageMetadataOnLargeTests', false);
+        }
+
         $requireSealedMockObjects = false;
 
         if ($documentElement->hasAttribute('requireSealedMockObjects')) {
@@ -1219,6 +1237,9 @@ final readonly class Loader
             $this->parseBooleanAttribute($documentElement, 'displayDetailsOnTestsThatTriggerWarnings', false),
             $this->parseBooleanAttribute($documentElement, 'reverseDefectList', false),
             $requireCoverageMetadata,
+            $requireCoverageMetadataOnSmallTests,
+            $requireCoverageMetadataOnMediumTests,
+            $requireCoverageMetadataOnLargeTests,
             $requireSealedMockObjects,
             $bootstrap,
             $this->bootstrapForTestSuite($filename, $xpath),

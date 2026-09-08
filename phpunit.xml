@@ -44,6 +44,7 @@
             <directory suffix=".phpt">tests/end-to-end/phpt</directory>
             <directory suffix=".phpt">tests/end-to-end/regression</directory>
             <directory suffix=".phpt">tests/end-to-end/repeat</directory>
+            <directory suffix=".phpt">tests/end-to-end/require-coverage-metadata</directory>
             <directory suffix=".phpt">tests/end-to-end/retry</directory>
             <directory suffix=".phpt">tests/end-to-end/test-doubles/generator</directory>
             <directory suffix=".phpt">tests/end-to-end/test-doubles/runtime</directory>

@@ -849,8 +849,11 @@ final readonly class Merger
             $reverseDefectList = $xmlConfiguration->phpunit()->reverseDefectList();
         }
 
-        $requireCoverageMetadata  = $xmlConfiguration->phpunit()->requireCoverageMetadata();
-        $requireSealedMockObjects = $xmlConfiguration->phpunit()->requireSealedMockObjects();
+        $requireCoverageMetadata              = $xmlConfiguration->phpunit()->requireCoverageMetadata();
+        $requireCoverageMetadataOnSmallTests  = $xmlConfiguration->phpunit()->requireCoverageMetadataOnSmallTests();
+        $requireCoverageMetadataOnMediumTests = $xmlConfiguration->phpunit()->requireCoverageMetadataOnMediumTests();
+        $requireCoverageMetadataOnLargeTests  = $xmlConfiguration->phpunit()->requireCoverageMetadataOnLargeTests();
+        $requireSealedMockObjects             = $xmlConfiguration->phpunit()->requireSealedMockObjects();
 
         if ($cliConfiguration->hasExecutionOrder()) {
             $executionOrder = $cliConfiguration->executionOrder();
@@ -1446,6 +1449,9 @@ final readonly class Merger
             $displayDetailsOnTestsThatTriggerWarnings,
             $reverseDefectList,
             $requireCoverageMetadata,
+            $requireCoverageMetadataOnSmallTests,
+            $requireCoverageMetadataOnMediumTests,
+            $requireCoverageMetadataOnLargeTests,
             $requireSealedMockObjects,
             $noProgress,
             $noResults,

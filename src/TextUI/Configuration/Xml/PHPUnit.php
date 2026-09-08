@@ -41,6 +41,9 @@ final readonly class PHPUnit
     private bool $displayDetailsOnTestsThatTriggerWarnings;
     private bool $reverseDefectList;
     private bool $requireCoverageMetadata;
+    private bool $requireCoverageMetadataOnSmallTests;
+    private bool $requireCoverageMetadataOnMediumTests;
+    private bool $requireCoverageMetadataOnLargeTests;
     private bool $requireSealedMockObjects;
 
     /**
@@ -211,7 +214,7 @@ final readonly class PHPUnit
      * @param non-negative-int                          $shortenArraysForExportThreshold
      * @param positive-int                              $diffContext
      */
-    public function __construct(?string $cacheDirectory, bool $recordTestRunHistory, int|string $columns, string $colors, bool $stderr, bool $displayDetailsOnAllIssues, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnPhpunitDeprecations, bool $displayDetailsOnPhpunitNotices, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $reverseDefectList, bool $requireCoverageMetadata, bool $requireSealedMockObjects, ?string $bootstrap, array $bootstrapForTestSuite, bool $processIsolation, bool $failOnAllIssues, bool $failOnDeprecation, bool $hasFailOnDeprecation, bool $failOnSelfDeprecation, bool $hasFailOnSelfDeprecation, bool $failOnDirectDeprecation, bool $hasFailOnDirectDeprecation, bool $failOnIndirectDeprecation, bool $hasFailOnIndirectDeprecation, bool $failOnPhpunitDeprecation, bool $hasFailOnPhpunitDeprecation, bool $failOnPhpunitNotice, bool $hasFailOnPhpunitNotice, bool $failOnPhpunitWarning, bool $hasFailOnPhpunitWarning, bool $failOnEmptyTestSuite, bool $hasFailOnEmptyTestSuite, bool $failOnIncomplete, bool $hasFailOnIncomplete, bool $failOnNotice, bool $hasFailOnNotice, bool $failOnRisky, bool $hasFailOnRisky, bool $failOnSkipped, bool $hasFailOnSkipped, bool $failOnWarning, bool $hasFailOnWarning, int $stopOnDefect, int $stopOnDeprecation, int $stopOnError, int $stopOnFailure, int $stopOnIncomplete, int $stopOnNotice, int $stopOnRisky, int $stopOnSkipped, int $stopOnWarning, ?string $extensionsDirectory, bool $beStrictAboutChangesToGlobalState, bool $beStrictAboutOutputDuringTests, bool $beStrictAboutTestsThatDoNotTestAnything, bool $beStrictAboutCoverageMetadata, bool $requireCoverageContribution, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, ?string $defaultTestSuite, int $executionOrder, bool $resolveDependencies, bool $defectsFirst, bool $backupGlobals, bool $backupStaticProperties, bool $testdoxPrinter, bool $testdoxPrinterSummary, bool $controlGarbageCollector, int $numberOfTestsBeforeGarbageCollection, int $shortenArraysForExportThreshold, int $diffContext, bool $warnWhenPhpIsNotConfiguredForDevelopment, bool $cacheTestIndex)
+    public function __construct(?string $cacheDirectory, bool $recordTestRunHistory, int|string $columns, string $colors, bool $stderr, bool $displayDetailsOnAllIssues, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnPhpunitDeprecations, bool $displayDetailsOnPhpunitNotices, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $reverseDefectList, bool $requireCoverageMetadata, bool $requireCoverageMetadataOnSmallTests, bool $requireCoverageMetadataOnMediumTests, bool $requireCoverageMetadataOnLargeTests, bool $requireSealedMockObjects, ?string $bootstrap, array $bootstrapForTestSuite, bool $processIsolation, bool $failOnAllIssues, bool $failOnDeprecation, bool $hasFailOnDeprecation, bool $failOnSelfDeprecation, bool $hasFailOnSelfDeprecation, bool $failOnDirectDeprecation, bool $hasFailOnDirectDeprecation, bool $failOnIndirectDeprecation, bool $hasFailOnIndirectDeprecation, bool $failOnPhpunitDeprecation, bool $hasFailOnPhpunitDeprecation, bool $failOnPhpunitNotice, bool $hasFailOnPhpunitNotice, bool $failOnPhpunitWarning, bool $hasFailOnPhpunitWarning, bool $failOnEmptyTestSuite, bool $hasFailOnEmptyTestSuite, bool $failOnIncomplete, bool $hasFailOnIncomplete, bool $failOnNotice, bool $hasFailOnNotice, bool $failOnRisky, bool $hasFailOnRisky, bool $failOnSkipped, bool $hasFailOnSkipped, bool $failOnWarning, bool $hasFailOnWarning, int $stopOnDefect, int $stopOnDeprecation, int $stopOnError, int $stopOnFailure, int $stopOnIncomplete, int $stopOnNotice, int $stopOnRisky, int $stopOnSkipped, int $stopOnWarning, ?string $extensionsDirectory, bool $beStrictAboutChangesToGlobalState, bool $beStrictAboutOutputDuringTests, bool $beStrictAboutTestsThatDoNotTestAnything, bool $beStrictAboutCoverageMetadata, bool $requireCoverageContribution, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, ?string $defaultTestSuite, int $executionOrder, bool $resolveDependencies, bool $defectsFirst, bool $backupGlobals, bool $backupStaticProperties, bool $testdoxPrinter, bool $testdoxPrinterSummary, bool $controlGarbageCollector, int $numberOfTestsBeforeGarbageCollection, int $shortenArraysForExportThreshold, int $diffContext, bool $warnWhenPhpIsNotConfiguredForDevelopment, bool $cacheTestIndex)
     {
         $this->cacheDirectory                               = $cacheDirectory;
         $this->recordTestRunHistory                         = $recordTestRunHistory;
@@ -229,6 +232,9 @@ final readonly class PHPUnit
         $this->displayDetailsOnTestsThatTriggerWarnings     = $displayDetailsOnTestsThatTriggerWarnings;
         $this->reverseDefectList                            = $reverseDefectList;
         $this->requireCoverageMetadata                      = $requireCoverageMetadata;
+        $this->requireCoverageMetadataOnSmallTests          = $requireCoverageMetadataOnSmallTests;
+        $this->requireCoverageMetadataOnMediumTests         = $requireCoverageMetadataOnMediumTests;
+        $this->requireCoverageMetadataOnLargeTests          = $requireCoverageMetadataOnLargeTests;
         $this->requireSealedMockObjects                     = $requireSealedMockObjects;
         $this->bootstrap                                    = $bootstrap;
         $this->bootstrapForTestSuite                        = $bootstrapForTestSuite;
@@ -399,6 +405,21 @@ final readonly class PHPUnit
     public function requireCoverageMetadata(): bool
     {
         return $this->requireCoverageMetadata;
+    }
+
+    public function requireCoverageMetadataOnSmallTests(): bool
+    {
+        return $this->requireCoverageMetadataOnSmallTests;
+    }
+
+    public function requireCoverageMetadataOnMediumTests(): bool
+    {
+        return $this->requireCoverageMetadataOnMediumTests;
+    }
+
+    public function requireCoverageMetadataOnLargeTests(): bool
+    {
+        return $this->requireCoverageMetadataOnLargeTests;
     }
 
     public function requireSealedMockObjects(): bool

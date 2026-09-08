@@ -167,7 +167,7 @@ final class TestRunner
         }
 
         if (!$error && !$failure && !$incomplete && !$skipped && !$risky &&
-            $this->configuration->requireCoverageMetadata() &&
+            $this->requiresCoverageMetadata($test) &&
             !$this->hasCoverageMetadata($test::class, $test->name())) {
             Facade::emitter()->testConsideredRisky(
                 $test->valueObjectForEvents(),
@@ -265,6 +265,25 @@ final class TestRunner
                 $test->numberOfAssertionsPerformed(),
             );
         }
+    }
+
+    private function requiresCoverageMetadata(TestCase $test): bool
+    {
+        $size = $test->size();
+
+        if ($size->isSmall()) {
+            return $this->configuration->requireCoverageMetadataOnSmallTests();
+        }
+
+        if ($size->isMedium()) {
+            return $this->configuration->requireCoverageMetadataOnMediumTests();
+        }
+
+        if ($size->isLarge()) {
+            return $this->configuration->requireCoverageMetadataOnLargeTests();
+        }
+
+        return $this->configuration->requireCoverageMetadata();
     }
 
     /**
