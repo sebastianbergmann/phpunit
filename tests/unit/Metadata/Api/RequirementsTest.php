@@ -37,6 +37,9 @@ final class RequirementsTest extends TestCase
             ['testNine',           [
                 'Function testFunc() is required.',
             ]],
+            ['testRequiresNonExistentClass', [
+                'Class DoesNotExist is required.',
+            ]],
             ['testTen',            [
                 'PHP extension testExt is required, but it is not loaded.',
             ]],
@@ -57,6 +60,7 @@ final class RequirementsTest extends TestCase
                 'Function testFuncOne() is required.',
                 'Function testFunc2() is required.',
                 'Method DoesNotExist::doesNotExist() is required.',
+                'Class DoesNotExist is required.',
                 'PHP extension testExtOne is required, but it is not loaded.',
                 'PHP extension testExt2 is required, but it is not loaded.',
                 'PHP extension testExtThree >= 2.0.0 is required, but it is not loaded.',

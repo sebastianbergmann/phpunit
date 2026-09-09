@@ -412,6 +412,14 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isRequiresMethod());
     }
 
+    public function test_Can_be_filtered_for_RequiresClass(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isRequiresClass();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isRequiresClass());
+    }
+
     public function test_Can_be_filtered_for_RequiresFunction(): void
     {
         $collection = $this->collectionWithOneOfEach()->isRequiresFunction();
@@ -686,6 +694,7 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::preCondition(0),
                 Metadata::preserveGlobalStateOnClass(true),
                 Metadata::requiresMethodOnClass('', ''),
+                Metadata::requiresClassOnClass(''),
                 Metadata::requiresFunctionOnClass(''),
                 Metadata::requiresOperatingSystemFamilyOnClass(''),
                 Metadata::requiresOperatingSystemOnClass(''),
