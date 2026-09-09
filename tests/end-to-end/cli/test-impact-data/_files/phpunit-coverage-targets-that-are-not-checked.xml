@@ -3,7 +3,8 @@
          xsi:noNamespaceSchemaLocation="../../../../../phpunit.xsd"
          bootstrap="vendor/autoload.php"
          cacheDirectory=".phpunit.cache.coverage-targets-that-are-not-checked"
-         deriveTestImpactDataFromCoverageTargets="true">
+         deriveTestImpactDataFromCoverageTargets="true"
+         requireCoverageMetadata="true">
     <testsuites>
         <testsuite name="default">
             <directory>tests-that-cover-different-classes</directory>
