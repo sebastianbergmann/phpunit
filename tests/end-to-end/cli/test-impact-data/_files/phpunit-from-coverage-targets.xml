@@ -4,6 +4,7 @@
          bootstrap="vendor/autoload.php"
          cacheDirectory=".phpunit.cache.from-coverage-targets"
          deriveTestImpactDataFromCoverageTargets="true"
+         requireCoverageMetadata="true"
          beStrictAboutCoverageMetadata="true">
     <testsuites>
         <testsuite name="default">
