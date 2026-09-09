@@ -7,6 +7,10 @@ All notable changes of the PHPUnit 13.3 release series are documented in this fi
 ### Fixed
 
 * Paths of included files are now escaped when generating the code that is executed in a separate process, so that a path containing special characters no longer produces broken code
+* Tests of a test class that is skipped as a whole are missing from the TestDox output
+* A test that is skipped or marked incomplete before it started is missing from the TestDox output
+* A test that is marked incomplete before it started is not counted in the number of tests that ran
+* No progress is printed for a test that is marked incomplete before it started
 
 ## [13.3.2] - 2026-08-27
 
