@@ -2,12 +2,13 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="../../../../../phpunit.xsd"
          bootstrap="vendor/autoload.php"
-         cacheDirectory=".phpunit.cache.coverage-targets-that-are-not-checked"
+         cacheDirectory=".phpunit.cache.coverage-metadata-that-is-not-required-for-all-tests"
          deriveTestImpactDataFromCoverageTargets="true"
-         requireCoverageMetadata="true">
+         requireCoverageMetadata="true"
+         requireCoverageMetadataOnMediumTests="false">
     <testsuites>
         <testsuite name="default">
-            <directory>tests-that-cover-different-classes</directory>
+            <directory>tests</directory>
         </testsuite>
     </testsuites>
 

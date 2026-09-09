@@ -531,11 +531,37 @@ final class MergerTest extends TestCase
     {
         $mergedConfig = new Merger($this->createStub(Emitter::class))->merge(
             new Builder($this->createStub(Emitter::class))->fromParameters(['--derive-test-impact-data-from-coverage-targets']),
-            DefaultConfiguration::create(),
+            new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration-require-coverage-metadata.xml'),
         );
 
         $this->assertTrue($mergedConfig->deriveTestImpactDataFromCoverageTargets());
         $this->assertTrue($mergedConfig->recordTestImpactData());
+    }
+
+    /**
+     * What each test depends on can only be worked out from the code coverage
+     * targets it declares when every test has to declare them.
+     */
+    public function testDerivingTestImpactDataFromCoverageTargetsIsDeclinedWhenCoverageMetadataIsNotRequired(): void
+    {
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge(
+            new Builder($this->createStub(Emitter::class))->fromParameters(['--derive-test-impact-data-from-coverage-targets']),
+            DefaultConfiguration::create(),
+        );
+
+        $this->assertFalse($mergedConfig->deriveTestImpactDataFromCoverageTargets());
+        $this->assertFalse($mergedConfig->recordTestImpactData());
+    }
+
+    public function testDerivingTestImpactDataFromCoverageTargetsIsDeclinedWhenCoverageMetadataIsNotRequiredOnTestsOfACertainSize(): void
+    {
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge(
+            new Builder($this->createStub(Emitter::class))->fromParameters([]),
+            new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration-derive-test-impact-data-from-coverage-targets-without-required-coverage-metadata-on-large-tests.xml'),
+        );
+
+        $this->assertFalse($mergedConfig->deriveTestImpactDataFromCoverageTargets());
+        $this->assertFalse($mergedConfig->recordTestImpactData());
     }
 
     public function testDerivingTestImpactDataFromCoverageTargetsCanBeDeclinedOnTheCommandLine(): void

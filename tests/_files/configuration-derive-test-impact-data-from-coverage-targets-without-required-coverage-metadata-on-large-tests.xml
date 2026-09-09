@@ -3,5 +3,6 @@
          xsi:noNamespaceSchemaLocation="../../phpunit.xsd"
          deriveTestImpactDataFromCoverageTargets="true"
          requireCoverageMetadata="true"
+         requireCoverageMetadataOnLargeTests="false"
 >
 </phpunit>
