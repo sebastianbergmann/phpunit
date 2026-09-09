@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 13.3 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [13.3.4] - 2026-MM-DD
+
+### Fixed
+
+* [#6965](https://github.com/sebastianbergmann/phpunit/issues/6965): Temporary file used by `SourceMapper` may be deleted prematurely
+
 ## [13.3.3] - 2026-09-09
 
 ### Fixed
@@ -87,6 +93,7 @@ All notable changes of the PHPUnit 13.3 release series are documented in this fi
 * The test runner no longer aborts with an uncaught `PHPUnit\Runner\Phpt\InvalidPhptFileException` when a PHPT test file has an empty `--FILE--` or `--FILEEOF--` section or a `--FILE_EXTERNAL--` section that references an empty file; such a file is now rejected while it is parsed and reported as an errored test
 * `PHPUnit\Runner\Phpt\InvalidPhptFileException` now has a message that explains why the PHPT test file was rejected
 
+[13.3.4]: https://github.com/sebastianbergmann/phpunit/compare/13.3.3...13.3
 [13.3.3]: https://github.com/sebastianbergmann/phpunit/compare/13.3.2...13.3.3
 [13.3.2]: https://github.com/sebastianbergmann/phpunit/compare/13.3.1...13.3.2
 [13.3.1]: https://github.com/sebastianbergmann/phpunit/compare/13.3.0...13.3.1

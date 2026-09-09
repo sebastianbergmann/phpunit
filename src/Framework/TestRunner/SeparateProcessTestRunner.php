@@ -13,6 +13,7 @@ use function assert;
 use function bin2hex;
 use function defined;
 use function get_include_path;
+use function getmypid;
 use function hrtime;
 use function random_bytes;
 use function register_shutdown_function;
@@ -218,14 +219,24 @@ final class SeparateProcessTestRunner
             // @codeCoverageIgnoreEnd
         }
 
+        $pid = getmypid();
+
         // the source map is written once per test run and shared by all child
         // processes, so it can only be removed when the test run has ended
         register_shutdown_function(
-            static function () use ($path): void
+            static function () use ($path, $pid): void
             {
                 // this runs during PHP's shutdown sequence, after code coverage
                 // data has been collected
                 // @codeCoverageIgnoreStart
+                if (getmypid() !== $pid) {
+                    // a process that was forked, for instance using pcntl_fork(),
+                    // from the process that registered this shutdown function
+                    // inherited it; only the process that created the source map
+                    // may delete it
+                    return;
+                }
+
                 @unlink($path);
                 // @codeCoverageIgnoreEnd
             },
