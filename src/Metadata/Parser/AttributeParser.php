@@ -66,6 +66,7 @@ use PHPUnit\Framework\Attributes\PostCondition;
 use PHPUnit\Framework\Attributes\PreCondition;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\Attributes\Repeat;
+use PHPUnit\Framework\Attributes\RequiresClass;
 use PHPUnit\Framework\Attributes\RequiresEnvironmentVariable;
 use PHPUnit\Framework\Attributes\RequiresFunction;
 use PHPUnit\Framework\Attributes\RequiresMethod;
@@ -405,6 +406,13 @@ final class AttributeParser implements Parser
                         $attributeInstance->className(),
                         $attributeInstance->methodName(),
                     );
+
+                    break;
+
+                case RequiresClass::class:
+                    assert($attributeInstance instanceof RequiresClass);
+
+                    $result[] = Metadata::requiresClassOnClass($attributeInstance->className());
 
                     break;
 
@@ -881,6 +889,13 @@ final class AttributeParser implements Parser
                         $attributeInstance->className(),
                         $attributeInstance->methodName(),
                     );
+
+                    break;
+
+                case RequiresClass::class:
+                    assert($attributeInstance instanceof RequiresClass);
+
+                    $result[] = Metadata::requiresClassOnMethod($attributeInstance->className());
 
                     break;
 
