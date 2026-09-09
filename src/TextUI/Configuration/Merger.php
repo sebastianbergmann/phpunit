@@ -110,6 +110,22 @@ final readonly class Merger
         }
 
         /*
+         * What each test depends on can only be worked out from the code
+         * coverage targets it declares when every test has to declare them: a
+         * test that declares none would be recorded as depending on nothing,
+         * and would therefore not be run again for a change to the code it
+         * does test.
+         */
+        if ($deriveTestImpactDataFromCoverageTargets &&
+            !$this->requiresCoverageMetadataForAllTests($xmlConfiguration)) {
+            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                'Cannot derive test impact data from code coverage targets because code coverage metadata is not required for all tests',
+            );
+
+            $deriveTestImpactDataFromCoverageTargets = false;
+        }
+
+        /*
          * Recording which source files each test executed is collecting code
          * coverage, whatever is done with what is collected: a test run that
          * is told to collect none does not record it either. Working out what
@@ -1606,6 +1622,18 @@ final readonly class Merger
         }
 
         return $value;
+    }
+
+    /**
+     * Code coverage metadata can be required for all tests, or only for the
+     * tests of a certain size.
+     */
+    private function requiresCoverageMetadataForAllTests(XmlConfiguration $xmlConfiguration): bool
+    {
+        return $xmlConfiguration->phpunit()->requireCoverageMetadata() &&
+               $xmlConfiguration->phpunit()->requireCoverageMetadataOnSmallTests() &&
+               $xmlConfiguration->phpunit()->requireCoverageMetadataOnMediumTests() &&
+               $xmlConfiguration->phpunit()->requireCoverageMetadataOnLargeTests();
     }
 
     private function hasExplicitTestSelection(CliConfiguration $cliConfiguration): bool
