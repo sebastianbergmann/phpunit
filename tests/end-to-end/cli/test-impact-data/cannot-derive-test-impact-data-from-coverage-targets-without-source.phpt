@@ -7,13 +7,13 @@ $_SERVER['argv'][] = '--derive-test-impact-data-from-coverage-targets';
 $_SERVER['argv'][] = '--no-progress';
 $_SERVER['argv'][] = '--colors=never';
 $_SERVER['argv'][] = '--configuration';
-$_SERVER['argv'][] = __DIR__ . '/_files/phpunit-without-source.xml';
+$_SERVER['argv'][] = __DIR__ . '/_files/phpunit-without-source-from-coverage-targets.xml';
 
 require __DIR__ . '/../../../bootstrap.php';
 
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv'], false);
 
-if (file_exists(__DIR__ . '/_files/.phpunit.cache.without-source/test-impact-data')) {
+if (file_exists(__DIR__ . '/_files/.phpunit.cache.without-source-from-coverage-targets/test-impact-data')) {
     print PHP_EOL . 'Test impact data was written' . PHP_EOL;
 } else {
     print PHP_EOL . 'No test impact data was written' . PHP_EOL;
@@ -22,7 +22,7 @@ if (file_exists(__DIR__ . '/_files/.phpunit.cache.without-source/test-impact-dat
 <?php declare(strict_types=1);
 require __DIR__ . '/../../../_files/delete_directory.php';
 
-delete_directory(__DIR__ . '/_files/.phpunit.cache.without-source');
+delete_directory(__DIR__ . '/_files/.phpunit.cache.without-source-from-coverage-targets');
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
