@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\CliArguments;
 
+use Fidry\CpuCoreCounter\CpuCoreCounter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
@@ -1590,6 +1591,38 @@ final class BuilderTest extends TestCase
         $this->expectException(Exception::class);
 
         $configuration->processIsolation();
+    }
+
+    #[TestDox('--parallel')]
+    public function testParallel(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--parallel', '4']);
+
+        $this->assertTrue($configuration->hasNumberOfParallelWorkers());
+        $this->assertSame(4, $configuration->numberOfParallelWorkers());
+    }
+
+    #[TestDox('--parallel auto')]
+    public function testParallelAuto(): void
+    {
+        $configuration = (new Builder)->fromParameters(['--parallel', 'auto']);
+
+        $this->assertTrue($configuration->hasNumberOfParallelWorkers());
+        $this->assertSame(
+            (new CpuCoreCounter)->getAvailableForParallelisation()->availableCpus,
+            $configuration->numberOfParallelWorkers(),
+        );
+    }
+
+    public function testNumberOfParallelWorkersMayNotBeConfigured(): void
+    {
+        $configuration = (new Builder)->fromParameters([]);
+
+        $this->assertFalse($configuration->hasNumberOfParallelWorkers());
+
+        $this->expectException(Exception::class);
+
+        $configuration->numberOfParallelWorkers();
     }
 
     #[TestDox('--stderr')]
