@@ -331,6 +331,12 @@ final class BuilderTest extends TestCase
         $this->assertTrue(new Builder($this->createStub(Emitter::class))->fromParameters(['--only-impacted'])->onlyImpacted());
     }
 
+    #[TestDox('--explain-impacted')]
+    public function testExplainImpacted(): void
+    {
+        $this->assertTrue(new Builder($this->createStub(Emitter::class))->fromParameters(['--explain-impacted'])->explainImpacted());
+    }
+
     #[TestDox('--impacted-by <path>')]
     public function testImpactedBy(): void
     {
