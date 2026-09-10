@@ -49,6 +49,7 @@ final readonly class Recording
      * @var array<int, non-empty-string>
      */
     private array $sourceFiles;
+    private RecordingTime $recordedAt;
 
     /**
      * @param list<non-empty-string>             $files
@@ -56,9 +57,9 @@ final readonly class Recording
      * @param array<non-empty-string, list<int>> $tests
      * @param array<int, non-empty-string>       $sourceFiles
      */
-    public static function from(array $files, array $versions, array $tests, array $sourceFiles): self
+    public static function from(array $files, array $versions, array $tests, array $sourceFiles, RecordingTime $recordedAt): self
     {
-        return new self($files, $versions, $tests, $sourceFiles);
+        return new self($files, $versions, $tests, $sourceFiles, $recordedAt);
     }
 
     /**
@@ -67,12 +68,22 @@ final readonly class Recording
      * @param array<non-empty-string, list<int>> $tests
      * @param array<int, non-empty-string>       $sourceFiles
      */
-    private function __construct(array $files, array $versions, array $tests, array $sourceFiles)
+    private function __construct(array $files, array $versions, array $tests, array $sourceFiles, RecordingTime $recordedAt)
     {
         $this->files       = $files;
         $this->versions    = $versions;
         $this->tests       = $tests;
         $this->sourceFiles = $sourceFiles;
+        $this->recordedAt  = $recordedAt;
+    }
+
+    /**
+     * When what is recorded was recorded: what changed is what is not what
+     * it was then.
+     */
+    public function recordedAt(): RecordingTime
+    {
+        return $this->recordedAt;
     }
 
     public function isEmpty(): bool

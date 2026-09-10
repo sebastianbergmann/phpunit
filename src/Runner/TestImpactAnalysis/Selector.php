@@ -68,8 +68,12 @@ final class Selector
         $explanation = $this->explain($tests, $sourceFiles, $changedPaths);
 
         if ($explanation->isEverything()) {
-            return Selection::everything($explanation->reasonEverythingIsRun());
+            return Selection::everything($explanation->reasonEverythingIsRun(), $explanation->recordedAt());
         }
+
+        $recordedAt = $explanation->recordedAt();
+
+        assert($recordedAt !== null);
 
         return Selection::of(
             $explanation->testsThatAreRun(),
@@ -79,6 +83,7 @@ final class Selector
                 $explanation->numberOfTestsThatWereConsidered(),
             ),
             $explanation->numberOfTestsThatWereConsidered(),
+            $recordedAt,
         );
     }
 
@@ -98,7 +103,7 @@ final class Selector
         $recording = $this->testImpactDataFile->recording($this->provenance);
 
         if ($recording === null || $recording->isEmpty()) {
-            return Explanation::everything($this->reasonNothingCanBeSelectedFrom());
+            return Explanation::everything($this->reasonNothingCanBeSelectedFrom(), null);
         }
 
         if ($changedPaths === null) {
@@ -108,7 +113,7 @@ final class Selector
         }
 
         if ($change !== null) {
-            return Explanation::everything($change);
+            return Explanation::everything($change, $recording->recordedAt());
         }
 
         if ($changedPaths === null) {
@@ -163,7 +168,7 @@ final class Selector
 
         $selected = $this->withTestsThatAreDependedUpon($tests, $selected);
 
-        return Explanation::of($selected, count($tests));
+        return Explanation::of($selected, count($tests), $recording->recordedAt());
     }
 
     /**
