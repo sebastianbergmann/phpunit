@@ -17,6 +17,7 @@ use PHPUnit\Framework\TestCase;
 
 #[CoversClass(Explanation::class)]
 #[UsesClass(ExplainedTest::class)]
+#[UsesClass(RecordingTime::class)]
 #[Small]
 #[Group('test-runner')]
 #[Group('test-runner/test-impact-analysis')]
@@ -24,7 +25,7 @@ final class ExplanationTest extends TestCase
 {
     public function testKnowsThatEveryTestIsRun(): void
     {
-        $explanation = Explanation::everything('a reason');
+        $explanation = Explanation::everything('a reason', null);
 
         $this->assertTrue($explanation->isEverything());
         $this->assertSame('a reason', $explanation->reasonEverythingIsRun());
@@ -45,6 +46,7 @@ final class ExplanationTest extends TestCase
                 'BarTest::testOne' => $unknown,
             ],
             10,
+            RecordingTime::fromUnixTimestamp(1700000000),
         );
 
         $this->assertFalse($explanation->isEverything());
@@ -66,6 +68,7 @@ final class ExplanationTest extends TestCase
                 'FooTest::testTwo' => $second,
             ],
             3,
+            RecordingTime::fromUnixTimestamp(1700000000),
         );
 
         $this->assertSame(
@@ -74,5 +77,14 @@ final class ExplanationTest extends TestCase
         );
 
         $this->assertSame([], $explanation->testsRunBecause(SelectionReason::ItCannotBeRecorded));
+    }
+
+    public function testKnowsWhenWhatItWasMadeFromWasRecorded(): void
+    {
+        $recordedAt = RecordingTime::fromUnixTimestamp(1700000000);
+
+        $this->assertSame($recordedAt, Explanation::of([], 0, $recordedAt)->recordedAt());
+        $this->assertSame($recordedAt, Explanation::everything('a reason', $recordedAt)->recordedAt());
+        $this->assertNull(Explanation::everything('nothing is recorded', null)->recordedAt());
     }
 }

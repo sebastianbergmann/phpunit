@@ -35,25 +35,27 @@ final readonly class RecordedTests
      */
     private array $thatDependOnAnEarlierVersionOfTheFile;
     private Provenance $provenance;
+    private ?RecordingTime $recordedAt;
 
     /**
      * @param list<non-empty-string> $thatDependOnTheFileAsItIsNow
      * @param list<non-empty-string> $thatDependOnAnEarlierVersionOfTheFile
      */
-    public static function from(array $thatDependOnTheFileAsItIsNow, array $thatDependOnAnEarlierVersionOfTheFile, Provenance $provenance): self
+    public static function from(array $thatDependOnTheFileAsItIsNow, array $thatDependOnAnEarlierVersionOfTheFile, Provenance $provenance, ?RecordingTime $recordedAt): self
     {
-        return new self($thatDependOnTheFileAsItIsNow, $thatDependOnAnEarlierVersionOfTheFile, $provenance);
+        return new self($thatDependOnTheFileAsItIsNow, $thatDependOnAnEarlierVersionOfTheFile, $provenance, $recordedAt);
     }
 
     /**
      * @param list<non-empty-string> $thatDependOnTheFileAsItIsNow
      * @param list<non-empty-string> $thatDependOnAnEarlierVersionOfTheFile
      */
-    private function __construct(array $thatDependOnTheFileAsItIsNow, array $thatDependOnAnEarlierVersionOfTheFile, Provenance $provenance)
+    private function __construct(array $thatDependOnTheFileAsItIsNow, array $thatDependOnAnEarlierVersionOfTheFile, Provenance $provenance, ?RecordingTime $recordedAt)
     {
         $this->thatDependOnTheFileAsItIsNow          = $thatDependOnTheFileAsItIsNow;
         $this->thatDependOnAnEarlierVersionOfTheFile = $thatDependOnAnEarlierVersionOfTheFile;
         $this->provenance                            = $provenance;
+        $this->recordedAt                            = $recordedAt;
     }
 
     /**
@@ -79,6 +81,14 @@ final readonly class RecordedTests
     public function thatDependOnAnEarlierVersionOfTheFile(): array
     {
         return $this->thatDependOnAnEarlierVersionOfTheFile;
+    }
+
+    /**
+     * When the tests were recorded, or null when nothing is recorded.
+     */
+    public function recordedAt(): ?RecordingTime
+    {
+        return $this->recordedAt;
     }
 
     public function isEmpty(): bool

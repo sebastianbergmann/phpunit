@@ -60,6 +60,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 Runtime:       %s
 Configuration: %s
 Impact:        2 of 2 tests can be affected by what changed; 0 tests are not run
+Recorded:      %s
 
 Time: %s, Memory: %s
 
