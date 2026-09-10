@@ -95,8 +95,8 @@ final class RecordingTest extends TestCase
 
         $this->assertSame(
             [
-                'BarTest::testOne' => true,
-                'BazTest::testOne' => true,
+                'BarTest::testOne' => $changed,
+                'BazTest::testOne' => $changed,
             ],
             $recording->testsAffectedByWhatChanged($hasher),
         );
@@ -114,7 +114,7 @@ final class RecordingTest extends TestCase
             [],
         );
 
-        $this->assertSame(['FooTest::testOne' => true], $recording->testsThatDependOnAnyOf(['/src/Foo.php']));
+        $this->assertSame(['FooTest::testOne' => '/src/Foo.php'], $recording->testsThatDependOnAnyOf(['/src/Foo.php']));
     }
 
     public function testKnowsWhichTestsDependOnSomethingBeneathADirectoryThatIsNamed(): void
@@ -131,7 +131,10 @@ final class RecordingTest extends TestCase
             [],
         );
 
-        $this->assertSame(['FooTest::testOne' => true], $recording->testsThatDependOnAnyOf([$directory]));
+        $this->assertSame(
+            ['FooTest::testOne' => $directory . DIRECTORY_SEPARATOR . 'Foo.php'],
+            $recording->testsThatDependOnAnyOf([$directory]),
+        );
     }
 
     public function testKnowsWhichTestsDependOnADirectoryAFileThatIsNamedIsIn(): void
@@ -149,7 +152,7 @@ final class RecordingTest extends TestCase
         );
 
         $this->assertSame(
-            ['FooTest::testOne' => true],
+            ['FooTest::testOne' => $directory],
             $recording->testsThatDependOnAnyOf([$directory . DIRECTORY_SEPARATOR . 'one.txt']),
         );
     }
