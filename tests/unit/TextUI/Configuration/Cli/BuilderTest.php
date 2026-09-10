@@ -330,6 +330,12 @@ final class BuilderTest extends TestCase
         $this->assertTrue((new Builder)->fromParameters(['--only-impacted'])->onlyImpacted());
     }
 
+    #[TestDox('--explain-impacted')]
+    public function testExplainImpacted(): void
+    {
+        $this->assertTrue((new Builder)->fromParameters(['--explain-impacted'])->explainImpacted());
+    }
+
     #[TestDox('--impacted-by <path>')]
     public function testImpactedBy(): void
     {
