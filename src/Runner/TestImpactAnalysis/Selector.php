@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Runner\TestImpactAnalysis;
 
-use function array_keys;
 use function array_pop;
 use function assert;
 use function count;
@@ -66,10 +65,40 @@ final class Selector
      */
     public function select(array $tests, array $sourceFiles, ?array $changedPaths = null): Selection
     {
+        $explanation = $this->explain($tests, $sourceFiles, $changedPaths);
+
+        if ($explanation->isEverything()) {
+            return Selection::everything($explanation->reasonEverythingIsRun());
+        }
+
+        return Selection::of(
+            $explanation->testsThatAreRun(),
+            sprintf(
+                '%d of %d tests can be affected by what changed',
+                $explanation->numberOfTestsThatAreRun(),
+                $explanation->numberOfTestsThatWereConsidered(),
+            ),
+            $explanation->numberOfTestsThatWereConsidered(),
+        );
+    }
+
+    /**
+     * Which of the tests that would be run can be affected by what changed,
+     * and why each of them is run.
+     *
+     * This is what the selection is made of: what is explained here is what
+     * select() decides, and not a second opinion about it.
+     *
+     * @param list<PhptTestCase|TestCase> $tests        the tests that would be run
+     * @param list<non-empty-string>      $sourceFiles  the files that are subject to code coverage analysis
+     * @param ?list<non-empty-string>     $changedPaths the files and directories that changed, when they are named
+     */
+    public function explain(array $tests, array $sourceFiles, ?array $changedPaths = null): Explanation
+    {
         $recording = $this->testImpactDataFile->recording($this->provenance);
 
         if ($recording === null || $recording->isEmpty()) {
-            return Selection::everything($this->reasonNothingCanBeSelectedFrom());
+            return Explanation::everything($this->reasonNothingCanBeSelectedFrom());
         }
 
         if ($changedPaths === null) {
@@ -79,7 +108,7 @@ final class Selector
         }
 
         if ($change !== null) {
-            return Selection::everything($change);
+            return Explanation::everything($change);
         }
 
         if ($changedPaths === null) {
@@ -98,7 +127,7 @@ final class Selector
                  * A test that is not a test method is never recorded, so
                  * nothing is known about it and it has to be run.
                  */
-                $selected[$id] = true;
+                $selected[$id] = ExplainedTest::from($id, SelectionReason::ItCannotBeRecorded);
 
                 continue;
             }
@@ -112,33 +141,29 @@ final class Selector
             $recordedId = $test->valueObjectForEvents()->idWithoutRepetitionAndAttempt();
 
             if (!$recording->knows($recordedId)) {
-                $selected[$id] = true;
+                $selected[$id] = ExplainedTest::from($id, SelectionReason::NothingIsKnownAboutIt);
 
                 continue;
             }
 
             if ($this->testRunHistory->status(TestRunHistoryId::fromReorderable($test))->isKnown()) {
-                $selected[$id] = true;
+                $selected[$id] = ExplainedTest::from($id, SelectionReason::ItDidNotPass);
 
                 continue;
             }
 
             if (isset($affected[$recordedId])) {
-                $selected[$id] = true;
+                $selected[$id] = ExplainedTest::from(
+                    $id,
+                    SelectionReason::DependsOnSomethingThatChanged,
+                    $affected[$recordedId],
+                );
             }
         }
 
         $selected = $this->withTestsThatAreDependedUpon($tests, $selected);
 
-        return Selection::of(
-            array_keys($selected),
-            sprintf(
-                '%d of %d tests can be affected by what changed',
-                count($selected),
-                count($tests),
-            ),
-            count($tests),
-        );
+        return Explanation::of($selected, count($tests));
     }
 
     /**
@@ -172,10 +197,10 @@ final class Selector
      * What a selected test depends on may itself depend on something else,
      * which is why what is selected is followed until nothing is added.
      *
-     * @param list<PhptTestCase|TestCase>   $tests
-     * @param array<non-empty-string, true> $selected
+     * @param list<PhptTestCase|TestCase>            $tests
+     * @param array<non-empty-string, ExplainedTest> $selected
      *
-     * @return array<non-empty-string, true>
+     * @return array<non-empty-string, ExplainedTest>
      */
     private function withTestsThatAreDependedUpon(array $tests, array $selected): array
     {
@@ -215,7 +240,7 @@ final class Selector
                         continue;
                     }
 
-                    $selected[$id] = true;
+                    $selected[$id] = ExplainedTest::from($id, SelectionReason::AnotherTestDependsOnIt);
                     $pending[]     = $provider;
                 }
             }
