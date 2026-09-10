@@ -581,7 +581,7 @@ final class ResultPrinter
     {
         $this->printListHeader(
             sprintf(
-                "%d test%s triggered %d %s%s:\n\n",
+                '%d test%s triggered %d %s%s:' . PHP_EOL . PHP_EOL,
                 $numberOfTestsWithIssues,
                 $numberOfTestsWithIssues !== 1 ? 's' : '',
                 $numberOfIssues,
@@ -595,7 +595,7 @@ final class ResultPrinter
     {
         $this->printListHeader(
             sprintf(
-                "There %s %d %s%s triggered outside of tests:\n\n",
+                'There %s %d %s%s triggered outside of tests:' . PHP_EOL . PHP_EOL,
                 ($number === 1) ? 'was' : 'were',
                 $number,
                 $type,
@@ -608,7 +608,7 @@ final class ResultPrinter
     {
         $this->printListHeader(
             sprintf(
-                "There %s %d %s%s:\n\n",
+                'There %s %d %s%s:' . PHP_EOL . PHP_EOL,
                 ($number === 1) ? 'was' : 'were',
                 $number,
                 $type,
@@ -620,7 +620,7 @@ final class ResultPrinter
     private function printListHeader(string $header): void
     {
         if ($this->listPrinted) {
-            $this->printer->print("--\n\n");
+            $this->printer->print('--' . PHP_EOL . PHP_EOL);
         }
 
         $this->listPrinted = true;
@@ -643,7 +643,7 @@ final class ResultPrinter
             $this->printListElement($i++, $element['title'], $element['body']);
         }
 
-        $this->printer->print("\n");
+        $this->printer->print(PHP_EOL);
     }
 
     private function printListElement(int $number, string $title, string $body): void
@@ -652,12 +652,12 @@ final class ResultPrinter
 
         $this->printer->print(
             sprintf(
-                "%s%d) %s\n%s%s",
-                $number > 1 ? "\n" : '',
+                '%s%d) %s' . PHP_EOL . '%s%s',
+                $number > 1 ? PHP_EOL : '',
                 $number,
                 $title,
                 $body,
-                $body !== '' ? "\n" : '',
+                $body !== '' ? PHP_EOL : '',
             ),
         );
     }
@@ -668,11 +668,11 @@ final class ResultPrinter
 
         $this->printer->print(
             sprintf(
-                "%d) %s\n%s%s",
+                '%d) %s' . PHP_EOL . '%s%s',
                 $number,
                 $title,
                 $body,
-                $body !== '' ? "\n" : '',
+                $body !== '' ? PHP_EOL : '',
             ),
         );
     }

@@ -48,6 +48,15 @@ final class Builder
         'do-not-record-test-run-history',
         'cache-test-index',
         'do-not-cache-test-index',
+        'record-test-impact-data',
+        'do-not-record-test-impact-data',
+        'derive-test-impact-data-from-coverage-targets',
+        'do-not-derive-test-impact-data-from-coverage-targets',
+        'list-tests-that-depend-on=',
+        'only-impacted',
+        'explain-impacted',
+        'impacted-by=',
+        'impacted-by-file=',
         'cache-directory=',
         'check-version',
         'check-php-configuration',
@@ -205,6 +214,12 @@ final class Builder
         ['--cache-result', '--do-not-record-test-run-history'],
         ['--record-test-run-history', '--do-not-cache-result'],
         ['--cache-test-index', '--do-not-cache-test-index'],
+        ['--record-test-impact-data', '--do-not-record-test-impact-data'],
+        ['--derive-test-impact-data-from-coverage-targets', '--do-not-derive-test-impact-data-from-coverage-targets'],
+        ['--derive-test-impact-data-from-coverage-targets', '--do-not-record-test-impact-data'],
+        ['--no-coverage', '--record-test-impact-data'],
+        ['--only-impacted', '--impacted-by'],
+        ['--only-impacted', '--impacted-by-file'],
         ['--warn-when-php-is-not-configured-for-development', '--do-not-warn-when-php-is-not-configured-for-development'],
         ['--fail-on-deprecation', '--do-not-fail-on-deprecation'],
         ['--fail-on-self-deprecation', '--do-not-fail-on-self-deprecation'],
@@ -291,6 +306,13 @@ final class Builder
         $cacheDirectory                           = null;
         $recordTestRunHistory                     = null;
         $cacheTestIndex                           = null;
+        $recordTestImpactData                     = null;
+        $deriveTestImpactDataFromCoverageTargets  = null;
+        $listTestsThatDependOn                    = null;
+        $onlyImpacted                             = false;
+        $explainImpacted                          = false;
+        $impactedBy                               = null;
+        $impactedByFile                           = null;
         $checkPhpConfiguration                    = false;
         $checkVersion                             = false;
         $colors                                   = null;
@@ -494,6 +516,57 @@ final class Builder
 
                 case '--do-not-cache-test-index':
                     $cacheTestIndex = false;
+
+                    break;
+
+                case '--record-test-impact-data':
+                    $recordTestImpactData = true;
+
+                    break;
+
+                case '--do-not-record-test-impact-data':
+                    $recordTestImpactData = false;
+
+                    break;
+
+                case '--derive-test-impact-data-from-coverage-targets':
+                    $deriveTestImpactDataFromCoverageTargets = true;
+
+                    break;
+
+                case '--do-not-derive-test-impact-data-from-coverage-targets':
+                    $deriveTestImpactDataFromCoverageTargets = false;
+
+                    break;
+
+                case '--list-tests-that-depend-on':
+                    $listTestsThatDependOn = $this->requireNonEmptyValue($option[1], '--list-tests-that-depend-on');
+
+                    break;
+
+                case '--only-impacted':
+                    $onlyImpacted = true;
+
+                    break;
+
+                case '--explain-impacted':
+                    $explainImpacted = true;
+
+                    break;
+
+                case '--impacted-by':
+                    if ($impactedBy === null) {
+                        $impactedBy = [];
+                    }
+
+                    $impactedBy[] = $this->requireNonEmptyValue($option[1], '--impacted-by');
+
+                    $optionAllowedMultipleTimes = true;
+
+                    break;
+
+                case '--impacted-by-file':
+                    $impactedByFile = $this->requireNonEmptyValue($option[1], '--impacted-by-file');
 
                     break;
 
@@ -1560,6 +1633,13 @@ final class Builder
             $withTelemetry,
             $extensions,
             $cacheTestIndex,
+            $recordTestImpactData,
+            $deriveTestImpactDataFromCoverageTargets,
+            $listTestsThatDependOn,
+            $onlyImpacted,
+            $explainImpacted,
+            $impactedBy,
+            $impactedByFile,
         );
     }
 

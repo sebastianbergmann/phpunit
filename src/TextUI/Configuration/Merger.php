@@ -85,6 +85,61 @@ final readonly class Merger
             $cacheTestIndex = $xmlConfiguration->phpunit()->cacheTestIndex();
         }
 
+        if ($cliConfiguration->hasRecordTestImpactData()) {
+            $recordTestImpactData = $cliConfiguration->recordTestImpactData();
+        } else {
+            $recordTestImpactData = $xmlConfiguration->phpunit()->recordTestImpactData();
+        }
+
+        if ($cliConfiguration->hasDeriveTestImpactDataFromCoverageTargets()) {
+            $deriveTestImpactDataFromCoverageTargets = $cliConfiguration->deriveTestImpactDataFromCoverageTargets();
+        } else {
+            $deriveTestImpactDataFromCoverageTargets = $xmlConfiguration->phpunit()->deriveTestImpactDataFromCoverageTargets();
+        }
+
+        /*
+         * Working out what each test depends on from the code coverage targets
+         * it declares is a way of recording test impact data, and not
+         * something that is done in addition to recording it. Saying on the
+         * command line that test impact data must not be recorded therefore
+         * says that it must not be worked out that way either, whatever the
+         * configuration file asks for.
+         */
+        if ($cliConfiguration->hasRecordTestImpactData() && !$cliConfiguration->recordTestImpactData()) {
+            $deriveTestImpactDataFromCoverageTargets = false;
+        }
+
+        /*
+         * What each test depends on can only be worked out from the code
+         * coverage targets it declares when every test has to declare them: a
+         * test that declares none would be recorded as depending on nothing,
+         * and would therefore not be run again for a change to the code it
+         * does test.
+         */
+        if ($deriveTestImpactDataFromCoverageTargets &&
+            !$this->requiresCoverageMetadataForAllTests($xmlConfiguration)) {
+            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                'Cannot derive test impact data from code coverage targets because code coverage metadata is not required for all tests',
+            );
+
+            $deriveTestImpactDataFromCoverageTargets = false;
+        }
+
+        /*
+         * Recording which source files each test executed is collecting code
+         * coverage, whatever is done with what is collected: a test run that
+         * is told to collect none does not record it either. Working out what
+         * each test depends on from the code coverage targets it declares
+         * collects nothing, and is not affected.
+         */
+        if ($cliConfiguration->hasNoCoverage() && $cliConfiguration->noCoverage()) {
+            $recordTestImpactData = false;
+        }
+
+        if ($deriveTestImpactDataFromCoverageTargets) {
+            $recordTestImpactData = true;
+        }
+
         if ($cliConfiguration->hasWarnWhenPhpIsNotConfiguredForDevelopment()) {
             $warnWhenPhpIsNotConfiguredForDevelopment = $cliConfiguration->warnWhenPhpIsNotConfiguredForDevelopment();
         } else {
@@ -1512,6 +1567,8 @@ final readonly class Merger
             $xmlConfiguration->phpunit()->shortenArraysForExportThreshold(),
             $warnWhenPhpIsNotConfiguredForDevelopment,
             $cacheTestIndex,
+            $recordTestImpactData,
+            $deriveTestImpactDataFromCoverageTargets,
         );
     }
 
@@ -1565,6 +1622,18 @@ final readonly class Merger
         }
 
         return $value;
+    }
+
+    /**
+     * Code coverage metadata can be required for all tests, or only for the
+     * tests of a certain size.
+     */
+    private function requiresCoverageMetadataForAllTests(XmlConfiguration $xmlConfiguration): bool
+    {
+        return $xmlConfiguration->phpunit()->requireCoverageMetadata() &&
+               $xmlConfiguration->phpunit()->requireCoverageMetadataOnSmallTests() &&
+               $xmlConfiguration->phpunit()->requireCoverageMetadataOnMediumTests() &&
+               $xmlConfiguration->phpunit()->requireCoverageMetadataOnLargeTests();
     }
 
     private function hasExplicitTestSelection(CliConfiguration $cliConfiguration): bool

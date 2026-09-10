@@ -103,7 +103,9 @@ final readonly class Reflection
      * Interfaces are not considered: they cannot contribute a test method to a
      * concrete test class.
      *
-     * @param ReflectionClass<TestCase> $class
+     * @template T of object
+     *
+     * @param ReflectionClass<T> $class
      *
      * @return list<non-empty-string>
      */
