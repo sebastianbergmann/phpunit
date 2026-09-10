@@ -90,9 +90,15 @@ final readonly class Recording
 
     /**
      * The tests that executed, or that declared that they depend on, something
-     * that is not what it was when they were recorded.
+     * that is not what it was when they were recorded, each with the file that
+     * is not what it was.
      *
-     * @return array<non-empty-string, true>
+     * A test can refer to more than one file that changed. The first one that
+     * is found is the one that is reported: it is enough to explain why the
+     * test is run, and reporting all of them would say the same thing at
+     * greater length.
+     *
+     * @return array<non-empty-string, non-empty-string>
      */
     public function testsAffectedByWhatChanged(PathHasher $hasher): array
     {
@@ -117,7 +123,10 @@ final readonly class Recording
                     continue;
                 }
 
-                $affected[$test] = true;
+                assert(isset($this->versions[$version]));
+                assert(isset($this->files[$this->versions[$version][0]]));
+
+                $affected[$test] = $this->files[$this->versions[$version][0]];
 
                 break;
             }
@@ -135,7 +144,7 @@ final readonly class Recording
      *
      * @param list<non-empty-string> $paths
      *
-     * @return array<non-empty-string, true>
+     * @return array<non-empty-string, non-empty-string>
      */
     public function testsThatDependOnAnyOf(array $paths): array
     {
@@ -150,7 +159,9 @@ final readonly class Recording
                     continue;
                 }
 
-                $affected[$test] = true;
+                assert(isset($this->files[$this->versions[$version][0]]));
+
+                $affected[$test] = $this->files[$this->versions[$version][0]];
 
                 break;
             }
