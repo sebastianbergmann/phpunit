@@ -28,6 +28,7 @@ use PHPUnit\Runner\TestIndex\FileHasher;
 #[CoversClass(Recording::class)]
 #[UsesClass(PathHasher::class)]
 #[UsesClass(FileHasher::class)]
+#[UsesClass(RecordingTime::class)]
 #[Small]
 #[Group('test-runner')]
 #[Group('test-runner/test-impact-analysis')]
@@ -61,12 +62,12 @@ final class RecordingTest extends TestCase
 
     public function testKnowsThatNothingWasRecorded(): void
     {
-        $this->assertTrue(Recording::from([], [], [], [])->isEmpty());
+        $this->assertTrue(Recording::from([], [], [], [], RecordingTime::fromUnixTimestamp(1700000000))->isEmpty());
     }
 
     public function testKnowsWhichTestsWereRecorded(): void
     {
-        $recording = Recording::from(['/src/Foo.php'], [[0, 'a-hash']], ['FooTest::testOne' => [0]], []);
+        $recording = Recording::from(['/src/Foo.php'], [[0, 'a-hash']], ['FooTest::testOne' => [0]], [], RecordingTime::fromUnixTimestamp(1700000000));
 
         $this->assertFalse($recording->isEmpty());
         $this->assertTrue($recording->knows('FooTest::testOne'));
@@ -89,6 +90,7 @@ final class RecordingTest extends TestCase
                 'BazTest::testOne' => [0, 1],
             ],
             [],
+            RecordingTime::fromUnixTimestamp(1700000000),
         );
 
         $this->writeFile($directory, 'Changed.php', 'second');
@@ -112,6 +114,7 @@ final class RecordingTest extends TestCase
                 'BarTest::testOne' => [1],
             ],
             [],
+            RecordingTime::fromUnixTimestamp(1700000000),
         );
 
         $this->assertSame(['FooTest::testOne' => '/src/Foo.php'], $recording->testsThatDependOnAnyOf(['/src/Foo.php']));
@@ -129,6 +132,7 @@ final class RecordingTest extends TestCase
                 'BarTest::testOne' => [1],
             ],
             [],
+            RecordingTime::fromUnixTimestamp(1700000000),
         );
 
         $this->assertSame(
@@ -149,6 +153,7 @@ final class RecordingTest extends TestCase
                 'BarTest::testOne' => [1],
             ],
             [],
+            RecordingTime::fromUnixTimestamp(1700000000),
         );
 
         $this->assertSame(
@@ -166,6 +171,7 @@ final class RecordingTest extends TestCase
             [[0, 'a-hash']],
             ['FooTest::testOne' => [0]],
             [],
+            RecordingTime::fromUnixTimestamp(1700000000),
         );
 
         $this->assertNull($recording->pathNothingIsKnownAbout([$directory . DIRECTORY_SEPARATOR . 'one.txt']));
@@ -173,7 +179,7 @@ final class RecordingTest extends TestCase
 
     public function testKnowsThatAPathThatIsNamedWasNotRecorded(): void
     {
-        $recording = Recording::from(['/src/Foo.php'], [[0, 'a-hash']], ['FooTest::testOne' => [0]], []);
+        $recording = Recording::from(['/src/Foo.php'], [[0, 'a-hash']], ['FooTest::testOne' => [0]], [], RecordingTime::fromUnixTimestamp(1700000000));
 
         $this->assertNull($recording->pathNothingIsKnownAbout(['/src/Foo.php']));
 
@@ -193,6 +199,7 @@ final class RecordingTest extends TestCase
                 0 => 'a-hash',
                 1 => 'another-hash',
             ],
+            RecordingTime::fromUnixTimestamp(1700000000),
         );
 
         $this->assertStringContainsString(
@@ -203,7 +210,7 @@ final class RecordingTest extends TestCase
 
     public function testKnowsThatASourceFileThatWasNotRecordedIsAChangeNothingIsKnownAbout(): void
     {
-        $recording = Recording::from(['/src/Foo.php'], [[0, 'a-hash']], ['FooTest::testOne' => [0]], []);
+        $recording = Recording::from(['/src/Foo.php'], [[0, 'a-hash']], ['FooTest::testOne' => [0]], [], RecordingTime::fromUnixTimestamp(1700000000));
 
         $this->assertStringContainsString(
             '/src/Bar.php was not there',
@@ -225,6 +232,7 @@ final class RecordingTest extends TestCase
                 0 => $this->hashOf($covered),
                 1 => $this->hashOf($untested),
             ],
+            RecordingTime::fromUnixTimestamp(1700000000),
         );
 
         $this->assertNull($recording->changeNothingIsKnownAbout(new PathHasher, [$covered, $untested]));
@@ -235,6 +243,13 @@ final class RecordingTest extends TestCase
             'Untested.php changed and no test is recorded as depending on it',
             (string) $recording->changeNothingIsKnownAbout(new PathHasher, [$covered, $untested]),
         );
+    }
+
+    public function testKnowsWhenItWasRecorded(): void
+    {
+        $recordedAt = RecordingTime::fromUnixTimestamp(1700000000);
+
+        $this->assertSame($recordedAt, Recording::from([], [], [], [], $recordedAt)->recordedAt());
     }
 
     /**

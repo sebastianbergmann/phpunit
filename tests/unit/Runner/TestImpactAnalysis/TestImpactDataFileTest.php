@@ -23,6 +23,7 @@ use function rmdir;
 use function scandir;
 use function sort;
 use function sys_get_temp_dir;
+use function time;
 use function uniqid;
 use function unlink;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -40,6 +41,7 @@ use PHPUnit\TextUI\Configuration\Source;
 #[CoversClass(TestImpactDataFile::class)]
 #[UsesClass(DefaultTestImpactData::class)]
 #[UsesClass(Recording::class)]
+#[UsesClass(RecordingTime::class)]
 #[Small]
 #[Group('test-runner')]
 #[Group('test-runner/test-impact-analysis')]
@@ -53,9 +55,10 @@ final class TestImpactDataFileTest extends TestCase
     public static function provideUnusableData(): array
     {
         $usable = [
-            'version'     => 5,
+            'version'     => 6,
             'phpunit'     => Version::id(),
             'php'         => PHP_VERSION_ID,
+            'recordedAt'  => 1,
             'provenance'  => 'observed-execution',
             'assumptions' => self::assumptionsOfTheProvider(),
             'sourceFiles' => [],
@@ -68,6 +71,9 @@ final class TestImpactDataFileTest extends TestCase
             'written by another version of PHPUnit'        => [['phpunit' => 'another-version'] + $usable],
             'written by another version of PHP'            => [['php' => PHP_VERSION_ID - 1] + $usable],
             'written in another format'                    => [['version' => 0] + $usable],
+            'without a recording time'                     => [self::withoutKey($usable, 'recordedAt')],
+            'with a recording time that is not an integer' => [['recordedAt' => '1'] + $usable],
+            'with a recording time that is not positive'   => [['recordedAt' => 0] + $usable],
             'without a provenance'                         => [self::withoutKey($usable, 'provenance')],
             'with a provenance that is not a string'       => [['provenance' => 1] + $usable],
             'with an unknown provenance'                   => [['provenance' => 'guesswork'] + $usable],
@@ -134,11 +140,32 @@ final class TestImpactDataFileTest extends TestCase
 
         $persisted = $this->persistedData($directory);
 
-        $this->assertSame(5, $persisted['version']);
+        $this->assertSame(6, $persisted['version']);
         $this->assertSame(Version::id(), $persisted['phpunit']);
         $this->assertSame(PHP_VERSION_ID, $persisted['php']);
         $this->assertSame([$file], $persisted['files']);
         $this->assertSame([['FooTest::testOne', 'Foo.php']], $this->dependencies($persisted));
+    }
+
+    public function testPersistsWhenItWasRecorded(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $file      = $this->writeSourceFile($directory, 'Foo', 'first');
+
+        $data = new DefaultTestImpactData;
+        $data->record('FooTest::testOne', [$file]);
+
+        $before = time();
+
+        new TestImpactDataFile($directory, $this->assumptions())->persist($data, Provenance::ObservedExecution, []);
+
+        $after = time();
+
+        $recording = new TestImpactDataFile($directory, $this->assumptions())->recording(Provenance::ObservedExecution);
+
+        $this->assertNotNull($recording);
+        $this->assertGreaterThanOrEqual($before, $recording->recordedAt()->asUnixTimestamp());
+        $this->assertLessThanOrEqual($after, $recording->recordedAt()->asUnixTimestamp());
     }
 
     public function testPersistsTheFileNamesOfSourceFilesAsTheyAreOnThisMachine(): void
