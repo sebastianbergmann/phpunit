@@ -53,6 +53,7 @@ final class Builder
         'do-not-derive-test-impact-data-from-coverage-targets',
         'list-tests-that-depend-on=',
         'only-impacted',
+        'explain-impacted',
         'impacted-by=',
         'impacted-by-file=',
         'cache-directory=',
@@ -314,6 +315,7 @@ final class Builder
         $deriveTestImpactDataFromCoverageTargets  = null;
         $listTestsThatDependOn                    = null;
         $onlyImpacted                             = false;
+        $explainImpacted                          = false;
         $impactedBy                               = null;
         $impactedByFile                           = null;
         $checkPhpConfiguration                    = false;
@@ -532,6 +534,11 @@ final class Builder
 
                 case '--only-impacted':
                     $onlyImpacted = true;
+
+                    break;
+
+                case '--explain-impacted':
+                    $explainImpacted = true;
 
                     break;
 
@@ -1627,6 +1634,7 @@ final class Builder
             $deriveTestImpactDataFromCoverageTargets,
             $listTestsThatDependOn,
             $onlyImpacted,
+            $explainImpacted,
             $impactedBy,
             $impactedByFile,
         );
