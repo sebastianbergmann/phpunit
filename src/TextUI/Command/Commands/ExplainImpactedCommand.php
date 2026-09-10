@@ -14,6 +14,7 @@ use function count;
 use function sprintf;
 use PHPUnit\Runner\TestImpactAnalysis\Explanation;
 use PHPUnit\Runner\TestImpactAnalysis\Provenance;
+use PHPUnit\Runner\TestImpactAnalysis\RecordingTime;
 use PHPUnit\Runner\TestImpactAnalysis\SelectionReason;
 
 /**
@@ -55,22 +56,29 @@ final readonly class ExplainImpactedCommand implements Command
 
     public function execute(): Result
     {
+        $buffer     = '';
+        $recordedAt = $this->explanation->recordedAt();
+
         /*
-         * Where what is reported comes from is only said when something is
-         * reported from it: a run that falls back to running every test says
-         * why it does, and saying what was recorded from would claim that
-         * something was recorded at all.
+         * Where what is reported comes from, and when it was recorded, is only
+         * said when something was recorded: a run that falls back to running
+         * every test because nothing was recorded says why it does, and saying
+         * what was recorded from would claim that something was recorded at
+         * all.
          */
+        if ($recordedAt !== null) {
+            $buffer = $this->provenanceOfWhatIsReported($recordedAt) . PHP_EOL . PHP_EOL;
+        }
+
         if ($this->explanation->isEverything()) {
             return Result::from(
+                $buffer .
                 sprintf(
                     'Every test is run: %s' . PHP_EOL,
                     $this->explanation->reasonEverythingIsRun(),
                 ),
             );
         }
-
-        $buffer = $this->provenanceOfWhatIsReported() . PHP_EOL . PHP_EOL;
 
         $buffer .= sprintf(
             '%d of %d tests can be affected by what changed',
@@ -151,14 +159,21 @@ final readonly class ExplainImpactedCommand implements Command
      * What a test depends on is not always something it was observed to
      * execute: it can have been worked out from the code coverage targets the
      * test declares. Where what is reported comes from is therefore said once,
-     * instead of being claimed again in each heading.
+     * together with when it was recorded, instead of being claimed again in
+     * each heading.
      */
-    private function provenanceOfWhatIsReported(): string
+    private function provenanceOfWhatIsReported(RecordingTime $recordedAt): string
     {
         if ($this->provenance === Provenance::CoverageTargets) {
-            return 'Recorded from the code coverage targets the tests declare.';
+            return sprintf(
+                'Recorded at %s from the code coverage targets the tests declare.',
+                $recordedAt->asString(),
+            );
         }
 
-        return 'Recorded from what the tests executed.';
+        return sprintf(
+            'Recorded at %s from what the tests executed.',
+            $recordedAt->asString(),
+        );
     }
 }

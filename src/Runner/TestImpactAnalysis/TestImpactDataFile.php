@@ -34,6 +34,7 @@ use function json_encode;
 use function rewind;
 use function sort;
 use function stream_get_contents;
+use function time;
 use PHPUnit\Runner\DirectoryDoesNotExistException;
 use PHPUnit\Runner\Exception;
 use PHPUnit\Runner\Version;
@@ -71,7 +72,7 @@ use PHPUnit\Util\Filesystem;
  */
 final class TestImpactDataFile
 {
-    private const int VERSION             = 5;
+    private const int VERSION             = 6;
     private const string DEFAULT_FILENAME = 'test-impact-data';
     private readonly string $filename;
     private readonly Assumptions $assumptions;
@@ -105,7 +106,7 @@ final class TestImpactDataFile
      */
     public function testsThatDependOn(string $file): RecordedTests
     {
-        [$files, $versions, $tests, $provenance] = $this->read();
+        [0 => $files, 1 => $versions, 2 => $tests, 3 => $provenance, 5 => $recordedAt] = $this->read();
 
         if ($provenance === null) {
             $provenance = Provenance::ObservedExecution;
@@ -114,7 +115,7 @@ final class TestImpactDataFile
         $position = array_search($file, $files, true);
 
         if ($position === false) {
-            return RecordedTests::from([], [], $provenance);
+            return RecordedTests::from([], [], $provenance, $recordedAt);
         }
 
         $hash                                  = $this->hasher->hash($file);
@@ -142,7 +143,7 @@ final class TestImpactDataFile
         sort($thatDependOnTheFileAsItIsNow);
         sort($thatDependOnAnEarlierVersionOfTheFile);
 
-        return RecordedTests::from($thatDependOnTheFileAsItIsNow, $thatDependOnAnEarlierVersionOfTheFile, $provenance);
+        return RecordedTests::from($thatDependOnTheFileAsItIsNow, $thatDependOnAnEarlierVersionOfTheFile, $provenance, $recordedAt);
     }
 
     /**
@@ -156,13 +157,15 @@ final class TestImpactDataFile
      */
     public function recording(Provenance $provenance): ?Recording
     {
-        [$files, $versions, $tests, $provenanceOfWhatIsThere, $sourceFiles] = $this->read();
+        [$files, $versions, $tests, $provenanceOfWhatIsThere, $sourceFiles, $recordedAt] = $this->read();
 
         if ($provenanceOfWhatIsThere === null || $provenanceOfWhatIsThere !== $provenance) {
             return null;
         }
 
-        return Recording::from($files, $versions, $tests, $sourceFiles);
+        assert($recordedAt !== null);
+
+        return Recording::from($files, $versions, $tests, $sourceFiles, $recordedAt);
     }
 
     /**
@@ -436,6 +439,7 @@ final class TestImpactDataFile
                 'version'     => self::VERSION,
                 'phpunit'     => Version::id(),
                 'php'         => PHP_VERSION_ID,
+                'recordedAt'  => time(),
                 'provenance'  => $provenance->value,
                 'assumptions' => $this->assumptions->asArray(),
                 'files'       => $keptFiles,
@@ -466,11 +470,11 @@ final class TestImpactDataFile
      * cannot be read, or when it was written by a different version of PHPUnit
      * or of PHP.
      *
-     * @return array{0: list<non-empty-string>, 1: list<VersionType>, 2: array<non-empty-string, list<int>>, 3: ?Provenance, 4: array<int, non-empty-string>}
+     * @return array{0: list<non-empty-string>, 1: list<VersionType>, 2: array<non-empty-string, list<int>>, 3: ?Provenance, 4: array<int, non-empty-string>, 5: ?RecordingTime}
      */
     private function read(): array
     {
-        $empty = [[], [], [], null, []];
+        $empty = [[], [], [], null, [], null];
 
         if (!is_file($this->filename)) {
             return $empty;
@@ -488,11 +492,11 @@ final class TestImpactDataFile
     /**
      * Returns empty data when what was read cannot be used: see read().
      *
-     * @return array{0: list<non-empty-string>, 1: list<VersionType>, 2: array<non-empty-string, list<int>>, 3: ?Provenance, 4: array<int, non-empty-string>}
+     * @return array{0: list<non-empty-string>, 1: list<VersionType>, 2: array<non-empty-string, list<int>>, 3: ?Provenance, 4: array<int, non-empty-string>, 5: ?RecordingTime}
      */
     private function parse(string $contents): array
     {
-        $empty = [[], [], [], null, []];
+        $empty = [[], [], [], null, [], null];
 
         $data = json_decode($contents, true);
 
@@ -500,7 +504,7 @@ final class TestImpactDataFile
             return $empty;
         }
 
-        if (!isset($data['version'], $data['phpunit'], $data['php'], $data['provenance'], $data['assumptions'], $data['files'], $data['sourceFiles'], $data['versions'], $data['tests'])) {
+        if (!isset($data['version'], $data['phpunit'], $data['php'], $data['provenance'], $data['assumptions'], $data['files'], $data['sourceFiles'], $data['versions'], $data['tests'], $data['recordedAt'])) {
             return $empty;
         }
 
@@ -525,6 +529,10 @@ final class TestImpactDataFile
         }
 
         if ($data['version'] !== self::VERSION || $data['phpunit'] !== Version::id() || $data['php'] !== PHP_VERSION_ID) {
+            return $empty;
+        }
+
+        if (!is_int($data['recordedAt']) || $data['recordedAt'] < 1) {
             return $empty;
         }
 
@@ -590,6 +598,6 @@ final class TestImpactDataFile
             $tests[$test] = $versionsOfSingleTest;
         }
 
-        return [$files, $versions, $tests, $provenance, $sourceFiles];
+        return [$files, $versions, $tests, $provenance, $sourceFiles, RecordingTime::fromUnixTimestamp($data['recordedAt'])];
     }
 }

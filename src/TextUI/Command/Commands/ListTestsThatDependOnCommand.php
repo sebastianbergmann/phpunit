@@ -10,6 +10,7 @@
 namespace PHPUnit\TextUI\Command;
 
 use const PHP_EOL;
+use function assert;
 use function realpath;
 use function sprintf;
 use PHPUnit\Runner\TestImpactAnalysis\TestImpactDataFile;
@@ -69,10 +70,20 @@ final readonly class ListTestsThatDependOnCommand implements Command
          * what is reported comes from is therefore said once, instead of
          * being claimed again in each heading.
          */
-        $provenance = 'Recorded from what the tests executed.';
+        $recordedAt = $tests->recordedAt();
+
+        assert($recordedAt !== null);
+
+        $provenance = sprintf(
+            'Recorded at %s from what the tests executed.',
+            $recordedAt->asString(),
+        );
 
         if ($tests->wereDerivedFromCoverageTargets()) {
-            $provenance = 'Recorded from the code coverage targets the tests declare.';
+            $provenance = sprintf(
+                'Recorded at %s from the code coverage targets the tests declare.',
+                $recordedAt->asString(),
+            );
         }
 
         return Result::from(

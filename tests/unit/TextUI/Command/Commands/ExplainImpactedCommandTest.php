@@ -18,11 +18,13 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\TestImpactAnalysis\ExplainedTest;
 use PHPUnit\Runner\TestImpactAnalysis\Explanation;
 use PHPUnit\Runner\TestImpactAnalysis\Provenance;
+use PHPUnit\Runner\TestImpactAnalysis\RecordingTime;
 use PHPUnit\Runner\TestImpactAnalysis\SelectionReason;
 
 #[CoversClass(ExplainImpactedCommand::class)]
 #[UsesClass(ExplainedTest::class)]
 #[UsesClass(Explanation::class)]
+#[UsesClass(RecordingTime::class)]
 #[Small]
 #[Group('textui')]
 #[Group('textui/commands')]
@@ -49,6 +51,7 @@ final class ExplainImpactedCommandTest extends TestCase
                     ),
                 ],
                 10,
+                $this->recordedAt(),
             ),
             Provenance::ObservedExecution,
         )->execute();
@@ -56,7 +59,7 @@ final class ExplainImpactedCommandTest extends TestCase
         $this->assertSame(Result::SUCCESS, $result->shellExitCode());
 
         $this->assertSame(
-            'Recorded from what the tests executed.' . PHP_EOL .
+            'Recorded at ' . $this->recordedAt()->asString() . ' from what the tests executed.' . PHP_EOL .
             PHP_EOL .
             '3 of 10 tests can be affected by what changed.' . PHP_EOL .
             PHP_EOL .
@@ -75,7 +78,7 @@ final class ExplainImpactedCommandTest extends TestCase
 
     public function testReportsWhatEachOfTheOtherReasonsIs(): void
     {
-        $result = new ExplainImpactedCommand(
+        $output = new ExplainImpactedCommand(
             Explanation::of(
                 [
                     'FooTest::testOne' => ExplainedTest::from('FooTest::testOne', SelectionReason::ItDidNotPass),
@@ -86,13 +89,14 @@ final class ExplainImpactedCommandTest extends TestCase
                     'another-one'      => ExplainedTest::from('another-one', SelectionReason::ItCannotBeRecorded),
                 ],
                 6,
+                $this->recordedAt(),
             ),
             Provenance::ObservedExecution,
-        )->execute();
+        )->execute()->output();
 
-        $this->assertStringContainsString('2 tests did not pass when they were last run:', $result->output());
-        $this->assertStringContainsString('2 tests are depended upon by another test that is run:', $result->output());
-        $this->assertStringContainsString('2 tests are not test methods and can never be recorded:', $result->output());
+        $this->assertStringContainsString('2 tests did not pass when they were last run:', $output);
+        $this->assertStringContainsString('2 tests are depended upon by another test that is run:', $output);
+        $this->assertStringContainsString('2 tests are not test methods and can never be recorded:', $output);
     }
 
     public function testUsesTheSingularForASingleTest(): void
@@ -107,6 +111,7 @@ final class ExplainImpactedCommandTest extends TestCase
                     'BazTest::testOne' => ExplainedTest::from('BazTest::testOne', SelectionReason::NothingIsKnownAboutIt),
                 ],
                 5,
+                $this->recordedAt(),
             ),
             Provenance::ObservedExecution,
         )->execute()->output();
@@ -124,17 +129,21 @@ final class ExplainImpactedCommandTest extends TestCase
             Explanation::of(
                 ['FooTest::testOne' => ExplainedTest::from('FooTest::testOne', SelectionReason::NothingIsKnownAboutIt)],
                 1,
+                $this->recordedAt(),
             ),
             Provenance::CoverageTargets,
         )->execute()->output();
 
-        $this->assertStringStartsWith('Recorded from the code coverage targets the tests declare.', $output);
+        $this->assertStringStartsWith(
+            'Recorded at ' . $this->recordedAt()->asString() . ' from the code coverage targets the tests declare.',
+            $output,
+        );
     }
 
-    public function testSaysWhyEveryTestIsRunWhenNoTestCanBeLeftOut(): void
+    public function testSaysWhyEveryTestIsRunWhenNothingWasRecorded(): void
     {
         $output = new ExplainImpactedCommand(
-            Explanation::everything('no test impact data has been recorded'),
+            Explanation::everything('no test impact data has been recorded', null),
             Provenance::ObservedExecution,
         )->execute()->output();
 
@@ -144,18 +153,38 @@ final class ExplainImpactedCommandTest extends TestCase
         );
     }
 
-    public function testSaysThatNoTestCanBeAffectedByWhatChanged(): void
+    public function testSaysWhenWhatIsKnownWasRecordedWhenEveryTestIsRunAllTheSame(): void
     {
         $output = new ExplainImpactedCommand(
-            Explanation::of([], 10),
+            Explanation::everything('/src/Foo.php changed and no test is recorded as depending on it', $this->recordedAt()),
             Provenance::ObservedExecution,
         )->execute()->output();
 
         $this->assertSame(
-            'Recorded from what the tests executed.' . PHP_EOL .
+            'Recorded at ' . $this->recordedAt()->asString() . ' from what the tests executed.' . PHP_EOL .
+            PHP_EOL .
+            'Every test is run: /src/Foo.php changed and no test is recorded as depending on it' . PHP_EOL,
+            $output,
+        );
+    }
+
+    public function testSaysThatNoTestCanBeAffectedByWhatChanged(): void
+    {
+        $output = new ExplainImpactedCommand(
+            Explanation::of([], 10, $this->recordedAt()),
+            Provenance::ObservedExecution,
+        )->execute()->output();
+
+        $this->assertSame(
+            'Recorded at ' . $this->recordedAt()->asString() . ' from what the tests executed.' . PHP_EOL .
             PHP_EOL .
             '0 of 10 tests can be affected by what changed' . PHP_EOL,
             $output,
         );
+    }
+
+    private function recordedAt(): RecordingTime
+    {
+        return RecordingTime::fromUnixTimestamp(1700000000);
     }
 }
