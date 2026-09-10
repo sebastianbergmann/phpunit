@@ -28,6 +28,7 @@ use PHPUnit\Runner\TestImpactAnalysis\Assumptions;
 use PHPUnit\Runner\TestImpactAnalysis\DefaultTestImpactData;
 use PHPUnit\Runner\TestImpactAnalysis\Provenance;
 use PHPUnit\Runner\TestImpactAnalysis\RecordedTests;
+use PHPUnit\Runner\TestImpactAnalysis\RecordingTime;
 use PHPUnit\Runner\TestImpactAnalysis\TestImpactDataFile;
 use PHPUnit\TextUI\Configuration\FilterDirectoryCollection;
 use PHPUnit\TextUI\Configuration\FilterFileCollection;
@@ -36,6 +37,7 @@ use PHPUnit\TextUI\Configuration\Source;
 #[CoversClass(ListTestsThatDependOnCommand::class)]
 #[UsesClass(DefaultTestImpactData::class)]
 #[UsesClass(RecordedTests::class)]
+#[UsesClass(RecordingTime::class)]
 #[UsesClass(TestImpactDataFile::class)]
 #[Small]
 #[Group('textui')]
@@ -105,8 +107,8 @@ final class ListTestsThatDependOnCommandTest extends TestCase
 
         $result = new ListTestsThatDependOnCommand(new TestImpactDataFile($directory, $this->assumptions()), $file)->execute();
 
-        $this->assertSame(
-            'Recorded from what the tests executed.' . PHP_EOL . PHP_EOL .
+        $this->assertStringMatchesFormat(
+            'Recorded at %d-%d-%d %d:%d:%d %s from what the tests executed.' . PHP_EOL . PHP_EOL .
             'Tests that depend on ' . $file . ' as it is now:' . PHP_EOL .
             ' - BarTest::testOne' . PHP_EOL .
             ' - FooTest::testOne' . PHP_EOL . PHP_EOL,
@@ -135,8 +137,8 @@ final class ListTestsThatDependOnCommandTest extends TestCase
 
         $result = new ListTestsThatDependOnCommand(new TestImpactDataFile($directory, $this->assumptions()), $file)->execute();
 
-        $this->assertSame(
-            'Recorded from what the tests executed.' . PHP_EOL . PHP_EOL .
+        $this->assertStringMatchesFormat(
+            'Recorded at %d-%d-%d %d:%d:%d %s from what the tests executed.' . PHP_EOL . PHP_EOL .
             'Tests that depend on ' . $file . ' as it is now:' . PHP_EOL .
             ' - BarTest::testOne' . PHP_EOL . PHP_EOL .
             'Tests that depend on an earlier version of ' . $file . ':' . PHP_EOL .
@@ -157,8 +159,8 @@ final class ListTestsThatDependOnCommandTest extends TestCase
 
         $result = new ListTestsThatDependOnCommand(new TestImpactDataFile($directory, $this->assumptions()), $file)->execute();
 
-        $this->assertSame(
-            'Recorded from the code coverage targets the tests declare.' . PHP_EOL . PHP_EOL .
+        $this->assertStringMatchesFormat(
+            'Recorded at %d-%d-%d %d:%d:%d %s from the code coverage targets the tests declare.' . PHP_EOL . PHP_EOL .
             'Tests that depend on ' . $file . ' as it is now:' . PHP_EOL .
             ' - FooTest::testOne' . PHP_EOL . PHP_EOL,
             $result->output(),

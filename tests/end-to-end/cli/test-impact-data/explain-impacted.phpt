@@ -69,7 +69,7 @@ Nothing changed:
 
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-Recorded from what the tests executed.
+Recorded at %s from what the tests executed.
 
 1 of 4 tests can be affected by what changed.
 
@@ -81,7 +81,7 @@ Calculator.php is named as changed:
 
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-Recorded from what the tests executed.
+Recorded at %s from what the tests executed.
 
 4 of 4 tests can be affected by what changed.
 
