@@ -80,6 +80,7 @@ use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 use PHPUnit\Runner\TestImpactAnalysis\Assumptions;
 use PHPUnit\Runner\TestImpactAnalysis\ChangedPaths;
 use PHPUnit\Runner\TestImpactAnalysis\DefaultTestImpactData;
+use PHPUnit\Runner\TestImpactAnalysis\Explanation;
 use PHPUnit\Runner\TestImpactAnalysis\Provenance;
 use PHPUnit\Runner\TestImpactAnalysis\Selection;
 use PHPUnit\Runner\TestImpactAnalysis\Selector;
@@ -106,6 +107,7 @@ use PHPUnit\TextUI\CliArguments\Exception as ArgumentsException;
 use PHPUnit\TextUI\CliArguments\XmlConfigurationFileFinder;
 use PHPUnit\TextUI\Command\AtLeastVersionCommand;
 use PHPUnit\TextUI\Command\CheckPhpConfigurationCommand;
+use PHPUnit\TextUI\Command\ExplainImpactedCommand;
 use PHPUnit\TextUI\Command\GenerateConfigurationCommand;
 use PHPUnit\TextUI\Command\ListGroupsCommand;
 use PHPUnit\TextUI\Command\ListTestFilesCommand;
@@ -251,7 +253,7 @@ final readonly class Application
 
             ErrorHandler::instance()->restoreForNonTestCaseContext();
 
-            $this->executeCommandsThatRequireTheTestSuite($configuration, $cliConfiguration, $testSuite);
+            $this->executeCommandsThatRequireTheTestSuite($configuration, $cliConfiguration, $testSuite, $testRunHistory);
 
             /*
              * The help is only shown when no tests were selected at all. Tests
@@ -598,8 +600,18 @@ final readonly class Application
         }
     }
 
-    private function executeCommandsThatRequireTheTestSuite(Configuration $configuration, CliConfiguration $cliConfiguration, TestSuite $testSuite): void
+    private function executeCommandsThatRequireTheTestSuite(Configuration $configuration, CliConfiguration $cliConfiguration, TestSuite $testSuite, TestRunHistory $testRunHistory): void
     {
+        if ($cliConfiguration->explainImpacted()) {
+            $this->execute(
+                new ExplainImpactedCommand(
+                    $this->explainImpact($configuration, $cliConfiguration, $testSuite, $testRunHistory),
+                    $this->provenanceOf($configuration),
+                ),
+                true,
+            );
+        }
+
         if ($cliConfiguration->listSuites()) {
             $this->execute(new ListTestSuitesCommand($testSuite));
         }
@@ -912,35 +924,90 @@ final readonly class Application
             return null;
         }
 
+        return $this->selector($configuration, $testRunHistory, 'run only the tests that are affected by what changed')->select(
+            $testSuite->collect(),
+            $this->sourceFiles(),
+            $this->changedPathsOrNull($cliConfiguration),
+        );
+    }
+
+    /**
+     * Which tests can be affected by what changed, and why each of them can
+     * be.
+     *
+     * This asks the selection the same question a test run asks it, and with
+     * the same input, so that what is reported is what such a test run would
+     * do.
+     */
+    private function explainImpact(Configuration $configuration, CliConfiguration $cliConfiguration, TestSuite $testSuite, TestRunHistory $testRunHistory): Explanation
+    {
+        return $this->selector($configuration, $testRunHistory, 'explain which tests are affected by what changed')->explain(
+            $testSuite->collect(),
+            $this->sourceFiles(),
+            $this->changedPathsOrNull($cliConfiguration),
+        );
+    }
+
+    /**
+     * @param non-empty-string $whatCannotBeDone what the developer asked for, said as what cannot be done without it
+     */
+    private function selector(Configuration $configuration, TestRunHistory $testRunHistory, string $whatCannotBeDone): Selector
+    {
         if (!$configuration->hasCacheDirectory()) {
-            $this->exitWithErrorMessage('Cannot run only the tests that are affected by what changed because no cache directory is configured');
+            $this->exitWithErrorMessage(
+                sprintf(
+                    'Cannot %s because no cache directory is configured',
+                    $whatCannotBeDone,
+                ),
+            );
         }
 
         if (!$configuration->recordTestRunHistory()) {
-            $this->exitWithErrorMessage('Cannot run only the tests that are affected by what changed because the test run history is not recorded');
+            $this->exitWithErrorMessage(
+                sprintf(
+                    'Cannot %s because the test run history is not recorded',
+                    $whatCannotBeDone,
+                ),
+            );
         }
 
         CodeCoverageFilterRegistry::instance()->init($configuration, true);
 
         $testRunHistory->load();
 
-        $changedPaths = null;
-
-        if ($cliConfiguration->hasImpactedBy() || $cliConfiguration->hasImpactedByFile()) {
-            $changedPaths = $this->changedPaths($cliConfiguration);
-        }
-
-        $provenance = Provenance::ObservedExecution;
-
-        if ($configuration->deriveTestImpactDataFromCoverageTargets()) {
-            $provenance = Provenance::CoverageTargets;
-        }
-
         return new Selector(
             new TestImpactDataFile($configuration->cacheDirectory(), $this->assumptionsOf($configuration)),
-            $provenance,
+            $this->provenanceOf($configuration),
             $testRunHistory,
-        )->select($testSuite->collect(), $this->sourceFiles(), $changedPaths);
+        );
+    }
+
+    /**
+     * Where what a test depends on comes from: what the tests were observed to
+     * execute, or the code coverage targets they declare.
+     */
+    private function provenanceOf(Configuration $configuration): Provenance
+    {
+        if ($configuration->deriveTestImpactDataFromCoverageTargets()) {
+            return Provenance::CoverageTargets;
+        }
+
+        return Provenance::ObservedExecution;
+    }
+
+    /**
+     * The files and directories that changed when they are named, and null
+     * when what changed is to be worked out from what was recorded.
+     *
+     * @return ?list<non-empty-string>
+     */
+    private function changedPathsOrNull(CliConfiguration $cliConfiguration): ?array
+    {
+        if (!$cliConfiguration->hasImpactedBy() && !$cliConfiguration->hasImpactedByFile()) {
+            return null;
+        }
+
+        return $this->changedPaths($cliConfiguration);
     }
 
     /**

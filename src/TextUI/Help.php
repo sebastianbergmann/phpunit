@@ -279,6 +279,7 @@ final class Help
                 ['arg' => '--do-not-derive-test-impact-data-from-coverage-targets', 'desc' => 'Do not derive test impact data from code coverage targets'],
                 ['arg' => '--list-tests-that-depend-on <file>', 'desc' => 'List tests that depend on <file>'],
                 ['arg' => '--only-impacted', 'desc' => 'Only run tests affected by what changed'],
+                ['arg' => '--explain-impacted', 'desc' => 'Report which tests are affected by what changed, and why, without running them'],
                 ['arg' => '--impacted-by <path>', 'desc' => 'Only run tests affected by <path>'],
                 ['arg' => '--impacted-by-file <file>', 'desc' => 'Only run tests affected by the paths listed in <file> ("-" for standard input)'],
                 ['spacer' => ''],
