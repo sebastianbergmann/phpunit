@@ -37,33 +37,35 @@ final readonly class Selection
      */
     private string $reason;
     private int $numberOfTestsThatWereConsidered;
+    private ?RecordingTime $recordedAt;
 
     /**
      * @param non-empty-string $reason
      */
-    public static function everything(string $reason): self
+    public static function everything(string $reason, ?RecordingTime $recordedAt): self
     {
-        return new self(null, $reason, 0);
+        return new self(null, $reason, 0, $recordedAt);
     }
 
     /**
      * @param list<non-empty-string> $tests
      * @param non-empty-string       $reason
      */
-    public static function of(array $tests, string $reason, int $numberOfTestsThatWereConsidered): self
+    public static function of(array $tests, string $reason, int $numberOfTestsThatWereConsidered, RecordingTime $recordedAt): self
     {
-        return new self($tests, $reason, $numberOfTestsThatWereConsidered);
+        return new self($tests, $reason, $numberOfTestsThatWereConsidered, $recordedAt);
     }
 
     /**
      * @param ?list<non-empty-string> $tests
      * @param non-empty-string        $reason
      */
-    private function __construct(?array $tests, string $reason, int $numberOfTestsThatWereConsidered)
+    private function __construct(?array $tests, string $reason, int $numberOfTestsThatWereConsidered, ?RecordingTime $recordedAt)
     {
         $this->tests                           = $tests;
         $this->reason                          = $reason;
         $this->numberOfTestsThatWereConsidered = $numberOfTestsThatWereConsidered;
+        $this->recordedAt                      = $recordedAt;
     }
 
     /**
@@ -112,5 +114,14 @@ final readonly class Selection
     public function reason(): string
     {
         return $this->reason;
+    }
+
+    /**
+     * When what this was made from was recorded, or null when nothing was
+     * recorded.
+     */
+    public function recordedAt(): ?RecordingTime
+    {
+        return $this->recordedAt;
     }
 }

@@ -39,32 +39,34 @@ final readonly class Explanation
      */
     private ?string $reasonEverythingIsRun;
     private int $numberOfTestsThatWereConsidered;
+    private ?RecordingTime $recordedAt;
 
     /**
      * @param non-empty-string $reason
      */
-    public static function everything(string $reason): self
+    public static function everything(string $reason, ?RecordingTime $recordedAt): self
     {
-        return new self(null, $reason, 0);
+        return new self(null, $reason, 0, $recordedAt);
     }
 
     /**
      * @param array<non-empty-string, ExplainedTest> $tests
      */
-    public static function of(array $tests, int $numberOfTestsThatWereConsidered): self
+    public static function of(array $tests, int $numberOfTestsThatWereConsidered, RecordingTime $recordedAt): self
     {
-        return new self($tests, null, $numberOfTestsThatWereConsidered);
+        return new self($tests, null, $numberOfTestsThatWereConsidered, $recordedAt);
     }
 
     /**
      * @param ?array<non-empty-string, ExplainedTest> $tests
      * @param ?non-empty-string                       $reasonEverythingIsRun
      */
-    private function __construct(?array $tests, ?string $reasonEverythingIsRun, int $numberOfTestsThatWereConsidered)
+    private function __construct(?array $tests, ?string $reasonEverythingIsRun, int $numberOfTestsThatWereConsidered, ?RecordingTime $recordedAt)
     {
         $this->tests                           = $tests;
         $this->reasonEverythingIsRun           = $reasonEverythingIsRun;
         $this->numberOfTestsThatWereConsidered = $numberOfTestsThatWereConsidered;
+        $this->recordedAt                      = $recordedAt;
     }
 
     /**
@@ -152,5 +154,14 @@ final readonly class Explanation
     public function numberOfTestsThatWereConsidered(): int
     {
         return $this->numberOfTestsThatWereConsidered;
+    }
+
+    /**
+     * When what this was made from was recorded, or null when nothing was
+     * recorded.
+     */
+    public function recordedAt(): ?RecordingTime
+    {
+        return $this->recordedAt;
     }
 }
