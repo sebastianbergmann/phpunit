@@ -68,6 +68,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 Runtime:       %s
 Configuration: %s
 Impact:        every test is run: %sDeletedCalculator.php is not among the files that were recorded
+Recorded:      %s
 
 Time: %s, Memory: %s
 

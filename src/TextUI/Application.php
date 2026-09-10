@@ -1212,6 +1212,23 @@ final readonly class Application
             return;
         }
 
+        $this->writeImpactInformation($printer, $configuration, $selection);
+
+        /*
+         * Tests are selected against what was recorded, and what changed is
+         * what is not what it was when it was recorded. Whether that is recent
+         * enough to rely on is for the developer to judge, and they can only
+         * judge it when they are told when it was.
+         */
+        $recordedAt = $selection->recordedAt();
+
+        if ($recordedAt !== null) {
+            $this->writeMessage($printer, 'Recorded', $recordedAt->asString());
+        }
+    }
+
+    private function writeImpactInformation(Printer $printer, Configuration $configuration, Selection $selection): void
+    {
         /*
          * What test impact analysis selected is not what is run when tests are
          * filtered as well: how many of them are run, and whether any of them
