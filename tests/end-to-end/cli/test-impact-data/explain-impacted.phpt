@@ -34,7 +34,21 @@ run(['--explain-impacted']);
 
 print PHP_EOL . 'Calculator.php is named as changed:' . PHP_EOL . PHP_EOL;
 
-run(['--explain-impacted', '--impacted-by', __DIR__ . '/_files/src/Calculator.php']);
+/*
+ * The last run is not run in another process, so that the code that explains
+ * the selection is covered by this test.
+ */
+$_SERVER['argv'][] = '--no-progress';
+$_SERVER['argv'][] = '--colors=never';
+$_SERVER['argv'][] = '--configuration';
+$_SERVER['argv'][] = __DIR__ . '/_files/phpunit-explain-impacted.xml';
+$_SERVER['argv'][] = '--explain-impacted';
+$_SERVER['argv'][] = '--impacted-by';
+$_SERVER['argv'][] = __DIR__ . '/_files/src/Calculator.php';
+
+require __DIR__ . '/../../../bootstrap.php';
+
+(new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --CLEAN--
 <?php declare(strict_types=1);
 require __DIR__ . '/../../../_files/delete_directory.php';
