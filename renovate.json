@@ -23,11 +23,6 @@
         "enabled": true,
         "labels": ["type/security", "type/dependencies"]
     },
-    "lockFileMaintenance": {
-        "enabled": true,
-        "automerge": true,
-        "schedule": ["before 6am on monday"]
-    },
     "packageRules": [
         {
             "description": "Group GitHub Actions updates per branch into one PR, automerge",
