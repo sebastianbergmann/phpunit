@@ -36,9 +36,9 @@ Code Coverage Report:%w
   %s
 
  Summary:%w
-  Classes: 100.00% (1/1)
-  Methods: 100.00% (1/1)
-  Lines:   100.00% (3/3)
+  Classes:  100.00% (1/1)
+  Methods:  100.00% (1/1)
+  Lines:    100.00% (3/3)
 
 PHPUnit\TestFixture\CodeCoverageParseError\Foo
   Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)

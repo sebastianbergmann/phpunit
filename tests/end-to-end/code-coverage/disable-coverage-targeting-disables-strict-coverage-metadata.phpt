@@ -32,9 +32,9 @@ Code Coverage Report:%w
   %s
 
  Summary:%w
-  Classes: 100.00% (2/2)
-  Methods: 100.00% (2/2)
-  Lines:   100.00% (2/2)
+  Classes:  100.00% (2/2)
+  Methods:  100.00% (2/2)
+  Lines:    100.00% (2/2)
 
 PHPUnit\TestFixture\TestRunner\Covered
   Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)

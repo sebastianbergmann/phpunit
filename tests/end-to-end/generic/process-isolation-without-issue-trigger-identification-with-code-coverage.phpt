@@ -38,9 +38,9 @@ Code Coverage Report:
   %s
 
  Summary:
-  Classes: 100.00% (1/1)
-  Methods: 100.00% (1/1)
-  Lines:   100.00% (1/1)
+  Classes:  100.00% (1/1)
+  Methods:  100.00% (1/1)
+  Lines:    100.00% (1/1)
 
 PHPUnit\TestFixture\ProcessIsolationWithoutIssueTriggerIdentification\Covered
   Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)

@@ -32,6 +32,6 @@ Code Coverage Report:%w
   %s
 
  Summary:%w
-  Classes:  0.00% (0/1)
-  Methods:  0.00% (0/1)
-  Lines:    0.00% (0/1)
+  Classes:    0.00% (0/1)
+  Methods:    0.00% (0/1)
+  Lines:      0.00% (0/1)
