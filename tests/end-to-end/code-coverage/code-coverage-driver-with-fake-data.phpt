@@ -31,9 +31,9 @@ Code Coverage Report:%w
   %s
 
  Summary:%w
-  Classes: 100.00% (1/1)
-  Methods: 100.00% (1/1)
-  Lines:   100.00% (1/1)
+  Classes:  100.00% (1/1)
+  Methods:  100.00% (1/1)
+  Lines:    100.00% (1/1)
 
 PHPUnit\TestFixture\CodeCoverageDriver\Foo
   Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
