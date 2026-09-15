@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TestFixture;
 
+use PHPUnit\Framework\Attributes\RequiresClass;
 use PHPUnit\Framework\Attributes\RequiresFunction;
 use PHPUnit\Framework\Attributes\RequiresMethod;
 use PHPUnit\Framework\Attributes\RequiresOperatingSystem;
@@ -76,6 +77,11 @@ final class RequirementsTest extends TestCase
     {
     }
 
+    #[RequiresClass('DoesNotExist')]
+    public function testRequiresNonExistentClass(): void
+    {
+    }
+
     #[RequiresPhpExtension('testExt')]
     public function testTen(): void
     {
@@ -94,6 +100,7 @@ final class RequirementsTest extends TestCase
     #[RequiresFunction('testFuncOne')]
     #[RequiresFunction('testFunc2')]
     #[RequiresMethod('DoesNotExist', 'doesNotExist')]
+    #[RequiresClass('DoesNotExist')]
     #[RequiresPhpExtension('testExtOne')]
     #[RequiresPhpExtension('testExt2')]
     #[RequiresPhpExtension('testExtThree', '>= 2.0.0')]
@@ -109,6 +116,11 @@ final class RequirementsTest extends TestCase
 
     #[RequiresMethod(ReflectionMethod::class, 'setAccessible')]
     public function testExistingMethod(): void
+    {
+    }
+
+    #[RequiresClass(TestCase::class)]
+    public function testExistingClass(): void
     {
     }
 

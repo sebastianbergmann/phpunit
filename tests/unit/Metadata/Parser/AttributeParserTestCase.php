@@ -56,6 +56,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\PhpunitAttributeThatDoesNotExistTest;
 use PHPUnit\TestFixture\Metadata\Attribute\PreserveGlobalStateTest;
 use PHPUnit\TestFixture\Metadata\Attribute\ProcessIsolationTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RepeatTest;
+use PHPUnit\TestFixture\Metadata\Attribute\RequiresClassTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresEnvironmentVariableTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresFunctionTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresMethodTest;
@@ -322,6 +323,16 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isRequiresMethod());
         $this->assertSame('ClassName', $metadata->asArray()[0]->className());
         $this->assertSame('methodName', $metadata->asArray()[0]->methodName());
+    }
+
+    #[TestDox('Parses #[RequiresClass] attribute on class')]
+    public function test_parses_RequiresClass_attribute_on_class(): void
+    {
+        $metadata = $this->parser()->forClass(RequiresClassTest::class)->isRequiresClass();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isRequiresClass());
+        $this->assertSame(TestCase::class, $metadata->asArray()[0]->className());
     }
 
     #[TestDox('Parses #[RequiresFunction] attribute on class')]
@@ -983,6 +994,16 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isRequiresMethod());
         $this->assertSame('AnotherClassName', $metadata->asArray()[0]->className());
         $this->assertSame('anotherMethodName', $metadata->asArray()[0]->methodName());
+    }
+
+    #[TestDox('Parses #[RequiresClass] attribute on method')]
+    public function test_parses_RequiresClass_attribute_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(RequiresClassTest::class, 'testOne')->isRequiresClass();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isRequiresClass());
+        $this->assertSame(RequiresClassTest::class, $metadata->asArray()[0]->className());
     }
 
     #[TestDox('Parses #[RequiresFunction] attribute on method')]
