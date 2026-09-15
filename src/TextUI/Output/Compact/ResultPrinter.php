@@ -43,8 +43,10 @@ final readonly class ResultPrinter
     private bool $displayDetailsOnTestsThatTriggerErrors;
     private bool $displayDetailsOnTestsThatTriggerNotices;
     private bool $displayDetailsOnTestsThatTriggerWarnings;
+    private bool $displayDetailsOnPhpunitDeprecations;
+    private bool $displayDetailsOnPhpunitNotices;
 
-    public function __construct(Printer $printer, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings)
+    public function __construct(Printer $printer, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $displayDetailsOnPhpunitDeprecations, bool $displayDetailsOnPhpunitNotices)
     {
         $this->printer                                      = $printer;
         $this->renderer                                     = new Renderer($printer);
@@ -54,6 +56,8 @@ final readonly class ResultPrinter
         $this->displayDetailsOnTestsThatTriggerErrors       = $displayDetailsOnTestsThatTriggerErrors;
         $this->displayDetailsOnTestsThatTriggerNotices      = $displayDetailsOnTestsThatTriggerNotices;
         $this->displayDetailsOnTestsThatTriggerWarnings     = $displayDetailsOnTestsThatTriggerWarnings;
+        $this->displayDetailsOnPhpunitDeprecations          = $displayDetailsOnPhpunitDeprecations;
+        $this->displayDetailsOnPhpunitNotices               = $displayDetailsOnPhpunitNotices;
     }
 
     public function print(TestResult $result): void
@@ -71,11 +75,24 @@ final readonly class ResultPrinter
         $this->printSummaryLine($result);
         $this->printPhpunitErrors($result);
         $this->printTestRunnerWarnings($result);
-        $this->printTestRunnerDeprecations($result);
-        $this->printTestRunnerNotices($result);
+
+        if ($this->displayDetailsOnPhpunitDeprecations) {
+            $this->printTestRunnerDeprecations($result);
+        }
+
+        if ($this->displayDetailsOnPhpunitNotices) {
+            $this->printTestRunnerNotices($result);
+        }
+
         $this->printPhpunitWarnings($result);
-        $this->printPhpunitDeprecations($result);
-        $this->printPhpunitNotices($result);
+
+        if ($this->displayDetailsOnPhpunitDeprecations) {
+            $this->printPhpunitDeprecations($result);
+        }
+
+        if ($this->displayDetailsOnPhpunitNotices) {
+            $this->printPhpunitNotices($result);
+        }
 
         if ($this->displayDetailsOnTestsThatTriggerDeprecations) {
             $this->printDeprecations($result);
@@ -139,12 +156,24 @@ final readonly class ResultPrinter
             $counts[] = sprintf('%d deprecation%s', $result->numberOfPhpOrUserDeprecations(), $result->numberOfPhpOrUserDeprecations() === 1 ? '' : 's');
         }
 
+        if ($result->numberOfPhpunitDeprecations() > 0) {
+            $counts[] = sprintf('%d PHPUnit deprecation%s', $result->numberOfPhpunitDeprecations(), $result->numberOfPhpunitDeprecations() === 1 ? '' : 's');
+        }
+
         if ($result->numberOfWarnings() > 0) {
             $counts[] = sprintf('%d warning%s', $result->numberOfWarnings(), $result->numberOfWarnings() === 1 ? '' : 's');
         }
 
+        if ($result->numberOfPhpunitWarnings() > 0) {
+            $counts[] = sprintf('%d PHPUnit warning%s', $result->numberOfPhpunitWarnings(), $result->numberOfPhpunitWarnings() === 1 ? '' : 's');
+        }
+
         if ($result->numberOfNotices() > 0) {
             $counts[] = sprintf('%d notice%s', $result->numberOfNotices(), $result->numberOfNotices() === 1 ? '' : 's');
+        }
+
+        if ($result->numberOfPhpunitNotices() > 0) {
+            $counts[] = sprintf('%d PHPUnit notice%s', $result->numberOfPhpunitNotices(), $result->numberOfPhpunitNotices() === 1 ? '' : 's');
         }
 
         $skipped = $result->numberOfTestSkippedByTestSuiteSkippedEvents() + $result->numberOfTestSkippedEvents();
@@ -163,10 +192,7 @@ final readonly class ResultPrinter
 
         $countString = implode(', ', $counts);
 
-        if ($result->wasSuccessful() && !$result->hasIssues() &&
-            !$result->hasTestSuiteSkippedEvents() && !$result->hasTestSkippedEvents()) {
-            $this->printer->print(sprintf('OK (%s)' . PHP_EOL, $countString));
-        } elseif ($result->wasSuccessful()) {
+        if ($result->wasSuccessful()) {
             $this->printer->print(sprintf('OK (%s)' . PHP_EOL, $countString));
         } elseif ($result->hasTestErroredEvents() || $result->hasTestTriggeredPhpunitErrorEvents()) {
             $this->printer->print(sprintf('ERRORS (%s)' . PHP_EOL, $countString));

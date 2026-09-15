@@ -64,7 +64,7 @@ use PHPUnit\TextUI\Output\Printer;
 final class ResultPrinterTest extends TestCase
 {
     /**
-     * @return array<string,array{0: string, 1: TestResult, 2: bool, 3: bool, 4: bool, 5: bool, 6: bool, 7: bool}>
+     * @return array<string,array{0: string, 1: TestResult, 2: bool, 3: bool, 4: bool, 5: bool, 6: bool, 7: bool, 8: bool, 9: bool}>
      */
     public static function provider(): array
     {
@@ -80,11 +80,15 @@ final class ResultPrinterTest extends TestCase
                 false,
                 false,
                 false,
+                false,
+                false,
             ],
 
             'successful test without issues' => [
                 'successful_test_without_issues.txt',
                 self::createTestResult(),
+                false,
+                false,
                 false,
                 false,
                 false,
@@ -106,6 +110,8 @@ final class ResultPrinterTest extends TestCase
                 false,
                 false,
                 false,
+                false,
+                false,
             ],
 
             'failed test' => [
@@ -115,6 +121,8 @@ final class ResultPrinterTest extends TestCase
                         self::failedTest(),
                     ],
                 ),
+                false,
+                false,
                 false,
                 false,
                 false,
@@ -132,6 +140,8 @@ final class ResultPrinterTest extends TestCase
                         ],
                     ],
                 ),
+                false,
+                false,
                 false,
                 false,
                 false,
@@ -158,6 +168,8 @@ final class ResultPrinterTest extends TestCase
                 false,
                 false,
                 false,
+                false,
+                false,
             ],
 
             'failed test that is risky' => [
@@ -172,6 +184,8 @@ final class ResultPrinterTest extends TestCase
                         ],
                     ],
                 ),
+                false,
+                false,
                 false,
                 false,
                 false,
@@ -197,6 +211,8 @@ final class ResultPrinterTest extends TestCase
                 false,
                 false,
                 false,
+                false,
+                false,
             ],
 
             'incomplete test not displayed' => [
@@ -210,6 +226,8 @@ final class ResultPrinterTest extends TestCase
                         ),
                     ],
                 ),
+                false,
+                false,
                 false,
                 false,
                 false,
@@ -235,6 +253,8 @@ final class ResultPrinterTest extends TestCase
                 false,
                 false,
                 false,
+                false,
+                false,
             ],
 
             'skipped test not displayed' => [
@@ -248,6 +268,8 @@ final class ResultPrinterTest extends TestCase
                         ),
                     ],
                 ),
+                false,
+                false,
                 false,
                 false,
                 false,
@@ -274,6 +296,8 @@ final class ResultPrinterTest extends TestCase
                 false,
                 false,
                 false,
+                false,
+                false,
             ],
 
             'deprecation not displayed' => [
@@ -288,6 +312,8 @@ final class ResultPrinterTest extends TestCase
                         ),
                     ],
                 ),
+                false,
+                false,
                 false,
                 false,
                 false,
@@ -314,6 +340,8 @@ final class ResultPrinterTest extends TestCase
                 false,
                 false,
                 true,
+                false,
+                false,
             ],
 
             'notice displayed' => [
@@ -333,6 +361,8 @@ final class ResultPrinterTest extends TestCase
                 false,
                 false,
                 true,
+                false,
+                false,
                 false,
             ],
 
@@ -354,6 +384,8 @@ final class ResultPrinterTest extends TestCase
                 true,
                 false,
                 false,
+                false,
+                false,
             ],
 
             'error in before-first-test-method hook' => [
@@ -368,6 +400,8 @@ final class ResultPrinterTest extends TestCase
                         ),
                     ],
                 ),
+                false,
+                false,
                 false,
                 false,
                 false,
@@ -392,6 +426,8 @@ final class ResultPrinterTest extends TestCase
                         ),
                     ],
                 ),
+                false,
+                false,
                 false,
                 false,
                 false,
@@ -429,11 +465,15 @@ final class ResultPrinterTest extends TestCase
                 false,
                 false,
                 false,
+                false,
+                false,
             ],
 
             'successful test with display flags on but no issues' => [
                 'successful_test_without_issues.txt',
                 self::createTestResult(),
+                true,
+                true,
                 true,
                 true,
                 true,
@@ -464,6 +504,8 @@ final class ResultPrinterTest extends TestCase
                 false,
                 false,
                 false,
+                false,
+                false,
             ],
 
             'risky phpt test' => [
@@ -479,6 +521,8 @@ final class ResultPrinterTest extends TestCase
                         ],
                     ],
                 ),
+                false,
+                false,
                 false,
                 false,
                 false,
@@ -504,6 +548,8 @@ final class ResultPrinterTest extends TestCase
                 false,
                 false,
                 false,
+                false,
+                false,
             ],
 
             'PHPUnit test runner warning' => [
@@ -522,10 +568,12 @@ final class ResultPrinterTest extends TestCase
                 false,
                 false,
                 false,
+                false,
+                false,
             ],
 
             'PHPUnit test runner warnings are deduplicated' => [
-                'phpunit_test_runner_warning.txt',
+                'phpunit_test_runner_warnings_deduplicated.txt',
                 self::createTestResult(
                     testRunnerTriggeredWarningEvents: [
                         new TestRunnerWarningTriggered(
@@ -544,9 +592,11 @@ final class ResultPrinterTest extends TestCase
                 false,
                 false,
                 false,
+                false,
+                false,
             ],
 
-            'PHPUnit test runner deprecation' => [
+            'PHPUnit test runner deprecation displayed' => [
                 'phpunit_test_runner_deprecation.txt',
                 self::createTestResult(
                     testRunnerTriggeredDeprecationEvents: [
@@ -562,9 +612,31 @@ final class ResultPrinterTest extends TestCase
                 false,
                 false,
                 false,
+                true,
+                false,
             ],
 
-            'PHPUnit test runner notice' => [
+            'PHPUnit test runner deprecation not displayed' => [
+                'phpunit_test_runner_deprecation_not_displayed.txt',
+                self::createTestResult(
+                    testRunnerTriggeredDeprecationEvents: [
+                        new TestRunnerDeprecationTriggered(
+                            self::telemetryInfo(),
+                            'message',
+                        ),
+                    ],
+                ),
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+            ],
+
+            'PHPUnit test runner notice displayed' => [
                 'phpunit_test_runner_notice.txt',
                 self::createTestResult(
                     testRunnerTriggeredNoticeEvents: [
@@ -574,6 +646,28 @@ final class ResultPrinterTest extends TestCase
                         ),
                     ],
                 ),
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true,
+            ],
+
+            'PHPUnit test runner notice not displayed' => [
+                'phpunit_test_runner_notice_not_displayed.txt',
+                self::createTestResult(
+                    testRunnerTriggeredNoticeEvents: [
+                        new TestRunnerNoticeTriggered(
+                            self::telemetryInfo(),
+                            'message',
+                        ),
+                    ],
+                ),
+                false,
+                false,
                 false,
                 false,
                 false,
@@ -583,7 +677,7 @@ final class ResultPrinterTest extends TestCase
             ],
 
             'PHPUnit test runner notices are deduplicated' => [
-                'phpunit_test_runner_notice.txt',
+                'phpunit_test_runner_notices_deduplicated.txt',
                 self::createTestResult(
                     testRunnerTriggeredNoticeEvents: [
                         new TestRunnerNoticeTriggered(
@@ -602,6 +696,8 @@ final class ResultPrinterTest extends TestCase
                 false,
                 false,
                 false,
+                false,
+                true,
             ],
 
             'test triggers PHPUnit error' => [
@@ -617,6 +713,8 @@ final class ResultPrinterTest extends TestCase
                         ],
                     ],
                 ),
+                false,
+                false,
                 false,
                 false,
                 false,
@@ -645,9 +743,11 @@ final class ResultPrinterTest extends TestCase
                 false,
                 false,
                 false,
+                false,
+                false,
             ],
 
-            'test triggers PHPUnit deprecation' => [
+            'test triggers PHPUnit deprecation displayed' => [
                 'test_triggered_phpunit_deprecation.txt',
                 self::createTestResult(
                     testTriggeredPhpunitDeprecationEvents: [
@@ -666,9 +766,34 @@ final class ResultPrinterTest extends TestCase
                 false,
                 false,
                 false,
+                true,
+                false,
             ],
 
-            'test triggers PHPUnit notice' => [
+            'test triggers PHPUnit deprecation not displayed' => [
+                'test_triggered_phpunit_deprecation_not_displayed.txt',
+                self::createTestResult(
+                    testTriggeredPhpunitDeprecationEvents: [
+                        'FooTest::testBar' => [
+                            new PhpunitDeprecationTriggered(
+                                self::telemetryInfo(),
+                                self::testMethod(),
+                                'message',
+                            ),
+                        ],
+                    ],
+                ),
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+            ],
+
+            'test triggers PHPUnit notice displayed' => [
                 'test_triggered_phpunit_notice.txt',
                 self::createTestResult(
                     testTriggeredPhpunitNoticeEvents: [
@@ -681,6 +806,31 @@ final class ResultPrinterTest extends TestCase
                         ],
                     ],
                 ),
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true,
+            ],
+
+            'test triggers PHPUnit notice not displayed' => [
+                'test_triggered_phpunit_notice_not_displayed.txt',
+                self::createTestResult(
+                    testTriggeredPhpunitNoticeEvents: [
+                        'FooTest::testBar' => [
+                            new PhpunitNoticeTriggered(
+                                self::telemetryInfo(),
+                                self::testMethod(),
+                                'message',
+                            ),
+                        ],
+                    ],
+                ),
+                false,
+                false,
                 false,
                 false,
                 false,
@@ -706,6 +856,8 @@ final class ResultPrinterTest extends TestCase
                 false,
                 false,
                 true,
+                false,
+                false,
                 false,
                 false,
             ],
@@ -736,6 +888,8 @@ final class ResultPrinterTest extends TestCase
                 true,
                 false,
                 false,
+                false,
+                false,
             ],
 
             'warning triggered outside of tests' => [
@@ -758,6 +912,8 @@ final class ResultPrinterTest extends TestCase
                 false,
                 false,
                 true,
+                false,
+                false,
             ],
 
             'PHP warning triggered outside of tests' => [
@@ -780,6 +936,8 @@ final class ResultPrinterTest extends TestCase
                 false,
                 false,
                 true,
+                false,
+                false,
             ],
 
             'notice triggered outside of tests' => [
@@ -801,6 +959,8 @@ final class ResultPrinterTest extends TestCase
                 false,
                 false,
                 true,
+                false,
+                false,
                 false,
             ],
 
@@ -824,6 +984,8 @@ final class ResultPrinterTest extends TestCase
                 false,
                 true,
                 false,
+                false,
+                false,
             ],
 
             'deprecation triggered outside of tests' => [
@@ -846,6 +1008,8 @@ final class ResultPrinterTest extends TestCase
                 false,
                 false,
                 true,
+                false,
+                false,
                 false,
                 false,
                 false,
@@ -873,12 +1037,14 @@ final class ResultPrinterTest extends TestCase
                 false,
                 false,
                 false,
+                false,
+                false,
             ],
         ];
     }
 
     #[DataProvider('provider')]
-    public function testPrintsExpectedOutputForTestResultObject(string $expectationFile, TestResult $result, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings): void
+    public function testPrintsExpectedOutputForTestResultObject(string $expectationFile, TestResult $result, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $displayDetailsOnPhpunitDeprecations, bool $displayDetailsOnPhpunitNotices): void
     {
         $printer = $this->printer();
 
@@ -890,6 +1056,8 @@ final class ResultPrinterTest extends TestCase
             $displayDetailsOnTestsThatTriggerErrors,
             $displayDetailsOnTestsThatTriggerNotices,
             $displayDetailsOnTestsThatTriggerWarnings,
+            $displayDetailsOnPhpunitDeprecations,
+            $displayDetailsOnPhpunitNotices,
         );
 
         $resultPrinter->print($result);
