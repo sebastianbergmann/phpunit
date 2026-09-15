@@ -7,6 +7,8 @@ All notable changes of the PHPUnit 13.3 release series are documented in this fi
 ### Fixed
 
 * [#6965](https://github.com/sebastianbergmann/phpunit/issues/6965): Temporary file used by `SourceMapper` may be deleted prematurely
+* The compact output displays details on PHPUnit deprecations and PHPUnit notices even when `--display-phpunit-deprecations` and `--display-phpunit-notices` are not used
+* The summary line of the compact output does not report the number of PHPUnit deprecations, PHPUnit notices, and PHPUnit warnings
 
 ## [13.3.3] - 2026-09-09
 

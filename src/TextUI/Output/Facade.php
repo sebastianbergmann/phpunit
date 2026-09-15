@@ -66,6 +66,8 @@ final class Facade
                 $configuration->displayDetailsOnTestsThatTriggerErrors() || $configuration->displayDetailsOnAllIssues(),
                 $configuration->displayDetailsOnTestsThatTriggerNotices() || $configuration->displayDetailsOnAllIssues(),
                 $configuration->displayDetailsOnTestsThatTriggerWarnings() || $configuration->displayDetailsOnAllIssues(),
+                $configuration->displayDetailsOnPhpunitDeprecations() || $configuration->displayDetailsOnAllIssues(),
+                $configuration->displayDetailsOnPhpunitNotices() || $configuration->displayDetailsOnAllIssues(),
             );
 
             new CompactProgressPrinter(
