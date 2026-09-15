@@ -26,9 +26,11 @@ use Throwable;
 final class TestRunner
 {
     /**
+     * @param ?list<non-empty-string> $selectedTests
+     *
      * @throws RuntimeException
      */
-    public function run(Configuration $configuration, TestRunHistory $testRunHistory, TestSuite $suite): void
+    public function run(Configuration $configuration, TestRunHistory $testRunHistory, TestSuite $suite, ?array $selectedTests = null): void
     {
         try {
             Event\Facade::emitter()->testRunnerStarted();
@@ -56,7 +58,7 @@ final class TestRunner
                 );
             }
 
-            (new TestSuiteFilterProcessor)->process($configuration, $suite);
+            (new TestSuiteFilterProcessor)->process($configuration, $suite, $selectedTests);
 
             Event\Facade::emitter()->testRunnerExecutionStarted(
                 Event\TestSuite\TestSuiteBuilder::from($suite),

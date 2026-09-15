@@ -179,11 +179,7 @@ final readonly class TestMethod extends Test
      */
     public function id(): string
     {
-        $buffer = $this->className . '::' . $this->methodName;
-
-        if ($this->testData()->hasDataFromDataProvider()) {
-            $buffer .= '#' . $this->testData->dataFromDataProvider()->dataSetName();
-        }
+        $buffer = $this->idWithoutRepetitionAndAttempt();
 
         if ($this->totalRepetitions > 1) {
             $buffer .= sprintf(
@@ -199,6 +195,25 @@ final readonly class TestMethod extends Test
                 $this->attempt,
                 $this->maxAttempts,
             );
+        }
+
+        return $buffer;
+    }
+
+    /**
+     * Which repetition of a test was run, and which attempt it was, is not
+     * part of what the test is: a test that is repeated executes the same code
+     * on every repetition. This is how a test is named where the repetitions
+     * and the attempts of a test are the same test as the test itself.
+     *
+     * @return non-empty-string
+     */
+    public function idWithoutRepetitionAndAttempt(): string
+    {
+        $buffer = $this->className . '::' . $this->methodName;
+
+        if ($this->testData()->hasDataFromDataProvider()) {
+            $buffer .= '#' . $this->testData->dataFromDataProvider()->dataSetName();
         }
 
         return $buffer;
