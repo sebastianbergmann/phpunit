@@ -16,6 +16,7 @@ use function addcslashes;
 use function array_column;
 use function array_key_exists;
 use function assert;
+use function class_exists;
 use function extension_loaded;
 use function function_exists;
 use function in_array;
@@ -27,6 +28,7 @@ use function sprintf;
 use function substr_count;
 use PHPUnit\Event\Facade;
 use PHPUnit\Metadata\Parser\Registry;
+use PHPUnit\Metadata\RequiresClass;
 use PHPUnit\Metadata\RequiresEnvironmentVariable;
 use PHPUnit\Metadata\RequiresFunction;
 use PHPUnit\Metadata\RequiresMethod;
@@ -206,6 +208,17 @@ final readonly class Requirements
                         'Method %s::%s() is required.',
                         $metadata->className(),
                         $metadata->methodName(),
+                    );
+                }
+            }
+
+            if ($metadata->isRequiresClass()) {
+                assert($metadata instanceof RequiresClass);
+
+                if (!class_exists($metadata->className())) {
+                    $notSatisfied[] = sprintf(
+                        'Class %s is required.',
+                        $metadata->className(),
                     );
                 }
             }
