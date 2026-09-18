@@ -10,7 +10,6 @@
 namespace PHPUnit\Runner\Parallel;
 
 use function assert;
-use function count;
 use function usleep;
 use PHPUnit\Event\EventCollection;
 
@@ -21,6 +20,11 @@ use PHPUnit\Event\EventCollection;
  * Distribution is a dynamic work-stealing queue rather than a static
  * pre-partitioning of the units: whenever a worker becomes idle it pulls the
  * next unit from the queue, which self-balances the load against stragglers.
+ *
+ * The queue hands out its units in the order in which they are to be
+ * dispatched: longest first, except that the unit the ordered output is
+ * waiting for is dispatched ahead of the others while it is not in flight, so
+ * that the results keep flowing (see DispatchQueue).
  *
  * A single thread of control keeps all of the workers busy by polling them in
  * rounds: each round it drains the events that the busy workers have streamed
@@ -61,19 +65,8 @@ final class WorkerPool
     /**
      * The units that have not been dispatched to a worker yet, in dispatch
      * order.
-     *
-     * @var list<WorkUnit>
      */
-    private array $queue = [];
-
-    /**
-     * The position of the next unit to dispatch. Dispatching advances this
-     * cursor instead of shifting the queue, which would reindex all of the
-     * remaining units on every dispatch.
-     *
-     * @var non-negative-int
-     */
-    private int $queuePosition = 0;
+    private DispatchQueue $queue;
 
     /**
      * @var ?callable(CompletedWorkUnit):void
@@ -120,6 +113,7 @@ final class WorkerPool
     {
         $this->workers = $workers;
         $this->budget  = $budget;
+        $this->queue   = new DispatchQueue([]);
     }
 
     /**
@@ -176,8 +170,7 @@ final class WorkerPool
      */
     public function begin(array $units, callable $onCompleted, callable $onStreamedEvents, callable $onCrashedUnitRetry): void
     {
-        $this->queue              = $units;
-        $this->queuePosition      = 0;
+        $this->queue              = new DispatchQueue($units);
         $this->onCompleted        = $onCompleted;
         $this->onStreamedEvents   = $onStreamedEvents;
         $this->onCrashedUnitRetry = $onCrashedUnitRetry;
@@ -275,8 +268,7 @@ final class WorkerPool
      */
     public function halt(): void
     {
-        $this->queue         = [];
-        $this->queuePosition = 0;
+        $this->queue->clear();
 
         foreach ($this->workers as $worker) {
             if (!$worker->isAlive() || !$worker->isBusy()) {
@@ -401,18 +393,42 @@ final class WorkerPool
      */
     private function hasQueuedUnits(): bool
     {
-        return $this->queuePosition < count($this->queue);
+        return !$this->queue->isEmpty();
     }
 
+    /**
+     * Take the next unit to dispatch, telling the queue which unit the output
+     * is waiting for: the lowest suite index that is executing right now is
+     * what decides whether the queue hands out the next unit in suite order,
+     * so that the results keep flowing, or the longest one, so that the chunk
+     * finishes as early as possible (see DispatchQueue).
+     */
     private function nextQueuedUnit(): WorkUnit
     {
-        assert(isset($this->queue[$this->queuePosition]));
+        return $this->queue->next($this->lowestExecutingIndex());
+    }
 
-        $unit = $this->queue[$this->queuePosition];
+    /**
+     * The lowest suite index among the units that the workers are executing
+     * right now; null when no unit is in flight.
+     *
+     * @return ?non-negative-int
+     */
+    private function lowestExecutingIndex(): ?int
+    {
+        $lowest = null;
 
-        $this->queuePosition++;
+        foreach ($this->busyWorkers() as $worker) {
+            $unit = $worker->currentUnit();
 
-        return $unit;
+            assert($unit !== null);
+
+            if ($lowest === null || $unit->index() < $lowest) {
+                $lowest = $unit->index();
+            }
+        }
+
+        return $lowest;
     }
 
     private function hasAliveWorkers(): bool
