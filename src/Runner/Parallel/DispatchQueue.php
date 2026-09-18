@@ -34,19 +34,21 @@ use function usort;
  * had buffered in one burst.
  *
  * A few of the dispatch slots are therefore reserved for the suite order: while
- * fewer than SUITE_ORDER_SLOTS of the units in flight precede it in suite
- * order, next() hands out the lowest-indexed unit that has not been dispatched
- * instead of the longest one. Those slots walk the chunk in suite order and
- * keep the output flowing, while the others work the cost order for throughput.
+ * fewer than that many of the units in flight precede it in suite order, next()
+ * hands out the lowest-indexed unit that has not been dispatched instead of the
+ * longest one. Those slots walk the chunk in suite order and keep the output
+ * flowing, while the others work the cost order for throughput.
  *
- * Reserving more than one slot matters for the units that report only when they
- * have finished — the PHPT tests, which stream nothing while they run. The
- * release sequence can then advance by one such unit per unit duration and no
- * faster, while the cost-ordered slots finish units several times as fast; the
- * results of those units pile up in the aggregator's buffer and are released in
- * bursts. Each reserved slot multiplies the rate at which the release sequence
- * can advance, and costs the straggler protection that the cost order provides
- * on that slot.
+ * How many slots to reserve is the caller's decision, because it depends on how
+ * the caller's units report. A unit whose worker streams the events of each of
+ * its finished tests advances the release sequence while it is still executing,
+ * so one reserved slot keeps the output flowing; a unit that reports only once
+ * it has finished advances the release sequence by one unit per unit duration
+ * and no faster, while the cost-ordered slots finish units several times as
+ * fast, so the results of those units pile up in the aggregator's buffer and are
+ * released in bursts. Each reserved slot multiplies the rate at which the
+ * release sequence can advance, and costs the straggler protection that the cost
+ * order provides on that slot.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -58,14 +60,9 @@ final class DispatchQueue
      * How many of the dispatch slots follow the suite order rather than the
      * cost order.
      *
-     * Two is a compromise, and the dial is deliberately small: the first slot
-     * is what makes a run report anything at all before its shortest unit is
-     * dispatched, the second one halves the backlog that builds up behind a
-     * release sequence which may only advance one unit at a time, and every
-     * further slot is one the cost order can no longer use to start the
-     * longest work early.
+     * @var positive-int
      */
-    public const int SUITE_ORDER_SLOTS = 2;
+    private readonly int $suiteOrderSlots;
 
     /**
      * The units in cost order, longest first, as the scheduler ordered them.
@@ -105,9 +102,10 @@ final class DispatchQueue
     private array $dispatched = [];
 
     /**
-     * @param list<WorkUnit> $units in cost order (see Scheduler)
+     * @param list<WorkUnit> $units           in cost order (see Scheduler)
+     * @param positive-int   $suiteOrderSlots how many of the dispatch slots are reserved for the suite order
      */
-    public function __construct(array $units)
+    public function __construct(array $units, int $suiteOrderSlots)
     {
         $bySuiteOrder = $units;
 
@@ -119,8 +117,9 @@ final class DispatchQueue
             },
         );
 
-        $this->byCost       = $units;
-        $this->bySuiteOrder = $bySuiteOrder;
+        $this->byCost          = $units;
+        $this->bySuiteOrder    = $bySuiteOrder;
+        $this->suiteOrderSlots = $suiteOrderSlots;
     }
 
     /**
@@ -149,7 +148,7 @@ final class DispatchQueue
 
         $nextInSuiteOrder = $this->nextInSuiteOrder();
 
-        if ($this->numberOfIndexesBelow($executingIndexes, $nextInSuiteOrder->index()) < self::SUITE_ORDER_SLOTS) {
+        if ($this->numberOfIndexesBelow($executingIndexes, $nextInSuiteOrder->index()) < $this->suiteOrderSlots) {
             return $this->take($nextInSuiteOrder);
         }
 
