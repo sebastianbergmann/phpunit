@@ -105,15 +105,36 @@ final readonly class TestClassWorkUnit implements WorkUnit
     }
 
     /**
-     * The recorded duration of one member of the unit, with the members of an
+     * The estimated duration of one member of the unit, with the members of an
      * aggregating suite — the tests of a data provider method, the attempts
      * of a retried test method, the repetitions of a repeated test method —
      * summed up recursively.
+     *
+     * What a previous run recorded for a test is the estimate whenever it is
+     * available. For a test that has not run before — a new test, a new data
+     * set, or every test of a run without a result cache — the size the test
+     * declares takes its place: #[Small], #[Medium], and #[Large] promise that
+     * the test stays within the time limit of its size, which makes that limit
+     * the one upper bound of its duration that the test itself provides. The
+     * estimate is only ever compared with the estimates of the other units, so
+     * an upper bound that is an order of magnitude apart per size is exactly
+     * what the cost order needs: it puts the large tests first.
+     *
+     * A test that declares no size contributes nothing, as it did before sizes
+     * were consulted here. A unit made up of such tests alone is estimated at
+     * 0.0, which is what the scheduler dispatches before everything else (see
+     * Scheduler).
      */
     private function durationOf(Test $test, TestRunHistory $testRunHistory): float
     {
         if ($test instanceof TestCase) {
-            return $testRunHistory->time(TestRunHistoryId::fromReorderable($test));
+            $duration = $testRunHistory->time(TestRunHistoryId::fromReorderable($test));
+
+            if ($duration > 0.0) {
+                return $duration;
+            }
+
+            return $this->estimateFromDeclaredSizeOf($test);
         }
 
         assert($test instanceof TestSuite);
@@ -129,5 +150,31 @@ final readonly class TestClassWorkUnit implements WorkUnit
         }
 
         return $duration;
+    }
+
+    /**
+     * The time limit of the size the test declares, in seconds, and 0.0 when it
+     * declares none. These are the limits PHPUnit's own defaults enforce for
+     * #[Small], #[Medium], and #[Large]; they are used here as an estimate, not
+     * enforced, so a configuration that raises or lowers them does not change
+     * the dispatch order.
+     */
+    private function estimateFromDeclaredSizeOf(TestCase $test): float
+    {
+        $size = $test->size();
+
+        if ($size->isSmall()) {
+            return 1.0;
+        }
+
+        if ($size->isMedium()) {
+            return 10.0;
+        }
+
+        if ($size->isLarge()) {
+            return 60.0;
+        }
+
+        return 0.0;
     }
 }
