@@ -33,13 +33,20 @@ use function usort;
  * the run would report nothing at all until then, only to report everything it
  * had buffered in one burst.
  *
- * The unit the aggregator waits for is therefore dispatched ahead of the cost
- * order whenever it is not in flight already: while no unit that precedes it in
- * suite order is executing, next() hands out the lowest-indexed unit that has
- * not been dispatched instead of the longest one. This costs exactly one
- * dispatch — with that unit in flight, the next call goes back to the cost
- * order — so that one slot walks the chunk in suite order and keeps the output
- * flowing while the others work the cost order for throughput.
+ * A few of the dispatch slots are therefore reserved for the suite order: while
+ * fewer than SUITE_ORDER_SLOTS of the units in flight precede it in suite
+ * order, next() hands out the lowest-indexed unit that has not been dispatched
+ * instead of the longest one. Those slots walk the chunk in suite order and
+ * keep the output flowing, while the others work the cost order for throughput.
+ *
+ * Reserving more than one slot matters for the units that report only when they
+ * have finished — the PHPT tests, which stream nothing while they run. The
+ * release sequence can then advance by one such unit per unit duration and no
+ * faster, while the cost-ordered slots finish units several times as fast; the
+ * results of those units pile up in the aggregator's buffer and are released in
+ * bursts. Each reserved slot multiplies the rate at which the release sequence
+ * can advance, and costs the straggler protection that the cost order provides
+ * on that slot.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -47,6 +54,19 @@ use function usort;
  */
 final class DispatchQueue
 {
+    /**
+     * How many of the dispatch slots follow the suite order rather than the
+     * cost order.
+     *
+     * Two is a compromise, and the dial is deliberately small: the first slot
+     * is what makes a run report anything at all before its shortest unit is
+     * dispatched, the second one halves the backlog that builds up behind a
+     * release sequence which may only advance one unit at a time, and every
+     * further slot is one the cost order can no longer use to start the
+     * longest work early.
+     */
+    public const int SUITE_ORDER_SLOTS = 2;
+
     /**
      * The units in cost order, longest first, as the scheduler ordered them.
      *
@@ -114,22 +134,22 @@ final class DispatchQueue
     /**
      * Take the next unit to dispatch.
      *
-     * The lowest suite index among the units that are executing right now, or
-     * null when none is, is what tells the queue whether the unit the
-     * ResultAggregator waits for is in flight already: no unit executing with a
-     * lower index means that the lowest-indexed unit which has not been
-     * dispatched is the one the output is waiting for, and it is dispatched
+     * The suite indexes of the units that are executing right now are what tell
+     * the queue how many of the reserved slots are occupied: every unit in
+     * flight that precedes the lowest-indexed unit which has not been dispatched
+     * holds one of them. While one is free, that lowest-indexed unit — the one
+     * whose results the output is waiting for, or waits for next — is dispatched
      * ahead of the cost order.
      *
-     * @param ?non-negative-int $lowestExecutingIndex
+     * @param list<non-negative-int> $executingIndexes
      */
-    public function next(?int $lowestExecutingIndex): WorkUnit
+    public function next(array $executingIndexes): WorkUnit
     {
         assert(!$this->isEmpty());
 
         $nextInSuiteOrder = $this->nextInSuiteOrder();
 
-        if ($lowestExecutingIndex === null || $nextInSuiteOrder->index() < $lowestExecutingIndex) {
+        if ($this->numberOfIndexesBelow($executingIndexes, $nextInSuiteOrder->index()) < self::SUITE_ORDER_SLOTS) {
             return $this->take($nextInSuiteOrder);
         }
 
@@ -186,6 +206,27 @@ final class DispatchQueue
         }
 
         return isset($this->dispatched[$units[$position]->index()]);
+    }
+
+    /**
+     * How many of the given suite indexes precede the given one.
+     *
+     * @param list<non-negative-int> $indexes
+     * @param non-negative-int       $index
+     *
+     * @return non-negative-int
+     */
+    private function numberOfIndexesBelow(array $indexes, int $index): int
+    {
+        $below = 0;
+
+        foreach ($indexes as $candidate) {
+            if ($candidate < $index) {
+                $below++;
+            }
+        }
+
+        return $below;
     }
 
     private function take(WorkUnit $unit): WorkUnit
