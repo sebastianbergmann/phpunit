@@ -301,7 +301,7 @@ final class PhptRunner
 
         $progressed = false;
 
-        foreach ($this->queue as $position => $unit) {
+        foreach ($this->startOrder() as $position => $unit) {
             if (count($this->active) >= $this->concurrency || $this->exclusive) {
                 break;
             }
@@ -350,6 +350,82 @@ final class PhptRunner
         }
 
         return $progressed;
+    }
+
+    /**
+     * The queued units, keyed by their position in the queue, in the order in
+     * which a round considers them for a start.
+     *
+     * The order is the one begin() established — the units with the longest
+     * recorded durations first, the tests that conflict with "all" last — with
+     * one exception: the unit that the ordered output is waiting for is
+     * considered first while no unit that precedes it in suite order is
+     * running.
+     *
+     * The results of the units are released in suite order, and the results of
+     * a unit whose turn has not come yet are buffered until it has (see
+     * ResultAggregator). Starting the lowest-indexed queued unit first whenever
+     * nothing that precedes it is running keeps the release sequence supplied,
+     * so that results are reported as the tests finish instead of piling up
+     * behind a unit that the start order would otherwise only get to at the end
+     * of the chunk.
+     *
+     * @return array<int, PhptWorkUnit>
+     */
+    private function startOrder(): array
+    {
+        $head = null;
+
+        foreach ($this->queue as $position => $unit) {
+            if ($head === null || $unit->index() < $head['unit']->index()) {
+                $head = ['position' => $position, 'unit' => $unit];
+            }
+        }
+
+        if ($head === null) {
+            return [];
+        }
+
+        $lowestRunningIndex = $this->lowestRunningIndex();
+
+        // The unit the output is waiting for is running already; the start
+        // order has nothing to gain from a reordering.
+        if ($lowestRunningIndex !== null && $lowestRunningIndex < $head['unit']->index()) {
+            return $this->queue;
+        }
+
+        $order = [$head['position'] => $head['unit']];
+
+        foreach ($this->queue as $queuedPosition => $queuedUnit) {
+            if ($queuedPosition === $head['position']) {
+                continue;
+            }
+
+            $order[$queuedPosition] = $queuedUnit;
+        }
+
+        return $order;
+    }
+
+    /**
+     * The lowest suite index among the units that are running right now; null
+     * when none is.
+     *
+     * @return ?non-negative-int
+     */
+    private function lowestRunningIndex(): ?int
+    {
+        $lowest = null;
+
+        foreach ($this->active as $task) {
+            $index = $task['unit']->index();
+
+            if ($lowest === null || $index < $lowest) {
+                $lowest = $index;
+            }
+        }
+
+        return $lowest;
     }
 
     /**
