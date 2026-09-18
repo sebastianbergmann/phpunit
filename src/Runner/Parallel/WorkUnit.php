@@ -33,9 +33,11 @@ interface WorkUnit
     public function name(): string;
 
     /**
-     * The duration recorded for this unit's tests by a previous run, in
-     * seconds; 0.0 when nothing is recorded. The scheduler dispatches the
-     * units of a chunk longest first (see Scheduler).
+     * The estimated duration of this unit's tests, in seconds: what a previous
+     * run recorded for them, and for the tests that have not run before what
+     * the size they declare promises (see TestClassWorkUnit); 0.0 when neither
+     * is available. The scheduler dispatches the units of a chunk longest first
+     * (see Scheduler).
      */
     public function duration(TestRunHistory $testRunHistory): float;
 }
