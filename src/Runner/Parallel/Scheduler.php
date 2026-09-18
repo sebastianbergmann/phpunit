@@ -21,13 +21,18 @@ use PHPUnit\Runner\TestRunHistory\TestRunHistory;
  * start as early as possible, so that it overlaps with the rest of the chunk
  * instead of becoming the straggler that the workers wait for at the end.
  *
- * The durations are those that the result cache recorded in a previous run. A
- * unit for which no duration is recorded — its tests have not run before — is
- * scheduled before every unit whose duration is known: its duration may be
- * arbitrarily large, and dispatching a small unit too early costs next to
- * nothing while dispatching a large unit too late costs its full duration.
- * Units whose estimates are equal keep their suite order; without a result
- * cache, every duration is unknown and the dispatch order is the suite order.
+ * The durations are the ones the result cache recorded in a previous run, and
+ * for the tests that have not run before the ones their declared size promises
+ * (see TestClassWorkUnit) — which is what lets a first run, or a run in a fresh
+ * CI container, dispatch the large units first as well.
+ *
+ * A unit for which nothing can be estimated at all — its tests have not run
+ * before and declare no size — is scheduled before every unit whose estimate is
+ * known: its duration may be arbitrarily large, and dispatching a small unit too
+ * early costs next to nothing while dispatching a large unit too late costs its
+ * full duration. Units whose estimates are equal keep their suite order; with
+ * neither a result cache nor declared sizes, every estimate is unknown and the
+ * dispatch order is the suite order.
  *
  * Only the dispatch order is affected. Results are released in suite order
  * either way, so the output of the run does not change.
@@ -90,8 +95,8 @@ final readonly class Scheduler
     {
         $duration = $unit->duration($this->testRunHistory);
 
-        // Nothing is recorded for this unit: its tests have not run before,
-        // and their duration may be arbitrarily large.
+        // Nothing is known about this unit: its tests have not run before and
+        // declare no size, so their duration may be arbitrarily large.
         if ($duration === 0.0) {
             return PHP_FLOAT_MAX;
         }
