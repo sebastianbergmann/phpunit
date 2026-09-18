@@ -23,7 +23,10 @@ final readonly class ShellExitCodeCalculator
     private const int FAILURE_EXIT   = 1;
     private const int EXCEPTION_EXIT = 2;
 
-    public function calculate(Configuration $configuration, TestResult $result): int
+    /**
+     * @param bool $noTestCanBeAffectedByWhatChanged whether test impact analysis selected no test at all
+     */
+    public function calculate(Configuration $configuration, TestResult $result, bool $noTestCanBeAffectedByWhatChanged = false): int
     {
         $failOnDeprecation        = false;
         $failOnPhpunitDeprecation = false;
@@ -114,6 +117,17 @@ final readonly class ShellExitCodeCalculator
         }
 
         if ($configuration->doNotFailOnEmptyTestSuite()) {
+            $failOnEmptyTestSuite = false;
+        }
+
+        /*
+         * A test run that was asked for the tests that can be affected by what
+         * changed, and that found that no test can be, ran no test because
+         * there was nothing to run. That is the answer such a test run is for,
+         * and not an empty test suite: the tests are there, and what changed
+         * cannot affect them.
+         */
+        if ($noTestCanBeAffectedByWhatChanged) {
             $failOnEmptyTestSuite = false;
         }
 

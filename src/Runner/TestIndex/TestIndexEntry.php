@@ -54,16 +54,15 @@ final readonly class TestIndexEntry
      */
     public static function for(ReflectionClass $class, FileHasher $hasher, bool $madePhpUnitWarn): ?self
     {
+        $files = TestFiles::of($class);
+
+        if ($files === null) {
+            return null;
+        }
+
         $dependencies = [];
 
-        /*
-         * The source files a test class is made of are what decides whether an
-         * entry is still valid. PHPUnit's own files are not among them, which
-         * is what keeps a change to PHPUnit itself from invalidating every
-         * entry at once. That a different version of PHPUnit means a different
-         * index is already established by the version the index records.
-         */
-        foreach (Reflection::sourceFilesOf($class) as $file) {
+        foreach ($files as $file) {
             $hash = $hasher->hash($file);
 
             if ($hash === null) {
@@ -71,10 +70,6 @@ final readonly class TestIndexEntry
             }
 
             $dependencies[$file] = $hash;
-        }
-
-        if ($dependencies === []) {
-            return null;
         }
 
         $groups   = [];
