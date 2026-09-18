@@ -19,8 +19,11 @@ use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 use PHPUnit\Runner\TestRunHistory\DefaultTestRunHistory;
 use PHPUnit\Runner\TestRunHistory\TestRunHistoryId;
 use PHPUnit\TestFixture\ParallelWorker\WorkerFirstTest;
+use PHPUnit\TestFixture\ParallelWorker\WorkerLargeTest;
+use PHPUnit\TestFixture\ParallelWorker\WorkerMediumTest;
 use PHPUnit\TestFixture\ParallelWorker\WorkerSecondTest;
 use PHPUnit\TestFixture\ParallelWorker\WorkerSleepingTest;
+use PHPUnit\TestFixture\ParallelWorker\WorkerSmallTest;
 
 #[CoversClass(Scheduler::class)]
 #[UsesClass(TestClassWorkUnit::class)]
@@ -72,6 +75,50 @@ final class SchedulerTest extends TestCase
         // Without a result cache, every duration is unknown; the dispatch
         // order is the suite order, as it was before scheduling existed.
         $this->assertSame([0, 1, 2], $this->indexesOf(new Scheduler($this->cache())->schedule($units)));
+    }
+
+    public function testEstimatesAUnitWhoseTestsHaveNotRunBeforeFromTheSizeTheyDeclare(): void
+    {
+        // Nothing is recorded, as in a first run or in a fresh CI container.
+        // The sizes the tests declare are what orders the units: the large one
+        // first, the small one last.
+        $units = [
+            new TestClassWorkUnit(0, WorkerSmallTest::class, [new WorkerSmallTest('testOne')]),
+            new TestClassWorkUnit(1, WorkerLargeTest::class, [new WorkerLargeTest('testOne')]),
+            new TestClassWorkUnit(2, WorkerMediumTest::class, [new WorkerMediumTest('testOne')]),
+        ];
+
+        $this->assertSame([1, 2, 0], $this->indexesOf(new Scheduler($this->cache())->schedule($units)));
+    }
+
+    public function testDispatchesAUnitThatCannotBeEstimatedAtAllBeforeOneEstimatedFromADeclaredSize(): void
+    {
+        // The unit at index 1 declares no size and has not run before, so
+        // nothing is known about it and its duration may be arbitrarily large.
+        $units = [
+            new TestClassWorkUnit(0, WorkerLargeTest::class, [new WorkerLargeTest('testOne')]),
+            new TestClassWorkUnit(1, WorkerFirstTest::class, [new WorkerFirstTest('testStartsTheProcessLocalCounter')]),
+        ];
+
+        $this->assertSame([1, 0], $this->indexesOf(new Scheduler($this->cache())->schedule($units)));
+    }
+
+    public function testPrefersTheRecordedDurationOfATestOverTheSizeItDeclares(): void
+    {
+        $cache = $this->cache();
+
+        // The small test took 20 seconds when it last ran, which is what its
+        // unit is estimated at — the second of the two, which declares the
+        // larger size but has not run before, is worth the 10 seconds its size
+        // promises.
+        $cache->setTime(TestRunHistoryId::fromTestClassAndMethodName(WorkerSmallTest::class, 'testOne'), 20.0);
+
+        $units = [
+            new TestClassWorkUnit(0, WorkerSmallTest::class, [new WorkerSmallTest('testOne')]),
+            new TestClassWorkUnit(1, WorkerMediumTest::class, [new WorkerMediumTest('testOne')]),
+        ];
+
+        $this->assertSame([0, 1], $this->indexesOf(new Scheduler($cache)->schedule($units)));
     }
 
     public function testSchedulesAPhptTestByItsRecordedDuration(): void
