@@ -11,6 +11,7 @@ namespace PHPUnit\Runner\Parallel;
 
 use function sys_get_temp_dir;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\TestCase;
@@ -18,12 +19,27 @@ use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\TestRunHistory\DefaultTestRunHistory;
 use PHPUnit\Runner\TestRunHistory\TestRunHistoryId;
 use PHPUnit\TestFixture\ParallelWorker\WorkerFirstTest;
+use PHPUnit\TestFixture\ParallelWorker\WorkerLargeTest;
+use PHPUnit\TestFixture\ParallelWorker\WorkerMediumTest;
 use PHPUnit\TestFixture\ParallelWorker\WorkerSecondTest;
+use PHPUnit\TestFixture\ParallelWorker\WorkerSmallTest;
 
 #[CoversClass(TestClassWorkUnit::class)]
 #[Small]
 final class TestClassWorkUnitTest extends TestCase
 {
+    /**
+     * @return array<string, array{class-string<TestCase>, float}>
+     */
+    public static function sizedTestClassProvider(): array
+    {
+        return [
+            'small'  => [WorkerSmallTest::class, 1.0],
+            'medium' => [WorkerMediumTest::class, 10.0],
+            'large'  => [WorkerLargeTest::class, 60.0],
+        ];
+    }
+
     public function testHasIndex(): void
     {
         $this->assertSame(3, $this->unit()->index());
@@ -122,6 +138,30 @@ final class TestClassWorkUnitTest extends TestCase
     public function testHasNoDurationWhenItsTestsHaveNotRunBefore(): void
     {
         $this->assertSame(0.0, $this->unit()->duration($this->testRunHistory()));
+    }
+
+    /**
+     * @param class-string<TestCase> $className
+     */
+    #[DataProvider('sizedTestClassProvider')]
+    public function testEstimatesTheDurationOfATestThatHasNotRunBeforeFromTheSizeItDeclares(string $className, float $expected): void
+    {
+        // Nothing has been recorded for the test, so the time limit of the
+        // size it declares stands in for its duration.
+        $unit = new TestClassWorkUnit(0, $className, [new $className('testOne')]);
+
+        $this->assertSame($expected, $unit->duration($this->testRunHistory()));
+    }
+
+    public function testPrefersTheDurationRecordedForATestOverTheSizeItDeclares(): void
+    {
+        $testRunHistory = $this->testRunHistory();
+
+        $testRunHistory->setTime(TestRunHistoryId::fromTestClassAndMethodName(WorkerLargeTest::class, 'testOne'), 0.5);
+
+        $unit = new TestClassWorkUnit(0, WorkerLargeTest::class, [new WorkerLargeTest('testOne')]);
+
+        $this->assertSame(0.5, $unit->duration($testRunHistory));
     }
 
     private function unit(): TestClassWorkUnit
