@@ -10,6 +10,7 @@
 namespace PHPUnit\Runner\Parallel;
 
 use function array_merge;
+use function array_slice;
 use function assert;
 use function count;
 use function in_array;
@@ -358,46 +359,44 @@ final class PhptRunner
      *
      * The order is the one begin() established — the units with the longest
      * recorded durations first, the tests that conflict with "all" last — with
-     * one exception: the unit that the ordered output is waiting for is
-     * considered first while no unit that precedes it in suite order is
-     * running.
+     * one exception: the units the ordered output is waiting for are considered
+     * first, on the slots that are reserved for the suite order.
      *
      * The results of the units are released in suite order, and the results of
      * a unit whose turn has not come yet are buffered until it has (see
-     * ResultAggregator). Starting the lowest-indexed queued unit first whenever
-     * nothing that precedes it is running keeps the release sequence supplied,
-     * so that results are reported as the tests finish instead of piling up
-     * behind a unit that the start order would otherwise only get to at the end
-     * of the chunk.
+     * ResultAggregator). A PHPT unit reports nothing until it has finished, so
+     * the release sequence can only advance as fast as the reserved slots
+     * finish the units it is waiting for; keeping them supplied is what makes
+     * results appear as the tests finish instead of piling up behind a unit
+     * that the start order would otherwise only get to at the end of the chunk.
      *
      * @return array<int, PhptWorkUnit>
      */
     private function startOrder(): array
     {
-        $head = null;
+        $heads = $this->lowestIndexedQueuedUnits(DispatchQueue::SUITE_ORDER_SLOTS);
 
-        foreach ($this->queue as $position => $unit) {
-            if ($head === null || $unit->index() < $head['unit']->index()) {
-                $head = ['position' => $position, 'unit' => $unit];
-            }
-        }
-
-        if ($head === null) {
+        if ($heads === []) {
             return [];
         }
 
-        $lowestRunningIndex = $this->lowestRunningIndex();
+        // Every running unit that precedes them all holds one of the reserved
+        // slots; what is left is how many of the lowest-indexed queued units
+        // are started ahead of the cost order.
+        $free = DispatchQueue::SUITE_ORDER_SLOTS - $this->numberOfRunningUnitsBelow($heads[0]['unit']->index());
 
-        // The unit the output is waiting for is running already; the start
-        // order has nothing to gain from a reordering.
-        if ($lowestRunningIndex !== null && $lowestRunningIndex < $head['unit']->index()) {
+        if ($free < 1) {
             return $this->queue;
         }
 
-        $order = [$head['position'] => $head['unit']];
+        $order = [];
+
+        foreach (array_slice($heads, 0, $free) as $head) {
+            $order[$head['position']] = $head['unit'];
+        }
 
         foreach ($this->queue as $queuedPosition => $queuedUnit) {
-            if ($queuedPosition === $head['position']) {
+            if (isset($order[$queuedPosition])) {
                 continue;
             }
 
@@ -408,24 +407,76 @@ final class PhptRunner
     }
 
     /**
-     * The lowest suite index among the units that are running right now; null
-     * when none is.
+     * The queued units with the lowest suite indexes, lowest first, at most
+     * $count of them.
      *
-     * @return ?non-negative-int
+     * @param positive-int $count
+     *
+     * @return list<array{position: int, unit: PhptWorkUnit}>
      */
-    private function lowestRunningIndex(): ?int
+    private function lowestIndexedQueuedUnits(int $count): array
     {
-        $lowest = null;
+        $lowest = [];
 
-        foreach ($this->active as $task) {
-            $index = $task['unit']->index();
+        // One pass per reserved slot; there are very few of them (see
+        // DispatchQueue::SUITE_ORDER_SLOTS), and a pass over the queue is what
+        // a polling round costs anyway.
+        for ($taken = 0; $taken < $count; $taken++) {
+            $candidate = null;
 
-            if ($lowest === null || $index < $lowest) {
-                $lowest = $index;
+            foreach ($this->queue as $position => $unit) {
+                if ($this->isAmong($lowest, $position)) {
+                    continue;
+                }
+
+                if ($candidate === null || $unit->index() < $candidate['unit']->index()) {
+                    $candidate = ['position' => $position, 'unit' => $unit];
+                }
             }
+
+            if ($candidate === null) {
+                break;
+            }
+
+            $lowest[] = $candidate;
         }
 
         return $lowest;
+    }
+
+    /**
+     * @param list<array{position: int, unit: PhptWorkUnit}> $units
+     */
+    private function isAmong(array $units, int $position): bool
+    {
+        foreach ($units as $unit) {
+            if ($unit['position'] === $position) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * How many of the units that are running right now precede the given suite
+     * index.
+     *
+     * @param non-negative-int $index
+     *
+     * @return non-negative-int
+     */
+    private function numberOfRunningUnitsBelow(int $index): int
+    {
+        $below = 0;
+
+        foreach ($this->active as $task) {
+            if ($task['unit']->index() < $index) {
+                $below++;
+            }
+        }
+
+        return $below;
     }
 
     /**
