@@ -1,5 +1,7 @@
 --TEST--
 Order by defects (with test run history): Skipped tests are not hoisted to the front
+--CONFLICTS--
+all
 --FILE--
 <?php declare(strict_types=1);
 $testRunHistoryFile = sys_get_temp_dir() . '/test-run-history';

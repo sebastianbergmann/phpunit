@@ -20,6 +20,7 @@ use function is_numeric;
 use function max;
 use function sprintf;
 use function strtolower;
+use Fidry\CpuCoreCounter\CpuCoreCounter;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\Configuration\ExecutionOrderParser;
@@ -124,6 +125,7 @@ final class Builder
         'no-results',
         'order-by=',
         'process-isolation',
+        'parallel=',
         'do-not-report-useless-tests',
         'random-order',
         'random-order-seed=',
@@ -400,6 +402,7 @@ final class Builder
         $noResults                                = null;
         $noLogging                                = null;
         $processIsolation                         = null;
+        $numberOfParallelWorkers                  = null;
         $randomOrderSeed                          = null;
         $repeat                                   = null;
         $retry                                    = null;
@@ -856,6 +859,31 @@ final class Builder
 
                 case '--process-isolation':
                     $processIsolation = true;
+
+                    break;
+
+                case '--parallel':
+                    if ($option[1] === 'auto') {
+                        $numberOfParallelWorkers = (new CpuCoreCounter)->getAvailableForParallelisation()->availableCpus;
+
+                        break;
+                    }
+
+                    if (!is_numeric($option[1]) ||
+                        (string) (int) $option[1] !== $option[1] ||
+                        (int) $option[1] < 1) {
+                        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                            sprintf(
+                                'Option "--parallel %s" ignored because "%s" is neither a positive integer nor "auto"',
+                                $option[1],
+                                $option[1],
+                            ),
+                        );
+
+                        break;
+                    }
+
+                    $numberOfParallelWorkers = (int) $option[1];
 
                     break;
 
@@ -1560,6 +1588,7 @@ final class Builder
             $withTelemetry,
             $extensions,
             $cacheTestIndex,
+            $numberOfParallelWorkers,
         );
     }
 

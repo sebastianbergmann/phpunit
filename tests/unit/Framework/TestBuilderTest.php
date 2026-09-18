@@ -11,6 +11,7 @@ namespace PHPUnit\Framework;
 
 use function iterator_to_array;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase\GlobalStateCapture;
 use PHPUnit\TestFixture\TestBuilder\TestWithBackupExcludeListAttributes;
@@ -27,6 +28,22 @@ use ReflectionProperty;
 #[Small]
 final class TestBuilderTest extends TestCase
 {
+    /**
+     * @return array<string, array{class-string<TestCase>, non-empty-string}>
+     */
+    public static function provider(): array
+    {
+        return [
+            'without metadata for isolation'                    => [TestWithoutIsolationAttributes::class, 'testOne'],
+            'with class-level metadata for isolation'           => [TestWithClassLevelIsolationAttributes::class, 'testOne'],
+            'with method-level metadata for isolation'          => [TestWithMethodLevelIsolationAttributes::class, 'testOne'],
+            'with inherited class-level metadata for isolation' => [TestWithInheritedClassLevelIsolationAttributes::class, 'testOne'],
+            'with metadata for excluding global state'          => [TestWithBackupExcludeListAttributes::class, 'testOne'],
+            'with metadata for preserving global state'         => [TestWithPreserveGlobalStateAttribute::class, 'testOne'],
+            'with data provider'                                => [TestWithDataProvider::class, 'testOne'],
+        ];
+    }
+
     public function testBuildsTestWithoutMetadataForIsolation(): void
     {
         $test = (new TestBuilder)->build(
@@ -143,5 +160,89 @@ final class TestBuilderTest extends TestCase
         $this->assertSame(TestWithDataProvider::class, $test->className());
         $this->assertSame('testOne', $test->methodName());
         $this->assertTrue($test->testData()->hasDataFromDataProvider());
+    }
+
+    public function testConfiguresTestWithClassLevelMetadataForIsolation(): void
+    {
+        $test = new TestWithClassLevelIsolationAttributes('testOne');
+
+        (new TestBuilder)->configure($test, TestWithClassLevelIsolationAttributes::class, 'testOne');
+
+        $this->assertTrue(new ReflectionProperty(TestCase::class, 'runTestInSeparateProcess')->getValue($test));
+
+        $globalStateCapture = new ReflectionProperty(TestCase::class, 'globalStateCapture')->getValue($test);
+
+        $this->assertTrue(new ReflectionProperty(GlobalStateCapture::class, 'backupGlobals')->getValue($globalStateCapture));
+        $this->assertTrue(new ReflectionProperty(GlobalStateCapture::class, 'backupStaticProperties')->getValue($globalStateCapture));
+    }
+
+    public function testConfiguresTestWithMetadataForExcludingGlobalStateFromBackup(): void
+    {
+        $test = new TestWithBackupExcludeListAttributes('testOne');
+
+        (new TestBuilder)->configure($test, TestWithBackupExcludeListAttributes::class, 'testOne');
+
+        $globalStateCapture = new ReflectionProperty(TestCase::class, 'globalStateCapture')->getValue($test);
+
+        $this->assertSame(
+            ['variable'],
+            new ReflectionProperty(GlobalStateCapture::class, 'backupGlobalsExcludeList')->getValue($globalStateCapture),
+        );
+
+        $this->assertSame(
+            [TestWithBackupExcludeListAttributes::class => ['firstProperty', 'secondProperty']],
+            new ReflectionProperty(GlobalStateCapture::class, 'backupStaticPropertiesExcludeList')->getValue($globalStateCapture),
+        );
+    }
+
+    public function testConfiguresTestWithMetadataForPreservingGlobalState(): void
+    {
+        $test = new TestWithPreserveGlobalStateAttribute('testOne');
+
+        (new TestBuilder)->configure($test, TestWithPreserveGlobalStateAttribute::class, 'testOne');
+
+        $this->assertTrue(new ReflectionProperty(TestCase::class, 'preserveGlobalState')->getValue($test));
+    }
+
+    /**
+     * @param class-string<TestCase> $className
+     * @param non-empty-string       $methodName
+     */
+    #[DataProvider('provider')]
+    public function testConfiguresTestTheSameWayAsItBuildsIt(string $className, string $methodName): void
+    {
+        $built = (new TestBuilder)->build(new ReflectionClass($className), $methodName);
+
+        if ($built instanceof DataProviderTestSuite) {
+            $built = iterator_to_array($built)[0];
+        }
+
+        $this->assertInstanceOf(TestCase::class, $built);
+
+        $configured = new $className($methodName);
+
+        (new TestBuilder)->configure($configured, $className, $methodName);
+
+        $this->assertSame(
+            $this->configurationOf($built),
+            $this->configurationOf($configured),
+        );
+    }
+
+    /**
+     * @return array<non-empty-string, mixed>
+     */
+    private function configurationOf(TestCase $test): array
+    {
+        $globalStateCapture = new ReflectionProperty(TestCase::class, 'globalStateCapture')->getValue($test);
+
+        return [
+            'runTestInSeparateProcess'          => new ReflectionProperty(TestCase::class, 'runTestInSeparateProcess')->getValue($test),
+            'preserveGlobalState'               => new ReflectionProperty(TestCase::class, 'preserveGlobalState')->getValue($test),
+            'backupGlobals'                     => new ReflectionProperty(GlobalStateCapture::class, 'backupGlobals')->getValue($globalStateCapture),
+            'backupGlobalsExcludeList'          => new ReflectionProperty(GlobalStateCapture::class, 'backupGlobalsExcludeList')->getValue($globalStateCapture),
+            'backupStaticProperties'            => new ReflectionProperty(GlobalStateCapture::class, 'backupStaticProperties')->getValue($globalStateCapture),
+            'backupStaticPropertiesExcludeList' => new ReflectionProperty(GlobalStateCapture::class, 'backupStaticPropertiesExcludeList')->getValue($globalStateCapture),
+        ];
     }
 }
