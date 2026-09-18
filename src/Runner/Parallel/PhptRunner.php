@@ -73,6 +73,23 @@ final class PhptRunner
      * no child has finished, so that waiting does not spin the CPU.
      */
     private const int POLL_INTERVAL_MICROSECONDS = 1000;
+
+    /**
+     * How many of the runner's start slots are reserved for the suite order
+     * (see DispatchQueue), at most.
+     *
+     * More than the worker pool reserves, because a PHPT unit streams nothing
+     * while it runs: it reports its events only once it has finished, so the
+     * release sequence advances by one such unit per unit duration while the
+     * cost-ordered slots finish units several times as fast. Each reserved slot
+     * multiplies the rate at which the release sequence can advance; three is
+     * the compromise between that and the straggler protection the cost order
+     * provides on the remaining slots.
+     *
+     * The effective number is derived from this, so that one slot always keeps
+     * working the cost order (see suiteOrderSlots()).
+     */
+    private const int SUITE_ORDER_SLOTS = 3;
     private readonly JobRunner $jobRunner;
 
     /**
@@ -360,7 +377,8 @@ final class PhptRunner
      * The order is the one begin() established — the units with the longest
      * recorded durations first, the tests that conflict with "all" last — with
      * one exception: the units the ordered output is waiting for are considered
-     * first, on the slots that are reserved for the suite order.
+     * first, on the slots that are reserved for the suite order (see
+     * SUITE_ORDER_SLOTS).
      *
      * The results of the units are released in suite order, and the results of
      * a unit whose turn has not come yet are buffered until it has (see
@@ -374,7 +392,8 @@ final class PhptRunner
      */
     private function startOrder(): array
     {
-        $heads = $this->lowestIndexedQueuedUnits(DispatchQueue::SUITE_ORDER_SLOTS);
+        $slots = $this->suiteOrderSlots();
+        $heads = $this->lowestIndexedQueuedUnits($slots);
 
         if ($heads === []) {
             return [];
@@ -383,7 +402,7 @@ final class PhptRunner
         // Every running unit that precedes them all holds one of the reserved
         // slots; what is left is how many of the lowest-indexed queued units
         // are started ahead of the cost order.
-        $free = DispatchQueue::SUITE_ORDER_SLOTS - $this->numberOfRunningUnitsBelow($heads[0]['unit']->index());
+        $free = $slots - $this->numberOfRunningUnitsBelow($heads[0]['unit']->index());
 
         if ($free < 1) {
             return $this->queue;
@@ -407,6 +426,31 @@ final class PhptRunner
     }
 
     /**
+     * How many of the runner's start slots are reserved for the suite order.
+     *
+     * One slot is always left to the cost order, so that the longest of the
+     * queued units still starts as early as the reserved slots allow; a runner
+     * that may only run one unit at a time reserves that one slot, because
+     * reporting nothing at all is worse than losing the cost order on it.
+     *
+     * @return positive-int
+     */
+    private function suiteOrderSlots(): int
+    {
+        $slots = self::SUITE_ORDER_SLOTS;
+
+        if ($slots > $this->concurrency - 1) {
+            $slots = $this->concurrency - 1;
+        }
+
+        if ($slots < 1) {
+            $slots = 1;
+        }
+
+        return $slots;
+    }
+
+    /**
      * The queued units with the lowest suite indexes, lowest first, at most
      * $count of them.
      *
@@ -419,8 +463,8 @@ final class PhptRunner
         $lowest = [];
 
         // One pass per reserved slot; there are very few of them (see
-        // DispatchQueue::SUITE_ORDER_SLOTS), and a pass over the queue is what
-        // a polling round costs anyway.
+        // SUITE_ORDER_SLOTS), and a pass over the queue is what a polling round
+        // costs anyway.
         for ($taken = 0; $taken < $count; $taken++) {
             $candidate = null;
 
