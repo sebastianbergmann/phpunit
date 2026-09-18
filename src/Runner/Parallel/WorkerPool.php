@@ -22,9 +22,9 @@ use PHPUnit\Event\EventCollection;
  * next unit from the queue, which self-balances the load against stragglers.
  *
  * The queue hands out its units in the order in which they are to be
- * dispatched: longest first, except on the slots that are reserved for the
- * suite order, which dispatch the units the ordered output is waiting for, so
- * that the results keep flowing (see DispatchQueue).
+ * dispatched: longest first, except on the slot that is reserved for the suite
+ * order, which dispatches the unit the ordered output is waiting for, so that
+ * the results keep flowing (see SUITE_ORDER_SLOTS and DispatchQueue).
  *
  * A single thread of control keeps all of the workers busy by polling them in
  * rounds: each round it drains the events that the busy workers have streamed
@@ -56,6 +56,20 @@ final class WorkerPool
      * worker has finished, so that waiting on the workers does not spin the CPU.
      */
     private const int POLL_INTERVAL_MICROSECONDS = 1000;
+
+    /**
+     * How many of the pool's dispatch slots are reserved for the suite order
+     * (see DispatchQueue).
+     *
+     * One is enough here: a worker streams the events of every test of its unit
+     * as that test finishes, so the unit the ordered output is waiting for
+     * advances the release sequence while it is still executing. A second
+     * reserved slot would therefore buy the output next to nothing, and would
+     * cost the straggler protection that the cost order provides on it. The
+     * PHPT runner, whose units report only once they have finished, reserves
+     * more.
+     */
+    private const int SUITE_ORDER_SLOTS = 1;
 
     /**
      * @var non-empty-list<PersistentWorker>
@@ -113,7 +127,7 @@ final class WorkerPool
     {
         $this->workers = $workers;
         $this->budget  = $budget;
-        $this->queue   = new DispatchQueue([]);
+        $this->queue   = new DispatchQueue([], self::SUITE_ORDER_SLOTS);
     }
 
     /**
@@ -170,7 +184,7 @@ final class WorkerPool
      */
     public function begin(array $units, callable $onCompleted, callable $onStreamedEvents, callable $onCrashedUnitRetry): void
     {
-        $this->queue              = new DispatchQueue($units);
+        $this->queue              = new DispatchQueue($units, self::SUITE_ORDER_SLOTS);
         $this->onCompleted        = $onCompleted;
         $this->onStreamedEvents   = $onStreamedEvents;
         $this->onCrashedUnitRetry = $onCrashedUnitRetry;

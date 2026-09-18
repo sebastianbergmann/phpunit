@@ -23,14 +23,14 @@ final class DispatchQueueTest extends TestCase
         // The cost order puts the unit at index 0 last: it is the shortest.
         // Nothing is executing, so the results are released from index 0
         // onwards and that unit is the one the output waits for.
-        $queue = new DispatchQueue([$this->unit(9), $this->unit(5), $this->unit(0)]);
+        $queue = new DispatchQueue([$this->unit(9), $this->unit(5), $this->unit(0)], 1);
 
         $this->assertSame(0, $queue->next([])->index());
     }
 
     public function testKeepsAsManyUnitsInSuiteOrderInFlightAsThereAreReservedSlots(): void
     {
-        $queue = new DispatchQueue([$this->unit(9), $this->unit(8), $this->unit(1), $this->unit(0)]);
+        $queue = new DispatchQueue([$this->unit(9), $this->unit(8), $this->unit(1), $this->unit(0)], 2);
 
         $this->assertSame(0, $queue->next([])->index());
 
@@ -43,11 +43,23 @@ final class DispatchQueueTest extends TestCase
         $this->assertSame(9, $queue->next([0, 1])->index());
     }
 
+    public function testHandsOutTheLongestUnitAsSoonAsTheOnlyReservedSlotIsOccupied(): void
+    {
+        // One reserved slot, as the worker pool asks for: its units report the
+        // events of each of their finished tests while they execute, so the
+        // release sequence advances without a second slot.
+        $queue = new DispatchQueue([$this->unit(9), $this->unit(5), $this->unit(1), $this->unit(0)], 1);
+
+        $this->assertSame(0, $queue->next([])->index());
+        $this->assertSame(9, $queue->next([0])->index());
+        $this->assertSame(5, $queue->next([0, 9])->index());
+    }
+
     public function testHandsOutTheLongestUnitWhileEveryReservedSlotIsOccupied(): void
     {
         // The units at index 0 and 1 have been dispatched already and are
         // executing; the queue holds the units that follow them.
-        $queue = new DispatchQueue([$this->unit(9), $this->unit(5), $this->unit(2)]);
+        $queue = new DispatchQueue([$this->unit(9), $this->unit(5), $this->unit(2)], 2);
 
         // Both units that are executing precede everything still queued, so
         // both reserved slots are occupied from the first dispatch on.
@@ -57,7 +69,7 @@ final class DispatchQueueTest extends TestCase
 
     public function testHandsOutTheUnitsTheOrderedOutputWaitsForOnceTheirPredecessorsHaveFinished(): void
     {
-        $queue = new DispatchQueue([$this->unit(9), $this->unit(8), $this->unit(7), $this->unit(1), $this->unit(0)]);
+        $queue = new DispatchQueue([$this->unit(9), $this->unit(8), $this->unit(7), $this->unit(1), $this->unit(0)], 2);
 
         $this->assertSame(0, $queue->next([])->index());
         $this->assertSame(1, $queue->next([0])->index());
@@ -72,7 +84,7 @@ final class DispatchQueueTest extends TestCase
 
     public function testHandsOutEveryUnitExactlyOnceAndIsEmptyAfterwards(): void
     {
-        $queue = new DispatchQueue([$this->unit(3), $this->unit(0), $this->unit(2), $this->unit(1)]);
+        $queue = new DispatchQueue([$this->unit(3), $this->unit(0), $this->unit(2), $this->unit(1)], 2);
 
         $indexes = [];
 
@@ -89,12 +101,12 @@ final class DispatchQueueTest extends TestCase
 
     public function testIsEmptyWhenItHasNoUnits(): void
     {
-        $this->assertTrue(new DispatchQueue([])->isEmpty());
+        $this->assertTrue(new DispatchQueue([], 1)->isEmpty());
     }
 
     public function testIsEmptyAfterItHasBeenCleared(): void
     {
-        $queue = new DispatchQueue([$this->unit(0), $this->unit(1)]);
+        $queue = new DispatchQueue([$this->unit(0), $this->unit(1)], 1);
 
         $this->assertFalse($queue->isEmpty());
 
