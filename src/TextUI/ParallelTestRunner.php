@@ -224,6 +224,7 @@ final class ParallelTestRunner
                 $parallel[] = $unit;
             }
 
+            // @codeCoverageIgnoreStart
             foreach ($chunk['standalone'] as $item) {
                 $test = $item['test'];
 
@@ -236,6 +237,7 @@ final class ParallelTestRunner
                     },
                 ];
             }
+            // @codeCoverageIgnoreEnd
 
             if ($parallel !== []) {
                 $poolIsNeeded = true;
