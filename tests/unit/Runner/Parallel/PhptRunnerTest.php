@@ -58,6 +58,32 @@ final class PhptRunnerTest extends TestCase
         }
     }
 
+    public function testStartsTheUnitTheOrderedOutputWaitsForBeforeTheLongerOnesQueuedAheadOfIt(): void
+    {
+        $file = __DIR__ . '/../../../_files/parallel-worker/worker.phpt';
+
+        // The scheduler queued the unit at index 1 first, because it is the
+        // longer one; the unit at index 0 is what the ordered output waits
+        // for, though, so it is started first. With one test running at a
+        // time, the completion order is the start order.
+        $units = [
+            new PhptWorkUnit(1, $file),
+            new PhptWorkUnit(0, $file),
+        ];
+
+        $order = [];
+
+        $this->runner(1, new ProcessBudget(1))->run(
+            $units,
+            static function (int $index, EventCollection $events) use (&$order): void
+            {
+                $order[] = $index;
+            },
+        );
+
+        $this->assertSame([0, 1], $order);
+    }
+
     public function testRunsTheRepetitionsOfARepeatedPhptTestOneAfterAnotherWithinItsUnit(): void
     {
         $units = [
