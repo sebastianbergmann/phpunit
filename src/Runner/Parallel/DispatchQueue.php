@@ -195,14 +195,17 @@ final class DispatchQueue
      * dispatched already — by the other order, in which case this order's
      * cursor has to advance past it.
      *
+     * The position is always within the order: both orders hold the same
+     * units and share the record of what has been dispatched, so as long as
+     * the queue is not empty — which next() asserts — either cursor reaches a
+     * unit that has not been dispatched before it runs off the end.
+     *
      * @param list<WorkUnit>   $units
      * @param non-negative-int $position
      */
     private function wasDispatched(array $units, int $position): bool
     {
-        if (!isset($units[$position])) {
-            return false;
-        }
+        assert(isset($units[$position]));
 
         return isset($this->dispatched[$units[$position]->index()]);
     }
