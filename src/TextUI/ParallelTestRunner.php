@@ -153,7 +153,11 @@ final class ParallelTestRunner
      * the order of their recorded durations, longest first, so that the
      * longest-running work does not become the straggler that the workers
      * wait for at the end of the chunk (see Scheduler). The results are
-     * released in suite order regardless of the dispatch order.
+     * released in suite order regardless of the dispatch order; the unit that
+     * the release sequence is waiting for is therefore dispatched ahead of the
+     * cost order while it is not in flight, so that results are reported as
+     * the tests finish instead of piling up behind a unit that the cost order
+     * would only get to at the end of the chunk (see DispatchQueue).
      *
      * @param non-empty-list<array{suite: TestSuite, units: list<WorkUnit>, phpt: list<PhptWorkUnit>, standalone: list<array{index: non-negative-int, test: Test}>}> $chunks
      *
