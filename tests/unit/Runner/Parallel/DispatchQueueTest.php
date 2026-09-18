@@ -25,34 +25,49 @@ final class DispatchQueueTest extends TestCase
         // onwards and that unit is the one the output waits for.
         $queue = new DispatchQueue([$this->unit(9), $this->unit(5), $this->unit(0)]);
 
-        $this->assertSame(0, $queue->next(null)->index());
+        $this->assertSame(0, $queue->next([])->index());
     }
 
-    public function testHandsOutTheLongestUnitWhileTheUnitTheOutputWaitsForIsExecuting(): void
-    {
-        $queue = new DispatchQueue([$this->unit(9), $this->unit(5), $this->unit(0)]);
-
-        $this->assertSame(0, $queue->next(null)->index());
-
-        // The unit at index 0 is executing now, so it is what the output is
-        // waiting for; the remaining dispatches are free to follow the cost
-        // order.
-        $this->assertSame(9, $queue->next(0)->index());
-        $this->assertSame(5, $queue->next(0)->index());
-    }
-
-    public function testHandsOutTheUnitTheOrderedOutputWaitsForOnceItsPredecessorsHaveFinished(): void
+    public function testKeepsAsManyUnitsInSuiteOrderInFlightAsThereAreReservedSlots(): void
     {
         $queue = new DispatchQueue([$this->unit(9), $this->unit(8), $this->unit(1), $this->unit(0)]);
 
-        $this->assertSame(0, $queue->next(null)->index());
-        $this->assertSame(9, $queue->next(0)->index());
-        $this->assertSame(8, $queue->next(0)->index());
+        $this->assertSame(0, $queue->next([])->index());
 
-        // The unit at index 0 has finished; of the units that are executing,
-        // the lowest index is 8, so the output now waits for the unit at
-        // index 1 rather than for one of them.
-        $this->assertSame(1, $queue->next(8)->index());
+        // One reserved slot is held by the unit at index 0; the other one is
+        // free, so the next unit in suite order goes out as well.
+        $this->assertSame(1, $queue->next([0])->index());
+
+        // Both reserved slots are occupied now, so the cost order has the
+        // remaining dispatches.
+        $this->assertSame(9, $queue->next([0, 1])->index());
+    }
+
+    public function testHandsOutTheLongestUnitWhileEveryReservedSlotIsOccupied(): void
+    {
+        // The units at index 0 and 1 have been dispatched already and are
+        // executing; the queue holds the units that follow them.
+        $queue = new DispatchQueue([$this->unit(9), $this->unit(5), $this->unit(2)]);
+
+        // Both units that are executing precede everything still queued, so
+        // both reserved slots are occupied from the first dispatch on.
+        $this->assertSame(9, $queue->next([0, 1])->index());
+        $this->assertSame(5, $queue->next([0, 1])->index());
+    }
+
+    public function testHandsOutTheUnitsTheOrderedOutputWaitsForOnceTheirPredecessorsHaveFinished(): void
+    {
+        $queue = new DispatchQueue([$this->unit(9), $this->unit(8), $this->unit(7), $this->unit(1), $this->unit(0)]);
+
+        $this->assertSame(0, $queue->next([])->index());
+        $this->assertSame(1, $queue->next([0])->index());
+        $this->assertSame(9, $queue->next([0, 1])->index());
+
+        // The units at index 0 and 1 have finished; of the units that are
+        // executing, none precedes the unit at index 7, so both reserved slots
+        // are free again.
+        $this->assertSame(7, $queue->next([9])->index());
+        $this->assertSame(8, $queue->next([9, 7])->index());
     }
 
     public function testHandsOutEveryUnitExactlyOnceAndIsEmptyAfterwards(): void
@@ -61,12 +76,10 @@ final class DispatchQueueTest extends TestCase
 
         $indexes = [];
 
-        // Alternating between the two orders: every second dispatch is made
-        // while the unit the output waits for is not executing.
-        $indexes[] = $queue->next(null)->index();
-        $indexes[] = $queue->next(0)->index();
-        $indexes[] = $queue->next(null)->index();
-        $indexes[] = $queue->next(0)->index();
+        $indexes[] = $queue->next([])->index();
+        $indexes[] = $queue->next([0])->index();
+        $indexes[] = $queue->next([0, 1])->index();
+        $indexes[] = $queue->next([])->index();
 
         sort($indexes);
 

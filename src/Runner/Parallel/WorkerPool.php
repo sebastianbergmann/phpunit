@@ -22,8 +22,8 @@ use PHPUnit\Event\EventCollection;
  * next unit from the queue, which self-balances the load against stragglers.
  *
  * The queue hands out its units in the order in which they are to be
- * dispatched: longest first, except that the unit the ordered output is
- * waiting for is dispatched ahead of the others while it is not in flight, so
+ * dispatched: longest first, except on the slots that are reserved for the
+ * suite order, which dispatch the units the ordered output is waiting for, so
  * that the results keep flowing (see DispatchQueue).
  *
  * A single thread of control keeps all of the workers busy by polling them in
@@ -397,38 +397,35 @@ final class WorkerPool
     }
 
     /**
-     * Take the next unit to dispatch, telling the queue which unit the output
-     * is waiting for: the lowest suite index that is executing right now is
-     * what decides whether the queue hands out the next unit in suite order,
-     * so that the results keep flowing, or the longest one, so that the chunk
-     * finishes as early as possible (see DispatchQueue).
+     * Take the next unit to dispatch, telling the queue what is in flight: the
+     * suite indexes of the executing units are what decide whether the queue
+     * hands out the next unit in suite order, so that the results keep
+     * flowing, or the longest one, so that the chunk finishes as early as
+     * possible (see DispatchQueue).
      */
     private function nextQueuedUnit(): WorkUnit
     {
-        return $this->queue->next($this->lowestExecutingIndex());
+        return $this->queue->next($this->executingIndexes());
     }
 
     /**
-     * The lowest suite index among the units that the workers are executing
-     * right now; null when no unit is in flight.
+     * The suite indexes of the units that the workers are executing right now.
      *
-     * @return ?non-negative-int
+     * @return list<non-negative-int>
      */
-    private function lowestExecutingIndex(): ?int
+    private function executingIndexes(): array
     {
-        $lowest = null;
+        $indexes = [];
 
         foreach ($this->busyWorkers() as $worker) {
             $unit = $worker->currentUnit();
 
             assert($unit !== null);
 
-            if ($lowest === null || $unit->index() < $lowest) {
-                $lowest = $unit->index();
-            }
+            $indexes[] = $unit->index();
         }
 
-        return $lowest;
+        return $indexes;
     }
 
     private function hasAliveWorkers(): bool
