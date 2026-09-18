@@ -84,6 +84,39 @@ final class PhptRunnerTest extends TestCase
         $this->assertSame([0, 1], $order);
     }
 
+    public function testStartsAsManyOfTheUnitsTheOrderedOutputWaitsForAsItHasReservedSlots(): void
+    {
+        $fast = __DIR__ . '/../../../_files/parallel-worker/worker.phpt';
+        $slow = __DIR__ . '/../../../_files/parallel-worker/worker-slow.phpt';
+
+        // The scheduler queued the two fast units first, because the two units
+        // the ordered output waits for are the longer ones. More than one start
+        // slot is reserved for the suite order, so both of them are started
+        // right away — the budget has room for two units at a time — and their
+        // results are what is reported first. With a single reserved slot, one
+        // of the fast units would have taken the second slot and would have
+        // been the first unit to finish.
+        $units = [
+            new PhptWorkUnit(5, $fast),
+            new PhptWorkUnit(0, $slow),
+            new PhptWorkUnit(6, $fast),
+            new PhptWorkUnit(1, $slow),
+        ];
+
+        $order = [];
+
+        $this->runner(4, new ProcessBudget(2))->run(
+            $units,
+            static function (int $index, EventCollection $events) use (&$order): void
+            {
+                $order[] = $index;
+            },
+        );
+
+        $this->assertCount(4, $order);
+        $this->assertContains($order[0], [0, 1]);
+    }
+
     public function testRunsTheRepetitionsOfARepeatedPhptTestOneAfterAnotherWithinItsUnit(): void
     {
         $units = [
