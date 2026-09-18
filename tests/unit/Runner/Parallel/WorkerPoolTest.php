@@ -67,6 +67,25 @@ final class WorkerPoolTest extends TestCase
         $this->assertArrayHasKey(1, $streamed);
     }
 
+    public function testDispatchesTheUnitTheOrderedOutputWaitsForBeforeTheLongerOnesQueuedAheadOfIt(): void
+    {
+        // The scheduler queued the unit at index 1 first, because it is the
+        // longer one; the unit at index 0 is what the ordered output waits
+        // for, though, so it is dispatched first and its results are reported
+        // while the other unit is still executing. With one worker, the
+        // completion order is the dispatch order.
+        $units = [
+            new TestClassWorkUnit(1, WorkerSecondTest::class, [new WorkerSecondTest('testThatFails')]),
+            new TestClassWorkUnit(0, WorkerFirstTest::class, [new WorkerFirstTest('testStartsTheProcessLocalCounter')]),
+        ];
+
+        $completed = $this->execute($this->pool(1), $units);
+
+        $this->assertCount(2, $completed);
+        $this->assertSame(0, $completed[0]->unit()->index());
+        $this->assertSame(1, $completed[1]->unit()->index());
+    }
+
     public function testReportsACrashedUnitWhenItsWorkerDies(): void
     {
         $units = [

@@ -253,6 +253,16 @@ final class PersistentWorker
     }
 
     /**
+     * The unit the worker is currently executing; null when it is idle. The
+     * pool derives from this which of the units in flight is the one the
+     * ordered output is waiting for (see WorkerPool).
+     */
+    public function currentUnit(): ?WorkUnit
+    {
+        return $this->currentUnit;
+    }
+
+    /**
      * Whether the worker process is still usable. A worker that died while
      * running a unit is no longer usable and must not be dispatched to again.
      */
