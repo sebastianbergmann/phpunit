@@ -32,6 +32,12 @@ use PHPUnit\Runner\TestRunHistory\TestRunHistory;
  * Only the dispatch order is affected. Results are released in suite order
  * either way, so the output of the run does not change.
  *
+ * The cost order is not the whole of the dispatch order: because only the unit
+ * whose turn it is can be reported live, the unit the ordered output is waiting
+ * for is dispatched ahead of the cost order while it is not in flight. The
+ * scheduler establishes the cost order, the DispatchQueue makes that exception
+ * to it.
+ *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
