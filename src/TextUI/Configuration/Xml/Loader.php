@@ -1130,7 +1130,7 @@ final readonly class Loader
         $configuredExecutionOrder = $this->parseStringAttribute($documentElement, 'executionOrder');
 
         if ($configuredExecutionOrder !== null) {
-            $parsedExecutionOrder = (new ExecutionOrderParser)->parse(
+            $parsedExecutionOrder = new ExecutionOrderParser($this->emitter)->parse(
                 $configuredExecutionOrder,
                 ExecutionOrderSource::XmlAttribute,
                 $executionOrder,

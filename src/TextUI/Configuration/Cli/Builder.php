@@ -835,7 +835,7 @@ final class Builder
                 case '--order-by':
                     assert($option[1] !== null);
 
-                    $parsedExecutionOrder = (new ExecutionOrderParser)->parse(
+                    $parsedExecutionOrder = new ExecutionOrderParser($this->emitter)->parse(
                         $option[1],
                         ExecutionOrderSource::CommandLineOption,
                         $executionOrder,

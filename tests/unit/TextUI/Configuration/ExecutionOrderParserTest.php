@@ -9,17 +9,13 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
-use PHPUnit\Event\Event;
-use PHPUnit\Event\Facade;
-use PHPUnit\Event\TestRunner\DeprecationTriggered;
-use PHPUnit\Event\Tracer\Tracer;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\TestSuiteSorter;
-use ReflectionProperty;
 
 #[CoversClass(ExecutionOrderParser::class)]
 #[CoversClass(ExecutionOrder::class)]
@@ -181,24 +177,13 @@ final class ExecutionOrderParserTest extends TestCase
 
     private function parse(string $value, ExecutionOrderSource $source = ExecutionOrderSource::CommandLineOption): ExecutionOrder
     {
-        $result = null;
-
-        $this->withThrowAwayEventFacade(
-            static function () use (&$result, $value, $source): void
-            {
-                $result = (new ExecutionOrderParser)->parse(
-                    $value,
-                    $source,
-                    TestSuiteSorter::ORDER_DEFAULT,
-                    TestSuiteSorter::ORDER_DEFAULT,
-                    false,
-                );
-            },
+        return new ExecutionOrderParser($this->createStub(Emitter::class))->parse(
+            $value,
+            $source,
+            TestSuiteSorter::ORDER_DEFAULT,
+            TestSuiteSorter::ORDER_DEFAULT,
+            false,
         );
-
-        $this->assertInstanceOf(ExecutionOrder::class, $result);
-
-        return $result;
     }
 
     /**
@@ -206,62 +191,27 @@ final class ExecutionOrderParserTest extends TestCase
      */
     private function deprecationsTriggeredBy(string $value, ExecutionOrderSource $source = ExecutionOrderSource::CommandLineOption): array
     {
-        $tracer = new class implements Tracer
-        {
-            /**
-             * @var list<string>
-             */
-            public array $messages = [];
+        $messages = [];
 
-            public function trace(Event $event): void
-            {
-                if ($event instanceof DeprecationTriggered) {
-                    $this->messages[] = $event->message();
-                }
-            }
-        };
+        $emitter = $this->createStub(Emitter::class);
 
-        $this->withThrowAwayEventFacade(
-            static function () use ($value, $source): void
-            {
-                (new ExecutionOrderParser)->parse(
-                    $value,
-                    $source,
-                    TestSuiteSorter::ORDER_DEFAULT,
-                    TestSuiteSorter::ORDER_DEFAULT,
-                    false,
-                );
-            },
-            $tracer,
+        $emitter
+            ->method('testRunnerTriggeredPhpunitDeprecation')
+            ->willReturnCallback(
+                static function (string $message) use (&$messages): void
+                {
+                    $messages[] = $message;
+                },
+            );
+
+        new ExecutionOrderParser($emitter)->parse(
+            $value,
+            $source,
+            TestSuiteSorter::ORDER_DEFAULT,
+            TestSuiteSorter::ORDER_DEFAULT,
+            false,
         );
 
-        return $tracer->messages;
-    }
-
-    /**
-     * The parser emits PHPUnit deprecations. These must not end up in the
-     * result of the test run that exercises the parser, so they are emitted
-     * into a throw-away event facade.
-     */
-    private function withThrowAwayEventFacade(callable $callable, ?Tracer $tracer = null): void
-    {
-        $facade = new Facade;
-
-        if ($tracer !== null) {
-            $facade->registerTracer($tracer);
-        }
-
-        $facade->seal();
-
-        $property = new ReflectionProperty(Facade::class, 'instance');
-        $instance = $property->getValue();
-
-        $property->setValue(null, $facade);
-
-        try {
-            $callable();
-        } finally {
-            $property->setValue(null, $instance);
-        }
+        return $messages;
     }
 }

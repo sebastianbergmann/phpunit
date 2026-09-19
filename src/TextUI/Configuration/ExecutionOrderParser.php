@@ -12,7 +12,7 @@ namespace PHPUnit\TextUI\Configuration;
 use function explode;
 use function in_array;
 use function sprintf;
-use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Runner\TestSuiteSorter;
 
 /**
@@ -48,6 +48,12 @@ final readonly class ExecutionOrderParser
         'size-ascending',
         'size-descending',
     ];
+    private Emitter $emitter;
+
+    public function __construct(Emitter $emitter)
+    {
+        $this->emitter = $emitter;
+    }
 
     /**
      * @param string $value the configured value; every token it does not give
@@ -178,7 +184,7 @@ final readonly class ExecutionOrderParser
      */
     private function deprecateRenamedToken(ExecutionOrderSource $source, string $token, string $replacement): void
     {
-        EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
+        $this->emitter->testRunnerTriggeredPhpunitDeprecation(
             sprintf(
                 'Using "%s" for %s is deprecated and will be removed in PHPUnit 14. Use "%s" instead.',
                 $token,
@@ -197,7 +203,7 @@ final readonly class ExecutionOrderParser
      */
     private function deprecateDependencyToken(ExecutionOrderSource $source, string $token, string $replacement): void
     {
-        EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
+        $this->emitter->testRunnerTriggeredPhpunitDeprecation(
             sprintf(
                 'Using "%s" for %s is deprecated and will be removed in PHPUnit 14. Use %s instead.',
                 $token,
@@ -213,7 +219,7 @@ final readonly class ExecutionOrderParser
      */
     private function deprecateMultipleOrders(ExecutionOrderSource $source, string $previousToken, string $token): void
     {
-        EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
+        $this->emitter->testRunnerTriggeredPhpunitDeprecation(
             sprintf(
                 'Using more than one order for %s is deprecated and will be an error in PHPUnit 14. "%s" overrides "%s".',
                 $source->subject(),
@@ -228,7 +234,7 @@ final readonly class ExecutionOrderParser
      */
     private function deprecateDefectsBeforeOrder(ExecutionOrderSource $source, string $token): void
     {
-        EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
+        $this->emitter->testRunnerTriggeredPhpunitDeprecation(
             sprintf(
                 'Using "defects" before "%s" for %s is deprecated and will change meaning in PHPUnit 14, where tests are reordered in the order in which the tokens are written. Use "%s,defects" instead.',
                 $token,
