@@ -97,15 +97,26 @@ final class Facade implements EventCollector
             new DirectDispatcher($this->typeMap()),
         );
 
-        $this->emitter = new DispatchingEmitter(
-            $dispatcher,
-            new Telemetry\System(
-                new Telemetry\SystemStopWatchWithOffset($offset),
-                new Telemetry\SystemMemoryMeter,
-                new SystemGarbageCollectorStatusProvider,
-                new Telemetry\SystemCpuTimeMeter,
-            ),
+        $system = new Telemetry\System(
+            new Telemetry\SystemStopWatchWithOffset($offset),
+            new Telemetry\SystemMemoryMeter,
+            new SystemGarbageCollectorStatusProvider,
+            new Telemetry\SystemCpuTimeMeter,
         );
+
+        /*
+         * A persistent worker process of a parallel test run initializes its
+         * event facade for isolation once per unit it runs, while the error
+         * handler and the code coverage singletons that hold the emitter are
+         * created once, when the worker boots. The emitter therefore keeps its
+         * identity and is re-targeted instead of being replaced, so that the
+         * events those singletons emit end up in the current unit's envelope.
+         */
+        if ($this->emitter instanceof DispatchingEmitter) {
+            $this->emitter->initialize($dispatcher, $system);
+        } else {
+            $this->emitter = new DispatchingEmitter($dispatcher, $system);
+        }
 
         $this->sealed = true;
 
