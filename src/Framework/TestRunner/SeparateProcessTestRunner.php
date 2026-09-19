@@ -23,7 +23,7 @@ use function sys_get_temp_dir;
 use function tempnam;
 use function unlink;
 use function var_export;
-use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Event\TestRunner\ChildProcessReason;
 use PHPUnit\Framework\Exception;
@@ -49,6 +49,12 @@ final class SeparateProcessTestRunner
 {
     private static ?string $configurationFile = null;
     private static ?string $sourceMapFile     = null;
+    private readonly Emitter $emitter;
+
+    public function __construct(Emitter $emitter)
+    {
+        $this->emitter = $emitter;
+    }
 
     /**
      * @throws \PHPUnit\Runner\Exception
@@ -80,7 +86,7 @@ final class SeparateProcessTestRunner
             $iniSettings       = GlobalState::getIniSettingsAsString();
 
             foreach ($globalStateResult->skippedGlobals() as $skipped) {
-                EventFacade::emitter()->testTriggeredPhpunitWarning(
+                $this->emitter->testTriggeredPhpunitWarning(
                     $test->valueObjectForEvents(),
                     sprintf(
                         'Global variable %s was not preserved because it %s',
