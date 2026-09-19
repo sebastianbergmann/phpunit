@@ -20,13 +20,12 @@ use function sys_get_temp_dir;
 use function uniqid;
 use function unlink;
 use Closure;
-use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\TestSuite as TestSuiteObject;
 use PHPUnit\Runner\TestIndex\TestFileSkipper;
 use PHPUnit\TextUI\Configuration\File;
 use PHPUnit\TextUI\Configuration\FileCollection;
@@ -38,7 +37,6 @@ use PHPUnit\TextUI\Configuration\TestSuite;
 use PHPUnit\TextUI\Configuration\TestSuiteCollection;
 use PHPUnit\TextUI\TestFileNotFoundException;
 use PHPUnit\Util\VersionComparisonOperator;
-use ReflectionProperty;
 use RuntimeException;
 
 #[CoversClass(TestSuiteMapper::class)]
@@ -76,7 +74,7 @@ final class TestSuiteMapperTest extends TestCase
 
     public function testMapsDirectoryToTestSuite(): void
     {
-        $testSuite = (new TestSuiteMapper)->map(
+        $testSuite = new TestSuiteMapper($this->createStub(Emitter::class))->map(
             'phpunit.xml',
             TestSuiteCollection::fromArray([
                 $this->testSuite(
@@ -93,7 +91,7 @@ final class TestSuiteMapperTest extends TestCase
 
     public function testDoesNotMapFilesThatAreExcluded(): void
     {
-        $testSuite = (new TestSuiteMapper)->map(
+        $testSuite = new TestSuiteMapper($this->createStub(Emitter::class))->map(
             'phpunit.xml',
             TestSuiteCollection::fromArray([
                 $this->testSuite(
@@ -114,7 +112,7 @@ final class TestSuiteMapperTest extends TestCase
 
     public function testDoesNotMapDirectoryThatRequiresDifferentPhpVersion(): void
     {
-        $testSuite = (new TestSuiteMapper)->map(
+        $testSuite = new TestSuiteMapper($this->createStub(Emitter::class))->map(
             'phpunit.xml',
             TestSuiteCollection::fromArray([
                 $this->testSuite(
@@ -131,7 +129,7 @@ final class TestSuiteMapperTest extends TestCase
 
     public function testDoesNotMapFileThatRequiresDifferentPhpVersion(): void
     {
-        $testSuite = (new TestSuiteMapper)->map(
+        $testSuite = new TestSuiteMapper($this->createStub(Emitter::class))->map(
             'phpunit.xml',
             TestSuiteCollection::fromArray([
                 $this->testSuite(
@@ -151,7 +149,7 @@ final class TestSuiteMapperTest extends TestCase
     {
         $this->expectException(TestFileNotFoundException::class);
 
-        (new TestSuiteMapper)->map(
+        new TestSuiteMapper($this->createStub(Emitter::class))->map(
             'phpunit.xml',
             TestSuiteCollection::fromArray([
                 $this->testSuite(
@@ -174,7 +172,16 @@ final class TestSuiteMapperTest extends TestCase
 
     public function testDoesNotAddFileToMoreThanOneTestSuite(): void
     {
-        $testSuite = $this->mapWithThrowAwayEventFacade(
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter
+            ->expects($this->once())
+            ->method('testRunnerTriggeredPhpunitWarning')
+            ->with($this->matchesRegularExpression('/^Cannot add file .+ to test suite "second" as it was already added to test suite "first"$/'))
+            ->seal();
+
+        $testSuite = new TestSuiteMapper($emitter)->map(
+            'phpunit.xml',
             TestSuiteCollection::fromArray([
                 $this->testSuite(
                     'first',
@@ -187,6 +194,8 @@ final class TestSuiteMapperTest extends TestCase
                     TestFileCollection::fromArray([$this->testFile()]),
                 ),
             ]),
+            [],
+            [],
         );
 
         $this->assertSame(1, $testSuite->count());
@@ -211,7 +220,7 @@ final class TestSuiteMapperTest extends TestCase
             ->method('record')
             ->seal();
 
-        $testSuite = new TestSuiteMapper($skipper)->map(
+        $testSuite = new TestSuiteMapper($this->createStub(Emitter::class), $skipper)->map(
             __FILE__,
             $this->testSuiteForDirectory($directory),
             [],
@@ -249,7 +258,7 @@ final class TestSuiteMapperTest extends TestCase
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('BrokenInDirectoryTest.php cannot be loaded');
 
-        new TestSuiteMapper($skipper)->map(
+        new TestSuiteMapper($this->createStub(Emitter::class), $skipper)->map(
             __FILE__,
             $this->testSuiteForDirectory($directory),
             [],
@@ -274,7 +283,7 @@ final class TestSuiteMapperTest extends TestCase
             ->method('record')
             ->seal();
 
-        $testSuite = new TestSuiteMapper($skipper)->map(
+        $testSuite = new TestSuiteMapper($this->createStub(Emitter::class), $skipper)->map(
             __FILE__,
             $this->testSuiteForFile($file),
             [],
@@ -306,32 +315,12 @@ final class TestSuiteMapperTest extends TestCase
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('BrokenFileTest.php cannot be loaded');
 
-        new TestSuiteMapper($skipper)->map(
+        new TestSuiteMapper($this->createStub(Emitter::class), $skipper)->map(
             __FILE__,
             $this->testSuiteForFile($file),
             [],
             [],
         );
-    }
-
-    private function mapWithThrowAwayEventFacade(TestSuiteCollection $configuredTestSuites): TestSuiteObject
-    {
-        /*
-         * TestSuiteMapper emits a test runner warning when a test file is
-         * configured for more than one test suite. This must not end up in the
-         * result of the test run that exercises TestSuiteMapper, so it is
-         * emitted into a throw-away event facade that is never forwarded.
-         */
-        $property = new ReflectionProperty(EventFacade::class, 'instance');
-        $facade   = $property->getValue();
-
-        $property->setValue(null, new EventFacade);
-
-        try {
-            return (new TestSuiteMapper)->map('phpunit.xml', $configuredTestSuites, [], []);
-        } finally {
-            $property->setValue(null, $facade);
-        }
     }
 
     private function testSuite(string $name, TestDirectoryCollection $directories, ?TestFileCollection $files = null, ?FileCollection $exclude = null): TestSuite

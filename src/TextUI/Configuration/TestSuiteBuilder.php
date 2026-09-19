@@ -136,7 +136,7 @@ final readonly class TestSuiteBuilder
 
             assert($xmlConfigurationFile !== '');
 
-            $testSuite = new TestSuiteMapper($this->skipper)->map(
+            $testSuite = new TestSuiteMapper($this->emitter, $this->skipper)->map(
                 $xmlConfigurationFile,
                 $configuration->testSuite(),
                 $configuration->ignoreTestSelectionInXmlConfiguration() ? [] : $configuration->includeTestSuites(),

@@ -16,7 +16,7 @@ use function is_file;
 use function sprintf;
 use function str_contains;
 use function version_compare;
-use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Exception as FrameworkException;
 use PHPUnit\Framework\TestSuite as TestSuiteObject;
 use PHPUnit\Runner\Filter\CompiledGroupFilter;
@@ -35,14 +35,16 @@ use SebastianBergmann\FileIterator\Facade;
  */
 final readonly class TestSuiteMapper
 {
+    private Emitter $emitter;
     private TestFileSkipper $skipper;
 
-    public function __construct(?TestFileSkipper $skipper = null)
+    public function __construct(Emitter $emitter, ?TestFileSkipper $skipper = null)
     {
         if ($skipper === null) {
             $skipper = new NullTestFileSkipper;
         }
 
+        $this->emitter = $emitter;
         $this->skipper = $skipper;
     }
 
@@ -195,7 +197,7 @@ final readonly class TestSuiteMapper
                 continue;
             }
 
-            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+            $this->emitter->testRunnerTriggeredPhpunitWarning(
                 sprintf(
                     'Group name "%s" configured for %s cannot be used to select tests: "+" combines several group names into a selection of the tests that are in all of them',
                     $group,
@@ -216,7 +218,7 @@ final readonly class TestSuiteMapper
             return false;
         }
 
-        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+        $this->emitter->testRunnerTriggeredPhpunitWarning(
             sprintf(
                 'Cannot add file %s to test suite "%s" as it was already added to test suite "%s"',
                 $file,
