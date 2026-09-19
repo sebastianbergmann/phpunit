@@ -22,9 +22,11 @@ use function str_starts_with;
 use function xdebug_is_debugger_active;
 use AssertionError;
 use PHPUnit\Event\Facade;
+use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\IncompleteTestError;
+use PHPUnit\Framework\ProcessIsolationException;
 use PHPUnit\Framework\SkippedTest;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Api\CodeCoverage as CodeCoverageMetadataApi;
@@ -32,6 +34,7 @@ use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\Runner\Exception;
+use PHPUnit\Runner\ShutdownHandler;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\TextUI\Configuration\SourceFilter;
@@ -61,9 +64,33 @@ final class TestRunner
     /**
      * @throws Exception
      * @throws InvalidArgumentException
+     * @throws NoPreviousThrowableException
+     * @throws ProcessIsolationException
      * @throws UnintentionallyCoveredCodeException
      */
     public function run(TestCase $test): void
+    {
+        if ((new ProcessIsolation)->shouldBeUsedFor($test)) {
+            (new SeparateProcessTestRunner)->run($test);
+
+            return;
+        }
+
+        try {
+            ShutdownHandler::setMessage(sprintf('Fatal error: Premature end of PHP process when running %s.', $test->toString()));
+
+            $this->runInProcess($test);
+        } finally {
+            ShutdownHandler::resetMessage();
+        }
+    }
+
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws UnintentionallyCoveredCodeException
+     */
+    private function runInProcess(TestCase $test): void
     {
         Assert::resetCount();
 

@@ -29,6 +29,7 @@ use PHPUnit\Event\TestRunner\ChildProcessReason;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\ProcessIsolationException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\TextUI\Configuration\SourceMapper;
@@ -57,7 +58,7 @@ final class SeparateProcessTestRunner
      * @throws NoPreviousThrowableException
      * @throws ProcessIsolationException
      */
-    public function run(TestCase $test, bool $preserveGlobalState, bool $requiresXdebug): void
+    public function run(TestCase $test): void
     {
         $class = new ReflectionClass($test);
 
@@ -71,7 +72,7 @@ final class SeparateProcessTestRunner
             $bootstrap = ConfigurationRegistry::get()->bootstrap();
         }
 
-        if ($preserveGlobalState) {
+        if ($test->preservesGlobalState()) {
             $constants         = GlobalState::getConstantsAsString();
             $globalStateResult = GlobalState::exportGlobals();
             $globals           = $globalStateResult->globalsString();
@@ -175,6 +176,8 @@ final class SeparateProcessTestRunner
         $code = $template->render();
 
         assert($code !== '');
+
+        $requiresXdebug = (new Requirements)->requiresXdebug($test::class, $test->name());
 
         JobRunnerRegistry::runTestJob(new Job($code, ChildProcessReason::TestRequiringProcessIsolation, requiresXdebug: $requiresXdebug), $processResultFile, $test, $processResultNonce);
     }

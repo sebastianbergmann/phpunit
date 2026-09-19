@@ -17,7 +17,6 @@ use PHPUnit\Framework\Attributes\ExcludeGlobalVariableFromBackup;
 use PHPUnit\Framework\TestCase\GlobalStateCapture;
 use PHPUnit\TestFixture\ExpectsOutput;
 use PHPUnit\TestFixture\TestWithDifferentNames;
-use ReflectionMethod;
 use ReflectionProperty;
 
 #[CoversClass(TestCase::class)]
@@ -133,14 +132,62 @@ class TestCaseTest extends TestCase
         );
     }
 
-    public function testShouldRunInSeparateProcessReturnsFalseWhenTestIsAlreadyInIsolation(): void
+    public function testDoesNotRunInSeparateProcessByDefault(): void
     {
         $testCase = new TestWithDifferentNames('testWithName');
+
+        $this->assertFalse($testCase->runsTestInSeparateProcess());
+    }
+
+    public function testCanBeConfiguredToRunInSeparateProcess(): void
+    {
+        $testCase = new TestWithDifferentNames('testWithName');
+
+        $testCase->setRunTestInSeparateProcess(true);
+
+        $this->assertTrue($testCase->runsTestInSeparateProcess());
+    }
+
+    public function testFirstConfigurationOfRunningInSeparateProcessWins(): void
+    {
+        $testCase = new TestWithDifferentNames('testWithName');
+
+        $testCase->setRunTestInSeparateProcess(false);
+        $testCase->setRunTestInSeparateProcess(true);
+
+        $this->assertFalse($testCase->runsTestInSeparateProcess());
+    }
+
+    public function testDoesNotPreserveGlobalStateByDefault(): void
+    {
+        $testCase = new TestWithDifferentNames('testWithName');
+
+        $this->assertFalse($testCase->preservesGlobalState());
+    }
+
+    public function testCanBeConfiguredToPreserveGlobalState(): void
+    {
+        $testCase = new TestWithDifferentNames('testWithName');
+
+        $testCase->setPreserveGlobalState(true);
+
+        $this->assertTrue($testCase->preservesGlobalState());
+    }
+
+    public function testIsNotInIsolationByDefault(): void
+    {
+        $testCase = new TestWithDifferentNames('testWithName');
+
+        $this->assertFalse($testCase->isInIsolation());
+    }
+
+    public function testCanBeMarkedAsInIsolation(): void
+    {
+        $testCase = new TestWithDifferentNames('testWithName');
+
         $testCase->setInIsolation(true);
 
-        $method = new ReflectionMethod(TestCase::class, 'shouldRunInSeparateProcess');
-
-        $this->assertFalse($method->invoke($testCase));
+        $this->assertTrue($testCase->isInIsolation());
     }
 
     public function testCreateGlobalStateSnapshotAppliesBackupStaticPropertiesExcludeList(): void

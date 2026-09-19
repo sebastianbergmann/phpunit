@@ -53,7 +53,6 @@ use PHPUnit\Framework\TestCase\HookMethodInvoker;
 use PHPUnit\Framework\TestCase\MockObjectRegistry;
 use PHPUnit\Framework\TestCase\OutputBuffer;
 use PHPUnit\Framework\TestCase\TestDoubleFactory;
-use PHPUnit\Framework\TestRunner\SeparateProcessTestRunner;
 use PHPUnit\Framework\TestRunner\TestRunner;
 use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Framework\TestStatus\TestStatus;
@@ -61,9 +60,7 @@ use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\HookMethods;
 use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
-use PHPUnit\Runner\ShutdownHandler;
 use PHPUnit\TestRunner\TestResult\PassedTests;
-use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use ReflectionClass;
 use ReflectionMethod;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
@@ -287,22 +284,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             return;
         }
 
-        if (!$this->shouldRunInSeparateProcess() || $this->requirementsNotSatisfied()) {
-            try {
-                ShutdownHandler::setMessage(sprintf('Fatal error: Premature end of PHP process when running %s.', $this->toString()));
-                (new TestRunner)->run($this);
-            } finally {
-                ShutdownHandler::resetMessage();
-            }
-
-            return;
-        }
-
-        (new SeparateProcessTestRunner)->run(
-            $this,
-            $this->preserveGlobalState,
-            $this->requiresXdebug(),
-        );
+        (new TestRunner)->run($this);
     }
 
     /**
@@ -730,6 +712,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
+    final public function runsTestInSeparateProcess(): bool
+    {
+        return $this->runTestInSeparateProcess === true;
+    }
+
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     final public function setRunTestInSeparateProcess(bool $runTestInSeparateProcess): void
     {
         if ($this->runTestInSeparateProcess === null) {
@@ -740,9 +730,25 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
+    final public function preservesGlobalState(): bool
+    {
+        return $this->preserveGlobalState;
+    }
+
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     final public function setPreserveGlobalState(bool $preserveGlobalState): void
     {
         $this->preserveGlobalState = $preserveGlobalState;
+    }
+
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    final public function isInIsolation(): bool
+    {
+        return $this->inIsolation;
     }
 
     /**
@@ -1385,35 +1391,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
     }
 
-    private function shouldRunInSeparateProcess(): bool
-    {
-        if ($this->inIsolation) {
-            return false;
-        }
-
-        if ($this->runTestInSeparateProcess === true) {
-            return true;
-        }
-
-        return ConfigurationRegistry::get()->processIsolation();
-    }
-
     private function isRegisteredFailure(Throwable $t): bool
     {
         return array_any(
             array_keys($this->failureTypes),
             static fn (string $failureType) => $t instanceof $failureType,
         );
-    }
-
-    private function requirementsNotSatisfied(): bool
-    {
-        return (new Requirements)->requirementsNotSatisfiedFor(static::class, $this->methodName) !== [];
-    }
-
-    private function requiresXdebug(): bool
-    {
-        return (new Requirements)->requiresXdebug(static::class, $this->methodName);
     }
 
     private function emitEventForCustomTestMethodInvocation(): void
