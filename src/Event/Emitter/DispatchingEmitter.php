@@ -41,12 +41,27 @@ use SebastianBergmann\Comparator\Comparator;
  */
 final class DispatchingEmitter implements Emitter
 {
-    private readonly Dispatcher $dispatcher;
-    private readonly Telemetry\System $system;
-    private readonly Telemetry\Snapshot $startSnapshot;
+    private Dispatcher $dispatcher;
+    private Telemetry\System $system;
+    private Telemetry\Snapshot $startSnapshot;
     private Telemetry\Snapshot $previousSnapshot;
 
     public function __construct(Dispatcher $dispatcher, Telemetry\System $system)
+    {
+        $this->initialize($dispatcher, $system);
+    }
+
+    /**
+     * Re-target this emitter to another dispatcher and telemetry system, as if
+     * it had been constructed with them. The emitter keeps its identity, so
+     * objects that hold it — the error handler and the code coverage singletons
+     * of a worker process, for example — keep dispatching to the dispatcher
+     * that is current, and not to the one that was current when they were
+     * created.
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function initialize(Dispatcher $dispatcher, Telemetry\System $system): void
     {
         $this->dispatcher = $dispatcher;
         $this->system     = $system;
