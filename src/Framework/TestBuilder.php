@@ -133,7 +133,7 @@ final readonly class TestBuilder
 
             if ($this->requirementsSatisfied($className, $methodName) &&
                 !$this->filterExcludesMethod($className, $methodName)) {
-                $data = (new DataProvider)->providedData($className, $methodName);
+                $data = new DataProvider($this->emitter)->providedData($className, $methodName);
             }
         } finally {
             ErrorHandler::instance()->leaveTestCaseContext();

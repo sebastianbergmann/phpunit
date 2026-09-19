@@ -38,6 +38,13 @@ use Throwable;
  */
 final readonly class DataProvider
 {
+    private Event\Emitter $emitter;
+
+    public function __construct(Event\Emitter $emitter)
+    {
+        $this->emitter = $emitter;
+    }
+
     /**
      * @param class-string<TestCase> $className
      * @param non-empty-string       $methodName
@@ -101,7 +108,7 @@ final readonly class DataProvider
                 $skipWhenEmpty = true;
             }
 
-            Event\Facade::emitter()->dataProviderMethodCalled(
+            $this->emitter->dataProviderMethodCalled(
                 $testMethodValueObject,
                 $dataProviderMethod,
             );
@@ -114,7 +121,7 @@ final readonly class DataProvider
                 $methodName = $_dataProvider->methodName();
 
                 if (Test::isTestMethod($method)) {
-                    Event\Facade::emitter()->testRunnerTriggeredPhpunitWarning(
+                    $this->emitter->testRunnerTriggeredPhpunitWarning(
                         sprintf(
                             'Method %s::%s() used by test method %s::%s() is also a test method',
                             $_dataProvider->className(),
@@ -168,7 +175,7 @@ final readonly class DataProvider
                     );
                 }
             } catch (Throwable $e) {
-                Event\Facade::emitter()->dataProviderMethodFinished(
+                $this->emitter->dataProviderMethodFinished(
                     $testMethodValueObject,
                     ...$methodsCalled,
                 );
@@ -233,7 +240,7 @@ final readonly class DataProvider
                     $result[$key] = new ProvidedData($providerLabel, $value);
                 }
             } catch (Throwable $e) {
-                Event\Facade::emitter()->dataProviderMethodFinished(
+                $this->emitter->dataProviderMethodFinished(
                     $testMethodValueObject,
                     ...$methodsCalled,
                 );
@@ -262,7 +269,7 @@ final readonly class DataProvider
                     );
                 }
             } catch (Throwable $e) {
-                Event\Facade::emitter()->dataProviderMethodFinished(
+                $this->emitter->dataProviderMethodFinished(
                     $testMethodValueObject,
                     ...$methodsCalled,
                 );
@@ -272,7 +279,7 @@ final readonly class DataProvider
 
             foreach ($data as $key => $value) {
                 if (!is_int($key) && !is_string($key)) {
-                    Event\Facade::emitter()->dataProviderMethodFinished(
+                    $this->emitter->dataProviderMethodFinished(
                         $testMethodValueObject,
                         ...$methodsCalled,
                     );
@@ -286,7 +293,7 @@ final readonly class DataProvider
                 }
 
                 if ($key === '') {
-                    Event\Facade::emitter()->dataProviderMethodFinished(
+                    $this->emitter->dataProviderMethodFinished(
                         $testMethodValueObject,
                         ...$methodsCalled,
                     );
@@ -297,7 +304,7 @@ final readonly class DataProvider
                 }
 
                 if (!is_array($value)) {
-                    Event\Facade::emitter()->dataProviderMethodFinished(
+                    $this->emitter->dataProviderMethodFinished(
                         $testMethodValueObject,
                         ...$methodsCalled,
                     );
@@ -329,7 +336,7 @@ final readonly class DataProvider
                 }
 
                 if (array_key_exists($key, $result)) {
-                    Event\Facade::emitter()->dataProviderMethodFinished(
+                    $this->emitter->dataProviderMethodFinished(
                         $testMethodValueObject,
                         ...$methodsCalled,
                     );
@@ -347,7 +354,7 @@ final readonly class DataProvider
             }
         }
 
-        Event\Facade::emitter()->dataProviderMethodFinished(
+        $this->emitter->dataProviderMethodFinished(
             $testMethodValueObject,
             ...$methodsCalled,
         );
@@ -446,7 +453,7 @@ final readonly class DataProvider
 
     private function triggerWarningForMixingOfDataProviderAndTestWith(ReflectionMethod $method): void
     {
-        Event\Facade::emitter()->testTriggeredPhpunitWarning(
+        $this->emitter->testTriggeredPhpunitWarning(
             $this->testValueObject($method),
             'Mixing #[DataProvider*] and #[TestWith*] attributes is not supported, only the data provided by #[DataProvider*] will be used',
         );
@@ -454,7 +461,7 @@ final readonly class DataProvider
 
     private function triggerWarningForArgumentCount(ReflectionMethod $method, string $key, string $label, int $numberOfValues, int $testMethodNumberOfParameters): void
     {
-        Event\Facade::emitter()->testTriggeredPhpunitWarning(
+        $this->emitter->testTriggeredPhpunitWarning(
             $this->testValueObject($method),
             sprintf(
                 'Data set %s provided by %s has more arguments (%d) than the test method accepts (%d)',
