@@ -411,9 +411,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $outputBufferingStopped = false;
 
         if ($e === null && $this->outputBuffer->hasExpectation()) {
-            if ($this->stopOutputBuffering($emitter)->closedCleanly) {
-                $outputBufferingStopped = true;
+            $outputBufferingStopped = true;
 
+            if ($this->stopOutputBuffering($emitter)->closedCleanly) {
                 $e = $this->performOutputAssertions($emitter);
             }
         }
