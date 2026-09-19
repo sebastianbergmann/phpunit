@@ -846,7 +846,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     final protected function any(): AnyInvokedCountMatcher
     {
         Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
-            $this->testValueObjectForEvents,
+            $this->valueObjectForEvents(),
             'The any() invoked count expectation is deprecated and will be removed in PHPUnit 14. ' .
             'Use a test stub instead or configure a real invocation count expectation.',
         );
