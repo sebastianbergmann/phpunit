@@ -464,6 +464,7 @@ final readonly class Application
         $extensionBootstrapper = new ExtensionBootstrapper(
             $configuration,
             $facade,
+            $this->emitter,
         );
 
         foreach ($configuration->extensionBootstrappers() as $bootstrapper) {
