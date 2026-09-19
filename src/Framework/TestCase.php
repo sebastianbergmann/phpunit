@@ -720,7 +720,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function setData(int|string $dataName, array $data): void
     {
-        $this->dataSet = new DataSet($dataName, $data);
+        $this->dataSet                  = new DataSet($dataName, $data);
+        $this->testValueObjectForEvents = null;
     }
 
     /**
@@ -773,8 +774,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function setRepetition(int $repetition, int $totalRepetitions): void
     {
-        $this->repetition       = $repetition;
-        $this->totalRepetitions = $totalRepetitions;
+        $this->repetition               = $repetition;
+        $this->totalRepetitions         = $totalRepetitions;
+        $this->testValueObjectForEvents = null;
     }
 
     /**
@@ -805,8 +807,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function setAttempt(int $attempt, int $maxAttempts): void
     {
-        $this->attempt     = $attempt;
-        $this->maxAttempts = $maxAttempts;
+        $this->attempt                  = $attempt;
+        $this->maxAttempts              = $maxAttempts;
+        $this->testValueObjectForEvents = null;
     }
 
     /**

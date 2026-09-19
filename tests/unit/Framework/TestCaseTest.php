@@ -132,6 +132,62 @@ class TestCaseTest extends TestCase
         );
     }
 
+    public function testValueObjectForEventsIsCached(): void
+    {
+        $testCase = new TestWithDifferentNames('testWithName');
+
+        $this->assertSame($testCase->valueObjectForEvents(), $testCase->valueObjectForEvents());
+    }
+
+    public function testValueObjectForEventsReflectsDataSetProvidedAfterItWasBuilt(): void
+    {
+        $testCase = new TestWithDifferentNames('testWithName');
+
+        $this->assertFalse($testCase->valueObjectForEvents()->testData()->hasDataFromDataProvider());
+
+        $testCase->setData('myDataSet', ['foo']);
+
+        $this->assertTrue($testCase->valueObjectForEvents()->testData()->hasDataFromDataProvider());
+        $this->assertSame('myDataSet', $testCase->valueObjectForEvents()->testData()->dataFromDataProvider()->dataSetName());
+    }
+
+    public function testValueObjectForEventsReflectsRepetitionSetAfterItWasBuilt(): void
+    {
+        $testCase = new TestWithDifferentNames('testWithName');
+
+        $this->assertFalse($testCase->valueObjectForEvents()->isRepeated());
+
+        $testCase->setRepetition(2, 3);
+
+        $this->assertTrue($testCase->valueObjectForEvents()->isRepeated());
+        $this->assertSame(2, $testCase->valueObjectForEvents()->repetition());
+        $this->assertSame(3, $testCase->valueObjectForEvents()->totalRepetitions());
+    }
+
+    public function testValueObjectForEventsReflectsAttemptSetAfterItWasBuilt(): void
+    {
+        $testCase = new TestWithDifferentNames('testWithName');
+
+        $this->assertFalse($testCase->valueObjectForEvents()->isRetried());
+
+        $testCase->setAttempt(2, 3);
+
+        $this->assertTrue($testCase->valueObjectForEvents()->isRetried());
+        $this->assertSame(2, $testCase->valueObjectForEvents()->attempt());
+        $this->assertSame(3, $testCase->valueObjectForEvents()->maxAttempts());
+    }
+
+    public function testValueObjectForEventsReflectsDependencyInputSetAfterItWasBuilt(): void
+    {
+        $testCase = new TestWithDifferentNames('testWithName');
+
+        $this->assertCount(0, $testCase->valueObjectForEvents()->testData());
+
+        $testCase->setDependencyInput(['previousTest' => 'value']);
+
+        $this->assertCount(1, $testCase->valueObjectForEvents()->testData());
+    }
+
     public function testDoesNotRunInSeparateProcessByDefault(): void
     {
         $testCase = new TestWithDifferentNames('testWithName');
