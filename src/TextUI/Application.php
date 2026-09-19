@@ -451,7 +451,7 @@ final readonly class Application
     private function buildTestSuite(Configuration $configuration, CliConfiguration $cliConfiguration): TestSuite
     {
         try {
-            return new TestSuiteBuilder($this->initializeTestIndex($configuration, $cliConfiguration))->build($configuration);
+            return new TestSuiteBuilder($this->emitter, $this->initializeTestIndex($configuration, $cliConfiguration))->build($configuration);
         } catch (Exception $e) {
             $this->exitWithErrorMessage($e->getMessage());
         }

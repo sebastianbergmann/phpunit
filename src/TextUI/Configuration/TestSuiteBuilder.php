@@ -20,7 +20,7 @@ use function is_file;
 use function realpath;
 use function str_ends_with;
 use function trim;
-use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Exception;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\TestIndex\NullTestFileSkipper;
@@ -39,14 +39,16 @@ use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
  */
 final readonly class TestSuiteBuilder
 {
+    private Emitter $emitter;
     private TestFileSkipper $skipper;
 
-    public function __construct(?TestFileSkipper $skipper = null)
+    public function __construct(Emitter $emitter, ?TestFileSkipper $skipper = null)
     {
         if ($skipper === null) {
             $skipper = new NullTestFileSkipper;
         }
 
+        $this->emitter = $emitter;
         $this->skipper = $skipper;
     }
 
@@ -150,7 +152,7 @@ final readonly class TestSuiteBuilder
          */
         $this->skipper->persist();
 
-        EventFacade::emitter()->testSuiteLoaded(\PHPUnit\Event\TestSuite\TestSuiteBuilder::from($testSuite));
+        $this->emitter->testSuiteLoaded(\PHPUnit\Event\TestSuite\TestSuiteBuilder::from($testSuite));
 
         return $testSuite;
     }

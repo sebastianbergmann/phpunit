@@ -19,6 +19,7 @@ use function sys_get_temp_dir;
 use function uniqid;
 use function unlink;
 use Closure;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
@@ -66,7 +67,7 @@ final class TestSuiteBuilderTest extends TestCase
 
         $this->writeTestClass($directory, 'Built');
 
-        $testSuite = (new TestSuiteBuilder)->build($this->configurationFor($directory));
+        $testSuite = new TestSuiteBuilder($this->createStub(Emitter::class))->build($this->configurationFor($directory));
 
         $this->assertSame(1, $testSuite->count());
     }
@@ -93,7 +94,7 @@ final class TestSuiteBuilderTest extends TestCase
             ->method('persist')
             ->seal();
 
-        $testSuite = new TestSuiteBuilder($skipper)->build($this->configurationFor($directory));
+        $testSuite = new TestSuiteBuilder($this->createStub(Emitter::class), $skipper)->build($this->configurationFor($directory));
 
         $this->assertSame(0, $testSuite->count());
     }
@@ -121,7 +122,7 @@ final class TestSuiteBuilderTest extends TestCase
             ->method('persist')
             ->seal();
 
-        $testSuite = new TestSuiteBuilder($skipper)->build($this->configurationFor($loaded, $skipped));
+        $testSuite = new TestSuiteBuilder($this->createStub(Emitter::class), $skipper)->build($this->configurationFor($loaded, $skipped));
 
         $this->assertSame(1, $testSuite->count());
     }
@@ -148,7 +149,7 @@ final class TestSuiteBuilderTest extends TestCase
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('BrokenByBuilderTest.php cannot be loaded');
 
-        new TestSuiteBuilder($skipper)->build($this->configurationFor($directory));
+        new TestSuiteBuilder($this->createStub(Emitter::class), $skipper)->build($this->configurationFor($directory));
     }
 
     /**
