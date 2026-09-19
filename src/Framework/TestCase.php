@@ -43,6 +43,7 @@ use PHPUnit\Framework\MockObject\Rule\InvokedCount as InvokedCountMatcher;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\MockObject\Stub\Exception as ExceptionStub;
 use PHPUnit\Framework\MockObject\TestStubBuilder;
+use PHPUnit\Framework\TestCase\CustomRegistrations;
 use PHPUnit\Framework\TestCase\DependencyResolver;
 use PHPUnit\Framework\TestCase\DeprecationExpectation;
 use PHPUnit\Framework\TestCase\EnvironmentVariables;
@@ -69,7 +70,6 @@ use ReflectionClass;
 use ReflectionMethod;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use SebastianBergmann\Comparator\Comparator;
-use SebastianBergmann\Comparator\Factory as ComparatorFactory;
 use SebastianBergmann\Exporter\ObjectExporter;
 use SebastianBergmann\Invoker\TimeoutException;
 use Throwable;
@@ -127,16 +127,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private bool $doesNotPerformAssertions   = false;
     private OutputBuffer $outputBuffer;
     private ErrorLogCapture $errorLogCapture;
-
-    /**
-     * @var list<Comparator>
-     */
-    private array $customComparators = [];
-
-    /**
-     * @var list<ObjectExporter>
-     */
-    private array $customObjectExporters                     = [];
+    private CustomRegistrations $customRegistrations;
     private ?Event\Code\TestMethod $testValueObjectForEvents = null;
     private bool $wasPrepared                                = false;
 
@@ -184,6 +175,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->mockObjectRegistry     = new MockObjectRegistry;
         $this->deprecationExpectation = new DeprecationExpectation;
         $this->environmentVariables   = new EnvironmentVariables;
+        $this->customRegistrations    = new CustomRegistrations;
 
         if (is_callable($this->sortId(), true)) {
             $this->providedTests = [new ExecutionOrderDependency($this->sortId())];
@@ -656,8 +648,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->environmentVariables->restore();
         $this->globalStateCapture->restoreErrorHandlers($this, $emitter, $this->inIsolation);
         $this->globalStateCapture->restoreGlobals($this, $emitter);
-        $this->unregisterCustomComparators();
-        $this->unregisterCustomObjectExporters();
+        $this->customRegistrations->unregisterAll();
         libxml_clear_errors();
 
         $this->testValueObjectForEvents = null;
@@ -1255,18 +1246,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     final protected function registerComparator(Comparator $comparator): void
     {
-        ComparatorFactory::getInstance()->register($comparator);
+        $this->customRegistrations->registerComparator($comparator);
 
         Event\Facade::emitter()->testRegisteredComparator($comparator::class);
-
-        $this->customComparators[] = $comparator;
     }
 
     final protected function registerObjectExporter(ObjectExporter $objectExporter): void
     {
-        Exporter::registerObjectExporter($objectExporter);
-
-        $this->customObjectExporters[] = $objectExporter;
+        $this->customRegistrations->registerObjectExporter($objectExporter);
     }
 
     /**
@@ -1484,26 +1471,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         if ($missingRequirements !== []) {
             $this->markTestSkipped(implode(PHP_EOL, $missingRequirements));
         }
-    }
-
-    private function unregisterCustomComparators(): void
-    {
-        $factory = ComparatorFactory::getInstance();
-
-        foreach ($this->customComparators as $comparator) {
-            $factory->unregister($comparator);
-        }
-
-        $this->customComparators = [];
-    }
-
-    private function unregisterCustomObjectExporters(): void
-    {
-        foreach ($this->customObjectExporters as $objectExporter) {
-            Exporter::unregisterObjectExporter($objectExporter);
-        }
-
-        $this->customObjectExporters = [];
     }
 
     private function shouldRunInSeparateProcess(): bool
