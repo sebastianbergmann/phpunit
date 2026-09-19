@@ -10,6 +10,8 @@
 namespace PHPUnit\Logging\TestDox;
 
 use DateTimeImmutable;
+use PHPUnit\Event\Code\TestMethod;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -18,6 +20,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\BackedEnumeration;
 use PHPUnit\TestFixture\Enumeration;
 use PHPUnit\TestFixture\TestDox\TestDoxAttributeOnTestClassTest;
+use PHPUnit\TestFixture\TestDoxFormatterErrorTest;
 use PHPUnit\TestFixture\TestDoxTest;
 use stdClass;
 
@@ -199,13 +202,39 @@ final class NamePrettifierTest extends TestCase
     }
 
     /**
+     * @return non-empty-list<array{0: non-empty-string, 1: non-empty-string, 2: non-empty-string}>
+     */
+    public static function brokenFormatterProvider(): array
+    {
+        $className = TestDoxFormatterErrorTest::class;
+
+        return [
+            [
+                'testWithFormatterThatDoesNotExist',
+                'With formatter that does not exist',
+                'Method ' . $className . '::formatterThatDoesNotExist() cannot be used as a TestDox formatter because it does not exist',
+            ],
+            [
+                'testWithFormatterThatIsNotPublic',
+                'With formatter that is not public',
+                'Method ' . $className . '::formatterThatIsNotPublic() cannot be used as a TestDox formatter because it is not public',
+            ],
+            [
+                'testWithFormatterThatIsNotStatic',
+                'With formatter that is not static',
+                'Method ' . $className . '::formatterThatIsNotStatic() cannot be used as a TestDox formatter because it is not static',
+            ],
+        ];
+    }
+
+    /**
      * @param non-empty-string $expected
      * @param non-empty-string $className
      */
     #[DataProvider('classNameProvider')]
     public function testNameOfTestClassCanBePrettified(string $expected, string $className): void
     {
-        $this->assertSame($expected, (new NamePrettifier)->prettifyTestClassName($className));
+        $this->assertSame($expected, new NamePrettifier($this->createStub(Emitter::class))->prettifyTestClassName($className));
     }
 
     /**
@@ -215,7 +244,7 @@ final class NamePrettifierTest extends TestCase
     #[DataProvider('methodNameProvider')]
     public function testNameOfTestMethodCanBePrettified(string $expected, string $methodName): void
     {
-        $this->assertSame($expected, (new NamePrettifier)->prettifyTestMethodName($methodName));
+        $this->assertSame($expected, new NamePrettifier($this->createStub(Emitter::class))->prettifyTestMethodName($methodName));
     }
 
     /**
@@ -224,12 +253,54 @@ final class NamePrettifierTest extends TestCase
     #[DataProvider('objectProvider')]
     public function test_TestCase_can_be_prettified(string $expected, TestCase $testCase, bool $colorize): void
     {
-        $this->assertSame($expected, (new NamePrettifier)->prettifyTestCase($testCase, $colorize));
+        $this->assertSame($expected, new NamePrettifier($this->createStub(Emitter::class))->prettifyTestCase($testCase, $colorize));
+    }
+
+    /**
+     * @param non-empty-string $methodName
+     * @param non-empty-string $expected
+     * @param non-empty-string $message
+     */
+    #[DataProvider('brokenFormatterProvider')]
+    public function testEmitsErrorWhenFormatterCannotBeUsed(string $methodName, string $expected, string $message): void
+    {
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter
+            ->expects($this->once())
+            ->method('testTriggeredPhpunitError')
+            ->with($this->isInstanceOf(TestMethod::class), $message)
+            ->seal();
+
+        $namePrettifier = new NamePrettifier($emitter);
+        $test           = new TestDoxFormatterErrorTest($methodName);
+
+        $this->assertSame($expected, $namePrettifier->prettifyTestCase($test, false));
+        $this->assertSame($expected, $namePrettifier->prettifyTestCase($test, false));
+    }
+
+    public function testEmitsErrorWhenFormatterThrows(): void
+    {
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter
+            ->expects($this->once())
+            ->method('testTriggeredPhpunitError')
+            ->with(
+                $this->isInstanceOf(TestMethod::class),
+                $this->stringStartsWith('TestDox formatter ' . TestDoxFormatterErrorTest::class . '::formatterThatThrows() triggered an error: message'),
+            )
+            ->seal();
+
+        $namePrettifier = new NamePrettifier($emitter);
+        $test           = new TestDoxFormatterErrorTest('testWithFormatterThatThrows');
+
+        $this->assertSame('With formatter that throws', $namePrettifier->prettifyTestCase($test, false));
     }
 
     public function testStripsNumericSuffixFromTestMethodNameWhenTestMethodNameWithoutThatSuffixWasPreviouslyProcessed(): void
     {
-        $namePrettifier = new NamePrettifier;
+        $namePrettifier = new NamePrettifier($this->createStub(Emitter::class));
 
         $this->assertSame('This is a test', $namePrettifier->prettifyTestMethodName('testThisIsATest'));
         $this->assertSame('This is a test', $namePrettifier->prettifyTestMethodName('testThisIsATest2'));
