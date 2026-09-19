@@ -52,6 +52,7 @@ use PHPUnit\Framework\TestCase\GlobalStateCapture;
 use PHPUnit\Framework\TestCase\HookMethodInvoker;
 use PHPUnit\Framework\TestCase\MockObjectRegistry;
 use PHPUnit\Framework\TestCase\OutputBuffer;
+use PHPUnit\Framework\TestCase\OutputBufferStopResult;
 use PHPUnit\Framework\TestCase\TestDoubleFactory;
 use PHPUnit\Framework\TestRunner\TestRunner;
 use PHPUnit\Framework\TestSize\TestSize;
@@ -71,6 +72,8 @@ use Throwable;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
+ * @phpstan-import-type HookMethodsByType from HookMethods
  */
 abstract class TestCase extends Assert implements Reorderable, SelfDescribing, Test
 {
@@ -379,257 +382,64 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         $emitter = Event\Facade::emitter();
 
-        error_clear_last();
-        clearstatcache();
+        $this->prepareEnvironment($emitter);
 
-        $emitter->testPreparationStarted(
-            $this->valueObjectForEvents(),
-        );
-
-        $this->globalStateCapture->snapshotGlobals($this, $emitter, $this->inIsolation, $this->runTestInSeparateProcess);
-        $this->globalStateCapture->snapshotErrorHandlers($this, $emitter);
-        $this->environmentVariables->set(static::class, $this->methodName);
-        $this->outputBuffer->start();
-
-        $hookMethods                       = (new HookMethods)->hookMethods(static::class);
-        $hasMetRequirements                = false;
-        $this->numberOfAssertionsPerformed = 0;
-        $currentWorkingDirectory           = getcwd();
+        $hookMethods             = (new HookMethods)->hookMethods(static::class);
+        $currentWorkingDirectory = getcwd();
+        $hasMetRequirements      = false;
+        $testSucceeded           = false;
+        $e                       = null;
 
         try {
-            /**
-             * A previously registered error handler may have turned an issue that
-             * was triggered before this test was run, in a data provider for
-             * example, into an exception: the exception is control flow of this
-             * test and must be handled as if it was thrown while this test was
-             * prepared.
-             *
-             * @see https://github.com/sebastianbergmann/phpunit/issues/6831
-             */
-            if ($this->throwableFromDeferredIssue !== null) {
-                $throwableFromDeferredIssue = $this->throwableFromDeferredIssue;
-
-                $this->throwableFromDeferredIssue = null;
-
-                throw $throwableFromDeferredIssue;
-            }
-
+            $this->throwThrowableFromDeferredIssue();
             $this->checkRequirements();
+
             $hasMetRequirements = true;
 
-            if ($this->emptyDataProviderSkipMessage !== null) {
-                $this->markTestSkipped($this->emptyDataProviderSkipMessage);
-            }
+            $this->prepareTest($hookMethods, $emitter);
 
-            if ($this->inIsolation) {
-                // @codeCoverageIgnoreStart
-                HookMethodInvoker::invokeBeforeClass($this, $hookMethods, $emitter);
-                // @codeCoverageIgnoreEnd
-            }
+            $this->testResult = $this->runTest();
 
-            if (method_exists(static::class, $this->methodName) &&
-                MetadataRegistry::parser()->forClassAndMethod(static::class, $this->methodName)->isDoesNotPerformAssertions()->isNotEmpty()) {
-                $this->doesNotPerformAssertions = true;
-            }
+            $this->verifyTest($hookMethods, $emitter);
 
-            HookMethodInvoker::invokeBeforeTest($this, $hookMethods, $emitter);
-            HookMethodInvoker::invokePreCondition($this, $hookMethods, $emitter);
-
-            $emitter->testPrepared(
-                $this->valueObjectForEvents(),
-            );
-
-            $this->wasPrepared = true;
-            $this->testResult  = $this->runTest();
-
-            $this->deprecationExpectation->verify($this);
-            $this->mockObjectRegistry->verify($this, $emitter);
-            HookMethodInvoker::invokePostCondition($this, $hookMethods, $emitter);
-
-            $this->status = TestStatus::success();
-        } catch (IncompleteTest $e) {
-            $this->status = TestStatus::incomplete($e->getMessage());
-
-            $emitter->testMarkedAsIncomplete(
-                $this->valueObjectForEvents(),
-                Event\Code\ThrowableBuilder::from($e),
-            );
-        } catch (SkippedTest $e) {
-            $this->status = TestStatus::skipped($e->getMessage());
-
-            /** @var non-empty-string $skipMessage */
-            $skipMessage = $e->getMessage();
-
-            $emitter->testSkipped(
-                $this->valueObjectForEvents(),
-                $skipMessage,
-            );
-        } catch (AssertionError|AssertionFailedError $e) {
-            $this->mockObjectRegistry->handleExceptionFromInvokedCountRule($this, $e);
-
-            if (!$this->wasPrepared) {
-                $this->wasPrepared = true;
-
-                $emitter->testPreparationFailed(
-                    $this->valueObjectForEvents(),
-                    Event\Code\ThrowableBuilder::from($e),
-                );
-            }
-
-            $this->status = TestStatus::failure($e->getMessage());
-
-            $emitter->testFailed(
-                $this->valueObjectForEvents(),
-                Event\Code\ThrowableBuilder::from($e),
-                Event\Code\ComparisonFailureBuilder::from($e),
-            );
-        } catch (TimeoutException $e) {
-        } catch (Throwable $_e) {
-            if ($this->isRegisteredFailure($_e)) {
-                $this->status = TestStatus::failure($_e->getMessage());
-
-                $emitter->testFailed(
-                    $this->valueObjectForEvents(),
-                    Event\Code\ThrowableBuilder::from($_e),
-                    null,
-                );
-            } else {
-                $e = $this->transformException($_e);
-
-                $this->status = TestStatus::error($e->getMessage());
-
-                if (!$this->wasPrepared) {
-                    if ($e instanceof AssertionFailedError) {
-                        $emitter->testPreparationFailed(
-                            $this->valueObjectForEvents(),
-                            Event\Code\ThrowableBuilder::from($e),
-                        );
-                    } else {
-                        $emitter->testPreparationErrored(
-                            $this->valueObjectForEvents(),
-                            Event\Code\ThrowableBuilder::from($e),
-                        );
-                    }
-                }
-
-                $emitter->testErrored(
-                    $this->valueObjectForEvents(),
-                    Event\Code\ThrowableBuilder::from($e),
-                );
-            }
+            $this->status  = TestStatus::success();
+            $testSucceeded = true;
+        } catch (Throwable $t) {
+            $e = $this->handleThrowableFromTest($t, $emitter);
         }
 
         $outputBufferingStopped = false;
 
-        if (!isset($e) && $this->outputBuffer->hasExpectation()) {
-            $stopResult = $this->outputBuffer->stop();
-
-            if ($stopResult->riskyMessage !== null) {
-                $emitter->testConsideredRisky(
-                    $this->valueObjectForEvents(),
-                    $stopResult->riskyMessage,
-                );
-            }
-
-            if ($stopResult->closedCleanly) {
+        if ($e === null && $this->outputBuffer->hasExpectation()) {
+            if ($this->stopOutputBuffering($emitter)->closedCleanly) {
                 $outputBufferingStopped = true;
 
-                try {
-                    $this->outputBuffer->performAssertions();
-                } catch (ExpectationFailedException $e) {
-                    $this->status = TestStatus::failure($e->getMessage());
-
-                    $emitter->testFailed(
-                        $this->valueObjectForEvents(),
-                        Event\Code\ThrowableBuilder::from($e),
-                        Event\Code\ComparisonFailureBuilder::from($e),
-                    );
-                }
+                $e = $this->performOutputAssertions($emitter);
             }
         }
 
-        try {
-            $this->mockObjectRegistry->clear();
-        } catch (Throwable $e) {
-            Event\Facade::emitter()->testErrored(
-                $this->valueObjectForEvents(),
-                Event\Code\ThrowableBuilder::from($e),
-            );
+        $throwableFromMockObjectDestructor = $this->discardMockObjects($emitter);
+
+        if ($throwableFromMockObjectDestructor !== null) {
+            $e = $throwableFromMockObjectDestructor;
         }
 
-        // Tear down the fixture. An exception raised in tearDown() will be
-        // caught and passed on when no exception was raised before.
-        try {
-            if ($hasMetRequirements) {
-                HookMethodInvoker::invokeAfterTest($this, $hookMethods, $emitter);
-
-                if ($this->inIsolation) {
-                    // @codeCoverageIgnoreStart
-                    HookMethodInvoker::invokeAfterClass($this, $hookMethods, $emitter);
-                    // @codeCoverageIgnoreEnd
-                }
-            }
-        } catch (AssertionError|AssertionFailedError $e) {
-            $this->status = TestStatus::failure($e->getMessage());
-
-            $emitter->testFailed(
-                $this->valueObjectForEvents(),
-                Event\Code\ThrowableBuilder::from($e),
-                Event\Code\ComparisonFailureBuilder::from($e),
-            );
-        } catch (Throwable $exceptionRaisedDuringTearDown) {
-            if (!isset($e) || $e instanceof SkippedWithMessageException) {
-                $this->status = TestStatus::error($exceptionRaisedDuringTearDown->getMessage());
-                $e            = $exceptionRaisedDuringTearDown;
-
-                $emitter->testErrored(
-                    $this->valueObjectForEvents(),
-                    Event\Code\ThrowableBuilder::from($exceptionRaisedDuringTearDown),
-                );
-            }
+        if ($hasMetRequirements) {
+            $e = $this->tearDownTest($hookMethods, $emitter, $e);
         }
 
-        if (!isset($e) && !isset($_e)) {
-            $emitter->testPassed(
-                $this->valueObjectForEvents(),
-            );
-
-            // a repeated test method is registered as passed once all of its
-            // repetitions have finished without failure or error
-            if (!$this->usesDataProvider() && $this->totalRepetitions === 1) {
-                PassedTests::instance()->testMethodPassed(
-                    $this->valueObjectForEvents(),
-                    $this->testResult,
-                );
-            }
+        // $e is null when the test failed with a throwable of a registered failure type
+        if ($testSucceeded && $e === null) {
+            $this->registerAsPassed($emitter);
         }
 
         if (!$outputBufferingStopped) {
-            $stopResult = $this->outputBuffer->stop();
-
-            if ($stopResult->riskyMessage !== null) {
-                $emitter->testConsideredRisky(
-                    $this->valueObjectForEvents(),
-                    $stopResult->riskyMessage,
-                );
-            }
+            $this->stopOutputBuffering($emitter);
         }
 
-        clearstatcache();
+        $this->restoreEnvironment($currentWorkingDirectory, $emitter);
 
-        if ($currentWorkingDirectory !== false && $currentWorkingDirectory !== getcwd()) {
-            chdir($currentWorkingDirectory);
-        }
-
-        $this->environmentVariables->restore();
-        $this->globalStateCapture->restoreErrorHandlers($this, $emitter, $this->inIsolation);
-        $this->globalStateCapture->restoreGlobals($this, $emitter);
-        $this->customRegistrations->unregisterAll();
-        libxml_clear_errors();
-
-        $this->testValueObjectForEvents = null;
-
-        if (isset($e)) {
+        if ($e !== null) {
             $this->onNotSuccessfulTest($e);
         }
     }
@@ -1342,6 +1152,318 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         /** @phpstan-ignore method.dynamicName */
         return $this->{$methodName}(...$testArguments);
+    }
+
+    private function prepareEnvironment(Event\Emitter $emitter): void
+    {
+        error_clear_last();
+        clearstatcache();
+
+        $emitter->testPreparationStarted(
+            $this->valueObjectForEvents(),
+        );
+
+        $this->globalStateCapture->snapshotGlobals($this, $emitter, $this->inIsolation, $this->runTestInSeparateProcess);
+        $this->globalStateCapture->snapshotErrorHandlers($this, $emitter);
+        $this->environmentVariables->set(static::class, $this->methodName);
+        $this->outputBuffer->start();
+
+        $this->numberOfAssertionsPerformed = 0;
+    }
+
+    private function restoreEnvironment(false|string $currentWorkingDirectory, Event\Emitter $emitter): void
+    {
+        clearstatcache();
+
+        if ($currentWorkingDirectory !== false && $currentWorkingDirectory !== getcwd()) {
+            chdir($currentWorkingDirectory);
+        }
+
+        $this->environmentVariables->restore();
+        $this->globalStateCapture->restoreErrorHandlers($this, $emitter, $this->inIsolation);
+        $this->globalStateCapture->restoreGlobals($this, $emitter);
+        $this->customRegistrations->unregisterAll();
+        libxml_clear_errors();
+
+        $this->testValueObjectForEvents = null;
+    }
+
+    /**
+     * A previously registered error handler may have turned an issue that
+     * was triggered before this test was run, in a data provider for
+     * example, into an exception: the exception is control flow of this
+     * test and must be handled as if it was thrown while this test was
+     * prepared.
+     *
+     * @see https://github.com/sebastianbergmann/phpunit/issues/6831
+     *
+     * @throws Throwable
+     */
+    private function throwThrowableFromDeferredIssue(): void
+    {
+        if ($this->throwableFromDeferredIssue === null) {
+            return;
+        }
+
+        $throwableFromDeferredIssue = $this->throwableFromDeferredIssue;
+
+        $this->throwableFromDeferredIssue = null;
+
+        throw $throwableFromDeferredIssue;
+    }
+
+    /**
+     * @param HookMethodsByType $hookMethods
+     *
+     * @throws Throwable
+     */
+    private function prepareTest(array $hookMethods, Event\Emitter $emitter): void
+    {
+        if ($this->emptyDataProviderSkipMessage !== null) {
+            $this->markTestSkipped($this->emptyDataProviderSkipMessage);
+        }
+
+        if ($this->inIsolation) {
+            // @codeCoverageIgnoreStart
+            HookMethodInvoker::invokeBeforeClass($this, $hookMethods, $emitter);
+            // @codeCoverageIgnoreEnd
+        }
+
+        if (method_exists(static::class, $this->methodName) &&
+            MetadataRegistry::parser()->forClassAndMethod(static::class, $this->methodName)->isDoesNotPerformAssertions()->isNotEmpty()) {
+            $this->doesNotPerformAssertions = true;
+        }
+
+        HookMethodInvoker::invokeBeforeTest($this, $hookMethods, $emitter);
+        HookMethodInvoker::invokePreCondition($this, $hookMethods, $emitter);
+
+        $emitter->testPrepared(
+            $this->valueObjectForEvents(),
+        );
+
+        $this->wasPrepared = true;
+    }
+
+    /**
+     * @param HookMethodsByType $hookMethods
+     *
+     * @throws Throwable
+     */
+    private function verifyTest(array $hookMethods, Event\Emitter $emitter): void
+    {
+        $this->deprecationExpectation->verify($this);
+        $this->mockObjectRegistry->verify($this, $emitter);
+
+        HookMethodInvoker::invokePostCondition($this, $hookMethods, $emitter);
+    }
+
+    /**
+     * Sets the status of the test and emits the events for a throwable that
+     * escaped from preparing, running, or verifying the test.
+     *
+     * Returns the throwable that is to be passed to onNotSuccessfulTest() or
+     * null when the throwable is of a registered failure type.
+     */
+    private function handleThrowableFromTest(Throwable $t, Event\Emitter $emitter): ?Throwable
+    {
+        if ($t instanceof IncompleteTest) {
+            $this->status = TestStatus::incomplete($t->getMessage());
+
+            $emitter->testMarkedAsIncomplete(
+                $this->valueObjectForEvents(),
+                Event\Code\ThrowableBuilder::from($t),
+            );
+
+            return $t;
+        }
+
+        if ($t instanceof SkippedTest) {
+            $this->status = TestStatus::skipped($t->getMessage());
+
+            /** @var non-empty-string $skipMessage */
+            $skipMessage = $t->getMessage();
+
+            $emitter->testSkipped(
+                $this->valueObjectForEvents(),
+                $skipMessage,
+            );
+
+            return $t;
+        }
+
+        if ($t instanceof AssertionError || $t instanceof AssertionFailedError) {
+            $this->mockObjectRegistry->handleExceptionFromInvokedCountRule($this, $t);
+
+            if (!$this->wasPrepared) {
+                $this->wasPrepared = true;
+
+                $emitter->testPreparationFailed(
+                    $this->valueObjectForEvents(),
+                    Event\Code\ThrowableBuilder::from($t),
+                );
+            }
+
+            $this->status = TestStatus::failure($t->getMessage());
+
+            $emitter->testFailed(
+                $this->valueObjectForEvents(),
+                Event\Code\ThrowableBuilder::from($t),
+                Event\Code\ComparisonFailureBuilder::from($t),
+            );
+
+            return $t;
+        }
+
+        if ($t instanceof TimeoutException) {
+            return $t;
+        }
+
+        if ($this->isRegisteredFailure($t)) {
+            $this->status = TestStatus::failure($t->getMessage());
+
+            $emitter->testFailed(
+                $this->valueObjectForEvents(),
+                Event\Code\ThrowableBuilder::from($t),
+                null,
+            );
+
+            return null;
+        }
+
+        $e = $this->transformException($t);
+
+        $this->status = TestStatus::error($e->getMessage());
+
+        if (!$this->wasPrepared) {
+            if ($e instanceof AssertionFailedError) {
+                $emitter->testPreparationFailed(
+                    $this->valueObjectForEvents(),
+                    Event\Code\ThrowableBuilder::from($e),
+                );
+            } else {
+                $emitter->testPreparationErrored(
+                    $this->valueObjectForEvents(),
+                    Event\Code\ThrowableBuilder::from($e),
+                );
+            }
+        }
+
+        $emitter->testErrored(
+            $this->valueObjectForEvents(),
+            Event\Code\ThrowableBuilder::from($e),
+        );
+
+        return $e;
+    }
+
+    private function stopOutputBuffering(Event\Emitter $emitter): OutputBufferStopResult
+    {
+        $stopResult = $this->outputBuffer->stop();
+
+        if ($stopResult->riskyMessage !== null) {
+            $emitter->testConsideredRisky(
+                $this->valueObjectForEvents(),
+                $stopResult->riskyMessage,
+            );
+        }
+
+        return $stopResult;
+    }
+
+    private function performOutputAssertions(Event\Emitter $emitter): ?Throwable
+    {
+        try {
+            $this->outputBuffer->performAssertions();
+        } catch (ExpectationFailedException $e) {
+            $this->status = TestStatus::failure($e->getMessage());
+
+            $emitter->testFailed(
+                $this->valueObjectForEvents(),
+                Event\Code\ThrowableBuilder::from($e),
+                Event\Code\ComparisonFailureBuilder::from($e),
+            );
+
+            return $e;
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns the throwable raised by the destructor of a mock object, if any.
+     */
+    private function discardMockObjects(Event\Emitter $emitter): ?Throwable
+    {
+        try {
+            $this->mockObjectRegistry->clear();
+        } catch (Throwable $t) {
+            $emitter->testErrored(
+                $this->valueObjectForEvents(),
+                Event\Code\ThrowableBuilder::from($t),
+            );
+
+            return $t;
+        }
+
+        return null;
+    }
+
+    /**
+     * Tears down the fixture. An exception raised in tearDown() is passed on
+     * when no exception was raised before.
+     *
+     * @param HookMethodsByType $hookMethods
+     */
+    private function tearDownTest(array $hookMethods, Event\Emitter $emitter, ?Throwable $e): ?Throwable
+    {
+        try {
+            HookMethodInvoker::invokeAfterTest($this, $hookMethods, $emitter);
+
+            if ($this->inIsolation) {
+                // @codeCoverageIgnoreStart
+                HookMethodInvoker::invokeAfterClass($this, $hookMethods, $emitter);
+                // @codeCoverageIgnoreEnd
+            }
+        } catch (AssertionError|AssertionFailedError $t) {
+            $this->status = TestStatus::failure($t->getMessage());
+
+            $emitter->testFailed(
+                $this->valueObjectForEvents(),
+                Event\Code\ThrowableBuilder::from($t),
+                Event\Code\ComparisonFailureBuilder::from($t),
+            );
+
+            return $t;
+        } catch (Throwable $t) {
+            if ($e === null || $e instanceof SkippedWithMessageException) {
+                $this->status = TestStatus::error($t->getMessage());
+
+                $emitter->testErrored(
+                    $this->valueObjectForEvents(),
+                    Event\Code\ThrowableBuilder::from($t),
+                );
+
+                return $t;
+            }
+        }
+
+        return $e;
+    }
+
+    private function registerAsPassed(Event\Emitter $emitter): void
+    {
+        $emitter->testPassed(
+            $this->valueObjectForEvents(),
+        );
+
+        // a repeated test method is registered as passed once all of its
+        // repetitions have finished without failure or error
+        if (!$this->usesDataProvider() && $this->totalRepetitions === 1) {
+            PassedTests::instance()->testMethodPassed(
+                $this->valueObjectForEvents(),
+                $this->testResult,
+            );
+        }
     }
 
     /**
