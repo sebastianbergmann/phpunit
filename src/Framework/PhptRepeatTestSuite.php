@@ -57,7 +57,7 @@ final class PhptRepeatTestSuite extends PhptIterativeTestSuite
             }
 
             if ($lastFailedRepetition !== 0) {
-                $test->markSkippedForRepeatAbort($lastFailedRepetition);
+                $this->skipRemainingRepetition($test->valueObjectForEvents(), $lastFailedRepetition, $emitter);
 
                 continue;
             }

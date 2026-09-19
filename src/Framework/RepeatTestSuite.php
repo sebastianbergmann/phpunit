@@ -13,6 +13,7 @@ use function array_pop;
 use function array_reverse;
 use function assert;
 use PHPUnit\Event;
+use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
 
 /**
@@ -66,7 +67,9 @@ final class RepeatTestSuite extends IterativeTestSuite
             }
 
             if ($failureCount >= $this->failureThreshold) {
-                $test->markSkippedForRepeatAbort($lastFailedRepetition);
+                $message = $this->skipRemainingRepetition($test->valueObjectForEvents(), $lastFailedRepetition, $emitter);
+
+                $test->setStatus(TestStatus::skipped($message));
 
                 continue;
             }

@@ -21,6 +21,11 @@ final class ConcreteIterativeTestSuite extends IterativeTestSuite
         return $this->runCollectingEvents($test);
     }
 
+    public function skipRepetition(Event\Code\Test $test, int $failedRepetition, Event\Emitter $emitter): string
+    {
+        return $this->skipRemainingRepetition($test, $failedRepetition, $emitter);
+    }
+
     /**
      * @param list<Test> $tests
      */

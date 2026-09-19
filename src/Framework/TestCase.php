@@ -820,24 +820,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    final public function markSkippedForRepeatAbort(int $failedRepetition): void
-    {
-        $message = sprintf(
-            'Remaining repetition skipped after failure in repetition %d',
-            $failedRepetition,
-        );
-
-        Event\Facade::emitter()->testSkipped(
-            $this->valueObjectForEvents(),
-            $message,
-        );
-
-        $this->status = TestStatus::skipped($message);
-    }
-
-    /**
      * Returns a matcher that matches when the method is executed
      * zero or more times.
      *
