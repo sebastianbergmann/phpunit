@@ -16,7 +16,6 @@ use function array_merge;
 use function array_values;
 use function assert;
 use function chdir;
-use function class_exists;
 use function clearstatcache;
 use function error_clear_last;
 use function getcwd;
@@ -34,7 +33,6 @@ use function sprintf;
 use function str_contains;
 use function str_starts_with;
 use AssertionError;
-use DeepCopy\DeepCopy;
 use PHPUnit\Event;
 use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\MockObject\Exception as MockObjectException;
@@ -53,6 +51,7 @@ use PHPUnit\Framework\MockObject\Rule\InvokedCount as InvokedCountMatcher;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\MockObject\Stub\Exception as ExceptionStub;
 use PHPUnit\Framework\MockObject\TestStubBuilder;
+use PHPUnit\Framework\TestCase\DependencyResolver;
 use PHPUnit\Framework\TestCase\ErrorLogCapture;
 use PHPUnit\Framework\TestCase\ExceptionExpectation;
 use PHPUnit\Framework\TestCase\GlobalStateCapture;
@@ -320,7 +319,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function run(): void
     {
-        if (!$this->handleDependencies()) {
+        if (!$this->inIsolation &&
+            !(new DependencyResolver)->resolve($this, $this->dependencies, Event\Facade::emitter())) {
             return;
         }
 
@@ -706,12 +706,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @param array<string, mixed> $dependencyInput
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     *
-     * @codeCoverageIgnore
      */
     final public function setDependencyInput(array $dependencyInput): void
     {
-        $this->dependencyInput = $dependencyInput;
+        $this->dependencyInput          = $dependencyInput;
+        $this->testValueObjectForEvents = null;
     }
 
     /**
@@ -1605,115 +1604,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         if ($missingRequirements !== []) {
             $this->markTestSkipped(implode(PHP_EOL, $missingRequirements));
         }
-    }
-
-    private function handleDependencies(): bool
-    {
-        if ([] === $this->dependencies || $this->inIsolation) {
-            return true;
-        }
-
-        $passedTests = PassedTests::instance();
-
-        foreach ($this->dependencies as $dependency) {
-            if ($dependency->targetIsClass()) {
-                $dependencyClassName = $dependency->getTargetClassName();
-
-                if (!class_exists($dependencyClassName)) {
-                    $this->markErrorForInvalidDependency($dependency);
-
-                    return false;
-                }
-
-                if (!$passedTests->hasTestClassPassed($dependencyClassName)) {
-                    $this->markSkippedForMissingDependency($dependency);
-
-                    return false;
-                }
-            } else {
-                $dependencyTarget = $dependency->getTarget();
-
-                if (!$passedTests->hasTestMethodPassed($dependencyTarget)) {
-                    if (!$dependency->targetIsCallableTestMethod()) {
-                        $this->markErrorForInvalidDependency($dependency);
-                    } else {
-                        $this->markSkippedForMissingDependency($dependency);
-                    }
-
-                    return false;
-                }
-
-                if ($passedTests->isGreaterThan($dependencyTarget, $this->size())) {
-                    Event\Facade::emitter()->testConsideredRisky(
-                        $this->valueObjectForEvents(),
-                        'This test depends on a test that is larger than itself',
-                    );
-
-                    return true;
-                }
-
-                if (!$passedTests->hasReturnValue($dependencyTarget)) {
-                    return true;
-                }
-
-                $returnValue = $passedTests->returnValue($dependencyTarget);
-
-                if ($dependency->deepClone()) {
-                    $deepCopy = new DeepCopy;
-                    $deepCopy->skipUncloneable(false);
-
-                    $this->dependencyInput[$dependencyTarget] = $deepCopy->copy($returnValue);
-                } elseif ($dependency->shallowClone() && is_object($returnValue)) {
-                    $this->dependencyInput[$dependencyTarget] = clone $returnValue;
-                } else {
-                    $this->dependencyInput[$dependencyTarget] = $returnValue;
-                }
-            }
-        }
-
-        $this->testValueObjectForEvents = null;
-
-        return true;
-    }
-
-    /**
-     * @throws Exception
-     * @throws NoPreviousThrowableException
-     */
-    private function markErrorForInvalidDependency(?ExecutionOrderDependency $dependency = null): void
-    {
-        $message = 'This test has an invalid dependency';
-
-        if ($dependency !== null) {
-            $message = sprintf(
-                'This test depends on "%s" which does not exist',
-                $dependency->targetIsClass() ? $dependency->getTargetClassName() : $dependency->getTarget(),
-            );
-        }
-
-        $exception = new InvalidDependencyException($message);
-
-        Event\Facade::emitter()->testErrored(
-            $this->valueObjectForEvents(),
-            Event\Code\ThrowableBuilder::from($exception),
-        );
-
-        $this->status = TestStatus::error($message);
-    }
-
-    private function markSkippedForMissingDependency(ExecutionOrderDependency $dependency): void
-    {
-        $message = sprintf(
-            'This test depends on "%s" to pass',
-            $dependency->getTarget(),
-        );
-
-        Event\Facade::emitter()->testSkipped(
-            $this->valueObjectForEvents(),
-            $message,
-        );
-
-        $this->status = TestStatus::skipped($message);
     }
 
     private function handleEnvironmentVariables(): void
