@@ -14,7 +14,7 @@ use function class_exists;
 use function in_array;
 use function sprintf;
 use function strtolower;
-use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\After;
 use PHPUnit\Metadata\AfterClass;
@@ -43,6 +43,12 @@ final class HookMethods
      * @var array<class-string, HookMethodsByType>
      */
     private static array $hookMethods = [];
+    private readonly Emitter $emitter;
+
+    public function __construct(Emitter $emitter)
+    {
+        $this->emitter = $emitter;
+    }
 
     /**
      * @param class-string<TestCase> $className
@@ -130,7 +136,7 @@ final class HookMethods
         );
 
         if ($hookMethods->isDefaultHookMethod($methodName)) {
-            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+            $this->emitter->testRunnerTriggeredPhpunitWarning(
                 sprintf(
                     'Method %s::%s() is a template method and does not need the #[%s] attribute; the attribute is ignored',
                     $declaringClassName,

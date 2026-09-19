@@ -121,7 +121,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                 continue;
             }
 
-            if ((new HookMethods)->isHookMethod($method)) {
+            if (new HookMethods($emitter)->isHookMethod($method)) {
                 $emitter->testRunnerTriggeredPhpunitWarning(
                     sprintf(
                         'Method %s::%s() cannot be used both as a hook method and as a test method',
@@ -826,7 +826,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             return true;
         }
 
-        $methods         = (new HookMethods)->hookMethods($this->name)['beforeClass']->methodNamesSortedByPriority();
+        $methods         = new HookMethods($emitter)->hookMethods($this->name)['beforeClass']->methodNamesSortedByPriority();
         $reflector       = new ReflectionClass($this->name);
         $calledMethods   = [];
         $emitCalledEvent = true;
@@ -918,7 +918,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             return;
         }
 
-        $methods       = (new HookMethods)->hookMethods($this->name)['afterClass']->methodNamesSortedByPriority();
+        $methods       = new HookMethods($emitter)->hookMethods($this->name)['afterClass']->methodNamesSortedByPriority();
         $reflector     = new ReflectionClass($this->name);
         $calledMethods = [];
 

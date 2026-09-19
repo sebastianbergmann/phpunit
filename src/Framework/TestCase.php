@@ -384,7 +384,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $this->prepareEnvironment($emitter);
 
-        $hookMethods             = (new HookMethods)->hookMethods(static::class);
+        $hookMethods             = new HookMethods($emitter)->hookMethods(static::class);
         $currentWorkingDirectory = getcwd();
         $hasMetRequirements      = false;
         $testSucceeded           = false;

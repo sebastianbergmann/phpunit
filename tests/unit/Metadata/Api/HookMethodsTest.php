@@ -10,12 +10,14 @@
 namespace PHPUnit\Metadata\Api;
 
 use function array_keys;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\HookMethod;
 use PHPUnit\Runner\HookMethodCollection;
+use PHPUnit\TestFixture\TestWithHookAttributeOnTemplateMethodTest;
 use PHPUnit\TestFixture\TestWithHookMethodsPrioritizedTest;
 use PHPUnit\TestFixture\TestWithHookMethodsTest;
 use PHPUnit\TestFixture\TestWithoutHookMethodsTest;
@@ -37,7 +39,7 @@ final class HookMethodsTest extends TestCase
                 'after'         => HookMethodCollection::defaultAfter(),
                 'afterClass'    => HookMethodCollection::defaultAfterClass(),
             ],
-            (new HookMethods)->hookMethods('does not exist'),
+            new HookMethods($this->createStub(Emitter::class))->hookMethods('does not exist'),
         );
     }
 
@@ -52,13 +54,13 @@ final class HookMethodsTest extends TestCase
                 'after'         => HookMethodCollection::defaultAfter(),
                 'afterClass'    => HookMethodCollection::defaultAfterClass(),
             ],
-            (new HookMethods)->hookMethods(TestWithoutHookMethodsTest::class),
+            new HookMethods($this->createStub(Emitter::class))->hookMethods(TestWithoutHookMethodsTest::class),
         );
     }
 
     public function testFindsHookMethodsInTestClassWithHookMethods(): void
     {
-        $hookMethods = (new HookMethods)->hookMethods(TestWithHookMethodsTest::class);
+        $hookMethods = new HookMethods($this->createStub(Emitter::class))->hookMethods(TestWithHookMethodsTest::class);
         $this->assertSame(['beforeClass', 'before', 'preCondition', 'postCondition', 'after', 'afterClass'], array_keys($hookMethods));
 
         $beforeClassHooks = HookMethodCollection::defaultBeforeClass();
@@ -88,7 +90,7 @@ final class HookMethodsTest extends TestCase
 
     public function testFindsHookMethodsInTestClassWithHookMethodsPrioritized(): void
     {
-        $hookMethods = (new HookMethods)->hookMethods(TestWithHookMethodsPrioritizedTest::class);
+        $hookMethods = new HookMethods($this->createStub(Emitter::class))->hookMethods(TestWithHookMethodsPrioritizedTest::class);
         $this->assertSame(['beforeClass', 'before', 'preCondition', 'postCondition', 'after', 'afterClass'], array_keys($hookMethods));
 
         $beforeClassHooks = HookMethodCollection::defaultBeforeClass();
@@ -120,5 +122,20 @@ final class HookMethodsTest extends TestCase
         $afterClassHooks->add(new HookMethod('afterLastTest', 6));
         $afterClassHooks->add(new HookMethod('afterLastTestWithNegativePriority', -6));
         $this->assertEquals($afterClassHooks, $hookMethods['afterClass']);
+    }
+
+    public function testWarnsWhenHookAttributeIsUsedOnTemplateMethod(): void
+    {
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter
+            ->expects($this->once())
+            ->method('testRunnerTriggeredPhpunitWarning')
+            ->with('Method ' . TestWithHookAttributeOnTemplateMethodTest::class . '::setUp() is a template method and does not need the #[Before] attribute; the attribute is ignored')
+            ->seal();
+
+        $hookMethods = new HookMethods($emitter)->hookMethods(TestWithHookAttributeOnTemplateMethodTest::class);
+
+        $this->assertSame(['setUp'], $hookMethods['before']->methodNamesSortedByPriority());
     }
 }
