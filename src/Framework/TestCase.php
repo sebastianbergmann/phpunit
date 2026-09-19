@@ -24,7 +24,6 @@ use function is_callable;
 use function is_int;
 use function libxml_clear_errors;
 use function method_exists;
-use function putenv;
 use function sprintf;
 use function str_contains;
 use AssertionError;
@@ -46,6 +45,7 @@ use PHPUnit\Framework\MockObject\Stub\Exception as ExceptionStub;
 use PHPUnit\Framework\MockObject\TestStubBuilder;
 use PHPUnit\Framework\TestCase\DependencyResolver;
 use PHPUnit\Framework\TestCase\DeprecationExpectation;
+use PHPUnit\Framework\TestCase\EnvironmentVariables;
 use PHPUnit\Framework\TestCase\ErrorLogCapture;
 use PHPUnit\Framework\TestCase\ExceptionExpectation;
 use PHPUnit\Framework\TestCase\GlobalStateCapture;
@@ -60,8 +60,6 @@ use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\HookMethods;
 use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
-use PHPUnit\Metadata\WithEnvironmentVariable;
-use PHPUnit\Runner\BackedUpEnvironmentVariable;
 use PHPUnit\Runner\ShutdownHandler;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
@@ -86,11 +84,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private bool $preserveGlobalState       = false;
     private bool $inIsolation               = false;
     private ExceptionExpectation $exceptionExpectation;
-
-    /**
-     * @var list<BackedUpEnvironmentVariable>
-     */
-    private array $backupEnvironmentVariables = [];
+    private EnvironmentVariables $environmentVariables;
 
     /**
      * @var list<ExecutionOrderDependency>
@@ -189,6 +183,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->globalStateCapture     = new GlobalStateCapture;
         $this->mockObjectRegistry     = new MockObjectRegistry;
         $this->deprecationExpectation = new DeprecationExpectation;
+        $this->environmentVariables   = new EnvironmentVariables;
 
         if (is_callable($this->sortId(), true)) {
             $this->providedTests = [new ExecutionOrderDependency($this->sortId())];
@@ -425,7 +420,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $this->globalStateCapture->snapshotGlobals($this, $emitter, $this->inIsolation, $this->runTestInSeparateProcess);
         $this->globalStateCapture->snapshotErrorHandlers($this, $emitter);
-        $this->handleEnvironmentVariables();
+        $this->environmentVariables->set(static::class, $this->methodName);
         $this->outputBuffer->start();
 
         $hookMethods                       = (new HookMethods)->hookMethods(static::class);
@@ -658,7 +653,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             chdir($currentWorkingDirectory);
         }
 
-        $this->restoreEnvironmentVariables();
+        $this->environmentVariables->restore();
         $this->globalStateCapture->restoreErrorHandlers($this, $emitter, $this->inIsolation);
         $this->globalStateCapture->restoreGlobals($this, $emitter);
         $this->unregisterCustomComparators();
@@ -1489,40 +1484,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         if ($missingRequirements !== []) {
             $this->markTestSkipped(implode(PHP_EOL, $missingRequirements));
         }
-    }
-
-    private function handleEnvironmentVariables(): void
-    {
-        $withEnvironmentVariables = MetadataRegistry::parser()->forClassAndMethod(static::class, $this->methodName)->isWithEnvironmentVariable();
-
-        $environmentVariables = [];
-
-        foreach ($withEnvironmentVariables as $metadata) {
-            assert($metadata instanceof WithEnvironmentVariable);
-
-            $environmentVariables[$metadata->environmentVariableName()] = $metadata->value();
-        }
-
-        foreach ($environmentVariables as $environmentVariableName => $environmentVariableValue) {
-            $this->backupEnvironmentVariables = [...$this->backupEnvironmentVariables, ...BackedUpEnvironmentVariable::create($environmentVariableName)];
-
-            if ($environmentVariableValue === null) {
-                unset($_ENV[$environmentVariableName]);
-                putenv($environmentVariableName);
-            } else {
-                $_ENV[$environmentVariableName] = $environmentVariableValue;
-                putenv("{$environmentVariableName}={$environmentVariableValue}");
-            }
-        }
-    }
-
-    private function restoreEnvironmentVariables(): void
-    {
-        foreach ($this->backupEnvironmentVariables as $backupEnvironmentVariable) {
-            $backupEnvironmentVariable->restore();
-        }
-
-        $this->backupEnvironmentVariables = [];
     }
 
     private function unregisterCustomComparators(): void
