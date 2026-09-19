@@ -10,6 +10,7 @@
 namespace PHPUnit\TextUI;
 
 use function uniqid;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
@@ -32,7 +33,7 @@ final class TestSuiteFilterProcessorTest extends TestCase
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Cannot read from ' . $file);
 
-        (new TestSuiteFilterProcessor)->process(
+        new TestSuiteFilterProcessor($this->createStub(Emitter::class))->process(
             $this->configuration($file),
             TestSuite::empty('test suite'),
         );

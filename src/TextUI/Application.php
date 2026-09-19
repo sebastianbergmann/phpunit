@@ -1091,7 +1091,7 @@ final readonly class Application
      */
     private function filteredTests(Configuration $configuration, TestSuite $suite): array
     {
-        (new TestSuiteFilterProcessor)->process($configuration, $suite);
+        new TestSuiteFilterProcessor($this->emitter)->process($configuration, $suite);
 
         return $suite->collect();
     }

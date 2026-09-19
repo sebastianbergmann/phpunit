@@ -27,6 +27,13 @@ use PHPUnit\TextUI\Configuration\FilterNotConfiguredException;
  */
 final readonly class TestSuiteFilterProcessor
 {
+    private Event\Emitter $emitter;
+
+    public function __construct(Event\Emitter $emitter)
+    {
+        $this->emitter = $emitter;
+    }
+
     /**
      * @throws Event\RuntimeException
      * @throws FilterNotConfiguredException
@@ -129,7 +136,7 @@ final readonly class TestSuiteFilterProcessor
 
         $suite->injectFilter($factory);
 
-        Event\Facade::emitter()->testSuiteFiltered(
+        $this->emitter->testSuiteFiltered(
             Event\TestSuite\TestSuiteBuilder::from($suite),
         );
     }

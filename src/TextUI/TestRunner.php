@@ -63,7 +63,7 @@ final class TestRunner
                 );
             }
 
-            (new TestSuiteFilterProcessor)->process($configuration, $suite);
+            new TestSuiteFilterProcessor($this->emitter)->process($configuration, $suite);
 
             $this->emitter->testRunnerExecutionStarted(
                 Event\TestSuite\TestSuiteBuilder::from($suite),
