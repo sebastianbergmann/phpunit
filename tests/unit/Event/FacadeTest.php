@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event;
 
+use PHPUnit\Event\Telemetry\HRTime;
 use PHPUnit\Event\Tracer\Tracer;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
@@ -51,6 +52,23 @@ final class FacadeTest extends TestCase
         $this->expectException(EventsAreAlreadyBeingCollectedException::class);
 
         $dispatcher->startCollectingEvents();
+    }
+
+    public function testKeepsTheEmitterWhenInitializedForIsolationRepeatedly(): void
+    {
+        // A persistent worker process of a parallel test run initializes its
+        // event facade for isolation once per unit, but the error handler and
+        // the code coverage singletons hold the emitter from when the worker
+        // booted, so the emitter must keep its identity across those calls.
+        $facade   = new Facade;
+        $property = new ReflectionProperty(Facade::class, 'emitter');
+        $emitter  = $property->getValue($facade);
+
+        $first  = $facade->initForIsolation(HRTime::fromSecondsAndNanoseconds(1, 0));
+        $second = $facade->initForIsolation(HRTime::fromSecondsAndNanoseconds(2, 0));
+
+        $this->assertSame($emitter, $property->getValue($facade));
+        $this->assertNotSame($first, $second);
     }
 
     public function testTracerRegistrationDoesNotWorkWhenEventFacadeIsSealed(): void
