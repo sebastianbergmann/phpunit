@@ -10,12 +10,11 @@
 namespace PHPUnit\Runner\Extension;
 
 use const DIRECTORY_SEPARATOR;
-use PHPUnit\Event\Facade;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
-use ReflectionProperty;
 
 #[CoversClass(PharLoader::class)]
 #[Medium]
@@ -61,21 +60,6 @@ final class PharLoaderTest extends TestCase
         $directory = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' .
                      DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'phar-loader' . DIRECTORY_SEPARATOR . $directory;
 
-        /*
-         * PharLoader emits test runner warnings for extensions that cannot be
-         * loaded. These must not end up in the result of the test run that
-         * exercises PharLoader, so they are emitted into a throw-away event
-         * facade that is never forwarded.
-         */
-        $property = new ReflectionProperty(Facade::class, 'instance');
-        $facade   = $property->getValue();
-
-        $property->setValue(null, new Facade);
-
-        try {
-            return (new PharLoader)->loadPharExtensionsInDirectory($directory);
-        } finally {
-            $property->setValue(null, $facade);
-        }
+        return new PharLoader($this->createStub(Emitter::class))->loadPharExtensionsInDirectory($directory);
     }
 }

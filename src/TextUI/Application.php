@@ -175,7 +175,7 @@ final readonly class Application
 
             if (!$configuration->noExtensions()) {
                 if ($configuration->hasPharExtensionDirectory()) {
-                    $pharExtensions = (new PharLoader)->loadPharExtensionsInDirectory(
+                    $pharExtensions = new PharLoader($this->emitter)->loadPharExtensionsInDirectory(
                         $configuration->pharExtensionDirectory(),
                     );
                 }
