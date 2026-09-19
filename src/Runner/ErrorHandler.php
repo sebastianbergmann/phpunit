@@ -97,6 +97,7 @@ final class ErrorHandler
      */
     private array $testCaseContextIssues = [];
     private ?string $testCaseContext     = null;
+    private readonly Event\Emitter $emitter;
 
     /**
      * @var ?list<callable>
@@ -132,13 +133,18 @@ final class ErrorHandler
             $identifyIssueTrigger = false;
         }
 
-        return self::$instance ?? self::$instance = new self($identifyIssueTrigger);
+        if (self::$instance === null) {
+            self::$instance = new self($identifyIssueTrigger, Event\Facade::emitter());
+        }
+
+        return self::$instance;
     }
 
-    private function __construct(bool $identifyIssueTrigger)
+    public function __construct(bool $identifyIssueTrigger, Event\Emitter $emitter)
     {
         $this->excludeList           = new ExcludeList;
         $this->identifyIssueTrigger  = $identifyIssueTrigger;
+        $this->emitter               = $emitter;
         $this->issueTriggerResolvers = [new DefaultIssueTriggerResolver];
     }
 
@@ -216,7 +222,7 @@ final class ErrorHandler
 
         switch ($errorNumber) {
             case E_NOTICE:
-                Event\Facade::emitter()->testTriggeredPhpNotice(
+                $this->emitter->testTriggeredPhpNotice(
                     $test,
                     $errorString,
                     $errorFile,
@@ -228,7 +234,7 @@ final class ErrorHandler
                 break;
 
             case E_USER_NOTICE:
-                Event\Facade::emitter()->testTriggeredNotice(
+                $this->emitter->testTriggeredNotice(
                     $test,
                     $errorString,
                     $errorFile,
@@ -240,7 +246,7 @@ final class ErrorHandler
                 break;
 
             case E_WARNING:
-                Event\Facade::emitter()->testTriggeredPhpWarning(
+                $this->emitter->testTriggeredPhpWarning(
                     $test,
                     $errorString,
                     $errorFile,
@@ -252,7 +258,7 @@ final class ErrorHandler
                 break;
 
             case E_USER_WARNING:
-                Event\Facade::emitter()->testTriggeredWarning(
+                $this->emitter->testTriggeredWarning(
                     $test,
                     $errorString,
                     $errorFile,
@@ -266,7 +272,7 @@ final class ErrorHandler
             case E_DEPRECATED:
                 $trigger = $this->trigger($test, false, $errorString, $errorFile);
 
-                Event\Facade::emitter()->testTriggeredPhpDeprecation(
+                $this->emitter->testTriggeredPhpDeprecation(
                     $test,
                     $errorString,
                     $errorFile,
@@ -283,7 +289,7 @@ final class ErrorHandler
             case E_USER_DEPRECATED:
                 $trigger = $this->trigger($test, true, $errorString);
 
-                Event\Facade::emitter()->testTriggeredDeprecation(
+                $this->emitter->testTriggeredDeprecation(
                     $test,
                     $errorString,
                     $errorFile,
@@ -299,7 +305,7 @@ final class ErrorHandler
                 break;
 
             case E_USER_ERROR:
-                Event\Facade::emitter()->testTriggeredError(
+                $this->emitter->testTriggeredError(
                     $test,
                     $errorString,
                     $errorFile,
@@ -381,7 +387,7 @@ final class ErrorHandler
 
         switch ($errorNumber) {
             case E_NOTICE:
-                Event\Facade::emitter()->testRunnerTriggeredPhpNotice(
+                $this->emitter->testRunnerTriggeredPhpNotice(
                     $errorString,
                     $errorFile,
                     $errorLine,
@@ -392,7 +398,7 @@ final class ErrorHandler
                 break;
 
             case E_USER_NOTICE:
-                Event\Facade::emitter()->testRunnerTriggeredNotice(
+                $this->emitter->testRunnerTriggeredNotice(
                     $errorString,
                     $errorFile,
                     $errorLine,
@@ -403,7 +409,7 @@ final class ErrorHandler
                 break;
 
             case E_WARNING:
-                Event\Facade::emitter()->testRunnerTriggeredPhpWarning(
+                $this->emitter->testRunnerTriggeredPhpWarning(
                     $errorString,
                     $errorFile,
                     $errorLine,
@@ -414,7 +420,7 @@ final class ErrorHandler
                 break;
 
             case E_USER_WARNING:
-                Event\Facade::emitter()->testRunnerTriggeredWarning(
+                $this->emitter->testRunnerTriggeredWarning(
                     $errorString,
                     $errorFile,
                     $errorLine,
@@ -427,7 +433,7 @@ final class ErrorHandler
             case E_DEPRECATED:
                 $trigger = $this->triggerWithoutTest(false, $errorString, $errorFile);
 
-                Event\Facade::emitter()->testRunnerTriggeredPhpDeprecation(
+                $this->emitter->testRunnerTriggeredPhpDeprecation(
                     $errorString,
                     $errorFile,
                     $errorLine,
@@ -442,7 +448,7 @@ final class ErrorHandler
             case E_USER_DEPRECATED:
                 $trigger = $this->triggerWithoutTest(true, $errorString);
 
-                Event\Facade::emitter()->testRunnerTriggeredDeprecation(
+                $this->emitter->testRunnerTriggeredDeprecation(
                     $errorString,
                     $errorFile,
                     $errorLine,
@@ -463,7 +469,7 @@ final class ErrorHandler
                  */
                 // @codeCoverageIgnoreStart
             case E_USER_ERROR:
-                Event\Facade::emitter()->testRunnerTriggeredError(
+                $this->emitter->testRunnerTriggeredError(
                     $errorString,
                     $errorFile,
                     $errorLine,
