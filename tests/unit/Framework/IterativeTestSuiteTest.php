@@ -32,7 +32,7 @@ final class IterativeTestSuiteTest extends TestCase
 
         $this->assertNotFalse($filename);
 
-        $suite = ConcreteIterativeTestSuite::empty('the-name');
+        $suite = ConcreteIterativeTestSuite::empty('the-name', $this->createStub(Emitter::class));
         $suite->addTest(new PhptTestCase($filename));
 
         $dependencies = [new ExecutionOrderDependency('PHPUnit\TestFixture\ExampleTest::testOne')];
@@ -56,14 +56,14 @@ final class IterativeTestSuiteTest extends TestCase
             ->with($test, 'Remaining repetition skipped after failure in repetition 2')
             ->seal();
 
-        $message = ConcreteIterativeTestSuite::empty('the-name')->skipRepetition($test, 2, $emitter);
+        $message = ConcreteIterativeTestSuite::empty('the-name', $this->createStub(Emitter::class))->skipRepetition($test, 2, $emitter);
 
         $this->assertSame('Remaining repetition skipped after failure in repetition 2', $message);
     }
 
     public function testStopsCollectingEventsWhenRunningTheTestThrows(): void
     {
-        $suite = ConcreteIterativeTestSuite::empty('the-name');
+        $suite = ConcreteIterativeTestSuite::empty('the-name', $this->createStub(Emitter::class));
 
         $message = null;
 

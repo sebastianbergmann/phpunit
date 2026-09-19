@@ -22,6 +22,7 @@ use function sys_get_temp_dir;
 use function uniqid;
 use function unlink;
 use PHPUnit\Event\AbstractEventTestCase;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Event\EventCollection;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Event\TestRunner\WarningTriggered;
@@ -432,9 +433,11 @@ final class DefaultTestFileSkipperTest extends AbstractEventTestCase
             NameFilterPruner::withoutFilter(),
         );
 
-        $skipper->record($file, static function () use ($file): void
+        $emitter = $this->createStub(Emitter::class);
+
+        $skipper->record($file, static function () use ($file, $emitter): void
         {
-            TestSuite::empty('test')->addTestFile($file);
+            TestSuite::empty('test', $emitter)->addTestFile($file);
         });
 
         $this->assertTrue($skipper->canSkipLoading($file, []));

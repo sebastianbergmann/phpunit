@@ -35,7 +35,7 @@ final class TestSuiteFilterProcessorTest extends TestCase
 
         new TestSuiteFilterProcessor($this->createStub(Emitter::class))->process(
             $this->configuration($file),
-            TestSuite::empty('test suite'),
+            TestSuite::empty('test suite', $this->createStub(Emitter::class)),
         );
     }
 

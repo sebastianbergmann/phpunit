@@ -11,6 +11,7 @@ namespace PHPUnit\Runner\Filter;
 
 use function assert;
 use function iterator_to_array;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
@@ -102,12 +103,12 @@ final class IncludeGroupFilterIteratorTest extends TestCase
 
     public function testAcceptsTestSuitesSoThatTheTestsTheyContainCanBeFiltered(): void
     {
-        $childSuite = TestSuite::empty('child test suite name');
+        $childSuite = TestSuite::empty('child test suite name', $this->createStub(Emitter::class));
 
         $childSuite->addTest(new BankAccountTest('testBalanceIsInitiallyZero'), ['one']);
         $childSuite->addTest(new BankAccountTest('testBalanceCannotBecomeNegative'), ['two']);
 
-        $suite = TestSuite::empty('test suite name');
+        $suite = TestSuite::empty('test suite name', $this->createStub(Emitter::class));
 
         $suite->addTest($childSuite);
 
@@ -137,7 +138,7 @@ final class IncludeGroupFilterIteratorTest extends TestCase
         $iterator = new IncludeGroupFilterIterator(
             new RecursiveArrayIterator([new TestThatIsNeitherTestCaseNorPhptTestCase]),
             ['one'],
-            TestSuite::empty('test suite name'),
+            TestSuite::empty('test suite name', $this->createStub(Emitter::class)),
         );
 
         $this->assertCount(1, iterator_to_array($iterator));
@@ -148,7 +149,7 @@ final class IncludeGroupFilterIteratorTest extends TestCase
      */
     private function idsOfAcceptedTests(array $groups): array
     {
-        $suite = TestSuite::empty('test suite name');
+        $suite = TestSuite::empty('test suite name', $this->createStub(Emitter::class));
 
         $suite->addTest(new BankAccountTest('testBalanceIsInitiallyZero'), ['one', '+one']);
         $suite->addTest(new BankAccountTest('testBalanceCannotBecomeNegative'), ['two', '5']);

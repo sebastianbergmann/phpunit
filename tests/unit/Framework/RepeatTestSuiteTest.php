@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework;
 
+use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\TestFixture\Success;
@@ -25,7 +26,7 @@ final class RepeatTestSuiteTest extends TestCase
             new Success('testOne'),
         ];
 
-        $suite = RepeatTestSuite::fromTests('PHPUnit\TestFixture\Success::testOne', $tests, 1);
+        $suite = RepeatTestSuite::fromTests('PHPUnit\TestFixture\Success::testOne', $this->createStub(Emitter::class), $tests, 1);
 
         $this->assertCount(3, $suite);
     }
@@ -34,6 +35,7 @@ final class RepeatTestSuiteTest extends TestCase
     {
         $suite = RepeatTestSuite::fromTests(
             'PHPUnit\TestFixture\Success::testOne',
+            $this->createStub(Emitter::class),
             [new Success('testOne')],
             1,
         );
@@ -47,6 +49,7 @@ final class RepeatTestSuiteTest extends TestCase
 
         $suite = RepeatTestSuite::fromTests(
             'PHPUnit\TestFixture\Success::testOne',
+            $this->createStub(Emitter::class),
             [$test],
             1,
         );

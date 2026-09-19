@@ -62,7 +62,7 @@ final readonly class TestSuiteMapper
     public function map(string $xmlConfigurationFile, TestSuiteCollection $configuredTestSuites, array $includeTestSuites, array $excludeTestSuites, int $numberOfRuns = 1, int $maxAttempts = 1): TestSuiteObject
     {
         try {
-            $result    = TestSuiteObject::empty($xmlConfigurationFile);
+            $result    = TestSuiteObject::empty($xmlConfigurationFile, $this->emitter);
             $processed = [];
 
             foreach ($configuredTestSuites as $configuredTestSuite) {
@@ -81,7 +81,7 @@ final readonly class TestSuiteMapper
                     $exclude[] = $file->path();
                 }
 
-                $testSuite = TestSuiteObject::empty($configuredTestSuite->name());
+                $testSuite = TestSuiteObject::empty($configuredTestSuite->name(), $this->emitter);
                 $empty     = true;
 
                 foreach ($configuredTestSuite->directories() as $directory) {

@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework;
 
 use function iterator_to_array;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase\GlobalStateCapture;
@@ -29,7 +30,7 @@ final class TestBuilderTest extends TestCase
 {
     public function testBuildsTestWithoutMetadataForIsolation(): void
     {
-        $test = (new TestBuilder)->build(
+        $test = new TestBuilder($this->createStub(Emitter::class))->build(
             new ReflectionClass(TestWithoutIsolationAttributes::class),
             'testOne',
         );
@@ -47,7 +48,7 @@ final class TestBuilderTest extends TestCase
 
     public function testBuildsTestWithClassLevelMetadataForIsolation(): void
     {
-        $test = (new TestBuilder)->build(
+        $test = new TestBuilder($this->createStub(Emitter::class))->build(
             new ReflectionClass(TestWithClassLevelIsolationAttributes::class),
             'testOne',
         );
@@ -65,7 +66,7 @@ final class TestBuilderTest extends TestCase
 
     public function testBuildsTestWithMethodLevelMetadataForIsolation(): void
     {
-        $test = (new TestBuilder)->build(
+        $test = new TestBuilder($this->createStub(Emitter::class))->build(
             new ReflectionClass(TestWithMethodLevelIsolationAttributes::class),
             'testOne',
         );
@@ -83,7 +84,7 @@ final class TestBuilderTest extends TestCase
 
     public function testBuildsTestWithInheritedClassLevelMetadataForIsolation(): void
     {
-        $test = (new TestBuilder)->build(
+        $test = new TestBuilder($this->createStub(Emitter::class))->build(
             new ReflectionClass(TestWithInheritedClassLevelIsolationAttributes::class),
             'testOne',
         );
@@ -94,7 +95,7 @@ final class TestBuilderTest extends TestCase
 
     public function testBuildsTestWithMetadataForExcludingGlobalStateFromBackup(): void
     {
-        $test = (new TestBuilder)->build(
+        $test = new TestBuilder($this->createStub(Emitter::class))->build(
             new ReflectionClass(TestWithBackupExcludeListAttributes::class),
             'testOne',
         );
@@ -116,7 +117,7 @@ final class TestBuilderTest extends TestCase
 
     public function testBuildsTestWithMetadataForPreservingGlobalState(): void
     {
-        $test = (new TestBuilder)->build(
+        $test = new TestBuilder($this->createStub(Emitter::class))->build(
             new ReflectionClass(TestWithPreserveGlobalStateAttribute::class),
             'testOne',
         );
@@ -127,7 +128,7 @@ final class TestBuilderTest extends TestCase
 
     public function testBuildsTestWithDataProvider(): void
     {
-        $test = (new TestBuilder)->build(
+        $test = new TestBuilder($this->createStub(Emitter::class))->build(
             new ReflectionClass(TestWithDataProvider::class),
             'testOne',
         );

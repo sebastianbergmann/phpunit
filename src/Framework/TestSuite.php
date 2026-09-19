@@ -96,13 +96,14 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
     private ?array $providedTests    = null;
     private ?Factory $iteratorFilter = null;
     private bool $wasRun             = false;
+    private Event\Emitter $emitter;
 
     /**
      * @param non-empty-string $name
      */
-    public static function empty(string $name): static
+    public static function empty(string $name, Event\Emitter $emitter): static
     {
-        return new static($name);
+        return new static($name, $emitter);
     }
 
     /**
@@ -111,9 +112,9 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
      * @param positive-int              $numberOfRuns
      * @param positive-int              $maxAttempts
      */
-    public static function fromClassReflector(ReflectionClass $class, array $groups = [], int $numberOfRuns = 1, int $maxAttempts = 1): static
+    public static function fromClassReflector(ReflectionClass $class, Event\Emitter $emitter, array $groups = [], int $numberOfRuns = 1, int $maxAttempts = 1): static
     {
-        $testSuite = new static($class->getName());
+        $testSuite = new static($class->getName(), $emitter);
 
         foreach (Reflection::publicMethodsDeclaredDirectlyInTestClass($class) as $method) {
             if (!TestUtil::isTestMethod($method)) {
@@ -121,7 +122,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             }
 
             if ((new HookMethods)->isHookMethod($method)) {
-                Event\Facade::emitter()->testRunnerTriggeredPhpunitWarning(
+                $emitter->testRunnerTriggeredPhpunitWarning(
                     sprintf(
                         'Method %s::%s() cannot be used both as a hook method and as a test method',
                         $class->getName(),
@@ -136,7 +137,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
         }
 
         if ($testSuite->isEmpty()) {
-            Event\Facade::emitter()->testRunnerTriggeredPhpunitWarning(
+            $emitter->testRunnerTriggeredPhpunitWarning(
                 sprintf(
                     'No tests found in class "%s".',
                     $class->getName(),
@@ -150,9 +151,10 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
     /**
      * @param non-empty-string $name
      */
-    final private function __construct(string $name)
+    final private function __construct(string $name, Event\Emitter $emitter)
     {
-        $this->name = $name;
+        $this->name    = $name;
+        $this->emitter = $emitter;
     }
 
     /**
@@ -226,7 +228,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             );
         }
 
-        $this->addTest(self::fromClassReflector($testClass, $groups, $numberOfRuns, $maxAttempts), $groups);
+        $this->addTest(self::fromClassReflector($testClass, $this->emitter, $groups, $numberOfRuns, $maxAttempts), $groups);
     }
 
     /**
@@ -249,12 +251,12 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             if (str_ends_with($filename, '.phpt') && is_file($filename)) {
                 if ($numberOfRuns > 1) {
                     $this->addTest(
-                        PhptRepeatTestSuite::for($filename, $numberOfRuns),
+                        PhptRepeatTestSuite::for($filename, $this->emitter, $numberOfRuns),
                         $groups,
                     );
                 } elseif ($maxAttempts > 1) {
                     $this->addTest(
-                        PhptRetryTestSuite::for($filename, $maxAttempts),
+                        PhptRetryTestSuite::for($filename, $this->emitter, $maxAttempts),
                         $groups,
                     );
                 } else {
@@ -273,7 +275,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
 
             assert($message !== '');
 
-            Event\Facade::emitter()->testRunnerTriggeredPhpunitWarning(
+            $this->emitter->testRunnerTriggeredPhpunitWarning(
                 $message,
             );
         }
@@ -405,7 +407,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             return;
         }
 
-        $emitter                       = Event\Facade::emitter();
+        $emitter                       = $this->emitter;
         $testSuiteValueObjectForEvents = Event\TestSuite\TestSuiteBuilder::from($this);
 
         $emitter->testSuiteStarted($testSuiteValueObjectForEvents);
@@ -662,7 +664,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             assert($line !== false);
 
             foreach ($metadataErrors as $message) {
-                Event\Facade::emitter()->testTriggeredPhpunitError(
+                $this->emitter->testTriggeredPhpunitError(
                     new TestMethod(
                         $className,
                         $methodName,
@@ -683,7 +685,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
         }
 
         try {
-            $test = (new TestBuilder)->build($class, $methodName, $groups, $numberOfRuns, 1, $maxAttempts);
+            $test = new TestBuilder($this->emitter)->build($class, $methodName, $groups, $numberOfRuns, 1, $maxAttempts);
         } catch (InvalidDataProviderException $e) {
             if ($e->getProviderLabel() === null) {
                 $message = sprintf(
@@ -708,7 +710,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             assert($file !== false && $file !== '');
             assert($line !== false);
 
-            Event\Facade::emitter()->testTriggeredPhpunitError(
+            $this->emitter->testTriggeredPhpunitError(
                 new TestMethod(
                     $className,
                     $methodName,

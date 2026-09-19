@@ -10,6 +10,7 @@
 namespace PHPUnit\Runner;
 
 use function sys_get_temp_dir;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -49,7 +50,7 @@ final class TestSuiteSorterTest extends TestCase
         $small  = new SmallGroupAttributesTest('testOne');
         $medium = new MediumGroupAttributesTest('testOne');
 
-        $suite = TestSuite::empty('test');
+        $suite = TestSuite::empty('test', $this->createStub(Emitter::class));
         $suite->setTests([$large, $small, $medium]);
 
         $sorter = new TestSuiteSorter;
@@ -68,7 +69,7 @@ final class TestSuiteSorterTest extends TestCase
         $small  = new SmallGroupAttributesTest('testOne');
         $medium = new MediumGroupAttributesTest('testOne');
 
-        $suite = TestSuite::empty('test');
+        $suite = TestSuite::empty('test', $this->createStub(Emitter::class));
         $suite->setTests([$large, $small, $medium]);
 
         $sorter = new TestSuiteSorter;
@@ -84,7 +85,7 @@ final class TestSuiteSorterTest extends TestCase
     public function testSortsBySizeWithDataProviderTestSuite(): void
     {
         $classReflector = new ReflectionClass(SmallTestWithDataProvider::class);
-        $smallSuite     = TestSuite::fromClassReflector($classReflector);
+        $smallSuite     = TestSuite::fromClassReflector($classReflector, $this->createStub(Emitter::class));
 
         $dataProviderTestSuite = null;
 
@@ -100,7 +101,7 @@ final class TestSuiteSorterTest extends TestCase
 
         $large = new LargeGroupAttributesTest('testOne');
 
-        $suite = TestSuite::empty('test');
+        $suite = TestSuite::empty('test', $this->createStub(Emitter::class));
         $suite->setTests([$large, $dataProviderTestSuite]);
 
         $sorter = new TestSuiteSorter;
@@ -117,7 +118,7 @@ final class TestSuiteSorterTest extends TestCase
         $nonReorderable = new NonReorderableTest;
         $testCase       = new SmallGroupAttributesTest('testOne');
 
-        $suite = TestSuite::empty('test');
+        $suite = TestSuite::empty('test', $this->createStub(Emitter::class));
         $suite->setTests([$nonReorderable, $testCase]);
 
         $sorter = new TestSuiteSorter;
@@ -135,7 +136,7 @@ final class TestSuiteSorterTest extends TestCase
         $nonReorderable = new NonReorderableTest;
         $testCase       = new SmallGroupAttributesTest('testOne');
 
-        $suite = TestSuite::empty('test');
+        $suite = TestSuite::empty('test', $this->createStub(Emitter::class));
         $suite->setTests([$nonReorderable, $testCase]);
 
         $sorter = new TestSuiteSorter;
@@ -154,7 +155,7 @@ final class TestSuiteSorterTest extends TestCase
         $medium = new MediumGroupAttributesTest('testOne');
         $large  = new LargeGroupAttributesTest('testOne');
 
-        $suite = TestSuite::empty('test');
+        $suite = TestSuite::empty('test', $this->createStub(Emitter::class));
         $suite->setTests([$small, $medium, $large]);
 
         $cache = new DefaultTestRunHistory(sys_get_temp_dir());
@@ -178,7 +179,7 @@ final class TestSuiteSorterTest extends TestCase
         $medium = new MediumGroupAttributesTest('testOne');
         $large  = new LargeGroupAttributesTest('testOne');
 
-        $suite = TestSuite::empty('test');
+        $suite = TestSuite::empty('test', $this->createStub(Emitter::class));
         $suite->setTests([$small, $medium, $large]);
 
         $cache = new DefaultTestRunHistory(sys_get_temp_dir());
@@ -200,7 +201,7 @@ final class TestSuiteSorterTest extends TestCase
         $medium = new MediumGroupAttributesTest('testOne');
         $large  = new LargeGroupAttributesTest('testOne');
 
-        $suite = TestSuite::empty('test');
+        $suite = TestSuite::empty('test', $this->createStub(Emitter::class));
         $suite->setTests([$small, $medium, $large]);
 
         $cache = new DefaultTestRunHistory(sys_get_temp_dir());
@@ -222,7 +223,7 @@ final class TestSuiteSorterTest extends TestCase
         $medium = new MediumGroupAttributesTest('testOne');
         $large  = new LargeGroupAttributesTest('testOne');
 
-        $suite = TestSuite::empty('test');
+        $suite = TestSuite::empty('test', $this->createStub(Emitter::class));
         $suite->setTests([$small, $medium, $large]);
 
         $cache = new DefaultTestRunHistory(sys_get_temp_dir());
@@ -243,13 +244,13 @@ final class TestSuiteSorterTest extends TestCase
         $unitTest     = new SmallGroupAttributesTest('testOne');
         $endToEndTest = new LargeGroupAttributesTest('testOne');
 
-        $unitSuite = TestSuite::empty('unit');
+        $unitSuite = TestSuite::empty('unit', $this->createStub(Emitter::class));
         $unitSuite->setTests([$unitTest]);
 
-        $endToEndSuite = TestSuite::empty('end-to-end');
+        $endToEndSuite = TestSuite::empty('end-to-end', $this->createStub(Emitter::class));
         $endToEndSuite->setTests([$endToEndTest]);
 
-        $parent = TestSuite::empty('test');
+        $parent = TestSuite::empty('test', $this->createStub(Emitter::class));
         $parent->setTests([$unitSuite, $endToEndSuite]);
 
         $cache = new DefaultTestRunHistory(sys_get_temp_dir());
@@ -272,16 +273,16 @@ final class TestSuiteSorterTest extends TestCase
         $failingTest = new LargeGroupAttributesTest('testOne');
         $passingTest = new SmallGroupAttributesTest('testOne');
 
-        $innerFailing = TestSuite::empty('inner-failing');
+        $innerFailing = TestSuite::empty('inner-failing', $this->createStub(Emitter::class));
         $innerFailing->setTests([$failingTest]);
 
-        $outerFailing = TestSuite::empty('outer-failing');
+        $outerFailing = TestSuite::empty('outer-failing', $this->createStub(Emitter::class));
         $outerFailing->setTests([$innerFailing]);
 
-        $outerPassing = TestSuite::empty('outer-passing');
+        $outerPassing = TestSuite::empty('outer-passing', $this->createStub(Emitter::class));
         $outerPassing->setTests([$passingTest]);
 
-        $parent = TestSuite::empty('parent');
+        $parent = TestSuite::empty('parent', $this->createStub(Emitter::class));
         $parent->setTests([$outerPassing, $outerFailing]);
 
         $cache = new DefaultTestRunHistory(sys_get_temp_dir());
@@ -299,7 +300,7 @@ final class TestSuiteSorterTest extends TestCase
     public function testDefectsFirstHoistsClassSuiteContainingFailingDataProviderTest(): void
     {
         $classReflector = new ReflectionClass(SmallTestWithDataProvider::class);
-        $classSuite     = TestSuite::fromClassReflector($classReflector);
+        $classSuite     = TestSuite::fromClassReflector($classReflector, $this->createStub(Emitter::class));
 
         $dataProviderTestSuite = null;
 
@@ -315,10 +316,10 @@ final class TestSuiteSorterTest extends TestCase
 
         $failingDataSet = $dataProviderTestSuite->tests()[0];
 
-        $passingClassSuite = TestSuite::empty('passing');
+        $passingClassSuite = TestSuite::empty('passing', $this->createStub(Emitter::class));
         $passingClassSuite->setTests([new SmallGroupAttributesTest('testOne')]);
 
-        $parent = TestSuite::empty('parent');
+        $parent = TestSuite::empty('parent', $this->createStub(Emitter::class));
         $parent->setTests([$passingClassSuite, $classSuite]);
 
         $cache = new DefaultTestRunHistory(sys_get_temp_dir());
@@ -335,10 +336,10 @@ final class TestSuiteSorterTest extends TestCase
 
     public function testSortBySizeAssignsUnknownToPlainTestSuite(): void
     {
-        $suiteA = TestSuite::empty('A');
-        $suiteB = TestSuite::empty('B');
+        $suiteA = TestSuite::empty('A', $this->createStub(Emitter::class));
+        $suiteB = TestSuite::empty('B', $this->createStub(Emitter::class));
 
-        $parent = TestSuite::empty('test');
+        $parent = TestSuite::empty('test', $this->createStub(Emitter::class));
         $parent->setTests([$suiteA, $suiteB]);
 
         $sorter = new TestSuiteSorter;

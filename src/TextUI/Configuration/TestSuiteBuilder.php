@@ -169,7 +169,7 @@ final readonly class TestSuiteBuilder
     {
         if (str_ends_with($path, '.phpt') && is_file($path)) {
             if ($suite === null) {
-                $suite = TestSuite::empty($path);
+                $suite = TestSuite::empty($path, $this->emitter);
             }
 
             $suite->addTestFile($path, [], $numberOfRuns, $maxAttempts);
@@ -181,7 +181,7 @@ final readonly class TestSuiteBuilder
             $files = (new FileIteratorFacade)->getFilesAsArray($path, $suffixes);
 
             if ($suite === null) {
-                $suite = TestSuite::empty('CLI Arguments');
+                $suite = TestSuite::empty('CLI Arguments', $this->emitter);
             }
 
             foreach ($files as $file) {
@@ -211,9 +211,11 @@ final readonly class TestSuiteBuilder
             return $suite;
         }
 
+        $emitter = $this->emitter;
+
         return $this->skipper->record(
             $path,
-            static function () use ($path, $suite, $numberOfRuns, $maxAttempts): TestSuite
+            static function () use ($path, $suite, $numberOfRuns, $maxAttempts, $emitter): TestSuite
             {
                 try {
                     $testClass = (new TestSuiteLoader)->load($path);
@@ -224,7 +226,7 @@ final readonly class TestSuiteBuilder
                 }
 
                 if ($suite === null) {
-                    return TestSuite::fromClassReflector($testClass, [], $numberOfRuns, $maxAttempts);
+                    return TestSuite::fromClassReflector($testClass, $emitter, [], $numberOfRuns, $maxAttempts);
                 }
 
                 $suite->addTestSuite($testClass, [], $numberOfRuns, $maxAttempts);
@@ -244,7 +246,7 @@ final readonly class TestSuiteBuilder
      */
     private function testSuiteFromPathList(array $paths, array $suffixes, int $numberOfRuns, int $maxAttempts): TestSuite
     {
-        $suite = TestSuite::empty('CLI Arguments');
+        $suite = TestSuite::empty('CLI Arguments', $this->emitter);
 
         foreach ($paths as $path) {
             $this->testSuiteFromPath($path, $suffixes, $numberOfRuns, $maxAttempts, $suite);

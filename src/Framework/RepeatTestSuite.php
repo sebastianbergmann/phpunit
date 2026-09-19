@@ -34,9 +34,9 @@ final class RepeatTestSuite extends IterativeTestSuite
      * @param positive-int             $failureThreshold
      * @param list<non-empty-string>   $groups
      */
-    public static function fromTests(string $name, array $tests, int $failureThreshold, array $groups = []): self
+    public static function fromTests(string $name, Event\Emitter $emitter, array $tests, int $failureThreshold, array $groups = []): self
     {
-        $suite = self::empty($name);
+        $suite = self::empty($name, $emitter);
 
         $suite->failureThreshold = $failureThreshold;
 

@@ -10,6 +10,7 @@
 namespace PHPUnit\Runner\Filter;
 
 use function assert;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
@@ -94,7 +95,7 @@ final class ExcludeGroupFilterIteratorTest extends TestCase
      */
     private function idsOfAcceptedTests(array $groups): array
     {
-        $suite = TestSuite::empty('test suite name');
+        $suite = TestSuite::empty('test suite name', $this->createStub(Emitter::class));
 
         $suite->addTest(new BankAccountTest('testBalanceIsInitiallyZero'), ['one']);
         $suite->addTest(new BankAccountTest('testBalanceCannotBecomeNegative'), ['two', '5']);

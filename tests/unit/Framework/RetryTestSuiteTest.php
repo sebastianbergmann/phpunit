@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework;
 
+use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\TestFixture\Success;
@@ -21,6 +22,7 @@ final class RetryTestSuiteTest extends TestCase
     {
         $suite = RetryTestSuite::fromTestCase(
             'PHPUnit\TestFixture\Success::testOne',
+            $this->createStub(Emitter::class),
             new Success('testOne'),
             3,
             static fn (): TestCase => new Success('testOne'),
@@ -34,6 +36,7 @@ final class RetryTestSuiteTest extends TestCase
     {
         $suite = RetryTestSuite::fromTestCase(
             'PHPUnit\TestFixture\Success::testOne',
+            $this->createStub(Emitter::class),
             new Success('testOne'),
             3,
             static fn (): TestCase => new Success('testOne'),
@@ -48,6 +51,7 @@ final class RetryTestSuiteTest extends TestCase
 
         $suite = RetryTestSuite::fromTestCase(
             'PHPUnit\TestFixture\Success::testOne',
+            $this->createStub(Emitter::class),
             $test,
             3,
             static fn (): TestCase => new Success('testOne'),
@@ -58,11 +62,11 @@ final class RetryTestSuiteTest extends TestCase
 
     public function testProvidesNothingWhenItIsEmpty(): void
     {
-        $this->assertSame([], RetryTestSuite::empty('the-name')->provides());
+        $this->assertSame([], RetryTestSuite::empty('the-name', $this->createStub(Emitter::class))->provides());
     }
 
     public function testRequiresNothingWhenItIsEmpty(): void
     {
-        $this->assertSame([], RetryTestSuite::empty('the-name')->requires());
+        $this->assertSame([], RetryTestSuite::empty('the-name', $this->createStub(Emitter::class))->requires());
     }
 }

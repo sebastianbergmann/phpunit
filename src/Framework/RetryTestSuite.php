@@ -40,9 +40,9 @@ final class RetryTestSuite extends IterativeTestSuite
      * @param Closure(): TestCase    $additionalAttemptFactory
      * @param list<non-empty-string> $groups
      */
-    public static function fromTestCase(string $name, TestCase $test, int $maxAttempts, Closure $additionalAttemptFactory, array $groups = []): self
+    public static function fromTestCase(string $name, Event\Emitter $emitter, TestCase $test, int $maxAttempts, Closure $additionalAttemptFactory, array $groups = []): self
     {
-        $suite = self::empty($name);
+        $suite = self::empty($name, $emitter);
 
         $suite->maxAttempts              = $maxAttempts;
         $suite->additionalAttemptFactory = $additionalAttemptFactory;

@@ -15,6 +15,7 @@ use function get_parent_class;
 use function preg_match;
 use function range;
 use function sprintf;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Metadata\Api\DataProvider;
 use PHPUnit\Metadata\Api\Groups;
@@ -46,6 +47,13 @@ use ReflectionNamedType;
  */
 final readonly class TestBuilder
 {
+    private Emitter $emitter;
+
+    public function __construct(Emitter $emitter)
+    {
+        $this->emitter = $emitter;
+    }
+
     /**
      * @param ReflectionClass<TestCase> $theClass
      * @param non-empty-string          $methodName
@@ -204,6 +212,7 @@ final readonly class TestBuilder
     {
         $dataProviderTestSuite = DataProviderTestSuite::empty(
             $className . '::' . $methodName,
+            $this->emitter,
         );
 
         $groups = array_merge(
@@ -232,6 +241,7 @@ final readonly class TestBuilder
                 $dataProviderTestSuite->addTest(
                     RetryTestSuite::fromTestCase(
                         $className . '::' . $methodName . '#' . $_dataName,
+                        $this->emitter,
                         $factory(),
                         $maxAttempts,
                         $factory,
@@ -261,6 +271,7 @@ final readonly class TestBuilder
                 $dataProviderTestSuite->addTest(
                     RepeatTestSuite::fromTests(
                         $className . '::' . $methodName . '#' . $_dataName,
+                        $this->emitter,
                         $tests,
                         $failureThreshold,
                         $groups,
@@ -320,6 +331,7 @@ final readonly class TestBuilder
 
         return RepeatTestSuite::fromTests(
             $className . '::' . $methodName,
+            $this->emitter,
             $tests,
             $failureThreshold,
             $groups,
@@ -356,6 +368,7 @@ final readonly class TestBuilder
 
         return RetryTestSuite::fromTestCase(
             $className . '::' . $methodName,
+            $this->emitter,
             $factory(),
             $maxAttempts,
             $factory,

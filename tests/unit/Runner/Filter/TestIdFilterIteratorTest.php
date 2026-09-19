@@ -12,6 +12,7 @@ namespace PHPUnit\Runner\Filter;
 use function assert;
 use function iterator_to_array;
 use Iterator;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
@@ -68,7 +69,7 @@ final class TestIdFilterIteratorTest extends TestCase
 
     private function testSuite(): TestSuite
     {
-        $suite = TestSuite::empty('test suite name');
+        $suite = TestSuite::empty('test suite name', $this->createStub(Emitter::class));
 
         $suite->addTest(new BankAccountTest('testBalanceIsInitiallyZero'));
         $suite->addTest(new BankAccountTest('testBalanceCannotBecomeNegative'));

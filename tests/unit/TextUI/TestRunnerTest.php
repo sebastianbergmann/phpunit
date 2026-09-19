@@ -44,7 +44,7 @@ final class TestRunnerTest extends TestCase
         new TestRunner($this->createStub(Emitter::class))->run(
             $configuration,
             new NullTestRunHistory,
-            TestSuite::empty('test suite'),
+            TestSuite::empty('test suite', $this->createStub(Emitter::class)),
         );
     }
 }

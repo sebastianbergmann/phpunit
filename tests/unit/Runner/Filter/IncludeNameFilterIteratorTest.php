@@ -10,6 +10,7 @@
 namespace PHPUnit\Runner\Filter;
 
 use Exception;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
@@ -56,7 +57,7 @@ final class IncludeNameFilterIteratorTest extends TestCase
         $test = new BankAccountTest('testBalanceIsInitiallyZero');
         $test->setData('my data set', [1]);
 
-        $suite = TestSuite::empty('test suite name');
+        $suite = TestSuite::empty('test suite name', $this->createStub(Emitter::class));
         $suite->addTest($test);
 
         $factory = new Factory;
@@ -93,7 +94,7 @@ final class IncludeNameFilterIteratorTest extends TestCase
      */
     private function createFilter(string $filter): IncludeNameFilterIterator
     {
-        $suite = TestSuite::empty('test suite name');
+        $suite = TestSuite::empty('test suite name', $this->createStub(Emitter::class));
         $suite->addTest(new BankAccountTest('testBalanceIsInitiallyZero'));
 
         $iterator = new IncludeNameFilterIterator($suite->getIterator(), $filter);
@@ -111,7 +112,7 @@ final class IncludeNameFilterIteratorTest extends TestCase
         $test = new BankAccountTest('testBalanceIsInitiallyZero');
         $test->setData($dataSetName, [1]);
 
-        $suite = TestSuite::empty('test suite name');
+        $suite = TestSuite::empty('test suite name', $this->createStub(Emitter::class));
         $suite->addTest($test);
 
         $iterator = new IncludeNameFilterIterator($suite->getIterator(), $filter);
@@ -129,7 +130,7 @@ final class IncludeNameFilterIteratorTest extends TestCase
         $test = new BankAccountTest('testBalanceIsInitiallyZero');
         $test->setData($dataSetIndex, [1]);
 
-        $suite = TestSuite::empty('test suite name');
+        $suite = TestSuite::empty('test suite name', $this->createStub(Emitter::class));
         $suite->addTest($test);
 
         $iterator = new IncludeNameFilterIterator($suite->getIterator(), $filter);

@@ -27,9 +27,9 @@ final class PhptRepeatTestSuite extends PhptIterativeTestSuite
      * @param non-empty-string $filename
      * @param positive-int     $numberOfRuns
      */
-    public static function for(string $filename, int $numberOfRuns): self
+    public static function for(string $filename, Event\Emitter $emitter, int $numberOfRuns): self
     {
-        $suite = self::empty($filename);
+        $suite = self::empty($filename, $emitter);
 
         foreach (range(1, $numberOfRuns) as $repetition) {
             $suite->addTest(new PhptTestCase($filename, $repetition, $numberOfRuns));
