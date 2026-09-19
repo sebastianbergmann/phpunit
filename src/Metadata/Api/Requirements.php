@@ -25,7 +25,7 @@ use function phpversion;
 use function preg_match;
 use function sprintf;
 use function substr_count;
-use PHPUnit\Event\Facade;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Metadata\Parser\Registry;
 use PHPUnit\Metadata\RequiresEnvironmentVariable;
 use PHPUnit\Metadata\RequiresFunction;
@@ -50,6 +50,13 @@ use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
  */
 final readonly class Requirements
 {
+    private Emitter $emitter;
+
+    public function __construct(Emitter $emitter)
+    {
+        $this->emitter = $emitter;
+    }
+
     /**
      * @param class-string     $className
      * @param non-empty-string $methodName
@@ -294,7 +301,7 @@ final readonly class Requirements
             return;
         }
 
-        Facade::emitter()->testRunnerTriggeredPhpunitWarning(
+        $this->emitter->testRunnerTriggeredPhpunitWarning(
             sprintf(
                 'Version requirement "%s" used by %s::%s() is incomplete, expected a version that consists of major, minor, and patch level ("8.5.0" instead of "8.5", for example)',
                 $versionRequirement->asString(),

@@ -772,7 +772,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
      */
     private function metadataErrorsFor(string $className, string $methodName): array
     {
-        $errors = (new Requirements)->invalidVersionRequirementsFor($className, $methodName);
+        $errors = new Requirements($this->emitter)->invalidVersionRequirementsFor($className, $methodName);
 
         foreach (MetadataRegistry::parser()->forClassAndMethod($className, $methodName)->isInvalidAttribute() as $metadata) {
             assert($metadata instanceof InvalidAttribute);
@@ -843,7 +843,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             );
 
             try {
-                $missingRequirements = (new Requirements)->requirementsNotSatisfiedFor($this->name, $method);
+                $missingRequirements = new Requirements($emitter)->requirementsNotSatisfiedFor($this->name, $method);
 
                 if ($missingRequirements !== []) {
                     $emitCalledEvent = false;

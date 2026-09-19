@@ -75,7 +75,7 @@ final class TestRunner
      */
     public function run(TestCase $test): void
     {
-        if ((new ProcessIsolation)->shouldBeUsedFor($test)) {
+        if (new ProcessIsolation($this->emitter)->shouldBeUsedFor($test)) {
             new SeparateProcessTestRunner($this->emitter)->run($test);
 
             return;

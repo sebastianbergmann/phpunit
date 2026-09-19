@@ -29,7 +29,7 @@ final class ProcessIsolationTest extends TestCase
     {
         $test = new TestWithDifferentNames('testWithName');
 
-        $this->assertFalse((new ProcessIsolation)->shouldBeUsedFor($test));
+        $this->assertFalse(new ProcessIsolation($this->createStub(Emitter::class))->shouldBeUsedFor($test));
     }
 
     public function testIsUsedWhenTestRequestsIt(): void
@@ -38,7 +38,7 @@ final class ProcessIsolationTest extends TestCase
 
         $test->setRunTestInSeparateProcess(true);
 
-        $this->assertTrue((new ProcessIsolation)->shouldBeUsedFor($test));
+        $this->assertTrue(new ProcessIsolation($this->createStub(Emitter::class))->shouldBeUsedFor($test));
     }
 
     public function testIsUsedWhenConfigurationRequestsIt(): void
@@ -55,7 +55,7 @@ final class ProcessIsolationTest extends TestCase
         $test->setRunTestInSeparateProcess(true);
         $test->setInIsolation(true);
 
-        $this->assertFalse((new ProcessIsolation)->shouldBeUsedFor($test));
+        $this->assertFalse(new ProcessIsolation($this->createStub(Emitter::class))->shouldBeUsedFor($test));
     }
 
     public function testIsNotUsedForTestWhoseRequirementsAreNotSatisfied(): void
@@ -64,7 +64,7 @@ final class ProcessIsolationTest extends TestCase
 
         $test->setRunTestInSeparateProcess(true);
 
-        $this->assertFalse((new ProcessIsolation)->shouldBeUsedFor($test));
+        $this->assertFalse(new ProcessIsolation($this->createStub(Emitter::class))->shouldBeUsedFor($test));
     }
 
     private function withProcessIsolationConfigured(): ProcessIsolation
@@ -81,7 +81,7 @@ final class ProcessIsolationTest extends TestCase
         );
 
         try {
-            return new ProcessIsolation;
+            return new ProcessIsolation($this->createStub(Emitter::class));
         } finally {
             $property->setValue(null, $originalConfiguration);
         }

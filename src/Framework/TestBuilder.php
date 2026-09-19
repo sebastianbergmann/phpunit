@@ -540,7 +540,7 @@ final readonly class TestBuilder
      */
     private function requirementsSatisfied(string $className, string $methodName): bool
     {
-        return (new Requirements)->requirementsNotSatisfiedFor($className, $methodName) === [];
+        return new Requirements($this->emitter)->requirementsNotSatisfiedFor($className, $methodName) === [];
     }
 
     /**

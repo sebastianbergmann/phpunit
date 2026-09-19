@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\TestRunner;
 
+use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\TextUI\Configuration\Configuration;
@@ -24,10 +25,12 @@ use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 final readonly class ProcessIsolation
 {
     private Configuration $configuration;
+    private Emitter $emitter;
 
-    public function __construct()
+    public function __construct(Emitter $emitter)
     {
         $this->configuration = ConfigurationRegistry::get();
+        $this->emitter       = $emitter;
     }
 
     /**
@@ -46,6 +49,6 @@ final readonly class ProcessIsolation
             return false;
         }
 
-        return (new Requirements)->requirementsNotSatisfiedFor($test::class, $test->name()) === [];
+        return new Requirements($this->emitter)->requirementsNotSatisfiedFor($test::class, $test->name()) === [];
     }
 }

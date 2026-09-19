@@ -12,6 +12,7 @@ namespace PHPUnit\Metadata\Api;
 use const PHP_VERSION;
 use function phpversion;
 use function sprintf;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -19,6 +20,7 @@ use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\Version;
 use PHPUnit\TestFixture\RequirementsEnvironmentVariableTest;
+use PHPUnit\TestFixture\RequirementsWithIncompleteVersionTest;
 use PHPUnit\TestFixture\RequirementsWithInvalidVersionConstraintTest;
 
 #[CoversClass(Requirements::class)]
@@ -156,7 +158,7 @@ final class RequirementsTest extends TestCase
     {
         $this->assertEquals(
             $result,
-            (new Requirements)->requirementsNotSatisfiedFor(\PHPUnit\TestFixture\RequirementsTest::class, $test),
+            new Requirements($this->createStub(Emitter::class))->requirementsNotSatisfiedFor(\PHPUnit\TestFixture\RequirementsTest::class, $test),
         );
     }
 
@@ -171,7 +173,7 @@ final class RequirementsTest extends TestCase
                 'Environment variable "BAR" is required.',
                 'Environment variable "BAZ" is required.',
             ],
-            (new Requirements)->requirementsNotSatisfiedFor(RequirementsEnvironmentVariableTest::class, 'testRequiresEnvironmentVariable'),
+            new Requirements($this->createStub(Emitter::class))->requirementsNotSatisfiedFor(RequirementsEnvironmentVariableTest::class, 'testRequiresEnvironmentVariable'),
         );
     }
 
@@ -181,7 +183,7 @@ final class RequirementsTest extends TestCase
             [
                 'Attribute RequiresPhp for test method PHPUnit\TestFixture\RequirementsWithInvalidVersionConstraintTest::testRequiresPhp has invalid version requirement "invalid-version": expected a version constraint (such as "^8.1", "~8.1.0", or "8.1.*") or a version comparison (such as ">= 8.1.0")',
             ],
-            (new Requirements)->invalidVersionRequirementsFor(RequirementsWithInvalidVersionConstraintTest::class, 'testRequiresPhp'),
+            new Requirements($this->createStub(Emitter::class))->invalidVersionRequirementsFor(RequirementsWithInvalidVersionConstraintTest::class, 'testRequiresPhp'),
         );
     }
 
@@ -191,7 +193,7 @@ final class RequirementsTest extends TestCase
             [
                 'Attribute RequiresPhpunit for test method PHPUnit\TestFixture\RequirementsWithInvalidVersionConstraintTest::testRequiresPhpunit has invalid version requirement "invalid-version": expected a version constraint (such as "^8.1", "~8.1.0", or "8.1.*") or a version comparison (such as ">= 8.1.0")',
             ],
-            (new Requirements)->invalidVersionRequirementsFor(RequirementsWithInvalidVersionConstraintTest::class, 'testRequiresPhpunit'),
+            new Requirements($this->createStub(Emitter::class))->invalidVersionRequirementsFor(RequirementsWithInvalidVersionConstraintTest::class, 'testRequiresPhpunit'),
         );
     }
 
@@ -201,7 +203,7 @@ final class RequirementsTest extends TestCase
             [
                 'Attribute RequiresPhpExtension for test method PHPUnit\TestFixture\RequirementsWithInvalidVersionConstraintTest::testRequiresPhpExtension has invalid version requirement "invalid-version": expected a version constraint (such as "^8.1", "~8.1.0", or "8.1.*") or a version comparison (such as ">= 8.1.0")',
             ],
-            (new Requirements)->invalidVersionRequirementsFor(RequirementsWithInvalidVersionConstraintTest::class, 'testRequiresPhpExtension'),
+            new Requirements($this->createStub(Emitter::class))->invalidVersionRequirementsFor(RequirementsWithInvalidVersionConstraintTest::class, 'testRequiresPhpExtension'),
         );
     }
 
@@ -209,7 +211,23 @@ final class RequirementsTest extends TestCase
     {
         $this->assertSame(
             [],
-            (new Requirements)->invalidVersionRequirementsFor(RequirementsWithInvalidVersionConstraintTest::class, 'testWithoutVersionConstraint'),
+            new Requirements($this->createStub(Emitter::class))->invalidVersionRequirementsFor(RequirementsWithInvalidVersionConstraintTest::class, 'testWithoutVersionConstraint'),
+        );
+    }
+
+    public function testWarnsWhenVersionRequirementIsIncomplete(): void
+    {
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter
+            ->expects($this->once())
+            ->method('testRunnerTriggeredPhpunitWarning')
+            ->with($this->stringContains('used by ' . RequirementsWithIncompleteVersionTest::class . '::testOne() is incomplete'))
+            ->seal();
+
+        $this->assertSame(
+            [],
+            new Requirements($emitter)->requirementsNotSatisfiedFor(RequirementsWithIncompleteVersionTest::class, 'testOne'),
         );
     }
 

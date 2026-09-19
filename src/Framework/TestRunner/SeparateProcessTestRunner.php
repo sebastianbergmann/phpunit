@@ -183,7 +183,7 @@ final class SeparateProcessTestRunner
 
         assert($code !== '');
 
-        $requiresXdebug = (new Requirements)->requiresXdebug($test::class, $test->name());
+        $requiresXdebug = new Requirements($this->emitter)->requiresXdebug($test::class, $test->name());
 
         JobRunnerRegistry::runTestJob(new Job($code, ChildProcessReason::TestRequiringProcessIsolation, requiresXdebug: $requiresXdebug), $processResultFile, $test, $processResultNonce);
     }

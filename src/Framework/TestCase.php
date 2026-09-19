@@ -392,7 +392,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         try {
             $this->throwThrowableFromDeferredIssue();
-            $this->checkRequirements();
+            $this->checkRequirements($emitter);
 
             $hasMetRequirements = true;
 
@@ -1486,9 +1486,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @throws SkippedTest
      */
-    private function checkRequirements(): void
+    private function checkRequirements(Event\Emitter $emitter): void
     {
-        $missingRequirements = (new Requirements)->requirementsNotSatisfiedFor(
+        $missingRequirements = new Requirements($emitter)->requirementsNotSatisfiedFor(
             static::class,
             $this->methodName,
         );
