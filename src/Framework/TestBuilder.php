@@ -16,7 +16,6 @@ use function preg_match;
 use function range;
 use function sprintf;
 use PHPUnit\Event\Emitter;
-use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Metadata\Api\DataProvider;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\ProvidedData;
@@ -96,7 +95,7 @@ final readonly class TestBuilder
 
         if ($retryMetadata->isNotEmpty()) {
             if ($repeatMetadata->isNotEmpty()) {
-                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                $this->emitter->testRunnerTriggeredPhpunitWarning(
                     sprintf(
                         'Method %s::%s is annotated with both #[Repeat] and #[Retry], the #[Retry] attribute is ignored',
                         $className,
@@ -595,7 +594,7 @@ final readonly class TestBuilder
     private function warnWhenMethodIsIneligible(string $attribute, string $verb, ReflectionClass $theClass, string $className, string $methodName): void
     {
         if (!$this->hasVoidReturnType($theClass->getMethod($methodName))) {
-            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+            $this->emitter->testRunnerTriggeredPhpunitWarning(
                 sprintf(
                     'Method %s::%s is annotated with #[%s] but does not have a void return type declaration and will not be %s',
                     $className,
@@ -607,7 +606,7 @@ final readonly class TestBuilder
         }
 
         if (!$this->doesNotDependOnAnotherTest($className, $methodName)) {
-            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+            $this->emitter->testRunnerTriggeredPhpunitWarning(
                 sprintf(
                     'Method %s::%s is annotated with #[%s] but depends on another test and will not be %s',
                     $className,
