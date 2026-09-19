@@ -76,7 +76,7 @@ final class ProcessIsolationTest extends TestCase
             null,
             (new Merger)->merge(
                 new Builder($this->createStub(Emitter::class))->fromParameters([]),
-                (new Loader)->load(__DIR__ . '/_files/process-isolation.xml'),
+                new Loader($this->createStub(Emitter::class))->load(__DIR__ . '/_files/process-isolation.xml'),
             ),
         );
 

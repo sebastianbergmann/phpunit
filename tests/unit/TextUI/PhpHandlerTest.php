@@ -120,7 +120,7 @@ final class PhpHandlerTest extends TestCase
     {
         $savedIniHighlightKeyword = ini_get('highlight.keyword');
 
-        $configuration = (new Loader)->load(TEST_FILES_PATH . 'configuration_ini_with_constant.xml')->php();
+        $configuration = new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration_ini_with_constant.xml')->php();
 
         new PhpHandler($this->createStub(Emitter::class))->handle($configuration);
 
@@ -193,7 +193,7 @@ final class PhpHandlerTest extends TestCase
 
     private function handle(): void
     {
-        $configuration = (new Loader)->load(TEST_FILES_PATH . 'configuration.xml')->php();
+        $configuration = new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration.xml')->php();
 
         new PhpHandler($this->createStub(Emitter::class))->handle($configuration);
     }

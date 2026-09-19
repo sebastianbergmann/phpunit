@@ -32,7 +32,7 @@ use DOMElement;
 use DOMNode;
 use DOMNodeList;
 use DOMXPath;
-use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\Version;
 use PHPUnit\TextUI\Configuration\Configuration;
@@ -94,6 +94,13 @@ use Throwable;
  */
 final readonly class Loader
 {
+    private Emitter $emitter;
+
+    public function __construct(Emitter $emitter)
+    {
+        $this->emitter = $emitter;
+    }
+
     /**
      * @throws Exception
      */
@@ -827,7 +834,7 @@ final readonly class Loader
         }
 
         if ($element->hasAttribute('cacheResult')) {
-            EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
+            $this->emitter->testRunnerTriggeredPhpunitDeprecation(
                 'The "cacheResult" attribute is deprecated and will be removed in PHPUnit 14. Use "recordTestRunHistory" instead.',
             );
 
@@ -1132,7 +1139,7 @@ final readonly class Loader
             );
 
             foreach ($parsedExecutionOrder->unknownTokens() as $unknownToken) {
-                EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
+                $this->emitter->testRunnerTriggeredPhpunitDeprecation(
                     sprintf(
                         'Using "%s" for the executionOrder attribute is deprecated and will be an error in PHPUnit 14. The value is ignored.',
                         $unknownToken,

@@ -19,6 +19,7 @@ use function realpath;
 use function sys_get_temp_dir;
 use function uniqid;
 use function unlink;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversNamespace;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -139,7 +140,7 @@ final class LoaderTest extends TestCase
         $xml         = "<phpunit {$optionName}='{$optionValue}'></phpunit>" . PHP_EOL;
         file_put_contents($tmpFilename, $xml);
 
-        $configuration = (new Loader)->load($tmpFilename);
+        $configuration = new Loader($this->createStub(Emitter::class))->load($tmpFilename);
 
         $this->assertFalse($configuration->hasValidationErrors());
 
@@ -155,7 +156,7 @@ final class LoaderTest extends TestCase
         $xml         = "<phpunit executionOrder='duration'></phpunit>" . PHP_EOL;
         file_put_contents($tmpFilename, $xml);
 
-        $configuration = (new Loader)->load($tmpFilename);
+        $configuration = new Loader($this->createStub(Emitter::class))->load($tmpFilename);
 
         $this->assertTrue($configuration->hasValidationErrors());
         $this->assertEquals(TestSuiteSorter::ORDER_DURATION_ASCENDING, $configuration->phpunit()->executionOrder());
@@ -170,7 +171,7 @@ final class LoaderTest extends TestCase
         $xml         = "<phpunit executionOrder='size'></phpunit>" . PHP_EOL;
         file_put_contents($tmpFilename, $xml);
 
-        $configuration = (new Loader)->load($tmpFilename);
+        $configuration = new Loader($this->createStub(Emitter::class))->load($tmpFilename);
 
         $this->assertTrue($configuration->hasValidationErrors());
         $this->assertEquals(TestSuiteSorter::ORDER_SIZE_ASCENDING, $configuration->phpunit()->executionOrder());
@@ -186,7 +187,7 @@ final class LoaderTest extends TestCase
         $xml         = "<phpunit executionOrder='depends,defects'></phpunit>" . PHP_EOL;
         file_put_contents($tmpFilename, $xml);
 
-        $configuration = (new Loader)->load($tmpFilename);
+        $configuration = new Loader($this->createStub(Emitter::class))->load($tmpFilename);
 
         $this->assertTrue($configuration->hasValidationErrors());
 
@@ -202,7 +203,7 @@ final class LoaderTest extends TestCase
         $xml         = "<phpunit executionOrder='duration-ascending,defects'></phpunit>" . PHP_EOL;
         file_put_contents($tmpFilename, $xml);
 
-        $configuration = (new Loader)->load($tmpFilename);
+        $configuration = new Loader($this->createStub(Emitter::class))->load($tmpFilename);
 
         $this->assertFalse($configuration->hasValidationErrors());
 
@@ -220,7 +221,7 @@ final class LoaderTest extends TestCase
         $xml         = "<phpunit executionOrder='reverse,does-not-exist'></phpunit>" . PHP_EOL;
         file_put_contents($tmpFilename, $xml);
 
-        $configuration = (new Loader)->load($tmpFilename);
+        $configuration = new Loader($this->createStub(Emitter::class))->load($tmpFilename);
 
         $this->assertTrue($configuration->hasValidationErrors());
         $this->assertEquals(TestSuiteSorter::ORDER_REVERSED, $configuration->phpunit()->executionOrder());
@@ -715,6 +716,6 @@ final class LoaderTest extends TestCase
 
     private function configuration(string $filename): LoadedFromFileConfiguration
     {
-        return (new Loader)->load(TEST_FILES_PATH . $filename);
+        return new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . $filename);
     }
 }

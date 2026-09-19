@@ -191,7 +191,7 @@ final class ErrorHandlerBootstrapperTest extends TestCase
 
     private function configurationFromFixture(string $filename): Configuration
     {
-        $fromFile = (new Loader)->load(__DIR__ . '/_files/' . $filename);
+        $fromFile = new Loader($this->createStub(Emitter::class))->load(__DIR__ . '/_files/' . $filename);
         $fromCli  = new Builder($this->createStub(Emitter::class))->fromParameters([]);
 
         return (new Merger)->merge($fromCli, $fromFile);

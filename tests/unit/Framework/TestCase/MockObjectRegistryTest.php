@@ -335,7 +335,7 @@ final class MockObjectRegistryTest extends TestCase
             null,
             (new Merger)->merge(
                 new Builder($this->createStub(Emitter::class))->fromParameters([]),
-                (new Loader)->load(__DIR__ . '/_files/require-sealed-mock-objects.xml'),
+                new Loader($this->createStub(Emitter::class))->load(__DIR__ . '/_files/require-sealed-mock-objects.xml'),
             ),
         );
 

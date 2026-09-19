@@ -37,7 +37,7 @@ final readonly class Builder
             $xmlConfiguration  = DefaultConfiguration::create();
 
             if ($configurationFile !== false) {
-                $xmlConfiguration = (new Loader)->load($configurationFile);
+                $xmlConfiguration = new Loader(EventFacade::emitter())->load($configurationFile);
             }
 
             return Registry::init(
