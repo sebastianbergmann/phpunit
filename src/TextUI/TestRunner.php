@@ -25,13 +25,20 @@ use Throwable;
  */
 final class TestRunner
 {
+    private readonly Event\Emitter $emitter;
+
+    public function __construct(Event\Emitter $emitter)
+    {
+        $this->emitter = $emitter;
+    }
+
     /**
      * @throws RuntimeException
      */
     public function run(Configuration $configuration, TestRunHistory $testRunHistory, TestSuite $suite): void
     {
         try {
-            Event\Facade::emitter()->testRunnerStarted();
+            $this->emitter->testRunnerStarted();
 
             if ($configuration->executionOrder() === TestSuiteSorter::ORDER_RANDOMIZED) {
                 mt_srand($configuration->randomOrderSeed());
@@ -48,7 +55,7 @@ final class TestRunner
             if (!$pipeline->isEmpty()) {
                 new TestSuiteSorter($testRunHistory)->apply($suite, $pipeline);
 
-                Event\Facade::emitter()->testSuiteSorted(
+                $this->emitter->testSuiteSorted(
                     $configuration->executionOrder(),
                     $configuration->executionOrderDefects(),
                     $configuration->resolveDependencies(),
@@ -58,14 +65,14 @@ final class TestRunner
 
             (new TestSuiteFilterProcessor)->process($configuration, $suite);
 
-            Event\Facade::emitter()->testRunnerExecutionStarted(
+            $this->emitter->testRunnerExecutionStarted(
                 Event\TestSuite\TestSuiteBuilder::from($suite),
             );
 
             $suite->run();
 
-            Event\Facade::emitter()->testRunnerExecutionFinished();
-            Event\Facade::emitter()->testRunnerFinished();
+            $this->emitter->testRunnerExecutionFinished();
+            $this->emitter->testRunnerFinished();
         } catch (Throwable $t) {
             throw new RuntimeException(
                 $t->getMessage(),

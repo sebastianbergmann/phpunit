@@ -271,7 +271,7 @@ final readonly class Application
 
             if ($coverageInitializationStatus === CodeCoverageInitializationStatus::NOT_REQUESTED ||
                 $coverageInitializationStatus === CodeCoverageInitializationStatus::SUCCEEDED) {
-                $runner = new TestRunner;
+                $runner = new TestRunner($this->emitter);
 
                 $runner->run(
                     $configuration,
