@@ -20,12 +20,10 @@ use function clearstatcache;
 use function error_clear_last;
 use function getcwd;
 use function implode;
-use function in_array;
 use function is_callable;
 use function is_int;
 use function libxml_clear_errors;
 use function method_exists;
-use function preg_match;
 use function putenv;
 use function sprintf;
 use function str_contains;
@@ -47,6 +45,7 @@ use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\MockObject\Stub\Exception as ExceptionStub;
 use PHPUnit\Framework\MockObject\TestStubBuilder;
 use PHPUnit\Framework\TestCase\DependencyResolver;
+use PHPUnit\Framework\TestCase\DeprecationExpectation;
 use PHPUnit\Framework\TestCase\ErrorLogCapture;
 use PHPUnit\Framework\TestCase\ExceptionExpectation;
 use PHPUnit\Framework\TestCase\GlobalStateCapture;
@@ -63,7 +62,6 @@ use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Metadata\WithEnvironmentVariable;
 use PHPUnit\Runner\BackedUpEnvironmentVariable;
-use PHPUnit\Runner\DeprecationCollector\Facade as DeprecationCollector;
 use PHPUnit\Runner\ShutdownHandler;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
@@ -152,18 +150,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @var array<class-string, true>
      */
     private array $failureTypes = [];
-
-    /**
-     * @var list<non-empty-string>
-     */
-    private array $expectedUserDeprecationMessage = [];
-
-    /**
-     * @var list<non-empty-string>
-     */
-    private array $expectedUserDeprecationMessageRegularExpression = [];
-    private ?string $emptyDataProviderSkipMessage                  = null;
-    private ?Throwable $throwableFromDeferredIssue                 = null;
+    private DeprecationExpectation $deprecationExpectation;
+    private ?string $emptyDataProviderSkipMessage  = null;
+    private ?Throwable $throwableFromDeferredIssue = null;
 
     /**
      * @var positive-int
@@ -192,13 +181,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function __construct(string $name)
     {
-        $this->methodName           = $name;
-        $this->status               = TestStatus::unknown();
-        $this->exceptionExpectation = new ExceptionExpectation;
-        $this->outputBuffer         = new OutputBuffer;
-        $this->errorLogCapture      = new ErrorLogCapture;
-        $this->globalStateCapture   = new GlobalStateCapture;
-        $this->mockObjectRegistry   = new MockObjectRegistry;
+        $this->methodName             = $name;
+        $this->status                 = TestStatus::unknown();
+        $this->exceptionExpectation   = new ExceptionExpectation;
+        $this->outputBuffer           = new OutputBuffer;
+        $this->errorLogCapture        = new ErrorLogCapture;
+        $this->globalStateCapture     = new GlobalStateCapture;
+        $this->mockObjectRegistry     = new MockObjectRegistry;
+        $this->deprecationExpectation = new DeprecationExpectation;
 
         if (is_callable($this->sortId(), true)) {
             $this->providedTests = [new ExecutionOrderDependency($this->sortId())];
@@ -489,7 +479,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $this->wasPrepared = true;
             $this->testResult  = $this->runTest();
 
-            $this->verifyDeprecationExpectations();
+            $this->deprecationExpectation->verify($this);
             $this->mockObjectRegistry->verify($this, $emitter);
             HookMethodInvoker::invokePostCondition($this, $hookMethods, $emitter);
 
@@ -1243,7 +1233,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final protected function expectUserDeprecationMessage(string $expectedUserDeprecationMessage): void
     {
-        $this->expectedUserDeprecationMessage[] = $expectedUserDeprecationMessage;
+        $this->deprecationExpectation->expectMessage($expectedUserDeprecationMessage);
     }
 
     /**
@@ -1251,7 +1241,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final protected function expectUserDeprecationMessageMatches(string $expectedUserDeprecationMessageRegularExpression): void
     {
-        $this->expectedUserDeprecationMessageRegularExpression[] = $expectedUserDeprecationMessageRegularExpression;
+        $this->deprecationExpectation->expectMessageMatches($expectedUserDeprecationMessageRegularExpression);
     }
 
     /**
@@ -1484,43 +1474,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->exceptionExpectation->assertWasRaised($this);
 
         return $testResult;
-    }
-
-    /**
-     * @throws ExpectationFailedException
-     */
-    private function verifyDeprecationExpectations(): void
-    {
-        foreach ($this->expectedUserDeprecationMessage as $deprecationExpectation) {
-            $this->numberOfAssertionsPerformed++;
-
-            if (!in_array($deprecationExpectation, DeprecationCollector::deprecations(), true)) {
-                throw new ExpectationFailedException(
-                    sprintf(
-                        'Expected deprecation with message "%s" was not triggered',
-                        $deprecationExpectation,
-                    ),
-                );
-            }
-        }
-
-        foreach ($this->expectedUserDeprecationMessageRegularExpression as $deprecationExpectation) {
-            $this->numberOfAssertionsPerformed++;
-
-            $expectedDeprecationTriggered = array_any(
-                DeprecationCollector::deprecations(),
-                static fn (string $deprecation) => @preg_match($deprecationExpectation, $deprecation) > 0,
-            );
-
-            if (!$expectedDeprecationTriggered) {
-                throw new ExpectationFailedException(
-                    sprintf(
-                        'Expected deprecation with message matching regular expression "%s" was not triggered',
-                        $deprecationExpectation,
-                    ),
-                );
-            }
-        }
     }
 
     /**
