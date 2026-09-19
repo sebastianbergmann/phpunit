@@ -32,18 +32,19 @@ final readonly class Builder
     public function build(array $argv): Configuration
     {
         try {
-            $cliConfiguration  = new CliConfigurationBuilder(EventFacade::emitter())->fromParameters($argv);
+            $emitter           = EventFacade::emitter();
+            $cliConfiguration  = new CliConfigurationBuilder($emitter)->fromParameters($argv);
             $configurationFile = (new XmlConfigurationFileFinder)->find($cliConfiguration);
             $xmlConfiguration  = DefaultConfiguration::create();
 
             if ($configurationFile !== false) {
-                $xmlConfiguration = new Loader(EventFacade::emitter())->load($configurationFile);
+                $xmlConfiguration = new Loader($emitter)->load($configurationFile);
             }
 
             return Registry::init(
                 $cliConfiguration,
                 $xmlConfiguration,
-                EventFacade::emitter(),
+                $emitter,
             );
         } catch (CliConfigurationException|XmlConfigurationException $e) {
             throw new ConfigurationCannotBeBuiltException(
