@@ -21,7 +21,6 @@ use function error_clear_last;
 use function getcwd;
 use function implode;
 use function is_callable;
-use function is_int;
 use function libxml_clear_errors;
 use function method_exists;
 use function sprintf;
@@ -44,6 +43,7 @@ use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\MockObject\Stub\Exception as ExceptionStub;
 use PHPUnit\Framework\MockObject\TestStubBuilder;
 use PHPUnit\Framework\TestCase\CustomRegistrations;
+use PHPUnit\Framework\TestCase\DataSet;
 use PHPUnit\Framework\TestCase\DependencyResolver;
 use PHPUnit\Framework\TestCase\DeprecationExpectation;
 use PHPUnit\Framework\TestCase\EnvironmentVariables;
@@ -64,8 +64,6 @@ use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\ShutdownHandler;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
-use PHPUnit\Util\Exporter;
-use PHPUnit\Util\Sanitizer;
 use ReflectionClass;
 use ReflectionMethod;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
@@ -90,12 +88,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @var list<ExecutionOrderDependency>
      */
     private array $providedTests = [];
-
-    /**
-     * @var array<mixed>
-     */
-    private array $data          = [];
-    private int|string $dataName = '';
+    private DataSet $dataSet;
 
     /**
      * @var non-empty-string
@@ -167,6 +160,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     final public function __construct(string $name)
     {
         $this->methodName             = $name;
+        $this->dataSet                = DataSet::empty();
         $this->status                 = TestStatus::unknown();
         $this->exceptionExpectation   = new ExceptionExpectation;
         $this->outputBuffer           = new OutputBuffer;
@@ -830,7 +824,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function usesDataProvider(): bool
     {
-        return $this->data !== [];
+        return !$this->dataSet->isEmpty();
     }
 
     /**
@@ -838,7 +832,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function dataName(): int|string
     {
-        return $this->dataName;
+        return $this->dataSet->name();
     }
 
     /**
@@ -846,18 +840,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function dataSetAsString(): string
     {
-        if ($this->data !== []) {
-            if (is_int($this->dataName)) {
-                return sprintf(' with data set #%s', $this->dataName);
-            }
-
-            return sprintf(
-                ' with data set "%s"',
-                Sanitizer::sanitizeBidirectionalControlCharacters($this->dataName),
-            );
-        }
-
-        return '';
+        return $this->dataSet->asString();
     }
 
     /**
@@ -865,24 +848,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function dataSetAsStringWithData(): string
     {
-        if ($this->data === []) {
-            return '';
-        }
-
-        if (is_int($this->dataName)) {
-            $dataName = sprintf('#%d', $this->dataName);
-        } else {
-            $dataName = sprintf(
-                '@%s',
-                Sanitizer::sanitizeBidirectionalControlCharacters($this->dataName),
-            );
-        }
-
-        return sprintf(
-            '%s with data (%s)',
-            $dataName,
-            Exporter::shortenedRecursiveExport($this->data),
-        );
+        return $this->dataSet->asStringWithData();
     }
 
     /**
@@ -892,7 +858,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function providedData(): array
     {
-        return $this->data;
+        return $this->dataSet->data();
     }
 
     /**
@@ -940,8 +906,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function setData(int|string $dataName, array $data): void
     {
-        $this->dataName = $dataName;
-        $this->data     = $data;
+        $this->dataSet = new DataSet($dataName, $data);
     }
 
     /**
@@ -1434,7 +1399,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     private function runTest(): mixed
     {
-        $testArguments = array_merge($this->data, array_values($this->dependencyInput));
+        $testArguments = array_merge($this->dataSet->data(), array_values($this->dependencyInput));
 
         try {
             $testResult = $this->invokeTestMethod($this->methodName, $testArguments);
