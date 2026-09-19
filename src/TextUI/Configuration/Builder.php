@@ -43,6 +43,7 @@ final readonly class Builder
             return Registry::init(
                 $cliConfiguration,
                 $xmlConfiguration,
+                EventFacade::emitter(),
             );
         } catch (CliConfigurationException|XmlConfigurationException $e) {
             throw new ConfigurationCannotBeBuiltException(

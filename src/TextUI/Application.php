@@ -156,6 +156,7 @@ final readonly class Application
             $configuration = Registry::init(
                 $cliConfiguration,
                 $xmlConfiguration,
+                $this->emitter,
             );
 
             DifferBuilder::configureComparatorFactory();

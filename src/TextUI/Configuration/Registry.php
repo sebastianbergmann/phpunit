@@ -14,7 +14,7 @@ use function file_get_contents;
 use function file_put_contents;
 use function serialize;
 use function unserialize;
-use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Event\Emitter;
 use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
 use PHPUnit\TextUI\CliArguments\Exception;
 use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
@@ -112,11 +112,11 @@ final class Registry
      * @throws Exception
      * @throws NoCustomCssFileException
      */
-    public static function init(CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration): Configuration
+    public static function init(CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration, Emitter $emitter): Configuration
     {
-        self::$instance = new Merger(EventFacade::emitter())->merge($cliConfiguration, $xmlConfiguration);
+        self::$instance = new Merger($emitter)->merge($cliConfiguration, $xmlConfiguration);
 
-        EventFacade::emitter()->testRunnerConfigured(self::$instance);
+        $emitter->testRunnerConfigured(self::$instance);
 
         return self::$instance;
     }
