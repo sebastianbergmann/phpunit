@@ -34,6 +34,7 @@ use function str_contains;
 use function str_starts_with;
 use function trim;
 use function unlink;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Event\UnknownSubscriberTypeException;
@@ -126,13 +127,20 @@ use Throwable;
  */
 final readonly class Application
 {
+    private Emitter $emitter;
+
+    public function __construct()
+    {
+        $this->emitter = EventFacade::emitter();
+    }
+
     /**
      * @param list<string> $argv
      */
     public function run(array $argv): int
     {
         try {
-            EventFacade::emitter()->applicationStarted();
+            $this->emitter->applicationStarted();
 
             $cliConfiguration           = $this->buildCliConfiguration($argv);
             $pathToXmlConfigurationFile = (new XmlConfigurationFileFinder)->find($cliConfiguration);
@@ -287,7 +295,7 @@ final readonly class Application
                         (new TestDoxHtmlRenderer)->render($testDoxResult),
                     );
                 } catch (DirectoryDoesNotExistException|InvalidSocketException $e) {
-                    EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                    $this->emitter->testRunnerTriggeredPhpunitWarning(
                         sprintf(
                             'Cannot log test results in TestDox HTML format to "%s": %s',
                             $configuration->logfileTestdoxHtml(),
@@ -304,7 +312,7 @@ final readonly class Application
                         (new TestDoxTextRenderer)->render($testDoxResult),
                     );
                 } catch (DirectoryDoesNotExistException|InvalidSocketException $e) {
-                    EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                    $this->emitter->testRunnerTriggeredPhpunitWarning(
                         sprintf(
                             'Cannot log test results in TestDox plain text format to "%s": %s',
                             $configuration->logfileTestdoxText(),
@@ -362,7 +370,7 @@ final readonly class Application
                 $result,
             );
 
-            EventFacade::emitter()->applicationFinished($shellExitCode);
+            $this->emitter->applicationFinished($shellExitCode);
 
             return $shellExitCode;
             // @codeCoverageIgnoreStart
@@ -679,7 +687,7 @@ final readonly class Application
         }
 
         if ($configuration->hasLogEventsVerboseText()) {
-            EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
+            $this->emitter->testRunnerTriggeredPhpunitDeprecation(
                 'The "--log-events-verbose-text <file>" CLI option is deprecated and will be removed in PHPUnit 14. Use "--log-events-text <file> --with-telemetry" instead.',
             );
 
@@ -702,7 +710,7 @@ final readonly class Application
                     EventFacade::instance(),
                 );
             } catch (DirectoryDoesNotExistException|InvalidSocketException $e) {
-                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                $this->emitter->testRunnerTriggeredPhpunitWarning(
                     sprintf(
                         'Cannot log test results in JUnit XML format to "%s": %s',
                         $configuration->logfileJunit(),
@@ -721,7 +729,7 @@ final readonly class Application
                     $configuration->executionOrder() === TestSuiteSorter::ORDER_RANDOMIZED ? $configuration->randomOrderSeed() : null,
                 );
             } catch (CannotOpenUriForWritingException $e) {
-                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                $this->emitter->testRunnerTriggeredPhpunitWarning(
                     sprintf(
                         'Cannot log test results in Open Test Reporting XML format to "%s": %s',
                         $configuration->logfileOtr(),
@@ -740,7 +748,7 @@ final readonly class Application
                     EventFacade::instance(),
                 );
             } catch (DirectoryDoesNotExistException|InvalidSocketException $e) {
-                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                $this->emitter->testRunnerTriggeredPhpunitWarning(
                     sprintf(
                         'Cannot log test results in TeamCity format to "%s": %s',
                         $configuration->logfileTeamcity(),
@@ -788,7 +796,7 @@ final readonly class Application
         }
 
         if (!$configuration->hasCacheDirectory()) {
-            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+            $this->emitter->testRunnerTriggeredPhpunitWarning(
                 'Cannot cache the test index because no cache directory is configured',
             );
 
@@ -889,14 +897,14 @@ final readonly class Application
         }
 
         if ($configuration->executionOrderDefects() === TestSuiteSorter::ORDER_DEFECTS_FIRST) {
-            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+            $this->emitter->testRunnerTriggeredPhpunitWarning(
                 'Tests cannot be ordered by defects because recording of the test run history is disabled',
             );
         }
 
         if ($configuration->executionOrder() === TestSuiteSorter::ORDER_DURATION_ASCENDING ||
             $configuration->executionOrder() === TestSuiteSorter::ORDER_DURATION_DESCENDING) {
-            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+            $this->emitter->testRunnerTriggeredPhpunitWarning(
                 'Tests cannot be ordered by duration because recording of the test run history is disabled',
             );
         }
@@ -969,7 +977,7 @@ final readonly class Application
                 }
                 // @codeCoverageIgnoreEnd
 
-                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning($message);
+                $this->emitter->testRunnerTriggeredPhpunitWarning($message);
             }
 
             if ($baseline !== null) {
@@ -991,7 +999,7 @@ final readonly class Application
                 continue;
             }
 
-            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+            $this->emitter->testRunnerTriggeredPhpunitWarning(
                 sprintf(
                     'PHP is not configured for development: %s should be %s, but is %s',
                     $result->name(),
@@ -1100,7 +1108,7 @@ final readonly class Application
         foreach ($configuration->source()->deprecationTriggers()['functions'] as $function) {
             if (!function_exists($function)) {
                 if (!$ignoreUndefinedTriggers) {
-                    EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                    $this->emitter->testRunnerTriggeredPhpunitWarning(
                         sprintf(
                             'Function %s cannot be configured as a deprecation trigger because it is not declared',
                             $function,
@@ -1118,7 +1126,7 @@ final readonly class Application
             $parts = explode('::', $method, 2);
 
             if (count($parts) !== 2) {
-                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                $this->emitter->testRunnerTriggeredPhpunitWarning(
                     sprintf(
                         '%s cannot be configured as a deprecation trigger because it is not in ClassName::methodName format',
                         $method,
@@ -1132,7 +1140,7 @@ final readonly class Application
 
             if ($methodName === '' || !class_exists($className) || !method_exists($className, $methodName)) {
                 if (!$ignoreUndefinedTriggers) {
-                    EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                    $this->emitter->testRunnerTriggeredPhpunitWarning(
                         sprintf(
                             'Method %s::%s cannot be configured as a deprecation trigger because it is not declared',
                             $className,
@@ -1161,7 +1169,7 @@ final readonly class Application
 
         foreach (array_reverse($classNames) as $className) {
             if (!class_exists($className)) {
-                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                $this->emitter->testRunnerTriggeredPhpunitWarning(
                     sprintf(
                         'Class %s cannot be used as an issue trigger resolver because it does not exist',
                         $className,
@@ -1174,7 +1182,7 @@ final readonly class Application
             $resolver = new $className;
 
             if (!$resolver instanceof Resolver) {
-                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                $this->emitter->testRunnerTriggeredPhpunitWarning(
                     sprintf(
                         'Class %s cannot be used as an issue trigger resolver because it does not implement %s',
                         $className,
@@ -1193,7 +1201,7 @@ final readonly class Application
     {
         foreach ($configuration->source()->deprecationFilters() as $className) {
             if (!class_exists($className)) {
-                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                $this->emitter->testRunnerTriggeredPhpunitWarning(
                     sprintf(
                         'Class %s cannot be used as a deprecation filter because it does not exist',
                         $className,
@@ -1206,7 +1214,7 @@ final readonly class Application
             $filter = new $className;
 
             if (!$filter instanceof DeprecationFilter) {
-                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                $this->emitter->testRunnerTriggeredPhpunitWarning(
                     sprintf(
                         'Class %s cannot be used as a deprecation filter because it does not implement %s',
                         $className,
