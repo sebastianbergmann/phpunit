@@ -13,7 +13,7 @@ use const PHP_EOL;
 use function in_array;
 use function is_readable;
 use function sprintf;
-use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Event\Emitter;
 use Throwable;
 
 /**
@@ -23,6 +23,13 @@ use Throwable;
  */
 final class BootstrapLoader
 {
+    private readonly Emitter $emitter;
+
+    public function __construct(Emitter $emitter)
+    {
+        $this->emitter = $emitter;
+    }
+
     /**
      * @throws BootstrapScriptDoesNotExistException
      * @throws BootstrapScriptException
@@ -85,6 +92,6 @@ final class BootstrapLoader
             throw new BootstrapScriptException($message);
         }
 
-        EventFacade::emitter()->testRunnerBootstrapFinished($filename);
+        $this->emitter->testRunnerBootstrapFinished($filename);
     }
 }

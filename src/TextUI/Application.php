@@ -163,7 +163,7 @@ final readonly class Application
             (new PhpHandler)->handle($configuration->php());
 
             try {
-                (new BootstrapLoader)->handle($configuration);
+                new BootstrapLoader($this->emitter)->handle($configuration);
             } catch (BootstrapScriptDoesNotExistException|BootstrapScriptException $e) {
                 $this->exitWithErrorMessage($e->getMessage());
             }
