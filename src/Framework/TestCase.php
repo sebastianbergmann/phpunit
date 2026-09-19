@@ -77,23 +77,11 @@ use Throwable;
  */
 abstract class TestCase extends Assert implements Reorderable, SelfDescribing, Test
 {
-    private GlobalStateCapture $globalStateCapture;
-    private ?bool $runTestInSeparateProcess = null;
-    private bool $preserveGlobalState       = false;
-    private bool $inIsolation               = false;
-    private ExceptionExpectation $exceptionExpectation;
-    private EnvironmentVariables $environmentVariables;
-
-    /**
-     * @var list<ExecutionOrderDependency>
-     */
-    private array $providedTests = [];
-    private DataSet $dataSet;
-
     /**
      * @var non-empty-string
      */
     private string $methodName;
+    private DataSet $dataSet;
 
     /**
      * @var list<string>
@@ -103,32 +91,20 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @var list<ExecutionOrderDependency>
      */
+    private array $providedTests = [];
+
+    /**
+     * @var list<ExecutionOrderDependency>
+     */
     private array $dependencies = [];
 
     /**
      * @var array<string, mixed>
      */
-    private array $dependencyInput = [];
-    private MockObjectRegistry $mockObjectRegistry;
-    private TestStatus $status;
-
-    /**
-     * @var non-negative-int
-     */
-    private int $numberOfAssertionsPerformed = 0;
-    private mixed $testResult                = null;
-    private bool $doesNotPerformAssertions   = false;
-    private OutputBuffer $outputBuffer;
-    private ErrorLogCapture $errorLogCapture;
-    private CustomRegistrations $customRegistrations;
-    private ?Event\Code\TestMethod $testValueObjectForEvents = null;
-    private bool $wasPrepared                                = false;
-
-    /**
-     * @var array<class-string, true>
-     */
-    private array $failureTypes = [];
-    private DeprecationExpectation $deprecationExpectation;
+    private array $dependencyInput                 = [];
+    private ?bool $runTestInSeparateProcess        = null;
+    private bool $preserveGlobalState              = false;
+    private bool $inIsolation                      = false;
     private ?string $emptyDataProviderSkipMessage  = null;
     private ?Throwable $throwableFromDeferredIssue = null;
 
@@ -151,6 +127,29 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @var positive-int
      */
     private int $maxAttempts = 1;
+    private ExceptionExpectation $exceptionExpectation;
+    private DeprecationExpectation $deprecationExpectation;
+    private OutputBuffer $outputBuffer;
+    private ErrorLogCapture $errorLogCapture;
+    private GlobalStateCapture $globalStateCapture;
+    private EnvironmentVariables $environmentVariables;
+    private MockObjectRegistry $mockObjectRegistry;
+    private CustomRegistrations $customRegistrations;
+
+    /**
+     * @var array<class-string, true>
+     */
+    private array $failureTypes = [];
+    private TestStatus $status;
+
+    /**
+     * @var non-negative-int
+     */
+    private int $numberOfAssertionsPerformed                 = 0;
+    private mixed $testResult                                = null;
+    private bool $doesNotPerformAssertions                   = false;
+    private bool $wasPrepared                                = false;
+    private ?Event\Code\TestMethod $testValueObjectForEvents = null;
 
     /**
      * @param non-empty-string $name

@@ -62,6 +62,9 @@ final class TestRunner
     }
 
     /**
+     * @throws \PHPUnit\Framework\Exception
+     * @throws \PHPUnit\Util\Exception
+     * @throws \SebastianBergmann\Template\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      * @throws NoPreviousThrowableException
