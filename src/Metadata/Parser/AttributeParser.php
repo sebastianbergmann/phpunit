@@ -21,7 +21,7 @@ use function str_starts_with;
 use function strtolower;
 use function trim;
 use Error;
-use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\AfterClass;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
@@ -115,6 +115,13 @@ use ReflectionMethod;
  */
 final readonly class AttributeParser implements Parser
 {
+    private Emitter $emitter;
+
+    public function __construct(Emitter $emitter)
+    {
+        $this->emitter = $emitter;
+    }
+
     /**
      * @param class-string $className
      */
@@ -306,7 +313,7 @@ final readonly class AttributeParser implements Parser
 
                         $small = true;
                     } else {
-                        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                        $this->emitter->testRunnerTriggeredPhpunitWarning(
                             sprintf(
                                 '#[Small] cannot be combined with #[Medium] or #[Large] for %s',
                                 $this->testAsString($className),
@@ -322,7 +329,7 @@ final readonly class AttributeParser implements Parser
 
                         $medium = true;
                     } else {
-                        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                        $this->emitter->testRunnerTriggeredPhpunitWarning(
                             sprintf(
                                 '#[Medium] cannot be combined with #[Small] or #[Large] for %s',
                                 $this->testAsString($className),
@@ -338,7 +345,7 @@ final readonly class AttributeParser implements Parser
 
                         $large = true;
                     } else {
-                        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                        $this->emitter->testRunnerTriggeredPhpunitWarning(
                             sprintf(
                                 '#[Large] cannot be combined with #[Small] or #[Medium] for %s',
                                 $this->testAsString($className),
@@ -969,7 +976,7 @@ final readonly class AttributeParser implements Parser
                     assert($attributeInstance instanceof Repeat);
 
                     if ($attributeInstance->times() < 1) {
-                        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                        $this->emitter->testRunnerTriggeredPhpunitWarning(
                             sprintf(
                                 'Method %s::%s is annotated with #[Repeat] but %d is not a positive integer for the number of repetitions and will not be repeated',
                                 $className,
@@ -984,7 +991,7 @@ final readonly class AttributeParser implements Parser
                     }
 
                     if ($attributeInstance->failureThreshold() < 1) {
-                        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                        $this->emitter->testRunnerTriggeredPhpunitWarning(
                             sprintf(
                                 'Method %s::%s is annotated with #[Repeat] but %d is not a positive integer for the failure threshold and will not be repeated',
                                 $className,
@@ -1009,7 +1016,7 @@ final readonly class AttributeParser implements Parser
                     assert($attributeInstance instanceof Retry);
 
                     if ($attributeInstance->maxAttempts() < 1) {
-                        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                        $this->emitter->testRunnerTriggeredPhpunitWarning(
                             sprintf(
                                 'Method %s::%s is annotated with #[Retry] but %d is not a positive integer for the maximum number of attempts and will not be retried',
                                 $className,
@@ -1127,7 +1134,7 @@ final readonly class AttributeParser implements Parser
             return false;
         }
 
-        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+        $this->emitter->testRunnerTriggeredPhpunitWarning(
             sprintf(
                 'Group name "%s" is not allowed for %s',
                 $_groupName,
@@ -1159,7 +1166,7 @@ final readonly class AttributeParser implements Parser
             return;
         }
 
-        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+        $this->emitter->testRunnerTriggeredPhpunitWarning(
             sprintf(
                 'Group name "%s" for %s cannot be used to select tests: "+" combines several group names into a selection of the tests that are in all of them',
                 $groupName,
@@ -1177,7 +1184,7 @@ final readonly class AttributeParser implements Parser
     private function requirement(string $attributeName, string $versionRequirement, string $testClassName, ?string $testMethodName = null): ?Requirement
     {
         if (is_numeric(trim($versionRequirement))) {
-            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+            $this->emitter->testRunnerTriggeredPhpunitWarning(
                 sprintf(
                     'Attribute %s for test %s has version requirement "%s" without a version comparison operator, the version requirement is ignored (use a version comparison such as ">= 8.1.0" or a version constraint such as "^8.1")',
                     $attributeName,

@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Metadata\Parser;
 
+use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
@@ -19,8 +20,8 @@ use PHPUnit\Framework\Attributes\Small;
 #[Group('metadata/attributes')]
 final class CachedAttributeParserTest extends AttributeParserTestCase
 {
-    protected function parser(): Parser
+    protected function parserWithEmitter(Emitter $emitter): Parser
     {
-        return new CachingParser(new AttributeParser);
+        return new CachingParser(new AttributeParser($emitter));
     }
 }

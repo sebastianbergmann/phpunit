@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Metadata\Parser;
 
+use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\AfterClass;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
@@ -162,8 +163,8 @@ use PHPUnit\Metadata\InvalidAttribute;
 #[Group('metadata/attributes')]
 final class AttributeParserTest extends AttributeParserTestCase
 {
-    protected function parser(): Parser
+    protected function parserWithEmitter(Emitter $emitter): Parser
     {
-        return new AttributeParser;
+        return new AttributeParser($emitter);
     }
 }
