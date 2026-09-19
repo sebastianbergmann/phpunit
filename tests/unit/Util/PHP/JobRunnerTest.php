@@ -232,7 +232,7 @@ EOT,
                 new Facade,
                 $this->createStub(Emitter::class),
                 new PassedTests,
-                new CodeCoverage,
+                new CodeCoverage($this->createStub(Emitter::class)),
             ),
         );
 
@@ -249,7 +249,7 @@ EOT,
                 new Facade,
                 $this->createStub(Emitter::class),
                 new PassedTests,
-                new CodeCoverage,
+                new CodeCoverage($this->createStub(Emitter::class)),
             ),
         );
 
@@ -285,7 +285,7 @@ EOT,
                     new Facade,
                     $this->createStub(Emitter::class),
                     new PassedTests,
-                    new CodeCoverage,
+                    new CodeCoverage($this->createStub(Emitter::class)),
                 ),
             );
 
@@ -314,7 +314,7 @@ EOT,
                 new Facade,
                 $this->createStub(Emitter::class),
                 new PassedTests,
-                new CodeCoverage,
+                new CodeCoverage($this->createStub(Emitter::class)),
             ),
         );
 
