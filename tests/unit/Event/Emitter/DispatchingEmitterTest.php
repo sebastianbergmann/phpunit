@@ -228,7 +228,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         );
 
         $configuration = (new Merger)->merge(
-            (new Builder)->fromParameters([]),
+            new Builder($this->createStub(Emitter::class))->fromParameters([]),
             DefaultConfiguration::create(),
         );
 

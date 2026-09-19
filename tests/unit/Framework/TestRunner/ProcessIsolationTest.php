@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\TestRunner;
 
+use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
@@ -74,7 +75,7 @@ final class ProcessIsolationTest extends TestCase
         $property->setValue(
             null,
             (new Merger)->merge(
-                (new Builder)->fromParameters([]),
+                new Builder($this->createStub(Emitter::class))->fromParameters([]),
                 (new Loader)->load(__DIR__ . '/_files/process-isolation.xml'),
             ),
         );

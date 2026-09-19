@@ -12,6 +12,7 @@ namespace PHPUnit\TextUI;
 use function hrtime;
 use PHPUnit\Event\Code\TestDoxBuilder;
 use PHPUnit\Event\Code\TestMethod;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Event\Telemetry\CpuTime;
 use PHPUnit\Event\Telemetry\Duration;
 use PHPUnit\Event\Telemetry\GarbageCollectorStatus;
@@ -68,7 +69,7 @@ final class ShellExitCodeCalculatorTest extends TestCase
     private function configuration(array $parameters): Configuration
     {
         return (new Merger)->merge(
-            (new CliBuilder)->fromParameters($parameters),
+            new CliBuilder($this->createStub(Emitter::class))->fromParameters($parameters),
             DefaultConfiguration::create(),
         );
     }

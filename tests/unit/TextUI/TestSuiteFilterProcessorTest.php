@@ -42,7 +42,7 @@ final class TestSuiteFilterProcessorTest extends TestCase
     private function configuration(string $testIdFilterFile): Configuration
     {
         return (new Merger)->merge(
-            (new CliBuilder)->fromParameters([
+            new CliBuilder($this->createStub(Emitter::class))->fromParameters([
                 '--test-id-filter-file',
                 $testIdFilterFile,
             ]),

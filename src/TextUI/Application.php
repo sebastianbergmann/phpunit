@@ -427,7 +427,7 @@ final readonly class Application
     private function buildCliConfiguration(array $argv): CliConfiguration
     {
         try {
-            $cliConfiguration = (new Builder)->fromParameters($argv);
+            $cliConfiguration = new Builder($this->emitter)->fromParameters($argv);
         } catch (ArgumentsException $e) {
             $this->exitWithErrorMessage($e->getMessage());
         }

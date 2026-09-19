@@ -15,6 +15,7 @@ use function realpath;
 use function rmdir;
 use function sys_get_temp_dir;
 use function uniqid;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
@@ -587,7 +588,7 @@ final class ConfigurationTest extends TestCase
     public function testReturnsValuesProvidedViaCommandLineArguments(): void
     {
         $configuration = (new Merger)->merge(
-            (new CliBuilder)->fromParameters([
+            new CliBuilder($this->createStub(Emitter::class))->fromParameters([
                 '--test-files-file', 'tests.txt',
                 '--bootstrap', 'bootstrap.php',
                 '--filter', 'foo',
@@ -650,7 +651,7 @@ final class ConfigurationTest extends TestCase
 
         try {
             $configuration = (new Merger)->merge(
-                (new CliBuilder)->fromParameters(['--cache-directory', $cacheDirectory]),
+                new CliBuilder($this->createStub(Emitter::class))->fromParameters(['--cache-directory', $cacheDirectory]),
                 DefaultConfiguration::create(),
             );
 
@@ -672,7 +673,7 @@ final class ConfigurationTest extends TestCase
     public function testReturnsBaselineProvidedViaCommandLineArguments(): void
     {
         $configuration = (new Merger)->merge(
-            (new CliBuilder)->fromParameters(['--generate-baseline', 'baseline.xml']),
+            new CliBuilder($this->createStub(Emitter::class))->fromParameters(['--generate-baseline', 'baseline.xml']),
             DefaultConfiguration::create(),
         );
 
@@ -683,7 +684,7 @@ final class ConfigurationTest extends TestCase
     private function defaultConfiguration(): Configuration
     {
         return (new Merger)->merge(
-            (new CliBuilder)->fromParameters([]),
+            new CliBuilder($this->createStub(Emitter::class))->fromParameters([]),
             DefaultConfiguration::create(),
         );
     }
@@ -691,7 +692,7 @@ final class ConfigurationTest extends TestCase
     private function configurationFromXml(string $filename): Configuration
     {
         return (new Merger)->merge(
-            (new CliBuilder)->fromParameters([]),
+            new CliBuilder($this->createStub(Emitter::class))->fromParameters([]),
             (new Loader)->load(TEST_FILES_PATH . $filename),
         );
     }

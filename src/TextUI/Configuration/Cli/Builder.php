@@ -20,7 +20,7 @@ use function is_numeric;
 use function max;
 use function sprintf;
 use function strtolower;
-use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\Configuration\ExecutionOrderParser;
 use PHPUnit\TextUI\Configuration\ExecutionOrderSource;
@@ -260,6 +260,12 @@ final class Builder
      * @var array<string, non-negative-int>
      */
     private array $processed = [];
+    private readonly Emitter $emitter;
+
+    public function __construct(Emitter $emitter)
+    {
+        $this->emitter = $emitter;
+    }
 
     /**
      * @param list<string> $parameters
@@ -462,7 +468,7 @@ final class Builder
                 case '--cache-result':
                     $recordTestRunHistory = true;
 
-                    EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
+                    $this->emitter->testRunnerTriggeredPhpunitDeprecation(
                         'The "--cache-result" CLI option is deprecated and will be removed in PHPUnit 14. Use "--record-test-run-history" instead.',
                     );
 
@@ -476,7 +482,7 @@ final class Builder
                 case '--do-not-cache-result':
                     $recordTestRunHistory = false;
 
-                    EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
+                    $this->emitter->testRunnerTriggeredPhpunitDeprecation(
                         'The "--do-not-cache-result" CLI option is deprecated and will be removed in PHPUnit 14. Use "--do-not-record-test-run-history" instead.',
                     );
 
@@ -1278,7 +1284,7 @@ final class Builder
                     if (!is_numeric($option[1]) ||
                         (string) (int) $option[1] !== $option[1] ||
                         (int) $option[1] < 1) {
-                        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                        $this->emitter->testRunnerTriggeredPhpunitWarning(
                             sprintf(
                                 'Option "--repeat %s" ignored because "%s" is not a positive integer',
                                 $option[1],
@@ -1297,7 +1303,7 @@ final class Builder
                     if (!is_numeric($option[1]) ||
                         (string) (int) $option[1] !== $option[1] ||
                         (int) $option[1] < 1) {
-                        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                        $this->emitter->testRunnerTriggeredPhpunitWarning(
                             sprintf(
                                 'Option "--retry %s" ignored because "%s" is not a positive integer',
                                 $option[1],
@@ -1393,7 +1399,7 @@ final class Builder
         $this->warnAboutConflictingOptions();
 
         if ($randomOrderSeed !== null && $executionOrder !== TestSuiteSorter::ORDER_RANDOMIZED) {
-            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+            $this->emitter->testRunnerTriggeredPhpunitWarning(
                 '--random-order-seed is only used when execution order is "random" (use --order-by random or --random-order)',
             );
         }
@@ -1574,7 +1580,7 @@ final class Builder
         $this->processed[$option]++;
 
         if ($this->processed[$option] === 2) {
-            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+            $this->emitter->testRunnerTriggeredPhpunitWarning(
                 sprintf(
                     'Option %s cannot be used more than once',
                     $option,
@@ -1587,7 +1593,7 @@ final class Builder
     {
         foreach (self::CONFLICTING_OPTIONS as $conflictingOptions) {
             if (isset($this->processed[$conflictingOptions[0]], $this->processed[$conflictingOptions[1]])) {
-                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                $this->emitter->testRunnerTriggeredPhpunitWarning(
                     sprintf(
                         'Options %s and %s cannot be used together',
                         $conflictingOptions[0],

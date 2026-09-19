@@ -91,7 +91,7 @@ final class CodeCoverageTest extends TestCase
     private function configuration(array $parameters): Configuration
     {
         return (new Merger)->merge(
-            (new Builder)->fromParameters($parameters),
+            new Builder($this->createStub(Emitter::class))->fromParameters($parameters),
             DefaultConfiguration::create(),
         );
     }

@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\Output;
 
+use PHPUnit\Event\Emitter;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
@@ -88,7 +89,7 @@ final class FacadeTest extends TestCase
     private function configuration(array $parameters): Configuration
     {
         return (new Merger)->merge(
-            (new CliBuilder)->fromParameters($parameters),
+            new CliBuilder($this->createStub(Emitter::class))->fromParameters($parameters),
             DefaultConfiguration::create(),
         );
     }

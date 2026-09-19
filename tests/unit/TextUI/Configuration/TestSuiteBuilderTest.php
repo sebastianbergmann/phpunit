@@ -159,7 +159,7 @@ final class TestSuiteBuilderTest extends TestCase
     {
         return (new Merger)->merge(
             // the first parameter is the name of the script that was invoked
-            (new CliConfigurationBuilder)->fromParameters(['phpunit', ...$paths]),
+            new CliConfigurationBuilder($this->createStub(Emitter::class))->fromParameters(['phpunit', ...$paths]),
             DefaultConfiguration::create(),
         );
     }

@@ -63,7 +63,7 @@ final class TestSuiteBuilderTest extends TestCase
 
     private function testSuiteFromXmlConfiguration(): FrameworkTestSuite
     {
-        $cliConfiguration = (new CliArgumentsBuilder)->fromParameters([]);
+        $cliConfiguration = new CliArgumentsBuilder($this->createStub(Emitter::class))->fromParameters([]);
         $xmlConfiguration = (new XmlConfigurationLoader)->load(__DIR__ . '/../../../../end-to-end/_files/groups/phpunit.xml');
         $configuration    = (new ConfigurationMerger)->merge($cliConfiguration, $xmlConfiguration);
 

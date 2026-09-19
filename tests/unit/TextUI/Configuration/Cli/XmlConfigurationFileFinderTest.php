@@ -19,6 +19,7 @@ use function rmdir;
 use function sys_get_temp_dir;
 use function uniqid;
 use function unlink;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
@@ -67,7 +68,7 @@ final class XmlConfigurationFileFinderTest extends TestCase
         $directory = $this->createDirectory();
         $file      = $this->createFile($directory . DIRECTORY_SEPARATOR . 'custom-name.xml', '<phpunit/>');
 
-        $configuration = (new Builder)->fromParameters(['--configuration', $file]);
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--configuration', $file]);
 
         $this->assertSame($file, (new XmlConfigurationFileFinder)->find($configuration));
     }
@@ -77,7 +78,7 @@ final class XmlConfigurationFileFinderTest extends TestCase
         $directory = $this->createDirectory();
         $file      = $this->createFile($directory . DIRECTORY_SEPARATOR . 'phpunit.xml', '<phpunit/>');
 
-        $configuration = (new Builder)->fromParameters(['--configuration', $directory]);
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--configuration', $directory]);
 
         $this->assertSame(realpath($file), (new XmlConfigurationFileFinder)->find($configuration));
     }
@@ -87,7 +88,7 @@ final class XmlConfigurationFileFinderTest extends TestCase
         $directory = $this->createDirectory();
         $file      = $this->createFile($directory . DIRECTORY_SEPARATOR . 'phpunit.dist.xml', '<phpunit/>');
 
-        $configuration = (new Builder)->fromParameters(['--configuration', $directory]);
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--configuration', $directory]);
 
         $this->assertSame(realpath($file), (new XmlConfigurationFileFinder)->find($configuration));
     }
@@ -97,7 +98,7 @@ final class XmlConfigurationFileFinderTest extends TestCase
         $directory = $this->createDirectory();
         $file      = $this->createFile($directory . DIRECTORY_SEPARATOR . 'phpunit.xml.dist', '<phpunit/>');
 
-        $configuration = (new Builder)->fromParameters(['--configuration', $directory]);
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--configuration', $directory]);
 
         $this->assertSame(realpath($file), (new XmlConfigurationFileFinder)->find($configuration));
     }
@@ -106,14 +107,14 @@ final class XmlConfigurationFileFinderTest extends TestCase
     {
         $directory = $this->createDirectory();
 
-        $configuration = (new Builder)->fromParameters(['--configuration', $directory]);
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--configuration', $directory]);
 
         $this->assertFalse((new XmlConfigurationFileFinder)->find($configuration));
     }
 
     public function testReturnsFalseWhenNoConfigurationFileIsGivenAndUseDefaultConfigurationIsDisabled(): void
     {
-        $configuration = (new Builder)->fromParameters(['--no-configuration']);
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--no-configuration']);
 
         $this->assertFalse((new XmlConfigurationFileFinder)->find($configuration));
     }
@@ -124,7 +125,7 @@ final class XmlConfigurationFileFinderTest extends TestCase
 
         $this->changeWorkingDirectoryTo($directory);
 
-        $configuration = (new Builder)->fromParameters([]);
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters([]);
 
         $this->assertFalse((new XmlConfigurationFileFinder)->find($configuration));
     }
@@ -136,7 +137,7 @@ final class XmlConfigurationFileFinderTest extends TestCase
 
         $this->changeWorkingDirectoryTo($directory);
 
-        $configuration = (new Builder)->fromParameters([]);
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters([]);
 
         $this->assertSame(realpath($file), (new XmlConfigurationFileFinder)->find($configuration));
     }

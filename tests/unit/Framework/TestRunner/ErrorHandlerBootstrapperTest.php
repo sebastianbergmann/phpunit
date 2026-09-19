@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework;
 
+use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
@@ -191,7 +192,7 @@ final class ErrorHandlerBootstrapperTest extends TestCase
     private function configurationFromFixture(string $filename): Configuration
     {
         $fromFile = (new Loader)->load(__DIR__ . '/_files/' . $filename);
-        $fromCli  = (new Builder)->fromParameters([]);
+        $fromCli  = new Builder($this->createStub(Emitter::class))->fromParameters([]);
 
         return (new Merger)->merge($fromCli, $fromFile);
     }
