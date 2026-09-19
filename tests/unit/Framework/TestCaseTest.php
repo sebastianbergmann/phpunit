@@ -19,7 +19,6 @@ use PHPUnit\TestFixture\ExpectsOutput;
 use PHPUnit\TestFixture\TestWithDifferentNames;
 use ReflectionMethod;
 use ReflectionProperty;
-use stdClass;
 
 #[CoversClass(TestCase::class)]
 #[ExcludeGlobalVariableFromBackup('i')]
@@ -142,30 +141,6 @@ class TestCaseTest extends TestCase
         $method = new ReflectionMethod(TestCase::class, 'shouldRunInSeparateProcess');
 
         $this->assertFalse($method->invoke($testCase));
-    }
-
-    public function testShouldInvocationMockerBeResetReturnsFalseWhenMockIsAmongDependencyInput(): void
-    {
-        $testCase = new TestWithDifferentNames('testWithName');
-        $mock     = $this->createMock(stdClass::class);
-
-        $testCase->setDependencyInput(['previousTest' => $mock]);
-
-        $method = new ReflectionMethod(TestCase::class, 'shouldInvocationMockerBeReset');
-
-        $this->assertFalse($method->invoke($testCase, $mock));
-    }
-
-    public function testShouldInvocationMockerBeResetReturnsFalseWhenMockIsAmongTestResult(): void
-    {
-        $testCase = new TestWithDifferentNames('testWithName');
-        $mock     = $this->createMock(stdClass::class);
-
-        $testCase->setResult([$mock]);
-
-        $method = new ReflectionMethod(TestCase::class, 'shouldInvocationMockerBeReset');
-
-        $this->assertFalse($method->invoke($testCase, $mock));
     }
 
     public function testCreateGlobalStateSnapshotAppliesBackupStaticPropertiesExcludeList(): void

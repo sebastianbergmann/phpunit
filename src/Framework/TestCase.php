@@ -21,17 +21,14 @@ use function error_clear_last;
 use function getcwd;
 use function implode;
 use function in_array;
-use function is_array;
 use function is_callable;
 use function is_int;
-use function is_object;
 use function libxml_clear_errors;
 use function method_exists;
 use function preg_match;
 use function putenv;
 use function sprintf;
 use function str_contains;
-use function str_starts_with;
 use AssertionError;
 use PHPUnit\Event;
 use PHPUnit\Event\NoPreviousThrowableException;
@@ -41,12 +38,10 @@ use PHPUnit\Framework\MockObject\InvocationJournal;
 use PHPUnit\Framework\MockObject\InvocationJournalImplementation;
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\MockObject\MockObjectInternal;
 use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount as AnyInvokedCountMatcher;
 use PHPUnit\Framework\MockObject\Rule\InvokedAtLeastCount as InvokedAtLeastCountMatcher;
 use PHPUnit\Framework\MockObject\Rule\InvokedAtLeastOnce as InvokedAtLeastOnceMatcher;
 use PHPUnit\Framework\MockObject\Rule\InvokedAtMostCount as InvokedAtMostCountMatcher;
-use PHPUnit\Framework\MockObject\Rule\InvokedCount;
 use PHPUnit\Framework\MockObject\Rule\InvokedCount as InvokedCountMatcher;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\MockObject\Stub\Exception as ExceptionStub;
@@ -56,6 +51,7 @@ use PHPUnit\Framework\TestCase\ErrorLogCapture;
 use PHPUnit\Framework\TestCase\ExceptionExpectation;
 use PHPUnit\Framework\TestCase\GlobalStateCapture;
 use PHPUnit\Framework\TestCase\HookMethodInvoker;
+use PHPUnit\Framework\TestCase\MockObjectRegistry;
 use PHPUnit\Framework\TestCase\OutputBuffer;
 use PHPUnit\Framework\TestRunner\SeparateProcessTestRunner;
 use PHPUnit\Framework\TestRunner\TestRunner;
@@ -80,7 +76,6 @@ use SebastianBergmann\Comparator\Comparator;
 use SebastianBergmann\Comparator\Factory as ComparatorFactory;
 use SebastianBergmann\Exporter\ObjectExporter;
 use SebastianBergmann\Invoker\TimeoutException;
-use SebastianBergmann\ObjectEnumerator\Enumerator;
 use Throwable;
 
 /**
@@ -129,11 +124,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @var array<string, mixed>
      */
     private array $dependencyInput = [];
-
-    /**
-     * @var list<array{type: non-empty-string, mockObject: MockObjectInternal}>
-     */
-    private array $mockObjects = [];
+    private MockObjectRegistry $mockObjectRegistry;
     private TestStatus $status;
 
     /**
@@ -207,6 +198,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->outputBuffer         = new OutputBuffer;
         $this->errorLogCapture      = new ErrorLogCapture;
         $this->globalStateCapture   = new GlobalStateCapture;
+        $this->mockObjectRegistry   = new MockObjectRegistry;
 
         if (is_callable($this->sortId(), true)) {
             $this->providedTests = [new ExecutionOrderDependency($this->sortId())];
@@ -498,7 +490,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $this->testResult  = $this->runTest();
 
             $this->verifyDeprecationExpectations();
-            $this->verifyMockObjects();
+            $this->mockObjectRegistry->verify($this, $emitter);
             HookMethodInvoker::invokePostCondition($this, $hookMethods, $emitter);
 
             $this->status = TestStatus::success();
@@ -520,7 +512,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $skipMessage,
             );
         } catch (AssertionError|AssertionFailedError $e) {
-            $this->handleExceptionFromInvokedCountMockObjectRule($e);
+            $this->mockObjectRegistry->handleExceptionFromInvokedCountRule($this, $e);
 
             if (!$this->wasPrepared) {
                 $this->wasPrepared = true;
@@ -604,9 +596,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         try {
-            $this->mockObjects = [];
-
-            /** @phpstan-ignore catch.neverThrown */
+            $this->mockObjectRegistry->clear();
         } catch (Throwable $e) {
             Event\Facade::emitter()->testErrored(
                 $this->valueObjectForEvents(),
@@ -813,8 +803,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     *
-     * @codeCoverageIgnore
      */
     final public function result(): mixed
     {
@@ -836,12 +824,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function registerMockObject(string $type, MockObject $mockObject): void
     {
-        assert($mockObject instanceof MockObjectInternal);
-
-        $this->mockObjects[] = [
-            'type'       => $type,
-            'mockObject' => $mockObject,
-        ];
+        $this->mockObjectRegistry->register($type, $mockObject);
     }
 
     /**
@@ -1541,57 +1524,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @throws Throwable
-     */
-    private function verifyMockObjects(): void
-    {
-        $allowsMockObjectsWithoutExpectations = $this->allowsMockObjectsWithoutExpectations();
-        $isPhpunitTestSuite                   = str_starts_with($this::class, 'PHPUnit\\');
-        $requireSealedMockObjects             = ConfigurationRegistry::get()->requireSealedMockObjects();
-
-        foreach ($this->mockObjects as $mockObject) {
-            $mockedType = $mockObject['type'];
-            $mockObject = $mockObject['mockObject'];
-
-            if ($requireSealedMockObjects &&
-                !$mockObject->__phpunit_getInvocationHandler()->isSealed()) {
-                Event\Facade::emitter()->testConsideredRisky(
-                    $this->valueObjectForEvents(),
-                    sprintf(
-                        'Mock object for %s has not been sealed',
-                        $mockedType,
-                    ),
-                );
-            }
-
-            if (!$mockObject->__phpunit_hasInvocationCountRule()) {
-                if (!$mockObject->__phpunit_hasParametersRule() &&
-                    !$mockObject->__phpunit_recordsInvocations() &&
-                    !$allowsMockObjectsWithoutExpectations &&
-                    !$isPhpunitTestSuite) {
-                    Event\Facade::emitter()->testTriggeredPhpunitNotice(
-                        $this->valueObjectForEvents(),
-                        sprintf(
-                            'No expectations were configured for the mock object for %s. ' .
-                            'Consider refactoring your test code to use a test stub instead. ' .
-                            'The #[AllowMockObjectsWithoutExpectations] attribute can be used to opt out of this check.',
-                            $mockedType,
-                        ),
-                    );
-                }
-
-                continue;
-            }
-
-            $this->numberOfAssertionsPerformed++;
-
-            $mockObject->__phpunit_verify(
-                $this->shouldInvocationMockerBeReset($mockObject),
-            );
-        }
-    }
-
-    /**
      * @throws SkippedTest
      */
     private function checkRequirements(): void
@@ -1638,21 +1570,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         $this->backupEnvironmentVariables = [];
-    }
-
-    private function shouldInvocationMockerBeReset(MockObject $mock): bool
-    {
-        $enumerator = new Enumerator;
-
-        if (in_array($mock, $enumerator->enumerate($this->dependencyInput), true)) {
-            return false;
-        }
-
-        if (!is_array($this->testResult) && !is_object($this->testResult)) {
-            return true;
-        }
-
-        return !in_array($mock, $enumerator->enumerate($this->testResult), true);
     }
 
     private function unregisterCustomComparators(): void
@@ -1704,27 +1621,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private function requiresXdebug(): bool
     {
         return (new Requirements)->requiresXdebug(static::class, $this->methodName);
-    }
-
-    /**
-     * @see https://github.com/sebastianbergmann/phpunit/issues/6095
-     */
-    private function handleExceptionFromInvokedCountMockObjectRule(Throwable $t): void
-    {
-        if (!$t instanceof ExpectationFailedException) {
-            return;
-        }
-
-        $trace = $t->getTrace();
-
-        if (isset($trace[0]['class']) && $trace[0]['class'] === InvokedCount::class) {
-            $this->numberOfAssertionsPerformed++;
-        }
-    }
-
-    private function allowsMockObjectsWithoutExpectations(): bool
-    {
-        return MetadataRegistry::parser()->forClassAndMethod(static::class, $this->methodName)->isAllowMockObjectsWithoutExpectations()->isNotEmpty();
     }
 
     private function emitEventForCustomTestMethodInvocation(): void

@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use function assert;
 use function call_user_func_array;
 use Exception;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
@@ -20,6 +21,7 @@ use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Generator\MethodNamedRecordInvocationsInException;
 use PHPUnit\Framework\MockObject\Runtime\PropertyHook;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestCase\MockObjectRegistry;
 use PHPUnit\TestFixture\MockObject\AnInterface;
 use PHPUnit\TestFixture\MockObject\AnotherInterface;
 use PHPUnit\TestFixture\MockObject\ExtendableClassWithCloneMethod;
@@ -1453,6 +1455,10 @@ EOT,
 
     private function resetMockObjects(): void
     {
-        new ReflectionProperty(TestCase::class, 'mockObjects')->setValue($this, []);
+        $registry = new ReflectionProperty(TestCase::class, 'mockObjectRegistry')->getValue($this);
+
+        assert($registry instanceof MockObjectRegistry);
+
+        $registry->clear();
     }
 }

@@ -9,11 +9,13 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use function assert;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\MockObject\Generator\DuplicateMethodException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestCase\MockObjectRegistry;
 use PHPUnit\TestFixture\MockObject\ExtendableClass;
 use ReflectionProperty;
 
@@ -68,6 +70,10 @@ final class CreatePartialMockTest extends TestCase
 
     private function resetMockObjects(): void
     {
-        new ReflectionProperty(TestCase::class, 'mockObjects')->setValue($this, []);
+        $registry = new ReflectionProperty(TestCase::class, 'mockObjectRegistry')->getValue($this);
+
+        assert($registry instanceof MockObjectRegistry);
+
+        $registry->clear();
     }
 }
