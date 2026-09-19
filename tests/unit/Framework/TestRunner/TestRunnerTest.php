@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework;
 
+use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
@@ -73,7 +74,7 @@ final class TestRunnerTest extends TestCase
     private function hasCoverageMetadata(string $className): bool
     {
         return new ReflectionMethod(TestRunner::class, 'hasCoverageMetadata')->invoke(
-            new TestRunner,
+            new TestRunner($this->createStub(Emitter::class)),
             $className,
             'testOne',
         );

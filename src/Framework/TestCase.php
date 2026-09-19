@@ -280,12 +280,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function run(): void
     {
+        $emitter = Event\Facade::emitter();
+
         if (!$this->inIsolation &&
-            !(new DependencyResolver)->resolve($this, $this->dependencies, Event\Facade::emitter())) {
+            !(new DependencyResolver)->resolve($this, $this->dependencies, $emitter)) {
             return;
         }
 
-        (new TestRunner)->run($this);
+        new TestRunner($emitter)->run($this);
     }
 
     /**
