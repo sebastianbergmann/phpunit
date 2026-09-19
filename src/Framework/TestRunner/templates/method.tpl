@@ -106,7 +106,7 @@ if ('{sourceMapFile}' !== '') {
     SourceMapper::loadFrom('{sourceMapFile}', ConfigurationRegistry::get()->source());
 }
 
-(new PhpHandler)->handle(ConfigurationRegistry::get()->php());
+(new PhpHandler(Facade::emitter()))->handle(ConfigurationRegistry::get()->php());
 
 if ('{bootstrap}' !== '') {
     require_once '{bootstrap}';

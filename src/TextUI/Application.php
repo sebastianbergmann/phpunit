@@ -160,7 +160,7 @@ final readonly class Application
 
             DifferBuilder::configureComparatorFactory();
 
-            (new PhpHandler)->handle($configuration->php());
+            new PhpHandler($this->emitter)->handle($configuration->php());
 
             try {
                 new BootstrapLoader($this->emitter)->handle($configuration);

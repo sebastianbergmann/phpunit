@@ -23,7 +23,7 @@ use function putenv;
 use function restore_error_handler;
 use function set_error_handler;
 use function sprintf;
-use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Event\Emitter;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -32,6 +32,13 @@ use PHPUnit\Event\Facade as EventFacade;
  */
 final readonly class PhpHandler
 {
+    private Emitter $emitter;
+
+    public function __construct(Emitter $emitter)
+    {
+        $this->emitter = $emitter;
+    }
+
     public function handle(Php $configuration): void
     {
         $this->handleIncludePaths($configuration->includePaths());
@@ -94,7 +101,7 @@ final readonly class PhpHandler
             restore_error_handler();
 
             if ($success === false) {
-                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                $this->emitter->testRunnerTriggeredPhpunitWarning(
                     sprintf(
                         'Failed to set "%s=%s": %s',
                         $iniSetting->name(),
