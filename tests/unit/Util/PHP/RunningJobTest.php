@@ -163,6 +163,7 @@ EOT,
                 new PassedTests,
                 new CodeCoverage($this->createStub(Emitter::class)),
             ),
+            $this->createStub(Emitter::class),
         );
     }
 }

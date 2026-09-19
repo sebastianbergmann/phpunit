@@ -234,6 +234,7 @@ EOT,
                 new PassedTests,
                 new CodeCoverage($this->createStub(Emitter::class)),
             ),
+            $this->createStub(Emitter::class),
         );
 
         $result = $jobRunner->run($job);
@@ -251,6 +252,7 @@ EOT,
                 new PassedTests,
                 new CodeCoverage($this->createStub(Emitter::class)),
             ),
+            $this->createStub(Emitter::class),
         );
 
         $running = $jobRunner->start(
@@ -287,6 +289,7 @@ EOT,
                     new PassedTests,
                     new CodeCoverage($this->createStub(Emitter::class)),
                 ),
+                $this->createStub(Emitter::class),
             );
 
             $result = $jobRunner->run(
@@ -307,6 +310,40 @@ EOT,
         }
     }
 
+    public function testEmitsEventWhenChildProcessIsStarted(): void
+    {
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter
+            ->expects($this->once())
+            ->method('childProcessStarted')
+            ->with(ChildProcessReason::TestRequiringProcessIsolation)
+            ->seal();
+
+        $jobRunner = new JobRunner(
+            new ChildProcessResultProcessor(
+                new Facade,
+                $this->createStub(Emitter::class),
+                new PassedTests,
+                new CodeCoverage($this->createStub(Emitter::class)),
+            ),
+            $emitter,
+        );
+
+        $result = $jobRunner->run(
+            new Job(
+                <<<'EOT'
+<?php declare(strict_types=1);
+print 'started';
+
+EOT,
+                ChildProcessReason::TestRequiringProcessIsolation,
+            ),
+        );
+
+        $this->assertSame('started', $result->stdout());
+    }
+
     public function testRejectsPhpSettingValueContainingLineBreak(): void
     {
         $jobRunner = new JobRunner(
@@ -316,6 +353,7 @@ EOT,
                 new PassedTests,
                 new CodeCoverage($this->createStub(Emitter::class)),
             ),
+            $this->createStub(Emitter::class),
         );
 
         $job = new Job(

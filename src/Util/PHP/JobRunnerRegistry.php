@@ -46,13 +46,16 @@ final class JobRunnerRegistry
     private static function runner(): JobRunner
     {
         if (self::$runner === null) {
+            $emitter = Facade::emitter();
+
             self::$runner = new JobRunner(
                 new ChildProcessResultProcessor(
                     Facade::instance(),
-                    Facade::emitter(),
+                    $emitter,
                     PassedTests::instance(),
                     CodeCoverage::instance(),
                 ),
+                $emitter,
             );
         }
 

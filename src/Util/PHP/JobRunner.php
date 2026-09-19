@@ -37,8 +37,7 @@ use function tmpfile;
 use function trim;
 use function unlink;
 use function xdebug_is_debugger_active;
-use PHPUnit\Event\Facade;
-use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestRunner\ChildProcessResultProcessor;
 use PHPUnit\Runner\CodeCoverage;
@@ -52,10 +51,12 @@ use SebastianBergmann\Environment\Runtime;
 final readonly class JobRunner
 {
     private ChildProcessResultProcessor $processor;
+    private Emitter $emitter;
 
-    public function __construct(ChildProcessResultProcessor $processor)
+    public function __construct(ChildProcessResultProcessor $processor, Emitter $emitter)
     {
         $this->processor = $processor;
+        $this->emitter   = $emitter;
     }
 
     /**
@@ -83,7 +84,7 @@ final readonly class JobRunner
             $processResultNonce,
         );
 
-        EventFacade::emitter()->childProcessFinished($job->reason(), $result->stdout(), $result->stderr());
+        $this->emitter->childProcessFinished($job->reason(), $result->stdout(), $result->stderr());
     }
 
     /**
@@ -226,7 +227,7 @@ final readonly class JobRunner
             // @codeCoverageIgnoreEnd
         }
 
-        Facade::emitter()->childProcessStarted($job->reason());
+        $this->emitter->childProcessStarted($job->reason());
 
         return new RunningJob($process, $pipes, $mergedOutputStream, $temporaryFile);
     }
