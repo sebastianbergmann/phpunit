@@ -13,7 +13,6 @@ use function assert;
 use function putenv;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Metadata\WithEnvironmentVariable;
-use PHPUnit\Runner\BackedUpEnvironmentVariable;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit

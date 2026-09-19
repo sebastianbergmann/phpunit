@@ -14,7 +14,6 @@ use function putenv;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Runner\BackedUpEnvironmentVariable;
 use PHPUnit\TestFixture\Metadata\Attribute\WithEnvironmentVariableTest;
 use PHPUnit\TestFixture\TestWithDifferentNames;
 
