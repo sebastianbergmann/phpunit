@@ -29,7 +29,6 @@ use AssertionError;
 use PHPUnit\Event;
 use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\MockObject\Exception as MockObjectException;
-use PHPUnit\Framework\MockObject\Generator\Generator as MockGenerator;
 use PHPUnit\Framework\MockObject\InvocationJournal;
 use PHPUnit\Framework\MockObject\InvocationJournalImplementation;
 use PHPUnit\Framework\MockObject\MockBuilder;
@@ -53,6 +52,7 @@ use PHPUnit\Framework\TestCase\GlobalStateCapture;
 use PHPUnit\Framework\TestCase\HookMethodInvoker;
 use PHPUnit\Framework\TestCase\MockObjectRegistry;
 use PHPUnit\Framework\TestCase\OutputBuffer;
+use PHPUnit\Framework\TestCase\TestDoubleFactory;
 use PHPUnit\Framework\TestRunner\SeparateProcessTestRunner;
 use PHPUnit\Framework\TestRunner\TestRunner;
 use PHPUnit\Framework\TestSize\TestSize;
@@ -1244,22 +1244,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final protected function createMock(string $type): MockObject
     {
-        $mock = (new MockGenerator)->testDouble(
-            $type,
-            true,
-            callOriginalConstructor: false,
-            callOriginalClone: false,
-            returnValueGeneration: self::generateReturnValuesForTestDoubles(),
-        );
-
-        assert($mock instanceof $type);
-        assert($mock instanceof MockObject);
-
-        $this->registerMockObject($type, $mock);
-
-        Event\Facade::emitter()->testCreatedMockObject($type);
-
-        return $mock;
+        return self::testDoubleFactory()->createMock($this, $type);
     }
 
     /**
@@ -1269,23 +1254,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final protected function createMockForIntersectionOfInterfaces(array $interfaces): MockObject
     {
-        $mock = (new MockGenerator)->testDoubleForInterfaceIntersection(
-            $interfaces,
-            true,
-            returnValueGeneration: self::generateReturnValuesForTestDoubles(),
-        );
-
-        assert($mock instanceof MockObject);
-
-        $type = implode('|', $interfaces);
-
-        assert($type !== '');
-
-        $this->registerMockObject($type, $mock);
-
-        Event\Facade::emitter()->testCreatedMockObjectForIntersectionOfInterfaces($interfaces);
-
-        return $mock;
+        return self::testDoubleFactory()->createMockForIntersectionOfInterfaces($this, $interfaces);
     }
 
     /**
@@ -1313,13 +1282,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final protected function createConfiguredMock(string $type, array $configuration): MockObject
     {
-        $o = $this->createMock($type);
-
-        foreach ($configuration as $method => $return) {
-            $o->method($method)->willReturn($return);
-        }
-
-        return $o;
+        return self::testDoubleFactory()->createConfiguredMock($this, $type, $configuration);
     }
 
     /**
@@ -1337,23 +1300,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final protected function createPartialMock(string $type, array $methods): MockObject
     {
-        $mockBuilder = $this->getMockBuilder($type)
-            ->disableOriginalConstructor()
-            ->disableOriginalClone()
-            ->onlyMethods($methods);
-
-        if (!self::generateReturnValuesForTestDoubles()) {
-            $mockBuilder->disableAutoReturnValueGeneration();
-        }
-
-        $partialMock = $mockBuilder->getMock();
-
-        Event\Facade::emitter()->testCreatedPartialMockObject(
-            $type,
-            ...$methods,
-        );
-
-        return $partialMock;
+        return self::testDoubleFactory()->createPartialMock($this, $type, $methods);
     }
 
     /**
@@ -1525,20 +1472,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final protected static function createStub(string $type): Stub
     {
-        $stub = (new MockGenerator)->testDouble(
-            $type,
-            false,
-            callOriginalConstructor: false,
-            callOriginalClone: false,
-            returnValueGeneration: self::generateReturnValuesForTestDoubles(),
-        );
-
-        Event\Facade::emitter()->testCreatedStub($type);
-
-        assert($stub instanceof $type);
-        assert($stub instanceof Stub);
-
-        return $stub;
+        return self::testDoubleFactory()->createStub($type);
     }
 
     /**
@@ -1548,15 +1482,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final protected static function createStubForIntersectionOfInterfaces(array $interfaces): Stub
     {
-        $stub = (new MockGenerator)->testDoubleForInterfaceIntersection(
-            $interfaces,
-            false,
-            returnValueGeneration: self::generateReturnValuesForTestDoubles(),
-        );
-
-        Event\Facade::emitter()->testCreatedStubForIntersectionOfInterfaces($interfaces);
-
-        return $stub;
+        return self::testDoubleFactory()->createStubForIntersectionOfInterfaces($interfaces);
     }
 
     /**
@@ -1575,17 +1501,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final protected static function createConfiguredStub(string $type, array $configuration): Stub
     {
-        $o = self::createStub($type);
-
-        foreach ($configuration as $method => $return) {
-            $o->method($method)->willReturn($return);
-        }
-
-        return $o;
+        return self::testDoubleFactory()->createConfiguredStub($type, $configuration);
     }
 
-    private static function generateReturnValuesForTestDoubles(): bool
+    private static function testDoubleFactory(): TestDoubleFactory
     {
-        return MetadataRegistry::parser()->forClass(static::class)->isDisableReturnValueGenerationForTestDoubles()->isEmpty();
+        return new TestDoubleFactory(static::class, Event\Facade::emitter());
     }
 }
