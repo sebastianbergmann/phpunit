@@ -65,7 +65,7 @@ final class TestSuiteBuilderTest extends TestCase
     {
         $cliConfiguration = new CliArgumentsBuilder($this->createStub(Emitter::class))->fromParameters([]);
         $xmlConfiguration = new XmlConfigurationLoader($this->createStub(Emitter::class))->load(__DIR__ . '/../../../../end-to-end/_files/groups/phpunit.xml');
-        $configuration    = (new ConfigurationMerger)->merge($cliConfiguration, $xmlConfiguration);
+        $configuration    = new ConfigurationMerger($this->createStub(Emitter::class))->merge($cliConfiguration, $xmlConfiguration);
 
         return new TestSuiteMapper($this->createStub(Emitter::class))->map(
             $configuration->configurationFile(),

@@ -157,7 +157,7 @@ final class TestSuiteBuilderTest extends TestCase
      */
     private function configurationFor(string ...$paths): Configuration
     {
-        return (new Merger)->merge(
+        return new Merger($this->createStub(Emitter::class))->merge(
             // the first parameter is the name of the script that was invoked
             new CliConfigurationBuilder($this->createStub(Emitter::class))->fromParameters(['phpunit', ...$paths]),
             DefaultConfiguration::create(),

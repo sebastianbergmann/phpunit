@@ -227,7 +227,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem,
         );
 
-        $configuration = (new Merger)->merge(
+        $configuration = new Merger($this->createStub(Emitter::class))->merge(
             new Builder($this->createStub(Emitter::class))->fromParameters([]),
             DefaultConfiguration::create(),
         );

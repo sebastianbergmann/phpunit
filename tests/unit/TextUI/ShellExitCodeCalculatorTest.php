@@ -68,7 +68,7 @@ final class ShellExitCodeCalculatorTest extends TestCase
      */
     private function configuration(array $parameters): Configuration
     {
-        return (new Merger)->merge(
+        return new Merger($this->createStub(Emitter::class))->merge(
             new CliBuilder($this->createStub(Emitter::class))->fromParameters($parameters),
             DefaultConfiguration::create(),
         );

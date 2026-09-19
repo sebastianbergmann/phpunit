@@ -51,7 +51,7 @@ final class ConfiguredTest extends AbstractEventTestCase
 
     private function configuration(): Configuration
     {
-        return (new Merger)->merge(
+        return new Merger($this->createStub(Emitter::class))->merge(
             new Builder($this->createStub(Emitter::class))->fromParameters([]),
             DefaultConfiguration::create(),
         );

@@ -194,7 +194,7 @@ final class ErrorHandlerBootstrapperTest extends TestCase
         $fromFile = new Loader($this->createStub(Emitter::class))->load(__DIR__ . '/_files/' . $filename);
         $fromCli  = new Builder($this->createStub(Emitter::class))->fromParameters([]);
 
-        return (new Merger)->merge($fromCli, $fromFile);
+        return new Merger($this->createStub(Emitter::class))->merge($fromCli, $fromFile);
     }
 
     private function reflectProperty(string $name): mixed

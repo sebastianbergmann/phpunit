@@ -30,7 +30,7 @@ final class TestRunnerTest extends TestCase
     {
         $file = '/path/to/file/that/does/not/exist/' . uniqid('test_id_filter_file_');
 
-        $configuration = (new Merger)->merge(
+        $configuration = new Merger($this->createStub(Emitter::class))->merge(
             new CliBuilder($this->createStub(Emitter::class))->fromParameters([
                 '--test-id-filter-file',
                 $file,

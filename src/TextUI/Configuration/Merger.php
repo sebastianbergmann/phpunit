@@ -24,7 +24,7 @@ use function realpath;
 use function sprintf;
 use function time;
 use LogicException;
-use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
 use PHPUnit\TextUI\CliArguments\Exception;
@@ -44,6 +44,13 @@ use SebastianBergmann\Invoker\Invoker;
  */
 final readonly class Merger
 {
+    private Emitter $emitter;
+
+    public function __construct(Emitter $emitter)
+    {
+        $this->emitter = $emitter;
+    }
+
     /**
      * @throws \PHPUnit\TextUI\XmlConfiguration\Exception
      * @throws Exception
@@ -464,7 +471,7 @@ final readonly class Merger
         if ($columns < 16) {
             $columns = 16;
 
-            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+            $this->emitter->testRunnerTriggeredPhpunitWarning(
                 'Less than 16 columns requested, number of columns set to 16',
             );
         }
@@ -488,7 +495,7 @@ final readonly class Merger
         if ($cliConfiguration->hasExtensions()) {
             foreach ($cliConfiguration->extensions() as $extension) {
                 if (array_key_exists($extension, $extensionBootstrappers)) {
-                    EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                    $this->emitter->testRunnerTriggeredPhpunitWarning(
                         sprintf(
                             'Extension "%s" is configured more than once on the command line',
                             $extension,
@@ -505,7 +512,7 @@ final readonly class Merger
 
         foreach ($xmlConfiguration->extensions() as $extension) {
             if (array_key_exists($extension->className(), $extensionBootstrappers)) {
-                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                $this->emitter->testRunnerTriggeredPhpunitWarning(
                     sprintf(
                         'Extension "%s" is configured more than once',
                         $extension->className(),
@@ -656,7 +663,7 @@ final readonly class Merger
         }
 
         if (!$coverageHtmlClassView && !$coverageHtmlFileView) {
-            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+            $this->emitter->testRunnerTriggeredPhpunitWarning(
                 'The class view and the file view of the code coverage report in HTML format cannot both be disabled, rendering both',
             );
 
@@ -744,7 +751,7 @@ final readonly class Merger
         }
 
         if ($enforceTimeLimit && !(new Invoker)->canInvokeWithTimeout()) {
-            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+            $this->emitter->testRunnerTriggeredPhpunitWarning(
                 'The pcntl extension is required for enforcing time limits',
             );
         }
@@ -1083,11 +1090,11 @@ final readonly class Merger
 
         if ($xmlConfiguration->wasLoadedFromFile() && $xmlConfiguration->hasValidationErrors()) {
             if ((new SchemaDetector)->detect($xmlConfiguration->filename())->detected()) {
-                EventFacade::emitter()->testRunnerTriggeredPhpunitDeprecation(
+                $this->emitter->testRunnerTriggeredPhpunitDeprecation(
                     'Your XML configuration validates against a deprecated schema. Migrate your XML configuration using "--migrate-configuration"!',
                 );
             } else {
-                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                $this->emitter->testRunnerTriggeredPhpunitWarning(
                     "Test results may not be as expected because the XML configuration file did not pass validation:\n" .
                     $xmlConfiguration->validationErrors(),
                 );
@@ -1223,7 +1230,7 @@ final readonly class Merger
         $issueTriggerIdentificationNeeded = $xmlConfiguration->source()->ignoreSelfDeprecations() || $xmlConfiguration->source()->ignoreDirectDeprecations() || $xmlConfiguration->source()->ignoreIndirectDeprecations();
 
         if ($issueTriggerIdentificationNeeded && !$xmlConfiguration->source()->identifyIssueTrigger()) {
-            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+            $this->emitter->testRunnerTriggeredPhpunitWarning(
                 'The identification of issue triggers is disabled. However, ignoring self-deprecations, direct deprecations, or indirect deprecations is requested.',
             );
         }
@@ -1603,7 +1610,7 @@ final readonly class Merger
      */
     private function warnAboutFailOnSettingThatHasNoEffect(string $attribute, string $enablingSetting, string $cliOption): void
     {
-        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+        $this->emitter->testRunnerTriggeredPhpunitWarning(
             sprintf(
                 '%s="false" has no effect because %s is enabled. Use the %s CLI option instead',
                 $attribute,

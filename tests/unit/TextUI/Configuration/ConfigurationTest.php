@@ -587,7 +587,7 @@ final class ConfigurationTest extends TestCase
 
     public function testReturnsValuesProvidedViaCommandLineArguments(): void
     {
-        $configuration = (new Merger)->merge(
+        $configuration = new Merger($this->createStub(Emitter::class))->merge(
             new CliBuilder($this->createStub(Emitter::class))->fromParameters([
                 '--test-files-file', 'tests.txt',
                 '--bootstrap', 'bootstrap.php',
@@ -650,7 +650,7 @@ final class ConfigurationTest extends TestCase
         $cacheDirectory = sys_get_temp_dir() . '/' . uniqid('phpunit-test-cache-');
 
         try {
-            $configuration = (new Merger)->merge(
+            $configuration = new Merger($this->createStub(Emitter::class))->merge(
                 new CliBuilder($this->createStub(Emitter::class))->fromParameters(['--cache-directory', $cacheDirectory]),
                 DefaultConfiguration::create(),
             );
@@ -672,7 +672,7 @@ final class ConfigurationTest extends TestCase
 
     public function testReturnsBaselineProvidedViaCommandLineArguments(): void
     {
-        $configuration = (new Merger)->merge(
+        $configuration = new Merger($this->createStub(Emitter::class))->merge(
             new CliBuilder($this->createStub(Emitter::class))->fromParameters(['--generate-baseline', 'baseline.xml']),
             DefaultConfiguration::create(),
         );
@@ -683,7 +683,7 @@ final class ConfigurationTest extends TestCase
 
     private function defaultConfiguration(): Configuration
     {
-        return (new Merger)->merge(
+        return new Merger($this->createStub(Emitter::class))->merge(
             new CliBuilder($this->createStub(Emitter::class))->fromParameters([]),
             DefaultConfiguration::create(),
         );
@@ -691,7 +691,7 @@ final class ConfigurationTest extends TestCase
 
     private function configurationFromXml(string $filename): Configuration
     {
-        return (new Merger)->merge(
+        return new Merger($this->createStub(Emitter::class))->merge(
             new CliBuilder($this->createStub(Emitter::class))->fromParameters([]),
             new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . $filename),
         );

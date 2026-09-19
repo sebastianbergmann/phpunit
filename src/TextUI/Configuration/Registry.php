@@ -114,7 +114,7 @@ final class Registry
      */
     public static function init(CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration): Configuration
     {
-        self::$instance = (new Merger)->merge($cliConfiguration, $xmlConfiguration);
+        self::$instance = new Merger(EventFacade::emitter())->merge($cliConfiguration, $xmlConfiguration);
 
         EventFacade::emitter()->testRunnerConfigured(self::$instance);
 
