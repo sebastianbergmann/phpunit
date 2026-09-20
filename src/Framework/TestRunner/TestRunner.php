@@ -155,7 +155,7 @@ final class TestRunner
                 $this->shouldTimeLimitBeEnforced($test)) {
                 $risky = $this->runTestWithTimeout($test);
             } else {
-                $test->runBare();
+                $test->runLifecycle();
             }
         } catch (AssertionFailedError $e) {
             $failure = true;
@@ -374,7 +374,7 @@ final class TestRunner
         }
 
         try {
-            (new Invoker)->invoke($test->runBare(...), [], $_timeout);
+            (new Invoker)->invoke($test->runLifecycle(...), [], $_timeout);
         } catch (TimeoutException) {
             $this->emitter->testConsideredRisky(
                 $test->valueObjectForEvents(),
