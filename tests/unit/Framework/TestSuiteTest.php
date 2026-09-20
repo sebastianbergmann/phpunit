@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework;
 
+use const DIRECTORY_SEPARATOR;
+use const TEST_FILES_PATH;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
@@ -131,6 +133,26 @@ final class TestSuiteTest extends TestCase
             DependencySuccessTest::class . '::class',
             DependencyFailureTest::class . '::class',
         ], $suite->requires(), 'Required test names incorrect');
+    }
+
+    public function testAddsTestsFromMultipleTestFiles(): void
+    {
+        $suite = TestSuite::empty('the-test-suite', $this->createStub(Emitter::class));
+
+        $suite->addTestFiles(
+            [
+                TEST_FILES_PATH . 'dependencies' . DIRECTORY_SEPARATOR . 'DependencySuccessTest.php',
+                TEST_FILES_PATH . 'dependencies' . DIRECTORY_SEPARATOR . 'DependencyFailureTest.php',
+            ],
+        );
+
+        $tests = $suite->tests();
+
+        $this->assertCount(2, $tests);
+        $this->assertInstanceOf(TestSuite::class, $tests[0]);
+        $this->assertSame(DependencySuccessTest::class, $tests[0]->name());
+        $this->assertInstanceOf(TestSuite::class, $tests[1]);
+        $this->assertSame(DependencyFailureTest::class, $tests[1]->name());
     }
 
     public function testRejectsAbstractTestClass(): void

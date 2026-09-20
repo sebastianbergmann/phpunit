@@ -22,9 +22,12 @@ use function sys_get_temp_dir;
 use function uniqid;
 use function unlink;
 use PHPUnit\Event\AbstractEventTestCase;
+use PHPUnit\Event\Code\ClassMethod;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Event\EventCollection;
 use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Event\Test\DataProviderMethodCalled;
+use PHPUnit\Event\Test\DataProviderMethodFinished;
 use PHPUnit\Event\TestRunner\WarningTriggered;
 use PHPUnit\Event\TestRunner\WarningTriggeredSubscriber;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -443,6 +446,29 @@ final class DefaultTestFileSkipperTest extends AbstractEventTestCase
         $this->assertTrue($skipper->canSkipLoading($file, []));
     }
 
+    #[TestDox('Skips a file whose data provider methods were the only thing PHPUnit reported while it was loaded')]
+    public function testSkipsFileWhoseDataProviderMethodsWereTheOnlyThingReported(): void
+    {
+        $file = $this->writeTestClass('DataProviderReported');
+
+        $eventFacade = new EventFacade;
+        $eventFacade->seal();
+
+        $skipper = new DefaultTestFileSkipper(
+            $eventFacade,
+            new TestIndex($this->directory()),
+            new GroupPruner(['other'], []),
+            NameFilterPruner::withoutFilter(),
+        );
+
+        $skipper->record($file, function () use ($eventFacade): void
+        {
+            $eventFacade->forward($this->dataProviderMethodCalledAndFinished());
+        });
+
+        $this->assertTrue($skipper->canSkipLoading($file, []));
+    }
+
     /**
      * @param non-empty-string $name
      *
@@ -504,6 +530,19 @@ final class DefaultTestFileSkipperTest extends AbstractEventTestCase
         );
 
         return $file;
+    }
+
+    private function dataProviderMethodCalledAndFinished(): EventCollection
+    {
+        $testMethod         = new ClassMethod(self::class, 'testOne');
+        $dataProviderMethod = new ClassMethod(self::class, 'provider');
+
+        $events = new EventCollection;
+
+        $events->add(new DataProviderMethodCalled($this->telemetryInfo(), $testMethod, $dataProviderMethod));
+        $events->add(new DataProviderMethodFinished($this->telemetryInfo(), $testMethod, $dataProviderMethod));
+
+        return $events;
     }
 
     /**

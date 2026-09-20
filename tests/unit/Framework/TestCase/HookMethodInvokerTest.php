@@ -19,6 +19,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\HookMethod;
 use PHPUnit\Runner\HookMethodCollection;
 use PHPUnit\TestFixture\HookFixture;
+use PHPUnit\TestFixture\StaticHookFixture;
 
 #[CoversClass(HookMethodInvoker::class)]
 #[Small]
@@ -169,6 +170,35 @@ final class HookMethodInvokerTest extends TestCase
                 HookMethodCollection::defaultBefore()
                     ->add(new HookMethod('throwingHook', 100))
                     ->add(new HookMethod('secondSuccessfulHook', 50)),
+            ),
+            $emitter,
+        );
+    }
+
+    public function testInvokesStaticHookMethodStatically(): void
+    {
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter
+            ->expects($this->once())
+            ->method('beforeTestMethodCalled');
+
+        $emitter
+            ->expects($this->once())
+            ->method('beforeTestMethodErrored');
+
+        $emitter
+            ->expects($this->once())
+            ->method('beforeTestMethodFinished')
+            ->seal();
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('the static hook was invoked');
+
+        HookMethodInvoker::invokeBeforeTest(
+            new StaticHookFixture('testOne'),
+            $this->hookMethods(
+                HookMethodCollection::defaultBefore()->add(new HookMethod('staticHook', 100)),
             ),
             $emitter,
         );

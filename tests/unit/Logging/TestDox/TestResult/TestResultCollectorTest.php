@@ -13,6 +13,7 @@ use function array_keys;
 use function hrtime;
 use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
 use PHPUnit\Event\Code\Phpt;
+use PHPUnit\Event\Code\TestCollection;
 use PHPUnit\Event\Code\TestDoxBuilder;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
@@ -42,6 +43,9 @@ use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\Event\TestData\TestDataCollection;
+use PHPUnit\Event\TestSuite\Skipped as TestSuiteSkipped;
+use PHPUnit\Event\TestSuite\TestSuiteForTestClass;
+use PHPUnit\Event\TestSuite\TestSuiteWithName;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
@@ -412,6 +416,51 @@ final class TestResultCollectorTest extends TestCase
         );
 
         $this->assertSame([], $collector->testMethodsGroupedByClass());
+    }
+
+    public function test_Skipped_test_suite_that_is_not_for_a_test_class_is_ignored(): void
+    {
+        $collector = $this->collector();
+
+        $collector->testSuiteSkipped(
+            new TestSuiteSkipped(
+                $this->telemetryInfo(),
+                new TestSuiteWithName(
+                    'the-test-suite',
+                    1,
+                    TestCollection::fromArray([$this->testMethod('testOne')]),
+                ),
+                'skip reason',
+            ),
+        );
+
+        $this->assertSame([], $collector->testMethodsGroupedByClass());
+    }
+
+    public function test_Only_test_methods_of_a_skipped_test_suite_are_recorded_as_skipped(): void
+    {
+        $collector = $this->collector();
+
+        $collector->testSuiteSkipped(
+            new TestSuiteSkipped(
+                $this->telemetryInfo(),
+                new TestSuiteForTestClass(
+                    TestDoxTest::class,
+                    2,
+                    TestCollection::fromArray([new Phpt('test.phpt'), $this->testMethod('testOne')]),
+                    'TestDox',
+                    TestDoxTest::class . '.php',
+                    1,
+                ),
+                'skip reason',
+            ),
+        );
+
+        $results = $collector->testMethodsGroupedByClass()[TestDoxTest::class]->asArray();
+
+        $this->assertCount(1, $results);
+        $this->assertTrue($results[0]->status()->isSkipped());
+        $this->assertSame('skip reason', $results[0]->status()->message());
     }
 
     /**
