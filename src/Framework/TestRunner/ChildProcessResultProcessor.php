@@ -11,7 +11,9 @@ namespace PHPUnit\Framework\TestRunner;
 
 use function assert;
 use function hash_equals;
+use function is_array;
 use function is_int;
+use function is_string;
 use function property_exists;
 use function strlen;
 use function substr;
@@ -157,6 +159,31 @@ final readonly class ChildProcessResultProcessor
         $test->setResult($childResult->testResult);
         $test->setStatus($childResult->status);
         $test->addToAssertionCount($childResult->numAssertions);
+
+        /*
+         * What the test executed was recorded in the child process, and the
+         * data that is merged below does not carry it: it is per test, whereas
+         * what is merged is what the code coverage report is made of.
+         */
+        if (isset($childResult->testImpactData) && is_array($childResult->testImpactData)) {
+            foreach ($childResult->testImpactData as $recordedTest => $files) {
+                if (!is_string($recordedTest) || $recordedTest === '' || !is_array($files)) {
+                    continue; // @codeCoverageIgnore
+                }
+
+                $recordedFiles = [];
+
+                foreach ($files as $file) {
+                    if (!is_string($file) || $file === '') {
+                        continue; // @codeCoverageIgnore
+                    }
+
+                    $recordedFiles[] = $file;
+                }
+
+                $this->codeCoverage->testImpactData()->record($recordedTest, $recordedFiles);
+            }
+        }
 
         if (!$this->codeCoverage->isActive()) {
             return;

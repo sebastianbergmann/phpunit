@@ -77,6 +77,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\SmallTest;
 use PHPUnit\TestFixture\Metadata\Attribute\TestDoxTest;
 use PHPUnit\TestFixture\Metadata\Attribute\TestWithTest;
 use PHPUnit\TestFixture\Metadata\Attribute\UsesFilesystemTest;
+use PHPUnit\TestFixture\Metadata\Attribute\UsesFixtureTest;
 use PHPUnit\TestFixture\Metadata\Attribute\UsesTest;
 use PHPUnit\TestFixture\Metadata\Attribute\VersionRequirementWithoutOperatorTest;
 use PHPUnit\TestFixture\Metadata\Attribute\WithEnvironmentVariableTest;
@@ -192,6 +193,28 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isCoversFile());
         $this->assertSame('source.php', $metadata->asArray()[0]->path());
+    }
+
+    #[TestDox('Parses #[UsesFixture] attribute on class')]
+    public function test_parses_UsesFixture_attribute_on_class(): void
+    {
+        $metadata = $this->parser()->forClass(UsesFixtureTest::class)->isUsesFixture();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isUsesFixture());
+        $this->assertTrue($metadata->asArray()[0]->isClassLevel());
+        $this->assertSame('fixtures', $metadata->asArray()[0]->path());
+    }
+
+    #[TestDox('Parses #[UsesFixture] attribute on method')]
+    public function test_parses_UsesFixture_attribute_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(UsesFixtureTest::class, 'testOne')->isUsesFixture();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isUsesFixture());
+        $this->assertTrue($metadata->asArray()[0]->isMethodLevel());
+        $this->assertSame('fixtures/one.csv', $metadata->asArray()[0]->path());
     }
 
     #[TestDox('Parses #[CoversDirectory] attribute on class')]

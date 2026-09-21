@@ -522,6 +522,109 @@ final class MergerTest extends TestCase
         $this->assertTrue($mergedConfig->displayDetailsOnTestsThatTriggerDeprecations());
     }
 
+    /**
+     * Working out what each test depends on from the code coverage targets it
+     * declares is a way of recording test impact data, and not something that
+     * is done in addition to recording it.
+     */
+    public function testDerivingTestImpactDataFromCoverageTargetsCanBeRequestedOnTheCommandLine(): void
+    {
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge(
+            new Builder($this->createStub(Emitter::class))->fromParameters(['--derive-test-impact-data-from-coverage-targets']),
+            new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration-require-coverage-metadata.xml'),
+        );
+
+        $this->assertTrue($mergedConfig->deriveTestImpactDataFromCoverageTargets());
+        $this->assertTrue($mergedConfig->recordTestImpactData());
+    }
+
+    /**
+     * What each test depends on can only be worked out from the code coverage
+     * targets it declares when every test has to declare them.
+     */
+    public function testDerivingTestImpactDataFromCoverageTargetsIsDeclinedWhenCoverageMetadataIsNotRequired(): void
+    {
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge(
+            new Builder($this->createStub(Emitter::class))->fromParameters(['--derive-test-impact-data-from-coverage-targets']),
+            DefaultConfiguration::create(),
+        );
+
+        $this->assertFalse($mergedConfig->deriveTestImpactDataFromCoverageTargets());
+        $this->assertFalse($mergedConfig->recordTestImpactData());
+    }
+
+    public function testDerivingTestImpactDataFromCoverageTargetsIsDeclinedWhenCoverageMetadataIsNotRequiredOnTestsOfACertainSize(): void
+    {
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge(
+            new Builder($this->createStub(Emitter::class))->fromParameters([]),
+            new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration-derive-test-impact-data-from-coverage-targets-without-required-coverage-metadata-on-large-tests.xml'),
+        );
+
+        $this->assertFalse($mergedConfig->deriveTestImpactDataFromCoverageTargets());
+        $this->assertFalse($mergedConfig->recordTestImpactData());
+    }
+
+    public function testDerivingTestImpactDataFromCoverageTargetsCanBeDeclinedOnTheCommandLine(): void
+    {
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge(
+            new Builder($this->createStub(Emitter::class))->fromParameters([
+                '--record-test-impact-data',
+                '--do-not-derive-test-impact-data-from-coverage-targets',
+            ]),
+            DefaultConfiguration::create(),
+        );
+
+        $this->assertFalse($mergedConfig->deriveTestImpactDataFromCoverageTargets());
+        $this->assertTrue($mergedConfig->recordTestImpactData());
+    }
+
+    public function testRecordingTestImpactDataCanBeDeclinedOnTheCommandLineWhenTheConfigurationFileAsksForItToBeDerived(): void
+    {
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge(
+            new Builder($this->createStub(Emitter::class))->fromParameters(['--do-not-record-test-impact-data']),
+            new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration-derive-test-impact-data-from-coverage-targets.xml'),
+        );
+
+        $this->assertFalse($mergedConfig->deriveTestImpactDataFromCoverageTargets());
+        $this->assertFalse($mergedConfig->recordTestImpactData());
+    }
+
+    public function testDerivingTestImpactDataFromCoverageTargetsIsRequestedByTheConfigurationFile(): void
+    {
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge(
+            new Builder($this->createStub(Emitter::class))->fromParameters([]),
+            new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration-derive-test-impact-data-from-coverage-targets.xml'),
+        );
+
+        $this->assertTrue($mergedConfig->deriveTestImpactDataFromCoverageTargets());
+        $this->assertTrue($mergedConfig->recordTestImpactData());
+    }
+
+    /**
+     * Recording which source files each test executed is collecting code
+     * coverage, whatever is done with what is collected.
+     */
+    public function testRecordingTestImpactDataIsDeclinedByNotCollectingCodeCoverage(): void
+    {
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge(
+            new Builder($this->createStub(Emitter::class))->fromParameters(['--no-coverage']),
+            new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration-record-test-impact-data.xml'),
+        );
+
+        $this->assertFalse($mergedConfig->recordTestImpactData());
+    }
+
+    public function testDerivingTestImpactDataFromCoverageTargetsIsNotDeclinedByNotCollectingCodeCoverage(): void
+    {
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge(
+            new Builder($this->createStub(Emitter::class))->fromParameters(['--no-coverage']),
+            new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration-derive-test-impact-data-from-coverage-targets.xml'),
+        );
+
+        $this->assertTrue($mergedConfig->deriveTestImpactDataFromCoverageTargets());
+        $this->assertTrue($mergedConfig->recordTestImpactData());
+    }
+
     private function mergeWithPhpSelf(?string $phpSelf): MergedConfiguration
     {
         $backup = null;
