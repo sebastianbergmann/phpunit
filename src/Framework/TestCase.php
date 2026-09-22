@@ -893,7 +893,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             return sprintf(
                 ' with data set "%s"',
-                Sanitizer::sanitizeBidirectionalControlCharacters($this->dataName),
+                Sanitizer::sanitizeControlCharacters($this->dataName),
             );
         }
 
@@ -914,7 +914,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         } else {
             $dataName = sprintf(
                 '@%s',
-                Sanitizer::sanitizeBidirectionalControlCharacters($this->dataName),
+                Sanitizer::sanitizeControlCharacters($this->dataName),
             );
         }
 

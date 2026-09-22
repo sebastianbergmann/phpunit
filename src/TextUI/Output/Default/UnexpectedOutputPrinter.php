@@ -13,6 +13,7 @@ use PHPUnit\Event\Facade;
 use PHPUnit\Event\Test\PrintedUnexpectedOutput;
 use PHPUnit\Event\Test\PrintedUnexpectedOutputSubscriber;
 use PHPUnit\TextUI\Output\Printer;
+use PHPUnit\Util\Sanitizer;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -30,6 +31,6 @@ final readonly class UnexpectedOutputPrinter implements PrintedUnexpectedOutputS
 
     public function notify(PrintedUnexpectedOutput $event): void
     {
-        $this->printer->print($event->output());
+        $this->printer->print(Sanitizer::sanitizeControlCharacters($event->output()));
     }
 }

@@ -46,6 +46,7 @@ use PHPUnit\Event\TestRunner\Issue as TestRunnerIssue;
 use PHPUnit\TestRunner\TestResult\Issues\Issue;
 use PHPUnit\TestRunner\TestResult\TestResult;
 use PHPUnit\TextUI\Output\Printer;
+use PHPUnit\Util\Sanitizer;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -648,7 +649,8 @@ final class ResultPrinter
 
     private function printListElement(int $number, string $title, string $body): void
     {
-        $body = trim($body);
+        $title = Sanitizer::sanitizeControlCharacters($title);
+        $body  = Sanitizer::sanitizeControlCharacters(trim($body));
 
         $this->printer->print(
             sprintf(
@@ -664,7 +666,8 @@ final class ResultPrinter
 
     private function printIssueListElement(int $number, string $title, string $body): void
     {
-        $body = trim($body);
+        $title = Sanitizer::sanitizeControlCharacters($title);
+        $body  = Sanitizer::sanitizeControlCharacters(trim($body));
 
         $this->printer->print(
             sprintf(
