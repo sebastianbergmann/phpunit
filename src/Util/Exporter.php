@@ -21,7 +21,7 @@ final class Exporter
 
     public static function export(mixed $value): string
     {
-        return Sanitizer::sanitizeBidirectionalControlCharacters(
+        return Sanitizer::sanitizeControlCharacters(
             self::exporter()->export($value),
         );
     }
@@ -31,14 +31,14 @@ final class Exporter
      */
     public static function shortenedRecursiveExport(array $data): string
     {
-        return Sanitizer::sanitizeBidirectionalControlCharacters(
+        return Sanitizer::sanitizeControlCharacters(
             self::exporter()->shortenedRecursiveExport($data),
         );
     }
 
     public static function shortenedExport(mixed $value): string
     {
-        return Sanitizer::sanitizeBidirectionalControlCharacters(
+        return Sanitizer::sanitizeControlCharacters(
             self::exporter()->shortenedExport($value),
         );
     }

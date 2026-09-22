@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 12.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [12.5.36] - 2026-MM-DD
+
+### Changed
+
+* Control characters and ANSI escape sequences in user-supplied strings such as test names, data set names, and messages are now made visible as `\u{NNNN}` escape sequences instead of being passed through to the terminal
+
 ## [12.5.35] - 2026-09-09
 
 ### Fixed
@@ -302,6 +308,7 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 * [#6380](https://github.com/sebastianbergmann/phpunit/pull/6380): Allow `Throwable` in `expectExceptionObject()`
 * A PHPUnit notice is now emitted for test methods that create a mock object but do not configure an expectation for it
 
+[12.5.36]: https://github.com/sebastianbergmann/phpunit/compare/12.5.35...12.5
 [12.5.35]: https://github.com/sebastianbergmann/phpunit/compare/12.5.34...12.5.35
 [12.5.34]: https://github.com/sebastianbergmann/phpunit/compare/12.5.33...12.5.34
 [12.5.33]: https://github.com/sebastianbergmann/phpunit/compare/12.5.32...12.5.33

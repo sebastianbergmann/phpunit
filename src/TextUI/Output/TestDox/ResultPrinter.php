@@ -28,6 +28,7 @@ use PHPUnit\Logging\TestDox\TestResultCollection;
 use PHPUnit\TestRunner\TestResult\TestResult;
 use PHPUnit\TextUI\Output\Printer;
 use PHPUnit\Util\Color;
+use PHPUnit\Util\Sanitizer;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -208,8 +209,8 @@ final readonly class ResultPrinter
 
     private function printThrowable(TestStatus $status, Throwable $throwable): void
     {
-        $message    = trim($throwable->description());
-        $stackTrace = $this->formatStackTrace($throwable->stackTrace());
+        $message    = Sanitizer::sanitizeControlCharacters(trim($throwable->description()));
+        $stackTrace = $this->formatStackTrace(Sanitizer::sanitizeControlCharacters($throwable->stackTrace()));
         $diff       = '';
 
         if ($message !== '' && $this->colors) {
@@ -493,8 +494,8 @@ final readonly class ResultPrinter
                 ),
             );
 
-            $this->printer->print(trim($error->throwable()->description()) . PHP_EOL . PHP_EOL);
-            $this->printer->print($this->formatStackTrace($error->throwable()->stackTrace()) . PHP_EOL);
+            $this->printer->print(Sanitizer::sanitizeControlCharacters(trim($error->throwable()->description())) . PHP_EOL . PHP_EOL);
+            $this->printer->print($this->formatStackTrace(Sanitizer::sanitizeControlCharacters($error->throwable()->stackTrace())) . PHP_EOL);
         }
 
         $this->printer->print(PHP_EOL);

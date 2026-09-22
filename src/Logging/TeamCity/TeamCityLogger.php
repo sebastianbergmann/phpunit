@@ -39,6 +39,7 @@ use PHPUnit\Event\TestSuite\TestSuiteForTestClass;
 use PHPUnit\Event\TestSuite\TestSuiteForTestMethodWithDataProvider;
 use PHPUnit\Framework\Exception as FrameworkException;
 use PHPUnit\TextUI\Output\Printer;
+use PHPUnit\Util\Sanitizer;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -468,7 +469,7 @@ final class TeamCityLogger
                 sprintf(
                     " %s='%s'",
                     $key,
-                    $this->escape((string) $value),
+                    $this->escape(Sanitizer::sanitizeControlCharacters((string) $value)),
                 ),
             );
         }
