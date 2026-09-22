@@ -68,6 +68,9 @@
   [32m--parallel [36m<n>[0m                      [0m Run test classes in parallel using <n>
                                        worker processes ("auto" for one worker
                                        process per available CPU core)
+  [32m--recycle-workers-after [36m<n>[0m         [0m Replace a parallel worker process with a
+                                       fresh one after it has run <n> test
+                                       classes (0 for never)
   [32m--globals-backup                    [0m Backup and restore $GLOBALS for each
                                        test
   [32m--static-backup                     [0m Backup and restore static properties for
