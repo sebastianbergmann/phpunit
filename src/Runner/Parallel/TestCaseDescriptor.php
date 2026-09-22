@@ -35,20 +35,35 @@ final readonly class TestCaseDescriptor extends TestDescriptor
     private string $methodName;
 
     /**
-     * The data provided to the test method by its data provider, and the input
-     * provided to it by the tests it depends on, each serialized on its own.
+     * Whether the test case runs with data from a data provider, and the name
+     * of its data set.
      *
-     * These are the only parts of a work unit that are under the control of
-     * the tests themselves, and the only ones that can therefore contain
-     * objects of arbitrary classes. Keeping them serialized while the
-     * descriptor travels is what allows the command that carries it to be
-     * decoded with only the descriptor classes allowed (see CommandStream):
-     * the classes of the data are unserialized here, one test case at a time,
-     * and not while the command is being decoded.
+     * The data itself does not travel with the descriptor: it may be anything
+     * a test author can construct, and no transport would carry all of it
+     * faithfully. The worker process invokes the data provider again and
+     * selects the data set by this name (see WorkerDataProvider). A test case
+     * that does not use a data provider still carries a name — the empty
+     * string that TestCase gives such a test case, or the name of a data set
+     * that was provided as an empty array — so that the rebuilt test case
+     * reports itself the way the described one did.
      */
-    private string $data;
-    private string $dependencyInput;
+    private bool $usesDataProvider;
     private int|string $dataName;
+
+    /**
+     * The input provided to the test method by the tests it depends on,
+     * serialized.
+     *
+     * The input is not known until the depended-upon tests have run, so at
+     * the time a unit is described it is empty; it travels all the same, so
+     * that a described test case is rebuilt exactly. Keeping it serialized
+     * while the descriptor travels is what allows the command that carries
+     * the descriptor to be decoded with only the descriptor classes allowed
+     * (see CommandStream): whatever classes the input consists of are
+     * unserialized here, one test case at a time, and not while the command
+     * is being decoded.
+     */
+    private string $dependencyInput;
 
     /**
      * @var positive-int
@@ -78,12 +93,11 @@ final readonly class TestCaseDescriptor extends TestDescriptor
     public static function fromTestCase(TestCase $test, string $className): self
     {
         try {
-            $data            = serialize($test->providedData());
             $dependencyInput = serialize($test->dependencyInput());
         } catch (Throwable $t) {
             throw new WorkerException(
                 sprintf(
-                    'The tests of class %s cannot be run in parallel because their data cannot be serialized: %s',
+                    'The tests of class %s cannot be run in parallel because their dependency input cannot be serialized: %s',
                     $className,
                     $t->getMessage(),
                 ),
@@ -92,7 +106,7 @@ final readonly class TestCaseDescriptor extends TestDescriptor
 
         return new self(
             $test->name(),
-            $data,
+            $test->usesDataProvider(),
             $test->dataName(),
             $dependencyInput,
             $test->repetition(),
@@ -109,10 +123,10 @@ final readonly class TestCaseDescriptor extends TestDescriptor
      * @param positive-int     $attempt
      * @param positive-int     $maxAttempts
      */
-    private function __construct(string $methodName, string $data, int|string $dataName, string $dependencyInput, int $repetition, int $totalRepetitions, int $attempt, int $maxAttempts)
+    private function __construct(string $methodName, bool $usesDataProvider, int|string $dataName, string $dependencyInput, int $repetition, int $totalRepetitions, int $attempt, int $maxAttempts)
     {
         $this->methodName       = $methodName;
-        $this->data             = $data;
+        $this->usesDataProvider = $usesDataProvider;
         $this->dataName         = $dataName;
         $this->dependencyInput  = $dependencyInput;
         $this->repetition       = $repetition;
@@ -123,15 +137,21 @@ final readonly class TestCaseDescriptor extends TestDescriptor
 
     /**
      * @param class-string<TestCase> $className
+     *
+     * @throws WorkerException
      */
-    public function test(string $className): TestCase
+    public function test(string $className, WorkerDataProvider $dataProvider): TestCase
     {
         $test = new $className($this->methodName);
 
-        $providedData    = unserialize($this->data);
+        $providedData = [];
+
+        if ($this->usesDataProvider) {
+            $providedData = $dataProvider->dataSet($className, $this->methodName, $this->dataName);
+        }
+
         $dependencyInput = unserialize($this->dependencyInput);
 
-        assert(is_array($providedData));
         assert(is_array($dependencyInput));
 
         /** @var array<string, mixed> $dependencyInput */

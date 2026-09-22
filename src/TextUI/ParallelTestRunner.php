@@ -14,13 +14,7 @@ use function class_exists;
 use function count;
 use function explode;
 use function get_parent_class;
-use function gettype;
-use function is_array;
-use function is_object;
-use function is_resource;
 use function is_subclass_of;
-use function serialize;
-use function spl_object_id;
 use function sprintf;
 use function usleep;
 use PHPUnit\Event;
@@ -56,7 +50,6 @@ use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\Util\PHP\JobRunner;
-use Throwable;
 
 /**
  * Runs a test suite by distributing its test classes across a pool of worker
@@ -112,10 +105,13 @@ final class ParallelTestRunner
      * The chunks are run one after another; within a chunk, three kinds of
      * units run concurrently.
      *
-     * Units whose tests may run in a worker process — those that are neither
-     * attributed with #[DoNotRunInParallel] nor carry test data that cannot be
-     * serialized for transport to a worker — are distributed across the worker
-     * pool.
+     * Units whose tests may run in a worker process — those that are not
+     * attributed with #[DoNotRunInParallel], do not need process isolation,
+     * and do not depend on another class — are distributed across the worker
+     * pool. The data of a data-provided test does not travel to the worker:
+     * the worker invokes the data provider again and selects the data set by
+     * name (see WorkerDataProvider), so what a data provider provides never
+     * decides where a unit runs.
      *
      * PHPT tests are not PHPUnit\Framework\TestCase instances and cannot run in
      * a worker, so they run concurrently in the main process, each as its own
@@ -133,11 +129,9 @@ final class ParallelTestRunner
      * finish the units they are executing and start nothing new until the
      * unit is done), when it is configured to run in a separate process (an
      * isolation that a shared worker cannot provide but the main process can),
-     * when one of its tests depends on a test of another class (whose result
-     * is only available in the main process, once the unit it belongs to has
-     * been released), or when its test data cannot be serialized for transport
-     * to a worker (in which case the main process is the only place it can run
-     * at all). Running in the main process is ordinary execution that behaves
+     * or when one of its tests depends on a test of another class (whose
+     * result is only available in the main process, once the unit it belongs
+     * to has been released). Running in the main process is ordinary execution that behaves
      * exactly as it would in sequential mode — but it is not what the author
      * of a test suite that opted into parallel execution expects, so a unit
      * that runs there for any reason other than a configured process
@@ -603,124 +597,7 @@ final class ParallelTestRunner
             return 'its tests require process isolation, which a shared worker process cannot provide';
         }
 
-        $dependency = $this->crossClassDependencyOf($unit, $testCases);
-
-        if ($dependency !== null) {
-            return $dependency;
-        }
-
-        return $this->serializationProblemOf($testCases);
-    }
-
-    /**
-     * The first of the unit's test cases whose provided data does not survive
-     * serialization for transport to a worker process, together with what is
-     * wrong with the data — or null when the data of every test case
-     * survives. A unit with such a test case must be run in the main process
-     * instead.
-     *
-     * Two kinds of data do not survive: data that cannot be serialized at all
-     * (a closure, for example), which makes serialize() throw; and a resource,
-     * which serialize() silently turns into the integer 0 rather than rejecting
-     * — a test would then receive 0 in place of its resource and fail in a way
-     * that has nothing to do with the code under test.
-     *
-     * Only the provided data is examined: the input a test receives from the
-     * tests it depends on is not known yet when the units are planned — the
-     * dependency resolver sets it right before the test runs, which for a
-     * worker unit happens inside the worker, where the depended-upon tests of
-     * the same class have run as well.
-     *
-     * @param list<TestCase> $testCases
-     *
-     * @return ?non-empty-string
-     */
-    private function serializationProblemOf(array $testCases): ?string
-    {
-        foreach ($testCases as $test) {
-            $problem = $this->serializationProblemWith($test->providedData());
-
-            if ($problem !== null) {
-                return sprintf(
-                    'the data of test %s cannot be serialized: %s',
-                    $test->nameWithDataSet(),
-                    $problem,
-                );
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * @return ?non-empty-string
-     */
-    private function serializationProblemWith(mixed $value): ?string
-    {
-        try {
-            serialize($value);
-        } catch (Throwable $t) {
-            $message = $t->getMessage();
-
-            if ($message !== '') {
-                return $message;
-            }
-
-            // @codeCoverageIgnoreStart
-            return 'serialize() failed';
-            // @codeCoverageIgnoreEnd
-        }
-
-        if ($this->containsResource($value)) {
-            return 'it contains a resource';
-        }
-
-        return null;
-    }
-
-    /**
-     * @param array<object> $seen
-     */
-    private function containsResource(mixed $value, array &$seen = []): bool
-    {
-        if (is_resource($value)) {
-            return true;
-        }
-
-        // is_resource() returns false for a resource that has already been
-        // closed, yet serialize() degrades it to 0 just the same, so a closed
-        // resource must be recognized here too.
-        if (gettype($value) === 'resource (closed)') {
-            return true;
-        }
-
-        if (is_array($value)) {
-            foreach ($value as $item) {
-                if ($this->containsResource($item, $seen)) {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        if (is_object($value)) {
-            $id = spl_object_id($value);
-
-            if (isset($seen[$id])) {
-                return false;
-            }
-
-            $seen[$id] = $value;
-
-            foreach ((array) $value as $item) {
-                if ($this->containsResource($item, $seen)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+        return $this->crossClassDependencyOf($unit, $testCases);
     }
 
     /**
