@@ -13,13 +13,19 @@ use const DIRECTORY_SEPARATOR;
 use const PHP_EOL;
 use const PHP_VERSION;
 use function assert;
+use function defined;
 use function dirname;
 use function explode;
 use function is_numeric;
 use function max;
+use function preg_match;
 use function realpath;
 use function sprintf;
+use function str_contains;
+use function str_starts_with;
+use function strlen;
 use function strtolower;
+use function substr;
 use function trim;
 use DOMDocument;
 use DOMElement;
@@ -74,7 +80,6 @@ use PHPUnit\TextUI\XmlConfiguration\Logging\Otr;
 use PHPUnit\TextUI\XmlConfiguration\Logging\TeamCity;
 use PHPUnit\TextUI\XmlConfiguration\Logging\TestDox\Html as TestDoxHtml;
 use PHPUnit\TextUI\XmlConfiguration\Logging\TestDox\Text as TestDoxText;
-use PHPUnit\Util\Filesystem;
 use PHPUnit\Util\VersionComparisonOperator;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
 use PHPUnit\Util\Xml\XmlException;
@@ -291,7 +296,25 @@ final readonly class Loader
     {
         $path = trim($path);
 
-        if (Filesystem::isAbsolutePath($path) || Filesystem::isStream($path)) {
+        if (str_starts_with($path, '/')) {
+            return $path;
+        }
+
+        // Matches the following on Windows:
+        //  - \\NetworkComputer\Path
+        //  - \\.\D:
+        //  - \\.\c:
+        //  - C:\Windows
+        //  - C:\windows
+        //  - C:/windows
+        //  - c:/windows
+        if (defined('PHP_WINDOWS_VERSION_BUILD') &&
+            $path !== '' &&
+            ($path[0] === '\\' || (strlen($path) >= 3 && preg_match('#^[A-Z]:[/\\\]#i', substr($path, 0, 3)) === 1))) {
+            return $path;
+        }
+
+        if (str_contains($path, '://')) {
             return $path;
         }
 

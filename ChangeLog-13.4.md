@@ -14,7 +14,6 @@ All notable changes of the PHPUnit 13.4 release series are documented in this fi
 * [#6958](https://github.com/sebastianbergmann/phpunit/issues/6958): Select the tests that are in all of several groups
 * [#6960](https://github.com/sebastianbergmann/phpunit/pull/6960): Record the order in which methods of mock objects are invoked
 * `--coverage-jsonl` CLI option and `<jsonl>` element for the XML configuration file to write a code coverage report in JSONL format, one JSON object per line, that reports uncovered code rather than every executable line
-* `--restrict-file-output` CLI option to specify the only directory that PHPUnit may write files to; when a log file, code coverage report, cache directory, test run history, baseline, or generated or migrated configuration file would be written outside this directory, nothing is written, nothing is executed, and PHPUnit exits with shell exit code 73
 * `--timeout` CLI option to limit the wall-clock time of the entire test run
 * `requireCoverageMetadataOnSmallTests`, `requireCoverageMetadataOnMediumTests`, and `requireCoverageMetadataOnLargeTests` attributes for the XML configuration file to require code coverage metadata depending on the size of a test; these have precedence over `requireCoverageMetadata`
 

@@ -9,9 +9,6 @@
  */
 namespace PHPUnit\TextUI\CliArguments;
 
-use const DIRECTORY_SEPARATOR;
-use function getcwd;
-use function realpath;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
@@ -3268,64 +3265,6 @@ final class BuilderTest extends TestCase
         $configuration = new Builder($emitter)->fromParameters(['--timeout', '0']);
 
         $this->assertFalse($configuration->hasTimeout());
-    }
-
-    #[TestDox('--restrict-file-output')]
-    public function testRestrictFileOutput(): void
-    {
-        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--restrict-file-output', __DIR__ . '/..']);
-
-        $this->assertTrue($configuration->hasRestrictFileOutput());
-        $this->assertSame(realpath(__DIR__ . '/..'), $configuration->restrictFileOutput());
-    }
-
-    public function testRestrictFileOutputMayNotBeConfigured(): void
-    {
-        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters([]);
-
-        $this->assertFalse($configuration->hasRestrictFileOutput());
-
-        $this->expectException(Exception::class);
-
-        $configuration->restrictFileOutput();
-    }
-
-    #[TestDox('--restrict-file-output with a path that is not a directory')]
-    public function testRestrictFileOutputRequiresDirectory(): void
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessageIs('The path "' . __FILE__ . '" specified for the --restrict-file-output option is not a directory');
-
-        new Builder($this->createStub(Emitter::class))->fromParameters(['--restrict-file-output', __FILE__]);
-    }
-
-    #[TestDox('--restrict-file-output with a path that does not exist')]
-    public function testRestrictFileOutputRequiresExistingDirectory(): void
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessageIs('The path "' . __DIR__ . '/does-not-exist" specified for the --restrict-file-output option is not a directory');
-
-        new Builder($this->createStub(Emitter::class))->fromParameters(['--restrict-file-output', __DIR__ . '/does-not-exist']);
-    }
-
-    #[TestDox('--restrict-file-output resolves the path for --list-tests-xml')]
-    public function testListTestsXmlPathIsResolvedWhenFileOutputIsRestricted(): void
-    {
-        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--restrict-file-output', __DIR__, '--list-tests-xml', 'tests.xml']);
-
-        $cwd = getcwd();
-
-        $this->assertNotFalse($cwd);
-
-        $this->assertSame(realpath($cwd) . DIRECTORY_SEPARATOR . 'tests.xml', $configuration->listTestsXml());
-    }
-
-    #[TestDox('--list-tests-xml is not resolved when --restrict-file-output is not used')]
-    public function testListTestsXmlPathIsNotResolvedWhenFileOutputIsNotRestricted(): void
-    {
-        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--list-tests-xml', 'tests.xml']);
-
-        $this->assertSame('tests.xml', $configuration->listTestsXml());
     }
 
     public function testInvalidOption(): void

@@ -21,13 +21,7 @@ final readonly class Result
     public const int SUCCESS   = 0;
     public const int FAILURE   = 1;
     public const int EXCEPTION = 2;
-
-    /**
-     * EX_CANTCREAT from sysexits.h: a user-specified output file cannot be created.
-     */
-    public const int FILE_OUTPUT_RESTRICTED = 73;
-
-    public const int CRASH = 255;
+    public const int CRASH     = 255;
     private string $output;
     private int $shellExitCode;
 
