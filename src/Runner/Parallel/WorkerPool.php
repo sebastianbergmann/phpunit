@@ -10,6 +10,7 @@
 namespace PHPUnit\Runner\Parallel;
 
 use function assert;
+use function spl_object_id;
 use function usleep;
 use PHPUnit\Event\EventCollection;
 
@@ -121,13 +122,40 @@ final class WorkerPool
     private readonly ProcessBudget $budget;
 
     /**
-     * @param non-empty-list<PersistentWorker> $workers
+     * The number of units a worker runs before it is replaced by a fresh
+     * process, or 0 when a worker is never replaced.
+     *
+     * A worker accumulates whatever the tests it runs leave behind in the
+     * process — static state, caches, leaked objects — the way a sequential
+     * run does. Replacing the worker bounds that accumulation. The
+     * replacement is a planned restart, not a crash: the worker is shut down
+     * gracefully once it is idle, so its output is harvested as it is at the
+     * end of the run, and the fresh process keeps the worker's ordinal
+     * identity. Nothing is replaced while no unit is queued for the fresh
+     * process to run, as the run is then about to shut every worker down.
+     *
+     * @var non-negative-int
      */
-    public function __construct(array $workers, ProcessBudget $budget)
+    private readonly int $numberOfUnitsBeforeRecycling;
+
+    /**
+     * How many units each worker has completed since it was last started,
+     * keyed by the worker's object id.
+     *
+     * @var array<int, non-negative-int>
+     */
+    private array $completedUnits = [];
+
+    /**
+     * @param non-empty-list<PersistentWorker> $workers
+     * @param non-negative-int                 $numberOfUnitsBeforeRecycling
+     */
+    public function __construct(array $workers, ProcessBudget $budget, int $numberOfUnitsBeforeRecycling = 0)
     {
-        $this->workers = $workers;
-        $this->budget  = $budget;
-        $this->queue   = new DispatchQueue([], self::SUITE_ORDER_SLOTS);
+        $this->workers                      = $workers;
+        $this->budget                       = $budget;
+        $this->numberOfUnitsBeforeRecycling = $numberOfUnitsBeforeRecycling;
+        $this->queue                        = new DispatchQueue([], self::SUITE_ORDER_SLOTS);
     }
 
     /**
@@ -252,6 +280,8 @@ final class WorkerPool
             }
 
             $onCompleted($completed);
+
+            $this->recycleWhenDue($worker);
         }
 
         return $progressed;
@@ -339,6 +369,8 @@ final class WorkerPool
 
         $worker->restart();
 
+        unset($this->completedUnits[spl_object_id($worker)]);
+
         $acquired = $this->budget->acquire();
 
         assert($acquired);
@@ -356,6 +388,39 @@ final class WorkerPool
         }
 
         return true;
+    }
+
+    /**
+     * Count the unit the worker has just completed and, once the worker has
+     * completed as many as the recycling limit allows, replace it with a
+     * fresh process — provided it is still alive (a worker that died with its
+     * unit is dealt with by the retry) and there is a queued unit for the
+     * fresh process to run.
+     *
+     * @throws WorkerException
+     */
+    private function recycleWhenDue(PersistentWorker $worker): void
+    {
+        if ($this->numberOfUnitsBeforeRecycling === 0 || !$worker->isAlive()) {
+            return;
+        }
+
+        $id = spl_object_id($worker);
+
+        if (!isset($this->completedUnits[$id])) {
+            $this->completedUnits[$id] = 0;
+        }
+
+        $this->completedUnits[$id]++;
+
+        if ($this->completedUnits[$id] < $this->numberOfUnitsBeforeRecycling || !$this->hasQueuedUnits()) {
+            return;
+        }
+
+        $worker->stop();
+        $worker->restart();
+
+        unset($this->completedUnits[$id]);
     }
 
     /**

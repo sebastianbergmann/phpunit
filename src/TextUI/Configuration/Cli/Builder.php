@@ -128,6 +128,7 @@ final class Builder
         'order-by=',
         'process-isolation',
         'parallel=',
+        'recycle-workers-after=',
         'property-examples=',
         'property-examples-multiplier=',
         'property-maximum-shrinking-attempts=',
@@ -415,6 +416,7 @@ final class Builder
         $noLogging                                = null;
         $processIsolation                         = null;
         $numberOfParallelWorkers                  = null;
+        $numberOfTestClassesBeforeWorkerRecycling = null;
         $randomSeed                               = null;
         $randomSeedFromGitCommit                  = false;
         $propertyExamples                         = null;
@@ -873,6 +875,25 @@ final class Builder
                     }
 
                     $numberOfParallelWorkers = (int) $option[1];
+
+                    break;
+
+                case '--recycle-workers-after':
+                    if (!is_numeric($option[1]) ||
+                        (string) (int) $option[1] !== $option[1] ||
+                        (int) $option[1] < 0) {
+                        $this->emitter->testRunnerTriggeredPhpunitWarning(
+                            sprintf(
+                                'Option "--recycle-workers-after %s" ignored because "%s" is not a non-negative integer',
+                                $option[1],
+                                $option[1],
+                            ),
+                        );
+
+                        break;
+                    }
+
+                    $numberOfTestClassesBeforeWorkerRecycling = (int) $option[1];
 
                     break;
 
@@ -1668,6 +1689,7 @@ final class Builder
             $extensions,
             $cacheTestIndex,
             $numberOfParallelWorkers,
+            $numberOfTestClassesBeforeWorkerRecycling,
         );
     }
 

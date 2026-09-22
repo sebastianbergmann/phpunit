@@ -1295,6 +1295,7 @@ final readonly class Loader
             $this->parseNonNegativeIntegerAttribute($documentElement, 'triggeringTestsLimit', 0),
             $this->parseBooleanAttribute($documentElement, 'warnWhenPhpIsNotConfiguredForDevelopment', false),
             $this->parseBooleanAttribute($documentElement, 'cacheTestIndex', false),
+            $this->parseNonNegativeIntegerAttribute($documentElement, 'numberOfTestClassesBeforeWorkerRecycling', 0),
         );
     }
 
