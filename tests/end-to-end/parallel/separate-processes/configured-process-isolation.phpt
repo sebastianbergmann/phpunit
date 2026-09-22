@@ -1,9 +1,11 @@
---TEST--phpunit --parallel=2 runs tests requiring process isolation in the main process instead of a worker, and reports each such class with a test runner notice
+--TEST--
+phpunit --parallel=2 --process-isolation runs every test in the main process without reporting a test runner notice, because the process isolation was asked for
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--parallel=2';
+$_SERVER['argv'][] = '--process-isolation';
 $_SERVER['argv'][] = '--display-phpunit-notices';
 $_SERVER['argv'][] = '--testdox';
 $_SERVER['argv'][] = __DIR__ . '/_files/';
@@ -27,11 +29,4 @@ Class Level Separate Process (PHPUnit\TestFixture\ParallelSeparateProcesses\Clas
 Method Level Separate Process (PHPUnit\TestFixture\ParallelSeparateProcesses\MethodLevelSeparateProcess)
  ✔ Method level
 
-There were 2 PHPUnit test runner notices:
-
-1) The tests of class PHPUnit\TestFixture\ParallelSeparateProcesses\ClassLevelSeparateProcessTest are run in the main process instead of a parallel worker because its tests require process isolation, which a shared worker process cannot provide
-
-2) The tests of class PHPUnit\TestFixture\ParallelSeparateProcesses\MethodLevelSeparateProcessTest are run in the main process instead of a parallel worker because its tests require process isolation, which a shared worker process cannot provide
-
-OK, but there were issues!
-Tests: 2, Assertions: 2, PHPUnit Notices: 2.
+OK (2 tests, 2 assertions)
