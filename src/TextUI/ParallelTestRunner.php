@@ -286,7 +286,11 @@ final class ParallelTestRunner
         $pool = null;
 
         if ($poolIsNeeded) {
-            $pool = $this->createPool($configuration->numberOfParallelWorkers(), $budget);
+            $pool = $this->createPool(
+                $configuration->numberOfParallelWorkers(),
+                $configuration->numberOfTestClassesBeforeWorkerRecycling(),
+                $budget,
+            );
 
             $pool->start();
         }
@@ -766,7 +770,11 @@ final class ParallelTestRunner
     /**
      * @param positive-int $numberOfWorkers
      */
-    private function createPool(int $numberOfWorkers, ProcessBudget $budget): WorkerPool
+    /**
+     * @param positive-int     $numberOfWorkers
+     * @param non-negative-int $numberOfUnitsBeforeRecycling
+     */
+    private function createPool(int $numberOfWorkers, int $numberOfUnitsBeforeRecycling, ProcessBudget $budget): WorkerPool
     {
         $processor = new ChildProcessResultProcessor(
             Event\Facade::instance(),
@@ -783,7 +791,7 @@ final class ParallelTestRunner
             $workers[] = new PersistentWorker($jobRunner, $id);
         }
 
-        return new WorkerPool($workers, $budget);
+        return new WorkerPool($workers, $budget, $numberOfUnitsBeforeRecycling);
     }
 
     /**

@@ -157,6 +157,71 @@ final class WorkerPoolTest extends TestCase
         $this->assertFalse($byIndex[1]->crashed());
     }
 
+    public function testReplacesAWorkerWithAFreshProcessAfterItHasCompletedTheConfiguredNumberOfUnits(): void
+    {
+        // The fixture test passes only in a process in which no test has run
+        // before it: its process-local counter must start at 1. With one
+        // worker that is replaced after every unit, all three units pass.
+        $units = [
+            new TestClassWorkUnit(0, WorkerFirstTest::class, [new WorkerFirstTest('testStartsTheProcessLocalCounter')]),
+            new TestClassWorkUnit(1, WorkerFirstTest::class, [new WorkerFirstTest('testStartsTheProcessLocalCounter')]),
+            new TestClassWorkUnit(2, WorkerFirstTest::class, [new WorkerFirstTest('testStartsTheProcessLocalCounter')]),
+        ];
+
+        $completed = $this->execute($this->pool(1, null, 1), $units);
+
+        $this->assertCount(3, $completed);
+
+        foreach ($completed as $unit) {
+            $this->assertFalse($unit->crashed());
+            $this->assertTrue($this->passedTestsOf($unit)->hasTestMethodPassed(WorkerFirstTest::class . '::testStartsTheProcessLocalCounter'));
+        }
+    }
+
+    public function testKeepsAWorkerForTheWholeRunWhenRecyclingIsOff(): void
+    {
+        // The same units on a worker that is never replaced: the second unit
+        // finds the counter left behind by the first, and its test fails.
+        $units = [
+            new TestClassWorkUnit(0, WorkerFirstTest::class, [new WorkerFirstTest('testStartsTheProcessLocalCounter')]),
+            new TestClassWorkUnit(1, WorkerFirstTest::class, [new WorkerFirstTest('testStartsTheProcessLocalCounter')]),
+        ];
+
+        $completed = $this->execute($this->pool(1), $units);
+
+        $this->assertCount(2, $completed);
+
+        $byIndex = [];
+
+        foreach ($completed as $unit) {
+            $byIndex[$unit->unit()->index()] = $unit;
+        }
+
+        $this->assertTrue($this->passedTestsOf($byIndex[0])->hasTestMethodPassed(WorkerFirstTest::class . '::testStartsTheProcessLocalCounter'));
+        $this->assertFalse($this->passedTestsOf($byIndex[1])->hasTestMethodPassed(WorkerFirstTest::class . '::testStartsTheProcessLocalCounter'));
+    }
+
+    public function testDoesNotReplaceAWorkerThatHasNoQueuedUnitLeftToRun(): void
+    {
+        // One worker, replaced after every unit, three units: the process is
+        // started once for the pool and once after each of the first two
+        // units. After the third unit nothing is queued, so no fresh process
+        // is started for it to run.
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter->expects($this->exactly(3))->method('childProcessStarted');
+
+        $units = [
+            new TestClassWorkUnit(0, WorkerFirstTest::class, [new WorkerFirstTest('testStartsTheProcessLocalCounter')]),
+            new TestClassWorkUnit(1, WorkerFirstTest::class, [new WorkerFirstTest('testStartsTheProcessLocalCounter')]),
+            new TestClassWorkUnit(2, WorkerFirstTest::class, [new WorkerFirstTest('testStartsTheProcessLocalCounter')]),
+        ];
+
+        $completed = $this->execute($this->pool(1, null, 1, $emitter), $units);
+
+        $this->assertCount(3, $completed);
+    }
+
     public function testRedistributesRemainingUnitsAcrossSurvivingWorkersWhenAWorkerDies(): void
     {
         $units = [
@@ -513,7 +578,7 @@ final class WorkerPoolTest extends TestCase
     /**
      * @param positive-int $numberOfWorkers
      */
-    private function pool(int $numberOfWorkers, ?ProcessBudget $budget = null): WorkerPool
+    private function pool(int $numberOfWorkers, ?ProcessBudget $budget = null, int $numberOfUnitsBeforeRecycling = 0, ?Emitter $jobRunnerEmitter = null): WorkerPool
     {
         $processor = new ChildProcessResultProcessor(
             new Facade,
@@ -522,7 +587,11 @@ final class WorkerPoolTest extends TestCase
             new CodeCoverage($this->createStub(Emitter::class)),
         );
 
-        $jobRunner = new JobRunner($processor, $this->createStub(Emitter::class));
+        if ($jobRunnerEmitter === null) {
+            $jobRunnerEmitter = $this->createStub(Emitter::class);
+        }
+
+        $jobRunner = new JobRunner($processor, $jobRunnerEmitter);
 
         $workers = [];
 
@@ -534,7 +603,17 @@ final class WorkerPoolTest extends TestCase
             $budget = new ProcessBudget($numberOfWorkers);
         }
 
-        return new WorkerPool($workers, $budget);
+        return new WorkerPool($workers, $budget, $numberOfUnitsBeforeRecycling);
+    }
+
+    private function passedTestsOf(CompletedWorkUnit $completed): PassedTests
+    {
+        $envelope = unserialize(substr($completed->serializedResult(), strlen((string) $completed->nonce())));
+
+        $this->assertIsObject($envelope);
+        $this->assertInstanceOf(PassedTests::class, $envelope->passedTests);
+
+        return $envelope->passedTests;
     }
 
     /**
