@@ -69,9 +69,12 @@ abstract readonly class TestDescriptor
 
     /**
      * Rebuild the member that this descriptor describes. Runs inside the
-     * worker process.
+     * worker process, which provides the data of the data-provided test cases
+     * among the members through the given data provider.
      *
      * @param class-string<TestCase> $className
+     *
+     * @throws WorkerException
      */
-    abstract public function test(string $className): Test;
+    abstract public function test(string $className, WorkerDataProvider $dataProvider): Test;
 }

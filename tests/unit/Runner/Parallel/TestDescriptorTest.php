@@ -24,6 +24,7 @@ use PHPUnit\TestFixture\ParallelWorker\WorkerFirstTest;
 #[UsesClass(RepeatSuiteDescriptor::class)]
 #[UsesClass(RetrySuiteDescriptor::class)]
 #[UsesClass(TestCaseDescriptor::class)]
+#[UsesClass(WorkerDataProvider::class)]
 #[Small]
 final class TestDescriptorTest extends TestCase
 {
@@ -102,7 +103,10 @@ final class TestDescriptorTest extends TestCase
 
         $outer->addTest($inner);
 
-        $rebuilt = TestDescriptor::from($outer, WorkerFirstTest::class)->test(WorkerFirstTest::class);
+        $rebuilt = TestDescriptor::from($outer, WorkerFirstTest::class)->test(
+            WorkerFirstTest::class,
+            new WorkerDataProvider($this->createStub(Emitter::class)),
+        );
 
         $this->assertInstanceOf(DataProviderTestSuite::class, $rebuilt);
         $this->assertInstanceOf(RetryTestSuite::class, $rebuilt->tests()[0]);

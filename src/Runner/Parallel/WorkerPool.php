@@ -345,8 +345,8 @@ final class WorkerPool
 
         try {
             $worker->dispatch($unit);
-            // The unit was dispatched successfully once, so its data is known
-            // to be serializable; this cannot happen.
+            // The unit was dispatched successfully once, so its description
+            // is known to be transportable; this cannot happen.
             // @codeCoverageIgnoreStart
         } catch (WorkerException $e) {
             $this->budget->release();
@@ -361,8 +361,8 @@ final class WorkerPool
     /**
      * Hand the next queued units to the idle, alive workers.
      *
-     * A unit that cannot be dispatched — for instance because its test data
-     * cannot be serialized for transport to a worker — is reported to the
+     * A unit that cannot be dispatched — its description cannot be built or
+     * transported — is reported to the
      * callback as a crashed unit and skipped, so that one undispatchable unit
      * does not abort the entire run or starve an otherwise idle worker.
      */

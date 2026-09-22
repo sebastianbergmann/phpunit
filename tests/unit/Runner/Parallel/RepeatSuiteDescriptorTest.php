@@ -16,10 +16,11 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\RepeatTestSuite;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\Filter\Factory;
-use PHPUnit\TestFixture\ParallelWorker\WorkerFirstTest;
+use PHPUnit\TestFixture\ParallelWorker\WorkerDataProvidedTest;
 
 #[CoversClass(RepeatSuiteDescriptor::class)]
 #[UsesClass(TestCaseDescriptor::class)]
+#[UsesClass(WorkerDataProvider::class)]
 #[Small]
 final class RepeatSuiteDescriptorTest extends TestCase
 {
@@ -28,7 +29,7 @@ final class RepeatSuiteDescriptorTest extends TestCase
         $suite = $this->rebuild($this->suite());
 
         $this->assertInstanceOf(RepeatTestSuite::class, $suite);
-        $this->assertSame(WorkerFirstTest::class . '::testStartsTheProcessLocalCounter', $suite->name());
+        $this->assertSame(WorkerDataProvidedTest::class . '::testWithNamedDataSets', $suite->name());
     }
 
     public function testRebuildsTheNumberOfFailuresTheRepetitionsAreAllowed(): void
@@ -46,8 +47,8 @@ final class RepeatSuiteDescriptorTest extends TestCase
         $this->assertCount(3, $tests);
 
         foreach ($tests as $position => $test) {
-            $this->assertInstanceOf(WorkerFirstTest::class, $test);
-            $this->assertSame('testStartsTheProcessLocalCounter', $test->name());
+            $this->assertInstanceOf(WorkerDataProvidedTest::class, $test);
+            $this->assertSame('testWithNamedDataSets', $test->name());
             $this->assertSame($position + 1, $test->repetition());
             $this->assertSame(3, $test->totalRepetitions());
         }
@@ -59,39 +60,15 @@ final class RepeatSuiteDescriptorTest extends TestCase
         // test selection takes either all of them or none of them. A suite the
         // selection emptied is not described at all: it is skipped where the
         // members of a unit are collected.
-        $suite = $this->suiteFor('the data set');
+        $suite = $this->suiteFor('first data set');
 
         $factory = new Factory;
 
-        $factory->addIncludeNameFilter('testStartsTheProcessLocalCounter#the data set');
+        $factory->addIncludeNameFilter('testWithNamedDataSets#first data set');
 
         $suite->injectFilter($factory);
 
         $this->assertCount(3, $this->rebuild($suite)->tests());
-    }
-
-    public function testCannotDescribeASuiteWhoseRepetitionsCarryDataThatCannotBeSerialized(): void
-    {
-        // A closure cannot be serialized, so a suite whose repetitions carry
-        // one cannot be described for transport to a worker.
-        $closure = static function (): void
-        {
-        };
-
-        $repetition = new WorkerFirstTest('testStartsTheProcessLocalCounter');
-
-        $repetition->setData(0, [$closure]);
-
-        $suite = RepeatTestSuite::fromTests(
-            WorkerFirstTest::class . '::testStartsTheProcessLocalCounter',
-            $this->createStub(Emitter::class),
-            [$repetition],
-            1,
-        );
-
-        $this->expectException(WorkerException::class);
-
-        RepeatSuiteDescriptor::fromTestSuite($suite, WorkerFirstTest::class);
     }
 
     private function suite(): RepeatTestSuite
@@ -107,7 +84,7 @@ final class RepeatSuiteDescriptorTest extends TestCase
         $repetitions = [];
 
         for ($repetition = 1; $repetition <= 3; $repetition++) {
-            $test = new WorkerFirstTest('testStartsTheProcessLocalCounter');
+            $test = new WorkerDataProvidedTest('testWithNamedDataSets');
 
             if ($dataName !== null) {
                 $test->setData($dataName, [$repetition]);
@@ -119,7 +96,7 @@ final class RepeatSuiteDescriptorTest extends TestCase
         }
 
         return RepeatTestSuite::fromTests(
-            WorkerFirstTest::class . '::testStartsTheProcessLocalCounter',
+            WorkerDataProvidedTest::class . '::testWithNamedDataSets',
             $this->createStub(Emitter::class),
             $repetitions,
             2,
@@ -132,6 +109,9 @@ final class RepeatSuiteDescriptorTest extends TestCase
      */
     private function rebuild(RepeatTestSuite $suite): RepeatTestSuite
     {
-        return RepeatSuiteDescriptor::fromTestSuite($suite, WorkerFirstTest::class)->test(WorkerFirstTest::class);
+        return RepeatSuiteDescriptor::fromTestSuite($suite, WorkerDataProvidedTest::class)->test(
+            WorkerDataProvidedTest::class,
+            new WorkerDataProvider($this->createStub(Emitter::class)),
+        );
     }
 }
