@@ -286,13 +286,11 @@ final class NamePrettifier
                 } else {
                     $value = "''";
                 }
+            } else {
+                $value = Sanitizer::sanitizeControlCharacters($value);
             }
 
-            $providedData['$' . $parameter->getName()] = str_replace(
-                '$',
-                '\\$',
-                Sanitizer::sanitizeControlCharacters($value),
-            );
+            $providedData['$' . $parameter->getName()] = str_replace('$', '\\$', $value);
         }
 
         if ($colorize) {
