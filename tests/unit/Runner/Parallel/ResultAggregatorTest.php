@@ -68,6 +68,64 @@ final class ResultAggregatorTest extends TestCase
         );
     }
 
+    public function testReportsTheTestsOfAUnitThatTheWorkerCouldNotRebuildAsErroredWithTheWorkersMessage(): void
+    {
+        // The worker ran none of the unit's tests: its data provider did not
+        // provide, in the worker process, a data set that the parent process
+        // selected. The envelope it wrote carries that failure instead of
+        // results, and every test of the unit is reported as errored with it.
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter->expects($this->exactly(2))->method('testPrepared');
+        $emitter->expects($this->exactly(2))
+            ->method('childProcessErrored')
+            ->with($this->anything(), 'the data provider did not provide the data set');
+        $emitter->expects($this->exactly(2))->method('testFinished');
+        $emitter->expects($this->once())->method('testSuiteStarted');
+        $emitter->expects($this->once())->method('testSuiteFinished');
+
+        $errored = [];
+
+        $emitter->method('testErrored')->willReturnCallback(
+            static function (CodeTest $test, CodeThrowable $throwable) use (&$errored): void
+            {
+                $errored[$test->id()] = $throwable->message();
+            },
+        )->seal();
+
+        $nonce = 'abc';
+
+        $this->aggregator($emitter)->add(
+            CompletedWorkUnit::fromEnvelope(
+                new TestClassWorkUnit(
+                    0,
+                    WorkerSecondTest::class,
+                    [
+                        new WorkerSecondTest('testSeesTheStateLeftBehindByTheFirstTest'),
+                        new WorkerSecondTest('testThatFails'),
+                    ],
+                ),
+                $nonce . serialize(
+                    (object) [
+                        'codeCoverage' => null,
+                        'events'       => new EventCollection,
+                        'passedTests'  => new PassedTests,
+                        'failure'      => 'the data provider did not provide the data set',
+                    ],
+                ),
+                $nonce,
+            ),
+        );
+
+        $this->assertSame(
+            [
+                WorkerSecondTest::class . '::testSeesTheStateLeftBehindByTheFirstTest' => 'the data provider did not provide the data set',
+                WorkerSecondTest::class . '::testThatFails'                            => 'the data provider did not provide the data set',
+            ],
+            $errored,
+        );
+    }
+
     public function testReportsTheTestsOfACrashedUnitAsErroredInsideASynthesizedSuiteEnvelope(): void
     {
         $emitter = $this->createMock(Emitter::class);

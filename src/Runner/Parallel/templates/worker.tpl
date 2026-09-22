@@ -4,6 +4,8 @@ use PHPUnit\Framework\TestRunner\ErrorHandlerBootstrapper;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\Parallel\CommandStream;
+use PHPUnit\Runner\Parallel\WorkerDataProvider;
+use PHPUnit\Runner\Parallel\WorkerException;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\PhpHandler;
@@ -85,16 +87,37 @@ function __phpunit_worker_run_unit(array $command): string
 
     require_once $command['file'];
 
-    $suite = TestSuite::empty($command['className'], Facade::emitter());
+    $suite        = TestSuite::empty($command['className'], Facade::emitter());
+    $dataProvider = new WorkerDataProvider(Facade::emitter());
+    $failure      = null;
 
     // Each member of the unit arrived as the descriptor that
     // TestDescriptor::from() produced in the parent process; the descriptor
-    // turns back into the member it describes here.
-    foreach ($command['tests'] as $__phpunit_test) {
-        $suite->addTest($__phpunit_test->test($command['className']));
+    // turns back into the member it describes here. The data of a
+    // data-provided test case is not part of its description: it is
+    // provided here, by invoking the data provider again (see
+    // WorkerDataProvider). A unit that cannot be rebuilt — its data provider
+    // failed in this process, or did not provide a data set the parent
+    // process selected — runs no test at all; its envelope carries the
+    // failure instead, and the parent reports every test of the unit as
+    // errored with it.
+    try {
+        foreach ($command['tests'] as $__phpunit_test) {
+            $suite->addTest($__phpunit_test->test($command['className'], $dataProvider));
+        }
+    } catch (WorkerException $e) {
+        $failure = $e->getMessage();
     }
 
-    $suite->run();
+    // Invoking the data providers emitted the events that a data provider
+    // invocation emits. The parent process emitted the same events when it
+    // built the suite, and it is the parent's that are reported; the ones
+    // emitted here are discarded so that they are not reported a second time.
+    $dispatcher->flush();
+
+    if ($failure === null) {
+        $suite->run();
+    }
 
     $codeCoverage = null;
 
@@ -102,13 +125,17 @@ function __phpunit_worker_run_unit(array $command): string
         $codeCoverage = CodeCoverage::instance()->codeCoverage();
     }
 
-    $result = $command['nonce'] . serialize(
-        (object) [
-            'codeCoverage' => $codeCoverage,
-            'events'       => $dispatcher->flush(),
-            'passedTests'  => PassedTests::instance(),
-        ]
-    );
+    $envelope = (object) [
+        'codeCoverage' => $codeCoverage,
+        'events'       => $dispatcher->flush(),
+        'passedTests'  => PassedTests::instance(),
+    ];
+
+    if ($failure !== null) {
+        $envelope->failure = $failure;
+    }
+
+    $result = $command['nonce'] . serialize($envelope);
 
     // Per-unit code coverage has been collected for this command and is about
     // to be shipped to the parent process. It is cleared here so that the next

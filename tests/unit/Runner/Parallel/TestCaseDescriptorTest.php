@@ -10,13 +10,16 @@
 namespace PHPUnit\Runner\Parallel;
 
 use Closure;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\ParallelWorker\WorkerDataProvidedTest;
 use PHPUnit\TestFixture\ParallelWorker\WorkerFirstTest;
-use stdClass;
 
 #[CoversClass(TestCaseDescriptor::class)]
+#[UsesClass(WorkerDataProvider::class)]
 #[Small]
 final class TestCaseDescriptorTest extends TestCase
 {
@@ -26,30 +29,60 @@ final class TestCaseDescriptorTest extends TestCase
 
         $this->assertInstanceOf(WorkerFirstTest::class, $test);
         $this->assertSame('testStartsTheProcessLocalCounter', $test->name());
+        $this->assertFalse($test->usesDataProvider());
     }
 
-    public function testRebuildsTheDataThatTheDataProviderProvided(): void
+    public function testRebuildsATestCaseWithTheDataSetThatTheDataProviderProvidesUnderTheDescribedName(): void
     {
-        $described = new WorkerFirstTest('testStartsTheProcessLocalCounter');
+        $described = new WorkerDataProvidedTest('testWithNamedDataSets');
 
-        $described->setData('the data set', ['first', 'second']);
+        $described->setData('second data set', [2]);
 
         $test = $this->rebuild($described);
 
-        $this->assertSame(['first', 'second'], $test->providedData());
-        $this->assertSame('the data set', $test->dataName());
+        $this->assertSame([2], $test->providedData());
+        $this->assertSame('second data set', $test->dataName());
     }
 
-    public function testRebuildsTheDataOfATestCaseThatADataProviderKeyedByNumber(): void
+    public function testRebuildsATestCaseWhoseDataSetTheDataProviderKeyedByNumber(): void
     {
-        $described = new WorkerFirstTest('testStartsTheProcessLocalCounter');
+        $described = new WorkerDataProvidedTest('testWithNumberedDataSets');
 
-        $described->setData(1, ['second data set']);
+        $described->setData(1, [2]);
 
         $test = $this->rebuild($described);
 
-        $this->assertSame(['second data set'], $test->providedData());
+        $this->assertSame([2], $test->providedData());
         $this->assertSame(1, $test->dataName());
+    }
+
+    public function testRebuildsTheDataFromTheDataProviderRatherThanFromTheDescribedTestCase(): void
+    {
+        // What the described test case carries as data does not travel with
+        // the descriptor; the worker's invocation of the data provider is
+        // what provides the data. The described data is therefore irrelevant
+        // to what the rebuilt test case receives — only the name of the data
+        // set counts.
+        $described = new WorkerDataProvidedTest('testWithNamedDataSets');
+
+        $described->setData('first data set', ['something else entirely']);
+
+        $this->assertSame([1], $this->rebuild($described)->providedData());
+    }
+
+    public function testRebuildsTheNameOfADataSetThatWasProvidedAsAnEmptyArray(): void
+    {
+        // A data set that is an empty array leaves the test case without
+        // data, so the data provider is not invoked for it; the data set's
+        // name is rebuilt all the same.
+        $described = new WorkerFirstTest('testStartsTheProcessLocalCounter');
+
+        $described->setData('empty data set', []);
+
+        $test = $this->rebuild($described);
+
+        $this->assertSame([], $test->providedData());
+        $this->assertSame('empty data set', $test->dataName());
     }
 
     public function testRebuildsTheInputProvidedByTheTestsTheTestCaseDependsOn(): void
@@ -61,25 +94,6 @@ final class TestCaseDescriptorTest extends TestCase
         $test = $this->rebuild($described);
 
         $this->assertSame(['WorkerFirstTest::testThatIsDependedUpon' => 'its return value'], $test->dependencyInput());
-    }
-
-    public function testRebuildsTheObjectsCarriedByTheDataRatherThanSharingThem(): void
-    {
-        $object = new stdClass;
-
-        $object->value = 'provided by the data provider';
-
-        $described = new WorkerFirstTest('testStartsTheProcessLocalCounter');
-
-        $described->setData(0, [$object]);
-
-        $rebuilt = $this->rebuild($described)->providedData();
-
-        // The data is serialized while the descriptor travels to the worker,
-        // where it is unserialized again: the rebuilt test case works on
-        // objects of its own, not on the ones the parent process described.
-        $this->assertEquals($object, $rebuilt[0]);
-        $this->assertNotSame($object, $rebuilt[0]);
     }
 
     public function testRebuildsTheRepetitionTheTestCaseIsOneOf(): void
@@ -106,18 +120,16 @@ final class TestCaseDescriptorTest extends TestCase
         $this->assertSame(4, $test->maxAttempts());
     }
 
-    public function testCannotDescribeATestCaseWhoseDataCannotBeSerialized(): void
+    public function testCannotRebuildATestCaseWhoseDataSetTheDataProviderDoesNotProvide(): void
     {
-        $test = new WorkerFirstTest('testStartsTheProcessLocalCounter');
+        $described = new WorkerDataProvidedTest('testWithNamedDataSets');
 
-        $test->setData(0, [$this->valueThatCannotBeSerialized()]);
+        $described->setData('data set the provider does not provide', [1]);
 
         $this->expectException(WorkerException::class);
-        $this->expectExceptionMessage(
-            'The tests of class ' . WorkerFirstTest::class . ' cannot be run in parallel because their data cannot be serialized',
-        );
+        $this->expectExceptionMessage('did not provide data set "data set the provider does not provide"');
 
-        TestCaseDescriptor::fromTestCase($test, WorkerFirstTest::class);
+        $this->rebuild($described);
     }
 
     public function testCannotDescribeATestCaseWhoseDependencyInputCannotBeSerialized(): void
@@ -128,7 +140,7 @@ final class TestCaseDescriptorTest extends TestCase
 
         $this->expectException(WorkerException::class);
         $this->expectExceptionMessage(
-            'The tests of class ' . WorkerFirstTest::class . ' cannot be run in parallel because their data cannot be serialized',
+            'The tests of class ' . WorkerFirstTest::class . ' cannot be run in parallel because their dependency input cannot be serialized',
         );
 
         TestCaseDescriptor::fromTestCase($test, WorkerFirstTest::class);
@@ -138,14 +150,17 @@ final class TestCaseDescriptorTest extends TestCase
      * Describe the test case as the parent process does and rebuild it as the
      * worker process does.
      */
-    private function rebuild(WorkerFirstTest $test): TestCase
+    private function rebuild(TestCase $test): TestCase
     {
-        return TestCaseDescriptor::fromTestCase($test, WorkerFirstTest::class)->test(WorkerFirstTest::class);
+        return TestCaseDescriptor::fromTestCase($test, $test::class)->test(
+            $test::class,
+            new WorkerDataProvider($this->createStub(Emitter::class)),
+        );
     }
 
     /**
-     * A closure cannot be serialized, and a test case that carries one can
-     * therefore not be described for transport to a worker.
+     * A closure cannot be serialized, and a test case whose dependency input
+     * carries one can therefore not be described for transport to a worker.
      */
     private function valueThatCannotBeSerialized(): Closure
     {

@@ -9,10 +9,14 @@
  */
 namespace PHPUnit\Runner\Parallel;
 
+use function putenv;
 use function sort;
+use function strlen;
+use function substr;
 use function sys_get_temp_dir;
 use function tempnam;
 use function unlink;
+use function unserialize;
 use function usleep;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Event\EventCollection;
@@ -24,6 +28,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestRunner\ChildProcessResultProcessor;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TestFixture\ParallelWorker\WorkerCrashesOnceTest;
+use PHPUnit\TestFixture\ParallelWorker\WorkerDataProvidedTest;
 use PHPUnit\TestFixture\ParallelWorker\WorkerFirstTest;
 use PHPUnit\TestFixture\ParallelWorker\WorkerSecondTest;
 use PHPUnit\TestFixture\ParallelWorker\WorkerSleepingTest;
@@ -118,13 +123,16 @@ final class WorkerPoolTest extends TestCase
         }
     }
 
-    public function testReportsAUnitWhoseDataCannotBeSerializedAsCrashedAndKeepsRunning(): void
+    public function testReportsAUnitWhoseDataSetTheWorkerCannotProvideThroughItsEnvelopeAndKeepsRunning(): void
     {
-        $test = new WorkerFirstTest('testStartsTheProcessLocalCounter');
-        $test->setData('with-closure', [static fn (): null => null]);
+        // The worker invokes the data provider again and does not find the
+        // data set the parent process selected; it reports that through the
+        // unit's result envelope, and stays alive for the units that follow.
+        $test = new WorkerDataProvidedTest('testWithNamedDataSets');
+        $test->setData('data set the worker does not know', [1]);
 
         $units = [
-            new TestClassWorkUnit(0, WorkerFirstTest::class, [$test]),
+            new TestClassWorkUnit(0, WorkerDataProvidedTest::class, [$test]),
             new TestClassWorkUnit(1, WorkerSecondTest::class, [new WorkerSecondTest('testThatFails')]),
         ];
 
@@ -138,11 +146,14 @@ final class WorkerPoolTest extends TestCase
             $byIndex[$unit->unit()->index()] = $unit;
         }
 
-        $this->assertTrue($byIndex[0]->crashed());
-        $this->assertNotNull($byIndex[0]->message());
-        $this->assertStringContainsString('cannot be serialized', (string) $byIndex[0]->message());
+        $this->assertFalse($byIndex[0]->crashed());
 
-        // The unit that could be serialized still ran on the same worker.
+        $envelope = unserialize(substr($byIndex[0]->serializedResult(), strlen((string) $byIndex[0]->nonce())));
+
+        $this->assertIsObject($envelope);
+        $this->assertStringContainsString('did not provide data set "data set the worker does not know"', $envelope->failure);
+
+        // The unit that followed still ran on the same worker.
         $this->assertFalse($byIndex[1]->crashed());
     }
 
@@ -187,9 +198,17 @@ final class WorkerPoolTest extends TestCase
             new TestClassWorkUnit(0, WorkerCrashesOnceTest::class, [$test]),
         ];
 
-        $completed = $this->execute($this->pool(1), $units);
+        // The worker invokes the fixture's data provider again, which reads
+        // the marker from the environment the worker inherits.
+        putenv('PHPUNIT_TEST_CRASH_ONCE_MARKER=' . $marker);
 
-        @unlink($marker);
+        try {
+            $completed = $this->execute($this->pool(1), $units);
+        } finally {
+            putenv('PHPUNIT_TEST_CRASH_ONCE_MARKER');
+
+            @unlink($marker);
+        }
 
         // The first attempt killed the worker; the retry, on a freshly booted
         // worker, passed — so the unit is reported as completed, not crashed.

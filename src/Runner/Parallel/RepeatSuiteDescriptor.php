@@ -80,12 +80,12 @@ final readonly class RepeatSuiteDescriptor extends TestDescriptor
     /**
      * @param class-string<TestCase> $className
      */
-    public function test(string $className): RepeatTestSuite
+    public function test(string $className, WorkerDataProvider $dataProvider): RepeatTestSuite
     {
         $repetitions = [];
 
         foreach ($this->repetitions as $repetition) {
-            $repetitions[] = $repetition->test($className);
+            $repetitions[] = $repetition->test($className, $dataProvider);
         }
 
         return RepeatTestSuite::fromTests(
