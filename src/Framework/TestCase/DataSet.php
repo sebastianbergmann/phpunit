@@ -76,7 +76,7 @@ final readonly class DataSet
 
         return sprintf(
             ' with data set "%s"',
-            Sanitizer::sanitizeBidirectionalControlCharacters($this->name),
+            Sanitizer::sanitizeControlCharacters($this->name),
         );
     }
 
@@ -91,7 +91,7 @@ final readonly class DataSet
         } else {
             $name = sprintf(
                 '@%s',
-                Sanitizer::sanitizeBidirectionalControlCharacters($this->name),
+                Sanitizer::sanitizeControlCharacters($this->name),
             );
         }
 

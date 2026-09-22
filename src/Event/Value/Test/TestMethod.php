@@ -264,7 +264,7 @@ final readonly class TestMethod extends Test
             } else {
                 $name .= sprintf(
                     ' with data set "%s"',
-                    Sanitizer::sanitizeBidirectionalControlCharacters($dataSetName),
+                    Sanitizer::sanitizeControlCharacters($dataSetName),
                 );
             }
         }

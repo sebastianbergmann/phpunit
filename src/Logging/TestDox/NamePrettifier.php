@@ -99,7 +99,7 @@ final class NamePrettifier
 
                 assert($classLevelTestDox instanceof TestDox);
 
-                return $classLevelTestDox->text();
+                return Sanitizer::sanitizeControlCharacters($classLevelTestDox->text());
             }
         }
 
@@ -243,7 +243,7 @@ final class NamePrettifier
         return Color::dim(' with ') . Color::colorize(
             'fg-cyan',
             Color::visualizeWhitespace(
-                Sanitizer::sanitizeBidirectionalControlCharacters($test->dataName()),
+                Sanitizer::sanitizeControlCharacters($test->dataName()),
             ),
         );
     }
@@ -282,7 +282,7 @@ final class NamePrettifier
         if (is_int($dataName)) {
             $providedData['$_dataName'] = (string) $dataName;
         } else {
-            $providedData['$_dataName'] = Sanitizer::sanitizeBidirectionalControlCharacters($dataName);
+            $providedData['$_dataName'] = Sanitizer::sanitizeControlCharacters($dataName);
         }
 
         foreach ($reflector->getParameters() as $parameter) {
@@ -320,13 +320,11 @@ final class NamePrettifier
                 } else {
                     $value = "''";
                 }
+            } else {
+                $value = Sanitizer::sanitizeControlCharacters($value);
             }
 
-            $providedData['$' . $parameter->getName()] = str_replace(
-                '$',
-                '\\$',
-                Sanitizer::sanitizeBidirectionalControlCharacters($value),
-            );
+            $providedData['$' . $parameter->getName()] = str_replace('$', '\\$', $value);
         }
 
         if ($colorize) {
@@ -363,7 +361,7 @@ final class NamePrettifier
     {
         $placeholdersUsed = false;
 
-        $result = $testDox->text();
+        $result = Sanitizer::sanitizeControlCharacters($testDox->text());
 
         if (str_contains($result, '$')) {
             $annotation   = $result;
@@ -462,7 +460,7 @@ final class NamePrettifier
 
             assert(is_string($result));
 
-            return [$result, true];
+            return [Sanitizer::sanitizeControlCharacters($result), true];
         } catch (Throwable $t) {
             $this->emitter->testTriggeredPhpunitError(
                 TestMethodBuilder::fromTestCase($test, false),
