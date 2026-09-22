@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI;
 
+use const DIRECTORY_SEPARATOR;
 use const PHP_EOL;
 use const PHP_VERSION;
 use const SIGINT;
@@ -20,6 +21,7 @@ use function defined;
 use function dirname;
 use function explode;
 use function function_exists;
+use function getcwd;
 use function getmypid;
 use function is_array;
 use function is_file;
@@ -107,6 +109,9 @@ use PHPUnit\TextUI\Configuration\BootstrapScriptDoesNotExistException;
 use PHPUnit\TextUI\Configuration\BootstrapScriptException;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\Configuration;
+use PHPUnit\TextUI\Configuration\FileOutputRestriction;
+use PHPUnit\TextUI\Configuration\FileOutputTarget;
+use PHPUnit\TextUI\Configuration\FileOutputTargets;
 use PHPUnit\TextUI\Configuration\PhpHandler;
 use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\TextUI\Configuration\TestSuiteBuilder;
@@ -117,6 +122,7 @@ use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\DefaultConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\Util\DifferBuilder;
+use PHPUnit\Util\Filesystem;
 use PHPUnit\Util\Http\PhpDownloader;
 use SebastianBergmann\Timer\Timer;
 use Throwable;
@@ -159,6 +165,16 @@ final readonly class Application
                 $xmlConfiguration,
                 $this->emitter,
             );
+
+            if ($configuration->hasRestrictFileOutput()) {
+                // checked before the bootstrap script, extensions, or tests
+                // run: nothing that the code base controls has run yet
+                $this->ensureFileOutputIsRestrictedTo(
+                    $configuration->restrictFileOutput(),
+                    FileOutputTargets::fromConfiguration($configuration, $cliConfiguration),
+                    $configuration->testRunHistoryFile(),
+                );
+            }
 
             DifferBuilder::configureComparatorFactory();
 
@@ -501,6 +517,19 @@ final readonly class Application
     private function executeCommandsThatOnlyRequireCliConfiguration(CliConfiguration $cliConfiguration, false|string $configurationFile): void
     {
         if ($cliConfiguration->generateConfiguration()) {
+            if ($cliConfiguration->hasRestrictFileOutput()) {
+                $cwd = getcwd();
+
+                assert($cwd !== false);
+
+                $this->ensureFileOutputIsRestrictedTo(
+                    $cliConfiguration->restrictFileOutput(),
+                    [
+                        new FileOutputTarget('generated configuration file', $cwd . DIRECTORY_SEPARATOR . 'phpunit.xml'),
+                    ],
+                );
+            }
+
             $this->execute(new GenerateConfigurationCommand);
         }
 
@@ -516,6 +545,16 @@ final readonly class Application
                 $this->exitWithErrorMessage('Configuration file cannot be migrated');
             }
             // @codeCoverageIgnoreEnd
+
+            if ($cliConfiguration->hasRestrictFileOutput()) {
+                $this->ensureFileOutputIsRestrictedTo(
+                    $cliConfiguration->restrictFileOutput(),
+                    [
+                        new FileOutputTarget('migrated configuration file', $resolved),
+                        new FileOutputTarget('backup of the configuration file', $resolved . '.bak'),
+                    ],
+                );
+            }
 
             $this->execute(new MigrateConfigurationCommand($resolved));
         }
@@ -1112,6 +1151,56 @@ final readonly class Application
         } while (($t = $t->getPrevious()) !== null);
 
         exit(Result::CRASH);
+    }
+
+    /**
+     * Ends the process with a dedicated shell exit code when one of the
+     * targets is not located in the directory that --restrict-file-output
+     * allows writing to.
+     *
+     * @param non-empty-string       $directory
+     * @param list<FileOutputTarget> $targets
+     * @param ?non-empty-string      $testRunHistoryFile
+     */
+    private function ensureFileOutputIsRestrictedTo(string $directory, array $targets, ?string $testRunHistoryFile = null): void
+    {
+        $violations = new FileOutputRestriction($directory)->violations($targets);
+
+        if ($violations === []) {
+            return;
+        }
+
+        $message = sprintf(
+            'Cannot proceed because the following paths are outside %s, the directory that --restrict-file-output allows writing to:',
+            $directory,
+        ) . PHP_EOL . PHP_EOL;
+
+        $streamViolated         = false;
+        $testRunHistoryViolated = false;
+
+        foreach ($violations as $violation) {
+            $message .= sprintf('  %s (%s)', $violation->path(), $violation->description()) . PHP_EOL;
+
+            if (Filesystem::isStream($violation->path())) {
+                $streamViolated = true;
+            }
+
+            if ($violation->path() === $testRunHistoryFile) {
+                $testRunHistoryViolated = true;
+            }
+        }
+
+        if ($streamViolated) {
+            $message .= PHP_EOL . 'Only php://stdout and php://stderr are allowed as streams.' . PHP_EOL;
+        }
+
+        if ($testRunHistoryViolated) {
+            $message .= PHP_EOL . 'The test run history is recorded by default. Use --do-not-record-test-run-history to not record it, or --cache-directory to record it inside the allowed directory.' . PHP_EOL;
+        }
+
+        print Version::getVersionString() . PHP_EOL . PHP_EOL . $message;
+
+        exit(Result::FILE_OUTPUT_RESTRICTED);
     }
 
     private function exitWithErrorMessage(string $message): never

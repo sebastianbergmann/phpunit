@@ -15,6 +15,8 @@
                                        path(s)
   [32m-d [36m<key[=value]>[0m                    [0m Sets a php.ini value
   [32m--cache-directory [36m<dir>[0m             [0m Specify cache directory
+  [32m--restrict-file-output [36m<dir>[0m        [0m Do not run tests when a file would be
+                                       written outside the specified directory
   [32m--generate-configuration            [0m Generate configuration file with
                                        suggested settings
   [32m--migrate-configuration             [0m Migrate configuration file to current

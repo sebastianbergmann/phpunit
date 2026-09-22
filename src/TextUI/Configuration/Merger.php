@@ -98,13 +98,43 @@ final readonly class Merger
             $warnWhenPhpIsNotConfiguredForDevelopment = $xmlConfiguration->phpunit()->warnWhenPhpIsNotConfiguredForDevelopment();
         }
 
+        $restrictFileOutput = null;
+
+        if ($cliConfiguration->hasRestrictFileOutput()) {
+            $restrictFileOutput = $cliConfiguration->restrictFileOutput();
+        }
+
         $cacheDirectory         = null;
         $coverageCacheDirectory = null;
 
-        if ($cliConfiguration->hasCacheDirectory() && Filesystem::createDirectory($cliConfiguration->cacheDirectory())) {
-            $cacheDirectory = realpath($cliConfiguration->cacheDirectory());
-        } elseif ($xmlConfiguration->phpunit()->hasCacheDirectory() && Filesystem::createDirectory($xmlConfiguration->phpunit()->cacheDirectory())) {
-            $cacheDirectory = realpath($xmlConfiguration->phpunit()->cacheDirectory());
+        $cacheDirectoryCandidates = [];
+
+        if ($cliConfiguration->hasCacheDirectory()) {
+            $cacheDirectoryCandidates[] = $cliConfiguration->cacheDirectory();
+        }
+
+        if ($xmlConfiguration->phpunit()->hasCacheDirectory()) {
+            $cacheDirectoryCandidates[] = $xmlConfiguration->phpunit()->cacheDirectory();
+        }
+
+        foreach ($cacheDirectoryCandidates as $candidate) {
+            if ($candidate === '') {
+                continue;
+            }
+
+            if ($restrictFileOutput !== null && !new FileOutputRestriction($restrictFileOutput)->allows($candidate)) {
+                // do not create a directory outside the allowed directory;
+                // the resolved path is kept so that the violation is reported
+                $cacheDirectory = Filesystem::resolvePath($candidate);
+
+                break;
+            }
+
+            if (Filesystem::createDirectory($candidate)) {
+                $cacheDirectory = realpath($candidate);
+
+                break;
+            }
         }
 
         // @codeCoverageIgnoreStart
@@ -1290,6 +1320,30 @@ final readonly class Merger
         $testIdFilter                       = $this->nullableNonEmptyString($testIdFilter);
         $randomOrderSeed                    = $this->clampPositiveInt($randomOrderSeed);
 
+        if ($restrictFileOutput !== null) {
+            // the files are written after the bootstrap script has run, which
+            // may change the working directory; resolve the paths now so that
+            // the check against --restrict-file-output and the writes agree
+            $testRunHistoryFile   = Filesystem::resolvePath($testRunHistoryFile);
+            $coverageClover       = $this->resolveOutputPath($coverageClover);
+            $coverageCobertura    = $this->resolveOutputPath($coverageCobertura);
+            $coverageCrap4j       = $this->resolveOutputPath($coverageCrap4j);
+            $coverageHtml         = $this->resolveOutputPath($coverageHtml);
+            $coverageJsonl        = $this->resolveOutputPath($coverageJsonl);
+            $coverageOpenClover   = $this->resolveOutputPath($coverageOpenClover);
+            $coveragePhp          = $this->resolveOutputPath($coveragePhp);
+            $coverageText         = $this->resolveOutputPath($coverageText);
+            $coverageXml          = $this->resolveOutputPath($coverageXml);
+            $logfileTeamcity      = $this->resolveOutputPath($logfileTeamcity);
+            $logfileJunit         = $this->resolveOutputPath($logfileJunit);
+            $logfileOtr           = $this->resolveOutputPath($logfileOtr);
+            $logfileTestdoxHtml   = $this->resolveOutputPath($logfileTestdoxHtml);
+            $logfileTestdoxText   = $this->resolveOutputPath($logfileTestdoxText);
+            $logEventsText        = $this->resolveOutputPath($logEventsText);
+            $logEventsVerboseText = $this->resolveOutputPath($logEventsVerboseText);
+            $generateBaseline     = $this->resolveOutputPath($generateBaseline);
+        }
+
         $normalizedGroups = [];
 
         foreach ($groups as $group) {
@@ -1498,6 +1552,7 @@ final readonly class Merger
             $repeat,
             $retry,
             $timeout,
+            $restrictFileOutput,
             $includeUncoveredFiles,
             $xmlConfiguration->testSuite(),
             $includeTestSuite,
@@ -1527,6 +1582,18 @@ final readonly class Merger
             $warnWhenPhpIsNotConfiguredForDevelopment,
             $cacheTestIndex,
         );
+    }
+
+    /**
+     * @return ($path is null ? null : ($path is non-empty-string ? non-empty-string : string))
+     */
+    private function resolveOutputPath(?string $path): ?string
+    {
+        if ($path === null || Filesystem::isStream($path) || $path === '') {
+            return $path;
+        }
+
+        return Filesystem::resolvePath($path);
     }
 
     /**

@@ -11,8 +11,13 @@ namespace PHPUnit\TextUI\XmlConfiguration;
 
 use const DIRECTORY_SEPARATOR;
 use const PATH_SEPARATOR;
+use function basename;
 use function dirname;
+use function getcwd;
+use function is_dir;
 use function realpath;
+use function rmdir;
+use function sys_get_temp_dir;
 use function uniqid;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -22,7 +27,9 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\TextUI\CliArguments\Builder;
 use PHPUnit\TextUI\Configuration\Configuration as MergedConfiguration;
 use PHPUnit\TextUI\Configuration\Merger;
+use PHPUnit\TextUI\Configuration\NoFileOutputRestrictionException;
 use PHPUnit\TextUI\Configuration\TimeoutNotConfiguredException;
+use PHPUnit\Util\Filesystem;
 
 #[CoversClass(Merger::class)]
 #[Medium]
@@ -331,6 +338,111 @@ final class MergerTest extends TestCase
 
         $this->assertTrue($mergedConfig->hasTimeout());
         $this->assertSame(60, $mergedConfig->timeout());
+    }
+
+    public function testFileOutputIsNotRestrictedByDefault(): void
+    {
+        $fromFile = new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration_empty.xml');
+        $fromCli  = new Builder($this->createStub(Emitter::class))->fromParameters([]);
+
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge($fromCli, $fromFile);
+
+        $this->assertFalse($mergedConfig->hasRestrictFileOutput());
+
+        $this->expectException(NoFileOutputRestrictionException::class);
+
+        $mergedConfig->restrictFileOutput();
+    }
+
+    public function testFileOutputRestrictionCanBeConfiguredFromCli(): void
+    {
+        $fromFile = new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration_empty.xml');
+        $fromCli  = new Builder($this->createStub(Emitter::class))->fromParameters(['--restrict-file-output=' . __DIR__]);
+
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge($fromCli, $fromFile);
+
+        $this->assertTrue($mergedConfig->hasRestrictFileOutput());
+        $this->assertSame(realpath(__DIR__), $mergedConfig->restrictFileOutput());
+    }
+
+    public function testOutputPathsAreResolvedWhenFileOutputIsRestricted(): void
+    {
+        $fromFile = new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration_logging.xml');
+        $fromCli  = new Builder($this->createStub(Emitter::class))->fromParameters([
+            '--restrict-file-output=' . __DIR__,
+            '--log-junit=junit.xml',
+            '--coverage-html=coverage',
+            '--generate-baseline=baseline.xml',
+            '--testdox-text=php://stdout',
+        ]);
+
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge($fromCli, $fromFile);
+
+        $cwd = getcwd();
+
+        $this->assertNotFalse($cwd);
+
+        $cwd = realpath($cwd);
+
+        $this->assertSame($cwd . DIRECTORY_SEPARATOR . 'junit.xml', $mergedConfig->logfileJunit());
+        $this->assertSame($cwd . DIRECTORY_SEPARATOR . 'coverage', $mergedConfig->coverageHtml());
+        $this->assertSame($cwd . DIRECTORY_SEPARATOR . 'baseline.xml', $mergedConfig->generateBaseline());
+        $this->assertSame('php://stdout', $mergedConfig->logfileTestdoxText());
+        $this->assertSame(dirname(realpath(TEST_FILES_PATH . 'configuration_logging.xml')) . DIRECTORY_SEPARATOR . 'teamcity.txt', $mergedConfig->logfileTeamcity());
+        $this->assertTrue(Filesystem::isAbsolutePath($mergedConfig->testRunHistoryFile()));
+    }
+
+    public function testOutputPathsAreNotResolvedWhenFileOutputIsNotRestricted(): void
+    {
+        $fromFile = new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration_empty.xml');
+        $fromCli  = new Builder($this->createStub(Emitter::class))->fromParameters([
+            '--log-junit=junit.xml',
+            '--coverage-html=coverage',
+        ]);
+
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge($fromCli, $fromFile);
+
+        $this->assertSame('junit.xml', $mergedConfig->logfileJunit());
+        $this->assertSame('coverage', $mergedConfig->coverageHtml());
+    }
+
+    public function testCacheDirectoryOutsideTheRestrictedDirectoryIsNotCreated(): void
+    {
+        $cacheDirectory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-' . uniqid();
+
+        $fromFile = new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration_empty.xml');
+        $fromCli  = new Builder($this->createStub(Emitter::class))->fromParameters([
+            '--restrict-file-output=' . __DIR__,
+            '--cache-directory=' . $cacheDirectory,
+        ]);
+
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge($fromCli, $fromFile);
+
+        $this->assertFalse(is_dir($cacheDirectory));
+        $this->assertTrue($mergedConfig->hasCacheDirectory());
+        $this->assertSame(realpath(sys_get_temp_dir()) . DIRECTORY_SEPARATOR . basename($cacheDirectory), $mergedConfig->cacheDirectory());
+        $this->assertSame($mergedConfig->cacheDirectory() . DIRECTORY_SEPARATOR . 'test-run-history', $mergedConfig->testRunHistoryFile());
+    }
+
+    public function testCacheDirectoryInsideTheRestrictedDirectoryIsCreated(): void
+    {
+        $restrictedDirectory = realpath(sys_get_temp_dir());
+        $cacheDirectory      = $restrictedDirectory . DIRECTORY_SEPARATOR . 'phpunit-' . uniqid();
+
+        $fromFile = new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration_empty.xml');
+        $fromCli  = new Builder($this->createStub(Emitter::class))->fromParameters([
+            '--restrict-file-output=' . $restrictedDirectory,
+            '--cache-directory=' . $cacheDirectory,
+        ]);
+
+        try {
+            $mergedConfig = new Merger($this->createStub(Emitter::class))->merge($fromCli, $fromFile);
+
+            $this->assertTrue(is_dir($cacheDirectory));
+            $this->assertSame($cacheDirectory, $mergedConfig->cacheDirectory());
+        } finally {
+            rmdir($cacheDirectory);
+        }
     }
 
     public function testInvalidRandomOrderSeedIsReplacedWithSmallestValidSeed(): void

@@ -21,6 +21,7 @@ use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\Configuration;
+use PHPUnit\TextUI\Configuration\FileOutputRestriction;
 use PHPUnit\TextUI\Output\Printer;
 use PHPUnit\Util\Filesystem;
 use ReflectionClass;
@@ -115,7 +116,7 @@ final class CodeCoverage
         } else {
             $candidate = sys_get_temp_dir() . '/phpunit-code-coverage-cache';
 
-            if (Filesystem::createDirectory($candidate)) {
+            if ($this->fileOutputIsAllowed($configuration, $candidate) && Filesystem::createDirectory($candidate)) {
                 $coverageCacheDirectory = $candidate;
             }
         }
@@ -658,6 +659,18 @@ final class CodeCoverage
         $driver->setGranularity($granularity);
 
         return $driver;
+    }
+
+    /**
+     * @param non-empty-string $path
+     */
+    private function fileOutputIsAllowed(Configuration $configuration, string $path): bool
+    {
+        if (!$configuration->hasRestrictFileOutput()) {
+            return true;
+        }
+
+        return new FileOutputRestriction($configuration->restrictFileOutput())->allows($path);
     }
 
     private function codeCoverageGenerationStart(Printer $printer, string $format): void

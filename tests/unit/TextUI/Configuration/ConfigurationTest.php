@@ -63,6 +63,17 @@ final class ConfigurationTest extends TestCase
         $configuration->bootstrap();
     }
 
+    public function testRestrictFileOutputThrowsWhenNotConfigured(): void
+    {
+        $configuration = $this->defaultConfiguration();
+
+        $this->assertFalse($configuration->hasRestrictFileOutput());
+
+        $this->expectException(NoFileOutputRestrictionException::class);
+
+        $configuration->restrictFileOutput();
+    }
+
     public function testCacheDirectoryThrowsWhenNotConfigured(): void
     {
         $configuration = $this->defaultConfiguration();

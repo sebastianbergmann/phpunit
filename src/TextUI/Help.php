@@ -181,6 +181,7 @@ final class Help
                 ['arg' => '--include-path <path(s)>', 'desc' => 'Prepend PHP\'s include_path with given path(s)'],
                 ['arg' => '-d <key[=value]>', 'desc' => 'Sets a php.ini value'],
                 ['arg' => '--cache-directory <dir>', 'desc' => 'Specify cache directory'],
+                ['arg' => '--restrict-file-output <dir>', 'desc' => 'Do not run tests when a file would be written outside the specified directory'],
                 ['arg' => '--generate-configuration', 'desc' => 'Generate configuration file with suggested settings'],
                 ['arg' => '--migrate-configuration', 'desc' => 'Migrate configuration file to current format'],
                 ['arg' => '--validate-configuration', 'desc' => 'Validate XML configuration file'],

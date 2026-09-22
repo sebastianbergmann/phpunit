@@ -15,9 +15,11 @@ use function basename;
 use function count;
 use function explode;
 use function getcwd;
+use function is_dir;
 use function is_file;
 use function is_numeric;
 use function max;
+use function realpath;
 use function sprintf;
 use function strtolower;
 use PHPUnit\Event\Emitter;
@@ -49,6 +51,7 @@ final class Builder
         'cache-test-index',
         'do-not-cache-test-index',
         'cache-directory=',
+        'restrict-file-output=',
         'check-version',
         'check-php-configuration',
         'warn-when-php-is-not-configured-for-development',
@@ -411,6 +414,7 @@ final class Builder
         $repeat                                   = null;
         $retry                                    = null;
         $timeout                                  = null;
+        $restrictFileOutput                       = null;
         $reportUselessTests                       = null;
         $resolveDependencies                      = null;
         $reverseList                              = null;
@@ -1339,6 +1343,21 @@ final class Builder
 
                     break;
 
+                case '--restrict-file-output':
+                    $restrictFileOutputPath = $this->requireNonEmptyValue($option[1], '--restrict-file-output');
+                    $restrictFileOutput     = realpath($restrictFileOutputPath);
+
+                    if ($restrictFileOutput === false || !is_dir($restrictFileOutput)) {
+                        throw new Exception(
+                            sprintf(
+                                'The path "%s" specified for the --restrict-file-output option is not a directory',
+                                $restrictFileOutputPath,
+                            ),
+                        );
+                    }
+
+                    break;
+
                 case '--resolve-dependencies':
                     $resolveDependencies = true;
 
@@ -1435,6 +1454,13 @@ final class Builder
             // @codeCoverageIgnoreEnd
 
             $arguments[] = $argument;
+        }
+
+        if ($restrictFileOutput !== null && $listTestsXml !== null && $listTestsXml !== '') {
+            // the file is written after the bootstrap script has run, which
+            // may change the working directory; resolve the path now so that
+            // the check against --restrict-file-output and the write agree
+            $listTestsXml = Filesystem::resolvePath($listTestsXml);
         }
 
         return new Configuration(
@@ -1554,6 +1580,7 @@ final class Builder
             $repeat,
             $retry,
             $timeout,
+            $restrictFileOutput,
             $reportUselessTests,
             $resolveDependencies,
             $reverseList,
