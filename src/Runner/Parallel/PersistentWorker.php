@@ -53,6 +53,13 @@ use SebastianBergmann\Template\Template;
  * kind of serialized envelope that process isolation uses, which the
  * ResultAggregator decodes and replays into the parent's event subsystem.
  *
+ * The configured extensions that implement ParallelWorkerExtension are
+ * bootstrapped in the worker when it boots, once for its lifetime, and the
+ * subscribers they register receive the events of every unit the worker runs,
+ * live, inside the worker process (see WorkerExtensionBootstrapper). Every
+ * other extension is known to the main process only, where its subscribers
+ * receive the replayed events.
+ *
  * While a unit is still running, the worker additionally streams the events of
  * every test that has finished so far: it appends them, as length-prefixed
  * frames, to a stream file that the parent reads incrementally on each poll.
