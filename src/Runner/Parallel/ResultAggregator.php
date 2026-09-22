@@ -13,6 +13,7 @@ use function array_pop;
 use function array_reverse;
 use function array_slice;
 use function assert;
+use function is_string;
 use function sprintf;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\TestMethodBuilder;
@@ -64,7 +65,7 @@ use PHPUnit\TestRunner\TestResult\PassedTests;
  *
  * Some units do not run in a worker but in the main process (see
  * ParallelTestRunner): a unit attributed with #[DoNotRunInParallel], one that
- * needs process isolation, or one whose data cannot be serialized. Such a unit
+ * needs process isolation, or one that depends on another class. Such a unit
  * is registered with its suite index and run, by the aggregator, at the moment
  * its index comes up in the release sequence. Running it there — between the
  * units that precede and follow it in suite order — lets its events reach the
@@ -548,6 +549,15 @@ final class ResultAggregator
             return;
         }
 
+        // The worker could not rebuild the unit — a data provider failed in
+        // the worker process, or did not provide a data set that the parent
+        // process selected — and ran none of its tests.
+        if (isset($childResult->failure) && is_string($childResult->failure) && $childResult->failure !== '') {
+            $this->reportTestsWithoutResult($completed, $childResult->failure);
+
+            return;
+        }
+
         assert($childResult->events instanceof EventCollection);
         assert($childResult->passedTests instanceof PassedTests);
 
@@ -561,7 +571,8 @@ final class ResultAggregator
 
     /**
      * Report every test of a unit whose result will never arrive, because the
-     * worker running it died or its result envelope failed verification.
+     * worker running it died, its result envelope failed verification, or the
+     * worker could not rebuild the unit from its description.
      *
      * The tests that were already reported through the unit's forwarded
      * streamed frames keep the results that were shown for them; every other

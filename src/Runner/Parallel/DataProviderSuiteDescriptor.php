@@ -77,13 +77,15 @@ final readonly class DataProviderSuiteDescriptor extends TestDescriptor
 
     /**
      * @param class-string<TestCase> $className
+     *
+     * @throws WorkerException
      */
-    public function test(string $className): DataProviderTestSuite
+    public function test(string $className, WorkerDataProvider $dataProvider): DataProviderTestSuite
     {
         $suite = DataProviderTestSuite::empty($this->name, EventFacade::emitter());
 
         foreach ($this->members as $member) {
-            $suite->addTest($member->test($className));
+            $suite->addTest($member->test($className, $dataProvider));
         }
 
         return $suite;

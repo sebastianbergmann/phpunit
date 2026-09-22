@@ -75,13 +75,13 @@ final readonly class RetrySuiteDescriptor extends TestDescriptor
     /**
      * @param class-string<TestCase> $className
      */
-    public function test(string $className): RetryTestSuite
+    public function test(string $className, WorkerDataProvider $dataProvider): RetryTestSuite
     {
         $testCase = $this->testCase;
 
-        $factory = static function () use ($className, $testCase): TestCase
+        $factory = static function () use ($className, $testCase, $dataProvider): TestCase
         {
-            return $testCase->test($className);
+            return $testCase->test($className, $dataProvider);
         };
 
         return RetryTestSuite::fromTestCase(

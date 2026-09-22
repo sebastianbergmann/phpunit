@@ -18,11 +18,12 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\RetryTestSuite;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\Filter\Factory;
-use PHPUnit\TestFixture\ParallelWorker\WorkerFirstTest;
+use PHPUnit\TestFixture\ParallelWorker\WorkerDataProvidedTest;
 use ReflectionProperty;
 
 #[CoversClass(RetrySuiteDescriptor::class)]
 #[UsesClass(TestCaseDescriptor::class)]
+#[UsesClass(WorkerDataProvider::class)]
 #[Small]
 final class RetrySuiteDescriptorTest extends TestCase
 {
@@ -31,7 +32,7 @@ final class RetrySuiteDescriptorTest extends TestCase
         $suite = $this->rebuild($this->suite());
 
         $this->assertInstanceOf(RetryTestSuite::class, $suite);
-        $this->assertSame(WorkerFirstTest::class . '::testStartsTheProcessLocalCounter', $suite->name());
+        $this->assertSame(WorkerDataProvidedTest::class . '::testWithNumberedDataSets', $suite->name());
     }
 
     public function testRebuildsTheNumberOfAttemptsTheTestMethodIsAllowed(): void
@@ -44,9 +45,9 @@ final class RetrySuiteDescriptorTest extends TestCase
         $tests = $this->rebuild($this->suite())->tests();
 
         $this->assertCount(1, $tests);
-        $this->assertInstanceOf(WorkerFirstTest::class, $tests[0]);
-        $this->assertSame('testStartsTheProcessLocalCounter', $tests[0]->name());
-        $this->assertSame(['the data set'], $tests[0]->providedData());
+        $this->assertInstanceOf(WorkerDataProvidedTest::class, $tests[0]);
+        $this->assertSame('testWithNumberedDataSets', $tests[0]->name());
+        $this->assertSame([1], $tests[0]->providedData());
     }
 
     public function testRebuildsASuiteThatBuildsEachFurtherAttemptFromTheSameDescription(): void
@@ -58,9 +59,9 @@ final class RetrySuiteDescriptorTest extends TestCase
         // one runs on a test case of its own.
         $furtherAttempt = $this->additionalAttemptFactoryOf($suite)();
 
-        $this->assertInstanceOf(WorkerFirstTest::class, $furtherAttempt);
-        $this->assertSame('testStartsTheProcessLocalCounter', $furtherAttempt->name());
-        $this->assertSame(['the data set'], $furtherAttempt->providedData());
+        $this->assertInstanceOf(WorkerDataProvidedTest::class, $furtherAttempt);
+        $this->assertSame('testWithNumberedDataSets', $furtherAttempt->name());
+        $this->assertSame([1], $furtherAttempt->providedData());
         $this->assertNotSame($suite->tests()[0], $furtherAttempt);
     }
 
@@ -73,35 +74,18 @@ final class RetrySuiteDescriptorTest extends TestCase
 
         $factory = new Factory;
 
-        $factory->addIncludeNameFilter('testStartsTheProcessLocalCounter#0');
+        $factory->addIncludeNameFilter('testWithNumberedDataSets#0');
 
         $suite->injectFilter($factory);
 
         $this->assertCount(1, $this->rebuild($suite)->tests());
     }
 
-    public function testCannotDescribeASuiteWhoseTestCarriesDataThatCannotBeSerialized(): void
-    {
-        // A closure cannot be serialized, so a suite whose test carries one
-        // cannot be described for transport to a worker.
-        $closure = static function (): void
-        {
-        };
-
-        $test = new WorkerFirstTest('testStartsTheProcessLocalCounter');
-
-        $test->setData(0, [$closure]);
-
-        $this->expectException(WorkerException::class);
-
-        RetrySuiteDescriptor::fromTestSuite($this->suiteFor($test), WorkerFirstTest::class);
-    }
-
     private function suite(): RetryTestSuite
     {
-        $test = new WorkerFirstTest('testStartsTheProcessLocalCounter');
+        $test = new WorkerDataProvidedTest('testWithNumberedDataSets');
 
-        $test->setData(0, ['the data set']);
+        $test->setData(0, [1]);
 
         return $this->suiteFor($test);
     }
@@ -110,16 +94,16 @@ final class RetrySuiteDescriptorTest extends TestCase
      * A suite of three attempts, as the parent process has it before the unit
      * that contains it is described.
      */
-    private function suiteFor(WorkerFirstTest $test): RetryTestSuite
+    private function suiteFor(WorkerDataProvidedTest $test): RetryTestSuite
     {
         return RetryTestSuite::fromTestCase(
-            WorkerFirstTest::class . '::testStartsTheProcessLocalCounter',
+            WorkerDataProvidedTest::class . '::testWithNumberedDataSets',
             $this->createStub(Emitter::class),
             $test,
             3,
             static function (): TestCase
             {
-                return new WorkerFirstTest('testStartsTheProcessLocalCounter');
+                return new WorkerDataProvidedTest('testWithNumberedDataSets');
             },
         );
     }
@@ -142,6 +126,9 @@ final class RetrySuiteDescriptorTest extends TestCase
      */
     private function rebuild(RetryTestSuite $suite): RetryTestSuite
     {
-        return RetrySuiteDescriptor::fromTestSuite($suite, WorkerFirstTest::class)->test(WorkerFirstTest::class);
+        return RetrySuiteDescriptor::fromTestSuite($suite, WorkerDataProvidedTest::class)->test(
+            WorkerDataProvidedTest::class,
+            new WorkerDataProvider($this->createStub(Emitter::class)),
+        );
     }
 }
