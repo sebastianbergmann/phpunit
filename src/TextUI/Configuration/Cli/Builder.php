@@ -127,6 +127,7 @@ final class Builder
         'order-by=',
         'process-isolation',
         'parallel=',
+        'recycle-workers-after=',
         'do-not-report-useless-tests',
         'random-order',
         'random-order-seed=',
@@ -411,6 +412,7 @@ final class Builder
         $noLogging                                = null;
         $processIsolation                         = null;
         $numberOfParallelWorkers                  = null;
+        $numberOfTestClassesBeforeWorkerRecycling = null;
         $randomOrderSeed                          = null;
         $repeat                                   = null;
         $retry                                    = null;
@@ -893,6 +895,25 @@ final class Builder
                     }
 
                     $numberOfParallelWorkers = (int) $option[1];
+
+                    break;
+
+                case '--recycle-workers-after':
+                    if (!is_numeric($option[1]) ||
+                        (string) (int) $option[1] !== $option[1] ||
+                        (int) $option[1] < 0) {
+                        EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                            sprintf(
+                                'Option "--recycle-workers-after %s" ignored because "%s" is not a non-negative integer',
+                                $option[1],
+                                $option[1],
+                            ),
+                        );
+
+                        break;
+                    }
+
+                    $numberOfTestClassesBeforeWorkerRecycling = (int) $option[1];
 
                     break;
 
@@ -1618,6 +1639,7 @@ final class Builder
             $extensions,
             $cacheTestIndex,
             $numberOfParallelWorkers,
+            $numberOfTestClassesBeforeWorkerRecycling,
         );
     }
 

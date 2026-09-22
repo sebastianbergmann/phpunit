@@ -1615,6 +1615,35 @@ final class BuilderTest extends TestCase
         );
     }
 
+    #[TestDox('--recycle-workers-after')]
+    public function testRecycleWorkersAfter(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--recycle-workers-after', '25']);
+
+        $this->assertTrue($configuration->hasNumberOfTestClassesBeforeWorkerRecycling());
+        $this->assertSame(25, $configuration->numberOfTestClassesBeforeWorkerRecycling());
+    }
+
+    #[TestDox('--recycle-workers-after 0')]
+    public function testRecycleWorkersAfterZero(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--recycle-workers-after', '0']);
+
+        $this->assertTrue($configuration->hasNumberOfTestClassesBeforeWorkerRecycling());
+        $this->assertSame(0, $configuration->numberOfTestClassesBeforeWorkerRecycling());
+    }
+
+    public function testNumberOfTestClassesBeforeWorkerRecyclingMayNotBeConfigured(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters([]);
+
+        $this->assertFalse($configuration->hasNumberOfTestClassesBeforeWorkerRecycling());
+
+        $this->expectException(Exception::class);
+
+        $configuration->numberOfTestClassesBeforeWorkerRecycling();
+    }
+
     public function testNumberOfParallelWorkersMayNotBeConfigured(): void
     {
         $configuration = new Builder($this->createStub(Emitter::class))->fromParameters([]);
