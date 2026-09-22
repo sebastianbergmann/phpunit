@@ -38,8 +38,7 @@ final readonly class CompletedWorkUnit
     /**
      * A human-readable explanation of why a crashed unit did not run, used in
      * place of the generic "ended unexpectedly" message when a more specific
-     * reason is known (for example, that the unit's test data could not be
-     * serialized for transport to a worker).
+     * reason is known (for example, that the unit could not be dispatched).
      */
     private ?string $message;
 

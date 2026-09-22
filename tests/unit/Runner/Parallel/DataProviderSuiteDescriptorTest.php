@@ -18,13 +18,14 @@ use PHPUnit\Framework\RepeatTestSuite;
 use PHPUnit\Framework\RetryTestSuite;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\Filter\Factory;
-use PHPUnit\TestFixture\ParallelWorker\WorkerFirstTest;
+use PHPUnit\TestFixture\ParallelWorker\WorkerDataProvidedTest;
 
 #[CoversClass(DataProviderSuiteDescriptor::class)]
 #[UsesClass(TestDescriptor::class)]
 #[UsesClass(TestCaseDescriptor::class)]
 #[UsesClass(RepeatSuiteDescriptor::class)]
 #[UsesClass(RetrySuiteDescriptor::class)]
+#[UsesClass(WorkerDataProvider::class)]
 #[Small]
 final class DataProviderSuiteDescriptorTest extends TestCase
 {
@@ -33,7 +34,7 @@ final class DataProviderSuiteDescriptorTest extends TestCase
         $suite = $this->rebuild($this->suite());
 
         $this->assertInstanceOf(DataProviderTestSuite::class, $suite);
-        $this->assertSame(WorkerFirstTest::class . '::testStartsTheProcessLocalCounter', $suite->name());
+        $this->assertSame(WorkerDataProvidedTest::class . '::testWithNamedDataSets', $suite->name());
     }
 
     public function testRebuildsTheTestsOfTheDataProviderInTheOrderTheyWereDescribedIn(): void
@@ -42,11 +43,11 @@ final class DataProviderSuiteDescriptorTest extends TestCase
 
         $this->assertCount(2, $tests);
 
-        $this->assertInstanceOf(WorkerFirstTest::class, $tests[0]);
+        $this->assertInstanceOf(WorkerDataProvidedTest::class, $tests[0]);
         $this->assertSame('first data set', $tests[0]->dataName());
         $this->assertSame([1], $tests[0]->providedData());
 
-        $this->assertInstanceOf(WorkerFirstTest::class, $tests[1]);
+        $this->assertInstanceOf(WorkerDataProvidedTest::class, $tests[1]);
         $this->assertSame('second data set', $tests[1]->dataName());
         $this->assertSame([2], $tests[1]->providedData());
     }
@@ -56,7 +57,7 @@ final class DataProviderSuiteDescriptorTest extends TestCase
         // A data provider that provided nothing leaves an empty suite behind;
         // it travels to the worker so that the worker reports it just as a
         // sequential run would.
-        $suite = $this->rebuild(DataProviderTestSuite::empty(WorkerFirstTest::class . '::testStartsTheProcessLocalCounter', $this->createStub(Emitter::class)));
+        $suite = $this->rebuild(DataProviderTestSuite::empty(WorkerDataProvidedTest::class . '::testWithNamedDataSets', $this->createStub(Emitter::class)));
 
         $this->assertSame([], $suite->tests());
     }
@@ -65,12 +66,12 @@ final class DataProviderSuiteDescriptorTest extends TestCase
     {
         $suite = $this->suite();
 
-        $this->select($suite, 'testStartsTheProcessLocalCounter#second data set');
+        $this->select($suite, 'testWithNamedDataSets#second data set');
 
         $tests = $this->rebuild($suite)->tests();
 
         $this->assertCount(1, $tests);
-        $this->assertInstanceOf(WorkerFirstTest::class, $tests[0]);
+        $this->assertInstanceOf(WorkerDataProvidedTest::class, $tests[0]);
         $this->assertSame('second data set', $tests[0]->dataName());
     }
 
@@ -81,12 +82,12 @@ final class DataProviderSuiteDescriptorTest extends TestCase
         // excluded are still yielded as a suite, an empty one. That suite runs
         // nothing in a sequential run and must therefore not travel to the
         // worker.
-        $suite = DataProviderTestSuite::empty(WorkerFirstTest::class . '::testStartsTheProcessLocalCounter', $this->createStub(Emitter::class));
+        $suite = DataProviderTestSuite::empty(WorkerDataProvidedTest::class . '::testWithNamedDataSets', $this->createStub(Emitter::class));
 
         $suite->addTest($this->attemptsFor('first data set'));
         $suite->addTest($this->attemptsFor('second data set'));
 
-        $this->select($suite, 'testStartsTheProcessLocalCounter#second data set');
+        $this->select($suite, 'testWithNamedDataSets#second data set');
 
         $members = $this->rebuild($suite)->tests();
 
@@ -96,7 +97,7 @@ final class DataProviderSuiteDescriptorTest extends TestCase
         $attempts = $members[0]->tests();
 
         $this->assertCount(1, $attempts);
-        $this->assertInstanceOf(WorkerFirstTest::class, $attempts[0]);
+        $this->assertInstanceOf(WorkerDataProvidedTest::class, $attempts[0]);
         $this->assertSame('second data set', $attempts[0]->dataName());
     }
 
@@ -107,12 +108,12 @@ final class DataProviderSuiteDescriptorTest extends TestCase
         // selection excluded are still yielded as a suite, an empty one. That
         // suite runs nothing in a sequential run and must therefore not travel
         // to the worker.
-        $suite = DataProviderTestSuite::empty(WorkerFirstTest::class . '::testStartsTheProcessLocalCounter', $this->createStub(Emitter::class));
+        $suite = DataProviderTestSuite::empty(WorkerDataProvidedTest::class . '::testWithNamedDataSets', $this->createStub(Emitter::class));
 
         $suite->addTest($this->repetitionsFor('first data set'));
         $suite->addTest($this->repetitionsFor('second data set'));
 
-        $this->select($suite, 'testStartsTheProcessLocalCounter#second data set');
+        $this->select($suite, 'testWithNamedDataSets#second data set');
 
         $members = $this->rebuild($suite)->tests();
 
@@ -124,41 +125,20 @@ final class DataProviderSuiteDescriptorTest extends TestCase
         $this->assertCount(2, $repetitions);
 
         foreach ($repetitions as $repetition) {
-            $this->assertInstanceOf(WorkerFirstTest::class, $repetition);
+            $this->assertInstanceOf(WorkerDataProvidedTest::class, $repetition);
             $this->assertSame('second data set', $repetition->dataName());
         }
     }
 
-    public function testCannotDescribeASuiteWhoseTestsCarryDataThatCannotBeSerialized(): void
-    {
-        // A closure cannot be serialized, so a suite whose tests carry one
-        // cannot be described for transport to a worker.
-        $closure = static function (): void
-        {
-        };
-
-        $test = new WorkerFirstTest('testStartsTheProcessLocalCounter');
-
-        $test->setData('the data set', [$closure]);
-
-        $suite = DataProviderTestSuite::empty(WorkerFirstTest::class . '::testStartsTheProcessLocalCounter', $this->createStub(Emitter::class));
-
-        $suite->addTest($test);
-
-        $this->expectException(WorkerException::class);
-
-        DataProviderSuiteDescriptor::fromTestSuite($suite, WorkerFirstTest::class);
-    }
-
     private function suite(): DataProviderTestSuite
     {
-        $suite = DataProviderTestSuite::empty(WorkerFirstTest::class . '::testStartsTheProcessLocalCounter', $this->createStub(Emitter::class));
+        $suite = DataProviderTestSuite::empty(WorkerDataProvidedTest::class . '::testWithNamedDataSets', $this->createStub(Emitter::class));
 
-        $first = new WorkerFirstTest('testStartsTheProcessLocalCounter');
+        $first = new WorkerDataProvidedTest('testWithNamedDataSets');
 
         $first->setData('first data set', [1]);
 
-        $second = new WorkerFirstTest('testStartsTheProcessLocalCounter');
+        $second = new WorkerDataProvidedTest('testWithNamedDataSets');
 
         $second->setData('second data set', [2]);
 
@@ -176,18 +156,18 @@ final class DataProviderSuiteDescriptorTest extends TestCase
      */
     private function attemptsFor(string $dataName): RetryTestSuite
     {
-        $test = new WorkerFirstTest('testStartsTheProcessLocalCounter');
+        $test = new WorkerDataProvidedTest('testWithNamedDataSets');
 
         $test->setData($dataName, [1]);
 
         return RetryTestSuite::fromTestCase(
-            WorkerFirstTest::class . '::testStartsTheProcessLocalCounter',
+            WorkerDataProvidedTest::class . '::testWithNamedDataSets',
             $this->createStub(Emitter::class),
             $test,
             2,
             static function () use ($dataName): TestCase
             {
-                $attempt = new WorkerFirstTest('testStartsTheProcessLocalCounter');
+                $attempt = new WorkerDataProvidedTest('testWithNamedDataSets');
 
                 $attempt->setData($dataName, [1]);
 
@@ -207,7 +187,7 @@ final class DataProviderSuiteDescriptorTest extends TestCase
         $repetitions = [];
 
         for ($repetition = 1; $repetition <= 2; $repetition++) {
-            $test = new WorkerFirstTest('testStartsTheProcessLocalCounter');
+            $test = new WorkerDataProvidedTest('testWithNamedDataSets');
 
             $test->setData($dataName, [$repetition]);
             $test->setRepetition($repetition, 2);
@@ -216,7 +196,7 @@ final class DataProviderSuiteDescriptorTest extends TestCase
         }
 
         return RepeatTestSuite::fromTests(
-            WorkerFirstTest::class . '::testStartsTheProcessLocalCounter',
+            WorkerDataProvidedTest::class . '::testWithNamedDataSets',
             $this->createStub(Emitter::class),
             $repetitions,
             1,
@@ -243,6 +223,9 @@ final class DataProviderSuiteDescriptorTest extends TestCase
      */
     private function rebuild(DataProviderTestSuite $suite): DataProviderTestSuite
     {
-        return DataProviderSuiteDescriptor::fromTestSuite($suite, WorkerFirstTest::class)->test(WorkerFirstTest::class);
+        return DataProviderSuiteDescriptor::fromTestSuite($suite, WorkerDataProvidedTest::class)->test(
+            WorkerDataProvidedTest::class,
+            new WorkerDataProvider($this->createStub(Emitter::class)),
+        );
     }
 }
