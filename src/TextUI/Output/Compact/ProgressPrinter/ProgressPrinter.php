@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\TextUI\Output\Compact\ProgressPrinter;
 
-use const PHP_EOL;
 use function str_starts_with;
 use function strlen;
 use function substr;
@@ -32,12 +31,10 @@ use PHPUnit\TextUI\Output\Printer;
  */
 final readonly class ProgressPrinter
 {
-    private Printer $printer;
     private Renderer $renderer;
 
     public function __construct(Printer $printer, Facade $facade)
     {
-        $this->printer  = $printer;
         $this->renderer = new Renderer($printer);
 
         $this->registerSubscribers($facade);
@@ -75,13 +72,13 @@ final readonly class ProgressPrinter
 
     private function printError(string $title, Throwable $throwable): void
     {
-        $this->printer->print(PHP_EOL . '--- ERROR: ' . $title . PHP_EOL);
+        $this->renderer->printHeader('ERROR', $title);
         $this->renderer->printThrowable($throwable);
     }
 
     private function printFailure(string $title, Throwable $throwable): void
     {
-        $this->printer->print(PHP_EOL . '--- FAILURE: ' . $title . PHP_EOL);
+        $this->renderer->printHeader('FAILURE', $title);
 
         $body = $throwable->description();
 
@@ -89,7 +86,7 @@ final readonly class ProgressPrinter
             $body = substr($body, strlen('AssertionError: '));
         }
 
-        $this->printer->print(trim($body) . PHP_EOL);
+        $this->renderer->printBody(trim($body));
         $this->renderer->printStackTrace($throwable->stackTrace());
     }
 

@@ -7,6 +7,8 @@ All notable changes of the PHPUnit 13.3 release series are documented in this fi
 ### Changed
 
 * Control characters and ANSI escape sequences in user-supplied strings such as test names, data set names, and messages are now made visible as `\u{NNNN}` escape sequences instead of being passed through to the terminal
+* Control characters in user-supplied strings are now also made visible in the compact output
+* Line feeds in the name of a test no longer break the header line of a record in the compact output
 
 ## [13.3.4] - 2026-09-15
 
