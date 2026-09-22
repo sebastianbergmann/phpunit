@@ -16,6 +16,8 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 
+
+--- OUTPUT: PHPUnit\TestFixture\ControlCharactersTest::testUnexpectedOutput
 \u{001B}[2J\u{001B}[Hunexpected output
 
 --- FAILURE: PHPUnit\TestFixture\ControlCharactersTest::testFailureMessage

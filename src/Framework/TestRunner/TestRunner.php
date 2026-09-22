@@ -17,6 +17,7 @@ use function array_unique;
 use function assert;
 use function extension_loaded;
 use function realpath;
+use function rtrim;
 use function sprintf;
 use function str_starts_with;
 use function xdebug_is_debugger_active;
@@ -286,7 +287,7 @@ final class TestRunner
                 $test->valueObjectForEvents(),
                 sprintf(
                     'Test code or tested code printed unexpected output: %s',
-                    $test->output(),
+                    rtrim($test->output(), "\r\n"),
                 ),
             );
         }

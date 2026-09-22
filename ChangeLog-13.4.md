@@ -16,6 +16,10 @@ All notable changes of the PHPUnit 13.4 release series are documented in this fi
 * `--coverage-jsonl` CLI option and `<jsonl>` element for the XML configuration file to write a code coverage report in JSONL format, one JSON object per line, that reports uncovered code rather than every executable line
 * `requireCoverageMetadataOnSmallTests`, `requireCoverageMetadataOnMediumTests`, and `requireCoverageMetadataOnLargeTests` attributes for the XML configuration file to require code coverage metadata depending on the size of a test; these have precedence over `requireCoverageMetadata`
 
+### Changed
+
+* Output printed by a test is now shown in the compact output as a `--- OUTPUT:` record that is attributed to the test instead of being passed through unformatted; the record is omitted when `beStrictAboutOutputDuringTests` or `--disallow-test-output` already reports the output as risky
+
 ### Deprecated
 
 * [#6585](https://github.com/sebastianbergmann/phpunit/issues/6585): Writing `defects` before the order for `--order-by` and `executionOrder`, which will change meaning in PHPUnit 14

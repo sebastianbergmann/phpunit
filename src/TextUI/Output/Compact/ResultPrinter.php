@@ -68,10 +68,6 @@ final readonly class ResultPrinter
             return;
         }
 
-        if ($result->hasTestErroredEvents() || $result->hasTestFailedEvents()) {
-            $this->printer->print(PHP_EOL);
-        }
-
         $this->printSummaryLine($result);
         $this->printPhpunitErrors($result);
         $this->printTestRunnerWarnings($result);

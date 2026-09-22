@@ -55,8 +55,6 @@ final class Facade
             return $printer;
         }
 
-        self::createUnexpectedOutputPrinter();
-
         if ($configuration->outputIsCompact()) {
             self::$compactResultPrinter = new CompactResultPrinter(
                 $printer,
@@ -73,8 +71,11 @@ final class Facade
             new CompactProgressPrinter(
                 $printer,
                 EventFacade::instance(),
+                !$configuration->disallowTestOutput(),
             );
         } else {
+            self::createUnexpectedOutputPrinter();
+
             if (!$extensionCapabilities->replacesProgressOutput()) {
                 self::createProgressPrinter($configuration);
             }
