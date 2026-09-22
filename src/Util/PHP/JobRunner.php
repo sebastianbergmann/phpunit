@@ -20,11 +20,10 @@ use function explode;
 use function file_get_contents;
 use function file_put_contents;
 use function function_exists;
+use function getenv;
 use function ini_get_all;
-use function is_array;
 use function is_file;
 use function is_resource;
-use function is_string;
 use function preg_match;
 use function proc_open;
 use function sprintf;
@@ -193,26 +192,13 @@ final readonly class JobRunner
         $environmentVariables = null;
 
         if ($job->hasEnvironmentVariables()) {
-            /** @phpstan-ignore nullCoalesce.variable */
-            $serverVariables = $_SERVER ?? [];
-
-            unset($serverVariables['argv'], $serverVariables['argc']);
-
-            $environmentVariables = [];
-
-            foreach ($serverVariables as $key => $value) {
-                if (!is_string($key)) {
-                    continue;
-                }
-
-                if (is_array($value)) {
-                    continue;
-                }
-
-                $environmentVariables[$key] = $value;
-            }
-
-            $environmentVariables = array_merge($environmentVariables, $job->environmentVariables());
+            // The child process inherits the environment of this process, not
+            // the contents of $_SERVER: application bootstrap code such as a
+            // .env loader writes computed values into $_SERVER without
+            // exporting them, and forwarding those would let the child see
+            // them through getenv() while its own bootstrap computes different
+            // values into its $_SERVER.
+            $environmentVariables = array_merge(getenv(), $job->environmentVariables());
         }
 
         $mergedOutputStream = null;
