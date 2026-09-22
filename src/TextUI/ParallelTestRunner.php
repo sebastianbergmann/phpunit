@@ -21,6 +21,7 @@ use function is_resource;
 use function is_subclass_of;
 use function serialize;
 use function spl_object_id;
+use function sprintf;
 use function usleep;
 use PHPUnit\Event;
 use PHPUnit\Framework\DataProviderTestSuite;
@@ -136,9 +137,12 @@ final class ParallelTestRunner
      * is only available in the main process, once the unit it belongs to has
      * been released), or when its test data cannot be serialized for transport
      * to a worker (in which case the main process is the only place it can run
-     * at all). Running
-     * in the main process is ordinary execution that behaves exactly as it would
-     * in sequential mode. Any remaining standalone test — one that is neither a
+     * at all). Running in the main process is ordinary execution that behaves
+     * exactly as it would in sequential mode — but it is not what the author
+     * of a test suite that opted into parallel execution expects, so a unit
+     * that runs there for any reason other than a configured process
+     * isolation or a #[DoNotRunInParallel] attribute is reported with a test
+     * runner notice that names the reason. Any remaining standalone test — one that is neither a
      * TestCase nor a PHPT test — is run the same way, at its own suite index.
      *
      * In sequential mode, TestSuite::run() wraps every suite's tests in a pair
@@ -197,12 +201,33 @@ final class ParallelTestRunner
 
                 $mustNotRunInParallel = $unit instanceof TestClassWorkUnit && $this->mustNotRunInParallel($unit, $testCases);
 
+                // A unit that runs in the main process for a reason its
+                // author did not ask for — process isolation is configured
+                // for the whole run and #[DoNotRunInParallel] is a deliberate
+                // choice, the other reasons are properties of the tests that
+                // their author may not know disqualify them from a worker —
+                // is reported with a test runner notice that names the
+                // reason, so that the author can act on it.
+                $reason = null;
+
+                if ($unit instanceof TestClassWorkUnit && !$processIsolation && !$mustNotRunInParallel) {
+                    $reason = $this->reasonForRunningInMainProcess($unit, $testCases);
+                }
+
                 if ($unit instanceof TestClassWorkUnit &&
                     ($processIsolation ||
                      $mustNotRunInParallel ||
-                     $this->requiresProcessIsolation($unit, $testCases) ||
-                     $this->hasCrossClassDependencies($unit, $testCases) ||
-                     !$this->canBeSerialized($testCases))) {
+                     $reason !== null)) {
+                    if ($reason !== null) {
+                        Event\Facade::emitter()->testRunnerTriggeredPhpunitNotice(
+                            sprintf(
+                                'The tests of class %s are run in the main process instead of a parallel worker because %s',
+                                $unit->className(),
+                                $reason,
+                            ),
+                        );
+                    }
+
                     // The unit keeps its global suite index; the aggregator runs
                     // it in the main process at the moment that index comes up in
                     // the release sequence, which keeps the output in global
@@ -559,9 +584,40 @@ final class ParallelTestRunner
     }
 
     /**
-     * Whether every one of the unit's test cases carries data that survives
-     * serialization for transport to a worker process. A unit that does not
-     * must be run in the main process instead.
+     * Why the unit cannot run in a worker process and has to run in the main
+     * process instead — or null when it can. The reason is phrased so that it
+     * completes the sentence "The tests of class X are run in the main
+     * process instead of a parallel worker because ...".
+     *
+     * The reasons are checked in the order in which they are listed in
+     * execute(); the first one that applies is reported, even when more than
+     * one does.
+     *
+     * @param list<TestCase> $testCases
+     *
+     * @return ?non-empty-string
+     */
+    private function reasonForRunningInMainProcess(TestClassWorkUnit $unit, array $testCases): ?string
+    {
+        if ($this->requiresProcessIsolation($unit, $testCases)) {
+            return 'its tests require process isolation, which a shared worker process cannot provide';
+        }
+
+        $dependency = $this->crossClassDependencyOf($unit, $testCases);
+
+        if ($dependency !== null) {
+            return $dependency;
+        }
+
+        return $this->serializationProblemOf($testCases);
+    }
+
+    /**
+     * The first of the unit's test cases whose provided data does not survive
+     * serialization for transport to a worker process, together with what is
+     * wrong with the data — or null when the data of every test case
+     * survives. A unit with such a test case must be run in the main process
+     * instead.
      *
      * Two kinds of data do not survive: data that cannot be serialized at all
      * (a closure, for example), which makes serialize() throw; and a resource,
@@ -569,25 +625,57 @@ final class ParallelTestRunner
      * — a test would then receive 0 in place of its resource and fail in a way
      * that has nothing to do with the code under test.
      *
+     * Only the provided data is examined: the input a test receives from the
+     * tests it depends on is not known yet when the units are planned — the
+     * dependency resolver sets it right before the test runs, which for a
+     * worker unit happens inside the worker, where the depended-upon tests of
+     * the same class have run as well.
+     *
      * @param list<TestCase> $testCases
+     *
+     * @return ?non-empty-string
      */
-    private function canBeSerialized(array $testCases): bool
+    private function serializationProblemOf(array $testCases): ?string
     {
         foreach ($testCases as $test) {
-            try {
-                serialize($test->providedData());
-                serialize($test->dependencyInput());
-            } catch (Throwable) {
-                return false;
-            }
+            $problem = $this->serializationProblemWith($test->providedData());
 
-            if ($this->containsResource($test->providedData()) ||
-                $this->containsResource($test->dependencyInput())) {
-                return false;
+            if ($problem !== null) {
+                return sprintf(
+                    'the data of test %s cannot be serialized: %s',
+                    $test->nameWithDataSet(),
+                    $problem,
+                );
             }
         }
 
-        return true;
+        return null;
+    }
+
+    /**
+     * @return ?non-empty-string
+     */
+    private function serializationProblemWith(mixed $value): ?string
+    {
+        try {
+            serialize($value);
+        } catch (Throwable $t) {
+            $message = $t->getMessage();
+
+            if ($message !== '') {
+                return $message;
+            }
+
+            // @codeCoverageIgnoreStart
+            return 'serialize() failed';
+            // @codeCoverageIgnoreEnd
+        }
+
+        if ($this->containsResource($value)) {
+            return 'it contains a resource';
+        }
+
+        return null;
     }
 
     /**
@@ -683,18 +771,22 @@ final class ParallelTestRunner
     }
 
     /**
-     * Whether any of the unit's tests depends on a test — or on all of the
-     * tests — of another test class. Such a test needs the results of tests
-     * that run in a different unit: possibly in a different worker, possibly
-     * not finished yet, and in any case invisible to this unit's worker
-     * process. The unit is therefore run in the main process, at its suite
-     * index: by then, every unit that precedes it in suite order has been
-     * released and the results its tests depend on have been imported —
-     * exactly the state a sequential run would present to them.
+     * The first of the unit's tests that depends on a test — or on all of the
+     * tests — of another test class, described as the reason for running the
+     * unit in the main process — or null when no test of the unit does. Such
+     * a test needs the results of tests that run in a different unit:
+     * possibly in a different worker, possibly not finished yet, and in any
+     * case invisible to this unit's worker process. The unit is therefore run
+     * in the main process, at its suite index: by then, every unit that
+     * precedes it in suite order has been released and the results its tests
+     * depend on have been imported — exactly the state a sequential run would
+     * present to them.
      *
      * @param list<TestCase> $testCases
+     *
+     * @return ?non-empty-string
      */
-    private function hasCrossClassDependencies(TestClassWorkUnit $unit, array $testCases): bool
+    private function crossClassDependencyOf(TestClassWorkUnit $unit, array $testCases): ?string
     {
         $className = $unit->className();
 
@@ -704,12 +796,16 @@ final class ParallelTestRunner
                 // a test method — is not a cross-class dependency; the test
                 // runner reports it wherever the unit runs.
                 if ($dependency->isValid() && $dependency->getTargetClassName() !== $className) {
-                    return true;
+                    return sprintf(
+                        'test %s depends on %s, a test of another class',
+                        $test->name(),
+                        $dependency->getTarget(),
+                    );
                 }
             }
         }
 
-        return false;
+        return null;
     }
 
     /**
