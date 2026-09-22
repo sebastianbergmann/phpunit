@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Util\PHP;
 
+use function putenv;
 use Generator;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Event\Facade;
@@ -272,14 +273,14 @@ EOT,
         $this->assertSame("echoed\n", $running->wait()->stdout());
     }
 
-    #[TestDox('Server variables that cannot be represented as environment variables are not forwarded')]
-    public function testDoesNotForwardServerVariablesThatAreNotEnvironmentVariables(): void
+    #[TestDox('Child process inherits the environment of the parent process, not the contents of $_SERVER')]
+    public function testForwardsEnvironmentVariablesButNotServerVariables(): void
     {
         $server = $_SERVER;
 
-        $_SERVER[0]                     = 'value for non-string key';
-        $_SERVER['__test_array_value']  = ['value'];
-        $_SERVER['__test_string_value'] = 'value';
+        $_SERVER['__test_server_variable'] = 'from server';
+
+        putenv('__test_environment_variable=from environment');
 
         try {
             $jobRunner = new JobRunner(
@@ -296,7 +297,7 @@ EOT,
                 new Job(
                     <<<'EOT'
 <?php declare(strict_types=1);
-var_dump(getenv('__test_array_value'), getenv('__test_string_value'));
+var_dump(getenv('__test_server_variable'), getenv('__test_environment_variable'), getenv('test'));
 
 EOT,
                     ChildProcessReason::TestRequiringProcessIsolation,
@@ -304,9 +305,11 @@ EOT,
                 ),
             );
 
-            $this->assertSame("bool(false)\nstring(5) \"value\"\n", $result->stdout());
+            $this->assertSame("bool(false)\nstring(16) \"from environment\"\nstring(4) \"test\"\n", $result->stdout());
         } finally {
             $_SERVER = $server;
+
+            putenv('__test_environment_variable');
         }
     }
 
