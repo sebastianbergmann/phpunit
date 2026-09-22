@@ -42,6 +42,8 @@ use PHPUnit\Event\TestRunner\GarbageCollectionTriggered;
 use PHPUnit\Event\TestRunner\GarbageCollectionTriggeredSubscriber;
 use PHPUnit\Event\TestRunner\NoticeTriggered as TestRunnerNoticeTriggered;
 use PHPUnit\Event\TestRunner\NoticeTriggeredSubscriber as TestRunnerNoticeTriggeredSubscriber;
+use PHPUnit\Event\TestRunner\TimeLimitExceeded;
+use PHPUnit\Event\TestRunner\TimeLimitExceededSubscriber;
 use PHPUnit\Event\TestRunner\WarningTriggered as TestRunnerWarningTriggered;
 use PHPUnit\Event\TestRunner\WarningTriggeredSubscriber as TestRunnerWarningTriggeredSubscriber;
 use PHPUnit\Event\TestSuite\Filtered as TestSuiteFiltered;
@@ -3716,6 +3718,40 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertSame(1, $subscriber->recordedEventCount());
         $this->assertInstanceOf(ExecutionAborted::class, $subscriber->lastRecordedEvent());
+    }
+
+    #[TestDox('testRunnerTimeLimitExceeded() emits TestRunner\TimeLimitExceeded event')]
+    public function testTestRunnerTimeLimitExceededEmitsTestRunnerTimeLimitExceededEvent(): void
+    {
+        $subscriber = new class extends RecordingSubscriber implements TimeLimitExceededSubscriber
+        {
+            public function notify(TimeLimitExceeded $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
+            TimeLimitExceededSubscriber::class,
+            TimeLimitExceeded::class,
+            $subscriber,
+        );
+
+        $telemetrySystem = $this->telemetrySystem();
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $telemetrySystem,
+        );
+
+        $emitter->testRunnerTimeLimitExceeded(60);
+
+        $this->assertSame(1, $subscriber->recordedEventCount());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(TimeLimitExceeded::class, $event);
+        $this->assertSame(60, $event->timeLimit());
     }
 
     #[TestDox('testRunnerExecutionFinished() emits TestRunner\ExecutionFinished event')]

@@ -57,6 +57,10 @@ final class Facade
         $configuration = ConfigurationRegistry::get();
         $collector     = self::collector();
 
+        if ($collector->wasTimeLimitExceeded()) {
+            return true;
+        }
+
         $numberOfErrors   = $collector->numberOfErroredTests();
         $numberOfFailures = $collector->numberOfFailedTests();
         $numberOfWarnings = $collector->numberOfWarnings();

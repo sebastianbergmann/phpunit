@@ -224,6 +224,7 @@ final class Help
                 ['arg' => '--disallow-test-output', 'desc' => 'Be strict about output during tests'],
                 ['arg' => '--enforce-time-limit', 'desc' => 'Enforce time limit based on test size'],
                 ['arg' => '--default-time-limit <sec>', 'desc' => 'Timeout in seconds for tests that have no declared size'],
+                ['arg' => '--timeout <sec>', 'desc' => 'Stop the test run after the specified number of seconds (wall-clock time for the entire run)'],
                 ['arg' => '--do-not-report-useless-tests', 'desc' => 'Do not report tests that do not test anything'],
                 ['spacer' => ''],
 

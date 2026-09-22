@@ -1088,6 +1088,12 @@ final readonly class Merger
             $retry = $cliConfiguration->retry();
         }
 
+        $timeout = 0;
+
+        if ($cliConfiguration->hasTimeout()) {
+            $timeout = $cliConfiguration->timeout();
+        }
+
         if ($xmlConfiguration->wasLoadedFromFile() && $xmlConfiguration->hasValidationErrors()) {
             if ((new SchemaDetector)->detect($xmlConfiguration->filename())->detected()) {
                 $this->emitter->testRunnerTriggeredPhpunitDeprecation(
@@ -1491,6 +1497,7 @@ final readonly class Merger
             $randomOrderSeed,
             $repeat,
             $retry,
+            $timeout,
             $includeUncoveredFiles,
             $xmlConfiguration->testSuite(),
             $includeTestSuite,

@@ -78,6 +78,7 @@ use PHPUnit\Runner\TestRunHistory\NullTestRunHistory;
 use PHPUnit\Runner\TestRunHistory\TestRunHistory;
 use PHPUnit\Runner\TestRunHistory\TestRunHistoryHandler;
 use PHPUnit\Runner\TestSuiteSorter;
+use PHPUnit\Runner\TimeLimit\TimeLimitHandler;
 use PHPUnit\Runner\Version;
 use PHPUnit\TestRunner\IssueFilter;
 use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
@@ -160,6 +161,12 @@ final readonly class Application
             );
 
             DifferBuilder::configureComparatorFactory();
+
+            if ($configuration->hasTimeout()) {
+                // the time limit covers everything from here on, including
+                // bootstrapping and loading the test suite
+                TimeLimitHandler::init(EventFacade::instance(), $configuration->timeout());
+            }
 
             new PhpHandler($this->emitter)->handle($configuration->php());
 
@@ -328,15 +335,28 @@ final readonly class Application
             $result = TestResultFacade::result();
 
             if (TestResultFacade::wasInterrupted()) {
-                if (!$extensionCapabilities->replacesResultOutput() && !$configuration->debug()) {
-                    $printer->print(PHP_EOL . PHP_EOL);
+                $this->printAbortMessage($printer, $configuration, $extensionCapabilities, 'Test execution was interrupted by a signal.');
+            }
+
+            // the compact output prints the exceeded time limit as a record of its own
+            if ($result->wasTimeLimitExceeded() && !$configuration->outputIsCompact()) {
+                $timeLimit = $result->timeLimitExceededEvent()->timeLimit();
+                $unit      = 'seconds';
+
+                if ($timeLimit === 1) {
+                    $unit = 'second';
                 }
 
-                $printer->print('Test execution was interrupted by a signal.');
-
-                if ($extensionCapabilities->replacesResultOutput() || $configuration->debug()) {
-                    $printer->print(PHP_EOL);
-                }
+                $this->printAbortMessage(
+                    $printer,
+                    $configuration,
+                    $extensionCapabilities,
+                    sprintf(
+                        'The time limit of %d %s for the test run was exceeded.',
+                        $timeLimit,
+                        $unit,
+                    ),
+                );
             }
 
             if (!$extensionCapabilities->replacesResultOutput() && !$configuration->debug()) {
@@ -348,7 +368,7 @@ final readonly class Application
                 );
             }
 
-            if (!TestResultFacade::wasInterrupted()) {
+            if (!TestResultFacade::wasInterrupted() && !$result->wasTimeLimitExceeded()) {
                 CodeCoverage::instance()->generateReports($printer, $configuration);
 
                 if (isset($baselineGenerator)) {
@@ -1009,6 +1029,19 @@ final readonly class Application
                     $result->actualValue(),
                 ),
             );
+        }
+    }
+
+    private function printAbortMessage(Printer $printer, Configuration $configuration, ExtensionCapabilities $extensionCapabilities, string $message): void
+    {
+        if (!$extensionCapabilities->replacesResultOutput() && !$configuration->debug()) {
+            $printer->print(PHP_EOL . PHP_EOL);
+        }
+
+        $printer->print($message);
+
+        if ($extensionCapabilities->replacesResultOutput() || $configuration->debug()) {
+            $printer->print(PHP_EOL);
         }
     }
 

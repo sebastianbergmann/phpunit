@@ -14,6 +14,7 @@ use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Test\PhpDeprecationTriggered;
 use PHPUnit\Event\TestRunner\NoticeTriggered as TestRunnerNoticeTriggered;
+use PHPUnit\Event\TestRunner\TimeLimitExceeded;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
@@ -48,6 +49,24 @@ final class TestResultTest extends AbstractEventTestCase
 
         $this->assertSame([$event], $result->testRunnerTriggeredNoticeEvents());
         $this->assertSame(1, $result->numberOfTestRunnerTriggeredNoticeEvents());
+    }
+
+    public function testTimeLimitIsNotExceededByDefault(): void
+    {
+        $this->assertFalse($this->collector()->result()->wasTimeLimitExceeded());
+    }
+
+    public function testProvidesTimeLimitExceededEventWhenTimeLimitWasExceeded(): void
+    {
+        $collector = $this->collector();
+        $event     = new TimeLimitExceeded($this->telemetryInfo(), 60);
+
+        $collector->testRunnerTimeLimitExceeded($event);
+
+        $result = $collector->result();
+
+        $this->assertTrue($result->wasTimeLimitExceeded());
+        $this->assertSame($event, $result->timeLimitExceededEvent());
     }
 
     public function testHasNoPhpOrUserDeprecationsByDefault(): void

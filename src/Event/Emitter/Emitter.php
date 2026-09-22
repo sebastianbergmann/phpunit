@@ -390,5 +390,10 @@ interface Emitter
 
     public function testRunnerFinished(): void;
 
+    /**
+     * @param positive-int $timeLimit
+     */
+    public function testRunnerTimeLimitExceeded(int $timeLimit): void;
+
     public function applicationFinished(int $shellExitCode): void;
 }

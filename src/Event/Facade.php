@@ -264,6 +264,7 @@ final class Facade
             TestRunner\ExtensionBootstrapped::class,
             TestRunner\Finished::class,
             TestRunner\Started::class,
+            TestRunner\TimeLimitExceeded::class,
             TestRunner\DeprecationTriggered::class,
             TestRunner\NoticeTriggered::class,
             TestRunner\WarningTriggered::class,

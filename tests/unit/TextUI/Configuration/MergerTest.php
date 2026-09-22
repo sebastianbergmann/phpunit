@@ -22,6 +22,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\TextUI\CliArguments\Builder;
 use PHPUnit\TextUI\Configuration\Configuration as MergedConfiguration;
 use PHPUnit\TextUI\Configuration\Merger;
+use PHPUnit\TextUI\Configuration\TimeoutNotConfiguredException;
 
 #[CoversClass(Merger::class)]
 #[Medium]
@@ -305,6 +306,31 @@ final class MergerTest extends TestCase
         $this->assertTrue($mergedConfig->colors());
         $this->assertCount(1, $mergedConfig->php()->includePaths());
         $this->assertSame(0, $mergedConfig->defaultTimeLimit());
+    }
+
+    public function testTimeoutIsNotConfiguredByDefault(): void
+    {
+        $fromFile = new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration_empty.xml');
+        $fromCli  = new Builder($this->createStub(Emitter::class))->fromParameters([]);
+
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge($fromCli, $fromFile);
+
+        $this->assertFalse($mergedConfig->hasTimeout());
+
+        $this->expectException(TimeoutNotConfiguredException::class);
+
+        $mergedConfig->timeout();
+    }
+
+    public function testTimeoutCanBeConfiguredFromCli(): void
+    {
+        $fromFile = new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration_empty.xml');
+        $fromCli  = new Builder($this->createStub(Emitter::class))->fromParameters(['--timeout=60']);
+
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge($fromCli, $fromFile);
+
+        $this->assertTrue($mergedConfig->hasTimeout());
+        $this->assertSame(60, $mergedConfig->timeout());
     }
 
     public function testInvalidRandomOrderSeedIsReplacedWithSmallestValidSeed(): void

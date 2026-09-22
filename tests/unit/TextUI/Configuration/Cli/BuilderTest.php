@@ -3232,6 +3232,41 @@ final class BuilderTest extends TestCase
         $configuration->retry();
     }
 
+    #[TestDox('--timeout')]
+    public function testTimeout(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--timeout', '60']);
+
+        $this->assertTrue($configuration->hasTimeout());
+        $this->assertSame(60, $configuration->timeout());
+    }
+
+    public function testTimeoutMayNotBeConfigured(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters([]);
+
+        $this->assertFalse($configuration->hasTimeout());
+
+        $this->expectException(Exception::class);
+
+        $configuration->timeout();
+    }
+
+    #[TestDox('--timeout with a value that is not a positive integer is ignored')]
+    public function testTimeoutIsIgnoredWhenValueIsNotAPositiveInteger(): void
+    {
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter
+            ->expects($this->once())
+            ->method('testRunnerTriggeredPhpunitWarning')
+            ->with('Option "--timeout 0" ignored because "0" is not a positive integer');
+
+        $configuration = new Builder($emitter)->fromParameters(['--timeout', '0']);
+
+        $this->assertFalse($configuration->hasTimeout());
+    }
+
     public function testInvalidOption(): void
     {
         $this->expectException(Exception::class);

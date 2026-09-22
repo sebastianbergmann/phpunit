@@ -129,6 +129,7 @@ final class Builder
         'random-order-seed=',
         'repeat=',
         'retry=',
+        'timeout=',
         'reverse-order',
         'reverse-list',
         'static-backup',
@@ -409,6 +410,7 @@ final class Builder
         $randomOrderSeed                          = null;
         $repeat                                   = null;
         $retry                                    = null;
+        $timeout                                  = null;
         $reportUselessTests                       = null;
         $resolveDependencies                      = null;
         $reverseList                              = null;
@@ -1318,6 +1320,25 @@ final class Builder
 
                     break;
 
+                case '--timeout':
+                    if (!is_numeric($option[1]) ||
+                        (string) (int) $option[1] !== $option[1] ||
+                        (int) $option[1] < 1) {
+                        $this->emitter->testRunnerTriggeredPhpunitWarning(
+                            sprintf(
+                                'Option "--timeout %s" ignored because "%s" is not a positive integer',
+                                $option[1],
+                                $option[1],
+                            ),
+                        );
+
+                        break;
+                    }
+
+                    $timeout = (int) $option[1];
+
+                    break;
+
                 case '--resolve-dependencies':
                     $resolveDependencies = true;
 
@@ -1532,6 +1553,7 @@ final class Builder
             $randomOrderSeed,
             $repeat,
             $retry,
+            $timeout,
             $reportUselessTests,
             $resolveDependencies,
             $reverseList,

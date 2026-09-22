@@ -1643,6 +1643,19 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
+     * @param positive-int $timeLimit
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
+    public function testRunnerTimeLimitExceeded(int $timeLimit): void
+    {
+        $this->dispatcher->dispatch(
+            new TestRunner\TimeLimitExceeded($this->telemetryInfo(), $timeLimit),
+        );
+    }
+
+    /**
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */

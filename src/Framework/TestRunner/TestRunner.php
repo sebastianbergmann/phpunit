@@ -36,6 +36,7 @@ use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\Runner\Exception;
 use PHPUnit\Runner\ShutdownHandler;
+use PHPUnit\Runner\TimeLimit\TimeLimitHandler;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\TextUI\Configuration\SourceFilter;
@@ -152,6 +153,8 @@ final class TestRunner
         }
 
         try {
+            TimeLimitHandler::armAlarm();
+
             if ($this->canTimeLimitBeEnforced() &&
                 $this->shouldTimeLimitBeEnforced($test)) {
                 $risky = $this->runTestWithTimeout($test);
@@ -189,6 +192,8 @@ final class TestRunner
             );
         } catch (Throwable $e) {
             $error = true;
+        } finally {
+            TimeLimitHandler::disarmAlarm();
         }
 
         $test->addToAssertionCount(Assert::getCount());

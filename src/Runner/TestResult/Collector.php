@@ -51,6 +51,7 @@ use PHPUnit\Event\TestRunner\NoticeTriggered as TestRunnerNoticeTriggered;
 use PHPUnit\Event\TestRunner\PhpDeprecationTriggered as TestRunnerIssuePhpDeprecationTriggered;
 use PHPUnit\Event\TestRunner\PhpNoticeTriggered as TestRunnerIssuePhpNoticeTriggered;
 use PHPUnit\Event\TestRunner\PhpWarningTriggered as TestRunnerIssuePhpWarningTriggered;
+use PHPUnit\Event\TestRunner\TimeLimitExceeded;
 use PHPUnit\Event\TestRunner\WarningTriggered as TestRunnerWarningTriggered;
 use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
 use PHPUnit\Event\TestSuite\Skipped as TestSuiteSkipped;
@@ -228,7 +229,8 @@ final class Collector
     /**
      * @var array<non-empty-string, positive-int>
      */
-    private array $retriedTests = [];
+    private array $retriedTests                        = [];
+    private ?TimeLimitExceeded $timeLimitExceededEvent = null;
 
     public function __construct(Facade $facade, IssueFilter $issueFilter)
     {
@@ -272,6 +274,7 @@ final class Collector
             new TestRunnerTriggeredIssuePhpWarningSubscriber($this),
             new TestRunnerTriggeredIssueWarningSubscriber($this),
             new ChildProcessErroredSubscriber($this),
+            new TestRunnerTimeLimitExceededSubscriber($this),
         );
 
         $this->issueFilter = $issueFilter;
@@ -318,6 +321,7 @@ final class Collector
                 'unknown'  => count($this->deprecationIdsByTrigger['unknown']),
             ],
             $this->retriedTests,
+            $this->timeLimitExceededEvent,
         );
     }
 
@@ -786,6 +790,16 @@ final class Collector
     public function testRunnerTriggeredIssueWarning(TestRunnerIssueWarningTriggered $event): void
     {
         $this->testRunnerTriggeredIssueWarningEvents[] = $event;
+    }
+
+    public function testRunnerTimeLimitExceeded(TimeLimitExceeded $event): void
+    {
+        $this->timeLimitExceededEvent = $event;
+    }
+
+    public function wasTimeLimitExceeded(): bool
+    {
+        return $this->timeLimitExceededEvent !== null;
     }
 
     public function childProcessErrored(ChildProcessErrored $event): void

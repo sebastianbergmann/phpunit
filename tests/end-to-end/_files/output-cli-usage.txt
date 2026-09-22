@@ -55,6 +55,7 @@ Execution:
   --disallow-test-output               Be strict about output during tests
   --enforce-time-limit                 Enforce time limit based on test size
   --default-time-limit <sec>           Timeout in seconds for tests that have no declared size
+  --timeout <sec>                      Stop the test run after the specified number of seconds (wall-clock time for the entire run)
   --do-not-report-useless-tests        Do not report tests that do not test anything
 
   --stop-on-defect[=<n>]               Stop after first (or n-th) error, failure, warning, or risky test

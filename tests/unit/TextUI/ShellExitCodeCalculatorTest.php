@@ -22,6 +22,7 @@ use PHPUnit\Event\Telemetry\MemoryUsage;
 use PHPUnit\Event\Telemetry\Snapshot;
 use PHPUnit\Event\Test\PhpunitNoticeTriggered;
 use PHPUnit\Event\TestData\TestDataCollection;
+use PHPUnit\Event\TestRunner\TimeLimitExceeded;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
@@ -59,6 +60,17 @@ final class ShellExitCodeCalculatorTest extends TestCase
                     '--do-not-fail-on-phpunit-notice',
                 ]),
                 $this->testResultWithPhpunitNotice(),
+            ),
+        );
+    }
+
+    public function testSignalsExceededTimeLimitUsingDedicatedExitCode(): void
+    {
+        $this->assertSame(
+            124,
+            (new ShellExitCodeCalculator)->calculate(
+                $this->configuration([]),
+                $this->testResultWithExceededTimeLimit(),
             ),
         );
     }
@@ -130,6 +142,51 @@ final class ShellExitCodeCalculatorTest extends TestCase
                 'indirect' => 0,
                 'unknown'  => 0,
             ],
+        );
+    }
+
+    private function testResultWithExceededTimeLimit(): TestResult
+    {
+        return new TestResult(
+            1,
+            1,
+            1,
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            0,
+            [
+                'self'     => 0,
+                'direct'   => 0,
+                'indirect' => 0,
+                'unknown'  => 0,
+            ],
+            [],
+            new TimeLimitExceeded($this->telemetryInfo(), 60),
         );
     }
 
