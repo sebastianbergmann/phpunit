@@ -2,7 +2,11 @@
 use PHPUnit\Event\Facade;
 use PHPUnit\Framework\TestRunner\ErrorHandlerBootstrapper;
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Runner\CodeCoverage;
+use PHPUnit\Runner\Extension\PharLoader;
+use PHPUnit\Runner\Extension\WorkerExtensionBootstrapper;
+use PHPUnit\Runner\Extension\WorkerExtensionFacade;
 use PHPUnit\Runner\Parallel\CommandStream;
 use PHPUnit\Runner\Parallel\WorkerDataProvider;
 use PHPUnit\Runner\Parallel\WorkerException;
@@ -26,6 +30,34 @@ if ({collectCodeCoverageInformation}) {
 
 ErrorHandlerBootstrapper::bootstrap($__phpunit_configuration);
 
+// The configured extensions that implement ParallelWorkerExtension are
+// bootstrapped once, here, for the lifetime of the worker. Their subscribers
+// are collected and registered with the dispatcher of every unit this worker
+// runs (see __phpunit_worker_run_unit()); the warnings that a failed
+// bootstrap produces are emitted with the first unit, as there is no unit to
+// emit them into yet.
+$__phpunit_extensionFacade   = new WorkerExtensionFacade;
+$__phpunit_extensionWarnings = [];
+
+if (!$__phpunit_configuration->noExtensions()) {
+    if ($__phpunit_configuration->hasPharExtensionDirectory()) {
+        (new PharLoader(Facade::emitter()))->loadPharExtensionsInDirectory(
+            $__phpunit_configuration->pharExtensionDirectory(),
+        );
+    }
+
+    $__phpunit_extensionBootstrapper = new WorkerExtensionBootstrapper($__phpunit_configuration, $__phpunit_extensionFacade);
+
+    foreach ($__phpunit_configuration->extensionBootstrappers() as $__phpunit_bootstrapper) {
+        $__phpunit_extensionBootstrapper->bootstrap(
+            $__phpunit_bootstrapper['className'],
+            $__phpunit_bootstrapper['parameters'],
+        );
+    }
+
+    $__phpunit_extensionWarnings = $__phpunit_extensionBootstrapper->warnings();
+}
+
 // A unit of work is run as a TestSuite, whose run loop consults the test
 // result facade to decide whether to stop. The facade lazily registers its
 // collector as an event subscriber on first use, which is not possible once
@@ -37,7 +69,7 @@ TestResultFacade::init();
 
 ob_end_clean();
 
-function __phpunit_worker_run_unit(array $command): string
+function __phpunit_worker_run_unit(array $command, array $extensionSubscribers, array $extensionWarnings): string
 {
     $dispatcher = Facade::instance()->initForIsolation(
         PHPUnit\Event\Telemetry\HRTime::fromSecondsAndNanoseconds(
@@ -45,6 +77,22 @@ function __phpunit_worker_run_unit(array $command): string
             $command['offsetNanoseconds']
         ),
     );
+
+    // The subscribers of the extensions bootstrapped in this worker receive
+    // the events of this unit's tests live, inside this process. They are
+    // registered ahead of the streaming subscriber below, so that whatever
+    // they do when a test finishes is done before the test's events are
+    // streamed to the parent.
+    foreach ($extensionSubscribers as $__phpunit_subscriber) {
+        try {
+            $dispatcher->registerSubscriber($__phpunit_subscriber);
+        } catch (UnknownSubscriberTypeException) {
+            // A subscriber that implements no known subscriber interface
+            // cannot receive events here any more than it can in the main
+            // process, where registering it made the extension's bootstrap
+            // fail and reported that failure.
+        }
+    }
 
     // Stream the events of the unit to the parent process while the unit is
     // still running: whenever a test finishes, the events collected so far are
@@ -114,6 +162,10 @@ function __phpunit_worker_run_unit(array $command): string
     // built the suite, and it is the parent's that are reported; the ones
     // emitted here are discarded so that they are not reported a second time.
     $dispatcher->flush();
+
+    foreach ($extensionWarnings as $__phpunit_warning) {
+        Facade::emitter()->testRunnerTriggeredPhpunitWarning($__phpunit_warning);
+    }
 
     if ($failure === null) {
         $suite->run();
@@ -185,7 +237,15 @@ while (($__phpunit_line = fgets($__phpunit_input)) !== false) {
         break;
     }
 
-    $__phpunit_result = __phpunit_worker_run_unit($__phpunit_command);
+    $__phpunit_result = __phpunit_worker_run_unit(
+        $__phpunit_command,
+        $__phpunit_extensionFacade->subscribers(),
+        $__phpunit_extensionWarnings,
+    );
+
+    // The warnings of the worker's extension bootstrap travel with the first
+    // unit only.
+    $__phpunit_extensionWarnings = [];
 
     file_put_contents($__phpunit_command['resultFile'], $__phpunit_result);
 
