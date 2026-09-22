@@ -114,6 +114,66 @@ final class RendererTest extends TestCase
         $this->assertSame('', $printer->buffer());
     }
 
+    public function testRendersHeaderOnASingleLine(): void
+    {
+        $printer = $this->printer();
+
+        new Renderer($printer)->printHeader('FAILURE', "FooTest::testBar\n--- FAILURE: Forged::testForged\r\nforged\rbody");
+
+        /* @noinspection PhpPossiblePolymorphicInvocationInspection */
+        $this->assertSame(
+            PHP_EOL . '--- FAILURE: FooTest::testBar\u{000A}--- FAILURE: Forged::testForged\u{000D}\u{000A}forged\u{000D}body' . PHP_EOL,
+            $printer->buffer(),
+        );
+    }
+
+    public function testMakesControlCharactersInHeaderVisible(): void
+    {
+        $printer = $this->printer();
+
+        new Renderer($printer)->printHeader('ERROR', "FooTest::testBar\x1B[2K");
+
+        /* @noinspection PhpPossiblePolymorphicInvocationInspection */
+        $this->assertSame(
+            PHP_EOL . '--- ERROR: FooTest::testBar\u{001B}[2K' . PHP_EOL,
+            $printer->buffer(),
+        );
+    }
+
+    public function testMakesControlCharactersInBodyVisibleButKeepsLineFeeds(): void
+    {
+        $printer = $this->printer();
+
+        new Renderer($printer)->printBody("first line\x1B[2J\nsecond line");
+
+        /* @noinspection PhpPossiblePolymorphicInvocationInspection */
+        $this->assertSame(
+            'first line\u{001B}[2J' . "\n" . 'second line' . PHP_EOL,
+            $printer->buffer(),
+        );
+    }
+
+    public function testMakesControlCharactersInThrowableVisible(): void
+    {
+        $printer = $this->printer();
+
+        new Renderer($printer)->printThrowable(
+            new Throwable(
+                'RuntimeException',
+                "message\x1B[2K",
+                "RuntimeException: message\x1B[2K",
+                "FooTest.php:1\x07",
+                null,
+            ),
+        );
+
+        /* @noinspection PhpPossiblePolymorphicInvocationInspection */
+        $this->assertSame(
+            'RuntimeException: message\u{001B}[2K' . PHP_EOL . PHP_EOL . 'FooTest.php:1\u{0007}' . PHP_EOL,
+            $printer->buffer(),
+        );
+    }
+
     private function printer(): Printer
     {
         return new class implements Printer
