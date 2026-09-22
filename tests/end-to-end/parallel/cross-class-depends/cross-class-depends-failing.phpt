@@ -29,4 +29,4 @@ Failed asserting that false is true.
 %sFailingProducerTest.php:%d
 
 FAILURES!
-Tests: 2, Assertions: 1, Failures: 1, Skipped: 1.
+Tests: 2, Assertions: 1, Failures: 1, PHPUnit Notices: 1, Skipped: 1.

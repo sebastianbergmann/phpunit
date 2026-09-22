@@ -13,7 +13,7 @@ use function fopen;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-final class NonSerializableDataTest extends TestCase
+final class ResourceDataTest extends TestCase
 {
     public static function resourceProvider(): array
     {
@@ -22,22 +22,9 @@ final class NonSerializableDataTest extends TestCase
         ];
     }
 
-    public static function closureProvider(): array
-    {
-        return [
-            [static fn (): bool => true],
-        ];
-    }
-
     #[DataProvider('resourceProvider')]
     public function testReceivesAnOpenResource(mixed $resource): void
     {
         $this->assertIsResource($resource);
-    }
-
-    #[DataProvider('closureProvider')]
-    public function testReceivesACallable(mixed $callable): void
-    {
-        $this->assertIsCallable($callable);
     }
 }

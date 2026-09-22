@@ -20,4 +20,5 @@ Parallel:      2 workers
 
 Time: %s, Memory: %s
 
-OK (4 tests, 4 assertions)
+OK, but there were issues!
+Tests: 4, Assertions: 4, PHPUnit Notices: 3.
