@@ -10,6 +10,7 @@
 namespace PHPUnit\TestFixture\ParallelWorkerExtension\Recycling;
 
 use const FILE_APPEND;
+use const LOCK_EX;
 use const PHP_EOL;
 use function file_put_contents;
 use function getenv;
@@ -46,7 +47,7 @@ final class Extension implements ParallelWorkerExtension
         file_put_contents(
             (string) getenv('PHPUNIT_TEST_WORKER_LIFECYCLE_LOG'),
             getenv('PHPUNIT_WORKER_TOKEN') . ' ' . $what . PHP_EOL,
-            FILE_APPEND,
+            FILE_APPEND | LOCK_EX,
         );
     }
 }
