@@ -144,6 +144,16 @@ final class FacadeTest extends TestCase
         $this->assertSame([$event, $event], $tracer->events);
     }
 
+    public function testRegistrationOfSubscriberForEventsOfThisProcessDoesNotWorkWhenEventFacadeIsSealed(): void
+    {
+        $this->expectException(EventFacadeIsSealedException::class);
+
+        Facade::instance()->registerSubscriberForEventsOfThisProcess(
+            new class implements Subscriber
+            {},
+        );
+    }
+
     public function testUsesTheIsolationDispatcherOfAFacadeThatWasInitializedForIsolation(): void
     {
         // In a process whose event facade was initialized for isolation — the
