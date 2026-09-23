@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner;
 
+use function array_keys;
 use function array_slice;
 use function basename;
 use function count;
@@ -37,6 +38,41 @@ final class TestSuiteLoader
      * @var array<non-empty-string, list<class-string>>
      */
     private static array $fileToClassesMap = [];
+
+    /**
+     * @var array<string, true>
+     */
+    private static array $loadedSuiteClassFiles = [];
+
+    /**
+     * The classes declared in the test class files that have been loaded,
+     * mapped to the file that declares them.
+     *
+     * A parallel worker loads only the test class file of the unit it runs,
+     * so a class that is declared in another test class file, and is not
+     * autoloadable, is unknown to it. A sequential run, which loads every
+     * test class file before it runs a test, knows such a class, and a test
+     * may rely on that, for instance by naming it in #[DataProviderExternal].
+     * The worker uses this map to load such a class when it is needed.
+     *
+     * @return array<lowercase-string, string>
+     */
+    public static function classesDeclaredInLoadedSuiteClassFiles(): array
+    {
+        $map = [];
+
+        foreach (array_keys(self::$loadedSuiteClassFiles) as $file) {
+            if (!isset(self::$fileToClassesMap[$file])) {
+                continue;
+            }
+
+            foreach (self::$fileToClassesMap[$file] as $class) {
+                $map[strtolower($class)] = $file;
+            }
+        }
+
+        return $map;
+    }
 
     /**
      * @throws Exception
@@ -112,6 +148,13 @@ final class TestSuiteLoader
      */
     private function loadSuiteClassFile(string $suiteClassFile): array
     {
+        /*
+         * The file is recorded even when it does not have to be loaded
+         * because its classes have already been declared, by the autoloader
+         * for instance, and mapped while another file was loaded.
+         */
+        self::$loadedSuiteClassFiles[$suiteClassFile] = true;
+
         if (isset(self::$fileToClassesMap[$suiteClassFile])) {
             return self::$fileToClassesMap[$suiteClassFile];
         }
