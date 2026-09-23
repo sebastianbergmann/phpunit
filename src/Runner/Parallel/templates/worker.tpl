@@ -49,7 +49,7 @@ spl_autoload_register(
     },
 );
 
-// The configured extensions that implement ParallelWorkerExtension are
+// The configured extensions that implement ChildProcessExtension are
 // bootstrapped once, here, for the lifetime of the worker. Their subscribers
 // are collected and registered with the dispatcher of every unit this worker
 // runs (see __phpunit_worker_run_unit()); the warnings that a failed

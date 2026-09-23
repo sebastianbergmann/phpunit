@@ -9,25 +9,25 @@
  */
 namespace PHPUnit\TestFixture\ParallelWorkerExtension\Failing;
 
+use PHPUnit\Runner\Extension\ChildProcessExtension;
+use PHPUnit\Runner\Extension\ChildProcessFacade;
 use PHPUnit\Runner\Extension\Facade;
-use PHPUnit\Runner\Extension\ParallelWorkerExtension;
 use PHPUnit\Runner\Extension\ParameterCollection;
-use PHPUnit\Runner\Extension\WorkerFacade;
 use PHPUnit\TextUI\Configuration\Configuration;
 use RuntimeException;
 
-final class Extension implements ParallelWorkerExtension
+final class Extension implements ChildProcessExtension
 {
     public function bootstrap(Configuration $configuration, Facade $facade, ParameterCollection $parameters): void
     {
     }
 
-    public function bootstrapWorker(Configuration $configuration, WorkerFacade $facade, ParameterCollection $parameters): void
+    public function bootstrapChildProcess(Configuration $configuration, ChildProcessFacade $facade, ParameterCollection $parameters): void
     {
         throw new RuntimeException('the resource this extension needs does not exist in a worker');
     }
 
-    public function shutdownWorker(): void
+    public function shutdownChildProcess(): void
     {
     }
 }

@@ -1,5 +1,5 @@
 --TEST--
-phpunit --parallel=2 lets a subscriber that is registered in the main process for the events of that process only, and in the worker processes, count every test once, in the process that ran it, and not count a test that ran in a separate process
+phpunit --parallel=2 lets a subscriber that is registered in the main process for the events of that process only, and in the worker processes, count every test once, in the process that ran it, including a test that ran in a separate process
 --FILE--
 <?php declare(strict_types=1);
 $log = tempnam(sys_get_temp_dir(), 'phpunit_counted_');
@@ -34,6 +34,7 @@ Parallel:      2 workers
 Time: %s, Memory: %s
 
 OK (4 tests, 4 assertions)
+PHPUnit\TestFixture\ParallelWorkerExtension\EventsOfThisProcess\IsolatedTest::testOne counted in separate process
 PHPUnit\TestFixture\ParallelWorkerExtension\EventsOfThisProcess\MainTest::testOne counted in main process
 PHPUnit\TestFixture\ParallelWorkerExtension\EventsOfThisProcess\WorkerOneTest::testOne counted in worker process
 PHPUnit\TestFixture\ParallelWorkerExtension\EventsOfThisProcess\WorkerTwoTest::testOne counted in worker process
