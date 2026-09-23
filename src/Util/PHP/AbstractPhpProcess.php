@@ -261,7 +261,11 @@ abstract class AbstractPhpProcess
         );
 
         try {
-            $childResult = unserialize($stdout);
+            $childResult = false;
+
+            if ($stdout !== '') {
+                $childResult = unserialize($stdout);
+            }
 
             restore_error_handler();
 
