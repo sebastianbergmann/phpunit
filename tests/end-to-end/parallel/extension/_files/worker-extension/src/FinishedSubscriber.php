@@ -10,6 +10,7 @@
 namespace PHPUnit\TestFixture\ParallelWorkerExtension\Worker;
 
 use const FILE_APPEND;
+use const LOCK_EX;
 use const PHP_EOL;
 use function file_put_contents;
 use function getenv;
@@ -28,7 +29,7 @@ final class FinishedSubscriber implements FinishedSubscriberInterface
         file_put_contents(
             (string) getenv('PHPUNIT_TEST_FINISHED_LOG'),
             $event->test()->id() . ' finished in worker ' . getenv('PHPUNIT_WORKER_ID') . PHP_EOL,
-            FILE_APPEND,
+            FILE_APPEND | LOCK_EX,
         );
     }
 }

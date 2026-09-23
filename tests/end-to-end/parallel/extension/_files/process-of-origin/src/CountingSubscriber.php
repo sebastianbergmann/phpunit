@@ -10,6 +10,7 @@
 namespace PHPUnit\TestFixture\ParallelWorkerExtension\ProcessOfOrigin;
 
 use const FILE_APPEND;
+use const LOCK_EX;
 use const PHP_EOL;
 use function file_put_contents;
 use function getenv;
@@ -39,7 +40,7 @@ final class CountingSubscriber implements FinishedSubscriber
         file_put_contents(
             (string) getenv('PHPUNIT_TEST_COUNTED_LOG'),
             $event->test()->id() . ' counted in ' . $process . PHP_EOL,
-            FILE_APPEND,
+            FILE_APPEND | LOCK_EX,
         );
     }
 }

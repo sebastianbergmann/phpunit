@@ -9,7 +9,7 @@ usleep(300000);
 file_put_contents(
     sys_get_temp_dir() . '/phpunit-parallel-repeat-interval-a.intervals',
     $start . ' ' . microtime(true) . PHP_EOL,
-    FILE_APPEND,
+    FILE_APPEND | LOCK_EX,
 );
 
 print 'ok';
