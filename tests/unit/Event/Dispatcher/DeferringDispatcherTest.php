@@ -178,6 +178,23 @@ final class DeferringDispatcherTest extends TestCase
         $deferringDispatcher->registerSubscriber($subscriber);
     }
 
+    public function testSubscriberForEventsOfThisProcessCanBeRegistered(): void
+    {
+        $subscriber = $this->createMock(DummySubscriber::class);
+
+        $subscribableDispatcher = $this->createMock(SubscribableDispatcher::class);
+
+        $subscribableDispatcher
+            ->expects($this->once())
+            ->method('registerSubscriberForEventsOfThisProcess')
+            ->with($this->identicalTo($subscriber))
+            ->seal();
+
+        $deferringDispatcher = new DeferringDispatcher($subscribableDispatcher);
+
+        $deferringDispatcher->registerSubscriberForEventsOfThisProcess($subscriber);
+    }
+
     public function testTracerCanBeRegistered(): void
     {
         $tracer = $this->createStub(Tracer::class);

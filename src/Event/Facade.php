@@ -74,6 +74,30 @@ final class Facade implements EventCollector
 
     /**
      * @throws EventFacadeIsSealedException
+     * @throws UnknownSubscriberTypeException
+     */
+    public function registerSubscribersForEventsOfThisProcess(Subscriber ...$subscribers): void
+    {
+        foreach ($subscribers as $subscriber) {
+            $this->registerSubscriberForEventsOfThisProcess($subscriber);
+        }
+    }
+
+    /**
+     * @throws EventFacadeIsSealedException
+     * @throws UnknownSubscriberTypeException
+     */
+    public function registerSubscriberForEventsOfThisProcess(Subscriber $subscriber): void
+    {
+        if ($this->sealed) {
+            throw new EventFacadeIsSealedException;
+        }
+
+        $this->deferredDispatcher()->registerSubscriberForEventsOfThisProcess($subscriber);
+    }
+
+    /**
+     * @throws EventFacadeIsSealedException
      */
     public function registerTracer(Tracer\Tracer $tracer): void
     {
