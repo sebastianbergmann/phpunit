@@ -26,11 +26,12 @@ use PHPUnit\TextUI\Configuration\Configuration;
  * The main process bootstraps the extension through bootstrap() as it does in
  * a sequential run, and the subscribers registered there receive every event
  * of the run — replayed, for the tests that ran in a worker. A subscriber
- * that has to act once per test, in the process that runs it, and that is
- * registered in both places, skips the replayed events in the main process:
- * their telemetry information carries the ID of the process that emitted
- * them (see Telemetry\Info::processId()), which differs from getmypid() for
- * an event that was emitted in a worker.
+ * that has to act once per test, in the process that runs it, is registered
+ * in both places: in the main process with
+ * Facade::registerSubscriberForEventsOfThisProcess(), so that it is not
+ * notified of the replayed events of the tests that ran in a worker, and in
+ * the worker processes with WorkerFacade::registerSubscriber(), because a
+ * worker does not replay the events of another process.
  *
  * The worker's identity is available to bootstrapWorker() through the
  * environment variables PHPUNIT_WORKER_ID and PHPUNIT_WORKER_TOKEN. No test
