@@ -12,6 +12,7 @@ namespace PHPUnit\Runner\GarbageCollection;
 use function gc_collect_cycles;
 use function gc_disable;
 use function gc_enable;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Event\Facade;
 
 /**
@@ -21,38 +22,38 @@ use PHPUnit\Event\Facade;
  */
 final class GarbageCollectionHandler
 {
-    private readonly Facade $facade;
+    private readonly Emitter $emitter;
     private readonly int $threshold;
     private int $tests = 0;
 
     public function __construct(Facade $facade, int $threshold)
     {
-        $this->facade    = $facade;
+        $this->emitter   = $facade->emitter();
         $this->threshold = $threshold;
 
-        $this->registerSubscribers();
+        $this->registerSubscribers($facade);
     }
 
     public function executionStarted(): void
     {
         gc_disable();
 
-        $this->facade->emitter()->testRunnerDisabledGarbageCollection();
+        $this->emitter->testRunnerDisabledGarbageCollection();
 
         gc_collect_cycles();
 
-        $this->facade->emitter()->testRunnerTriggeredGarbageCollection();
+        $this->emitter->testRunnerTriggeredGarbageCollection();
     }
 
     public function executionFinished(): void
     {
         gc_collect_cycles();
 
-        $this->facade->emitter()->testRunnerTriggeredGarbageCollection();
+        $this->emitter->testRunnerTriggeredGarbageCollection();
 
         gc_enable();
 
-        $this->facade->emitter()->testRunnerEnabledGarbageCollection();
+        $this->emitter->testRunnerEnabledGarbageCollection();
     }
 
     public function testFinished(): void
@@ -62,15 +63,15 @@ final class GarbageCollectionHandler
         if ($this->tests === $this->threshold) {
             gc_collect_cycles();
 
-            $this->facade->emitter()->testRunnerTriggeredGarbageCollection();
+            $this->emitter->testRunnerTriggeredGarbageCollection();
 
             $this->tests = 0;
         }
     }
 
-    private function registerSubscribers(): void
+    private function registerSubscribers(Facade $facade): void
     {
-        $this->facade->registerSubscribers(
+        $facade->registerSubscribers(
             new ExecutionStartedSubscriber($this),
             new ExecutionFinishedSubscriber($this),
             new TestFinishedSubscriber($this),
