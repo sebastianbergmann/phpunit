@@ -9,13 +9,13 @@
  */
 namespace PHPUnit\TestFixture\ParallelWorkerExtension;
 
+use PHPUnit\Runner\Extension\ChildProcessExtension;
+use PHPUnit\Runner\Extension\ChildProcessFacade;
 use PHPUnit\Runner\Extension\Facade;
-use PHPUnit\Runner\Extension\ParallelWorkerExtension;
 use PHPUnit\Runner\Extension\ParameterCollection;
-use PHPUnit\Runner\Extension\WorkerFacade;
 use PHPUnit\TextUI\Configuration\Configuration;
 
-final class WorkerAwareExtension implements ParallelWorkerExtension
+final class WorkerAwareExtension implements ChildProcessExtension
 {
     public static ?ParameterCollection $workerParameters = null;
     public static int $shutdowns                         = 0;
@@ -24,14 +24,14 @@ final class WorkerAwareExtension implements ParallelWorkerExtension
     {
     }
 
-    public function bootstrapWorker(Configuration $configuration, WorkerFacade $facade, ParameterCollection $parameters): void
+    public function bootstrapChildProcess(Configuration $configuration, ChildProcessFacade $facade, ParameterCollection $parameters): void
     {
         self::$workerParameters = $parameters;
 
         $facade->registerSubscriber(new RecordingSubscriber);
     }
 
-    public function shutdownWorker(): void
+    public function shutdownChildProcess(): void
     {
         self::$shutdowns++;
     }
