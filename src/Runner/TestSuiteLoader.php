@@ -39,6 +39,41 @@ final class TestSuiteLoader
     private static array $fileToClassesMap = [];
 
     /**
+     * @var list<string>
+     */
+    private static array $loadedSuiteClassFiles = [];
+
+    /**
+     * The classes declared in the test class files that have been loaded,
+     * mapped to the file that declares them.
+     *
+     * A parallel worker loads only the test class file of the unit it runs,
+     * so a class that is declared in another test class file, and is not
+     * autoloadable, is unknown to it. A sequential run, which loads every
+     * test class file before it runs a test, knows such a class, and a test
+     * may rely on that, for instance by naming it in #[DataProviderExternal].
+     * The worker uses this map to load such a class when it is needed.
+     *
+     * @return array<lowercase-string, string>
+     */
+    public static function classesDeclaredInLoadedSuiteClassFiles(): array
+    {
+        $map = [];
+
+        foreach (self::$loadedSuiteClassFiles as $file) {
+            if (!isset(self::$fileToClassesMap[$file])) {
+                continue;
+            }
+
+            foreach (self::$fileToClassesMap[$file] as $class) {
+                $map[strtolower($class)] = $file;
+            }
+        }
+
+        return $map;
+    }
+
+    /**
      * @throws Exception
      *
      * @return ReflectionClass<TestCase>
@@ -132,6 +167,8 @@ final class TestSuiteLoader
         }
 
         require_once $suiteClassFile;
+
+        self::$loadedSuiteClassFiles[] = $suiteClassFile;
 
         $declaredClasses = get_declared_classes();
 
