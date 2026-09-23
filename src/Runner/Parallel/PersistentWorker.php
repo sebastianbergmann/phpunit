@@ -61,7 +61,7 @@ use SebastianBergmann\Template\Template;
  * kind of serialized envelope that process isolation uses, which the
  * ResultAggregator decodes and replays into the parent's event subsystem.
  *
- * The configured extensions that implement ParallelWorkerExtension are
+ * The configured extensions that implement ChildProcessExtension are
  * bootstrapped in the worker when it boots, once for its lifetime, and the
  * subscribers they register receive the events of every unit the worker runs,
  * live, inside the worker process (see WorkerExtensionBootstrapper). Every

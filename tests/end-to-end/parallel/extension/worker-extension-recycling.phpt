@@ -1,5 +1,5 @@
 --TEST--
-phpunit --parallel=2 --recycle-workers-after=1 shuts down an extension that implements ParallelWorkerExtension in every worker process, including the ones that are replaced with a fresh process
+phpunit --parallel=2 --recycle-workers-after=1 shuts down an extension that implements ChildProcessExtension in every worker process, including the ones that are replaced with a fresh process
 --FILE--
 <?php declare(strict_types=1);
 $log = tempnam(sys_get_temp_dir(), 'phpunit_lifecycle_');

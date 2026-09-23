@@ -19,17 +19,18 @@ use PHPUnit\Event\Test\FinishedSubscriber;
 
 final class CountingSubscriber implements FinishedSubscriber
 {
+    private string $process;
+
+    public function __construct(string $process)
+    {
+        $this->process = $process;
+    }
+
     public function notify(Finished $event): void
     {
-        $process = 'main process';
-
-        if (getenv('PHPUNIT_WORKER_ID') !== false) {
-            $process = 'worker process';
-        }
-
         file_put_contents(
             (string) getenv('PHPUNIT_TEST_COUNTED_LOG'),
-            $event->test()->id() . ' counted in ' . $process . PHP_EOL,
+            $event->test()->id() . ' counted in ' . $this->process . PHP_EOL,
             FILE_APPEND | LOCK_EX,
         );
     }
