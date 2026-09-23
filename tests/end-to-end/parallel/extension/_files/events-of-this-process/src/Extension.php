@@ -9,33 +9,40 @@
  */
 namespace PHPUnit\TestFixture\ParallelWorkerExtension\EventsOfThisProcess;
 
+use function getenv;
+use PHPUnit\Runner\Extension\ChildProcessExtension;
+use PHPUnit\Runner\Extension\ChildProcessFacade;
 use PHPUnit\Runner\Extension\Facade;
-use PHPUnit\Runner\Extension\ParallelWorkerExtension;
 use PHPUnit\Runner\Extension\ParameterCollection;
-use PHPUnit\Runner\Extension\WorkerFacade;
 use PHPUnit\TextUI\Configuration\Configuration;
 
 /**
- * Registers the same subscriber in the main process and in the worker
- * processes: a test that runs in a worker is to be counted there, and a test
- * that runs in the main process is to be counted there. In the main process,
- * the subscriber is registered for the events of that process only, so that
- * it is not notified of the replayed events of the tests that ran in a worker
- * or in a separate process.
+ * Registers the same subscriber in the main process and in the child
+ * processes: a test that runs in a worker or in a separate process is to be
+ * counted there, and a test that runs in the main process is to be counted
+ * there. In the main process, the subscriber is registered for the events of
+ * that process only, so that it is not notified of the replayed events of the
+ * tests that ran in a worker or in a separate process.
  */
-final class Extension implements ParallelWorkerExtension
+final class Extension implements ChildProcessExtension
 {
     public function bootstrap(Configuration $configuration, Facade $facade, ParameterCollection $parameters): void
     {
-        $facade->registerSubscriberForEventsOfThisProcess(new CountingSubscriber);
+        $facade->registerSubscriberForEventsOfThisProcess(new CountingSubscriber('main process'));
     }
 
-    public function bootstrapWorker(Configuration $configuration, WorkerFacade $facade, ParameterCollection $parameters): void
+    public function bootstrapChildProcess(Configuration $configuration, ChildProcessFacade $facade, ParameterCollection $parameters): void
     {
-        $facade->registerSubscriber(new CountingSubscriber);
+        $process = 'separate process';
+
+        if (getenv('PHPUNIT_WORKER_ID') !== false) {
+            $process = 'worker process';
+        }
+
+        $facade->registerSubscriber(new CountingSubscriber($process));
     }
 
-    public function shutdownWorker(): void
+    public function shutdownChildProcess(): void
     {
     }
 }

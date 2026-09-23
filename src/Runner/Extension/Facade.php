@@ -47,8 +47,8 @@ interface Facade
      * subscriber registered with this method does not. This is what a
      * subscriber needs that acts on a test in the process that runs it, such
      * as one that wraps every test in a database transaction, when the
-     * extension also registers it in the worker processes of a parallel test
-     * run (see ParallelWorkerExtension).
+     * extension also registers it in the child processes that run tests (see
+     * ChildProcessExtension).
      *
      * An event is considered to be emitted in this process when the process
      * ID in its telemetry information (see Telemetry\Info::processId()) is
