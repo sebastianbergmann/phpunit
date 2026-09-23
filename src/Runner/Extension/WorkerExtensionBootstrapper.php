@@ -32,6 +32,9 @@ use Throwable;
  * worker has no unit to emit it into at the time it bootstraps, so it emits
  * the recorded warnings with the first unit it runs.
  *
+ * The extensions that were bootstrapped successfully are shut down when the
+ * worker stops (see shutdown()).
+ *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -40,6 +43,11 @@ final class WorkerExtensionBootstrapper
 {
     private readonly Configuration $configuration;
     private readonly WorkerFacade $facade;
+
+    /**
+     * @var list<ParallelWorkerExtension>
+     */
+    private array $extensions = [];
 
     /**
      * @var list<non-empty-string>
@@ -75,6 +83,8 @@ final class WorkerExtensionBootstrapper
                 $this->facade,
                 ParameterCollection::fromArray($parameters),
             );
+
+            $this->extensions[] = $instance;
         } catch (Throwable $t) {
             $this->warnings[] = sprintf(
                 'Bootstrapping of extension %s in a parallel worker process failed: %s%s%s',
@@ -92,5 +102,34 @@ final class WorkerExtensionBootstrapper
     public function warnings(): array
     {
         return $this->warnings;
+    }
+
+    /**
+     * Shut down the extensions that were bootstrapped successfully, in the
+     * order in which they were bootstrapped. An extension whose shutdown
+     * fails does not keep the others from being shut down; the failure is
+     * returned as a warning, which the worker reports to the main process.
+     *
+     * @return list<non-empty-string>
+     */
+    public function shutdown(): array
+    {
+        $warnings = [];
+
+        foreach ($this->extensions as $extension) {
+            try {
+                $extension->shutdownWorker();
+            } catch (Throwable $t) {
+                $warnings[] = sprintf(
+                    'Shutdown of extension %s in a parallel worker process failed: %s%s%s',
+                    $extension::class,
+                    $t->getMessage(),
+                    PHP_EOL,
+                    $t->getTraceAsString(),
+                );
+            }
+        }
+
+        return $warnings;
     }
 }

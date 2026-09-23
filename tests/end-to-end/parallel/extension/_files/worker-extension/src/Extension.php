@@ -9,6 +9,10 @@
  */
 namespace PHPUnit\TestFixture\ParallelWorkerExtension\Worker;
 
+use const FILE_APPEND;
+use const PHP_EOL;
+use function file_put_contents;
+use function getenv;
 use PHPUnit\Runner\Extension\Facade;
 use PHPUnit\Runner\Extension\ParallelWorkerExtension;
 use PHPUnit\Runner\Extension\ParameterCollection;
@@ -28,6 +32,15 @@ final class Extension implements ParallelWorkerExtension
         $facade->registerSubscribers(
             new PreparationStartedSubscriber,
             new FinishedSubscriber,
+        );
+    }
+
+    public function shutdownWorker(): void
+    {
+        file_put_contents(
+            (string) getenv('PHPUNIT_TEST_FINISHED_LOG'),
+            'worker ' . getenv('PHPUNIT_WORKER_ID') . ' shut down' . PHP_EOL,
+            FILE_APPEND,
         );
     }
 }

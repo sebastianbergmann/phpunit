@@ -16,7 +16,7 @@ use PHPUnit\Runner\Extension\WorkerFacade;
 use PHPUnit\TextUI\Configuration\Configuration;
 use RuntimeException;
 
-final class FailingWorkerExtension implements ParallelWorkerExtension
+final class ShutdownFailingWorkerExtension implements ParallelWorkerExtension
 {
     public function bootstrap(Configuration $configuration, Facade $facade, ParameterCollection $parameters): void
     {
@@ -24,11 +24,10 @@ final class FailingWorkerExtension implements ParallelWorkerExtension
 
     public function bootstrapWorker(Configuration $configuration, WorkerFacade $facade, ParameterCollection $parameters): void
     {
-        throw new RuntimeException('the worker bootstrap failed');
     }
 
     public function shutdownWorker(): void
     {
-        throw new RuntimeException('an extension whose bootstrap failed must not be shut down');
+        throw new RuntimeException('the worker shutdown failed');
     }
 }
