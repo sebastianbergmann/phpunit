@@ -55,6 +55,11 @@ final class InfoTest extends TestCase
         $this->assertSame(0, $this->info()->memoryUsageSincePrevious()->bytes());
     }
 
+    public function testHasProcessId(): void
+    {
+        $this->assertSame(12345, $this->info()->processId());
+    }
+
     public function testHasGarbageCollectorStatus(): void
     {
         $this->assertInstanceOf(GarbageCollectorStatus::class, $this->info()->garbageCollectorStatus());
@@ -135,6 +140,7 @@ final class InfoTest extends TestCase
             $current->userCpuTime()->diff($current->userCpuTime()),
             $current->systemCpuTime()->diff($current->systemCpuTime()),
             $current->totalCpuTime()->diff($current->totalCpuTime()),
+            12345,
         );
     }
 
