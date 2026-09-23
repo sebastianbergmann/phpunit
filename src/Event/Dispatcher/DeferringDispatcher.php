@@ -53,6 +53,11 @@ final class DeferringDispatcher implements SubscribableDispatcher
         $this->collectedEventsDispatcher->registerSubscriber($subscriber);
     }
 
+    public function registerSubscriberForEventsOfThisProcess(Subscriber $subscriber): void
+    {
+        $this->dispatcher->registerSubscriberForEventsOfThisProcess($subscriber);
+    }
+
     public function dispatch(Event $event): void
     {
         if ($this->collectDispatchedEvent($event)) {
