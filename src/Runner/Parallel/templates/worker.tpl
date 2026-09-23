@@ -30,6 +30,25 @@ if ({collectCodeCoverageInformation}) {
 
 ErrorHandlerBootstrapper::bootstrap($__phpunit_configuration);
 
+// A worker loads only the test class file of the unit it runs, whereas the
+// main process has loaded every test class file. A class that is declared in
+// another test class file and cannot be autoloaded, such as a test class that
+// a #[DataProviderExternal] attribute names, is therefore loaded on demand from
+// the file the main process loaded it from. This autoloader is registered
+// last, so that it only ever sees classes that no other autoloader knows.
+spl_autoload_register(
+    static function (string $className): void
+    {
+        static $files = {testClassFiles};
+
+        $className = strtolower($className);
+
+        if (isset($files[$className])) {
+            require_once $files[$className];
+        }
+    },
+);
+
 // The configured extensions that implement ParallelWorkerExtension are
 // bootstrapped once, here, for the lifetime of the worker. Their subscribers
 // are collected and registered with the dispatcher of every unit this worker

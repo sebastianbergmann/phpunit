@@ -28,6 +28,7 @@ use function sys_get_temp_dir;
 use function tempnam;
 use function unlink;
 use function unserialize;
+use function var_export;
 use PHPUnit\Event\EventCollection;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Event\TestRunner\ChildProcessReason;
@@ -35,6 +36,7 @@ use PHPUnit\Framework\ProcessIsolationException;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestRunner\ChildProcessBootstrap;
 use PHPUnit\Runner\CodeCoverage;
+use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Util\PHP\Job;
 use PHPUnit\Util\PHP\JobRunner;
 use PHPUnit\Util\PHP\RunningJob;
@@ -692,6 +694,7 @@ final class PersistentWorker
                 'childProcessHead'               => ChildProcessBootstrap::headFragment(''),
                 'childProcessConfiguration'      => $configurationFragment,
                 'collectCodeCoverageInformation' => $coverage,
+                'testClassFiles'                 => var_export(TestSuiteLoader::classesDeclaredInLoadedSuiteClassFiles(), true),
             ],
         );
 
