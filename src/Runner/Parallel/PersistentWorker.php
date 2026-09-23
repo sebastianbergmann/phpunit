@@ -9,19 +9,25 @@
  */
 namespace PHPUnit\Runner\Parallel;
 
+use function array_is_list;
 use function assert;
 use function bin2hex;
 use function clearstatcache;
 use function file_get_contents;
 use function filesize;
 use function hrtime;
+use function is_array;
 use function is_file;
+use function is_string;
 use function random_bytes;
 use function sprintf;
+use function str_starts_with;
 use function strlen;
+use function substr;
 use function sys_get_temp_dir;
 use function tempnam;
 use function unlink;
+use function unserialize;
 use PHPUnit\Event\EventCollection;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Event\TestRunner\ChildProcessReason;
@@ -338,17 +344,48 @@ final class PersistentWorker
         $this->clearCurrentUnit();
     }
 
+    /**
+     * Stop the worker process gracefully: the worker shuts down the
+     * extensions that were bootstrapped in it and exits. The warnings that a
+     * failed shutdown produces are reported through a result file, whose
+     * content is trusted only when it carries the nonce of the stop command,
+     * and are emitted as test runner warnings.
+     */
     public function stop(): void
     {
-        if ($this->job !== null) {
-            $this->job->write(CommandStream::encode(['command' => 'stop']) . "\n");
-            $this->job->closeStdin();
+        if ($this->job === null) {
+            return;
+        }
 
-            $result = $this->job->wait();
+        $nonce      = bin2hex(random_bytes(16));
+        $resultFile = tempnam(sys_get_temp_dir(), 'phpunit_');
 
-            EventFacade::emitter()->childProcessFinished(ChildProcessReason::ParallelWorker, $result->stdout(), $result->stderr());
+        if ($resultFile === false) {
+            // @codeCoverageIgnoreStart
+            $resultFile = sys_get_temp_dir() . '/phpunit_' . $nonce;
+            // @codeCoverageIgnoreEnd
+        }
 
-            $this->job = null;
+        $this->job->write(
+            CommandStream::encode(
+                [
+                    'command'    => 'stop',
+                    'resultFile' => $resultFile,
+                    'nonce'      => $nonce,
+                ],
+            ) . "\n",
+        );
+
+        $this->job->closeStdin();
+
+        $result = $this->job->wait();
+
+        EventFacade::emitter()->childProcessFinished(ChildProcessReason::ParallelWorker, $result->stdout(), $result->stderr());
+
+        $this->job = null;
+
+        foreach ($this->shutdownWarnings($resultFile, $nonce) as $warning) {
+            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning($warning);
         }
     }
 
@@ -537,6 +574,43 @@ final class PersistentWorker
         $this->clearCurrentUnit();
 
         return $completed;
+    }
+
+    /**
+     * The warnings that the worker reported for the extensions whose shutdown
+     * failed. A result file that is missing, or whose content does not carry
+     * the nonce of the stop command or does not decode to a list of strings,
+     * reports none.
+     *
+     * @param non-empty-string $nonce
+     *
+     * @return list<non-empty-string>
+     */
+    private function shutdownWarnings(string $resultFile, string $nonce): array
+    {
+        $result = @file_get_contents($resultFile);
+
+        @unlink($resultFile);
+
+        if ($result === false || !str_starts_with($result, $nonce)) {
+            return [];
+        }
+
+        $warnings = @unserialize(substr($result, strlen($nonce)), ['allowed_classes' => false]);
+
+        if (!is_array($warnings) || !array_is_list($warnings)) {
+            return [];
+        }
+
+        $valid = [];
+
+        foreach ($warnings as $warning) {
+            if (is_string($warning) && $warning !== '') {
+                $valid[] = $warning;
+            }
+        }
+
+        return $valid;
     }
 
     /**
