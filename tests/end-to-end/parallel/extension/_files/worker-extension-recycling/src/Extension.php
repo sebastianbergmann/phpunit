@@ -14,10 +14,10 @@ use const LOCK_EX;
 use const PHP_EOL;
 use function file_put_contents;
 use function getenv;
+use PHPUnit\Runner\Extension\ChildProcessExtension;
+use PHPUnit\Runner\Extension\ChildProcessFacade;
 use PHPUnit\Runner\Extension\Facade;
-use PHPUnit\Runner\Extension\ParallelWorkerExtension;
 use PHPUnit\Runner\Extension\ParameterCollection;
-use PHPUnit\Runner\Extension\WorkerFacade;
 use PHPUnit\TextUI\Configuration\Configuration;
 
 /**
@@ -26,18 +26,18 @@ use PHPUnit\TextUI\Configuration\Configuration;
  * bootstrapped — including those that replaced a recycled one — was shut
  * down as well.
  */
-final class Extension implements ParallelWorkerExtension
+final class Extension implements ChildProcessExtension
 {
     public function bootstrap(Configuration $configuration, Facade $facade, ParameterCollection $parameters): void
     {
     }
 
-    public function bootstrapWorker(Configuration $configuration, WorkerFacade $facade, ParameterCollection $parameters): void
+    public function bootstrapChildProcess(Configuration $configuration, ChildProcessFacade $facade, ParameterCollection $parameters): void
     {
         $this->log('bootstrapped');
     }
 
-    public function shutdownWorker(): void
+    public function shutdownChildProcess(): void
     {
         $this->log('shut down');
     }

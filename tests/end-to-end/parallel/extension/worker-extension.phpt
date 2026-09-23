@@ -1,5 +1,5 @@
 --TEST--
-phpunit --parallel=2 bootstraps an extension that implements ParallelWorkerExtension in the worker, where its subscribers receive the events of the tests the worker runs, live, once per test, and shuts it down when the worker stops
+phpunit --parallel=2 bootstraps an extension that implements ChildProcessExtension in the worker, where its subscribers receive the events of the tests the worker runs, live, once per test, and shuts it down when the worker stops
 --FILE--
 <?php declare(strict_types=1);
 $log = tempnam(sys_get_temp_dir(), 'phpunit_finished_');

@@ -1,5 +1,5 @@
 --TEST--
-phpunit lets a subscriber that is registered for the events of this process only count every test that ran in this process, and not count a test that ran in a separate process
+phpunit lets a subscriber that is registered for the events of this process only count every test that ran in this process, and a subscriber that is registered in a separate process count the test that ran there, so that every test is counted once
 --FILE--
 <?php declare(strict_types=1);
 $log = tempnam(sys_get_temp_dir(), 'phpunit_counted_');
@@ -32,6 +32,7 @@ Configuration: %sphpunit.xml
 Time: %s, Memory: %s
 
 OK (4 tests, 4 assertions)
+PHPUnit\TestFixture\ParallelWorkerExtension\EventsOfThisProcess\IsolatedTest::testOne counted in separate process
 PHPUnit\TestFixture\ParallelWorkerExtension\EventsOfThisProcess\MainTest::testOne counted in main process
 PHPUnit\TestFixture\ParallelWorkerExtension\EventsOfThisProcess\WorkerOneTest::testOne counted in main process
 PHPUnit\TestFixture\ParallelWorkerExtension\EventsOfThisProcess\WorkerTwoTest::testOne counted in main process

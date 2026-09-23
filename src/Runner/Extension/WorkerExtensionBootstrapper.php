@@ -21,10 +21,11 @@ use Throwable;
 
 /**
  * Bootstraps, in a parallel worker process, the configured extensions that
- * implement ParallelWorkerExtension.
+ * implement ChildProcessExtension.
  *
- * This is the worker's counterpart of ExtensionBootstrapper. An extension
- * that does not implement ParallelWorkerExtension is skipped without comment,
+ * This is the worker's counterpart of ExtensionBootstrapper, and what
+ * ChildProcessExtensionBootstrapper is for a separate process. An extension
+ * that does not implement ChildProcessExtension is skipped without comment,
  * as is a class that does not exist: the main process has bootstrapped, or
  * warned about, every configured extension already, and the worker only
  * bootstraps the ones that asked to be. A failure to bootstrap an extension
@@ -42,10 +43,10 @@ use Throwable;
 final class WorkerExtensionBootstrapper
 {
     private readonly Configuration $configuration;
-    private readonly WorkerFacade $facade;
+    private readonly ChildProcessFacade $facade;
 
     /**
-     * @var list<ParallelWorkerExtension>
+     * @var list<ChildProcessExtension>
      */
     private array $extensions = [];
 
@@ -54,7 +55,7 @@ final class WorkerExtensionBootstrapper
      */
     private array $warnings = [];
 
-    public function __construct(Configuration $configuration, WorkerFacade $facade)
+    public function __construct(Configuration $configuration, ChildProcessFacade $facade)
     {
         $this->configuration = $configuration;
         $this->facade        = $facade;
@@ -69,16 +70,16 @@ final class WorkerExtensionBootstrapper
             return;
         }
 
-        if (!in_array(ParallelWorkerExtension::class, class_implements($className), true)) {
+        if (!in_array(ChildProcessExtension::class, class_implements($className), true)) {
             return;
         }
 
         try {
             $instance = new ReflectionClass($className)->newInstance();
 
-            assert($instance instanceof ParallelWorkerExtension);
+            assert($instance instanceof ChildProcessExtension);
 
-            $instance->bootstrapWorker(
+            $instance->bootstrapChildProcess(
                 $this->configuration,
                 $this->facade,
                 ParameterCollection::fromArray($parameters),
@@ -118,7 +119,7 @@ final class WorkerExtensionBootstrapper
 
         foreach ($this->extensions as $extension) {
             try {
-                $extension->shutdownWorker();
+                $extension->shutdownChildProcess();
             } catch (Throwable $t) {
                 $warnings[] = sprintf(
                     'Shutdown of extension %s in a parallel worker process failed: %s%s%s',
