@@ -26,4 +26,8 @@ final class Extension implements ParallelWorkerExtension
     {
         throw new RuntimeException('the resource this extension needs does not exist in a worker');
     }
+
+    public function shutdownWorker(): void
+    {
+    }
 }

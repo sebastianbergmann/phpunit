@@ -26,4 +26,9 @@ final class FailingWorkerExtension implements ParallelWorkerExtension
     {
         throw new RuntimeException('the worker bootstrap failed');
     }
+
+    public function shutdownWorker(): void
+    {
+        throw new RuntimeException('an extension whose bootstrap failed must not be shut down');
+    }
 }

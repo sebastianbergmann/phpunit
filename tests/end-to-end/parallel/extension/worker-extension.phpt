@@ -1,5 +1,5 @@
 --TEST--
-phpunit --parallel=2 bootstraps an extension that implements ParallelWorkerExtension in the worker, where its subscribers receive the events of the tests the worker runs, live, once per test
+phpunit --parallel=2 bootstraps an extension that implements ParallelWorkerExtension in the worker, where its subscribers receive the events of the tests the worker runs, live, once per test, and shuts it down when the worker stops
 --FILE--
 <?php declare(strict_types=1);
 $log = tempnam(sys_get_temp_dir(), 'phpunit_finished_');
@@ -32,3 +32,5 @@ Time: %s, Memory: %s
 OK (2 tests, 3 assertions)
 PHPUnit\TestFixture\ParallelWorkerExtension\Worker\SeesTheWorkerSubscriberTest::testTheSubscriberRegisteredInTheWorkerSawThisTestBeingPrepared finished in worker %d
 PHPUnit\TestFixture\ParallelWorkerExtension\Worker\SeesTheWorkerSubscriberTest::testTheSubscriberPersistsAcrossTheTestsOfAUnit finished in worker %d
+worker 0 shut down
+worker 1 shut down
