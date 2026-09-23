@@ -41,6 +41,18 @@ final class CollectingDispatcher implements Dispatcher
         }
     }
 
+    /**
+     * Registers a subscriber with the direct dispatcher that events are
+     * dispatched to as they are collected, so that it receives the events of
+     * the test that a child process runs while the test is running.
+     *
+     * @throws UnknownSubscriberTypeException
+     */
+    public function registerSubscriber(Subscriber $subscriber): void
+    {
+        $this->isolatedDirectDispatcher->registerSubscriber($subscriber);
+    }
+
     public function flush(): EventCollection
     {
         $events = $this->events;

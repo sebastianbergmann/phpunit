@@ -13,6 +13,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\DummyEvent;
+use PHPUnit\TestFixture\DummySubscriber;
 
 #[CoversClass(CollectingDispatcher::class)]
 #[Small]
@@ -41,5 +43,40 @@ final class CollectingDispatcherTest extends TestCase
         $dispatcher->dispatch($event);
 
         $this->assertSame([$event], $dispatcher->flush()->asArray());
+    }
+
+    public function testDispatchesCollectedEventsToRegisteredSubscribers(): void
+    {
+        $typeMap = new TypeMap;
+        $typeMap->addMapping(Test\DeprecationTriggeredSubscriber::class, Test\DeprecationTriggered::class);
+        $typeMap->addMapping(DummySubscriber::class, DummyEvent::class);
+
+        $dispatcher = new CollectingDispatcher(new DirectDispatcher($typeMap));
+        $event      = new DummyEvent;
+        $subscriber = $this->createMock(DummySubscriber::class);
+
+        $subscriber
+            ->expects($this->once())
+            ->method('notify')
+            ->with($this->identicalTo($event))
+            ->seal();
+
+        $dispatcher->registerSubscriber($subscriber);
+
+        $dispatcher->dispatch($event);
+
+        $this->assertSame([$event], $dispatcher->flush()->asArray());
+    }
+
+    public function testRejectsSubscriberOfUnknownType(): void
+    {
+        $typeMap = new TypeMap;
+        $typeMap->addMapping(Test\DeprecationTriggeredSubscriber::class, Test\DeprecationTriggered::class);
+
+        $dispatcher = new CollectingDispatcher(new DirectDispatcher($typeMap));
+
+        $this->expectException(UnknownSubscriberTypeException::class);
+
+        $dispatcher->registerSubscriber($this->createStub(DummySubscriber::class));
     }
 }

@@ -3,6 +3,9 @@ use PHPUnit\Event\Facade;
 use PHPUnit\Framework\TestRunner\ChildProcessOutputCollector;
 use PHPUnit\Framework\TestRunner\ErrorHandlerBootstrapper;
 use PHPUnit\Runner\CodeCoverage;
+use PHPUnit\Runner\Extension\ChildProcessExtensionBootstrapper;
+use PHPUnit\Runner\Extension\ChildProcessExtensionFacade;
+use PHPUnit\Runner\Extension\PharLoader;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\PhpHandler;
@@ -55,6 +58,25 @@ function __phpunit_run_isolated_test()
 
     ErrorHandlerBootstrapper::bootstrap($configuration);
 
+    // The extensions are bootstrapped after the event facade has been
+    // initialized for isolation, so that the subscribers they register
+    // receive the events of the test, and so that a failure to bootstrap one
+    // is reported to the main process along with these events.
+    $extensionBootstrapper = new ChildProcessExtensionBootstrapper(
+        $configuration,
+        new ChildProcessExtensionFacade($dispatcher),
+        Facade::emitter(),
+    );
+
+    if (!$configuration->noExtensions()) {
+        foreach ($configuration->extensionBootstrappers() as $bootstrapper) {
+            $extensionBootstrapper->bootstrap(
+                $bootstrapper['className'],
+                $bootstrapper['parameters'],
+            );
+        }
+    }
+
     $test = new {className}('{methodName}');
 
     $test->setData({dataName}, unserialize('{data}'));
@@ -66,6 +88,11 @@ function __phpunit_run_isolated_test()
     ob_end_clean();
 
     $test->run();
+
+    // What an extension prints while it is shut down is not shown.
+    ob_start();
+    $extensionBootstrapper->shutdown();
+    ob_end_clean();
 
     $output = ChildProcessOutputCollector::collect($test);
 
@@ -125,6 +152,15 @@ foreach (ConfigurationRegistry::get()->bootstrapForTestSuite() as $__phpunit_tes
     }
 
     require_once $__phpunit_bootstrapForTestSuite;
+}
+
+// The extensions in PHARs are loaded before the event facade is initialized
+// for isolation, so that the events that are emitted while they are loaded,
+// which the main process has emitted already, are not reported again.
+if (!ConfigurationRegistry::get()->noExtensions() && ConfigurationRegistry::get()->hasPharExtensionDirectory()) {
+    (new PharLoader(Facade::emitter()))->loadPharExtensionsInDirectory(
+        ConfigurationRegistry::get()->pharExtensionDirectory(),
+    );
 }
 
 __phpunit_run_isolated_test();
