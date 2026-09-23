@@ -33,11 +33,24 @@ use PHPUnit\TextUI\Configuration\Configuration;
  * The worker's identity is available to bootstrapWorker() through the
  * environment variables PHPUNIT_WORKER_ID and PHPUNIT_WORKER_TOKEN. No test
  * runner lifecycle event is emitted inside a worker: what an extension would
- * do when the test runner starts, it does in bootstrapWorker().
+ * do when the test runner starts, it does in bootstrapWorker(), and what it
+ * would do when the test runner finishes, it does in shutdownWorker().
+ *
+ * shutdownWorker() is called once in every worker process whose
+ * bootstrapWorker() succeeded, on the same instance, after the worker has run
+ * its last unit and before it exits: at the end of the test run, and when the
+ * worker is replaced with a fresh process because it has run the configured
+ * number of test classes. It is not called when the worker process dies or
+ * is terminated: when it crashes, when a test runs into the timeout, or when
+ * the test run is stopped early (--stop-on-*) while the worker is running a
+ * unit. No subscriber receives an event while it runs, and what it prints is
+ * not shown. A failure is reported with a test runner warning.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 interface ParallelWorkerExtension extends Extension
 {
     public function bootstrapWorker(Configuration $configuration, WorkerFacade $facade, ParameterCollection $parameters): void;
+
+    public function shutdownWorker(): void;
 }
