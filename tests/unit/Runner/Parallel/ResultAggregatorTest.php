@@ -1110,6 +1110,7 @@ final class ResultAggregatorTest extends TestCase
             Telemetry\CpuTime::fromSecondsAndNanoseconds(0, 0),
             Telemetry\CpuTime::fromSecondsAndNanoseconds(0, 0),
             Telemetry\CpuTime::fromSecondsAndNanoseconds(0, 0),
+            12345,
         );
     }
 }
