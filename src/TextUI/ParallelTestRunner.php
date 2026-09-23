@@ -131,13 +131,15 @@ final class ParallelTestRunner
      * isolation that a shared worker cannot provide but the main process can),
      * or when one of its tests depends on a test of another class (whose
      * result is only available in the main process, once the unit it belongs
-     * to has been released). Running in the main process is ordinary execution that behaves
-     * exactly as it would in sequential mode — but it is not what the author
-     * of a test suite that opted into parallel execution expects, so a unit
-     * that runs there for any reason other than a configured process
-     * isolation or a #[DoNotRunInParallel] attribute is reported with a test
-     * runner notice that names the reason. Any remaining standalone test — one that is neither a
-     * TestCase nor a PHPT test — is run the same way, at its own suite index.
+     * to has been released). Running in the main process is ordinary
+     * execution that behaves exactly as it would in sequential mode — but it
+     * is not what the author of a test suite that opted into parallel
+     * execution expects, so a unit that runs there because of a dependency on
+     * a test of another class is reported with a test runner notice that
+     * names the reason. Process isolation and #[DoNotRunInParallel] are
+     * deliberate choices and are not reported. Any remaining standalone
+     * test — one that is neither a TestCase nor a PHPT test — is run the same
+     * way, at its own suite index.
      *
      * In sequential mode, TestSuite::run() wraps every suite's tests in a pair
      * of "test suite started" / "test suite finished" events. The workers and
@@ -193,23 +195,26 @@ final class ParallelTestRunner
                     $testCases = $this->testCasesOf($unit);
                 }
 
-                $mustNotRunInParallel = $unit instanceof TestClassWorkUnit && $this->mustNotRunInParallel($unit, $testCases);
+                $mustNotRunInParallel     = $unit instanceof TestClassWorkUnit && $this->mustNotRunInParallel($unit, $testCases);
+                $requiresProcessIsolation = $unit instanceof TestClassWorkUnit && ($processIsolation || $this->requiresProcessIsolation($unit, $testCases));
 
                 // A unit that runs in the main process for a reason its
-                // author did not ask for — process isolation is configured
-                // for the whole run and #[DoNotRunInParallel] is a deliberate
-                // choice, the other reasons are properties of the tests that
-                // their author may not know disqualify them from a worker —
-                // is reported with a test runner notice that names the
-                // reason, so that the author can act on it.
+                // author did not ask for is reported with a test runner
+                // notice that names the reason, so that the author can act
+                // on it. Process isolation, whether it is configured for the
+                // whole run or requested with #[RunInSeparateProcess] or
+                // #[RunTestsInSeparateProcesses], and #[DoNotRunInParallel]
+                // are deliberate choices and are not reported; a dependency
+                // on a test of another class is a property of the tests that
+                // their author may not know disqualifies them from a worker.
                 $reason = null;
 
-                if ($unit instanceof TestClassWorkUnit && !$processIsolation && !$mustNotRunInParallel) {
-                    $reason = $this->reasonForRunningInMainProcess($unit, $testCases);
+                if ($unit instanceof TestClassWorkUnit && !$requiresProcessIsolation && !$mustNotRunInParallel) {
+                    $reason = $this->crossClassDependencyOf($unit, $testCases);
                 }
 
                 if ($unit instanceof TestClassWorkUnit &&
-                    ($processIsolation ||
+                    ($requiresProcessIsolation ||
                      $mustNotRunInParallel ||
                      $reason !== null)) {
                     if ($reason !== null) {
@@ -579,29 +584,6 @@ final class ParallelTestRunner
         }
 
         $suite->run();
-    }
-
-    /**
-     * Why the unit cannot run in a worker process and has to run in the main
-     * process instead — or null when it can. The reason is phrased so that it
-     * completes the sentence "The tests of class X are run in the main
-     * process instead of a parallel worker because ...".
-     *
-     * The reasons are checked in the order in which they are listed in
-     * execute(); the first one that applies is reported, even when more than
-     * one does.
-     *
-     * @param list<TestCase> $testCases
-     *
-     * @return ?non-empty-string
-     */
-    private function reasonForRunningInMainProcess(TestClassWorkUnit $unit, array $testCases): ?string
-    {
-        if ($this->requiresProcessIsolation($unit, $testCases)) {
-            return 'its tests require process isolation, which a shared worker process cannot provide';
-        }
-
-        return $this->crossClassDependencyOf($unit, $testCases);
     }
 
     /**
