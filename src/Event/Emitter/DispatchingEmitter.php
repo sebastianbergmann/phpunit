@@ -10,6 +10,7 @@
 namespace PHPUnit\Event;
 
 use function assert;
+use function getmypid;
 use function memory_reset_peak_usage;
 use function preg_match;
 use PHPUnit\Event\Code\ClassMethod;
@@ -1691,6 +1692,14 @@ final class DispatchingEmitter implements Emitter
     {
         $current = $this->system->snapshot();
 
+        $processId = getmypid();
+
+        if ($processId === false || $processId < 0) {
+            // @codeCoverageIgnoreStart
+            $processId = 0;
+            // @codeCoverageIgnoreEnd
+        }
+
         $info = new Telemetry\Info(
             $current,
             $current->time()->duration($this->startSnapshot->time()),
@@ -1703,6 +1712,7 @@ final class DispatchingEmitter implements Emitter
             $current->userCpuTime()->diff($this->previousSnapshot->userCpuTime()),
             $current->systemCpuTime()->diff($this->previousSnapshot->systemCpuTime()),
             $current->totalCpuTime()->diff($this->previousSnapshot->totalCpuTime()),
+            $processId,
         );
 
         $this->previousSnapshot = $current;
