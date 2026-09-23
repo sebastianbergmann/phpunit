@@ -36,8 +36,9 @@ ErrorHandlerBootstrapper::bootstrap($__phpunit_configuration);
 // runs (see __phpunit_worker_run_unit()); the warnings that a failed
 // bootstrap produces are emitted with the first unit, as there is no unit to
 // emit them into yet.
-$__phpunit_extensionFacade   = new WorkerExtensionFacade;
-$__phpunit_extensionWarnings = [];
+$__phpunit_extensionFacade       = new WorkerExtensionFacade;
+$__phpunit_extensionWarnings     = [];
+$__phpunit_extensionBootstrapper = null;
 
 if (!$__phpunit_configuration->noExtensions()) {
     if ($__phpunit_configuration->hasPharExtensionDirectory()) {
@@ -234,6 +235,21 @@ while (($__phpunit_line = fgets($__phpunit_input)) !== false) {
     }
 
     if ($__phpunit_command['command'] === 'stop') {
+        // The extensions bootstrapped in this worker are shut down once the
+        // worker has run its last unit. The warnings that a failed shutdown
+        // produces are reported to the parent through the command's result
+        // file, as there is no unit left to emit them into.
+        $__phpunit_shutdownWarnings = [];
+
+        if ($__phpunit_extensionBootstrapper !== null) {
+            $__phpunit_shutdownWarnings = $__phpunit_extensionBootstrapper->shutdown();
+        }
+
+        file_put_contents(
+            $__phpunit_command['resultFile'],
+            $__phpunit_command['nonce'] . serialize($__phpunit_shutdownWarnings),
+        );
+
         break;
     }
 

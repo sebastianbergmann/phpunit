@@ -18,6 +18,7 @@ use PHPUnit\TextUI\Configuration\Configuration;
 final class WorkerAwareExtension implements ParallelWorkerExtension
 {
     public static ?ParameterCollection $workerParameters = null;
+    public static int $shutdowns                         = 0;
 
     public function bootstrap(Configuration $configuration, Facade $facade, ParameterCollection $parameters): void
     {
@@ -28,5 +29,10 @@ final class WorkerAwareExtension implements ParallelWorkerExtension
         self::$workerParameters = $parameters;
 
         $facade->registerSubscriber(new RecordingSubscriber);
+    }
+
+    public function shutdownWorker(): void
+    {
+        self::$shutdowns++;
     }
 }
