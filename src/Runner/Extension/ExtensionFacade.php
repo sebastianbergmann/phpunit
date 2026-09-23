@@ -47,6 +47,24 @@ final class ExtensionFacade implements Facade
 
     /**
      * @throws EventFacadeIsSealedException
+     * @throws UnknownSubscriberTypeException
+     */
+    public function registerSubscribersForEventsOfThisProcess(Subscriber ...$subscribers): void
+    {
+        EventFacade::instance()->registerSubscribersForEventsOfThisProcess(...$subscribers);
+    }
+
+    /**
+     * @throws EventFacadeIsSealedException
+     * @throws UnknownSubscriberTypeException
+     */
+    public function registerSubscriberForEventsOfThisProcess(Subscriber $subscriber): void
+    {
+        EventFacade::instance()->registerSubscriberForEventsOfThisProcess($subscriber);
+    }
+
+    /**
+     * @throws EventFacadeIsSealedException
      */
     public function registerTracer(Tracer $tracer): void
     {
