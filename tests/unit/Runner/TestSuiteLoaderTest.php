@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner;
 
+use function class_exists;
 use function realpath;
 use function strtolower;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -59,6 +60,26 @@ final class TestSuiteLoaderTest extends TestCase
         $file = realpath(__DIR__ . '/../../_files/BankAccountTest.php');
 
         (new TestSuiteLoader)->load($file);
+
+        $map = TestSuiteLoader::classesDeclaredInLoadedSuiteClassFiles();
+
+        $this->assertArrayHasKey(strtolower(BankAccountTest::class), $map);
+        $this->assertSame($file, $map[strtolower(BankAccountTest::class)]);
+    }
+
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testMapsTheClassesDeclaredInTestClassFileWhoseClassWasAutoloadedAfterAnotherTestClassFileWasLoaded(): void
+    {
+        $loader = new TestSuiteLoader;
+        $file   = realpath(__DIR__ . '/../../_files/BankAccountTest.php');
+
+        $loader->load(__DIR__ . '/../../_files/ActualOutputTest.php');
+
+        $this->assertTrue(class_exists(BankAccountTest::class));
+
+        $loader->load(__DIR__ . '/../../_files/AssertionExampleTest.php');
+        $loader->load($file);
 
         $map = TestSuiteLoader::classesDeclaredInLoadedSuiteClassFiles();
 

@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner;
 
+use function array_keys;
 use function array_slice;
 use function basename;
 use function count;
@@ -39,7 +40,7 @@ final class TestSuiteLoader
     private static array $fileToClassesMap = [];
 
     /**
-     * @var list<string>
+     * @var array<string, true>
      */
     private static array $loadedSuiteClassFiles = [];
 
@@ -60,7 +61,7 @@ final class TestSuiteLoader
     {
         $map = [];
 
-        foreach (self::$loadedSuiteClassFiles as $file) {
+        foreach (array_keys(self::$loadedSuiteClassFiles) as $file) {
             if (!isset(self::$fileToClassesMap[$file])) {
                 continue;
             }
@@ -147,6 +148,13 @@ final class TestSuiteLoader
      */
     private function loadSuiteClassFile(string $suiteClassFile): array
     {
+        /*
+         * The file is recorded even when it does not have to be loaded
+         * because its classes have already been declared, by the autoloader
+         * for instance, and mapped while another file was loaded.
+         */
+        self::$loadedSuiteClassFiles[$suiteClassFile] = true;
+
         if (isset(self::$fileToClassesMap[$suiteClassFile])) {
             return self::$fileToClassesMap[$suiteClassFile];
         }
@@ -167,8 +175,6 @@ final class TestSuiteLoader
         }
 
         require_once $suiteClassFile;
-
-        self::$loadedSuiteClassFiles[] = $suiteClassFile;
 
         $declaredClasses = get_declared_classes();
 
