@@ -10,6 +10,7 @@
 namespace PHPUnit\TestFixture\ParallelWorkerExtension\Worker;
 
 use const FILE_APPEND;
+use const LOCK_EX;
 use const PHP_EOL;
 use function file_put_contents;
 use function getenv;
@@ -40,7 +41,7 @@ final class Extension implements ParallelWorkerExtension
         file_put_contents(
             (string) getenv('PHPUNIT_TEST_FINISHED_LOG'),
             'worker ' . getenv('PHPUNIT_WORKER_ID') . ' shut down' . PHP_EOL,
-            FILE_APPEND,
+            FILE_APPEND | LOCK_EX,
         );
     }
 }
