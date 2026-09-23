@@ -26,7 +26,7 @@ use PHPUnit\Event\Subscriber;
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class WorkerExtensionFacade implements WorkerFacade
+final class WorkerExtensionFacade implements ChildProcessFacade
 {
     /**
      * @var list<Subscriber>

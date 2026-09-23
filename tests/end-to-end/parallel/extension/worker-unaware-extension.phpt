@@ -1,5 +1,5 @@
 --TEST--
-phpunit --parallel=2 does not bootstrap an extension that does not implement ParallelWorkerExtension in the worker: its subscribers receive the replayed events in the main process only
+phpunit --parallel=2 does not bootstrap an extension that does not implement ChildProcessExtension in the worker: its subscribers receive the replayed events in the main process only
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-record-test-run-history';
