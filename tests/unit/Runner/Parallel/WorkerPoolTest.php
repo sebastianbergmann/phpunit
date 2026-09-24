@@ -157,6 +157,44 @@ final class WorkerPoolTest extends TestCase
         $this->assertFalse($byIndex[1]->crashed());
     }
 
+    public function testReportsAUnitThatCannotBeDispatchedAsCrashedAndRunsTheRemainingOnes(): void
+    {
+        $undescribable = new WorkerFirstTest('testStartsTheProcessLocalCounter');
+
+        // A test case whose dependency input cannot be serialized cannot be
+        // described for transport, so its unit cannot be dispatched to a
+        // worker at all.
+        $undescribable->setDependencyInput(
+            [
+                'WorkerFirstTest::testThatIsDependedUpon' => static function (): void
+                {
+                },
+            ],
+        );
+
+        $units = [
+            new TestClassWorkUnit(0, WorkerFirstTest::class, [$undescribable]),
+            new TestClassWorkUnit(1, WorkerSecondTest::class, [new WorkerSecondTest('testThatFails')]),
+        ];
+
+        $completed = $this->execute($this->pool(1), $units);
+
+        $this->assertSame([0, 1], $this->indexesOf($completed));
+
+        $byIndex = [];
+
+        foreach ($completed as $unit) {
+            $byIndex[$unit->unit()->index()] = $unit;
+        }
+
+        $this->assertTrue($byIndex[0]->crashed());
+        $this->assertStringContainsString('cannot be run in parallel', (string) $byIndex[0]->message());
+
+        // One unit that cannot be dispatched must neither abort the run nor
+        // starve the worker of the units that follow it.
+        $this->assertFalse($byIndex[1]->crashed());
+    }
+
     public function testReplacesAWorkerWithAFreshProcessAfterItHasCompletedTheConfiguredNumberOfUnits(): void
     {
         // The fixture test passes only in a process in which no test has run
