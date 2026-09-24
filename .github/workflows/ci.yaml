@@ -222,6 +222,7 @@ jobs:
           - "8.4"
           - "8.5"
           - "8.6"
+          - "8.7"
 
     steps:
       - name: Configure Git to avoid issues with line endings
@@ -302,6 +303,7 @@ jobs:
           - "8.4"
           - "8.5"
           - "8.6"
+          - "8.7"
 
     steps:
       - name: Configure Git to avoid issues with line endings
@@ -531,6 +533,7 @@ jobs:
           - "8.4"
           - "8.5"
           - "8.6"
+          - "8.7"
 
         coverage:
           - pcov
