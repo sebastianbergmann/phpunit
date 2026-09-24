@@ -15,6 +15,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\RecordingSubscriber;
 use ReflectionMethod;
 use ReflectionProperty;
 
@@ -41,6 +42,37 @@ final class FacadeTest extends TestCase
             new class implements Subscriber
             {},
         );
+    }
+
+    public function testRegistersSeveralSubscribersForEventsOfThisProcessAtOnce(): void
+    {
+        $facade = new Facade;
+
+        $first = new class extends RecordingSubscriber implements TestRunner\EventFacadeSealedSubscriber
+        {
+            public function notify(TestRunner\EventFacadeSealed $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $second = new class extends RecordingSubscriber implements TestRunner\EventFacadeSealedSubscriber
+        {
+            public function notify(TestRunner\EventFacadeSealed $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $facade->registerSubscribersForEventsOfThisProcess($first, $second);
+
+        // Sealing the facade emits an event in this process, so every
+        // subscriber that was registered for the events of this process is
+        // notified of it.
+        $facade->seal();
+
+        $this->assertSame(1, $first->recordedEventCount());
+        $this->assertSame(1, $second->recordedEventCount());
     }
 
     public function testUsesTheIsolationDispatcherOfAFacadeThatWasInitializedForIsolation(): void

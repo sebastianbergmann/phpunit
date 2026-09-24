@@ -321,6 +321,50 @@ final class PersistentWorkerTest extends TestCase
         $worker->stop();
     }
 
+    public function testDoesNotDispatchAUnitWhoseTestsCannotBeDescribed(): void
+    {
+        $test = new WorkerFirstTest('testStartsTheProcessLocalCounter');
+
+        // A test case whose dependency input cannot be serialized cannot be
+        // described for transport, so the unit never reaches the worker.
+        $test->setDependencyInput(
+            [
+                'WorkerFirstTest::testThatIsDependedUpon' => static function (): void
+                {
+                },
+            ],
+        );
+
+        $worker = $this->worker();
+
+        $worker->start();
+
+        $thrown = null;
+
+        try {
+            $worker->dispatch(new TestClassWorkUnit(0, WorkerFirstTest::class, [$test]));
+        } catch (WorkerException $e) {
+            $thrown = $e;
+        }
+
+        $this->assertNotNull($thrown);
+        $this->assertStringContainsString('cannot be run in parallel', $thrown->getMessage());
+
+        // The worker is still idle and usable: the unit that could not be
+        // described must not leave it busy waiting for a result that will
+        // never arrive.
+        $this->assertFalse($worker->isBusy());
+
+        $completed = $this->runToCompletion(
+            $worker,
+            new TestClassWorkUnit(1, WorkerFirstTest::class, [new WorkerFirstTest('testStartsTheProcessLocalCounter')]),
+        );
+
+        $worker->stop();
+
+        $this->assertFalse($completed->crashed());
+    }
+
     public function testKillingAWorkerThatIsNotRunningAUnitTerminatesItAllTheSame(): void
     {
         $worker = $this->worker();
