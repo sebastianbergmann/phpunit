@@ -750,9 +750,6 @@ final class ParallelTestRunner
     }
 
     /**
-     * @param positive-int $numberOfWorkers
-     */
-    /**
      * @param positive-int     $numberOfWorkers
      * @param non-negative-int $numberOfUnitsBeforeRecycling
      */
