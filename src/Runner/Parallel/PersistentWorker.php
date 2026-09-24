@@ -595,13 +595,24 @@ final class PersistentWorker
         @unlink($resultFile);
 
         if ($result === false || !str_starts_with($result, $nonce)) {
+            // A worker writes this file before it exits, and stop() is not
+            // reached for a worker whose death the parent has already
+            // observed; only a worker that died unnoticed leaves the file
+            // unwritten, which a test cannot arrange through this class.
+            // @codeCoverageIgnoreStart
             return [];
+            // @codeCoverageIgnoreEnd
         }
 
         $warnings = @unserialize(substr($result, strlen($nonce)), ['allowed_classes' => false]);
 
         if (!is_array($warnings) || !array_is_list($warnings)) {
+            // The worker serializes a list of strings, so a payload that
+            // carries the nonce of the stop command and yet decodes to
+            // anything else cannot have been written by it.
+            // @codeCoverageIgnoreStart
             return [];
+            // @codeCoverageIgnoreEnd
         }
 
         $valid = [];
