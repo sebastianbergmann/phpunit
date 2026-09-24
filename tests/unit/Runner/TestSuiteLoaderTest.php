@@ -67,6 +67,21 @@ final class TestSuiteLoaderTest extends TestCase
         $this->assertSame($file, $map[strtolower(BankAccountTest::class)]);
     }
 
+    public function testDoesNotMapAnythingForALoadedTestClassFileThatDeclaresNoClass(): void
+    {
+        $file = realpath(__DIR__ . '/../../_files/TestClassFileWithoutTestClass.php');
+
+        // The file is recorded as loaded before it turns out that it declares
+        // no class, so the map of the classes declared in the loaded test
+        // class files has to skip it rather than trip over it.
+        try {
+            (new TestSuiteLoader)->load($file);
+        } catch (ClassCannotBeFoundException) {
+        }
+
+        $this->assertNotContains($file, TestSuiteLoader::classesDeclaredInLoadedSuiteClassFiles());
+    }
+
     #[RunInSeparateProcess]
     #[PreserveGlobalState(false)]
     public function testMapsTheClassesDeclaredInTestClassFileWhoseClassWasAutoloadedAfterAnotherTestClassFileWasLoaded(): void
