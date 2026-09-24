@@ -29,5 +29,6 @@ All notable changes of the PHPUnit 13.4 release series are documented in this fi
 * [#6585](https://github.com/sebastianbergmann/phpunit/issues/6585): Configuring more than one order for `--order-by` and `executionOrder`
 * [#6585](https://github.com/sebastianbergmann/phpunit/issues/6585): Unknown values for the `executionOrder` XML configuration attribute, which are currently ignored
 * [#6686](https://github.com/sebastianbergmann/phpunit/issues/6686): `Constraint::failureDescriptionInContext()` and `LogicalNot::negate()`
+* [#6999](https://github.com/sebastianbergmann/phpunit/issues/6999): Class-level `#[Group]`, `#[Ticket]`, `#[Small]`, `#[Medium]`, and `#[Large]` on parent classes of test classes
 
 [13.4.0]: https://github.com/sebastianbergmann/phpunit/compare/13.3...main
