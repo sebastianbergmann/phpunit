@@ -6,7 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased
 
-For a full diff see [`2.13.1...main`][2.13.1...main].
+For a full diff see [`2.14.0...main`][2.14.0...main].
+
+## [`2.14.0`][2.14.0]
+
+For a full diff see [`2.13.1...2.14.0`][2.13.1...2.14.0].
+
+### Changed
+
+- Allowed installation on PHP 8.6 ([#1101]), by [@localheinz]
+
+### Fixed
+
+- Adjusted `Functions\NoParameterPassedByReferenceRule` to use the appropriate error identifier ([#1036]), by [@Legend999]
 
 ## [`2.13.1`][2.13.1]
 
@@ -217,9 +229,9 @@ For a full diff see [`1.0.0...2.0.0`][1.0.0...2.0.0].
 
 ### Added
 
-- Added `methodsAllowedToUseContainerTypeDeclarations` parameter to allow configuring a list of method names that are allowed to have container parameter type declarations ([#541), by [@localheinz]
-- Allowed disabling rules ([#542), by [@localheinz]
-- Added support for nullable union types ([#543), by [@localheinz]
+- Added `methodsAllowedToUseContainerTypeDeclarations` parameter to allow configuring a list of method names that are allowed to have container parameter type declarations ([#541]), by [@localheinz]
+- Allowed disabling rules ([#542]), by [@localheinz]
+- Added support for nullable union types ([#543]), by [@localheinz]
 
 ### Changed
 
@@ -420,7 +432,7 @@ For a full diff see [`0.10.0...0.11.0`][0.10.0...0.11.0].
 
 ### Added
 
-- Added `Files\DeclareStrictTypesRule`, which reports an error when a PHP file does not have a `declare(strict_types=1)` declaration ([#79]
+- Added `Files\DeclareStrictTypesRule`, which reports an error when a PHP file does not have a `declare(strict_types=1)` declaration ([#79]), by [@dmecke]
 - Added `Expressions\NoEmptyRule`, which reports an error when the language construct `empty()` is used ([#110]), by [@localheinz]
 - Added `Expressions\NoEvalRule`, which reports an error when the language construct `eval()` is used ([#112]), by [@localheinz]
 - Added `Expressions\NoErrorSuppressionRule`, which reports an error when `@` is used to suppress errors ([#113]), by [@localheinz]
@@ -662,7 +674,9 @@ For a full diff see [`362c7ea...0.1.0`][362c7ea...0.1.0].
 [2.11.0...2.12.0]: https://github.com/ergebnis/phpstan-rules/compare/2.11.0...2.12.0
 [2.12.0...2.13.0]: https://github.com/ergebnis/phpstan-rules/compare/2.12.0...2.13.0
 [2.13.0...2.13.1]: https://github.com/ergebnis/phpstan-rules/compare/2.13.0...2.13.1
-[2.13.1...main]: https://github.com/ergebnis/phpstan-rules/compare/2.13.1...main
+[2.13.1...2.14.0]: https://github.com/ergebnis/phpstan-rules/compare/2.13.1...2.14.0
+[2.14.0]: https://github.com/ergebnis/phpstan-rules/releases/tag/2.14.0
+[2.14.0...main]: https://github.com/ergebnis/phpstan-rules/compare/2.14.0...main
 
 [#1]: https://github.com/ergebnis/phpstan-rules/pull/1
 [#4]: https://github.com/ergebnis/phpstan-rules/pull/4
@@ -720,13 +734,14 @@ For a full diff see [`362c7ea...0.1.0`][362c7ea...0.1.0].
 [#396]: https://github.com/ergebnis/phpstan-rules/pull/396
 [#496]: https://github.com/ergebnis/phpstan-rules/pull/496
 [#498]: https://github.com/ergebnis/phpstan-rules/pull/498
-[#499]: https://github.com/ergebnis/phpstan-rules/pull/498
+[#499]: https://github.com/ergebnis/phpstan-rules/pull/499
 [#525]: https://github.com/ergebnis/phpstan-rules/pull/525
 [#540]: https://github.com/ergebnis/phpstan-rules/pull/540
 [#541]: https://github.com/ergebnis/phpstan-rules/pull/541
 [#542]: https://github.com/ergebnis/phpstan-rules/pull/542
 [#543]: https://github.com/ergebnis/phpstan-rules/pull/543
 [#567]: https://github.com/ergebnis/phpstan-rules/pull/567
+[#604]: https://github.com/ergebnis/phpstan-rules/pull/604
 [#735]: https://github.com/ergebnis/phpstan-rules/pull/735
 [#862]: https://github.com/ergebnis/phpstan-rules/pull/862
 [#863]: https://github.com/ergebnis/phpstan-rules/pull/863
@@ -763,11 +778,15 @@ For a full diff see [`362c7ea...0.1.0`][362c7ea...0.1.0].
 [#1009]: https://github.com/ergebnis/phpstan-rules/pull/1009
 [#1010]: https://github.com/ergebnis/phpstan-rules/pull/1010
 [#1011]: https://github.com/ergebnis/phpstan-rules/pull/1011
+[#1036]: https://github.com/ergebnis/phpstan-rules/pull/1036
+[#1101]: https://github.com/ergebnis/phpstan-rules/pull/1101
 
 [@cosmastech]: https://github.com/cosmastech
+[@dmecke]: https://github.com/dmecke
 [@enumag]: https://github.com/enumag
 [@ergebnis]: https://github.com/ergebnis
 [@Great-Antique]: https://github.com/Great-Antique
+[@Legend999]: https://github.com/Legend999
 [@localheinz]: https://github.com/localheinz
 [@manuelkiessling]: https://github.com/manuelkiessling
 [@nunomaduro]: https://github.com/nunomaduro
