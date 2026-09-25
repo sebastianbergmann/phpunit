@@ -21,26 +21,28 @@
     "security": "https://github.com/ergebnis/phpstan-rules/blob/main/.github/SECURITY.md"
   },
   "require": {
-    "php": "~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
+    "php": "~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0 || ~8.6.0",
     "ext-mbstring": "*",
     "phpstan/phpstan": "^2.1.35"
   },
   "require-dev": {
     "codeception/codeception": "^4.0.0 || ^5.0.0",
     "doctrine/orm": "^2.20.0 || ^3.3.0",
-    "ergebnis/composer-normalize": "^2.49.0",
+    "ergebnis/composer-normalize": "^2.53.0",
     "ergebnis/license": "^2.7.0",
-    "ergebnis/php-cs-fixer-config": "^6.59.0",
-    "ergebnis/phpunit-slow-test-detector": "^2.20.0",
+    "ergebnis/php-cs-fixer-config": "^6.63.2",
+    "ergebnis/phpunit-slow-test-detector": "^2.25.0",
+    "ergebnis/rector-rules": "^1.18.3",
     "fakerphp/faker": "^1.24.1",
     "phpstan/extension-installer": "^1.4.3",
-    "phpstan/phpstan-deprecation-rules": "^2.0.3",
-    "phpstan/phpstan-phpunit": "^2.0.12",
-    "phpstan/phpstan-strict-rules": "^2.0.8",
-    "phpunit/phpunit": "^9.6.21",
+    "phpstan/phpstan-deprecation-rules": "^2.0.5",
+    "phpstan/phpstan-phpunit": "^2.0.18",
+    "phpstan/phpstan-strict-rules": "^2.0.12",
+    "phpunit/phpunit": "^9.6.33",
     "psr/container": "^2.0.2",
+    "rector/rector": "^2.3.8",
     "symfony/finder": "^5.4.45",
-    "symfony/process": "^5.4.47"
+    "symfony/process": "^5.4.51"
   },
   "autoload": {
     "psr-4": {
@@ -68,6 +70,9 @@
     "sort-packages": true
   },
   "extra": {
+    "branch-alias": {
+      "dev-main": "2.14-dev"
+    },
     "phpstan": {
       "includes": [
         "rules.neon"

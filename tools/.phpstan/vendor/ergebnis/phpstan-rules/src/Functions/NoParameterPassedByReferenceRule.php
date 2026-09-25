@@ -60,7 +60,7 @@ final class NoParameterPassedByReferenceRule implements Rules\Rule
             );
 
             return Rules\RuleErrorBuilder::message($message)
-                ->identifier(ErrorIdentifier::noParameterWithNullDefaultValue()->toString())
+                ->identifier(ErrorIdentifier::noParameterPassedByReference()->toString())
                 ->build();
         }, $parametersPassedByReference);
     }
