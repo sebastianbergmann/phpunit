@@ -170,10 +170,33 @@ final readonly class Assumptions
 
     public function equals(self $other): bool
     {
-        return $this->configuration === $other->configuration &&
-               $this->bootstrap === $other->bootstrap &&
-               $this->source === $other->source &&
-               $this->installedPackages === $other->installedPackages;
+        return $this->whatChangedSince($other) === null;
+    }
+
+    /**
+     * What is not what it was when the other assumptions were made, or null
+     * when nothing is. When more than one of them changed, the first one is
+     * named: any one of them is reason enough to discard what was recorded.
+     */
+    public function whatChangedSince(self $other): ?DiscardReason
+    {
+        if ($this->configuration !== $other->configuration) {
+            return DiscardReason::ConfigurationFileChanged;
+        }
+
+        if ($this->bootstrap !== $other->bootstrap) {
+            return DiscardReason::BootstrapScriptChanged;
+        }
+
+        if ($this->source !== $other->source) {
+            return DiscardReason::FirstPartyCodeChanged;
+        }
+
+        if ($this->installedPackages !== $other->installedPackages) {
+            return DiscardReason::InstalledPackagesChanged;
+        }
+
+        return null;
     }
 
     /**

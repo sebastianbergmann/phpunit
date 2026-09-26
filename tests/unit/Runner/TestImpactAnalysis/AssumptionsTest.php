@@ -215,6 +215,83 @@ final class AssumptionsTest extends TestCase
         $this->assertFalse($before->equals(Assumptions::from($configurationFile, $this->source(), [])));
     }
 
+    public function testNameNothingThatChangedWhenNothingChanged(): void
+    {
+        $this->assertNull(
+            Assumptions::from(null, $this->source(), [])->whatChangedSince(Assumptions::from(null, $this->source(), [])),
+        );
+    }
+
+    public function testNameTheConfigurationFileWhenItChanged(): void
+    {
+        $directory         = $this->temporaryDirectory();
+        $configurationFile = $this->writeFile($directory, 'phpunit.xml', 'first');
+
+        $before = Assumptions::from($configurationFile, $this->source(), []);
+
+        $this->writeFile($directory, 'phpunit.xml', 'second');
+
+        $this->assertSame(
+            DiscardReason::ConfigurationFileChanged,
+            Assumptions::from($configurationFile, $this->source(), [])->whatChangedSince($before),
+        );
+    }
+
+    public function testNameTheBootstrapScriptWhenItChanged(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $bootstrap = $this->writeFile($directory, 'bootstrap.php', 'first');
+
+        $before = Assumptions::from(null, $this->source(), [$bootstrap]);
+
+        $this->writeFile($directory, 'bootstrap.php', 'second');
+
+        $this->assertSame(
+            DiscardReason::BootstrapScriptChanged,
+            Assumptions::from(null, $this->source(), [$bootstrap])->whatChangedSince($before),
+        );
+    }
+
+    public function testNameWhatIsFirstPartyCodeWhenItChanged(): void
+    {
+        $this->assertSame(
+            DiscardReason::FirstPartyCodeChanged,
+            Assumptions::from(null, $this->source('lib'), [])->whatChangedSince(Assumptions::from(null, $this->source('src'), [])),
+        );
+    }
+
+    public function testNameTheLockFileOfThePackageManagerWhenItChanged(): void
+    {
+        $directory         = $this->temporaryDirectory();
+        $configurationFile = $this->writeFile($directory, 'phpunit.xml', 'first');
+
+        $this->writeFile($directory, 'composer.lock', 'first');
+
+        $before = Assumptions::from($configurationFile, $this->source(), []);
+
+        $this->writeFile($directory, 'composer.lock', 'second');
+
+        $this->assertSame(
+            DiscardReason::InstalledPackagesChanged,
+            Assumptions::from($configurationFile, $this->source(), [])->whatChangedSince($before),
+        );
+    }
+
+    public function testNameTheConfigurationFileWhenMoreThanOneThingChanged(): void
+    {
+        $directory         = $this->temporaryDirectory();
+        $configurationFile = $this->writeFile($directory, 'phpunit.xml', 'first');
+
+        $before = Assumptions::from($configurationFile, $this->source('src'), []);
+
+        $this->writeFile($directory, 'phpunit.xml', 'second');
+
+        $this->assertSame(
+            DiscardReason::ConfigurationFileChanged,
+            Assumptions::from($configurationFile, $this->source('lib'), [])->whatChangedSince($before),
+        );
+    }
+
     public function testSurviveBeingWrittenAndReadAgain(): void
     {
         $assumptions = Assumptions::from(null, $this->source('src'), []);

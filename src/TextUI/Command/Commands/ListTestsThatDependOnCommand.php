@@ -55,6 +55,23 @@ final readonly class ListTestsThatDependOnCommand implements Command
         $tests = $this->testImpactDataFile->testsThatDependOn($file);
 
         if ($tests->isEmpty()) {
+            /*
+             * No test is recorded as depending on the file when what was
+             * recorded is not used, and saying so without saying why would
+             * claim that it was looked at.
+             */
+            $discardReason = $this->testImpactDataFile->discardReason();
+
+            if ($discardReason !== null) {
+                return Result::from(
+                    sprintf(
+                        'No test that depends on %s is recorded: %s' . PHP_EOL,
+                        $file,
+                        $discardReason->asString(),
+                    ),
+                );
+            }
+
             return Result::from(
                 sprintf(
                     'No test that depends on %s is recorded' . PHP_EOL,
