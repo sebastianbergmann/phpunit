@@ -17,6 +17,7 @@ All notable changes of the PHPUnit 13.4 release series are documented in this fi
 * `--coverage-jsonl` CLI option and `<jsonl>` element for the XML configuration file to write a code coverage report in JSONL format, one JSON object per line, that reports uncovered code rather than every executable line
 * `--timeout` CLI option to limit the wall-clock time of the entire test run
 * `requireCoverageMetadataOnSmallTests`, `requireCoverageMetadataOnMediumTests`, and `requireCoverageMetadataOnLargeTests` attributes for the XML configuration file to require code coverage metadata depending on the size of a test; these have precedence over `requireCoverageMetadata`
+* `#[RequiresClass]` attribute to skip a test if a class does not exist
 
 ### Changed
 
