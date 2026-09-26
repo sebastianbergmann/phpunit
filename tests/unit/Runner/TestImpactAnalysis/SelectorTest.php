@@ -12,7 +12,10 @@ namespace PHPUnit\Runner\TestImpactAnalysis;
 use const DIRECTORY_SEPARATOR;
 use const PHP_EOL;
 use function array_merge;
+use function file_get_contents;
 use function file_put_contents;
+use function json_decode;
+use function json_encode;
 use function mkdir;
 use function realpath;
 use function rmdir;
@@ -45,6 +48,7 @@ use ReflectionClass;
 #[CoversClass(Selector::class)]
 #[UsesClass(Assumptions::class)]
 #[UsesClass(DefaultTestImpactData::class)]
+#[UsesClass(DiscardReason::class)]
 #[UsesClass(PathHasher::class)]
 #[UsesClass(Recording::class)]
 #[UsesClass(Selection::class)]
@@ -86,6 +90,31 @@ final class SelectorTest extends TestCase
 
         $this->assertTrue($selection->isEverything());
         $this->assertSame('no test impact data has been recorded', $selection->reason());
+    }
+
+    public function testRunsEveryTestWhenWhatWasRecordedIsNotUsed(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $money     = $this->writeSourceFile($directory, 'Money', 'first');
+
+        $this->selectorFor($directory, $this->everyTestDependsOn($money), [$money]);
+
+        $data = json_decode((string) file_get_contents($directory . DIRECTORY_SEPARATOR . 'test-impact-data'), true);
+
+        $this->assertIsArray($data);
+
+        $data['assumptions']['configuration'] = 'another-hash';
+
+        file_put_contents($directory . DIRECTORY_SEPARATOR . 'test-impact-data', json_encode($data));
+
+        $selection = new Selector(
+            new TestImpactDataFile($directory, $this->assumptions()),
+            Provenance::ObservedExecution,
+            new DefaultTestRunHistory($directory . DIRECTORY_SEPARATOR . 'history'),
+        )->select($this->tests(), [$money]);
+
+        $this->assertTrue($selection->isEverything());
+        $this->assertSame('the configuration file changed since the test impact data was recorded', $selection->reason());
     }
 
     public function testRunsNoTestWhenNothingChanged(): void

@@ -54,18 +54,7 @@ final class TestImpactDataFileTest extends TestCase
 
     public static function provideUnusableData(): array
     {
-        $usable = [
-            'version'     => 6,
-            'phpunit'     => Version::id(),
-            'php'         => PHP_VERSION_ID,
-            'recordedAt'  => 1,
-            'provenance'  => 'observed-execution',
-            'assumptions' => self::assumptionsOfTheProvider(),
-            'sourceFiles' => [],
-            'files'       => ['/src/Foo.php'],
-            'versions'    => [[0, 'a-hash']],
-            'tests'       => ['FooTest::testOne' => [0]],
-        ];
+        $usable = self::usableData();
 
         return [
             'written by another version of PHPUnit'        => [['phpunit' => 'another-version'] + $usable],
@@ -104,6 +93,27 @@ final class TestImpactDataFileTest extends TestCase
             'with a test that is not a list'               => [['tests' => ['FooTest::testOne' => 0]] + $usable],
             'with an unknown version'                      => [['tests' => ['FooTest::testOne' => [1]]] + $usable],
             'with a version that is not an integer'        => [['tests' => ['FooTest::testOne' => ['0']]] + $usable],
+        ];
+    }
+
+    /**
+     * @return array<non-empty-string, array{0: string, 1: DiscardReason}>
+     */
+    public static function provideDataThatIsDiscardedForAReason(): array
+    {
+        $usable      = self::usableData();
+        $assumptions = self::assumptionsOfTheProvider();
+
+        return [
+            'that is not JSON'                                       => ['this is not JSON', DiscardReason::CannotBeRead],
+            'written in another format'                              => [json_encode(['version' => 0] + $usable), DiscardReason::CannotBeRead],
+            'written by another version of PHPUnit'                  => [json_encode(['phpunit' => 'another-version'] + $usable), DiscardReason::RecordedWithAnotherVersionOfPhpunit],
+            'written by another version of PHPUnit in another shape' => [json_encode(['phpunit' => 'another-version']), DiscardReason::RecordedWithAnotherVersionOfPhpunit],
+            'written by another version of PHP'                      => [json_encode(['php' => PHP_VERSION_ID - 1] + $usable), DiscardReason::RecordedWithAnotherVersionOfPhp],
+            'recorded with another configuration file'               => [json_encode(['assumptions' => ['configuration' => 'another-hash'] + $assumptions] + $usable), DiscardReason::ConfigurationFileChanged],
+            'recorded with another bootstrap script'                 => [json_encode(['assumptions' => ['bootstrap' => 'another-hash'] + $assumptions] + $usable), DiscardReason::BootstrapScriptChanged],
+            'recorded with other first-party code'                   => [json_encode(['assumptions' => ['source' => 'another-hash'] + $assumptions] + $usable), DiscardReason::FirstPartyCodeChanged],
+            'recorded with other installed packages'                 => [json_encode(['assumptions' => ['installedPackages' => 'another-hash'] + $assumptions] + $usable), DiscardReason::InstalledPackagesChanged],
         ];
     }
 
@@ -553,6 +563,30 @@ final class TestImpactDataFileTest extends TestCase
         );
     }
 
+    #[DataProvider('provideDataThatIsDiscardedForAReason')]
+    public function testKnowsWhyWhatWasRecordedIsNotUsed(string $contents, DiscardReason $expected): void
+    {
+        $directory = $this->temporaryDirectory();
+
+        file_put_contents($directory . DIRECTORY_SEPARATOR . 'test-impact-data', $contents);
+
+        $this->assertSame($expected, new TestImpactDataFile($directory, $this->assumptions())->discardReason());
+    }
+
+    public function testHasNoReasonToDiscardWhatIsUsed(): void
+    {
+        $directory = $this->temporaryDirectory();
+
+        file_put_contents($directory . DIRECTORY_SEPARATOR . 'test-impact-data', json_encode(self::usableData()));
+
+        $this->assertNull(new TestImpactDataFile($directory, $this->assumptions())->discardReason());
+    }
+
+    public function testHasNoReasonToDiscardWhatWasNeverRecorded(): void
+    {
+        $this->assertNull(new TestImpactDataFile($this->temporaryDirectory(), $this->assumptions())->discardReason());
+    }
+
     public function testKnowsThatNothingWasRecorded(): void
     {
         $this->assertNull(new TestImpactDataFile($this->temporaryDirectory(), $this->assumptions())->provenance());
@@ -797,6 +831,22 @@ final class TestImpactDataFileTest extends TestCase
         file_put_contents($file, '<?php declare(strict_types=1); // ' . $contents . PHP_EOL);
 
         return $file;
+    }
+
+    private static function usableData(): array
+    {
+        return [
+            'version'     => 6,
+            'phpunit'     => Version::id(),
+            'php'         => PHP_VERSION_ID,
+            'recordedAt'  => 1,
+            'provenance'  => 'observed-execution',
+            'assumptions' => self::assumptionsOfTheProvider(),
+            'sourceFiles' => [],
+            'files'       => ['/src/Foo.php'],
+            'versions'    => [[0, 'a-hash']],
+            'tests'       => ['FooTest::testOne' => [0]],
+        ];
     }
 
     private static function assumptionsOfTheProvider(): array

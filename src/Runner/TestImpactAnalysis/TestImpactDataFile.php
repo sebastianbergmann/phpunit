@@ -177,6 +177,15 @@ final class TestImpactDataFile
     }
 
     /**
+     * Why what was recorded is not used, or null when it is used or when
+     * nothing was recorded.
+     */
+    public function discardReason(): ?DiscardReason
+    {
+        return $this->read()[6];
+    }
+
+    /**
      * What an earlier test run recorded for a test that was not run again is
      * written back unchanged: a run that did not run a test did not learn
      * anything about it and must not cause what is known about it to be
@@ -468,22 +477,21 @@ final class TestImpactDataFile
     /**
      * Returns empty data when there is nothing to read, when what is there
      * cannot be read, or when it was written by a different version of PHPUnit
-     * or of PHP.
+     * or of PHP. Why what is there is not used is returned with it: there
+     * being nothing to read is the only case in which there is no reason.
      *
-     * @return array{0: list<non-empty-string>, 1: list<VersionType>, 2: array<non-empty-string, list<int>>, 3: ?Provenance, 4: array<int, non-empty-string>, 5: ?RecordingTime}
+     * @return array{0: list<non-empty-string>, 1: list<VersionType>, 2: array<non-empty-string, list<int>>, 3: ?Provenance, 4: array<int, non-empty-string>, 5: ?RecordingTime, 6: ?DiscardReason}
      */
     private function read(): array
     {
-        $empty = [[], [], [], null, [], null];
-
         if (!is_file($this->filename)) {
-            return $empty;
+            return [[], [], [], null, [], null, null];
         }
 
         $contents = file_get_contents($this->filename);
 
         if ($contents === false) {
-            return $empty; // @codeCoverageIgnore
+            return self::discarded(DiscardReason::CannotBeRead); // @codeCoverageIgnore
         }
 
         return $this->parse($contents);
@@ -492,16 +500,30 @@ final class TestImpactDataFile
     /**
      * Returns empty data when what was read cannot be used: see read().
      *
-     * @return array{0: list<non-empty-string>, 1: list<VersionType>, 2: array<non-empty-string, list<int>>, 3: ?Provenance, 4: array<int, non-empty-string>, 5: ?RecordingTime}
+     * @return array{0: list<non-empty-string>, 1: list<VersionType>, 2: array<non-empty-string, list<int>>, 3: ?Provenance, 4: array<int, non-empty-string>, 5: ?RecordingTime, 6: ?DiscardReason}
      */
     private function parse(string $contents): array
     {
-        $empty = [[], [], [], null, [], null];
+        $empty = self::discarded(DiscardReason::CannotBeRead);
 
         $data = json_decode($contents, true);
 
         if (!is_array($data)) {
             return $empty;
+        }
+
+        /*
+         * The versions are looked at before anything else: what another
+         * version of PHPUnit wrote need not have the shape this one expects,
+         * and that it was written by another version is then why it cannot be
+         * used, and not that it cannot be read.
+         */
+        if (isset($data['phpunit']) && $data['phpunit'] !== Version::id()) {
+            return self::discarded(DiscardReason::RecordedWithAnotherVersionOfPhpunit);
+        }
+
+        if (isset($data['php']) && $data['php'] !== PHP_VERSION_ID) {
+            return self::discarded(DiscardReason::RecordedWithAnotherVersionOfPhp);
         }
 
         if (!isset($data['version'], $data['phpunit'], $data['php'], $data['provenance'], $data['assumptions'], $data['files'], $data['sourceFiles'], $data['versions'], $data['tests'], $data['recordedAt'])) {
@@ -514,8 +536,14 @@ final class TestImpactDataFile
          * What was recorded under other assumptions describes a state of
          * affairs that no longer exists, and is discarded rather than added to.
          */
-        if ($assumptions === null || !$assumptions->equals($this->assumptions)) {
+        if ($assumptions === null) {
             return $empty;
+        }
+
+        $change = $this->assumptions->whatChangedSince($assumptions);
+
+        if ($change !== null) {
+            return self::discarded($change);
         }
 
         if (!is_string($data['provenance'])) {
@@ -528,7 +556,7 @@ final class TestImpactDataFile
             return $empty;
         }
 
-        if ($data['version'] !== self::VERSION || $data['phpunit'] !== Version::id() || $data['php'] !== PHP_VERSION_ID) {
+        if ($data['version'] !== self::VERSION) {
             return $empty;
         }
 
@@ -598,6 +626,14 @@ final class TestImpactDataFile
             $tests[$test] = $versionsOfSingleTest;
         }
 
-        return [$files, $versions, $tests, $provenance, $sourceFiles, RecordingTime::fromUnixTimestamp($data['recordedAt'])];
+        return [$files, $versions, $tests, $provenance, $sourceFiles, RecordingTime::fromUnixTimestamp($data['recordedAt']), null];
+    }
+
+    /**
+     * @return array{0: list<non-empty-string>, 1: list<VersionType>, 2: array<non-empty-string, list<int>>, 3: ?Provenance, 4: array<int, non-empty-string>, 5: ?RecordingTime, 6: ?DiscardReason}
+     */
+    private static function discarded(DiscardReason $reason): array
+    {
+        return [[], [], [], null, [], null, $reason];
     }
 }
