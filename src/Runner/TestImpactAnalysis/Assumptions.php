@@ -26,16 +26,16 @@ use PHPUnit\TextUI\Configuration\Source;
 /**
  * What everything that was recorded rests on.
  *
- * A test run answers what a test depends on for one configuration of PHPUnit,
- * for one bootstrap of the test suite, for one idea of which code is
- * first-party code, and for one set of installed packages. When any of those
- * is not what it was, what was recorded describes a state of affairs that no
- * longer exists, and the answer is not that some entries are stale: it is that
- * none of them can be relied on.
+ * A test run answers what a test depends on for the settings of PHPUnit that
+ * can change what code a test executes, for one bootstrap of the test suite,
+ * for one idea of which code is first-party code, and for one set of installed
+ * packages. When any of those is not what it was, what was recorded describes
+ * a state of affairs that no longer exists, and the answer is not that some
+ * entries are stale: it is that none of them can be relied on.
  *
- * The code that is first-party code is not taken from the configuration file
- * alone: --coverage-filter widens it from the command line without the file
- * changing.
+ * Neither the settings nor the code that is first-party code are taken from
+ * the configuration file: the command line changes both without the file
+ * changing, and the file changes in ways that change neither.
  *
  * @immutable
  *
@@ -48,9 +48,9 @@ final readonly class Assumptions
     private const string COMPOSER_LOCK_FILENAME = 'composer.lock';
 
     /**
-     * @var ?non-empty-string
+     * @var non-empty-string
      */
-    private ?string $configuration;
+    private string $settings;
 
     /**
      * @var ?non-empty-string
@@ -77,19 +77,13 @@ final readonly class Assumptions
      * that does not have one, or that is tested with a PHAR, is not a project
      * whose data has to be discarded.
      *
-     * @param ?non-empty-string      $configurationFile
+     * @param ?non-empty-string      $configurationFile the configuration file, which is only used to find the lock file
      * @param list<non-empty-string> $bootstrapFiles
      */
-    public static function from(?string $configurationFile, Source $source, array $bootstrapFiles, ?FileHasher $hasher = null): self
+    public static function from(?string $configurationFile, ExecutionSettings $settings, Source $source, array $bootstrapFiles, ?FileHasher $hasher = null): self
     {
         if ($hasher === null) {
             $hasher = new FileHasher;
-        }
-
-        $configuration = null;
-
-        if ($configurationFile !== null) {
-            $configuration = $hasher->hash($configurationFile);
         }
 
         $lockFile = self::composerLockFileNearest($configurationFile);
@@ -101,7 +95,7 @@ final readonly class Assumptions
         }
 
         return new self(
-            $configuration,
+            $settings->hash(),
             self::hashOfBootstrapFiles($bootstrapFiles, $hasher),
             self::hashOf($source),
             $installedPackages,
@@ -113,16 +107,16 @@ final readonly class Assumptions
      */
     public static function fromArray(mixed $data): ?self
     {
-        if (!is_array($data) || !array_key_exists('configuration', $data) || !array_key_exists('bootstrap', $data) || !array_key_exists('source', $data) || !array_key_exists('installedPackages', $data)) {
+        if (!is_array($data) || !array_key_exists('settings', $data) || !array_key_exists('bootstrap', $data) || !array_key_exists('source', $data) || !array_key_exists('installedPackages', $data)) {
             return null;
         }
 
-        $configuration     = $data['configuration'];
+        $settings          = $data['settings'];
         $bootstrap         = $data['bootstrap'];
         $source            = $data['source'];
         $installedPackages = $data['installedPackages'];
 
-        if ($configuration !== null && (!is_string($configuration) || $configuration === '')) {
+        if (!is_string($settings) || $settings === '') {
             return null;
         }
 
@@ -138,30 +132,30 @@ final readonly class Assumptions
             return null;
         }
 
-        return new self($configuration, $bootstrap, $source, $installedPackages);
+        return new self($settings, $bootstrap, $source, $installedPackages);
     }
 
     /**
-     * @param ?non-empty-string $configuration
+     * @param non-empty-string  $settings
      * @param ?non-empty-string $bootstrap
      * @param non-empty-string  $source
      * @param ?non-empty-string $installedPackages
      */
-    private function __construct(?string $configuration, ?string $bootstrap, string $source, ?string $installedPackages)
+    private function __construct(string $settings, ?string $bootstrap, string $source, ?string $installedPackages)
     {
-        $this->configuration     = $configuration;
+        $this->settings          = $settings;
         $this->bootstrap         = $bootstrap;
         $this->source            = $source;
         $this->installedPackages = $installedPackages;
     }
 
     /**
-     * @return array{configuration: ?non-empty-string, bootstrap: ?non-empty-string, source: non-empty-string, installedPackages: ?non-empty-string}
+     * @return array{settings: non-empty-string, bootstrap: ?non-empty-string, source: non-empty-string, installedPackages: ?non-empty-string}
      */
     public function asArray(): array
     {
         return [
-            'configuration'     => $this->configuration,
+            'settings'          => $this->settings,
             'bootstrap'         => $this->bootstrap,
             'source'            => $this->source,
             'installedPackages' => $this->installedPackages,
@@ -180,8 +174,8 @@ final readonly class Assumptions
      */
     public function whatChangedSince(self $other): ?DiscardReason
     {
-        if ($this->configuration !== $other->configuration) {
-            return DiscardReason::ConfigurationFileChanged;
+        if ($this->settings !== $other->settings) {
+            return DiscardReason::ConfigurationChanged;
         }
 
         if ($this->bootstrap !== $other->bootstrap) {
@@ -203,13 +197,13 @@ final readonly class Assumptions
      * A bootstrap script registers autoloaders, defines constants, and sets up
      * global state: it can change what every test does without any of the
      * files a test executed changing, and it is not code that is subject to
-     * code coverage analysis, so nothing else notices when it changes. Which
-     * script is used is part of the configuration, what it does is not, which
-     * is why the contents of the scripts are hashed here.
+     * code coverage analysis, so nothing else notices when it changes. That
+     * is why the contents of the scripts are hashed here, and not which
+     * scripts they are.
      *
-     * The order the scripts are named in does not matter: a bootstrap script
-     * that is named for a test suite is named in the configuration file, and
-     * that file is hashed as well.
+     * The order the scripts are named in does not matter: which test suite a
+     * script is used for is one of the execution settings, and those are part
+     * of the assumptions as well.
      *
      * A script that cannot be read is passed over: a run whose bootstrap
      * script is not there does not get as far as recording anything.
