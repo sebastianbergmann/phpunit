@@ -389,6 +389,7 @@
 
         <exec executable="${basedir}/build/scripts/phar-set-timestamps/run.php" taskname="phar-set-timestamps" failonerror="true">
             <arg path="${basedir}/build/artifacts/phpunit-library-${_version}.phar" />
+            <arg value="${type}" />
         </exec>
 
         <exec executable="${basedir}/build/scripts/check-scoped-phar.php" taskname="check-scoped-phar" failonerror="true">
@@ -414,6 +415,7 @@
 
         <exec executable="${basedir}/build/scripts/phar-set-timestamps/run.php" taskname="phar-set-timestamps" failonerror="true">
             <arg path="${basedir}/build/artifacts/phpunit-${_version}.phar" />
+            <arg value="${type}" />
         </exec>
 
         <chmod file="${basedir}/build/artifacts/phpunit-${_version}.phar" perm="ugo+rx"/>
