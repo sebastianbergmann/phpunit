@@ -156,16 +156,12 @@ abstract class Constraint implements Countable, SelfDescribing
      * Returns the description of this constraint when it is wrapped in a
      * LogicalNot operator.
      *
-     * Override this method to author the negated description directly instead
-     * of letting LogicalNot rewrite the string returned by toString().
-     *
-     * The method shall return an empty string when it does not author its own
-     * negation. LogicalNot then falls back to toStringInContext() and, finally,
-     * to rewriting the string returned by toString().
+     * Override this method to author the negated description directly. The
+     * default wraps the affirmative description returned by toString().
      */
     protected function negatedToString(): string
     {
-        return '';
+        return 'not (' . $this->toString() . ')';
     }
 
     /**
@@ -176,19 +172,10 @@ abstract class Constraint implements Countable, SelfDescribing
      * negatedToString(). Overriding negatedToString() is therefore enough for
      * most constraints. Override this method as well when the negated failure
      * description does not have that shape.
-     *
-     * The method shall return an empty string when it does not author its own
-     * negation.
      */
     protected function negatedFailureDescription(mixed $other): string
     {
-        $string = $this->negatedToString();
-
-        if ($string === '') {
-            return '';
-        }
-
-        return Exporter::export($other) . ' ' . $string;
+        return Exporter::export($other) . ' ' . $this->negatedToString();
     }
 
     /**
@@ -201,36 +188,12 @@ abstract class Constraint implements Countable, SelfDescribing
      * The method shall return empty string, when it does not handle
      * customization by itself.
      *
-     * For the LogicalNot case, override negatedToString() instead.
+     * This method is not consulted by LogicalNot. Override negatedToString()
+     * to author the description of a negated constraint.
      */
     protected function toStringInContext(Operator $operator, mixed $role): string
     {
         return '';
-    }
-
-    /**
-     * Returns the description of the failure when this constraint appears in
-     * context of an $operator expression.
-     *
-     * The purpose of this method is to provide a meaningful failure description
-     * in context of operators.
-     *
-     * The method shall return empty string, when it does not handle
-     * customization by itself.
-     *
-     * For the LogicalNot case, override negatedFailureDescription() instead.
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/6686
-     */
-    protected function failureDescriptionInContext(Operator $operator, mixed $role, mixed $other): string
-    {
-        $string = $this->toStringInContext($operator, $role);
-
-        if ($string === '') {
-            return '';
-        }
-
-        return Exporter::export($other) . ' ' . $string;
     }
 
     /**
