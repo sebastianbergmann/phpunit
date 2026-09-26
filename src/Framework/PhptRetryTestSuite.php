@@ -9,10 +9,13 @@
  */
 namespace PHPUnit\Framework;
 
+use Generator;
 use PHPUnit\Event;
-use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Event\EventCollector;
+use PHPUnit\Runner\Phpt\Interruption;
 use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
-use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
+use PHPUnit\Util\PHP\Job;
+use PHPUnit\Util\PHP\Result;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -57,23 +60,27 @@ final class PhptRetryTestSuite extends PhptIterativeTestSuite
 
     /**
      * @param list<Test> $tests
+     *
+     * @throws Event\RuntimeException
+     *
+     * @return Generator<int, Job, Result, void>
      */
-    protected function execute(array $tests, Event\Emitter $emitter): void
+    protected function iterate(array $tests, Event\Emitter $emitter, EventCollector $collector, ?Interruption $interruption = null): Generator
     {
-        $facade = EventFacade::instance();
-
         for ($attempt = 1; $attempt <= $this->maxAttempts; $attempt++) {
             /*
              * The events of an attempt are only forwarded when no further
              * attempt is made, so the test result of an attempt cannot make
              * the test runner stop before the next attempt is made. And a
              * PHPT test that interrupts the test runner does not fail, so it
-             * is not retried. This makes the check below unreachable, but it
-             * is kept so that this class does not silently ignore a reason to
-             * stop that a future change may introduce.
+             * is not retried. An attempt that a parallel run abandons does not
+             * fail either, so it is not retried and this check is not reached
+             * after it. That makes the check below unreachable, but it is kept
+             * so that this class does not silently ignore a reason to stop
+             * that a future change may introduce.
              */
             // @codeCoverageIgnoreStart
-            if (TestResultFacade::shouldStop()) {
+            if ($this->shouldStop($interruption)) {
                 $emitter->testRunnerExecutionAborted();
 
                 return;
@@ -82,10 +89,10 @@ final class PhptRetryTestSuite extends PhptIterativeTestSuite
 
             $test = new PhptTestCase($this->filename, 1, 1, $attempt, $this->maxAttempts);
 
-            $events = $this->runCollectingEvents($test);
+            $events = yield from $this->executeCollectingEvents($test, $emitter, $collector, $interruption);
 
             if (!$this->failedOrErrored($events) || $attempt === $this->maxAttempts) {
-                $facade->forward($events);
+                $collector->forward($events);
 
                 return;
             }

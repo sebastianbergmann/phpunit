@@ -21,5 +21,10 @@ interface SubscribableDispatcher extends Dispatcher
      */
     public function registerSubscriber(Subscriber $subscriber): void;
 
+    /**
+     * @throws UnknownSubscriberTypeException
+     */
+    public function registerSubscriberForEventsOfThisProcess(Subscriber $subscriber): void;
+
     public function registerTracer(Tracer\Tracer $tracer): void;
 }

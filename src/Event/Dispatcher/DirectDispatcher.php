@@ -12,6 +12,7 @@ namespace PHPUnit\Event;
 use const PHP_EOL;
 use function array_key_exists;
 use function dirname;
+use function getmypid;
 use function sprintf;
 use function str_starts_with;
 use Throwable;
@@ -26,7 +27,7 @@ final class DirectDispatcher implements SubscribableDispatcher
     private readonly TypeMap $typeMap;
 
     /**
-     * @var array<class-string, list<Subscriber>>
+     * @var array<class-string, list<array{subscriber: Subscriber, eventsOfThisProcessOnly: bool}>>
      */
     private array $subscribers = [];
 
@@ -51,22 +52,16 @@ final class DirectDispatcher implements SubscribableDispatcher
      */
     public function registerSubscriber(Subscriber $subscriber): void
     {
-        if (!$this->typeMap->isKnownSubscriberType($subscriber)) {
-            throw new UnknownSubscriberTypeException(
-                sprintf(
-                    'Subscriber "%s" does not implement any known interface - did you forget to register it?',
-                    $subscriber::class,
-                ),
-            );
-        }
+        $this->register($subscriber, false);
+    }
 
-        $eventClassName = $this->typeMap->map($subscriber);
-
-        if (!array_key_exists($eventClassName, $this->subscribers)) {
-            $this->subscribers[$eventClassName] = [];
-        }
-
-        $this->subscribers[$eventClassName][] = $subscriber;
+    /**
+     * @throws MapError
+     * @throws UnknownSubscriberTypeException
+     */
+    public function registerSubscriberForEventsOfThisProcess(Subscriber $subscriber): void
+    {
+        $this->register($subscriber, true);
     }
 
     /**
@@ -100,10 +95,15 @@ final class DirectDispatcher implements SubscribableDispatcher
             return;
         }
 
-        foreach ($this->subscribers[$eventClassName] as $subscriber) {
+        foreach ($this->subscribers[$eventClassName] as $registration) {
+            if ($registration['eventsOfThisProcessOnly'] &&
+                $event->telemetryInfo()->processId() !== $this->processId()) {
+                continue;
+            }
+
             try {
                 /** @phpstan-ignore method.notFound */
-                $subscriber->notify($event);
+                $registration['subscriber']->notify($event);
             } catch (Throwable $t) {
                 $this->handleThrowable($t);
             }
@@ -131,6 +131,50 @@ final class DirectDispatcher implements SubscribableDispatcher
         // @codeCoverageIgnoreStart
         throw $t;
         // @codeCoverageIgnoreEnd
+    }
+
+    /**
+     * @throws MapError
+     * @throws UnknownSubscriberTypeException
+     */
+    private function register(Subscriber $subscriber, bool $eventsOfThisProcessOnly): void
+    {
+        if (!$this->typeMap->isKnownSubscriberType($subscriber)) {
+            throw new UnknownSubscriberTypeException(
+                sprintf(
+                    'Subscriber "%s" does not implement any known interface - did you forget to register it?',
+                    $subscriber::class,
+                ),
+            );
+        }
+
+        $eventClassName = $this->typeMap->map($subscriber);
+
+        if (!array_key_exists($eventClassName, $this->subscribers)) {
+            $this->subscribers[$eventClassName] = [];
+        }
+
+        $this->subscribers[$eventClassName][] = [
+            'subscriber'              => $subscriber,
+            'eventsOfThisProcessOnly' => $eventsOfThisProcessOnly,
+        ];
+    }
+
+    /**
+     * The process ID as the emitter records it in the telemetry information
+     * of an event (see DispatchingEmitter::telemetryInfo()).
+     */
+    private function processId(): int
+    {
+        $processId = getmypid();
+
+        if ($processId === false || $processId < 0) {
+            // @codeCoverageIgnoreStart
+            $processId = 0;
+            // @codeCoverageIgnoreEnd
+        }
+
+        return $processId;
     }
 
     private function isThrowableFromThirdPartySubscriber(Throwable $t): bool

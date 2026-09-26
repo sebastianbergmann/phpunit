@@ -53,6 +53,19 @@ final class PassedTestsTest extends TestCase
         $this->assertNull((new PassedTests)->returnValue(HookFixture::class . '::testOne'));
     }
 
+    public function testForgetsRecordedPassesWhenReset(): void
+    {
+        $passedTests = new PassedTests;
+
+        $passedTests->testClassPassed(self::class);
+
+        $this->assertTrue($passedTests->hasTestClassPassed(self::class));
+
+        $passedTests->reset();
+
+        $this->assertFalse($passedTests->hasTestClassPassed(self::class));
+    }
+
     private function testMethod(): TestMethod
     {
         return new TestMethod(

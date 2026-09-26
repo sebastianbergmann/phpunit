@@ -170,6 +170,12 @@ abstract class IterativeTestSuite extends TestSuite
         return $message;
     }
 
+    /**
+     * Synthesize a test attempt event from the events an attempt collected, so
+     * that a failed or errored attempt that is going to be retried is reported
+     * as an attempt rather than as the test's final outcome. Returns whether
+     * such an event could be determined from the collected events.
+     */
     final protected function emitAttemptEvent(EventCollection $events, Event\Emitter $emitter): bool
     {
         $duration = $this->durationOf($events);

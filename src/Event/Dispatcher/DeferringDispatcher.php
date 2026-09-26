@@ -16,10 +16,10 @@ namespace PHPUnit\Event;
  */
 final class DeferringDispatcher implements SubscribableDispatcher
 {
+    use CollectionWindow;
     private readonly SubscribableDispatcher $dispatcher;
     private EventCollection $events;
-    private bool $recording                   = true;
-    private ?EventCollection $collectedEvents = null;
+    private bool $recording = true;
 
     public function __construct(SubscribableDispatcher $dispatcher)
     {
@@ -37,11 +37,14 @@ final class DeferringDispatcher implements SubscribableDispatcher
         $this->dispatcher->registerSubscriber($subscriber);
     }
 
+    public function registerSubscriberForEventsOfThisProcess(Subscriber $subscriber): void
+    {
+        $this->dispatcher->registerSubscriberForEventsOfThisProcess($subscriber);
+    }
+
     public function dispatch(Event $event): void
     {
-        if ($this->collectedEvents !== null) {
-            $this->collectedEvents->add($event);
-
+        if ($this->collectDispatchedEvent($event)) {
             return;
         }
 
@@ -52,34 +55,6 @@ final class DeferringDispatcher implements SubscribableDispatcher
         }
 
         $this->dispatcher->dispatch($event);
-    }
-
-    /**
-     * @throws EventsAreAlreadyBeingCollectedException
-     */
-    public function startCollectingEvents(): void
-    {
-        if ($this->collectedEvents !== null) {
-            throw new EventsAreAlreadyBeingCollectedException;
-        }
-
-        $this->collectedEvents = new EventCollection;
-    }
-
-    /**
-     * @throws EventsAreNotBeingCollectedException
-     */
-    public function stopCollectingEvents(): EventCollection
-    {
-        if ($this->collectedEvents === null) {
-            throw new EventsAreNotBeingCollectedException;
-        }
-
-        $events = $this->collectedEvents;
-
-        $this->collectedEvents = null;
-
-        return $events;
     }
 
     public function flush(): void

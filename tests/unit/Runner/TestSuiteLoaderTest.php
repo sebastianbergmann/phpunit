@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Runner;
 
+use function class_exists;
+use function realpath;
+use function strtolower;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
@@ -50,6 +53,53 @@ final class TestSuiteLoaderTest extends TestCase
             BankAccountTest::class,
             (new TestSuiteLoader)->load(__DIR__ . '/../../_files/BankAccountTest.php')->getName(),
         );
+    }
+
+    public function testMapsTheClassesDeclaredInLoadedTestClassFilesToTheFilesThatDeclareThem(): void
+    {
+        $file = realpath(__DIR__ . '/../../_files/BankAccountTest.php');
+
+        (new TestSuiteLoader)->load($file);
+
+        $map = TestSuiteLoader::classesDeclaredInLoadedSuiteClassFiles();
+
+        $this->assertArrayHasKey(strtolower(BankAccountTest::class), $map);
+        $this->assertSame($file, $map[strtolower(BankAccountTest::class)]);
+    }
+
+    public function testDoesNotMapAnythingForALoadedTestClassFileThatDeclaresNoClass(): void
+    {
+        $file = realpath(__DIR__ . '/../../_files/TestClassFileWithoutTestClass.php');
+
+        // The file is recorded as loaded before it turns out that it declares
+        // no class, so the map of the classes declared in the loaded test
+        // class files has to skip it rather than trip over it.
+        try {
+            (new TestSuiteLoader)->load($file);
+        } catch (ClassCannotBeFoundException) {
+        }
+
+        $this->assertNotContains($file, TestSuiteLoader::classesDeclaredInLoadedSuiteClassFiles());
+    }
+
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testMapsTheClassesDeclaredInTestClassFileWhoseClassWasAutoloadedAfterAnotherTestClassFileWasLoaded(): void
+    {
+        $loader = new TestSuiteLoader;
+        $file   = realpath(__DIR__ . '/../../_files/BankAccountTest.php');
+
+        $loader->load(__DIR__ . '/../../_files/ActualOutputTest.php');
+
+        $this->assertTrue(class_exists(BankAccountTest::class));
+
+        $loader->load(__DIR__ . '/../../_files/AssertionExampleTest.php');
+        $loader->load($file);
+
+        $map = TestSuiteLoader::classesDeclaredInLoadedSuiteClassFiles();
+
+        $this->assertArrayHasKey(strtolower(BankAccountTest::class), $map);
+        $this->assertSame($file, $map[strtolower(BankAccountTest::class)]);
     }
 
     public function testRejectsFileThatDeclaresClassThatDoesNotExtendTestCase(): void

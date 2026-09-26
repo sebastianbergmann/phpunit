@@ -9,6 +9,16 @@
  */
 namespace PHPUnit\Event;
 
+use function getmypid;
+use PHPUnit\Event\Telemetry\CpuTime;
+use PHPUnit\Event\Telemetry\Duration;
+use PHPUnit\Event\Telemetry\GarbageCollectorStatus;
+use PHPUnit\Event\Telemetry\HRTime;
+use PHPUnit\Event\Telemetry\Info;
+use PHPUnit\Event\Telemetry\MemoryUsage;
+use PHPUnit\Event\Telemetry\Snapshot;
+use PHPUnit\Event\TestRunner\Started;
+use PHPUnit\Event\TestRunner\StartedSubscriber;
 use PHPUnit\Event\Tracer\Tracer;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
@@ -42,6 +52,73 @@ final class DirectDispatcherTest extends TestCase
         $dispatcher->registerSubscriber($subscriber);
 
         $dispatcher->dispatch($event);
+    }
+
+    public function testDispatchesEventOfThisProcessToSubscriberForEventsOfThisProcess(): void
+    {
+        $event = new Started($this->telemetryInfo((int) getmypid()));
+
+        $dispatcher = new DirectDispatcher($this->typeMapForTestRunnerStarted());
+
+        $subscriber = $this->createMock(StartedSubscriber::class);
+
+        $subscriber
+            ->expects($this->once())
+            ->method('notify')
+            ->with($this->identicalTo($event))
+            ->seal();
+
+        $dispatcher->registerSubscriberForEventsOfThisProcess($subscriber);
+
+        $dispatcher->dispatch($event);
+    }
+
+    public function testDoesNotDispatchEventOfAnotherProcessToSubscriberForEventsOfThisProcess(): void
+    {
+        $event = new Started($this->telemetryInfo((int) getmypid() + 1));
+
+        $dispatcher = new DirectDispatcher($this->typeMapForTestRunnerStarted());
+
+        $subscriber = $this->createMock(StartedSubscriber::class);
+
+        $subscriber
+            ->expects($this->never())
+            ->method('notify')
+            ->seal();
+
+        $dispatcher->registerSubscriberForEventsOfThisProcess($subscriber);
+
+        $dispatcher->dispatch($event);
+    }
+
+    public function testDispatchesEventOfAnotherProcessToSubscriber(): void
+    {
+        $event = new Started($this->telemetryInfo((int) getmypid() + 1));
+
+        $dispatcher = new DirectDispatcher($this->typeMapForTestRunnerStarted());
+
+        $subscriber = $this->createMock(StartedSubscriber::class);
+
+        $subscriber
+            ->expects($this->once())
+            ->method('notify')
+            ->with($this->identicalTo($event))
+            ->seal();
+
+        $dispatcher->registerSubscriber($subscriber);
+
+        $dispatcher->dispatch($event);
+    }
+
+    public function testRegisterForEventsOfThisProcessRejectsUnknownSubscriber(): void
+    {
+        $subscriber = $this->createStub(Subscriber::class);
+
+        $dispatcher = new DirectDispatcher(new TypeMap);
+
+        $this->expectException(RuntimeException::class);
+
+        $dispatcher->registerSubscriberForEventsOfThisProcess($subscriber);
     }
 
     public function testDispatchesEventToTracers(): void
@@ -93,5 +170,43 @@ final class DirectDispatcherTest extends TestCase
         $typeMap->addMapping(DummySubscriber::class, DummyEvent::class);
 
         return $typeMap;
+    }
+
+    private function typeMapForTestRunnerStarted(): TypeMap
+    {
+        $typeMap = new TypeMap;
+
+        $typeMap->addMapping(StartedSubscriber::class, Started::class);
+
+        return $typeMap;
+    }
+
+    /**
+     * @param non-negative-int $processId
+     */
+    private function telemetryInfo(int $processId): Info
+    {
+        return new Info(
+            new Snapshot(
+                HRTime::fromSecondsAndNanoseconds(0, 0),
+                MemoryUsage::fromBytes(0),
+                MemoryUsage::fromBytes(0),
+                new GarbageCollectorStatus(0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, false, false, false, 0),
+                CpuTime::fromSecondsAndNanoseconds(0, 0),
+                CpuTime::fromSecondsAndNanoseconds(0, 0),
+                CpuTime::fromSecondsAndNanoseconds(0, 0),
+            ),
+            Duration::fromSecondsAndNanoseconds(0, 0),
+            MemoryUsage::fromBytes(0),
+            Duration::fromSecondsAndNanoseconds(0, 0),
+            MemoryUsage::fromBytes(0),
+            CpuTime::fromSecondsAndNanoseconds(0, 0),
+            CpuTime::fromSecondsAndNanoseconds(0, 0),
+            CpuTime::fromSecondsAndNanoseconds(0, 0),
+            CpuTime::fromSecondsAndNanoseconds(0, 0),
+            CpuTime::fromSecondsAndNanoseconds(0, 0),
+            CpuTime::fromSecondsAndNanoseconds(0, 0),
+            $processId,
+        );
     }
 }

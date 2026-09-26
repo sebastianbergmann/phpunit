@@ -1,0 +1,665 @@
+<?php declare(strict_types=1);
+/*
+ * This file is part of PHPUnit.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+namespace PHPUnit\Runner\Parallel;
+
+use function array_merge;
+use function array_slice;
+use function assert;
+use function count;
+use function in_array;
+use function usleep;
+use Generator;
+use PHPUnit\Event\CollectingEmitter;
+use PHPUnit\Event\EventCollection;
+use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Framework\PhptRepeatTestSuite;
+use PHPUnit\Framework\PhptRetryTestSuite;
+use PHPUnit\Runner\Phpt\Interruption;
+use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
+use PHPUnit\Util\PHP\Job;
+use PHPUnit\Util\PHP\JobRunner;
+use PHPUnit\Util\PHP\Result;
+use PHPUnit\Util\PHP\RunningJob;
+
+/**
+ * Runs PHPT tests concurrently, each as its own child process, in the main
+ * PHPUnit process.
+ *
+ * A PHPT test already runs its --SKIPIF--, --FILE--, and --CLEAN-- sections in
+ * child processes; routing it through a PersistentWorker would only wrap those
+ * children in a further process, and a child process spawned from within a
+ * worker hangs on Windows because it inherits the worker's control-channel
+ * handles. This runner therefore drives the PHPT tests directly: it advances up
+ * to a fixed number of them at a time, each represented by the generator that
+ * PhptTestCase::execute() returns, and starts the next section's child process
+ * for a test as soon as the previous one has finished.
+ *
+ * Because the events of a PHPT test must reach the parent's output and result
+ * subsystem in suite order — not in the order in which the concurrently running
+ * tests happen to finish — each test writes its events into its own collecting
+ * emitter. The collected events are handed to the caller, which replays them at
+ * the test's suite index through the same ResultAggregator that orders the
+ * worker units.
+ *
+ * The --FILE-- section's child redirects its standard error onto its standard
+ * output, which is captured in a file rather than a pipe; there is therefore no
+ * stream to wait on with stream_select(), so the runner polls each child's
+ * liveness instead, draining the pipes of the sections that do use them so that
+ * a child never blocks on a full pipe buffer.
+ *
+ * A test may declare conflict keys with a --CONFLICTS-- section: while a test
+ * that conflicts with key K is running, no other test that conflicts with K is
+ * started. The reserved key "all" conflicts with every other test, so a test
+ * that declares it runs entirely on its own — not alongside another PHPT test,
+ * and not alongside a unit executing in the worker pool either. Such tests are
+ * ordered last and run once the others have drained, mirroring how
+ * run-tests.php defers them until a single worker remains.
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ */
+final class PhptRunner
+{
+    /**
+     * How long run() sleeps, in microseconds, when a polling round finds that
+     * no child has finished, so that waiting does not spin the CPU.
+     */
+    private const int POLL_INTERVAL_MICROSECONDS = 1000;
+
+    /**
+     * How many of the runner's start slots are reserved for the suite order
+     * (see DispatchQueue), at most.
+     *
+     * More than the worker pool reserves, because a PHPT unit streams nothing
+     * while it runs: it reports its events only once it has finished, so the
+     * release sequence advances by one such unit per unit duration while the
+     * cost-ordered slots finish units several times as fast. Each reserved slot
+     * multiplies the rate at which the release sequence can advance; three is
+     * the compromise between that and the straggler protection the cost order
+     * provides on the remaining slots.
+     *
+     * The effective number is derived from this, so that one slot always keeps
+     * working the cost order (see suiteOrderSlots()).
+     */
+    private const int SUITE_ORDER_SLOTS = 3;
+    private readonly JobRunner $jobRunner;
+
+    /**
+     * @var positive-int
+     */
+    private readonly int $concurrency;
+
+    /**
+     * The units that have not been started yet, in start order. Skipped
+     * positions (units whose conflict keys are currently held) leave holes,
+     * so this is keyed by original position rather than being a list.
+     *
+     * @var array<int, PhptWorkUnit>
+     */
+    private array $queue = [];
+
+    /**
+     * @var array<int, array{unit: PhptWorkUnit, interruption: Interruption, generator: Generator<int, Job, Result, void>, collector: CollectingEmitter, job: RunningJob}>
+     */
+    private array $active = [];
+
+    /**
+     * The conflict keys currently held by a running test, and whether a test
+     * that conflicts with "all" is running (which blocks every other test
+     * from starting).
+     *
+     * @var array<non-empty-string, true>
+     */
+    private array $activeConflicts = [];
+    private bool $exclusive        = false;
+
+    /**
+     * @var ?callable(non-negative-int, EventCollection): void
+     */
+    private $onCompleted;
+
+    /**
+     * The budget of concurrently executing units that the PHPT tests share
+     * with the worker pool: a slot is taken for every started test and given
+     * back when the test finishes, so that the PHPT tests and the worker pool
+     * together never execute more units at once than the budget allows.
+     */
+    private readonly ProcessBudget $budget;
+
+    /**
+     * Whether nothing outside of this runner — the worker pool, in
+     * particular — is executing a unit right now. A test that conflicts with
+     * "all" must run entirely on its own, so it is only started while this
+     * reports true. When no predicate is given, only the runner's own tests
+     * are considered, as for a run without a worker pool.
+     *
+     * @var ?callable(): bool
+     */
+    private $nothingElseIsExecuting;
+
+    /**
+     * @param positive-int      $concurrency
+     * @param ?callable(): bool $nothingElseIsExecuting
+     */
+    public function __construct(JobRunner $jobRunner, int $concurrency, ProcessBudget $budget, ?callable $nothingElseIsExecuting = null)
+    {
+        $this->jobRunner              = $jobRunner;
+        $this->concurrency            = $concurrency;
+        $this->budget                 = $budget;
+        $this->nothingElseIsExecuting = $nothingElseIsExecuting;
+    }
+
+    /**
+     * Run the given PHPT units to completion, invoking the callback once for
+     * each unit as it finishes (in completion order, not suite order) with its
+     * suite index and the events it collected.
+     *
+     * @param list<PhptWorkUnit>                                $units
+     * @param callable(non-negative-int, EventCollection): void $onCompleted
+     */
+    public function run(array $units, callable $onCompleted): void
+    {
+        $this->begin($units, $onCompleted);
+
+        while (!$this->isFinished()) {
+            if (!$this->tick()) {
+                usleep(self::POLL_INTERVAL_MICROSECONDS);
+            }
+        }
+    }
+
+    /**
+     * Accept the units to run without running them yet: the caller is expected
+     * to drive the runner with tick() until isFinished() reports completion.
+     * This is what lets the parallel test runner advance the PHPT tests and the
+     * worker pool side by side in one polling loop.
+     *
+     * @param list<PhptWorkUnit>                                $units
+     * @param callable(non-negative-int, EventCollection): void $onCompleted
+     */
+    public function begin(array $units, callable $onCompleted): void
+    {
+        // Tests that conflict with "all" run on their own; ordering them last
+        // lets the others start first, so an "all" test only runs once the
+        // queue ahead of it has drained.
+        $queue    = [];
+        $deferred = [];
+
+        foreach ($units as $unit) {
+            if (in_array('all', $unit->conflicts(), true)) {
+                $deferred[] = $unit;
+
+                continue;
+            }
+
+            $queue[] = $unit;
+        }
+
+        $this->queue           = array_merge($queue, $deferred);
+        $this->active          = [];
+        $this->activeConflicts = [];
+        $this->exclusive       = false;
+        $this->onCompleted     = $onCompleted;
+    }
+
+    /**
+     * Advance the runner by one polling round: start every queued unit that a
+     * free slot and its conflict keys allow, and harvest the children that have
+     * finished. Returns whether the round made progress; a caller driving the
+     * runner in a loop is expected to sleep briefly when it did not, so that
+     * polling does not spin the CPU.
+     *
+     * When the caller passes false for $mayStart, no queued unit is started in
+     * this round: the tests that are already running are still advanced and
+     * harvested, so the runner drains. This is how the caller makes room for
+     * a unit that must run alone (see ParallelTestRunner).
+     */
+    public function tick(bool $mayStart = true): bool
+    {
+        $progressed = false;
+
+        if ($mayStart) {
+            $progressed = $this->startRunnable();
+        }
+
+        if ($this->active === []) {
+            return $progressed;
+        }
+
+        if ($this->harvest()) {
+            $progressed = true;
+        }
+
+        return $progressed;
+    }
+
+    /**
+     * Whether every unit accepted by begin() has finished.
+     */
+    public function isFinished(): bool
+    {
+        return $this->queue === [] && $this->active === [];
+    }
+
+    /**
+     * Whether any test is currently running.
+     */
+    public function hasRunningTests(): bool
+    {
+        return $this->active !== [];
+    }
+
+    /**
+     * Whether the test that is currently running conflicts with "all" and
+     * must therefore run entirely on its own. While this reports true, the
+     * caller must not start any other work — the worker pool must not
+     * dispatch units — or the promised exclusivity would be broken.
+     */
+    public function isRunningExclusiveTest(): bool
+    {
+        return $this->exclusive;
+    }
+
+    /**
+     * Abandon the run: the tests that have not been started yet are dropped
+     * and the child processes of the running tests are terminated without
+     * waiting for their results. Used when the test runner stops early,
+     * because the results collected so far call for it (--stop-on-*).
+     *
+     * A terminated test's cleanup still happens: the test is marked as
+     * interrupted and its generator is driven to completion, which runs the
+     * --CLEAN-- section when the --FILE-- section has already run and skips
+     * everything else. The events the test emits while being driven go into
+     * its collector, which is discarded — the cleanup happens, no result is
+     * reported, exactly as when a sequential run is interrupted.
+     */
+    public function halt(): void
+    {
+        $this->queue = [];
+
+        foreach ($this->active as $task) {
+            $task['interruption']->interrupt();
+
+            $task['job']->terminate();
+
+            $generator = $task['generator'];
+
+            $generator->send($task['job']->wait());
+
+            while ($generator->valid()) {
+                $generator->send($this->jobRunner->run($generator->current()));
+            }
+
+            // The slot that the abandoned test held goes back to the shared
+            // process budget.
+            $this->budget->release();
+        }
+
+        $this->active          = [];
+        $this->activeConflicts = [];
+        $this->exclusive       = false;
+    }
+
+    /**
+     * Start every queued unit that a free slot and its conflict keys allow.
+     */
+    private function startRunnable(): bool
+    {
+        $onCompleted = $this->onCompleted;
+
+        assert($onCompleted !== null);
+
+        $progressed = false;
+
+        foreach ($this->startOrder() as $position => $unit) {
+            if (count($this->active) >= $this->concurrency || $this->exclusive) {
+                break;
+            }
+
+            if (!$this->canStart($unit)) {
+                continue;
+            }
+
+            // The unit may only start while the shared process budget has a
+            // slot left; the slot is held until the test finishes.
+            if (!$this->budget->acquire()) {
+                break;
+            }
+
+            unset($this->queue[$position]);
+
+            $progressed = true;
+
+            $collector    = EventFacade::instance()->collectingEmitter();
+            $interruption = new Interruption;
+            $generator    = $this->generatorFor($unit, $collector, $interruption);
+
+            $generator->rewind();
+
+            if (!$generator->valid()) {
+                // The test produced its events without running any child
+                // process — a parse error, or a skip decided in-process. It
+                // is already finished, so it reserves no conflict keys and
+                // gives its slot back to the budget right away.
+                $this->budget->release();
+
+                $onCompleted($unit->index(), $collector->flush());
+
+                continue;
+            }
+
+            $this->reserve($unit);
+
+            $this->active[] = [
+                'unit'         => $unit,
+                'interruption' => $interruption,
+                'generator'    => $generator,
+                'collector'    => $collector,
+                'job'          => $this->jobRunner->startAsync($generator->current()),
+            ];
+        }
+
+        return $progressed;
+    }
+
+    /**
+     * The queued units, keyed by their position in the queue, in the order in
+     * which a round considers them for a start.
+     *
+     * The order is the one begin() established — the units with the longest
+     * recorded durations first, the tests that conflict with "all" last — with
+     * one exception: the units the ordered output is waiting for are considered
+     * first, on the slots that are reserved for the suite order (see
+     * SUITE_ORDER_SLOTS).
+     *
+     * The results of the units are released in suite order, and the results of
+     * a unit whose turn has not come yet are buffered until it has (see
+     * ResultAggregator). A PHPT unit reports nothing until it has finished, so
+     * the release sequence can only advance as fast as the reserved slots
+     * finish the units it is waiting for; keeping them supplied is what makes
+     * results appear as the tests finish instead of piling up behind a unit
+     * that the start order would otherwise only get to at the end of the chunk.
+     *
+     * @return array<int, PhptWorkUnit>
+     */
+    private function startOrder(): array
+    {
+        $slots = $this->suiteOrderSlots();
+        $heads = $this->lowestIndexedQueuedUnits($slots);
+
+        if ($heads === []) {
+            return [];
+        }
+
+        // Every running unit that precedes them all holds one of the reserved
+        // slots; what is left is how many of the lowest-indexed queued units
+        // are started ahead of the cost order.
+        $free = $slots - $this->numberOfRunningUnitsBelow($heads[0]['unit']->index());
+
+        if ($free < 1) {
+            return $this->queue;
+        }
+
+        $order = [];
+
+        foreach (array_slice($heads, 0, $free) as $head) {
+            $order[$head['position']] = $head['unit'];
+        }
+
+        foreach ($this->queue as $queuedPosition => $queuedUnit) {
+            if (isset($order[$queuedPosition])) {
+                continue;
+            }
+
+            $order[$queuedPosition] = $queuedUnit;
+        }
+
+        return $order;
+    }
+
+    /**
+     * How many of the runner's start slots are reserved for the suite order.
+     *
+     * One slot is always left to the cost order, so that the longest of the
+     * queued units still starts as early as the reserved slots allow; a runner
+     * that may only run one unit at a time reserves that one slot, because
+     * reporting nothing at all is worse than losing the cost order on it.
+     *
+     * @return positive-int
+     */
+    private function suiteOrderSlots(): int
+    {
+        $slots = self::SUITE_ORDER_SLOTS;
+
+        if ($slots > $this->concurrency - 1) {
+            $slots = $this->concurrency - 1;
+        }
+
+        if ($slots < 1) {
+            $slots = 1;
+        }
+
+        return $slots;
+    }
+
+    /**
+     * The queued units with the lowest suite indexes, lowest first, at most
+     * $count of them.
+     *
+     * @param positive-int $count
+     *
+     * @return list<array{position: int, unit: PhptWorkUnit}>
+     */
+    private function lowestIndexedQueuedUnits(int $count): array
+    {
+        $lowest = [];
+
+        // One pass per reserved slot; there are very few of them (see
+        // SUITE_ORDER_SLOTS), and a pass over the queue is what a polling round
+        // costs anyway.
+        for ($taken = 0; $taken < $count; $taken++) {
+            $candidate = null;
+
+            foreach ($this->queue as $position => $unit) {
+                if ($this->isAmong($lowest, $position)) {
+                    continue;
+                }
+
+                if ($candidate === null || $unit->index() < $candidate['unit']->index()) {
+                    $candidate = ['position' => $position, 'unit' => $unit];
+                }
+            }
+
+            if ($candidate === null) {
+                break;
+            }
+
+            $lowest[] = $candidate;
+        }
+
+        return $lowest;
+    }
+
+    /**
+     * @param list<array{position: int, unit: PhptWorkUnit}> $units
+     */
+    private function isAmong(array $units, int $position): bool
+    {
+        foreach ($units as $unit) {
+            if ($unit['position'] === $position) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * How many of the units that are running right now precede the given suite
+     * index.
+     *
+     * @param non-negative-int $index
+     *
+     * @return non-negative-int
+     */
+    private function numberOfRunningUnitsBelow(int $index): int
+    {
+        $below = 0;
+
+        foreach ($this->active as $task) {
+            if ($task['unit']->index() < $index) {
+                $below++;
+            }
+        }
+
+        return $below;
+    }
+
+    /**
+     * The generator that advances the unit: the sections of a single PHPT
+     * test, or the repetitions or attempts of a repeated or retried one, which
+     * the suite that aggregates them orchestrates as one generator so that
+     * they run one after another within the unit.
+     *
+     * @return Generator<int, Job, Result, void>
+     */
+    private function generatorFor(PhptWorkUnit $unit, CollectingEmitter $collector, Interruption $interruption): Generator
+    {
+        if ($unit->numberOfRuns() > 1) {
+            return PhptRepeatTestSuite::for($unit->file(), EventFacade::emitter(), $unit->numberOfRuns())->executeInterleaved(
+                $collector->emitter(),
+                $collector,
+                $interruption,
+            );
+        }
+
+        if ($unit->maxAttempts() > 1) {
+            return PhptRetryTestSuite::for($unit->file(), EventFacade::emitter(), $unit->maxAttempts())->executeInterleaved(
+                $collector->emitter(),
+                $collector,
+                $interruption,
+            );
+        }
+
+        return new PhptTestCase($unit->file())->execute($collector->emitter(), $interruption);
+    }
+
+    /**
+     * Whether the unit may be started right now: a unit that conflicts with
+     * "all" may start only when nothing else is running, and any other unit may
+     * start only when none of its conflict keys are currently held.
+     */
+    private function canStart(PhptWorkUnit $unit): bool
+    {
+        if (in_array('all', $unit->conflicts(), true)) {
+            if ($this->active !== []) {
+                return false;
+            }
+
+            // A test that conflicts with every other test runs entirely on
+            // its own: not alongside another PHPT test, and not alongside a
+            // unit executing in the worker pool either.
+            if ($this->nothingElseIsExecuting !== null && !($this->nothingElseIsExecuting)()) {
+                return false;
+            }
+
+            return true;
+        }
+
+        foreach ($unit->conflicts() as $key) {
+            if (isset($this->activeConflicts[$key])) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Record the conflict keys the unit holds while it runs. The reserved key
+     * "all" is tracked through the exclusive flag rather than the key map,
+     * because it blocks every other test rather than one sharing its key.
+     */
+    private function reserve(PhptWorkUnit $unit): void
+    {
+        foreach ($unit->conflicts() as $key) {
+            if ($key === 'all') {
+                $this->exclusive = true;
+
+                continue;
+            }
+
+            $this->activeConflicts[$key] = true;
+        }
+    }
+
+    /**
+     * Release the conflict keys the unit held once it has finished.
+     */
+    private function release(PhptWorkUnit $unit): void
+    {
+        foreach ($unit->conflicts() as $key) {
+            if ($key === 'all') {
+                $this->exclusive = false;
+
+                continue;
+            }
+
+            unset($this->activeConflicts[$key]);
+        }
+    }
+
+    /**
+     * Advance the children of the running tests and finish every test whose
+     * last section's child has ended.
+     */
+    private function harvest(): bool
+    {
+        $onCompleted = $this->onCompleted;
+
+        assert($onCompleted !== null);
+
+        $progressed = false;
+
+        foreach ($this->active as $id => $task) {
+            // Drain whatever the child has produced on its pipes so that it
+            // never blocks writing into a full pipe buffer while we wait.
+            $task['job']->consume();
+
+            if ($task['job']->isRunning()) {
+                continue;
+            }
+
+            $progressed = true;
+
+            $generator = $task['generator'];
+
+            $generator->send($task['job']->wait());
+
+            if ($generator->valid()) {
+                // The test's next section has to run in a child process too.
+                $this->active[$id]['job'] = $this->jobRunner->startAsync($generator->current());
+
+                continue;
+            }
+
+            $this->budget->release();
+
+            $onCompleted($task['unit']->index(), $task['collector']->flush());
+
+            $this->release($task['unit']);
+
+            unset($this->active[$id]);
+        }
+
+        return $progressed;
+    }
+}

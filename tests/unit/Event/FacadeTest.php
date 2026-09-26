@@ -9,11 +9,15 @@
  */
 namespace PHPUnit\Event;
 
+use PHPUnit\Event\Telemetry\HRTime;
 use PHPUnit\Event\Tracer\Tracer;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\RecordingSubscriber;
+use ReflectionMethod;
+use ReflectionProperty;
 
 #[CoversClass(Facade::class)]
 #[Small]
@@ -28,6 +32,85 @@ final class FacadeTest extends TestCase
             new class implements Subscriber
             {},
         );
+    }
+
+    public function testRegistrationOfSubscriberForEventsOfThisProcessDoesNotWorkWhenEventFacadeIsSealed(): void
+    {
+        $this->expectException(EventFacadeIsSealedException::class);
+
+        Facade::instance()->registerSubscriberForEventsOfThisProcess(
+            new class implements Subscriber
+            {},
+        );
+    }
+
+    public function testRegistersSeveralSubscribersForEventsOfThisProcessAtOnce(): void
+    {
+        $facade = new Facade;
+
+        $first = new class extends RecordingSubscriber implements TestRunner\EventFacadeSealedSubscriber
+        {
+            public function notify(TestRunner\EventFacadeSealed $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $second = new class extends RecordingSubscriber implements TestRunner\EventFacadeSealedSubscriber
+        {
+            public function notify(TestRunner\EventFacadeSealed $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $facade->registerSubscribersForEventsOfThisProcess($first, $second);
+
+        // Sealing the facade emits an event in this process, so every
+        // subscriber that was registered for the events of this process is
+        // notified of it.
+        $facade->seal();
+
+        $this->assertSame(1, $first->recordedEventCount());
+        $this->assertSame(1, $second->recordedEventCount());
+    }
+
+    public function testUsesTheIsolationDispatcherOfAFacadeThatWasInitializedForIsolation(): void
+    {
+        // In a process whose event facade was initialized for isolation — the
+        // worker process of a parallel test run, for example — the emitter
+        // dispatches to the isolation dispatcher, so the collection windows
+        // must be opened on that dispatcher and not on the deferring one.
+        $facade = new Facade;
+
+        $dispatcher = new CollectingDispatcher(
+            new DirectDispatcher(new ReflectionMethod(Facade::class, 'typeMap')->invoke($facade)),
+        );
+
+        new ReflectionProperty(Facade::class, 'isolationDispatcher')->setValue($facade, $dispatcher);
+
+        $facade->startCollectingEvents();
+
+        $this->expectException(EventsAreAlreadyBeingCollectedException::class);
+
+        $dispatcher->startCollectingEvents();
+    }
+
+    public function testKeepsTheEmitterWhenInitializedForIsolationRepeatedly(): void
+    {
+        // A persistent worker process of a parallel test run initializes its
+        // event facade for isolation once per unit, but the error handler and
+        // the code coverage singletons hold the emitter from when the worker
+        // booted, so the emitter must keep its identity across those calls.
+        $facade   = new Facade;
+        $property = new ReflectionProperty(Facade::class, 'emitter');
+        $emitter  = $property->getValue($facade);
+
+        $first  = $facade->initForIsolation(HRTime::fromSecondsAndNanoseconds(1, 0));
+        $second = $facade->initForIsolation(HRTime::fromSecondsAndNanoseconds(2, 0));
+
+        $this->assertSame($emitter, $property->getValue($facade));
+        $this->assertNotSame($first, $second);
     }
 
     public function testTracerRegistrationDoesNotWorkWhenEventFacadeIsSealed(): void
