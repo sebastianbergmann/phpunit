@@ -81,6 +81,7 @@ use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 use PHPUnit\Runner\TestImpactAnalysis\Assumptions;
 use PHPUnit\Runner\TestImpactAnalysis\ChangedPaths;
 use PHPUnit\Runner\TestImpactAnalysis\DefaultTestImpactData;
+use PHPUnit\Runner\TestImpactAnalysis\ExecutionSettings;
 use PHPUnit\Runner\TestImpactAnalysis\Explanation;
 use PHPUnit\Runner\TestImpactAnalysis\Provenance;
 use PHPUnit\Runner\TestImpactAnalysis\Selection;
@@ -1342,7 +1343,20 @@ final readonly class Application
             $bootstrapFiles[] = $bootstrapFile;
         }
 
-        return Assumptions::from($configurationFile, $configuration->source(), $bootstrapFiles);
+        return Assumptions::from(
+            $configurationFile,
+            ExecutionSettings::from(
+                $configuration->php(),
+                $configuration->bootstrapForTestSuite(),
+                $configuration->extensionBootstrappers(),
+                $configuration->noExtensions(),
+                $configuration->processIsolation(),
+                $configuration->backupGlobals(),
+                $configuration->backupStaticProperties(),
+            ),
+            $configuration->source(),
+            $bootstrapFiles,
+        );
     }
 
     private function persistTestImpactData(Configuration $configuration, ?TestImpactData $testImpactData, bool $prune): void

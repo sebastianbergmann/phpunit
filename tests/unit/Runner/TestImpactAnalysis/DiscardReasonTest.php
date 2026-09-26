@@ -30,7 +30,7 @@ final class DiscardReasonTest extends TestCase
             'cannot be read'                           => [DiscardReason::CannotBeRead, 'the test impact data that was recorded cannot be read'],
             'recorded with another version of PHPUnit' => [DiscardReason::RecordedWithAnotherVersionOfPhpunit, 'the test impact data was recorded with another version of PHPUnit'],
             'recorded with another version of PHP'     => [DiscardReason::RecordedWithAnotherVersionOfPhp, 'the test impact data was recorded with another version of PHP'],
-            'configuration file changed'               => [DiscardReason::ConfigurationFileChanged, 'the configuration file changed since the test impact data was recorded'],
+            'configuration changed'                    => [DiscardReason::ConfigurationChanged, 'the configuration changed since the test impact data was recorded'],
             'bootstrap script changed'                 => [DiscardReason::BootstrapScriptChanged, 'a bootstrap script changed since the test impact data was recorded'],
             'first-party code changed'                 => [DiscardReason::FirstPartyCodeChanged, 'what is first-party code changed since the test impact data was recorded'],
             'installed packages changed'               => [DiscardReason::InstalledPackagesChanged, 'composer.lock changed since the test impact data was recorded'],

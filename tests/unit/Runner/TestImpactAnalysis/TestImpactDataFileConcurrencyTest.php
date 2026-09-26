@@ -34,9 +34,11 @@ use PHPUnit\Runner\TestIndex\FileHasher;
 use PHPUnit\TextUI\Configuration\FilterDirectoryCollection;
 use PHPUnit\TextUI\Configuration\FilterFileCollection;
 use PHPUnit\TextUI\Configuration\Source;
+use PHPUnit\TextUI\XmlConfiguration\DefaultConfiguration;
 
 #[CoversClass(TestImpactDataFile::class)]
 #[UsesClass(Assumptions::class)]
+#[UsesClass(ExecutionSettings::class)]
 #[UsesClass(DefaultTestImpactData::class)]
 #[UsesClass(FileHasher::class)]
 #[UsesClass(PathHasher::class)]
@@ -164,6 +166,7 @@ final class TestImpactDataFileConcurrencyTest extends TestCase
     {
         return Assumptions::from(
             null,
+            ExecutionSettings::from(DefaultConfiguration::create()->php(), [], [], false, false, false, false),
             new Source(
                 null,
                 false,
