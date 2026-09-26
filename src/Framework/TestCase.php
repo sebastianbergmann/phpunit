@@ -1068,6 +1068,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         $this->attempt     = $attempt;
         $this->maxAttempts = $maxAttempts;
+
+        $this->testValueObjectForEvents = null;
     }
 
     /**

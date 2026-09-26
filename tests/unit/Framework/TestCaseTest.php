@@ -134,6 +134,18 @@ class TestCaseTest extends TestCase
         );
     }
 
+    public function testValueObjectForEventsReflectsAttemptThatIsSetAfterItWasCreated(): void
+    {
+        $testCase = new TestWithDifferentNames('testWithName');
+
+        $this->assertSame(1, $testCase->valueObjectForEvents()->maxAttempts());
+
+        $testCase->setAttempt(2, 3);
+
+        $this->assertSame(2, $testCase->valueObjectForEvents()->attempt());
+        $this->assertSame(3, $testCase->valueObjectForEvents()->maxAttempts());
+    }
+
     public function testShouldRunInSeparateProcessReturnsFalseWhenTestIsAlreadyInIsolation(): void
     {
         $testCase = new TestWithDifferentNames('testWithName');
