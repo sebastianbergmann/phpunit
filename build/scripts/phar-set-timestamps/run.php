@@ -38,6 +38,15 @@ if (is_string(getenv('SOURCE_DATE_EPOCH'))) {
 }
 
 if (!isset($epoch)) {
+    if (isset($argv[2]) && $argv[2] === 'release') {
+        fwrite(
+            STDERR,
+            'Cannot determine timestamp for files in PHAR: no annotated tag found and SOURCE_DATE_EPOCH is not set' . PHP_EOL
+        );
+
+        exit(1);
+    }
+
     $epoch = time();
 
     printf(
