@@ -172,15 +172,21 @@ final class Selector
     }
 
     /**
-     * What was recorded by a test run of the other kind is there, but it does
-     * not answer what this test run asks, and saying that nothing has been
-     * recorded would send the developer looking for a recording that is right
-     * in front of them.
+     * What was recorded by a test run of the other kind, or under other
+     * circumstances, is there, but it does not answer what this test run asks,
+     * and saying that nothing has been recorded would send the developer
+     * looking for a recording that is right in front of them.
      *
      * @return non-empty-string
      */
     private function reasonNothingCanBeSelectedFrom(): string
     {
+        $discardReason = $this->testImpactDataFile->discardReason();
+
+        if ($discardReason !== null) {
+            return $discardReason->asString();
+        }
+
         $provenanceOfWhatIsThere = $this->testImpactDataFile->provenance();
 
         if ($provenanceOfWhatIsThere === null || $provenanceOfWhatIsThere === $this->provenance) {
