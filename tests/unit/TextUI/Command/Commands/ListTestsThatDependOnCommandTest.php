@@ -27,6 +27,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\TestImpactAnalysis\Assumptions;
 use PHPUnit\Runner\TestImpactAnalysis\DefaultTestImpactData;
 use PHPUnit\Runner\TestImpactAnalysis\DiscardReason;
+use PHPUnit\Runner\TestImpactAnalysis\ExecutionSettings;
 use PHPUnit\Runner\TestImpactAnalysis\Provenance;
 use PHPUnit\Runner\TestImpactAnalysis\RecordedTests;
 use PHPUnit\Runner\TestImpactAnalysis\RecordingTime;
@@ -34,6 +35,7 @@ use PHPUnit\Runner\TestImpactAnalysis\TestImpactDataFile;
 use PHPUnit\TextUI\Configuration\FilterDirectoryCollection;
 use PHPUnit\TextUI\Configuration\FilterFileCollection;
 use PHPUnit\TextUI\Configuration\Source;
+use PHPUnit\TextUI\XmlConfiguration\DefaultConfiguration;
 
 #[CoversClass(ListTestsThatDependOnCommand::class)]
 #[UsesClass(DefaultTestImpactData::class)]
@@ -209,6 +211,7 @@ final class ListTestsThatDependOnCommandTest extends TestCase
     {
         return Assumptions::from(
             null,
+            ExecutionSettings::from(DefaultConfiguration::create()->php(), [], [], false, false, false, false),
             new Source(
                 null,
                 false,

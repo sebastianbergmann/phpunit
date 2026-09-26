@@ -33,7 +33,7 @@ enum DiscardReason
             self::CannotBeRead                        => 'the test impact data that was recorded cannot be read',
             self::RecordedWithAnotherVersionOfPhpunit => 'the test impact data was recorded with another version of PHPUnit',
             self::RecordedWithAnotherVersionOfPhp     => 'the test impact data was recorded with another version of PHP',
-            self::ConfigurationFileChanged            => 'the configuration file changed since the test impact data was recorded',
+            self::ConfigurationChanged                => 'the configuration changed since the test impact data was recorded',
             self::BootstrapScriptChanged              => 'a bootstrap script changed since the test impact data was recorded',
             self::FirstPartyCodeChanged               => 'what is first-party code changed since the test impact data was recorded',
             self::InstalledPackagesChanged            => 'composer.lock changed since the test impact data was recorded',
@@ -42,7 +42,7 @@ enum DiscardReason
     case CannotBeRead;
     case RecordedWithAnotherVersionOfPhpunit;
     case RecordedWithAnotherVersionOfPhp;
-    case ConfigurationFileChanged;
+    case ConfigurationChanged;
     case BootstrapScriptChanged;
     case FirstPartyCodeChanged;
     case InstalledPackagesChanged;

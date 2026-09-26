@@ -43,10 +43,12 @@ use PHPUnit\TestFixture\TestImpactAnalysis\UnrelatedSelectionTest;
 use PHPUnit\TextUI\Configuration\FilterDirectoryCollection;
 use PHPUnit\TextUI\Configuration\FilterFileCollection;
 use PHPUnit\TextUI\Configuration\Source;
+use PHPUnit\TextUI\XmlConfiguration\DefaultConfiguration;
 use ReflectionClass;
 
 #[CoversClass(Selector::class)]
 #[UsesClass(Assumptions::class)]
+#[UsesClass(ExecutionSettings::class)]
 #[UsesClass(DefaultTestImpactData::class)]
 #[UsesClass(DiscardReason::class)]
 #[UsesClass(PathHasher::class)]
@@ -103,7 +105,7 @@ final class SelectorTest extends TestCase
 
         $this->assertIsArray($data);
 
-        $data['assumptions']['configuration'] = 'another-hash';
+        $data['assumptions']['settings'] = 'another-hash';
 
         file_put_contents($directory . DIRECTORY_SEPARATOR . 'test-impact-data', json_encode($data));
 
@@ -114,7 +116,7 @@ final class SelectorTest extends TestCase
         )->select($this->tests(), [$money]);
 
         $this->assertTrue($selection->isEverything());
-        $this->assertSame('the configuration file changed since the test impact data was recorded', $selection->reason());
+        $this->assertSame('the configuration changed since the test impact data was recorded', $selection->reason());
     }
 
     public function testRunsNoTestWhenNothingChanged(): void
@@ -601,6 +603,7 @@ final class SelectorTest extends TestCase
     {
         return Assumptions::from(
             null,
+            ExecutionSettings::from(DefaultConfiguration::create()->php(), [], [], false, false, false, false),
             new Source(
                 null,
                 false,
