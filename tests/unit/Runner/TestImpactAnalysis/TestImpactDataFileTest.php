@@ -37,6 +37,7 @@ use PHPUnit\Runner\Version;
 use PHPUnit\TextUI\Configuration\FilterDirectoryCollection;
 use PHPUnit\TextUI\Configuration\FilterFileCollection;
 use PHPUnit\TextUI\Configuration\Source;
+use PHPUnit\TextUI\XmlConfiguration\DefaultConfiguration;
 
 #[CoversClass(TestImpactDataFile::class)]
 #[UsesClass(DefaultTestImpactData::class)]
@@ -74,8 +75,8 @@ final class TestImpactDataFileTest extends TestCase
             'with a source file hash that is not a string' => [['sourceFiles' => [[0, 1]]] + $usable],
             'with assumptions that are not an array'       => [['assumptions' => 'guesswork'] + $usable],
             'with assumptions that are incomplete'         => [['assumptions' => ['source' => 'a-hash']] + $usable],
-            'with an unusable assumption'                  => [['assumptions' => ['configuration' => null, 'source' => 1, 'installedPackages' => null]] + $usable],
-            'with other assumptions'                       => [['assumptions' => ['configuration' => null, 'source' => 'another-hash', 'installedPackages' => null]] + $usable],
+            'with an unusable assumption'                  => [['assumptions' => ['settings' => 'a-hash', 'source' => 1, 'installedPackages' => null]] + $usable],
+            'with other assumptions'                       => [['assumptions' => ['settings' => 'a-hash', 'source' => 'another-hash', 'installedPackages' => null]] + $usable],
             'without files'                                => [self::withoutKey($usable, 'files')],
             'without versions'                             => [self::withoutKey($usable, 'versions')],
             'without tests'                                => [self::withoutKey($usable, 'tests')],
@@ -110,7 +111,7 @@ final class TestImpactDataFileTest extends TestCase
             'written by another version of PHPUnit'                  => [json_encode(['phpunit' => 'another-version'] + $usable), DiscardReason::RecordedWithAnotherVersionOfPhpunit],
             'written by another version of PHPUnit in another shape' => [json_encode(['phpunit' => 'another-version']), DiscardReason::RecordedWithAnotherVersionOfPhpunit],
             'written by another version of PHP'                      => [json_encode(['php' => PHP_VERSION_ID - 1] + $usable), DiscardReason::RecordedWithAnotherVersionOfPhp],
-            'recorded with another configuration file'               => [json_encode(['assumptions' => ['configuration' => 'another-hash'] + $assumptions] + $usable), DiscardReason::ConfigurationFileChanged],
+            'recorded with another configuration'                    => [json_encode(['assumptions' => ['settings' => 'another-hash'] + $assumptions] + $usable), DiscardReason::ConfigurationChanged],
             'recorded with another bootstrap script'                 => [json_encode(['assumptions' => ['bootstrap' => 'another-hash'] + $assumptions] + $usable), DiscardReason::BootstrapScriptChanged],
             'recorded with other first-party code'                   => [json_encode(['assumptions' => ['source' => 'another-hash'] + $assumptions] + $usable), DiscardReason::FirstPartyCodeChanged],
             'recorded with other installed packages'                 => [json_encode(['assumptions' => ['installedPackages' => 'another-hash'] + $assumptions] + $usable), DiscardReason::InstalledPackagesChanged],
@@ -150,7 +151,7 @@ final class TestImpactDataFileTest extends TestCase
 
         $persisted = $this->persistedData($directory);
 
-        $this->assertSame(6, $persisted['version']);
+        $this->assertSame(7, $persisted['version']);
         $this->assertSame(Version::id(), $persisted['phpunit']);
         $this->assertSame(PHP_VERSION_ID, $persisted['php']);
         $this->assertSame([$file], $persisted['files']);
@@ -700,6 +701,7 @@ final class TestImpactDataFileTest extends TestCase
     {
         return Assumptions::from(
             null,
+            ExecutionSettings::from(DefaultConfiguration::create()->php(), [], [], false, false, false, false),
             new Source(
                 null,
                 false,
@@ -836,7 +838,7 @@ final class TestImpactDataFileTest extends TestCase
     private static function usableData(): array
     {
         return [
-            'version'     => 6,
+            'version'     => 7,
             'phpunit'     => Version::id(),
             'php'         => PHP_VERSION_ID,
             'recordedAt'  => 1,
