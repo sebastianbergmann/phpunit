@@ -26,6 +26,7 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\TestImpactAnalysis\Assumptions;
 use PHPUnit\Runner\TestImpactAnalysis\DefaultTestImpactData;
+use PHPUnit\Runner\TestImpactAnalysis\DiscardReason;
 use PHPUnit\Runner\TestImpactAnalysis\Provenance;
 use PHPUnit\Runner\TestImpactAnalysis\RecordedTests;
 use PHPUnit\Runner\TestImpactAnalysis\RecordingTime;
@@ -36,6 +37,7 @@ use PHPUnit\TextUI\Configuration\Source;
 
 #[CoversClass(ListTestsThatDependOnCommand::class)]
 #[UsesClass(DefaultTestImpactData::class)]
+#[UsesClass(DiscardReason::class)]
 #[UsesClass(RecordedTests::class)]
 #[UsesClass(RecordingTime::class)]
 #[UsesClass(TestImpactDataFile::class)]
@@ -91,6 +93,23 @@ final class ListTestsThatDependOnCommandTest extends TestCase
         $result = new ListTestsThatDependOnCommand(new TestImpactDataFile($directory, $this->assumptions()), $file)->execute();
 
         $this->assertSame('No test that depends on ' . $file . ' is recorded' . PHP_EOL, $result->output());
+        $this->assertSame(Result::SUCCESS, $result->shellExitCode());
+    }
+
+    public function testReportsWhyNoTestIsRecordedForTheSourceFileWhenWhatWasRecordedIsNotUsed(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $file      = $this->writeSourceFile($directory, 'Foo', 'first');
+
+        file_put_contents($directory . DIRECTORY_SEPARATOR . 'test-impact-data', 'this is not JSON');
+
+        $result = new ListTestsThatDependOnCommand(new TestImpactDataFile($directory, $this->assumptions()), $file)->execute();
+
+        $this->assertSame(
+            'No test that depends on ' . $file . ' is recorded: the test impact data that was recorded cannot be read' . PHP_EOL,
+            $result->output(),
+        );
+
         $this->assertSame(Result::SUCCESS, $result->shellExitCode());
     }
 
