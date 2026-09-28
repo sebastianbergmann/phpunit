@@ -3,8 +3,7 @@
     "extends": [
         "config:recommended",
         "helpers:pinGitHubActionDigestsToSemver",
-        ":configMigration",
-        ":maintainLockFilesWeekly"
+        ":configMigration"
     ],
     "timezone": "Europe/Berlin",
     "baseBranchPatterns": [
