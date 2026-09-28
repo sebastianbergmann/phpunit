@@ -247,12 +247,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "9b94a0328227df891482a39d7588e15a18e660cd"
+                "reference": "62853111b944bb63fde12cb110f4ef0fabab95f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/9b94a0328227df891482a39d7588e15a18e660cd",
-                "reference": "9b94a0328227df891482a39d7588e15a18e660cd",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/62853111b944bb63fde12cb110f4ef0fabab95f6",
+                "reference": "62853111b944bb63fde12cb110f4ef0fabab95f6",
                 "shasum": ""
             },
             "require": {
@@ -271,7 +271,7 @@
                 "theseer/tokenizer": "^2.0.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "^13.3.4"
+                "phpunit/phpunit": "^13.3.5"
             },
             "suggest": {
                 "ext-pcov": "PHP extension that provides line coverage",
@@ -330,7 +330,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-09-25T08:29:26+00:00"
+            "time": "2026-09-27T17:48:42+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
