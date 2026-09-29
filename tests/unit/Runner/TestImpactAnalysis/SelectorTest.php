@@ -580,6 +580,38 @@ final class SelectorTest extends TestCase
         $this->assertStringContainsString('recorded from what the tests executed', $selection->reason());
     }
 
+    public function testRunsEveryTestWhenAFileThatWasExecutedOutsideOfTestsChanged(): void
+    {
+        $directory    = $this->temporaryDirectory();
+        $money        = $this->writeSourceFile($directory, 'Money', 'first');
+        $bootstrapped = $this->writeSourceFile($directory, 'Bootstrapped', 'first');
+
+        $selector = $this->selectorThatKnowsWhatWasExecutedOutsideOfTests($directory, $money, $bootstrapped);
+
+        $this->writeSourceFile($directory, 'Bootstrapped', 'second');
+
+        $explanation = $selector->explain($this->tests(), [$money, $bootstrapped]);
+
+        $this->assertTrue($explanation->isEverything());
+        $this->assertSame($bootstrapped . ' changed and was executed outside of any test', $explanation->reasonEverythingIsRun());
+    }
+
+    public function testRunsEveryTestWhenAFileThatWasExecutedOutsideOfTestsIsNamed(): void
+    {
+        $directory    = $this->temporaryDirectory();
+        $money        = $this->writeSourceFile($directory, 'Money', 'first');
+        $bootstrapped = $this->writeSourceFile($directory, 'Bootstrapped', 'first');
+
+        $explanation = $this->selectorThatKnowsWhatWasExecutedOutsideOfTests($directory, $money, $bootstrapped)->explain(
+            $this->tests(),
+            [$money, $bootstrapped],
+            [$bootstrapped],
+        );
+
+        $this->assertTrue($explanation->isEverything());
+        $this->assertSame($bootstrapped . ' was executed outside of any test', $explanation->reasonEverythingIsRun());
+    }
+
     public function testRunsEveryTestWhenAFileNoTestDependsOnChanged(): void
     {
         $directory = $this->temporaryDirectory();
@@ -659,6 +691,26 @@ final class SelectorTest extends TestCase
         }
 
         $file->persistAndPrune($data, Provenance::ObservedExecution, $sourceFiles);
+
+        return new Selector($file, Provenance::ObservedExecution, new DefaultTestRunHistory($directory . DIRECTORY_SEPARATOR . 'history'));
+    }
+
+    /**
+     * @param non-empty-string $money
+     * @param non-empty-string $bootstrapped
+     */
+    private function selectorThatKnowsWhatWasExecutedOutsideOfTests(string $directory, string $money, string $bootstrapped): Selector
+    {
+        $file = new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions());
+        $data = new DefaultTestImpactData;
+
+        foreach ($this->everyTestDependsOn($money) as $test => $filesOfTest) {
+            $data->record($test, array_merge($filesOfTest, $this->fileOfTestClassOf($test)));
+        }
+
+        $data->recordExecutedOutsideOfTests([$bootstrapped]);
+
+        $file->persistAndPrune($data, Provenance::ObservedExecution, [$money, $bootstrapped]);
 
         return new Selector($file, Provenance::ObservedExecution, new DefaultTestRunHistory($directory . DIRECTORY_SEPARATOR . 'history'));
     }
