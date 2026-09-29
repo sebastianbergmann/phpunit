@@ -61,8 +61,10 @@ use PHPUnit\Util\Filesystem;
  * the packages that are installed. The file is discarded, and not merged with,
  * when any of them does not match.
  *
- * The file is written for the machine it was written on and cannot be shared
- * with another machine: the source files are named by their absolute path.
+ * The file names every file relative to the base directory, so that what is
+ * recorded in one checkout of a project can be used in another: in the
+ * checkout of another CI runner, for instance, which is somewhere else on the
+ * same machine or on another machine altogether.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -72,15 +74,17 @@ use PHPUnit\Util\Filesystem;
  */
 final class TestImpactDataFile
 {
-    private const int VERSION             = 7;
+    private const int VERSION             = 8;
     private const string DEFAULT_FILENAME = 'test-impact-data';
     private readonly string $filename;
+    private readonly BaseDirectory $baseDirectory;
     private readonly Assumptions $assumptions;
     private readonly PathHasher $hasher;
 
-    public function __construct(string $filepath, Assumptions $assumptions, ?PathHasher $hasher = null)
+    public function __construct(string $filepath, BaseDirectory $baseDirectory, Assumptions $assumptions, ?PathHasher $hasher = null)
     {
-        $this->assumptions = $assumptions;
+        $this->baseDirectory = $baseDirectory;
+        $this->assumptions   = $assumptions;
 
         if (is_dir($filepath)) {
             $filepath .= DIRECTORY_SEPARATOR . self::DEFAULT_FILENAME;
@@ -443,6 +447,12 @@ final class TestImpactDataFile
             $sourceFiles[] = [$keptFilePositions[$sourceFile], $hash];
         }
 
+        $relativeFiles = [];
+
+        foreach ($keptFiles as $file) {
+            $relativeFiles[] = $this->baseDirectory->relativePathOf($file);
+        }
+
         $json = json_encode(
             [
                 'version'     => self::VERSION,
@@ -451,7 +461,7 @@ final class TestImpactDataFile
                 'recordedAt'  => time(),
                 'provenance'  => $provenance->value,
                 'assumptions' => $this->assumptions->asArray(),
-                'files'       => $keptFiles,
+                'files'       => $relativeFiles,
                 'sourceFiles' => $sourceFiles,
                 'versions'    => $keptVersions,
                 'tests'       => $keptTests,
@@ -575,7 +585,7 @@ final class TestImpactDataFile
                 return $empty;
             }
 
-            $files[] = $file;
+            $files[] = $this->baseDirectory->absolutePathOf($file);
         }
 
         $versions = [];

@@ -12,6 +12,7 @@ namespace PHPUnit\Runner\TestImpactAnalysis;
 use const DIRECTORY_SEPARATOR;
 use const PHP_BINARY;
 use const PHP_EOL;
+use function dirname;
 use function file_exists;
 use function file_put_contents;
 use function is_dir;
@@ -38,6 +39,7 @@ use PHPUnit\TextUI\XmlConfiguration\DefaultConfiguration;
 
 #[CoversClass(TestImpactDataFile::class)]
 #[UsesClass(Assumptions::class)]
+#[UsesClass(BaseDirectory::class)]
 #[UsesClass(ExecutionSettings::class)]
 #[UsesClass(DefaultTestImpactData::class)]
 #[UsesClass(FileHasher::class)]
@@ -77,7 +79,7 @@ final class TestImpactDataFileConcurrencyTest extends TestCase
         $whatIsThere = new DefaultTestImpactData;
         $whatIsThere->record('FooTest::testOne', [$sourceFile]);
 
-        new TestImpactDataFile($directory, $this->assumptions())->persist($whatIsThere, Provenance::ObservedExecution, [$sourceFile]);
+        new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions())->persist($whatIsThere, Provenance::ObservedExecution, [$sourceFile]);
 
         $whatTheOtherTestRunWrites = $this->whatAnotherTestRunRecords('BazTest::testOne', $sourceFile);
 
@@ -96,7 +98,7 @@ final class TestImpactDataFileConcurrencyTest extends TestCase
         $whatThisTestRunRecorded = new DefaultTestImpactData;
         $whatThisTestRunRecorded->record('BarTest::testOne', [$sourceFile]);
 
-        new TestImpactDataFile($directory, $this->assumptions())->persist(
+        new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions())->persist(
             $whatThisTestRunRecorded,
             Provenance::ObservedExecution,
             [$sourceFile],
@@ -104,7 +106,7 @@ final class TestImpactDataFileConcurrencyTest extends TestCase
 
         proc_close($process);
 
-        $recording = new TestImpactDataFile($directory, $this->assumptions())->recording(Provenance::ObservedExecution);
+        $recording = new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions())->recording(Provenance::ObservedExecution);
 
         $this->assertNotNull($recording);
         $this->assertTrue($recording->knows('BarTest::testOne'), 'What this test run recorded was not written');
@@ -123,7 +125,11 @@ final class TestImpactDataFileConcurrencyTest extends TestCase
         $data = new DefaultTestImpactData;
         $data->record($test, [$sourceFile]);
 
-        new TestImpactDataFile($directory, $this->assumptions())->persist($data, Provenance::ObservedExecution, [$sourceFile]);
+        /*
+         * The other test run is a test run of the same project, and names the
+         * source file relative to the same directory.
+         */
+        new TestImpactDataFile($directory, BaseDirectory::from(dirname($sourceFile)), $this->assumptions())->persist($data, Provenance::ObservedExecution, [$sourceFile]);
 
         return $directory . DIRECTORY_SEPARATOR . 'test-impact-data';
     }
@@ -165,8 +171,8 @@ final class TestImpactDataFileConcurrencyTest extends TestCase
     private function assumptions(): Assumptions
     {
         return Assumptions::from(
-            null,
-            ExecutionSettings::from(DefaultConfiguration::create()->php(), [], [], false, false, false, false),
+            BaseDirectory::fromWorkingDirectory(),
+            ExecutionSettings::from(BaseDirectory::fromWorkingDirectory(), DefaultConfiguration::create()->php(), [], [], false, false, false, false),
             new Source(
                 null,
                 false,
