@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 12.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [12.5.37] - 2026-MM-DD
+
+### Fixed
+
+* A `#[RequiresMethod]` attribute that refers to a class which cannot be loaded, for instance because its parent class does not exist, aborts the test run instead of skipping the test
+
 ## [12.5.36] - 2026-09-25
 
 ### Changed
@@ -308,6 +314,7 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 * [#6380](https://github.com/sebastianbergmann/phpunit/pull/6380): Allow `Throwable` in `expectExceptionObject()`
 * A PHPUnit notice is now emitted for test methods that create a mock object but do not configure an expectation for it
 
+[12.5.37]: https://github.com/sebastianbergmann/phpunit/compare/12.5.36...12.5
 [12.5.36]: https://github.com/sebastianbergmann/phpunit/compare/12.5.35...12.5.36
 [12.5.35]: https://github.com/sebastianbergmann/phpunit/compare/12.5.34...12.5.35
 [12.5.34]: https://github.com/sebastianbergmann/phpunit/compare/12.5.33...12.5.34

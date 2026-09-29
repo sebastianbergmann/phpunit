@@ -41,6 +41,7 @@ use PHPUnit\Metadata\Version\ComparisonRequirement;
 use PHPUnit\Metadata\Version\Requirement;
 use PHPUnit\Runner\Version;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
+use Throwable;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -189,11 +190,21 @@ final readonly class Requirements
             if ($metadata->isRequiresMethod()) {
                 assert($metadata instanceof RequiresMethod);
 
-                if (!method_exists($metadata->className(), $metadata->methodName())) {
+                try {
+                    if (!method_exists($metadata->className(), $metadata->methodName())) {
+                        $notSatisfied[] = sprintf(
+                            'Method %s::%s() is required.',
+                            $metadata->className(),
+                            $metadata->methodName(),
+                        );
+                    }
+                } catch (Throwable $t) {
                     $notSatisfied[] = sprintf(
-                        'Method %s::%s() is required.',
+                        'Method %s::%s() is required, but class %s cannot be loaded: %s',
                         $metadata->className(),
                         $metadata->methodName(),
+                        $metadata->className(),
+                        $t->getMessage(),
                     );
                 }
             }
