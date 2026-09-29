@@ -13,7 +13,6 @@ use const DIRECTORY_SEPARATOR;
 use function array_key_exists;
 use function array_unique;
 use function dirname;
-use function getcwd;
 use function hash;
 use function implode;
 use function is_array;
@@ -68,25 +67,24 @@ final readonly class Assumptions
     private ?string $installedPackages;
 
     /**
-     * The lock file of the package manager is looked for next to the
-     * configuration file, and in the working directory when there is no
-     * configuration file, and then in the directories above it: a
-     * configuration file that is kept in a directory of its own is not next to
-     * the lock file of the project it configures the tests of. That there is
-     * no lock file is not the same as the lock file having changed: a project
-     * that does not have one, or that is tested with a PHAR, is not a project
-     * whose data has to be discarded.
+     * The lock file of the package manager is looked for in the base
+     * directory, which is the directory of the configuration file or the
+     * working directory when there is no configuration file, and then in the
+     * directories above it: a configuration file that is kept in a directory
+     * of its own is not next to the lock file of the project it configures the
+     * tests of. That there is no lock file is not the same as the lock file
+     * having changed: a project that does not have one, or that is tested with
+     * a PHAR, is not a project whose data has to be discarded.
      *
-     * @param ?non-empty-string      $configurationFile the configuration file, which is only used to find the lock file
      * @param list<non-empty-string> $bootstrapFiles
      */
-    public static function from(?string $configurationFile, ExecutionSettings $settings, Source $source, array $bootstrapFiles, ?FileHasher $hasher = null): self
+    public static function from(BaseDirectory $baseDirectory, ExecutionSettings $settings, Source $source, array $bootstrapFiles, ?FileHasher $hasher = null): self
     {
         if ($hasher === null) {
             $hasher = new FileHasher;
         }
 
-        $lockFile = self::composerLockFileNearest($configurationFile);
+        $lockFile = self::composerLockFileNearest($baseDirectory);
 
         $installedPackages = null;
 
@@ -97,7 +95,7 @@ final readonly class Assumptions
         return new self(
             $settings->hash(),
             self::hashOfBootstrapFiles($bootstrapFiles, $hasher),
-            self::hashOf($source),
+            self::hashOf($source, $baseDirectory),
             $installedPackages,
         );
     }
@@ -243,26 +241,30 @@ final readonly class Assumptions
      * included does not make what was recorded for the tests that exist wrong,
      * whereas including another directory does.
      *
+     * The directories and files are described relative to the base directory:
+     * the same directory in another checkout of the project is the same
+     * first-party code.
+     *
      * @return non-empty-string
      */
-    private static function hashOf(Source $source): string
+    private static function hashOf(Source $source, BaseDirectory $baseDirectory): string
     {
         $description = [];
 
         foreach ($source->includeDirectories() as $directory) {
-            $description[] = 'include-directory ' . $directory->path() . ' ' . $directory->prefix() . ' ' . $directory->suffix();
+            $description[] = 'include-directory ' . $baseDirectory->relativePathOf($directory->path()) . ' ' . $directory->prefix() . ' ' . $directory->suffix();
         }
 
         foreach ($source->includeFiles() as $file) {
-            $description[] = 'include-file ' . $file->path();
+            $description[] = 'include-file ' . $baseDirectory->relativePathOf($file->path());
         }
 
         foreach ($source->excludeDirectories() as $directory) {
-            $description[] = 'exclude-directory ' . $directory->path() . ' ' . $directory->prefix() . ' ' . $directory->suffix();
+            $description[] = 'exclude-directory ' . $baseDirectory->relativePathOf($directory->path()) . ' ' . $directory->prefix() . ' ' . $directory->suffix();
         }
 
         foreach ($source->excludeFiles() as $file) {
-            $description[] = 'exclude-file ' . $file->path();
+            $description[] = 'exclude-file ' . $baseDirectory->relativePathOf($file->path());
         }
 
         $description = array_unique($description);
@@ -279,21 +281,11 @@ final readonly class Assumptions
      * recorded is discarded when it does not have to be, which is the safe way
      * to be wrong.
      *
-     * @param ?non-empty-string $configurationFile
-     *
      * @return ?non-empty-string
      */
-    private static function composerLockFileNearest(?string $configurationFile): ?string
+    private static function composerLockFileNearest(BaseDirectory $baseDirectory): ?string
     {
-        if ($configurationFile !== null) {
-            $directory = dirname($configurationFile);
-        } else {
-            $directory = getcwd();
-
-            if ($directory === false) {
-                return null; // @codeCoverageIgnore
-            }
-        }
+        $directory = $baseDirectory->path();
 
         while (true) {
             $candidate = $directory . DIRECTORY_SEPARATOR . self::COMPOSER_LOCK_FILENAME;

@@ -10,6 +10,7 @@
 namespace PHPUnit\Runner\TestImpactAnalysis;
 
 use const DIRECTORY_SEPARATOR;
+use function dirname;
 use function file_put_contents;
 use function is_dir;
 use function mkdir;
@@ -33,6 +34,7 @@ use PHPUnit\TextUI\Configuration\Source;
 use PHPUnit\TextUI\XmlConfiguration\DefaultConfiguration;
 
 #[CoversClass(Assumptions::class)]
+#[UsesClass(BaseDirectory::class)]
 #[UsesClass(ExecutionSettings::class)]
 #[UsesClass(FileHasher::class)]
 #[Small]
@@ -57,7 +59,7 @@ final class AssumptionsTest extends TestCase
     public function testAreTheSameWhenNothingChanged(): void
     {
         $this->assertTrue(
-            Assumptions::from(null, $this->settings(), $this->source(), [])->equals(Assumptions::from(null, $this->settings(), $this->source(), [])),
+            Assumptions::from(BaseDirectory::fromWorkingDirectory(), $this->settings(), $this->source(), [])->equals(Assumptions::from(BaseDirectory::fromWorkingDirectory(), $this->settings(), $this->source(), [])),
         );
     }
 
@@ -66,18 +68,18 @@ final class AssumptionsTest extends TestCase
         $directory         = $this->temporaryDirectory();
         $configurationFile = $this->writeFile($directory, 'phpunit.xml', 'first');
 
-        $before = Assumptions::from($configurationFile, $this->settings(), $this->source(), []);
+        $before = Assumptions::from(BaseDirectory::from(dirname($configurationFile)), $this->settings(), $this->source(), []);
 
         $this->writeFile($directory, 'phpunit.xml', 'second');
 
-        $this->assertTrue($before->equals(Assumptions::from($configurationFile, $this->settings(), $this->source(), [])));
+        $this->assertTrue($before->equals(Assumptions::from(BaseDirectory::from(dirname($configurationFile)), $this->settings(), $this->source(), [])));
     }
 
     public function testAreNotTheSameWhenTheExecutionSettingsChanged(): void
     {
         $this->assertFalse(
-            Assumptions::from(null, $this->settings(), $this->source(), [])->equals(
-                Assumptions::from(null, $this->settings(true), $this->source(), []),
+            Assumptions::from(BaseDirectory::fromWorkingDirectory(), $this->settings(), $this->source(), [])->equals(
+                Assumptions::from(BaseDirectory::fromWorkingDirectory(), $this->settings(true), $this->source(), []),
             ),
         );
     }
@@ -87,11 +89,11 @@ final class AssumptionsTest extends TestCase
         $directory = $this->temporaryDirectory();
         $bootstrap = $this->writeFile($directory, 'bootstrap.php', 'first');
 
-        $before = Assumptions::from(null, $this->settings(), $this->source(), [$bootstrap]);
+        $before = Assumptions::from(BaseDirectory::fromWorkingDirectory(), $this->settings(), $this->source(), [$bootstrap]);
 
         $this->writeFile($directory, 'bootstrap.php', 'second');
 
-        $this->assertFalse($before->equals(Assumptions::from(null, $this->settings(), $this->source(), [$bootstrap])));
+        $this->assertFalse($before->equals(Assumptions::from(BaseDirectory::fromWorkingDirectory(), $this->settings(), $this->source(), [$bootstrap])));
     }
 
     public function testAreNotTheSameWhenThereIsNoBootstrapScriptAnyLonger(): void
@@ -100,7 +102,7 @@ final class AssumptionsTest extends TestCase
         $bootstrap = $this->writeFile($directory, 'bootstrap.php', 'first');
 
         $this->assertFalse(
-            Assumptions::from(null, $this->settings(), $this->source(), [$bootstrap])->equals(Assumptions::from(null, $this->settings(), $this->source(), [])),
+            Assumptions::from(BaseDirectory::fromWorkingDirectory(), $this->settings(), $this->source(), [$bootstrap])->equals(Assumptions::from(BaseDirectory::fromWorkingDirectory(), $this->settings(), $this->source(), [])),
         );
     }
 
@@ -111,8 +113,8 @@ final class AssumptionsTest extends TestCase
         $forSuite  = $this->writeFile($directory, 'bootstrap-for-suite.php', 'second');
 
         $this->assertFalse(
-            Assumptions::from(null, $this->settings(), $this->source(), [$bootstrap])->equals(
-                Assumptions::from(null, $this->settings(), $this->source(), [$bootstrap, $forSuite]),
+            Assumptions::from(BaseDirectory::fromWorkingDirectory(), $this->settings(), $this->source(), [$bootstrap])->equals(
+                Assumptions::from(BaseDirectory::fromWorkingDirectory(), $this->settings(), $this->source(), [$bootstrap, $forSuite]),
             ),
         );
     }
@@ -124,8 +126,8 @@ final class AssumptionsTest extends TestCase
         $second    = $this->writeFile($directory, 'second.php', 'second');
 
         $this->assertTrue(
-            Assumptions::from(null, $this->settings(), $this->source(), [$first, $second])->equals(
-                Assumptions::from(null, $this->settings(), $this->source(), [$second, $first]),
+            Assumptions::from(BaseDirectory::fromWorkingDirectory(), $this->settings(), $this->source(), [$first, $second])->equals(
+                Assumptions::from(BaseDirectory::fromWorkingDirectory(), $this->settings(), $this->source(), [$second, $first]),
             ),
         );
     }
@@ -133,8 +135,8 @@ final class AssumptionsTest extends TestCase
     public function testAreTheSameWhenABootstrapScriptThatIsNotThereIsNamed(): void
     {
         $this->assertTrue(
-            Assumptions::from(null, $this->settings(), $this->source(), [__DIR__ . '/does-not-exist.php'])->equals(
-                Assumptions::from(null, $this->settings(), $this->source(), []),
+            Assumptions::from(BaseDirectory::fromWorkingDirectory(), $this->settings(), $this->source(), [__DIR__ . '/does-not-exist.php'])->equals(
+                Assumptions::from(BaseDirectory::fromWorkingDirectory(), $this->settings(), $this->source(), []),
             ),
         );
     }
@@ -142,14 +144,14 @@ final class AssumptionsTest extends TestCase
     public function testAreNotTheSameWhenAnotherDirectoryIsFirstPartyCode(): void
     {
         $this->assertFalse(
-            Assumptions::from(null, $this->settings(), $this->source('src'), [])->equals(Assumptions::from(null, $this->settings(), $this->source('lib'), [])),
+            Assumptions::from(BaseDirectory::fromWorkingDirectory(), $this->settings(), $this->source('src'), [])->equals(Assumptions::from(BaseDirectory::fromWorkingDirectory(), $this->settings(), $this->source('lib'), [])),
         );
     }
 
     public function testAreNotTheSameWhenAFileIsNoLongerFirstPartyCode(): void
     {
-        $before = Assumptions::from(null, $this->settings(), $this->source('src'), []);
-        $after  = Assumptions::from(null, $this->settings(), $this->source('src', 'src/Excluded.php'), []);
+        $before = Assumptions::from(BaseDirectory::fromWorkingDirectory(), $this->settings(), $this->source('src'), []);
+        $after  = Assumptions::from(BaseDirectory::fromWorkingDirectory(), $this->settings(), $this->source('src', 'src/Excluded.php'), []);
 
         $this->assertFalse($before->equals($after));
     }
@@ -157,8 +159,21 @@ final class AssumptionsTest extends TestCase
     public function testAreTheSameWhenTheSameDirectoriesAreFirstPartyCodeInAnotherOrder(): void
     {
         $this->assertTrue(
-            Assumptions::from(null, $this->settings(), $this->source('src', null, ['a', 'b']), [])->equals(
-                Assumptions::from(null, $this->settings(), $this->source('src', null, ['b', 'a']), []),
+            Assumptions::from(BaseDirectory::fromWorkingDirectory(), $this->settings(), $this->source('src', null, ['a', 'b']), [])->equals(
+                Assumptions::from(BaseDirectory::fromWorkingDirectory(), $this->settings(), $this->source('src', null, ['b', 'a']), []),
+            ),
+        );
+    }
+
+    /**
+     * The same directories in another checkout of the project, the checkout
+     * of another CI runner for instance, are the same first-party code.
+     */
+    public function testAreTheSameWhenTheSameFirstPartyCodeIsInAnotherCheckout(): void
+    {
+        $this->assertTrue(
+            Assumptions::from(BaseDirectory::from('/checkout'), $this->settings(), $this->sourceIn('/checkout'), [])->equals(
+                Assumptions::from(BaseDirectory::from('/another/checkout'), $this->settings(), $this->sourceIn('/another/checkout'), []),
             ),
         );
     }
@@ -166,8 +181,8 @@ final class AssumptionsTest extends TestCase
     public function testAreTheSameWhenADirectoryThatIsAlreadyFirstPartyCodeIsNamedAgain(): void
     {
         $this->assertTrue(
-            Assumptions::from(null, $this->settings(), $this->source('src'), [])->equals(
-                Assumptions::from(null, $this->settings(), $this->source('src', null, ['src']), []),
+            Assumptions::from(BaseDirectory::fromWorkingDirectory(), $this->settings(), $this->source('src'), [])->equals(
+                Assumptions::from(BaseDirectory::fromWorkingDirectory(), $this->settings(), $this->source('src', null, ['src']), []),
             ),
         );
     }
@@ -179,11 +194,11 @@ final class AssumptionsTest extends TestCase
 
         $this->writeFile($directory, 'composer.lock', 'first');
 
-        $before = Assumptions::from($configurationFile, $this->settings(), $this->source(), []);
+        $before = Assumptions::from(BaseDirectory::from(dirname($configurationFile)), $this->settings(), $this->source(), []);
 
         $this->writeFile($directory, 'composer.lock', 'second');
 
-        $this->assertFalse($before->equals(Assumptions::from($configurationFile, $this->settings(), $this->source(), [])));
+        $this->assertFalse($before->equals(Assumptions::from(BaseDirectory::from(dirname($configurationFile)), $this->settings(), $this->source(), [])));
     }
 
     public function testAreNotTheSameWhenThereIsALockFileWhereThereWasNone(): void
@@ -191,11 +206,11 @@ final class AssumptionsTest extends TestCase
         $directory         = $this->temporaryDirectory();
         $configurationFile = $this->writeFile($directory, 'phpunit.xml', 'first');
 
-        $before = Assumptions::from($configurationFile, $this->settings(), $this->source(), []);
+        $before = Assumptions::from(BaseDirectory::from(dirname($configurationFile)), $this->settings(), $this->source(), []);
 
         $this->writeFile($directory, 'composer.lock', 'first');
 
-        $this->assertFalse($before->equals(Assumptions::from($configurationFile, $this->settings(), $this->source(), [])));
+        $this->assertFalse($before->equals(Assumptions::from(BaseDirectory::from(dirname($configurationFile)), $this->settings(), $this->source(), [])));
     }
 
     public function testAreNotTheSameWhenTheLockFileOfThePackageManagerAboveTheConfigurationFileChanged(): void
@@ -209,17 +224,17 @@ final class AssumptionsTest extends TestCase
 
         $this->writeFile($directory, 'composer.lock', 'first');
 
-        $before = Assumptions::from($configurationFile, $this->settings(), $this->source(), []);
+        $before = Assumptions::from(BaseDirectory::from(dirname($configurationFile)), $this->settings(), $this->source(), []);
 
         $this->writeFile($directory, 'composer.lock', 'second');
 
-        $this->assertFalse($before->equals(Assumptions::from($configurationFile, $this->settings(), $this->source(), [])));
+        $this->assertFalse($before->equals(Assumptions::from(BaseDirectory::from(dirname($configurationFile)), $this->settings(), $this->source(), [])));
     }
 
     public function testNameNothingThatChangedWhenNothingChanged(): void
     {
         $this->assertNull(
-            Assumptions::from(null, $this->settings(), $this->source(), [])->whatChangedSince(Assumptions::from(null, $this->settings(), $this->source(), [])),
+            Assumptions::from(BaseDirectory::fromWorkingDirectory(), $this->settings(), $this->source(), [])->whatChangedSince(Assumptions::from(BaseDirectory::fromWorkingDirectory(), $this->settings(), $this->source(), [])),
         );
     }
 
@@ -227,8 +242,8 @@ final class AssumptionsTest extends TestCase
     {
         $this->assertSame(
             DiscardReason::ConfigurationChanged,
-            Assumptions::from(null, $this->settings(true), $this->source(), [])->whatChangedSince(
-                Assumptions::from(null, $this->settings(), $this->source(), []),
+            Assumptions::from(BaseDirectory::fromWorkingDirectory(), $this->settings(true), $this->source(), [])->whatChangedSince(
+                Assumptions::from(BaseDirectory::fromWorkingDirectory(), $this->settings(), $this->source(), []),
             ),
         );
     }
@@ -238,13 +253,13 @@ final class AssumptionsTest extends TestCase
         $directory = $this->temporaryDirectory();
         $bootstrap = $this->writeFile($directory, 'bootstrap.php', 'first');
 
-        $before = Assumptions::from(null, $this->settings(), $this->source(), [$bootstrap]);
+        $before = Assumptions::from(BaseDirectory::fromWorkingDirectory(), $this->settings(), $this->source(), [$bootstrap]);
 
         $this->writeFile($directory, 'bootstrap.php', 'second');
 
         $this->assertSame(
             DiscardReason::BootstrapScriptChanged,
-            Assumptions::from(null, $this->settings(), $this->source(), [$bootstrap])->whatChangedSince($before),
+            Assumptions::from(BaseDirectory::fromWorkingDirectory(), $this->settings(), $this->source(), [$bootstrap])->whatChangedSince($before),
         );
     }
 
@@ -252,7 +267,7 @@ final class AssumptionsTest extends TestCase
     {
         $this->assertSame(
             DiscardReason::FirstPartyCodeChanged,
-            Assumptions::from(null, $this->settings(), $this->source('lib'), [])->whatChangedSince(Assumptions::from(null, $this->settings(), $this->source('src'), [])),
+            Assumptions::from(BaseDirectory::fromWorkingDirectory(), $this->settings(), $this->source('lib'), [])->whatChangedSince(Assumptions::from(BaseDirectory::fromWorkingDirectory(), $this->settings(), $this->source('src'), [])),
         );
     }
 
@@ -263,13 +278,13 @@ final class AssumptionsTest extends TestCase
 
         $this->writeFile($directory, 'composer.lock', 'first');
 
-        $before = Assumptions::from($configurationFile, $this->settings(), $this->source(), []);
+        $before = Assumptions::from(BaseDirectory::from(dirname($configurationFile)), $this->settings(), $this->source(), []);
 
         $this->writeFile($directory, 'composer.lock', 'second');
 
         $this->assertSame(
             DiscardReason::InstalledPackagesChanged,
-            Assumptions::from($configurationFile, $this->settings(), $this->source(), [])->whatChangedSince($before),
+            Assumptions::from(BaseDirectory::from(dirname($configurationFile)), $this->settings(), $this->source(), [])->whatChangedSince($before),
         );
     }
 
@@ -277,15 +292,15 @@ final class AssumptionsTest extends TestCase
     {
         $this->assertSame(
             DiscardReason::ConfigurationChanged,
-            Assumptions::from(null, $this->settings(true), $this->source('lib'), [])->whatChangedSince(
-                Assumptions::from(null, $this->settings(), $this->source('src'), []),
+            Assumptions::from(BaseDirectory::fromWorkingDirectory(), $this->settings(true), $this->source('lib'), [])->whatChangedSince(
+                Assumptions::from(BaseDirectory::fromWorkingDirectory(), $this->settings(), $this->source('src'), []),
             ),
         );
     }
 
     public function testSurviveBeingWrittenAndReadAgain(): void
     {
-        $assumptions = Assumptions::from(null, $this->settings(), $this->source('src'), []);
+        $assumptions = Assumptions::from(BaseDirectory::fromWorkingDirectory(), $this->settings(), $this->source('src'), []);
 
         $this->assertTrue($assumptions->equals(Assumptions::fromArray($assumptions->asArray())));
     }
@@ -311,7 +326,7 @@ final class AssumptionsTest extends TestCase
 
     private function settings(bool $processIsolation = false): ExecutionSettings
     {
-        return ExecutionSettings::from(DefaultConfiguration::create()->php(), [], [], false, $processIsolation, false, false);
+        return ExecutionSettings::from(BaseDirectory::fromWorkingDirectory(), DefaultConfiguration::create()->php(), [], [], false, $processIsolation, false, false);
     }
 
     /**
@@ -342,6 +357,42 @@ final class AssumptionsTest extends TestCase
             FilterFileCollection::fromArray([new FilterFile('src/Included.php')]),
             FilterDirectoryCollection::fromArray([new FilterDirectory('src/excluded', '', '.php')]),
             FilterFileCollection::fromArray($excludeFiles),
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            [
+                'functions' => [],
+                'methods'   => [],
+            ],
+            false,
+            false,
+            false,
+            true,
+        );
+    }
+
+    /**
+     * First-party code the way the configuration file of a project in the
+     * checkout names it: by absolute paths, made from the directory the
+     * configuration file is in.
+     *
+     * @param non-empty-string $checkout
+     */
+    private function sourceIn(string $checkout): Source
+    {
+        return new Source(
+            null,
+            false,
+            FilterDirectoryCollection::fromArray([new FilterDirectory($checkout . '/src', '', '.php')]),
+            FilterFileCollection::fromArray([new FilterFile($checkout . '/lib/functions.php')]),
+            FilterDirectoryCollection::fromArray([new FilterDirectory($checkout . '/src/generated', '', '.php')]),
+            FilterFileCollection::fromArray([new FilterFile($checkout . '/src/Excluded.php')]),
             false,
             false,
             false,

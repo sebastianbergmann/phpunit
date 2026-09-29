@@ -19,6 +19,7 @@ use function is_readable;
 use function mkdir;
 use function octdec;
 use function realpath;
+use function rename;
 use function rmdir;
 use function scandir;
 use function symlink;
@@ -120,6 +121,37 @@ final class PathHasherTest extends TestCase
         $before = (new PathHasher)->hash($directory);
 
         $this->writeFile($directory . DIRECTORY_SEPARATOR . 'nested', 'a.txt', 'second');
+
+        $this->assertNotSame($before, (new PathHasher)->hash($directory));
+    }
+
+    /**
+     * A fixture directory in another checkout of the project, the checkout of
+     * another CI runner for instance, is the same fixture.
+     */
+    public function testHashesTheSameDirectoryInAnotherCheckoutTheSame(): void
+    {
+        $directory        = $this->temporaryDirectory();
+        $anotherDirectory = $this->temporaryDirectory();
+
+        foreach ([$directory, $anotherDirectory] as $fixture) {
+            mkdir($fixture . DIRECTORY_SEPARATOR . 'nested');
+
+            $this->writeFile($fixture, 'a.txt', 'first');
+            $this->writeFile($fixture . DIRECTORY_SEPARATOR . 'nested', 'b.txt', 'first');
+        }
+
+        $this->assertSame((new PathHasher)->hash($directory), (new PathHasher)->hash($anotherDirectory));
+    }
+
+    public function testHashesADirectoryDifferentlyWhenAFileInItIsRenamed(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $this->writeFile($directory, 'a.txt', 'first');
+
+        $before = (new PathHasher)->hash($directory);
+
+        rename($directory . DIRECTORY_SEPARATOR . 'a.txt', $directory . DIRECTORY_SEPARATOR . 'b.txt');
 
         $this->assertNotSame($before, (new PathHasher)->hash($directory));
     }
