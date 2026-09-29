@@ -30,6 +30,13 @@ enum SelectionReason
     case DependsOnSomethingThatChanged;
 
     /**
+     * The test depends on another test that can be affected by what changed.
+     * It is given what that test returns, and it is skipped when that test
+     * does not pass, neither of which is something it executes itself.
+     */
+    case DependsOnATestThatCanBeAffected;
+
+    /**
      * Nothing was recorded for the test. It has never been run, or it was
      * skipped or marked incomplete when it was, and a test that executes
      * nothing has nothing to record.

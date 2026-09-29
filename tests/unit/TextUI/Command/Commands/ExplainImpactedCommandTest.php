@@ -87,8 +87,10 @@ final class ExplainImpactedCommandTest extends TestCase
                     'BarTest::testTwo' => ExplainedTest::from('BarTest::testTwo', SelectionReason::AnotherTestDependsOnIt),
                     'a-phpt-test'      => ExplainedTest::from('a-phpt-test', SelectionReason::ItCannotBeRecorded),
                     'another-one'      => ExplainedTest::from('another-one', SelectionReason::ItCannotBeRecorded),
+                    'BazTest::testOne' => ExplainedTest::from('BazTest::testOne', SelectionReason::DependsOnATestThatCanBeAffected),
+                    'BazTest::testTwo' => ExplainedTest::from('BazTest::testTwo', SelectionReason::DependsOnATestThatCanBeAffected),
                 ],
-                6,
+                8,
                 $this->recordedAt(),
             ),
             Provenance::ObservedExecution,
@@ -97,6 +99,7 @@ final class ExplainImpactedCommandTest extends TestCase
         $this->assertStringContainsString('2 tests did not pass when they were last run:', $output);
         $this->assertStringContainsString('2 tests are depended upon by another test that is run:', $output);
         $this->assertStringContainsString('2 tests are not test methods and can never be recorded:', $output);
+        $this->assertStringContainsString('2 tests depend on a test that can be affected by what changed:', $output);
     }
 
     public function testUsesTheSingularForASingleTest(): void
@@ -109,8 +112,9 @@ final class ExplainImpactedCommandTest extends TestCase
                     'BarTest::testOne' => ExplainedTest::from('BarTest::testOne', SelectionReason::AnotherTestDependsOnIt),
                     'a-phpt-test'      => ExplainedTest::from('a-phpt-test', SelectionReason::ItCannotBeRecorded),
                     'BazTest::testOne' => ExplainedTest::from('BazTest::testOne', SelectionReason::NothingIsKnownAboutIt),
+                    'QuxTest::testOne' => ExplainedTest::from('QuxTest::testOne', SelectionReason::DependsOnATestThatCanBeAffected),
                 ],
-                5,
+                6,
                 $this->recordedAt(),
             ),
             Provenance::ObservedExecution,
@@ -121,6 +125,42 @@ final class ExplainImpactedCommandTest extends TestCase
         $this->assertStringContainsString('1 test did not pass when it was last run:', $output);
         $this->assertStringContainsString('1 test is depended upon by another test that is run:', $output);
         $this->assertStringContainsString('1 test is not a test method and can never be recorded:', $output);
+        $this->assertStringContainsString('1 test depends on a test that can be affected by what changed:', $output);
+    }
+
+    /**
+     * A test that depends on a test that can be affected by what changed is
+     * run because of what changed as well, and is reported right after the
+     * tests that depend on something that changed.
+     */
+    public function testReportsTheTestsThatDependOnATestThatCanBeAffectedRightAfterTheTestsThatDependOnSomethingThatChanged(): void
+    {
+        $output = new ExplainImpactedCommand(
+            Explanation::of(
+                [
+                    'BarTest::testOne' => ExplainedTest::from('BarTest::testOne', SelectionReason::NothingIsKnownAboutIt),
+                    'FooTest::testTwo' => ExplainedTest::from('FooTest::testTwo', SelectionReason::DependsOnATestThatCanBeAffected),
+                    'FooTest::testOne' => ExplainedTest::from('FooTest::testOne', SelectionReason::DependsOnSomethingThatChanged, '/src/Foo.php'),
+                ],
+                3,
+                $this->recordedAt(),
+            ),
+            Provenance::ObservedExecution,
+        )->execute()->output();
+
+        $this->assertStringEndsWith(
+            '1 test depends on something that changed:' . PHP_EOL .
+            ' - FooTest::testOne' . PHP_EOL .
+            '   /src/Foo.php' . PHP_EOL .
+            PHP_EOL .
+            '1 test depends on a test that can be affected by what changed:' . PHP_EOL .
+            ' - FooTest::testTwo' . PHP_EOL .
+            PHP_EOL .
+            '1 test has never been recorded:' . PHP_EOL .
+            ' - BarTest::testOne' . PHP_EOL .
+            PHP_EOL,
+            $output,
+        );
     }
 
     public function testSaysWhereWhatIsReportedComesFromWhenItWasDerivedFromCodeCoverageTargets(): void
