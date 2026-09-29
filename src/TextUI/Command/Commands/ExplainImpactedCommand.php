@@ -40,6 +40,7 @@ final readonly class ExplainImpactedCommand implements Command
      */
     private const array ORDER = [
         SelectionReason::DependsOnSomethingThatChanged,
+        SelectionReason::DependsOnATestThatCanBeAffected,
         SelectionReason::NothingIsKnownAboutIt,
         SelectionReason::ItDidNotPass,
         SelectionReason::AnotherTestDependsOnIt,
@@ -136,22 +137,24 @@ final readonly class ExplainImpactedCommand implements Command
     private function whatOneTestDid(SelectionReason $reason): string
     {
         return match ($reason) {
-            SelectionReason::DependsOnSomethingThatChanged => 'depends on something that changed',
-            SelectionReason::NothingIsKnownAboutIt         => 'has never been recorded',
-            SelectionReason::ItDidNotPass                  => 'did not pass when it was last run',
-            SelectionReason::AnotherTestDependsOnIt        => 'is depended upon by another test that is run',
-            SelectionReason::ItCannotBeRecorded            => 'is not a test method and can never be recorded',
+            SelectionReason::DependsOnSomethingThatChanged   => 'depends on something that changed',
+            SelectionReason::DependsOnATestThatCanBeAffected => 'depends on a test that can be affected by what changed',
+            SelectionReason::NothingIsKnownAboutIt           => 'has never been recorded',
+            SelectionReason::ItDidNotPass                    => 'did not pass when it was last run',
+            SelectionReason::AnotherTestDependsOnIt          => 'is depended upon by another test that is run',
+            SelectionReason::ItCannotBeRecorded              => 'is not a test method and can never be recorded',
         };
     }
 
     private function whatSeveralTestsDid(SelectionReason $reason): string
     {
         return match ($reason) {
-            SelectionReason::DependsOnSomethingThatChanged => 'depend on something that changed',
-            SelectionReason::NothingIsKnownAboutIt         => 'have never been recorded',
-            SelectionReason::ItDidNotPass                  => 'did not pass when they were last run',
-            SelectionReason::AnotherTestDependsOnIt        => 'are depended upon by another test that is run',
-            SelectionReason::ItCannotBeRecorded            => 'are not test methods and can never be recorded',
+            SelectionReason::DependsOnSomethingThatChanged   => 'depend on something that changed',
+            SelectionReason::DependsOnATestThatCanBeAffected => 'depend on a test that can be affected by what changed',
+            SelectionReason::NothingIsKnownAboutIt           => 'have never been recorded',
+            SelectionReason::ItDidNotPass                    => 'did not pass when they were last run',
+            SelectionReason::AnotherTestDependsOnIt          => 'are depended upon by another test that is run',
+            SelectionReason::ItCannotBeRecorded              => 'are not test methods and can never be recorded',
         };
     }
 

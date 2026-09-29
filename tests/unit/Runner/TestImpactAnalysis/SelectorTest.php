@@ -12,6 +12,7 @@ namespace PHPUnit\Runner\TestImpactAnalysis;
 use const DIRECTORY_SEPARATOR;
 use const PHP_EOL;
 use function array_merge;
+use function explode;
 use function file_get_contents;
 use function file_put_contents;
 use function json_decode;
@@ -38,6 +39,7 @@ use PHPUnit\Runner\TestRunHistory\DefaultTestRunHistory;
 use PHPUnit\Runner\TestRunHistory\TestRunHistory;
 use PHPUnit\Runner\TestRunHistory\TestRunHistoryId;
 use PHPUnit\TestFixture\TestImpactAnalysis\ClassDependentSelectionTest;
+use PHPUnit\TestFixture\TestImpactAnalysis\DependencyChainSelectionTest;
 use PHPUnit\TestFixture\TestImpactAnalysis\SelectionTest;
 use PHPUnit\TestFixture\TestImpactAnalysis\UnrelatedSelectionTest;
 use PHPUnit\TextUI\Configuration\FilterDirectoryCollection;
@@ -52,6 +54,8 @@ use ReflectionClass;
 #[UsesClass(ExecutionSettings::class)]
 #[UsesClass(DefaultTestImpactData::class)]
 #[UsesClass(DiscardReason::class)]
+#[UsesClass(ExplainedTest::class)]
+#[UsesClass(Explanation::class)]
 #[UsesClass(PathHasher::class)]
 #[UsesClass(Recording::class)]
 #[UsesClass(Selection::class)]
@@ -259,6 +263,143 @@ final class SelectorTest extends TestCase
         );
 
         $this->assertSame([$dependent], $selection->tests());
+    }
+
+    /**
+     * The test that depends on another test does not execute what the test
+     * it depends on executes: it is given what that test returns.
+     */
+    public function testRunsATestThatDependsOnATestThatCanBeAffected(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $money     = $this->writeSourceFile($directory, 'Money', 'first');
+        $formatter = $this->writeSourceFile($directory, 'Formatter', 'first');
+
+        $selector = $this->selectorFor(
+            $directory,
+            [
+                SelectionTest::class . '::testProducesMoney'    => [$money],
+                SelectionTest::class . '::testConsumesMoney'    => [$formatter],
+                UnrelatedSelectionTest::class . '::testFormats' => [$formatter],
+            ],
+            [$money, $formatter],
+        );
+
+        $this->writeSourceFile($directory, 'Money', 'second');
+
+        $explanation = $selector->explain($this->tests(), [$money, $formatter]);
+
+        $this->assertSame(
+            $this->sorted([
+                SelectionTest::class . '::testConsumesMoney',
+                SelectionTest::class . '::testProducesMoney',
+                $this->phpt(),
+            ]),
+            $this->sorted($explanation->testsThatAreRun()),
+        );
+
+        $this->assertSame(
+            [SelectionTest::class . '::testConsumesMoney'],
+            $this->idsOf($explanation->testsRunBecause(SelectionReason::DependsOnATestThatCanBeAffected)),
+        );
+    }
+
+    public function testRunsTheTestsThatDependOnATestThatCanBeAffectedUntilNothingIsAdded(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $money     = $this->writeSourceFile($directory, 'Money', 'first');
+        $formatter = $this->writeSourceFile($directory, 'Formatter', 'first');
+
+        $selector = $this->selectorRecordedFor(
+            $directory,
+            [
+                DependencyChainSelectionTest::class . '::testProducesMoney'       => [$money],
+                DependencyChainSelectionTest::class . '::testDoublesMoney'        => [$formatter],
+                DependencyChainSelectionTest::class . '::testFormatsDoubledMoney' => [$formatter],
+                DependencyChainSelectionTest::class . '::testConsumesMoney'       => [$formatter],
+            ],
+            [$money, $formatter],
+        );
+
+        $this->writeSourceFile($directory, 'Money', 'second');
+
+        $explanation = $selector->explain($this->testsOf(DependencyChainSelectionTest::class), [$money, $formatter]);
+
+        $this->assertSame(
+            $this->sorted([
+                DependencyChainSelectionTest::class . '::testConsumesMoney',
+                DependencyChainSelectionTest::class . '::testDoublesMoney',
+                DependencyChainSelectionTest::class . '::testFormatsDoubledMoney',
+            ]),
+            $this->sorted($this->idsOf($explanation->testsRunBecause(SelectionReason::DependsOnATestThatCanBeAffected))),
+        );
+    }
+
+    /**
+     * A test that is only run because a selected test depends on it executes
+     * what it executed when it was recorded, and gives the other tests that
+     * depend on it what it gave them then.
+     */
+    public function testDoesNotRunATestThatDependsOnATestThatIsOnlyRunBecauseAnotherTestDependsOnIt(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $money     = $this->writeSourceFile($directory, 'Money', 'first');
+        $formatter = $this->writeSourceFile($directory, 'Formatter', 'first');
+
+        $selector = $this->selectorRecordedFor(
+            $directory,
+            [
+                DependencyChainSelectionTest::class . '::testProducesMoney'       => [$money],
+                DependencyChainSelectionTest::class . '::testDoublesMoney'        => [$money],
+                DependencyChainSelectionTest::class . '::testFormatsDoubledMoney' => [$formatter],
+                DependencyChainSelectionTest::class . '::testConsumesMoney'       => [$money],
+            ],
+            [$money, $formatter],
+        );
+
+        $this->writeSourceFile($directory, 'Formatter', 'second');
+
+        $selection = $selector->select($this->testsOf(DependencyChainSelectionTest::class), [$money, $formatter]);
+
+        $this->assertSame(
+            $this->sorted([
+                DependencyChainSelectionTest::class . '::testDoublesMoney',
+                DependencyChainSelectionTest::class . '::testFormatsDoubledMoney',
+                DependencyChainSelectionTest::class . '::testProducesMoney',
+            ]),
+            $this->sorted($selection->tests()),
+        );
+    }
+
+    public function testRunsATestThatDependsOnATestClassWithATestThatCanBeAffected(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $money     = $this->writeSourceFile($directory, 'Money', 'first');
+        $formatter = $this->writeSourceFile($directory, 'Formatter', 'first');
+
+        $dependent  = ClassDependentSelectionTest::class . '::testFormatsAsWell';
+        $dependedOn = UnrelatedSelectionTest::class . '::testFormats';
+
+        $selector = $this->selectorRecordedFor(
+            $directory,
+            [
+                $dependent  => [$formatter],
+                $dependedOn => [$money],
+            ],
+            [$money, $formatter],
+        );
+
+        $this->writeSourceFile($directory, 'Money', 'second');
+
+        $selection = $selector->select(
+            $this->testsOf(ClassDependentSelectionTest::class, UnrelatedSelectionTest::class),
+            [$money, $formatter],
+        );
+
+        $this->assertSame(
+            $this->sorted([$dependent, $dependedOn]),
+            $this->sorted($selection->tests()),
+        );
     }
 
     public function testRunsATestThatWasNeverRecorded(): void
@@ -499,6 +640,43 @@ final class SelectorTest extends TestCase
         }
 
         return new Selector($file, $records, $testRunHistory);
+    }
+
+    /**
+     * Every test is recorded as depending on the file its own class is
+     * declared in as well, whichever class that is.
+     *
+     * @param array<non-empty-string, list<non-empty-string>> $dependencies
+     * @param list<non-empty-string>                          $sourceFiles
+     */
+    private function selectorRecordedFor(string $directory, array $dependencies, array $sourceFiles): Selector
+    {
+        $file = new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions());
+        $data = new DefaultTestImpactData;
+
+        foreach ($dependencies as $test => $filesOfTest) {
+            $data->record($test, array_merge($filesOfTest, [$this->fileOf(explode('::', $test)[0])]));
+        }
+
+        $file->persistAndPrune($data, Provenance::ObservedExecution, $sourceFiles);
+
+        return new Selector($file, Provenance::ObservedExecution, new DefaultTestRunHistory($directory . DIRECTORY_SEPARATOR . 'history'));
+    }
+
+    /**
+     * @param list<ExplainedTest> $tests
+     *
+     * @return list<non-empty-string>
+     */
+    private function idsOf(array $tests): array
+    {
+        $ids = [];
+
+        foreach ($tests as $test) {
+            $ids[] = $test->test();
+        }
+
+        return $ids;
     }
 
     /**
