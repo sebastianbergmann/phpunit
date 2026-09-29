@@ -344,7 +344,7 @@ abstract readonly class Metadata
     }
 
     /**
-     * @param class-string     $className
+     * @param non-empty-string $className
      * @param non-empty-string $methodName
      */
     public static function requiresMethodOnClass(string $className, string $methodName): RequiresMethod
@@ -353,7 +353,7 @@ abstract readonly class Metadata
     }
 
     /**
-     * @param class-string     $className
+     * @param non-empty-string $className
      * @param non-empty-string $methodName
      */
     public static function requiresMethodOnMethod(string $className, string $methodName): RequiresMethod
