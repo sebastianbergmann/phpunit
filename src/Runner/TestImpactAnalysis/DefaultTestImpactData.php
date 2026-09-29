@@ -22,6 +22,11 @@ final class DefaultTestImpactData implements TestImpactData
     private array $tests = [];
 
     /**
+     * @var list<non-empty-string>
+     */
+    private array $executedOutsideOfTests = [];
+
+    /**
      * @param non-empty-string       $test
      * @param list<non-empty-string> $files
      */
@@ -36,5 +41,21 @@ final class DefaultTestImpactData implements TestImpactData
     public function recorded(): array
     {
         return $this->tests;
+    }
+
+    /**
+     * @param list<non-empty-string> $files
+     */
+    public function recordExecutedOutsideOfTests(array $files): void
+    {
+        $this->executedOutsideOfTests = $files;
+    }
+
+    /**
+     * @return list<non-empty-string>
+     */
+    public function executedOutsideOfTests(): array
+    {
+        return $this->executedOutsideOfTests;
     }
 }

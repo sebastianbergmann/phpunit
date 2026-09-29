@@ -43,6 +43,8 @@ use PHPUnit\TextUI\XmlConfiguration\DefaultConfiguration;
 #[CoversClass(TestImpactDataFile::class)]
 #[UsesClass(BaseDirectory::class)]
 #[UsesClass(DefaultTestImpactData::class)]
+#[UsesClass(PathHasher::class)]
+#[UsesClass(RecordedTests::class)]
 #[UsesClass(Recording::class)]
 #[UsesClass(RecordingTime::class)]
 #[Small]
@@ -60,42 +62,46 @@ final class TestImpactDataFileTest extends TestCase
         $usable = self::usableData();
 
         return [
-            'written by another version of PHPUnit'        => [['phpunit' => 'another-version'] + $usable],
-            'written by another version of PHP'            => [['php' => PHP_VERSION_ID - 1] + $usable],
-            'written in another format'                    => [['version' => 0] + $usable],
-            'without a recording time'                     => [self::withoutKey($usable, 'recordedAt')],
-            'with a recording time that is not an integer' => [['recordedAt' => '1'] + $usable],
-            'with a recording time that is not positive'   => [['recordedAt' => 0] + $usable],
-            'without a provenance'                         => [self::withoutKey($usable, 'provenance')],
-            'with a provenance that is not a string'       => [['provenance' => 1] + $usable],
-            'with an unknown provenance'                   => [['provenance' => 'guesswork'] + $usable],
-            'without assumptions'                          => [self::withoutKey($usable, 'assumptions')],
-            'without source files'                         => [self::withoutKey($usable, 'sourceFiles')],
-            'with source files that are not an array'      => [['sourceFiles' => 'guesswork'] + $usable],
-            'with a source file that is not a pair'        => [['sourceFiles' => [[0]]] + $usable],
-            'with a source file that is not known'         => [['sourceFiles' => [[1, 'a-hash']]] + $usable],
-            'with a source file hash that is not a string' => [['sourceFiles' => [[0, 1]]] + $usable],
-            'with assumptions that are not an array'       => [['assumptions' => 'guesswork'] + $usable],
-            'with assumptions that are incomplete'         => [['assumptions' => ['source' => 'a-hash']] + $usable],
-            'with an unusable assumption'                  => [['assumptions' => ['settings' => 'a-hash', 'source' => 1, 'installedPackages' => null]] + $usable],
-            'with other assumptions'                       => [['assumptions' => ['settings' => 'a-hash', 'source' => 'another-hash', 'installedPackages' => null]] + $usable],
-            'without files'                                => [self::withoutKey($usable, 'files')],
-            'without versions'                             => [self::withoutKey($usable, 'versions')],
-            'without tests'                                => [self::withoutKey($usable, 'tests')],
-            'with files that are not an array'             => [['files' => 'not-an-array'] + $usable],
-            'with versions that are not an array'          => [['versions' => 'not-an-array'] + $usable],
-            'with tests that are not an array'             => [['tests' => 'not-an-array'] + $usable],
-            'with files that are not a list'               => [['files' => ['a-key' => '/src/Foo.php']] + $usable],
-            'with a file that is not a string'             => [['files' => [1]] + $usable],
-            'with an empty file name'                      => [['files' => ['']] + $usable],
-            'with a version that is not a pair'            => [['versions' => [[0]]] + $usable],
-            'with a version of an unknown file'            => [['versions' => [[1, 'a-hash']]] + $usable],
-            'with a hash that is not a string'             => [['versions' => [[0, 1]]] + $usable],
-            'with an empty hash'                           => [['versions' => [[0, '']]] + $usable],
-            'with an empty test name'                      => [['tests' => ['' => [0]]] + $usable],
-            'with a test that is not a list'               => [['tests' => ['FooTest::testOne' => 0]] + $usable],
-            'with an unknown version'                      => [['tests' => ['FooTest::testOne' => [1]]] + $usable],
-            'with a version that is not an integer'        => [['tests' => ['FooTest::testOne' => ['0']]] + $usable],
+            'written by another version of PHPUnit'                           => [['phpunit' => 'another-version'] + $usable],
+            'written by another version of PHP'                               => [['php' => PHP_VERSION_ID - 1] + $usable],
+            'written in another format'                                       => [['version' => 0] + $usable],
+            'without a recording time'                                        => [self::withoutKey($usable, 'recordedAt')],
+            'with a recording time that is not an integer'                    => [['recordedAt' => '1'] + $usable],
+            'with a recording time that is not positive'                      => [['recordedAt' => 0] + $usable],
+            'without a provenance'                                            => [self::withoutKey($usable, 'provenance')],
+            'with a provenance that is not a string'                          => [['provenance' => 1] + $usable],
+            'with an unknown provenance'                                      => [['provenance' => 'guesswork'] + $usable],
+            'without assumptions'                                             => [self::withoutKey($usable, 'assumptions')],
+            'without source files'                                            => [self::withoutKey($usable, 'sourceFiles')],
+            'with source files that are not an array'                         => [['sourceFiles' => 'guesswork'] + $usable],
+            'with a source file that is not a pair'                           => [['sourceFiles' => [[0]]] + $usable],
+            'with a source file that is not known'                            => [['sourceFiles' => [[1, 'a-hash']]] + $usable],
+            'with a source file hash that is not a string'                    => [['sourceFiles' => [[0, 1]]] + $usable],
+            'with assumptions that are not an array'                          => [['assumptions' => 'guesswork'] + $usable],
+            'with assumptions that are incomplete'                            => [['assumptions' => ['source' => 'a-hash']] + $usable],
+            'with an unusable assumption'                                     => [['assumptions' => ['settings' => 'a-hash', 'source' => 1, 'installedPackages' => null]] + $usable],
+            'with other assumptions'                                          => [['assumptions' => ['settings' => 'a-hash', 'source' => 'another-hash', 'installedPackages' => null]] + $usable],
+            'without files'                                                   => [self::withoutKey($usable, 'files')],
+            'without versions'                                                => [self::withoutKey($usable, 'versions')],
+            'without tests'                                                   => [self::withoutKey($usable, 'tests')],
+            'with files that are not an array'                                => [['files' => 'not-an-array'] + $usable],
+            'with versions that are not an array'                             => [['versions' => 'not-an-array'] + $usable],
+            'with tests that are not an array'                                => [['tests' => 'not-an-array'] + $usable],
+            'with files that are not a list'                                  => [['files' => ['a-key' => '/src/Foo.php']] + $usable],
+            'with a file that is not a string'                                => [['files' => [1]] + $usable],
+            'with an empty file name'                                         => [['files' => ['']] + $usable],
+            'with a version that is not a pair'                               => [['versions' => [[0]]] + $usable],
+            'with a version of an unknown file'                               => [['versions' => [[1, 'a-hash']]] + $usable],
+            'with a hash that is not a string'                                => [['versions' => [[0, 1]]] + $usable],
+            'with an empty hash'                                              => [['versions' => [[0, '']]] + $usable],
+            'with an empty test name'                                         => [['tests' => ['' => [0]]] + $usable],
+            'with a test that is not a list'                                  => [['tests' => ['FooTest::testOne' => 0]] + $usable],
+            'with an unknown version'                                         => [['tests' => ['FooTest::testOne' => [1]]] + $usable],
+            'with a version that is not an integer'                           => [['tests' => ['FooTest::testOne' => ['0']]] + $usable],
+            'without what was executed outside of tests'                      => [self::withoutKey($usable, 'executedOutsideOfTests')],
+            'with what was executed outside of tests that is not an array'    => [['executedOutsideOfTests' => 'guesswork'] + $usable],
+            'with an unknown version executed outside of tests'               => [['executedOutsideOfTests' => [1]] + $usable],
+            'with a version executed outside of tests that is not an integer' => [['executedOutsideOfTests' => ['0']] + $usable],
         ];
     }
 
@@ -153,7 +159,7 @@ final class TestImpactDataFileTest extends TestCase
 
         $persisted = $this->persistedData($directory);
 
-        $this->assertSame(8, $persisted['version']);
+        $this->assertSame(9, $persisted['version']);
         $this->assertSame(Version::id(), $persisted['phpunit']);
         $this->assertSame(PHP_VERSION_ID, $persisted['php']);
         $this->assertSame(['Foo.php'], $persisted['files']);
@@ -705,6 +711,140 @@ final class TestImpactDataFileTest extends TestCase
         $this->assertSame(['FooTest::testOne'], $tests->thatDependOnAnEarlierVersionOfTheFile());
     }
 
+    public function testPersistsWhatWasExecutedOutsideOfTests(): void
+    {
+        $directory    = $this->temporaryDirectory();
+        $foo          = $this->writeSourceFile($directory, 'Foo', 'first');
+        $bootstrapped = $this->writeSourceFile($directory, 'Bootstrapped', 'first');
+
+        $data = new DefaultTestImpactData;
+        $data->record('FooTest::testOne', [$foo]);
+        $data->recordExecutedOutsideOfTests([$bootstrapped]);
+
+        new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions())->persist($data, Provenance::ObservedExecution, []);
+
+        $this->assertSame(['Bootstrapped.php'], $this->executedOutsideOfTests($this->persistedData($directory)));
+    }
+
+    public function testKeepsWhatAnEarlierTestRunExecutedOutsideOfTestsWhenNotPruning(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $foo       = $this->writeSourceFile($directory, 'Foo', 'first');
+        $first     = $this->writeSourceFile($directory, 'First', 'first');
+        $second    = $this->writeSourceFile($directory, 'Second', 'first');
+
+        $data = new DefaultTestImpactData;
+        $data->record('FooTest::testOne', [$foo]);
+        $data->recordExecutedOutsideOfTests([$first]);
+
+        new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions())->persist($data, Provenance::ObservedExecution, []);
+
+        $data = new DefaultTestImpactData;
+        $data->record('FooTest::testOne', [$foo]);
+        $data->recordExecutedOutsideOfTests([$second]);
+
+        new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions())->persist($data, Provenance::ObservedExecution, []);
+
+        $this->assertSame(['First.php', 'Second.php'], $this->executedOutsideOfTests($this->persistedData($directory)));
+    }
+
+    public function testForgetsWhatAnEarlierTestRunExecutedOutsideOfTestsWhenPruning(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $foo       = $this->writeSourceFile($directory, 'Foo', 'first');
+        $first     = $this->writeSourceFile($directory, 'First', 'first');
+        $second    = $this->writeSourceFile($directory, 'Second', 'first');
+
+        $data = new DefaultTestImpactData;
+        $data->record('FooTest::testOne', [$foo]);
+        $data->recordExecutedOutsideOfTests([$first]);
+
+        new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions())->persist($data, Provenance::ObservedExecution, []);
+
+        $data = new DefaultTestImpactData;
+        $data->record('FooTest::testOne', [$foo]);
+        $data->recordExecutedOutsideOfTests([$second]);
+
+        new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions())->persistAndPrune($data, Provenance::ObservedExecution, []);
+
+        $this->assertSame(['Second.php'], $this->executedOutsideOfTests($this->persistedData($directory)));
+    }
+
+    public function testForgetsWhatWasExecutedOutsideOfTestsWhenWhatIsThereComesFromSomewhereElse(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $foo       = $this->writeSourceFile($directory, 'Foo', 'first');
+        $first     = $this->writeSourceFile($directory, 'First', 'first');
+
+        $data = new DefaultTestImpactData;
+        $data->record('FooTest::testOne', [$foo]);
+        $data->recordExecutedOutsideOfTests([$first]);
+
+        new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions())->persist($data, Provenance::ObservedExecution, []);
+
+        $data = new DefaultTestImpactData;
+        $data->record('FooTest::testOne', [$foo]);
+
+        new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions())->persist($data, Provenance::CoverageTargets, []);
+
+        $this->assertSame([], $this->executedOutsideOfTests($this->persistedData($directory)));
+    }
+
+    public function testRecordsWhatAFileThatWasExecutedOutsideOfTestsAgainIsNow(): void
+    {
+        $directory    = $this->temporaryDirectory();
+        $foo          = $this->writeSourceFile($directory, 'Foo', 'first');
+        $bootstrapped = $this->writeSourceFile($directory, 'Bootstrapped', 'first');
+
+        $data = new DefaultTestImpactData;
+        $data->record('FooTest::testOne', [$foo]);
+        $data->recordExecutedOutsideOfTests([$bootstrapped]);
+
+        new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions())->persist($data, Provenance::ObservedExecution, []);
+
+        $this->writeSourceFile($directory, 'Bootstrapped', 'second');
+
+        new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions())->persist($data, Provenance::ObservedExecution, []);
+
+        $recording = new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions())->recording(Provenance::ObservedExecution);
+
+        $this->assertNotNull($recording);
+        $this->assertSame(['Bootstrapped.php'], $this->executedOutsideOfTests($this->persistedData($directory)));
+        $this->assertNull($recording->changeExecutedOutsideOfTests(new PathHasher));
+    }
+
+    public function testDoesNotRecordAFileThatWasExecutedOutsideOfTestsAndIsNoLongerThere(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $foo       = $this->writeSourceFile($directory, 'Foo', 'first');
+
+        $data = new DefaultTestImpactData;
+        $data->record('FooTest::testOne', [$foo]);
+        $data->recordExecutedOutsideOfTests([$directory . DIRECTORY_SEPARATOR . 'Removed.php']);
+
+        new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions())->persist($data, Provenance::ObservedExecution, []);
+
+        $this->assertSame([], $this->executedOutsideOfTests($this->persistedData($directory)));
+    }
+
+    public function testKnowsThatEveryTestDependsOnAFileThatWasExecutedOutsideOfTests(): void
+    {
+        $directory    = $this->temporaryDirectory();
+        $foo          = $this->writeSourceFile($directory, 'Foo', 'first');
+        $bootstrapped = $this->writeSourceFile($directory, 'Bootstrapped', 'first');
+
+        $data = new DefaultTestImpactData;
+        $data->record('FooTest::testOne', [$foo]);
+        $data->recordExecutedOutsideOfTests([$bootstrapped]);
+
+        new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions())->persist($data, Provenance::ObservedExecution, []);
+
+        $file = new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions());
+
+        $this->assertTrue($file->testsThatDependOn($bootstrapped)->everyTestDependsOnTheFile());
+        $this->assertFalse($file->testsThatDependOn($foo)->everyTestDependsOnTheFile());
+    }
+
     public function testKnowsEveryTestExecutedAnEarlierVersionOfASourceFileThatIsNoLongerThere(): void
     {
         $directory = $this->temporaryDirectory();
@@ -812,6 +952,26 @@ final class TestImpactDataFileTest extends TestCase
     }
 
     /**
+     * The base name of each source file that was executed outside of any
+     * test, so that what was persisted can be compared without knowing how
+     * files and versions were numbered.
+     *
+     * @return list<string>
+     */
+    private function executedOutsideOfTests(array $persisted): array
+    {
+        $files = [];
+
+        foreach ($persisted['executedOutsideOfTests'] as $version) {
+            $files[] = basename($persisted['files'][$persisted['versions'][$version][0]]);
+        }
+
+        sort($files);
+
+        return $files;
+    }
+
+    /**
      * The test and the base name of each source file it executed, so that what
      * was persisted can be compared without knowing how files and versions
      * were numbered.
@@ -867,16 +1027,17 @@ final class TestImpactDataFileTest extends TestCase
     private static function usableData(): array
     {
         return [
-            'version'     => 8,
-            'phpunit'     => Version::id(),
-            'php'         => PHP_VERSION_ID,
-            'recordedAt'  => 1,
-            'provenance'  => 'observed-execution',
-            'assumptions' => self::assumptionsOfTheProvider(),
-            'sourceFiles' => [],
-            'files'       => ['/src/Foo.php'],
-            'versions'    => [[0, 'a-hash']],
-            'tests'       => ['FooTest::testOne' => [0]],
+            'version'                => 9,
+            'phpunit'                => Version::id(),
+            'php'                    => PHP_VERSION_ID,
+            'recordedAt'             => 1,
+            'provenance'             => 'observed-execution',
+            'assumptions'            => self::assumptionsOfTheProvider(),
+            'sourceFiles'            => [],
+            'files'                  => ['/src/Foo.php'],
+            'versions'               => [[0, 'a-hash']],
+            'tests'                  => ['FooTest::testOne' => [0]],
+            'executedOutsideOfTests' => [],
         ];
     }
 

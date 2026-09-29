@@ -31,4 +31,19 @@ final class NullTestImpactData implements TestImpactData
     {
         return [];
     }
+
+    /**
+     * @param list<non-empty-string> $files
+     */
+    public function recordExecutedOutsideOfTests(array $files): void
+    {
+    }
+
+    /**
+     * @return list<non-empty-string>
+     */
+    public function executedOutsideOfTests(): array
+    {
+        return [];
+    }
 }

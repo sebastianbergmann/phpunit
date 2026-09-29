@@ -50,4 +50,15 @@ final class DefaultTestImpactDataTest extends TestCase
 
         $this->assertSame(['FooTest::testOne' => ['/src/Bar.php']], $data->recorded());
     }
+
+    public function testRecordsWhatWasExecutedOutsideOfTests(): void
+    {
+        $data = new DefaultTestImpactData;
+
+        $this->assertSame([], $data->executedOutsideOfTests());
+
+        $data->recordExecutedOutsideOfTests(['/src/Bootstrapped.php']);
+
+        $this->assertSame(['/src/Bootstrapped.php'], $data->executedOutsideOfTests());
+    }
 }

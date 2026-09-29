@@ -38,6 +38,15 @@ final class RecordedTestsTest extends TestCase
         );
     }
 
+    public function testKnowsThatEveryTestDependsOnAFileThatWasExecutedOutsideOfTests(): void
+    {
+        $tests = RecordedTests::executedOutsideOfTests(Provenance::ObservedExecution, RecordingTime::fromUnixTimestamp(1700000000));
+
+        $this->assertTrue($tests->everyTestDependsOnTheFile());
+        $this->assertFalse($tests->isEmpty());
+        $this->assertFalse(RecordedTests::from(['FooTest::testOne'], [], Provenance::ObservedExecution, null)->everyTestDependsOnTheFile());
+    }
+
     public function testIsEmptyWhenNoTestIsRecordedForTheFile(): void
     {
         $this->assertTrue(RecordedTests::from([], [], Provenance::ObservedExecution, null)->isEmpty());

@@ -15,6 +15,7 @@ use const LOCK_UN;
 use const PHP_VERSION_ID;
 use function array_key_exists;
 use function array_search;
+use function array_values;
 use function assert;
 use function count;
 use function dirname;
@@ -50,6 +51,10 @@ use PHPUnit\Util\Filesystem;
  * refers to a version that no longer exists executed code that has changed
  * since.
  *
+ * The versions of the source files that were executed outside of any test,
+ * while PHPUnit was bootstrapped or while the tests were loaded, for instance,
+ * are kept once, and not for each test: every test depends on them.
+ *
  * The file also records where what is in it comes from: what a test executed
  * and what a test declares that it covers and uses are different claims, and
  * the file is discarded rather than added to when it was written from the
@@ -74,7 +79,7 @@ use PHPUnit\Util\Filesystem;
  */
 final class TestImpactDataFile
 {
-    private const int VERSION             = 8;
+    private const int VERSION             = 9;
     private const string DEFAULT_FILENAME = 'test-impact-data';
     private readonly string $filename;
     private readonly BaseDirectory $baseDirectory;
@@ -110,7 +115,7 @@ final class TestImpactDataFile
      */
     public function testsThatDependOn(string $file): RecordedTests
     {
-        [0 => $files, 1 => $versions, 2 => $tests, 3 => $provenance, 5 => $recordedAt] = $this->read();
+        [0 => $files, 1 => $versions, 2 => $tests, 3 => $provenance, 5 => $recordedAt, 7 => $executedOutsideOfTests] = $this->read();
 
         if ($provenance === null) {
             $provenance = Provenance::ObservedExecution;
@@ -120,6 +125,18 @@ final class TestImpactDataFile
 
         if ($position === false) {
             return RecordedTests::from([], [], $provenance, $recordedAt);
+        }
+
+        foreach ($executedOutsideOfTests as $versionPosition) {
+            assert(isset($versions[$versionPosition]));
+
+            if ($versions[$versionPosition][0] !== $position) {
+                continue;
+            }
+
+            assert($recordedAt !== null);
+
+            return RecordedTests::executedOutsideOfTests($provenance, $recordedAt);
         }
 
         $hash                                  = $this->hasher->hash($file);
@@ -161,7 +178,7 @@ final class TestImpactDataFile
      */
     public function recording(Provenance $provenance): ?Recording
     {
-        [$files, $versions, $tests, $provenanceOfWhatIsThere, $sourceFiles, $recordedAt] = $this->read();
+        [$files, $versions, $tests, $provenanceOfWhatIsThere, $sourceFiles, $recordedAt, , $executedOutsideOfTests] = $this->read();
 
         if ($provenanceOfWhatIsThere === null || $provenanceOfWhatIsThere !== $provenance) {
             return null;
@@ -169,7 +186,7 @@ final class TestImpactDataFile
 
         assert($recordedAt !== null);
 
-        return Recording::from($files, $versions, $tests, $sourceFiles, $recordedAt);
+        return Recording::from($files, $versions, $tests, $sourceFiles, $recordedAt, $executedOutsideOfTests);
     }
 
     /**
@@ -265,10 +282,11 @@ final class TestImpactDataFile
      */
     private function recordWhileTheFileIsLocked($handle, TestImpactData $data, Provenance $provenance, array $sourceFiles, bool $prune): void
     {
-        $files                  = [];
-        $versions               = [];
-        $tests                  = [];
-        $hashesThatWereRecorded = [];
+        $files                             = [];
+        $versions                          = [];
+        $tests                             = [];
+        $hashesThatWereRecorded            = [];
+        $executedOutsideOfTestsThatIsThere = [];
 
         /*
          * Pruning is what makes what is there beside the point: everything
@@ -276,12 +294,13 @@ final class TestImpactDataFile
          * earlier one recorded would only bring back what pruning is for.
          */
         if (!$prune) {
-            [$files, $versions, $tests, $provenanceOfWhatIsThere, $sourceFilesThatAreThere] = $this->parse((string) stream_get_contents($handle));
+            [$files, $versions, $tests, $provenanceOfWhatIsThere, $sourceFilesThatAreThere, , , $executedOutsideOfTestsThatIsThere] = $this->parse((string) stream_get_contents($handle));
 
             if ($provenanceOfWhatIsThere !== null && $provenanceOfWhatIsThere !== $provenance) {
-                $files    = [];
-                $versions = [];
-                $tests    = [];
+                $files                             = [];
+                $versions                          = [];
+                $tests                             = [];
+                $executedOutsideOfTestsThatIsThere = [];
             } else {
                 foreach ($sourceFilesThatAreThere as $position => $hash) {
                     assert(isset($files[$position]));
@@ -349,6 +368,48 @@ final class TestImpactDataFile
         }
 
         /*
+         * What was executed outside of any test is recorded once, and not for
+         * each test. What this test run executed outside of its tests replaces
+         * what was recorded for the same file before, and what an earlier test
+         * run recorded for a file this one did not execute is kept: a test run
+         * that did not run every test there is did not load every test either.
+         *
+         * A file that cannot be hashed any longer, because what was executed
+         * removed it again, is not recorded: it cannot be compared to what it
+         * will be on a later run, and a file that is not there on a later run
+         * is not something a change can be made to either.
+         */
+        $executedOutsideOfTests = [];
+
+        foreach ($executedOutsideOfTestsThatIsThere as $versionPosition) {
+            assert(isset($versions[$versionPosition]));
+
+            $executedOutsideOfTests[$versions[$versionPosition][0]] = $versionPosition;
+        }
+
+        foreach ($data->executedOutsideOfTests() as $file) {
+            $hash = $this->hasher->hash($file);
+
+            if ($hash === null) {
+                continue;
+            }
+
+            if (!isset($filePositions[$file])) {
+                $filePositions[$file] = count($files);
+                $files[]              = $file;
+            }
+
+            $key = $filePositions[$file] . ':' . $hash;
+
+            if (!isset($versionPositions[$key])) {
+                $versionPositions[$key] = count($versions);
+                $versions[]             = [$filePositions[$file], $hash];
+            }
+
+            $executedOutsideOfTests[$filePositions[$file]] = $versionPositions[$key];
+        }
+
+        /*
          * The source files are recorded whether or not a test executed them:
          * a change to a source file no test executed is a change nothing is
          * known about, and knowing what such a file was is what makes it
@@ -386,7 +447,7 @@ final class TestImpactDataFile
             $hashesOfSourceFiles[$sourceFile] = $hash;
         }
 
-        $this->write($handle, $files, $versions, $tests, $provenance, $hashesOfSourceFiles);
+        $this->write($handle, $files, $versions, $tests, $provenance, $hashesOfSourceFiles, array_values($executedOutsideOfTests));
     }
 
     /**
@@ -399,8 +460,9 @@ final class TestImpactDataFile
      * @param list<VersionType>                         $versions
      * @param array<non-empty-string, list<int>>        $tests
      * @param array<non-empty-string, non-empty-string> $hashesOfSourceFiles
+     * @param list<int>                                 $executedOutsideOfTests
      */
-    private function write($handle, array $files, array $versions, array $tests, Provenance $provenance, array $hashesOfSourceFiles): void
+    private function write($handle, array $files, array $versions, array $tests, Provenance $provenance, array $hashesOfSourceFiles, array $executedOutsideOfTests): void
     {
         $keptFiles            = [];
         $keptFilePositions    = [];
@@ -436,6 +498,30 @@ final class TestImpactDataFile
             $keptTests[$test] = $keptVersionsOfTest;
         }
 
+        $keptExecutedOutsideOfTests = [];
+
+        foreach ($executedOutsideOfTests as $versionPosition) {
+            if (!isset($keptVersionPositions[$versionPosition])) {
+                assert(isset($versions[$versionPosition]));
+
+                $version = $versions[$versionPosition];
+
+                assert(isset($files[$version[0]]));
+
+                $file = $files[$version[0]];
+
+                if (!isset($keptFilePositions[$file])) {
+                    $keptFilePositions[$file] = count($keptFiles);
+                    $keptFiles[]              = $file;
+                }
+
+                $keptVersionPositions[$versionPosition] = count($keptVersions);
+                $keptVersions[]                         = [$keptFilePositions[$file], $version[1]];
+            }
+
+            $keptExecutedOutsideOfTests[] = $keptVersionPositions[$versionPosition];
+        }
+
         $sourceFiles = [];
 
         foreach ($hashesOfSourceFiles as $sourceFile => $hash) {
@@ -465,6 +551,8 @@ final class TestImpactDataFile
                 'sourceFiles' => $sourceFiles,
                 'versions'    => $keptVersions,
                 'tests'       => $keptTests,
+
+                'executedOutsideOfTests' => $keptExecutedOutsideOfTests,
             ],
         );
 
@@ -490,12 +578,12 @@ final class TestImpactDataFile
      * or of PHP. Why what is there is not used is returned with it: there
      * being nothing to read is the only case in which there is no reason.
      *
-     * @return array{0: list<non-empty-string>, 1: list<VersionType>, 2: array<non-empty-string, list<int>>, 3: ?Provenance, 4: array<int, non-empty-string>, 5: ?RecordingTime, 6: ?DiscardReason}
+     * @return array{0: list<non-empty-string>, 1: list<VersionType>, 2: array<non-empty-string, list<int>>, 3: ?Provenance, 4: array<int, non-empty-string>, 5: ?RecordingTime, 6: ?DiscardReason, 7: list<int>}
      */
     private function read(): array
     {
         if (!is_file($this->filename)) {
-            return [[], [], [], null, [], null, null];
+            return [[], [], [], null, [], null, null, []];
         }
 
         $contents = file_get_contents($this->filename);
@@ -510,7 +598,7 @@ final class TestImpactDataFile
     /**
      * Returns empty data when what was read cannot be used: see read().
      *
-     * @return array{0: list<non-empty-string>, 1: list<VersionType>, 2: array<non-empty-string, list<int>>, 3: ?Provenance, 4: array<int, non-empty-string>, 5: ?RecordingTime, 6: ?DiscardReason}
+     * @return array{0: list<non-empty-string>, 1: list<VersionType>, 2: array<non-empty-string, list<int>>, 3: ?Provenance, 4: array<int, non-empty-string>, 5: ?RecordingTime, 6: ?DiscardReason, 7: list<int>}
      */
     private function parse(string $contents): array
     {
@@ -536,7 +624,7 @@ final class TestImpactDataFile
             return self::discarded(DiscardReason::RecordedWithAnotherVersionOfPhp);
         }
 
-        if (!isset($data['version'], $data['phpunit'], $data['php'], $data['provenance'], $data['assumptions'], $data['files'], $data['sourceFiles'], $data['versions'], $data['tests'], $data['recordedAt'])) {
+        if (!isset($data['version'], $data['phpunit'], $data['php'], $data['provenance'], $data['assumptions'], $data['files'], $data['sourceFiles'], $data['versions'], $data['tests'], $data['recordedAt'], $data['executedOutsideOfTests'])) {
             return $empty;
         }
 
@@ -574,7 +662,7 @@ final class TestImpactDataFile
             return $empty;
         }
 
-        if (!is_array($data['files']) || !is_array($data['sourceFiles']) || !is_array($data['versions']) || !is_array($data['tests'])) {
+        if (!is_array($data['files']) || !is_array($data['sourceFiles']) || !is_array($data['versions']) || !is_array($data['tests']) || !is_array($data['executedOutsideOfTests'])) {
             return $empty;
         }
 
@@ -636,14 +724,24 @@ final class TestImpactDataFile
             $tests[$test] = $versionsOfSingleTest;
         }
 
-        return [$files, $versions, $tests, $provenance, $sourceFiles, RecordingTime::fromUnixTimestamp($data['recordedAt']), null];
+        $executedOutsideOfTests = [];
+
+        foreach ($data['executedOutsideOfTests'] as $versionPosition) {
+            if (!is_int($versionPosition) || !isset($versions[$versionPosition])) {
+                return $empty;
+            }
+
+            $executedOutsideOfTests[] = $versionPosition;
+        }
+
+        return [$files, $versions, $tests, $provenance, $sourceFiles, RecordingTime::fromUnixTimestamp($data['recordedAt']), null, $executedOutsideOfTests];
     }
 
     /**
-     * @return array{0: list<non-empty-string>, 1: list<VersionType>, 2: array<non-empty-string, list<int>>, 3: ?Provenance, 4: array<int, non-empty-string>, 5: ?RecordingTime, 6: ?DiscardReason}
+     * @return array{0: list<non-empty-string>, 1: list<VersionType>, 2: array<non-empty-string, list<int>>, 3: ?Provenance, 4: array<int, non-empty-string>, 5: ?RecordingTime, 6: ?DiscardReason, 7: list<int>}
      */
     private static function discarded(DiscardReason $reason): array
     {
-        return [[], [], [], null, [], null, $reason];
+        return [[], [], [], null, [], null, $reason, []];
     }
 }
