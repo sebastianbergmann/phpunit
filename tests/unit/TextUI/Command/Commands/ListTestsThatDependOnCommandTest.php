@@ -117,6 +117,29 @@ final class ListTestsThatDependOnCommandTest extends TestCase
         $this->assertSame(Result::SUCCESS, $result->shellExitCode());
     }
 
+    public function testSaysThatEveryTestDependsOnAFileThatWasExecutedOutsideOfTests(): void
+    {
+        $directory    = $this->temporaryDirectory();
+        $foo          = $this->writeSourceFile($directory, 'Foo', 'first');
+        $bootstrapped = $this->writeSourceFile($directory, 'Bootstrapped', 'first');
+
+        $data = new DefaultTestImpactData;
+        $data->record('FooTest::testOne', [$foo]);
+        $data->recordExecutedOutsideOfTests([$bootstrapped]);
+
+        new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions())->persist($data, Provenance::ObservedExecution, []);
+
+        $result = new ListTestsThatDependOnCommand(new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions()), $bootstrapped)->execute();
+
+        $this->assertStringMatchesFormat(
+            'Recorded at %d-%d-%d %d:%d:%d %s from what the tests executed.' . PHP_EOL . PHP_EOL .
+            'Every test depends on ' . $bootstrapped . ': it was executed outside of any test' . PHP_EOL,
+            $result->output(),
+        );
+
+        $this->assertSame(Result::SUCCESS, $result->shellExitCode());
+    }
+
     public function testListsTheTestsThatDependOnTheFileAsItIsNow(): void
     {
         $directory = $this->temporaryDirectory();

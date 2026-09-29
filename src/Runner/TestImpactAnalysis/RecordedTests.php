@@ -17,6 +17,10 @@ namespace PHPUnit\Runner\TestImpactAnalysis;
  * was recorded for the former describes the code that is there, while what was
  * recorded for the latter describes code that has changed since.
  *
+ * A source file that was executed outside of any test, while PHPUnit was
+ * bootstrapped or while the tests were loaded, for instance, is one every test
+ * depends on, and no test is named for it.
+ *
  * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -36,6 +40,7 @@ final readonly class RecordedTests
     private array $thatDependOnAnEarlierVersionOfTheFile;
     private Provenance $provenance;
     private ?RecordingTime $recordedAt;
+    private bool $everyTestDependsOnTheFile;
 
     /**
      * @param list<non-empty-string> $thatDependOnTheFileAsItIsNow
@@ -43,19 +48,34 @@ final readonly class RecordedTests
      */
     public static function from(array $thatDependOnTheFileAsItIsNow, array $thatDependOnAnEarlierVersionOfTheFile, Provenance $provenance, ?RecordingTime $recordedAt): self
     {
-        return new self($thatDependOnTheFileAsItIsNow, $thatDependOnAnEarlierVersionOfTheFile, $provenance, $recordedAt);
+        return new self($thatDependOnTheFileAsItIsNow, $thatDependOnAnEarlierVersionOfTheFile, $provenance, $recordedAt, false);
+    }
+
+    public static function executedOutsideOfTests(Provenance $provenance, RecordingTime $recordedAt): self
+    {
+        return new self([], [], $provenance, $recordedAt, true);
     }
 
     /**
      * @param list<non-empty-string> $thatDependOnTheFileAsItIsNow
      * @param list<non-empty-string> $thatDependOnAnEarlierVersionOfTheFile
      */
-    private function __construct(array $thatDependOnTheFileAsItIsNow, array $thatDependOnAnEarlierVersionOfTheFile, Provenance $provenance, ?RecordingTime $recordedAt)
+    private function __construct(array $thatDependOnTheFileAsItIsNow, array $thatDependOnAnEarlierVersionOfTheFile, Provenance $provenance, ?RecordingTime $recordedAt, bool $everyTestDependsOnTheFile)
     {
         $this->thatDependOnTheFileAsItIsNow          = $thatDependOnTheFileAsItIsNow;
         $this->thatDependOnAnEarlierVersionOfTheFile = $thatDependOnAnEarlierVersionOfTheFile;
         $this->provenance                            = $provenance;
         $this->recordedAt                            = $recordedAt;
+        $this->everyTestDependsOnTheFile             = $everyTestDependsOnTheFile;
+    }
+
+    /**
+     * Whether the file was executed outside of any test, which makes it a file
+     * every test depends on.
+     */
+    public function everyTestDependsOnTheFile(): bool
+    {
+        return $this->everyTestDependsOnTheFile;
     }
 
     /**
@@ -93,6 +113,10 @@ final readonly class RecordedTests
 
     public function isEmpty(): bool
     {
+        if ($this->everyTestDependsOnTheFile) {
+            return false;
+        }
+
         return $this->thatDependOnTheFileAsItIsNow === [] && $this->thatDependOnAnEarlierVersionOfTheFile === [];
     }
 }

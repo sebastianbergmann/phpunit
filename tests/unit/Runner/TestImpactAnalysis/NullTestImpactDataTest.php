@@ -28,4 +28,13 @@ final class NullTestImpactDataTest extends TestCase
 
         $this->assertSame([], $data->recorded());
     }
+
+    public function testDoesNotRecordWhatWasExecutedOutsideOfTests(): void
+    {
+        $data = new NullTestImpactData;
+
+        $data->recordExecutedOutsideOfTests(['/src/Bootstrapped.php']);
+
+        $this->assertSame([], $data->executedOutsideOfTests());
+    }
 }
