@@ -48,6 +48,7 @@ use ReflectionClass;
 
 #[CoversClass(Selector::class)]
 #[UsesClass(Assumptions::class)]
+#[UsesClass(BaseDirectory::class)]
 #[UsesClass(ExecutionSettings::class)]
 #[UsesClass(DefaultTestImpactData::class)]
 #[UsesClass(DiscardReason::class)]
@@ -110,7 +111,7 @@ final class SelectorTest extends TestCase
         file_put_contents($directory . DIRECTORY_SEPARATOR . 'test-impact-data', json_encode($data));
 
         $selection = new Selector(
-            new TestImpactDataFile($directory, $this->assumptions()),
+            new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions()),
             Provenance::ObservedExecution,
             new DefaultTestRunHistory($directory . DIRECTORY_SEPARATOR . 'history'),
         )->select($this->tests(), [$money]);
@@ -204,7 +205,7 @@ final class SelectorTest extends TestCase
         $dependent  = ClassDependentSelectionTest::class . '::testFormatsAsWell';
         $dependedOn = UnrelatedSelectionTest::class . '::testFormats';
 
-        $file = new TestImpactDataFile($directory, $this->assumptions());
+        $file = new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions());
         $data = new DefaultTestImpactData;
 
         $data->record($dependent, [$formatter, $this->fileOf(ClassDependentSelectionTest::class)]);
@@ -238,7 +239,7 @@ final class SelectorTest extends TestCase
 
         $dependent = ClassDependentSelectionTest::class . '::testFormatsAsWell';
 
-        $file = new TestImpactDataFile($directory, $this->assumptions());
+        $file = new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions());
         $data = new DefaultTestImpactData;
 
         $data->record($dependent, [$formatter, $this->fileOf(ClassDependentSelectionTest::class)]);
@@ -481,7 +482,7 @@ final class SelectorTest extends TestCase
      */
     private function selectorFor(string $directory, array $dependencies, array $sourceFiles = [], ?TestRunHistory $testRunHistory = null, Provenance $recorded = Provenance::ObservedExecution, Provenance $records = Provenance::ObservedExecution): Selector
     {
-        $file = new TestImpactDataFile($directory, $this->assumptions());
+        $file = new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions());
 
         if ($dependencies !== []) {
             $data = new DefaultTestImpactData;
@@ -602,8 +603,8 @@ final class SelectorTest extends TestCase
     private function assumptions(): Assumptions
     {
         return Assumptions::from(
-            null,
-            ExecutionSettings::from(DefaultConfiguration::create()->php(), [], [], false, false, false, false),
+            BaseDirectory::fromWorkingDirectory(),
+            ExecutionSettings::from(BaseDirectory::fromWorkingDirectory(), DefaultConfiguration::create()->php(), [], [], false, false, false, false),
             new Source(
                 null,
                 false,

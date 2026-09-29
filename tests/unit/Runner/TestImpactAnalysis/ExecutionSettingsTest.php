@@ -25,6 +25,7 @@ use PHPUnit\TextUI\Configuration\Variable;
 use PHPUnit\TextUI\Configuration\VariableCollection;
 
 #[CoversClass(ExecutionSettings::class)]
+#[UsesClass(BaseDirectory::class)]
 #[Small]
 #[Group('test-runner')]
 #[Group('test-runner/test-impact-analysis')]
@@ -117,8 +118,36 @@ final class ExecutionSettingsTest extends TestCase
     public function testAreNotTheSameWhenATestSuiteIsBootstrappedByAnotherScript(): void
     {
         $this->assertNotSame(
-            ExecutionSettings::from($this->php(), ['unit' => '/a.php', 'integration' => '/b.php'], [], false, false, false, false)->hash(),
-            ExecutionSettings::from($this->php(), ['unit' => '/b.php', 'integration' => '/a.php'], [], false, false, false, false)->hash(),
+            ExecutionSettings::from(BaseDirectory::fromWorkingDirectory(), $this->php(), ['unit' => '/a.php', 'integration' => '/b.php'], [], false, false, false, false)->hash(),
+            ExecutionSettings::from(BaseDirectory::fromWorkingDirectory(), $this->php(), ['unit' => '/b.php', 'integration' => '/a.php'], [], false, false, false, false)->hash(),
+        );
+    }
+
+    /**
+     * The same bootstrap script in another checkout of the project, the
+     * checkout of another CI runner for instance, is the same setting.
+     */
+    public function testAreTheSameWhenATestSuiteIsBootstrappedByTheSameScriptInAnotherCheckout(): void
+    {
+        $this->assertSame(
+            ExecutionSettings::from(BaseDirectory::from('/checkout'), $this->php(), ['unit' => '/checkout/tests/bootstrap.php'], [], false, false, false, false)->hash(),
+            ExecutionSettings::from(BaseDirectory::from('/another/checkout'), $this->php(), ['unit' => '/another/checkout/tests/bootstrap.php'], [], false, false, false, false)->hash(),
+        );
+    }
+
+    public function testAreTheSameWhenTheSameIncludePathIsInAnotherCheckout(): void
+    {
+        $this->assertSame(
+            ExecutionSettings::from(BaseDirectory::from('/checkout'), $this->php([new Directory('/checkout/lib')]), [], [], false, false, false, false)->hash(),
+            ExecutionSettings::from(BaseDirectory::from('/another/checkout'), $this->php([new Directory('/another/checkout/lib')]), [], [], false, false, false, false)->hash(),
+        );
+    }
+
+    public function testAreNotTheSameWhenAnotherIncludePathIsInTheSameCheckout(): void
+    {
+        $this->assertNotSame(
+            ExecutionSettings::from(BaseDirectory::from('/checkout'), $this->php([new Directory('/checkout/lib')]), [], [], false, false, false, false)->hash(),
+            ExecutionSettings::from(BaseDirectory::from('/checkout'), $this->php([new Directory('/checkout/vendor')]), [], [], false, false, false, false)->hash(),
         );
     }
 
@@ -126,15 +155,15 @@ final class ExecutionSettingsTest extends TestCase
     {
         $this->assertNotSame(
             $this->settings()->hash(),
-            ExecutionSettings::from($this->php(), [], [['className' => 'Extension', 'parameters' => []]], false, false, false, false)->hash(),
+            ExecutionSettings::from(BaseDirectory::fromWorkingDirectory(), $this->php(), [], [['className' => 'Extension', 'parameters' => []]], false, false, false, false)->hash(),
         );
     }
 
     public function testAreNotTheSameWhenAnExtensionIsConfiguredDifferently(): void
     {
         $this->assertNotSame(
-            ExecutionSettings::from($this->php(), [], [['className' => 'Extension', 'parameters' => ['mode' => 'a']]], false, false, false, false)->hash(),
-            ExecutionSettings::from($this->php(), [], [['className' => 'Extension', 'parameters' => ['mode' => 'b']]], false, false, false, false)->hash(),
+            ExecutionSettings::from(BaseDirectory::fromWorkingDirectory(), $this->php(), [], [['className' => 'Extension', 'parameters' => ['mode' => 'a']]], false, false, false, false)->hash(),
+            ExecutionSettings::from(BaseDirectory::fromWorkingDirectory(), $this->php(), [], [['className' => 'Extension', 'parameters' => ['mode' => 'b']]], false, false, false, false)->hash(),
         );
     }
 
@@ -142,7 +171,7 @@ final class ExecutionSettingsTest extends TestCase
     {
         $this->assertSame(
             $this->settings()->hash(),
-            ExecutionSettings::from($this->php(), [], [['className' => 'Extension', 'parameters' => []]], true, false, false, false)->hash(),
+            ExecutionSettings::from(BaseDirectory::fromWorkingDirectory(), $this->php(), [], [['className' => 'Extension', 'parameters' => []]], true, false, false, false)->hash(),
         );
     }
 
@@ -150,7 +179,7 @@ final class ExecutionSettingsTest extends TestCase
     {
         $this->assertNotSame(
             $this->settings()->hash(),
-            ExecutionSettings::from($this->php(), [], [], false, true, false, false)->hash(),
+            ExecutionSettings::from(BaseDirectory::fromWorkingDirectory(), $this->php(), [], [], false, true, false, false)->hash(),
         );
     }
 
@@ -158,7 +187,7 @@ final class ExecutionSettingsTest extends TestCase
     {
         $this->assertNotSame(
             $this->settings()->hash(),
-            ExecutionSettings::from($this->php(), [], [], false, false, true, false)->hash(),
+            ExecutionSettings::from(BaseDirectory::fromWorkingDirectory(), $this->php(), [], [], false, false, true, false)->hash(),
         );
     }
 
@@ -166,7 +195,7 @@ final class ExecutionSettingsTest extends TestCase
     {
         $this->assertNotSame(
             $this->settings()->hash(),
-            ExecutionSettings::from($this->php(), [], [], false, false, false, true)->hash(),
+            ExecutionSettings::from(BaseDirectory::fromWorkingDirectory(), $this->php(), [], [], false, false, false, true)->hash(),
         );
     }
 
@@ -176,7 +205,7 @@ final class ExecutionSettingsTest extends TestCase
             $php = $this->php();
         }
 
-        return ExecutionSettings::from($php, [], [], false, false, false, false);
+        return ExecutionSettings::from(BaseDirectory::fromWorkingDirectory(), $php, [], [], false, false, false, false);
     }
 
     /**
