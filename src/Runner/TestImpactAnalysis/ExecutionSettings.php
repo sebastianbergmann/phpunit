@@ -36,6 +36,10 @@ use PHPUnit\TextUI\Configuration\VariableCollection;
  * The settings are described in the order they are configured in: the same
  * PHP setting configured twice has the value it was configured with last.
  *
+ * The paths that are configured are described relative to the base directory:
+ * the same bootstrap script, or the same include path, in another checkout of
+ * the project is the same setting.
+ *
  * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -53,16 +57,16 @@ final readonly class ExecutionSettings
      * @param array<non-empty-string, non-empty-string>                                   $bootstrapForTestSuite
      * @param list<array{className: non-empty-string, parameters: array<string, string>}> $extensionBootstrappers
      */
-    public static function from(Php $php, array $bootstrapForTestSuite, array $extensionBootstrappers, bool $noExtensions, bool $processIsolation, bool $backupGlobals, bool $backupStaticProperties): self
+    public static function from(BaseDirectory $baseDirectory, Php $php, array $bootstrapForTestSuite, array $extensionBootstrappers, bool $noExtensions, bool $processIsolation, bool $backupGlobals, bool $backupStaticProperties): self
     {
         $description = [];
 
         foreach ($bootstrapForTestSuite as $testSuite => $bootstrap) {
-            $description[] = 'bootstrap-for-test-suite ' . $testSuite . ' ' . $bootstrap;
+            $description[] = 'bootstrap-for-test-suite ' . $testSuite . ' ' . $baseDirectory->relativePathOf($bootstrap);
         }
 
         foreach ($php->includePaths() as $includePath) {
-            $description[] = 'include-path ' . $includePath->path();
+            $description[] = 'include-path ' . $baseDirectory->relativePathOf($includePath->path());
         }
 
         foreach ($php->iniSettings() as $iniSetting) {

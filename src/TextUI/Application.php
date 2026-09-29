@@ -78,6 +78,7 @@ use PHPUnit\Runner\IssueTriggerResolver\Resolver;
 use PHPUnit\Runner\PhpConfiguration\PhpConfigurationChecker;
 use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 use PHPUnit\Runner\TestImpactAnalysis\Assumptions;
+use PHPUnit\Runner\TestImpactAnalysis\BaseDirectory;
 use PHPUnit\Runner\TestImpactAnalysis\ChangedPaths;
 use PHPUnit\Runner\TestImpactAnalysis\DefaultTestImpactData;
 use PHPUnit\Runner\TestImpactAnalysis\ExecutionSettings;
@@ -626,6 +627,7 @@ final readonly class Application
                 new ListTestsThatDependOnCommand(
                     new TestImpactDataFile(
                         $configuration->cacheDirectory(),
+                        $this->baseDirectoryOf($configuration),
                         $this->assumptionsOf($configuration),
                     ),
                     $cliConfiguration->listTestsThatDependOn(),
@@ -975,7 +977,7 @@ final readonly class Application
         $testRunHistory->load();
 
         return new Selector(
-            new TestImpactDataFile($configuration->cacheDirectory(), $this->assumptionsOf($configuration)),
+            new TestImpactDataFile($configuration->cacheDirectory(), $this->baseDirectoryOf($configuration), $this->assumptionsOf($configuration)),
             $this->provenanceOf($configuration),
             $testRunHistory,
         );
@@ -1313,13 +1315,23 @@ final readonly class Application
         return CodeCoverageFilterRegistry::instance()->get()->files();
     }
 
+    /**
+     * What is recorded names files relative to the directory of the
+     * configuration file, which is part of the project it configures the
+     * tests of, and relative to the working directory when there is none.
+     */
+    private function baseDirectoryOf(Configuration $configuration): BaseDirectory
+    {
+        if ($configuration->hasConfigurationFile()) {
+            return BaseDirectory::from(dirname($configuration->configurationFile()));
+        }
+
+        return BaseDirectory::fromWorkingDirectory();
+    }
+
     private function assumptionsOf(Configuration $configuration): Assumptions
     {
-        $configurationFile = null;
-
-        if ($configuration->hasConfigurationFile()) {
-            $configurationFile = $configuration->configurationFile();
-        }
+        $baseDirectory = $this->baseDirectoryOf($configuration);
 
         $bootstrapFiles = [];
 
@@ -1332,8 +1344,9 @@ final readonly class Application
         }
 
         return Assumptions::from(
-            $configurationFile,
+            $baseDirectory,
             ExecutionSettings::from(
+                $baseDirectory,
                 $configuration->php(),
                 $configuration->bootstrapForTestSuite(),
                 $configuration->extensionBootstrappers(),
@@ -1364,7 +1377,7 @@ final readonly class Application
 
     private function persist(Configuration $configuration, TestImpactData $testImpactData, Provenance $provenance, bool $prune): void
     {
-        $testImpactDataFile = new TestImpactDataFile($configuration->cacheDirectory(), $this->assumptionsOf($configuration));
+        $testImpactDataFile = new TestImpactDataFile($configuration->cacheDirectory(), $this->baseDirectoryOf($configuration), $this->assumptionsOf($configuration));
 
         try {
             if ($prune) {

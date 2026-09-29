@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner\TestImpactAnalysis;
 
+use const SORT_STRING;
 use function array_key_exists;
 use function hash;
 use function in_array;
@@ -28,6 +29,9 @@ use UnexpectedValueException;
  * that is added to it or removed from it changes the hash of the directory
  * just as a change to one of its files does. Files in subdirectories count:
  * fixtures are nested as often as not.
+ *
+ * A file is named relative to the directory, and not by its absolute path: the
+ * same directory in another checkout of the project has the same hash.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -95,22 +99,27 @@ final class PathHasher
 
         $files = [];
 
-        foreach ($filesInDirectory as $file) {
+        foreach ($filesInDirectory as $name => $file) {
             $hash = $this->fileHasher->hash($file);
 
             if ($hash === null) {
                 return null; // @codeCoverageIgnore
             }
 
-            $files[$file] = $hash;
+            $files[$name] = $hash;
         }
 
-        ksort($files);
+        /*
+         * A file whose name is a number is a key that is an integer, and the
+         * names are compared as strings so that the order does not depend on
+         * which of them are.
+         */
+        ksort($files, SORT_STRING);
 
         $digest = '';
 
-        foreach ($files as $file => $hash) {
-            $digest .= $file . "\0" . $hash . "\0";
+        foreach ($files as $name => $hash) {
+            $digest .= $name . "\0" . $hash . "\0";
         }
 
         return hash('xxh128', $digest);
@@ -132,12 +141,15 @@ final class PathHasher
      * in it, which is not a limit that is reached before the number of paths
      * that lead to the same file has become unreasonable.
      *
+     * Each file is keyed by its name relative to the directory the walk
+     * started in, with '/' as the directory separator on every platform.
+     *
      * @param non-empty-string       $directory
      * @param list<non-empty-string> $directoriesTheWalkCameThrough
      *
-     * @return ?list<non-empty-string>
+     * @return ?array<non-empty-string, non-empty-string>
      */
-    private function filesIn(string $directory, array $directoriesTheWalkCameThrough = []): ?array
+    private function filesIn(string $directory, string $prefix = '', array $directoriesTheWalkCameThrough = []): ?array
     {
         $resolved = realpath($directory);
 
@@ -166,21 +178,24 @@ final class PathHasher
                 continue; // @codeCoverageIgnore
             }
 
-            $path = $entry->getPathname();
+            $path     = $entry->getPathname();
+            $filename = $entry->getFilename();
 
-            if ($path === '') {
+            if ($path === '' || $filename === '') {
                 continue; // @codeCoverageIgnore
             }
 
+            $name = $prefix . $filename;
+
             if ($entry->isDir()) {
-                $filesInDirectory = $this->filesIn($path, $directoriesTheWalkCameThrough);
+                $filesInDirectory = $this->filesIn($path, $name . '/', $directoriesTheWalkCameThrough);
 
                 if ($filesInDirectory === null) {
                     return null;
                 }
 
-                foreach ($filesInDirectory as $file) {
-                    $files[] = $file;
+                foreach ($filesInDirectory as $nameInDirectory => $file) {
+                    $files[$nameInDirectory] = $file;
                 }
 
                 continue;
@@ -190,7 +205,7 @@ final class PathHasher
                 continue; // @codeCoverageIgnore
             }
 
-            $files[] = $path;
+            $files[$name] = $path;
         }
 
         return $files;
