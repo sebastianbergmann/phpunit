@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 
 ### Fixed
 
+* The class name argument of `#[RequiresMethod]` is declared as `class-string`, so static analysis reports an error when it refers to a class that does not exist
 * A `#[RequiresMethod]` attribute that refers to a class which cannot be loaded, for instance because its parent class does not exist, aborts the test run instead of skipping the test
 
 ## [12.5.36] - 2026-09-25

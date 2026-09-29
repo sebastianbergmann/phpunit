@@ -20,7 +20,7 @@ use Attribute;
 final readonly class RequiresMethod
 {
     /**
-     * @var class-string
+     * @var non-empty-string
      */
     private string $className;
 
@@ -30,7 +30,7 @@ final readonly class RequiresMethod
     private string $methodName;
 
     /**
-     * @param class-string     $className
+     * @param non-empty-string $className
      * @param non-empty-string $methodName
      */
     public function __construct(string $className, string $methodName)
@@ -40,7 +40,7 @@ final readonly class RequiresMethod
     }
 
     /**
-     * @return class-string
+     * @return non-empty-string
      */
     public function className(): string
     {
