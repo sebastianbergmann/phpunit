@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 13.3 release series are documented in this fi
 ### Fixed
 
 * The first attempt of a test that is retried is reported as attempt 1 of 1 in events, instead of attempt 1 of the configured maximum number of attempts
+* A `#[RequiresMethod]` attribute that refers to a class which cannot be loaded, for instance because its parent class does not exist, aborts the test run instead of skipping the test
 
 ## [13.3.5] - 2026-09-25
 
