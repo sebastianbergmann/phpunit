@@ -39,4 +39,19 @@ interface TestImpactData
      * @return array<non-empty-string, list<non-empty-string>>
      */
     public function recorded(): array;
+
+    /**
+     * What was executed outside of any test, while PHPUnit was bootstrapped
+     * and while the tests were loaded, for instance, is what every test can
+     * be affected by: the state it leaves behind is the state every test
+     * starts in.
+     *
+     * @param list<non-empty-string> $files
+     */
+    public function recordExecutedOutsideOfTests(array $files): void;
+
+    /**
+     * @return list<non-empty-string>
+     */
+    public function executedOutsideOfTests(): array;
 }

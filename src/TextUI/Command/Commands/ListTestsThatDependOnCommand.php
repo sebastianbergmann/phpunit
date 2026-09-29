@@ -103,6 +103,16 @@ final readonly class ListTestsThatDependOnCommand implements Command
             );
         }
 
+        if ($tests->everyTestDependsOnTheFile()) {
+            return Result::from(
+                $provenance . PHP_EOL . PHP_EOL .
+                sprintf(
+                    'Every test depends on %s: it was executed outside of any test' . PHP_EOL,
+                    $file,
+                ),
+            );
+        }
+
         return Result::from(
             $provenance . PHP_EOL . PHP_EOL .
             $this->listOf(

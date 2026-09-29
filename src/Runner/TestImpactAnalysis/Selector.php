@@ -106,10 +106,24 @@ final class Selector
             return Explanation::everything($this->reasonNothingCanBeSelectedFrom(), null);
         }
 
+        /*
+         * What was executed outside of any test is what every test depends
+         * on, so a change to it is one every test can be affected by. It is
+         * asked about first: such a file is not one that nothing is known
+         * about, and saying that it is would not say why every test is run.
+         */
         if ($changedPaths === null) {
-            $change = $recording->changeNothingIsKnownAbout($this->hasher, $sourceFiles);
+            $change = $recording->changeExecutedOutsideOfTests($this->hasher);
+
+            if ($change === null) {
+                $change = $recording->changeNothingIsKnownAbout($this->hasher, $sourceFiles);
+            }
         } else {
-            $change = $recording->pathNothingIsKnownAbout($changedPaths);
+            $change = $recording->pathExecutedOutsideOfTests($changedPaths);
+
+            if ($change === null) {
+                $change = $recording->pathNothingIsKnownAbout($changedPaths);
+            }
         }
 
         if ($change !== null) {

@@ -62,12 +62,12 @@ final class RecordingTest extends TestCase
 
     public function testKnowsThatNothingWasRecorded(): void
     {
-        $this->assertTrue(Recording::from([], [], [], [], RecordingTime::fromUnixTimestamp(1700000000))->isEmpty());
+        $this->assertTrue(Recording::from([], [], [], [], RecordingTime::fromUnixTimestamp(1700000000), [])->isEmpty());
     }
 
     public function testKnowsWhichTestsWereRecorded(): void
     {
-        $recording = Recording::from(['/src/Foo.php'], [[0, 'a-hash']], ['FooTest::testOne' => [0]], [], RecordingTime::fromUnixTimestamp(1700000000));
+        $recording = Recording::from(['/src/Foo.php'], [[0, 'a-hash']], ['FooTest::testOne' => [0]], [], RecordingTime::fromUnixTimestamp(1700000000), []);
 
         $this->assertFalse($recording->isEmpty());
         $this->assertTrue($recording->knows('FooTest::testOne'));
@@ -91,6 +91,7 @@ final class RecordingTest extends TestCase
             ],
             [],
             RecordingTime::fromUnixTimestamp(1700000000),
+            [],
         );
 
         $this->writeFile($directory, 'Changed.php', 'second');
@@ -115,6 +116,7 @@ final class RecordingTest extends TestCase
             ],
             [],
             RecordingTime::fromUnixTimestamp(1700000000),
+            [],
         );
 
         $this->assertSame(['FooTest::testOne' => '/src/Foo.php'], $recording->testsThatDependOnAnyOf(['/src/Foo.php']));
@@ -133,6 +135,7 @@ final class RecordingTest extends TestCase
             ],
             [],
             RecordingTime::fromUnixTimestamp(1700000000),
+            [],
         );
 
         $this->assertSame(
@@ -154,6 +157,7 @@ final class RecordingTest extends TestCase
             ],
             [],
             RecordingTime::fromUnixTimestamp(1700000000),
+            [],
         );
 
         $this->assertSame(
@@ -172,6 +176,7 @@ final class RecordingTest extends TestCase
             ['FooTest::testOne' => [0]],
             [],
             RecordingTime::fromUnixTimestamp(1700000000),
+            [],
         );
 
         $this->assertNull($recording->pathNothingIsKnownAbout([$directory . DIRECTORY_SEPARATOR . 'one.txt']));
@@ -179,7 +184,7 @@ final class RecordingTest extends TestCase
 
     public function testKnowsThatAPathThatIsNamedWasNotRecorded(): void
     {
-        $recording = Recording::from(['/src/Foo.php'], [[0, 'a-hash']], ['FooTest::testOne' => [0]], [], RecordingTime::fromUnixTimestamp(1700000000));
+        $recording = Recording::from(['/src/Foo.php'], [[0, 'a-hash']], ['FooTest::testOne' => [0]], [], RecordingTime::fromUnixTimestamp(1700000000), []);
 
         $this->assertNull($recording->pathNothingIsKnownAbout(['/src/Foo.php']));
 
@@ -200,6 +205,7 @@ final class RecordingTest extends TestCase
                 1 => 'another-hash',
             ],
             RecordingTime::fromUnixTimestamp(1700000000),
+            [],
         );
 
         $this->assertStringContainsString(
@@ -210,7 +216,7 @@ final class RecordingTest extends TestCase
 
     public function testKnowsThatASourceFileThatWasNotRecordedIsAChangeNothingIsKnownAbout(): void
     {
-        $recording = Recording::from(['/src/Foo.php'], [[0, 'a-hash']], ['FooTest::testOne' => [0]], [], RecordingTime::fromUnixTimestamp(1700000000));
+        $recording = Recording::from(['/src/Foo.php'], [[0, 'a-hash']], ['FooTest::testOne' => [0]], [], RecordingTime::fromUnixTimestamp(1700000000), []);
 
         $this->assertStringContainsString(
             '/src/Bar.php was not there',
@@ -233,6 +239,7 @@ final class RecordingTest extends TestCase
                 1 => $this->hashOf($untested),
             ],
             RecordingTime::fromUnixTimestamp(1700000000),
+            [],
         );
 
         $this->assertNull($recording->changeNothingIsKnownAbout(new PathHasher, [$covered, $untested]));
@@ -245,11 +252,80 @@ final class RecordingTest extends TestCase
         );
     }
 
+    public function testKnowsThatAFileThatWasExecutedOutsideOfTestsChanged(): void
+    {
+        $directory    = $this->temporaryDirectory();
+        $bootstrapped = $this->writeFile($directory, 'Bootstrapped.php', 'first');
+        $covered      = $this->writeFile($directory, 'Covered.php', 'first');
+
+        $recording = Recording::from(
+            [$covered, $bootstrapped],
+            [[0, $this->hashOf($covered)], [1, $this->hashOf($bootstrapped)]],
+            ['FooTest::testOne' => [0]],
+            [],
+            RecordingTime::fromUnixTimestamp(1700000000),
+            [1],
+        );
+
+        $this->assertNull($recording->changeExecutedOutsideOfTests(new PathHasher));
+
+        $this->writeFile($directory, 'Bootstrapped.php', 'second');
+
+        $this->assertSame(
+            $bootstrapped . ' changed and was executed outside of any test',
+            $recording->changeExecutedOutsideOfTests(new PathHasher),
+        );
+    }
+
+    public function testKnowsThatAPathThatIsNamedWasExecutedOutsideOfTests(): void
+    {
+        $recording = Recording::from(
+            ['/src/Foo.php', '/src/Bootstrapped.php'],
+            [[0, 'a-hash'], [1, 'another-hash']],
+            ['FooTest::testOne' => [0]],
+            [],
+            RecordingTime::fromUnixTimestamp(1700000000),
+            [1],
+        );
+
+        $this->assertNull($recording->pathExecutedOutsideOfTests(['/src/Foo.php']));
+
+        $this->assertSame(
+            '/src/Bootstrapped.php was executed outside of any test',
+            $recording->pathExecutedOutsideOfTests(['/src/Foo.php', '/src/Bootstrapped.php']),
+        );
+    }
+
+    /**
+     * Every test depends on what was executed outside of any test, so such a
+     * file is not one nothing is known about.
+     */
+    public function testKnowsAboutAFileThatWasOnlyExecutedOutsideOfTests(): void
+    {
+        $directory    = $this->temporaryDirectory();
+        $bootstrapped = $this->writeFile($directory, 'Bootstrapped.php', 'first');
+
+        $recording = Recording::from(
+            ['/src/Foo.php', $bootstrapped],
+            [[0, 'a-hash'], [1, $this->hashOf($bootstrapped)]],
+            ['FooTest::testOne' => [0]],
+            [1 => $this->hashOf($bootstrapped)],
+            RecordingTime::fromUnixTimestamp(1700000000),
+            [1],
+        );
+
+        $this->assertNull($recording->pathNothingIsKnownAbout([$bootstrapped]));
+
+        $this->writeFile($directory, 'Bootstrapped.php', 'second');
+
+        $this->assertNull($recording->changeNothingIsKnownAbout(new PathHasher, [$bootstrapped]));
+    }
+
     public function testKnowsWhenItWasRecorded(): void
     {
         $recordedAt = RecordingTime::fromUnixTimestamp(1700000000);
 
-        $this->assertSame($recordedAt, Recording::from([], [], [], [], $recordedAt)->recordedAt());
+        $this->assertSame($recordedAt, Recording::from([], [], [], [], $recordedAt, [])->recordedAt());
     }
 
     /**

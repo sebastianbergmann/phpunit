@@ -52,14 +52,20 @@ final readonly class Recording
     private RecordingTime $recordedAt;
 
     /**
+     * @var list<int>
+     */
+    private array $executedOutsideOfTests;
+
+    /**
      * @param list<non-empty-string>             $files
      * @param list<VersionType>                  $versions
      * @param array<non-empty-string, list<int>> $tests
      * @param array<int, non-empty-string>       $sourceFiles
+     * @param list<int>                          $executedOutsideOfTests the versions of the files that were executed outside of any test
      */
-    public static function from(array $files, array $versions, array $tests, array $sourceFiles, RecordingTime $recordedAt): self
+    public static function from(array $files, array $versions, array $tests, array $sourceFiles, RecordingTime $recordedAt, array $executedOutsideOfTests): self
     {
-        return new self($files, $versions, $tests, $sourceFiles, $recordedAt);
+        return new self($files, $versions, $tests, $sourceFiles, $recordedAt, $executedOutsideOfTests);
     }
 
     /**
@@ -67,14 +73,16 @@ final readonly class Recording
      * @param list<VersionType>                  $versions
      * @param array<non-empty-string, list<int>> $tests
      * @param array<int, non-empty-string>       $sourceFiles
+     * @param list<int>                          $executedOutsideOfTests
      */
-    private function __construct(array $files, array $versions, array $tests, array $sourceFiles, RecordingTime $recordedAt)
+    private function __construct(array $files, array $versions, array $tests, array $sourceFiles, RecordingTime $recordedAt, array $executedOutsideOfTests)
     {
-        $this->files       = $files;
-        $this->versions    = $versions;
-        $this->tests       = $tests;
-        $this->sourceFiles = $sourceFiles;
-        $this->recordedAt  = $recordedAt;
+        $this->files                  = $files;
+        $this->versions               = $versions;
+        $this->tests                  = $tests;
+        $this->sourceFiles            = $sourceFiles;
+        $this->recordedAt             = $recordedAt;
+        $this->executedOutsideOfTests = $executedOutsideOfTests;
     }
 
     /**
@@ -97,6 +105,67 @@ final readonly class Recording
     public function knows(string $test): bool
     {
         return isset($this->tests[$test]);
+    }
+
+    /**
+     * A file that was executed outside of any test and that is not what it was
+     * when it was recorded, or null when there is none.
+     *
+     * What was executed outside of any test, while PHPUnit was bootstrapped or
+     * while the tests were loaded, for instance, left behind the state every
+     * test starts in, so a change to it is a change every test can be affected
+     * by.
+     *
+     * @return ?non-empty-string the reason why every test can be affected
+     */
+    public function changeExecutedOutsideOfTests(PathHasher $hasher): ?string
+    {
+        foreach ($this->executedOutsideOfTests as $version) {
+            assert(isset($this->versions[$version]));
+
+            if ($this->isCurrent($this->versions[$version], $hasher)) {
+                continue;
+            }
+
+            assert(isset($this->files[$this->versions[$version][0]]));
+
+            return sprintf(
+                '%s changed and was executed outside of any test',
+                $this->files[$this->versions[$version][0]],
+            );
+        }
+
+        return null;
+    }
+
+    /**
+     * A path that is named as having changed and that was executed outside of
+     * any test, or null when there is none.
+     *
+     * @param list<non-empty-string> $paths
+     *
+     * @return ?non-empty-string the reason why every test can be affected
+     */
+    public function pathExecutedOutsideOfTests(array $paths): ?string
+    {
+        $positions = $this->positionsOf($paths);
+
+        foreach ($this->executedOutsideOfTests as $version) {
+            assert(isset($this->versions[$version]));
+
+            if (!isset($positions[$this->versions[$version][0]])) {
+                continue;
+            }
+
+            assert(isset($this->files[$this->versions[$version][0]]));
+
+            return sprintf(
+                '%s was executed outside of any test',
+                $this->files[$this->versions[$version][0]],
+            );
+        }
+
+        return null;
     }
 
     /**
@@ -277,7 +346,8 @@ final readonly class Recording
 
     /**
      * The positions of the files that a test executed, or that a test declared
-     * that it depends on.
+     * that it depends on, and of the files that were executed outside of any
+     * test, which every test depends on.
      *
      * @return array<int, true>
      */
@@ -291,6 +361,12 @@ final readonly class Recording
 
                 $files[$this->versions[$version][0]] = true;
             }
+        }
+
+        foreach ($this->executedOutsideOfTests as $version) {
+            assert(isset($this->versions[$version]));
+
+            $files[$this->versions[$version][0]] = true;
         }
 
         return $files;
