@@ -37,6 +37,7 @@ use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Metadata\InvalidAttribute;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
+use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\Exception as RunnerException;
 use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
@@ -421,18 +422,36 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
 
         $emitter->testSuiteStarted($testSuiteValueObjectForEvents);
 
-        if (!$this->invokeMethodsBeforeFirstTest($emitter, $testSuiteValueObjectForEvents)) {
-            return;
+        /*
+         * What is executed while the tests of a test class are run, but not
+         * by one of them, is what the tests of that test class depend on:
+         * the methods that are called before the first test is run, for
+         * instance, prepare what every one of them finds when it starts.
+         */
+        $isForTestClass = $this->isForTestClass();
+
+        if ($isForTestClass) {
+            CodeCoverage::instance()->enterTestClass($this->name);
         }
 
-        // runTests() receives the tests as an argument expression so that no
-        // local variable retains a reference to them; this allows each test
-        // object to be destructed as soon as it has run (see #5875)
-        $this->runTests($this->takeTests(), $emitter);
+        try {
+            if (!$this->invokeMethodsBeforeFirstTest($emitter, $testSuiteValueObjectForEvents)) {
+                return;
+            }
 
-        $this->invokeMethodsAfterLastTest($emitter);
+            // runTests() receives the tests as an argument expression so that no
+            // local variable retains a reference to them; this allows each test
+            // object to be destructed as soon as it has run (see #5875)
+            $this->runTests($this->takeTests(), $emitter);
 
-        $emitter->testSuiteFinished($testSuiteValueObjectForEvents);
+            $this->invokeMethodsAfterLastTest($emitter);
+
+            $emitter->testSuiteFinished($testSuiteValueObjectForEvents);
+        } finally {
+            if ($isForTestClass) {
+                CodeCoverage::instance()->leaveTestClass();
+            }
+        }
     }
 
     /**
