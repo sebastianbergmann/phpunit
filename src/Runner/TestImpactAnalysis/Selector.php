@@ -166,6 +166,7 @@ final class Selector
             }
         }
 
+        $selected = $this->withTestsThatDependOnTestsThatCanBeAffected($tests, $selected);
         $selected = $this->withTestsThatAreDependedUpon($tests, $selected);
 
         return Explanation::of($selected, count($tests), $recording->recordedAt());
@@ -198,6 +199,71 @@ final class Selector
         }
 
         return 'what is known was recorded from what the tests executed, and this test run records the code coverage targets the tests declare';
+    }
+
+    /**
+     * A test that depends on another test is given what that test returns,
+     * and is skipped when that test does not pass. What it was recorded as
+     * executing does not show that: what it is given is not something it
+     * executes. A test that can be affected by what changed can therefore
+     * affect every test that depends on it.
+     *
+     * A test that depends on a test that is added may itself be depended upon,
+     * which is why what is added is followed until nothing is added.
+     *
+     * This is done before the tests that selected tests depend on are added: a
+     * test that is only run because another test depends on it executes what
+     * it executed when it was recorded, and gives the tests that depend on it
+     * what it gave them then.
+     *
+     * @param list<PhptTestCase|TestCase>            $tests
+     * @param array<non-empty-string, ExplainedTest> $selected
+     *
+     * @return array<non-empty-string, ExplainedTest>
+     */
+    private function withTestsThatDependOnTestsThatCanBeAffected(array $tests, array $selected): array
+    {
+        $dependents = [];
+        $pending    = [];
+
+        foreach ($tests as $test) {
+            if (!$test instanceof TestCase) {
+                continue;
+            }
+
+            foreach ($test->requires() as $required) {
+                $dependents[$required->getTarget()][] = $test;
+            }
+
+            if (isset($selected[$test->valueObjectForEvents()->id()])) {
+                $pending[] = $test;
+            }
+        }
+
+        while ($pending !== []) {
+            $test = array_pop($pending);
+
+            assert($test instanceof TestCase);
+
+            foreach ($this->targetsProvidedBy($test) as $target) {
+                if (!isset($dependents[$target])) {
+                    continue;
+                }
+
+                foreach ($dependents[$target] as $dependent) {
+                    $id = $dependent->valueObjectForEvents()->id();
+
+                    if (isset($selected[$id])) {
+                        continue;
+                    }
+
+                    $selected[$id] = ExplainedTest::from($id, SelectionReason::DependsOnATestThatCanBeAffected);
+                    $pending[]     = $dependent;
+                }
+            }
+        }
+
+        return $selected;
     }
 
     /**
