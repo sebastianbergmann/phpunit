@@ -17,12 +17,12 @@ namespace PHPUnit\Metadata;
 final readonly class RequiresClass extends Metadata
 {
     /**
-     * @var class-string
+     * @var non-empty-string
      */
     private string $className;
 
     /**
-     * @param class-string $className
+     * @param non-empty-string $className
      */
     protected function __construct(Level $level, string $className)
     {
@@ -37,7 +37,7 @@ final readonly class RequiresClass extends Metadata
     }
 
     /**
-     * @return class-string
+     * @return non-empty-string
      */
     public function className(): string
     {

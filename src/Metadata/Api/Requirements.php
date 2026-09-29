@@ -233,10 +233,18 @@ final readonly class Requirements
             if ($metadata->isRequiresClass()) {
                 assert($metadata instanceof RequiresClass);
 
-                if (!class_exists($metadata->className())) {
+                try {
+                    if (!class_exists($metadata->className())) {
+                        $notSatisfied[] = sprintf(
+                            'Class %s is required.',
+                            $metadata->className(),
+                        );
+                    }
+                } catch (Throwable $t) {
                     $notSatisfied[] = sprintf(
-                        'Class %s is required.',
+                        'Class %s is required, but it cannot be loaded: %s',
                         $metadata->className(),
+                        $t->getMessage(),
                     );
                 }
             }

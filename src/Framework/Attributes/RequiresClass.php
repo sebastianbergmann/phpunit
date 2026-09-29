@@ -20,12 +20,12 @@ use Attribute;
 final readonly class RequiresClass
 {
     /**
-     * @var class-string
+     * @var non-empty-string
      */
     private string $className;
 
     /**
-     * @param class-string $className
+     * @param non-empty-string $className
      */
     public function __construct(string $className)
     {
@@ -33,7 +33,7 @@ final readonly class RequiresClass
     }
 
     /**
-     * @return class-string
+     * @return non-empty-string
      */
     public function className(): string
     {
