@@ -150,7 +150,7 @@ final readonly class ChildProcessResultProcessor
                     $recordedFiles[] = $file;
                 }
 
-                $this->codeCoverage->testImpactData()->record($recordedTest, $recordedFiles);
+                $this->codeCoverage->recordTestImpactDataOf($test, $recordedTest, $recordedFiles);
             }
         }
 
