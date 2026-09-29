@@ -173,10 +173,6 @@ final readonly class Application
 
             $this->executeCommandsThatOnlyRequireCliConfiguration($cliConfiguration, $pathToXmlConfigurationFile);
 
-            // the commands above end the process; preloading is therefore only
-            // worthwhile once it is known that tests are going to be run
-            $this->preload();
-
             $xmlConfiguration = $this->loadXmlConfiguration($pathToXmlConfigurationFile);
 
             $configuration = Registry::init(
@@ -195,11 +191,33 @@ final readonly class Application
 
             new PhpHandler($this->emitter)->handle($configuration->php());
 
+            /*
+             * What the bootstrap script executes, and everything else that is
+             * executed outside of the tests, is what the tests find when they
+             * start, and is recorded when test impact data is recorded.
+             */
+            CodeCoverage::instance()->startRecordingWhatIsExecutedOutsideOfTests($configuration, CodeCoverageFilterRegistry::instance());
+
+            /*
+             * The commands above end the process; preloading is therefore only
+             * worthwhile once it is known that tests are going to be run.
+             *
+             * The code of PHPUnit is preloaded after the code coverage driver
+             * that records what is executed outside of the tests was started:
+             * the driver only leaves out code that was compiled after it was
+             * told which code is first-party code, and the code of PHPUnit is
+             * executed between the tests, where it would otherwise be collected
+             * only to be discarded.
+             */
+            $this->preload();
+
             try {
                 new BootstrapLoader($this->emitter)->handle($configuration);
             } catch (BootstrapScriptDoesNotExistException|BootstrapScriptException $e) {
                 $this->exitWithErrorMessage($e->getMessage());
             }
+
+            CodeCoverage::instance()->startRecordingWhatIsExecutedOutsideOfTests($configuration, CodeCoverageFilterRegistry::instance());
 
             $this->executeCommandsThatDoNotRequireTheTestSuite($configuration, $cliConfiguration);
 
@@ -328,6 +346,8 @@ final readonly class Application
             }
 
             $duration = $timer->stop();
+
+            CodeCoverage::instance()->stopRecordingWhatIsExecutedOutsideOfTests();
 
             $this->persistTestImpactData(
                 $configuration,

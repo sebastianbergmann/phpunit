@@ -22,6 +22,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Api\Fixtures;
 use PHPUnit\Runner\TestImpactAnalysis\DefaultTestImpactData;
 use PHPUnit\Runner\TestImpactAnalysis\ExecutedFiles;
+use PHPUnit\Runner\TestImpactAnalysis\ExecutionOutsideOfTests;
 use PHPUnit\Runner\TestImpactAnalysis\NullTestImpactData;
 use PHPUnit\Runner\TestImpactAnalysis\TestImpactData;
 use PHPUnit\Runner\TestIndex\TestFiles;
@@ -44,6 +45,7 @@ use SebastianBergmann\CodeCoverage\Report\Html\Views;
 use SebastianBergmann\CodeCoverage\Report\Thresholds;
 use SebastianBergmann\CodeCoverage\Serialization\Serializer;
 use SebastianBergmann\CodeCoverage\StaticAnalysis\CacheWarmer;
+use SebastianBergmann\CodeCoverage\StaticAnalysis\Registry as StaticAnalysisRegistry;
 use SebastianBergmann\CodeCoverage\Test\Target\TargetCollection;
 use SebastianBergmann\CodeCoverage\Test\Target\ValidationFailure;
 use SebastianBergmann\CodeCoverage\Test\TestSize;
@@ -78,9 +80,10 @@ final class CodeCoverage
     private bool $collectsBranchCoverage        = false;
     private bool $collectsPathCoverage          = false;
     private readonly Emitter $emitter;
-    private bool $recordTestImpactData         = false;
-    private bool $collectForTestImpactDataOnly = false;
-    private ?TestImpactData $testImpactData    = null;
+    private bool $recordTestImpactData                        = false;
+    private bool $collectForTestImpactDataOnly                = false;
+    private ?TestImpactData $testImpactData                   = null;
+    private ?ExecutionOutsideOfTests $executionOutsideOfTests = null;
 
     public static function instance(): self
     {
@@ -115,10 +118,17 @@ final class CodeCoverage
                                       $configuration->hasCacheDirectory() &&
                                       !$configuration->deriveTestImpactDataFromCoverageTargets();
 
-        $codeCoverageFilterRegistry->init(
-            $configuration,
-            $extensionRequiresCodeCoverageCollection || $this->recordTestImpactData,
-        );
+        /*
+         * The source filter was initialized before the bootstrap script was
+         * loaded when what is executed outside of the tests is recorded, and
+         * the code coverage driver that records it uses that filter.
+         */
+        if ($this->executionOutsideOfTests === null) {
+            $codeCoverageFilterRegistry->init(
+                $configuration,
+                $extensionRequiresCodeCoverageCollection || $this->recordTestImpactData,
+            );
+        }
 
         if (!$configuration->hasCoverageReport() && !$extensionRequiresCodeCoverageCollection && !$this->recordTestImpactData) {
             return CodeCoverageInitializationStatus::NOT_REQUESTED;
@@ -161,17 +171,9 @@ final class CodeCoverage
             return CodeCoverageInitializationStatus::FAILED;
         }
 
-        if ($configuration->hasCoverageCacheDirectory()) {
-            $coverageCacheDirectory = $configuration->coverageCacheDirectory();
-        } else {
-            $candidate = sys_get_temp_dir() . '/phpunit-code-coverage-cache';
+        $coverageCacheDirectory = $this->coverageCacheDirectory($configuration);
 
-            if (Filesystem::createDirectory($candidate)) {
-                $coverageCacheDirectory = $candidate;
-            }
-        }
-
-        if (isset($coverageCacheDirectory)) {
+        if ($coverageCacheDirectory !== null) {
             $this->codeCoverage()->cacheStaticAnalysis($coverageCacheDirectory);
         }
 
@@ -203,7 +205,7 @@ final class CodeCoverage
 
         $this->warnIfFilterIsNotConfigured($codeCoverageFilterRegistry, $configuration, $onlyRequestedForTestImpactData);
 
-        if (isset($coverageCacheDirectory) && $configuration->includeUncoveredFiles()) {
+        if ($coverageCacheDirectory !== null && $configuration->includeUncoveredFiles()) {
             $this->emitter->testRunnerStartedStaticAnalysisForCodeCoverage();
 
             /** @phpstan-ignore new.internalClass,method.internalClass */
@@ -221,6 +223,153 @@ final class CodeCoverage
         }
 
         return CodeCoverageInitializationStatus::SUCCEEDED;
+    }
+
+    /**
+     * What is executed outside of the tests is recorded from as early as
+     * possible: before the bootstrap script is loaded, when the code coverage
+     * driver is available then. A code coverage driver that is configured
+     * by the name of its class may only be available once the bootstrap
+     * script has registered an autoloader, which is why this is tried again
+     * after the bootstrap script was loaded.
+     *
+     * This only ever happens for a test run that records test impact data,
+     * and nothing is said about a code coverage driver that is not available
+     * or about a source filter that matches no files: init() does that, as it
+     * does for a test run that records test impact data without this.
+     */
+    public function startRecordingWhatIsExecutedOutsideOfTests(Configuration $configuration, CodeCoverageFilterRegistry $codeCoverageFilterRegistry): void
+    {
+        if ($this->executionOutsideOfTests !== null) {
+            return;
+        }
+
+        if (!$configuration->recordTestImpactData() ||
+            !$configuration->hasCacheDirectory() ||
+            $configuration->deriveTestImpactDataFromCoverageTargets()) {
+            return;
+        }
+
+        if (!$codeCoverageFilterRegistry->configured()) {
+            $codeCoverageFilterRegistry->init($configuration, true);
+        }
+
+        $filter = $codeCoverageFilterRegistry->get();
+
+        if ($filter->isEmpty()) {
+            return;
+        }
+
+        $driverClass = null;
+
+        if ($configuration->hasCoverageDriver()) {
+            $driverClass = $configuration->coverageDriver();
+        }
+
+        try {
+            $this->driver = $this->createDriver($filter, $configuration->branchCoverage(), $configuration->pathCoverage(), $driverClass);
+        } catch (CodeCoverageDriverException|CodeCoverageException) {
+            return;
+        }
+
+        /**
+         * The static analysis that decides which lines are executable is the
+         * one the code coverage report uses, so that what is executed outside
+         * of the tests is filtered the way what a test executes is.
+         *
+         * @phpstan-ignore staticMethod.internalClass
+         */
+        $analyser = StaticAnalysisRegistry::analyser(
+            $this->coverageCacheDirectory($configuration),
+            !$configuration->disableCodeCoverageIgnore(),
+            $configuration->ignoreDeprecatedCodeUnitsFromCodeCoverage(),
+        );
+
+        $this->executionOutsideOfTests = new ExecutionOutsideOfTests(
+            $this->driver,
+            $filter,
+            $analyser,
+            !$configuration->disableCodeCoverageIgnore(),
+        );
+
+        $this->executionOutsideOfTests->start();
+    }
+
+    /**
+     * What was executed outside of the tests is added to what the tests
+     * executed before what was recorded is persisted, and only when test
+     * impact data is recorded: a test run that ends up not recording it, for
+     * instance because the source filter matches no files, stops collecting
+     * and discards what it collected.
+     */
+    public function stopRecordingWhatIsExecutedOutsideOfTests(): void
+    {
+        if ($this->executionOutsideOfTests === null) {
+            return;
+        }
+
+        $this->executionOutsideOfTests->stop();
+
+        if ($this->isRecordingTestImpactData()) {
+            $this->executionOutsideOfTests->addTo($this->testImpactData());
+        }
+    }
+
+    /**
+     * @param non-empty-string $className
+     */
+    public function enterTestClass(string $className): void
+    {
+        if ($this->executionOutsideOfTests === null) {
+            return;
+        }
+
+        $this->executionOutsideOfTests->enterTestClass($className);
+    }
+
+    public function leaveTestClass(): void
+    {
+        if ($this->executionOutsideOfTests === null) {
+            return;
+        }
+
+        $this->executionOutsideOfTests->leaveTestClass();
+    }
+
+    /**
+     * @param non-empty-string $className
+     * @param non-empty-string $methodName the test method the data is provided for
+     */
+    public function enterDataProvider(string $className, string $methodName): void
+    {
+        if ($this->executionOutsideOfTests === null) {
+            return;
+        }
+
+        $this->executionOutsideOfTests->enterDataProvider($className, $methodName);
+    }
+
+    public function leaveDataProvider(): void
+    {
+        if ($this->executionOutsideOfTests === null) {
+            return;
+        }
+
+        $this->executionOutsideOfTests->leaveDataProvider();
+    }
+
+    /**
+     * What a test that was run in a process of its own executed is recorded
+     * in that process, and is recorded here for the test that was run.
+     *
+     * @param non-empty-string       $recordedTest
+     * @param list<non-empty-string> $files
+     */
+    public function recordTestImpactDataOf(TestCase $test, string $recordedTest, array $files): void
+    {
+        $this->testImpactData()->record($recordedTest, $files);
+
+        $this->testWasRecorded($test, $recordedTest);
     }
 
     /**
@@ -267,6 +416,10 @@ final class CodeCoverage
             return;
         }
 
+        if ($this->executionOutsideOfTests !== null) {
+            $this->executionOutsideOfTests->pause();
+        }
+
         $this->collectForTestImpactDataOnly = $forTestImpactDataOnly;
 
         $size = TestSize::Unknown;
@@ -300,86 +453,23 @@ final class CodeCoverage
         $this->timer()->start();
     }
 
+    /**
+     * What is executed outside of the tests is recorded again once the test
+     * is no longer collected for, whatever happened while it was.
+     */
     public function stop(bool $append, null|false|TargetCollection $covers = null, ?TargetCollection $uses = null): void
     {
         if (!$this->collecting) {
             return;
         }
 
-        assert($this->codeCoverage !== null);
-        assert($this->test !== null);
-
-        $time             = $this->timer()->stop()->asSeconds();
-        $this->collecting = false;
-
-        if ($this->collectForTestImpactDataOnly) {
-            $this->stopCollectingForTestImpactDataOnly();
-
-            return;
-        }
-
-        if ($this->test->status()->isSuccess()) {
-            $status = TestStatus::Success;
-        } else {
-            $status = TestStatus::Failure;
-        }
-
-        if ($covers instanceof TargetCollection) {
-            $result = $this->codeCoverage->validate($covers);
-
-            if ($result->isFailure()) {
-                assert($result instanceof ValidationFailure);
-
-                $this->emitter->testTriggeredPhpunitWarning(
-                    $this->test->valueObjectForEvents(),
-                    $result->message(),
-                );
-
-                $append = false;
+        try {
+            $this->stopCollecting($append, $covers, $uses);
+        } finally {
+            if ($this->executionOutsideOfTests !== null) {
+                $this->executionOutsideOfTests->resume();
             }
         }
-
-        if ($uses instanceof TargetCollection) {
-            $result = $this->codeCoverage->validate($uses);
-
-            if ($result->isFailure()) {
-                assert($result instanceof ValidationFailure);
-
-                $this->emitter->testTriggeredPhpunitWarning(
-                    $this->test->valueObjectForEvents(),
-                    $result->message(),
-                );
-
-                $append = false;
-            }
-        }
-
-        $rawData = $this->codeCoverage->stop($append, $status, $covers, $uses, $time);
-
-        if ($this->recordTestImpactData) {
-            $this->recordTestImpactDataFor(
-                $this->test,
-                $this->codeCoverage->dataNotFilteredUsingTargets(),
-            );
-        }
-
-        if ($this->requireCoverageContribution) {
-            $this->lastTestContributedToCoverage = false;
-
-            /** @phpstan-ignore method.internalClass */
-            foreach ($rawData->lineCoverage() as $lines) {
-                foreach ($lines as $lineStatus) {
-                    /** @phpstan-ignore classConstant.internalClass */
-                    if ($lineStatus === Driver::LINE_EXECUTED) {
-                        $this->lastTestContributedToCoverage = true;
-
-                        break 2;
-                    }
-                }
-            }
-        }
-
-        $this->test = null;
     }
 
     /**
@@ -679,6 +769,84 @@ final class CodeCoverage
         $this->deactivate();
     }
 
+    private function stopCollecting(bool $append, null|false|TargetCollection $covers, ?TargetCollection $uses): void
+    {
+        assert($this->codeCoverage !== null);
+        assert($this->test !== null);
+
+        $time             = $this->timer()->stop()->asSeconds();
+        $this->collecting = false;
+
+        if ($this->collectForTestImpactDataOnly) {
+            $this->stopCollectingForTestImpactDataOnly();
+
+            return;
+        }
+
+        if ($this->test->status()->isSuccess()) {
+            $status = TestStatus::Success;
+        } else {
+            $status = TestStatus::Failure;
+        }
+
+        if ($covers instanceof TargetCollection) {
+            $result = $this->codeCoverage->validate($covers);
+
+            if ($result->isFailure()) {
+                assert($result instanceof ValidationFailure);
+
+                $this->emitter->testTriggeredPhpunitWarning(
+                    $this->test->valueObjectForEvents(),
+                    $result->message(),
+                );
+
+                $append = false;
+            }
+        }
+
+        if ($uses instanceof TargetCollection) {
+            $result = $this->codeCoverage->validate($uses);
+
+            if ($result->isFailure()) {
+                assert($result instanceof ValidationFailure);
+
+                $this->emitter->testTriggeredPhpunitWarning(
+                    $this->test->valueObjectForEvents(),
+                    $result->message(),
+                );
+
+                $append = false;
+            }
+        }
+
+        $rawData = $this->codeCoverage->stop($append, $status, $covers, $uses, $time);
+
+        if ($this->recordTestImpactData) {
+            $this->recordTestImpactDataFor(
+                $this->test,
+                $this->codeCoverage->dataNotFilteredUsingTargets(),
+            );
+        }
+
+        if ($this->requireCoverageContribution) {
+            $this->lastTestContributedToCoverage = false;
+
+            /** @phpstan-ignore method.internalClass */
+            foreach ($rawData->lineCoverage() as $lines) {
+                foreach ($lines as $lineStatus) {
+                    /** @phpstan-ignore classConstant.internalClass */
+                    if ($lineStatus === Driver::LINE_EXECUTED) {
+                        $this->lastTestContributedToCoverage = true;
+
+                        break 2;
+                    }
+                }
+            }
+        }
+
+        $this->test = null;
+    }
+
     /**
      * The data of a test that opted out of code coverage must not reach the
      * code coverage report, and not appending it is not enough: the files a
@@ -748,27 +916,40 @@ final class CodeCoverage
             $files[] = $file;
         }
 
-        $this->testImpactData()->record($test->valueObjectForEvents()->idWithoutRepetitionAndAttempt(), $files);
+        $recordedTest = $test->valueObjectForEvents()->idWithoutRepetitionAndAttempt();
+
+        $this->testImpactData()->record($recordedTest, $files);
+
+        $this->testWasRecorded($test, $recordedTest);
+    }
+
+    /**
+     * @param non-empty-string $recordedTest
+     */
+    private function testWasRecorded(TestCase $test, string $recordedTest): void
+    {
+        if ($this->executionOutsideOfTests === null) {
+            return;
+        }
+
+        $this->executionOutsideOfTests->testWasRecorded($recordedTest, $test::class, $test->name());
     }
 
     private function activate(Filter $filter, bool $branchCoverage, bool $pathCoverage, ?string $driverClass, bool $onlyRequestedForTestImpactData): void
     {
         try {
-            $granularity = Granularity::Line;
-
-            if ($branchCoverage) {
-                $granularity = Granularity::LineAndBranch;
-            }
-
             if ($pathCoverage) {
                 $branchCoverage = true;
-                $granularity    = Granularity::LineBranchAndPath;
             }
 
-            if ($driverClass !== null) {
-                $this->driver = $this->instantiateDriver($driverClass, $filter, $granularity);
-            } else {
-                $this->driver = (new Selector)->select($filter, $granularity);
+            /*
+             * The code coverage driver that records what is executed outside
+             * of the tests is the one that records what the tests execute:
+             * code coverage is never collected for two purposes at the same
+             * time, and a second driver would not know about the first.
+             */
+            if ($this->driver === null) {
+                $this->driver = $this->createDriver($filter, $branchCoverage, $pathCoverage, $driverClass);
             }
 
             $this->codeCoverage = new \SebastianBergmann\CodeCoverage\CodeCoverage(
@@ -802,6 +983,31 @@ final class CodeCoverage
 
             $this->emitter->testRunnerTriggeredPhpunitWarning($message);
         }
+    }
+
+    /**
+     * @throws CodeCoverageDriverException
+     * @throws CodeCoverageException
+     *
+     * @phpstan-ignore return.internalClass
+     */
+    private function createDriver(Filter $filter, bool $branchCoverage, bool $pathCoverage, ?string $driverClass): Driver
+    {
+        $granularity = Granularity::Line;
+
+        if ($branchCoverage) {
+            $granularity = Granularity::LineAndBranch;
+        }
+
+        if ($pathCoverage) {
+            $granularity = Granularity::LineBranchAndPath;
+        }
+
+        if ($driverClass !== null) {
+            return $this->instantiateDriver($driverClass, $filter, $granularity);
+        }
+
+        return (new Selector)->select($filter, $granularity);
     }
 
     /**
@@ -895,6 +1101,24 @@ final class CodeCoverage
                 $e->getMessage(),
             ),
         );
+    }
+
+    /**
+     * @return ?non-empty-string
+     */
+    private function coverageCacheDirectory(Configuration $configuration): ?string
+    {
+        if ($configuration->hasCoverageCacheDirectory()) {
+            return $configuration->coverageCacheDirectory();
+        }
+
+        $candidate = sys_get_temp_dir() . '/phpunit-code-coverage-cache';
+
+        if (Filesystem::createDirectory($candidate)) {
+            return $candidate;
+        }
+
+        return null;
     }
 
     private function timer(): Timer
