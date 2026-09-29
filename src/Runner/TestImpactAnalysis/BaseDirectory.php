@@ -59,11 +59,16 @@ final readonly class BaseDirectory
     private string $path;
 
     /**
+     * The path is read with the directory separator of the platform, just
+     * like the paths this directory is asked about: a path on Windows that is
+     * written with '/' has no root otherwise, and no path would be relative
+     * to it.
+     *
      * @param non-empty-string $path an absolute path that names the directory the way realpath() does
      */
     public static function from(string $path): self
     {
-        return new self($path);
+        return new self(self::withNativeDirectorySeparators($path));
     }
 
     public static function fromWorkingDirectory(): self
