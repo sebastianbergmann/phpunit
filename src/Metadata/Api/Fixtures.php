@@ -191,6 +191,14 @@ final class Fixtures
      */
     private function resolve(string $path, string $directory): ?string
     {
+        /*
+         * An empty path does not name a file, although appending it to the
+         * directory the attribute is written in names that directory.
+         */
+        if ($path === '') {
+            return null;
+        }
+
         if (!$this->isAbsolute($path)) {
             $path = $directory . DIRECTORY_SEPARATOR . $path;
         }

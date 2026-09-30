@@ -33,7 +33,7 @@ Time: %s, Memory: %s
 1 test triggered 1 PHPUnit warning:
 
 1) PHPUnit\TestFixture\TestImpactData\SumTest::testAdds#0 with data (1, 2, 3)
-Fixture ../fixtures/does-not-exist.csv does not exist, the attribute is ignored
+Fixture "../fixtures/does-not-exist.csv" does not exist, the attribute is ignored
 
 %s
 
