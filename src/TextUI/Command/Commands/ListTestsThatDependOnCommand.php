@@ -92,7 +92,7 @@ final readonly class ListTestsThatDependOnCommand implements Command
         assert($recordedAt !== null);
 
         $provenance = sprintf(
-            'Recorded at %s from what the tests executed.',
+            'Recorded at %s from what the tests executed and, for a test that ran in a process of its own, what that process loaded.',
             $recordedAt->asString(),
         );
 

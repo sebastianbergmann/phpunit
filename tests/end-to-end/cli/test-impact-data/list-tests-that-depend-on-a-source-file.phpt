@@ -45,7 +45,7 @@ Tests: 4, Assertions: 3, Skipped: 1.
 
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-Recorded at %s from what the tests executed.
+Recorded at %s from what the tests executed and, for a test that ran in a process of its own, what that process loaded.
 
 Tests that depend on %sRounder.php as it is now:
  - PHPUnit\TestFixture\TestImpactData\CalculatorTest::testAdds
