@@ -348,7 +348,7 @@ final class TestRunner
             $this->emitter->testTriggeredPhpunitWarning(
                 $test->valueObjectForEvents(),
                 sprintf(
-                    'Fixture %s does not exist, the attribute is ignored',
+                    'Fixture "%s" does not exist, the attribute is ignored',
                     $path,
                 ),
             );
