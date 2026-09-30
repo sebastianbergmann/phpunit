@@ -139,18 +139,20 @@ abstract readonly class Metadata
 
     /**
      * @param non-empty-string $path
+     * @param non-empty-string $declaringFile
      */
-    public static function usesFixtureOnClass(string $path): UsesFixture
+    public static function usesFixtureOnClass(string $path, string $declaringFile): UsesFixture
     {
-        return new UsesFixture(Level::CLASS_LEVEL, $path);
+        return new UsesFixture(Level::CLASS_LEVEL, $path, $declaringFile);
     }
 
     /**
      * @param non-empty-string $path
+     * @param non-empty-string $declaringFile
      */
-    public static function usesFixtureOnMethod(string $path): UsesFixture
+    public static function usesFixtureOnMethod(string $path, string $declaringFile): UsesFixture
     {
-        return new UsesFixture(Level::METHOD_LEVEL, $path);
+        return new UsesFixture(Level::METHOD_LEVEL, $path, $declaringFile);
     }
 
     /**
