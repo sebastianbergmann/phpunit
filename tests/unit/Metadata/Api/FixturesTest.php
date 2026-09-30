@@ -26,6 +26,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\TestImpactAnalysis\Nested\TestThatInheritsAFixture;
 use PHPUnit\TestFixture\TestImpactAnalysis\Nested\TestThatUsesAFixtureOfATrait;
 use PHPUnit\TestFixture\TestImpactAnalysis\TestThatUsesFixtures;
 use PHPUnit\TestFixture\TestImpactAnalysis\TestWithAMissingDataProviderClass;
@@ -183,6 +184,30 @@ final class FixturesTest extends TestCase
             [$fixture],
             (new Fixtures)->for(TestThatUsesAFixtureOfATrait::class, 'testDeclaredOnAMethodOfATrait'),
         );
+    }
+
+    public function testResolvesAPathThatIsDeclaredOnAParentClassRelativeToTheParentClass(): void
+    {
+        $fixture = realpath(__DIR__ . '/../../../_files/TestImpactAnalysis/fixtures/one.txt');
+
+        $this->assertIsString($fixture);
+
+        $this->assertContains(
+            $fixture,
+            (new Fixtures)->for(TestThatInheritsAFixture::class, 'testOne'),
+        );
+    }
+
+    public function testResolvesThePathsThatAreDeclaredOnTheTestClassAndOnItsParentClasses(): void
+    {
+        $baseNames = array_map(
+            static fn (string $path): string => basename($path),
+            (new Fixtures)->for(TestThatInheritsAFixture::class, 'testOne'),
+        );
+
+        sort($baseNames);
+
+        $this->assertSame(['one.txt', 'sums.csv'], $baseNames);
     }
 
     public function testResolvesAPathWhoseNameIsANumber(): void

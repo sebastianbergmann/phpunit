@@ -24,11 +24,9 @@ use function str_starts_with;
 use function strlen;
 use function substr;
 use PHPUnit\Metadata\DataProvider as DataProviderMetadata;
+use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry;
 use PHPUnit\Metadata\UsesFixture;
-use ReflectionClass;
-use ReflectionException;
-use ReflectionMethod;
 
 /**
  * The files and directories a test declares that it depends on although
@@ -38,7 +36,8 @@ use ReflectionMethod;
  * or on the method that provides the data for the test. A path that is
  * declared on a data provider counts for every test that provider provides
  * data for, which is why declaring it there and not on each of those tests is
- * worth doing.
+ * worth doing. For the same reason, a path that is declared on a class counts
+ * for every class that extends it.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -109,9 +108,9 @@ final class Fixtures
      */
     private function declaredPaths(string $className, string $methodName): array
     {
-        $paths = $this->declaredOnClass($className);
+        $paths = $this->declaredIn(Registry::parser()->forClass($className));
 
-        foreach ($this->declaredOnMethod($className, $methodName) as $key => $declaration) {
+        foreach ($this->declaredIn(Registry::parser()->forMethod($className, $methodName)) as $key => $declaration) {
             $paths[$key] = $declaration;
         }
 
@@ -130,11 +129,11 @@ final class Fixtures
                 continue;
             }
 
-            foreach ($this->declaredOnClass($providerClassName) as $key => $declaration) {
+            foreach ($this->declaredIn(Registry::parser()->forClass($providerClassName)) as $key => $declaration) {
                 $paths[$key] = $declaration;
             }
 
-            foreach ($this->declaredOnMethod($providerClassName, $providerMethodName) as $key => $declaration) {
+            foreach ($this->declaredIn(Registry::parser()->forMethod($providerClassName, $providerMethodName)) as $key => $declaration) {
                 $paths[$key] = $declaration;
             }
         }
@@ -143,60 +142,23 @@ final class Fixtures
     }
 
     /**
-     * @param class-string $className
+     * A path is resolved relative to the file the attribute is written in: an
+     * attribute on a parent class or on a method of a trait names a path next
+     * to that parent class or that trait, and not one next to the class that
+     * inherits it.
      *
      * @return array<non-empty-string, array{0: non-empty-string, 1: non-empty-string}>
      */
-    private function declaredOnClass(string $className): array
+    private function declaredIn(MetadataCollection $metadata): array
     {
-        $paths     = [];
-        $directory = null;
+        $paths = [];
 
-        foreach (Registry::parser()->forClass($className)->isUsesFixture() as $metadata) {
-            assert($metadata instanceof UsesFixture);
+        foreach ($metadata->isUsesFixture() as $usesFixture) {
+            assert($usesFixture instanceof UsesFixture);
 
-            if ($directory === null) {
-                $directory = $this->directoryOf($className);
-            }
+            $directory = dirname($usesFixture->declaringFile());
 
-            if ($directory === null) {
-                continue; // @codeCoverageIgnore
-            }
-
-            $paths[$metadata->path() . "\0" . $directory] = [$metadata->path(), $directory];
-        }
-
-        return $paths;
-    }
-
-    /**
-     * A path is resolved relative to the file the attribute is written in, and
-     * that is the file of the class the attribute was found on: an attribute
-     * on a parent class or on a trait names a path next to that parent class
-     * or that trait, and not one next to the class that inherits it.
-     *
-     * @param class-string     $className
-     * @param non-empty-string $methodName
-     *
-     * @return array<non-empty-string, array{0: non-empty-string, 1: non-empty-string}>
-     */
-    private function declaredOnMethod(string $className, string $methodName): array
-    {
-        $paths     = [];
-        $directory = null;
-
-        foreach (Registry::parser()->forMethod($className, $methodName)->isUsesFixture() as $metadata) {
-            assert($metadata instanceof UsesFixture);
-
-            if ($directory === null) {
-                $directory = $this->directoryOfMethod($className, $methodName);
-            }
-
-            if ($directory === null) {
-                continue; // @codeCoverageIgnore
-            }
-
-            $paths[$metadata->path() . "\0" . $directory] = [$metadata->path(), $directory];
+            $paths[$usesFixture->path() . "\0" . $directory] = [$usesFixture->path(), $directory];
         }
 
         return $paths;
@@ -219,51 +181,6 @@ final class Fixtures
         }
 
         return $dataProviders;
-    }
-
-    /**
-     * @param class-string $className
-     *
-     * @return ?non-empty-string
-     */
-    private function directoryOf(string $className): ?string
-    {
-        try {
-            $file = new ReflectionClass($className)->getFileName();
-            // @codeCoverageIgnoreStart
-        } catch (ReflectionException) {
-            return null;
-        }
-        // @codeCoverageIgnoreEnd
-
-        if ($file === false || $file === '') {
-            return null; // @codeCoverageIgnore
-        }
-
-        return dirname($file);
-    }
-
-    /**
-     * @param class-string     $className
-     * @param non-empty-string $methodName
-     *
-     * @return ?non-empty-string
-     */
-    private function directoryOfMethod(string $className, string $methodName): ?string
-    {
-        try {
-            $file = new ReflectionMethod($className, $methodName)->getFileName();
-            // @codeCoverageIgnoreStart
-        } catch (ReflectionException) {
-            return null;
-        }
-        // @codeCoverageIgnoreEnd
-
-        if ($file === false || $file === '') {
-            return null; // @codeCoverageIgnore
-        }
-
-        return dirname($file);
     }
 
     /**
