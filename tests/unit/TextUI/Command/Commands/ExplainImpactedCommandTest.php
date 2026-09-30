@@ -59,7 +59,7 @@ final class ExplainImpactedCommandTest extends TestCase
         $this->assertSame(Result::SUCCESS, $result->shellExitCode());
 
         $this->assertSame(
-            'Recorded at ' . $this->recordedAt()->asString() . ' from what the tests executed.' . PHP_EOL .
+            'Recorded at ' . $this->recordedAt()->asString() . ' from what the tests executed and, for a test that ran in a process of its own, what that process loaded.' . PHP_EOL .
             PHP_EOL .
             '3 of 10 tests can be affected by what changed.' . PHP_EOL .
             PHP_EOL .
@@ -201,7 +201,7 @@ final class ExplainImpactedCommandTest extends TestCase
         )->execute()->output();
 
         $this->assertSame(
-            'Recorded at ' . $this->recordedAt()->asString() . ' from what the tests executed.' . PHP_EOL .
+            'Recorded at ' . $this->recordedAt()->asString() . ' from what the tests executed and, for a test that ran in a process of its own, what that process loaded.' . PHP_EOL .
             PHP_EOL .
             'Every test is run: /src/Foo.php changed and no test is recorded as depending on it' . PHP_EOL,
             $output,
@@ -216,7 +216,7 @@ final class ExplainImpactedCommandTest extends TestCase
         )->execute()->output();
 
         $this->assertSame(
-            'Recorded at ' . $this->recordedAt()->asString() . ' from what the tests executed.' . PHP_EOL .
+            'Recorded at ' . $this->recordedAt()->asString() . ' from what the tests executed and, for a test that ran in a process of its own, what that process loaded.' . PHP_EOL .
             PHP_EOL .
             '0 of 10 tests can be affected by what changed' . PHP_EOL,
             $output,

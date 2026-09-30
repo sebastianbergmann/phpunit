@@ -64,7 +64,7 @@ What the bootstrap script executed is named as changed:
 
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-Recorded at %s from what the tests executed.
+Recorded at %s from what the tests executed and, for a test that ran in a process of its own, what that process loaded.
 
 Every test is run: %sFramework.php was executed outside of any test
 
@@ -72,7 +72,7 @@ What a data provider executed is named as changed:
 
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-Recorded at %s from what the tests executed.
+Recorded at %s from what the tests executed and, for a test that ran in a process of its own, what that process loaded.
 
 2 of 7 tests can be affected by what changed.
 
@@ -87,7 +87,7 @@ What was executed before the first test of a test class is named as changed:
 
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-Recorded at %s from what the tests executed.
+Recorded at %s from what the tests executed and, for a test that ran in a process of its own, what that process loaded.
 
 1 of 7 tests can be affected by what changed.
 
@@ -100,6 +100,6 @@ Which tests depend on what the bootstrap script executed:
 
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-Recorded at %s from what the tests executed.
+Recorded at %s from what the tests executed and, for a test that ran in a process of its own, what that process loaded.
 
 Every test depends on %sFramework.php: it was executed outside of any test

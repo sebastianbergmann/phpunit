@@ -175,7 +175,7 @@ final readonly class ExplainImpactedCommand implements Command
         }
 
         return sprintf(
-            'Recorded at %s from what the tests executed.',
+            'Recorded at %s from what the tests executed and, for a test that ran in a process of its own, what that process loaded.',
             $recordedAt->asString(),
         );
     }
