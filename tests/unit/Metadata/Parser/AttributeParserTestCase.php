@@ -51,11 +51,15 @@ use PHPUnit\TestFixture\Metadata\Attribute\IgnoreDeprecationsMethodTest;
 use PHPUnit\TestFixture\Metadata\Attribute\IgnorePhpunitDeprecationsClassTest;
 use PHPUnit\TestFixture\Metadata\Attribute\IgnorePhpunitDeprecationsMethodTest;
 use PHPUnit\TestFixture\Metadata\Attribute\IgnorePhpunitWarningsTest;
+use PHPUnit\TestFixture\Metadata\Attribute\InheritedInvalidUsesFixtureTest;
+use PHPUnit\TestFixture\Metadata\Attribute\InheritedUsesFixtureTest;
 use PHPUnit\TestFixture\Metadata\Attribute\InvalidRepeatTest;
 use PHPUnit\TestFixture\Metadata\Attribute\InvalidRetryTest;
 use PHPUnit\TestFixture\Metadata\Attribute\LargeTest;
 use PHPUnit\TestFixture\Metadata\Attribute\MediumTest;
 use PHPUnit\TestFixture\Metadata\Attribute\NonPhpunitAttributeTest;
+use PHPUnit\TestFixture\Metadata\Attribute\ParentClassWithInvalidUsesFixture;
+use PHPUnit\TestFixture\Metadata\Attribute\ParentClassWithUsesFixture;
 use PHPUnit\TestFixture\Metadata\Attribute\PhpunitAttributeThatDoesNotExistTest;
 use PHPUnit\TestFixture\Metadata\Attribute\PreserveGlobalStateTest;
 use PHPUnit\TestFixture\Metadata\Attribute\ProcessIsolationTest;
@@ -83,6 +87,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\UsesTest;
 use PHPUnit\TestFixture\Metadata\Attribute\VersionRequirementWithoutOperatorTest;
 use PHPUnit\TestFixture\Metadata\Attribute\WithEnvironmentVariableTest;
 use PHPUnit\TestFixture\Metadata\Attribute\WithoutErrorHandlerTest;
+use ReflectionClass;
 
 abstract class AttributeParserTestCase extends TestCase
 {
@@ -205,6 +210,23 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isUsesFixture());
         $this->assertTrue($metadata->asArray()[0]->isClassLevel());
         $this->assertSame('fixtures', $metadata->asArray()[0]->path());
+        $this->assertSame(new ReflectionClass(UsesFixtureTest::class)->getFileName(), $metadata->asArray()[0]->declaringFile());
+    }
+
+    #[TestDox('Parses #[UsesFixture] attribute on parent class')]
+    public function test_parses_UsesFixture_attribute_on_parent_class(): void
+    {
+        $metadata = $this->parser()->forClass(InheritedUsesFixtureTest::class)->isUsesFixture();
+
+        $this->assertCount(2, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isUsesFixture());
+        $this->assertTrue($metadata->asArray()[0]->isClassLevel());
+        $this->assertSame('fixtures', $metadata->asArray()[0]->path());
+        $this->assertSame(new ReflectionClass(InheritedUsesFixtureTest::class)->getFileName(), $metadata->asArray()[0]->declaringFile());
+        $this->assertTrue($metadata->asArray()[1]->isUsesFixture());
+        $this->assertTrue($metadata->asArray()[1]->isClassLevel());
+        $this->assertSame('fixtures/of-the-parent-class', $metadata->asArray()[1]->path());
+        $this->assertSame(new ReflectionClass(ParentClassWithUsesFixture::class)->getFileName(), $metadata->asArray()[1]->declaringFile());
     }
 
     #[TestDox('Parses #[UsesFixture] attribute on method')]
@@ -216,6 +238,7 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isUsesFixture());
         $this->assertTrue($metadata->asArray()[0]->isMethodLevel());
         $this->assertSame('fixtures/one.csv', $metadata->asArray()[0]->path());
+        $this->assertSame(new ReflectionClass(UsesFixtureTest::class)->getFileName(), $metadata->asArray()[0]->declaringFile());
     }
 
     #[TestDox('Parses #[CoversDirectory] attribute on class')]
@@ -1405,6 +1428,23 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertTrue($invalidAttribute->isInvalidAttribute());
         $this->assertStringContainsString(
             'Invalid attribute PHPUnit\Framework\Attributes\Small for class ' . DuplicateSmallAttributeTest::class,
+            $invalidAttribute->message(),
+        );
+    }
+
+    public function testRecordsInvalidAttributeMetadataWhenAttributeCannotBeInstantiatedOnParentClass(): void
+    {
+        $metadata = $this->parser()->forClass(InheritedInvalidUsesFixtureTest::class)->isInvalidAttribute();
+
+        $this->assertCount(1, $metadata);
+
+        $invalidAttribute = $metadata->asArray()[0];
+
+        assert($invalidAttribute instanceof InvalidAttribute);
+
+        $this->assertTrue($invalidAttribute->isInvalidAttribute());
+        $this->assertStringStartsWith(
+            'Invalid attribute PHPUnit\Framework\Attributes\UsesFixture for class ' . ParentClassWithInvalidUsesFixture::class,
             $invalidAttribute->message(),
         );
     }
