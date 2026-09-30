@@ -13,6 +13,7 @@ use function array_unique;
 use function array_values;
 use function assert;
 use function class_exists;
+use function get_included_files;
 use function implode;
 use function is_subclass_of;
 use function sprintf;
@@ -86,6 +87,7 @@ final class CodeCoverage
     private bool $collectForTestImpactDataOnly                = false;
     private ?TestImpactData $testImpactData                   = null;
     private ?ExecutionOutsideOfTests $executionOutsideOfTests = null;
+    private bool $testRunConsistsOfASingleTest                = false;
 
     public static function instance(): self
     {
@@ -358,6 +360,16 @@ final class CodeCoverage
         }
 
         $this->executionOutsideOfTests->leaveDataProvider();
+    }
+
+    /**
+     * A test run that consists of a single test gives that test a process of
+     * its own, and what that process loaded is then what the test depends on,
+     * see recordTestImpactDataFor().
+     */
+    public function setTestRunConsistsOfASingleTest(bool $testRunConsistsOfASingleTest): void
+    {
+        $this->testRunConsistsOfASingleTest = $testRunConsistsOfASingleTest;
     }
 
     /**
@@ -919,6 +931,32 @@ final class CodeCoverage
          */
         foreach ($test->registeredFixtures() as $fixture) {
             $files[] = $fixture;
+        }
+
+        /*
+         * PHP loads a file once per process, so the source files a process
+         * that ran no other test loaded are source files the test depends on,
+         * whether a line of them was executed or not: using a constant or an
+         * inherited method of a class, reflecting on it, and creating a test
+         * double for it executes no line of the file that declares it. In a
+         * process that runs other tests as well, a file is loaded by the first
+         * test that needs it, and that it was loaded says nothing about the
+         * tests that come after it.
+         */
+        if ($test->isInIsolation() || $this->testRunConsistsOfASingleTest) {
+            assert($this->codeCoverage !== null);
+
+            $filter = $this->codeCoverage->filter();
+
+            foreach (get_included_files() as $file) {
+                if ($filter->isExcluded($file)) {
+                    continue;
+                }
+
+                assert($file !== '');
+
+                $files[] = $file;
+            }
         }
 
         /*

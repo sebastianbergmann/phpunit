@@ -11,6 +11,7 @@ namespace PHPUnit\TextUI;
 
 use PHPUnit\Event;
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\ExecutionOrder\ReorderPipeline;
 use PHPUnit\Runner\RandomNumberGeneratorSeeder;
 use PHPUnit\Runner\TestRunHistory\TestRunHistory;
@@ -64,6 +65,8 @@ final class TestRunner
             }
 
             new TestSuiteFilterProcessor(Event\Facade::emitter())->process($configuration, $suite, $selectedTests);
+
+            CodeCoverage::instance()->setTestRunConsistsOfASingleTest($suite->count() === 1);
 
             $this->emitter->testRunnerExecutionStarted(
                 Event\TestSuite\TestSuiteBuilder::from($suite),
