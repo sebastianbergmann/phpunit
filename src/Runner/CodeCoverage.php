@@ -10,6 +10,8 @@
 namespace PHPUnit\Runner;
 
 use const PHP_OS_FAMILY;
+use function array_unique;
+use function array_values;
 use function assert;
 use function class_exists;
 use function implode;
@@ -891,6 +893,16 @@ final class CodeCoverage
             return;
         }
 
+        foreach ($test->registeredFixturesThatCannotBeResolved() as $path) {
+            $this->emitter->testTriggeredPhpunitWarning(
+                $test->valueObjectForEvents(),
+                sprintf(
+                    'Fixture %s does not exist, it is ignored',
+                    $path,
+                ),
+            );
+        }
+
         $files = ExecutedFiles::in($data);
 
         /*
@@ -898,6 +910,15 @@ final class CodeCoverage
          * it uses as a fixture cannot be observed and has to be added here.
          */
         foreach ((new Fixtures)->for($test::class, $test->name()) as $fixture) {
+            $files[] = $fixture;
+        }
+
+        /*
+         * The same goes for what a test registers as a fixture while it runs:
+         * the code a web server loaded while it handled the requests the test
+         * sent, for instance, was executed in another process.
+         */
+        foreach ($test->registeredFixtures() as $fixture) {
             $files[] = $fixture;
         }
 
@@ -919,7 +940,7 @@ final class CodeCoverage
 
         $recordedTest = $test->valueObjectForEvents()->idWithoutRepetitionAndAttempt();
 
-        $this->testImpactData()->record($recordedTest, $files);
+        $this->testImpactData()->record($recordedTest, array_values(array_unique($files)));
 
         $this->testWasRecorded($test, $recordedTest);
     }
