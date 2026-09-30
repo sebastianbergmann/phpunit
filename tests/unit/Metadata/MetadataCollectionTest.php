@@ -683,7 +683,7 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::coversFunction(''),
                 Metadata::coversMethod('', ''),
                 Metadata::coversFile(''),
-                Metadata::usesFixtureOnClass(''),
+                Metadata::usesFixtureOnClass('', ''),
                 Metadata::coversDirectory(''),
                 Metadata::coversDirectoryRecursively(''),
                 Metadata::coversNothingOnClass(),
