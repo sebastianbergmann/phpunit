@@ -7842,9 +7842,10 @@ final class MetadataTest extends TestCase
 
     public function testCanBeUsesFixtureOnClass(): void
     {
-        $path = 'path';
+        $path          = 'path';
+        $declaringFile = 'file.php';
 
-        $metadata = Metadata::usesFixtureOnClass($path);
+        $metadata = Metadata::usesFixtureOnClass($path, $declaringFile);
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -7912,6 +7913,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame($path, $metadata->path());
+        $this->assertSame($declaringFile, $metadata->declaringFile());
 
         $this->assertTrue($metadata->isClassLevel());
         $this->assertFalse($metadata->isMethodLevel());
@@ -7919,9 +7921,10 @@ final class MetadataTest extends TestCase
 
     public function testCanBeUsesFixtureOnMethod(): void
     {
-        $path = 'path';
+        $path          = 'path';
+        $declaringFile = 'file.php';
 
-        $metadata = Metadata::usesFixtureOnMethod($path);
+        $metadata = Metadata::usesFixtureOnMethod($path, $declaringFile);
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -7989,6 +7992,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame($path, $metadata->path());
+        $this->assertSame($declaringFile, $metadata->declaringFile());
 
         $this->assertTrue($metadata->isMethodLevel());
         $this->assertFalse($metadata->isClassLevel());

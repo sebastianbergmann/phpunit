@@ -19,6 +19,9 @@ use Attribute;
  * The path is relative to the file the attribute is written in, unless it is
  * absolute.
  *
+ * Declared on a class, the attribute counts for the tests of that class and
+ * for the tests of every class that extends it.
+ *
  * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
