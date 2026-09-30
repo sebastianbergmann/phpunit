@@ -22,13 +22,20 @@ final readonly class UsesFixture extends Metadata
     private string $path;
 
     /**
-     * @param non-empty-string $path
+     * @var non-empty-string
      */
-    protected function __construct(Level $level, string $path)
+    private string $declaringFile;
+
+    /**
+     * @param non-empty-string $path
+     * @param non-empty-string $declaringFile
+     */
+    protected function __construct(Level $level, string $path, string $declaringFile)
     {
         parent::__construct($level);
 
-        $this->path = $path;
+        $this->path          = $path;
+        $this->declaringFile = $declaringFile;
     }
 
     public function isUsesFixture(): true
@@ -42,5 +49,18 @@ final readonly class UsesFixture extends Metadata
     public function path(): string
     {
         return $this->path;
+    }
+
+    /**
+     * The file the attribute is written in, which the path is relative to:
+     * for an attribute that is inherited from a parent class, or that is
+     * declared on a method of a trait, this is the file of that parent class
+     * or of that trait.
+     *
+     * @return non-empty-string
+     */
+    public function declaringFile(): string
+    {
+        return $this->declaringFile;
     }
 }
