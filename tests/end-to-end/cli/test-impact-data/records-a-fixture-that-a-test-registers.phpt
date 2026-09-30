@@ -33,9 +33,9 @@ Time: %s, Memory: %s
 1 test triggered 2 PHPUnit warnings:
 
 1) PHPUnit\TestFixture\TestImpactData\RegistersFixturesTest::testRegistersPathsThatDoNotExist
-* Fixture does-not-exist.csv does not exist, it is ignored
+* Fixture "does-not-exist.csv" does not exist, it is ignored
 
-* Fixture  does not exist, it is ignored
+* Fixture "" does not exist, it is ignored
 
 %s
 

@@ -897,7 +897,7 @@ final class CodeCoverage
             $this->emitter->testTriggeredPhpunitWarning(
                 $test->valueObjectForEvents(),
                 sprintf(
-                    'Fixture %s does not exist, it is ignored',
+                    'Fixture "%s" does not exist, it is ignored',
                     $path,
                 ),
             );
