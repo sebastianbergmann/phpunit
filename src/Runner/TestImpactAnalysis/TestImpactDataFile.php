@@ -49,7 +49,8 @@ use PHPUnit\Util\Filesystem;
  * executed it. That is what makes the data usable later: a test whose files
  * all still hash the same executed the code that is there now, and a test that
  * refers to a version that no longer exists executed code that has changed
- * since.
+ * since. A test that ran in a process of its own also refers to the versions
+ * of the source files that process loaded.
  *
  * The versions of the source files that were executed outside of any test,
  * while PHPUnit was bootstrapped or while the tests were loaded, for instance,
