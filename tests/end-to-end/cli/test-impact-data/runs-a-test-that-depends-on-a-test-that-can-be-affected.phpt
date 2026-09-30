@@ -52,7 +52,7 @@ OK (2 tests, 2 assertions)
 
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-Recorded at %s from what the tests executed.
+Recorded at %s from what the tests executed and, for a test that ran in a process of its own, what that process loaded.
 
 2 of 2 tests can be affected by what changed.
 

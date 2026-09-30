@@ -132,7 +132,7 @@ final class ListTestsThatDependOnCommandTest extends TestCase
         $result = new ListTestsThatDependOnCommand(new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions()), $bootstrapped)->execute();
 
         $this->assertStringMatchesFormat(
-            'Recorded at %d-%d-%d %d:%d:%d %s from what the tests executed.' . PHP_EOL . PHP_EOL .
+            'Recorded at %d-%d-%d %d:%d:%d %s from what the tests executed and, for a test that ran in a process of its own, what that process loaded.' . PHP_EOL . PHP_EOL .
             'Every test depends on ' . $bootstrapped . ': it was executed outside of any test' . PHP_EOL,
             $result->output(),
         );
@@ -154,7 +154,7 @@ final class ListTestsThatDependOnCommandTest extends TestCase
         $result = new ListTestsThatDependOnCommand(new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions()), $file)->execute();
 
         $this->assertStringMatchesFormat(
-            'Recorded at %d-%d-%d %d:%d:%d %s from what the tests executed.' . PHP_EOL . PHP_EOL .
+            'Recorded at %d-%d-%d %d:%d:%d %s from what the tests executed and, for a test that ran in a process of its own, what that process loaded.' . PHP_EOL . PHP_EOL .
             'Tests that depend on ' . $file . ' as it is now:' . PHP_EOL .
             ' - BarTest::testOne' . PHP_EOL .
             ' - FooTest::testOne' . PHP_EOL . PHP_EOL,
@@ -184,7 +184,7 @@ final class ListTestsThatDependOnCommandTest extends TestCase
         $result = new ListTestsThatDependOnCommand(new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions()), $file)->execute();
 
         $this->assertStringMatchesFormat(
-            'Recorded at %d-%d-%d %d:%d:%d %s from what the tests executed.' . PHP_EOL . PHP_EOL .
+            'Recorded at %d-%d-%d %d:%d:%d %s from what the tests executed and, for a test that ran in a process of its own, what that process loaded.' . PHP_EOL . PHP_EOL .
             'Tests that depend on ' . $file . ' as it is now:' . PHP_EOL .
             ' - BarTest::testOne' . PHP_EOL . PHP_EOL .
             'Tests that depend on an earlier version of ' . $file . ':' . PHP_EOL .
