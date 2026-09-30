@@ -22,6 +22,9 @@ use Attribute;
  * Declared on a class, the attribute counts for the tests of that class and
  * for the tests of every class that extends it.
  *
+ * A test that only knows while it runs what it depends on registers it with
+ * TestCase::registerFixture() instead.
+ *
  * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
