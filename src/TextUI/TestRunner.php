@@ -12,6 +12,7 @@ namespace PHPUnit\TextUI;
 use function mt_srand;
 use PHPUnit\Event;
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\ExecutionOrder\ReorderPipeline;
 use PHPUnit\Runner\TestRunHistory\TestRunHistory;
 use PHPUnit\Runner\TestSuiteSorter;
@@ -66,6 +67,8 @@ final class TestRunner
             }
 
             new TestSuiteFilterProcessor(Event\Facade::emitter())->process($configuration, $suite, $selectedTests);
+
+            CodeCoverage::instance()->setTestRunConsistsOfASingleTest($suite->count() === 1);
 
             $this->emitter->testRunnerExecutionStarted(
                 Event\TestSuite\TestSuiteBuilder::from($suite),
