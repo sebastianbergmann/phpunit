@@ -47,7 +47,7 @@ OK (7 tests, 7 assertions)
 Recorded:
 PHPUnit\TestFixture\TestImpactData\OutsideOfTests\BeforeClassTest::testReadsWhatWasSetUpBeforeTheFirstTest => BeforeClassTest.php, Settings.php
 PHPUnit\TestFixture\TestImpactData\OutsideOfTests\CallsRatesTest::testExecutesWhatItDependsOn => CallsRatesTest.php, Rates.php
-PHPUnit\TestFixture\TestImpactData\OutsideOfTests\IsolatedProvidedTest::testUsesWhatTheDataProviderProvidesInAnotherProcess#0 => IsolatedCases.php, IsolatedProvidedTest.php
+PHPUnit\TestFixture\TestImpactData\OutsideOfTests\IsolatedProvidedTest::testUsesWhatTheDataProviderProvidesInAnotherProcess#0 => Framework.php, IsolatedCases.php, IsolatedProvidedTest.php
 PHPUnit\TestFixture\TestImpactData\OutsideOfTests\ProvidedTest::testUsesWhatTheDataProviderProvides#0 => Cases.php, ProvidedTest.php
 PHPUnit\TestFixture\TestImpactData\OutsideOfTests\ProvidedTest::testUsesWhatTheDataProviderProvides#1 => Cases.php, ProvidedTest.php
 PHPUnit\TestFixture\TestImpactData\OutsideOfTests\ReadsBootStateTest::testReadsWhatTheBootstrapScriptSetUp => ReadsBootStateTest.php
