@@ -227,6 +227,19 @@ final class FixturesTest extends TestCase
         $this->assertSame([$fixture], (new Fixtures)->for($className, 'testOne'));
     }
 
+    public function testDoesNotResolveAnEmptyPath(): void
+    {
+        $className = $this->writeTestClass(
+            $this->temporaryDirectory(),
+            'TestThatUsesAnEmptyFixturePath',
+            "#[UsesFixture('')]",
+            '',
+        );
+
+        $this->assertSame([], (new Fixtures)->for($className, 'testOne'));
+        $this->assertSame([''], (new Fixtures)->thatCannotBeResolved($className, 'testOne'));
+    }
+
     public function testResolvesTheSamePathDeclaredInTwoDirectories(): void
     {
         $directoryOfTheTest     = $this->temporaryDirectory();
