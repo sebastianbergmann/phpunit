@@ -16,6 +16,7 @@ use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\ParallelWorker\WorkerFirstTest;
+use stdClass;
 
 #[CoversClass(CommandStream::class)]
 #[UsesClass(TestDescriptor::class)]
@@ -79,7 +80,7 @@ final class CommandStreamTest extends TestCase
                 serialize(
                     [
                         'command' => 'runUnit',
-                        'tests'   => [new WorkerFirstTest('testStartsTheProcessLocalCounter')],
+                        'tests'   => [new stdClass],
                     ],
                 ),
             ),
@@ -87,7 +88,7 @@ final class CommandStreamTest extends TestCase
 
         $this->assertIsArray($command);
         $this->assertIsArray($command['tests']);
-        $this->assertNotInstanceOf(WorkerFirstTest::class, $command['tests'][0]);
+        $this->assertNotInstanceOf(stdClass::class, $command['tests'][0]);
     }
 
     private function descriptor(): TestDescriptor
