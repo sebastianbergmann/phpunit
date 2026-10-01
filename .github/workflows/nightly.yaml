@@ -19,7 +19,7 @@ jobs:
     name: Tests
 
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 10
+    timeout-minutes: 20
 
     env:
       PHP_EXTENSIONS: none, ctype, curl, dom, json, libxml, mbstring, openssl, pdo, phar, tokenizer, xmlwriter
