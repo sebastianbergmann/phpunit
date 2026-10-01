@@ -104,24 +104,80 @@ final class WorkerPoolTest extends TestCase
         $this->assertTrue($completed[0]->crashed());
     }
 
-    public function testReportsRemainingUnitsAsCrashedWhenEveryWorkerHasDied(): void
+    public function testBootsAFreshProcessForTheNextUnitOfAWorkerWhoseProcessDiedWhileRunningAUnitThatWasNotRetried(): void
     {
-        // The only worker dies on the first unit, so the second unit can no
-        // longer be dispatched anywhere; it must still be reported as crashed
-        // rather than silently lost.
+        // The only worker dies on the first unit, whose retry is vetoed; the
+        // second unit runs on a fresh process of the same worker.
         $units = [
             new TestClassWorkUnit(0, WorkerSecondTest::class, [new WorkerSecondTest('testThatKillsTheWorkerProcess')]),
             new TestClassWorkUnit(1, WorkerFirstTest::class, [new WorkerFirstTest('testStartsTheProcessLocalCounter')]),
         ];
 
-        $completed = $this->execute($this->pool(1), $units);
+        $streamed = [];
+
+        $completed = $this->execute(
+            $this->pool(1),
+            $units,
+            $streamed,
+            static function (WorkUnit $unit): bool
+            {
+                return false;
+            },
+        );
 
         $this->assertCount(2, $completed);
         $this->assertSame([0, 1], $this->indexesOf($completed));
+        $this->assertTrue($completed[0]->crashed());
+        $this->assertFalse($completed[1]->crashed());
+    }
 
-        foreach ($completed as $unit) {
-            $this->assertTrue($unit->crashed());
+    public function testBootsAFreshProcessForTheUnitsOfALaterRunOfAWorkerWhoseProcessDiedInAnEarlierOne(): void
+    {
+        $pool = $this->pool(1);
+
+        $pool->start();
+
+        $completed = [];
+
+        $onCompleted = static function (CompletedWorkUnit $unit) use (&$completed): void
+        {
+            $completed[] = $unit;
+        };
+
+        $onStreamedEvents = static function (WorkUnit $unit, EventCollection $events): void
+        {
+        };
+
+        $onCrashedUnitRetry = static function (WorkUnit $unit): bool
+        {
+            return true;
+        };
+
+        try {
+            // The units of the test suites of a run that is partitioned into
+            // test suites are run one test suite after another, on the same
+            // workers: the only worker dies in the first one, and its unit is
+            // reported as crashed once its retry has crashed as well.
+            $pool->run(
+                [new TestClassWorkUnit(0, WorkerSecondTest::class, [new WorkerSecondTest('testThatKillsTheWorkerProcess')])],
+                $onCompleted,
+                $onStreamedEvents,
+                $onCrashedUnitRetry,
+            );
+
+            $pool->run(
+                [new TestClassWorkUnit(1, WorkerFirstTest::class, [new WorkerFirstTest('testStartsTheProcessLocalCounter')])],
+                $onCompleted,
+                $onStreamedEvents,
+                $onCrashedUnitRetry,
+            );
+        } finally {
+            $pool->stop();
         }
+
+        $this->assertCount(2, $completed);
+        $this->assertTrue($completed[0]->crashed());
+        $this->assertFalse($completed[1]->crashed());
     }
 
     public function testReportsAUnitWhoseDataSetTheWorkerCannotProvideThroughItsEnvelopeAndKeepsRunning(): void
