@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Runner\Parallel;
 
-use const PHP_EOL;
 use function array_pop;
 use function array_reverse;
 use function array_slice;
@@ -530,7 +529,7 @@ final class ResultAggregator
             }
 
             if ($completed->output() !== '') {
-                $message .= PHP_EOL . PHP_EOL . $completed->output();
+                $message .= "\n\n" . $completed->output();
             }
 
             $this->reportTestsWithoutResult($completed, $message);

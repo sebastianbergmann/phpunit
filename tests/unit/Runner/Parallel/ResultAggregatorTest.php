@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Runner\Parallel;
 
-use const PHP_EOL;
 use function hrtime;
 use function in_array;
 use function serialize;
@@ -363,9 +362,7 @@ final class ResultAggregatorTest extends TestCase
 
         $this->assertSame(
             [
-                'The worker process running ' . WorkerSecondTest::class . ' ended unexpectedly' . PHP_EOL .
-                PHP_EOL .
-                'output of the worker process',
+                'The worker process running ' . WorkerSecondTest::class . " ended unexpectedly\n\noutput of the worker process",
             ],
             $messages,
         );
@@ -392,9 +389,7 @@ final class ResultAggregatorTest extends TestCase
         $emitter->expects($this->once())
             ->method('testRunnerTriggeredPhpunitWarning')
             ->with(
-                'The worker process running ' . WorkerSecondTest::class . ' ended unexpectedly' . PHP_EOL .
-                PHP_EOL .
-                'output of the worker process',
+                'The worker process running ' . WorkerSecondTest::class . " ended unexpectedly\n\noutput of the worker process",
             )
             ->seal();
 
