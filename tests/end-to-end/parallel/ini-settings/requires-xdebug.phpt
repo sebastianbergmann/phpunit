@@ -1,0 +1,44 @@
+--TEST--
+phpunit --parallel=2 does not turn off Xdebug in a worker when a test requires the Xdebug extension
+--SKIPIF--
+<?php declare(strict_types=1);
+if (!extension_loaded('xdebug')) {
+    print 'skip: Xdebug is not loaded';
+
+    exit;
+}
+
+if (!in_array('develop', xdebug_info('mode'), true) &&
+    !in_array('debug', xdebug_info('mode'), true) &&
+    !in_array('coverage', xdebug_info('mode'), true)) {
+    print 'skip: Xdebug mode must include develop, debug, or coverage';
+
+    exit;
+}
+
+if (ini_get('xdebug.start_with_request') === '1') {
+    print 'skip: Xdebug emits a warning that breaks output expectations when xdebug.start_with_request=1 is configured';
+
+    exit;
+}
+--FILE--
+<?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--parallel=2';
+$_SERVER['argv'][] = __DIR__ . '/_files/XdebugRequiredTest.php';
+
+require_once __DIR__ . '/../../../bootstrap.php';
+
+(new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
+--EXPECTF--
+PHPUnit %s by Sebastian Bergmann and contributors.
+
+Runtime:       %s
+Parallel:      2 workers
+
+.                                                                   1 / 1 (100%)
+
+Time: %s, Memory: %s
+
+OK (1 test, 2 assertions)
