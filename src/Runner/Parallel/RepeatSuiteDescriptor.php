@@ -78,6 +78,14 @@ final readonly class RepeatSuiteDescriptor extends TestDescriptor
     }
 
     /**
+     * @return non-empty-string
+     */
+    public function methodName(): string
+    {
+        return $this->repetitions[0]->methodName();
+    }
+
+    /**
      * @param class-string<TestCase> $className
      */
     public function test(string $className, WorkerDataProvider $dataProvider): RepeatTestSuite

@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Runner\Parallel;
 
+use function assert;
+use function count;
+use function explode;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\TestCase;
@@ -73,6 +76,23 @@ final readonly class DataProviderSuiteDescriptor extends TestDescriptor
     {
         $this->name    = $name;
         $this->members = $members;
+    }
+
+    /**
+     * The name of a data provider test suite is the name of its test class
+     * and the name of its test method, separated by "::" (see TestBuilder).
+     *
+     * @return non-empty-string
+     */
+    public function methodName(): string
+    {
+        assert(count(explode('::', $this->name)) === 2);
+
+        [, $methodName] = explode('::', $this->name);
+
+        assert($methodName !== '');
+
+        return $methodName;
     }
 
     /**

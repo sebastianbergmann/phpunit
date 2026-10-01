@@ -66,6 +66,13 @@ final readonly class TestCaseDescriptor extends TestDescriptor
     private string $dependencyInput;
 
     /**
+     * The message that the test case is skipped with because its data provider
+     * provided no data, which it is explicitly permitted to do: such a test
+     * case has no data set for the worker process to select.
+     */
+    private ?string $emptyDataProviderSkipMessage;
+
+    /**
      * @var positive-int
      */
     private int $repetition;
@@ -109,6 +116,7 @@ final readonly class TestCaseDescriptor extends TestDescriptor
             $test->usesDataProvider(),
             $test->dataName(),
             $dependencyInput,
+            $test->emptyDataProviderSkipMessage(),
             $test->repetition(),
             $test->totalRepetitions(),
             $test->attempt(),
@@ -123,16 +131,25 @@ final readonly class TestCaseDescriptor extends TestDescriptor
      * @param positive-int     $attempt
      * @param positive-int     $maxAttempts
      */
-    private function __construct(string $methodName, bool $usesDataProvider, int|string $dataName, string $dependencyInput, int $repetition, int $totalRepetitions, int $attempt, int $maxAttempts)
+    private function __construct(string $methodName, bool $usesDataProvider, int|string $dataName, string $dependencyInput, ?string $emptyDataProviderSkipMessage, int $repetition, int $totalRepetitions, int $attempt, int $maxAttempts)
     {
-        $this->methodName       = $methodName;
-        $this->usesDataProvider = $usesDataProvider;
-        $this->dataName         = $dataName;
-        $this->dependencyInput  = $dependencyInput;
-        $this->repetition       = $repetition;
-        $this->totalRepetitions = $totalRepetitions;
-        $this->attempt          = $attempt;
-        $this->maxAttempts      = $maxAttempts;
+        $this->methodName                   = $methodName;
+        $this->usesDataProvider             = $usesDataProvider;
+        $this->dataName                     = $dataName;
+        $this->dependencyInput              = $dependencyInput;
+        $this->emptyDataProviderSkipMessage = $emptyDataProviderSkipMessage;
+        $this->repetition                   = $repetition;
+        $this->totalRepetitions             = $totalRepetitions;
+        $this->attempt                      = $attempt;
+        $this->maxAttempts                  = $maxAttempts;
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    public function methodName(): string
+    {
+        return $this->methodName;
     }
 
     /**
@@ -159,6 +176,10 @@ final readonly class TestCaseDescriptor extends TestDescriptor
         $test->setDependencyInput($dependencyInput);
         $test->setRepetition($this->repetition, $this->totalRepetitions);
         $test->setAttempt($this->attempt, $this->maxAttempts);
+
+        if ($this->emptyDataProviderSkipMessage !== null) {
+            $test->setEmptyDataProviderSkipMessage($this->emptyDataProviderSkipMessage);
+        }
 
         // The settings that TestBuilder derives from metadata and configuration
         // do not travel with the descriptor: they are derived again here, from

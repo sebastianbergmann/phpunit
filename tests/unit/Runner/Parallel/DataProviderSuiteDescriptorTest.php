@@ -37,6 +37,11 @@ final class DataProviderSuiteDescriptorTest extends TestCase
         $this->assertSame(WorkerDataProvidedTest::class . '::testWithNamedDataSets', $suite->name());
     }
 
+    public function testNamesTheTestMethodOfTheDataProvider(): void
+    {
+        $this->assertSame('testWithNamedDataSets', DataProviderSuiteDescriptor::fromTestSuite($this->suite(), WorkerDataProvidedTest::class)->methodName());
+    }
+
     public function testRebuildsTheTestsOfTheDataProviderInTheOrderTheyWereDescribedIn(): void
     {
         $tests = $this->rebuild($this->suite())->tests();

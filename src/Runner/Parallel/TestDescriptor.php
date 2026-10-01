@@ -11,10 +11,12 @@ namespace PHPUnit\Runner\Parallel;
 
 use function assert;
 use PHPUnit\Framework\DataProviderTestSuite;
+use PHPUnit\Framework\IterativeTestSuite;
 use PHPUnit\Framework\RepeatTestSuite;
 use PHPUnit\Framework\RetryTestSuite;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Metadata\Api\Dependencies;
 
 /**
  * One member of a test class work unit, in the form in which it travels to the
@@ -77,4 +79,37 @@ abstract readonly class TestDescriptor
      * @throws WorkerException
      */
     abstract public function test(string $className, WorkerDataProvider $dataProvider): Test;
+
+    /**
+     * The name of the test method whose test, or tests, the described member
+     * consists of.
+     *
+     * @return non-empty-string
+     */
+    abstract public function methodName(): string;
+
+    /**
+     * Rebuild the member that this descriptor describes and prepare it the way
+     * TestSuite::addTestMethod() prepares a member of the suite of a test
+     * class: with the dependencies of its test method. Runs inside the worker
+     * process.
+     *
+     * The dependencies do not travel with the descriptor: they are derived
+     * again here, from the same metadata, which is available in the worker
+     * process as well.
+     *
+     * @param class-string<TestCase> $className
+     *
+     * @throws WorkerException
+     */
+    final public function member(string $className, WorkerDataProvider $dataProvider): Test
+    {
+        $test = $this->test($className, $dataProvider);
+
+        assert($test instanceof TestCase || $test instanceof DataProviderTestSuite || $test instanceof IterativeTestSuite);
+
+        $test->setDependencies(Dependencies::dependencies($className, $this->methodName()));
+
+        return $test;
+    }
 }
