@@ -35,6 +35,11 @@ final class RetrySuiteDescriptorTest extends TestCase
         $this->assertSame(WorkerDataProvidedTest::class . '::testWithNumberedDataSets', $suite->name());
     }
 
+    public function testNamesTheRetriedTestMethod(): void
+    {
+        $this->assertSame('testWithNumberedDataSets', RetrySuiteDescriptor::fromTestSuite($this->suite(), WorkerDataProvidedTest::class)->methodName());
+    }
+
     public function testRebuildsTheNumberOfAttemptsTheTestMethodIsAllowed(): void
     {
         $this->assertSame(3, $this->rebuild($this->suite())->maxAttempts());

@@ -73,6 +73,14 @@ final readonly class RetrySuiteDescriptor extends TestDescriptor
     }
 
     /**
+     * @return non-empty-string
+     */
+    public function methodName(): string
+    {
+        return $this->testCase->methodName();
+    }
+
+    /**
      * @param class-string<TestCase> $className
      */
     public function test(string $className, WorkerDataProvider $dataProvider): RetryTestSuite

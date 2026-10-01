@@ -14,9 +14,12 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\DataProviderTestSuite;
+use PHPUnit\Framework\Reorderable;
 use PHPUnit\Framework\RepeatTestSuite;
 use PHPUnit\Framework\RetryTestSuite;
+use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\ParallelWorker\WorkerDependingTest;
 use PHPUnit\TestFixture\ParallelWorker\WorkerFirstTest;
 
 #[CoversClass(TestDescriptor::class)]
@@ -112,8 +115,96 @@ final class TestDescriptorTest extends TestCase
         $this->assertInstanceOf(RetryTestSuite::class, $rebuilt->tests()[0]);
     }
 
+    public function testRebuildsATestCaseWithTheDependenciesOfItsTestMethod(): void
+    {
+        $member = TestDescriptor::from(new WorkerDependingTest('testConsumer'), WorkerDependingTest::class)->member(
+            WorkerDependingTest::class,
+            new WorkerDataProvider($this->createStub(Emitter::class)),
+        );
+
+        $this->assertSame([WorkerDependingTest::class . '::testProducer'], $this->dependencyTargetsOf($member));
+    }
+
+    public function testRebuildsTheSuiteOfADataProviderMethodWithTheDependenciesOfItsTestMethod(): void
+    {
+        $test = new WorkerDependingTest('testDataProvidedConsumer');
+
+        $test->setData(0, [true]);
+
+        $suite = DataProviderTestSuite::empty(WorkerDependingTest::class . '::testDataProvidedConsumer', $this->createStub(Emitter::class));
+
+        $suite->addTest($test);
+
+        $member = TestDescriptor::from($suite, WorkerDependingTest::class)->member(
+            WorkerDependingTest::class,
+            new WorkerDataProvider($this->createStub(Emitter::class)),
+        );
+
+        $this->assertInstanceOf(DataProviderTestSuite::class, $member);
+        $this->assertSame([WorkerDependingTest::class . '::testProducer'], $this->dependencyTargetsOf($member));
+        $this->assertSame([WorkerDependingTest::class . '::testProducer'], $this->dependencyTargetsOf($member->tests()[0]));
+    }
+
+    public function testRebuildsTheSuiteOfARetriedTestMethodWithTheDependenciesOfItsTestMethod(): void
+    {
+        $test = new WorkerDependingTest('testConsumer');
+
+        $suite = RetryTestSuite::fromTestCase(
+            WorkerDependingTest::class . '::testConsumer',
+            $this->createStub(Emitter::class),
+            $test,
+            2,
+            static function () use ($test): TestCase
+            {
+                return $test;
+            },
+        );
+
+        $member = TestDescriptor::from($suite, WorkerDependingTest::class)->member(
+            WorkerDependingTest::class,
+            new WorkerDataProvider($this->createStub(Emitter::class)),
+        );
+
+        $this->assertInstanceOf(RetryTestSuite::class, $member);
+        $this->assertSame([WorkerDependingTest::class . '::testProducer'], $this->dependencyTargetsOf($member));
+    }
+
+    public function testRebuildsTheSuiteOfARepeatedTestMethodWithTheDependenciesOfItsTestMethod(): void
+    {
+        $suite = RepeatTestSuite::fromTests(
+            WorkerDependingTest::class . '::testConsumer',
+            $this->createStub(Emitter::class),
+            [new WorkerDependingTest('testConsumer')],
+            1,
+        );
+
+        $member = TestDescriptor::from($suite, WorkerDependingTest::class)->member(
+            WorkerDependingTest::class,
+            new WorkerDataProvider($this->createStub(Emitter::class)),
+        );
+
+        $this->assertInstanceOf(RepeatTestSuite::class, $member);
+        $this->assertSame([WorkerDependingTest::class . '::testProducer'], $this->dependencyTargetsOf($member));
+    }
+
     private function testCase(): WorkerFirstTest
     {
         return new WorkerFirstTest('testStartsTheProcessLocalCounter');
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function dependencyTargetsOf(Test $test): array
+    {
+        $this->assertInstanceOf(Reorderable::class, $test);
+
+        $targets = [];
+
+        foreach ($test->requires() as $dependency) {
+            $targets[] = $dependency->getTarget();
+        }
+
+        return $targets;
     }
 }

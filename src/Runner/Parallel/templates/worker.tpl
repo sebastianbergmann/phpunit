@@ -8,6 +8,7 @@ use PHPUnit\Runner\Extension\PharLoader;
 use PHPUnit\Runner\Extension\WorkerExtensionBootstrapper;
 use PHPUnit\Runner\Extension\WorkerExtensionFacade;
 use PHPUnit\Runner\Parallel\CommandStream;
+use PHPUnit\Runner\Parallel\PassedTestsRecorder;
 use PHPUnit\Runner\Parallel\WorkerDataProvider;
 use PHPUnit\Runner\Parallel\WorkerException;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
@@ -148,6 +149,14 @@ function __phpunit_worker_run_unit(array $command, array $extensionSubscribers, 
         },
     );
 
+    // A test that depends on a test method whose test is run with the data
+    // sets of a data provider, or repeated, can only run once that test
+    // method has been recorded as passed. The test result collector, which
+    // records this in the main process, does not receive the events of this
+    // unit, so a recorder of the unit's own records it (see
+    // PassedTestsRecorder).
+    (new PassedTestsRecorder)->registerWith($dispatcher);
+
     require_once $command['file'];
 
     $suite        = TestSuite::forTestClass($command['className'], Facade::emitter());
@@ -166,7 +175,7 @@ function __phpunit_worker_run_unit(array $command, array $extensionSubscribers, 
     // errored with it.
     try {
         foreach ($command['tests'] as $__phpunit_test) {
-            $suite->addTest($__phpunit_test->test($command['className'], $dataProvider));
+            $suite->addTest($__phpunit_test->member($command['className'], $dataProvider));
         }
     } catch (WorkerException $e) {
         $failure = $e->getMessage();
