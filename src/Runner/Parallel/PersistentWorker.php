@@ -9,17 +9,24 @@
  */
 namespace PHPUnit\Runner\Parallel;
 
+use const LOCK_EX;
+use const LOCK_UN;
 use function array_is_list;
 use function assert;
 use function bin2hex;
 use function clearstatcache;
+use function fclose;
 use function file_get_contents;
+use function file_put_contents;
 use function filesize;
+use function flock;
+use function fopen;
 use function hrtime;
 use function is_array;
 use function is_file;
 use function is_string;
 use function random_bytes;
+use function rename;
 use function sprintf;
 use function str_starts_with;
 use function strlen;
@@ -152,6 +159,28 @@ final class PersistentWorker
     private string $token;
 
     /**
+     * The file that the worker process polls for the next command, and the
+     * file that this process holds an exclusive lock on for as long as the
+     * worker process may need it.
+     *
+     * Commands do not travel through the worker's standard input: a test
+     * that reads its standard input, or a process that a test starts and
+     * that inherits it, would wait forever for input on a channel that stays
+     * open between commands. The worker's standard input is closed instead,
+     * as the standard input of the child process of a test that runs in
+     * process isolation is, so that reading it ends right away. The worker
+     * finds out that this process is gone, and exits, when the lock on the
+     * lock file has been released.
+     */
+    private ?string $commandFile = null;
+    private ?string $lockFile    = null;
+
+    /**
+     * @var ?resource
+     */
+    private $lock;
+
+    /**
      * Whether a test that the worker may be asked to run requires the Xdebug
      * extension. A child process is started with Xdebug turned off unless it
      * is needed (see JobRunner), and a worker process cannot know in advance
@@ -202,6 +231,8 @@ final class PersistentWorker
         // process was started with, a memory limit given to the PHP binary
         // with -d for instance: a sequential run runs its tests with these
         // settings, so the tests that a worker runs must see them, too.
+        $this->lock();
+
         $this->job = $this->jobRunner->start(
             new Job(
                 $this->buildWorkerCode(),
@@ -214,6 +245,8 @@ final class PersistentWorker
                 $this->requiresXdebug,
             ),
         );
+
+        $this->job->closeStdin();
     }
 
     /**
@@ -282,7 +315,7 @@ final class PersistentWorker
         $this->currentStreamTainted   = false;
         $this->currentOutputOffset    = $this->job->outputLength();
 
-        $this->job->write($encodedCommand . "\n");
+        $this->sendCommand($encodedCommand);
     }
 
     /**
@@ -370,6 +403,8 @@ final class PersistentWorker
         $this->deleteCurrentUnitFiles();
 
         $this->clearCurrentUnit();
+
+        $this->unlock();
     }
 
     /**
@@ -381,7 +416,11 @@ final class PersistentWorker
      */
     public function stop(): void
     {
-        if ($this->job === null) {
+        $job = $this->job;
+
+        if ($job === null) {
+            $this->unlock();
+
             return;
         }
 
@@ -394,23 +433,23 @@ final class PersistentWorker
             // @codeCoverageIgnoreEnd
         }
 
-        $this->job->write(
+        $this->sendCommand(
             CommandStream::encode(
                 [
                     'command'    => 'stop',
                     'resultFile' => $resultFile,
                     'nonce'      => $nonce,
                 ],
-            ) . "\n",
+            ),
         );
 
-        $this->job->closeStdin();
-
-        $result = $this->job->wait();
+        $result = $job->wait();
 
         EventFacade::emitter()->childProcessFinished(ChildProcessReason::ParallelWorker, $result->stdout(), $result->stderr());
 
         $this->job = null;
+
+        $this->unlock();
 
         foreach ($this->shutdownWarnings($resultFile, $nonce) as $warning) {
             EventFacade::emitter()->testRunnerTriggeredPhpunitWarning($warning);
@@ -709,6 +748,88 @@ final class PersistentWorker
     }
 
     /**
+     * Take the lock that tells the worker process that this process is still
+     * there, unless it has already been taken for an earlier worker process
+     * of this worker. The lock file is opened with the close-on-exec flag:
+     * a worker process that inherited it would hold the lock itself and
+     * never find out that this process is gone.
+     *
+     * @throws WorkerException
+     */
+    private function lock(): void
+    {
+        if ($this->lock !== null) {
+            return;
+        }
+
+        $lockFile = tempnam(sys_get_temp_dir(), 'phpunit_');
+
+        if ($lockFile === false) {
+            // @codeCoverageIgnoreStart
+            throw new WorkerException('Unable to create temporary file for the worker lock');
+            // @codeCoverageIgnoreEnd
+        }
+
+        $lock = fopen($lockFile, 'ce');
+
+        if ($lock === false || !flock($lock, LOCK_EX)) {
+            // @codeCoverageIgnoreStart
+            throw new WorkerException('Unable to lock the worker lock file');
+            // @codeCoverageIgnoreEnd
+        }
+
+        $this->lock        = $lock;
+        $this->lockFile    = $lockFile;
+        $this->commandFile = $lockFile . '.command';
+    }
+
+    /**
+     * Release the lock, once the worker process is gone, and delete the files
+     * through which the worker process received its commands.
+     */
+    private function unlock(): void
+    {
+        if ($this->lock === null) {
+            return;
+        }
+
+        assert($this->lockFile !== null);
+        assert($this->commandFile !== null);
+
+        flock($this->lock, LOCK_UN);
+        fclose($this->lock);
+
+        foreach ([$this->commandFile, $this->commandFile . '.tmp', $this->lockFile] as $file) {
+            if (is_file($file)) {
+                unlink($file);
+            }
+        }
+
+        $this->lock        = null;
+        $this->lockFile    = null;
+        $this->commandFile = null;
+    }
+
+    /**
+     * Hand a command to the worker process: the command is written to a
+     * temporary file that is then renamed to the command file, so that the
+     * worker process never reads a command that has only partly been written.
+     *
+     * @throws WorkerException
+     */
+    private function sendCommand(string $encodedCommand): void
+    {
+        assert($this->commandFile !== null);
+
+        if (file_put_contents($this->commandFile . '.tmp', $encodedCommand) === false ||
+            !rename($this->commandFile . '.tmp', $this->commandFile)) {
+            // @codeCoverageIgnoreStart
+            throw new WorkerException('Unable to write a command for the worker process');
+            // @codeCoverageIgnoreEnd
+        }
+    }
+
+    /**
      * @throws WorkerException
      *
      * @return non-empty-string
@@ -739,6 +860,8 @@ final class PersistentWorker
                 'childProcessConfiguration'      => $configurationFragment,
                 'collectCodeCoverageInformation' => $coverage,
                 'testClassFiles'                 => var_export(TestSuiteLoader::loadedSuiteClassFiles(), true),
+                'commandFile'                    => var_export($this->commandFile, true),
+                'lockFile'                       => var_export($this->lockFile, true),
             ],
         );
 
