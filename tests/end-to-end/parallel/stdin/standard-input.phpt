@@ -1,10 +1,5 @@
 --TEST--
 phpunit --parallel=2 runs tests that read their standard input, or start a process that reads it, without waiting for input, as a test that runs in process isolation does
---SKIPIF--
-<?php declare(strict_types=1);
-if (DIRECTORY_SEPARATOR === '\\') {
-    print 'skip: this test requires the cat command';
-}
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-record-test-run-history';

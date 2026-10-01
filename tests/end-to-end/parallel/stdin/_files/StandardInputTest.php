@@ -9,7 +9,9 @@
  */
 namespace PHPUnit\TestFixture\ParallelStandardInput;
 
+use const PHP_BINARY;
 use const STDIN;
+use function escapeshellarg;
 use function file_get_contents;
 use function shell_exec;
 use function stream_get_contents;
@@ -29,6 +31,9 @@ final class StandardInputTest extends TestCase
 
     public function testStartsAProcessThatReadsItsStandardInput(): void
     {
-        $this->assertSame('', (string) shell_exec('cat'));
+        $this->assertSame(
+            '',
+            (string) shell_exec(escapeshellarg(PHP_BINARY) . ' -r "print stream_get_contents(STDIN);"'),
+        );
     }
 }
