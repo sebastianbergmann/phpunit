@@ -38,6 +38,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestRunner\ChildProcessResultEnvelope;
 use PHPUnit\Framework\TestSuite as FrameworkTestSuite;
 use PHPUnit\Runner\CodeCoverage;
+use PHPUnit\Runner\TimeLimit\TimeLimitExceededException;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 
 /**
@@ -518,6 +519,16 @@ final class ResultAggregator
         // unit, they are the tests that did complete before the worker died.
         $this->forwardStreamedEventsOf($completed->unit()->index());
 
+        if ($completed->abortedByTimeLimit()) {
+            $message = $completed->message();
+
+            assert($message !== null && $message !== '');
+
+            $this->reportTestsWithoutResult($completed, $message, true);
+
+            return;
+        }
+
         if ($completed->crashed()) {
             $message = $completed->message();
 
@@ -609,7 +620,7 @@ final class ResultAggregator
      *
      * @param non-empty-string $message
      */
-    private function reportTestsWithoutResult(CompletedWorkUnit $completed, string $message): void
+    private function reportTestsWithoutResult(CompletedWorkUnit $completed, string $message, bool $abortedByTimeLimit = false): void
     {
         $unit  = $completed->unit();
         $index = $unit->index();
@@ -648,7 +659,11 @@ final class ResultAggregator
 
         $innerOpenSuites = array_slice($openSuites, 1);
 
-        $throwable = ThrowableBuilder::from(new AssertionFailedError($message));
+        if ($abortedByTimeLimit) {
+            $throwable = ThrowableBuilder::from(new TimeLimitExceededException($message));
+        } else {
+            $throwable = ThrowableBuilder::from(new AssertionFailedError($message));
+        }
 
         $members  = [];
         $anyStubs = false;
@@ -671,10 +686,17 @@ final class ResultAggregator
         // run would have been aborted by such a failure. As there is no test
         // left to report it for, it is reported as a test runner warning, so
         // that it is shown and fails the test run.
-        if (!$anyStubs) {
+        if (!$anyStubs && !$abortedByTimeLimit) {
             $this->emitter->childProcessErrored(ChildProcessReason::ParallelWorker, $message);
             $this->emitter->testRunnerTriggeredPhpunitWarning($message);
         }
+
+        // A unit that was abandoned because the time limit for the test run
+        // was exceeded reports the test that was running as aborted, as the
+        // sequential test runner reports the test that it aborts: that is the
+        // first test whose result did not arrive. Its other tests would not
+        // have been run by the sequential test runner and are not reported.
+        $abortedTestIsReported = false;
 
         foreach ($members as $member) {
             $test = $member['test'];
@@ -689,9 +711,21 @@ final class ResultAggregator
             // prepared: a consumer such as the JUnit XML logger begins its
             // record of a test when the test's preparation starts.
             foreach ($member['stubs'] as $testMethod) {
+                if ($abortedByTimeLimit) {
+                    if ($abortedTestIsReported) {
+                        break;
+                    }
+
+                    $abortedTestIsReported = true;
+                }
+
                 $this->emitter->testPreparationStarted($testMethod);
                 $this->emitter->testPrepared($testMethod);
-                $this->emitter->childProcessErrored(ChildProcessReason::ParallelWorker, $message);
+
+                if (!$abortedByTimeLimit) {
+                    $this->emitter->childProcessErrored(ChildProcessReason::ParallelWorker, $message);
+                }
+
                 $this->emitter->testErrored($testMethod, $throwable);
                 $this->emitter->testFinished($testMethod, 0);
             }
