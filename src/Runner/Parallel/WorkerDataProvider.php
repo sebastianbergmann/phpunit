@@ -34,8 +34,9 @@ use Throwable;
  *
  * A data provider is invoked once per test method and unit, however many of
  * the method's data sets the unit contains, and it is invoked the way the
- * parent process invoked it — through the same DataProvider API, inside the
- * error handler's test case context — so that the deprecations it triggers
+ * parent process invoked it — through the same DataProvider API, with the
+ * error handler for issues outside of tests registered and inside its test
+ * case context — so that the deprecations, notices, and warnings it triggers
  * are deferred to the tests it provides data for, as they are in a
  * sequential run. The events the invocation emits are discarded by the
  * worker: the parent process emitted them when it built the suite.
@@ -108,6 +109,8 @@ final class WorkerDataProvider
      */
     private function provide(string $className, string $methodName): array
     {
+        ErrorHandler::instance()->registerForNonTestCaseContext();
+
         try {
             ErrorHandler::instance()->enterTestCaseContext($className, $methodName);
 
@@ -123,6 +126,7 @@ final class WorkerDataProvider
             );
         } finally {
             ErrorHandler::instance()->leaveTestCaseContext();
+            ErrorHandler::instance()->restoreForNonTestCaseContext();
         }
 
         if ($providedData === null) {
