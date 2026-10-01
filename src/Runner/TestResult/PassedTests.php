@@ -82,6 +82,31 @@ final class PassedTests
     }
 
     /**
+     * A copy of the recorded passes without the values that the passed tests
+     * returned. A parallel worker ships its passes to the main process this
+     * way: a value that a test returned may not survive the trip, because it
+     * cannot be serialized (a closure, for instance) or cannot be unserialized
+     * in the main process (an object that holds a test double, for instance),
+     * and the main process does not need it, because a test that depends on a
+     * test of another class runs in the main process together with that test.
+     */
+    public function withoutReturnValues(): self
+    {
+        $copy = new self;
+
+        $copy->passedTestClasses = $this->passedTestClasses;
+
+        foreach ($this->passedTestMethods as $method => $passedTestMethod) {
+            $copy->passedTestMethods[$method] = [
+                'returnValue' => null,
+                'size'        => $passedTestMethod['size'],
+            ];
+        }
+
+        return $copy;
+    }
+
+    /**
      * The passes are added to the ones recorded so far rather than merged
      * with them into new arrays: merging would copy every pass recorded so
      * far on each import, and the main process imports the passes of every
