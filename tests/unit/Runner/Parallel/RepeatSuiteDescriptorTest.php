@@ -32,6 +32,11 @@ final class RepeatSuiteDescriptorTest extends TestCase
         $this->assertSame(WorkerDataProvidedTest::class . '::testWithNamedDataSets', $suite->name());
     }
 
+    public function testNamesTheRepeatedTestMethod(): void
+    {
+        $this->assertSame('testWithNamedDataSets', RepeatSuiteDescriptor::fromTestSuite($this->suite(), WorkerDataProvidedTest::class)->methodName());
+    }
+
     public function testRebuildsTheNumberOfFailuresTheRepetitionsAreAllowed(): void
     {
         $this->assertSame(2, $this->rebuild($this->suite())->failureThreshold());
