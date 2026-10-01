@@ -30,6 +30,7 @@ use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TestFixture\ParallelWorker\WorkerCrashesOnceTest;
 use PHPUnit\TestFixture\ParallelWorker\WorkerDataProvidedTest;
 use PHPUnit\TestFixture\ParallelWorker\WorkerFirstTest;
+use PHPUnit\TestFixture\ParallelWorker\WorkerHaltedTest;
 use PHPUnit\TestFixture\ParallelWorker\WorkerSecondTest;
 use PHPUnit\TestFixture\ParallelWorker\WorkerSleepingTest;
 use PHPUnit\TestRunner\TestResult\PassedTests;
@@ -452,7 +453,79 @@ final class WorkerPoolTest extends TestCase
         }
     }
 
-    public function testHaltDropsTheQueuedUnitsAndTerminatesTheBusyWorkers(): void
+    public function testHaltDropsTheQueuedUnitsAndWaitsForTheBusyWorkersToHaltTheirUnitsWithoutReportingTheirResults(): void
+    {
+        $budget = new ProcessBudget(1);
+
+        $pool = $this->pool(1, $budget);
+
+        $pool->start();
+
+        try {
+            $completed = [];
+            $streamed  = 0;
+
+            $pool->begin(
+                [
+                    new TestClassWorkUnit(
+                        0,
+                        WorkerHaltedTest::class,
+                        [
+                            new WorkerHaltedTest('testThatFinishesRightAway'),
+                            new WorkerHaltedTest('testThatIsRunningWhenTheHaltIsRequested'),
+                            new WorkerHaltedTest('testThatIsNotStartedOnceTheUnitHalts'),
+                        ],
+                    ),
+                    new TestClassWorkUnit(1, WorkerFirstTest::class, [new WorkerFirstTest('testStartsTheProcessLocalCounter')]),
+                ],
+                static function (CompletedWorkUnit $unit) use (&$completed): void
+                {
+                    $completed[] = $unit;
+                },
+                static function (WorkUnit $unit, EventCollection $events) use (&$streamed): void
+                {
+                    $streamed++;
+                },
+                static function (WorkUnit $unit): bool
+                {
+                    return true;
+                },
+            );
+
+            // The events of the first test are streamed once it has finished,
+            // while the second test is running.
+            while ($streamed === 0) {
+                $pool->tick();
+
+                usleep(1000);
+            }
+
+            $pool->halt();
+
+            // The worker is still running the second test: the pool is not
+            // finished until the worker has halted the unit.
+            $this->assertTrue($pool->hasExecutingUnits());
+            $this->assertFalse($pool->isFinished());
+
+            while (!$pool->isFinished()) {
+                if (!$pool->tick()) {
+                    usleep(1000);
+                }
+            }
+
+            // The queued unit was dropped, neither the events that the worker
+            // streamed after the halt was requested nor the halted unit's
+            // result were reported, and the slot the halted unit held has
+            // been given back to the shared budget.
+            $this->assertSame([], $completed);
+            $this->assertSame(1, $streamed);
+            $this->assertTrue($budget->acquire());
+        } finally {
+            $pool->stop();
+        }
+    }
+
+    public function testKillDropsTheQueuedUnitsAndTerminatesTheBusyWorkers(): void
     {
         $budget = new ProcessBudget(1);
 
@@ -485,7 +558,7 @@ final class WorkerPoolTest extends TestCase
 
             $this->assertFalse($pool->isFinished());
 
-            $pool->halt();
+            $pool->kill();
 
             // The queued unit was dropped and the sleeping unit's worker was
             // terminated without being waited for: the pool is finished,
@@ -548,7 +621,7 @@ final class WorkerPoolTest extends TestCase
         }
     }
 
-    public function testHaltLeavesTheWorkersThatAreNotExecutingAUnitAlone(): void
+    public function testKillLeavesTheWorkersThatAreNotExecutingAUnitAlone(): void
     {
         $budget = new ProcessBudget(2);
 
@@ -580,11 +653,11 @@ final class WorkerPoolTest extends TestCase
 
             $pool->tick();
 
-            $pool->halt();
+            $pool->kill();
 
             // Only the busy worker was terminated, and only the slot its unit
             // held went back to the budget: the idle worker holds no slot, so
-            // halting must not give one back on its behalf.
+            // killing must not give one back on its behalf.
             $this->assertTrue($pool->isFinished());
             $this->assertSame([], $completed);
             $this->assertTrue($budget->acquire());

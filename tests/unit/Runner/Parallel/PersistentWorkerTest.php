@@ -24,13 +24,16 @@ use function sys_get_temp_dir;
 use function unlink;
 use function unserialize;
 use function usleep;
+use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\EventCollection;
 use PHPUnit\Event\Facade;
+use PHPUnit\Event\Test\AfterLastTestMethodCalled;
 use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\Finished;
+use PHPUnit\Event\Test\PreparationStarted;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\Attributes\RequiresOperatingSystem;
@@ -39,6 +42,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestRunner\ChildProcessResultProcessor;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TestFixture\ParallelWorker\WorkerFirstTest;
+use PHPUnit\TestFixture\ParallelWorker\WorkerHaltedTest;
 use PHPUnit\TestFixture\ParallelWorker\WorkerSecondTest;
 use PHPUnit\TestFixture\ParallelWorker\WorkerStreamingTest;
 use PHPUnit\TestRunner\TestResult\PassedTests;
@@ -481,6 +485,79 @@ final class PersistentWorkerTest extends TestCase
         $worker->stop();
     }
 
+    public function testAWorkerThatIsAskedToHaltItsUnitLetsTheRunningTestFinishStartsNoFurtherTestAndRunsTheMethodsAfterTheLastTest(): void
+    {
+        $worker = $this->worker();
+
+        $worker->start();
+
+        $worker->dispatch(
+            new TestClassWorkUnit(
+                0,
+                WorkerHaltedTest::class,
+                [
+                    new WorkerHaltedTest('testThatFinishesRightAway'),
+                    new WorkerHaltedTest('testThatIsRunningWhenTheHaltIsRequested'),
+                    new WorkerHaltedTest('testThatIsNotStartedOnceTheUnitHalts'),
+                ],
+            ),
+        );
+
+        $haltFile = $this->privateString($worker, 'currentResultFile') . '.halt';
+
+        $this->streamedEvents = [];
+
+        // The events of the first test are streamed once it has finished,
+        // while the second test is running.
+        while ($this->streamedEvents === []) {
+            $this->assertNull(
+                $worker->poll(
+                    function (WorkUnit $unit, EventCollection $events): void
+                    {
+                        $this->streamedEvents[] = $events;
+                    },
+                ),
+            );
+
+            usleep(1000);
+        }
+
+        $worker->requestHalt();
+
+        $completed = $this->runToCompletion($worker, null);
+
+        $worker->stop();
+
+        $this->assertFalse($completed->crashed());
+        $this->assertSame(['testThatIsRunningWhenTheHaltIsRequested'], $this->namesOfTheTestMethodsThatWereStarted($completed));
+        $this->assertTrue($this->tearDownAfterClassWasCalled($completed));
+        $this->assertFileDoesNotExist($haltFile);
+    }
+
+    public function testAWorkerThatIsAskedToHaltAUnitBeforeItHasStartedItRunsNoTestOfIt(): void
+    {
+        $worker = $this->worker();
+
+        $worker->start();
+
+        // The worker process is still booting when the unit is dispatched,
+        // so the request to halt the unit is there before the worker process
+        // gets to it.
+        $worker->dispatch(
+            new TestClassWorkUnit(0, WorkerHaltedTest::class, [new WorkerHaltedTest('testThatFinishesRightAway')]),
+        );
+
+        $worker->requestHalt();
+
+        $completed = $this->runToCompletion($worker, null);
+
+        $worker->stop();
+
+        $this->assertFalse($completed->crashed());
+        $this->assertSame([], $this->namesOfTheTestMethodsThatWereStarted($completed));
+        $this->assertFalse($this->tearDownAfterClassWasCalled($completed));
+    }
+
     public function testWorkerProcessExitsOnceThisProcessNoLongerHoldsTheLockOnItsLockFile(): void
     {
         $worker = $this->worker();
@@ -613,6 +690,39 @@ final class PersistentWorkerTest extends TestCase
         }
 
         return $events;
+    }
+
+    /**
+     * @return list<non-empty-string>
+     */
+    private function namesOfTheTestMethodsThatWereStarted(CompletedWorkUnit $completed): array
+    {
+        $names = [];
+
+        foreach ($this->allEventsOf($completed) as $event) {
+            if (!$event instanceof PreparationStarted) {
+                continue;
+            }
+
+            $test = $event->test();
+
+            $this->assertInstanceOf(TestMethod::class, $test);
+
+            $names[] = $test->methodName();
+        }
+
+        return $names;
+    }
+
+    private function tearDownAfterClassWasCalled(CompletedWorkUnit $completed): bool
+    {
+        foreach ($this->allEventsOf($completed) as $event) {
+            if ($event instanceof AfterLastTestMethodCalled && $event->calledMethod()->methodName() === 'tearDownAfterClass') {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function streamedEventsContainAFinishedTest(): bool

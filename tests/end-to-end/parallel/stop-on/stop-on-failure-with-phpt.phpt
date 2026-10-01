@@ -1,5 +1,5 @@
 --TEST--
-phpunit --parallel=2 --stop-on-failure terminates a PHPT test's child process that is still running when the run stops
+phpunit --parallel=2 --stop-on-failure lets the child process of a PHPT test that is still running when the run stops finish, and reports nothing for the test
 --FILE--
 <?php declare(strict_types=1);
 $marker = sys_get_temp_dir() . '/phpunit-parallel-stop-on-failure.marker';
@@ -39,4 +39,4 @@ Failed asserting that false is true.
 
 FAILURES!
 Tests: 1, Assertions: 1, Failures: 1.
-bool(false)
+bool(true)
