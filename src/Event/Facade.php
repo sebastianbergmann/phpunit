@@ -115,11 +115,11 @@ final class Facade implements EventCollector
      */
     public function initForIsolation(HRTime $offset): CollectingDispatcher
     {
-        DeprecationCollector::initForIsolation();
-
         $dispatcher = new CollectingDispatcher(
             new DirectDispatcher($this->typeMap()),
         );
+
+        DeprecationCollector::initForIsolation($dispatcher);
 
         $system = new Telemetry\System(
             new Telemetry\SystemStopWatchWithOffset($offset),
