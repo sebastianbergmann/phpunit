@@ -30,25 +30,6 @@ if ({collectCodeCoverageInformation}) {
 
 ErrorHandlerBootstrapper::bootstrap($__phpunit_configuration);
 
-// A worker loads only the test class file of the unit it runs, whereas the
-// main process has loaded every test class file. A class that is declared in
-// another test class file and cannot be autoloaded, such as a test class that
-// a #[DataProviderExternal] attribute names, is therefore loaded on demand from
-// the file the main process loaded it from. This autoloader is registered
-// last, so that it only ever sees classes that no other autoloader knows.
-spl_autoload_register(
-    static function (string $className): void
-    {
-        static $files = {testClassFiles};
-
-        $className = strtolower($className);
-
-        if (isset($files[$className])) {
-            require_once $files[$className];
-        }
-    },
-);
-
 // The configured extensions that implement ChildProcessExtension are
 // bootstrapped once, here, for the lifetime of the worker. Their subscribers
 // are collected and registered with the dispatcher of every unit this worker
@@ -76,6 +57,20 @@ if (!$__phpunit_configuration->noExtensions()) {
     }
 
     $__phpunit_extensionWarnings = $__phpunit_extensionBootstrapper->warnings();
+}
+
+// A sequential run loads every test class file before it runs a test, so a
+// test may rely on what another test class file declares: a class that it
+// names in #[DataProviderExternal], an interface, a trait, a function, or a
+// constant, for instance. The worker loads the test class files that the
+// main process loaded, in the same order, so that the tests it runs see the
+// same declarations, whichever unit it is asked to run. A file that no longer
+// exists, because it was generated into a temporary directory that has been
+// removed since, for instance, is skipped.
+foreach ({testClassFiles} as $__phpunit_testClassFile) {
+    if (is_file($__phpunit_testClassFile)) {
+        require_once $__phpunit_testClassFile;
+    }
 }
 
 // A unit of work is run as a TestSuite, whose run loop consults the test
