@@ -277,7 +277,7 @@ jobs:
         run: php ./tools/composer install --no-ansi --no-interaction --no-progress
 
       - name: Run tests with PHPUnit
-        run: php ./phpunit --testsuite unit --order-by random --display-all-issues
+        run: php ./phpunit --testsuite unit --order-by random --compact --display-all-issues
 
   end-to-end-tests:
     name: End-to-End Tests
@@ -358,7 +358,7 @@ jobs:
         run: php ./tools/composer install --no-ansi --no-interaction --no-progress
 
       - name: Run tests with PHPUnit
-        run: php ./phpunit --testsuite end-to-end --order-by random --display-all-issues
+        run: php ./phpunit --testsuite end-to-end --order-by random --compact --display-all-issues
 
   code-coverage:
     name: Code Coverage
@@ -430,7 +430,7 @@ jobs:
         run: ./phpunit --warm-coverage-cache
 
       - name: Collect code coverage with PHPUnit
-        run: ./phpunit --log-junit test-results.xml --coverage-openclover=code-coverage.xml
+        run: ./phpunit --log-junit test-results.xml --coverage-openclover=code-coverage.xml --compact --display-all-issues
 
       - name: Upload test results to Codecov.io
         if: ${{ !cancelled() }}
