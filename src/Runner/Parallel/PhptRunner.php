@@ -122,6 +122,13 @@ final class PhptRunner
     private bool $exclusive        = false;
 
     /**
+     * Whether the tests that are running were asked to halt (see halt()):
+     * the runner then only drives them to completion, and discards their
+     * results.
+     */
+    private bool $halting = false;
+
+    /**
      * @var ?callable(non-negative-int, EventCollection): void
      */
     private $onCompleted;
@@ -208,6 +215,7 @@ final class PhptRunner
         $this->activeConflicts = [];
         $this->exclusive       = false;
         $this->onCompleted     = $onCompleted;
+        $this->halting         = false;
     }
 
     /**
@@ -269,19 +277,44 @@ final class PhptRunner
     }
 
     /**
-     * Abandon the run: the tests that have not been started yet are dropped
-     * and the child processes of the running tests are terminated without
-     * waiting for their results. Used when the test runner stops early,
-     * because the results collected so far call for it (--stop-on-*).
+     * Abandon the run, because the results collected so far call for the test
+     * runner to stop (--stop-on-*): the tests that have not been started yet
+     * are dropped, and the running tests are asked to halt. A halted test
+     * finishes the section that is running and then runs only what must
+     * still run — the --CLEAN-- section, when the --FILE-- section has run —
+     * and skips everything else, the remaining repetitions or attempts of a
+     * repeated or retried test included (see Interruption), so that the test
+     * does not leave its fixtures behind.
      *
-     * A terminated test's cleanup still happens: the test is marked as
-     * interrupted and its generator is driven to completion, which runs the
-     * --CLEAN-- section when the --FILE-- section has already run and skips
-     * everything else. The events the test emits while being driven go into
-     * its collector, which is discarded — the cleanup happens, no result is
-     * reported, exactly as when a sequential run is interrupted.
+     * The caller is expected to keep driving the runner with tick() until no
+     * test is running anymore. The results of the halted tests are discarded:
+     * they are for tests that a sequential run would not have run.
      */
     public function halt(): void
+    {
+        $this->queue   = [];
+        $this->halting = true;
+
+        foreach ($this->active as $task) {
+            $task['interruption']->interrupt();
+        }
+    }
+
+    /**
+     * Abandon the run without waiting for the sections that are running: the
+     * tests that have not been started yet are dropped, and the child
+     * processes of the running tests are terminated. Used when the deadline
+     * of a time limit for the test run passes while the test runner waits for
+     * the tests that it asked to halt.
+     *
+     * A terminated test's cleanup still happens, unless it was its --CLEAN--
+     * section that was terminated: the test is marked as interrupted and its
+     * generator is driven to completion, which runs the --CLEAN-- section
+     * when the --FILE-- section has already run and skips everything else.
+     * The events the test emits while being driven go into its collector,
+     * which is discarded.
+     */
+    public function kill(): void
     {
         $this->queue = [];
 
@@ -653,7 +686,11 @@ final class PhptRunner
 
             $this->budget->release();
 
-            $onCompleted($task['unit']->index(), $task['collector']->flush());
+            // The events of a test that was asked to halt are discarded, as
+            // its result is.
+            if (!$this->halting) {
+                $onCompleted($task['unit']->index(), $task['collector']->flush());
+            }
 
             $this->release($task['unit']);
 

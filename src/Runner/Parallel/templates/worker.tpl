@@ -85,6 +85,13 @@ TestResultFacade::init();
 
 ob_end_clean();
 
+function __phpunit_worker_halt_was_requested(string $haltFile): bool
+{
+    clearstatcache(true, $haltFile);
+
+    return is_file($haltFile);
+}
+
 function __phpunit_worker_run_unit(array $command, array $extensionSubscribers, array $extensionWarnings): string
 {
     $dispatcher = Facade::instance()->initForIsolation(
@@ -149,6 +156,52 @@ function __phpunit_worker_run_unit(array $command, array $extensionSubscribers, 
         },
     );
 
+    // The main process asks the worker to halt the unit when the run is to
+    // stop (--stop-on-*), by creating the unit's halt file (see
+    // PersistentWorker::requestHalt()). The request is honoured between two
+    // tests, as the sequential test runner stops between two tests: the test
+    // run is interrupted, so that the test suite starts no further test and
+    // runs the methods that run after the last test of the class,
+    // tearDownAfterClass() for instance, and the unit does not leave its
+    // fixtures behind. The request is checked for whenever a test has
+    // finished, and when the methods that run before the first test of the
+    // class have finished. An interrupted worker runs no further test, which
+    // is of no concern: the main process does not dispatch another unit once
+    // the run is stopping.
+    $dispatcher->registerSubscriber(
+        new class($command['haltFile']) implements PHPUnit\Event\Test\FinishedSubscriber
+        {
+            public function __construct(
+                private readonly string $haltFile,
+            ) {
+            }
+
+            public function notify(PHPUnit\Event\Test\Finished $event): void
+            {
+                if (__phpunit_worker_halt_was_requested($this->haltFile)) {
+                    TestResultFacade::interrupt();
+                }
+            }
+        },
+    );
+
+    $dispatcher->registerSubscriber(
+        new class($command['haltFile']) implements PHPUnit\Event\Test\BeforeFirstTestMethodFinishedSubscriber
+        {
+            public function __construct(
+                private readonly string $haltFile,
+            ) {
+            }
+
+            public function notify(PHPUnit\Event\Test\BeforeFirstTestMethodFinished $event): void
+            {
+                if (__phpunit_worker_halt_was_requested($this->haltFile)) {
+                    TestResultFacade::interrupt();
+                }
+            }
+        },
+    );
+
     // A test that depends on a test method whose test is run with the data
     // sets of a data provider, or repeated, can only run once that test
     // method has been recorded as passed. The test result collector, which
@@ -191,7 +244,9 @@ function __phpunit_worker_run_unit(array $command, array $extensionSubscribers, 
         Facade::emitter()->testRunnerTriggeredPhpunitWarning($__phpunit_warning);
     }
 
-    if ($failure === null) {
+    // A unit whose halt was requested before it started is not run at all:
+    // its tests come after the test that made the run stop.
+    if ($failure === null && !__phpunit_worker_halt_was_requested($command['haltFile'])) {
         $suite->run();
     }
 

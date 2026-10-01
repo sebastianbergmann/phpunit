@@ -339,9 +339,9 @@ final class ResultAggregator
     /**
      * Close the test suite envelopes that the forwarded events of the units
      * that are still executing left open. Called when the run stops early and
-     * those units are terminated: their remaining events, which would have
-     * closed the envelopes, never arrive, and the consumers that reconstruct
-     * the suite hierarchy from paired Started/Finished events need a balanced
+     * those units are halted: their remaining events, which would have closed
+     * the envelopes, are discarded, and the consumers that reconstruct the
+     * suite hierarchy from paired Started/Finished events need a balanced
      * stream.
      */
     public function closeOpenEnvelopes(): void
