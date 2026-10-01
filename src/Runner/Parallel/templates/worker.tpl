@@ -204,7 +204,7 @@ function __phpunit_worker_run_unit(array $command, array $extensionSubscribers, 
     $envelope = (object) [
         'codeCoverage' => $codeCoverage,
         'events'       => $dispatcher->flush(),
-        'passedTests'  => PassedTests::instance(),
+        'passedTests'  => PassedTests::instance()->withoutReturnValues(),
     ];
 
     if ($failure !== null) {
