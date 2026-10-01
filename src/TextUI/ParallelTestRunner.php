@@ -28,6 +28,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestRunner\ChildProcessResultProcessor;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Metadata\Api\Dependencies;
+use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\CodeCoverage;
@@ -180,9 +181,10 @@ final class ParallelTestRunner
 
         $processIsolation = $configuration->processIsolation();
 
-        $runs         = [];
-        $poolIsNeeded = false;
-        $phptIsNeeded = false;
+        $runs           = [];
+        $poolIsNeeded   = false;
+        $phptIsNeeded   = false;
+        $requiresXdebug = false;
 
         foreach ($chunks as $chunk) {
             $parallel  = [];
@@ -246,6 +248,10 @@ final class ParallelTestRunner
                 }
 
                 $parallel[] = $unit;
+
+                if ($unit instanceof TestClassWorkUnit && $this->requiresXdebug($unit, $testCases)) {
+                    $requiresXdebug = true;
+                }
             }
 
             // @codeCoverageIgnoreStart
@@ -295,6 +301,7 @@ final class ParallelTestRunner
                 $configuration->numberOfParallelWorkers(),
                 $configuration->numberOfTestClassesBeforeWorkerRecycling(),
                 $budget,
+                $requiresXdebug,
             );
 
             $pool->start();
@@ -604,6 +611,27 @@ final class ParallelTestRunner
     }
 
     /**
+     * Whether a test of the unit requires the Xdebug extension. A worker
+     * process is started with Xdebug turned off unless a test that it may be
+     * asked to run requires it, as the child process of a test that runs in
+     * process isolation is (see SeparateProcessTestRunner).
+     *
+     * @param list<TestCase> $testCases
+     */
+    private function requiresXdebug(TestClassWorkUnit $unit, array $testCases): bool
+    {
+        $requirements = new Requirements(Event\Facade::emitter());
+
+        foreach ($testCases as $testCase) {
+            if ($requirements->requiresXdebug($unit->className(), $testCase->name())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Whether the unit's test class — or one of its ancestors — carries class
      * metadata matched by the first filter, or any of the unit's test methods
      * carries method metadata matched by the second.
@@ -753,7 +781,7 @@ final class ParallelTestRunner
      * @param positive-int     $numberOfWorkers
      * @param non-negative-int $numberOfUnitsBeforeRecycling
      */
-    private function createPool(int $numberOfWorkers, int $numberOfUnitsBeforeRecycling, ProcessBudget $budget): WorkerPool
+    private function createPool(int $numberOfWorkers, int $numberOfUnitsBeforeRecycling, ProcessBudget $budget, bool $requiresXdebug): WorkerPool
     {
         $processor = new ChildProcessResultProcessor(
             Event\Facade::instance(),
@@ -764,10 +792,10 @@ final class ParallelTestRunner
 
         $jobRunner = new JobRunner($processor, Event\Facade::emitter());
 
-        $workers = [new PersistentWorker($jobRunner, 0)];
+        $workers = [new PersistentWorker($jobRunner, 0, $requiresXdebug)];
 
         for ($id = 1; $id < $numberOfWorkers; $id++) {
-            $workers[] = new PersistentWorker($jobRunner, $id);
+            $workers[] = new PersistentWorker($jobRunner, $id, $requiresXdebug);
         }
 
         return new WorkerPool($workers, $budget, $numberOfUnitsBeforeRecycling);
