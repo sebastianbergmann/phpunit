@@ -72,6 +72,16 @@ final class CompletedWorkUnitTest extends TestCase
         $this->assertSame('the data cannot be serialized', $completed->message());
     }
 
+    public function testAUnitThatCrashedCarriesNoOutputWhenTheWorkerWroteNone(): void
+    {
+        $this->assertSame('', CompletedWorkUnit::fromCrash($this->unit())->output());
+    }
+
+    public function testCarriesWhatTheWorkerWroteWhileRunningAUnitThatCrashed(): void
+    {
+        $this->assertSame('output', CompletedWorkUnit::fromCrash($this->unit(), null, 'output')->output());
+    }
+
     private function unit(): TestClassWorkUnit
     {
         return new TestClassWorkUnit(
