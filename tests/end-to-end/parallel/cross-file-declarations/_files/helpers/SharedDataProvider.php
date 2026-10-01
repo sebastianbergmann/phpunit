@@ -7,6 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-/*
- * This file declares no class at all, so that loading it maps no class to it.
- */
+namespace PHPUnit\TestFixture\ParallelCrossFile;
+
+final class SharedDataProvider
+{
+    public static function provide(): array
+    {
+        return [[true]];
+    }
+}

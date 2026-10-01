@@ -723,7 +723,7 @@ final class PersistentWorker
                 'childProcessHead'               => ChildProcessBootstrap::headFragment(''),
                 'childProcessConfiguration'      => $configurationFragment,
                 'collectCodeCoverageInformation' => $coverage,
-                'testClassFiles'                 => var_export(TestSuiteLoader::classesDeclaredInLoadedSuiteClassFiles(), true),
+                'testClassFiles'                 => var_export(TestSuiteLoader::loadedSuiteClassFiles(), true),
             ],
         );
 
