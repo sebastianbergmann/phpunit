@@ -32,6 +32,14 @@ final class TestCaseDescriptorTest extends TestCase
         $this->assertFalse($test->usesDataProvider());
     }
 
+    public function testNamesTheTestMethodItDescribes(): void
+    {
+        $this->assertSame(
+            'testStartsTheProcessLocalCounter',
+            TestCaseDescriptor::fromTestCase(new WorkerFirstTest('testStartsTheProcessLocalCounter'), WorkerFirstTest::class)->methodName(),
+        );
+    }
+
     public function testRebuildsATestCaseWithTheDataSetThatTheDataProviderProvidesUnderTheDescribedName(): void
     {
         $described = new WorkerDataProvidedTest('testWithNamedDataSets');
@@ -118,6 +126,15 @@ final class TestCaseDescriptorTest extends TestCase
 
         $this->assertSame(3, $test->attempt());
         $this->assertSame(4, $test->maxAttempts());
+    }
+
+    public function testRebuildsTheMessageThatATestCaseWhoseDataProviderProvidedNoDataIsSkippedWith(): void
+    {
+        $described = new WorkerFirstTest('testStartsTheProcessLocalCounter');
+
+        $described->setEmptyDataProviderSkipMessage('message');
+
+        $this->assertSame('message', $this->rebuild($described)->emptyDataProviderSkipMessage());
     }
 
     public function testCannotRebuildATestCaseWhoseDataSetTheDataProviderDoesNotProvide(): void
