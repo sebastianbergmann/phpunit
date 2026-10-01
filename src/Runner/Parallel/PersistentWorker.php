@@ -26,6 +26,7 @@ use function strlen;
 use function substr;
 use function sys_get_temp_dir;
 use function tempnam;
+use function trim;
 use function unlink;
 use function unserialize;
 use function var_export;
@@ -129,6 +130,15 @@ final class PersistentWorker
      * is not read any further, and the unit it belongs to is not trusted.
      */
     private bool $currentStreamTainted = false;
+
+    /**
+     * How much output the worker process had written when the current unit
+     * was dispatched. Should the worker die while running the unit, only
+     * what it wrote after that point is reported along with the crash.
+     *
+     * @var non-negative-int
+     */
+    private int $currentOutputOffset = 0;
 
     /**
      * @var non-negative-int
@@ -255,6 +265,7 @@ final class PersistentWorker
         $this->currentStreamOffset    = 0;
         $this->currentStreamSeenBytes = 0;
         $this->currentStreamTainted   = false;
+        $this->currentOutputOffset    = $this->job->outputLength();
 
         $this->job->write($encodedCommand . "\n");
     }
@@ -555,7 +566,9 @@ final class PersistentWorker
 
     /**
      * Record that the worker died while running the dispatched unit and reap
-     * the dead process so that it is not used again.
+     * the dead process so that it is not used again. What the worker wrote
+     * while it was running the unit is kept with the crash, as it may tell
+     * why the worker died.
      */
     private function crashed(): CompletedWorkUnit
     {
@@ -565,13 +578,17 @@ final class PersistentWorker
 
         $this->deleteCurrentUnitFiles();
 
-        $completed = CompletedWorkUnit::fromCrash($unit);
+        $output = '';
 
         if ($this->job !== null) {
-            $this->job->wait();
+            $result = $this->job->wait();
+
+            $output = trim(substr($result->stdout() . $result->stderr(), $this->currentOutputOffset));
 
             $this->job = null;
         }
+
+        $completed = CompletedWorkUnit::fromCrash($unit, null, $output);
 
         $this->clearCurrentUnit();
 
@@ -673,6 +690,7 @@ final class PersistentWorker
         $this->currentStreamOffset    = 0;
         $this->currentStreamSeenBytes = 0;
         $this->currentStreamTainted   = false;
+        $this->currentOutputOffset    = 0;
     }
 
     /**
