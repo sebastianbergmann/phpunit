@@ -392,11 +392,11 @@ final class ParallelTestRunner
      *
      * When the results forwarded so far call for the run to stop
      * (--stop-on-*), the chunk is aborted: the pumps drop their queued units
-     * and terminate the units they are executing, and true is returned so
-     * that the remaining chunks are abandoned. The results that were already
-     * forwarded are exactly those a sequential run would have reported,
-     * because the aggregator forwards in suite order and freezes as soon as
-     * the stop condition holds.
+     * and halt the units they are executing (see halt()), and true is
+     * returned so that the remaining chunks are abandoned. The results that
+     * were already forwarded are exactly those a sequential run would have
+     * reported, because the aggregator forwards in suite order and freezes as
+     * soon as the stop condition holds.
      *
      * @param list<WorkUnit>                                                                  $parallel
      * @param list<PhptWorkUnit>                                                              $phpt
@@ -468,19 +468,11 @@ final class ParallelTestRunner
         while (true) {
             // Stop early when the results forwarded so far call for it: the
             // queued units are dropped, and the units that are executing
-            // right now are terminated without waiting for their results —
-            // their results would be for tests that a sequential run would
-            // not have run.
+            // right now are halted and their results discarded — their
+            // results would be for tests that a sequential run would not have
+            // run.
             if (TestResultFacade::shouldStop()) {
-                if ($activePool !== null) {
-                    $activePool->halt();
-
-                    $aggregator->closeOpenEnvelopes();
-                }
-
-                if ($activePhptRunner !== null) {
-                    $activePhptRunner->halt();
-                }
+                $this->halt($activePool, $activePhptRunner, $aggregator);
 
                 $aborted = true;
 
@@ -580,6 +572,62 @@ final class ParallelTestRunner
         }
 
         return $aborted;
+    }
+
+    /**
+     * Halt the units of a chunk that are executing when the results forwarded
+     * so far call for the run to stop (--stop-on-*), and wait for them to
+     * halt. A unit halts as the sequential test runner stops: the test that
+     * is running finishes, no further test is started, and what cleans up
+     * after the tests is run — the methods that run after the last test of a
+     * class, such as tearDownAfterClass(), and the --CLEAN-- section of a
+     * PHPT test — so that the units do not leave their fixtures behind.
+     *
+     * The results of the halted units are discarded, so the test suites
+     * whose "test suite started" events have been forwarded for the units are
+     * closed here. Should the deadline of a time limit for the test run pass
+     * while the units halt, the units are terminated.
+     */
+    private function halt(?WorkerPool $pool, ?PhptRunner $phptRunner, ResultAggregator $aggregator): void
+    {
+        if ($pool !== null) {
+            $pool->halt();
+
+            $aggregator->closeOpenEnvelopes();
+        }
+
+        if ($phptRunner !== null) {
+            $phptRunner->halt();
+        }
+
+        while (($pool !== null && $pool->hasExecutingUnits()) ||
+               ($phptRunner !== null && $phptRunner->hasRunningTests())) {
+            if (TimeLimitHandler::deadlineHasPassed()) {
+                if ($pool !== null) {
+                    $pool->kill();
+                }
+
+                if ($phptRunner !== null) {
+                    $phptRunner->kill();
+                }
+
+                return;
+            }
+
+            $progressed = false;
+
+            if ($pool !== null && $pool->tick(false)) {
+                $progressed = true;
+            }
+
+            if ($phptRunner !== null && $phptRunner->tick(false)) {
+                $progressed = true;
+            }
+
+            if (!$progressed) {
+                usleep(self::POLL_INTERVAL_MICROSECONDS);
+            }
+        }
     }
 
     /**
