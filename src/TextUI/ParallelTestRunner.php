@@ -186,6 +186,8 @@ final class ParallelTestRunner
         $phptIsNeeded   = false;
         $requiresXdebug = false;
 
+        $classesDependedUponFromOtherClasses = $this->classesDependedUponFromOtherClasses($chunks);
+
         foreach ($chunks as $chunk) {
             $parallel  = [];
             $inProcess = [];
@@ -213,6 +215,10 @@ final class ParallelTestRunner
 
                 if ($unit instanceof TestClassWorkUnit && !$requiresProcessIsolation && !$mustNotRunInParallel) {
                     $reason = $this->crossClassDependencyOf($unit, $testCases);
+
+                    if ($reason === null && isset($classesDependedUponFromOtherClasses[$unit->className()])) {
+                        $reason = $classesDependedUponFromOtherClasses[$unit->className()];
+                    }
                 }
 
                 if ($unit instanceof TestClassWorkUnit &&
@@ -659,6 +665,61 @@ final class ParallelTestRunner
         }
 
         return false;
+    }
+
+    /**
+     * The test classes with a test that a test of another class depends on,
+     * each mapped to the reason why it is run in the main process.
+     *
+     * A test that depends on a test of another class runs in the main process
+     * (see crossClassDependencyOf()) and receives the value that the test it
+     * depends on returned. That value would have to travel from the worker
+     * process that ran the test it depends on to the main process, which a
+     * value that cannot be serialized, a closure for instance, cannot do. The
+     * test class whose test is depended upon is therefore run in the main
+     * process as well, and no worker process ever has to ship a return value.
+     * A test that depends on a test class as a whole does not receive a value,
+     * so the class it depends on can be run in a worker process.
+     *
+     * @param non-empty-list<array{suite: TestSuite, units: list<WorkUnit>, phpt: list<PhptWorkUnit>, standalone: list<array{index: non-negative-int, test: Test}>}> $chunks
+     *
+     * @return array<string, non-empty-string>
+     */
+    private function classesDependedUponFromOtherClasses(array $chunks): array
+    {
+        $classes = [];
+
+        foreach ($chunks as $chunk) {
+            foreach ($chunk['units'] as $unit) {
+                if (!$unit instanceof TestClassWorkUnit) {
+                    // @codeCoverageIgnoreStart
+                    continue;
+                    // @codeCoverageIgnoreEnd
+                }
+
+                $className = $unit->className();
+
+                foreach ($this->testCasesOf($unit) as $test) {
+                    foreach (Dependencies::dependencies($className, $test->name()) as $dependency) {
+                        if (!$dependency->isValid() ||
+                            $dependency->targetIsClass() ||
+                            $dependency->getTargetClassName() === $className ||
+                            isset($classes[$dependency->getTargetClassName()])) {
+                            continue;
+                        }
+
+                        $classes[$dependency->getTargetClassName()] = sprintf(
+                            'test %s::%s depends on %s, a test of this class',
+                            $className,
+                            $test->name(),
+                            $dependency->getTarget(),
+                        );
+                    }
+                }
+            }
+        }
+
+        return $classes;
     }
 
     /**
