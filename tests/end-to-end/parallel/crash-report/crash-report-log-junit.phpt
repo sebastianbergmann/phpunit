@@ -28,11 +28,15 @@ unlink($logfile);
       <testcase name="testThatPassesBeforeTheCrash" file="%sCrashingTest.php" line="%d" class="PHPUnit\TestFixture\ParallelCrashReport\CrashingTest" classname="PHPUnit.TestFixture.ParallelCrashReport.CrashingTest" assertions="1" time="%s"/>
       <testcase name="testThatKillsTheWorkerProcess" file="%sCrashingTest.php" line="%d" class="PHPUnit\TestFixture\ParallelCrashReport\CrashingTest" classname="PHPUnit.TestFixture.ParallelCrashReport.CrashingTest" assertions="0" time="%s">
         <error type="PHPUnit\Framework\AssertionFailedError">PHPUnit\TestFixture\ParallelCrashReport\CrashingTest::testThatKillsTheWorkerProcess
-The worker process running PHPUnit\TestFixture\ParallelCrashReport\CrashingTest ended unexpectedly</error>
+The worker process running PHPUnit\TestFixture\ParallelCrashReport\CrashingTest ended unexpectedly
+
+Fatal error: Premature end of PHP process when running PHPUnit\TestFixture\ParallelCrashReport\CrashingTest::testThatKillsTheWorkerProcess.</error>
       </testcase>
       <testcase name="testThatNeverRuns" file="%sCrashingTest.php" line="%d" class="PHPUnit\TestFixture\ParallelCrashReport\CrashingTest" classname="PHPUnit.TestFixture.ParallelCrashReport.CrashingTest" assertions="0" time="%s">
         <error type="PHPUnit\Framework\AssertionFailedError">PHPUnit\TestFixture\ParallelCrashReport\CrashingTest::testThatNeverRuns
-The worker process running PHPUnit\TestFixture\ParallelCrashReport\CrashingTest ended unexpectedly</error>
+The worker process running PHPUnit\TestFixture\ParallelCrashReport\CrashingTest ended unexpectedly
+
+Fatal error: Premature end of PHP process when running PHPUnit\TestFixture\ParallelCrashReport\CrashingTest::testThatKillsTheWorkerProcess.</error>
       </testcase>
     </testsuite>
     <testsuite name="PHPUnit\TestFixture\ParallelCrashReport\SteadyTest" file="%sSteadyTest.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="%s">

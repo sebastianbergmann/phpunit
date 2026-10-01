@@ -26,8 +26,12 @@ There were 2 errors:
 1) PHPUnit\TestFixture\ParallelCrashReport\CrashingTest::testThatKillsTheWorkerProcess
 The worker process running PHPUnit\TestFixture\ParallelCrashReport\CrashingTest ended unexpectedly
 
+Fatal error: Premature end of PHP process when running PHPUnit\TestFixture\ParallelCrashReport\CrashingTest::testThatKillsTheWorkerProcess.
+
 2) PHPUnit\TestFixture\ParallelCrashReport\CrashingTest::testThatNeverRuns
 The worker process running PHPUnit\TestFixture\ParallelCrashReport\CrashingTest ended unexpectedly
+
+Fatal error: Premature end of PHP process when running PHPUnit\TestFixture\ParallelCrashReport\CrashingTest::testThatKillsTheWorkerProcess.
 
 ERRORS!
 Tests: 4, Assertions: 2, Errors: 2.

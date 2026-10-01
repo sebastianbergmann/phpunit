@@ -230,6 +230,32 @@ final class PersistentWorkerTest extends TestCase
         $this->assertTrue($completed->crashed());
     }
 
+    public function testReportsWhatTheWorkerWroteWhileRunningTheUnitThatCrashed(): void
+    {
+        $worker = $this->worker();
+
+        $worker->start();
+
+        // What the worker wrote while it was running an earlier unit is not
+        // reported along with the crash of a later one.
+        $this->runToCompletion(
+            $worker,
+            new TestClassWorkUnit(0, WorkerSecondTest::class, [new WorkerSecondTest('testThatWritesStrayOutputWithoutANewlineToTheControlChannel')]),
+        );
+
+        $completed = $this->runToCompletion(
+            $worker,
+            new TestClassWorkUnit(1, WorkerSecondTest::class, [new WorkerSecondTest('testThatKillsTheWorkerProcess')]),
+        );
+
+        $worker->stop();
+
+        $this->assertSame(
+            'Fatal error: Premature end of PHP process when running ' . WorkerSecondTest::class . '::testThatKillsTheWorkerProcess.',
+            $completed->output(),
+        );
+    }
+
     public function testReportsAUnitAsCrashedWhenAFrameOfItsEventStreamFailsVerification(): void
     {
         $completed = $this->runWithTamperedEventStream(

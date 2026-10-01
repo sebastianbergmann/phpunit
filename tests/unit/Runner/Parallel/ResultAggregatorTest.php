@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner\Parallel;
 
+use const PHP_EOL;
 use function hrtime;
 use function in_array;
 use function serialize;
@@ -339,6 +340,82 @@ final class ResultAggregatorTest extends TestCase
         $this->assertSame([WorkerSecondTest::class . '::testThatFails'], $errored);
     }
 
+    public function testReportsWhatTheWorkerWroteAlongWithTheTestsOfACrashedUnit(): void
+    {
+        $messages = [];
+
+        $emitter = $this->createStub(Emitter::class);
+
+        $emitter->method('testErrored')->willReturnCallback(
+            static function (CodeTest $test, CodeThrowable $throwable) use (&$messages): void
+            {
+                $messages[] = $throwable->message();
+            },
+        )->seal();
+
+        $this->aggregator($emitter)->add(
+            CompletedWorkUnit::fromCrash(
+                new TestClassWorkUnit(0, WorkerSecondTest::class, [new WorkerSecondTest('testThatFails')]),
+                null,
+                'output of the worker process',
+            ),
+        );
+
+        $this->assertSame(
+            [
+                'The worker process running ' . WorkerSecondTest::class . ' ended unexpectedly' . PHP_EOL .
+                PHP_EOL .
+                'output of the worker process',
+            ],
+            $messages,
+        );
+    }
+
+    public function testReportsAWorkerThatEndedUnexpectedlyAfterAllTestsOfItsUnitHadFinishedAsATestRunnerWarning(): void
+    {
+        // The worker died after the last test of its unit had finished, in
+        // tearDownAfterClass(), for instance: there is no test left to report
+        // the crash for, yet it must not go unnoticed.
+        $reported = new WorkerSecondTest('testSeesTheStateLeftBehindByTheFirstTest');
+
+        $frameworkSuite = FrameworkTestSuite::empty(WorkerSecondTest::class, $this->createStub(Emitter::class));
+
+        $frameworkSuite->addTest($reported);
+
+        $suiteValue = TestSuiteBuilder::from($frameworkSuite);
+
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter->expects($this->never())->method('testErrored');
+        $emitter->expects($this->once())->method('childProcessErrored');
+        $emitter->expects($this->once())->method('testSuiteFinished');
+        $emitter->expects($this->once())
+            ->method('testRunnerTriggeredPhpunitWarning')
+            ->with(
+                'The worker process running ' . WorkerSecondTest::class . ' ended unexpectedly' . PHP_EOL .
+                PHP_EOL .
+                'output of the worker process',
+            )
+            ->seal();
+
+        $aggregator = $this->aggregator($emitter);
+
+        $frame = new EventCollection;
+
+        $frame->add(new TestSuiteStarted($this->telemetryInfo(), $suiteValue));
+        $frame->add(new TestFinished($this->telemetryInfo(), TestMethodBuilder::fromTestCase($reported), 1));
+
+        $aggregator->addStreamedEvents(0, $frame);
+
+        $aggregator->add(
+            CompletedWorkUnit::fromCrash(
+                new TestClassWorkUnit(0, WorkerSecondTest::class, [$reported]),
+                null,
+                'output of the worker process',
+            ),
+        );
+    }
+
     public function testDoesNotReportATestOfACrashedUnitAgainWhoseLastAttemptWasReported(): void
     {
         // The parent process knows a retried test by its first attempt, but
@@ -538,9 +615,10 @@ final class ResultAggregatorTest extends TestCase
         $emitter->expects($this->never())->method('testErrored');
 
         // The unit's only test was already reported, so the crash is
-        // signalled without stubbing any test, and only the class envelope,
-        // which the frames left open, is closed.
+        // reported as a test runner warning without stubbing any test, and
+        // only the class envelope, which the frames left open, is closed.
         $emitter->expects($this->once())->method('childProcessErrored');
+        $emitter->expects($this->once())->method('testRunnerTriggeredPhpunitWarning');
         $emitter->expects($this->once())
             ->method('testSuiteFinished')
             ->with($this->identicalTo($classValue))
@@ -573,7 +651,9 @@ final class ResultAggregatorTest extends TestCase
         $emitter->expects($this->once())
             ->method('childProcessErrored')
             ->with($this->anything(), $this->stringContains('tampered with'));
-        $emitter->expects($this->never())->method('testRunnerTriggeredPhpunitWarning');
+        $emitter->expects($this->once())
+            ->method('testRunnerTriggeredPhpunitWarning')
+            ->with($this->stringContains('tampered with'));
         $emitter->expects($this->once())->method('testSuiteStarted');
         $emitter->expects($this->once())->method('testSuiteFinished')->seal();
 
@@ -589,7 +669,9 @@ final class ResultAggregatorTest extends TestCase
         $emitter->expects($this->once())
             ->method('childProcessErrored')
             ->with($this->anything(), $this->stringContains('ended unexpectedly'));
-        $emitter->expects($this->never())->method('testRunnerTriggeredPhpunitWarning');
+        $emitter->expects($this->once())
+            ->method('testRunnerTriggeredPhpunitWarning')
+            ->with($this->stringContains('ended unexpectedly'));
         $emitter->expects($this->once())->method('testSuiteStarted');
         $emitter->expects($this->once())->method('testSuiteFinished')->seal();
 
@@ -608,6 +690,7 @@ final class ResultAggregatorTest extends TestCase
 
         $emitter->method('testSuiteStarted');
         $emitter->method('testSuiteFinished');
+        $emitter->method('testRunnerTriggeredPhpunitWarning');
         $emitter->method('childProcessErrored')->willReturnCallback(
             static function (ChildProcessReason $reason, string $message) use (&$messages): void
             {
@@ -639,6 +722,7 @@ final class ResultAggregatorTest extends TestCase
 
         $emitter->method('testSuiteStarted');
         $emitter->method('testSuiteFinished');
+        $emitter->method('testRunnerTriggeredPhpunitWarning');
         $emitter->method('childProcessErrored')->willReturnCallback(
             static function (ChildProcessReason $reason, string $message) use (&$order): void
             {
@@ -756,6 +840,7 @@ final class ResultAggregatorTest extends TestCase
 
         $emitter->method('testSuiteStarted');
         $emitter->method('testSuiteFinished');
+        $emitter->method('testRunnerTriggeredPhpunitWarning');
         $emitter->method('childProcessErrored')->willReturnCallback(
             static function (ChildProcessReason $reason, string $message) use (&$forwarded): void
             {
@@ -793,6 +878,7 @@ final class ResultAggregatorTest extends TestCase
 
         $emitter->method('testSuiteStarted');
         $emitter->method('testSuiteFinished');
+        $emitter->method('testRunnerTriggeredPhpunitWarning');
         $emitter->method('childProcessErrored')->willReturnCallback(
             static function (ChildProcessReason $reason, string $message) use (&$forwarded): void
             {
@@ -825,6 +911,7 @@ final class ResultAggregatorTest extends TestCase
 
         $emitter->method('testSuiteStarted');
         $emitter->method('testSuiteFinished');
+        $emitter->method('testRunnerTriggeredPhpunitWarning');
         $emitter->method('childProcessErrored')->willReturnCallback(
             static function (ChildProcessReason $reason, string $message) use (&$forwarded): void
             {
@@ -920,6 +1007,7 @@ final class ResultAggregatorTest extends TestCase
 
         $emitter->method('testSuiteStarted');
         $emitter->method('testSuiteFinished');
+        $emitter->method('testRunnerTriggeredPhpunitWarning');
         $emitter->method('childProcessErrored')->willReturnCallback(
             static function (ChildProcessReason $reason, string $message) use (&$messages): void
             {
