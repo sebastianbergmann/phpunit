@@ -41,10 +41,9 @@ use PHPUnit\Event\EventCollection;
  * the state the dead process had accumulated, so the retry gets a pristine
  * environment. A unit whose retry also crashes, or that cannot be retried
  * because some of its results were already reported, is reported to the
- * callback as a crashed unit; its worker stays dead and the remaining units
- * are redistributed across the surviving workers. Should every worker die,
- * the units that were never started are likewise reported as crashed so that
- * the caller can account for all of them.
+ * callback as a crashed unit. A worker whose process died is booted afresh
+ * once another unit is to be dispatched to it, so that the units that come
+ * after a crashed one run as they would have run without the crash.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -259,20 +258,10 @@ final class WorkerPool
 
         $busy = $this->busyWorkers();
 
+        // With no unit in flight, queued units are waiting for a slot of the
+        // shared process budget, which units executing elsewhere hold, or for
+        // the caller to allow dispatching again.
         if ($busy === []) {
-            // With no unit in flight, queued units can be waiting for one of
-            // two reasons: every worker has died, or the shared process budget
-            // is exhausted by units executing elsewhere. Only the former is
-            // terminal; the abandoned units are then accounted for so that the
-            // caller does not silently lose them.
-            if ($this->hasQueuedUnits() && !$this->hasAliveWorkers()) {
-                while ($this->hasQueuedUnits()) {
-                    $onCompleted(CompletedWorkUnit::fromCrash($this->nextQueuedUnit()));
-                }
-
-                return true;
-            }
-
             return false;
         }
 
@@ -441,9 +430,7 @@ final class WorkerPool
 
         $this->retriedUnits[$index] = true;
 
-        $worker->restart();
-
-        unset($this->completedUnits[spl_object_id($worker)]);
+        $this->restart($worker);
 
         $acquired = $this->budget->acquire();
 
@@ -498,12 +485,14 @@ final class WorkerPool
     }
 
     /**
-     * Hand the next queued units to the idle, alive workers.
+     * Hand the next queued units to the workers that are not busy, booting a
+     * fresh process for a worker whose process has died.
      *
      * A unit that cannot be dispatched — its description cannot be built or
-     * transported — is reported to the
-     * callback as a crashed unit and skipped, so that one undispatchable unit
-     * does not abort the entire run or starve an otherwise idle worker.
+     * transported, or no fresh worker process can be booted for it — is
+     * reported to the callback as a crashed unit and skipped, so that one
+     * undispatchable unit does not abort the entire run or starve an
+     * otherwise idle worker.
      */
     private function dispatch(): void
     {
@@ -512,7 +501,7 @@ final class WorkerPool
         assert($onCompleted !== null);
 
         foreach ($this->workers as $worker) {
-            if (!$worker->isAlive() || $worker->isBusy()) {
+            if ($worker->isBusy()) {
                 continue;
             }
 
@@ -527,6 +516,13 @@ final class WorkerPool
                 $unit = $this->nextQueuedUnit();
 
                 try {
+                    // A worker whose process died while it was running an
+                    // earlier unit, and that was not booted afresh to retry
+                    // that unit, is booted afresh for this one.
+                    if (!$worker->isAlive()) {
+                        $this->restart($worker);
+                    }
+
                     $worker->dispatch($unit);
 
                     break;
@@ -581,15 +577,18 @@ final class WorkerPool
         return $indexes;
     }
 
-    private function hasAliveWorkers(): bool
+    /**
+     * Boot a fresh worker process in place of one that has died. The fresh
+     * process has not completed any unit yet, so its count towards recycling
+     * starts over.
+     *
+     * @throws WorkerException
+     */
+    private function restart(PersistentWorker $worker): void
     {
-        foreach ($this->workers as $worker) {
-            if ($worker->isAlive()) {
-                return true;
-            }
-        }
+        $worker->restart();
 
-        return false;
+        unset($this->completedUnits[spl_object_id($worker)]);
     }
 
     /**
