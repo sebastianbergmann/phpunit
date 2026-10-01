@@ -13,6 +13,8 @@ use function array_reverse;
 use function class_exists;
 use function count;
 use function explode;
+use PHPUnit\Runner\Baseline\CannotLoadBaselineException;
+use PHPUnit\Runner\Baseline\Reader;
 use PHPUnit\Runner\DeprecationFilter;
 use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\Runner\IssueTriggerResolver\Resolver;
@@ -83,6 +85,16 @@ final readonly class ErrorHandlerBootstrapper
             }
 
             ErrorHandler::instance()->addDeprecationFilter($filter);
+        }
+
+        if (!$configuration->hasGenerateBaseline() && $configuration->source()->useBaseline()) {
+            try {
+                ErrorHandler::instance()->useBaseline(
+                    (new Reader)->read($configuration->source()->baseline()),
+                );
+            } catch (CannotLoadBaselineException) {
+                // The main process has already reported that the baseline cannot be loaded
+            }
         }
     }
 }

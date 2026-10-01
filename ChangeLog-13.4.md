@@ -32,4 +32,8 @@ All notable changes of the PHPUnit 13.4 release series are documented in this fi
 * [#6686](https://github.com/sebastianbergmann/phpunit/issues/6686): `Constraint::failureDescriptionInContext()` and `LogicalNot::negate()`
 * [#6999](https://github.com/sebastianbergmann/phpunit/issues/6999): Class-level `#[Group]`, `#[Ticket]`, `#[Small]`, `#[Medium]`, and `#[Large]` on parent classes of test classes
 
+### Fixed
+
+* Issues that are listed in the baseline are not ignored for tests that are run in a separate process
+
 [13.4.0]: https://github.com/sebastianbergmann/phpunit/compare/13.3...main
