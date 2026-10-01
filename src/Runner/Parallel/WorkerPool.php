@@ -147,6 +147,12 @@ final class WorkerPool
     private array $completedUnits = [];
 
     /**
+     * Whether the units that are executing were asked to halt (see halt()):
+     * the pool then only waits for them, and discards their results.
+     */
+    private bool $halting = false;
+
+    /**
      * @param non-empty-list<PersistentWorker> $workers
      * @param non-negative-int                 $numberOfUnitsBeforeRecycling
      */
@@ -217,6 +223,7 @@ final class WorkerPool
         $this->onStreamedEvents   = $onStreamedEvents;
         $this->onCrashedUnitRetry = $onCrashedUnitRetry;
         $this->retriedUnits       = [];
+        $this->halting            = false;
     }
 
     /**
@@ -230,9 +237,16 @@ final class WorkerPool
      * to a worker in this round: the units that are already executing are
      * still polled and harvested, so the pool drains. This is how the caller
      * makes room for a unit that must run alone (see ParallelTestRunner).
+     *
+     * Once halt() has been called, a round only harvests the workers whose
+     * units have halted.
      */
     public function tick(bool $mayDispatch = true): bool
     {
+        if ($this->halting) {
+            return $this->harvestHaltedUnits();
+        }
+
         $onCompleted      = $this->onCompleted;
         $onStreamedEvents = $this->onStreamedEvents;
 
@@ -340,21 +354,45 @@ final class WorkerPool
     }
 
     /**
-     * Abandon the run: the units that have not been dispatched yet are dropped
-     * and every worker that is busy executing a unit is terminated without
-     * waiting for its result. Used when the test runner stops early, because
-     * the results collected so far call for it (--stop-on-*); the workers that
-     * are idle stay alive and are shut down by stop() as usual.
+     * Abandon the run, because the results collected so far call for the
+     * test runner to stop (--stop-on-*): the units that have not been
+     * dispatched yet are dropped, and every worker that is busy executing a
+     * unit is asked to halt it as the sequential test runner stops — the test
+     * that is running finishes, no further test of the unit is started, and
+     * the methods that run after the last test of the class, such as
+     * tearDownAfterClass(), are run, so that the unit does not leave its
+     * fixtures behind.
+     *
+     * The caller is expected to keep driving the pool with tick() until no
+     * unit is executing anymore. The results of the halted units, and the
+     * events that their workers stream until then, are discarded: they are
+     * for tests that a sequential run would not have run. The workers stay
+     * alive and are shut down by stop() as usual.
      */
     public function halt(): void
     {
         $this->queue->clear();
 
-        foreach ($this->workers as $worker) {
-            if (!$worker->isAlive() || !$worker->isBusy()) {
-                continue;
-            }
+        $this->halting = true;
 
+        foreach ($this->busyWorkers() as $worker) {
+            $worker->requestHalt();
+        }
+    }
+
+    /**
+     * Abandon the run without waiting for the units that are executing: the
+     * units that have not been dispatched yet are dropped, and every worker
+     * that is busy executing a unit is terminated without waiting for its
+     * result. Used when the deadline of a time limit for the test run passes
+     * while the test runner waits for the units that it asked to halt; the
+     * workers that are idle stay alive and are shut down by stop() as usual.
+     */
+    public function kill(): void
+    {
+        $this->queue->clear();
+
+        foreach ($this->busyWorkers() as $worker) {
             $worker->kill();
 
             // The slot that the killed unit held goes back to the shared
@@ -552,6 +590,36 @@ final class WorkerPool
         }
 
         return false;
+    }
+
+    /**
+     * Harvest every worker that has halted the unit it was asked to halt.
+     * The unit's result is discarded, and so are the events that the worker
+     * streams in the meantime.
+     */
+    private function harvestHaltedUnits(): bool
+    {
+        $progressed = false;
+
+        foreach ($this->busyWorkers() as $worker) {
+            $completed = $worker->poll(
+                static function (WorkUnit $unit, EventCollection $events): void
+                {
+                },
+            );
+
+            if ($completed === null) {
+                continue;
+            }
+
+            $progressed = true;
+
+            // The slot that the halted unit held goes back to the shared
+            // process budget.
+            $this->budget->release();
+        }
+
+        return $progressed;
     }
 
     /**

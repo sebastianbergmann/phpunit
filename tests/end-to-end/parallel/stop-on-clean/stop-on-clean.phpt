@@ -1,5 +1,5 @@
 --TEST--
-phpunit --parallel=3 --stop-on-failure runs the CLEAN section of a PHPT test whose FILE section it terminated when the run stopped, and does not start the FILE section of a test whose SKIPIF section it terminated
+phpunit --parallel=3 --stop-on-failure runs the CLEAN section of a PHPT test whose FILE section is running when the run stops, and does not start the FILE section of a test whose SKIPIF section is running
 --FILE--
 <?php declare(strict_types=1);
 $dirty   = sys_get_temp_dir() . '/phpunit-parallel-stop-on-clean.dirty';
