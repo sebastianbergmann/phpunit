@@ -215,6 +215,51 @@ EOT,
         $this->assertSame('', $result->stderr());
     }
 
+    public function testReportsHowMuchOutputAJobWhoseOutputIsRedirectedToAFileHasWritten(): void
+    {
+        $job = $this->jobRunner()->start(
+            new Job(
+                <<<'EOT'
+<?php declare(strict_types=1);
+fwrite(STDOUT, 'out-');
+fwrite(STDERR, 'err');
+
+EOT,
+                ChildProcessReason::ParallelWorker,
+                redirectErrors: true,
+            ),
+        );
+
+        $job->closeStdin();
+
+        while ($job->isRunning()) {
+            usleep(1000);
+        }
+
+        $this->assertSame(7, $job->outputLength());
+
+        $job->wait();
+    }
+
+    public function testReportsNoOutputLengthForAJobWhoseOutputIsReadFromPipes(): void
+    {
+        $job = $this->jobRunner()->start(
+            new Job(
+                <<<'EOT'
+<?php declare(strict_types=1);
+fwrite(STDOUT, 'out');
+
+EOT,
+                ChildProcessReason::ParallelWorker,
+            ),
+        );
+
+        $this->assertSame(0, $job->outputLength());
+
+        $job->closeStdin();
+        $job->wait();
+    }
+
     public function testCanDriveSeveralJobsThroughASingleSelectLoop(): void
     {
         $runner = $this->jobRunner();

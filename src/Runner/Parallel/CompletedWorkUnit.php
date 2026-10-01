@@ -43,28 +43,36 @@ final readonly class CompletedWorkUnit
     private ?string $message;
 
     /**
+     * What the worker process wrote to its standard output and standard error
+     * while it was running a crashed unit, which may tell why it died: the
+     * message of a fatal error, for instance.
+     */
+    private string $output;
+
+    /**
      * @param non-empty-string $nonce
      */
     public static function fromEnvelope(WorkUnit $unit, string $serializedResult, string $nonce): self
     {
-        return new self($unit, $serializedResult, $nonce, false, null);
+        return new self($unit, $serializedResult, $nonce, false, null, '');
     }
 
-    public static function fromCrash(WorkUnit $unit, ?string $message = null): self
+    public static function fromCrash(WorkUnit $unit, ?string $message = null, string $output = ''): self
     {
-        return new self($unit, '', null, true, $message);
+        return new self($unit, '', null, true, $message, $output);
     }
 
     /**
      * @param ?non-empty-string $nonce
      */
-    private function __construct(WorkUnit $unit, string $serializedResult, ?string $nonce, bool $crashed, ?string $message)
+    private function __construct(WorkUnit $unit, string $serializedResult, ?string $nonce, bool $crashed, ?string $message, string $output)
     {
         $this->unit             = $unit;
         $this->serializedResult = $serializedResult;
         $this->nonce            = $nonce;
         $this->crashed          = $crashed;
         $this->message          = $message;
+        $this->output           = $output;
     }
 
     public function unit(): WorkUnit
@@ -93,5 +101,10 @@ final readonly class CompletedWorkUnit
     public function message(): ?string
     {
         return $this->message;
+    }
+
+    public function output(): string
+    {
+        return $this->output;
     }
 }

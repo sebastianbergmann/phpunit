@@ -93,8 +93,12 @@ unlink($logfile);
  </e:started>
  <e:finished id="4" time="%s">
   <result status="ERRORED">
-   <reason>The worker process running PHPUnit\TestFixture\ParallelCrashReport\CrashingTest ended unexpectedly</reason>
+   <reason>The worker process running PHPUnit\TestFixture\ParallelCrashReport\CrashingTest ended unexpectedly
+
+Fatal error: Premature end of PHP process when running PHPUnit\TestFixture\ParallelCrashReport\CrashingTest::testThatKillsTheWorkerProcess.</reason>
    <phpunit:throwable type="PHPUnit\Framework\AssertionFailedError" assertionError="false"><![CDATA[The worker process running PHPUnit\TestFixture\ParallelCrashReport\CrashingTest ended unexpectedly
+
+Fatal error: Premature end of PHP process when running PHPUnit\TestFixture\ParallelCrashReport\CrashingTest::testThatKillsTheWorkerProcess.
 ]]></phpunit:throwable>
   </result>
  </e:finished>
@@ -111,8 +115,12 @@ unlink($logfile);
  </e:started>
  <e:finished id="5" time="%s">
   <result status="ERRORED">
-   <reason>The worker process running PHPUnit\TestFixture\ParallelCrashReport\CrashingTest ended unexpectedly</reason>
+   <reason>The worker process running PHPUnit\TestFixture\ParallelCrashReport\CrashingTest ended unexpectedly
+
+Fatal error: Premature end of PHP process when running PHPUnit\TestFixture\ParallelCrashReport\CrashingTest::testThatKillsTheWorkerProcess.</reason>
    <phpunit:throwable type="PHPUnit\Framework\AssertionFailedError" assertionError="false"><![CDATA[The worker process running PHPUnit\TestFixture\ParallelCrashReport\CrashingTest ended unexpectedly
+
+Fatal error: Premature end of PHP process when running PHPUnit\TestFixture\ParallelCrashReport\CrashingTest::testThatKillsTheWorkerProcess.
 ]]></phpunit:throwable>
   </result>
  </e:finished>
