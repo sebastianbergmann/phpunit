@@ -15,6 +15,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Runner\DeprecationCollector\Facade as DeprecationCollector;
 use PHPUnit\TestFixture\RecordingSubscriber;
 use ReflectionMethod;
 use ReflectionProperty;
@@ -106,8 +107,18 @@ final class FacadeTest extends TestCase
         $property = new ReflectionProperty(Facade::class, 'emitter');
         $emitter  = $property->getValue($facade);
 
-        $first  = $facade->initForIsolation(HRTime::fromSecondsAndNanoseconds(1, 0));
-        $second = $facade->initForIsolation(HRTime::fromSecondsAndNanoseconds(2, 0));
+        // Initializing the event facade for isolation also initializes the
+        // deprecation collector for isolation, which is process-wide state
+        // that the process running this test must get back.
+        $inIsolationProperty = new ReflectionProperty(DeprecationCollector::class, 'inIsolation');
+        $inIsolation         = $inIsolationProperty->getValue();
+
+        try {
+            $first  = $facade->initForIsolation(HRTime::fromSecondsAndNanoseconds(1, 0));
+            $second = $facade->initForIsolation(HRTime::fromSecondsAndNanoseconds(2, 0));
+        } finally {
+            $inIsolationProperty->setValue(null, $inIsolation);
+        }
 
         $this->assertSame($emitter, $property->getValue($facade));
         $this->assertNotSame($first, $second);
