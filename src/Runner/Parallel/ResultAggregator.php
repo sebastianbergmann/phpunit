@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner\Parallel;
 
+use const PHP_EOL;
 use function array_pop;
 use function array_reverse;
 use function array_slice;
@@ -528,6 +529,10 @@ final class ResultAggregator
                 );
             }
 
+            if ($completed->output() !== '') {
+                $message .= PHP_EOL . PHP_EOL . $completed->output();
+            }
+
             $this->reportTestsWithoutResult($completed, $message);
 
             return;
@@ -662,10 +667,14 @@ final class ResultAggregator
         }
 
         // Every test of the unit was already reported through its streamed
-        // frames; the child-process failure that cost the unit its result
-        // envelope is still signalled.
+        // frames, but the worker failed after its last test had finished: in
+        // a method such as tearDownAfterClass(), for instance. A sequential
+        // run would have been aborted by such a failure. As there is no test
+        // left to report it for, it is reported as a test runner warning, so
+        // that it is shown and fails the test run.
         if (!$anyStubs) {
             $this->emitter->childProcessErrored(ChildProcessReason::ParallelWorker, $message);
+            $this->emitter->testRunnerTriggeredPhpunitWarning($message);
         }
 
         foreach ($members as $member) {

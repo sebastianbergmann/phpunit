@@ -12,8 +12,10 @@ namespace PHPUnit\Util\PHP;
 use function assert;
 use function fclose;
 use function feof;
+use function fstat;
 use function fwrite;
 use function is_resource;
+use function max;
 use function proc_close;
 use function proc_get_status;
 use function proc_terminate;
@@ -158,6 +160,31 @@ final class RunningJob
         }
 
         return $streams;
+    }
+
+    /**
+     * The number of bytes the worker process has written to its standard
+     * output and standard error so far, for a job whose output is redirected
+     * to a file rather than a pipe. For any other job, it is 0. Once the
+     * process has been reaped, its output is available from wait() instead.
+     *
+     * @return non-negative-int
+     */
+    public function outputLength(): int
+    {
+        if (!is_resource($this->mergedOutputStream)) {
+            return 0;
+        }
+
+        $statistics = fstat($this->mergedOutputStream);
+
+        if ($statistics === false) {
+            // @codeCoverageIgnoreStart
+            return 0;
+            // @codeCoverageIgnoreEnd
+        }
+
+        return max(0, $statistics['size']);
     }
 
     /**
