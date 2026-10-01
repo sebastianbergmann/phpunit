@@ -39,6 +39,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite as FrameworkTestSuite;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\Filter\Factory;
+use PHPUnit\Runner\TimeLimit\TimeLimitExceededException;
 use PHPUnit\TestFixture\ParallelWorker\WorkerFirstTest;
 use PHPUnit\TestFixture\ParallelWorker\WorkerSecondTest;
 use PHPUnit\TestRunner\TestResult\PassedTests;
@@ -407,6 +408,89 @@ final class ResultAggregatorTest extends TestCase
                 new TestClassWorkUnit(0, WorkerSecondTest::class, [$reported]),
                 null,
                 'output of the worker process',
+            ),
+        );
+    }
+
+    public function testReportsOnlyTheRunningTestOfAUnitThatWasAbortedByTheTimeLimitAsAborted(): void
+    {
+        $finished     = new WorkerSecondTest('testSeesTheStateLeftBehindByTheFirstTest');
+        $running      = new WorkerSecondTest('testThatFails');
+        $neverStarted = new WorkerSecondTest('testThatKillsTheWorkerProcess');
+
+        $frameworkSuite = FrameworkTestSuite::empty(WorkerSecondTest::class, $this->createStub(Emitter::class));
+
+        $frameworkSuite->addTest($finished);
+        $frameworkSuite->addTest($running);
+        $frameworkSuite->addTest($neverStarted);
+
+        $errored = [];
+
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter->expects($this->never())->method('childProcessErrored');
+        $emitter->expects($this->never())->method('testRunnerTriggeredPhpunitWarning');
+        $emitter->expects($this->once())->method('testPreparationStarted');
+        $emitter->expects($this->once())->method('testPrepared');
+        $emitter->expects($this->once())->method('testFinished');
+        $emitter->expects($this->once())->method('testSuiteFinished');
+        $emitter->method('testErrored')->willReturnCallback(
+            static function (CodeTest $test, CodeThrowable $throwable) use (&$errored): void
+            {
+                $errored[] = [$test->id(), $throwable->className(), $throwable->message()];
+            },
+        )->seal();
+
+        $aggregator = $this->aggregator($emitter);
+
+        $frame = new EventCollection;
+
+        $frame->add(new TestSuiteStarted($this->telemetryInfo(), TestSuiteBuilder::from($frameworkSuite)));
+        $frame->add(new TestFinished($this->telemetryInfo(), TestMethodBuilder::fromTestCase($finished), 1));
+
+        $aggregator->addStreamedEvents(0, $frame);
+
+        $aggregator->add(
+            CompletedWorkUnit::fromAbortionByTimeLimit(
+                new TestClassWorkUnit(0, WorkerSecondTest::class, [$finished, $running, $neverStarted]),
+                'message',
+            ),
+        );
+
+        $this->assertSame(
+            [[WorkerSecondTest::class . '::testThatFails', TimeLimitExceededException::class, 'message']],
+            $errored,
+        );
+    }
+
+    public function testDoesNotReportAWarningForAUnitThatWasAbortedByTheTimeLimitAfterAllOfItsTestsHadFinished(): void
+    {
+        $finished = new WorkerSecondTest('testSeesTheStateLeftBehindByTheFirstTest');
+
+        $frameworkSuite = FrameworkTestSuite::empty(WorkerSecondTest::class, $this->createStub(Emitter::class));
+
+        $frameworkSuite->addTest($finished);
+
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter->expects($this->never())->method('childProcessErrored');
+        $emitter->expects($this->never())->method('testRunnerTriggeredPhpunitWarning');
+        $emitter->expects($this->never())->method('testErrored');
+        $emitter->expects($this->once())->method('testSuiteFinished')->seal();
+
+        $aggregator = $this->aggregator($emitter);
+
+        $frame = new EventCollection;
+
+        $frame->add(new TestSuiteStarted($this->telemetryInfo(), TestSuiteBuilder::from($frameworkSuite)));
+        $frame->add(new TestFinished($this->telemetryInfo(), TestMethodBuilder::fromTestCase($finished), 1));
+
+        $aggregator->addStreamedEvents(0, $frame);
+
+        $aggregator->add(
+            CompletedWorkUnit::fromAbortionByTimeLimit(
+                new TestClassWorkUnit(0, WorkerSecondTest::class, [$finished]),
+                'message',
             ),
         );
     }
