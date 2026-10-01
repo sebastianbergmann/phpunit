@@ -300,7 +300,9 @@ final class PersistentWorker
         try {
             $command = $this->testClassCommand($unit, $offset, $resultFile, $doneFile, $streamFile, $nonce);
         } catch (WorkerException $e) {
-            @unlink($resultFile);
+            if (is_file($resultFile)) {
+                unlink($resultFile);
+            }
 
             throw $e;
         }
@@ -510,7 +512,7 @@ final class PersistentWorker
         // complete frame are detected.
         clearstatcache(true, $streamFile);
 
-        $size = @filesize($streamFile);
+        $size = filesize($streamFile);
 
         if (!$streamIsComplete && ($size === false || $size <= $this->currentStreamSeenBytes)) {
             return [];
@@ -520,7 +522,7 @@ final class PersistentWorker
             $this->currentStreamSeenBytes = $size;
         }
 
-        $data = @file_get_contents($streamFile, false, null, $this->currentStreamOffset);
+        $data = file_get_contents($streamFile, false, null, $this->currentStreamOffset);
 
         if ($data === false || $data === '') {
             return [];
@@ -685,9 +687,13 @@ final class PersistentWorker
      */
     private function shutdownWarnings(string $resultFile, string $nonce): array
     {
-        $result = @file_get_contents($resultFile);
+        $result = false;
 
-        @unlink($resultFile);
+        if (is_file($resultFile)) {
+            $result = file_get_contents($resultFile);
+
+            unlink($resultFile);
+        }
 
         if ($result === false || !str_starts_with($result, $nonce)) {
             // A worker writes this file before it exits, and stop() is not
@@ -755,9 +761,17 @@ final class PersistentWorker
             return;
         }
 
-        @unlink($this->currentResultFile);
-        @unlink($this->currentDoneFile());
-        @unlink($this->currentStreamFile());
+        // A unit does not necessarily leave every one of these files behind: a
+        // unit whose tests were all skipped before they started streams no
+        // event, for instance. The files are checked for rather than deleted
+        // with errors suppressed, because an error handler that the bootstrap
+        // script registered is called for a suppressed error, too, and may
+        // turn it into an exception that aborts the test run.
+        foreach ([$this->currentResultFile, $this->currentDoneFile(), $this->currentStreamFile()] as $file) {
+            if (is_file($file)) {
+                unlink($file);
+            }
+        }
     }
 
     private function clearCurrentUnit(): void
