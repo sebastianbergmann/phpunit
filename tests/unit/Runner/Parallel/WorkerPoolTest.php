@@ -499,6 +499,55 @@ final class WorkerPoolTest extends TestCase
         }
     }
 
+    public function testAbortDropsTheQueuedUnitsAndReportsTheBusyUnitsAsAbortedByTheTimeLimit(): void
+    {
+        $budget = new ProcessBudget(1);
+
+        $pool = $this->pool(1, $budget);
+
+        $pool->start();
+
+        try {
+            $completed = [];
+
+            $sleeping = new TestClassWorkUnit(0, WorkerSleepingTest::class, [new WorkerSleepingTest('testThatSleeps')]);
+
+            $pool->begin(
+                [
+                    $sleeping,
+                    new TestClassWorkUnit(1, WorkerFirstTest::class, [new WorkerFirstTest('testStartsTheProcessLocalCounter')]),
+                ],
+                static function (CompletedWorkUnit $unit) use (&$completed): void
+                {
+                    $completed[] = $unit;
+                },
+                static function (WorkUnit $unit, EventCollection $events): void
+                {
+                },
+                static function (WorkUnit $unit): bool
+                {
+                    return true;
+                },
+            );
+
+            $pool->tick();
+
+            $pool->abort('message');
+
+            // The queued unit was dropped, and the sleeping unit was terminated
+            // and handed over as aborted by the time limit, so that the test it
+            // was running is reported as aborted.
+            $this->assertTrue($pool->isFinished());
+            $this->assertCount(1, $completed);
+            $this->assertSame($sleeping, $completed[0]->unit());
+            $this->assertTrue($completed[0]->abortedByTimeLimit());
+            $this->assertSame('message', $completed[0]->message());
+            $this->assertTrue($budget->acquire());
+        } finally {
+            $pool->stop();
+        }
+    }
+
     public function testHaltLeavesTheWorkersThatAreNotExecutingAUnitAlone(): void
     {
         $budget = new ProcessBudget(2);

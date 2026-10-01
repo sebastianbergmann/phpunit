@@ -408,6 +408,30 @@ final class PersistentWorker
     }
 
     /**
+     * Terminate the worker process while it is executing a unit that has to be
+     * abandoned because the time limit for the test run has been exceeded,
+     * and return that unit. The events that the worker has streamed since the
+     * previous poll are handed to the given callback first, so that the tests
+     * that finished before the worker was terminated are reported.
+     *
+     * @param callable(WorkUnit, EventCollection):void $onStreamedEvents
+     */
+    public function abort(callable $onStreamedEvents): WorkUnit
+    {
+        $unit = $this->currentUnit;
+
+        assert($unit !== null);
+
+        foreach ($this->drainStreamedEvents(false) as $events) {
+            $onStreamedEvents($unit, $events);
+        }
+
+        $this->kill();
+
+        return $unit;
+    }
+
+    /**
      * Stop the worker process gracefully: the worker shuts down the
      * extensions that were bootstrapped in it and exits. The warnings that a
      * failed shutdown produces are reported through a result file, whose

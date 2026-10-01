@@ -72,6 +72,20 @@ final class CompletedWorkUnitTest extends TestCase
         $this->assertSame('the data cannot be serialized', $completed->message());
     }
 
+    public function testAUnitThatWasAbortedByTheTimeLimitCarriesTheMessageItsRunningTestIsAbortedWith(): void
+    {
+        $completed = CompletedWorkUnit::fromAbortionByTimeLimit($this->unit(), 'message');
+
+        $this->assertTrue($completed->abortedByTimeLimit());
+        $this->assertFalse($completed->crashed());
+        $this->assertSame('message', $completed->message());
+    }
+
+    public function testAUnitThatWasNotAbortedByTheTimeLimitSaysSo(): void
+    {
+        $this->assertFalse(CompletedWorkUnit::fromCrash($this->unit())->abortedByTimeLimit());
+    }
+
     public function testAUnitThatCrashedCarriesNoOutputWhenTheWorkerWroteNone(): void
     {
         $this->assertSame('', CompletedWorkUnit::fromCrash($this->unit())->output());
