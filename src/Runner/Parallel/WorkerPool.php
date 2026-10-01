@@ -304,6 +304,42 @@ final class WorkerPool
     }
 
     /**
+     * Abandon the units that are queued and the units that are executing,
+     * because the time limit for the test run has been exceeded: the queued
+     * units are dropped, as halt() drops them, and the executing units are
+     * terminated and handed to the completion callback as aborted, so that
+     * the test that each of them was running is reported as aborted with the
+     * given message, as the sequential test runner reports the test that it
+     * aborts.
+     *
+     * @param non-empty-string $message
+     */
+    public function abort(string $message): void
+    {
+        $onCompleted      = $this->onCompleted;
+        $onStreamedEvents = $this->onStreamedEvents;
+
+        assert($onCompleted !== null);
+        assert($onStreamedEvents !== null);
+
+        $this->queue->clear();
+
+        foreach ($this->workers as $worker) {
+            if (!$worker->isAlive() || !$worker->isBusy()) {
+                continue;
+            }
+
+            $unit = $worker->abort($onStreamedEvents);
+
+            // The slot that the aborted unit held goes back to the shared
+            // process budget.
+            $this->budget->release();
+
+            $onCompleted(CompletedWorkUnit::fromAbortionByTimeLimit($unit, $message));
+        }
+    }
+
+    /**
      * Abandon the run: the units that have not been dispatched yet are dropped
      * and every worker that is busy executing a unit is terminated without
      * waiting for its result. Used when the test runner stops early, because
