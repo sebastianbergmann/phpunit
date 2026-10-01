@@ -21,6 +21,7 @@ use PHPUnit\Event\Facade;
 use PHPUnit\Event\Telemetry;
 use PHPUnit\Event\Telemetry\HRTime;
 use PHPUnit\Event\Test\Finished as TestFinished;
+use PHPUnit\Event\Test\Prepared as TestPrepared;
 use PHPUnit\Event\Test\Skipped as TestSkipped;
 use PHPUnit\Event\TestRunner\ChildProcessReason;
 use PHPUnit\Event\TestRunner\WarningTriggered;
@@ -1076,6 +1077,214 @@ final class ResultAggregatorTest extends TestCase
             ['suite started', 'first test', 'suite finished'],
             $forwarded,
         );
+    }
+
+    public function testForwardsTheEventsOfACollectedUnitOnlyUpToTheSkippedTestAfterWhichTheRunStops(): void
+    {
+        $forwarded = [];
+
+        // The results collected so far call for the run to stop as soon as the
+        // skipped test has been forwarded.
+        $aggregator = $this->aggregatorObservingForwardedEvents(
+            $forwarded,
+            static function () use (&$forwarded): bool
+            {
+                return in_array('skipped test', $forwarded, true);
+            },
+        );
+
+        $skipped = new WorkerFirstTest('testStartsTheProcessLocalCounter');
+        $next    = new WorkerSecondTest('testThatFails');
+
+        $frameworkSuite = FrameworkTestSuite::empty(WorkerFirstTest::class, $this->createStub(Emitter::class));
+
+        $frameworkSuite->addTest($skipped);
+
+        $events = new EventCollection;
+
+        $events->add(new TestSuiteStarted($this->telemetryInfo(), TestSuiteBuilder::from($frameworkSuite)));
+        $events->add(new WarningTriggered($this->telemetryInfo(), 'skipped test'));
+
+        // A test that is skipped before it is prepared does not finish: its
+        // report ends with the event that it was skipped.
+        $events->add(new TestSkipped($this->telemetryInfo(), TestMethodBuilder::fromTestCase($skipped), 'message'));
+        $events->add(new WarningTriggered($this->telemetryInfo(), 'next test'));
+        $events->add(new TestFinished($this->telemetryInfo(), TestMethodBuilder::fromTestCase($next), 1));
+        $events->add(new TestSuiteFinishedEvent($this->telemetryInfo(), TestSuiteBuilder::from($frameworkSuite)));
+
+        $aggregator->registerCollectedUnit(0, $events);
+
+        $aggregator->flush();
+
+        $this->assertSame(
+            ['suite started', 'skipped test', 'suite finished'],
+            $forwarded,
+        );
+    }
+
+    public function testForwardsTheStreamedEventsOfAUnitOnlyUpToTheTestAfterWhichTheRunStops(): void
+    {
+        $forwarded = [];
+
+        $aggregator = $this->aggregatorObservingForwardedEvents(
+            $forwarded,
+            static function () use (&$forwarded): bool
+            {
+                return in_array('first test', $forwarded, true);
+            },
+        );
+
+        // One frame carries both tests of the unit, and the envelope that closes
+        // it: the run stops between the two tests, as the sequential runner
+        // does, but the envelope is closed all the same.
+        $aggregator->addStreamedEvents(0, $this->collectedUnitEvents());
+
+        $this->assertSame(
+            ['suite started', 'first test', 'suite finished'],
+            $forwarded,
+        );
+    }
+
+    public function testDoesNotCloseAnEnvelopeThatWasOpenedByAnEventThatWasNotForwardedBecauseTheRunIsToStop(): void
+    {
+        $forwarded = [];
+
+        $aggregator = $this->aggregatorObservingForwardedEvents(
+            $forwarded,
+            static function () use (&$forwarded): bool
+            {
+                return in_array('first test', $forwarded, true);
+            },
+        );
+
+        $first   = new WorkerSecondTest('testSeesTheStateLeftBehindByTheFirstTest');
+        $dataSet = new WorkerSecondTest('testThatFails');
+
+        $dataSet->setData(0, []);
+
+        $classSuite = FrameworkTestSuite::empty(WorkerSecondTest::class, $this->createStub(Emitter::class));
+
+        $classSuite->addTest($first);
+
+        $providerSuite = DataProviderTestSuite::empty(WorkerSecondTest::class . '::testThatFails', $this->createStub(Emitter::class));
+
+        $providerSuite->addTest($dataSet);
+
+        $events = new EventCollection;
+
+        $events->add(new TestSuiteStarted($this->telemetryInfo(), TestSuiteBuilder::from($classSuite)));
+        $events->add(new WarningTriggered($this->telemetryInfo(), 'first test'));
+        $events->add(new TestPrepared($this->telemetryInfo(), TestMethodBuilder::fromTestCase($first)));
+        $events->add(new TestFinished($this->telemetryInfo(), TestMethodBuilder::fromTestCase($first), 1));
+        $events->add(new TestSuiteStarted($this->telemetryInfo(), TestSuiteBuilder::from($providerSuite)));
+        $events->add(new WarningTriggered($this->telemetryInfo(), 'data set'));
+        $events->add(new TestFinished($this->telemetryInfo(), TestMethodBuilder::fromTestCase($dataSet), 1));
+        $events->add(new TestSuiteFinishedEvent($this->telemetryInfo(), TestSuiteBuilder::from($providerSuite)));
+        $events->add(new TestSuiteFinishedEvent($this->telemetryInfo(), TestSuiteBuilder::from($classSuite)));
+
+        $aggregator->addStreamedEvents(0, $events);
+
+        // The envelope of the data provider was opened by an event that was not
+        // forwarded, so the event that closes it is not forwarded either; the
+        // envelope of the class is closed.
+        $this->assertSame(
+            ['suite started', 'first test', 'suite finished'],
+            $forwarded,
+        );
+    }
+
+    public function testOnlyClosesTheEnvelopesOfAUnitWithoutResultWhoseStreamedEventsCallForTheRunToStop(): void
+    {
+        $reported   = new WorkerSecondTest('testSeesTheStateLeftBehindByTheFirstTest');
+        $unreported = new WorkerSecondTest('testThatFails');
+
+        $frameworkSuite = FrameworkTestSuite::empty(WorkerSecondTest::class, $this->createStub(Emitter::class));
+
+        $frameworkSuite->addTest($reported);
+        $frameworkSuite->addTest($unreported);
+
+        $emitter = $this->createMock(Emitter::class);
+
+        // The test whose result did not arrive would not have been run by the
+        // sequential runner once the run is to stop, so it is not reported;
+        // only the envelope that the forwarded frame opened is closed.
+        $emitter->expects($this->never())->method('testErrored');
+        $emitter->expects($this->never())->method('childProcessErrored');
+        $emitter->expects($this->never())->method('testRunnerTriggeredPhpunitWarning');
+        $emitter->expects($this->once())->method('testSuiteFinished')->seal();
+
+        $forwarded = [];
+
+        // The run is to stop once the unit's first test has been forwarded.
+        $aggregator = $this->aggregatorObservedThrough(
+            $forwarded,
+            $emitter,
+            static function () use (&$forwarded): bool
+            {
+                return in_array('first test', $forwarded, true);
+            },
+        );
+
+        // The unit at index 1 streamed its first test, and then its worker
+        // died, while the unit at index 0, which precedes it in suite order,
+        // was still running.
+        $frame = new EventCollection;
+
+        $frame->add(new TestSuiteStarted($this->telemetryInfo(), TestSuiteBuilder::from($frameworkSuite)));
+        $frame->add(new WarningTriggered($this->telemetryInfo(), 'first test'));
+        $frame->add(new TestFinished($this->telemetryInfo(), TestMethodBuilder::fromTestCase($reported), 1));
+
+        $aggregator->addStreamedEvents(1, $frame);
+
+        $aggregator->add(
+            CompletedWorkUnit::fromCrash(
+                new TestClassWorkUnit(1, WorkerSecondTest::class, [$reported, $unreported]),
+            ),
+        );
+
+        $aggregator->registerInProcessUnit(
+            0,
+            static function (): void
+            {
+            },
+        );
+
+        $aggregator->flush();
+
+        $this->assertSame(['first test'], $forwarded);
+    }
+
+    public function testClosesTheEnvelopesThatTheForwardedEventsOfAUnitThatIsStillExecutingLeftOpen(): void
+    {
+        $test = new WorkerSecondTest('testSeesTheStateLeftBehindByTheFirstTest');
+
+        $frameworkSuite = FrameworkTestSuite::empty(WorkerSecondTest::class, $this->createStub(Emitter::class));
+
+        $frameworkSuite->addTest($test);
+
+        $suiteValue = TestSuiteBuilder::from($frameworkSuite);
+
+        $emitter = $this->createMock(Emitter::class);
+
+        // The unit is terminated when the run stops, so the event that would
+        // have closed its envelope never arrives; the envelope is closed once,
+        // with the very suite that opened it.
+        $emitter->expects($this->once())
+            ->method('testSuiteFinished')
+            ->with($this->identicalTo($suiteValue))
+            ->seal();
+
+        $aggregator = $this->aggregator($emitter);
+
+        $frame = new EventCollection;
+
+        $frame->add(new TestSuiteStarted($this->telemetryInfo(), $suiteValue));
+        $frame->add(new TestFinished($this->telemetryInfo(), TestMethodBuilder::fromTestCase($test), 1));
+
+        $aggregator->addStreamedEvents(0, $frame);
+
+        $aggregator->closeOpenEnvelopes();
+        $aggregator->closeOpenEnvelopes();
     }
 
     public function testFreezesTheReleaseSequenceWhenTheCollectedResultsCallForTheRunToStop(): void

@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner\Parallel;
 
+use function array_key_last;
 use function array_pop;
 use function array_reverse;
 use function array_slice;
@@ -26,6 +27,7 @@ use PHPUnit\Event\Test\Errored as TestErrored;
 use PHPUnit\Event\Test\Failed as TestFailed;
 use PHPUnit\Event\Test\Finished as TestFinished;
 use PHPUnit\Event\Test\MarkedIncomplete as TestMarkedIncomplete;
+use PHPUnit\Event\Test\Prepared as TestPrepared;
 use PHPUnit\Event\Test\Skipped as TestSkipped;
 use PHPUnit\Event\TestRunner\ChildProcessReason;
 use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
@@ -334,6 +336,25 @@ final class ResultAggregator
         $this->release();
     }
 
+    /**
+     * Close the test suite envelopes that the forwarded events of the units
+     * that are still executing left open. Called when the run stops early and
+     * those units are terminated: their remaining events, which would have
+     * closed the envelopes, never arrive, and the consumers that reconstruct
+     * the suite hierarchy from paired Started/Finished events need a balanced
+     * stream.
+     */
+    public function closeOpenEnvelopes(): void
+    {
+        foreach ($this->forwardedOpenSuites as $index => $openSuites) {
+            foreach (array_reverse($openSuites) as $openSuite) {
+                $this->emitter->testSuiteFinished($openSuite);
+            }
+
+            unset($this->forwardedReportedTests[$index], $this->forwardedOpenSuites[$index]);
+        }
+    }
+
     private function release(): void
     {
         while (true) {
@@ -411,52 +432,45 @@ final class ResultAggregator
      */
     private function forwardCollectedEvents(EventCollection $events): void
     {
-        $group      = new EventCollection;
-        $closing    = new EventCollection;
-        $openSuites = 0;
-        $stopped    = false;
+        /** @var list<TestSuiteValue> $openSuites */
+        $openSuites = [];
 
-        foreach ($events as $event) {
-            if ($stopped) {
+        foreach (self::groupedByTest($events) as $group) {
+            if (($this->shouldStop)()) {
                 // Everything the run would not have shown is dropped, except
-                // for the envelopes that the forwarded events left open.
-                if ($event instanceof TestSuiteFinished && $openSuites > 0) {
-                    $openSuites--;
+                // for the events that close the envelopes that the forwarded
+                // events left open.
+                $closings = new EventCollection;
 
-                    $closing->add($event);
+                foreach ($group as $event) {
+                    if ($event instanceof TestSuiteFinished &&
+                        $openSuites !== [] &&
+                        $event->testSuite()->name() === $openSuites[array_key_last($openSuites)]->name()) {
+                        array_pop($openSuites);
+
+                        $closings->add($event);
+                    }
+                }
+
+                if ($closings->isNotEmpty()) {
+                    $this->eventFacade->forward($closings);
                 }
 
                 continue;
             }
 
-            $group->add($event);
+            foreach ($group as $event) {
+                if ($event instanceof TestSuiteStarted) {
+                    $openSuites[] = $event->testSuite();
+                }
 
-            if ($event instanceof TestSuiteStarted) {
-                $openSuites++;
-            }
-
-            if ($event instanceof TestSuiteFinished) {
-                $openSuites--;
-            }
-
-            if (!$event instanceof TestFinished) {
-                continue;
+                if ($event instanceof TestSuiteFinished) {
+                    array_pop($openSuites);
+                }
             }
 
             $this->eventFacade->forward($group);
-
-            $group = new EventCollection;
-
-            $stopped = ($this->shouldStop)();
         }
-
-        if (!$stopped) {
-            $this->eventFacade->forward($group);
-
-            return;
-        }
-
-        $this->eventFacade->forward($closing);
     }
 
     /**
@@ -487,29 +501,80 @@ final class ResultAggregator
             $this->forwardedOpenSuites[$index] = [];
         }
 
-        foreach ($events as $event) {
-            if ($event instanceof TestFinished ||
-                $event instanceof TestSkipped ||
-                $event instanceof TestErrored ||
-                $event instanceof TestFailed ||
-                $event instanceof TestMarkedIncomplete) {
-                $this->forwardedReportedTests[$index][$this->idOfFirstAttempt($event->test())] = true;
+        // Like the sequential test runner, which checks between two tests
+        // whether it should go on, the events are forwarded test by test, and
+        // the remaining tests are not shown once the run is to stop.
+        foreach (self::groupedByTest($events) as $group) {
+            if (($this->shouldStop)()) {
+                $this->forwardEnvelopeClosingsOf($index, $group);
 
                 continue;
             }
 
-            if ($event instanceof TestSuiteStarted) {
-                $this->forwardedOpenSuites[$index][] = $event->testSuite();
+            foreach ($group as $event) {
+                if ($event instanceof TestFinished ||
+                    $event instanceof TestSkipped ||
+                    $event instanceof TestErrored ||
+                    $event instanceof TestFailed ||
+                    $event instanceof TestMarkedIncomplete) {
+                    $this->forwardedReportedTests[$index][$this->idOfFirstAttempt($event->test())] = true;
 
-                continue;
+                    continue;
+                }
+
+                if ($event instanceof TestSuiteStarted) {
+                    $this->forwardedOpenSuites[$index][] = $event->testSuite();
+
+                    continue;
+                }
+
+                if ($event instanceof TestSuiteFinished && isset($this->forwardedOpenSuites[$index])) {
+                    array_pop($this->forwardedOpenSuites[$index]);
+                }
             }
 
-            if ($event instanceof TestSuiteFinished) {
-                array_pop($this->forwardedOpenSuites[$index]);
-            }
+            $this->eventFacade->forward($group);
+        }
+    }
+
+    /**
+     * Forward, from the given events of a unit whose remaining tests are not
+     * shown because the run is to stop, the events that close the test suite
+     * envelopes that the forwarded events of the unit opened, so that the
+     * event stream stays balanced. An envelope that was opened by an event
+     * that was not forwarded is not closed.
+     *
+     * @param non-negative-int $index
+     */
+    private function forwardEnvelopeClosingsOf(int $index, EventCollection $events): void
+    {
+        $openSuites = [];
+
+        if (isset($this->forwardedOpenSuites[$index])) {
+            $openSuites = $this->forwardedOpenSuites[$index];
         }
 
-        $this->eventFacade->forward($events);
+        $closings = new EventCollection;
+
+        foreach ($events as $event) {
+            if (!$event instanceof TestSuiteFinished || $openSuites === []) {
+                continue;
+            }
+
+            if ($event->testSuite()->name() !== $openSuites[array_key_last($openSuites)]->name()) {
+                continue;
+            }
+
+            array_pop($openSuites);
+
+            $closings->add($event);
+        }
+
+        $this->forwardedOpenSuites[$index] = $openSuites;
+
+        if ($closings->isNotEmpty()) {
+            $this->eventFacade->forward($closings);
+        }
     }
 
     private function forward(CompletedWorkUnit $completed): void
@@ -589,7 +654,12 @@ final class ResultAggregator
         assert($childResult->events instanceof EventCollection);
         assert($childResult->passedTests instanceof PassedTests);
 
-        $this->eventFacade->forward($childResult->events);
+        // The events that the unit emitted after its last test finished arrive
+        // with its result. They may report tests, too (the repetitions of a
+        // repeated test that are skipped after a repetition failed, for
+        // instance), and are forwarded test by test, like the streamed events.
+        $this->forwardFrame($completed->unit()->index(), $childResult->events);
+
         $this->passedTests->import($childResult->passedTests);
 
         ChildProcessResultEnvelope::mergeCodeCoverage($childResult, $this->codeCoverage);
@@ -641,6 +711,20 @@ final class ResultAggregator
 
         if (isset($this->forwardedOpenSuites[$index])) {
             $openSuites = $this->forwardedOpenSuites[$index];
+        }
+
+        // The run is to stop: the tests of the unit whose results did not arrive
+        // would not have been run by the sequential test runner, and are not
+        // reported. Only the envelopes that the forwarded events left open are
+        // closed.
+        if (($this->shouldStop)()) {
+            foreach (array_reverse($openSuites) as $openSuite) {
+                $this->emitter->testSuiteFinished($openSuite);
+            }
+
+            unset($this->forwardedReportedTests[$index], $this->forwardedOpenSuites[$index]);
+
+            return;
         }
 
         if ($openSuites === []) {
@@ -816,5 +900,60 @@ final class ResultAggregator
             $test->repetition(),
             $test->totalRepetitions(),
         )->id();
+    }
+
+    /**
+     * The given events, grouped by the test they report: a group ends with the
+     * event that ends the report of a test, which is Test\Finished for a test
+     * that was prepared, and the outcome itself for a test that was skipped,
+     * or errored or failed, before it was prepared (such a test does not
+     * finish). The events that follow the last test form a group of their
+     * own.
+     *
+     * @return list<EventCollection>
+     */
+    private static function groupedByTest(EventCollection $events): array
+    {
+        $list     = $events->asArray();
+        $groups   = [];
+        $group    = new EventCollection;
+        $prepared = false;
+
+        foreach ($list as $position => $event) {
+            $group->add($event);
+
+            if ($event instanceof TestPrepared) {
+                $prepared = true;
+
+                continue;
+            }
+
+            $endsTest = false;
+
+            if ($event instanceof TestFinished) {
+                $prepared = false;
+                $endsTest = true;
+            } elseif (!$prepared &&
+                      ($event instanceof TestSkipped ||
+                       $event instanceof TestErrored ||
+                       $event instanceof TestFailed ||
+                       $event instanceof TestMarkedIncomplete)) {
+                // A test that is reported as errored without having been
+                // prepared may still finish right away: the test of a child
+                // process that ended unexpectedly, for instance.
+                $endsTest = !isset($list[$position + 1]) || !$list[$position + 1] instanceof TestFinished;
+            }
+
+            if ($endsTest) {
+                $groups[] = $group;
+                $group    = new EventCollection;
+            }
+        }
+
+        if ($group->isNotEmpty()) {
+            $groups[] = $group;
+        }
+
+        return $groups;
     }
 }
