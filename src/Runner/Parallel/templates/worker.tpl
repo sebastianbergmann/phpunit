@@ -238,9 +238,64 @@ function __phpunit_worker_run_unit(array $command, array $extensionSubscribers, 
     return $result;
 }
 
-$__phpunit_input = fopen('php://stdin', 'rb');
+// The worker receives its commands through a command file, not through its
+// standard input, which the parent process closes right after it has started
+// the worker: a test that reads its standard input, or a process that a test
+// starts and that inherits it, would otherwise wait forever for input on a
+// channel that stays open between commands (see PersistentWorker). The worker
+// polls for the next command and, every so often, checks whether the parent
+// process still holds the lock on the lock file; once it does not, the parent
+// process is gone and the worker exits. The files are checked for before they
+// are opened, so that no warning reaches an error handler that the bootstrap
+// script may have registered.
+function __phpunit_worker_next_command(string $commandFile, string $lockFile): ?string
+{
+    $nextLockCheck = 0;
 
-while (($__phpunit_line = fgets($__phpunit_input)) !== false) {
+    while (true) {
+        clearstatcache(true, $commandFile);
+
+        if (is_file($commandFile)) {
+            $command = file_get_contents($commandFile);
+
+            unlink($commandFile);
+
+            if ($command === false) {
+                return null;
+            }
+
+            return $command;
+        }
+
+        if (hrtime(true) >= $nextLockCheck) {
+            clearstatcache(true, $lockFile);
+
+            if (!is_file($lockFile)) {
+                return null;
+            }
+
+            $lock = fopen($lockFile, 'rb');
+
+            if ($lock === false) {
+                return null;
+            }
+
+            $parentProcessIsGone = flock($lock, LOCK_SH | LOCK_NB);
+
+            fclose($lock);
+
+            if ($parentProcessIsGone) {
+                return null;
+            }
+
+            $nextLockCheck = hrtime(true) + 100000000;
+        }
+
+        usleep(1000);
+    }
+}
+
+while (($__phpunit_line = __phpunit_worker_next_command({commandFile}, {lockFile})) !== null) {
     $__phpunit_line = trim($__phpunit_line);
 
     if ($__phpunit_line === '') {
