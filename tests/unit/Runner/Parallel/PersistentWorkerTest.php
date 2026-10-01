@@ -43,6 +43,8 @@ use PHPUnit\TestFixture\ParallelWorker\WorkerStreamingTest;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 use PHPUnit\Util\PHP\Job;
 use PHPUnit\Util\PHP\JobRunner;
+use PHPUnit\Util\PHP\RunningJob;
+use ReflectionMethod;
 use ReflectionProperty;
 
 #[CoversClass(PersistentWorker::class)]
@@ -408,6 +410,56 @@ final class PersistentWorkerTest extends TestCase
         $this->assertFalse($worker->isBusy());
 
         $worker->stop();
+    }
+
+    public function testRunsUnitsAgainOnceItHasBeenRestartedAfterItsWorkerProcessDied(): void
+    {
+        $worker = $this->worker();
+
+        $worker->start();
+
+        $crashed = $this->runToCompletion(
+            $worker,
+            new TestClassWorkUnit(0, WorkerSecondTest::class, [new WorkerSecondTest('testThatKillsTheWorkerProcess')]),
+        );
+
+        $this->assertTrue($crashed->crashed());
+
+        $worker->restart();
+
+        $completed = $this->runToCompletion(
+            $worker,
+            new TestClassWorkUnit(1, WorkerFirstTest::class, [new WorkerFirstTest('testStartsTheProcessLocalCounter')]),
+        );
+
+        $worker->stop();
+
+        $this->assertFalse($completed->crashed());
+        $this->assertFalse($this->failedOrErrored($completed));
+    }
+
+    public function testWorkerProcessExitsOnceThisProcessNoLongerHoldsTheLockOnItsLockFile(): void
+    {
+        $worker = $this->worker();
+
+        $worker->start();
+
+        $job = new ReflectionProperty(PersistentWorker::class, 'job')->getValue($worker);
+
+        $this->assertInstanceOf(RunningJob::class, $job);
+
+        // Releasing the lock is what the worker process sees when this process
+        // is gone: an orphaned worker process must not wait for commands that
+        // will never come.
+        new ReflectionMethod(PersistentWorker::class, 'unlock')->invoke($worker);
+
+        for ($i = 0; $i < 500 && $job->isRunning(); $i++) {
+            usleep(10000);
+        }
+
+        $this->assertFalse($job->isRunning());
+
+        $worker->kill();
     }
 
     /**
