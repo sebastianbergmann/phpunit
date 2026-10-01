@@ -47,6 +47,7 @@ use PHPUnit\Runner\Parallel\WorkUnit;
 use PHPUnit\Runner\Phpt\Parser;
 use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 use PHPUnit\Runner\TestRunHistory\TestRunHistory;
+use PHPUnit\Runner\TimeLimit\TimeLimitHandler;
 use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 use PHPUnit\TextUI\Configuration\Configuration;
@@ -482,6 +483,27 @@ final class ParallelTestRunner
                 $aborted = true;
 
                 break;
+            }
+
+            // The deadline of a time limit for the test run is checked while
+            // the results are awaited: the tests that the workers run are not
+            // stopped by the alarm of this process, and their results arrive in
+            // suite order, if at all. Once it has passed, no further unit is
+            // dispatched, and the units that are executing are abandoned and
+            // their running tests reported as aborted. The event that the time
+            // limit was exceeded then stops the run in the next round.
+            if (TimeLimitHandler::deadlineHasPassed()) {
+                if ($activePool !== null) {
+                    $message = TimeLimitHandler::messageForAbortedTest();
+
+                    assert($message !== '');
+
+                    $activePool->abort($message);
+                }
+
+                TimeLimitHandler::timeLimitExceeded();
+
+                continue;
             }
 
             // A unit that must run alone — its class is attributed with

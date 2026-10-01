@@ -13,6 +13,7 @@ use const FILE_APPEND;
 use function assert;
 use function bin2hex;
 use function file_put_contents;
+use function filesize;
 use function is_file;
 use function is_string;
 use function pack;
@@ -436,6 +437,48 @@ final class PersistentWorkerTest extends TestCase
 
         $this->assertFalse($completed->crashed());
         $this->assertFalse($this->failedOrErrored($completed));
+    }
+
+    public function testAbortTerminatesTheWorkerProcessAfterHandingOverTheEventsItStreamed(): void
+    {
+        $worker = $this->worker();
+
+        $worker->start();
+
+        $unit = new TestClassWorkUnit(
+            0,
+            WorkerStreamingTest::class,
+            [
+                new WorkerStreamingTest('testThatFinishesRightAway'),
+                new WorkerStreamingTest('testThatSleeps'),
+            ],
+        );
+
+        $worker->dispatch($unit);
+
+        // The first test finishes right away and its events are streamed while
+        // the second test sleeps.
+        $streamFile = $this->privateString($worker, 'currentResultFile') . '.stream';
+
+        for ($i = 0; $i < 500 && !(is_file($streamFile) && filesize($streamFile) > 0); $i++) {
+            usleep(10000);
+        }
+
+        $this->streamedEvents = [];
+
+        $aborted = $worker->abort(
+            function (WorkUnit $unit, EventCollection $events): void
+            {
+                $this->streamedEvents[] = $events;
+            },
+        );
+
+        $this->assertSame($unit, $aborted);
+        $this->assertTrue($this->streamedEventsContainAFinishedTest());
+        $this->assertFalse($worker->isAlive());
+        $this->assertFalse($worker->isBusy());
+
+        $worker->stop();
     }
 
     public function testWorkerProcessExitsOnceThisProcessNoLongerHoldsTheLockOnItsLockFile(): void

@@ -50,29 +50,50 @@ final readonly class CompletedWorkUnit
     private string $output;
 
     /**
+     * Whether the unit was abandoned while it was executing because the time
+     * limit for the test run was exceeded. The message is then the one that
+     * the test that was running is reported as aborted with.
+     */
+    private bool $abortedByTimeLimit;
+
+    /**
      * @param non-empty-string $nonce
      */
     public static function fromEnvelope(WorkUnit $unit, string $serializedResult, string $nonce): self
     {
-        return new self($unit, $serializedResult, $nonce, false, null, '');
+        return new self($unit, $serializedResult, $nonce, false, null, '', false);
     }
 
     public static function fromCrash(WorkUnit $unit, ?string $message = null, string $output = ''): self
     {
-        return new self($unit, '', null, true, $message, $output);
+        return new self($unit, '', null, true, $message, $output, false);
+    }
+
+    /**
+     * @param non-empty-string $message
+     */
+    public static function fromAbortionByTimeLimit(WorkUnit $unit, string $message): self
+    {
+        return new self($unit, '', null, false, $message, '', true);
     }
 
     /**
      * @param ?non-empty-string $nonce
      */
-    private function __construct(WorkUnit $unit, string $serializedResult, ?string $nonce, bool $crashed, ?string $message, string $output)
+    private function __construct(WorkUnit $unit, string $serializedResult, ?string $nonce, bool $crashed, ?string $message, string $output, bool $abortedByTimeLimit)
     {
-        $this->unit             = $unit;
-        $this->serializedResult = $serializedResult;
-        $this->nonce            = $nonce;
-        $this->crashed          = $crashed;
-        $this->message          = $message;
-        $this->output           = $output;
+        $this->unit               = $unit;
+        $this->serializedResult   = $serializedResult;
+        $this->nonce              = $nonce;
+        $this->crashed            = $crashed;
+        $this->message            = $message;
+        $this->output             = $output;
+        $this->abortedByTimeLimit = $abortedByTimeLimit;
+    }
+
+    public function abortedByTimeLimit(): bool
+    {
+        return $this->abortedByTimeLimit;
     }
 
     public function unit(): WorkUnit
