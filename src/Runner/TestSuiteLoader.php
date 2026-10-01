@@ -45,33 +45,21 @@ final class TestSuiteLoader
     private static array $loadedSuiteClassFiles = [];
 
     /**
-     * The classes declared in the test class files that have been loaded,
-     * mapped to the file that declares them.
+     * The test class files that have been loaded, in the order in which they
+     * were loaded.
      *
-     * A parallel worker loads only the test class file of the unit it runs,
-     * so a class that is declared in another test class file, and is not
-     * autoloadable, is unknown to it. A sequential run, which loads every
-     * test class file before it runs a test, knows such a class, and a test
-     * may rely on that, for instance by naming it in #[DataProviderExternal].
-     * The worker uses this map to load such a class when it is needed.
+     * A sequential run loads every test class file before it runs a test, so
+     * a test may rely on what another test class file declares: a class that
+     * it names in #[DataProviderExternal], an interface, a trait, a function,
+     * or a constant, for instance. A parallel worker loads these files, in the
+     * same order, before it runs a test, so that its tests see the same
+     * declarations.
      *
-     * @return array<lowercase-string, string>
+     * @return list<string>
      */
-    public static function classesDeclaredInLoadedSuiteClassFiles(): array
+    public static function loadedSuiteClassFiles(): array
     {
-        $map = [];
-
-        foreach (array_keys(self::$loadedSuiteClassFiles) as $file) {
-            if (!isset(self::$fileToClassesMap[$file])) {
-                continue;
-            }
-
-            foreach (self::$fileToClassesMap[$file] as $class) {
-                $map[strtolower($class)] = $file;
-            }
-        }
-
-        return $map;
+        return array_keys(self::$loadedSuiteClassFiles);
     }
 
     /**
@@ -148,14 +136,15 @@ final class TestSuiteLoader
      */
     private function loadSuiteClassFile(string $suiteClassFile): array
     {
-        /*
-         * The file is recorded even when it does not have to be loaded
-         * because its classes have already been declared, by the autoloader
-         * for instance, and mapped while another file was loaded.
-         */
-        self::$loadedSuiteClassFiles[$suiteClassFile] = true;
-
         if (isset(self::$fileToClassesMap[$suiteClassFile])) {
+            /*
+             * The file is recorded even when it does not have to be loaded
+             * because its classes have already been declared, by the
+             * autoloader for instance, and mapped while another file was
+             * loaded.
+             */
+            self::$loadedSuiteClassFiles[$suiteClassFile] = true;
+
             return self::$fileToClassesMap[$suiteClassFile];
         }
 
@@ -175,6 +164,12 @@ final class TestSuiteLoader
         }
 
         require_once $suiteClassFile;
+
+        /*
+         * The file is recorded only once it has been loaded: a file whose
+         * loading failed must not be loaded again by a parallel worker.
+         */
+        self::$loadedSuiteClassFiles[$suiteClassFile] = true;
 
         $declaredClasses = get_declared_classes();
 
