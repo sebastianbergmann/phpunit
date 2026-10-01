@@ -38,6 +38,7 @@ use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestRunner\ChildProcessBootstrap;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\TestSuiteLoader;
+use PHPUnit\Util\PHP\CommandLineIniSettings;
 use PHPUnit\Util\PHP\Job;
 use PHPUnit\Util\PHP\JobRunner;
 use PHPUnit\Util\PHP\RunningJob;
@@ -151,13 +152,22 @@ final class PersistentWorker
     private string $token;
 
     /**
+     * Whether a test that the worker may be asked to run requires the Xdebug
+     * extension. A child process is started with Xdebug turned off unless it
+     * is needed (see JobRunner), and a worker process cannot know in advance
+     * which tests it will run.
+     */
+    private readonly bool $requiresXdebug;
+
+    /**
      * @param non-negative-int $id
      */
-    public function __construct(JobRunner $jobRunner, int $id = 0)
+    public function __construct(JobRunner $jobRunner, int $id = 0, bool $requiresXdebug = false)
     {
-        $this->jobRunner = $jobRunner;
-        $this->id        = $id;
-        $this->token     = $this->newToken();
+        $this->jobRunner      = $jobRunner;
+        $this->id             = $id;
+        $this->requiresXdebug = $requiresXdebug;
+        $this->token          = $this->newToken();
     }
 
     /**
@@ -188,15 +198,20 @@ final class PersistentWorker
         // a test writes enough to it — for instance with fwrite(STDERR, ...),
         // which bypasses PHPUnit's output buffering. The accumulated output
         // is harvested when the worker is stopped.
+        // The worker process is started with the INI settings that the main
+        // process was started with, a memory limit given to the PHP binary
+        // with -d for instance: a sequential run runs its tests with these
+        // settings, so the tests that a worker runs must see them, too.
         $this->job = $this->jobRunner->start(
             new Job(
                 $this->buildWorkerCode(),
                 ChildProcessReason::ParallelWorker,
-                [],
+                CommandLineIniSettings::settings(),
                 $environmentVariables,
                 [],
                 null,
                 true,
+                $this->requiresXdebug,
             ),
         );
     }
