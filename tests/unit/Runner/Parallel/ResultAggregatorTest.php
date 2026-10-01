@@ -76,6 +76,7 @@ final class ResultAggregatorTest extends TestCase
         // results, and every test of the unit is reported as errored with it.
         $emitter = $this->createMock(Emitter::class);
 
+        $emitter->expects($this->exactly(2))->method('testPreparationStarted');
         $emitter->expects($this->exactly(2))
             ->method('childProcessErrored')
             ->with($this->anything(), 'the data provider did not provide the data set');
@@ -129,9 +130,11 @@ final class ResultAggregatorTest extends TestCase
     {
         $emitter = $this->createMock(Emitter::class);
 
-        // Each stubbed test is reported with the same three events that the
-        // sequential runner emits for a test whose child process ended
-        // unexpectedly: childProcessErrored, testErrored, testFinished.
+        // Each stubbed test is reported as a test that is started and then
+        // errors because its child process ended unexpectedly:
+        // testPreparationStarted, childProcessErrored, testErrored,
+        // testFinished.
+        $emitter->expects($this->exactly(2))->method('testPreparationStarted');
         $emitter->expects($this->exactly(2))
             ->method('childProcessErrored')
             ->with($this->anything(), $this->stringContains('ended unexpectedly'));
@@ -175,6 +178,45 @@ final class ResultAggregatorTest extends TestCase
         );
     }
 
+    public function testReportsATestOfACrashedUnitLikeTheSequentialRunnerReportsATestWhoseChildProcessEndedUnexpectedly(): void
+    {
+        // The test is started, reported as errored, and finished; it is not
+        // reported as prepared, as it never was.
+        $sequence = [];
+
+        $record = static function (string $event) use (&$sequence): callable
+        {
+            return static function (CodeTest $test) use ($event, &$sequence): void
+            {
+                $sequence[] = $event . ': ' . $test->id();
+            };
+        };
+
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter->expects($this->once())->method('testSuiteStarted');
+        $emitter->expects($this->once())->method('testSuiteFinished');
+        $emitter->expects($this->once())->method('childProcessErrored');
+        $emitter->method('testPreparationStarted')->willReturnCallback($record('preparation started'));
+        $emitter->method('testErrored')->willReturnCallback($record('errored'));
+        $emitter->method('testFinished')->willReturnCallback($record('finished'))->seal();
+
+        $this->aggregator($emitter)->add(
+            CompletedWorkUnit::fromCrash(
+                new TestClassWorkUnit(0, WorkerSecondTest::class, [new WorkerSecondTest('testThatFails')]),
+            ),
+        );
+
+        $this->assertSame(
+            [
+                'preparation started: ' . WorkerSecondTest::class . '::testThatFails',
+                'errored: ' . WorkerSecondTest::class . '::testThatFails',
+                'finished: ' . WorkerSecondTest::class . '::testThatFails',
+            ],
+            $sequence,
+        );
+    }
+
     public function testDoesNotReportATestThatTestSelectionExcludedFromACrashedUnit(): void
     {
         // The unit dispatched only the tests that test selection selected, so
@@ -202,6 +244,7 @@ final class ResultAggregatorTest extends TestCase
 
         $emitter = $this->createMock(Emitter::class);
 
+        $emitter->expects($this->once())->method('testPreparationStarted');
         $emitter->expects($this->once())->method('childProcessErrored');
         $emitter->expects($this->once())->method('testSuiteStarted');
         $emitter->expects($this->once())->method('testFinished');
@@ -249,6 +292,7 @@ final class ResultAggregatorTest extends TestCase
         $emitter->expects($this->once())
             ->method('testSuiteFinished')
             ->with($this->identicalTo($suiteValue));
+        $emitter->expects($this->once())->method('testPreparationStarted');
         $emitter->expects($this->once())->method('childProcessErrored');
         $emitter->expects($this->once())->method('testFinished');
 
@@ -287,6 +331,53 @@ final class ResultAggregatorTest extends TestCase
         $this->assertSame([WorkerSecondTest::class . '::testThatFails'], $errored);
     }
 
+    public function testDoesNotReportATestOfACrashedUnitAgainWhoseLastAttemptWasReported(): void
+    {
+        // The parent process knows a retried test by its first attempt, but
+        // the worker reports the outcome of the attempt that ran last.
+        $retried    = new WorkerSecondTest('testSeesTheStateLeftBehindByTheFirstTest');
+        $unreported = new WorkerSecondTest('testThatFails');
+
+        $lastAttempt = new WorkerSecondTest('testSeesTheStateLeftBehindByTheFirstTest');
+
+        $lastAttempt->setAttempt(2, 2);
+
+        $frameworkSuite = FrameworkTestSuite::empty(WorkerSecondTest::class, $this->createStub(Emitter::class));
+
+        $frameworkSuite->addTest($retried);
+        $frameworkSuite->addTest($unreported);
+
+        $suiteValue = TestSuiteBuilder::from($frameworkSuite);
+
+        $errored = [];
+
+        $emitter = $this->createStub(Emitter::class);
+
+        $emitter->method('testErrored')->willReturnCallback(
+            static function (CodeTest $test, CodeThrowable $throwable) use (&$errored): void
+            {
+                $errored[] = $test->id();
+            },
+        )->seal();
+
+        $aggregator = $this->aggregator($emitter);
+
+        $frame = new EventCollection;
+
+        $frame->add(new TestSuiteStarted($this->telemetryInfo(), $suiteValue));
+        $frame->add(new TestFinished($this->telemetryInfo(), TestMethodBuilder::fromTestCase($lastAttempt), 1));
+
+        $aggregator->addStreamedEvents(0, $frame);
+
+        $aggregator->add(
+            CompletedWorkUnit::fromCrash(
+                new TestClassWorkUnit(0, WorkerSecondTest::class, [$retried, $unreported]),
+            ),
+        );
+
+        $this->assertSame([WorkerSecondTest::class . '::testThatFails'], $errored);
+    }
+
     public function testClosesTheOpenEnvelopeOfADataProviderMemberBeforeReportingTheTestsThatFollowIt(): void
     {
         // Two provider cases that share one test id: the frames report two
@@ -312,6 +403,7 @@ final class ResultAggregatorTest extends TestCase
         $emitter = $this->createMock(Emitter::class);
 
         $emitter->expects($this->never())->method('testSuiteStarted');
+        $emitter->expects($this->once())->method('testPreparationStarted');
         $emitter->expects($this->once())->method('childProcessErrored');
         $emitter->expects($this->once())->method('testFinished');
 

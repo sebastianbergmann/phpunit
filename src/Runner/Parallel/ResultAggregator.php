@@ -15,6 +15,7 @@ use function array_slice;
 use function assert;
 use function is_string;
 use function sprintf;
+use PHPUnit\Event\Code\Test as CodeTest;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\TestMethodBuilder;
 use PHPUnit\Event\Code\ThrowableBuilder;
@@ -133,9 +134,9 @@ final class ResultAggregator
 
     /**
      * What the forwarded streamed frames of each in-flight unit have already
-     * reported: how many times each test finished (a repeated test finishes
-     * once per repetition), and the test-suite envelopes that were opened but
-     * not yet closed, outermost first.
+     * reported: the ids of the tests whose outcome was reported, and the
+     * test-suite envelopes that were opened but not yet closed, outermost
+     * first.
      *
      * When a unit produces no trustworthy result — its worker died, or its
      * result envelope failed verification — this is what tells the aggregator
@@ -143,9 +144,9 @@ final class ResultAggregator
      * which envelopes still have to be closed, so that the event stream stays
      * complete and balanced.
      *
-     * @var array<non-negative-int, array<non-empty-string, positive-int>>
+     * @var array<non-negative-int, array<non-empty-string, true>>
      */
-    private array $forwardedFinishedTests = [];
+    private array $forwardedReportedTests = [];
 
     /**
      * @var array<non-negative-int, list<TestSuiteValue>>
@@ -455,16 +456,21 @@ final class ResultAggregator
 
     /**
      * Forward one streamed frame, recording what it reports: which tests it
-     * finished, and which test-suite envelopes it opened or closed. Should
-     * the unit fail to produce a trustworthy result later, this record is
-     * what completes its event stream (see reportTestsWithoutResult()).
+     * reported an outcome for, and which test-suite envelopes it opened or
+     * closed. Should the unit fail to produce a trustworthy result later,
+     * this record is what completes its event stream (see
+     * reportTestsWithoutResult()).
+     *
+     * Every test that is started is finished, whatever its outcome, and a
+     * frame is written when a test finishes, so a test whose Test\Finished a
+     * frame carries has had its outcome reported.
      *
      * @param non-negative-int $index
      */
     private function forwardFrame(int $index, EventCollection $events): void
     {
-        if (!isset($this->forwardedFinishedTests[$index])) {
-            $this->forwardedFinishedTests[$index] = [];
+        if (!isset($this->forwardedReportedTests[$index])) {
+            $this->forwardedReportedTests[$index] = [];
         }
 
         if (!isset($this->forwardedOpenSuites[$index])) {
@@ -473,13 +479,7 @@ final class ResultAggregator
 
         foreach ($events as $event) {
             if ($event instanceof TestFinished) {
-                $id = $event->test()->id();
-
-                if (!isset($this->forwardedFinishedTests[$index][$id])) {
-                    $this->forwardedFinishedTests[$index][$id] = 1;
-                } else {
-                    $this->forwardedFinishedTests[$index][$id]++;
-                }
+                $this->forwardedReportedTests[$index][$this->idOfFirstAttempt($event->test())] = true;
 
                 continue;
             }
@@ -566,7 +566,7 @@ final class ResultAggregator
 
         ChildProcessResultEnvelope::mergeCodeCoverage($childResult, $this->codeCoverage);
 
-        unset($this->forwardedFinishedTests[$completed->unit()->index()], $this->forwardedOpenSuites[$completed->unit()->index()]);
+        unset($this->forwardedReportedTests[$completed->unit()->index()], $this->forwardedOpenSuites[$completed->unit()->index()]);
     }
 
     /**
@@ -603,10 +603,10 @@ final class ResultAggregator
             // @codeCoverageIgnoreEnd
         }
 
-        $finished = [];
+        $reported = [];
 
-        if (isset($this->forwardedFinishedTests[$index])) {
-            $finished = $this->forwardedFinishedTests[$index];
+        if (isset($this->forwardedReportedTests[$index])) {
+            $reported = $this->forwardedReportedTests[$index];
         }
 
         $openSuites = [];
@@ -639,7 +639,7 @@ final class ResultAggregator
         foreach ($unit->tests() as $test) {
             $stubs = [];
 
-            $this->collectUnreportedLeavesOf($test, $finished, $stubs);
+            $this->collectUnreportedLeavesOf($test, $reported, $stubs);
 
             $members[] = ['test' => $test, 'stubs' => $stubs];
 
@@ -659,9 +659,11 @@ final class ResultAggregator
             $test = $member['test'];
 
             // A test whose result never arrived is reported with the same
-            // three events that the sequential runner emits for a test whose
-            // child process ended unexpectedly.
+            // events that the sequential runner emits for a test whose child
+            // process ended unexpectedly: the test is started, reported as
+            // errored, and finished.
             foreach ($member['stubs'] as $testMethod) {
+                $this->emitter->testPreparationStarted($testMethod);
                 $this->emitter->childProcessErrored(ChildProcessReason::ParallelWorker, $message);
                 $this->emitter->testErrored($testMethod, $throwable);
                 $this->emitter->testFinished($testMethod, 0);
@@ -689,33 +691,25 @@ final class ResultAggregator
 
         $this->emitter->testSuiteFinished($classSuite);
 
-        unset($this->forwardedFinishedTests[$index], $this->forwardedOpenSuites[$index]);
+        unset($this->forwardedReportedTests[$index], $this->forwardedOpenSuites[$index]);
     }
 
     /**
      * Collect the value objects of every test case of the given unit member
-     * that has not already finished. A member is a single test case or a
-     * suite (the tests of a data provider method, the repetitions of a
-     * repeated test method, the attempts of a retried test method) whose test
-     * cases are visited recursively.
+     * whose outcome was not already reported. A member is a single test case
+     * or a suite (the tests of a data provider method, the repetitions of a
+     * repeated test method, the first attempt of a retried test method) whose
+     * test cases are visited recursively.
      *
-     * The record of already-finished tests counts how many times a test
-     * finished, and every visited test case consumes one of its finishes: the
-     * repetitions of a repeated test method share one test id, and each
-     * repetition that finished must excuse only one of them.
-     *
-     * @param array<non-empty-string, int> $finished
-     * @param list<TestMethod>             $stubs
+     * @param array<non-empty-string, true> $reported
+     * @param list<TestMethod>              $stubs
      */
-    private function collectUnreportedLeavesOf(Test $test, array &$finished, array &$stubs): void
+    private function collectUnreportedLeavesOf(Test $test, array $reported, array &$stubs): void
     {
         if ($test instanceof TestCase) {
             $testMethod = TestMethodBuilder::fromTestCase($test);
-            $id         = $testMethod->id();
 
-            if (isset($finished[$id]) && $finished[$id] > 0) {
-                $finished[$id]--;
-
+            if (isset($reported[$this->idOfFirstAttempt($testMethod)])) {
                 return;
             }
 
@@ -732,7 +726,34 @@ final class ResultAggregator
         // never asked to run — is not reported as a test the worker failed to
         // run.
         foreach ($test as $member) {
-            $this->collectUnreportedLeavesOf($member, $finished, $stubs);
+            $this->collectUnreportedLeavesOf($member, $reported, $stubs);
         }
+    }
+
+    /**
+     * The id of a test, disregarding which attempt of a retried test it is.
+     * The parent process knows a retried test by its first attempt, whereas
+     * the outcome of a retried test is reported for the attempt that ran
+     * last.
+     *
+     * @return non-empty-string
+     */
+    private function idOfFirstAttempt(CodeTest $test): string
+    {
+        if (!$test instanceof TestMethod || $test->attempt() === 1) {
+            return $test->id();
+        }
+
+        return new TestMethod(
+            $test->className(),
+            $test->methodName(),
+            $test->file(),
+            $test->line(),
+            $test->testDox(),
+            $test->metadata(),
+            $test->testData(),
+            $test->repetition(),
+            $test->totalRepetitions(),
+        )->id();
     }
 }
