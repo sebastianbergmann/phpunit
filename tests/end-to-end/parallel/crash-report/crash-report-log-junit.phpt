@@ -1,5 +1,10 @@
 --TEST--
 phpunit --parallel=2 --log-junit logs every test of a crashed unit whose result never arrived as errored
+--SKIPIF--
+<?php declare(strict_types=1);
+if (DIRECTORY_SEPARATOR === '\\') {
+    print "skip: this test does not work on Windows / GitHub Actions\n";
+}
 --FILE--
 <?php declare(strict_types=1);
 $logfile = tempnam(sys_get_temp_dir(), __FILE__);
