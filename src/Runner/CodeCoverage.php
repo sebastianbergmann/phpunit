@@ -188,6 +188,30 @@ final class CodeCoverage
     }
 
     /**
+     * A code coverage object that holds only the code coverage data that has
+     * been collected and the tests it was collected for: what the main
+     * process merges into the code coverage that it collects when a parallel
+     * worker process ships the code coverage of a unit it ran.
+     *
+     * The code coverage object of this process itself is not shipped: apart
+     * from the collected data, it holds what every process has, such as the
+     * filter or the map of the code coverage targets that is built once the
+     * first test that declares targets has run, and which can be much larger
+     * than the data that was collected.
+     */
+    public function collectedCodeCoverage(): \SebastianBergmann\CodeCoverage\CodeCoverage
+    {
+        assert($this->driver !== null);
+
+        $collected = new \SebastianBergmann\CodeCoverage\CodeCoverage($this->driver, new Filter);
+
+        $collected->setData($this->codeCoverage()->getData(true));
+        $collected->setTests($this->codeCoverage()->getTests());
+
+        return $collected;
+    }
+
+    /**
      * @return non-empty-string
      */
     public function driverNameAndVersion(): string

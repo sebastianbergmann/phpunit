@@ -198,7 +198,7 @@ function __phpunit_worker_run_unit(array $command, array $extensionSubscribers, 
     $codeCoverage = null;
 
     if (CodeCoverage::instance()->isActive()) {
-        $codeCoverage = CodeCoverage::instance()->codeCoverage();
+        $codeCoverage = CodeCoverage::instance()->collectedCodeCoverage();
     }
 
     $envelope = (object) [
