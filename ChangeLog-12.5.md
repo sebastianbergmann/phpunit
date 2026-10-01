@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 ### Fixed
 
 * Issues that are listed in the baseline are not ignored for tests that are run in a separate process
+* A test that is run in process isolation aborts the test run when its result cannot be unserialized, for instance because it returns an object that holds a test double
 
 ## [12.5.37] - 2026-09-29
 
