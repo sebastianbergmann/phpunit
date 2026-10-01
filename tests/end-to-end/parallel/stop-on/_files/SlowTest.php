@@ -19,9 +19,9 @@ final class SlowTest extends TestCase
     public function testThatIsNeverReported(): void
     {
         // This test runs in a worker alongside the failing test of the other
-        // class. The run stops as soon as the failure is reported, and this
-        // test's worker is terminated mid-sleep — so the marker file must
-        // never come into existence.
+        // class. The run stops as soon as the failure is reported; this test
+        // is then either not started or allowed to finish, and nothing is
+        // reported for it either way.
         usleep(3000000);
 
         file_put_contents(

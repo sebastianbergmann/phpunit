@@ -10,6 +10,8 @@
 namespace PHPUnit\Runner\Parallel;
 
 use function array_keys;
+use function file_get_contents;
+use function is_file;
 use function ksort;
 use function sys_get_temp_dir;
 use function unlink;
@@ -225,7 +227,7 @@ final class PhptRunnerTest extends TestCase
         }
     }
 
-    public function testHaltDropsTheQueuedTestsAndTerminatesTheRunningChildProcesses(): void
+    public function testKillDropsTheQueuedTestsAndTerminatesTheRunningChildProcesses(): void
     {
         $budget = new ProcessBudget(1);
 
@@ -248,7 +250,7 @@ final class PhptRunnerTest extends TestCase
 
         $this->assertFalse($runner->isFinished());
 
-        $runner->halt();
+        $runner->kill();
 
         // The queued test was dropped and the sleeping test's child process
         // was terminated without being waited for: the runner is finished,
@@ -259,7 +261,7 @@ final class PhptRunnerTest extends TestCase
         $this->assertTrue($budget->acquire());
     }
 
-    public function testHaltDoesNotRunTheRemainingRepetitionsOfARepeatedTest(): void
+    public function testKillDoesNotRunTheRemainingRepetitionsOfARepeatedTest(): void
     {
         $budget = new ProcessBudget(1);
 
@@ -279,7 +281,7 @@ final class PhptRunnerTest extends TestCase
 
         $runner->tick();
 
-        $runner->halt();
+        $runner->kill();
 
         // The repetition that was running was terminated and the repetitions
         // that had not started are not run: the unit is abandoned as a whole,
@@ -433,7 +435,135 @@ final class PhptRunnerTest extends TestCase
         $this->assertSame([0, 1], array_keys($collected));
     }
 
-    public function testRunsTheCleanSectionOfATerminatedTestWhenHalting(): void
+    public function testHaltLetsTheRunningSectionOfATestFinishAndRunsItsCleanSectionWithoutReportingTheTest(): void
+    {
+        $marker = sys_get_temp_dir() . '/phpunit-parallel-halted-phpt.marker';
+
+        @unlink($marker);
+
+        $budget = new ProcessBudget(1);
+
+        $runner = $this->runner(1, $budget);
+
+        $collected = [];
+
+        $runner->begin(
+            [
+                new PhptWorkUnit(0, __DIR__ . '/../../../_files/parallel-worker/worker-halted.phpt'),
+                new PhptWorkUnit(1, __DIR__ . '/../../../_files/parallel-worker/worker.phpt'),
+            ],
+            static function (int $index, EventCollection $events) use (&$collected): void
+            {
+                $collected[$index] = $events;
+            },
+        );
+
+        $runner->tick();
+
+        $runner->halt();
+
+        // The --FILE-- section of the first test is still running: the
+        // runner is not finished until the test has halted.
+        $this->assertTrue($runner->hasRunningTests());
+        $this->assertFalse($runner->isFinished());
+
+        while (!$runner->isFinished()) {
+            if (!$runner->tick()) {
+                usleep(1000);
+            }
+        }
+
+        // The queued test was dropped, the --FILE-- section of the halted
+        // test finished and its --CLEAN-- section ran, nothing was reported
+        // for it, and the slot it held has been given back to the budget.
+        $this->assertSame("FILE\nCLEAN\n", file_get_contents($marker));
+        $this->assertSame([], $collected);
+        $this->assertTrue($budget->acquire());
+
+        @unlink($marker);
+    }
+
+    public function testHaltLetsTheRunningCleanSectionOfATestFinish(): void
+    {
+        $marker = sys_get_temp_dir() . '/phpunit-parallel-halted-during-clean.marker';
+
+        @unlink($marker);
+
+        $budget = new ProcessBudget(1);
+
+        $runner = $this->runner(1, $budget);
+
+        $collected = [];
+
+        $runner->begin(
+            [
+                new PhptWorkUnit(0, __DIR__ . '/../../../_files/parallel-worker/worker-halted-during-clean.phpt'),
+            ],
+            static function (int $index, EventCollection $events) use (&$collected): void
+            {
+                $collected[$index] = $events;
+            },
+        );
+
+        while (!is_file($marker)) {
+            $runner->tick();
+
+            usleep(1000);
+        }
+
+        $runner->halt();
+
+        while (!$runner->isFinished()) {
+            if (!$runner->tick()) {
+                usleep(1000);
+            }
+        }
+
+        $this->assertSame("started\nfinished\n", file_get_contents($marker));
+        $this->assertSame([], $collected);
+
+        @unlink($marker);
+    }
+
+    public function testHaltLetsTheRunningRepetitionOfARepeatedTestFinishAndDoesNotRunTheRemainingOnes(): void
+    {
+        $marker = sys_get_temp_dir() . '/phpunit-parallel-halted-phpt.marker';
+
+        @unlink($marker);
+
+        $budget = new ProcessBudget(1);
+
+        $runner = $this->runner(1, $budget);
+
+        $collected = [];
+
+        $runner->begin(
+            [
+                new PhptWorkUnit(0, __DIR__ . '/../../../_files/parallel-worker/worker-halted.phpt', [], 3),
+            ],
+            static function (int $index, EventCollection $events) use (&$collected): void
+            {
+                $collected[$index] = $events;
+            },
+        );
+
+        $runner->tick();
+
+        $runner->halt();
+
+        while (!$runner->isFinished()) {
+            if (!$runner->tick()) {
+                usleep(1000);
+            }
+        }
+
+        $this->assertSame("FILE\nCLEAN\n", file_get_contents($marker));
+        $this->assertSame([], $collected);
+
+        @unlink($marker);
+    }
+
+    public function testRunsTheCleanSectionOfATerminatedTestWhenKilling(): void
     {
         $marker = sys_get_temp_dir() . '/phpunit-parallel-halt-clean.marker';
 
@@ -457,7 +587,7 @@ final class PhptRunnerTest extends TestCase
 
         $runner->tick();
 
-        $runner->halt();
+        $runner->kill();
 
         // The terminated test's --CLEAN-- section ran even though the test
         // itself was abandoned mid-sleep and nothing was reported for it.

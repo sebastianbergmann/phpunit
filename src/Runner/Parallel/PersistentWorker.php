@@ -296,9 +296,10 @@ final class PersistentWorker
 
         $doneFile   = $resultFile . '.done';
         $streamFile = $resultFile . '.stream';
+        $haltFile   = $resultFile . '.halt';
 
         try {
-            $command = $this->testClassCommand($unit, $offset, $resultFile, $doneFile, $streamFile, $nonce);
+            $command = $this->testClassCommand($unit, $offset, $resultFile, $doneFile, $streamFile, $haltFile, $nonce);
         } catch (WorkerException $e) {
             if (is_file($resultFile)) {
                 unlink($resultFile);
@@ -389,10 +390,31 @@ final class PersistentWorker
     }
 
     /**
+     * Ask the worker process to halt the unit it is executing, because the
+     * results collected so far call for the test runner to stop
+     * (--stop-on-*): the worker process lets the test that is running finish,
+     * starts no further test, and runs the methods that run after the last
+     * test of the class, as the sequential test runner does when it stops
+     * (see worker.tpl). The request is made through a file, as the commands
+     * are, and the worker process then reports completion as usual.
+     *
+     * Should the file not be writable, the worker process is terminated
+     * instead, so that the run stops nonetheless.
+     */
+    public function requestHalt(): void
+    {
+        if (file_put_contents($this->currentHaltFile(), '') === false) {
+            // @codeCoverageIgnoreStart
+            $this->kill();
+            // @codeCoverageIgnoreEnd
+        }
+    }
+
+    /**
      * Terminate the worker process immediately, abandoning the unit it is
      * executing: the unit's result is neither awaited nor harvested. Used
-     * when the test runner stops early, because the results collected so far
-     * call for it (--stop-on-*).
+     * when the deadline of a time limit for the test run has passed, also
+     * while the test runner waits for a unit that it asked to halt.
      */
     public function kill(): void
     {
@@ -548,13 +570,14 @@ final class PersistentWorker
      * @param non-empty-string      $resultFile
      * @param non-empty-string      $doneFile
      * @param non-empty-string      $streamFile
+     * @param non-empty-string      $haltFile
      * @param non-empty-string      $nonce
      *
      * @throws WorkerException
      *
      * @return array<string, mixed>
      */
-    private function testClassCommand(TestClassWorkUnit $unit, array $offset, string $resultFile, string $doneFile, string $streamFile, string $nonce): array
+    private function testClassCommand(TestClassWorkUnit $unit, array $offset, string $resultFile, string $doneFile, string $streamFile, string $haltFile, string $nonce): array
     {
         $class = new ReflectionClass($unit->className());
         $file  = $class->getFileName();
@@ -577,6 +600,7 @@ final class PersistentWorker
             'resultFile'        => $resultFile,
             'doneFile'          => $doneFile,
             'streamFile'        => $streamFile,
+            'haltFile'          => $haltFile,
             'nonce'             => $nonce,
         ];
     }
@@ -738,7 +762,8 @@ final class PersistentWorker
     /**
      * The companion files of the current unit's result file: the worker
      * creates the done file after it has fully written the result file, and
-     * appends the frames of streamed events to the stream file. Both names
+     * appends the frames of streamed events to the stream file; this process
+     * creates the halt file to ask the worker to halt the unit. Their names
      * are derived from the result file's, so only that one is stored.
      */
     private function currentDoneFile(): string
@@ -755,6 +780,13 @@ final class PersistentWorker
         return $this->currentResultFile . '.stream';
     }
 
+    private function currentHaltFile(): string
+    {
+        assert($this->currentResultFile !== null);
+
+        return $this->currentResultFile . '.halt';
+    }
+
     private function deleteCurrentUnitFiles(): void
     {
         if ($this->currentResultFile === null) {
@@ -767,7 +799,7 @@ final class PersistentWorker
         // with errors suppressed, because an error handler that the bootstrap
         // script registered is called for a suppressed error, too, and may
         // turn it into an exception that aborts the test run.
-        foreach ([$this->currentResultFile, $this->currentDoneFile(), $this->currentStreamFile()] as $file) {
+        foreach ([$this->currentResultFile, $this->currentDoneFile(), $this->currentStreamFile(), $this->currentHaltFile()] as $file) {
             if (is_file($file)) {
                 unlink($file);
             }

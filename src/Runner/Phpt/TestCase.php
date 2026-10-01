@@ -204,8 +204,9 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
      * generator, when driven to completion, runs only what must still run —
      * the --CLEAN-- section, when the --FILE-- section has already run — and
      * skips everything else. The parallel test runner interrupts its in-flight
-     * PHPT tests this way when the test runner stops early (--stop-on-*), so
-     * that a terminated test's cleanup still happens.
+     * PHPT tests this way when the test runner stops early (--stop-on-*): the
+     * section that is running finishes, and the test's cleanup still happens,
+     * even when the section had to be terminated.
      *
      * @throws \PHPUnit\Framework\Exception
      * @throws \SebastianBergmann\Template\InvalidArgumentException
