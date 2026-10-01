@@ -1,5 +1,7 @@
 <?php declare(strict_types=1);
 use PHPUnit\Event\Facade;
+use PHPUnit\Runner\Baseline\CannotLoadBaselineException;
+use PHPUnit\Runner\Baseline\Reader;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
@@ -70,6 +72,16 @@ function __phpunit_run_isolated_test()
     }
 
     ErrorHandler::instance()->useDeprecationTriggers($deprecationTriggers);
+
+    if (!$configuration->hasGenerateBaseline() && $configuration->source()->useBaseline()) {
+        try {
+            ErrorHandler::instance()->useBaseline(
+                (new Reader)->read($configuration->source()->baseline()),
+            );
+        } catch (CannotLoadBaselineException) {
+            // The main process has already reported that the baseline cannot be loaded
+        }
+    }
 
     $test = new {className}('{name}');
 
