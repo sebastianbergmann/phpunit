@@ -474,6 +474,8 @@ final class ParallelTestRunner
             if (TestResultFacade::shouldStop()) {
                 if ($activePool !== null) {
                     $activePool->halt();
+
+                    $aggregator->closeOpenEnvelopes();
                 }
 
                 if ($activePhptRunner !== null) {
