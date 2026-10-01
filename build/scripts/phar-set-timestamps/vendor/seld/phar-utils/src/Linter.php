@@ -18,6 +18,8 @@ class Linter
      *
      * @param string $path Phar file path
      * @param list<string> $excludedPaths Paths which should be skipped by the linter
+     *
+     * @return void
      */
     public static function lint($path, array $excludedPaths = array())
     {
