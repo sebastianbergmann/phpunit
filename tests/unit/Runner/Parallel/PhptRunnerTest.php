@@ -27,6 +27,7 @@ use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
 use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Large;
+use PHPUnit\Framework\Attributes\RequiresOperatingSystem;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestRunner\ChildProcessResultProcessor;
@@ -483,6 +484,14 @@ final class PhptRunnerTest extends TestCase
         @unlink($marker);
     }
 
+    /**
+     * On Windows, reading the output of a section's child process blocks
+     * until the process has exited, as pipes cannot be read without blocking
+     * there: the round that polls the --CLEAN-- section returns only once the
+     * section has finished and the test has been reported, so the runner
+     * cannot be asked to halt while the section is running.
+     */
+    #[RequiresOperatingSystem('Linux|Darwin')]
     public function testHaltLetsTheRunningCleanSectionOfATestFinish(): void
     {
         $marker = sys_get_temp_dir() . '/phpunit-parallel-halted-during-clean.marker';
