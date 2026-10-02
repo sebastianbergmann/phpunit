@@ -35,94 +35,94 @@ jobs:
           - windows-latest
 
         phpunit-branch:
-          - main
-          - 13.4
-          - 12.5
-          - 11.5
-          - 10.5
-          - 9.6
-          - 8.5
+          - "main"
+          - "13.4"
+          - "12.5"
+          - "11.5"
+          - "10.5"
+          - "9.6"
+          - "8.5"
 
         php-version:
-          - 7.2
-          - 7.3
-          - 7.4
-          - 8.0
-          - 8.1
-          - 8.2
-          - 8.3
-          - 8.4
-          - 8.5
-          - 8.6
-          - 8.7
+          - "7.2"
+          - "7.3"
+          - "7.4"
+          - "8.0"
+          - "8.1"
+          - "8.2"
+          - "8.3"
+          - "8.4"
+          - "8.5"
+          - "8.6"
+          - "8.7"
 
         exclude:
-          - phpunit-branch: 8.5
-            php-version: 7.2
-          - phpunit-branch: 8.5
-            php-version: 7.3
-          - phpunit-branch: 9.6
-            php-version: 7.2
-          - phpunit-branch: 9.6
-            php-version: 7.3
-          - phpunit-branch: 10.5
-            php-version: 7.2
-          - phpunit-branch: 10.5
-            php-version: 7.3
-          - phpunit-branch: 10.5
-            php-version: 7.4
-          - phpunit-branch: 10.5
-            php-version: 8.0
-          - phpunit-branch: 11.5
-            php-version: 7.2
-          - phpunit-branch: 11.5
-            php-version: 7.3
-          - phpunit-branch: 11.5
-            php-version: 7.4
-          - phpunit-branch: 11.5
-            php-version: 8.0
-          - phpunit-branch: 11.5
-            php-version: 8.1
-          - phpunit-branch: 12.5
-            php-version: 7.2
-          - phpunit-branch: 12.5
-            php-version: 7.3
-          - phpunit-branch: 12.5
-            php-version: 7.4
-          - phpunit-branch: 12.5
-            php-version: 8.0
-          - phpunit-branch: 12.5
-            php-version: 8.1
-          - phpunit-branch: 12.5
-            php-version: 8.2
-          - phpunit-branch: 13.4
-            php-version: 7.2
-          - phpunit-branch: 13.4
-            php-version: 7.3
-          - phpunit-branch: 13.4
-            php-version: 7.4
-          - phpunit-branch: 13.4
-            php-version: 8.0
-          - phpunit-branch: 13.4
-            php-version: 8.1
-          - phpunit-branch: 13.4
-            php-version: 8.2
-          - phpunit-branch: 13.4
-            php-version: 8.3
-          - phpunit-branch: main
-            php-version: 7.2
-          - phpunit-branch: main
-            php-version: 7.3
-          - phpunit-branch: main
-            php-version: 7.4
-          - phpunit-branch: main
-            php-version: 8.0
-          - phpunit-branch: main
-            php-version: 8.1
-          - phpunit-branch: main
-            php-version: 8.2
-          - phpunit-branch: main
-            php-version: 8.3
+          - phpunit-branch: "8.5"
+            php-version: "7.2"
+          - phpunit-branch: "8.5"
+            php-version: "7.3"
+          - phpunit-branch: "9.6"
+            php-version: "7.2"
+          - phpunit-branch: "9.6"
+            php-version: "7.3"
+          - phpunit-branch: "10.5"
+            php-version: "7.2"
+          - phpunit-branch: "10.5"
+            php-version: "7.3"
+          - phpunit-branch: "10.5"
+            php-version: "7.4"
+          - phpunit-branch: "10.5"
+            php-version: "8.0"
+          - phpunit-branch: "11.5"
+            php-version: "7.2"
+          - phpunit-branch: "11.5"
+            php-version: "7.3"
+          - phpunit-branch: "11.5"
+            php-version: "7.4"
+          - phpunit-branch: "11.5"
+            php-version: "8.0"
+          - phpunit-branch: "11.5"
+            php-version: "8.1"
+          - phpunit-branch: "12.5"
+            php-version: "7.2"
+          - phpunit-branch: "12.5"
+            php-version: "7.3"
+          - phpunit-branch: "12.5"
+            php-version: "7.4"
+          - phpunit-branch: "12.5"
+            php-version: "8.0"
+          - phpunit-branch: "12.5"
+            php-version: "8.1"
+          - phpunit-branch: "12.5"
+            php-version: "8.2"
+          - phpunit-branch: "13.4"
+            php-version: "7.2"
+          - phpunit-branch: "13.4"
+            php-version: "7.3"
+          - phpunit-branch: "13.4"
+            php-version: "7.4"
+          - phpunit-branch: "13.4"
+            php-version: "8.0"
+          - phpunit-branch: "13.4"
+            php-version: "8.1"
+          - phpunit-branch: "13.4"
+            php-version: "8.2"
+          - phpunit-branch: "13.4"
+            php-version: "8.3"
+          - phpunit-branch: "main"
+            php-version: "7.2"
+          - phpunit-branch: "main"
+            php-version: "7.3"
+          - phpunit-branch: "main"
+            php-version: "7.4"
+          - phpunit-branch: "main"
+            php-version: "8.0"
+          - phpunit-branch: "main"
+            php-version: "8.1"
+          - phpunit-branch: "main"
+            php-version: "8.2"
+          - phpunit-branch: "main"
+            php-version: "8.3"
 
     steps:
       - name: Configure Git to avoid issues with line endings
