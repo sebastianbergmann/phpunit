@@ -2,7 +2,6 @@
 use PHPUnit\Event\Facade;
 use PHPUnit\Framework\TestRunner\ErrorHandlerBootstrapper;
 use PHPUnit\Framework\TestSuite;
-use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\Extension\PharLoader;
 use PHPUnit\Runner\Extension\WorkerExtensionBootstrapper;
@@ -35,10 +34,10 @@ ErrorHandlerBootstrapper::bootstrap($__phpunit_configuration);
 // bootstrapped once, here, for the lifetime of the worker. Their subscribers
 // are collected and registered with the dispatcher of every unit this worker
 // runs (see __phpunit_worker_run_unit()); the warnings that a failed
-// bootstrap produces are emitted with the first unit, as there is no unit to
-// emit them into yet.
-$__phpunit_extensionFacade       = new WorkerExtensionFacade;
-$__phpunit_extensionWarnings     = [];
+// bootstrap produces are reported to the parent when the worker is stopped,
+// together with the warnings that a failed shutdown produces, so that they
+// do not depend on how the units this worker runs fare.
+$__phpunit_extensionFacade       = new WorkerExtensionFacade(Facade::instance());
 $__phpunit_extensionBootstrapper = null;
 
 if (!$__phpunit_configuration->noExtensions()) {
@@ -56,8 +55,6 @@ if (!$__phpunit_configuration->noExtensions()) {
             $__phpunit_bootstrapper['parameters'],
         );
     }
-
-    $__phpunit_extensionWarnings = $__phpunit_extensionBootstrapper->warnings();
 }
 
 // A sequential run loads every test class file before it runs a test, so a
@@ -92,7 +89,7 @@ function __phpunit_worker_halt_was_requested(string $haltFile): bool
     return is_file($haltFile);
 }
 
-function __phpunit_worker_run_unit(array $command, array $extensionSubscribers, array $extensionWarnings): string
+function __phpunit_worker_run_unit(array $command, array $extensionSubscribers): string
 {
     $dispatcher = Facade::instance()->initForIsolation(
         PHPUnit\Event\Telemetry\HRTime::fromSecondsAndNanoseconds(
@@ -107,14 +104,7 @@ function __phpunit_worker_run_unit(array $command, array $extensionSubscribers, 
     // they do when a test finishes is done before the test's events are
     // streamed to the parent.
     foreach ($extensionSubscribers as $__phpunit_subscriber) {
-        try {
-            $dispatcher->registerSubscriber($__phpunit_subscriber);
-        } catch (UnknownSubscriberTypeException) {
-            // A subscriber that implements no known subscriber interface
-            // cannot receive events here any more than it can in the main
-            // process, where registering it made the extension's bootstrap
-            // fail and reported that failure.
-        }
+        $dispatcher->registerSubscriber($__phpunit_subscriber);
     }
 
     // Stream the events of the unit to the parent process while the unit is
@@ -239,10 +229,6 @@ function __phpunit_worker_run_unit(array $command, array $extensionSubscribers, 
     // built the suite, and it is the parent's that are reported; the ones
     // emitted here are discarded so that they are not reported a second time.
     $dispatcher->flush();
-
-    foreach ($extensionWarnings as $__phpunit_warning) {
-        Facade::emitter()->testRunnerTriggeredPhpunitWarning($__phpunit_warning);
-    }
 
     // A unit whose halt was requested before it started is not run at all:
     // its tests come after the test that made the run stop.
@@ -369,18 +355,21 @@ while (($__phpunit_line = __phpunit_worker_next_command({commandFile}, {lockFile
 
     if ($__phpunit_command['command'] === 'stop') {
         // The extensions bootstrapped in this worker are shut down once the
-        // worker has run its last unit. The warnings that a failed shutdown
-        // produces are reported to the parent through the command's result
-        // file, as there is no unit left to emit them into.
-        $__phpunit_shutdownWarnings = [];
+        // worker has run its last unit. The warnings that a failed bootstrap
+        // or a failed shutdown produced are reported to the parent through
+        // the command's result file.
+        $__phpunit_extensionWarnings = [];
 
         if ($__phpunit_extensionBootstrapper !== null) {
-            $__phpunit_shutdownWarnings = $__phpunit_extensionBootstrapper->shutdown();
+            $__phpunit_extensionWarnings = array_merge(
+                $__phpunit_extensionBootstrapper->warnings(),
+                $__phpunit_extensionBootstrapper->shutdown(),
+            );
         }
 
         file_put_contents(
             $__phpunit_command['resultFile'],
-            $__phpunit_command['nonce'] . serialize($__phpunit_shutdownWarnings),
+            $__phpunit_command['nonce'] . serialize($__phpunit_extensionWarnings),
         );
 
         break;
@@ -389,12 +378,7 @@ while (($__phpunit_line = __phpunit_worker_next_command({commandFile}, {lockFile
     $__phpunit_result = __phpunit_worker_run_unit(
         $__phpunit_command,
         $__phpunit_extensionFacade->subscribers(),
-        $__phpunit_extensionWarnings,
     );
-
-    // The warnings of the worker's extension bootstrap travel with the first
-    // unit only.
-    $__phpunit_extensionWarnings = [];
 
     file_put_contents($__phpunit_command['resultFile'], $__phpunit_result);
 

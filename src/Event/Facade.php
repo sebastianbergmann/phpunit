@@ -97,6 +97,16 @@ final class Facade implements EventCollector
     }
 
     /**
+     * Whether the given subscriber implements one of the subscriber
+     * interfaces that events can be dispatched to, which registering it
+     * requires.
+     */
+    public function isKnownSubscriberType(Subscriber $subscriber): bool
+    {
+        return $this->typeMap()->isKnownSubscriberType($subscriber);
+    }
+
+    /**
      * @throws EventFacadeIsSealedException
      */
     public function registerTracer(Tracer\Tracer $tracer): void
