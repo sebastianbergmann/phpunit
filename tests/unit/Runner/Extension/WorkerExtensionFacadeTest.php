@@ -9,10 +9,13 @@
  */
 namespace PHPUnit\Runner\Extension;
 
+use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Event\Subscriber;
 use PHPUnit\Event\Test\PreparationStarted;
 use PHPUnit\Event\Test\PreparationStartedSubscriber;
 use PHPUnit\Event\TestRunner\ExecutionFinished;
 use PHPUnit\Event\TestRunner\ExecutionFinishedSubscriber;
+use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
@@ -26,7 +29,7 @@ final class WorkerExtensionFacadeTest extends TestCase
         $first  = $this->preparationStartedSubscriber();
         $second = $this->executionFinishedSubscriber();
 
-        $facade = new WorkerExtensionFacade;
+        $facade = new WorkerExtensionFacade(new EventFacade);
 
         $facade->registerSubscriber($first);
         $facade->registerSubscriber($second);
@@ -39,16 +42,29 @@ final class WorkerExtensionFacadeTest extends TestCase
         $first  = $this->preparationStartedSubscriber();
         $second = $this->executionFinishedSubscriber();
 
-        $facade = new WorkerExtensionFacade;
+        $facade = new WorkerExtensionFacade(new EventFacade);
 
         $facade->registerSubscribers($first, $second);
 
         $this->assertSame([$first, $second], $facade->subscribers());
     }
 
+    public function testRejectsASubscriberThatImplementsNoKnownSubscriberInterface(): void
+    {
+        $facade = new WorkerExtensionFacade(new EventFacade);
+
+        $this->expectException(UnknownSubscriberTypeException::class);
+
+        $facade->registerSubscriber(
+            new class implements Subscriber
+            {
+            },
+        );
+    }
+
     public function testHasNoSubscribersUntilOneIsRegistered(): void
     {
-        $this->assertSame([], (new WorkerExtensionFacade)->subscribers());
+        $this->assertSame([], new WorkerExtensionFacade(new EventFacade)->subscribers());
     }
 
     private function preparationStartedSubscriber(): PreparationStartedSubscriber
