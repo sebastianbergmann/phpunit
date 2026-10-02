@@ -124,6 +124,30 @@ final class FacadeTest extends TestCase
         $this->assertNotSame($first, $second);
     }
 
+    public function testKnowsWhetherEventsCanBeDispatchedToASubscriber(): void
+    {
+        $facade = new Facade;
+
+        $this->assertTrue(
+            $facade->isKnownSubscriberType(
+                new class implements Test\PreparationStartedSubscriber
+                {
+                    public function notify(Test\PreparationStarted $event): void
+                    {
+                    }
+                },
+            ),
+        );
+
+        $this->assertFalse(
+            $facade->isKnownSubscriberType(
+                new class implements Subscriber
+                {
+                },
+            ),
+        );
+    }
+
     public function testTracerRegistrationDoesNotWorkWhenEventFacadeIsSealed(): void
     {
         $this->expectException(EventFacadeIsSealedException::class);

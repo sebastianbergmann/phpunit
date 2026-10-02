@@ -458,18 +458,22 @@ final class PersistentWorker
     /**
      * Stop the worker process gracefully: the worker shuts down the
      * extensions that were bootstrapped in it and exits. The warnings that a
-     * failed shutdown produces are reported through a result file, whose
-     * content is trusted only when it carries the nonce of the stop command,
-     * and are emitted as test runner warnings.
+     * failed bootstrap or a failed shutdown of an extension produced are
+     * reported through a result file, whose content is trusted only when it
+     * carries the nonce of the stop command, and are returned: every worker
+     * process bootstraps the same extensions, so the caller reports each
+     * warning once rather than once per worker process (see WorkerPool).
+     *
+     * @return list<non-empty-string>
      */
-    public function stop(): void
+    public function stop(): array
     {
         $job = $this->job;
 
         if ($job === null) {
             $this->unlock();
 
-            return;
+            return [];
         }
 
         $nonce      = bin2hex(random_bytes(16));
@@ -499,9 +503,7 @@ final class PersistentWorker
 
         $this->unlock();
 
-        foreach ($this->shutdownWarnings($resultFile, $nonce) as $warning) {
-            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning($warning);
-        }
+        return $this->extensionWarnings($resultFile, $nonce);
     }
 
     /**
@@ -700,8 +702,8 @@ final class PersistentWorker
     }
 
     /**
-     * The warnings that the worker reported for the extensions whose shutdown
-     * failed. A result file that is missing, or whose content does not carry
+     * The warnings that the worker reported for the extensions whose bootstrap
+     * or shutdown failed. A result file that is missing, or whose content does not carry
      * the nonce of the stop command or does not decode to a list of strings,
      * reports none.
      *
@@ -709,7 +711,7 @@ final class PersistentWorker
      *
      * @return list<non-empty-string>
      */
-    private function shutdownWarnings(string $resultFile, string $nonce): array
+    private function extensionWarnings(string $resultFile, string $nonce): array
     {
         $result = false;
 
