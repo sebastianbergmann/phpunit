@@ -14,6 +14,7 @@ use function class_exists;
 use function count;
 use function explode;
 use function get_parent_class;
+use function in_array;
 use function is_subclass_of;
 use function spl_object_id;
 use function sprintf;
@@ -903,6 +904,11 @@ final class ParallelTestRunner
      * emits live — when the unit runs. Emitting it around the chunk as well
      * would nest the class suite inside itself.
      *
+     * A suite that merely has the name of the one class it holds — a
+     * <testsuite> named like its only test class — is not that suite node:
+     * the class suite is a member of it, and a sequential run emits the
+     * envelopes of both.
+     *
      * @param array{suite: TestSuite, units: list<WorkUnit>, phpt: list<PhptWorkUnit>, standalone: list<array{index: non-negative-int, test: Test}>} $chunk
      */
     private function suiteEnvelopeIsEmittedByUnit(array $chunk): bool
@@ -917,7 +923,18 @@ final class ParallelTestRunner
 
         $unit = $chunk['units'][0];
 
-        return $unit instanceof TestClassWorkUnit && $unit->className() === $chunk['suite']->name();
+        if (!$unit instanceof TestClassWorkUnit || $unit->className() !== $chunk['suite']->name()) {
+            return false;
+        }
+
+        // The members of a class unit are members of one and the same suite
+        // (see addToClassUnit()), so the unit covers the chunk's suite node
+        // when its first member is a member of that suite.
+        $tests = $unit->tests();
+
+        assert($tests !== []);
+
+        return in_array($tests[0], $chunk['suite']->tests(), true);
     }
 
     /**
