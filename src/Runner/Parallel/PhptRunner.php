@@ -567,7 +567,7 @@ final class PhptRunner
     private function generatorFor(PhptWorkUnit $unit, CollectingEmitter $collector, Interruption $interruption): Generator
     {
         if ($unit->numberOfRuns() > 1) {
-            return PhptRepeatTestSuite::for($unit->file(), EventFacade::emitter(), $unit->numberOfRuns())->executeInterleaved(
+            return PhptRepeatTestSuite::for($unit->file(), EventFacade::emitter(), $unit->numberOfRuns(), $unit->repetitions())->executeInterleaved(
                 $collector->emitter(),
                 $collector,
                 $interruption,
