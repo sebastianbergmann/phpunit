@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   run-tests:
-    name: Tests
+    name: PHPUnit ${{ matrix.phpunit-branch }}, PHP ${{ matrix.php-version }}, ${{ matrix.os == 'windows-latest' && 'Windows' || 'Linux' }}
 
     runs-on: ${{ matrix.os }}
     timeout-minutes: 20
