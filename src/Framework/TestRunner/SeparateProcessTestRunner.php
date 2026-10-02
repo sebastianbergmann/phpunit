@@ -146,11 +146,14 @@ final class SeparateProcessTestRunner
 
         assert($file !== false);
 
+        // The paths are pasted into single-quoted string literals of the
+        // template; a single quote or a backslash in a path would otherwise
+        // break the code of the child process.
         $var = [
-            'bootstrap'                      => $bootstrap,
+            'bootstrap'                      => self::stringLiteralFragment($bootstrap),
             'composerAutoload'               => $composerAutoload,
             'phar'                           => $phar,
-            'filename'                       => $file,
+            'filename'                       => self::stringLiteralFragment($file),
             'className'                      => $class->getName(),
             'methodName'                     => $test->name(),
             'collectCodeCoverageInformation' => $coverage,
@@ -169,10 +172,10 @@ final class SeparateProcessTestRunner
             'name'                           => $test->name(),
             'offsetSeconds'                  => (string) $offset[0],
             'offsetNanoseconds'              => (string) $offset[1],
-            'serializedConfiguration'        => $serializedConfiguration,
-            'processResultFile'              => $processResultFile,
+            'serializedConfiguration'        => self::stringLiteralFragment($serializedConfiguration),
+            'processResultFile'              => self::stringLiteralFragment($processResultFile),
             'processResultNonce'             => $processResultNonce,
-            'sourceMapFile'                  => $sourceMapFile,
+            'sourceMapFile'                  => self::stringLiteralFragment($sourceMapFile),
         ];
 
         $template = new Template(__DIR__ . '/templates/method.tpl');
@@ -302,5 +305,16 @@ final class SeparateProcessTestRunner
         );
 
         return $path;
+    }
+
+    /**
+     * The given value as the contents of a single-quoted string literal of
+     * a template: the value is exported as a string literal of its own that
+     * is concatenated with the empty strings that the quotes of the template
+     * delimit, as is done for the data of the test above.
+     */
+    private static function stringLiteralFragment(string $value): string
+    {
+        return "'." . var_export($value, true) . ".'";
     }
 }
