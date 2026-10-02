@@ -75,7 +75,20 @@ abstract class PhptIterativeTestSuite extends IterativeTestSuite
         $generator->rewind();
 
         while ($generator->valid()) {
-            $generator->send(JobRunnerRegistry::run($generator->current()));
+            try {
+                $result = JobRunnerRegistry::run($generator->current());
+            } catch (Throwable $t) {
+                // The exception is raised inside the generator, where the run
+                // that needed the child process waits for its result, so that
+                // the run stops collecting its events, and forwards the ones it
+                // has collected, before the exception propagates (see
+                // executeCollectingEvents()).
+                $generator->throw($t);
+
+                continue;
+            }
+
+            $generator->send($result);
         }
     }
 
@@ -107,12 +120,10 @@ abstract class PhptIterativeTestSuite extends IterativeTestSuite
 
         try {
             yield from $test->execute($emitter, $interruption);
-            // @codeCoverageIgnoreStart
         } catch (Throwable $t) {
             $collector->forward($collector->stopCollectingEvents());
 
             throw $t;
-            // @codeCoverageIgnoreEnd
         }
 
         return $collector->stopCollectingEvents();
