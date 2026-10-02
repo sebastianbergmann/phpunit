@@ -24,7 +24,7 @@ jobs:
     env:
       PHP_EXTENSIONS: none, ctype, curl, dom, json, libxml, mbstring, openssl, pdo, phar, tokenizer, xmlwriter
       PHP_INI_VALUES: memory_limit=-1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On, display_startup_errors=On
-      PHPUNIT_OUTPUT_OPTIONS: ${{ (matrix.phpunit-branch == '12.5' || matrix.phpunit-branch == '11.5' || matrix.phpunit-branch == '10.5' || matrix.phpunit-branch == '9.6' || matrix.phpunit-branch == '8.5') && '--no-progress' || '--compact' }}
+      PHPUNIT_OUTPUT_OPTIONS: ${{ (matrix.phpunit-branch == '12.5' || matrix.phpunit-branch == '11.5' || matrix.phpunit-branch == '10.5') && '--no-progress' || (matrix.phpunit-branch != '9.6' && matrix.phpunit-branch != '8.5') && '--compact' || '' }}
       PHPUNIT_ISSUE_OPTIONS: ${{ (matrix.phpunit-branch != '9.6' && matrix.phpunit-branch != '8.5') && '--display-all-issues' || '' }}
 
     strategy:
