@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner\Parallel;
 
+use function range;
 use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 use PHPUnit\Runner\TestRunHistory\TestRunHistory;
 use PHPUnit\Runner\TestRunHistory\TestRunHistoryId;
@@ -55,19 +56,30 @@ final readonly class PhptWorkUnit implements WorkUnit
     private int $maxAttempts;
 
     /**
+     * @var non-empty-list<positive-int>
+     */
+    private array $repetitions;
+
+    /**
      * @param non-negative-int       $index
      * @param non-empty-string       $file
      * @param list<non-empty-string> $conflicts
      * @param positive-int           $numberOfRuns
      * @param positive-int           $maxAttempts
+     * @param list<positive-int>     $repetitions
      */
-    public function __construct(int $index, string $file, array $conflicts = [], int $numberOfRuns = 1, int $maxAttempts = 1)
+    public function __construct(int $index, string $file, array $conflicts = [], int $numberOfRuns = 1, int $maxAttempts = 1, array $repetitions = [])
     {
+        if ($repetitions === []) {
+            $repetitions = range(1, $numberOfRuns);
+        }
+
         $this->index        = $index;
         $this->file         = $file;
         $this->conflicts    = $conflicts;
         $this->numberOfRuns = $numberOfRuns;
         $this->maxAttempts  = $maxAttempts;
+        $this->repetitions  = $repetitions;
     }
 
     /**
@@ -79,6 +91,17 @@ final readonly class PhptWorkUnit implements WorkUnit
     public function numberOfRuns(): int
     {
         return $this->numberOfRuns;
+    }
+
+    /**
+     * The repetitions of a repeated test that are to be run: all of them,
+     * unless test selection, such as with --run-test-id, picked only some.
+     *
+     * @return non-empty-list<positive-int>
+     */
+    public function repetitions(): array
+    {
+        return $this->repetitions;
     }
 
     /**
