@@ -9,10 +9,14 @@
  */
 namespace PHPUnit\Runner\Parallel;
 
+use const PHP_EOL;
 use function assert;
 use function spl_object_id;
+use function strpos;
+use function substr;
 use function usleep;
 use PHPUnit\Event\EventCollection;
+use PHPUnit\Event\Facade as EventFacade;
 
 /**
  * A fixed-size pool of PersistentWorkers across which units of work are
@@ -146,6 +150,15 @@ final class WorkerPool
      * @var array<int, non-negative-int>
      */
     private array $completedUnits = [];
+
+    /**
+     * The warnings about extensions whose bootstrap or shutdown failed in a
+     * worker process that have been reported, keyed by the warning without
+     * its stack trace (see reportExtensionWarnings()).
+     *
+     * @var array<string, true>
+     */
+    private array $reportedExtensionWarnings = [];
 
     /**
      * Whether the units that are executing were asked to halt (see halt()):
@@ -406,7 +419,7 @@ final class WorkerPool
         $this->kill();
 
         foreach ($this->workers as $worker) {
-            $worker->stop();
+            $this->reportExtensionWarnings($worker->stop());
         }
     }
 
@@ -541,7 +554,7 @@ final class WorkerPool
                     if (!$worker->isAlive()) {
                         $this->restart($worker);
                     } elseif ($this->isDueForRecycling($worker)) {
-                        $worker->stop();
+                        $this->reportExtensionWarnings($worker->stop());
 
                         $this->restart($worker);
                     }
@@ -598,6 +611,38 @@ final class WorkerPool
         }
 
         return $indexes;
+    }
+
+    /**
+     * Report the warnings that a worker process sent back when it was stopped,
+     * about extensions whose bootstrap or shutdown failed in it, as test
+     * runner warnings. Every worker process bootstraps the same extensions, so
+     * a failure is usually the same in each of them: a warning is reported
+     * once, however many worker processes sent it. Two warnings are the same
+     * when they agree up to their stack trace, which names the file that holds
+     * the code of the worker process and thus differs between them.
+     *
+     * @param list<non-empty-string> $warnings
+     */
+    private function reportExtensionWarnings(array $warnings): void
+    {
+        foreach ($warnings as $warning) {
+            $key = $warning;
+
+            $stackTrace = strpos($warning, PHP_EOL . '#0 ');
+
+            if ($stackTrace !== false) {
+                $key = substr($warning, 0, $stackTrace);
+            }
+
+            if (isset($this->reportedExtensionWarnings[$key])) {
+                continue;
+            }
+
+            $this->reportedExtensionWarnings[$key] = true;
+
+            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning($warning);
+        }
     }
 
     /**

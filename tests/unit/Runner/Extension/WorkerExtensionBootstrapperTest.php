@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner\Extension;
 
+use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -16,6 +17,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\ParallelWorkerExtension\FailingWorkerExtension;
 use PHPUnit\TestFixture\ParallelWorkerExtension\RecordingSubscriber;
 use PHPUnit\TestFixture\ParallelWorkerExtension\ShutdownFailingWorkerExtension;
+use PHPUnit\TestFixture\ParallelWorkerExtension\UnknownSubscriberWorkerExtension;
 use PHPUnit\TestFixture\ParallelWorkerExtension\WorkerAwareExtension;
 use PHPUnit\TestFixture\ParallelWorkerExtension\WorkerUnawareExtension;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
@@ -34,7 +36,7 @@ final class WorkerExtensionBootstrapperTest extends TestCase
 
     public function testBootstrapsAnExtensionThatImplementsTheWorkerInterfaceWithItsParameters(): void
     {
-        $facade       = new WorkerExtensionFacade;
+        $facade       = new WorkerExtensionFacade(new EventFacade);
         $bootstrapper = new WorkerExtensionBootstrapper(ConfigurationRegistry::get(), $facade);
 
         $bootstrapper->bootstrap(WorkerAwareExtension::class, ['key' => 'value']);
@@ -50,7 +52,7 @@ final class WorkerExtensionBootstrapperTest extends TestCase
 
     public function testSkipsAnExtensionThatDoesNotImplementTheWorkerInterfaceWithoutComment(): void
     {
-        $facade       = new WorkerExtensionFacade;
+        $facade       = new WorkerExtensionFacade(new EventFacade);
         $bootstrapper = new WorkerExtensionBootstrapper(ConfigurationRegistry::get(), $facade);
 
         $bootstrapper->bootstrap(WorkerUnawareExtension::class, []);
@@ -62,7 +64,7 @@ final class WorkerExtensionBootstrapperTest extends TestCase
     public function testSkipsAClassThatDoesNotExistWithoutComment(): void
     {
         // The main process has warned about the class already.
-        $facade       = new WorkerExtensionFacade;
+        $facade       = new WorkerExtensionFacade(new EventFacade);
         $bootstrapper = new WorkerExtensionBootstrapper(ConfigurationRegistry::get(), $facade);
 
         $bootstrapper->bootstrap('PHPUnit\\TestFixture\\ParallelWorkerExtension\\ExtensionThatDoesNotExist', []);
@@ -73,7 +75,7 @@ final class WorkerExtensionBootstrapperTest extends TestCase
 
     public function testRecordsAWarningWhenBootstrappingAnExtensionInTheWorkerFails(): void
     {
-        $facade       = new WorkerExtensionFacade;
+        $facade       = new WorkerExtensionFacade(new EventFacade);
         $bootstrapper = new WorkerExtensionBootstrapper(ConfigurationRegistry::get(), $facade);
 
         $bootstrapper->bootstrap(FailingWorkerExtension::class, []);
@@ -87,9 +89,27 @@ final class WorkerExtensionBootstrapperTest extends TestCase
         );
     }
 
+    public function testRecordsAWarningWhenAnExtensionRegistersASubscriberOfAnUnknownTypeInTheWorker(): void
+    {
+        $facade       = new WorkerExtensionFacade(new EventFacade);
+        $bootstrapper = new WorkerExtensionBootstrapper(ConfigurationRegistry::get(), $facade);
+
+        $bootstrapper->bootstrap(UnknownSubscriberWorkerExtension::class, []);
+
+        $warnings = $bootstrapper->warnings();
+
+        $this->assertCount(1, $warnings);
+        $this->assertStringStartsWith(
+            'Bootstrapping of extension ' . UnknownSubscriberWorkerExtension::class . ' in a parallel worker process failed: Subscriber "',
+            $warnings[0],
+        );
+        $this->assertStringContainsString('does not implement any known interface', $warnings[0]);
+        $this->assertSame([], $facade->subscribers());
+    }
+
     public function testShutsDownAnExtensionThatWasBootstrapped(): void
     {
-        $bootstrapper = new WorkerExtensionBootstrapper(ConfigurationRegistry::get(), new WorkerExtensionFacade);
+        $bootstrapper = new WorkerExtensionBootstrapper(ConfigurationRegistry::get(), new WorkerExtensionFacade(new EventFacade));
 
         $bootstrapper->bootstrap(WorkerAwareExtension::class, []);
 
@@ -99,7 +119,7 @@ final class WorkerExtensionBootstrapperTest extends TestCase
 
     public function testDoesNotShutDownAnExtensionWhoseBootstrapFailed(): void
     {
-        $bootstrapper = new WorkerExtensionBootstrapper(ConfigurationRegistry::get(), new WorkerExtensionFacade);
+        $bootstrapper = new WorkerExtensionBootstrapper(ConfigurationRegistry::get(), new WorkerExtensionFacade(new EventFacade));
 
         $bootstrapper->bootstrap(FailingWorkerExtension::class, []);
 
@@ -108,7 +128,7 @@ final class WorkerExtensionBootstrapperTest extends TestCase
 
     public function testReturnsAWarningWhenShuttingDownAnExtensionFailsAndShutsDownTheOthersAllTheSame(): void
     {
-        $bootstrapper = new WorkerExtensionBootstrapper(ConfigurationRegistry::get(), new WorkerExtensionFacade);
+        $bootstrapper = new WorkerExtensionBootstrapper(ConfigurationRegistry::get(), new WorkerExtensionFacade(new EventFacade));
 
         $bootstrapper->bootstrap(ShutdownFailingWorkerExtension::class, []);
         $bootstrapper->bootstrap(WorkerAwareExtension::class, []);

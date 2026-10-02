@@ -30,8 +30,9 @@ use Throwable;
  * warned about, every configured extension already, and the worker only
  * bootstraps the ones that asked to be. A failure to bootstrap an extension
  * in the worker is a new fact, though, and is recorded as a warning; the
- * worker has no unit to emit it into at the time it bootstraps, so it emits
- * the recorded warnings with the first unit it runs.
+ * worker has no unit to emit it into at the time it bootstraps, so it
+ * reports the recorded warnings to the main process when it is stopped,
+ * together with the warnings of a failed shutdown.
  *
  * The extensions that were bootstrapped successfully are shut down when the
  * worker stops (see shutdown()).

@@ -1,5 +1,5 @@
 --TEST--
-phpunit --parallel=2 reports an extension whose shutdown fails in a worker with a test runner warning, once for every worker
+phpunit --parallel=2 reports an extension whose shutdown fails in the workers with one test runner warning, not one for every worker
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-record-test-run-history';
@@ -21,11 +21,9 @@ Parallel:      2 workers
 
 Time: %s, Memory: %s
 
-There were 2 PHPUnit test runner warnings:
+There was 1 PHPUnit test runner warning:
 
 1) Shutdown of extension PHPUnit\TestFixture\ParallelWorkerExtension\FailingShutdown\Extension in a parallel worker process failed: the resource this extension flushes at the end of a worker is gone
 %A
-2) Shutdown of extension PHPUnit\TestFixture\ParallelWorkerExtension\FailingShutdown\Extension in a parallel worker process failed: the resource this extension flushes at the end of a worker is gone
-%A
 OK, but there were issues!
-Tests: 1, Assertions: 1, PHPUnit Warnings: 2.
+Tests: 1, Assertions: 1, PHPUnit Warnings: 1.
