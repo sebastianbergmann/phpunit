@@ -130,8 +130,10 @@ final class WorkerPool
      * replacement is a planned restart, not a crash: the worker is shut down
      * gracefully once it is idle, so its output is harvested as it is at the
      * end of the run, and the fresh process keeps the worker's ordinal
-     * identity. Nothing is replaced while no unit is queued for the fresh
-     * process to run, as the run is then about to shut every worker down.
+     * identity. A worker is replaced when the next unit is dispatched to it,
+     * which may be a unit of a later test suite of the run, so nothing is
+     * replaced once no unit is left for the fresh process to run, as the run
+     * is then about to shut every worker down.
      *
      * @var non-negative-int
      */
@@ -284,7 +286,7 @@ final class WorkerPool
 
             $onCompleted($completed);
 
-            $this->recycleWhenDue($worker);
+            $this->countCompletedUnit($worker);
         }
 
         return $progressed;
@@ -452,15 +454,11 @@ final class WorkerPool
     }
 
     /**
-     * Count the unit the worker has just completed and, once the worker has
-     * completed as many as the recycling limit allows, replace it with a
-     * fresh process — provided it is still alive (a worker that died with its
-     * unit is dealt with by the retry) and there is a queued unit for the
-     * fresh process to run.
-     *
-     * @throws WorkerException
+     * Count the unit the worker has just completed towards recycling it. A
+     * worker that died with its unit is booted afresh before it runs another
+     * one, so its count starts over anyway.
      */
-    private function recycleWhenDue(PersistentWorker $worker): void
+    private function countCompletedUnit(PersistentWorker $worker): void
     {
         if ($this->numberOfUnitsBeforeRecycling === 0 || !$worker->isAlive()) {
             return;
@@ -473,20 +471,28 @@ final class WorkerPool
         }
 
         $this->completedUnits[$id]++;
+    }
 
-        if ($this->completedUnits[$id] < $this->numberOfUnitsBeforeRecycling || !$this->hasQueuedUnits()) {
-            return;
+    /**
+     * Whether the worker has completed as many units as the recycling limit
+     * allows and is to be replaced by a fresh process before it runs another
+     * one.
+     */
+    private function isDueForRecycling(PersistentWorker $worker): bool
+    {
+        $id = spl_object_id($worker);
+
+        if (!isset($this->completedUnits[$id])) {
+            return false;
         }
 
-        $worker->stop();
-        $worker->restart();
-
-        unset($this->completedUnits[$id]);
+        return $this->completedUnits[$id] >= $this->numberOfUnitsBeforeRecycling;
     }
 
     /**
      * Hand the next queued units to the workers that are not busy, booting a
-     * fresh process for a worker whose process has died.
+     * fresh process for a worker whose process has died or that is due for
+     * recycling.
      *
      * A unit that cannot be dispatched — its description cannot be built or
      * transported, or no fresh worker process can be booted for it — is
@@ -518,8 +524,14 @@ final class WorkerPool
                 try {
                     // A worker whose process died while it was running an
                     // earlier unit, and that was not booted afresh to retry
-                    // that unit, is booted afresh for this one.
+                    // that unit, is booted afresh for this one. So is a worker
+                    // that is due for recycling, once its process has been
+                    // shut down gracefully.
                     if (!$worker->isAlive()) {
+                        $this->restart($worker);
+                    } elseif ($this->isDueForRecycling($worker)) {
+                        $worker->stop();
+
                         $this->restart($worker);
                     }
 
