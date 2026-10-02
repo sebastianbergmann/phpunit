@@ -16,6 +16,7 @@ use function ksort;
 use function sys_get_temp_dir;
 use function unlink;
 use function usleep;
+use PHPUnit\Event\Code\Phpt;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Event\EventCollection;
 use PHPUnit\Event\Facade;
@@ -135,6 +136,31 @@ final class PhptRunnerTest extends TestCase
         $this->assertSame(1, $this->numberOf($collected[0], TestSuiteStarted::class));
         $this->assertSame(2, $this->numberOf($collected[0], Passed::class));
         $this->assertSame(1, $this->numberOf($collected[0], TestSuiteFinished::class));
+    }
+
+    public function testRunsOnlyTheRepetitionsOfARepeatedPhptTestThatTestSelectionPicked(): void
+    {
+        $units = [
+            new PhptWorkUnit(0, __DIR__ . '/../../../_files/parallel-worker/worker.phpt', [], 3, 1, [2]),
+        ];
+
+        $collected = $this->execute($units, 2);
+
+        $passed = [];
+
+        foreach ($collected[0] as $event) {
+            if (!$event instanceof Passed) {
+                continue;
+            }
+
+            $test = $event->test();
+
+            $this->assertInstanceOf(Phpt::class, $test);
+
+            $passed[] = $test->repetition();
+        }
+
+        $this->assertSame([2], $passed);
     }
 
     public function testSkipsTheRemainingRepetitionsOfARepeatedPhptTestAfterAFailedOne(): void
