@@ -314,9 +314,7 @@ final readonly class JobRunner
         }
 
         if ($job->hasArguments()) {
-            if ($file === null) {
-                $command[] = '--';
-            }
+            $command[] = '--';
 
             foreach ($job->arguments() as $argument) {
                 $command[] = trim($argument);

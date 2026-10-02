@@ -8,6 +8,7 @@ All notable changes of the PHPUnit 13.4 release series are documented in this fi
 
 * `setUpBeforeClass()` and `tearDownAfterClass()` were run twice for a test class that is the only test class in a test suite of the XML configuration file that has the name of that test class
 * Tests could not be run in process isolation when the path of the bootstrap script, the test file, or the directory for temporary files contained a single quote
+* Arguments in the `--ARGS--` section of a PHPT test that start with `-` were interpreted by PHP instead of being passed to the test when the test also has a `--STDIN--` section
 
 ## [13.4.0] - 2026-10-02
 
