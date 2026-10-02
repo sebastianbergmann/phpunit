@@ -38,4 +38,4 @@ All notable changes of the PHPUnit 13.4 release series are documented in this fi
 * A test that is run in process isolation aborts the test run when its result cannot be unserialized, for instance because it returns an object that holds a test double
 * A test that uses `#[DataProviderClosure]` errors when it is run in process isolation
 
-[13.4.0]: https://github.com/sebastianbergmann/phpunit/compare/13.3...main
+[13.4.0]: https://github.com/sebastianbergmann/phpunit/compare/13.3.6...13.4.0
