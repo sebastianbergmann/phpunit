@@ -273,6 +273,57 @@ final class WorkerPoolTest extends TestCase
         }
     }
 
+    public function testReplacesAWorkerThatHasCompletedTheConfiguredNumberOfUnitsBeforeItRunsAUnitOfALaterRun(): void
+    {
+        $pool = $this->pool(1, null, 1);
+
+        $pool->start();
+
+        $completed = [];
+
+        $onCompleted = static function (CompletedWorkUnit $unit) use (&$completed): void
+        {
+            $completed[] = $unit;
+        };
+
+        $onStreamedEvents = static function (WorkUnit $unit, EventCollection $events): void
+        {
+        };
+
+        $onCrashedUnitRetry = static function (WorkUnit $unit): bool
+        {
+            return true;
+        };
+
+        try {
+            // The units of the test suites of a run that is partitioned into
+            // test suites are run one test suite after another, on the same
+            // workers: the only worker has completed as many units as it may
+            // when the first test suite ends, with no unit left to run in it.
+            $pool->run(
+                [new TestClassWorkUnit(0, WorkerFirstTest::class, [new WorkerFirstTest('testStartsTheProcessLocalCounter')])],
+                $onCompleted,
+                $onStreamedEvents,
+                $onCrashedUnitRetry,
+            );
+
+            $pool->run(
+                [new TestClassWorkUnit(1, WorkerFirstTest::class, [new WorkerFirstTest('testStartsTheProcessLocalCounter')])],
+                $onCompleted,
+                $onStreamedEvents,
+                $onCrashedUnitRetry,
+            );
+        } finally {
+            $pool->stop();
+        }
+
+        $this->assertCount(2, $completed);
+
+        foreach ($completed as $unit) {
+            $this->assertTrue($this->passedTestsOf($unit)->hasTestMethodPassed(WorkerFirstTest::class . '::testStartsTheProcessLocalCounter'));
+        }
+    }
+
     public function testKeepsAWorkerForTheWholeRunWhenRecyclingIsOff(): void
     {
         // The same units on a worker that is never replaced: the second unit
