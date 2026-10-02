@@ -15,6 +15,7 @@ use function count;
 use function explode;
 use function get_parent_class;
 use function is_subclass_of;
+use function spl_object_id;
 use function sprintf;
 use function usleep;
 use PHPUnit\Event;
@@ -1008,7 +1009,12 @@ final class ParallelTestRunner
      * Walk the suite and group the selected tests into units in suite order.
      *
      * The tests of a class are gathered into one TestClassWorkUnit, indexed by
-     * the order in which the class first appears. A PHPT test becomes a
+     * the order in which the class first appears. A class whose test suite
+     * appears more than once — overlapping paths, or a test file that is
+     * listed twice, select it twice — becomes one unit per appearance,
+     * because a sequential run runs the class, and the methods that run
+     * before its first and after its last test, once per appearance. A PHPT
+     * test becomes a
      * PhptWorkUnit of its own. Both kinds can run in a worker, so both are
      * returned as parallel-eligible units. Any other kind of test — one that is
      * neither a PHPUnit\Framework\TestCase nor a PHPT test — cannot be
@@ -1022,7 +1028,7 @@ final class ParallelTestRunner
      */
     private function collectUnits(TestSuite $suite, int &$index): array
     {
-        /** @var array<class-string<TestCase>, array{index: non-negative-int, tests: list<DataProviderTestSuite|IterativeTestSuite|TestCase>}> $byClass */
+        /** @var array<non-empty-string, array{className: class-string<TestCase>, index: non-negative-int, tests: list<DataProviderTestSuite|IterativeTestSuite|TestCase>}> $byClass */
         $byClass = [];
 
         /** @var list<array{index: non-negative-int, file: non-empty-string, conflicts: list<non-empty-string>, numberOfRuns: positive-int, maxAttempts: positive-int}> $phpt */
@@ -1035,8 +1041,8 @@ final class ParallelTestRunner
 
         $units = [];
 
-        foreach ($byClass as $className => $group) {
-            $units[] = new TestClassWorkUnit($group['index'], $className, $group['tests']);
+        foreach ($byClass as $group) {
+            $units[] = new TestClassWorkUnit($group['index'], $group['className'], $group['tests']);
         }
 
         $phptUnits = [];
@@ -1059,10 +1065,10 @@ final class ParallelTestRunner
     }
 
     /**
-     * @param array<class-string<TestCase>, array{index: non-negative-int, tests: list<DataProviderTestSuite|IterativeTestSuite|TestCase>}>                          $byClass
-     * @param list<array{index: non-negative-int, file: non-empty-string, conflicts: list<non-empty-string>, numberOfRuns: positive-int, maxAttempts: positive-int}> $phpt
-     * @param list<array{index: non-negative-int, test: Test}>                                                                                                       $standalone
-     * @param non-negative-int                                                                                                                                       $index
+     * @param array<non-empty-string, array{className: class-string<TestCase>, index: non-negative-int, tests: list<DataProviderTestSuite|IterativeTestSuite|TestCase>}> $byClass
+     * @param list<array{index: non-negative-int, file: non-empty-string, conflicts: list<non-empty-string>, numberOfRuns: positive-int, maxAttempts: positive-int}>     $phpt
+     * @param list<array{index: non-negative-int, test: Test}>                                                                                                           $standalone
+     * @param non-negative-int                                                                                                                                           $index
      */
     private function collect(TestSuite $suite, array &$byClass, array &$phpt, array &$standalone, int &$index): void
     {
@@ -1120,7 +1126,7 @@ final class ParallelTestRunner
 
                 $className = $tests[0]::class;
 
-                $this->addToClassUnit($className, $test, $byClass, $index);
+                $this->addToClassUnit($suite, $className, $test, $byClass, $index);
 
                 continue;
             }
@@ -1135,7 +1141,7 @@ final class ParallelTestRunner
 
                 assert(class_exists($className) && is_subclass_of($className, TestCase::class));
 
-                $this->addToClassUnit($className, $test, $byClass, $index);
+                $this->addToClassUnit($suite, $className, $test, $byClass, $index);
 
                 continue;
             }
@@ -1149,7 +1155,7 @@ final class ParallelTestRunner
             if ($test instanceof TestCase) {
                 $className = $test::class;
 
-                $this->addToClassUnit($className, $test, $byClass, $index);
+                $this->addToClassUnit($suite, $className, $test, $byClass, $index);
 
                 continue;
             }
@@ -1192,22 +1198,29 @@ final class ParallelTestRunner
      * atomic member — to the work unit of its test class, creating the unit,
      * with the next suite index, on the member's first appearance.
      *
-     * @param class-string<TestCase>                                                                                                        $className
-     * @param array<class-string<TestCase>, array{index: non-negative-int, tests: list<DataProviderTestSuite|IterativeTestSuite|TestCase>}> $byClass
-     * @param non-negative-int                                                                                                              $index
+     * The unit is that of the class in the test suite that holds the member:
+     * a class whose test suite appears more than once gets a unit for each
+     * appearance.
+     *
+     * @param class-string<TestCase>                                                                                                                                     $className
+     * @param array<non-empty-string, array{className: class-string<TestCase>, index: non-negative-int, tests: list<DataProviderTestSuite|IterativeTestSuite|TestCase>}> $byClass
+     * @param non-negative-int                                                                                                                                           $index
      */
-    private function addToClassUnit(string $className, DataProviderTestSuite|IterativeTestSuite|TestCase $test, array &$byClass, int &$index): void
+    private function addToClassUnit(TestSuite $suite, string $className, DataProviderTestSuite|IterativeTestSuite|TestCase $test, array &$byClass, int &$index): void
     {
-        if (!isset($byClass[$className])) {
-            $byClass[$className] = [
-                'index' => $index,
-                'tests' => [],
+        $key = spl_object_id($suite) . ' ' . $className;
+
+        if (!isset($byClass[$key])) {
+            $byClass[$key] = [
+                'className' => $className,
+                'index'     => $index,
+                'tests'     => [],
             ];
 
             $index++;
         }
 
-        $byClass[$className]['tests'][] = $test;
+        $byClass[$key]['tests'][] = $test;
     }
 
     /**
