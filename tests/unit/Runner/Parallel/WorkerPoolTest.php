@@ -9,6 +9,11 @@
  */
 namespace PHPUnit\Runner\Parallel;
 
+use function assert;
+use function clearstatcache;
+use function hrtime;
+use function is_file;
+use function is_string;
 use function putenv;
 use function sort;
 use function strlen;
@@ -36,6 +41,7 @@ use PHPUnit\TestFixture\ParallelWorker\WorkerSleepingTest;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 use PHPUnit\Util\PHP\Job;
 use PHPUnit\Util\PHP\JobRunner;
+use ReflectionProperty;
 
 #[CoversClass(WorkerPool::class)]
 #[CoversClass(TestClassWorkUnit::class)]
@@ -772,6 +778,67 @@ final class WorkerPoolTest extends TestCase
         } finally {
             $pool->stop();
         }
+    }
+
+    public function testStopTerminatesAWorkerThatIsStillExecutingAUnitAndDeletesTheFilesOfTheUnit(): void
+    {
+        $pool = $this->pool(1);
+
+        $pool->start();
+
+        $pool->begin(
+            [
+                new TestClassWorkUnit(0, WorkerSleepingTest::class, [new WorkerSleepingTest('testThatSleeps')]),
+            ],
+            static function (CompletedWorkUnit $unit): void
+            {
+            },
+            static function (WorkUnit $unit, EventCollection $events): void
+            {
+            },
+            static function (WorkUnit $unit): bool
+            {
+                return true;
+            },
+        );
+
+        $pool->tick();
+
+        $workers = new ReflectionProperty(WorkerPool::class, 'workers')->getValue($pool);
+
+        $this->assertIsArray($workers);
+        $this->assertInstanceOf(PersistentWorker::class, $workers[0]);
+
+        $resultFile = new ReflectionProperty(PersistentWorker::class, 'currentResultFile')->getValue($workers[0]);
+
+        assert(is_string($resultFile));
+
+        $this->assertFileExists($resultFile);
+
+        // The worker deletes the command file once it has picked the command
+        // up, and then runs the test that sleeps for five seconds.
+        $commandFile = new ReflectionProperty(PersistentWorker::class, 'commandFile')->getValue($workers[0]);
+
+        assert(is_string($commandFile));
+
+        for ($i = 0; $i < 500 && is_file($commandFile); $i++) {
+            usleep(10000);
+
+            clearstatcache(true, $commandFile);
+        }
+
+        $this->assertFileDoesNotExist($commandFile);
+
+        $start = hrtime(true);
+
+        // An exception ended the run while the worker was still running the
+        // test.
+        $pool->stop();
+
+        $this->assertLessThan(4, (hrtime(true) - $start) / 1000000000);
+        $this->assertFalse($workers[0]->isAlive());
+        $this->assertFileDoesNotExist($resultFile);
+        $this->assertFileDoesNotExist($resultFile . '.done');
     }
 
     public function testATickOnAFinishedPoolReportsNoProgress(): void

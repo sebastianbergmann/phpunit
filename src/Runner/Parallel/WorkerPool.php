@@ -376,8 +376,9 @@ final class WorkerPool
      * units that have not been dispatched yet are dropped, and every worker
      * that is busy executing a unit is terminated without waiting for its
      * result. Used when the deadline of a time limit for the test run passes
-     * while the test runner waits for the units that it asked to halt; the
-     * workers that are idle stay alive and are shut down by stop() as usual.
+     * while the test runner waits for the units that it asked to halt, and
+     * when the pool is stopped while units are executing; the workers that
+     * are idle stay alive and are shut down by stop() as usual.
      */
     public function kill(): void
     {
@@ -392,8 +393,18 @@ final class WorkerPool
         }
     }
 
+    /**
+     * Shut every worker down gracefully, once the run has ended.
+     *
+     * A unit that is still executing then is abandoned, because an exception
+     * ended the run: its worker is terminated, and the unit's files are
+     * deleted, rather than waited for until it has finished the unit and
+     * picks up the command to shut down.
+     */
     public function stop(): void
     {
+        $this->kill();
+
         foreach ($this->workers as $worker) {
             $worker->stop();
         }

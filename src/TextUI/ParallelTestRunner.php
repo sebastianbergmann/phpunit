@@ -360,6 +360,15 @@ final class ParallelTestRunner
                 }
             }
         } finally {
+            // When an exception ends the run, the units that are executing
+            // are abandoned: the child processes of the PHPT tests are
+            // terminated, and their --CLEAN-- sections run, and the workers
+            // that are executing a unit are terminated when the pool is
+            // stopped.
+            if ($phptRunner !== null) {
+                $phptRunner->kill();
+            }
+
             if ($pool !== null) {
                 $pool->stop();
             }
