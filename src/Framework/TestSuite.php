@@ -16,7 +16,6 @@ use function array_pop;
 use function array_reverse;
 use function assert;
 use function call_user_func;
-use function class_exists;
 use function count;
 use function implode;
 use function is_callable;
@@ -99,6 +98,14 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
     private Event\Emitter $emitter;
 
     /**
+     * Whether this test suite holds the tests of a test class, which is only
+     * known from how it was created: a test suite that merely has the name of
+     * a test class, such as a test suite of the XML configuration file that
+     * is named like the test class it holds, is not for that test class.
+     */
+    private bool $isForTestClass = false;
+
+    /**
      * @param non-empty-string $name
      */
     public static function empty(string $name, Event\Emitter $emitter): static
@@ -115,6 +122,8 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
     public static function fromClassReflector(ReflectionClass $class, Event\Emitter $emitter, array $groups = [], int $numberOfRuns = 1, int $maxAttempts = 1): static
     {
         $testSuite = new static($class->getName(), $emitter);
+
+        $testSuite->isForTestClass = true;
 
         foreach (Reflection::publicMethodsDeclaredDirectlyInTestClass($class) as $method) {
             if (!TestUtil::isTestMethod($method)) {
@@ -612,7 +621,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
      */
     public function isForTestClass(): bool
     {
-        return class_exists($this->name, false) && is_subclass_of($this->name, TestCase::class);
+        return $this->isForTestClass;
     }
 
     /**

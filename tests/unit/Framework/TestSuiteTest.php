@@ -155,6 +155,22 @@ final class TestSuiteTest extends TestCase
         $this->assertSame(DependencyFailureTest::class, $tests[1]->name());
     }
 
+    public function testIsForTheTestClassItWasCreatedFor(): void
+    {
+        $suite = TestSuite::fromClassReflector(new ReflectionClass(MultiDependencyTest::class), $this->createStub(Emitter::class));
+
+        $this->assertTrue($suite->isForTestClass());
+    }
+
+    public function testIsNotForATestClassWhenItIsOnlyNamedLikeOne(): void
+    {
+        $suite = TestSuite::empty(MultiDependencyTest::class, $this->createStub(Emitter::class));
+
+        $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
+
+        $this->assertFalse($suite->isForTestClass());
+    }
+
     public function testRejectsAbstractTestClass(): void
     {
         $suite = TestSuite::empty('the-test-suite', $this->createStub(Emitter::class));
