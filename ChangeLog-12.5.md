@@ -6,8 +6,9 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 
 ### Fixed
 
-* Issues that are listed in the baseline are not ignored for tests that are run in a separate process
+* `setUpBeforeClass()` and `tearDownAfterClass()` were run twice for a test class that is the only test class in a test suite of the XML configuration file that has the name of that test class
 * A test that is run in process isolation aborts the test run when its result cannot be unserialized, for instance because it returns an object that holds a test double
+* Issues that are listed in the baseline are not ignored for tests that are run in a separate process
 
 ## [12.5.37] - 2026-09-29
 

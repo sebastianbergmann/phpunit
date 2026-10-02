@@ -116,6 +116,22 @@ final class TestSuiteTest extends TestCase
         ], $suite->requires(), 'Required test names incorrect');
     }
 
+    public function testIsForTheTestClassItWasCreatedFor(): void
+    {
+        $suite = TestSuite::fromClassReflector(new ReflectionClass(MultiDependencyTest::class));
+
+        $this->assertTrue($suite->isForTestClass());
+    }
+
+    public function testIsNotForATestClassWhenItIsOnlyNamedLikeOne(): void
+    {
+        $suite = TestSuite::empty(MultiDependencyTest::class);
+
+        $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
+
+        $this->assertFalse($suite->isForTestClass());
+    }
+
     public function testRejectsAbstractTestClass(): void
     {
         $suite = TestSuite::empty('the-test-suite');
