@@ -1057,7 +1057,7 @@ final class ParallelTestRunner
         /** @var array<non-empty-string, array{className: class-string<TestCase>, index: non-negative-int, tests: list<DataProviderTestSuite|IterativeTestSuite|TestCase>}> $byClass */
         $byClass = [];
 
-        /** @var list<array{index: non-negative-int, file: non-empty-string, conflicts: list<non-empty-string>, numberOfRuns: positive-int, maxAttempts: positive-int}> $phpt */
+        /** @var list<array{index: non-negative-int, file: non-empty-string, conflicts: list<non-empty-string>, numberOfRuns: positive-int, maxAttempts: positive-int, repetitions: list<positive-int>}> $phpt */
         $phpt = [];
 
         /** @var list<array{index: non-negative-int, test: Test}> $standalone */
@@ -1080,6 +1080,7 @@ final class ParallelTestRunner
                 $item['conflicts'],
                 $item['numberOfRuns'],
                 $item['maxAttempts'],
+                $item['repetitions'],
             );
         }
 
@@ -1091,10 +1092,10 @@ final class ParallelTestRunner
     }
 
     /**
-     * @param array<non-empty-string, array{className: class-string<TestCase>, index: non-negative-int, tests: list<DataProviderTestSuite|IterativeTestSuite|TestCase>}> $byClass
-     * @param list<array{index: non-negative-int, file: non-empty-string, conflicts: list<non-empty-string>, numberOfRuns: positive-int, maxAttempts: positive-int}>     $phpt
-     * @param list<array{index: non-negative-int, test: Test}>                                                                                                           $standalone
-     * @param non-negative-int                                                                                                                                           $index
+     * @param array<non-empty-string, array{className: class-string<TestCase>, index: non-negative-int, tests: list<DataProviderTestSuite|IterativeTestSuite|TestCase>}>                              $byClass
+     * @param list<array{index: non-negative-int, file: non-empty-string, conflicts: list<non-empty-string>, numberOfRuns: positive-int, maxAttempts: positive-int, repetitions: list<positive-int>}> $phpt
+     * @param list<array{index: non-negative-int, test: Test}>                                                                                                                                        $standalone
+     * @param non-negative-int                                                                                                                                                                        $index
      */
     private function collect(TestSuite $suite, array &$byClass, array &$phpt, array &$standalone, int &$index): void
     {
@@ -1119,9 +1120,19 @@ final class ParallelTestRunner
 
                 $numberOfRuns = 1;
                 $maxAttempts  = 1;
+                $repetitions  = [];
 
                 if ($test instanceof PhptRepeatTestSuite) {
                     $numberOfRuns = $test->numberOfRuns();
+
+                    // Test selection, such as with --run-test-id, may have
+                    // picked only some of the repetitions; iterating the suite
+                    // yields those, as it does for a sequential run.
+                    foreach ($test as $repetition) {
+                        assert($repetition instanceof PhptTestCase);
+
+                        $repetitions[] = $repetition->repetition();
+                    }
                 } else {
                     assert($test instanceof PhptRetryTestSuite);
 
@@ -1134,6 +1145,7 @@ final class ParallelTestRunner
                     'conflicts'    => $this->phptConflicts($file),
                     'numberOfRuns' => $numberOfRuns,
                     'maxAttempts'  => $maxAttempts,
+                    'repetitions'  => $repetitions,
                 ];
 
                 $index++;
@@ -1199,6 +1211,7 @@ final class ParallelTestRunner
                     'conflicts'    => $this->phptConflicts($file),
                     'numberOfRuns' => 1,
                     'maxAttempts'  => 1,
+                    'repetitions'  => [],
                 ];
 
                 $index++;

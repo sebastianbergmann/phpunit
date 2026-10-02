@@ -28,14 +28,23 @@ use PHPUnit\Util\PHP\Result;
 final class PhptRepeatTestSuite extends PhptIterativeTestSuite
 {
     /**
-     * @param non-empty-string $filename
-     * @param positive-int     $numberOfRuns
+     * The repetitions to run are all of them, unless only some are given: the
+     * ones that test selection picked, such as with --run-test-id, when the
+     * parallel test runner rebuilds the suite.
+     *
+     * @param non-empty-string   $filename
+     * @param positive-int       $numberOfRuns
+     * @param list<positive-int> $repetitions
      */
-    public static function for(string $filename, Event\Emitter $emitter, int $numberOfRuns): self
+    public static function for(string $filename, Event\Emitter $emitter, int $numberOfRuns, array $repetitions = []): self
     {
+        if ($repetitions === []) {
+            $repetitions = range(1, $numberOfRuns);
+        }
+
         $suite = self::empty($filename, $emitter);
 
-        foreach (range(1, $numberOfRuns) as $repetition) {
+        foreach ($repetitions as $repetition) {
             $suite->addTest(new PhptTestCase($filename, $repetition, $numberOfRuns));
         }
 
