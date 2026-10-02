@@ -383,6 +383,16 @@ final class PersistentWorker
         }
 
         if ($this->job === null || !$this->job->isRunning()) {
+            // The worker process may have written to its event stream after
+            // the stream was drained above and before it died: the events of a
+            // test that finished just before the worker process died, for
+            // instance. It can write no more now, so what is left of the stream
+            // is read in its entirety; a frame that the worker process did not
+            // finish writing is left unread.
+            foreach ($this->drainStreamedEvents(true) as $events) {
+                $onStreamedEvents($this->currentUnit, $events);
+            }
+
             return $this->crashed();
         }
 

@@ -12,6 +12,7 @@ namespace PHPUnit\Runner\Parallel;
 use const FILE_APPEND;
 use function assert;
 use function bin2hex;
+use function clearstatcache;
 use function file_put_contents;
 use function filesize;
 use function is_file;
@@ -43,6 +44,7 @@ use PHPUnit\Framework\TestRunner\ChildProcessResultProcessor;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TestFixture\ParallelWorker\WorkerFirstTest;
 use PHPUnit\TestFixture\ParallelWorker\WorkerHaltedTest;
+use PHPUnit\TestFixture\ParallelWorker\WorkerPassesAndThenDiesTest;
 use PHPUnit\TestFixture\ParallelWorker\WorkerSecondTest;
 use PHPUnit\TestFixture\ParallelWorker\WorkerStreamingTest;
 use PHPUnit\TestRunner\TestResult\PassedTests;
@@ -261,6 +263,63 @@ final class PersistentWorkerTest extends TestCase
             'Fatal error: Premature end of PHP process when running ' . WorkerSecondTest::class . '::testThatKillsTheWorkerProcess.',
             $completed->output(),
         );
+    }
+
+    public function testReportsTheEventsThatTheWorkerStreamedAfterTheStreamWasLastReadWhenItDied(): void
+    {
+        $worker = $this->worker();
+
+        $worker->start();
+
+        $worker->dispatch(
+            new TestClassWorkUnit(
+                0,
+                WorkerPassesAndThenDiesTest::class,
+                [
+                    new WorkerPassesAndThenDiesTest('testThatPasses'),
+                    new WorkerPassesAndThenDiesTest('testThatKillsTheWorkerProcess'),
+                ],
+            ),
+        );
+
+        $streamFile = $this->privateString($worker, 'currentResultFile') . '.stream';
+        $job        = new ReflectionProperty(PersistentWorker::class, 'job')->getValue($worker);
+
+        $this->assertInstanceOf(RunningJob::class, $job);
+
+        for ($i = 0; $i < 500 && $job->isRunning(); $i++) {
+            usleep(10000);
+        }
+
+        $this->assertFalse($job->isRunning());
+
+        clearstatcache(true, $streamFile);
+
+        $streamSize = filesize($streamFile);
+
+        $this->assertIsInt($streamSize);
+        $this->assertGreaterThan(0, $streamSize);
+
+        // The worker streamed the events of the first test and then died. To
+        // the poll, the stream looks as it would if the events had been
+        // written after it was last read, just before the worker died: it is
+        // not read again for having grown.
+        new ReflectionProperty(PersistentWorker::class, 'currentStreamSeenBytes')->setValue($worker, $streamSize);
+
+        $this->streamedEvents = [];
+
+        $completed = $worker->poll(
+            function (WorkUnit $unit, EventCollection $events): void
+            {
+                $this->streamedEvents[] = $events;
+            },
+        );
+
+        $worker->stop();
+
+        $this->assertNotNull($completed);
+        $this->assertTrue($completed->crashed());
+        $this->assertTrue($this->streamedEventsContainAFinishedTest());
     }
 
     public function testReportsAUnitAsCrashedWhenAFrameOfItsEventStreamFailsVerification(): void
