@@ -32,7 +32,8 @@ use PHPUnit\TextUI\Configuration\Configuration;
  * process, and the extension's state carries over from one test to the next.
  * The identity of a worker process is available through the environment
  * variables PHPUNIT_WORKER_ID and PHPUNIT_WORKER_TOKEN, which are not set in
- * a separate process.
+ * a separate process, nor in the main process, where the tests that cannot
+ * run in a worker run, mostly alongside the workers (see PersistentWorker).
  *
  * The main process bootstraps the extension through bootstrap() as it does
  * for any other extension, and the subscribers registered there receive every

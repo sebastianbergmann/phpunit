@@ -214,6 +214,15 @@ final class PersistentWorker
         // pre-provisioned resources, while PHPUNIT_WORKER_TOKEN adds a value
         // that is unique across workers and across runs, for resources that must
         // not collide with those left behind by a previous run.
+        //
+        // Neither is set for the tests that run in the main process instead of
+        // a worker — the tests of a class that requires process isolation,
+        // depends on a test of another class, or is attributed with
+        // #[DoNotRunInParallel] — nor in the separate processes they run in.
+        // Apart from those attributed with #[DoNotRunInParallel], such tests
+        // run alongside the workers, so a fixture that falls back to a value
+        // when PHPUNIT_WORKER_ID is not set must not fall back to the ID of a
+        // worker: its tests would share that worker's resources.
         $environmentVariables = [
             'PHPUNIT_WORKER_ID'    => (string) $this->id,
             'PHPUNIT_WORKER_TOKEN' => $this->token,
