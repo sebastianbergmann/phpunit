@@ -41,7 +41,7 @@
         "phpunit/php-code-coverage": "^14.4",
         "phpunit/php-file-iterator": "^7.0.2",
         "phpunit/php-invoker": "^7.0.0",
-        "phpunit/php-text-template": "^6.0.0",
+        "phpunit/php-text-template": "^6.0.1",
         "phpunit/php-timer": "^9.0.0",
         "sebastian/cli-parser": "^5.0.1",
         "sebastian/comparator": "^8.4",
