@@ -89,6 +89,20 @@ final class RunningJob
      * @var ?resource
      */
     private $mergedOutputStream;
+
+    /**
+     * The files that capture the standard output and the standard error of
+     * a process that writes them to files instead of pipes, which are read
+     * once the process has ended (see JobRunner::capturingOutputInFiles()).
+     *
+     * @var ?resource
+     */
+    private $outputFile;
+
+    /**
+     * @var ?resource
+     */
+    private $errorFile;
     private ?string $temporaryFile;
     private string $stdoutBuffer = '';
     private string $stderrBuffer = '';
@@ -98,12 +112,16 @@ final class RunningJob
      * @param resource             $process
      * @param array<int, resource> $pipes
      * @param ?resource            $mergedOutputStream
+     * @param ?resource            $outputFile
+     * @param ?resource            $errorFile
      */
-    public function __construct(mixed $process, array $pipes, mixed $mergedOutputStream, ?string $temporaryFile)
+    public function __construct(mixed $process, array $pipes, mixed $mergedOutputStream, ?string $temporaryFile, mixed $outputFile = null, mixed $errorFile = null)
     {
         $this->process            = $process;
         $this->mergedOutputStream = $mergedOutputStream;
         $this->temporaryFile      = $temporaryFile;
+        $this->outputFile         = $outputFile;
+        $this->errorFile          = $errorFile;
 
         if (isset($pipes[0])) {
             $this->stdin = $pipes[0];
@@ -306,6 +324,9 @@ final class RunningJob
             $this->stderrBuffer = '';
         }
 
+        $this->stdoutBuffer .= $this->readCapturedOutput($this->outputFile);
+        $this->stderrBuffer .= $this->readCapturedOutput($this->errorFile);
+
         if ($this->temporaryFile !== null) {
             unlink($this->temporaryFile);
         }
@@ -347,6 +368,31 @@ final class RunningJob
         }
 
         return $this->wait();
+    }
+
+    /**
+     * Read what a process wrote to a file that captured its output, once the
+     * process has ended, and close the file, which removes it.
+     *
+     * @param ?resource $file
+     */
+    private function readCapturedOutput(mixed &$file): string
+    {
+        if (!is_resource($file)) {
+            return '';
+        }
+
+        rewind($file);
+
+        $output = stream_get_contents($file);
+
+        fclose($file);
+
+        $file = null;
+
+        assert($output !== false);
+
+        return $output;
     }
 
     /**
