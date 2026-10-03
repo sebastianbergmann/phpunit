@@ -10,6 +10,7 @@
 namespace PHPUnit\TextUI\CliArguments;
 
 use const DIRECTORY_SEPARATOR;
+use const PHP_INT_SIZE;
 use function assert;
 use function basename;
 use function count;
@@ -873,6 +874,18 @@ final class Builder
                     break;
 
                 case '--parallel':
+                    // The workers of a parallel run stream their events to the
+                    // main process in frames whose length is a 64-bit integer
+                    // (see EventStream), which a 32-bit build of PHP cannot
+                    // pack and unpack.
+                    // @codeCoverageIgnoreStart
+                    if (PHP_INT_SIZE < 8) {
+                        throw new Exception(
+                            'The --parallel option requires a 64-bit build of PHP',
+                        );
+                    }
+                    // @codeCoverageIgnoreEnd
+
                     if ($option[1] === 'auto') {
                         $numberOfParallelWorkers = (new CpuCoreCounter)->getAvailableForParallelisation()->availableCpus;
 
