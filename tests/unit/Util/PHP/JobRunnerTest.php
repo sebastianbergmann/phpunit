@@ -9,7 +9,10 @@
  */
 namespace PHPUnit\Util\PHP;
 
+use function hrtime;
 use function putenv;
+use function str_repeat;
+use function usleep;
 use Generator;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Event\Facade;
@@ -415,6 +418,52 @@ EOT,
 
         $this->assertSame('waited for', $jobRunner->run($job)->stdout());
         $this->assertSame($invocationsBefore, $invocations);
+    }
+
+    public function testCapturesTheOutputOfAProcessItStartsAsynchronouslyInFilesWhenAskedTo(): void
+    {
+        $jobRunner = new JobRunner(
+            new ChildProcessResultProcessor(
+                new Facade,
+                $this->createStub(Emitter::class),
+                new PassedTests,
+                new CodeCoverage($this->createStub(Emitter::class)),
+            ),
+            $this->createStub(Emitter::class),
+        )->capturingOutputInFiles();
+
+        // The process writes more than a pipe holds to both of its output
+        // streams, and nothing is read from it while it runs: only whether it
+        // has ended is polled. The deadline turns a process that blocks on a
+        // full pipe into a failure rather than a test that never ends.
+        $job = $jobRunner->startAsync(
+            new Job(
+                <<<'EOT'
+<?php declare(strict_types=1);
+fwrite(STDOUT, str_repeat('o', 1048576));
+fwrite(STDERR, str_repeat('e', 1048576));
+
+EOT,
+                ChildProcessReason::TestRequiringProcessIsolation,
+            ),
+        );
+
+        $deadline = hrtime(true) + 10000000000;
+
+        while ($job->isRunning()) {
+            if (hrtime(true) > $deadline) {
+                $job->terminate();
+
+                $this->fail('The process did not end');
+            }
+
+            usleep(1000);
+        }
+
+        $result = $job->wait();
+
+        $this->assertSame(str_repeat('o', 1048576), $result->stdout());
+        $this->assertSame(str_repeat('e', 1048576), $result->stderr());
     }
 
     public function testRejectsPhpSettingValueContainingLineBreak(): void

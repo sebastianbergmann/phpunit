@@ -331,6 +331,30 @@ EOT,
         $this->assertSame(1048576, strlen($result->stderr()));
     }
 
+    public function testReadsTheOutputThatTheProcessWroteToFilesOnceItHasEnded(): void
+    {
+        $job = $this->jobRunner()->capturingOutputInFiles()->startAsync(
+            new Job(
+                <<<'EOT'
+<?php declare(strict_types=1);
+fwrite(STDOUT, 'out');
+fwrite(STDERR, 'err');
+
+EOT,
+                ChildProcessReason::TestRequiringProcessIsolation,
+            ),
+        );
+
+        // The output is in files, so there are no pipes to read from while the
+        // process runs.
+        $this->assertSame([], $job->readableStreams());
+
+        $result = $job->wait();
+
+        $this->assertSame('out', $result->stdout());
+        $this->assertSame('err', $result->stderr());
+    }
+
     public function testCanDriveSeveralJobsThroughASingleSelectLoop(): void
     {
         $runner = $this->jobRunner();

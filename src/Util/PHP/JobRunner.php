@@ -59,13 +59,21 @@ final readonly class JobRunner
     private ?Closure $whileWaiting;
 
     /**
+     * Whether the standard output and the standard error of a process that
+     * startAsync() starts are captured in files instead of pipes (see
+     * capturingOutputInFiles()).
+     */
+    private bool $captureOutputInFiles;
+
+    /**
      * @param ?Closure(): void $whileWaiting
      */
-    public function __construct(ChildProcessResultProcessor $processor, Emitter $emitter, ?Closure $whileWaiting = null)
+    public function __construct(ChildProcessResultProcessor $processor, Emitter $emitter, ?Closure $whileWaiting = null, bool $captureOutputInFiles = false)
     {
-        $this->processor    = $processor;
-        $this->emitter      = $emitter;
-        $this->whileWaiting = $whileWaiting;
+        $this->processor            = $processor;
+        $this->emitter              = $emitter;
+        $this->whileWaiting         = $whileWaiting;
+        $this->captureOutputInFiles = $captureOutputInFiles;
     }
 
     /**
@@ -76,7 +84,28 @@ final readonly class JobRunner
      */
     public function invokingWhileWaiting(Closure $whileWaiting): self
     {
-        return new self($this->processor, $this->emitter, $whileWaiting);
+        return new self($this->processor, $this->emitter, $whileWaiting, $this->captureOutputInFiles);
+    }
+
+    /**
+     * A copy of this job runner that captures the standard output and the
+     * standard error of a process that startAsync() starts in temporary files
+     * instead of pipes, for a caller that polls many such processes in one
+     * loop (see PhptRunner).
+     *
+     * Reading what a process has written to a pipe so far, so that it does
+     * not block on a full pipe buffer, cannot be done without blocking on
+     * Windows: the read waits until the process has ended, and so does the
+     * caller's loop. A process that writes to a file neither blocks on a full
+     * buffer nor needs to be read from before it has ended.
+     *
+     * The output is read once the process has ended, so a process that leaves
+     * a process of its own running, which inherited its output, is not waited
+     * for, and what that process writes afterwards is not part of the output.
+     */
+    public function capturingOutputInFiles(): self
+    {
+        return new self($this->processor, $this->emitter, $this->whileWaiting, true);
     }
 
     /**
@@ -145,7 +174,7 @@ final readonly class JobRunner
             // @codeCoverageIgnoreEnd
         }
 
-        return $this->startProcess($job, $temporaryFile);
+        return $this->startProcess($job, $temporaryFile, false);
     }
 
     /**
@@ -201,7 +230,7 @@ final readonly class JobRunner
 
         assert($temporaryFile !== '');
 
-        $running = $this->startProcess($job, $temporaryFile);
+        $running = $this->startProcess($job, $temporaryFile, $this->captureOutputInFiles);
 
         $running->write($job->code());
         $running->closeStdin();
@@ -214,7 +243,7 @@ final readonly class JobRunner
      *
      * @throws PhpProcessException
      */
-    private function startProcess(Job $job, ?string $temporaryFile): RunningJob
+    private function startProcess(Job $job, ?string $temporaryFile, bool $captureOutputInFiles): RunningJob
     {
         $environmentVariables = null;
 
@@ -229,6 +258,8 @@ final readonly class JobRunner
         }
 
         $mergedOutputStream = null;
+        $outputFile         = null;
+        $errorFile          = null;
 
         if ($job->redirectErrors()) {
             $mergedOutputStream = tmpfile();
@@ -243,6 +274,21 @@ final readonly class JobRunner
                 0 => ['pipe', 'r'],
                 1 => $mergedOutputStream,
                 2 => $mergedOutputStream,
+            ];
+        } elseif ($captureOutputInFiles) {
+            $outputFile = tmpfile();
+            $errorFile  = tmpfile();
+
+            if ($outputFile === false || $errorFile === false) {
+                // @codeCoverageIgnoreStart
+                throw new PhpProcessException('Unable to create temporary file for captured output');
+                // @codeCoverageIgnoreEnd
+            }
+
+            $pipeSpec = [
+                0 => ['pipe', 'r'],
+                1 => $outputFile,
+                2 => $errorFile,
             ];
         } else {
             $pipeSpec = [
@@ -270,7 +316,7 @@ final readonly class JobRunner
 
         $this->emitter->childProcessStarted($job->reason());
 
-        return new RunningJob($process, $pipes, $mergedOutputStream, $temporaryFile);
+        return new RunningJob($process, $pipes, $mergedOutputStream, $temporaryFile, $outputFile, $errorFile);
     }
 
     /**
