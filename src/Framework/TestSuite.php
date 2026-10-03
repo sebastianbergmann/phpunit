@@ -482,6 +482,20 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
     }
 
     /**
+     * Remove the tests from the test suite without running them, for a caller
+     * that runs them in a different way (see ParallelTestRunner). Like run(),
+     * which takes the tests out of the test suite before it runs them, this
+     * lets each test object be destructed as soon as it has run and its
+     * caller has let go of it (see #5875).
+     */
+    public function removeTests(): void
+    {
+        $this->tests        = [];
+        $this->groupedTests = [];
+        $this->groups       = null;
+    }
+
+    /**
      * @return Iterator<non-negative-int, Test>
      */
     public function getIterator(): Iterator
@@ -777,9 +791,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             $tests[] = $test;
         }
 
-        $this->tests        = [];
-        $this->groupedTests = [];
-        $this->groups       = null;
+        $this->removeTests();
 
         return $tests;
     }
