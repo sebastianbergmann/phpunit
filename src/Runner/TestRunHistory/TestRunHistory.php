@@ -29,6 +29,15 @@ interface TestRunHistory
     public function time(TestRunHistoryId $id): float;
 
     /**
+     * Whether a duration was recorded for the test. time() cannot tell: it
+     * returns 0.0 for a test whose duration was not recorded, and 0.0 is also
+     * what is recorded for a test that took less than half a millisecond, as
+     * durations are recorded rounded to milliseconds (see
+     * TestRunHistoryHandler).
+     */
+    public function hasTime(TestRunHistoryId $id): bool;
+
+    /**
      * Remembers the choice sequences of the counterexamples of a property that
      * was falsified, one for each way in which it was falsified, the minimal
      * counterexample that was reported first.

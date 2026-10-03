@@ -40,6 +40,11 @@ final readonly class NullTestRunHistory implements TestRunHistory
         return 0;
     }
 
+    public function hasTime(TestRunHistoryId $id): bool
+    {
+        return false;
+    }
+
     /**
      * @param non-empty-list<list<non-negative-int>> $choiceSequences
      */

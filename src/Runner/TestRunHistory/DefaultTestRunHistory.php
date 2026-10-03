@@ -128,6 +128,11 @@ final class DefaultTestRunHistory implements TestRunHistory
         return $this->times[$id->asString()] ?? 0.0;
     }
 
+    public function hasTime(TestRunHistoryId $id): bool
+    {
+        return isset($this->times[$id->asString()]);
+    }
+
     /**
      * @param non-empty-list<list<non-negative-int>> $choiceSequences
      */
