@@ -165,6 +165,29 @@ final class TestClassWorkUnitTest extends TestCase
         $this->assertSame(0.5, $unit->duration($testRunHistory));
     }
 
+    public function testEstimatesATestWhoseDurationWasRecordedAs0AtHalfAMillisecond(): void
+    {
+        $testRunHistory = $this->testRunHistory();
+
+        // Durations are recorded rounded to milliseconds: the test took less
+        // than half a millisecond, which is not the same as a duration that is
+        // unknown.
+        $testRunHistory->setTime(TestRunHistoryId::fromTestClassAndMethodName(WorkerFirstTest::class, 'testStartsTheProcessLocalCounter'), 0.0);
+
+        $this->assertSame(0.0005, $this->unit()->duration($testRunHistory));
+    }
+
+    public function testPrefersADurationRecordedAs0ForATestOverTheSizeItDeclares(): void
+    {
+        $testRunHistory = $this->testRunHistory();
+
+        $testRunHistory->setTime(TestRunHistoryId::fromTestClassAndMethodName(WorkerLargeTest::class, 'testOne'), 0.0);
+
+        $unit = new TestClassWorkUnit(0, WorkerLargeTest::class, [new WorkerLargeTest('testOne')]);
+
+        $this->assertSame(0.0005, $unit->duration($testRunHistory));
+    }
+
     private function unit(): TestClassWorkUnit
     {
         return new TestClassWorkUnit(

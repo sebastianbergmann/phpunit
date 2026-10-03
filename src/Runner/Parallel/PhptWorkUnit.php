@@ -154,8 +154,18 @@ final readonly class PhptWorkUnit implements WorkUnit
 
     public function duration(TestRunHistory $testRunHistory): float
     {
-        return $testRunHistory->time(
-            TestRunHistoryId::fromReorderable(new PhptTestCase($this->file)),
-        );
+        $id = TestRunHistoryId::fromReorderable(new PhptTestCase($this->file));
+
+        if (!$testRunHistory->hasTime($id)) {
+            return 0.0;
+        }
+
+        $duration = $testRunHistory->time($id);
+
+        if ($duration === 0.0) {
+            return self::DURATION_OF_A_TEST_RECORDED_AS_ZERO;
+        }
+
+        return $duration;
     }
 }

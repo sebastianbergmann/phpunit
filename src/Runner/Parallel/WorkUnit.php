@@ -26,6 +26,16 @@ use PHPUnit\Runner\TestRunHistory\TestRunHistory;
 interface WorkUnit
 {
     /**
+     * The estimated duration of a test whose recorded duration is 0.0, in
+     * seconds. Durations are recorded rounded to milliseconds, so such a test
+     * took less than half a millisecond; it is estimated at that bound rather
+     * than at 0.0, which is the estimate of a unit that nothing is known about
+     * (see Scheduler), and so that a unit of many such tests is estimated to
+     * cost more than a unit of few.
+     */
+    public const float DURATION_OF_A_TEST_RECORDED_AS_ZERO = 0.0005;
+
+    /**
      * @return non-negative-int
      */
     public function index(): int;

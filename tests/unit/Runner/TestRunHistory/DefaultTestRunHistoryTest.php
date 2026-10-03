@@ -387,6 +387,33 @@ final class DefaultTestRunHistoryTest extends TestCase
         $this->assertSame(1.0, $loaded->time($id));
     }
 
+    public function testHasTimeOnlyForATestWhoseTimeWasRecorded(): void
+    {
+        $file                 = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-has-time-' . uniqid() . '.cache';
+        $this->filesToClean[] = $file;
+
+        $recorded    = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testA');
+        $notRecorded = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testB');
+
+        // A test that took less than half a millisecond is recorded as 0.0,
+        // which is also what time() returns for a test that was not recorded
+        $cache = new DefaultTestRunHistory($file);
+        $cache->setTime($recorded, 0.0);
+
+        $this->assertTrue($cache->hasTime($recorded));
+        $this->assertFalse($cache->hasTime($notRecorded));
+
+        $cache->persist();
+
+        $loaded = new DefaultTestRunHistory($file);
+        $loaded->load();
+
+        $this->assertTrue($loaded->hasTime($recorded));
+        $this->assertSame(0.0, $loaded->time($recorded));
+        $this->assertFalse($loaded->hasTime($notRecorded));
+        $this->assertSame(0.0, $loaded->time($notRecorded));
+    }
+
     public function testMergeWithCombinesDefectsAndTimes(): void
     {
         $target = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-test-target.cache');
