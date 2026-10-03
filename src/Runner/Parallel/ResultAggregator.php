@@ -74,11 +74,19 @@ use PHPUnit\TestRunner\TestResult\PassedTests;
  * Some units do not run in a worker but in the main process (see
  * ParallelTestRunner): a unit attributed with #[DoNotRunInParallel], one that
  * needs process isolation, or one that depends on another class. Such a unit
- * is registered with its suite index and run, by the aggregator, at the moment
- * its index comes up in the release sequence. Running it there — between the
+ * is registered with its suite index, and the release sequence stops when the
+ * unit's index comes up: hasPendingUnit() reports the stop, and the runner
+ * runs the unit through runPendingUnit(). Running it there — between the
  * units that precede and follow it in suite order — lets its events reach the
  * dispatcher live and still in global suite order, so the ordering guarantee
  * holds for every output format, not just the ones that re-sort.
+ *
+ * The release sequence does not run such a unit itself because it is driven
+ * by the callbacks through which the worker pool and the PHPT runner hand
+ * over the units they have finished: a unit that is run from there runs
+ * while the pool or the PHPT runner is in the middle of a polling round, and
+ * neither can be advanced until the unit is done. Run by the runner, between
+ * two polling rounds, the unit runs while both can be advanced.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -113,14 +121,21 @@ final class ResultAggregator
 
     /**
      * The indexes of the registered in-process units that must run alone —
-     * their test class is attributed with #[DoNotRunInParallel]. The release
-     * sequence does not run such a unit itself: it stops at the unit's index,
-     * hasPendingExclusiveUnit() reports the stop, and the runner invokes the
-     * unit through runPendingExclusiveUnit() once nothing else is executing.
+     * their test class is attributed with #[DoNotRunInParallel]. The runner
+     * runs such a unit only once nothing else is executing.
      *
      * @var array<non-negative-int, true>
      */
     private array $exclusiveUnits = [];
+
+    /**
+     * The events that the units which have already run in the main process —
+     * the PHPT tests, run by the PHPT runner — collected, per suite index,
+     * until their unit's turn in the release sequence comes.
+     *
+     * @var array<non-negative-int, EventCollection>
+     */
+    private array $collectedUnits = [];
 
     /**
      * The events streamed by units that are still running, buffered per suite
@@ -179,12 +194,12 @@ final class ResultAggregator
 
     /**
      * Register a unit that is to be run, in the main process, at the point its
-     * suite index comes up in the release sequence.
+     * suite index comes up in the release sequence: the release sequence stops
+     * at its index, and the runner runs it through runPendingUnit().
      *
      * An exclusive unit — one whose test class is attributed with
-     * #[DoNotRunInParallel] — additionally runs alone: the release sequence
-     * stops at its index instead of running it, and the runner invokes it
-     * through runPendingExclusiveUnit() once nothing else is executing.
+     * #[DoNotRunInParallel] — additionally runs alone: the runner runs it only
+     * once nothing else is executing.
      *
      * @param non-negative-int $index
      * @param callable():void  $runner
@@ -219,20 +234,28 @@ final class ResultAggregator
      */
     public function registerCollectedUnit(int $index, EventCollection $events): void
     {
-        $this->registerInProcessUnit(
-            $index,
-            function () use ($events): void
-            {
-                $this->forwardCollectedEvents($events);
-            },
-        );
+        $this->collectedUnits[$index] = $events;
     }
 
     /**
-     * Whether the release sequence has stopped at the index of an exclusive
-     * unit: everything that precedes the unit in suite order has been
-     * forwarded, and the unit waits to be run through
-     * runPendingExclusiveUnit() once nothing else is executing.
+     * Whether the release sequence has stopped at the index of a unit that is
+     * to be run in the main process: everything that precedes the unit in
+     * suite order has been forwarded, and the unit waits to be run through
+     * runPendingUnit().
+     *
+     * While the unit runs, it is no longer pending, and the release sequence
+     * does not go past it: the units that finish in the meantime are held
+     * back until it is done.
+     */
+    public function hasPendingUnit(): bool
+    {
+        return isset($this->inProcessRunners[$this->nextIndex]);
+    }
+
+    /**
+     * Whether the unit that the release sequence has stopped at must run
+     * alone: it is run through runPendingUnit() only once nothing else is
+     * executing.
      */
     public function hasPendingExclusiveUnit(): bool
     {
@@ -240,15 +263,14 @@ final class ResultAggregator
     }
 
     /**
-     * Run the exclusive unit that the release sequence has stopped at, then
-     * resume releasing. The caller is responsible for calling this only once
-     * nothing else is executing — that is what makes the unit's execution
-     * exclusive.
+     * Run the unit that the release sequence has stopped at, then resume
+     * releasing. The caller is responsible for calling this for an exclusive
+     * unit only once nothing else is executing — that is what makes the
+     * unit's execution exclusive.
      */
-    public function runPendingExclusiveUnit(): void
+    public function runPendingUnit(): void
     {
         assert(isset($this->inProcessRunners[$this->nextIndex]));
-        assert(isset($this->exclusiveUnits[$this->nextIndex]));
 
         $runner = $this->inProcessRunners[$this->nextIndex];
 
@@ -325,11 +347,10 @@ final class ResultAggregator
     }
 
     /**
-     * Release every unit that is releasable in suite order, running registered
-     * in-process units in place as their index comes up. Called both after a
-     * worker finishes and directly by the runner, so that in-process units that
-     * precede or follow all worker units are run even when no worker completion
-     * drives the release.
+     * Release every unit that is releasable in suite order, up to the next
+     * unit that is to be run in the main process. Called by the runner once
+     * the PHPT runner has handed over the events of a PHPT test, which are
+     * then forwarded as their turn comes.
      */
     public function flush(): void
     {
@@ -377,25 +398,21 @@ final class ResultAggregator
                 continue;
             }
 
-            if (isset($this->inProcessRunners[$this->nextIndex])) {
-                // An exclusive unit is not run from here: the release
-                // sequence stops, and the runner invokes the unit through
-                // runPendingExclusiveUnit() once nothing else is executing.
-                if (isset($this->exclusiveUnits[$this->nextIndex])) {
-                    break;
-                }
+            if (isset($this->collectedUnits[$this->nextIndex])) {
+                $events = $this->collectedUnits[$this->nextIndex];
 
-                $runner = $this->inProcessRunners[$this->nextIndex];
+                unset($this->collectedUnits[$this->nextIndex]);
 
-                unset($this->inProcessRunners[$this->nextIndex]);
-
-                $runner();
+                $this->forwardCollectedEvents($events);
 
                 $this->nextIndex++;
 
                 continue;
             }
 
+            // A unit that is to be run in the main process is not run from
+            // here: the release sequence stops, and the runner runs the unit
+            // through runPendingUnit().
             break;
         }
 
