@@ -171,6 +171,20 @@ final class TestSuiteTest extends TestCase
         $this->assertTrue($suite->isEmpty());
     }
 
+    public function testCanHaveItsTestsRemovedWithoutRunningThem(): void
+    {
+        $suite = TestSuite::fromClassReflector(new ReflectionClass(MultiDependencyTest::class), $this->createStub(Emitter::class));
+
+        $this->assertNotSame([], $suite->tests());
+        $this->assertNotSame([], $suite->groups());
+
+        $suite->removeTests();
+
+        $this->assertSame([], $suite->tests());
+        $this->assertSame([], $suite->groups());
+        $this->assertTrue($suite->isEmpty());
+    }
+
     public function testIsNotForATestClassWhenItIsOnlyNamedLikeOne(): void
     {
         $suite = TestSuite::empty(MultiDependencyTest::class, $this->createStub(Emitter::class));
