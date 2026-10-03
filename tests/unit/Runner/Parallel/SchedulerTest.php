@@ -65,6 +65,28 @@ final class SchedulerTest extends TestCase
         $this->assertSame([1, 0], $this->indexesOf(new Scheduler($cache)->schedule($units)));
     }
 
+    public function testDispatchesAUnitWhoseTestsWereRecordedAsTakingNoTimeAfterTheOthers(): void
+    {
+        $cache = $this->cache();
+
+        // Durations are recorded rounded to milliseconds. The tests of the
+        // units at index 0 and 1 took less than half a millisecond, which is
+        // not the same as nothing being known about them: their units are
+        // dispatched last, rather than first or, for the small test, as if it
+        // took as long as its size permits.
+        $cache->setTime(TestRunHistoryId::fromTestClassAndMethodName(WorkerFirstTest::class, 'testStartsTheProcessLocalCounter'), 0.0);
+        $cache->setTime(TestRunHistoryId::fromTestClassAndMethodName(WorkerSmallTest::class, 'testOne'), 0.0);
+        $cache->setTime(TestRunHistoryId::fromTestClassAndMethodName(WorkerSecondTest::class, 'testThatFails'), 0.5);
+
+        $units = [
+            new TestClassWorkUnit(0, WorkerFirstTest::class, [new WorkerFirstTest('testStartsTheProcessLocalCounter')]),
+            new TestClassWorkUnit(1, WorkerSmallTest::class, [new WorkerSmallTest('testOne')]),
+            new TestClassWorkUnit(2, WorkerSecondTest::class, [new WorkerSecondTest('testThatFails')]),
+        ];
+
+        $this->assertSame([2, 0, 1], $this->indexesOf(new Scheduler($cache)->schedule($units)));
+    }
+
     public function testUnitsWithEqualDurationEstimatesKeepTheirSuiteOrder(): void
     {
         $units = [

@@ -96,6 +96,15 @@ final class PhptWorkUnitTest extends TestCase
         $this->assertSame(2.5, $this->unit()->duration($testRunHistory));
     }
 
+    public function testEstimatesItsTestAtHalfAMillisecondWhenItsDurationWasRecordedAs0(): void
+    {
+        $testRunHistory = $this->testRunHistory();
+
+        $testRunHistory->setTime(TestRunHistoryId::fromReorderable(new PhptTestCase('/path/to/test.phpt')), 0.0);
+
+        $this->assertSame(0.0005, $this->unit()->duration($testRunHistory));
+    }
+
     public function testHasNoDurationWhenItsTestHasNotRunBefore(): void
     {
         $this->assertSame(0.0, $this->unit()->duration($this->testRunHistory()));

@@ -111,14 +111,16 @@ final readonly class TestClassWorkUnit implements WorkUnit
      * summed up recursively.
      *
      * What a previous run recorded for a test is the estimate whenever it is
-     * available. For a test that has not run before — a new test, a new data
-     * set, or every test of a run without a result cache — the size the test
-     * declares takes its place: #[Small], #[Medium], and #[Large] promise that
-     * the test stays within the time limit of its size, which makes that limit
-     * the one upper bound of its duration that the test itself provides. The
-     * estimate is only ever compared with the estimates of the other units, so
-     * an upper bound that is an order of magnitude apart per size is exactly
-     * what the cost order needs: it puts the large tests first.
+     * available, even when it is 0.0: that is a duration of less than half a
+     * millisecond, not an unknown one (see WorkUnit). For a test that has not
+     * run before — a new test, a new data set, or every test of a run without
+     * a result cache — the size the test declares takes its place: #[Small],
+     * #[Medium], and #[Large] promise that the test stays within the time
+     * limit of its size, which makes that limit the one upper bound of its
+     * duration that the test itself provides. The estimate is only ever
+     * compared with the estimates of the other units, so an upper bound that
+     * is an order of magnitude apart per size is exactly what the cost order
+     * needs: it puts the large tests first.
      *
      * A test that declares no size contributes nothing, as it did before sizes
      * were consulted here. A unit made up of such tests alone is estimated at
@@ -128,13 +130,19 @@ final readonly class TestClassWorkUnit implements WorkUnit
     private function durationOf(Test $test, TestRunHistory $testRunHistory): float
     {
         if ($test instanceof TestCase) {
-            $duration = $testRunHistory->time(TestRunHistoryId::fromReorderable($test));
+            $id = TestRunHistoryId::fromReorderable($test);
 
-            if ($duration > 0.0) {
-                return $duration;
+            if (!$testRunHistory->hasTime($id)) {
+                return $this->estimateFromDeclaredSizeOf($test);
             }
 
-            return $this->estimateFromDeclaredSizeOf($test);
+            $duration = $testRunHistory->time($id);
+
+            if ($duration === 0.0) {
+                return self::DURATION_OF_A_TEST_RECORDED_AS_ZERO;
+            }
+
+            return $duration;
         }
 
         assert($test instanceof TestSuite);

@@ -67,6 +67,16 @@ final class NullTestRunHistoryTest extends TestCase
         $this->assertSame(0.0, $cache->time($id));
     }
 
+    public function testHasNoTime(): void
+    {
+        $cache = new NullTestRunHistory;
+        $id    = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testOne');
+
+        $cache->setTime($id, 1.234);
+
+        $this->assertFalse($cache->hasTime($id));
+    }
+
     public function testLoadIsNoOp(): void
     {
         $cache = new NullTestRunHistory;

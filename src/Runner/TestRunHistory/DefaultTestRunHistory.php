@@ -114,6 +114,11 @@ final class DefaultTestRunHistory implements TestRunHistory
         return $this->times[$id->asString()] ?? 0.0;
     }
 
+    public function hasTime(TestRunHistoryId $id): bool
+    {
+        return isset($this->times[$id->asString()]);
+    }
+
     public function mergeWith(self $other): void
     {
         foreach ($other->defects as $id => $defect) {
