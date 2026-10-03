@@ -88,18 +88,19 @@ final class PhptRunnerTest extends TestCase
         $this->assertSame([0, 1], $order);
     }
 
-    public function testStartsAsManyOfTheUnitsTheOrderedOutputWaitsForAsItHasReservedSlots(): void
+    public function testLeavesOneOfTheSlotsItCanUseToTheCostOrderWhenTheBudgetHasRoomForFewerUnitsThanItsConcurrency(): void
     {
         $fast = __DIR__ . '/../../../_files/parallel-worker/worker.phpt';
         $slow = __DIR__ . '/../../../_files/parallel-worker/worker-slow.phpt';
 
-        // The scheduler queued the two fast units first, because the two units
-        // the ordered output waits for are the longer ones. More than one start
-        // slot is reserved for the suite order, so both of them are started
-        // right away — the budget has room for two units at a time — and their
-        // results are what is reported first. With a single reserved slot, one
-        // of the fast units would have taken the second slot and would have
-        // been the first unit to finish.
+        // The units are queued in cost order, which the slow units the ordered
+        // output waits for come last in. The runner could run four units at a
+        // time, but the budget, which it shares with the worker pool in a real
+        // run, only has room for two: one of them is reserved for the suite
+        // order and starts a slow unit, the other one works the cost order and
+        // starts a fast unit, which is the first unit to finish. Were both of
+        // them reserved for the suite order, the units at the head of the cost
+        // order would only be started once the slow units have finished.
         $units = [
             new PhptWorkUnit(5, $fast),
             new PhptWorkUnit(0, $slow),
@@ -118,7 +119,7 @@ final class PhptRunnerTest extends TestCase
         );
 
         $this->assertCount(4, $order);
-        $this->assertContains($order[0], [0, 1]);
+        $this->assertSame(5, $order[0]);
     }
 
     public function testRunsTheRepetitionsOfARepeatedPhptTestOneAfterAnotherWithinItsUnit(): void

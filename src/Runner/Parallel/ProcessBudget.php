@@ -70,7 +70,21 @@ final class ProcessBudget
      */
     public function hasAvailableSlot(): bool
     {
-        return $this->inUse < $this->capacity;
+        return $this->availableSlots() > 0;
+    }
+
+    /**
+     * How many slots are available right now.
+     *
+     * @return non-negative-int
+     */
+    public function availableSlots(): int
+    {
+        $available = $this->capacity - $this->inUse;
+
+        assert($available >= 0);
+
+        return $available;
     }
 
     public function release(): void
