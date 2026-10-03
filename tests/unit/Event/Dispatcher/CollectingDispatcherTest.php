@@ -12,7 +12,6 @@ namespace PHPUnit\Event;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\DummyEvent;
 use PHPUnit\TestFixture\DummySubscriber;
 
@@ -20,7 +19,7 @@ use PHPUnit\TestFixture\DummySubscriber;
 #[Small]
 #[Group('event-system')]
 #[Group('event-system/dispatcher')]
-final class CollectingDispatcherTest extends TestCase
+final class CollectingDispatcherTest extends AbstractEventTestCase
 {
     public function testHasNoCollectedEventsWhenFlushedImmediatelyAfterCreation(): void
     {
@@ -78,5 +77,52 @@ final class CollectingDispatcherTest extends TestCase
         $this->expectException(UnknownSubscriberTypeException::class);
 
         $dispatcher->registerSubscriber($this->createStub(DummySubscriber::class));
+    }
+
+    public function testDispatchesCollectedEventsToRegisteredSubscribersButNotEventsDivertedByACollectionWindow(): void
+    {
+        $typeMap = new TypeMap;
+        $typeMap->addMapping(Test\DeprecationTriggeredSubscriber::class, Test\DeprecationTriggered::class);
+        $typeMap->addMapping(TestRunner\WarningTriggeredSubscriber::class, TestRunner\WarningTriggered::class);
+
+        $dispatcher = new CollectingDispatcher(new DirectDispatcher($typeMap));
+
+        $messages = [];
+
+        $dispatcher->registerSubscriber(
+            new class($messages) implements TestRunner\WarningTriggeredSubscriber
+            {
+                /**
+                 * @var list<string>
+                 */
+                private array $messages;
+
+                /**
+                 * @param list<string> $messages
+                 */
+                public function __construct(array &$messages)
+                {
+                    $this->messages = &$messages;
+                }
+
+                public function notify(TestRunner\WarningTriggered $event): void
+                {
+                    $this->messages[] = $event->message();
+                }
+            },
+        );
+
+        $dispatcher->dispatch(new TestRunner\WarningTriggered($this->telemetryInfo(), 'collected'));
+
+        $this->assertSame(['collected'], $messages);
+
+        // An event diverted by a collection window does not become part of the
+        // recorded stream and must not reach the subscriber either.
+        $dispatcher->startCollectingEvents();
+
+        $dispatcher->dispatch(new TestRunner\WarningTriggered($this->telemetryInfo(), 'diverted'));
+
+        $this->assertSame(['collected'], $messages);
+        $this->assertCount(1, $dispatcher->stopCollectingEvents());
     }
 }

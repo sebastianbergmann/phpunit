@@ -10,6 +10,7 @@
 namespace PHPUnit\TextUI\CliArguments;
 
 use const DIRECTORY_SEPARATOR;
+use const PHP_INT_SIZE;
 use function assert;
 use function basename;
 use function count;
@@ -20,6 +21,7 @@ use function is_numeric;
 use function max;
 use function sprintf;
 use function strtolower;
+use Fidry\CpuCoreCounter\CpuCoreCounter;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\Configuration\ExecutionOrderParser;
@@ -124,6 +126,8 @@ final class Builder
         'no-results',
         'order-by=',
         'process-isolation',
+        'parallel=',
+        'recycle-workers-after=',
         'do-not-report-useless-tests',
         'random-order',
         'random-order-seed=',
@@ -407,6 +411,8 @@ final class Builder
         $noResults                                = null;
         $noLogging                                = null;
         $processIsolation                         = null;
+        $numberOfParallelWorkers                  = null;
+        $numberOfTestClassesBeforeWorkerRecycling = null;
         $randomOrderSeed                          = null;
         $repeat                                   = null;
         $retry                                    = null;
@@ -864,6 +870,62 @@ final class Builder
 
                 case '--process-isolation':
                     $processIsolation = true;
+
+                    break;
+
+                case '--parallel':
+                    // The workers of a parallel run stream their events to the
+                    // main process in frames whose length is a 64-bit integer
+                    // (see EventStream), which a 32-bit build of PHP cannot
+                    // pack and unpack.
+                    // @codeCoverageIgnoreStart
+                    if (PHP_INT_SIZE < 8) {
+                        throw new Exception(
+                            'The --parallel option requires a 64-bit build of PHP',
+                        );
+                    }
+                    // @codeCoverageIgnoreEnd
+
+                    if ($option[1] === 'auto') {
+                        $numberOfParallelWorkers = (new CpuCoreCounter)->getAvailableForParallelisation()->availableCpus;
+
+                        break;
+                    }
+
+                    if (!is_numeric($option[1]) ||
+                        (string) (int) $option[1] !== $option[1] ||
+                        (int) $option[1] < 1) {
+                        $this->emitter->testRunnerTriggeredPhpunitWarning(
+                            sprintf(
+                                'Option "--parallel %s" ignored because "%s" is neither a positive integer nor "auto"',
+                                $option[1],
+                                $option[1],
+                            ),
+                        );
+
+                        break;
+                    }
+
+                    $numberOfParallelWorkers = (int) $option[1];
+
+                    break;
+
+                case '--recycle-workers-after':
+                    if (!is_numeric($option[1]) ||
+                        (string) (int) $option[1] !== $option[1] ||
+                        (int) $option[1] < 0) {
+                        $this->emitter->testRunnerTriggeredPhpunitWarning(
+                            sprintf(
+                                'Option "--recycle-workers-after %s" ignored because "%s" is not a non-negative integer',
+                                $option[1],
+                                $option[1],
+                            ),
+                        );
+
+                        break;
+                    }
+
+                    $numberOfTestClassesBeforeWorkerRecycling = (int) $option[1];
 
                     break;
 
@@ -1588,6 +1650,8 @@ final class Builder
             $withTelemetry,
             $extensions,
             $cacheTestIndex,
+            $numberOfParallelWorkers,
+            $numberOfTestClassesBeforeWorkerRecycling,
         );
     }
 

@@ -21,6 +21,7 @@ use function str_starts_with;
 use function sys_get_temp_dir;
 use Composer\Autoload\ClassLoader;
 use DeepCopy\DeepCopy;
+use Fidry\CpuCoreCounter\CpuCoreCounter;
 use PharIo\Manifest\Manifest;
 use PharIo\Version\Version as PharIoVersion;
 use PhpParser\Parser;
@@ -58,6 +59,9 @@ final class ExcludeList
     private const array EXCLUDED_CLASS_NAMES = [
         // composer
         ClassLoader::class => 1,
+
+        // fidry/cpu-core-counter
+        CpuCoreCounter::class => 1,
 
         // myclabs/deepcopy
         DeepCopy::class => 1,

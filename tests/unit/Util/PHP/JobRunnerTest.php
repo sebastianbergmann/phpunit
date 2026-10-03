@@ -9,12 +9,17 @@
  */
 namespace PHPUnit\Util\PHP;
 
+use function hrtime;
+use function putenv;
+use function str_repeat;
+use function usleep;
 use Generator;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\TestRunner\ChildProcessReason;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresOperatingSystem;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -289,7 +294,7 @@ EOT,
 fwrite(STDOUT, fgets(STDIN));
 
 EOT,
-                ChildProcessReason::TestRequiringProcessIsolation,
+                ChildProcessReason::ParallelWorker,
             ),
         );
 
@@ -299,14 +304,14 @@ EOT,
         $this->assertSame("echoed\n", $running->wait()->stdout());
     }
 
-    #[TestDox('Server variables that cannot be represented as environment variables are not forwarded')]
-    public function testDoesNotForwardServerVariablesThatAreNotEnvironmentVariables(): void
+    #[TestDox('Child process inherits the environment of the parent process, not the contents of $_SERVER')]
+    public function testForwardsEnvironmentVariablesButNotServerVariables(): void
     {
         $server = $_SERVER;
 
-        $_SERVER[0]                     = 'value for non-string key';
-        $_SERVER['__test_array_value']  = ['value'];
-        $_SERVER['__test_string_value'] = 'value';
+        $_SERVER['__test_server_variable'] = 'from server';
+
+        putenv('__test_environment_variable=from environment');
 
         try {
             $jobRunner = new JobRunner(
@@ -323,7 +328,7 @@ EOT,
                 new Job(
                     <<<'EOT'
 <?php declare(strict_types=1);
-var_dump(getenv('__test_array_value'), getenv('__test_string_value'));
+var_dump(getenv('__test_server_variable'), getenv('__test_environment_variable'), getenv('test'));
 
 EOT,
                     ChildProcessReason::TestRequiringProcessIsolation,
@@ -331,9 +336,11 @@ EOT,
                 ),
             );
 
-            $this->assertSame("bool(false)\nstring(5) \"value\"\n", $result->stdout());
+            $this->assertSame("bool(false)\nstring(16) \"from environment\"\nstring(4) \"test\"\n", $result->stdout());
         } finally {
             $_SERVER = $server;
+
+            putenv('__test_environment_variable');
         }
     }
 
@@ -369,6 +376,94 @@ EOT,
         );
 
         $this->assertSame('started', $result->stdout());
+    }
+
+    #[RequiresOperatingSystem('Linux|Darwin')]
+    public function testInvokesACallbackWhileWaitingForTheProcessOfAJob(): void
+    {
+        $jobRunner = new JobRunner(
+            new ChildProcessResultProcessor(
+                new Facade,
+                $this->createStub(Emitter::class),
+                new PassedTests,
+                new CodeCoverage($this->createStub(Emitter::class)),
+            ),
+            $this->createStub(Emitter::class),
+        );
+
+        $job = new Job(
+            <<<'EOT'
+<?php declare(strict_types=1);
+usleep(100000);
+print 'waited for';
+
+EOT,
+            ChildProcessReason::TestRequiringProcessIsolation,
+        );
+
+        $invocations = 0;
+
+        $invoking = $jobRunner->invokingWhileWaiting(
+            static function () use (&$invocations): void
+            {
+                $invocations++;
+            },
+        );
+
+        $this->assertSame('waited for', $invoking->run($job)->stdout());
+        $this->assertGreaterThan(0, $invocations);
+
+        // The job runner that the invoking one was derived from is unchanged.
+        $invocationsBefore = $invocations;
+
+        $this->assertSame('waited for', $jobRunner->run($job)->stdout());
+        $this->assertSame($invocationsBefore, $invocations);
+    }
+
+    public function testCapturesTheOutputOfAProcessItStartsAsynchronouslyInFilesWhenAskedTo(): void
+    {
+        $jobRunner = new JobRunner(
+            new ChildProcessResultProcessor(
+                new Facade,
+                $this->createStub(Emitter::class),
+                new PassedTests,
+                new CodeCoverage($this->createStub(Emitter::class)),
+            ),
+            $this->createStub(Emitter::class),
+        )->capturingOutputInFiles();
+
+        // The process writes more than a pipe holds to both of its output
+        // streams, and nothing is read from it while it runs: only whether it
+        // has ended is polled. The deadline turns a process that blocks on a
+        // full pipe into a failure rather than a test that never ends.
+        $job = $jobRunner->startAsync(
+            new Job(
+                <<<'EOT'
+<?php declare(strict_types=1);
+fwrite(STDOUT, str_repeat('o', 1048576));
+fwrite(STDERR, str_repeat('e', 1048576));
+
+EOT,
+                ChildProcessReason::TestRequiringProcessIsolation,
+            ),
+        );
+
+        $deadline = hrtime(true) + 10000000000;
+
+        while ($job->isRunning()) {
+            if (hrtime(true) > $deadline) {
+                $job->terminate();
+
+                $this->fail('The process did not end');
+            }
+
+            usleep(1000);
+        }
+
+        $result = $job->wait();
+
+        $this->assertSame(str_repeat('o', 1048576), $result->stdout());
+        $this->assertSame(str_repeat('e', 1048576), $result->stderr());
     }
 
     public function testRejectsPhpSettingValueContainingLineBreak(): void

@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\TestRunner\TestResult;
 
+use function serialize;
+use function unserialize;
 use PHPUnit\Event\Code\TestDoxBuilder;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\TestData\TestDataCollection;
@@ -86,6 +88,35 @@ final class PassedTestsTest extends TestCase
         $passedTests->import($other);
 
         $this->assertSame('imported', $passedTests->returnValue(self::class . '::testReplacesThePassOfATestMethodWithTheImportedOne'));
+    }
+
+    public function testForgetsRecordedPassesWhenReset(): void
+    {
+        $passedTests = new PassedTests;
+
+        $passedTests->testClassPassed(self::class);
+
+        $this->assertTrue($passedTests->hasTestClassPassed(self::class));
+
+        $passedTests->reset();
+
+        $this->assertFalse($passedTests->hasTestClassPassed(self::class));
+    }
+
+    public function testCanBeCopiedWithoutTheValuesThatThePassedTestsReturned(): void
+    {
+        $passedTests = new PassedTests;
+
+        $passedTests->testClassPassed(self::class);
+        $passedTests->testMethodPassed($this->testMethod(), static fn (): int => 42);
+
+        $copy = $passedTests->withoutReturnValues();
+
+        $this->assertTrue($copy->hasTestClassPassed(self::class));
+        $this->assertTrue($copy->hasTestMethodPassed(HookFixture::class . '::testOne'));
+        $this->assertNull($copy->returnValue(HookFixture::class . '::testOne'));
+        $this->assertInstanceOf(PassedTests::class, unserialize(serialize($copy)));
+        $this->assertNotNull($passedTests->returnValue(HookFixture::class . '::testOne'));
     }
 
     private function testMethod(): TestMethod

@@ -196,6 +196,7 @@
         <xs:attribute name="diffContext" type="xs:integer" default="3"/>
         <xs:attribute name="controlGarbageCollector" type="xs:boolean" default="false"/>
         <xs:attribute name="numberOfTestsBeforeGarbageCollection" type="xs:integer" default="100"/>
+        <xs:attribute name="numberOfTestClassesBeforeWorkerRecycling" type="xs:integer" default="0"/>
         <xs:attribute name="requireCoverageMetadata" type="xs:boolean" default="false"/>
         <xs:attribute name="requireCoverageMetadataOnSmallTests" type="xs:boolean"/>
         <xs:attribute name="requireCoverageMetadataOnMediumTests" type="xs:boolean"/>

@@ -580,6 +580,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
+    final public function emptyDataProviderSkipMessage(): ?string
+    {
+        return $this->emptyDataProviderSkipMessage;
+    }
+
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     final public function setThrowableFromDeferredIssue(Throwable $throwable): void
     {
         $this->throwableFromDeferredIssue = $throwable;
