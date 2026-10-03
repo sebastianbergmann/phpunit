@@ -64,6 +64,15 @@ final class ProcessBudget
         return true;
     }
 
+    /**
+     * Whether a slot is available right now, so that a caller can find out
+     * without taking one whether it is worth looking for a unit to start.
+     */
+    public function hasAvailableSlot(): bool
+    {
+        return $this->inUse < $this->capacity;
+    }
+
     public function release(): void
     {
         assert($this->inUse > 0);
