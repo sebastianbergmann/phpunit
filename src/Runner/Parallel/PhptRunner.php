@@ -343,9 +343,22 @@ final class PhptRunner
 
     /**
      * Start every queued unit that a free slot and its conflict keys allow.
+     *
+     * Most polling rounds find every slot taken. The start order, which a
+     * pass over the queue establishes, is only worked out when a unit could
+     * actually be started: the queue holds a unit, and neither this runner's
+     * concurrency, a running test that must run alone, nor the shared process
+     * budget rules out a start.
      */
     private function startRunnable(): bool
     {
+        if ($this->queue === [] ||
+            count($this->active) >= $this->concurrency ||
+            $this->exclusive ||
+            !$this->budget->hasAvailableSlot()) {
+            return false;
+        }
+
         $onCompleted = $this->onCompleted;
 
         assert($onCompleted !== null);
