@@ -67,6 +67,7 @@
             <exclude>tests/end-to-end/parallel/stop-on/_files</exclude>
             <exclude>tests/end-to-end/parallel/stop-on-clean/_files</exclude>
             <exclude>tests/end-to-end/parallel/exclusivity/_files</exclude>
+            <exclude>tests/end-to-end/parallel/in-process-unit/_files</exclude>
             <exclude>tests/end-to-end/random-seed/_files</exclude>
             <exclude>tests/end-to-end/repeat/_files</exclude>
             <exclude>tests/end-to-end/retry/_files</exclude>
