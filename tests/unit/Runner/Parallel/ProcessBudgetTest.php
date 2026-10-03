@@ -53,4 +53,23 @@ final class ProcessBudgetTest extends TestCase
 
         $this->assertTrue($budget->hasAvailableSlot());
     }
+
+    public function testReportsHowManySlotsAreAvailable(): void
+    {
+        $budget = new ProcessBudget(2);
+
+        $this->assertSame(2, $budget->availableSlots());
+
+        $this->assertTrue($budget->acquire());
+
+        $this->assertSame(1, $budget->availableSlots());
+
+        $this->assertTrue($budget->acquire());
+
+        $this->assertSame(0, $budget->availableSlots());
+
+        $budget->release();
+
+        $this->assertSame(1, $budget->availableSlots());
+    }
 }
