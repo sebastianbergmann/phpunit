@@ -54,6 +54,8 @@ use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\Util\PHP\JobRunner;
+use PHPUnit\Util\PHP\JobRunnerRegistry;
+use Throwable;
 
 /**
  * Runs a test suite by distributing its test classes across a pool of worker
@@ -84,6 +86,19 @@ final class ParallelTestRunner
      * waiting does not spin the CPU.
      */
     private const int POLL_INTERVAL_MICROSECONDS = 1000;
+
+    /**
+     * Whether a unit that runs in the main process alongside the units that
+     * are executing elsewhere is running (see runPendingUnit()).
+     */
+    private bool $inProcessUnitIsRunning = false;
+
+    /**
+     * What advancing the worker pool or the PHPT runner raised while a unit
+     * that runs in the main process was running, to be rethrown once the unit
+     * is done (see runPendingUnit()).
+     */
+    private ?Throwable $exceptionWhileInProcessUnitRan = null;
 
     /**
      * @throws RuntimeException
@@ -143,7 +158,10 @@ final class ParallelTestRunner
      * names the reason. Process isolation and #[DoNotRunInParallel] are
      * deliberate choices and are not reported. Any remaining standalone
      * test — one that is neither a TestCase nor a PHPT test — is run the same
-     * way, at its own suite index.
+     * way, at its own suite index. Unless it must run alone, a unit that runs
+     * in the main process runs alongside the units that are executing in the
+     * worker pool and the PHPT runner, which go on being advanced while it
+     * waits for a child process (see runPendingUnit()).
      *
      * In sequential mode, TestSuite::run() wraps every suite's tests in a pair
      * of "test suite started" / "test suite finished" events. The workers and
@@ -321,12 +339,16 @@ final class ParallelTestRunner
         if ($phptIsNeeded) {
             // A PHPT test that conflicts with "all" runs entirely on its own;
             // the PHPT runner therefore only starts one while no unit is
-            // executing in the worker pool.
+            // executing in the worker pool or in the main process.
             $phptRunner = $this->createPhptRunner(
                 $configuration,
                 $budget,
-                static function () use ($pool): bool
+                function () use ($pool): bool
                 {
+                    if ($this->inProcessUnitIsRunning) {
+                        return false;
+                    }
+
                     if ($pool === null) {
                         return true;
                     }
@@ -386,16 +408,16 @@ final class ParallelTestRunner
      * loop, so that the chunk's test classes and PHPT tests execute
      * concurrently and their results and streamed events reach the parent the
      * moment they arrive. The in-process units interspersed among them run as
-     * the release sequence reaches their indexes; the trailing flush releases
-     * those that follow the chunk's last worker or PHPT unit.
+     * the release sequence reaches their indexes, between two polling rounds,
+     * so that the pool and the PHPT runner can be advanced while they run.
      *
      * The chunk's in-process units are registered with the aggregator here,
      * not before the chunks run: were the units of every chunk registered up
      * front, the release sequence — which knows suite indexes but no chunk
-     * boundaries — would run a later chunk's leading in-process units the
-     * moment the last unit of an earlier chunk was released, inside that
-     * chunk's test-suite envelope and before their own suite's "test suite
-     * started" event.
+     * boundaries — would stop at a later chunk's leading in-process unit the
+     * moment the last unit of an earlier chunk was released, and the unit
+     * would be run inside that chunk's test-suite envelope and before its own
+     * suite's "test suite started" event.
      *
      * The chunk's results are wrapped in the "test suite started" / "test
      * suite finished" envelope that its suite would have emitted had it been
@@ -424,10 +446,6 @@ final class ParallelTestRunner
         foreach ($inProcess as $unit) {
             $aggregator->registerInProcessUnit($unit['index'], $unit['runner'], $unit['exclusive']);
         }
-
-        // Run the in-process units that precede the chunk's first worker or
-        // PHPT unit.
-        $aggregator->flush();
 
         $activePool = null;
 
@@ -521,7 +539,18 @@ final class ParallelTestRunner
             if ($exclusiveUnitIsPending &&
                 ($activePool === null || !$activePool->hasExecutingUnits()) &&
                 ($activePhptRunner === null || !$activePhptRunner->hasRunningTests())) {
-                $aggregator->runPendingExclusiveUnit();
+                $aggregator->runPendingUnit();
+
+                continue;
+            }
+
+            // Any other unit that runs in the main process runs as soon as it
+            // has reached its turn, alongside the units that are executing,
+            // unless a PHPT test that must run alone is running.
+            if (!$exclusiveUnitIsPending &&
+                $aggregator->hasPendingUnit() &&
+                ($activePhptRunner === null || !$activePhptRunner->isRunningExclusiveTest())) {
+                $this->runPendingUnit($activePool, $activePhptRunner, $aggregator);
 
                 continue;
             }
@@ -544,10 +573,10 @@ final class ParallelTestRunner
             $poolIsFinished       = $activePool === null || $activePool->isFinished();
             $phptRunnerIsFinished = $activePhptRunner === null || $activePhptRunner->isFinished();
 
-            // A unit that must run alone may have reached its turn during
-            // this round's final releases; the loop then goes around once
-            // more to run it instead of ending the chunk.
-            if ($poolIsFinished && $phptRunnerIsFinished && !$aggregator->hasPendingExclusiveUnit()) {
+            // A unit that runs in the main process may have reached its turn
+            // during this round's final releases; the loop then goes around
+            // once more to run it instead of ending the chunk.
+            if ($poolIsFinished && $phptRunnerIsFinished && !$aggregator->hasPendingUnit()) {
                 break;
             }
 
@@ -558,11 +587,6 @@ final class ParallelTestRunner
                 usleep(self::POLL_INTERVAL_MICROSECONDS);
             }
         }
-
-        // Run the in-process units that follow the chunk's last unit. When
-        // the run was stopped early, the aggregator is frozen and this
-        // releases nothing.
-        $aggregator->flush();
 
         // The chunk's very last releases may have tripped the stop condition
         // after the loop's final check; the remaining chunks are then
@@ -639,6 +663,93 @@ final class ParallelTestRunner
                 usleep(self::POLL_INTERVAL_MICROSECONDS);
             }
         }
+    }
+
+    /**
+     * Run the unit that runs in the main process and has reached its turn in
+     * the release sequence, and advance the worker pool and the PHPT runner
+     * whenever the unit waits for a child process, which is what a test that
+     * runs in a separate process spends most of its time doing. The workers
+     * that finish their units are given new ones, and the PHPT tests that
+     * finish are noticed as they finish, so that the time the unit takes is
+     * not added to the durations measured for them.
+     *
+     * The units that finish in the meantime are held back by the aggregator
+     * until the unit is done, so that the unit's events, which reach the
+     * dispatcher live, stay in suite order. A PHPT test that must run alone
+     * is not started while the unit runs.
+     *
+     * An exception that advancing the pool or the PHPT runner raises is
+     * rethrown once the unit is done, and not where it was raised: inside the
+     * test that was waiting for its child process, it would be reported as
+     * the outcome of that test.
+     *
+     * @throws Throwable
+     */
+    private function runPendingUnit(?WorkerPool $pool, ?PhptRunner $phptRunner, ResultAggregator $aggregator): void
+    {
+        $jobRunner = JobRunnerRegistry::get();
+
+        JobRunnerRegistry::set(
+            $jobRunner->invokingWhileWaiting(
+                function () use ($pool, $phptRunner): void
+                {
+                    $this->advanceWhileInProcessUnitRuns($pool, $phptRunner);
+                },
+            ),
+        );
+
+        $this->inProcessUnitIsRunning = true;
+
+        try {
+            $aggregator->runPendingUnit();
+        } finally {
+            $this->inProcessUnitIsRunning = false;
+
+            JobRunnerRegistry::set($jobRunner);
+        }
+
+        $exception = $this->exceptionWhileInProcessUnitRan;
+
+        // @codeCoverageIgnoreStart
+        if ($exception !== null) {
+            $this->exceptionWhileInProcessUnitRan = null;
+
+            throw $exception;
+        }
+        // @codeCoverageIgnoreEnd
+    }
+
+    /**
+     * Advance the worker pool and the PHPT runner by one polling round while a
+     * unit that runs in the main process waits for a child process. No unit
+     * is started once the results call for the run to stop or the deadline of
+     * a time limit for the test run has passed: the run loop deals with both
+     * once the unit is done.
+     */
+    private function advanceWhileInProcessUnitRuns(?WorkerPool $pool, ?PhptRunner $phptRunner): void
+    {
+        // @codeCoverageIgnoreStart
+        if ($this->exceptionWhileInProcessUnitRan !== null) {
+            return;
+        }
+        // @codeCoverageIgnoreEnd
+
+        $mayStart = !TestResultFacade::shouldStop() && !TimeLimitHandler::deadlineHasPassed();
+
+        try {
+            if ($pool !== null) {
+                $pool->tick($mayStart);
+            }
+
+            if ($phptRunner !== null) {
+                $phptRunner->tick($mayStart);
+            }
+            // @codeCoverageIgnoreStart
+        } catch (Throwable $t) {
+            $this->exceptionWhileInProcessUnitRan = $t;
+        }
+        // @codeCoverageIgnoreEnd
     }
 
     /**

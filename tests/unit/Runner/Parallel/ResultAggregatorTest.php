@@ -827,13 +827,62 @@ final class ResultAggregatorTest extends TestCase
 
         $this->assertSame([], $order);
 
-        // Once index 0 arrives, index 0 is forwarded, then the in-process unit
-        // at index 1 is run in place, then index 2 is released — global order.
+        // Once index 0 arrives, index 0 is forwarded, and the release sequence
+        // stops at the in-process unit at index 1.
         $aggregator->add(CompletedWorkUnit::fromCrash(new TestClassWorkUnit(0, WorkerFirstTest::class, [])));
 
-        $this->assertCount(3, $order);
+        $this->assertCount(1, $order);
         $this->assertStringContainsString(WorkerFirstTest::class, $order[0]);
+        $this->assertTrue($aggregator->hasPendingUnit());
+
+        // Running the in-process unit resumes the release sequence, which
+        // then releases index 2 — global order.
+        $aggregator->runPendingUnit();
+
+        $this->assertCount(3, $order);
         $this->assertSame('in-process', $order[1]);
+        $this->assertStringContainsString(WorkerSecondTest::class, $order[2]);
+        $this->assertFalse($aggregator->hasPendingUnit());
+    }
+
+    public function testHoldsBackTheUnitsThatFinishWhileAnInProcessUnitRunsUntilItIsDone(): void
+    {
+        $order = [];
+
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter->method('testSuiteStarted');
+        $emitter->method('testSuiteFinished');
+        $emitter->method('testRunnerTriggeredPhpunitWarning');
+        $emitter->method('childProcessErrored')->willReturnCallback(
+            static function (ChildProcessReason $reason, string $message) use (&$order): void
+            {
+                $order[] = $message;
+            },
+        )->seal();
+
+        $aggregator = $this->aggregator($emitter);
+
+        // The worker unit at index 1 finishes while the in-process unit at
+        // index 0 runs, as it does when the worker pool is advanced while the
+        // in-process unit waits for a child process.
+        $aggregator->registerInProcessUnit(
+            0,
+            static function () use (&$order, $aggregator): void
+            {
+                $order[] = 'in-process started';
+
+                $aggregator->add(CompletedWorkUnit::fromCrash(new TestClassWorkUnit(1, WorkerSecondTest::class, [])));
+
+                $order[] = 'in-process finished';
+            },
+        );
+
+        $aggregator->runPendingUnit();
+
+        $this->assertCount(3, $order);
+        $this->assertSame('in-process started', $order[0]);
+        $this->assertSame('in-process finished', $order[1]);
         $this->assertStringContainsString(WorkerSecondTest::class, $order[2]);
     }
 
@@ -866,17 +915,24 @@ final class ResultAggregatorTest extends TestCase
         $aggregator->flush();
 
         $this->assertSame([], $order);
+        $this->assertTrue($aggregator->hasPendingUnit());
         $this->assertTrue($aggregator->hasPendingExclusiveUnit());
 
         // Running the pending exclusive unit resumes the release sequence,
-        // which then releases the ordinary unit behind it.
-        $aggregator->runPendingExclusiveUnit();
+        // which then stops at the ordinary unit behind it.
+        $aggregator->runPendingUnit();
+
+        $this->assertSame(['exclusive'], $order);
+        $this->assertTrue($aggregator->hasPendingUnit());
+        $this->assertFalse($aggregator->hasPendingExclusiveUnit());
+
+        $aggregator->runPendingUnit();
 
         $this->assertSame(['exclusive', 'ordinary'], $order);
-        $this->assertFalse($aggregator->hasPendingExclusiveUnit());
+        $this->assertFalse($aggregator->hasPendingUnit());
     }
 
-    public function testRunsRegisteredInProcessUnitsThatPrecedeAllWorkerUnitsOnFlush(): void
+    public function testHasAPendingUnitWhenAnInProcessUnitPrecedesAllWorkerUnits(): void
     {
         $order = [];
 
@@ -890,11 +946,17 @@ final class ResultAggregatorTest extends TestCase
             },
         );
 
-        // No worker completion drives the release, so an explicit flush() must
-        // run the leading in-process unit.
-        $this->assertSame([], $order);
+        // No worker completion has to drive the release sequence to the
+        // leading in-process unit, and releasing does not run it: the runner
+        // runs it, between two polling rounds.
+        $this->assertTrue($aggregator->hasPendingUnit());
+        $this->assertFalse($aggregator->hasPendingExclusiveUnit());
 
         $aggregator->flush();
+
+        $this->assertSame([], $order);
+
+        $aggregator->runPendingUnit();
 
         $this->assertSame(['in-process'], $order);
     }
@@ -1249,7 +1311,7 @@ final class ResultAggregatorTest extends TestCase
             },
         );
 
-        $aggregator->flush();
+        $aggregator->runPendingUnit();
 
         $this->assertSame(['first test'], $forwarded);
     }

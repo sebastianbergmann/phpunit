@@ -36,6 +36,7 @@ use function tmpfile;
 use function trim;
 use function unlink;
 use function xdebug_is_debugger_active;
+use Closure;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestRunner\ChildProcessResultProcessor;
@@ -52,10 +53,30 @@ final readonly class JobRunner
     private ChildProcessResultProcessor $processor;
     private Emitter $emitter;
 
-    public function __construct(ChildProcessResultProcessor $processor, Emitter $emitter)
+    /**
+     * @var ?Closure(): void
+     */
+    private ?Closure $whileWaiting;
+
+    /**
+     * @param ?Closure(): void $whileWaiting
+     */
+    public function __construct(ChildProcessResultProcessor $processor, Emitter $emitter, ?Closure $whileWaiting = null)
     {
-        $this->processor = $processor;
-        $this->emitter   = $emitter;
+        $this->processor    = $processor;
+        $this->emitter      = $emitter;
+        $this->whileWaiting = $whileWaiting;
+    }
+
+    /**
+     * A copy of this job runner whose run() invokes the given callback while
+     * it waits for the process of a job (see RunningJob::waitInvoking()).
+     *
+     * @param Closure(): void $whileWaiting
+     */
+    public function invokingWhileWaiting(Closure $whileWaiting): self
+    {
+        return new self($this->processor, $this->emitter, $whileWaiting);
     }
 
     /**
@@ -91,7 +112,13 @@ final readonly class JobRunner
      */
     public function run(Job $job): Result
     {
-        return $this->startAsync($job)->wait();
+        $running = $this->startAsync($job);
+
+        if ($this->whileWaiting !== null) {
+            return $running->waitInvoking($this->whileWaiting);
+        }
+
+        return $running->wait();
     }
 
     /**
