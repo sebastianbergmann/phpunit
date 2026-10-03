@@ -14,6 +14,7 @@ use function array_slice;
 use function assert;
 use function count;
 use function in_array;
+use function min;
 use function usleep;
 use Generator;
 use PHPUnit\Event\CollectingEmitter;
@@ -86,8 +87,9 @@ final class PhptRunner
      * the compromise between that and the straggler protection the cost order
      * provides on the remaining slots.
      *
-     * The effective number is derived from this, so that one slot always keeps
-     * working the cost order (see suiteOrderSlots()).
+     * The effective number is derived from this, so that one of the slots the
+     * runner can use always keeps working the cost order (see
+     * suiteOrderSlots()).
      */
     private const int SUITE_ORDER_SLOTS = 3;
     private readonly JobRunner $jobRunner;
@@ -474,10 +476,19 @@ final class PhptRunner
     /**
      * How many of the runner's start slots are reserved for the suite order.
      *
-     * One slot is always left to the cost order, so that the longest of the
-     * queued units still starts as early as the reserved slots allow; a runner
-     * that may only run one unit at a time reserves that one slot, because
-     * reporting nothing at all is worse than losing the cost order on it.
+     * One of the slots the runner can use right now is always left to the
+     * cost order, so that the longest of the queued units still starts as
+     * early as the reserved slots allow; a runner that can use only one slot
+     * reserves that one slot, because reporting nothing at all is worse than
+     * losing the cost order on it.
+     *
+     * The slots the runner can use are not as many as its concurrency allows
+     * when it shares the process budget with the worker pool: the units that
+     * execute in the pool hold slots, too. Were the slots reserved for the
+     * suite order counted against the runner's concurrency, the units the
+     * ordered output waits for would take every slot that the pool leaves
+     * over, and the longest unit would only be started once they have run
+     * out, at the end of the chunk.
      *
      * @return positive-int
      */
@@ -485,8 +496,10 @@ final class PhptRunner
     {
         $slots = self::SUITE_ORDER_SLOTS;
 
-        if ($slots > $this->concurrency - 1) {
-            $slots = $this->concurrency - 1;
+        $usable = count($this->active) + min($this->concurrency - count($this->active), $this->budget->availableSlots());
+
+        if ($slots > $usable - 1) {
+            $slots = $usable - 1;
         }
 
         if ($slots < 1) {
