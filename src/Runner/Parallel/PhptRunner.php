@@ -49,11 +49,15 @@ use PHPUnit\Util\PHP\RunningJob;
  * the test's suite index through the same ResultAggregator that orders the
  * worker units.
  *
- * The --FILE-- section's child redirects its standard error onto its standard
- * output, which is captured in a file rather than a pipe; there is therefore no
- * stream to wait on with stream_select(), so the runner polls each child's
- * liveness instead, draining the pipes of the sections that do use them so that
- * a child never blocks on a full pipe buffer.
+ * The output of every child is captured in files rather than pipes: the
+ * --FILE-- section's child redirects its standard error onto its standard
+ * output, and the children of the other sections write each to a file of its
+ * own (see JobRunner::capturingOutputInFiles()). There is therefore no stream
+ * to wait on with stream_select(), so the runner polls each child's liveness
+ * instead, and reads its output once it has ended. A child never blocks on a
+ * full pipe buffer, and the runner never has to read from a pipe while the
+ * child is running, which blocks until the child has ended on Windows and
+ * would stall every other test, and the worker pool, for that long.
  *
  * A test may declare conflict keys with a --CONFLICTS-- section: while a test
  * that conflicts with key K is running, no other test that conflicts with K is
@@ -160,7 +164,9 @@ final class PhptRunner
      */
     public function __construct(JobRunner $jobRunner, int $concurrency, ProcessBudget $budget, ?callable $nothingElseIsExecuting = null)
     {
-        $this->jobRunner              = $jobRunner;
+        // The children's output is captured in files, so that polling them
+        // never has to read from a pipe (see the class comment).
+        $this->jobRunner              = $jobRunner->capturingOutputInFiles();
         $this->concurrency            = $concurrency;
         $this->budget                 = $budget;
         $this->nothingElseIsExecuting = $nothingElseIsExecuting;
@@ -689,10 +695,6 @@ final class PhptRunner
         $progressed = false;
 
         foreach ($this->active as $id => $task) {
-            // Drain whatever the child has produced on its pipes so that it
-            // never blocks writing into a full pipe buffer while we wait.
-            $task['job']->consume();
-
             if ($task['job']->isRunning()) {
                 continue;
             }
