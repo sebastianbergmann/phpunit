@@ -27,6 +27,7 @@ use PHPUnit\Metadata\DataProviderClosure as DataProviderClosureMetadata;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Metadata\TestWith;
+use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Util\Test;
 use ReflectionMethod;
 use Throwable;
@@ -71,7 +72,18 @@ final readonly class DataProvider
                 $this->triggerWarningForMixingOfDataProviderAndTestWith($testMethod);
             }
 
-            return $this->dataProvidedByMethods($className, $testMethod, $dataProvider, $dataProviderClosure);
+            /*
+             * What a data provider executes is what the tests that are made
+             * from the data it provides depend on, although none of them
+             * executes it.
+             */
+            CodeCoverage::instance()->enterDataProvider($className, $methodName);
+
+            try {
+                return $this->dataProvidedByMethods($className, $testMethod, $dataProvider, $dataProviderClosure);
+            } finally {
+                CodeCoverage::instance()->leaveDataProvider();
+            }
         }
 
         return $this->dataProvidedByMetadata($testMethod, $testWith);
