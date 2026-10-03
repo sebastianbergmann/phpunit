@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Util\PHP;
 
+use const PHP_OS_FAMILY;
 use function assert;
 use function fclose;
 use function feof;
@@ -49,6 +50,12 @@ final class RunningJob
     private const int TERMINATION_GRACE_PERIOD_MICROSECONDS = 500000;
 
     private const int TERMINATION_POLL_INTERVAL_MICROSECONDS = 1000;
+
+    /**
+     * The interval at which the liveness of the process is polled while
+     * waitInvoking() waits for it.
+     */
+    private const int WAIT_POLL_INTERVAL_MICROSECONDS = 1000;
 
     /**
      * The signal used to force termination when the process has not shut down
@@ -306,6 +313,40 @@ final class RunningJob
         $this->result = new Result($this->stdoutBuffer, $this->stderrBuffer);
 
         return $this->result;
+    }
+
+    /**
+     * Wait until the process has terminated, invoking the given callback each
+     * time its liveness is polled, then reap it and return its accumulated
+     * output as wait() does. This lets the caller carry on with other work
+     * while it waits for the process: the parallel test runner, for instance,
+     * advances its worker processes while a test that runs in a separate
+     * process waits for its child process.
+     *
+     * The output that the process writes is read as it becomes available, so
+     * that the process does not block on an output pipe whose buffer is full.
+     * On Windows, where a pipe cannot be read without blocking, the process is
+     * waited for as wait() waits for it, and the callback is not invoked.
+     *
+     * @param callable(): void $whileRunning
+     */
+    public function waitInvoking(callable $whileRunning): Result
+    {
+        // @codeCoverageIgnoreStart
+        if (PHP_OS_FAMILY === 'Windows') {
+            return $this->wait();
+        }
+        // @codeCoverageIgnoreEnd
+
+        while ($this->isRunning()) {
+            $this->consume();
+
+            $whileRunning();
+
+            usleep(self::WAIT_POLL_INTERVAL_MICROSECONDS);
+        }
+
+        return $this->wait();
     }
 
     /**

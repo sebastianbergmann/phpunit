@@ -16,6 +16,7 @@ use PHPUnit\Event\Facade;
 use PHPUnit\Event\TestRunner\ChildProcessReason;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresOperatingSystem;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -372,6 +373,48 @@ EOT,
         );
 
         $this->assertSame('started', $result->stdout());
+    }
+
+    #[RequiresOperatingSystem('Linux|Darwin')]
+    public function testInvokesACallbackWhileWaitingForTheProcessOfAJob(): void
+    {
+        $jobRunner = new JobRunner(
+            new ChildProcessResultProcessor(
+                new Facade,
+                $this->createStub(Emitter::class),
+                new PassedTests,
+                new CodeCoverage($this->createStub(Emitter::class)),
+            ),
+            $this->createStub(Emitter::class),
+        );
+
+        $job = new Job(
+            <<<'EOT'
+<?php declare(strict_types=1);
+usleep(100000);
+print 'waited for';
+
+EOT,
+            ChildProcessReason::TestRequiringProcessIsolation,
+        );
+
+        $invocations = 0;
+
+        $invoking = $jobRunner->invokingWhileWaiting(
+            static function () use (&$invocations): void
+            {
+                $invocations++;
+            },
+        );
+
+        $this->assertSame('waited for', $invoking->run($job)->stdout());
+        $this->assertGreaterThan(0, $invocations);
+
+        // The job runner that the invoking one was derived from is unchanged.
+        $invocationsBefore = $invocations;
+
+        $this->assertSame('waited for', $jobRunner->run($job)->stdout());
+        $this->assertSame($invocationsBefore, $invocations);
     }
 
     public function testRejectsPhpSettingValueContainingLineBreak(): void
