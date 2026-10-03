@@ -20,6 +20,11 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase as FrameworkTestCase;
+use PHPUnit\Framework\TestRunner\ChildProcessResultProcessor;
+use PHPUnit\Runner\CodeCoverage;
+use PHPUnit\TestRunner\TestResult\PassedTests;
+use PHPUnit\Util\PHP\JobRunner;
+use PHPUnit\Util\PHP\JobRunnerRegistry;
 use ReflectionProperty;
 
 #[CoversClass(TestCase::class)]
@@ -122,12 +127,37 @@ final class TestCaseTest extends FrameworkTestCase
 
         $property->setValue(null, $facade);
 
+        /*
+         * The PHPT test runs its child processes through the job runner of the
+         * JobRunnerRegistry, which reports to the event facade that it was
+         * created with. Were that job runner created while the throw-away
+         * event facade is in place, it would report to it for the rest of the
+         * test run, and the events of every test that runs in a separate
+         * process afterwards would be lost.
+         */
+        JobRunnerRegistry::set($this->jobRunnerForTheEventFacadeInPlace());
+
         try {
             new TestCase(realpath($filename))->run();
         } finally {
             $property->setValue(null, $instance);
+
+            JobRunnerRegistry::set($this->jobRunnerForTheEventFacadeInPlace());
         }
 
         return $tracer->events;
+    }
+
+    private function jobRunnerForTheEventFacadeInPlace(): JobRunner
+    {
+        return new JobRunner(
+            new ChildProcessResultProcessor(
+                Facade::instance(),
+                Facade::emitter(),
+                PassedTests::instance(),
+                CodeCoverage::instance(),
+            ),
+            Facade::emitter(),
+        );
     }
 }
