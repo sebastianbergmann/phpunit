@@ -14,6 +14,7 @@ use function file_get_contents;
 use function hrtime;
 use function sprintf;
 use function stream_select;
+use function strlen;
 use function sys_get_temp_dir;
 use function tempnam;
 use function unlink;
@@ -31,6 +32,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestRunner\ChildProcessResultProcessor;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TestRunner\TestResult\PassedTests;
+use RuntimeException;
 
 #[CoversClass(RunningJob::class)]
 #[UsesClass(JobRunner::class)]
@@ -258,6 +260,75 @@ EOT,
 
         $job->closeStdin();
         $job->wait();
+    }
+
+    #[RequiresOperatingSystem('Linux|Darwin')]
+    public function testInvokesACallbackWhileWaitingForTheProcessToTerminate(): void
+    {
+        $job = $this->jobRunner()->startAsync(
+            new Job(
+                <<<'EOT'
+<?php declare(strict_types=1);
+usleep(100000);
+fwrite(STDOUT, 'out');
+fwrite(STDERR, 'err');
+
+EOT,
+                ChildProcessReason::TestRequiringProcessIsolation,
+            ),
+        );
+
+        $invocations = 0;
+
+        $result = $job->waitInvoking(
+            static function () use (&$invocations): void
+            {
+                $invocations++;
+            },
+        );
+
+        $this->assertGreaterThan(0, $invocations);
+        $this->assertSame('out', $result->stdout());
+        $this->assertSame('err', $result->stderr());
+        $this->assertFalse($job->isRunning());
+    }
+
+    #[RequiresOperatingSystem('Linux|Darwin')]
+    public function testReadsTheOutputOfTheProcessWhileWaitingForItToTerminate(): void
+    {
+        // The process writes more than a pipe's buffer holds to both of its
+        // output streams: were they not read while the process runs, it would
+        // block on a full pipe and never terminate. On Windows, where a pipe
+        // cannot be read without blocking, waitInvoking() waits as wait()
+        // does, which reads one stream to its end before the other, and the
+        // process blocks on the other stream's full pipe.
+        $job = $this->jobRunner()->startAsync(
+            new Job(
+                <<<'EOT'
+<?php declare(strict_types=1);
+fwrite(STDOUT, str_repeat('o', 1048576));
+fwrite(STDERR, str_repeat('e', 1048576));
+
+EOT,
+                ChildProcessReason::TestRequiringProcessIsolation,
+            ),
+        );
+
+        $start = hrtime(true);
+
+        $result = $job->waitInvoking(
+            static function () use ($job, $start): void
+            {
+                if (hrtime(true) - $start > 10000000000) {
+                    $job->terminate();
+
+                    throw new RuntimeException('The process did not terminate');
+                }
+            },
+        );
+
+        $this->assertSame(1048576, strlen($result->stdout()));
+        $this->assertSame(1048576, strlen($result->stderr()));
     }
 
     public function testCanDriveSeveralJobsThroughASingleSelectLoop(): void

@@ -46,6 +46,23 @@ final class JobRunnerRegistryTest extends TestCase
         );
     }
 
+    public function testReturnsTheConfiguredJobRunner(): void
+    {
+        $jobRunner = new JobRunner(
+            new ChildProcessResultProcessor(
+                new Facade,
+                $this->createStub(Emitter::class),
+                new PassedTests,
+                new CodeCoverage($this->createStub(Emitter::class)),
+            ),
+            $this->createStub(Emitter::class),
+        );
+
+        JobRunnerRegistry::set($jobRunner);
+
+        $this->assertSame($jobRunner, JobRunnerRegistry::get());
+    }
+
     public function testConfiguredJobRunnerIsUsed(): void
     {
         $emitter = $this->createMock(Emitter::class);
