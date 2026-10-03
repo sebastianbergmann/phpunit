@@ -11,6 +11,7 @@ namespace PHPUnit\Runner\Parallel;
 
 use function array_keys;
 use function file_get_contents;
+use function hrtime;
 use function is_file;
 use function ksort;
 use function sys_get_temp_dir;
@@ -216,6 +217,43 @@ final class PhptRunnerTest extends TestCase
         ];
 
         $collected = $this->execute($units, 2);
+
+        $this->assertSame([0], array_keys($collected));
+        $this->assertTrue($this->contains($collected[0], Passed::class));
+    }
+
+    public function testRunsAPhptTestWhoseSkipifSectionWritesMoreOutputThanAPipeHolds(): void
+    {
+        // The --INI-- section makes the --SKIPIF-- section run in a child
+        // process, which writes more than a pipe holds before it ends, and the
+        // runner only polls whether it has ended. The child's output is captured in a file, so it does not
+        // block on a full pipe; the deadline turns a child that does into a
+        // failure rather than a test run that never ends.
+        $runner = $this->runner(1, new ProcessBudget(1));
+
+        $collected = [];
+
+        $runner->begin(
+            [new PhptWorkUnit(0, __DIR__ . '/../../../_files/parallel-worker/worker-with-verbose-skipif.phpt')],
+            static function (int $index, EventCollection $events) use (&$collected): void
+            {
+                $collected[$index] = $events;
+            },
+        );
+
+        $deadline = hrtime(true) + 10000000000;
+
+        while (!$runner->isFinished() && hrtime(true) < $deadline) {
+            if (!$runner->tick()) {
+                usleep(1000);
+            }
+        }
+
+        if (!$runner->isFinished()) {
+            $runner->kill();
+
+            $this->fail('The PHPT test did not finish');
+        }
 
         $this->assertSame([0], array_keys($collected));
         $this->assertTrue($this->contains($collected[0], Passed::class));
