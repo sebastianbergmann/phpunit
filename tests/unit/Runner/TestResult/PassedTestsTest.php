@@ -53,6 +53,41 @@ final class PassedTestsTest extends TestCase
         $this->assertNull((new PassedTests)->returnValue(HookFixture::class . '::testOne'));
     }
 
+    public function testImportsTheTestClassesAndTestMethodsThatAnotherInstanceRecordedAsPassed(): void
+    {
+        $passedTests = new PassedTests;
+
+        $passedTests->testClassPassed(self::class);
+        $passedTests->testMethodPassed($this->testMethodOfThisTestClass('testImportsTheTestClassesAndTestMethodsThatAnotherInstanceRecordedAsPassed'), 'recorded');
+
+        $other = new PassedTests;
+
+        $other->testClassPassed(TestCase::class);
+        $other->testMethodPassed($this->testMethodOfThisTestClass('testReplacesThePassOfATestMethodWithTheImportedOne'), 'imported');
+
+        $passedTests->import($other);
+
+        $this->assertTrue($passedTests->hasTestClassPassed(self::class));
+        $this->assertTrue($passedTests->hasTestClassPassed(TestCase::class));
+        $this->assertSame('recorded', $passedTests->returnValue(self::class . '::testImportsTheTestClassesAndTestMethodsThatAnotherInstanceRecordedAsPassed'));
+        $this->assertSame('imported', $passedTests->returnValue(self::class . '::testReplacesThePassOfATestMethodWithTheImportedOne'));
+    }
+
+    public function testReplacesThePassOfATestMethodWithTheImportedOne(): void
+    {
+        $passedTests = new PassedTests;
+
+        $passedTests->testMethodPassed($this->testMethodOfThisTestClass('testReplacesThePassOfATestMethodWithTheImportedOne'), 'recorded');
+
+        $other = new PassedTests;
+
+        $other->testMethodPassed($this->testMethodOfThisTestClass('testReplacesThePassOfATestMethodWithTheImportedOne'), 'imported');
+
+        $passedTests->import($other);
+
+        $this->assertSame('imported', $passedTests->returnValue(self::class . '::testReplacesThePassOfATestMethodWithTheImportedOne'));
+    }
+
     private function testMethod(): TestMethod
     {
         return new TestMethod(
@@ -61,6 +96,22 @@ final class PassedTestsTest extends TestCase
             'HookFixture.php',
             1,
             TestDoxBuilder::fromClassNameAndMethodName(HookFixture::class, 'testOne'),
+            MetadataCollection::fromArray([]),
+            TestDataCollection::fromArray([]),
+        );
+    }
+
+    /**
+     * @param non-empty-string $methodName
+     */
+    private function testMethodOfThisTestClass(string $methodName): TestMethod
+    {
+        return new TestMethod(
+            self::class,
+            $methodName,
+            __FILE__,
+            1,
+            TestDoxBuilder::fromClassNameAndMethodName(self::class, $methodName),
             MetadataCollection::fromArray([]),
             TestDataCollection::fromArray([]),
         );
