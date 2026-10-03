@@ -37,4 +37,20 @@ final class ProcessBudgetTest extends TestCase
 
         $this->assertTrue($budget->acquire());
     }
+
+    public function testReportsWhetherASlotIsAvailableWithoutTakingIt(): void
+    {
+        $budget = new ProcessBudget(1);
+
+        $this->assertTrue($budget->hasAvailableSlot());
+        $this->assertTrue($budget->hasAvailableSlot());
+
+        $this->assertTrue($budget->acquire());
+
+        $this->assertFalse($budget->hasAvailableSlot());
+
+        $budget->release();
+
+        $this->assertTrue($budget->hasAvailableSlot());
+    }
 }
