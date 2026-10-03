@@ -101,6 +101,14 @@ final class ParallelTestRunner
     private ?Throwable $exceptionWhileInProcessUnitRan = null;
 
     /**
+     * The units that run in the main process, by suite index, until they are
+     * run (see runInProcess()).
+     *
+     * @var array<non-negative-int, TestClassWorkUnit>
+     */
+    private array $inProcessUnits = [];
+
+    /**
      * @throws RuntimeException
      */
     public function run(Configuration $configuration, TestRunHistory $testRunHistory, TestSuite $suite): void
@@ -111,11 +119,10 @@ final class ParallelTestRunner
             $suite,
             function () use ($configuration, $testRunHistory, $suite): void
             {
-                $chunks = $this->collectChunks($configuration, $suite);
-
-                if ($chunks !== []) {
-                    $this->execute($configuration, $testRunHistory, $suite, $chunks);
-                }
+                // The chunks are handed to execute() without a variable that
+                // would keep the units, and the tests they hold, referenced
+                // for the whole run (see execute()).
+                $this->execute($configuration, $testRunHistory, $suite, $this->collectChunks($configuration, $suite));
             },
         );
     }
@@ -181,12 +188,16 @@ final class ParallelTestRunner
      * finish instead of piling up behind a unit that the cost order would only
      * get to at the end of the chunk (see DispatchQueue).
      *
-     * @param non-empty-list<array{suite: TestSuite, units: list<WorkUnit>, phpt: list<PhptWorkUnit>, standalone: list<array{index: non-negative-int, test: Test}>}> $chunks
+     * @param list<array{suite: TestSuite, units: list<WorkUnit>, phpt: list<PhptWorkUnit>, standalone: list<array{index: non-negative-int, test: Test}>}> $chunks
      *
      * @throws WorkerException
      */
     private function execute(Configuration $configuration, TestRunHistory $testRunHistory, TestSuite $suite, array $chunks): void
     {
+        if ($chunks === []) {
+            return;
+        }
+
         $scheduler = new Scheduler($testRunHistory);
 
         $aggregator = new ResultAggregator(
@@ -262,12 +273,16 @@ final class ParallelTestRunner
                     // suite order. A unit whose class is attributed with
                     // #[DoNotRunInParallel] additionally runs alone: nothing
                     // else may be executing while it runs (see runChunk()).
+                    $index = $unit->index();
+
+                    $this->inProcessUnits[$index] = $unit;
+
                     $inProcess[] = [
-                        'index'     => $unit->index(),
+                        'index'     => $index,
                         'exclusive' => $mustNotRunInParallel,
-                        'runner'    => function () use ($unit): void
+                        'runner'    => function () use ($index): void
                         {
-                            $this->runInProcess($unit);
+                            $this->runInProcess($index);
                         },
                     ];
 
@@ -305,13 +320,36 @@ final class ParallelTestRunner
             }
 
             $runs[] = [
-                'suite'                        => $chunk['suite'],
+                'suite'                        => Event\TestSuite\TestSuiteBuilder::from($chunk['suite']),
                 'parallel'                     => $scheduler->schedule($parallel),
                 'phpt'                         => $scheduler->schedule($chunk['phpt']),
                 'inProcess'                    => $inProcess,
                 'suiteEnvelopeIsEmittedByUnit' => $this->suiteEnvelopeIsEmittedByUnit($chunk),
             ];
         }
+
+        // When the suite was partitioned into chunks, the chunks are the
+        // root suite's top-level test suites, and the root suite needs an
+        // envelope of its own around all of them. When it was not, the only
+        // chunk is the root suite itself, whose envelope is emitted by
+        // runChunk().
+        $rootSuiteValueObject = null;
+
+        if ($chunks[0]['suite'] !== $suite) {
+            $rootSuiteValueObject = Event\TestSuite\TestSuiteBuilder::from($suite);
+        }
+
+        // The run has taken what it needs from the test suite: the units hold
+        // the tests they run, and the value objects of the test suites hold
+        // what the events about their envelopes report. The tests are removed
+        // from the test suite, as TestSuite::run() takes them out of it in a
+        // sequential run, and the chunks are let go of, so that a test that
+        // runs in the main process is referenced only by the test suite that
+        // runs it, which lets go of each test as soon as it has run (see
+        // runInProcess()).
+        $suite->removeTests();
+
+        unset($chunks, $chunk, $unit, $testCases);
 
         // The pool and the PHPT runner share one budget of concurrently
         // executing units, so that a chunk that contains both test classes
@@ -356,17 +394,6 @@ final class ParallelTestRunner
                     return !$pool->hasExecutingUnits();
                 },
             );
-        }
-
-        // When the suite was partitioned into chunks, the chunks are the
-        // root suite's top-level test suites, and the root suite needs an
-        // envelope of its own around all of them. When it was not, the only
-        // chunk is the root suite itself, whose envelope is emitted by
-        // runChunk().
-        $rootSuiteValueObject = null;
-
-        if ($chunks[0]['suite'] !== $suite) {
-            $rootSuiteValueObject = Event\TestSuite\TestSuiteBuilder::from($suite);
         }
 
         if ($rootSuiteValueObject !== null) {
@@ -435,10 +462,8 @@ final class ParallelTestRunner
      * @param list<PhptWorkUnit>                                                              $phpt
      * @param list<array{index: non-negative-int, exclusive: bool, runner: callable(): void}> $inProcess
      */
-    private function runChunk(TestSuite $suite, array $parallel, array $phpt, array $inProcess, bool $suiteEnvelopeIsEmittedByUnits, ?WorkerPool $pool, ?PhptRunner $phptRunner, ResultAggregator $aggregator): bool
+    private function runChunk(Event\TestSuite\TestSuite $suiteValueObject, array $parallel, array $phpt, array $inProcess, bool $suiteEnvelopeIsEmittedByUnits, ?WorkerPool $pool, ?PhptRunner $phptRunner, ResultAggregator $aggregator): bool
     {
-        $suiteValueObject = Event\TestSuite\TestSuiteBuilder::from($suite);
-
         if (!$suiteEnvelopeIsEmittedByUnits) {
             Event\Facade::emitter()->testSuiteStarted($suiteValueObject);
         }
@@ -781,16 +806,37 @@ final class ParallelTestRunner
      * sequential test runner would: the class is reassembled into a test suite
      * and run, which preserves its shared fixtures and intra-class ordering and
      * lets its events reach the parent's output and result subsystem directly.
+     *
+     * The unit is let go of before the test suite runs, so that the test
+     * suite, which takes the tests out of itself before it runs them, holds
+     * the only reference to them: each test object is destructed as soon as
+     * it has run, as in a sequential run (see #5875).
+     *
+     * @param non-negative-int $index
      */
-    private function runInProcess(TestClassWorkUnit $unit): void
+    private function runInProcess(int $index): void
     {
+        $this->testSuiteForInProcessUnit($index)->run();
+    }
+
+    /**
+     * @param non-negative-int $index
+     */
+    private function testSuiteForInProcessUnit(int $index): TestSuite
+    {
+        assert(isset($this->inProcessUnits[$index]));
+
+        $unit = $this->inProcessUnits[$index];
+
+        unset($this->inProcessUnits[$index]);
+
         $suite = TestSuite::forTestClass($unit->className(), Event\Facade::emitter());
 
         foreach ($unit->tests() as $test) {
             $suite->addTest($test);
         }
 
-        $suite->run();
+        return $suite;
     }
 
     /**
