@@ -12,6 +12,7 @@ namespace PHPUnit\TextUI\XmlConfiguration;
 use PHPUnit\TextUI\Configuration\ExtensionBootstrapCollection;
 use PHPUnit\TextUI\Configuration\Php;
 use PHPUnit\TextUI\Configuration\Source;
+use PHPUnit\TextUI\Configuration\TestImpactAnalysis;
 use PHPUnit\TextUI\Configuration\TestSuiteCollection;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\CodeCoverage;
 use PHPUnit\TextUI\XmlConfiguration\Logging\Logging;
@@ -34,8 +35,9 @@ abstract readonly class Configuration
     private PHPUnit $phpunit;
     private TestSuiteCollection $testSuite;
     private PropertyBasedTesting $propertyBasedTesting;
+    private TestImpactAnalysis $testImpactAnalysis;
 
-    public function __construct(ExtensionBootstrapCollection $extensions, Source $source, CodeCoverage $codeCoverage, Groups $groups, Logging $logging, Php $php, PHPUnit $phpunit, TestSuiteCollection $testSuite, PropertyBasedTesting $propertyBasedTesting)
+    public function __construct(ExtensionBootstrapCollection $extensions, Source $source, CodeCoverage $codeCoverage, Groups $groups, Logging $logging, Php $php, PHPUnit $phpunit, TestSuiteCollection $testSuite, PropertyBasedTesting $propertyBasedTesting, TestImpactAnalysis $testImpactAnalysis)
     {
         $this->extensions   = $extensions;
         $this->source       = $source;
@@ -47,6 +49,7 @@ abstract readonly class Configuration
         $this->testSuite    = $testSuite;
 
         $this->propertyBasedTesting = $propertyBasedTesting;
+        $this->testImpactAnalysis   = $testImpactAnalysis;
     }
 
     public function extensions(): ExtensionBootstrapCollection
@@ -92,6 +95,11 @@ abstract readonly class Configuration
     public function propertyBasedTesting(): PropertyBasedTesting
     {
         return $this->propertyBasedTesting;
+    }
+
+    public function testImpactAnalysis(): TestImpactAnalysis
+    {
+        return $this->testImpactAnalysis;
     }
 
     /**

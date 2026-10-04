@@ -213,7 +213,7 @@ final class TestImpactDataFile
      * anything about it and must not cause what is known about it to be
      * forgotten.
      *
-     * @param list<non-empty-string> $sourceFiles the files that are subject to code coverage analysis
+     * @param list<non-empty-string> $sourceFiles the files that are subject to code coverage analysis, and the files that are watched
      *
      * @throws Exception
      */
@@ -230,7 +230,7 @@ final class TestImpactDataFile
      * is dropped is everything the run did not record, and nothing tells a
      * test that is gone apart from a test that was merely not run.
      *
-     * @param list<non-empty-string> $sourceFiles the files that are subject to code coverage analysis
+     * @param list<non-empty-string> $sourceFiles the files that are subject to code coverage analysis, and the files that are watched
      *
      * @throws Exception
      */
@@ -240,7 +240,7 @@ final class TestImpactDataFile
     }
 
     /**
-     * @param list<non-empty-string> $sourceFiles the files that are subject to code coverage analysis
+     * @param list<non-empty-string> $sourceFiles the files that are subject to code coverage analysis, and the files that are watched
      *
      * @throws Exception
      */
@@ -414,7 +414,8 @@ final class TestImpactDataFile
          * The source files are recorded whether or not a test executed them:
          * a change to a source file no test executed is a change nothing is
          * known about, and knowing what such a file was is what makes it
-         * possible to notice that it changed at all.
+         * possible to notice that it changed at all. The same goes for the
+         * files that are watched.
          *
          * What such a file was is what a change to it is noticed against, and
          * only a test run that ran every test there is may say that it is what
