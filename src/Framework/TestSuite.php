@@ -637,9 +637,14 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
      */
     protected function runTests(array $tests, Event\Emitter $emitter): void
     {
-        $tests = array_reverse($tests);
+        // Unless zend.exception_ignore_args is enabled, the stack trace of an
+        // exception holds the current value of each parameter; clearing $tests
+        // keeps the tests that have not run yet out of such stack traces, which
+        // would otherwise make the garbage collector traverse them (see #7029)
+        $queue = array_reverse($tests);
+        $tests = [];
 
-        while (($test = array_pop($tests)) !== null) {
+        while (($test = array_pop($queue)) !== null) {
             if (TestResultFacade::shouldStop()) {
                 $emitter->testRunnerExecutionAborted();
 
