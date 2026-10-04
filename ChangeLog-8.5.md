@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 8.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [8.5.56] - 2026-MM-DD
+
+### Changed
+
+* The Software Bill of Materials (SBOM) embedded in the PHAR now uses CycloneDX 1.7 and includes the NTIA minimum elements (supplier/author, unique identifier, dependency relationships, author of SBOM data, timestamp)
+
 ## [8.5.55] - 2026-09-23
 
 ### Changed
@@ -399,6 +405,7 @@ All notable changes of the PHPUnit 8.5 release series are documented in this fil
 * [#3967](https://github.com/sebastianbergmann/phpunit/issues/3967): Cannot double interface that extends interface that extends `\Throwable`
 * [#3968](https://github.com/sebastianbergmann/phpunit/pull/3968): Test class run in a separate PHP process are passing when `exit` called inside
 
+[8.5.56]: https://github.com/sebastianbergmann/phpunit/compare/8.5.55...8.5
 [8.5.55]: https://github.com/sebastianbergmann/phpunit/compare/8.5.54...8.5.55
 [8.5.54]: https://github.com/sebastianbergmann/phpunit/compare/8.5.53...8.5.54
 [8.5.53]: https://github.com/sebastianbergmann/phpunit/compare/8.5.52...8.5.53
