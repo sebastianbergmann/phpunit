@@ -220,7 +220,45 @@ final class RecordingTest extends TestCase
 
         $this->assertStringContainsString(
             '/src/Bar.php was not there',
-            (string) $recording->changeNothingIsKnownAbout(new PathHasher, ['/src/Foo.php', '/src/Bar.php']),
+            (string) $recording->changeNothingIsKnownAbout(new PathHasher, ['/src/Foo.php', '/src/Bar.php'], []),
+        );
+    }
+
+    public function testKnowsThatAWatchedFileThatWasNotRecordedIsAChangeNothingIsKnownAbout(): void
+    {
+        $recording = Recording::from(['/src/Foo.php'], [[0, 'a-hash']], ['FooTest::testOne' => [0]], [], RecordingTime::fromUnixTimestamp(1700000000), []);
+
+        $this->assertSame(
+            '/config/app.php was not there, or was not watched, when what is known was recorded',
+            $recording->changeNothingIsKnownAbout(new PathHasher, ['/src/Foo.php'], ['/config/app.php']),
+        );
+    }
+
+    public function testKnowsThatAChangeToAWatchedFileNoTestDependsOnIsAChangeNothingIsKnownAbout(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $covered   = $this->writeFile($directory, 'Covered.php', 'first');
+        $watched   = $this->writeFile($directory, 'app.php', 'first');
+
+        $recording = Recording::from(
+            [$covered, $watched],
+            [[0, $this->hashOf($covered)]],
+            ['FooTest::testOne' => [0]],
+            [
+                0 => $this->hashOf($covered),
+                1 => $this->hashOf($watched),
+            ],
+            RecordingTime::fromUnixTimestamp(1700000000),
+            [],
+        );
+
+        $this->assertNull($recording->changeNothingIsKnownAbout(new PathHasher, [$covered], [$watched]));
+
+        $this->writeFile($directory, 'app.php', 'second');
+
+        $this->assertStringContainsString(
+            'app.php changed and no test is recorded as depending on it',
+            (string) $recording->changeNothingIsKnownAbout(new PathHasher, [$covered], [$watched]),
         );
     }
 
@@ -242,13 +280,13 @@ final class RecordingTest extends TestCase
             [],
         );
 
-        $this->assertNull($recording->changeNothingIsKnownAbout(new PathHasher, [$covered, $untested]));
+        $this->assertNull($recording->changeNothingIsKnownAbout(new PathHasher, [$covered, $untested], []));
 
         $this->writeFile($directory, 'Untested.php', 'second');
 
         $this->assertStringContainsString(
             'Untested.php changed and no test is recorded as depending on it',
-            (string) $recording->changeNothingIsKnownAbout(new PathHasher, [$covered, $untested]),
+            (string) $recording->changeNothingIsKnownAbout(new PathHasher, [$covered, $untested], []),
         );
     }
 
@@ -318,7 +356,7 @@ final class RecordingTest extends TestCase
 
         $this->writeFile($directory, 'Bootstrapped.php', 'second');
 
-        $this->assertNull($recording->changeNothingIsKnownAbout(new PathHasher, [$bootstrapped]));
+        $this->assertNull($recording->changeNothingIsKnownAbout(new PathHasher, [$bootstrapped], []));
     }
 
     public function testKnowsWhenItWasRecorded(): void
