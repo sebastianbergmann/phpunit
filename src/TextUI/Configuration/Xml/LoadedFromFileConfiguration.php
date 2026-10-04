@@ -12,6 +12,7 @@ namespace PHPUnit\TextUI\XmlConfiguration;
 use PHPUnit\TextUI\Configuration\ExtensionBootstrapCollection;
 use PHPUnit\TextUI\Configuration\Php;
 use PHPUnit\TextUI\Configuration\Source;
+use PHPUnit\TextUI\Configuration\TestImpactAnalysis;
 use PHPUnit\TextUI\Configuration\TestSuiteCollection;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\CodeCoverage;
 use PHPUnit\TextUI\XmlConfiguration\Logging\Logging;
@@ -34,7 +35,7 @@ final readonly class LoadedFromFileConfiguration extends Configuration
     /**
      * @param non-empty-string $filename
      */
-    public function __construct(string $filename, ValidationResult $validationResult, ExtensionBootstrapCollection $extensions, Source $source, CodeCoverage $codeCoverage, Groups $groups, Logging $logging, Php $php, PHPUnit $phpunit, TestSuiteCollection $testSuite)
+    public function __construct(string $filename, ValidationResult $validationResult, ExtensionBootstrapCollection $extensions, Source $source, CodeCoverage $codeCoverage, Groups $groups, Logging $logging, Php $php, PHPUnit $phpunit, TestSuiteCollection $testSuite, TestImpactAnalysis $testImpactAnalysis)
     {
         $this->filename         = $filename;
         $this->validationResult = $validationResult;
@@ -48,6 +49,7 @@ final readonly class LoadedFromFileConfiguration extends Configuration
             $php,
             $phpunit,
             $testSuite,
+            $testImpactAnalysis,
         );
     }
 

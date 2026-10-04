@@ -89,6 +89,7 @@ final class Registry
                     TestSuite::class,
                     VersionComparisonOperator::class,
                     Source::class,
+                    TestImpactAnalysis::class,
                 ],
             ],
         );

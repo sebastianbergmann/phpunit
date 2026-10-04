@@ -66,6 +66,28 @@
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
+    <xs:complexType name="testImpactAnalysisType">
+        <xs:all>
+            <xs:element name="watch" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:choice minOccurs="0" maxOccurs="unbounded">
+                            <xs:element name="directory" type="watchedDirectoryType"/>
+                            <xs:element name="file" type="xs:anyURI"/>
+                        </xs:choice>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="watchedDirectoryType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="prefix" default=""/>
+                <xs:attribute type="xs:string" name="suffix" default=".php"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
     <xs:complexType name="coverageType">
         <xs:all>
             <xs:element name="report" minOccurs="0" maxOccurs="1">
@@ -262,6 +284,7 @@
             <xs:element ref="testSuiteFacet" minOccurs="0"/>
             <xs:element name="groups" type="groupsType" minOccurs="0"/>
             <xs:element name="source" type="sourceType" minOccurs="0"/>
+            <xs:element name="testImpactAnalysis" type="testImpactAnalysisType" minOccurs="0"/>
             <xs:element name="coverage" type="coverageType" minOccurs="0"/>
             <xs:element name="logging" type="loggingType" minOccurs="0"/>
             <xs:element name="extensions" type="extensionsType" minOccurs="0"/>

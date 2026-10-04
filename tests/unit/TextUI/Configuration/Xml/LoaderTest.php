@@ -282,6 +282,34 @@ final class LoaderTest extends TestCase
         );
     }
 
+    public function testTestImpactAnalysisConfigurationIsReadCorrectly(): void
+    {
+        $testImpactAnalysis = $this->configuration('configuration_test_impact_analysis.xml')->testImpactAnalysis();
+
+        $directories = $testImpactAnalysis->watchedDirectories()->asArray();
+
+        $this->assertCount(2, $directories);
+        $this->assertSame(TEST_FILES_PATH . 'config', $directories[0]->path());
+        $this->assertSame('', $directories[0]->prefix());
+        $this->assertSame('.php', $directories[0]->suffix());
+        $this->assertSame('/path/to/config', $directories[1]->path());
+        $this->assertSame('services', $directories[1]->prefix());
+        $this->assertSame('.yaml', $directories[1]->suffix());
+
+        $files = $testImpactAnalysis->watchedFiles()->asArray();
+
+        $this->assertCount(1, $files);
+        $this->assertSame(TEST_FILES_PATH . '.env.testing', $files[0]->path());
+    }
+
+    public function testNothingIsWatchedForTestImpactAnalysisWhenNothingIsConfigured(): void
+    {
+        $testImpactAnalysis = $this->configuration('configuration_deprecation_filters.xml')->testImpactAnalysis();
+
+        $this->assertCount(0, $testImpactAnalysis->watchedDirectories());
+        $this->assertCount(0, $testImpactAnalysis->watchedFiles());
+    }
+
     public function testDeprecationFiltersAreReadCorrectlyAndEmptyClassNamesAreIgnored(): void
     {
         $source = $this->configuration('configuration_deprecation_filters.xml')->source();

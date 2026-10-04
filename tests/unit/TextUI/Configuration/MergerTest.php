@@ -356,6 +356,15 @@ final class MergerTest extends TestCase
         $this->assertCount(2, $mergedConfig->php()->includePaths());
     }
 
+    public function testFilesThatAreWatchedForTestImpactAnalysisAreCarriedOverFromXmlConfiguration(): void
+    {
+        $fromFile = new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration_test_impact_analysis.xml');
+
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge(new Builder($this->createStub(Emitter::class))->fromParameters([]), $fromFile);
+
+        $this->assertSame($fromFile->testImpactAnalysis(), $mergedConfig->testImpactAnalysis());
+    }
+
     public function testColorsCanBeEnabledFromXmlConfiguration(): void
     {
         $fromFile = new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration.colors.true.xml');

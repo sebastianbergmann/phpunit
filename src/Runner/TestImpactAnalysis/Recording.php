@@ -301,15 +301,18 @@ final readonly class Recording
      *
      * A source file that is not among the files that were recorded is a file
      * that was not there, or was not first-party code, when the recording was
-     * made. A source file that changed and that no test refers to is a file
-     * that nothing is known about: that no test executed it does not mean that
-     * no test is affected by it, only that executing the tests did not show it.
+     * made, and a watched file that is not among them was not there, or was
+     * not watched. A source file or a watched file that changed and that no
+     * test refers to is a file that nothing is known about: that no test
+     * executed it does not mean that no test is affected by it, only that
+     * executing the tests did not show it.
      *
-     * @param list<non-empty-string> $sourceFiles the files that are subject to code coverage analysis
+     * @param list<non-empty-string> $sourceFiles  the files that are subject to code coverage analysis
+     * @param list<non-empty-string> $watchedFiles the files a change to is noticed even though they are not subject to code coverage analysis
      *
      * @return ?non-empty-string the reason why nothing is known about it
      */
-    public function changeNothingIsKnownAbout(PathHasher $hasher, array $sourceFiles): ?string
+    public function changeNothingIsKnownAbout(PathHasher $hasher, array $sourceFiles, array $watchedFiles): ?string
     {
         $recorded = array_flip($this->files);
 
@@ -318,6 +321,15 @@ final readonly class Recording
                 return sprintf(
                     '%s was not there, or was not first-party code, when what is known was recorded',
                     $sourceFile,
+                );
+            }
+        }
+
+        foreach ($watchedFiles as $watchedFile) {
+            if (!isset($recorded[$watchedFile])) {
+                return sprintf(
+                    '%s was not there, or was not watched, when what is known was recorded',
+                    $watchedFile,
                 );
             }
         }

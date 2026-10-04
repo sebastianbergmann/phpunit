@@ -90,6 +90,7 @@ use PHPUnit\Runner\TestImpactAnalysis\Selector;
 use PHPUnit\Runner\TestImpactAnalysis\TestImpactData;
 use PHPUnit\Runner\TestImpactAnalysis\TestImpactDataFile;
 use PHPUnit\Runner\TestImpactAnalysis\TestImpactDataFromCoverageTargets;
+use PHPUnit\Runner\TestImpactAnalysis\WatchedFileFinder;
 use PHPUnit\Runner\TestIndex\DefaultTestFileSkipper;
 use PHPUnit\Runner\TestIndex\GroupPruner;
 use PHPUnit\Runner\TestIndex\NameFilterPruner;
@@ -978,6 +979,7 @@ final readonly class Application
         return $this->selector($configuration, $testRunHistory, 'run only the tests that are affected by what changed')->select(
             $testSuite->collect(),
             $this->sourceFiles(),
+            $this->watchedFiles($configuration),
             $this->changedPathsOrNull($cliConfiguration),
         );
     }
@@ -995,6 +997,7 @@ final readonly class Application
         return $this->selector($configuration, $testRunHistory, 'explain which tests are affected by what changed')->explain(
             $testSuite->collect(),
             $this->sourceFiles(),
+            $this->watchedFiles($configuration),
             $this->changedPathsOrNull($cliConfiguration),
         );
     }
@@ -1366,6 +1369,17 @@ final readonly class Application
     }
 
     /**
+     * @return list<non-empty-string>
+     */
+    private function watchedFiles(Configuration $configuration): array
+    {
+        return (new WatchedFileFinder)->find(
+            $configuration->testSuite(),
+            $configuration->testImpactAnalysis(),
+        );
+    }
+
+    /**
      * What is recorded names files relative to the directory of the
      * configuration file, which is part of the project it configures the
      * tests of, and relative to the working directory when there is none.
@@ -1434,13 +1448,13 @@ final readonly class Application
                 $testImpactDataFile->persistAndPrune(
                     $testImpactData,
                     $provenance,
-                    $this->sourceFiles(),
+                    [...$this->sourceFiles(), ...$this->watchedFiles($configuration)],
                 );
             } else {
                 $testImpactDataFile->persist(
                     $testImpactData,
                     $provenance,
-                    $this->sourceFiles(),
+                    [...$this->sourceFiles(), ...$this->watchedFiles($configuration)],
                 );
             }
             // @codeCoverageIgnoreStart
