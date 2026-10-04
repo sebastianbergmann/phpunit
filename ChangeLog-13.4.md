@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 13.4 release series are documented in this fi
 
 ## [13.4.1] - 2026-MM-DD
 
+### Changed
+
+* The Software Bill of Materials (SBOM) embedded in the PHAR now uses CycloneDX 1.7 and includes the NTIA minimum elements (supplier/author, unique identifier, dependency relationships, author of SBOM data, timestamp)
+
 ### Fixed
 
 * `setUpBeforeClass()` and `tearDownAfterClass()` were run twice for a test class that is the only test class in a test suite of the XML configuration file that has the name of that test class
