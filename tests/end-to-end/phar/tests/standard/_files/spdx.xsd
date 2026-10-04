@@ -1,0 +1,4144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified"
+           targetNamespace="http://cyclonedx.org/schema/spdx"
+           version="1.0-3.29.0">
+
+    <xs:simpleType name="licenseId">
+        <xs:restriction base="xs:string">
+            <!-- Licenses -->
+            <xs:enumeration value="0BSD">
+                <xs:annotation>
+                    <xs:documentation>BSD Zero Clause License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3D-Slicer-1.0">
+                <xs:annotation>
+                    <xs:documentation>3D Slicer License v1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="AAL">
+                <xs:annotation>
+                    <xs:documentation>Attribution Assurance License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Abstyles">
+                <xs:annotation>
+                    <xs:documentation>Abstyles License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="AdaCore-doc">
+                <xs:annotation>
+                    <xs:documentation>AdaCore Doc License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Adobe-2006">
+                <xs:annotation>
+                    <xs:documentation>Adobe Systems Incorporated Source Code License Agreement</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Adobe-Display-PostScript">
+                <xs:annotation>
+                    <xs:documentation>Adobe Display PostScript License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Adobe-Glyph">
+                <xs:annotation>
+                    <xs:documentation>Adobe Glyph List License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Adobe-Utopia">
+                <xs:annotation>
+                    <xs:documentation>Adobe Utopia Font License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ADSL">
+                <xs:annotation>
+                    <xs:documentation>Amazon Digital Services License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Advanced-Cryptics-Dictionary">
+                <xs:annotation>
+                    <xs:documentation>Advanced Cryptics Dictionary License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="AFL-1.1">
+                <xs:annotation>
+                    <xs:documentation>Academic Free License v1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="AFL-1.2">
+                <xs:annotation>
+                    <xs:documentation>Academic Free License v1.2</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="AFL-2.0">
+                <xs:annotation>
+                    <xs:documentation>Academic Free License v2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="AFL-2.1">
+                <xs:annotation>
+                    <xs:documentation>Academic Free License v2.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="AFL-3.0">
+                <xs:annotation>
+                    <xs:documentation>Academic Free License v3.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Afmparse">
+                <xs:annotation>
+                    <xs:documentation>Afmparse License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="AGPL-1.0">
+                <xs:annotation>
+                    <xs:documentation>Affero General Public License v1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="AGPL-1.0-only">
+                <xs:annotation>
+                    <xs:documentation>Affero General Public License v1.0 only</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="AGPL-1.0-or-later">
+                <xs:annotation>
+                    <xs:documentation>Affero General Public License v1.0 or later</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="AGPL-3.0">
+                <xs:annotation>
+                    <xs:documentation>GNU Affero General Public License v3.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="AGPL-3.0-only">
+                <xs:annotation>
+                    <xs:documentation>GNU Affero General Public License v3.0 only</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="AGPL-3.0-or-later">
+                <xs:annotation>
+                    <xs:documentation>GNU Affero General Public License v3.0 or later</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Aladdin">
+                <xs:annotation>
+                    <xs:documentation>Aladdin Free Public License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ALGLIB-Documentation">
+                <xs:annotation>
+                    <xs:documentation>ALGLIB Documentation License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="AMD-newlib">
+                <xs:annotation>
+                    <xs:documentation>AMD newlib License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="AMDPLPA">
+                <xs:annotation>
+                    <xs:documentation>AMD&apos;s plpa_map.c License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="AML">
+                <xs:annotation>
+                    <xs:documentation>Apple MIT License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="AML-glslang">
+                <xs:annotation>
+                    <xs:documentation>AML glslang variant License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="AMPAS">
+                <xs:annotation>
+                    <xs:documentation>Academy of Motion Picture Arts and Sciences BSD</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ANTLR-PD">
+                <xs:annotation>
+                    <xs:documentation>ANTLR Software Rights Notice</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ANTLR-PD-fallback">
+                <xs:annotation>
+                    <xs:documentation>ANTLR Software Rights Notice with license fallback</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="any-OSI">
+                <xs:annotation>
+                    <xs:documentation>Any OSI License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="any-OSI-perl-modules">
+                <xs:annotation>
+                    <xs:documentation>Any OSI License - Perl Modules</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Apache-1.0">
+                <xs:annotation>
+                    <xs:documentation>Apache License 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Apache-1.1">
+                <xs:annotation>
+                    <xs:documentation>Apache License 1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Apache-2.0">
+                <xs:annotation>
+                    <xs:documentation>Apache License 2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="APAFML">
+                <xs:annotation>
+                    <xs:documentation>Adobe Postscript AFM License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="APL-1.0">
+                <xs:annotation>
+                    <xs:documentation>Adaptive Public License 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="App-s2p">
+                <xs:annotation>
+                    <xs:documentation>App::s2p License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="APSL-1.0">
+                <xs:annotation>
+                    <xs:documentation>Apple Public Source License 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="APSL-1.1">
+                <xs:annotation>
+                    <xs:documentation>Apple Public Source License 1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="APSL-1.2">
+                <xs:annotation>
+                    <xs:documentation>Apple Public Source License 1.2</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="APSL-2.0">
+                <xs:annotation>
+                    <xs:documentation>Apple Public Source License 2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Arphic-1999">
+                <xs:annotation>
+                    <xs:documentation>Arphic Public License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Artistic-1.0">
+                <xs:annotation>
+                    <xs:documentation>Artistic License 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Artistic-1.0-cl8">
+                <xs:annotation>
+                    <xs:documentation>Artistic License 1.0 w/clause 8</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Artistic-1.0-Perl">
+                <xs:annotation>
+                    <xs:documentation>Artistic License 1.0 (Perl)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Artistic-2.0">
+                <xs:annotation>
+                    <xs:documentation>Artistic License 2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Artistic-dist">
+                <xs:annotation>
+                    <xs:documentation>Artistic License 1.0 (dist)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Aspell-RU">
+                <xs:annotation>
+                    <xs:documentation>Aspell Russian License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ASWF-Digital-Assets-1.0">
+                <xs:annotation>
+                    <xs:documentation>ASWF Digital Assets License version 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ASWF-Digital-Assets-1.1">
+                <xs:annotation>
+                    <xs:documentation>ASWF Digital Assets License 1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="atc-game">
+                <xs:annotation>
+                    <xs:documentation>atc Game License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Baekmuk">
+                <xs:annotation>
+                    <xs:documentation>Baekmuk License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Bahyph">
+                <xs:annotation>
+                    <xs:documentation>Bahyph License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Barr">
+                <xs:annotation>
+                    <xs:documentation>Barr License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="bcrypt-Solar-Designer">
+                <xs:annotation>
+                    <xs:documentation>bcrypt Solar Designer License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Beerware">
+                <xs:annotation>
+                    <xs:documentation>Beerware License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Bitstream-Charter">
+                <xs:annotation>
+                    <xs:documentation>Bitstream Charter Font License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Bitstream-Vera">
+                <xs:annotation>
+                    <xs:documentation>Bitstream Vera Font License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BitTorrent-1.0">
+                <xs:annotation>
+                    <xs:documentation>BitTorrent Open Source License v1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BitTorrent-1.1">
+                <xs:annotation>
+                    <xs:documentation>BitTorrent Open Source License v1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="blessing">
+                <xs:annotation>
+                    <xs:documentation>SQLite Blessing</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BlueOak-1.0.0">
+                <xs:annotation>
+                    <xs:documentation>Blue Oak Model License 1.0.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Boehm-GC">
+                <xs:annotation>
+                    <xs:documentation>Boehm-Demers-Weiser GC License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Boehm-GC-without-fee">
+                <xs:annotation>
+                    <xs:documentation>Boehm-Demers-Weiser GC License (without fee)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BOLA-1.1">
+                <xs:annotation>
+                    <xs:documentation>Buena Onda License Agreement v1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Borceux">
+                <xs:annotation>
+                    <xs:documentation>Borceux license</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Brian-Gladman-2-Clause">
+                <xs:annotation>
+                    <xs:documentation>Brian Gladman 2-Clause License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Brian-Gladman-3-Clause">
+                <xs:annotation>
+                    <xs:documentation>Brian Gladman 3-Clause License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Brian-Gladman-3-Clause-no-conversion">
+                <xs:annotation>
+                    <xs:documentation>Brian Gladman 3-Clause License (no conversion clause)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-1-Clause">
+                <xs:annotation>
+                    <xs:documentation>BSD 1-Clause License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-2-Clause">
+                <xs:annotation>
+                    <xs:documentation>BSD 2-Clause &quot;Simplified&quot; License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-2-Clause-Darwin">
+                <xs:annotation>
+                    <xs:documentation>BSD 2-Clause - Ian Darwin variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-2-Clause-first-lines">
+                <xs:annotation>
+                    <xs:documentation>BSD 2-Clause - first lines requirement</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-2-Clause-FreeBSD">
+                <xs:annotation>
+                    <xs:documentation>BSD 2-Clause FreeBSD License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-2-Clause-NetBSD">
+                <xs:annotation>
+                    <xs:documentation>BSD 2-Clause NetBSD License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-2-Clause-Patent">
+                <xs:annotation>
+                    <xs:documentation>BSD-2-Clause Plus Patent License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-2-Clause-pkgconf-disclaimer">
+                <xs:annotation>
+                    <xs:documentation>BSD 2-Clause pkgconf disclaimer variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-2-Clause-pos-unchanged">
+                <xs:annotation>
+                    <xs:documentation>BSD 2-Clause - position unchanged variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-2-Clause-Views">
+                <xs:annotation>
+                    <xs:documentation>BSD 2-Clause with views sentence</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-3-Clause">
+                <xs:annotation>
+                    <xs:documentation>BSD 3-Clause &quot;New&quot; or &quot;Revised&quot; License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-3-Clause-acpica">
+                <xs:annotation>
+                    <xs:documentation>BSD 3-Clause acpica variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-3-Clause-Attribution">
+                <xs:annotation>
+                    <xs:documentation>BSD with attribution</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-3-Clause-Clear">
+                <xs:annotation>
+                    <xs:documentation>BSD 3-Clause Clear License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-3-Clause-flex">
+                <xs:annotation>
+                    <xs:documentation>BSD 3-Clause Flex variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-3-Clause-HP">
+                <xs:annotation>
+                    <xs:documentation>Hewlett-Packard BSD variant license</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-3-Clause-LBNL">
+                <xs:annotation>
+                    <xs:documentation>Lawrence Berkeley National Labs BSD variant license</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-3-Clause-Modification">
+                <xs:annotation>
+                    <xs:documentation>BSD 3-Clause Modification</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-3-Clause-No-Military-License">
+                <xs:annotation>
+                    <xs:documentation>BSD 3-Clause No Military License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-3-Clause-No-Nuclear-License">
+                <xs:annotation>
+                    <xs:documentation>BSD 3-Clause No Nuclear License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-3-Clause-No-Nuclear-License-2014">
+                <xs:annotation>
+                    <xs:documentation>BSD 3-Clause No Nuclear License 2014</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-3-Clause-No-Nuclear-Warranty">
+                <xs:annotation>
+                    <xs:documentation>BSD 3-Clause No Nuclear Warranty</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-3-Clause-Open-MPI">
+                <xs:annotation>
+                    <xs:documentation>BSD 3-Clause Open MPI variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-3-Clause-OpenWebUI">
+                <xs:annotation>
+                    <xs:documentation>BSD 3-Clause - OpenWebUI variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-3-Clause-Sun">
+                <xs:annotation>
+                    <xs:documentation>BSD 3-Clause Sun Microsystems</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-3-Clause-Tso">
+                <xs:annotation>
+                    <xs:documentation>BSD 3-Clause Tso variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-4-Clause">
+                <xs:annotation>
+                    <xs:documentation>BSD 4-Clause &quot;Original&quot; or &quot;Old&quot; License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-4-Clause-Shortened">
+                <xs:annotation>
+                    <xs:documentation>BSD 4 Clause Shortened</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-4-Clause-UC">
+                <xs:annotation>
+                    <xs:documentation>BSD-4-Clause (University of California-Specific)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-4.3RENO">
+                <xs:annotation>
+                    <xs:documentation>BSD 4.3 RENO License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-4.3TAHOE">
+                <xs:annotation>
+                    <xs:documentation>BSD 4.3 TAHOE License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-Advertising-Acknowledgement">
+                <xs:annotation>
+                    <xs:documentation>BSD Advertising Acknowledgement License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-ask-to-endorse">
+                <xs:annotation>
+                    <xs:documentation>BSD - ask to endorse</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-Attribution-HPND-disclaimer">
+                <xs:annotation>
+                    <xs:documentation>BSD with Attribution and HPND disclaimer</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-Inferno-Nettverk">
+                <xs:annotation>
+                    <xs:documentation>BSD-Inferno-Nettverk</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-Mark-Modifications">
+                <xs:annotation>
+                    <xs:documentation>BSD Mark Modifications License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-Protection">
+                <xs:annotation>
+                    <xs:documentation>BSD Protection License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-Source-alt-GPL">
+                <xs:annotation>
+                    <xs:documentation>BSD Source Code Attribution - GPL alternative</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-Source-beginning-file">
+                <xs:annotation>
+                    <xs:documentation>BSD Source Code Attribution - beginning of file variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-Source-Code">
+                <xs:annotation>
+                    <xs:documentation>BSD Source Code Attribution</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-Source-Code-no-disclaimer">
+                <xs:annotation>
+                    <xs:documentation>BSD Source Code Attribution - no disclaimer</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-Systemics">
+                <xs:annotation>
+                    <xs:documentation>Systemics BSD variant license</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSD-Systemics-W3Works">
+                <xs:annotation>
+                    <xs:documentation>Systemics W3Works BSD variant license</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BSL-1.0">
+                <xs:annotation>
+                    <xs:documentation>Boost Software License 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Buddy">
+                <xs:annotation>
+                    <xs:documentation>Buddy License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Bugroff">
+                <xs:annotation>
+                    <xs:documentation>Bugroff License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BUSL-1.1">
+                <xs:annotation>
+                    <xs:documentation>Business Source License 1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="bzip2-1.0.5">
+                <xs:annotation>
+                    <xs:documentation>bzip2 and libbzip2 License v1.0.5</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="bzip2-1.0.6">
+                <xs:annotation>
+                    <xs:documentation>bzip2 and libbzip2 License v1.0.6</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="C-UDA-1.0">
+                <xs:annotation>
+                    <xs:documentation>Computational Use of Data Agreement v1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CAL-1.0">
+                <xs:annotation>
+                    <xs:documentation>Cryptographic Autonomy License 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CAL-1.0-Combined-Work-Exception">
+                <xs:annotation>
+                    <xs:documentation>Cryptographic Autonomy License 1.0 (Combined Work Exception)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Caldera">
+                <xs:annotation>
+                    <xs:documentation>Caldera License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Caldera-no-preamble">
+                <xs:annotation>
+                    <xs:documentation>Caldera License (without preamble)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CAPEC-tou">
+                <xs:annotation>
+                    <xs:documentation>Common Attack    Pattern Enumeration and Classification License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Catharon">
+                <xs:annotation>
+                    <xs:documentation>Catharon License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CATOSL-1.1">
+                <xs:annotation>
+                    <xs:documentation>Computer Associates Trusted Open Source License 1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-1.0">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution 1.0 Generic</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-2.0">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution 2.0 Generic</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-2.5">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution 2.5 Generic</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-2.5-AU">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution 2.5 Australia</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-3.0">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution 3.0 Unported</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-3.0-AT">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution 3.0 Austria</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-3.0-AU">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution 3.0 Australia</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-3.0-DE">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution 3.0 Germany</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-3.0-IGO">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution 3.0 IGO</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-3.0-NL">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution 3.0 Netherlands</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-3.0-US">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution 3.0 United States</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-4.0">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution 4.0 International</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-NC-1.0">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution Non Commercial 1.0 Generic</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-NC-2.0">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution Non Commercial 2.0 Generic</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-NC-2.5">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution Non Commercial 2.5 Generic</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-NC-3.0">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution Non Commercial 3.0 Unported</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-NC-3.0-DE">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution Non Commercial 3.0 Germany</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-NC-3.0-IGO">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution Non Commercial 3.0 IGO</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-NC-4.0">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution Non Commercial 4.0 International</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-NC-ND-1.0">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution Non Commercial No Derivatives 1.0 Generic</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-NC-ND-2.0">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution Non Commercial No Derivatives 2.0 Generic</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-NC-ND-2.5">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution Non Commercial No Derivatives 2.5 Generic</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-NC-ND-3.0">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution Non Commercial No Derivatives 3.0 Unported</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-NC-ND-3.0-DE">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution Non Commercial No Derivatives 3.0 Germany</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-NC-ND-3.0-IGO">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution Non Commercial No Derivatives 3.0 IGO</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-NC-ND-4.0">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution Non Commercial No Derivatives 4.0 International</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-NC-SA-1.0">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution Non Commercial Share Alike 1.0 Generic</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-NC-SA-2.0">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution Non Commercial Share Alike 2.0 Generic</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-NC-SA-2.0-DE">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution Non Commercial Share Alike 2.0 Germany</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-NC-SA-2.0-FR">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution-NonCommercial-ShareAlike 2.0 France</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-NC-SA-2.0-UK">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution Non Commercial Share Alike 2.0 England and Wales</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-NC-SA-2.5">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution Non Commercial Share Alike 2.5 Generic</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-NC-SA-3.0">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution Non Commercial Share Alike 3.0 Unported</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-NC-SA-3.0-DE">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution Non Commercial Share Alike 3.0 Germany</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-NC-SA-3.0-IGO">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution Non Commercial Share Alike 3.0 IGO</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-NC-SA-4.0">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution Non Commercial Share Alike 4.0 International</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-ND-1.0">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution No Derivatives 1.0 Generic</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-ND-2.0">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution No Derivatives 2.0 Generic</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-ND-2.5">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution No Derivatives 2.5 Generic</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-ND-3.0">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution No Derivatives 3.0 Unported</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-ND-3.0-DE">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution No Derivatives 3.0 Germany</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-ND-4.0">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution No Derivatives 4.0 International</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-SA-1.0">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution Share Alike 1.0 Generic</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-SA-2.0">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution Share Alike 2.0 Generic</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-SA-2.0-UK">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution Share Alike 2.0 England and Wales</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-SA-2.1-JP">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution Share Alike 2.1 Japan</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-SA-2.5">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution Share Alike 2.5 Generic</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-SA-3.0">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution Share Alike 3.0 Unported</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-SA-3.0-AT">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution Share Alike 3.0 Austria</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-SA-3.0-DE">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution Share Alike 3.0 Germany</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-SA-3.0-IGO">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution-ShareAlike 3.0 IGO</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-BY-SA-4.0">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Attribution Share Alike 4.0 International</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-PDDC">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Public Domain Dedication and Certification</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-PDM-1.0">
+                <xs:annotation>
+                    <xs:documentation>Creative    Commons Public Domain Mark 1.0 Universal</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC-SA-1.0">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Share Alike 1.0 Generic</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CC0-1.0">
+                <xs:annotation>
+                    <xs:documentation>Creative Commons Zero v1.0 Universal</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CDDL-1.0">
+                <xs:annotation>
+                    <xs:documentation>Common Development and Distribution License 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CDDL-1.1">
+                <xs:annotation>
+                    <xs:documentation>Common Development and Distribution License 1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CDL-1.0">
+                <xs:annotation>
+                    <xs:documentation>Common Documentation License 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CDLA-Permissive-1.0">
+                <xs:annotation>
+                    <xs:documentation>Community Data License Agreement Permissive 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CDLA-Permissive-2.0">
+                <xs:annotation>
+                    <xs:documentation>Community Data License Agreement Permissive 2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CDLA-Sharing-1.0">
+                <xs:annotation>
+                    <xs:documentation>Community Data License Agreement Sharing 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CECILL-1.0">
+                <xs:annotation>
+                    <xs:documentation>CeCILL Free Software License Agreement v1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CECILL-1.1">
+                <xs:annotation>
+                    <xs:documentation>CeCILL Free Software License Agreement v1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CECILL-2.0">
+                <xs:annotation>
+                    <xs:documentation>CeCILL Free Software License Agreement v2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CECILL-2.1">
+                <xs:annotation>
+                    <xs:documentation>CeCILL Free Software License Agreement v2.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CECILL-B">
+                <xs:annotation>
+                    <xs:documentation>CeCILL-B Free Software License Agreement</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CECILL-C">
+                <xs:annotation>
+                    <xs:documentation>CeCILL-C Free Software License Agreement</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CERN-OHL-1.1">
+                <xs:annotation>
+                    <xs:documentation>CERN Open Hardware Licence v1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CERN-OHL-1.2">
+                <xs:annotation>
+                    <xs:documentation>CERN Open Hardware Licence v1.2</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CERN-OHL-P-2.0">
+                <xs:annotation>
+                    <xs:documentation>CERN Open Hardware Licence Version 2 - Permissive</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CERN-OHL-S-2.0">
+                <xs:annotation>
+                    <xs:documentation>CERN Open Hardware Licence Version 2 - Strongly Reciprocal</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CERN-OHL-W-2.0">
+                <xs:annotation>
+                    <xs:documentation>CERN Open Hardware Licence Version 2 - Weakly Reciprocal</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CFITSIO">
+                <xs:annotation>
+                    <xs:documentation>CFITSIO License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="check-cvs">
+                <xs:annotation>
+                    <xs:documentation>check-cvs License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="checkmk">
+                <xs:annotation>
+                    <xs:documentation>Checkmk License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ClArtistic">
+                <xs:annotation>
+                    <xs:documentation>Clarified Artistic License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Clips">
+                <xs:annotation>
+                    <xs:documentation>Clips License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CMU-Mach">
+                <xs:annotation>
+                    <xs:documentation>CMU Mach License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CMU-Mach-nodoc">
+                <xs:annotation>
+                    <xs:documentation>CMU    Mach - no notices-in-documentation variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CNRI-Jython">
+                <xs:annotation>
+                    <xs:documentation>CNRI Jython License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CNRI-Python">
+                <xs:annotation>
+                    <xs:documentation>CNRI Python License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CNRI-Python-GPL-Compatible">
+                <xs:annotation>
+                    <xs:documentation>CNRI Python Open Source GPL Compatible License Agreement</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="COIL-1.0">
+                <xs:annotation>
+                    <xs:documentation>Copyfree Open Innovation License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Community-Spec-1.0">
+                <xs:annotation>
+                    <xs:documentation>Community Specification License 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Condor-1.1">
+                <xs:annotation>
+                    <xs:documentation>Condor Public License v1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="copyleft-next-0.3.0">
+                <xs:annotation>
+                    <xs:documentation>copyleft-next 0.3.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="copyleft-next-0.3.1">
+                <xs:annotation>
+                    <xs:documentation>copyleft-next 0.3.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Cornell-Lossless-JPEG">
+                <xs:annotation>
+                    <xs:documentation>Cornell Lossless JPEG License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CPAL-1.0">
+                <xs:annotation>
+                    <xs:documentation>Common Public Attribution License 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CPL-1.0">
+                <xs:annotation>
+                    <xs:documentation>Common Public License 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CPOL-1.02">
+                <xs:annotation>
+                    <xs:documentation>Code Project Open License 1.02</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Cronyx">
+                <xs:annotation>
+                    <xs:documentation>Cronyx License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Crossword">
+                <xs:annotation>
+                    <xs:documentation>Crossword License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CryptoSwift">
+                <xs:annotation>
+                    <xs:documentation>CryptoSwift License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CrystalStacker">
+                <xs:annotation>
+                    <xs:documentation>CrystalStacker License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CUA-OPL-1.0">
+                <xs:annotation>
+                    <xs:documentation>CUA Office Public License v1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Cube">
+                <xs:annotation>
+                    <xs:documentation>Cube License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="curl">
+                <xs:annotation>
+                    <xs:documentation>curl License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="cve-tou">
+                <xs:annotation>
+                    <xs:documentation>Common Vulnerability Enumeration ToU License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="D-FSL-1.0">
+                <xs:annotation>
+                    <xs:documentation>Deutsche Freie Software Lizenz</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="DEC-3-Clause">
+                <xs:annotation>
+                    <xs:documentation>DEC 3-Clause License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="diffmark">
+                <xs:annotation>
+                    <xs:documentation>diffmark license</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="DL-DE-BY-2.0">
+                <xs:annotation>
+                    <xs:documentation>Data licence Germany – attribution – version 2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="DL-DE-ZERO-2.0">
+                <xs:annotation>
+                    <xs:documentation>Data licence Germany – zero – version 2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="DOC">
+                <xs:annotation>
+                    <xs:documentation>DOC License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="DocBook-DTD">
+                <xs:annotation>
+                    <xs:documentation>DocBook DTD License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="DocBook-Schema">
+                <xs:annotation>
+                    <xs:documentation>DocBook Schema License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="DocBook-Stylesheet">
+                <xs:annotation>
+                    <xs:documentation>DocBook Stylesheet License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="DocBook-XML">
+                <xs:annotation>
+                    <xs:documentation>DocBook XML License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Dotseqn">
+                <xs:annotation>
+                    <xs:documentation>Dotseqn License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="DRL-1.0">
+                <xs:annotation>
+                    <xs:documentation>Detection Rule License 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="DRL-1.1">
+                <xs:annotation>
+                    <xs:documentation>Detection Rule License 1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="DSDP">
+                <xs:annotation>
+                    <xs:documentation>DSDP License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="dtoa">
+                <xs:annotation>
+                    <xs:documentation>David M. Gay dtoa License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="dvipdfm">
+                <xs:annotation>
+                    <xs:documentation>dvipdfm License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ECL-1.0">
+                <xs:annotation>
+                    <xs:documentation>Educational Community License v1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ECL-2.0">
+                <xs:annotation>
+                    <xs:documentation>Educational Community License v2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="eCos-2.0">
+                <xs:annotation>
+                    <xs:documentation>eCos license version 2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="EFL-1.0">
+                <xs:annotation>
+                    <xs:documentation>Eiffel Forum License v1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="EFL-2.0">
+                <xs:annotation>
+                    <xs:documentation>Eiffel Forum License v2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="eGenix">
+                <xs:annotation>
+                    <xs:documentation>eGenix.com Public License 1.1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Elastic-2.0">
+                <xs:annotation>
+                    <xs:documentation>Elastic License 2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Entessa">
+                <xs:annotation>
+                    <xs:documentation>Entessa Public License v1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="EPICS">
+                <xs:annotation>
+                    <xs:documentation>EPICS Open License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="EPL-1.0">
+                <xs:annotation>
+                    <xs:documentation>Eclipse Public License 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="EPL-2.0">
+                <xs:annotation>
+                    <xs:documentation>Eclipse Public License 2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ErlPL-1.1">
+                <xs:annotation>
+                    <xs:documentation>Erlang Public License v1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ESA-PL-permissive-2.4">
+                <xs:annotation>
+                    <xs:documentation>European Space Agency Public License – v2.4 – Permissive (Type 3)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ESA-PL-strong-copyleft-2.4">
+                <xs:annotation>
+                    <xs:documentation>European Space Agency Public License (ESA-PL) - V2.4 - Strong Copyleft (Type 1)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ESA-PL-weak-copyleft-2.4">
+                <xs:annotation>
+                    <xs:documentation>European Space Agency Public License – v2.4 – Weak Copyleft (Type 2)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="etalab-2.0">
+                <xs:annotation>
+                    <xs:documentation>Etalab Open License 2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="EUDatagrid">
+                <xs:annotation>
+                    <xs:documentation>EU DataGrid Software License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="EUPL-1.0">
+                <xs:annotation>
+                    <xs:documentation>European Union Public License 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="EUPL-1.1">
+                <xs:annotation>
+                    <xs:documentation>European Union Public License 1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="EUPL-1.2">
+                <xs:annotation>
+                    <xs:documentation>European Union Public License 1.2</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Eurosym">
+                <xs:annotation>
+                    <xs:documentation>Eurosym License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Fair">
+                <xs:annotation>
+                    <xs:documentation>Fair License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="FBM">
+                <xs:annotation>
+                    <xs:documentation>Fuzzy Bitmap License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="FDK-AAC">
+                <xs:annotation>
+                    <xs:documentation>Fraunhofer FDK AAC Codec Library</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="FDK-MPEG-H">
+                <xs:annotation>
+                    <xs:documentation>Fraunhofer FDK MPEG-H Software</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Ferguson-Twofish">
+                <xs:annotation>
+                    <xs:documentation>Ferguson Twofish License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Frameworx-1.0">
+                <xs:annotation>
+                    <xs:documentation>Frameworx Open License 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="FreeBSD-DOC">
+                <xs:annotation>
+                    <xs:documentation>FreeBSD Documentation License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="FreeImage">
+                <xs:annotation>
+                    <xs:documentation>FreeImage Public License v1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="FSFAP">
+                <xs:annotation>
+                    <xs:documentation>FSF All Permissive License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="FSFAP-no-warranty-disclaimer">
+                <xs:annotation>
+                    <xs:documentation>FSF All Permissive License (without Warranty)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="FSFUL">
+                <xs:annotation>
+                    <xs:documentation>FSF Unlimited License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="FSFULLR">
+                <xs:annotation>
+                    <xs:documentation>FSF Unlimited License (with License Retention)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="FSFULLRSD">
+                <xs:annotation>
+                    <xs:documentation>FSF Unlimited License (with License Retention and Short Disclaimer)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="FSFULLRWD">
+                <xs:annotation>
+                    <xs:documentation>FSF Unlimited License (With License Retention and Warranty Disclaimer)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="FSL-1.1-ALv2">
+                <xs:annotation>
+                    <xs:documentation>Functional Source License, Version 1.1, ALv2 Future License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="FSL-1.1-MIT">
+                <xs:annotation>
+                    <xs:documentation>Functional Source License, Version 1.1, MIT Future License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="FTL">
+                <xs:annotation>
+                    <xs:documentation>Freetype Project License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Furuseth">
+                <xs:annotation>
+                    <xs:documentation>Furuseth License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="fwlw">
+                <xs:annotation>
+                    <xs:documentation>fwlw License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Game-Programming-Gems">
+                <xs:annotation>
+                    <xs:documentation>Game Programming Gems License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GCR-docs">
+                <xs:annotation>
+                    <xs:documentation>Gnome GCR Documentation License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GD">
+                <xs:annotation>
+                    <xs:documentation>GD License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="generic-xts">
+                <xs:annotation>
+                    <xs:documentation>Generic XTS License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GFDL-1.1">
+                <xs:annotation>
+                    <xs:documentation>GNU Free Documentation License v1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GFDL-1.1-invariants-only">
+                <xs:annotation>
+                    <xs:documentation>GNU Free Documentation License v1.1 only - invariants</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GFDL-1.1-invariants-or-later">
+                <xs:annotation>
+                    <xs:documentation>GNU Free Documentation License v1.1 or later - invariants</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GFDL-1.1-no-invariants-only">
+                <xs:annotation>
+                    <xs:documentation>GNU Free Documentation License v1.1 only - no invariants</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GFDL-1.1-no-invariants-or-later">
+                <xs:annotation>
+                    <xs:documentation>GNU Free Documentation License v1.1 or later - no invariants</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GFDL-1.1-only">
+                <xs:annotation>
+                    <xs:documentation>GNU Free Documentation License v1.1 only</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GFDL-1.1-or-later">
+                <xs:annotation>
+                    <xs:documentation>GNU Free Documentation License v1.1 or later</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GFDL-1.2">
+                <xs:annotation>
+                    <xs:documentation>GNU Free Documentation License v1.2</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GFDL-1.2-invariants-only">
+                <xs:annotation>
+                    <xs:documentation>GNU Free Documentation License v1.2 only - invariants</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GFDL-1.2-invariants-or-later">
+                <xs:annotation>
+                    <xs:documentation>GNU Free Documentation License v1.2 or later - invariants</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GFDL-1.2-no-invariants-only">
+                <xs:annotation>
+                    <xs:documentation>GNU Free Documentation License v1.2 only - no invariants</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GFDL-1.2-no-invariants-or-later">
+                <xs:annotation>
+                    <xs:documentation>GNU Free Documentation License v1.2 or later - no invariants</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GFDL-1.2-only">
+                <xs:annotation>
+                    <xs:documentation>GNU Free Documentation License v1.2 only</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GFDL-1.2-or-later">
+                <xs:annotation>
+                    <xs:documentation>GNU Free Documentation License v1.2 or later</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GFDL-1.3">
+                <xs:annotation>
+                    <xs:documentation>GNU Free Documentation License v1.3</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GFDL-1.3-invariants-only">
+                <xs:annotation>
+                    <xs:documentation>GNU Free Documentation License v1.3 only - invariants</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GFDL-1.3-invariants-or-later">
+                <xs:annotation>
+                    <xs:documentation>GNU Free Documentation License v1.3 or later - invariants</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GFDL-1.3-no-invariants-only">
+                <xs:annotation>
+                    <xs:documentation>GNU Free Documentation License v1.3 only - no invariants</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GFDL-1.3-no-invariants-or-later">
+                <xs:annotation>
+                    <xs:documentation>GNU Free Documentation License v1.3 or later - no invariants</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GFDL-1.3-only">
+                <xs:annotation>
+                    <xs:documentation>GNU Free Documentation License v1.3 only</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GFDL-1.3-or-later">
+                <xs:annotation>
+                    <xs:documentation>GNU Free Documentation License v1.3 or later</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Giftware">
+                <xs:annotation>
+                    <xs:documentation>Giftware License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GL2PS">
+                <xs:annotation>
+                    <xs:documentation>GL2PS License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Glide">
+                <xs:annotation>
+                    <xs:documentation>3dfx Glide License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Glulxe">
+                <xs:annotation>
+                    <xs:documentation>Glulxe License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GLWTPL">
+                <xs:annotation>
+                    <xs:documentation>Good Luck With That Public License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="gnuplot">
+                <xs:annotation>
+                    <xs:documentation>gnuplot License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GPL-1.0">
+                <xs:annotation>
+                    <xs:documentation>GNU General Public License v1.0 only</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GPL-1.0+">
+                <xs:annotation>
+                    <xs:documentation>GNU General Public License v1.0 or later</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GPL-1.0-only">
+                <xs:annotation>
+                    <xs:documentation>GNU General Public License v1.0 only</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GPL-1.0-or-later">
+                <xs:annotation>
+                    <xs:documentation>GNU General Public License v1.0 or later</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GPL-2.0">
+                <xs:annotation>
+                    <xs:documentation>GNU General Public License v2.0 only</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GPL-2.0+">
+                <xs:annotation>
+                    <xs:documentation>GNU General Public License v2.0 or later</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GPL-2.0-only">
+                <xs:annotation>
+                    <xs:documentation>GNU General Public License v2.0 only</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GPL-2.0-or-later">
+                <xs:annotation>
+                    <xs:documentation>GNU General Public License v2.0 or later</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GPL-2.0-with-autoconf-exception">
+                <xs:annotation>
+                    <xs:documentation>GNU General Public License v2.0 w/Autoconf exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GPL-2.0-with-bison-exception">
+                <xs:annotation>
+                    <xs:documentation>GNU General Public License v2.0 w/Bison exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GPL-2.0-with-classpath-exception">
+                <xs:annotation>
+                    <xs:documentation>GNU General Public License v2.0 w/Classpath exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GPL-2.0-with-font-exception">
+                <xs:annotation>
+                    <xs:documentation>GNU General Public License v2.0 w/Font exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GPL-2.0-with-GCC-exception">
+                <xs:annotation>
+                    <xs:documentation>GNU General Public License v2.0 w/GCC Runtime Library exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GPL-3.0">
+                <xs:annotation>
+                    <xs:documentation>GNU General Public License v3.0 only</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GPL-3.0+">
+                <xs:annotation>
+                    <xs:documentation>GNU General Public License v3.0 or later</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GPL-3.0-only">
+                <xs:annotation>
+                    <xs:documentation>GNU General Public License v3.0 only</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GPL-3.0-or-later">
+                <xs:annotation>
+                    <xs:documentation>GNU General Public License v3.0 or later</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GPL-3.0-with-autoconf-exception">
+                <xs:annotation>
+                    <xs:documentation>GNU General Public License v3.0 w/Autoconf exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GPL-3.0-with-GCC-exception">
+                <xs:annotation>
+                    <xs:documentation>GNU General Public License v3.0 w/GCC Runtime Library exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Graphics-Gems">
+                <xs:annotation>
+                    <xs:documentation>Graphics Gems License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="gSOAP-1.3b">
+                <xs:annotation>
+                    <xs:documentation>gSOAP Public License v1.3b</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="gtkbook">
+                <xs:annotation>
+                    <xs:documentation>gtkbook License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Gutmann">
+                <xs:annotation>
+                    <xs:documentation>Gutmann License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="HaskellReport">
+                <xs:annotation>
+                    <xs:documentation>Haskell Language Report License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="HDF5">
+                <xs:annotation>
+                    <xs:documentation>HDF5 License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="hdparm">
+                <xs:annotation>
+                    <xs:documentation>hdparm License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="HIDAPI">
+                <xs:annotation>
+                    <xs:documentation>HIDAPI License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Hippocratic-2.1">
+                <xs:annotation>
+                    <xs:documentation>Hippocratic License 2.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Hippocratic-3.0-core">
+                <xs:annotation>
+                    <xs:documentation>Hippocratic License 3.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="HP-1986">
+                <xs:annotation>
+                    <xs:documentation>Hewlett-Packard 1986 License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="HP-1989">
+                <xs:annotation>
+                    <xs:documentation>Hewlett-Packard 1989 License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="HPND">
+                <xs:annotation>
+                    <xs:documentation>Historical Permission Notice and Disclaimer</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="HPND-DEC">
+                <xs:annotation>
+                    <xs:documentation>Historical Permission Notice and Disclaimer - DEC variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="HPND-doc">
+                <xs:annotation>
+                    <xs:documentation>Historical Permission Notice and Disclaimer - documentation variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="HPND-doc-sell">
+                <xs:annotation>
+                    <xs:documentation>Historical Permission Notice and Disclaimer - documentation sell variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="HPND-export-US">
+                <xs:annotation>
+                    <xs:documentation>HPND with US Government export control warning</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="HPND-export-US-acknowledgement">
+                <xs:annotation>
+                    <xs:documentation>HPND with US Government export control warning and acknowledgment</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="HPND-export-US-modify">
+                <xs:annotation>
+                    <xs:documentation>HPND with US Government export control warning and modification rqmt</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="HPND-export2-US">
+                <xs:annotation>
+                    <xs:documentation>HPND with US Government export control and 2 disclaimers</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="HPND-Fenneberg-Livingston">
+                <xs:annotation>
+                    <xs:documentation>Historical Permission Notice and Disclaimer - Fenneberg-Livingston variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="HPND-INRIA-IMAG">
+                <xs:annotation>
+                    <xs:documentation>Historical Permission Notice and Disclaimer    - INRIA-IMAG variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="HPND-Intel">
+                <xs:annotation>
+                    <xs:documentation>Historical Permission Notice and Disclaimer - Intel variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="HPND-Kevlin-Henney">
+                <xs:annotation>
+                    <xs:documentation>Historical Permission Notice and Disclaimer - Kevlin Henney variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="HPND-Markus-Kuhn">
+                <xs:annotation>
+                    <xs:documentation>Historical Permission Notice and Disclaimer - Markus Kuhn variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="HPND-merchantability-variant">
+                <xs:annotation>
+                    <xs:documentation>Historical Permission Notice and Disclaimer - merchantability variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="HPND-MIT-disclaimer">
+                <xs:annotation>
+                    <xs:documentation>Historical Permission Notice and Disclaimer with MIT disclaimer</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="HPND-Netrek">
+                <xs:annotation>
+                    <xs:documentation>Historical Permission Notice and Disclaimer - Netrek variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="HPND-Pbmplus">
+                <xs:annotation>
+                    <xs:documentation>Historical Permission Notice and Disclaimer - Pbmplus variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="HPND-sell-MIT-disclaimer-xserver">
+                <xs:annotation>
+                    <xs:documentation>Historical Permission Notice and Disclaimer - sell xserver variant with MIT disclaimer</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="HPND-sell-regexpr">
+                <xs:annotation>
+                    <xs:documentation>Historical Permission Notice and Disclaimer - sell regexpr variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="HPND-sell-variant">
+                <xs:annotation>
+                    <xs:documentation>Historical Permission Notice and Disclaimer - sell variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="HPND-sell-variant-critical-systems">
+                <xs:annotation>
+                    <xs:documentation>HPND - sell variant with safety critical systems clause</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="HPND-sell-variant-MIT-disclaimer">
+                <xs:annotation>
+                    <xs:documentation>HPND sell variant with MIT disclaimer</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="HPND-sell-variant-MIT-disclaimer-rev">
+                <xs:annotation>
+                    <xs:documentation>HPND sell variant with MIT disclaimer - reverse</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="HPND-SMC">
+                <xs:annotation>
+                    <xs:documentation>Historical Permission Notice and Disclaimer - SMC variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="HPND-UC">
+                <xs:annotation>
+                    <xs:documentation>Historical Permission Notice and Disclaimer - University of California variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="HPND-UC-export-US">
+                <xs:annotation>
+                    <xs:documentation>Historical Permission Notice and Disclaimer - University of California, US export warning</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="HTMLTIDY">
+                <xs:annotation>
+                    <xs:documentation>HTML Tidy License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="hyphen-bulgarian">
+                <xs:annotation>
+                    <xs:documentation>hyphen-bulgarian License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="IBM-pibs">
+                <xs:annotation>
+                    <xs:documentation>IBM PowerPC Initialization and Boot Software</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ICU">
+                <xs:annotation>
+                    <xs:documentation>ICU License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="IEC-Code-Components-EULA">
+                <xs:annotation>
+                    <xs:documentation>IEC    Code Components End-user licence agreement</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="IJG">
+                <xs:annotation>
+                    <xs:documentation>Independent JPEG Group License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="IJG-short">
+                <xs:annotation>
+                    <xs:documentation>Independent JPEG Group License - short</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ImageMagick">
+                <xs:annotation>
+                    <xs:documentation>ImageMagick License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="iMatix">
+                <xs:annotation>
+                    <xs:documentation>iMatix Standard Function Library Agreement</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Imlib2">
+                <xs:annotation>
+                    <xs:documentation>Imlib2 License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Info-ZIP">
+                <xs:annotation>
+                    <xs:documentation>Info-ZIP License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Informatica">
+                <xs:annotation>
+                    <xs:documentation>Informatica License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Inner-Net-2.0">
+                <xs:annotation>
+                    <xs:documentation>Inner Net License v2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="InnoSetup">
+                <xs:annotation>
+                    <xs:documentation>Inno Setup License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Intel">
+                <xs:annotation>
+                    <xs:documentation>Intel Open Source License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Intel-ACPI">
+                <xs:annotation>
+                    <xs:documentation>Intel ACPI Software License Agreement</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Interbase-1.0">
+                <xs:annotation>
+                    <xs:documentation>Interbase Public License v1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="IPA">
+                <xs:annotation>
+                    <xs:documentation>IPA Font License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="IPL-1.0">
+                <xs:annotation>
+                    <xs:documentation>IBM Public License v1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ISC">
+                <xs:annotation>
+                    <xs:documentation>ISC License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ISC-Veillard">
+                <xs:annotation>
+                    <xs:documentation>ISC Veillard variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ISO-permission">
+                <xs:annotation>
+                    <xs:documentation>ISO permission notice</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Jam">
+                <xs:annotation>
+                    <xs:documentation>Jam License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="JasPer-2.0">
+                <xs:annotation>
+                    <xs:documentation>JasPer License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="jove">
+                <xs:annotation>
+                    <xs:documentation>Jove License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="JPL-image">
+                <xs:annotation>
+                    <xs:documentation>JPL Image Use Policy</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="JPNIC">
+                <xs:annotation>
+                    <xs:documentation>Japan Network Information Center License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="JSON">
+                <xs:annotation>
+                    <xs:documentation>JSON License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Kastrup">
+                <xs:annotation>
+                    <xs:documentation>Kastrup License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Kazlib">
+                <xs:annotation>
+                    <xs:documentation>Kazlib License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Knuth-CTAN">
+                <xs:annotation>
+                    <xs:documentation>Knuth CTAN License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LAL-1.2">
+                <xs:annotation>
+                    <xs:documentation>Licence Art Libre 1.2</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LAL-1.3">
+                <xs:annotation>
+                    <xs:documentation>Licence Art Libre 1.3</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Latex2e">
+                <xs:annotation>
+                    <xs:documentation>Latex2e License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Latex2e-translated-notice">
+                <xs:annotation>
+                    <xs:documentation>Latex2e with translated notice permission</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Leptonica">
+                <xs:annotation>
+                    <xs:documentation>Leptonica License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LGPL-2.0">
+                <xs:annotation>
+                    <xs:documentation>GNU Library General Public License v2 only</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LGPL-2.0+">
+                <xs:annotation>
+                    <xs:documentation>GNU Library General Public License v2 or later</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LGPL-2.0-only">
+                <xs:annotation>
+                    <xs:documentation>GNU Library General Public License v2 only</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LGPL-2.0-or-later">
+                <xs:annotation>
+                    <xs:documentation>GNU Library General Public License v2 or later</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LGPL-2.1">
+                <xs:annotation>
+                    <xs:documentation>GNU Lesser General Public License v2.1 only</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LGPL-2.1+">
+                <xs:annotation>
+                    <xs:documentation>GNU Lesser General Public License v2.1 or later</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LGPL-2.1-only">
+                <xs:annotation>
+                    <xs:documentation>GNU Lesser General Public License v2.1 only</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LGPL-2.1-or-later">
+                <xs:annotation>
+                    <xs:documentation>GNU Lesser General Public License v2.1 or later</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LGPL-3.0">
+                <xs:annotation>
+                    <xs:documentation>GNU Lesser General Public License v3.0 only</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LGPL-3.0+">
+                <xs:annotation>
+                    <xs:documentation>GNU Lesser General Public License v3.0 or later</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LGPL-3.0-only">
+                <xs:annotation>
+                    <xs:documentation>GNU Lesser General Public License v3.0 only</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LGPL-3.0-or-later">
+                <xs:annotation>
+                    <xs:documentation>GNU Lesser General Public License v3.0 or later</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LGPLLR">
+                <xs:annotation>
+                    <xs:documentation>Lesser General Public License For Linguistic Resources</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Libpng">
+                <xs:annotation>
+                    <xs:documentation>libpng License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="libpng-1.6.35">
+                <xs:annotation>
+                    <xs:documentation>PNG Reference Library License v1 (for libpng 0.5 through 1.6.35)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="libpng-2.0">
+                <xs:annotation>
+                    <xs:documentation>PNG Reference Library version 2</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="libselinux-1.0">
+                <xs:annotation>
+                    <xs:documentation>libselinux public domain notice</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="libtiff">
+                <xs:annotation>
+                    <xs:documentation>libtiff License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="libutil-David-Nugent">
+                <xs:annotation>
+                    <xs:documentation>libutil David Nugent License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LiLiQ-P-1.1">
+                <xs:annotation>
+                    <xs:documentation>Licence Libre du Québec – Permissive version 1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LiLiQ-R-1.1">
+                <xs:annotation>
+                    <xs:documentation>Licence Libre du Québec – Réciprocité version 1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LiLiQ-Rplus-1.1">
+                <xs:annotation>
+                    <xs:documentation>Licence Libre du Québec – Réciprocité forte version 1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Linux-man-pages-1-para">
+                <xs:annotation>
+                    <xs:documentation>Linux man-pages - 1 paragraph</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Linux-man-pages-copyleft">
+                <xs:annotation>
+                    <xs:documentation>Linux man-pages Copyleft</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Linux-man-pages-copyleft-2-para">
+                <xs:annotation>
+                    <xs:documentation>Linux man-pages Copyleft - 2 paragraphs</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Linux-man-pages-copyleft-var">
+                <xs:annotation>
+                    <xs:documentation>Linux man-pages Copyleft Variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Linux-OpenIB">
+                <xs:annotation>
+                    <xs:documentation>Linux Kernel Variant of OpenIB.org license</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LOOP">
+                <xs:annotation>
+                    <xs:documentation>Common Lisp LOOP License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LPD-document">
+                <xs:annotation>
+                    <xs:documentation>LPD Documentation License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LPL-1.0">
+                <xs:annotation>
+                    <xs:documentation>Lucent Public License Version 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LPL-1.02">
+                <xs:annotation>
+                    <xs:documentation>Lucent Public License v1.02</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LPPL-1.0">
+                <xs:annotation>
+                    <xs:documentation>LaTeX Project Public License v1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LPPL-1.1">
+                <xs:annotation>
+                    <xs:documentation>LaTeX Project Public License v1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LPPL-1.2">
+                <xs:annotation>
+                    <xs:documentation>LaTeX Project Public License v1.2</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LPPL-1.3a">
+                <xs:annotation>
+                    <xs:documentation>LaTeX Project Public License v1.3a</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LPPL-1.3c">
+                <xs:annotation>
+                    <xs:documentation>LaTeX Project Public License v1.3c</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="lsof">
+                <xs:annotation>
+                    <xs:documentation>lsof License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Lucida-Bitmap-Fonts">
+                <xs:annotation>
+                    <xs:documentation>Lucida Bitmap Fonts License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LZMA-SDK-9.11-to-9.20">
+                <xs:annotation>
+                    <xs:documentation>LZMA SDK License (versions 9.11 to 9.20)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LZMA-SDK-9.22">
+                <xs:annotation>
+                    <xs:documentation>LZMA SDK License (versions 9.22 and beyond)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Mackerras-3-Clause">
+                <xs:annotation>
+                    <xs:documentation>Mackerras 3-Clause License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Mackerras-3-Clause-acknowledgment">
+                <xs:annotation>
+                    <xs:documentation>Mackerras 3-Clause - acknowledgment variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="magaz">
+                <xs:annotation>
+                    <xs:documentation>magaz License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="mailprio">
+                <xs:annotation>
+                    <xs:documentation>mailprio License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="MakeIndex">
+                <xs:annotation>
+                    <xs:documentation>MakeIndex License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="man2html">
+                <xs:annotation>
+                    <xs:documentation>man2html License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Martin-Birgmeier">
+                <xs:annotation>
+                    <xs:documentation>Martin Birgmeier License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="McPhee-slideshow">
+                <xs:annotation>
+                    <xs:documentation>McPhee Slideshow License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="metamail">
+                <xs:annotation>
+                    <xs:documentation>metamail License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Minpack">
+                <xs:annotation>
+                    <xs:documentation>Minpack License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="MIPS">
+                <xs:annotation>
+                    <xs:documentation>MIPS License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="MirOS">
+                <xs:annotation>
+                    <xs:documentation>The MirOS Licence</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="MIT">
+                <xs:annotation>
+                    <xs:documentation>MIT License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="MIT-0">
+                <xs:annotation>
+                    <xs:documentation>MIT No Attribution</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="MIT-advertising">
+                <xs:annotation>
+                    <xs:documentation>Enlightenment License (e16)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="MIT-Click">
+                <xs:annotation>
+                    <xs:documentation>MIT Click License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="MIT-CMU">
+                <xs:annotation>
+                    <xs:documentation>CMU License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="MIT-enna">
+                <xs:annotation>
+                    <xs:documentation>enna License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="MIT-feh">
+                <xs:annotation>
+                    <xs:documentation>feh License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="MIT-Festival">
+                <xs:annotation>
+                    <xs:documentation>MIT Festival Variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="MIT-Khronos-old">
+                <xs:annotation>
+                    <xs:documentation>MIT Khronos - old variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="MIT-Modern-Variant">
+                <xs:annotation>
+                    <xs:documentation>MIT License Modern Variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="MIT-open-group">
+                <xs:annotation>
+                    <xs:documentation>MIT Open Group variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="MIT-STK">
+                <xs:annotation>
+                    <xs:documentation>MIT-STK License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="MIT-testregex">
+                <xs:annotation>
+                    <xs:documentation>MIT testregex Variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="MIT-Wu">
+                <xs:annotation>
+                    <xs:documentation>MIT Tom Wu Variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="MITNFA">
+                <xs:annotation>
+                    <xs:documentation>MIT +no-false-attribs license</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="MMIXware">
+                <xs:annotation>
+                    <xs:documentation>MMIXware License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="MMPL-1.0.1">
+                <xs:annotation>
+                    <xs:documentation>Minecraft Mod Public License v1.0.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Motosoto">
+                <xs:annotation>
+                    <xs:documentation>Motosoto License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="MPEG-SSG">
+                <xs:annotation>
+                    <xs:documentation>MPEG Software Simulation</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="mpi-permissive">
+                <xs:annotation>
+                    <xs:documentation>mpi Permissive License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="mpich2">
+                <xs:annotation>
+                    <xs:documentation>mpich2 License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="MPL-1.0">
+                <xs:annotation>
+                    <xs:documentation>Mozilla Public License 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="MPL-1.1">
+                <xs:annotation>
+                    <xs:documentation>Mozilla Public License 1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="MPL-2.0">
+                <xs:annotation>
+                    <xs:documentation>Mozilla Public License 2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="MPL-2.0-no-copyleft-exception">
+                <xs:annotation>
+                    <xs:documentation>Mozilla Public License 2.0 (no copyleft exception)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="mplus">
+                <xs:annotation>
+                    <xs:documentation>mplus Font License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="MS-LPL">
+                <xs:annotation>
+                    <xs:documentation>Microsoft Limited Public License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="MS-PL">
+                <xs:annotation>
+                    <xs:documentation>Microsoft Public License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="MS-RL">
+                <xs:annotation>
+                    <xs:documentation>Microsoft Reciprocal License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="MTLL">
+                <xs:annotation>
+                    <xs:documentation>Matrix Template Library License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="MulanPSL-1.0">
+                <xs:annotation>
+                    <xs:documentation>Mulan Permissive Software License, Version 1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="MulanPSL-2.0">
+                <xs:annotation>
+                    <xs:documentation>Mulan Permissive Software License, Version 2</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Multics">
+                <xs:annotation>
+                    <xs:documentation>Multics License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Mup">
+                <xs:annotation>
+                    <xs:documentation>Mup License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="MVT-1.1">
+                <xs:annotation>
+                    <xs:documentation>MVT License 1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NAIST-2003">
+                <xs:annotation>
+                    <xs:documentation>Nara Institute of Science and Technology License (2003)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NASA-1.3">
+                <xs:annotation>
+                    <xs:documentation>NASA Open Source Agreement 1.3</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Naumen">
+                <xs:annotation>
+                    <xs:documentation>Naumen Public License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NBPL-1.0">
+                <xs:annotation>
+                    <xs:documentation>Net Boolean Public License v1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NCBI-PD">
+                <xs:annotation>
+                    <xs:documentation>NCBI Public Domain Notice</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NCGL-UK-2.0">
+                <xs:annotation>
+                    <xs:documentation>Non-Commercial Government Licence</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NCL">
+                <xs:annotation>
+                    <xs:documentation>NCL Source Code License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NCSA">
+                <xs:annotation>
+                    <xs:documentation>University of Illinois/NCSA Open Source License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Net-SNMP">
+                <xs:annotation>
+                    <xs:documentation>Net-SNMP License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NetCDF">
+                <xs:annotation>
+                    <xs:documentation>NetCDF license</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Newsletr">
+                <xs:annotation>
+                    <xs:documentation>Newsletr License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NGPL">
+                <xs:annotation>
+                    <xs:documentation>Nethack General Public License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ngrep">
+                <xs:annotation>
+                    <xs:documentation>ngrep License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NICTA-1.0">
+                <xs:annotation>
+                    <xs:documentation>NICTA Public Software License, Version 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NIST-PD">
+                <xs:annotation>
+                    <xs:documentation>NIST Public Domain Notice</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NIST-PD-fallback">
+                <xs:annotation>
+                    <xs:documentation>NIST Public Domain Notice with license fallback</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NIST-PD-TNT">
+                <xs:annotation>
+                    <xs:documentation>NIST    Public Domain Notice TNT variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NIST-Software">
+                <xs:annotation>
+                    <xs:documentation>NIST Software License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NLOD-1.0">
+                <xs:annotation>
+                    <xs:documentation>Norwegian Licence for Open Government Data (NLOD) 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NLOD-2.0">
+                <xs:annotation>
+                    <xs:documentation>Norwegian Licence for Open Government Data (NLOD) 2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NLPL">
+                <xs:annotation>
+                    <xs:documentation>No Limit Public License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Nokia">
+                <xs:annotation>
+                    <xs:documentation>Nokia Open Source License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NOSL">
+                <xs:annotation>
+                    <xs:documentation>Netizen Open Source License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Noweb">
+                <xs:annotation>
+                    <xs:documentation>Noweb License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NPL-1.0">
+                <xs:annotation>
+                    <xs:documentation>Netscape Public License v1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NPL-1.1">
+                <xs:annotation>
+                    <xs:documentation>Netscape Public License v1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NPOSL-3.0">
+                <xs:annotation>
+                    <xs:documentation>Non-Profit Open Software License 3.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NRL">
+                <xs:annotation>
+                    <xs:documentation>NRL License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NTIA-PD">
+                <xs:annotation>
+                    <xs:documentation>NTIA Public Domain Notice</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NTP">
+                <xs:annotation>
+                    <xs:documentation>NTP License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NTP-0">
+                <xs:annotation>
+                    <xs:documentation>NTP No Attribution</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Nunit">
+                <xs:annotation>
+                    <xs:documentation>Nunit License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="O-UDA-1.0">
+                <xs:annotation>
+                    <xs:documentation>Open Use of Data Agreement v1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OAR">
+                <xs:annotation>
+                    <xs:documentation>OAR License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OCCT-PL">
+                <xs:annotation>
+                    <xs:documentation>Open CASCADE Technology Public License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OCLC-2.0">
+                <xs:annotation>
+                    <xs:documentation>OCLC Research Public License 2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ODbL-1.0">
+                <xs:annotation>
+                    <xs:documentation>Open Data Commons Open Database License v1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ODC-By-1.0">
+                <xs:annotation>
+                    <xs:documentation>Open Data Commons Attribution License v1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OFFIS">
+                <xs:annotation>
+                    <xs:documentation>OFFIS License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OFL-1.0">
+                <xs:annotation>
+                    <xs:documentation>SIL Open Font License 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OFL-1.0-no-RFN">
+                <xs:annotation>
+                    <xs:documentation>SIL Open Font License 1.0 with no Reserved Font Name</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OFL-1.0-RFN">
+                <xs:annotation>
+                    <xs:documentation>SIL Open Font License 1.0 with Reserved Font Name</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OFL-1.1">
+                <xs:annotation>
+                    <xs:documentation>SIL Open Font License 1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OFL-1.1-no-RFN">
+                <xs:annotation>
+                    <xs:documentation>SIL Open Font License 1.1 with no Reserved Font Name</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OFL-1.1-RFN">
+                <xs:annotation>
+                    <xs:documentation>SIL Open Font License 1.1 with Reserved Font Name</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OGC-1.0">
+                <xs:annotation>
+                    <xs:documentation>OGC Software License, Version 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OGDL-Taiwan-1.0">
+                <xs:annotation>
+                    <xs:documentation>Taiwan Open Government Data License, version 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OGL-Canada-2.0">
+                <xs:annotation>
+                    <xs:documentation>Open Government Licence - Canada</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OGL-UK-1.0">
+                <xs:annotation>
+                    <xs:documentation>Open Government Licence v1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OGL-UK-2.0">
+                <xs:annotation>
+                    <xs:documentation>Open Government Licence v2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OGL-UK-3.0">
+                <xs:annotation>
+                    <xs:documentation>Open Government Licence v3.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OGTSL">
+                <xs:annotation>
+                    <xs:documentation>Open Group Test Suite License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OLDAP-1.1">
+                <xs:annotation>
+                    <xs:documentation>Open LDAP Public License v1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OLDAP-1.2">
+                <xs:annotation>
+                    <xs:documentation>Open LDAP Public License v1.2</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OLDAP-1.3">
+                <xs:annotation>
+                    <xs:documentation>Open LDAP Public License v1.3</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OLDAP-1.4">
+                <xs:annotation>
+                    <xs:documentation>Open LDAP Public License v1.4</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OLDAP-2.0">
+                <xs:annotation>
+                    <xs:documentation>Open LDAP Public License v2.0 (or possibly 2.0A and 2.0B)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OLDAP-2.0.1">
+                <xs:annotation>
+                    <xs:documentation>Open LDAP Public License v2.0.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OLDAP-2.1">
+                <xs:annotation>
+                    <xs:documentation>Open LDAP Public License v2.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OLDAP-2.2">
+                <xs:annotation>
+                    <xs:documentation>Open LDAP Public License v2.2</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OLDAP-2.2.1">
+                <xs:annotation>
+                    <xs:documentation>Open LDAP Public License v2.2.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OLDAP-2.2.2">
+                <xs:annotation>
+                    <xs:documentation>Open LDAP Public License 2.2.2</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OLDAP-2.3">
+                <xs:annotation>
+                    <xs:documentation>Open LDAP Public License v2.3</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OLDAP-2.4">
+                <xs:annotation>
+                    <xs:documentation>Open LDAP Public License v2.4</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OLDAP-2.5">
+                <xs:annotation>
+                    <xs:documentation>Open LDAP Public License v2.5</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OLDAP-2.6">
+                <xs:annotation>
+                    <xs:documentation>Open LDAP Public License v2.6</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OLDAP-2.7">
+                <xs:annotation>
+                    <xs:documentation>Open LDAP Public License v2.7</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OLDAP-2.8">
+                <xs:annotation>
+                    <xs:documentation>Open LDAP Public License v2.8</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OLFL-1.3">
+                <xs:annotation>
+                    <xs:documentation>Open Logistics Foundation License Version 1.3</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OML">
+                <xs:annotation>
+                    <xs:documentation>Open Market License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OpenMDW-1.0">
+                <xs:annotation>
+                    <xs:documentation>OpenMDW License Agreement v1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OpenPBS-2.3">
+                <xs:annotation>
+                    <xs:documentation>OpenPBS v2.3 Software License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OpenSSL">
+                <xs:annotation>
+                    <xs:documentation>OpenSSL License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OpenSSL-standalone">
+                <xs:annotation>
+                    <xs:documentation>OpenSSL License - standalone</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OpenVision">
+                <xs:annotation>
+                    <xs:documentation>OpenVision License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OPL-1.0">
+                <xs:annotation>
+                    <xs:documentation>Open Public License v1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OPL-UK-3.0">
+                <xs:annotation>
+                    <xs:documentation>United    Kingdom Open Parliament Licence v3.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OPUBL-1.0">
+                <xs:annotation>
+                    <xs:documentation>Open Publication License v1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OSC-1.0">
+                <xs:annotation>
+                    <xs:documentation>OSC License 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OSET-PL-2.1">
+                <xs:annotation>
+                    <xs:documentation>OSET Public License version 2.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OSL-1.0">
+                <xs:annotation>
+                    <xs:documentation>Open Software License 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OSL-1.1">
+                <xs:annotation>
+                    <xs:documentation>Open Software License 1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OSL-2.0">
+                <xs:annotation>
+                    <xs:documentation>Open Software License 2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OSL-2.1">
+                <xs:annotation>
+                    <xs:documentation>Open Software License 2.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OSL-3.0">
+                <xs:annotation>
+                    <xs:documentation>Open Software License 3.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OSSP">
+                <xs:annotation>
+                    <xs:documentation>OSSP License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="PADL">
+                <xs:annotation>
+                    <xs:documentation>PADL License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ParaType-Free-Font-1.3">
+                <xs:annotation>
+                    <xs:documentation>ParaType Free Font Licensing Agreement v1.3</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Parity-6.0.0">
+                <xs:annotation>
+                    <xs:documentation>The Parity Public License 6.0.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Parity-7.0.0">
+                <xs:annotation>
+                    <xs:documentation>The Parity Public License 7.0.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="PDDL-1.0">
+                <xs:annotation>
+                    <xs:documentation>Open Data Commons Public Domain Dedication &amp; License 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="PHP-3.0">
+                <xs:annotation>
+                    <xs:documentation>PHP License v3.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="PHP-3.01">
+                <xs:annotation>
+                    <xs:documentation>PHP License v3.01</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Pixar">
+                <xs:annotation>
+                    <xs:documentation>Pixar License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="pkgconf">
+                <xs:annotation>
+                    <xs:documentation>pkgconf License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Plexus">
+                <xs:annotation>
+                    <xs:documentation>Plexus Classworlds License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="pnmstitch">
+                <xs:annotation>
+                    <xs:documentation>pnmstitch License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="PolyForm-Noncommercial-1.0.0">
+                <xs:annotation>
+                    <xs:documentation>PolyForm Noncommercial License 1.0.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="PolyForm-Small-Business-1.0.0">
+                <xs:annotation>
+                    <xs:documentation>PolyForm Small Business License 1.0.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="PostgreSQL">
+                <xs:annotation>
+                    <xs:documentation>PostgreSQL License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="PPL">
+                <xs:annotation>
+                    <xs:documentation>Peer Production License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="PSF-2.0">
+                <xs:annotation>
+                    <xs:documentation>Python Software Foundation License 2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="psfrag">
+                <xs:annotation>
+                    <xs:documentation>psfrag License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="psutils">
+                <xs:annotation>
+                    <xs:documentation>psutils License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Python-2.0">
+                <xs:annotation>
+                    <xs:documentation>Python License 2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Python-2.0.1">
+                <xs:annotation>
+                    <xs:documentation>Python License 2.0.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="python-ldap">
+                <xs:annotation>
+                    <xs:documentation>Python ldap License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Qhull">
+                <xs:annotation>
+                    <xs:documentation>Qhull License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="QPL-1.0">
+                <xs:annotation>
+                    <xs:documentation>Q Public License 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="QPL-1.0-INRIA-2004">
+                <xs:annotation>
+                    <xs:documentation>Q Public License 1.0 - INRIA 2004 variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="radvd">
+                <xs:annotation>
+                    <xs:documentation>radvd License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Rdisc">
+                <xs:annotation>
+                    <xs:documentation>Rdisc License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="RHeCos-1.1">
+                <xs:annotation>
+                    <xs:documentation>Red Hat eCos Public License v1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="RPL-1.1">
+                <xs:annotation>
+                    <xs:documentation>Reciprocal Public License 1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="RPL-1.5">
+                <xs:annotation>
+                    <xs:documentation>Reciprocal Public License 1.5</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="RPSL-1.0">
+                <xs:annotation>
+                    <xs:documentation>RealNetworks Public Source License v1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="RSA-MD">
+                <xs:annotation>
+                    <xs:documentation>RSA Message-Digest License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="RSCPL">
+                <xs:annotation>
+                    <xs:documentation>Ricoh Source Code Public License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Ruby">
+                <xs:annotation>
+                    <xs:documentation>Ruby License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Ruby-pty">
+                <xs:annotation>
+                    <xs:documentation>Ruby pty extension license</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SAX-PD">
+                <xs:annotation>
+                    <xs:documentation>Sax Public Domain Notice</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SAX-PD-2.0">
+                <xs:annotation>
+                    <xs:documentation>Sax Public Domain Notice 2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Saxpath">
+                <xs:annotation>
+                    <xs:documentation>Saxpath License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SCEA">
+                <xs:annotation>
+                    <xs:documentation>SCEA Shared Source License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SchemeReport">
+                <xs:annotation>
+                    <xs:documentation>Scheme Language Report License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Sendmail">
+                <xs:annotation>
+                    <xs:documentation>Sendmail License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Sendmail-8.23">
+                <xs:annotation>
+                    <xs:documentation>Sendmail License 8.23</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Sendmail-Open-Source-1.1">
+                <xs:annotation>
+                    <xs:documentation>Sendmail Open Source License v1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SGI-B-1.0">
+                <xs:annotation>
+                    <xs:documentation>SGI Free Software License B v1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SGI-B-1.1">
+                <xs:annotation>
+                    <xs:documentation>SGI Free Software License B v1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SGI-B-2.0">
+                <xs:annotation>
+                    <xs:documentation>SGI Free Software License B v2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SGI-OpenGL">
+                <xs:annotation>
+                    <xs:documentation>SGI OpenGL License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SGMLUG-PM">
+                <xs:annotation>
+                    <xs:documentation>SGMLUG Parser Materials License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SGP4">
+                <xs:annotation>
+                    <xs:documentation>SGP4 Permission Notice</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SHL-0.5">
+                <xs:annotation>
+                    <xs:documentation>Solderpad Hardware License v0.5</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SHL-0.51">
+                <xs:annotation>
+                    <xs:documentation>Solderpad Hardware License, Version 0.51</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SimPL-2.0">
+                <xs:annotation>
+                    <xs:documentation>Simple Public License 2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SISSL">
+                <xs:annotation>
+                    <xs:documentation>Sun Industry Standards Source License v1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SISSL-1.2">
+                <xs:annotation>
+                    <xs:documentation>Sun Industry Standards Source License v1.2</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SL">
+                <xs:annotation>
+                    <xs:documentation>SL License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Sleepycat">
+                <xs:annotation>
+                    <xs:documentation>Sleepycat License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SMAIL-GPL">
+                <xs:annotation>
+                    <xs:documentation>SMAIL General Public License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SMLNJ">
+                <xs:annotation>
+                    <xs:documentation>Standard ML of New Jersey License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SMPPL">
+                <xs:annotation>
+                    <xs:documentation>Secure Messaging Protocol Public License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SNIA">
+                <xs:annotation>
+                    <xs:documentation>SNIA Public License 1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="snprintf">
+                <xs:annotation>
+                    <xs:documentation>snprintf License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SOFA">
+                <xs:annotation>
+                    <xs:documentation>SOFA Software License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="softSurfer">
+                <xs:annotation>
+                    <xs:documentation>softSurfer License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Soundex">
+                <xs:annotation>
+                    <xs:documentation>Soundex License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Spencer-86">
+                <xs:annotation>
+                    <xs:documentation>Spencer License 86</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Spencer-94">
+                <xs:annotation>
+                    <xs:documentation>Spencer License 94</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Spencer-99">
+                <xs:annotation>
+                    <xs:documentation>Spencer License 99</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SPL-1.0">
+                <xs:annotation>
+                    <xs:documentation>Sun Public License v1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ssh-keyscan">
+                <xs:annotation>
+                    <xs:documentation>ssh-keyscan License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SSH-OpenSSH">
+                <xs:annotation>
+                    <xs:documentation>SSH OpenSSH license</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SSH-short">
+                <xs:annotation>
+                    <xs:documentation>SSH short notice</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SSLeay-standalone">
+                <xs:annotation>
+                    <xs:documentation>SSLeay License - standalone</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SSPL-1.0">
+                <xs:annotation>
+                    <xs:documentation>Server Side Public License, v 1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="StandardML-NJ">
+                <xs:annotation>
+                    <xs:documentation>Standard ML of New Jersey License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SugarCRM-1.1.3">
+                <xs:annotation>
+                    <xs:documentation>SugarCRM Public License v1.1.3</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SUL-1.0">
+                <xs:annotation>
+                    <xs:documentation>Sustainable Use License v1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Sun-PPP">
+                <xs:annotation>
+                    <xs:documentation>Sun PPP License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Sun-PPP-2000">
+                <xs:annotation>
+                    <xs:documentation>Sun PPP License (2000)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SunPro">
+                <xs:annotation>
+                    <xs:documentation>SunPro License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SWL">
+                <xs:annotation>
+                    <xs:documentation>Scheme Widget Library (SWL) Software License Agreement</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="swrule">
+                <xs:annotation>
+                    <xs:documentation>swrule License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Symlinks">
+                <xs:annotation>
+                    <xs:documentation>Symlinks License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="TAPR-OHL-1.0">
+                <xs:annotation>
+                    <xs:documentation>TAPR Open Hardware License v1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="TCL">
+                <xs:annotation>
+                    <xs:documentation>TCL/TK License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="TCP-wrappers">
+                <xs:annotation>
+                    <xs:documentation>TCP Wrappers License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="TekHVC">
+                <xs:annotation>
+                    <xs:documentation>TekHVC License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="TermReadKey">
+                <xs:annotation>
+                    <xs:documentation>TermReadKey License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="TGPPL-1.0">
+                <xs:annotation>
+                    <xs:documentation>Transitive Grace Period Public Licence 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ThirdEye">
+                <xs:annotation>
+                    <xs:documentation>ThirdEye License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="threeparttable">
+                <xs:annotation>
+                    <xs:documentation>threeparttable License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="TMate">
+                <xs:annotation>
+                    <xs:documentation>TMate Open Source License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="TORQUE-1.1">
+                <xs:annotation>
+                    <xs:documentation>TORQUE v2.5+ Software License v1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="TOSL">
+                <xs:annotation>
+                    <xs:documentation>Trusster Open Source License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="TPDL">
+                <xs:annotation>
+                    <xs:documentation>Time::ParseDate License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="TPL-1.0">
+                <xs:annotation>
+                    <xs:documentation>THOR Public License 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="TrustedQSL">
+                <xs:annotation>
+                    <xs:documentation>TrustedQSL License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="TTWL">
+                <xs:annotation>
+                    <xs:documentation>Text-Tabs+Wrap License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="TTYP0">
+                <xs:annotation>
+                    <xs:documentation>TTYP0 License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="TU-Berlin-1.0">
+                <xs:annotation>
+                    <xs:documentation>Technische Universitaet Berlin License 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="TU-Berlin-2.0">
+                <xs:annotation>
+                    <xs:documentation>Technische Universitaet Berlin License 2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Ubuntu-font-1.0">
+                <xs:annotation>
+                    <xs:documentation>Ubuntu Font Licence v1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="UCAR">
+                <xs:annotation>
+                    <xs:documentation>UCAR License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="UCL-1.0">
+                <xs:annotation>
+                    <xs:documentation>Upstream Compatibility License v1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ulem">
+                <xs:annotation>
+                    <xs:documentation>ulem License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="UMich-Merit">
+                <xs:annotation>
+                    <xs:documentation>Michigan/Merit Networks License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Unicode-3.0">
+                <xs:annotation>
+                    <xs:documentation>Unicode License v3</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Unicode-DFS-2015">
+                <xs:annotation>
+                    <xs:documentation>Unicode License Agreement - Data Files and Software (2015)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Unicode-DFS-2016">
+                <xs:annotation>
+                    <xs:documentation>Unicode License Agreement - Data Files and Software (2016)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Unicode-TOU">
+                <xs:annotation>
+                    <xs:documentation>Unicode Terms of Use</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="UnixCrypt">
+                <xs:annotation>
+                    <xs:documentation>UnixCrypt License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Unlicense">
+                <xs:annotation>
+                    <xs:documentation>The Unlicense</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Unlicense-libtelnet">
+                <xs:annotation>
+                    <xs:documentation>Unlicense - libtelnet variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Unlicense-libwhirlpool">
+                <xs:annotation>
+                    <xs:documentation>Unlicense - libwhirlpool variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="UnRAR">
+                <xs:annotation>
+                    <xs:documentation>UnRAR License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="UPL-1.0">
+                <xs:annotation>
+                    <xs:documentation>Universal Permissive License v1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="URT-RLE">
+                <xs:annotation>
+                    <xs:documentation>Utah Raster Toolkit Run Length Encoded License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Vim">
+                <xs:annotation>
+                    <xs:documentation>Vim License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Vixie-Cron">
+                <xs:annotation>
+                    <xs:documentation>Vixie Cron License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="VOSTROM">
+                <xs:annotation>
+                    <xs:documentation>VOSTROM Public License for Open Source</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="VSL-1.0">
+                <xs:annotation>
+                    <xs:documentation>Vovida Software License v1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="W3C">
+                <xs:annotation>
+                    <xs:documentation>W3C Software Notice and License (2002-12-31)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="W3C-19980720">
+                <xs:annotation>
+                    <xs:documentation>W3C Software Notice and License (1998-07-20)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="W3C-20150513">
+                <xs:annotation>
+                    <xs:documentation>W3C Software Notice and Document License (2015-05-13)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="w3m">
+                <xs:annotation>
+                    <xs:documentation>w3m License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Watcom-1.0">
+                <xs:annotation>
+                    <xs:documentation>Sybase Open Watcom Public License 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Widget-Workshop">
+                <xs:annotation>
+                    <xs:documentation>Widget Workshop License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="WordNet">
+                <xs:annotation>
+                    <xs:documentation>WordNet License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Wsuipa">
+                <xs:annotation>
+                    <xs:documentation>Wsuipa License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="WTFNMFPL">
+                <xs:annotation>
+                    <xs:documentation>Do What The F*ck You Want To But It&apos;s Not My Fault Public License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="WTFPL">
+                <xs:annotation>
+                    <xs:documentation>Do What The F*ck You Want To Public License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="wwl">
+                <xs:annotation>
+                    <xs:documentation>WWL License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="wxWindows">
+                <xs:annotation>
+                    <xs:documentation>wxWindows Library License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="X11">
+                <xs:annotation>
+                    <xs:documentation>X11 License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="X11-distribute-modifications-variant">
+                <xs:annotation>
+                    <xs:documentation>X11 License Distribution Modification Variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="X11-no-permit-persons">
+                <xs:annotation>
+                    <xs:documentation>X11 no permit persons clause</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="X11-swapped">
+                <xs:annotation>
+                    <xs:documentation>X11 swapped final paragraphs</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Xdebug-1.03">
+                <xs:annotation>
+                    <xs:documentation>Xdebug License v 1.03</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Xerox">
+                <xs:annotation>
+                    <xs:documentation>Xerox License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Xfig">
+                <xs:annotation>
+                    <xs:documentation>Xfig License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="XFree86-1.1">
+                <xs:annotation>
+                    <xs:documentation>XFree86 License 1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="xinetd">
+                <xs:annotation>
+                    <xs:documentation>xinetd License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="xkeyboard-config-Zinoviev">
+                <xs:annotation>
+                    <xs:documentation>xkeyboard-config Zinoviev License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="xlock">
+                <xs:annotation>
+                    <xs:documentation>xlock License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Xnet">
+                <xs:annotation>
+                    <xs:documentation>X.Net License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="xpp">
+                <xs:annotation>
+                    <xs:documentation>XPP License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="XSkat">
+                <xs:annotation>
+                    <xs:documentation>XSkat License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="xzoom">
+                <xs:annotation>
+                    <xs:documentation>xzoom License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="YPL-1.0">
+                <xs:annotation>
+                    <xs:documentation>Yahoo! Public License v1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="YPL-1.1">
+                <xs:annotation>
+                    <xs:documentation>Yahoo! Public License v1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Zed">
+                <xs:annotation>
+                    <xs:documentation>Zed License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Zeeff">
+                <xs:annotation>
+                    <xs:documentation>Zeeff License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Zend-2.0">
+                <xs:annotation>
+                    <xs:documentation>Zend License v2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Zimbra-1.3">
+                <xs:annotation>
+                    <xs:documentation>Zimbra Public License v1.3</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Zimbra-1.4">
+                <xs:annotation>
+                    <xs:documentation>Zimbra Public License v1.4</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Zlib">
+                <xs:annotation>
+                    <xs:documentation>zlib License</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="zlib-acknowledgement">
+                <xs:annotation>
+                    <xs:documentation>zlib/libpng License with Acknowledgement</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ZPL-1.1">
+                <xs:annotation>
+                    <xs:documentation>Zope Public License 1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ZPL-2.0">
+                <xs:annotation>
+                    <xs:documentation>Zope Public License 2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ZPL-2.1">
+                <xs:annotation>
+                    <xs:documentation>Zope Public License 2.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <!-- Exceptions -->
+            <xs:enumeration value="389-exception">
+                <xs:annotation>
+                    <xs:documentation>389 Directory Server Exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Asterisk-exception">
+                <xs:annotation>
+                    <xs:documentation>Asterisk exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Asterisk-linking-protocols-exception">
+                <xs:annotation>
+                    <xs:documentation>Asterisk linking protocols exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Autoconf-exception-2.0">
+                <xs:annotation>
+                    <xs:documentation>Autoconf exception 2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Autoconf-exception-3.0">
+                <xs:annotation>
+                    <xs:documentation>Autoconf exception 3.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Autoconf-exception-generic">
+                <xs:annotation>
+                    <xs:documentation>Autoconf generic exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Autoconf-exception-generic-3.0">
+                <xs:annotation>
+                    <xs:documentation>Autoconf generic exception for GPL-3.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Autoconf-exception-macro">
+                <xs:annotation>
+                    <xs:documentation>Autoconf macro exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Bison-exception-1.24">
+                <xs:annotation>
+                    <xs:documentation>Bison exception 1.24</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Bison-exception-2.2">
+                <xs:annotation>
+                    <xs:documentation>Bison exception 2.2</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Bootloader-exception">
+                <xs:annotation>
+                    <xs:documentation>Bootloader Distribution Exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CGAL-linking-exception">
+                <xs:annotation>
+                    <xs:documentation>CGAL Linking Exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Classpath-exception-2.0">
+                <xs:annotation>
+                    <xs:documentation>Classpath exception 2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Classpath-exception-2.0-short">
+                <xs:annotation>
+                    <xs:documentation>Classpath exception 2.0 - short</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CLISP-exception-2.0">
+                <xs:annotation>
+                    <xs:documentation>CLISP exception 2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="cryptsetup-OpenSSL-exception">
+                <xs:annotation>
+                    <xs:documentation>cryptsetup OpenSSL exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Digia-Qt-LGPL-exception-1.1">
+                <xs:annotation>
+                    <xs:documentation>Digia Qt LGPL Exception version 1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="DigiRule-FOSS-exception">
+                <xs:annotation>
+                    <xs:documentation>DigiRule FOSS License Exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="eCos-exception-2.0">
+                <xs:annotation>
+                    <xs:documentation>eCos exception 2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="erlang-otp-linking-exception">
+                <xs:annotation>
+                    <xs:documentation>Erlang/OTP Linking Exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Fawkes-Runtime-exception">
+                <xs:annotation>
+                    <xs:documentation>Fawkes Runtime Exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="FLTK-exception">
+                <xs:annotation>
+                    <xs:documentation>FLTK exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="fmt-exception">
+                <xs:annotation>
+                    <xs:documentation>fmt exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Font-exception-2.0">
+                <xs:annotation>
+                    <xs:documentation>Font exception 2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="freertos-exception-2.0">
+                <xs:annotation>
+                    <xs:documentation>FreeRTOS Exception 2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GCC-exception-2.0">
+                <xs:annotation>
+                    <xs:documentation>GCC Runtime Library exception 2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GCC-exception-2.0-note">
+                <xs:annotation>
+                    <xs:documentation>GCC    Runtime Library exception 2.0 - note variant</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GCC-exception-3.1">
+                <xs:annotation>
+                    <xs:documentation>GCC Runtime Library exception 3.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Gmsh-exception">
+                <xs:annotation>
+                    <xs:documentation>Gmsh exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GNAT-exception">
+                <xs:annotation>
+                    <xs:documentation>GNAT exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GNOME-examples-exception">
+                <xs:annotation>
+                    <xs:documentation>GNOME examples exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GNU-compiler-exception">
+                <xs:annotation>
+                    <xs:documentation>GNU Compiler Exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="gnu-javamail-exception">
+                <xs:annotation>
+                    <xs:documentation>GNU JavaMail exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Google-Patent-WebM">
+                <xs:annotation>
+                    <xs:documentation>Google Additional IP Rights Grant (Patents) - WebM</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GPL-3.0-389-ds-base-exception">
+                <xs:annotation>
+                    <xs:documentation>GPL-3.0 389 DS Base Exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GPL-3.0-interface-exception">
+                <xs:annotation>
+                    <xs:documentation>GPL-3.0 Interface Exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GPL-3.0-linking-exception">
+                <xs:annotation>
+                    <xs:documentation>GPL-3.0 Linking Exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GPL-3.0-linking-source-exception">
+                <xs:annotation>
+                    <xs:documentation>GPL-3.0 Linking Exception (with Corresponding Source)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GPL-CC-1.0">
+                <xs:annotation>
+                    <xs:documentation>GPL Cooperation Commitment 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GStreamer-exception-2005">
+                <xs:annotation>
+                    <xs:documentation>GStreamer Exception (2005)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GStreamer-exception-2008">
+                <xs:annotation>
+                    <xs:documentation>GStreamer Exception (2008)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="harbour-exception">
+                <xs:annotation>
+                    <xs:documentation>harbour exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="i2p-gpl-java-exception">
+                <xs:annotation>
+                    <xs:documentation>i2p GPL+Java Exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Independent-modules-exception">
+                <xs:annotation>
+                    <xs:documentation>Independent Module Linking exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="KiCad-libraries-exception">
+                <xs:annotation>
+                    <xs:documentation>KiCad Libraries Exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="kvirc-openssl-exception">
+                <xs:annotation>
+                    <xs:documentation>kvirc OpenSSL Exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LGPL-3.0-linking-exception">
+                <xs:annotation>
+                    <xs:documentation>LGPL-3.0 Linking Exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="libpri-OpenH323-exception">
+                <xs:annotation>
+                    <xs:documentation>libpri OpenH323 exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Libtool-exception">
+                <xs:annotation>
+                    <xs:documentation>Libtool Exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Linux-syscall-note">
+                <xs:annotation>
+                    <xs:documentation>Linux Syscall Note</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LLGPL">
+                <xs:annotation>
+                    <xs:documentation>LLGPL Preamble</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LLVM-exception">
+                <xs:annotation>
+                    <xs:documentation>LLVM Exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LZMA-exception">
+                <xs:annotation>
+                    <xs:documentation>LZMA exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="mif-exception">
+                <xs:annotation>
+                    <xs:documentation>Macros and Inline Functions Exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="mxml-exception">
+                <xs:annotation>
+                    <xs:documentation>mxml Exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Nokia-Qt-exception-1.1">
+                <xs:annotation>
+                    <xs:documentation>Nokia Qt LGPL exception 1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OCaml-LGPL-linking-exception">
+                <xs:annotation>
+                    <xs:documentation>OCaml LGPL Linking Exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OCCT-exception-1.0">
+                <xs:annotation>
+                    <xs:documentation>Open CASCADE Exception 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OpenJDK-assembly-exception-1.0">
+                <xs:annotation>
+                    <xs:documentation>OpenJDK Assembly exception 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="openvpn-openssl-exception">
+                <xs:annotation>
+                    <xs:documentation>OpenVPN OpenSSL Exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="PCRE2-exception">
+                <xs:annotation>
+                    <xs:documentation>PCRE2 exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="polyparse-exception">
+                <xs:annotation>
+                    <xs:documentation>Polyparse Exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="PS-or-PDF-font-exception-20170817">
+                <xs:annotation>
+                    <xs:documentation>PS/PDF font exception (2017-08-17)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="QPL-1.0-INRIA-2004-exception">
+                <xs:annotation>
+                    <xs:documentation>INRIA QPL 1.0 2004 variant exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Qt-GPL-exception-1.0">
+                <xs:annotation>
+                    <xs:documentation>Qt GPL exception 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Qt-LGPL-exception-1.1">
+                <xs:annotation>
+                    <xs:documentation>Qt LGPL exception 1.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Qwt-exception-1.0">
+                <xs:annotation>
+                    <xs:documentation>Qwt exception 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="romic-exception">
+                <xs:annotation>
+                    <xs:documentation>Romic Exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="RRDtool-FLOSS-exception-2.0">
+                <xs:annotation>
+                    <xs:documentation>RRDtool FLOSS exception 2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="rsync-linking-exception">
+                <xs:annotation>
+                    <xs:documentation>rsync Linking Exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SANE-exception">
+                <xs:annotation>
+                    <xs:documentation>SANE Exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SHL-2.0">
+                <xs:annotation>
+                    <xs:documentation>Solderpad Hardware License v2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SHL-2.1">
+                <xs:annotation>
+                    <xs:documentation>Solderpad Hardware License v2.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Simple-Library-Usage-exception">
+                <xs:annotation>
+                    <xs:documentation>Simple Library Usage Exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Spelling-Provider-LGPL-exception">
+                <xs:annotation>
+                    <xs:documentation>Spelling Provider LGPL exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="sqlitestudio-OpenSSL-exception">
+                <xs:annotation>
+                    <xs:documentation>sqlitestudio OpenSSL exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="stunnel-exception">
+                <xs:annotation>
+                    <xs:documentation>stunnel Exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SWI-exception">
+                <xs:annotation>
+                    <xs:documentation>SWI exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Swift-exception">
+                <xs:annotation>
+                    <xs:documentation>Swift Exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Texinfo-exception">
+                <xs:annotation>
+                    <xs:documentation>Texinfo exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="u-boot-exception-2.0">
+                <xs:annotation>
+                    <xs:documentation>U-Boot exception 2.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="UBDL-exception">
+                <xs:annotation>
+                    <xs:documentation>Unmodified Binary Distribution exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Universal-FOSS-exception-1.0">
+                <xs:annotation>
+                    <xs:documentation>Universal FOSS Exception, Version 1.0</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="vsftpd-openssl-exception">
+                <xs:annotation>
+                    <xs:documentation>vsftpd OpenSSL exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="WxWindows-exception-3.1">
+                <xs:annotation>
+                    <xs:documentation>WxWindows Library Exception 3.1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="x11vnc-openssl-exception">
+                <xs:annotation>
+                    <xs:documentation>x11vnc OpenSSL Exception</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

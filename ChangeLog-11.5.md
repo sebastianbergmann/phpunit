@@ -6,7 +6,7 @@ All notable changes of the PHPUnit 11.5 release series are documented in this fi
 
 ### Changed
 
-* The Software Bill of Materials (SBOM) embedded in the PHAR now uses CycloneDX 1.7 and includes the NTIA minimum elements (supplier/author, unique identifier, dependency relationships, author of SBOM data, timestamp)
+* The Software Bill of Materials (SBOM) embedded in the PHAR now uses CycloneDX 1.7 and provides the NTIA minimum elements as well as the data fields that BSI TR-03183-2 (version 2.1.0) requires for logical and identified components, including component creators, original, distribution and effective licences, source code URIs, and the PHP runtime and its extensions as external components
 
 ## [11.5.56] - 2026-07-06
 
