@@ -11,10 +11,16 @@ namespace PHPUnit\TestFixture\Phar;
 
 use function file_get_contents;
 use function json_decode;
+use function libxml_clear_errors;
+use function libxml_get_errors;
+use function libxml_set_external_entity_loader;
+use function libxml_use_internal_errors;
 use function preg_match;
 use function sort;
+use function sprintf;
 use function strpos;
 use function substr_count;
+use function trim;
 use DOMDocument;
 use DOMElement;
 use DOMXPath;
@@ -32,6 +38,47 @@ final class SbomTest extends TestCase
         $this->assertSame(self::CYCLONEDX_NAMESPACE, $bom->namespaceURI);
         $this->assertSame('1', $bom->getAttribute('version'));
         $this->assertFalse($bom->hasAttribute('serialNumber'));
+    }
+
+    /**
+     * The XML Schema files in _files are bom-1.7.xsd and spdx.xsd from
+     * https://github.com/CycloneDX/specification/tree/1.7.2/schema.
+     */
+    public function testIsValidAccordingToCycloneDx17XmlSchema(): void
+    {
+        $document = $this->xpath()->document;
+
+        // bom-1.7.xsd imports the SPDX license schema from cyclonedx.org, use the local copy instead
+        libxml_set_external_entity_loader(
+            static function (?string $public, ?string $system, array $context): ?string
+            {
+                if ($system === 'http://cyclonedx.org/schema/spdx') {
+                    return __DIR__ . '/_files/spdx.xsd';
+                }
+
+                return $system;
+            }
+        );
+
+        $useInternalErrors = libxml_use_internal_errors(true);
+
+        libxml_clear_errors();
+
+        try {
+            $valid  = $document->schemaValidate(__DIR__ . '/_files/bom-1.7.xsd');
+            $errors = [];
+
+            foreach (libxml_get_errors() as $error) {
+                $errors[] = sprintf('Line %d: %s', $error->line, trim($error->message));
+            }
+        } finally {
+            libxml_clear_errors();
+            libxml_use_internal_errors($useInternalErrors);
+            libxml_set_external_entity_loader(null);
+        }
+
+        $this->assertSame([], $errors);
+        $this->assertTrue($valid);
     }
 
     public function testMetadataHasTimestampAuthorToolAndComponent(): void
