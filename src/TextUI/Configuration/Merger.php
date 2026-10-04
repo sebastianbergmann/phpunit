@@ -1589,6 +1589,7 @@ final readonly class Merger
             $cacheTestIndex,
             $recordTestImpactData,
             $deriveTestImpactDataFromCoverageTargets,
+            $xmlConfiguration->testImpactAnalysis(),
         );
     }
 

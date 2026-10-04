@@ -59,6 +59,7 @@ use PHPUnit\TextUI\Configuration\TestDirectory;
 use PHPUnit\TextUI\Configuration\TestDirectoryCollection;
 use PHPUnit\TextUI\Configuration\TestFile;
 use PHPUnit\TextUI\Configuration\TestFileCollection;
+use PHPUnit\TextUI\Configuration\TestImpactAnalysis;
 use PHPUnit\TextUI\Configuration\TestSuite as TestSuiteConfiguration;
 use PHPUnit\TextUI\Configuration\TestSuiteCollection;
 use PHPUnit\TextUI\Configuration\Variable;
@@ -155,6 +156,7 @@ final readonly class Loader
                 $this->php($configurationFileRealpath, $xpath),
                 $this->phpunit($configurationFileRealpath, $document, $xpath),
                 $this->testSuite($configurationFileRealpath, $xpath),
+                $this->testImpactAnalysis($configurationFileRealpath, $xpath),
             );
         } catch (Throwable $t) {
             $message = sprintf(
@@ -459,6 +461,14 @@ final readonly class Loader
             $identifyIssueTrigger,
             $issueTriggerResolvers,
             $deprecationFilters,
+        );
+    }
+
+    private function testImpactAnalysis(string $filename, DOMXPath $xpath): TestImpactAnalysis
+    {
+        return new TestImpactAnalysis(
+            $this->readFilterDirectories($filename, $xpath, 'testImpactAnalysis/watch/directory'),
+            $this->readFilterFiles($filename, $xpath, 'testImpactAnalysis/watch/file'),
         );
     }
 
