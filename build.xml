@@ -96,6 +96,22 @@
             <arg value="--detach-sign"/>
             <arg path="${basedir}/build/artifacts/phpunit-${version}.phar"/>
         </exec>
+
+        <exec executable="gpg" failonerror="true">
+            <arg value="--local-user"/>
+            <arg value="sb@sebastian-bergmann.de"/>
+            <arg value="--armor"/>
+            <arg value="--detach-sign"/>
+            <arg path="${basedir}/build/artifacts/phpunit-library-${version}.phar.cdx.xml"/>
+        </exec>
+
+        <exec executable="gpg" failonerror="true">
+            <arg value="--local-user"/>
+            <arg value="sb@sebastian-bergmann.de"/>
+            <arg value="--armor"/>
+            <arg value="--detach-sign"/>
+            <arg path="${basedir}/build/artifacts/phpunit-${version}.phar.cdx.xml"/>
+        </exec>
     </target>
 
     <target name="phar" depends="-phar-prepare,-phar-determine-version" description="Create PHAR archive of PHPUnit and all its dependencies">
@@ -434,6 +450,11 @@
             <arg path="${basedir}/build/artifacts/phpunit-library-${_version}.phar" />
         </exec>
 
+        <exec executable="${basedir}/build/scripts/phar-sbom.php" taskname="phar-sbom" failonerror="true">
+            <arg path="${basedir}/build/artifacts/phpunit-library-${_version}.phar" />
+            <arg path="${basedir}/build/artifacts/phpunit-library-${_version}.phar.cdx.xml" />
+        </exec>
+
         <copy file="${basedir}/build/templates/binary-phar-autoload.php.in" tofile="${basedir}/build/tmp/binary-phar-autoload.php"/>
         <replace file="${basedir}/build/tmp/binary-phar-autoload.php" token="X.Y.Z" value="${_version}"/>
 
@@ -459,6 +480,11 @@
 
         <exec executable="${basedir}/build/scripts/check-scoped-phar.php" taskname="check-scoped-phar" failonerror="true">
             <arg path="${basedir}/build/artifacts/phpunit-${_version}.phar" />
+        </exec>
+
+        <exec executable="${basedir}/build/scripts/phar-sbom.php" taskname="phar-sbom" failonerror="true">
+            <arg path="${basedir}/build/artifacts/phpunit-${_version}.phar" />
+            <arg path="${basedir}/build/artifacts/phpunit-${_version}.phar.cdx.xml" />
         </exec>
 
         <delete dir="${basedir}/build/tmp"/>

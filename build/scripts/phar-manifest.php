@@ -68,6 +68,9 @@ function sbom(string $outputFilename, array $package, string $version, array $de
         );
     }
 
+    $platformPackages = platformPackages($package, $dependencies);
+    $platformVersion  = minimumPhpVersion($package['require']);
+
     $writer = new XMLWriter;
 
     $writer->openMemory();
@@ -86,10 +89,14 @@ function sbom(string $outputFilename, array $package, string $version, array $de
         writeComponent($writer, $dependency, $refs[$dependency['name']]);
     }
 
+    foreach ($platformPackages as $platformPackage) {
+        writePlatformComponent($writer, $platformPackage, $platformVersion);
+    }
+
     $writer->endElement();
 
     writeDependencies($writer, $package, $ref, $dependencies, $refs);
-    writeCompositions($writer, $ref);
+    writeCompositions($writer, array_merge([$ref], array_values($refs)), $platformPackages);
 
     $writer->endElement();
     $writer->endDocument();
@@ -163,6 +170,73 @@ function purl(string $name, string $version): string
     );
 }
 
+function platformPackages(array $package, array $dependencies): array
+{
+    $requirements = [$package['group'] . '/' . $package['name'] => $package['require']];
+
+    foreach ($dependencies as $dependency) {
+        if (isset($dependency['require'])) {
+            $requirements[$dependency['name']] = $dependency['require'];
+        }
+    }
+
+    $platformPackages = [];
+
+    foreach ($requirements as $requiredBy => $require) {
+        foreach (array_keys($require) as $name) {
+            if (!isPlatformPackage($name)) {
+                continue;
+            }
+
+            if ($name !== 'php' && strpos($name, 'ext-') !== 0) {
+                abort(
+                    sprintf(
+                        '%s requires %s, which is a platform package that is neither php nor a PHP extension',
+                        $requiredBy,
+                        $name
+                    )
+                );
+            }
+
+            $platformPackages[$name] = true;
+        }
+    }
+
+    $platformPackages = array_keys($platformPackages);
+
+    sort($platformPackages, SORT_STRING);
+
+    return $platformPackages;
+}
+
+/**
+ * The PHP runtime and its extensions are not bundled, so the minimum version of PHP
+ * that is required by composer.json is used for php and for every ext-* package
+ */
+function minimumPhpVersion(array $require): string
+{
+    if (!isset($require['php'])) {
+        abort('composer.json does not require php');
+    }
+
+    if (preg_match('/^>=\s*(\d+)\.(\d+)(?:\.(\d+))?$/', $require['php'], $matches) !== 1) {
+        abort(
+            sprintf(
+                'composer.json requires php %s, but only >=X.Y and >=X.Y.Z are supported',
+                $require['php']
+            )
+        );
+    }
+
+    $patch = '0';
+
+    if (isset($matches[3])) {
+        $patch = $matches[3];
+    }
+
+    return $matches[1] . '.' . $matches[2] . '.' . $patch;
+}
+
 function writeMetadata(XMLWriter $writer, array $package, string $version, string $ref, int $epoch): void
 {
     $writer->startElement('metadata');
@@ -188,10 +262,14 @@ function writeMetadata(XMLWriter $writer, array $package, string $version, strin
 
     writeAuthors($writer, $package['authors']);
 
+    $name    = $package['group'] . '/' . $package['name'];
+    $license = license($name, $package['license']);
+
     $writer->startElement('component');
     $writer->writeAttribute('type', 'framework');
     $writer->writeAttribute('bom-ref', $ref);
 
+    writeManufacturer($writer, $name, $package['authors'], $package['homepage']);
     writeAuthors($writer, $package['authors']);
 
     $writer->writeElement('group', $package['group']);
@@ -199,7 +277,7 @@ function writeMetadata(XMLWriter $writer, array $package, string $version, strin
     $writer->writeElement('version', $version);
     $writer->writeElement('description', $package['description']);
 
-    writeLicenses($writer, $package['license']);
+    writeLicenses($writer, $license);
 
     $writer->writeElement('purl', $ref);
 
@@ -209,10 +287,15 @@ function writeMetadata(XMLWriter $writer, array $package, string $version, strin
             'website' => $package['homepage'],
             'issue-tracker' => $package['issues'],
             'security-contact' => $package['security'],
+            'rfc-9116' => 'https://phpunit.de/.well-known/security.txt',
         ]
     );
 
+    writeProperties($writer, ['bsi:component:effectiveLicence' => $license]);
+
     $writer->endElement();
+
+    writeManufacturer($writer, $name, $package['authors'], $package['homepage']);
 
     $writer->endElement();
 }
@@ -221,14 +304,32 @@ function writeComponent(XMLWriter $writer, array $dependency, string $ref): void
 {
     [$group, $name] = explode('/', $dependency['name']);
 
+    $authors = [];
+
+    if (isset($dependency['authors'])) {
+        $authors = $dependency['authors'];
+    }
+
+    $licenses = [];
+
+    if (isset($dependency['license'])) {
+        $licenses = $dependency['license'];
+    }
+
+    $license = license($dependency['name'], $licenses);
+
     $writer->startElement('component');
     $writer->writeAttribute('type', 'library');
     $writer->writeAttribute('bom-ref', $ref);
 
-    if (isset($dependency['authors']) && $dependency['authors'] !== []) {
-        writeAuthors($writer, $dependency['authors']);
-    } else {
+    if ($authors === []) {
         writeSupplier($writer, $group, $dependency);
+    }
+
+    writeManufacturer($writer, $dependency['name'], $authors, website($dependency));
+
+    if ($authors !== []) {
+        writeAuthors($writer, $authors);
     }
 
     $writer->writeElement('group', $group);
@@ -245,9 +346,7 @@ function writeComponent(XMLWriter $writer, array $dependency, string $ref): void
         $writer->writeElement('description', $dependency['description']);
     }
 
-    if (isset($dependency['license'])) {
-        writeLicenses($writer, $dependency['license']);
-    }
+    writeLicenses($writer, $license);
 
     $writer->writeElement('purl', $ref);
 
@@ -255,6 +354,10 @@ function writeComponent(XMLWriter $writer, array $dependency, string $ref): void
 
     if (isset($dependency['source']['url'])) {
         $references['vcs'] = $dependency['source']['url'];
+    }
+
+    if (isset($dependency['support']['source'])) {
+        $references['source-distribution'] = $dependency['support']['source'];
     }
 
     if (isset($dependency['dist']['url'])) {
@@ -273,7 +376,38 @@ function writeComponent(XMLWriter $writer, array $dependency, string $ref): void
         $properties['cdx:composer:package:distReference'] = $dependency['dist']['reference'];
     }
 
+    $properties['bsi:component:effectiveLicence'] = $license;
+
     writeProperties($writer, $properties);
+
+    $writer->endElement();
+}
+
+function writePlatformComponent(XMLWriter $writer, string $platformPackage, string $version): void
+{
+    if ($platformPackage === 'php') {
+        $type = 'platform';
+        $name = 'php';
+    } else {
+        $type = 'library';
+        $name = substr($platformPackage, strlen('ext-'));
+    }
+
+    $writer->startElement('component');
+    $writer->writeAttribute('type', $type);
+    $writer->writeAttribute('bom-ref', $platformPackage);
+    $writer->writeAttribute('isExternal', 'true');
+
+    $writer->startElement('manufacturer');
+    $writer->writeElement('url', 'https://www.php.net/');
+    $writer->endElement();
+
+    $writer->writeElement('name', $name);
+    $writer->writeElement('version', $version);
+
+    if ($platformPackage === 'php') {
+        $writer->writeElement('cpe', sprintf('cpe:2.3:a:php:php:%s:*:*:*:*:*:*:*', $version));
+    }
 
     $writer->endElement();
 }
@@ -308,30 +442,102 @@ function writeSupplier(XMLWriter $writer, string $group, array $dependency): voi
     $writer->endElement();
 }
 
-function writeLicenses(XMLWriter $writer, array $licenses): void
+function writeManufacturer(XMLWriter $writer, string $name, array $authors, ?string $website): void
 {
-    if ($licenses === []) {
-        return;
+    $contacts = [];
+
+    foreach ($authors as $author) {
+        if (isset($author['email'])) {
+            $contacts[] = $author;
+        }
     }
 
-    $writer->startElement('licenses');
+    if ($contacts === [] && $website === null) {
+        abort(
+            sprintf(
+                '%s has neither an author with an email address nor a homepage or source URL',
+                $name
+            )
+        );
+    }
 
-    if (count($licenses) === 1) {
-        $writer->startElement('license');
+    $writer->startElement('manufacturer');
 
-        if (isSpdxLicenseIdentifier($licenses[0])) {
-            $writer->writeElement('id', $licenses[0]);
-        } else {
-            $writer->writeElement('name', $licenses[0]);
-        }
+    if ($contacts === []) {
+        $writer->writeElement('url', $website);
+    }
 
+    foreach ($contacts as $contact) {
+        $writer->startElement('contact');
+        $writer->writeElement('name', $contact['name']);
+        $writer->writeElement('email', $contact['email']);
         $writer->endElement();
-    } else {
-        // Multiple licenses in composer.json are disjunctive: the package can be used under any of them
-        $writer->writeElement('expression', '(' . implode(' OR ', $licenses) . ')');
     }
 
     $writer->endElement();
+}
+
+function website(array $dependency): ?string
+{
+    if (isset($dependency['homepage'])) {
+        return $dependency['homepage'];
+    }
+
+    if (isset($dependency['source']['url'])) {
+        return preg_replace('/\.git$/', '', $dependency['source']['url']);
+    }
+
+    return null;
+}
+
+function writeLicenses(XMLWriter $writer, string $license): void
+{
+    $writer->startElement('licenses');
+
+    foreach (['declared', 'concluded'] as $acknowledgement) {
+        $writer->startElement('expression');
+        $writer->writeAttribute('acknowledgement', $acknowledgement);
+        $writer->text($license);
+        $writer->endElement();
+    }
+
+    $writer->endElement();
+}
+
+function license(string $name, array $licenses): string
+{
+    if ($licenses === []) {
+        abort(
+            sprintf(
+                '%s does not declare a license',
+                $name
+            )
+        );
+    }
+
+    // Multiple licenses in composer.json are disjunctive: the package can be used under any of them,
+    // but the effective license under which PHPUnit uses the package cannot be determined automatically
+    if (count($licenses) > 1) {
+        abort(
+            sprintf(
+                '%s declares more than one license (%s), the effective license cannot be determined',
+                $name,
+                implode(', ', $licenses)
+            )
+        );
+    }
+
+    if (!isSpdxLicenseIdentifier($licenses[0])) {
+        abort(
+            sprintf(
+                '%s declares the license %s, which is not a single SPDX license identifier',
+                $name,
+                $licenses[0]
+            )
+        );
+    }
+
+    return $licenses[0];
 }
 
 function isSpdxLicenseIdentifier(string $license): bool
@@ -429,21 +635,21 @@ function requirements(string $requiredBy, array $require, array $refs): array
     $requirements = [];
 
     foreach (array_keys($require) as $name) {
+        // The bom-ref of a platform component is its Composer name, see writePlatformComponent()
         if (isPlatformPackage($name)) {
+            $requirements[] = $name;
+
             continue;
         }
 
         if (!isset($refs[$name])) {
-            fwrite(
-                STDERR,
+            abort(
                 sprintf(
-                    'Cannot create SBOM: %s requires %s, which is neither a platform package nor a package in composer.lock' . PHP_EOL,
+                    '%s requires %s, which is neither a platform package nor a package in composer.lock',
                     $requiredBy,
                     $name
                 )
             );
-
-            exit(1);
         }
 
         $requirements[] = $refs[$name];
@@ -476,16 +682,39 @@ function writeDependency(XMLWriter $writer, string $ref, array $dependsOn): void
     $writer->endElement();
 }
 
-function writeCompositions(XMLWriter $writer, string $ref): void
+function writeCompositions(XMLWriter $writer, array $bundled, array $external): void
 {
     $writer->startElement('compositions');
+
+    // The dependencies of PHPUnit and of the bundled packages are known completely,
+    // the dependencies of the PHP runtime and its extensions are not resolved
+    writeComposition($writer, 'complete', $bundled);
+    writeComposition($writer, 'unknown', $external);
+
+    $writer->endElement();
+}
+
+function writeComposition(XMLWriter $writer, string $aggregate, array $refs): void
+{
+    sort($refs, SORT_STRING);
+
     $writer->startElement('composition');
-    $writer->writeElement('aggregate', 'complete');
-    $writer->startElement('assemblies');
-    $writer->startElement('assembly');
-    $writer->writeAttribute('ref', $ref);
+    $writer->writeElement('aggregate', $aggregate);
+    $writer->startElement('dependencies');
+
+    foreach ($refs as $ref) {
+        $writer->startElement('dependency');
+        $writer->writeAttribute('ref', $ref);
+        $writer->endElement();
+    }
+
     $writer->endElement();
     $writer->endElement();
-    $writer->endElement();
-    $writer->endElement();
+}
+
+function abort(string $message): void
+{
+    fwrite(STDERR, 'Cannot create SBOM: ' . $message . PHP_EOL);
+
+    exit(1);
 }
