@@ -381,31 +381,13 @@ function writeProperties(XMLWriter $writer, array $properties): void
 
 function writeDependencies(XMLWriter $writer, array $package, string $ref, array $dependencies, array $refs): void
 {
-    $requiredByDependency = [];
-
-    foreach ($dependencies as $dependency) {
-        if (!isset($dependency['require'])) {
-            continue;
-        }
-
-        foreach (array_keys($dependency['require']) as $name) {
-            $requiredByDependency[$name] = true;
-        }
-    }
-
-    $direct = requirements($package['group'] . '/' . $package['name'], $package['require'], $refs);
-
-    // Packages that are added to composer.lock only for the PHAR build, without
-    // being required in composer.json, are direct dependencies of PHPUnit, too
-    foreach ($dependencies as $dependency) {
-        if (!isset($requiredByDependency[$dependency['name']]) && !in_array($refs[$dependency['name']], $direct, true)) {
-            $direct[] = $refs[$dependency['name']];
-        }
-    }
-
     $writer->startElement('dependencies');
 
-    writeDependency($writer, $ref, $direct);
+    writeDependency(
+        $writer,
+        $ref,
+        requirements($package['group'] . '/' . $package['name'], $package['require'], $refs)
+    );
 
     foreach ($dependencies as $dependency) {
         $require = [];
