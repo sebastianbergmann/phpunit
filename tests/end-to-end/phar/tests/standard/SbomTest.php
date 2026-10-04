@@ -21,6 +21,7 @@ use function libxml_use_internal_errors;
 use function preg_match;
 use function sort;
 use function sprintf;
+use function str_starts_with;
 use function strpos;
 use function substr_count;
 use function trim;
@@ -209,7 +210,7 @@ final class SbomTest extends TestCase
             }
 
             foreach (array_keys($require) as $name) {
-                if ($name === 'php' || strpos($name, 'ext-') === 0) {
+                if ($name === 'php' || str_starts_with($name, 'ext-')) {
                     $expected[] = $bomRefs[$package['name']] . ' -> ' . $name;
                 }
             }
