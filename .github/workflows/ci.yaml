@@ -520,7 +520,7 @@ jobs:
         with:
           name: phpunit-snapshot-phar
           overwrite: true
-          path: ./build/artifacts/phpunit-snapshot.phar
+          path: ./build/artifacts/phpunit-snapshot.phar*
           retention-days: 7
 
   test-phar:
