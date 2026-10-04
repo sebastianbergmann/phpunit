@@ -54,7 +54,7 @@
         "sebastian/object-enumerator": "^8.1.0",
         "sebastian/recursion-context": "^8.0.1",
         "sebastian/type": "^7.0.2",
-        "sebastian/version": "^7.0.0",
+        "sebastian/version": "^7.0.1",
         "staabm/side-effects-detector": "^1.0.5"
     },
     "config": {
