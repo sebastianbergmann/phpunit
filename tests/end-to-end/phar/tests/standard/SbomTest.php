@@ -10,7 +10,9 @@
 namespace PHPUnit\TestFixture\Phar;
 
 use function array_keys;
+use function basename;
 use function file_get_contents;
+use function hash_file;
 use function json_decode;
 use function libxml_clear_errors;
 use function libxml_get_errors;
@@ -44,45 +46,9 @@ final class SbomTest extends TestCase
         $this->assertFalse($bom->hasAttribute('serialNumber'));
     }
 
-    /**
-     * The XML Schema files in _files are bom-1.7.xsd and spdx.xsd from
-     * https://github.com/CycloneDX/specification/tree/1.7.2/schema.
-     */
     public function testIsValidAccordingToCycloneDx17XmlSchema(): void
     {
-        $document = $this->xpath()->document;
-
-        // bom-1.7.xsd imports the SPDX license schema from cyclonedx.org, use the local copy instead
-        libxml_set_external_entity_loader(
-            static function (?string $public, ?string $system, array $context): ?string
-            {
-                if ($system === 'http://cyclonedx.org/schema/spdx') {
-                    return __DIR__ . '/_files/spdx.xsd';
-                }
-
-                return $system;
-            }
-        );
-
-        $useInternalErrors = libxml_use_internal_errors(true);
-
-        libxml_clear_errors();
-
-        try {
-            $valid  = $document->schemaValidate(__DIR__ . '/_files/bom-1.7.xsd');
-            $errors = [];
-
-            foreach (libxml_get_errors() as $error) {
-                $errors[] = sprintf('Line %d: %s', $error->line, trim($error->message));
-            }
-        } finally {
-            libxml_clear_errors();
-            libxml_use_internal_errors($useInternalErrors);
-            libxml_set_external_entity_loader(null);
-        }
-
-        $this->assertSame([], $errors);
-        $this->assertTrue($valid);
+        $this->assertValidAccordingToCycloneDx17XmlSchema($this->xpath()->document);
     }
 
     public function testMetadataHasTimestampAuthorToolAndComponent(): void
@@ -320,15 +286,122 @@ final class SbomTest extends TestCase
         }
     }
 
+    public function testSbomForPharFileIsValidAccordingToCycloneDx17XmlSchema(): void
+    {
+        $this->assertValidAccordingToCycloneDx17XmlSchema($this->sbomForPharFile()->document);
+    }
+
+    public function testSbomForPharFileHasSerialNumber(): void
+    {
+        $this->assertSame(
+            1,
+            preg_match(
+                '/^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/',
+                $this->sbomForPharFile()->document->documentElement->getAttribute('serialNumber')
+            )
+        );
+    }
+
+    public function testSbomForPharFileDescribesPharFile(): void
+    {
+        $xpath     = $this->sbomForPharFile();
+        $component = $xpath->query('/c:bom/c:metadata/c:component')->item(0);
+        $filename  = basename(__PHPUNIT_PHAR__);
+        $hash      = hash_file('sha512', __PHPUNIT_PHAR__);
+
+        $this->assertSame($hash, $xpath->evaluate('string(c:hashes/c:hash[@alg="SHA-512"])', $component));
+        $this->assertSame('https://phar.phpunit.de/' . $filename, $xpath->evaluate('string(c:externalReferences/c:reference[@type="distribution"]/c:url)', $component));
+        $this->assertSame($hash, $xpath->evaluate('string(c:externalReferences/c:reference[@type="distribution"]/c:hashes/c:hash[@alg="SHA-512"])', $component));
+        $this->assertSame($filename, $xpath->evaluate('string(c:properties/c:property[@name="bsi:component:filename"])', $component));
+        $this->assertSame('executable', $xpath->evaluate('string(c:properties/c:property[@name="bsi:component:executable"])', $component));
+        $this->assertSame('archive', $xpath->evaluate('string(c:properties/c:property[@name="bsi:component:archive"])', $component));
+        $this->assertSame('structured', $xpath->evaluate('string(c:properties/c:property[@name="bsi:component:structured"])', $component));
+    }
+
+    public function testSbomForPharFileIsEmbeddedSbomWithInformationAboutPharFile(): void
+    {
+        $xpath     = $this->sbomForPharFile();
+        $component = $xpath->query('/c:bom/c:metadata/c:component')->item(0);
+
+        $xpath->document->documentElement->removeAttribute('serialNumber');
+
+        $additions = $xpath->query(
+            '/c:bom/c:metadata/c:tools/c:components/c:component[c:name="phar-sbom"] | ' .
+            'c:hashes | ' .
+            'c:externalReferences/c:reference[@type="distribution"] | ' .
+            'c:properties/c:property[@name="bsi:component:filename" or @name="bsi:component:executable" or @name="bsi:component:archive" or @name="bsi:component:structured"]',
+            $component
+        );
+
+        $this->assertSame(7, $additions->length);
+
+        foreach ($additions as $addition) {
+            $addition->parentNode->removeChild($addition);
+        }
+
+        $this->assertSame($this->xpath()->document->C14N(), $xpath->document->C14N());
+    }
+
     private function xpath(): DOMXPath
     {
-        $document = new DOMDocument;
-        $document->load(__PHPUNIT_PHAR_ROOT__ . '/sbom.xml');
+        return $this->load(__PHPUNIT_PHAR_ROOT__ . '/sbom.xml');
+    }
+
+    private function sbomForPharFile(): DOMXPath
+    {
+        return $this->load(__PHPUNIT_PHAR__ . '.cdx.xml');
+    }
+
+    private function load(string $filename): DOMXPath
+    {
+        $document                     = new DOMDocument;
+        $document->preserveWhiteSpace = false;
+
+        $document->load($filename);
 
         $xpath = new DOMXPath($document);
         $xpath->registerNamespace('c', self::CYCLONEDX_NAMESPACE);
 
         return $xpath;
+    }
+
+    /**
+     * The XML Schema files in _files are bom-1.7.xsd and spdx.xsd from
+     * https://github.com/CycloneDX/specification/tree/1.7.2/schema.
+     */
+    private function assertValidAccordingToCycloneDx17XmlSchema(DOMDocument $document): void
+    {
+        // bom-1.7.xsd imports the SPDX license schema from cyclonedx.org, use the local copy instead
+        libxml_set_external_entity_loader(
+            static function (?string $public, ?string $system, array $context): ?string
+            {
+                if ($system === 'http://cyclonedx.org/schema/spdx') {
+                    return __DIR__ . '/_files/spdx.xsd';
+                }
+
+                return $system;
+            }
+        );
+
+        $useInternalErrors = libxml_use_internal_errors(true);
+
+        libxml_clear_errors();
+
+        try {
+            $valid  = $document->schemaValidate(__DIR__ . '/_files/bom-1.7.xsd');
+            $errors = [];
+
+            foreach (libxml_get_errors() as $error) {
+                $errors[] = sprintf('Line %d: %s', $error->line, trim($error->message));
+            }
+        } finally {
+            libxml_clear_errors();
+            libxml_use_internal_errors($useInternalErrors);
+            libxml_set_external_entity_loader(null);
+        }
+
+        $this->assertSame([], $errors);
+        $this->assertTrue($valid);
     }
 
     private function packages(): array
