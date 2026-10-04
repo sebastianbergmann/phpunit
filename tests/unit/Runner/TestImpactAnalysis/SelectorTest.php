@@ -93,7 +93,7 @@ final class SelectorTest extends TestCase
 
     public function testRunsEveryTestWhenNothingWasRecorded(): void
     {
-        $selection = $this->selectorFor($this->temporaryDirectory(), [])->select($this->tests(), []);
+        $selection = $this->selectorFor($this->temporaryDirectory(), [])->select($this->tests(), [], []);
 
         $this->assertTrue($selection->isEverything());
         $this->assertSame('no test impact data has been recorded', $selection->reason());
@@ -118,7 +118,7 @@ final class SelectorTest extends TestCase
             new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions()),
             Provenance::ObservedExecution,
             new DefaultTestRunHistory($directory . DIRECTORY_SEPARATOR . 'history'),
-        )->select($this->tests(), [$money]);
+        )->select($this->tests(), [$money], []);
 
         $this->assertTrue($selection->isEverything());
         $this->assertSame('the configuration changed since the test impact data was recorded', $selection->reason());
@@ -129,7 +129,7 @@ final class SelectorTest extends TestCase
         $directory = $this->temporaryDirectory();
         $source    = $this->writeSourceFile($directory, 'Money', 'first');
 
-        $selection = $this->selectorFor($directory, $this->everyTestDependsOn($source), [$source])->select($this->tests(), [$source]);
+        $selection = $this->selectorFor($directory, $this->everyTestDependsOn($source), [$source])->select($this->tests(), [$source], []);
 
         $this->assertFalse($selection->isEverything());
         $this->assertSame([$this->phpt()], $selection->tests());
@@ -154,7 +154,7 @@ final class SelectorTest extends TestCase
 
         $this->writeSourceFile($directory, 'Money', 'second');
 
-        $selection = $selector->select($this->tests(), [$money, $formatter]);
+        $selection = $selector->select($this->tests(), [$money, $formatter], []);
 
         $this->assertSame(
             $this->sorted([
@@ -188,7 +188,7 @@ final class SelectorTest extends TestCase
 
         $this->writeSourceFile($directory, 'Money', 'second');
 
-        $selection = $selector->select($this->tests(), [$money, $formatter]);
+        $selection = $selector->select($this->tests(), [$money, $formatter], []);
 
         $this->assertSame(
             $this->sorted([
@@ -228,6 +228,7 @@ final class SelectorTest extends TestCase
         $selection = new Selector($file, Provenance::ObservedExecution, new DefaultTestRunHistory($directory . DIRECTORY_SEPARATOR . 'history'))->select(
             $this->testsOf(ClassDependentSelectionTest::class, UnrelatedSelectionTest::class),
             [$money, $formatter],
+            [],
         );
 
         $this->assertSame(
@@ -260,6 +261,7 @@ final class SelectorTest extends TestCase
         $selection = new Selector($file, Provenance::ObservedExecution, new DefaultTestRunHistory($directory . DIRECTORY_SEPARATOR . 'history'))->select(
             $this->testsOf(ClassDependentSelectionTest::class),
             [$formatter],
+            [],
         );
 
         $this->assertSame([$dependent], $selection->tests());
@@ -287,7 +289,7 @@ final class SelectorTest extends TestCase
 
         $this->writeSourceFile($directory, 'Money', 'second');
 
-        $explanation = $selector->explain($this->tests(), [$money, $formatter]);
+        $explanation = $selector->explain($this->tests(), [$money, $formatter], []);
 
         $this->assertSame(
             $this->sorted([
@@ -323,7 +325,7 @@ final class SelectorTest extends TestCase
 
         $this->writeSourceFile($directory, 'Money', 'second');
 
-        $explanation = $selector->explain($this->testsOf(DependencyChainSelectionTest::class), [$money, $formatter]);
+        $explanation = $selector->explain($this->testsOf(DependencyChainSelectionTest::class), [$money, $formatter], []);
 
         $this->assertSame(
             $this->sorted([
@@ -359,7 +361,7 @@ final class SelectorTest extends TestCase
 
         $this->writeSourceFile($directory, 'Formatter', 'second');
 
-        $selection = $selector->select($this->testsOf(DependencyChainSelectionTest::class), [$money, $formatter]);
+        $selection = $selector->select($this->testsOf(DependencyChainSelectionTest::class), [$money, $formatter], []);
 
         $this->assertSame(
             $this->sorted([
@@ -394,6 +396,7 @@ final class SelectorTest extends TestCase
         $selection = $selector->select(
             $this->testsOf(ClassDependentSelectionTest::class, UnrelatedSelectionTest::class),
             [$money, $formatter],
+            [],
         );
 
         $this->assertSame(
@@ -411,7 +414,7 @@ final class SelectorTest extends TestCase
             $directory,
             [UnrelatedSelectionTest::class . '::testFormats' => [$money]],
             [$money],
-        )->select($this->tests(), [$money]);
+        )->select($this->tests(), [$money], []);
 
         $this->assertSame(
             $this->sorted([
@@ -435,7 +438,7 @@ final class SelectorTest extends TestCase
             TestStatus::failure('for the sake of this test'),
         );
 
-        $selection = $this->selectorFor($directory, $this->everyTestDependsOn($money), [$money], $testRunHistory)->select($this->tests(), [$money]);
+        $selection = $this->selectorFor($directory, $this->everyTestDependsOn($money), [$money], $testRunHistory)->select($this->tests(), [$money], []);
 
         $this->assertSame(
             $this->sorted([UnrelatedSelectionTest::class . '::testFormats', $this->phpt()]),
@@ -459,7 +462,7 @@ final class SelectorTest extends TestCase
             [$money, $formatter],
         );
 
-        $selection = $selector->select($this->tests(), [$money, $formatter], [$formatter]);
+        $selection = $selector->select($this->tests(), [$money, $formatter], [], [$formatter]);
 
         $this->assertSame(
             $this->sorted([UnrelatedSelectionTest::class . '::testFormats', $this->phpt()]),
@@ -483,7 +486,7 @@ final class SelectorTest extends TestCase
             [$money, $formatter],
         );
 
-        $selection = $selector->select($this->tests(), [$money, $formatter], [$directory]);
+        $selection = $selector->select($this->tests(), [$money, $formatter], [], [$directory]);
 
         $this->assertCount(4, $selection->tests());
     }
@@ -510,7 +513,7 @@ final class SelectorTest extends TestCase
          */
         $this->writeSourceFile($directory, 'Money', 'second');
 
-        $selection = $selector->select($this->tests(), [$money, $formatter], [$formatter]);
+        $selection = $selector->select($this->tests(), [$money, $formatter], [], [$formatter]);
 
         $this->assertSame(
             $this->sorted([UnrelatedSelectionTest::class . '::testFormats', $this->phpt()]),
@@ -526,6 +529,7 @@ final class SelectorTest extends TestCase
         $selection = $this->selectorFor($directory, $this->everyTestDependsOn($money), [$money])->select(
             $this->tests(),
             [$money],
+            [],
             [$directory . DIRECTORY_SEPARATOR . 'NotRecorded.php'],
         );
 
@@ -539,7 +543,7 @@ final class SelectorTest extends TestCase
         $money     = $this->writeSourceFile($directory, 'Money', 'first');
         $added     = $this->writeSourceFile($directory, 'Added', 'first');
 
-        $selection = $this->selectorFor($directory, $this->everyTestDependsOn($money), [$money])->select($this->tests(), [$money, $added]);
+        $selection = $this->selectorFor($directory, $this->everyTestDependsOn($money), [$money])->select($this->tests(), [$money, $added], []);
 
         $this->assertTrue($selection->isEverything());
         $this->assertStringContainsString('Added.php was not there', $selection->reason());
@@ -556,7 +560,7 @@ final class SelectorTest extends TestCase
             [$money],
             null,
             Provenance::CoverageTargets,
-        )->select($this->tests(), [$money]);
+        )->select($this->tests(), [$money], []);
 
         $this->assertTrue($selection->isEverything());
         $this->assertStringContainsString('recorded from the code coverage targets the tests declare', $selection->reason());
@@ -574,7 +578,7 @@ final class SelectorTest extends TestCase
             null,
             Provenance::ObservedExecution,
             Provenance::CoverageTargets,
-        )->select($this->tests(), [$money]);
+        )->select($this->tests(), [$money], []);
 
         $this->assertTrue($selection->isEverything());
         $this->assertStringContainsString('recorded from what the tests executed', $selection->reason());
@@ -590,7 +594,7 @@ final class SelectorTest extends TestCase
 
         $this->writeSourceFile($directory, 'Bootstrapped', 'second');
 
-        $explanation = $selector->explain($this->tests(), [$money, $bootstrapped]);
+        $explanation = $selector->explain($this->tests(), [$money, $bootstrapped], []);
 
         $this->assertTrue($explanation->isEverything());
         $this->assertSame($bootstrapped . ' changed and was executed outside of any test', $explanation->reasonEverythingIsRun());
@@ -605,6 +609,7 @@ final class SelectorTest extends TestCase
         $explanation = $this->selectorThatKnowsWhatWasExecutedOutsideOfTests($directory, $money, $bootstrapped)->explain(
             $this->tests(),
             [$money, $bootstrapped],
+            [],
             [$bootstrapped],
         );
 
@@ -622,10 +627,41 @@ final class SelectorTest extends TestCase
 
         $this->writeSourceFile($directory, 'Untested', 'second');
 
-        $selection = $selector->select($this->tests(), [$money, $untested]);
+        $selection = $selector->select($this->tests(), [$money, $untested], []);
 
         $this->assertTrue($selection->isEverything());
         $this->assertStringContainsString('Untested.php changed and no test is recorded as depending on it', $selection->reason());
+    }
+
+    public function testRunsEveryTestWhenAWatchedFileNoTestDependsOnChanged(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $money     = $this->writeSourceFile($directory, 'Money', 'first');
+        $helper    = $this->writeSourceFile($directory, 'Helper', 'first');
+
+        $selector = $this->selectorFor($directory, $this->everyTestDependsOn($money), [$money, $helper]);
+
+        $this->writeSourceFile($directory, 'Helper', 'second');
+
+        $selection = $selector->select($this->tests(), [$money], [$helper]);
+
+        $this->assertTrue($selection->isEverything());
+        $this->assertStringContainsString('Helper.php changed and no test is recorded as depending on it', $selection->reason());
+    }
+
+    public function testRunsEveryTestWhenAWatchedFileWasNotThereWhenWhatIsKnownWasRecorded(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $money     = $this->writeSourceFile($directory, 'Money', 'first');
+
+        $selector = $this->selectorFor($directory, $this->everyTestDependsOn($money), [$money]);
+
+        $helper = $this->writeSourceFile($directory, 'Helper', 'first');
+
+        $selection = $selector->select($this->tests(), [$money], [$helper]);
+
+        $this->assertTrue($selection->isEverything());
+        $this->assertStringContainsString('Helper.php was not there, or was not watched, when what is known was recorded', $selection->reason());
     }
 
     /**

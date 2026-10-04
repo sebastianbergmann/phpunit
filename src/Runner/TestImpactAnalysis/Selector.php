@@ -61,11 +61,12 @@ final class Selector
      *
      * @param list<PhptTestCase|TestCase> $tests        the tests that would be run
      * @param list<non-empty-string>      $sourceFiles  the files that are subject to code coverage analysis
+     * @param list<non-empty-string>      $watchedFiles the files a change to is noticed even though they are not subject to code coverage analysis
      * @param ?list<non-empty-string>     $changedPaths the files and directories that changed, when they are named
      */
-    public function select(array $tests, array $sourceFiles, ?array $changedPaths = null): Selection
+    public function select(array $tests, array $sourceFiles, array $watchedFiles, ?array $changedPaths = null): Selection
     {
-        $explanation = $this->explain($tests, $sourceFiles, $changedPaths);
+        $explanation = $this->explain($tests, $sourceFiles, $watchedFiles, $changedPaths);
 
         if ($explanation->isEverything()) {
             return Selection::everything($explanation->reasonEverythingIsRun(), $explanation->recordedAt());
@@ -96,9 +97,10 @@ final class Selector
      *
      * @param list<PhptTestCase|TestCase> $tests        the tests that would be run
      * @param list<non-empty-string>      $sourceFiles  the files that are subject to code coverage analysis
+     * @param list<non-empty-string>      $watchedFiles the files a change to is noticed even though they are not subject to code coverage analysis
      * @param ?list<non-empty-string>     $changedPaths the files and directories that changed, when they are named
      */
-    public function explain(array $tests, array $sourceFiles, ?array $changedPaths = null): Explanation
+    public function explain(array $tests, array $sourceFiles, array $watchedFiles, ?array $changedPaths = null): Explanation
     {
         $recording = $this->testImpactDataFile->recording($this->provenance);
 
@@ -116,7 +118,7 @@ final class Selector
             $change = $recording->changeExecutedOutsideOfTests($this->hasher);
 
             if ($change === null) {
-                $change = $recording->changeNothingIsKnownAbout($this->hasher, $sourceFiles);
+                $change = $recording->changeNothingIsKnownAbout($this->hasher, $sourceFiles, $watchedFiles);
             }
         } else {
             $change = $recording->pathExecutedOutsideOfTests($changedPaths);

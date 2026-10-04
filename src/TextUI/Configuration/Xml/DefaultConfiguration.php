@@ -18,6 +18,7 @@ use PHPUnit\TextUI\Configuration\GroupCollection;
 use PHPUnit\TextUI\Configuration\IniSettingCollection;
 use PHPUnit\TextUI\Configuration\Php;
 use PHPUnit\TextUI\Configuration\Source;
+use PHPUnit\TextUI\Configuration\TestImpactAnalysis;
 use PHPUnit\TextUI\Configuration\TestSuiteCollection;
 use PHPUnit\TextUI\Configuration\VariableCollection;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\CodeCoverage;
@@ -191,6 +192,10 @@ final readonly class DefaultConfiguration extends Configuration
                 false,
             ),
             TestSuiteCollection::fromArray([]),
+            new TestImpactAnalysis(
+                FilterDirectoryCollection::fromArray([]),
+                FilterFileCollection::fromArray([]),
+            ),
         );
     }
 }
