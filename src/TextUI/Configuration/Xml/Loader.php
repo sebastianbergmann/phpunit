@@ -32,6 +32,7 @@ use DOMNode;
 use DOMNodeList;
 use DOMXPath;
 use PHPUnit\Runner\Version;
+use PHPUnit\TextUI\Configuration\AddedFilesAreReachedThroughChanges;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\Constant;
 use PHPUnit\TextUI\Configuration\ConstantCollection;
@@ -471,6 +472,12 @@ final readonly class Loader
         return new TestImpactAnalysis(
             $this->readFilterDirectories($filename, $xpath, 'testImpactAnalysis/watch/directory'),
             $this->readFilterFiles($filename, $xpath, 'testImpactAnalysis/watch/file'),
+            new AddedFilesAreReachedThroughChanges(
+                $this->readFilterDirectories($filename, $xpath, 'testImpactAnalysis/addedFilesAreReachedThroughChanges/include/directory'),
+                $this->readFilterFiles($filename, $xpath, 'testImpactAnalysis/addedFilesAreReachedThroughChanges/include/file'),
+                $this->readFilterDirectories($filename, $xpath, 'testImpactAnalysis/addedFilesAreReachedThroughChanges/exclude/directory'),
+                $this->readFilterFiles($filename, $xpath, 'testImpactAnalysis/addedFilesAreReachedThroughChanges/exclude/file'),
+            ),
         );
     }
 
