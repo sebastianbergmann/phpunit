@@ -152,7 +152,7 @@ final readonly class Reflection
         $methodsByClass = [];
 
         foreach ($class->getMethods($filter) as $method) {
-            $declaringClassName = $method->getDeclaringClass()->getName();
+            $declaringClassName = $method->name;
 
             if ($declaringClassName === TestCase::class) {
                 continue;
