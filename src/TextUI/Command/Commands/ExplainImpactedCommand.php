@@ -87,7 +87,8 @@ final readonly class ExplainImpactedCommand implements Command
             $this->explanation->numberOfTestsThatWereConsidered(),
         );
 
-        if ($this->explanation->numberOfTestsThatAreRun() === 0) {
+        if ($this->explanation->numberOfTestsThatAreRun() === 0 &&
+            $this->explanation->addedFilesThatAreReachedThroughChanges() === []) {
             return Result::from($buffer . PHP_EOL);
         }
 
@@ -97,7 +98,38 @@ final readonly class ExplainImpactedCommand implements Command
             $buffer .= $this->section($reason);
         }
 
-        return Result::from($buffer);
+        return Result::from($buffer . $this->addedFiles());
+    }
+
+    /**
+     * A file that was added and that no test is recorded as depending on runs
+     * every test, unless the configuration says that a file that is added
+     * where it is can only affect a test through a file that was changed to
+     * use it. Which files that kept from running every test is said, because
+     * it rests on what the configuration says and not on what was recorded.
+     */
+    private function addedFiles(): string
+    {
+        $files = $this->explanation->addedFilesThatAreReachedThroughChanges();
+
+        if ($files === []) {
+            return '';
+        }
+
+        if (count($files) === 1) {
+            $buffer = '1 file was added that can only affect a test through a file that was changed to use it, as configured in <addedFilesAreReachedThroughChanges>:' . PHP_EOL;
+        } else {
+            $buffer = sprintf(
+                '%d files were added that can only affect a test through a file that was changed to use them, as configured in <addedFilesAreReachedThroughChanges>:' . PHP_EOL,
+                count($files),
+            );
+        }
+
+        foreach ($files as $file) {
+            $buffer .= ' - ' . $file . PHP_EOL;
+        }
+
+        return $buffer . PHP_EOL;
     }
 
     private function section(SelectionReason $reason): string

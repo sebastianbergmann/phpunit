@@ -10,6 +10,7 @@
 namespace PHPUnit\TextUI\XmlConfiguration;
 
 use PHPUnit\Runner\TestSuiteSorter;
+use PHPUnit\TextUI\Configuration\AddedFilesAreReachedThroughChanges;
 use PHPUnit\TextUI\Configuration\ConstantCollection;
 use PHPUnit\TextUI\Configuration\DirectoryCollection;
 use PHPUnit\TextUI\Configuration\ExtensionBootstrapCollection;
@@ -197,6 +198,12 @@ final readonly class DefaultConfiguration extends Configuration
             new TestImpactAnalysis(
                 FilterDirectoryCollection::fromArray([]),
                 FilterFileCollection::fromArray([]),
+                new AddedFilesAreReachedThroughChanges(
+                    FilterDirectoryCollection::fromArray([]),
+                    FilterFileCollection::fromArray([]),
+                    FilterDirectoryCollection::fromArray([]),
+                    FilterFileCollection::fromArray([]),
+                ),
             ),
         );
     }

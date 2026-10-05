@@ -16,6 +16,10 @@ namespace PHPUnit\TextUI\Configuration;
  * them that no test is recorded as depending on is a change nothing is known
  * about, and every test is run.
  *
+ * And the files that, when they are added, can only affect a test through a
+ * file that was changed to use them: such a file that no test is recorded as
+ * depending on does not make every test run.
+ *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @immutable
@@ -24,11 +28,13 @@ final readonly class TestImpactAnalysis
 {
     private FilterDirectoryCollection $watchedDirectories;
     private FilterFileCollection $watchedFiles;
+    private AddedFilesAreReachedThroughChanges $addedFilesAreReachedThroughChanges;
 
-    public function __construct(FilterDirectoryCollection $watchedDirectories, FilterFileCollection $watchedFiles)
+    public function __construct(FilterDirectoryCollection $watchedDirectories, FilterFileCollection $watchedFiles, AddedFilesAreReachedThroughChanges $addedFilesAreReachedThroughChanges)
     {
-        $this->watchedDirectories = $watchedDirectories;
-        $this->watchedFiles       = $watchedFiles;
+        $this->watchedDirectories                 = $watchedDirectories;
+        $this->watchedFiles                       = $watchedFiles;
+        $this->addedFilesAreReachedThroughChanges = $addedFilesAreReachedThroughChanges;
     }
 
     public function watchedDirectories(): FilterDirectoryCollection
@@ -39,5 +45,10 @@ final readonly class TestImpactAnalysis
     public function watchedFiles(): FilterFileCollection
     {
         return $this->watchedFiles;
+    }
+
+    public function addedFilesAreReachedThroughChanges(): AddedFilesAreReachedThroughChanges
+    {
+        return $this->addedFilesAreReachedThroughChanges;
     }
 }

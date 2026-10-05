@@ -20,6 +20,9 @@ use function is_file;
 use function is_string;
 use function sort;
 use PHPUnit\Runner\TestIndex\FileHasher;
+use PHPUnit\TextUI\Configuration\AddedFilesAreReachedThroughChanges;
+use PHPUnit\TextUI\Configuration\FilterDirectoryCollection;
+use PHPUnit\TextUI\Configuration\FilterFileCollection;
 use PHPUnit\TextUI\Configuration\Source;
 
 /**
@@ -27,10 +30,12 @@ use PHPUnit\TextUI\Configuration\Source;
  *
  * A test run answers what a test depends on for the settings of PHPUnit that
  * can change what code a test executes, for one bootstrap of the test suite,
- * for one idea of which code is first-party code, and for one set of installed
- * packages. When any of those is not what it was, what was recorded describes
- * a state of affairs that no longer exists, and the answer is not that some
- * entries are stale: it is that none of them can be relied on.
+ * for one idea of which code is first-party code, for one idea of where a file
+ * that is added can only affect a test through a file that was changed to use
+ * it, and for one set of installed packages. When any of those is not what it
+ * was, what was recorded describes a state of affairs that no longer exists,
+ * and the answer is not that some entries are stale: it is that none of them
+ * can be relied on.
  *
  * Neither the settings nor the code that is first-party code are taken from
  * the configuration file: the command line changes both without the file
@@ -62,6 +67,11 @@ final readonly class Assumptions
     private string $source;
 
     /**
+     * @var non-empty-string
+     */
+    private string $addedFilesAreReachedThroughChanges;
+
+    /**
      * @var ?non-empty-string
      */
     private ?string $installedPackages;
@@ -78,7 +88,7 @@ final readonly class Assumptions
      *
      * @param list<non-empty-string> $bootstrapFiles
      */
-    public static function from(BaseDirectory $baseDirectory, ExecutionSettings $settings, Source $source, array $bootstrapFiles, ?FileHasher $hasher = null): self
+    public static function from(BaseDirectory $baseDirectory, ExecutionSettings $settings, Source $source, AddedFilesAreReachedThroughChanges $addedFilesAreReachedThroughChanges, array $bootstrapFiles, ?FileHasher $hasher = null): self
     {
         if ($hasher === null) {
             $hasher = new FileHasher;
@@ -96,6 +106,7 @@ final readonly class Assumptions
             $settings->hash(),
             self::hashOfBootstrapFiles($bootstrapFiles, $hasher),
             self::hashOf($source, $baseDirectory),
+            self::hashOfWhereAddedFilesAreReachedThroughChanges($addedFilesAreReachedThroughChanges, $baseDirectory),
             $installedPackages,
         );
     }
@@ -105,14 +116,15 @@ final readonly class Assumptions
      */
     public static function fromArray(mixed $data): ?self
     {
-        if (!is_array($data) || !array_key_exists('settings', $data) || !array_key_exists('bootstrap', $data) || !array_key_exists('source', $data) || !array_key_exists('installedPackages', $data)) {
+        if (!is_array($data) || !array_key_exists('settings', $data) || !array_key_exists('bootstrap', $data) || !array_key_exists('source', $data) || !array_key_exists('addedFilesAreReachedThroughChanges', $data) || !array_key_exists('installedPackages', $data)) {
             return null;
         }
 
-        $settings          = $data['settings'];
-        $bootstrap         = $data['bootstrap'];
-        $source            = $data['source'];
-        $installedPackages = $data['installedPackages'];
+        $settings                           = $data['settings'];
+        $bootstrap                          = $data['bootstrap'];
+        $source                             = $data['source'];
+        $addedFilesAreReachedThroughChanges = $data['addedFilesAreReachedThroughChanges'];
+        $installedPackages                  = $data['installedPackages'];
 
         if (!is_string($settings) || $settings === '') {
             return null;
@@ -126,37 +138,44 @@ final readonly class Assumptions
             return null;
         }
 
+        if (!is_string($addedFilesAreReachedThroughChanges) || $addedFilesAreReachedThroughChanges === '') {
+            return null;
+        }
+
         if ($installedPackages !== null && (!is_string($installedPackages) || $installedPackages === '')) {
             return null;
         }
 
-        return new self($settings, $bootstrap, $source, $installedPackages);
+        return new self($settings, $bootstrap, $source, $addedFilesAreReachedThroughChanges, $installedPackages);
     }
 
     /**
      * @param non-empty-string  $settings
      * @param ?non-empty-string $bootstrap
      * @param non-empty-string  $source
+     * @param non-empty-string  $addedFilesAreReachedThroughChanges
      * @param ?non-empty-string $installedPackages
      */
-    private function __construct(string $settings, ?string $bootstrap, string $source, ?string $installedPackages)
+    private function __construct(string $settings, ?string $bootstrap, string $source, string $addedFilesAreReachedThroughChanges, ?string $installedPackages)
     {
-        $this->settings          = $settings;
-        $this->bootstrap         = $bootstrap;
-        $this->source            = $source;
-        $this->installedPackages = $installedPackages;
+        $this->settings                           = $settings;
+        $this->bootstrap                          = $bootstrap;
+        $this->source                             = $source;
+        $this->addedFilesAreReachedThroughChanges = $addedFilesAreReachedThroughChanges;
+        $this->installedPackages                  = $installedPackages;
     }
 
     /**
-     * @return array{settings: non-empty-string, bootstrap: ?non-empty-string, source: non-empty-string, installedPackages: ?non-empty-string}
+     * @return array{settings: non-empty-string, bootstrap: ?non-empty-string, source: non-empty-string, addedFilesAreReachedThroughChanges: non-empty-string, installedPackages: ?non-empty-string}
      */
     public function asArray(): array
     {
         return [
-            'settings'          => $this->settings,
-            'bootstrap'         => $this->bootstrap,
-            'source'            => $this->source,
-            'installedPackages' => $this->installedPackages,
+            'settings'                           => $this->settings,
+            'bootstrap'                          => $this->bootstrap,
+            'source'                             => $this->source,
+            'addedFilesAreReachedThroughChanges' => $this->addedFilesAreReachedThroughChanges,
+            'installedPackages'                  => $this->installedPackages,
         ];
     }
 
@@ -182,6 +201,10 @@ final readonly class Assumptions
 
         if ($this->source !== $other->source) {
             return DiscardReason::FirstPartyCodeChanged;
+        }
+
+        if ($this->addedFilesAreReachedThroughChanges !== $other->addedFilesAreReachedThroughChanges) {
+            return DiscardReason::WhereAddedFilesAreReachedThroughChangesChanged;
         }
 
         if ($this->installedPackages !== $other->installedPackages) {
@@ -249,21 +272,59 @@ final readonly class Assumptions
      */
     private static function hashOf(Source $source, BaseDirectory $baseDirectory): string
     {
+        return self::hashOfPaths(
+            $source->includeDirectories(),
+            $source->includeFiles(),
+            $source->excludeDirectories(),
+            $source->excludeFiles(),
+            $baseDirectory,
+        );
+    }
+
+    /**
+     * A file that nothing was recorded about is taken to have been added since
+     * the recording was made, and a file that was added where an added file
+     * can only affect a test through a file that was changed to use it does
+     * not make every test run. That nothing was recorded about such a file
+     * means that it was added only because every test run records it, and not
+     * only a test run that runs every test there is. What was recorded while
+     * the configuration said something else may not include a file that was
+     * there all along: that file would be taken to have been added, and a
+     * change to it would not make a single test run.
+     *
+     * @return non-empty-string
+     */
+    private static function hashOfWhereAddedFilesAreReachedThroughChanges(AddedFilesAreReachedThroughChanges $configuration, BaseDirectory $baseDirectory): string
+    {
+        return self::hashOfPaths(
+            $configuration->includeDirectories(),
+            $configuration->includeFiles(),
+            $configuration->excludeDirectories(),
+            $configuration->excludeFiles(),
+            $baseDirectory,
+        );
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    private static function hashOfPaths(FilterDirectoryCollection $includeDirectories, FilterFileCollection $includeFiles, FilterDirectoryCollection $excludeDirectories, FilterFileCollection $excludeFiles, BaseDirectory $baseDirectory): string
+    {
         $description = [];
 
-        foreach ($source->includeDirectories() as $directory) {
+        foreach ($includeDirectories as $directory) {
             $description[] = 'include-directory ' . $baseDirectory->relativePathOf($directory->path()) . ' ' . $directory->prefix() . ' ' . $directory->suffix();
         }
 
-        foreach ($source->includeFiles() as $file) {
+        foreach ($includeFiles as $file) {
             $description[] = 'include-file ' . $baseDirectory->relativePathOf($file->path());
         }
 
-        foreach ($source->excludeDirectories() as $directory) {
+        foreach ($excludeDirectories as $directory) {
             $description[] = 'exclude-directory ' . $baseDirectory->relativePathOf($directory->path()) . ' ' . $directory->prefix() . ' ' . $directory->suffix();
         }
 
-        foreach ($source->excludeFiles() as $file) {
+        foreach ($excludeFiles as $file) {
             $description[] = 'exclude-file ' . $baseDirectory->relativePathOf($file->path());
         }
 

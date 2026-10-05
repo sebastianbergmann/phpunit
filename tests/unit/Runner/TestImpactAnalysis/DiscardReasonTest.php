@@ -33,6 +33,7 @@ final class DiscardReasonTest extends TestCase
             'configuration changed'                    => [DiscardReason::ConfigurationChanged, 'the configuration changed since the test impact data was recorded'],
             'bootstrap script changed'                 => [DiscardReason::BootstrapScriptChanged, 'a bootstrap script changed since the test impact data was recorded'],
             'first-party code changed'                 => [DiscardReason::FirstPartyCodeChanged, 'what is first-party code changed since the test impact data was recorded'],
+            'where added files are reached changed'    => [DiscardReason::WhereAddedFilesAreReachedThroughChangesChanged, 'where an added file can only affect a test through a file that was changed to use it changed since the test impact data was recorded'],
             'installed packages changed'               => [DiscardReason::InstalledPackagesChanged, 'composer.lock changed since the test impact data was recorded'],
         ];
     }
