@@ -68,11 +68,13 @@ final class Facade
                 $configuration->displayDetailsOnPhpunitNotices() || $configuration->displayDetailsOnAllIssues(),
             );
 
-            new CompactProgressPrinter(
-                $printer,
-                EventFacade::instance(),
-                !$configuration->disallowTestOutput(),
-            );
+            if (!$extensionCapabilities->replacesProgressOutput()) {
+                new CompactProgressPrinter(
+                    $printer,
+                    EventFacade::instance(),
+                    !$configuration->disallowTestOutput(),
+                );
+            }
         } else {
             self::createUnexpectedOutputPrinter();
 
