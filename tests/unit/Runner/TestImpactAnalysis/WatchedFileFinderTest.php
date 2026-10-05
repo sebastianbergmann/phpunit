@@ -17,6 +17,7 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TextUI\Configuration\AddedFilesAreReachedThroughChanges;
 use PHPUnit\TextUI\Configuration\File;
 use PHPUnit\TextUI\Configuration\FileCollection;
 use PHPUnit\TextUI\Configuration\FilterDirectory;
@@ -34,6 +35,7 @@ use PHPUnit\Util\VersionComparisonOperator;
 
 #[CoversClass(WatchedFileFinder::class)]
 #[UsesClass(TestImpactAnalysis::class)]
+#[UsesClass(AddedFilesAreReachedThroughChanges::class)]
 #[Small]
 #[Group('test-runner')]
 #[Group('test-runner/test-impact-analysis')]
@@ -105,6 +107,7 @@ final class WatchedFileFinderTest extends TestCase
                             new FilterFile(self::path('does-not-exist.ini')),
                         ],
                     ),
+                    self::noAddedFilesAreReachedThroughChanges(),
                 ),
             ),
         );
@@ -127,6 +130,7 @@ final class WatchedFileFinderTest extends TestCase
                         ],
                     ),
                     FilterFileCollection::fromArray([]),
+                    self::noAddedFilesAreReachedThroughChanges(),
                 ),
             ),
         );
@@ -169,11 +173,22 @@ final class WatchedFileFinderTest extends TestCase
         );
     }
 
+    private static function noAddedFilesAreReachedThroughChanges(): AddedFilesAreReachedThroughChanges
+    {
+        return new AddedFilesAreReachedThroughChanges(
+            FilterDirectoryCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
+            FilterDirectoryCollection::fromArray([]),
+            FilterFileCollection::fromArray([]),
+        );
+    }
+
     private static function nothingIsWatched(): TestImpactAnalysis
     {
         return new TestImpactAnalysis(
             FilterDirectoryCollection::fromArray([]),
             FilterFileCollection::fromArray([]),
+            self::noAddedFilesAreReachedThroughChanges(),
         );
     }
 

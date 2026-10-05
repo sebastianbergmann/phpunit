@@ -52,6 +52,7 @@ final class ExplainImpactedCommandTest extends TestCase
                 ],
                 10,
                 $this->recordedAt(),
+                [],
             ),
             Provenance::ObservedExecution,
         )->execute();
@@ -92,6 +93,7 @@ final class ExplainImpactedCommandTest extends TestCase
                 ],
                 8,
                 $this->recordedAt(),
+                [],
             ),
             Provenance::ObservedExecution,
         )->execute()->output();
@@ -116,6 +118,7 @@ final class ExplainImpactedCommandTest extends TestCase
                 ],
                 6,
                 $this->recordedAt(),
+                [],
             ),
             Provenance::ObservedExecution,
         )->execute()->output();
@@ -144,6 +147,7 @@ final class ExplainImpactedCommandTest extends TestCase
                 ],
                 3,
                 $this->recordedAt(),
+                [],
             ),
             Provenance::ObservedExecution,
         )->execute()->output();
@@ -170,6 +174,7 @@ final class ExplainImpactedCommandTest extends TestCase
                 ['FooTest::testOne' => ExplainedTest::from('FooTest::testOne', SelectionReason::NothingIsKnownAboutIt)],
                 1,
                 $this->recordedAt(),
+                [],
             ),
             Provenance::CoverageTargets,
         )->execute()->output();
@@ -211,7 +216,7 @@ final class ExplainImpactedCommandTest extends TestCase
     public function testSaysThatNoTestCanBeAffectedByWhatChanged(): void
     {
         $output = new ExplainImpactedCommand(
-            Explanation::of([], 10, $this->recordedAt()),
+            Explanation::of([], 10, $this->recordedAt(), []),
             Provenance::ObservedExecution,
         )->execute()->output();
 
@@ -219,6 +224,56 @@ final class ExplainImpactedCommandTest extends TestCase
             'Recorded at ' . $this->recordedAt()->asString() . ' from what the tests executed and, for a test that ran in a process of its own, what that process loaded.' . PHP_EOL .
             PHP_EOL .
             '0 of 10 tests can be affected by what changed' . PHP_EOL,
+            $output,
+        );
+    }
+
+    public function testReportsTheFilesThatWereAddedWhereAddedFilesAreReachedThroughChanges(): void
+    {
+        $output = new ExplainImpactedCommand(
+            Explanation::of(
+                [
+                    'FooTest::testOne' => ExplainedTest::from('FooTest::testOne', SelectionReason::DependsOnSomethingThatChanged, '/src/Foo.php'),
+                ],
+                10,
+                $this->recordedAt(),
+                ['/src/Jobs/SendInvoice.php', '/src/Services/Invoicing.php'],
+            ),
+            Provenance::ObservedExecution,
+        )->execute()->output();
+
+        $this->assertSame(
+            'Recorded at ' . $this->recordedAt()->asString() . ' from what the tests executed and, for a test that ran in a process of its own, what that process loaded.' . PHP_EOL .
+            PHP_EOL .
+            '1 of 10 tests can be affected by what changed.' . PHP_EOL .
+            PHP_EOL .
+            '1 test depends on something that changed:' . PHP_EOL .
+            ' - FooTest::testOne' . PHP_EOL .
+            '   /src/Foo.php' . PHP_EOL .
+            PHP_EOL .
+            '2 files were added that can only affect a test through a file that was changed to use them, as configured in <addedFilesAreReachedThroughChanges>:' . PHP_EOL .
+            ' - /src/Jobs/SendInvoice.php' . PHP_EOL .
+            ' - /src/Services/Invoicing.php' . PHP_EOL .
+            PHP_EOL,
+            $output,
+        );
+    }
+
+    public function testReportsTheFileThatWasAddedWhereAddedFilesAreReachedThroughChangesWhenNoTestCanBeAffected(): void
+    {
+        $output = new ExplainImpactedCommand(
+            Explanation::of([], 10, $this->recordedAt(), ['/src/Jobs/SendInvoice.php']),
+            Provenance::ObservedExecution,
+        )->execute()->output();
+
+        $this->assertSame(
+            'Recorded at ' . $this->recordedAt()->asString() . ' from what the tests executed and, for a test that ran in a process of its own, what that process loaded.' . PHP_EOL .
+            PHP_EOL .
+            '0 of 10 tests can be affected by what changed.' . PHP_EOL .
+            PHP_EOL .
+            '1 file was added that can only affect a test through a file that was changed to use it, as configured in <addedFilesAreReachedThroughChanges>:' . PHP_EOL .
+            ' - /src/Jobs/SendInvoice.php' . PHP_EOL .
+            PHP_EOL,
             $output,
         );
     }

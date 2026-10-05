@@ -70,17 +70,36 @@
         <xs:all>
             <xs:element name="watch" minOccurs="0" maxOccurs="1">
                 <xs:complexType>
-                    <xs:sequence>
-                        <xs:choice minOccurs="0" maxOccurs="unbounded">
-                            <xs:element name="directory" type="watchedDirectoryType"/>
-                            <xs:element name="file" type="xs:anyURI"/>
-                        </xs:choice>
-                    </xs:sequence>
+                    <xs:group ref="testImpactAnalysisPathGroup"/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="addedFilesAreReachedThroughChanges" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                    <xs:all>
+                        <xs:element name="include" minOccurs="0" maxOccurs="1">
+                            <xs:complexType>
+                                <xs:group ref="testImpactAnalysisPathGroup"/>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="exclude" minOccurs="0" maxOccurs="1">
+                            <xs:complexType>
+                                <xs:group ref="testImpactAnalysisPathGroup"/>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:all>
                 </xs:complexType>
             </xs:element>
         </xs:all>
     </xs:complexType>
-    <xs:complexType name="watchedDirectoryType">
+    <xs:group name="testImpactAnalysisPathGroup">
+        <xs:sequence>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="directory" type="testImpactAnalysisDirectoryType"/>
+                <xs:element name="file" type="xs:anyURI"/>
+            </xs:choice>
+        </xs:sequence>
+    </xs:group>
+    <xs:complexType name="testImpactAnalysisDirectoryType">
         <xs:simpleContent>
             <xs:extension base="xs:string">
                 <xs:attribute type="xs:string" name="prefix" default=""/>

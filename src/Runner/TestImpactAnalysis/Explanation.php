@@ -42,31 +42,39 @@ final readonly class Explanation
     private ?RecordingTime $recordedAt;
 
     /**
+     * @var list<non-empty-string>
+     */
+    private array $addedFilesThatAreReachedThroughChanges;
+
+    /**
      * @param non-empty-string $reason
      */
     public static function everything(string $reason, ?RecordingTime $recordedAt): self
     {
-        return new self(null, $reason, 0, $recordedAt);
+        return new self(null, $reason, 0, $recordedAt, []);
     }
 
     /**
      * @param array<non-empty-string, ExplainedTest> $tests
+     * @param list<non-empty-string>                 $addedFilesThatAreReachedThroughChanges
      */
-    public static function of(array $tests, int $numberOfTestsThatWereConsidered, RecordingTime $recordedAt): self
+    public static function of(array $tests, int $numberOfTestsThatWereConsidered, RecordingTime $recordedAt, array $addedFilesThatAreReachedThroughChanges): self
     {
-        return new self($tests, null, $numberOfTestsThatWereConsidered, $recordedAt);
+        return new self($tests, null, $numberOfTestsThatWereConsidered, $recordedAt, $addedFilesThatAreReachedThroughChanges);
     }
 
     /**
      * @param ?array<non-empty-string, ExplainedTest> $tests
      * @param ?non-empty-string                       $reasonEverythingIsRun
+     * @param list<non-empty-string>                  $addedFilesThatAreReachedThroughChanges
      */
-    private function __construct(?array $tests, ?string $reasonEverythingIsRun, int $numberOfTestsThatWereConsidered, ?RecordingTime $recordedAt)
+    private function __construct(?array $tests, ?string $reasonEverythingIsRun, int $numberOfTestsThatWereConsidered, ?RecordingTime $recordedAt, array $addedFilesThatAreReachedThroughChanges)
     {
-        $this->tests                           = $tests;
-        $this->reasonEverythingIsRun           = $reasonEverythingIsRun;
-        $this->numberOfTestsThatWereConsidered = $numberOfTestsThatWereConsidered;
-        $this->recordedAt                      = $recordedAt;
+        $this->tests                                  = $tests;
+        $this->reasonEverythingIsRun                  = $reasonEverythingIsRun;
+        $this->numberOfTestsThatWereConsidered        = $numberOfTestsThatWereConsidered;
+        $this->recordedAt                             = $recordedAt;
+        $this->addedFilesThatAreReachedThroughChanges = $addedFilesThatAreReachedThroughChanges;
     }
 
     /**
@@ -154,6 +162,22 @@ final readonly class Explanation
     public function numberOfTestsThatWereConsidered(): int
     {
         return $this->numberOfTestsThatWereConsidered;
+    }
+
+    /**
+     * The files that were added and that no test is run because of: the
+     * configuration says that a file that is added there can only affect a
+     * test through a file that was changed to use it, and such a file selects
+     * the tests that depend on it by itself.
+     *
+     * Not running every test because of them rests on what the configuration
+     * says rather than on what was recorded, and that is why they are named.
+     *
+     * @return list<non-empty-string>
+     */
+    public function addedFilesThatAreReachedThroughChanges(): array
+    {
+        return $this->addedFilesThatAreReachedThroughChanges;
     }
 
     /**

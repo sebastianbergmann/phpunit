@@ -214,6 +214,39 @@ final class RecordingTest extends TestCase
         );
     }
 
+    public function testKnowsWhichFilesNothingWasRecordedAbout(): void
+    {
+        $recording = Recording::from(
+            ['/src/Foo.php', '/src/Untested.php'],
+            [[0, 'a-hash']],
+            ['FooTest::testOne' => [0]],
+            [1 => 'another-hash'],
+            RecordingTime::fromUnixTimestamp(1700000000),
+            [],
+        );
+
+        $this->assertSame(
+            ['/src/Added.php'],
+            $recording->filesNothingWasRecordedAbout(['/src/Foo.php', '/src/Untested.php', '/src/Added.php']),
+        );
+    }
+
+    public function testKnowsThatSomethingWasRecordedAboutAFileInADirectoryThatWasRecorded(): void
+    {
+        $directory = DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR . 'fixtures';
+
+        $recording = Recording::from(
+            [$directory],
+            [[0, 'a-hash']],
+            ['FooTest::testOne' => [0]],
+            [],
+            RecordingTime::fromUnixTimestamp(1700000000),
+            [],
+        );
+
+        $this->assertSame([], $recording->filesNothingWasRecordedAbout([$directory . DIRECTORY_SEPARATOR . 'Added.php']));
+    }
+
     public function testKnowsThatASourceFileThatWasNotRecordedIsAChangeNothingIsKnownAbout(): void
     {
         $recording = Recording::from(['/src/Foo.php'], [[0, 'a-hash']], ['FooTest::testOne' => [0]], [], RecordingTime::fromUnixTimestamp(1700000000), []);

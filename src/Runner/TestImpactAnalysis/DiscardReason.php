@@ -30,13 +30,14 @@ enum DiscardReason
     public function asString(): string
     {
         return match ($this) {
-            self::CannotBeRead                        => 'the test impact data that was recorded cannot be read',
-            self::RecordedWithAnotherVersionOfPhpunit => 'the test impact data was recorded with another version of PHPUnit',
-            self::RecordedWithAnotherVersionOfPhp     => 'the test impact data was recorded with another version of PHP',
-            self::ConfigurationChanged                => 'the configuration changed since the test impact data was recorded',
-            self::BootstrapScriptChanged              => 'a bootstrap script changed since the test impact data was recorded',
-            self::FirstPartyCodeChanged               => 'what is first-party code changed since the test impact data was recorded',
-            self::InstalledPackagesChanged            => 'composer.lock changed since the test impact data was recorded',
+            self::CannotBeRead                                   => 'the test impact data that was recorded cannot be read',
+            self::RecordedWithAnotherVersionOfPhpunit            => 'the test impact data was recorded with another version of PHPUnit',
+            self::RecordedWithAnotherVersionOfPhp                => 'the test impact data was recorded with another version of PHP',
+            self::ConfigurationChanged                           => 'the configuration changed since the test impact data was recorded',
+            self::BootstrapScriptChanged                         => 'a bootstrap script changed since the test impact data was recorded',
+            self::FirstPartyCodeChanged                          => 'what is first-party code changed since the test impact data was recorded',
+            self::WhereAddedFilesAreReachedThroughChangesChanged => 'where an added file can only affect a test through a file that was changed to use it changed since the test impact data was recorded',
+            self::InstalledPackagesChanged                       => 'composer.lock changed since the test impact data was recorded',
         };
     }
     case CannotBeRead;
@@ -45,5 +46,6 @@ enum DiscardReason
     case ConfigurationChanged;
     case BootstrapScriptChanged;
     case FirstPartyCodeChanged;
+    case WhereAddedFilesAreReachedThroughChangesChanged;
     case InstalledPackagesChanged;
 }
