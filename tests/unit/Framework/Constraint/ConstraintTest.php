@@ -60,48 +60,26 @@ final class ConstraintTest extends TestCase
         (new IsTrue)->evaluate(false, 'custom user description');
     }
 
-    public function testFailureDescriptionInContextIsUsedWhenConstraintProvidesContextString(): void
+    public function testToStringInContextIsIgnoredByLogicalNot(): void
     {
         $constraint = new class extends Constraint
         {
             public function toString(): string
             {
-                return 'fallback string';
+                return 'is fresh';
             }
 
             public function toStringInContext(Operator $operator, mixed $role): string
             {
-                return 'context-aware string';
-            }
+                if (!$operator instanceof LogicalNot) {
+                    return '';
+                }
 
-            protected function matches(mixed $other): bool
-            {
-                return true;
-            }
-        };
-
-        $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessageIs("Failed asserting that 'value' context-aware string.");
-
-        new LogicalNot($constraint)->evaluate('value');
-    }
-
-    public function testToStringInContextIsUsedWhenConstraintProvidesContextString(): void
-    {
-        $constraint = new class extends Constraint
-        {
-            public function toString(): string
-            {
-                return 'fallback string';
-            }
-
-            public function toStringInContext(Operator $operator, mixed $role): string
-            {
-                return 'context-aware string';
+                return 'is stale';
             }
         };
 
-        $this->assertSame('context-aware string', new LogicalNot($constraint)->toString());
+        $this->assertSame('not (is fresh)', new LogicalNot($constraint)->toString());
     }
 
     public function testNegatedToStringIsUsedWhenConstraintAuthorsItsNegation(): void
@@ -158,7 +136,7 @@ final class ConstraintTest extends TestCase
         new LogicalNot($constraint)->evaluate('value');
     }
 
-    public function testNegationIsRewrittenWhenConstraintDoesNotAuthorIt(): void
+    public function testAffirmativeDescriptionIsWrappedWhenConstraintDoesNotAuthorItsNegation(): void
     {
         $constraint = new class extends Constraint
         {
@@ -173,10 +151,10 @@ final class ConstraintTest extends TestCase
             }
         };
 
-        $this->assertSame('is not fresh', new LogicalNot($constraint)->toString());
+        $this->assertSame('not (is fresh)', new LogicalNot($constraint)->toString());
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessageIs("Failed asserting that 'value' is not fresh.");
+        $this->expectExceptionMessageIs("Failed asserting that 'value' not (is fresh).");
 
         new LogicalNot($constraint)->evaluate('value');
     }
