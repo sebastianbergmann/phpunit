@@ -83,6 +83,7 @@ use PHPUnit\Runner\TestImpactAnalysis\ChangedPaths;
 use PHPUnit\Runner\TestImpactAnalysis\DefaultTestImpactData;
 use PHPUnit\Runner\TestImpactAnalysis\ExecutionSettings;
 use PHPUnit\Runner\TestImpactAnalysis\Explanation;
+use PHPUnit\Runner\TestImpactAnalysis\FileReachedThroughChangesFinder;
 use PHPUnit\Runner\TestImpactAnalysis\Provenance;
 use PHPUnit\Runner\TestImpactAnalysis\Selection;
 use PHPUnit\Runner\TestImpactAnalysis\Selector;
@@ -950,6 +951,7 @@ final readonly class Application
             $testSuite->collect(),
             $this->sourceFiles(),
             $this->watchedFiles($configuration),
+            $this->filesReachedThroughChanges($configuration),
             $this->changedPathsOrNull($cliConfiguration),
         );
     }
@@ -968,6 +970,7 @@ final readonly class Application
             $testSuite->collect(),
             $this->sourceFiles(),
             $this->watchedFiles($configuration),
+            $this->filesReachedThroughChanges($configuration),
             $this->changedPathsOrNull($cliConfiguration),
         );
     }
@@ -1350,6 +1353,16 @@ final readonly class Application
     }
 
     /**
+     * @return list<non-empty-string>
+     */
+    private function filesReachedThroughChanges(Configuration $configuration): array
+    {
+        return (new FileReachedThroughChangesFinder)->find(
+            $configuration->testImpactAnalysis()->addedFilesAreReachedThroughChanges(),
+        );
+    }
+
+    /**
      * What is recorded names files relative to the directory of the
      * configuration file, which is part of the project it configures the
      * tests of, and relative to the working directory when there is none.
@@ -1390,6 +1403,7 @@ final readonly class Application
                 $configuration->backupStaticProperties(),
             ),
             $configuration->source(),
+            $configuration->testImpactAnalysis()->addedFilesAreReachedThroughChanges(),
             $bootstrapFiles,
         );
     }
@@ -1425,6 +1439,7 @@ final readonly class Application
                     $testImpactData,
                     $provenance,
                     [...$this->sourceFiles(), ...$this->watchedFiles($configuration)],
+                    $this->filesReachedThroughChanges($configuration),
                 );
             }
             // @codeCoverageIgnoreStart

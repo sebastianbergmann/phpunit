@@ -13,6 +13,7 @@ use const DIRECTORY_SEPARATOR;
 use const LOCK_EX;
 use const LOCK_UN;
 use const PHP_VERSION_ID;
+use function array_flip;
 use function array_key_exists;
 use function array_search;
 use function array_values;
@@ -80,7 +81,7 @@ use PHPUnit\Util\Filesystem;
  */
 final class TestImpactDataFile
 {
-    private const int VERSION             = 9;
+    private const int VERSION             = 10;
     private const string DEFAULT_FILENAME = 'test-impact-data';
     private readonly string $filename;
     private readonly BaseDirectory $baseDirectory;
@@ -213,13 +214,14 @@ final class TestImpactDataFile
      * anything about it and must not cause what is known about it to be
      * forgotten.
      *
-     * @param list<non-empty-string> $sourceFiles the files that are subject to code coverage analysis, and the files that are watched
+     * @param list<non-empty-string> $sourceFiles                the files that are subject to code coverage analysis, and the files that are watched
+     * @param list<non-empty-string> $filesReachedThroughChanges the files that, when they are added, can only affect a test through a file that was changed to use them
      *
      * @throws Exception
      */
-    public function persist(TestImpactData $data, Provenance $provenance, array $sourceFiles): void
+    public function persist(TestImpactData $data, Provenance $provenance, array $sourceFiles, array $filesReachedThroughChanges): void
     {
-        $this->record($data, $provenance, $sourceFiles, false);
+        $this->record($data, $provenance, $sourceFiles, $filesReachedThroughChanges, false);
     }
 
     /**
@@ -236,15 +238,16 @@ final class TestImpactDataFile
      */
     public function persistAndPrune(TestImpactData $data, Provenance $provenance, array $sourceFiles): void
     {
-        $this->record($data, $provenance, $sourceFiles, true);
+        $this->record($data, $provenance, $sourceFiles, [], true);
     }
 
     /**
-     * @param list<non-empty-string> $sourceFiles the files that are subject to code coverage analysis, and the files that are watched
+     * @param list<non-empty-string> $sourceFiles                the files that are subject to code coverage analysis, and the files that are watched
+     * @param list<non-empty-string> $filesReachedThroughChanges the files that, when they are added, can only affect a test through a file that was changed to use them
      *
      * @throws Exception
      */
-    private function record(TestImpactData $data, Provenance $provenance, array $sourceFiles, bool $prune): void
+    private function record(TestImpactData $data, Provenance $provenance, array $sourceFiles, array $filesReachedThroughChanges, bool $prune): void
     {
         if (!Filesystem::createDirectory(dirname($this->filename))) {
             throw new DirectoryDoesNotExistException(dirname($this->filename));
@@ -268,7 +271,7 @@ final class TestImpactDataFile
         flock($handle, LOCK_EX);
 
         try {
-            $this->recordWhileTheFileIsLocked($handle, $data, $provenance, $sourceFiles, $prune);
+            $this->recordWhileTheFileIsLocked($handle, $data, $provenance, $sourceFiles, $filesReachedThroughChanges, $prune);
         } finally {
             flock($handle, LOCK_UN);
             fclose($handle);
@@ -278,10 +281,11 @@ final class TestImpactDataFile
     /**
      * @param resource               $handle
      * @param list<non-empty-string> $sourceFiles
+     * @param list<non-empty-string> $filesReachedThroughChanges
      *
      * @throws Exception
      */
-    private function recordWhileTheFileIsLocked($handle, TestImpactData $data, Provenance $provenance, array $sourceFiles, bool $prune): void
+    private function recordWhileTheFileIsLocked($handle, TestImpactData $data, Provenance $provenance, array $sourceFiles, array $filesReachedThroughChanges, bool $prune): void
     {
         $files                             = [];
         $versions                          = [];
@@ -426,8 +430,21 @@ final class TestImpactDataFile
          * not recorded before: a source file nothing is known about is what
          * makes the next run that selects tests fall back to running every
          * test, which is what settles it.
+         *
+         * A file that, when it is added, can only affect a test through a file
+         * that was changed to use it is recorded as it is now by any test run.
+         * That it was added needs no assessment: a run that selects tests sets
+         * it aside, and the file that was changed to use it is what selects
+         * the tests it can affect. Once the file is recorded, it is no longer
+         * a file that was added: a change to it that no test is recorded as
+         * depending on is a change nothing is known about, like a change to
+         * any other file. Were it not recorded, it would be set aside again
+         * by the next run, after this run has recorded the tests that depend
+         * on the file that was changed to use it, and a change to it would
+         * then not select any test at all.
          */
-        $hashesOfSourceFiles = [];
+        $hashesOfSourceFiles        = [];
+        $filesReachedThroughChanges = array_flip($filesReachedThroughChanges);
 
         foreach ($sourceFiles as $sourceFile) {
             if (isset($hashesThatWereRecorded[$sourceFile])) {
@@ -436,7 +453,7 @@ final class TestImpactDataFile
                 continue;
             }
 
-            if (!$prune) {
+            if (!$prune && !isset($filesReachedThroughChanges[$sourceFile])) {
                 continue;
             }
 

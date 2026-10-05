@@ -251,6 +251,39 @@ final readonly class Recording
     }
 
     /**
+     * The files that nothing was recorded about: files that were not there,
+     * or that were neither first-party code nor watched, when the recording
+     * was made.
+     *
+     * A file in a directory that was recorded is not one of them: what a test
+     * declares that it uses can be a directory, and a file that is added to it
+     * changes it.
+     *
+     * @param list<non-empty-string> $files
+     *
+     * @return list<non-empty-string>
+     */
+    public function filesNothingWasRecordedAbout(array $files): array
+    {
+        $recorded    = array_flip($this->files);
+        $notRecorded = [];
+
+        foreach ($files as $file) {
+            if (isset($recorded[$file])) {
+                continue;
+            }
+
+            if ($this->positionsOf([$file]) !== []) {
+                continue;
+            }
+
+            $notRecorded[] = $file;
+        }
+
+        return $notRecorded;
+    }
+
+    /**
      * A path that nothing that was recorded accounts for, or null when there
      * is none.
      *

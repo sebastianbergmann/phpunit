@@ -33,6 +33,7 @@ use PHPUnit\Runner\TestImpactAnalysis\Provenance;
 use PHPUnit\Runner\TestImpactAnalysis\RecordedTests;
 use PHPUnit\Runner\TestImpactAnalysis\RecordingTime;
 use PHPUnit\Runner\TestImpactAnalysis\TestImpactDataFile;
+use PHPUnit\TextUI\Configuration\AddedFilesAreReachedThroughChanges;
 use PHPUnit\TextUI\Configuration\FilterDirectoryCollection;
 use PHPUnit\TextUI\Configuration\FilterFileCollection;
 use PHPUnit\TextUI\Configuration\Source;
@@ -127,7 +128,7 @@ final class ListTestsThatDependOnCommandTest extends TestCase
         $data->record('FooTest::testOne', [$foo]);
         $data->recordExecutedOutsideOfTests([$bootstrapped]);
 
-        new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions())->persist($data, Provenance::ObservedExecution, []);
+        new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions())->persist($data, Provenance::ObservedExecution, [], []);
 
         $result = new ListTestsThatDependOnCommand(new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions()), $bootstrapped)->execute();
 
@@ -149,7 +150,7 @@ final class ListTestsThatDependOnCommandTest extends TestCase
         $data->record('FooTest::testOne', [$file]);
         $data->record('BarTest::testOne', [$file]);
 
-        new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions())->persist($data, Provenance::ObservedExecution, []);
+        new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions())->persist($data, Provenance::ObservedExecution, [], []);
 
         $result = new ListTestsThatDependOnCommand(new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions()), $file)->execute();
 
@@ -172,14 +173,14 @@ final class ListTestsThatDependOnCommandTest extends TestCase
         $first = new DefaultTestImpactData;
         $first->record('FooTest::testOne', [$file]);
 
-        new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions())->persist($first, Provenance::ObservedExecution, []);
+        new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions())->persist($first, Provenance::ObservedExecution, [], []);
 
         $this->writeSourceFile($directory, 'Foo', 'second');
 
         $second = new DefaultTestImpactData;
         $second->record('BarTest::testOne', [$file]);
 
-        new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions())->persist($second, Provenance::ObservedExecution, []);
+        new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions())->persist($second, Provenance::ObservedExecution, [], []);
 
         $result = new ListTestsThatDependOnCommand(new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions()), $file)->execute();
 
@@ -201,7 +202,7 @@ final class ListTestsThatDependOnCommandTest extends TestCase
         $data = new DefaultTestImpactData;
         $data->record('FooTest::testOne', [$file]);
 
-        new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions())->persist($data, Provenance::CoverageTargets, []);
+        new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions())->persist($data, Provenance::CoverageTargets, [], []);
 
         $result = new ListTestsThatDependOnCommand(new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions()), $file)->execute();
 
@@ -222,7 +223,7 @@ final class ListTestsThatDependOnCommandTest extends TestCase
         $data = new DefaultTestImpactData;
         $data->record('FooTest::testOne', [$other]);
 
-        new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions())->persist($data, Provenance::CoverageTargets, []);
+        new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions())->persist($data, Provenance::CoverageTargets, [], []);
 
         $result = new ListTestsThatDependOnCommand(new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions()), $file)->execute();
 
@@ -261,6 +262,12 @@ final class ListTestsThatDependOnCommandTest extends TestCase
                 false,
                 false,
                 true,
+            ),
+            new AddedFilesAreReachedThroughChanges(
+                FilterDirectoryCollection::fromArray([]),
+                FilterFileCollection::fromArray([]),
+                FilterDirectoryCollection::fromArray([]),
+                FilterFileCollection::fromArray([]),
             ),
             [],
         );
