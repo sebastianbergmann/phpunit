@@ -90,6 +90,7 @@ final class Registry
                     VersionComparisonOperator::class,
                     Source::class,
                     TestImpactAnalysis::class,
+                    AddedFilesAreReachedThroughChanges::class,
                 ],
             ],
         );

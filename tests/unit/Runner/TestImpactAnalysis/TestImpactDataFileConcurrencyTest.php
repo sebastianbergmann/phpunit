@@ -32,6 +32,7 @@ use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\TestIndex\FileHasher;
+use PHPUnit\TextUI\Configuration\AddedFilesAreReachedThroughChanges;
 use PHPUnit\TextUI\Configuration\FilterDirectoryCollection;
 use PHPUnit\TextUI\Configuration\FilterFileCollection;
 use PHPUnit\TextUI\Configuration\Source;
@@ -79,7 +80,7 @@ final class TestImpactDataFileConcurrencyTest extends TestCase
         $whatIsThere = new DefaultTestImpactData;
         $whatIsThere->record('FooTest::testOne', [$sourceFile]);
 
-        new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions())->persist($whatIsThere, Provenance::ObservedExecution, [$sourceFile]);
+        new TestImpactDataFile($directory, BaseDirectory::from($directory), $this->assumptions())->persist($whatIsThere, Provenance::ObservedExecution, [$sourceFile], []);
 
         $whatTheOtherTestRunWrites = $this->whatAnotherTestRunRecords('BazTest::testOne', $sourceFile);
 
@@ -102,6 +103,7 @@ final class TestImpactDataFileConcurrencyTest extends TestCase
             $whatThisTestRunRecorded,
             Provenance::ObservedExecution,
             [$sourceFile],
+            [],
         );
 
         proc_close($process);
@@ -129,7 +131,7 @@ final class TestImpactDataFileConcurrencyTest extends TestCase
          * The other test run is a test run of the same project, and names the
          * source file relative to the same directory.
          */
-        new TestImpactDataFile($directory, BaseDirectory::from(dirname($sourceFile)), $this->assumptions())->persist($data, Provenance::ObservedExecution, [$sourceFile]);
+        new TestImpactDataFile($directory, BaseDirectory::from(dirname($sourceFile)), $this->assumptions())->persist($data, Provenance::ObservedExecution, [$sourceFile], []);
 
         return $directory . DIRECTORY_SEPARATOR . 'test-impact-data';
     }
@@ -197,6 +199,12 @@ final class TestImpactDataFileConcurrencyTest extends TestCase
                 false,
                 false,
                 true,
+            ),
+            new AddedFilesAreReachedThroughChanges(
+                FilterDirectoryCollection::fromArray([]),
+                FilterFileCollection::fromArray([]),
+                FilterDirectoryCollection::fromArray([]),
+                FilterFileCollection::fromArray([]),
             ),
             [],
         );

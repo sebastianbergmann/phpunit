@@ -47,6 +47,7 @@ final class ExplanationTest extends TestCase
             ],
             10,
             RecordingTime::fromUnixTimestamp(1700000000),
+            [],
         );
 
         $this->assertFalse($explanation->isEverything());
@@ -69,6 +70,7 @@ final class ExplanationTest extends TestCase
             ],
             3,
             RecordingTime::fromUnixTimestamp(1700000000),
+            [],
         );
 
         $this->assertSame(
@@ -83,8 +85,16 @@ final class ExplanationTest extends TestCase
     {
         $recordedAt = RecordingTime::fromUnixTimestamp(1700000000);
 
-        $this->assertSame($recordedAt, Explanation::of([], 0, $recordedAt)->recordedAt());
+        $this->assertSame($recordedAt, Explanation::of([], 0, $recordedAt, [])->recordedAt());
         $this->assertSame($recordedAt, Explanation::everything('a reason', $recordedAt)->recordedAt());
         $this->assertNull(Explanation::everything('nothing is recorded', null)->recordedAt());
+    }
+
+    public function testKnowsWhichFilesWereAddedWhereAddedFilesAreReachedThroughChanges(): void
+    {
+        $recordedAt = RecordingTime::fromUnixTimestamp(1700000000);
+
+        $this->assertSame(['/src/Added.php'], Explanation::of([], 0, $recordedAt, ['/src/Added.php'])->addedFilesThatAreReachedThroughChanges());
+        $this->assertSame([], Explanation::everything('a reason', $recordedAt)->addedFilesThatAreReachedThroughChanges());
     }
 }

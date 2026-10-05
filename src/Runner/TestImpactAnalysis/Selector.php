@@ -9,9 +9,11 @@
  */
 namespace PHPUnit\Runner\TestImpactAnalysis;
 
+use function array_flip;
 use function array_pop;
 use function assert;
 use function count;
+use function sort;
 use function sprintf;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
@@ -25,6 +27,11 @@ use PHPUnit\Runner\TestRunHistory\TestRunHistoryId;
  * was never recorded, a test that did not pass when it was last run, a test
  * that is not a test method and therefore cannot be recorded, and every test
  * there is when a change is one that nothing that was recorded accounts for.
+ *
+ * A file that was added where the configuration says that an added file can
+ * only affect a test through a file that was changed to use it is not such a
+ * change: the file that was changed to use it selects the tests that can be
+ * affected, and the file that was added is set aside.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -59,14 +66,15 @@ final class Selector
      * it, knows something PHPUnit cannot work out for itself, such as which of
      * the files that differ from what was recorded are their own doing.
      *
-     * @param list<PhptTestCase|TestCase> $tests        the tests that would be run
-     * @param list<non-empty-string>      $sourceFiles  the files that are subject to code coverage analysis
-     * @param list<non-empty-string>      $watchedFiles the files a change to is noticed even though they are not subject to code coverage analysis
-     * @param ?list<non-empty-string>     $changedPaths the files and directories that changed, when they are named
+     * @param list<PhptTestCase|TestCase> $tests                      the tests that would be run
+     * @param list<non-empty-string>      $sourceFiles                the files that are subject to code coverage analysis
+     * @param list<non-empty-string>      $watchedFiles               the files a change to is noticed even though they are not subject to code coverage analysis
+     * @param list<non-empty-string>      $filesReachedThroughChanges the files that, when they are added, can only affect a test through a file that was changed to use them
+     * @param ?list<non-empty-string>     $changedPaths               the files and directories that changed, when they are named
      */
-    public function select(array $tests, array $sourceFiles, array $watchedFiles, ?array $changedPaths = null): Selection
+    public function select(array $tests, array $sourceFiles, array $watchedFiles, array $filesReachedThroughChanges, ?array $changedPaths = null): Selection
     {
-        $explanation = $this->explain($tests, $sourceFiles, $watchedFiles, $changedPaths);
+        $explanation = $this->explain($tests, $sourceFiles, $watchedFiles, $filesReachedThroughChanges, $changedPaths);
 
         if ($explanation->isEverything()) {
             return Selection::everything($explanation->reasonEverythingIsRun(), $explanation->recordedAt());
@@ -95,12 +103,13 @@ final class Selector
      * This is what the selection is made of: what is explained here is what
      * select() decides, and not a second opinion about it.
      *
-     * @param list<PhptTestCase|TestCase> $tests        the tests that would be run
-     * @param list<non-empty-string>      $sourceFiles  the files that are subject to code coverage analysis
-     * @param list<non-empty-string>      $watchedFiles the files a change to is noticed even though they are not subject to code coverage analysis
-     * @param ?list<non-empty-string>     $changedPaths the files and directories that changed, when they are named
+     * @param list<PhptTestCase|TestCase> $tests                      the tests that would be run
+     * @param list<non-empty-string>      $sourceFiles                the files that are subject to code coverage analysis
+     * @param list<non-empty-string>      $watchedFiles               the files a change to is noticed even though they are not subject to code coverage analysis
+     * @param list<non-empty-string>      $filesReachedThroughChanges the files that, when they are added, can only affect a test through a file that was changed to use them
+     * @param ?list<non-empty-string>     $changedPaths               the files and directories that changed, when they are named
      */
-    public function explain(array $tests, array $sourceFiles, array $watchedFiles, ?array $changedPaths = null): Explanation
+    public function explain(array $tests, array $sourceFiles, array $watchedFiles, array $filesReachedThroughChanges, ?array $changedPaths = null): Explanation
     {
         $recording = $this->testImpactDataFile->recording($this->provenance);
 
@@ -114,17 +123,37 @@ final class Selector
          * asked about first: such a file is not one that nothing is known
          * about, and saying that it is would not say why every test is run.
          */
+        /*
+         * A file that was added where an added file can only affect a test
+         * through a file that was changed to use it is set aside before the
+         * changes that nothing that was recorded accounts for are looked for.
+         * Which files are set aside is reported: that no test is run because
+         * of them rests on what the configuration says, and not on what was
+         * recorded.
+         */
         if ($changedPaths === null) {
+            $added = $recording->filesNothingWasRecordedAbout(
+                $this->amongThem([...$sourceFiles, ...$watchedFiles], $filesReachedThroughChanges),
+            );
+
             $change = $recording->changeExecutedOutsideOfTests($this->hasher);
 
             if ($change === null) {
-                $change = $recording->changeNothingIsKnownAbout($this->hasher, $sourceFiles, $watchedFiles);
+                $change = $recording->changeNothingIsKnownAbout(
+                    $this->hasher,
+                    $this->without($sourceFiles, $added),
+                    $this->without($watchedFiles, $added),
+                );
             }
         } else {
+            $added = $recording->filesNothingWasRecordedAbout(
+                $this->amongThem($changedPaths, $filesReachedThroughChanges),
+            );
+
             $change = $recording->pathExecutedOutsideOfTests($changedPaths);
 
             if ($change === null) {
-                $change = $recording->pathNothingIsKnownAbout($changedPaths);
+                $change = $recording->pathNothingIsKnownAbout($this->without($changedPaths, $added));
             }
         }
 
@@ -185,7 +214,49 @@ final class Selector
         $selected = $this->withTestsThatDependOnTestsThatCanBeAffected($tests, $selected);
         $selected = $this->withTestsThatAreDependedUpon($tests, $selected);
 
-        return Explanation::of($selected, count($tests), $recording->recordedAt());
+        sort($added);
+
+        return Explanation::of($selected, count($tests), $recording->recordedAt(), $added);
+    }
+
+    /**
+     * @param list<non-empty-string> $paths
+     * @param list<non-empty-string> $files
+     *
+     * @return list<non-empty-string> the paths that are among the files
+     */
+    private function amongThem(array $paths, array $files): array
+    {
+        $files = array_flip($files);
+        $among = [];
+
+        foreach ($paths as $path) {
+            if (isset($files[$path])) {
+                $among[] = $path;
+            }
+        }
+
+        return $among;
+    }
+
+    /**
+     * @param list<non-empty-string> $paths
+     * @param list<non-empty-string> $files
+     *
+     * @return list<non-empty-string> the paths that are not among the files
+     */
+    private function without(array $paths, array $files): array
+    {
+        $files   = array_flip($files);
+        $without = [];
+
+        foreach ($paths as $path) {
+            if (!isset($files[$path])) {
+                $without[] = $path;
+            }
+        }
+
+        return $without;
     }
 
     /**

@@ -310,6 +310,45 @@ final class LoaderTest extends TestCase
         $this->assertCount(0, $testImpactAnalysis->watchedFiles());
     }
 
+    public function testWhereAddedFilesAreReachedThroughChangesIsReadCorrectly(): void
+    {
+        $addedFilesAreReachedThroughChanges = $this->configuration('configuration_added_files_are_reached_through_changes.xml')->testImpactAnalysis()->addedFilesAreReachedThroughChanges();
+
+        $includeDirectories = $addedFilesAreReachedThroughChanges->includeDirectories()->asArray();
+
+        $this->assertCount(1, $includeDirectories);
+        $this->assertSame(TEST_FILES_PATH . 'app', $includeDirectories[0]->path());
+        $this->assertSame('', $includeDirectories[0]->prefix());
+        $this->assertSame('.php', $includeDirectories[0]->suffix());
+
+        $includeFiles = $addedFilesAreReachedThroughChanges->includeFiles()->asArray();
+
+        $this->assertCount(1, $includeFiles);
+        $this->assertSame(TEST_FILES_PATH . 'bootstrap/helpers.php', $includeFiles[0]->path());
+
+        $excludeDirectories = $addedFilesAreReachedThroughChanges->excludeDirectories()->asArray();
+
+        $this->assertCount(1, $excludeDirectories);
+        $this->assertSame(TEST_FILES_PATH . 'app/Listeners', $excludeDirectories[0]->path());
+        $this->assertSame('Send', $excludeDirectories[0]->prefix());
+        $this->assertSame('Listener.php', $excludeDirectories[0]->suffix());
+
+        $excludeFiles = $addedFilesAreReachedThroughChanges->excludeFiles()->asArray();
+
+        $this->assertCount(1, $excludeFiles);
+        $this->assertSame(TEST_FILES_PATH . 'app/Kernel.php', $excludeFiles[0]->path());
+    }
+
+    public function testNoAddedFileIsReachedThroughChangesWhenNothingIsConfigured(): void
+    {
+        $addedFilesAreReachedThroughChanges = $this->configuration('configuration_deprecation_filters.xml')->testImpactAnalysis()->addedFilesAreReachedThroughChanges();
+
+        $this->assertCount(0, $addedFilesAreReachedThroughChanges->includeDirectories());
+        $this->assertCount(0, $addedFilesAreReachedThroughChanges->includeFiles());
+        $this->assertCount(0, $addedFilesAreReachedThroughChanges->excludeDirectories());
+        $this->assertCount(0, $addedFilesAreReachedThroughChanges->excludeFiles());
+    }
+
     public function testDeprecationFiltersAreReadCorrectlyAndEmptyClassNamesAreIgnored(): void
     {
         $source = $this->configuration('configuration_deprecation_filters.xml')->source();
