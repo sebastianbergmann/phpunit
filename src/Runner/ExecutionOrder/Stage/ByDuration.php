@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner\ExecutionOrder\Stage;
 
+use function array_column;
 use function usort;
 use PHPUnit\Framework\Reorderable;
 use PHPUnit\Framework\Test;
@@ -47,22 +48,19 @@ final readonly class ByDuration implements ReorderStage
     public function apply(array $tests, Context $context): array
     {
         $testRunHistory = $context->testRunHistory();
+        $weighted       = [];
 
-        if ($this->direction === Direction::Ascending) {
-            usort(
-                $tests,
-                fn (Test $left, Test $right) => $this->weight($left, $testRunHistory) <=> $this->weight($right, $testRunHistory),
-            );
-
-            return $tests;
+        foreach ($tests as $test) {
+            $weighted[] = [$this->weight($test, $testRunHistory), $test];
         }
 
-        usort(
-            $tests,
-            fn (Test $left, Test $right) => $this->weight($right, $testRunHistory) <=> $this->weight($left, $testRunHistory),
-        );
+        if ($this->direction === Direction::Ascending) {
+            usort($weighted, static fn (array $left, array $right) => $left[0] <=> $right[0]);
+        } else {
+            usort($weighted, static fn (array $left, array $right) => $right[0] <=> $left[0]);
+        }
 
-        return $tests;
+        return array_column($weighted, 1);
     }
 
     /**
