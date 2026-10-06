@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Runner\ExecutionOrder\Stage;
 
+use function array_column;
+use function array_key_exists;
 use function usort;
 use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\Test;
@@ -29,7 +31,7 @@ use PHPUnit\Runner\ExecutionOrder\ReorderStage;
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class BySize implements ReorderStage
+final class BySize implements ReorderStage
 {
     /**
      * @var non-empty-array<non-empty-string, positive-int>
@@ -40,7 +42,12 @@ final readonly class BySize implements ReorderStage
         'large'   => 3,
         'unknown' => 4,
     ];
-    private Direction $direction;
+    private readonly Direction $direction;
+
+    /**
+     * @var array<string, positive-int>
+     */
+    private array $weights = [];
 
     public function __construct(Direction $direction)
     {
@@ -54,21 +61,19 @@ final readonly class BySize implements ReorderStage
      */
     public function apply(array $tests, Context $context): array
     {
-        if ($this->direction === Direction::Ascending) {
-            usort(
-                $tests,
-                fn (Test $left, Test $right) => $this->weight($left) <=> $this->weight($right),
-            );
+        $weighted = [];
 
-            return $tests;
+        foreach ($tests as $test) {
+            $weighted[] = [$this->weight($test), $test];
         }
 
-        usort(
-            $tests,
-            fn (Test $left, Test $right) => $this->weight($right) <=> $this->weight($left),
-        );
+        if ($this->direction === Direction::Ascending) {
+            usort($weighted, static fn (array $left, array $right) => $left[0] <=> $right[0]);
+        } else {
+            usort($weighted, static fn (array $left, array $right) => $right[0] <=> $left[0]);
+        }
 
-        return $tests;
+        return array_column($weighted, 1);
     }
 
     /**
@@ -93,21 +98,44 @@ final readonly class BySize implements ReorderStage
         }
 
         if ($test instanceof TestSuite) {
-            $max = 0;
-
-            foreach ($test->tests() as $inner) {
-                $weight = $this->weight($inner);
-
-                if ($weight > $max) {
-                    $max = $weight;
-                }
-            }
-
-            if ($max > 0) {
-                return $max;
-            }
+            return $this->weightOfTestSuite($test);
         }
 
         return self::SIZE_SORT_WEIGHT['unknown'];
+    }
+
+    /**
+     * The weight of a test suite is needed when its parent test suite is
+     * reordered and again when the weight of that parent test suite is needed
+     * one level further up. Remembering it keeps the tree from being walked
+     * once per level.
+     *
+     * @return positive-int
+     */
+    private function weightOfTestSuite(TestSuite $testSuite): int
+    {
+        $sortId = $testSuite->sortId();
+
+        if (array_key_exists($sortId, $this->weights)) {
+            return $this->weights[$sortId];
+        }
+
+        $weight = 0;
+
+        foreach ($testSuite->tests() as $test) {
+            $innerWeight = $this->weight($test);
+
+            if ($innerWeight > $weight) {
+                $weight = $innerWeight;
+            }
+        }
+
+        if ($weight === 0) {
+            $weight = self::SIZE_SORT_WEIGHT['unknown'];
+        }
+
+        $this->weights[$sortId] = $weight;
+
+        return $weight;
     }
 }

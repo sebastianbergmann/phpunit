@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="../../../../../phpunit.xsd"
+         executionOrder="size-ascending"
+>
+    <testsuites>
+        <testsuite name="end-to-end">
+            <file>../test-classes-with-different-sizes/EndToEndTest.php</file>
+        </testsuite>
+
+        <testsuite name="unit">
+            <file>../test-classes-with-different-sizes/IntegrationTest.php</file>
+            <file>../test-classes-with-different-sizes/UnitTest.php</file>
+        </testsuite>
+    </testsuites>
+</phpunit>
