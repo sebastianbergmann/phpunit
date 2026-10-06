@@ -13,7 +13,6 @@ use const PHP_EOL;
 use function array_diff_assoc;
 use function array_intersect;
 use function array_unique;
-use function assert;
 use function extension_loaded;
 use function sprintf;
 use function xdebug_is_debugger_active;
@@ -106,24 +105,11 @@ final class TestRunner
             } elseif ($e instanceof SkippedTest) {
                 $skipped = true;
             }
-        } catch (AssertionError $e) {
+        } catch (AssertionError) {
             $test->addToAssertionCount(1);
 
             $failure = true;
-            $frame   = $e->getTrace()[0];
-
-            assert(isset($frame['file']));
-            assert(isset($frame['line']));
-
-            $e = new AssertionFailedError(
-                sprintf(
-                    '%s in %s:%s',
-                    $e->getMessage(),
-                    $frame['file'],
-                    $frame['line'],
-                ),
-            );
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             $error = true;
         }
 
@@ -167,10 +153,8 @@ final class TestRunner
                     PHP_EOL .
                     $cce->getMessage(),
                 );
-            } catch (CodeCoverageException $cce) {
+            } catch (CodeCoverageException) {
                 $error = true;
-
-                $e = $e ?? $cce;
             }
         }
 
