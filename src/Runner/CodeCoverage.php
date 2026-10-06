@@ -244,7 +244,6 @@ final class CodeCoverage
         assert($this->test !== null);
 
         $time             = $this->timer()->stop()->asSeconds();
-        $status           = TestStatus::Unknown;
         $this->collecting = false;
 
         if ($this->test->status()->isSuccess()) {

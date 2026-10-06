@@ -165,7 +165,9 @@ final class GlobalStateCapture
                 $message = 'Test code or tested code removed exception handlers other than its own';
             }
 
-            foreach ($activeExceptionHandlers as $handler) {
+            $numberOfActiveExceptionHandlers = count($activeExceptionHandlers);
+
+            for ($i = 0; $i < $numberOfActiveExceptionHandlers; $i++) {
                 restore_exception_handler();
             }
 

@@ -577,7 +577,9 @@ final class ErrorHandler
         }
 
         if ($activeErrorHandlers !== $backupErrorHandlers) {
-            foreach ($activeErrorHandlers as $handler) {
+            $numberOfActiveErrorHandlers = count($activeErrorHandlers);
+
+            for ($i = 0; $i < $numberOfActiveErrorHandlers; $i++) {
                 restore_error_handler();
             }
 

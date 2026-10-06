@@ -14,7 +14,6 @@ use const PHP_EOL;
 use function array_diff_assoc;
 use function array_intersect;
 use function array_unique;
-use function assert;
 use function extension_loaded;
 use function realpath;
 use function rtrim;
@@ -169,28 +168,11 @@ final class TestRunner
             } elseif ($e instanceof SkippedTest) {
                 $skipped = true;
             }
-        } catch (AssertionError $e) {
+        } catch (AssertionError) {
             $test->addToAssertionCount(1);
 
             $failure = true;
-            $trace   = $e->getTrace();
-
-            assert(isset($trace[0]));
-
-            $frame = $trace[0];
-
-            assert(isset($frame['file']));
-            assert(isset($frame['line']));
-
-            $e = new AssertionFailedError(
-                sprintf(
-                    '%s in %s:%s',
-                    $e->getMessage(),
-                    $frame['file'],
-                    $frame['line'],
-                ),
-            );
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             $error = true;
         } finally {
             TimeLimitHandler::disarmAlarm();
@@ -239,10 +221,8 @@ final class TestRunner
                     PHP_EOL .
                     $cce->getMessage(),
                 );
-            } catch (CodeCoverageException $cce) {
+            } catch (CodeCoverageException) {
                 $error = true;
-
-                $e = $e ?? $cce;
             }
 
             if ($append && !$error && !$failure && !$coveredUnintentionally &&
@@ -252,8 +232,6 @@ final class TestRunner
                     $test->valueObjectForEvents(),
                     'This test does not contribute to code coverage',
                 );
-
-                $risky = true;
             }
         }
 
