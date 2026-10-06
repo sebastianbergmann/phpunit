@@ -94,6 +94,7 @@ use PHPUnit\Framework\Attributes\UsesClassesThatImplementInterface;
 use PHPUnit\Framework\Attributes\UsesDirectory;
 use PHPUnit\Framework\Attributes\UsesDirectoryRecursively;
 use PHPUnit\Framework\Attributes\UsesFile;
+use PHPUnit\Framework\Attributes\UsesFixture;
 use PHPUnit\Framework\Attributes\UsesFunction;
 use PHPUnit\Framework\Attributes\UsesMethod;
 use PHPUnit\Framework\Attributes\UsesNamespace;
@@ -270,6 +271,17 @@ final class AttributeParser implements Parser
                     assert($attributeInstance instanceof CoversFile);
 
                     $result[] = Metadata::coversFile($attributeInstance->path());
+
+                    break;
+
+                case UsesFixture::class:
+                    assert($attributeInstance instanceof UsesFixture);
+
+                    $declaringFile = $reflector->getFileName();
+
+                    assert($declaringFile !== false && $declaringFile !== '');
+
+                    $result[] = Metadata::usesFixtureOnClass($attributeInstance->path(), $declaringFile);
 
                     break;
 
@@ -621,6 +633,10 @@ final class AttributeParser implements Parser
             }
         }
 
+        foreach ($this->usesFixtureOnParentClassesOf($reflector) as $usesFixture) {
+            $result[] = $usesFixture;
+        }
+
         $metadata = MetadataCollection::fromArray($result);
 
         $this->deprecateGroupAttributesOnParentClassesOf($reflector, $metadata);
@@ -844,6 +860,17 @@ final class AttributeParser implements Parser
 
                         $result[] = Metadata::groupOnMethod($attributeInstance->name());
                     }
+
+                    break;
+
+                case UsesFixture::class:
+                    assert($attributeInstance instanceof UsesFixture);
+
+                    $declaringFile = $reflector->getFileName();
+
+                    assert($declaringFile !== false && $declaringFile !== '');
+
+                    $result[] = Metadata::usesFixtureOnMethod($attributeInstance->path(), $declaringFile);
 
                     break;
 
@@ -1184,6 +1211,59 @@ final class AttributeParser implements Parser
         );
 
         return true;
+    }
+
+    /**
+     * A class-level #[UsesFixture] attribute on a parent class counts for the
+     * classes that extend it: a parent class that the test classes of a test
+     * suite share is where what they have in common is declared, and that
+     * includes the fixtures they use. The path remains relative to the file
+     * of the parent class the attribute is written in.
+     *
+     * @param ReflectionClass<object> $class
+     *
+     * @return list<Metadata>
+     */
+    private function usesFixtureOnParentClassesOf(ReflectionClass $class): array
+    {
+        $result = [];
+        $parent = $class->getParentClass();
+
+        while ($parent !== false && $parent->getName() !== TestCase::class) {
+            foreach ($parent->getAttributes(UsesFixture::class) as $attribute) {
+                $declaringFile = $parent->getFileName();
+
+                assert($declaringFile !== false && $declaringFile !== '');
+
+                try {
+                    $attributeInstance = $attribute->newInstance();
+                } catch (Error $e) {
+                    $line    = $parent->getStartLine();
+                    $message = $e->getMessage();
+
+                    assert($line !== false);
+                    assert($message !== '');
+
+                    $result[] = Metadata::invalidAttributeOnClass(
+                        $this->invalidAttributeMessage(
+                            $attribute->getName(),
+                            'class ' . $parent->getName(),
+                            $declaringFile,
+                            $line,
+                            $message,
+                        ),
+                    );
+
+                    continue;
+                }
+
+                $result[] = Metadata::usesFixtureOnClass($attributeInstance->path(), $declaringFile);
+            }
+
+            $parent = $parent->getParentClass();
+        }
+
+        return $result;
     }
 
     /**

@@ -23,6 +23,7 @@ use function implode;
 use function is_callable;
 use function libxml_clear_errors;
 use function method_exists;
+use function realpath;
 use function sprintf;
 use function str_contains;
 use AssertionError;
@@ -139,6 +140,16 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @var array<class-string, true>
      */
     private array $failureTypes = [];
+
+    /**
+     * @var array<non-empty-string, non-empty-string>
+     */
+    private array $registeredFixtures = [];
+
+    /**
+     * @var array<string, string>
+     */
+    private array $registeredFixturesThatCannotBeResolved = [];
     private TestStatus $status;
 
     /**
@@ -634,6 +645,31 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * The files and directories the test registered with registerFixture().
+     *
+     * @return list<non-empty-string>
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    final public function registeredFixtures(): array
+    {
+        return array_values($this->registeredFixtures);
+    }
+
+    /**
+     * The paths the test registered with registerFixture() that name neither
+     * a file nor a directory.
+     *
+     * @return list<string>
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    final public function registeredFixturesThatCannotBeResolved(): array
+    {
+        return array_values($this->registeredFixturesThatCannotBeResolved);
+    }
+
+    /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     final public function usesDataProvider(): bool
@@ -1026,6 +1062,38 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     final protected function registerFailureType(string $classOrInterface): void
     {
         $this->failureTypes[$classOrInterface] = true;
+    }
+
+    /**
+     * Registers files or directories the test depends on that executing the
+     * test does not show: the code a web server loaded while it handled the
+     * requests the test sent, for instance. When test impact data is recorded,
+     * they are recorded for the test together with the source files it
+     * executed and the paths it declares with the #[UsesFixture] attribute.
+     *
+     * A relative path is resolved against the current working directory.
+     */
+    final protected function registerFixture(string ...$paths): void
+    {
+        foreach ($paths as $path) {
+            $resolved = false;
+
+            /*
+             * An empty path does not name a file, although realpath()
+             * resolves it to the current working directory.
+             */
+            if ($path !== '') {
+                $resolved = realpath($path);
+            }
+
+            if ($resolved === false) {
+                $this->registeredFixturesThatCannotBeResolved[$path] = $path;
+
+                continue;
+            }
+
+            $this->registeredFixtures[$resolved] = $resolved;
+        }
     }
 
     /**

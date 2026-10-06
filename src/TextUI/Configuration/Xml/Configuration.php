@@ -12,6 +12,7 @@ namespace PHPUnit\TextUI\XmlConfiguration;
 use PHPUnit\TextUI\Configuration\ExtensionBootstrapCollection;
 use PHPUnit\TextUI\Configuration\Php;
 use PHPUnit\TextUI\Configuration\Source;
+use PHPUnit\TextUI\Configuration\TestImpactAnalysis;
 use PHPUnit\TextUI\Configuration\TestSuiteCollection;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\CodeCoverage;
 use PHPUnit\TextUI\XmlConfiguration\Logging\Logging;
@@ -33,17 +34,19 @@ abstract readonly class Configuration
     private Php $php;
     private PHPUnit $phpunit;
     private TestSuiteCollection $testSuite;
+    private TestImpactAnalysis $testImpactAnalysis;
 
-    public function __construct(ExtensionBootstrapCollection $extensions, Source $source, CodeCoverage $codeCoverage, Groups $groups, Logging $logging, Php $php, PHPUnit $phpunit, TestSuiteCollection $testSuite)
+    public function __construct(ExtensionBootstrapCollection $extensions, Source $source, CodeCoverage $codeCoverage, Groups $groups, Logging $logging, Php $php, PHPUnit $phpunit, TestSuiteCollection $testSuite, TestImpactAnalysis $testImpactAnalysis)
     {
-        $this->extensions   = $extensions;
-        $this->source       = $source;
-        $this->codeCoverage = $codeCoverage;
-        $this->groups       = $groups;
-        $this->logging      = $logging;
-        $this->php          = $php;
-        $this->phpunit      = $phpunit;
-        $this->testSuite    = $testSuite;
+        $this->extensions         = $extensions;
+        $this->source             = $source;
+        $this->codeCoverage       = $codeCoverage;
+        $this->groups             = $groups;
+        $this->logging            = $logging;
+        $this->php                = $php;
+        $this->phpunit            = $phpunit;
+        $this->testSuite          = $testSuite;
+        $this->testImpactAnalysis = $testImpactAnalysis;
     }
 
     public function extensions(): ExtensionBootstrapCollection
@@ -84,6 +87,11 @@ abstract readonly class Configuration
     public function testSuite(): TestSuiteCollection
     {
         return $this->testSuite;
+    }
+
+    public function testImpactAnalysis(): TestImpactAnalysis
+    {
+        return $this->testImpactAnalysis;
     }
 
     /**

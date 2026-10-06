@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="../../phpunit.xsd">
+    <testImpactAnalysis>
+        <addedFilesAreReachedThroughChanges>
+            <include>
+                <directory>app</directory>
+                <file>bootstrap/helpers.php</file>
+            </include>
+            <exclude>
+                <directory prefix="Send" suffix="Listener.php">app/Listeners</directory>
+                <file>app/Kernel.php</file>
+            </exclude>
+        </addedFilesAreReachedThroughChanges>
+    </testImpactAnalysis>
+</phpunit>
