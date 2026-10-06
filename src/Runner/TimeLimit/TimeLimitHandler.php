@@ -10,6 +10,7 @@
 namespace PHPUnit\Runner\TimeLimit;
 
 use const SIGALRM;
+use function assert;
 use function ceil;
 use function function_exists;
 use function getmypid;
@@ -75,6 +76,44 @@ final class TimeLimitHandler
     }
 
     /**
+     * Whether a time limit is configured for the test run and its deadline
+     * has passed.
+     *
+     * The parallel test runner checks this while it waits for its worker
+     * processes, rather than only when a test finishes: the tests that a
+     * worker process runs are not stopped by the alarm of this process, and
+     * their results arrive in suite order, if at all.
+     */
+    public static function deadlineHasPassed(): bool
+    {
+        if (self::$instance === null) {
+            return false;
+        }
+
+        return hrtime(true) >= self::$instance->deadline;
+    }
+
+    /**
+     * Emits the event that tells the test runner that the time limit for the
+     * test run was exceeded, unless it has already been emitted.
+     */
+    public static function timeLimitExceeded(): void
+    {
+        self::$instance?->exceed();
+    }
+
+    /**
+     * The message that a test is aborted with when the time limit for the
+     * test run is exceeded while the test runs.
+     */
+    public static function messageForAbortedTest(): string
+    {
+        assert(self::$instance !== null);
+
+        return self::$instance->abortedTestMessage();
+    }
+
+    /**
      * @param positive-int $timeLimit
      */
     private function __construct(Facade $facade, int $timeLimit)
@@ -100,9 +139,33 @@ final class TimeLimitHandler
             return;
         }
 
+        $this->exceed();
+    }
+
+    private function exceed(): void
+    {
+        if ($this->exceeded) {
+            return;
+        }
+
         $this->exceeded = true;
 
         $this->facade->emitter()->testRunnerTimeLimitExceeded($this->timeLimit);
+    }
+
+    private function abortedTestMessage(): string
+    {
+        $unit = 'seconds';
+
+        if ($this->timeLimit === 1) {
+            $unit = 'second';
+        }
+
+        return sprintf(
+            'This test was aborted because the time limit of %d %s for the test run was exceeded',
+            $this->timeLimit,
+            $unit,
+        );
     }
 
     private function arm(): void
@@ -125,19 +188,7 @@ final class TimeLimitHandler
 
                 $this->alarmFired = true;
 
-                $unit = 'seconds';
-
-                if ($this->timeLimit === 1) {
-                    $unit = 'second';
-                }
-
-                throw new TimeLimitExceededException(
-                    sprintf(
-                        'This test was aborted because the time limit of %d %s for the test run was exceeded',
-                        $this->timeLimit,
-                        $unit,
-                    ),
-                );
+                throw new TimeLimitExceededException($this->abortedTestMessage());
             },
         );
 

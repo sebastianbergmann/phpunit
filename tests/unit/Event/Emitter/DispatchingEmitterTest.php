@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event;
 
+use function getmypid;
 use Exception;
 use PHPUnit\Event\Code\ClassMethod;
 use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
@@ -104,6 +105,32 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertSame(1, $subscriber->recordedEventCount());
         $this->assertInstanceOf(Application\Started::class, $subscriber->lastRecordedEvent());
+    }
+
+    public function testRecordsTheIdOfTheProcessThatEmittedTheEventInItsTelemetryInformation(): void
+    {
+        $subscriber = new class extends RecordingSubscriber implements Application\StartedSubscriber
+        {
+            public function notify(Application\Started $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
+            Application\StartedSubscriber::class,
+            Application\Started::class,
+            $subscriber,
+        );
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $this->telemetrySystem(),
+        );
+
+        $emitter->applicationStarted();
+
+        $this->assertSame(getmypid(), $subscriber->lastRecordedEvent()->telemetryInfo()->processId());
     }
 
     #[TestDox('testRunnerStartedStaticAnalysisForCodeCoverage() emits TestRunner\StaticAnalysisForCodeCoverageStarted event')]
@@ -730,7 +757,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem,
         );
 
-        $reason  = ChildProcessReason::TestRequiringProcessIsolation;
+        $reason  = ChildProcessReason::ParallelWorker;
         $message = 'message';
 
         $emitter->childProcessErrored($reason, $message);

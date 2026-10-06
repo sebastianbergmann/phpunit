@@ -114,6 +114,23 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
     }
 
     /**
+     * Creates an empty test suite for the given test class, to which tests of
+     * that class are then added one by one. Used where the tests of the class
+     * have already been selected, as for a work unit of a parallel test run,
+     * rather than found by reflecting on the class.
+     *
+     * @param class-string<TestCase> $className
+     */
+    public static function forTestClass(string $className, Event\Emitter $emitter): static
+    {
+        $testSuite = new static($className, $emitter);
+
+        $testSuite->isForTestClass = true;
+
+        return $testSuite;
+    }
+
+    /**
      * @param ReflectionClass<TestCase> $class
      * @param list<non-empty-string>    $groups
      * @param positive-int              $numberOfRuns
@@ -467,6 +484,20 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
     }
 
     /**
+     * Remove the tests from the test suite without running them, for a caller
+     * that runs them in a different way (see ParallelTestRunner). Like run(),
+     * which takes the tests out of the test suite before it runs them, this
+     * lets each test object be destructed as soon as it has run and its
+     * caller has let go of it (see #5875).
+     */
+    public function removeTests(): void
+    {
+        $this->tests        = [];
+        $this->groupedTests = [];
+        $this->groups       = null;
+    }
+
+    /**
      * Mark the test suite as skipped.
      *
      * @throws SkippedTestSuiteError
@@ -772,9 +803,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             $tests[] = $test;
         }
 
-        $this->tests        = [];
-        $this->groupedTests = [];
-        $this->groups       = null;
+        $this->removeTests();
 
         return $tests;
     }

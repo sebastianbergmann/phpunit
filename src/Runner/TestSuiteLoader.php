@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner;
 
+use function array_keys;
 use function array_slice;
 use function basename;
 use function count;
@@ -37,6 +38,29 @@ final class TestSuiteLoader
      * @var array<non-empty-string, list<class-string>>
      */
     private static array $fileToClassesMap = [];
+
+    /**
+     * @var array<string, true>
+     */
+    private static array $loadedSuiteClassFiles = [];
+
+    /**
+     * The test class files that have been loaded, in the order in which they
+     * were loaded.
+     *
+     * A sequential run loads every test class file before it runs a test, so
+     * a test may rely on what another test class file declares: a class that
+     * it names in #[DataProviderExternal], an interface, a trait, a function,
+     * or a constant, for instance. A parallel worker loads these files, in the
+     * same order, before it runs a test, so that its tests see the same
+     * declarations.
+     *
+     * @return list<string>
+     */
+    public static function loadedSuiteClassFiles(): array
+    {
+        return array_keys(self::$loadedSuiteClassFiles);
+    }
 
     /**
      * @throws Exception
@@ -113,6 +137,14 @@ final class TestSuiteLoader
     private function loadSuiteClassFile(string $suiteClassFile): array
     {
         if (isset(self::$fileToClassesMap[$suiteClassFile])) {
+            /*
+             * The file is recorded even when it does not have to be loaded
+             * because its classes have already been declared, by the
+             * autoloader for instance, and mapped while another file was
+             * loaded.
+             */
+            self::$loadedSuiteClassFiles[$suiteClassFile] = true;
+
             return self::$fileToClassesMap[$suiteClassFile];
         }
 
@@ -132,6 +164,12 @@ final class TestSuiteLoader
         }
 
         require_once $suiteClassFile;
+
+        /*
+         * The file is recorded only once it has been loaded: a file whose
+         * loading failed must not be loaded again by a parallel worker.
+         */
+        self::$loadedSuiteClassFiles[$suiteClassFile] = true;
 
         $declaredClasses = get_declared_classes();
 

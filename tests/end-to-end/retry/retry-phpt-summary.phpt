@@ -1,5 +1,7 @@
 --TEST--
 A PHPT test that passed after retrying is listed in the test result summary
+--CONFLICTS--
+all
 --FILE--
 <?php declare(strict_types=1);
 @unlink(sys_get_temp_dir() . '/phpunit-e2e-phpt-retry.marker');

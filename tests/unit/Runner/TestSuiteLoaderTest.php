@@ -9,12 +9,15 @@
  */
 namespace PHPUnit\Runner;
 
+use function class_exists;
+use function realpath;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\BankAccountTest;
+use RuntimeException;
 
 #[CoversClass(TestSuiteLoader::class)]
 #[Small]
@@ -50,6 +53,66 @@ final class TestSuiteLoaderTest extends TestCase
             BankAccountTest::class,
             (new TestSuiteLoader)->load(__DIR__ . '/../../_files/BankAccountTest.php')->getName(),
         );
+    }
+
+    public function testRecordsALoadedTestClassFile(): void
+    {
+        $file = realpath(__DIR__ . '/../../_files/BankAccountTest.php');
+
+        (new TestSuiteLoader)->load($file);
+
+        $this->assertContains($file, TestSuiteLoader::loadedSuiteClassFiles());
+    }
+
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testRecordsTheLoadedTestClassFilesInTheOrderInWhichTheyWereLoaded(): void
+    {
+        $loader = new TestSuiteLoader;
+
+        $loader->load(__DIR__ . '/../../_files/AssertionExampleTest.php');
+        $loader->load(__DIR__ . '/../../_files/ActualOutputTest.php');
+
+        $this->assertSame(
+            [
+                realpath(__DIR__ . '/../../_files/AssertionExampleTest.php'),
+                realpath(__DIR__ . '/../../_files/ActualOutputTest.php'),
+            ],
+            TestSuiteLoader::loadedSuiteClassFiles(),
+        );
+    }
+
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testRecordsATestClassFileWhoseClassWasAutoloadedAfterAnotherTestClassFileWasLoaded(): void
+    {
+        $loader = new TestSuiteLoader;
+
+        $loader->load(__DIR__ . '/../../_files/ActualOutputTest.php');
+
+        $this->assertTrue(class_exists(BankAccountTest::class));
+
+        $loader->load(__DIR__ . '/../../_files/BankAccountTest.php');
+
+        $this->assertSame(
+            [
+                realpath(__DIR__ . '/../../_files/ActualOutputTest.php'),
+                realpath(__DIR__ . '/../../_files/BankAccountTest.php'),
+            ],
+            TestSuiteLoader::loadedSuiteClassFiles(),
+        );
+    }
+
+    public function testDoesNotRecordATestClassFileThatCannotBeLoaded(): void
+    {
+        $file = realpath(__DIR__ . '/../../_files/TestClassFileThatCannotBeLoaded.php');
+
+        try {
+            (new TestSuiteLoader)->load($file);
+        } catch (RuntimeException) {
+        }
+
+        $this->assertNotContains($file, TestSuiteLoader::loadedSuiteClassFiles());
     }
 
     public function testRejectsFileThatDeclaresClassThatDoesNotExtendTestCase(): void

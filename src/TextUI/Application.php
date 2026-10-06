@@ -278,13 +278,19 @@ final readonly class Application
 
             if ($coverageInitializationStatus === CodeCoverageInitializationStatus::NOT_REQUESTED ||
                 $coverageInitializationStatus === CodeCoverageInitializationStatus::SUCCEEDED) {
-                $runner = new TestRunner($this->emitter);
-
-                $runner->run(
-                    $configuration,
-                    $testRunHistory,
-                    $testSuite,
-                );
+                if ($configuration->numberOfParallelWorkers() > 1) {
+                    new ParallelTestRunner()->run(
+                        $configuration,
+                        $testRunHistory,
+                        $testSuite,
+                    );
+                } else {
+                    new TestRunner($this->emitter)->run(
+                        $configuration,
+                        $testRunHistory,
+                        $testSuite,
+                    );
+                }
             }
 
             $duration = $timer->stop();
@@ -646,6 +652,17 @@ final readonly class Application
                 $printer,
                 'Configuration',
                 $configuration->configurationFile(),
+            );
+        }
+
+        if ($configuration->numberOfParallelWorkers() > 1) {
+            $this->writeMessage(
+                $printer,
+                'Parallel',
+                sprintf(
+                    '%d workers',
+                    $configuration->numberOfParallelWorkers(),
+                ),
             );
         }
     }

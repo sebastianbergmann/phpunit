@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner\DeprecationCollector;
 
+use PHPUnit\Event\CollectingDispatcher;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Event\UnknownSubscriberTypeException;
@@ -30,11 +31,28 @@ final class Facade
         self::collector();
     }
 
-    public static function initForIsolation(): void
+    /**
+     * Prepares the collector for a process that runs tests in isolation from
+     * the main process and forwards their events to it: the child process of
+     * a test that runs in process isolation, or a worker process of a
+     * parallel test run.
+     *
+     * A worker process runs more than one test, so the deprecations that the
+     * expectations of a test are verified against are forgotten when the next
+     * test is prepared, as they are in the main process.
+     *
+     * @throws EventFacadeIsSealedException
+     * @throws UnknownSubscriberTypeException
+     */
+    public static function initForIsolation(CollectingDispatcher $dispatcher): void
     {
-        self::collector();
+        $collector = self::collector();
 
         self::$inIsolation = true;
+
+        if ($collector instanceof Collector) {
+            $dispatcher->registerSubscriber(new TestPreparedSubscriber($collector));
+        }
     }
 
     /**
@@ -50,6 +68,15 @@ final class Facade
      */
     public static function filteredDeprecations(): array
     {
+        /*
+         * A process that runs tests in isolation from the main process does not
+         * decide whether the test run is stopped: the main process decides that,
+         * from the deprecations that the isolated process forwards to it.
+         */
+        if (self::$inIsolation) {
+            return [];
+        }
+
         return self::collector()->filteredDeprecations();
     }
 

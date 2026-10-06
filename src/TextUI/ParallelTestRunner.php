@@ -1,0 +1,1452 @@
+<?php declare(strict_types=1);
+/*
+ * This file is part of PHPUnit.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+namespace PHPUnit\TextUI;
+
+use function assert;
+use function class_exists;
+use function count;
+use function explode;
+use function get_parent_class;
+use function in_array;
+use function is_subclass_of;
+use function spl_object_id;
+use function sprintf;
+use function usleep;
+use PHPUnit\Event;
+use PHPUnit\Framework\DataProviderTestSuite;
+use PHPUnit\Framework\IterativeTestSuite;
+use PHPUnit\Framework\PhptIterativeTestSuite;
+use PHPUnit\Framework\PhptRepeatTestSuite;
+use PHPUnit\Framework\PhptRetryTestSuite;
+use PHPUnit\Framework\Test;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestRunner\ChildProcessResultProcessor;
+use PHPUnit\Framework\TestSuite;
+use PHPUnit\Metadata\Api\Dependencies;
+use PHPUnit\Metadata\Api\Requirements;
+use PHPUnit\Metadata\MetadataCollection;
+use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
+use PHPUnit\Runner\CodeCoverage;
+use PHPUnit\Runner\Exception as PhptException;
+use PHPUnit\Runner\Parallel\CompletedWorkUnit;
+use PHPUnit\Runner\Parallel\PersistentWorker;
+use PHPUnit\Runner\Parallel\PhptRunner;
+use PHPUnit\Runner\Parallel\PhptWorkUnit;
+use PHPUnit\Runner\Parallel\ProcessBudget;
+use PHPUnit\Runner\Parallel\ResultAggregator;
+use PHPUnit\Runner\Parallel\Scheduler;
+use PHPUnit\Runner\Parallel\TestClassWorkUnit;
+use PHPUnit\Runner\Parallel\WorkerException;
+use PHPUnit\Runner\Parallel\WorkerPool;
+use PHPUnit\Runner\Parallel\WorkUnit;
+use PHPUnit\Runner\Phpt\Parser;
+use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
+use PHPUnit\Runner\TestRunHistory\TestRunHistory;
+use PHPUnit\Runner\TimeLimit\TimeLimitHandler;
+use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
+use PHPUnit\TestRunner\TestResult\PassedTests;
+use PHPUnit\TextUI\Configuration\Configuration;
+use PHPUnit\Util\PHP\JobRunner;
+use PHPUnit\Util\PHP\JobRunnerRegistry;
+use Throwable;
+
+/**
+ * Runs a test suite by distributing its test classes across a pool of worker
+ * processes that execute them concurrently.
+ *
+ * The distribution unit is one test class: all of the selected tests of a class
+ * are run together by a single worker, which preserves the class' shared
+ * fixtures (#[BeforeClass] / #[AfterClass]) and its intra-class ordering.
+ *
+ * The top-level <testsuite> elements of an XML configuration are run one after
+ * another, just as they are in sequential mode: only tests that belong to the
+ * same top-level test suite run concurrently with each other.
+ *
+ * Apart from the parallel execution itself, this runner is a drop-in
+ * replacement for the sequential TestRunner: it performs the same test suite
+ * sorting and filtering and emits the same test runner lifecycle events, so the
+ * parent process' output, logging, and result subsystem is unaffected.
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ */
+final class ParallelTestRunner
+{
+    /**
+     * How long to sleep, in microseconds, when a polling round finds that
+     * neither the worker pool nor the PHPT runner has progressed, so that
+     * waiting does not spin the CPU.
+     */
+    private const int POLL_INTERVAL_MICROSECONDS = 1000;
+
+    /**
+     * Whether a unit that runs in the main process alongside the units that
+     * are executing elsewhere is running (see runPendingUnit()).
+     */
+    private bool $inProcessUnitIsRunning = false;
+
+    /**
+     * What advancing the worker pool or the PHPT runner raised while a unit
+     * that runs in the main process was running, to be rethrown once the unit
+     * is done (see runPendingUnit()).
+     */
+    private ?Throwable $exceptionWhileInProcessUnitRan = null;
+
+    /**
+     * The units that run in the main process, by suite index, until they are
+     * run (see runInProcess()).
+     *
+     * @var array<non-negative-int, TestClassWorkUnit>
+     */
+    private array $inProcessUnits = [];
+
+    /**
+     * @throws RuntimeException
+     */
+    public function run(Configuration $configuration, TestRunHistory $testRunHistory, TestSuite $suite): void
+    {
+        new TestRunnerLifecycle(Event\Facade::emitter())->run(
+            $configuration,
+            $testRunHistory,
+            $suite,
+            function () use ($configuration, $testRunHistory, $suite): void
+            {
+                // The chunks are handed to execute() without a variable that
+                // would keep the units, and the tests they hold, referenced
+                // for the whole run (see execute()).
+                $this->execute($configuration, $testRunHistory, $suite, $this->collectChunks($configuration, $suite));
+            },
+        );
+    }
+
+    /**
+     * The chunks are run one after another; within a chunk, three kinds of
+     * units run concurrently.
+     *
+     * Units whose tests may run in a worker process — those that are not
+     * attributed with #[DoNotRunInParallel], do not need process isolation,
+     * and do not depend on another class — are distributed across the worker
+     * pool. The data of a data-provided test does not travel to the worker:
+     * the worker invokes the data provider again and selects the data set by
+     * name (see WorkerDataProvider), so what a data provider provides never
+     * decides where a unit runs.
+     *
+     * PHPT tests are not PHPUnit\Framework\TestCase instances and cannot run in
+     * a worker, so they run concurrently in the main process, each as its own
+     * child process, honouring the conflict keys of their --CONFLICTS-- section.
+     * The worker pool and the PHPT runner are advanced side by side in one
+     * polling loop, so that neither has to wait for the other and results reach
+     * the output the moment suite order allows.
+     *
+     * The remaining units run one at a time in the main PHPUnit process, each
+     * at the moment its suite index comes up in the aggregator's release
+     * sequence. A unit runs there when it is attributed with
+     * #[DoNotRunInParallel] (the author has declared that its tests must not run
+     * alongside others, for instance because they share a machine-global
+     * resource — such a unit runs alone: the pool and the PHPT runner first
+     * finish the units they are executing and start nothing new until the
+     * unit is done), when it is configured to run in a separate process (an
+     * isolation that a shared worker cannot provide but the main process can),
+     * or when one of its tests depends on a test of another class (whose
+     * result is only available in the main process, once the unit it belongs
+     * to has been released). Running in the main process is ordinary
+     * execution that behaves exactly as it would in sequential mode — but it
+     * is not what the author of a test suite that opted into parallel
+     * execution expects, so a unit that runs there because of a dependency on
+     * a test of another class is reported with a test runner notice that
+     * names the reason. Process isolation and #[DoNotRunInParallel] are
+     * deliberate choices and are not reported. Any remaining standalone
+     * test — one that is neither a TestCase nor a PHPT test — is run the same
+     * way, at its own suite index. Unless it must run alone, a unit that runs
+     * in the main process runs alongside the units that are executing in the
+     * worker pool and the PHPT runner, which go on being advanced while it
+     * waits for a child process (see runPendingUnit()).
+     *
+     * In sequential mode, TestSuite::run() wraps every suite's tests in a pair
+     * of "test suite started" / "test suite finished" events. The workers and
+     * the in-process units produce these for the test classes they run, but
+     * nothing produces them for the root suite and the top-level test suites
+     * in a parallel run; they are therefore emitted here, around the chunks.
+     * The loggers that reconstruct the suite hierarchy from these events —
+     * JUnit XML, Open Test Reporting, TeamCity — depend on them.
+     *
+     * Within a chunk, the worker units and the PHPT tests are dispatched in
+     * the order of their recorded durations, longest first, so that the
+     * longest-running work does not become the straggler that the workers
+     * wait for at the end of the chunk (see Scheduler). The results are
+     * released in suite order regardless of the dispatch order; a few of the
+     * dispatch slots are therefore reserved for the units that the release
+     * sequence is waiting for, so that results are reported as the tests
+     * finish instead of piling up behind a unit that the cost order would only
+     * get to at the end of the chunk (see DispatchQueue).
+     *
+     * @param list<array{suite: TestSuite, units: list<WorkUnit>, phpt: list<PhptWorkUnit>, standalone: list<array{index: non-negative-int, test: Test}>}> $chunks
+     *
+     * @throws WorkerException
+     */
+    private function execute(Configuration $configuration, TestRunHistory $testRunHistory, TestSuite $suite, array $chunks): void
+    {
+        if ($chunks === []) {
+            return;
+        }
+
+        $scheduler = new Scheduler($testRunHistory);
+
+        $aggregator = new ResultAggregator(
+            Event\Facade::instance(),
+            Event\Facade::emitter(),
+            PassedTests::instance(),
+            CodeCoverage::instance(),
+            static function (): bool
+            {
+                return TestResultFacade::shouldStop();
+            },
+        );
+
+        $processIsolation = $configuration->processIsolation();
+
+        $runs           = [];
+        $poolIsNeeded   = false;
+        $phptIsNeeded   = false;
+        $requiresXdebug = false;
+
+        $classesDependedUponFromOtherClasses = $this->classesDependedUponFromOtherClasses($chunks);
+
+        foreach ($chunks as $chunk) {
+            $parallel  = [];
+            $inProcess = [];
+
+            foreach ($chunk['units'] as $unit) {
+                $testCases = [];
+
+                if ($unit instanceof TestClassWorkUnit) {
+                    $testCases = $this->testCasesOf($unit);
+                }
+
+                $mustNotRunInParallel     = $unit instanceof TestClassWorkUnit && $this->mustNotRunInParallel($unit, $testCases);
+                $requiresProcessIsolation = $unit instanceof TestClassWorkUnit && ($processIsolation || $this->requiresProcessIsolation($unit, $testCases));
+
+                // A unit that runs in the main process for a reason its
+                // author did not ask for is reported with a test runner
+                // notice that names the reason, so that the author can act
+                // on it. Process isolation, whether it is configured for the
+                // whole run or requested with #[RunInSeparateProcess] or
+                // #[RunTestsInSeparateProcesses], and #[DoNotRunInParallel]
+                // are deliberate choices and are not reported; a dependency
+                // on a test of another class is a property of the tests that
+                // their author may not know disqualifies them from a worker.
+                $reason = null;
+
+                if ($unit instanceof TestClassWorkUnit && !$requiresProcessIsolation && !$mustNotRunInParallel) {
+                    $reason = $this->crossClassDependencyOf($unit, $testCases);
+
+                    if ($reason === null && isset($classesDependedUponFromOtherClasses[$unit->className()])) {
+                        $reason = $classesDependedUponFromOtherClasses[$unit->className()];
+                    }
+                }
+
+                if ($unit instanceof TestClassWorkUnit &&
+                    ($requiresProcessIsolation ||
+                     $mustNotRunInParallel ||
+                     $reason !== null)) {
+                    if ($reason !== null) {
+                        Event\Facade::emitter()->testRunnerTriggeredPhpunitNotice(
+                            sprintf(
+                                'The tests of class %s are run in the main process instead of a parallel worker because %s',
+                                $unit->className(),
+                                $reason,
+                            ),
+                        );
+                    }
+
+                    // The unit keeps its global suite index; the aggregator runs
+                    // it in the main process at the moment that index comes up in
+                    // the release sequence, which keeps the output in global
+                    // suite order. A unit whose class is attributed with
+                    // #[DoNotRunInParallel] additionally runs alone: nothing
+                    // else may be executing while it runs (see runChunk()).
+                    $index = $unit->index();
+
+                    $this->inProcessUnits[$index] = $unit;
+
+                    $inProcess[] = [
+                        'index'     => $index,
+                        'exclusive' => $mustNotRunInParallel,
+                        'runner'    => function () use ($index): void
+                        {
+                            $this->runInProcess($index);
+                        },
+                    ];
+
+                    continue;
+                }
+
+                $parallel[] = $unit;
+
+                if ($unit instanceof TestClassWorkUnit && $this->requiresXdebug($unit, $testCases)) {
+                    $requiresXdebug = true;
+                }
+            }
+
+            // @codeCoverageIgnoreStart
+            foreach ($chunk['standalone'] as $item) {
+                $test = $item['test'];
+
+                $inProcess[] = [
+                    'index'     => $item['index'],
+                    'exclusive' => false,
+                    'runner'    => static function () use ($test): void
+                    {
+                        $test->run();
+                    },
+                ];
+            }
+            // @codeCoverageIgnoreEnd
+
+            if ($parallel !== []) {
+                $poolIsNeeded = true;
+            }
+
+            if ($chunk['phpt'] !== []) {
+                $phptIsNeeded = true;
+            }
+
+            $runs[] = [
+                'suite'                        => Event\TestSuite\TestSuiteBuilder::from($chunk['suite']),
+                'parallel'                     => $scheduler->schedule($parallel),
+                'phpt'                         => $scheduler->schedule($chunk['phpt']),
+                'inProcess'                    => $inProcess,
+                'suiteEnvelopeIsEmittedByUnit' => $this->suiteEnvelopeIsEmittedByUnit($chunk),
+            ];
+        }
+
+        // When the suite was partitioned into chunks, the chunks are the
+        // root suite's top-level test suites, and the root suite needs an
+        // envelope of its own around all of them. When it was not, the only
+        // chunk is the root suite itself, whose envelope is emitted by
+        // runChunk().
+        $rootSuiteValueObject = null;
+
+        if ($chunks[0]['suite'] !== $suite) {
+            $rootSuiteValueObject = Event\TestSuite\TestSuiteBuilder::from($suite);
+        }
+
+        // The run has taken what it needs from the test suite: the units hold
+        // the tests they run, and the value objects of the test suites hold
+        // what the events about their envelopes report. The tests are removed
+        // from the test suite, as TestSuite::run() takes them out of it in a
+        // sequential run, and the chunks are let go of, so that a test that
+        // runs in the main process is referenced only by the test suite that
+        // runs it, which lets go of each test as soon as it has run (see
+        // runInProcess()).
+        $suite->removeTests();
+
+        unset($chunks, $chunk, $unit, $testCases);
+
+        // The pool and the PHPT runner share one budget of concurrently
+        // executing units, so that a chunk that contains both test classes
+        // and PHPT tests never executes more units at once than the number
+        // of parallel workers that was asked for.
+        $budget = new ProcessBudget($configuration->numberOfParallelWorkers());
+
+        // The pool and the PHPT runner are created once and reused across the
+        // chunks, so that the worker processes are booted only once.
+        $pool = null;
+
+        if ($poolIsNeeded) {
+            $pool = $this->createPool(
+                $configuration->numberOfParallelWorkers(),
+                $configuration->numberOfTestClassesBeforeWorkerRecycling(),
+                $budget,
+                $requiresXdebug,
+            );
+
+            $pool->start();
+        }
+
+        $phptRunner = null;
+
+        if ($phptIsNeeded) {
+            // A PHPT test that conflicts with "all" runs entirely on its own;
+            // the PHPT runner therefore only starts one while no unit is
+            // executing in the worker pool or in the main process.
+            $phptRunner = $this->createPhptRunner(
+                $configuration,
+                $budget,
+                function () use ($pool): bool
+                {
+                    if ($this->inProcessUnitIsRunning) {
+                        return false;
+                    }
+
+                    if ($pool === null) {
+                        return true;
+                    }
+
+                    return !$pool->hasExecutingUnits();
+                },
+            );
+        }
+
+        if ($rootSuiteValueObject !== null) {
+            Event\Facade::emitter()->testSuiteStarted($rootSuiteValueObject);
+        }
+
+        try {
+            foreach ($runs as $run) {
+                if ($this->runChunk($run['suite'], $run['parallel'], $run['phpt'], $run['inProcess'], $run['suiteEnvelopeIsEmittedByUnit'], $pool, $phptRunner, $aggregator)) {
+                    // The run was stopped early; the remaining chunks are
+                    // abandoned, exactly as the sequential runner does not
+                    // start another test suite once it has decided to stop.
+                    break;
+                }
+            }
+        } finally {
+            // When an exception ends the run, the units that are executing
+            // are abandoned: the child processes of the PHPT tests are
+            // terminated, and their --CLEAN-- sections run, and the workers
+            // that are executing a unit are terminated when the pool is
+            // stopped.
+            if ($phptRunner !== null) {
+                $phptRunner->kill();
+            }
+
+            if ($pool !== null) {
+                $pool->stop();
+            }
+        }
+
+        if ($rootSuiteValueObject !== null) {
+            Event\Facade::emitter()->testSuiteFinished($rootSuiteValueObject);
+        }
+    }
+
+    /**
+     * Run the units of one chunk: the worker pool and the PHPT runner are
+     * begun with the chunk's units and advanced side by side in one polling
+     * loop, so that the chunk's test classes and PHPT tests execute
+     * concurrently and their results and streamed events reach the parent the
+     * moment they arrive. The in-process units interspersed among them run as
+     * the release sequence reaches their indexes, between two polling rounds,
+     * so that the pool and the PHPT runner can be advanced while they run.
+     *
+     * The chunk's in-process units are registered with the aggregator here,
+     * not before the chunks run: were the units of every chunk registered up
+     * front, the release sequence — which knows suite indexes but no chunk
+     * boundaries — would stop at a later chunk's leading in-process unit the
+     * moment the last unit of an earlier chunk was released, and the unit
+     * would be run inside that chunk's test-suite envelope and before its own
+     * suite's "test suite started" event.
+     *
+     * The chunk's results are wrapped in the "test suite started" / "test
+     * suite finished" envelope that its suite would have emitted had it been
+     * run by TestSuite::run() in sequential mode.
+     *
+     * When the results forwarded so far call for the run to stop
+     * (--stop-on-*), the chunk is aborted: the pumps drop their queued units
+     * and halt the units they are executing (see halt()), and true is
+     * returned so that the remaining chunks are abandoned. The results that
+     * were already forwarded are exactly those a sequential run would have
+     * reported, because the aggregator forwards in suite order and freezes as
+     * soon as the stop condition holds.
+     *
+     * @param list<WorkUnit>                                                                  $parallel
+     * @param list<PhptWorkUnit>                                                              $phpt
+     * @param list<array{index: non-negative-int, exclusive: bool, runner: callable(): void}> $inProcess
+     */
+    private function runChunk(Event\TestSuite\TestSuite $suiteValueObject, array $parallel, array $phpt, array $inProcess, bool $suiteEnvelopeIsEmittedByUnits, ?WorkerPool $pool, ?PhptRunner $phptRunner, ResultAggregator $aggregator): bool
+    {
+        if (!$suiteEnvelopeIsEmittedByUnits) {
+            Event\Facade::emitter()->testSuiteStarted($suiteValueObject);
+        }
+
+        foreach ($inProcess as $unit) {
+            $aggregator->registerInProcessUnit($unit['index'], $unit['runner'], $unit['exclusive']);
+        }
+
+        $activePool = null;
+
+        if ($parallel !== []) {
+            assert($pool !== null);
+
+            $pool->begin(
+                $parallel,
+                static function (CompletedWorkUnit $completed) use ($aggregator): void
+                {
+                    $aggregator->add($completed);
+                },
+                static function (WorkUnit $unit, Event\EventCollection $events) use ($aggregator): void
+                {
+                    $aggregator->addStreamedEvents($unit->index(), $events);
+                },
+                static function (WorkUnit $unit) use ($aggregator): bool
+                {
+                    return $aggregator->discardStreamedEventsFor($unit->index());
+                },
+            );
+
+            $activePool = $pool;
+        }
+
+        $activePhptRunner = null;
+
+        if ($phpt !== []) {
+            assert($phptRunner !== null);
+
+            $phptRunner->begin(
+                $phpt,
+                static function (int $index, Event\EventCollection $events) use ($aggregator): void
+                {
+                    $aggregator->registerCollectedUnit($index, $events);
+
+                    // Release everything that has become contiguous in suite
+                    // order, so that progress is reported as the PHPT tests
+                    // finish rather than buffered until the chunk is done.
+                    $aggregator->flush();
+                },
+            );
+
+            $activePhptRunner = $phptRunner;
+        }
+
+        $aborted = false;
+
+        while (true) {
+            // Stop early when the results forwarded so far call for it: the
+            // queued units are dropped, and the units that are executing
+            // right now are halted and their results discarded — their
+            // results would be for tests that a sequential run would not have
+            // run.
+            if (TestResultFacade::shouldStop()) {
+                $this->halt($activePool, $activePhptRunner, $aggregator);
+
+                $aborted = true;
+
+                break;
+            }
+
+            // The deadline of a time limit for the test run is checked while
+            // the results are awaited: the tests that the workers run are not
+            // stopped by the alarm of this process, and their results arrive in
+            // suite order, if at all. Once it has passed, no further unit is
+            // dispatched, and the units that are executing are abandoned and
+            // their running tests reported as aborted. The event that the time
+            // limit was exceeded then stops the run in the next round.
+            if (TimeLimitHandler::deadlineHasPassed()) {
+                if ($activePool !== null) {
+                    $message = TimeLimitHandler::messageForAbortedTest();
+
+                    assert($message !== '');
+
+                    $activePool->abort($message);
+                }
+
+                TimeLimitHandler::timeLimitExceeded();
+
+                continue;
+            }
+
+            // A unit that must run alone — its class is attributed with
+            // #[DoNotRunInParallel] — has reached its turn in the release
+            // sequence: it runs once the pool and the PHPT runner have
+            // nothing executing anymore. Until then, neither starts new
+            // work, so that the units that are executing drain away.
+            $exclusiveUnitIsPending = $aggregator->hasPendingExclusiveUnit();
+
+            if ($exclusiveUnitIsPending &&
+                ($activePool === null || !$activePool->hasExecutingUnits()) &&
+                ($activePhptRunner === null || !$activePhptRunner->hasRunningTests())) {
+                $aggregator->runPendingUnit();
+
+                continue;
+            }
+
+            // Any other unit that runs in the main process runs as soon as it
+            // has reached its turn, alongside the units that are executing,
+            // unless a PHPT test that must run alone is running.
+            if (!$exclusiveUnitIsPending &&
+                $aggregator->hasPendingUnit() &&
+                ($activePhptRunner === null || !$activePhptRunner->isRunningExclusiveTest())) {
+                $this->runPendingUnit($activePool, $activePhptRunner, $aggregator);
+
+                continue;
+            }
+
+            // While a PHPT test that must run alone is running, the pool must
+            // not dispatch units alongside it.
+            $mayDispatch = !$exclusiveUnitIsPending &&
+                ($activePhptRunner === null || !$activePhptRunner->isRunningExclusiveTest());
+
+            $progressed = false;
+
+            if ($activePool !== null && $activePool->tick($mayDispatch)) {
+                $progressed = true;
+            }
+
+            if ($activePhptRunner !== null && $activePhptRunner->tick(!$exclusiveUnitIsPending)) {
+                $progressed = true;
+            }
+
+            $poolIsFinished       = $activePool === null || $activePool->isFinished();
+            $phptRunnerIsFinished = $activePhptRunner === null || $activePhptRunner->isFinished();
+
+            // A unit that runs in the main process may have reached its turn
+            // during this round's final releases; the loop then goes around
+            // once more to run it instead of ending the chunk.
+            if ($poolIsFinished && $phptRunnerIsFinished && !$aggregator->hasPendingUnit()) {
+                break;
+            }
+
+            // Neither the pool nor the PHPT runner progressed this round: sleep
+            // briefly before polling again so that waiting does not spin the
+            // CPU.
+            if (!$progressed) {
+                usleep(self::POLL_INTERVAL_MICROSECONDS);
+            }
+        }
+
+        // The chunk's very last releases may have tripped the stop condition
+        // after the loop's final check; the remaining chunks are then
+        // abandoned just the same.
+        if (!$aborted && TestResultFacade::shouldStop()) {
+            $aborted = true;
+        }
+
+        // The sequential runner emits this event when it decides to stop
+        // between two tests; it is emitted here when the parallel runner
+        // decides to abandon the run's remaining work.
+        if ($aborted) {
+            Event\Facade::emitter()->testRunnerExecutionAborted();
+        }
+
+        if (!$suiteEnvelopeIsEmittedByUnits) {
+            Event\Facade::emitter()->testSuiteFinished($suiteValueObject);
+        }
+
+        return $aborted;
+    }
+
+    /**
+     * Halt the units of a chunk that are executing when the results forwarded
+     * so far call for the run to stop (--stop-on-*), and wait for them to
+     * halt. A unit halts as the sequential test runner stops: the test that
+     * is running finishes, no further test is started, and what cleans up
+     * after the tests is run — the methods that run after the last test of a
+     * class, such as tearDownAfterClass(), and the --CLEAN-- section of a
+     * PHPT test — so that the units do not leave their fixtures behind.
+     *
+     * The results of the halted units are discarded, so the test suites
+     * whose "test suite started" events have been forwarded for the units are
+     * closed here. Should the deadline of a time limit for the test run pass
+     * while the units halt, the units are terminated.
+     */
+    private function halt(?WorkerPool $pool, ?PhptRunner $phptRunner, ResultAggregator $aggregator): void
+    {
+        if ($pool !== null) {
+            $pool->halt();
+
+            $aggregator->closeOpenEnvelopes();
+        }
+
+        if ($phptRunner !== null) {
+            $phptRunner->halt();
+        }
+
+        while (($pool !== null && $pool->hasExecutingUnits()) ||
+               ($phptRunner !== null && $phptRunner->hasRunningTests())) {
+            if (TimeLimitHandler::deadlineHasPassed()) {
+                if ($pool !== null) {
+                    $pool->kill();
+                }
+
+                if ($phptRunner !== null) {
+                    $phptRunner->kill();
+                }
+
+                return;
+            }
+
+            $progressed = false;
+
+            if ($pool !== null && $pool->tick(false)) {
+                $progressed = true;
+            }
+
+            if ($phptRunner !== null && $phptRunner->tick(false)) {
+                $progressed = true;
+            }
+
+            if (!$progressed) {
+                usleep(self::POLL_INTERVAL_MICROSECONDS);
+            }
+        }
+    }
+
+    /**
+     * Run the unit that runs in the main process and has reached its turn in
+     * the release sequence, and advance the worker pool and the PHPT runner
+     * whenever the unit waits for a child process, which is what a test that
+     * runs in a separate process spends most of its time doing. The workers
+     * that finish their units are given new ones, and the PHPT tests that
+     * finish are noticed as they finish, so that the time the unit takes is
+     * not added to the durations measured for them.
+     *
+     * The units that finish in the meantime are held back by the aggregator
+     * until the unit is done, so that the unit's events, which reach the
+     * dispatcher live, stay in suite order. A PHPT test that must run alone
+     * is not started while the unit runs.
+     *
+     * An exception that advancing the pool or the PHPT runner raises is
+     * rethrown once the unit is done, and not where it was raised: inside the
+     * test that was waiting for its child process, it would be reported as
+     * the outcome of that test.
+     *
+     * @throws Throwable
+     */
+    private function runPendingUnit(?WorkerPool $pool, ?PhptRunner $phptRunner, ResultAggregator $aggregator): void
+    {
+        $jobRunner = JobRunnerRegistry::get();
+
+        JobRunnerRegistry::set(
+            $jobRunner->invokingWhileWaiting(
+                function () use ($pool, $phptRunner): void
+                {
+                    $this->advanceWhileInProcessUnitRuns($pool, $phptRunner);
+                },
+            ),
+        );
+
+        $this->inProcessUnitIsRunning = true;
+
+        try {
+            $aggregator->runPendingUnit();
+        } finally {
+            $this->inProcessUnitIsRunning = false;
+
+            JobRunnerRegistry::set($jobRunner);
+        }
+
+        $exception = $this->exceptionWhileInProcessUnitRan;
+
+        // @codeCoverageIgnoreStart
+        if ($exception !== null) {
+            $this->exceptionWhileInProcessUnitRan = null;
+
+            throw $exception;
+        }
+        // @codeCoverageIgnoreEnd
+    }
+
+    /**
+     * Advance the worker pool and the PHPT runner by one polling round while a
+     * unit that runs in the main process waits for a child process. No unit
+     * is started once the results call for the run to stop or the deadline of
+     * a time limit for the test run has passed: the run loop deals with both
+     * once the unit is done.
+     */
+    private function advanceWhileInProcessUnitRuns(?WorkerPool $pool, ?PhptRunner $phptRunner): void
+    {
+        // @codeCoverageIgnoreStart
+        if ($this->exceptionWhileInProcessUnitRan !== null) {
+            return;
+        }
+        // @codeCoverageIgnoreEnd
+
+        $mayStart = !TestResultFacade::shouldStop() && !TimeLimitHandler::deadlineHasPassed();
+
+        try {
+            if ($pool !== null) {
+                $pool->tick($mayStart);
+            }
+
+            if ($phptRunner !== null) {
+                $phptRunner->tick($mayStart);
+            }
+            // @codeCoverageIgnoreStart
+        } catch (Throwable $t) {
+            $this->exceptionWhileInProcessUnitRan = $t;
+        }
+        // @codeCoverageIgnoreEnd
+    }
+
+    /**
+     * @param callable(): bool $nothingElseIsExecuting
+     */
+    private function createPhptRunner(Configuration $configuration, ProcessBudget $budget, callable $nothingElseIsExecuting): PhptRunner
+    {
+        $concurrency = $configuration->numberOfParallelWorkers();
+
+        if (CodeCoverage::instance()->isActive()) {
+            // The PHPT tests run in the main process and share its single code
+            // coverage instance, so they must not collect coverage at the same
+            // time; they are therefore run one at a time when coverage is on.
+            $concurrency = 1;
+        }
+
+        $processor = new ChildProcessResultProcessor(
+            Event\Facade::instance(),
+            Event\Facade::emitter(),
+            PassedTests::instance(),
+            CodeCoverage::instance(),
+        );
+
+        return new PhptRunner(new JobRunner($processor, Event\Facade::emitter()), $concurrency, $budget, $nothingElseIsExecuting);
+    }
+
+    /**
+     * Run all of a unit's tests in the main PHPUnit process, exactly as the
+     * sequential test runner would: the class is reassembled into a test suite
+     * and run, which preserves its shared fixtures and intra-class ordering and
+     * lets its events reach the parent's output and result subsystem directly.
+     *
+     * The unit is let go of before the test suite runs, so that the test
+     * suite, which takes the tests out of itself before it runs them, holds
+     * the only reference to them: each test object is destructed as soon as
+     * it has run, as in a sequential run (see #5875).
+     *
+     * @param non-negative-int $index
+     */
+    private function runInProcess(int $index): void
+    {
+        $this->testSuiteForInProcessUnit($index)->run();
+    }
+
+    /**
+     * @param non-negative-int $index
+     */
+    private function testSuiteForInProcessUnit(int $index): TestSuite
+    {
+        assert(isset($this->inProcessUnits[$index]));
+
+        $unit = $this->inProcessUnits[$index];
+
+        unset($this->inProcessUnits[$index]);
+
+        $suite = TestSuite::forTestClass($unit->className(), Event\Facade::emitter());
+
+        foreach ($unit->tests() as $test) {
+            $suite->addTest($test);
+        }
+
+        return $suite;
+    }
+
+    /**
+     * A work unit is the whole of a test class, so a single test method that is
+     * attributed with #[DoNotRunInParallel] excludes its entire class from the
+     * parallel phase.
+     *
+     * @param list<TestCase> $testCases
+     */
+    private function mustNotRunInParallel(TestClassWorkUnit $unit, array $testCases): bool
+    {
+        return $this->unitHasMetadata(
+            $unit,
+            $testCases,
+            static fn (MetadataCollection $metadata): bool => $metadata->isDoNotRunInParallel()->isNotEmpty(),
+            static fn (MetadataCollection $metadata): bool => $metadata->isDoNotRunInParallel()->isNotEmpty(),
+        );
+    }
+
+    /**
+     * Whether a test of the unit requires the Xdebug extension. A worker
+     * process is started with Xdebug turned off unless a test that it may be
+     * asked to run requires it, as the child process of a test that runs in
+     * process isolation is (see SeparateProcessTestRunner).
+     *
+     * @param list<TestCase> $testCases
+     */
+    private function requiresXdebug(TestClassWorkUnit $unit, array $testCases): bool
+    {
+        $requirements = new Requirements(Event\Facade::emitter());
+
+        foreach ($testCases as $testCase) {
+            if ($requirements->requiresXdebug($unit->className(), $testCase->name())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Whether the unit's test class — or one of its ancestors — carries class
+     * metadata matched by the first filter, or any of the unit's test methods
+     * carries method metadata matched by the second.
+     *
+     * @param list<TestCase>                     $testCases
+     * @param callable(MetadataCollection): bool $classMetadataMatches
+     * @param callable(MetadataCollection): bool $methodMetadataMatches
+     */
+    private function unitHasMetadata(TestClassWorkUnit $unit, array $testCases, callable $classMetadataMatches, callable $methodMetadataMatches): bool
+    {
+        $className = $unit->className();
+
+        $class = $className;
+
+        do {
+            if ($classMetadataMatches(MetadataRegistry::parser()->forClass($class))) {
+                return true;
+            }
+        } while (($class = get_parent_class($class)) !== false);
+
+        foreach ($testCases as $test) {
+            if ($methodMetadataMatches(MetadataRegistry::parser()->forMethod($className, $test->name()))) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * The test classes with a test that a test of another class depends on,
+     * each mapped to the reason why it is run in the main process.
+     *
+     * A test that depends on a test of another class runs in the main process
+     * (see crossClassDependencyOf()) and receives the value that the test it
+     * depends on returned. That value would have to travel from the worker
+     * process that ran the test it depends on to the main process, which a
+     * value that cannot be serialized, a closure for instance, cannot do. The
+     * test class whose test is depended upon is therefore run in the main
+     * process as well, and no worker process ever has to ship a return value.
+     * A test that depends on a test class as a whole does not receive a value,
+     * so the class it depends on can be run in a worker process.
+     *
+     * @param non-empty-list<array{suite: TestSuite, units: list<WorkUnit>, phpt: list<PhptWorkUnit>, standalone: list<array{index: non-negative-int, test: Test}>}> $chunks
+     *
+     * @return array<string, non-empty-string>
+     */
+    private function classesDependedUponFromOtherClasses(array $chunks): array
+    {
+        $classes = [];
+
+        foreach ($chunks as $chunk) {
+            foreach ($chunk['units'] as $unit) {
+                if (!$unit instanceof TestClassWorkUnit) {
+                    // @codeCoverageIgnoreStart
+                    continue;
+                    // @codeCoverageIgnoreEnd
+                }
+
+                $className = $unit->className();
+
+                foreach ($this->testCasesOf($unit) as $test) {
+                    foreach (Dependencies::dependencies($className, $test->name()) as $dependency) {
+                        if (!$dependency->isValid() ||
+                            $dependency->targetIsClass() ||
+                            $dependency->getTargetClassName() === $className ||
+                            isset($classes[$dependency->getTargetClassName()])) {
+                            continue;
+                        }
+
+                        $classes[$dependency->getTargetClassName()] = sprintf(
+                            'test %s::%s depends on %s, a test of this class',
+                            $className,
+                            $test->name(),
+                            $dependency->getTarget(),
+                        );
+                    }
+                }
+            }
+        }
+
+        return $classes;
+    }
+
+    /**
+     * The first of the unit's tests that depends on a test — or on all of the
+     * tests — of another test class, described as the reason for running the
+     * unit in the main process — or null when no test of the unit does. Such
+     * a test needs the results of tests that run in a different unit:
+     * possibly in a different worker, possibly not finished yet, and in any
+     * case invisible to this unit's worker process. The unit is therefore run
+     * in the main process, at its suite index: by then, every unit that
+     * precedes it in suite order has been released and the results its tests
+     * depend on have been imported — exactly the state a sequential run would
+     * present to them.
+     *
+     * @param list<TestCase> $testCases
+     *
+     * @return ?non-empty-string
+     */
+    private function crossClassDependencyOf(TestClassWorkUnit $unit, array $testCases): ?string
+    {
+        $className = $unit->className();
+
+        foreach ($testCases as $test) {
+            foreach (Dependencies::dependencies($className, $test->name()) as $dependency) {
+                // An invalid dependency — one whose declaration does not name
+                // a test method — is not a cross-class dependency; the test
+                // runner reports it wherever the unit runs.
+                if ($dependency->isValid() && $dependency->getTargetClassName() !== $className) {
+                    return sprintf(
+                        'test %s depends on %s, a test of another class',
+                        $test->name(),
+                        $dependency->getTarget(),
+                    );
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Whether any of the unit's tests is configured to run in a separate
+     * process. Such a test relies on process isolation that a shared worker
+     * cannot provide; it is therefore run in the main process, where the test
+     * runner spawns the isolated child process for it as usual.
+     *
+     * @param list<TestCase> $testCases
+     */
+    private function requiresProcessIsolation(TestClassWorkUnit $unit, array $testCases): bool
+    {
+        return $this->unitHasMetadata(
+            $unit,
+            $testCases,
+            static fn (MetadataCollection $metadata): bool => $metadata->isRunTestsInSeparateProcesses()->isNotEmpty(),
+            static fn (MetadataCollection $metadata): bool => $metadata->isRunInSeparateProcess()->isNotEmpty(),
+        );
+    }
+
+    /**
+     * The test cases of a unit, with the test cases aggregated by a
+     * DataProviderTestSuite or IterativeTestSuite member enumerated in its
+     * place — including those of a retried or repeated data set, which sit
+     * one level deeper, in an IterativeTestSuite inside a
+     * DataProviderTestSuite.
+     *
+     * @return list<TestCase>
+     */
+    private function testCasesOf(TestClassWorkUnit $unit): array
+    {
+        $testCases = [];
+
+        foreach ($unit->tests() as $test) {
+            if ($test instanceof TestCase) {
+                $testCases[] = $test;
+
+                continue;
+            }
+
+            // A suite member of a class unit aggregates test cases of that
+            // class only, never a PHPT test.
+            foreach ($test->collect() as $collected) {
+                assert($collected instanceof TestCase);
+
+                $testCases[] = $collected;
+            }
+        }
+
+        return $testCases;
+    }
+
+    /**
+     * Whether the chunk's suite envelope is emitted by the execution of the
+     * chunk's one unit, so that the chunk must not emit it a second time.
+     *
+     * That is the case when the collection walk dissolved the chunk's suite
+     * into exactly one unit covering the very same suite node: a single test
+     * class file given as the CLI argument makes the chunk's suite the class
+     * suite itself, whose envelope the worker replays — or the in-process run
+     * emits live — when the unit runs. Emitting it around the chunk as well
+     * would nest the class suite inside itself.
+     *
+     * A suite that merely has the name of the one class it holds — a
+     * <testsuite> named like its only test class — is not that suite node:
+     * the class suite is a member of it, and a sequential run emits the
+     * envelopes of both.
+     *
+     * @param array{suite: TestSuite, units: list<WorkUnit>, phpt: list<PhptWorkUnit>, standalone: list<array{index: non-negative-int, test: Test}>} $chunk
+     */
+    private function suiteEnvelopeIsEmittedByUnit(array $chunk): bool
+    {
+        if ($chunk['phpt'] !== [] || $chunk['standalone'] !== []) {
+            return false;
+        }
+
+        if (count($chunk['units']) !== 1) {
+            return false;
+        }
+
+        $unit = $chunk['units'][0];
+
+        if (!$unit instanceof TestClassWorkUnit || $unit->className() !== $chunk['suite']->name()) {
+            return false;
+        }
+
+        // The members of a class unit are members of one and the same suite
+        // (see addToClassUnit()), so the unit covers the chunk's suite node
+        // when its first member is a member of that suite.
+        $tests = $unit->tests();
+
+        assert($tests !== []);
+
+        return in_array($tests[0], $chunk['suite']->tests(), true);
+    }
+
+    /**
+     * @param positive-int     $numberOfWorkers
+     * @param non-negative-int $numberOfUnitsBeforeRecycling
+     */
+    private function createPool(int $numberOfWorkers, int $numberOfUnitsBeforeRecycling, ProcessBudget $budget, bool $requiresXdebug): WorkerPool
+    {
+        $processor = new ChildProcessResultProcessor(
+            Event\Facade::instance(),
+            Event\Facade::emitter(),
+            PassedTests::instance(),
+            CodeCoverage::instance(),
+        );
+
+        $jobRunner = new JobRunner($processor, Event\Facade::emitter());
+
+        $workers = [new PersistentWorker($jobRunner, 0, $requiresXdebug)];
+
+        for ($id = 1; $id < $numberOfWorkers; $id++) {
+            $workers[] = new PersistentWorker($jobRunner, $id, $requiresXdebug);
+        }
+
+        return new WorkerPool($workers, $budget, $numberOfUnitsBeforeRecycling);
+    }
+
+    /**
+     * Walk the suite and group the selected tests into units, partitioned into
+     * chunks that are run one after another.
+     *
+     * A test suite that was assembled from an XML configuration runs its
+     * top-level <testsuite> elements one after another in sequential mode; the
+     * chunks preserve that boundary in parallel mode: each top-level test suite
+     * becomes one chunk, and only the units of the same chunk run concurrently
+     * with each other. A suite assembled from CLI arguments or a test-files
+     * file has no such boundaries and forms a single chunk.
+     *
+     * All chunks draw their unit indexes from one shared sequence in suite
+     * order, so that the aggregator releases the results of every chunk in
+     * global suite order.
+     *
+     * Every chunk carries the suite it was collected from, so that the chunk's
+     * results can be wrapped in that suite's "test suite started" / "test
+     * suite finished" envelope. A chunk whose units were all filtered away is
+     * dropped, mirroring how TestSuite::run() emits no envelope for a suite
+     * that has become empty.
+     *
+     * @return list<array{suite: TestSuite, units: list<WorkUnit>, phpt: list<PhptWorkUnit>, standalone: list<array{index: non-negative-int, test: Test}>}>
+     */
+    private function collectChunks(Configuration $configuration, TestSuite $suite): array
+    {
+        $roots = [$suite];
+
+        if (!$configuration->hasCliArguments() && !$configuration->hasTestFilesFile()) {
+            $childSuites = [];
+
+            foreach ($suite as $test) {
+                if (!$test instanceof TestSuite) {
+                    // A test directly under the root does not belong to any
+                    // top-level test suite; there are no boundaries to honour.
+                    // @codeCoverageIgnoreStart
+                    $childSuites = [];
+
+                    break;
+                    // @codeCoverageIgnoreEnd
+                }
+
+                $childSuites[] = $test;
+            }
+
+            if ($childSuites !== []) {
+                $roots = $childSuites;
+            }
+        }
+
+        $index  = 0;
+        $chunks = [];
+
+        foreach ($roots as $root) {
+            $chunk = $this->collectUnits($root, $index);
+
+            if ($chunk['units'] === [] && $chunk['phpt'] === [] && $chunk['standalone'] === []) {
+                continue;
+            }
+
+            $chunks[] = [
+                'suite'      => $root,
+                'units'      => $chunk['units'],
+                'phpt'       => $chunk['phpt'],
+                'standalone' => $chunk['standalone'],
+            ];
+        }
+
+        return $chunks;
+    }
+
+    /**
+     * Walk the suite and group the selected tests into units in suite order.
+     *
+     * The tests of a class are gathered into one TestClassWorkUnit, indexed by
+     * the order in which the class first appears. A class whose test suite
+     * appears more than once — overlapping paths, or a test file that is
+     * listed twice, select it twice — becomes one unit per appearance,
+     * because a sequential run runs the class, and the methods that run
+     * before its first and after its last test, once per appearance. A PHPT
+     * test becomes a
+     * PhptWorkUnit of its own. Both kinds can run in a worker, so both are
+     * returned as parallel-eligible units. Any other kind of test — one that is
+     * neither a PHPUnit\Framework\TestCase nor a PHPT test — cannot be
+     * reconstructed in a worker and is returned as a standalone test to run in
+     * the main process. All draw from one shared index sequence so that they
+     * can be released together in global suite order.
+     *
+     * @param non-negative-int $index
+     *
+     * @return array{units: list<WorkUnit>, phpt: list<PhptWorkUnit>, standalone: list<array{index: non-negative-int, test: Test}>}
+     */
+    private function collectUnits(TestSuite $suite, int &$index): array
+    {
+        /** @var array<non-empty-string, array{className: class-string<TestCase>, index: non-negative-int, tests: list<DataProviderTestSuite|IterativeTestSuite|TestCase>}> $byClass */
+        $byClass = [];
+
+        /** @var list<array{index: non-negative-int, file: non-empty-string, conflicts: list<non-empty-string>, numberOfRuns: positive-int, maxAttempts: positive-int, repetitions: list<positive-int>}> $phpt */
+        $phpt = [];
+
+        /** @var list<array{index: non-negative-int, test: Test}> $standalone */
+        $standalone = [];
+
+        $this->collect($suite, $byClass, $phpt, $standalone, $index);
+
+        $units = [];
+
+        foreach ($byClass as $group) {
+            $units[] = new TestClassWorkUnit($group['index'], $group['className'], $group['tests']);
+        }
+
+        $phptUnits = [];
+
+        foreach ($phpt as $item) {
+            $phptUnits[] = new PhptWorkUnit(
+                $item['index'],
+                $item['file'],
+                $item['conflicts'],
+                $item['numberOfRuns'],
+                $item['maxAttempts'],
+                $item['repetitions'],
+            );
+        }
+
+        return [
+            'units'      => $units,
+            'phpt'       => $phptUnits,
+            'standalone' => $standalone,
+        ];
+    }
+
+    /**
+     * @param array<non-empty-string, array{className: class-string<TestCase>, index: non-negative-int, tests: list<DataProviderTestSuite|IterativeTestSuite|TestCase>}>                              $byClass
+     * @param list<array{index: non-negative-int, file: non-empty-string, conflicts: list<non-empty-string>, numberOfRuns: positive-int, maxAttempts: positive-int, repetitions: list<positive-int>}> $phpt
+     * @param list<array{index: non-negative-int, test: Test}>                                                                                                                                        $standalone
+     * @param non-negative-int                                                                                                                                                                        $index
+     */
+    private function collect(TestSuite $suite, array &$byClass, array &$phpt, array &$standalone, int &$index): void
+    {
+        foreach ($suite as $test) {
+            // A suite that test selection (--filter, --group, …) has emptied
+            // runs nothing in a sequential run: TestSuite::run() returns early
+            // for an empty suite. It must therefore become neither a unit of
+            // its own nor a member of a class unit here.
+            if ($test instanceof TestSuite && $test->isEmpty()) {
+                continue;
+            }
+
+            // The repetitions of a repeated PHPT test and the attempts of a
+            // retried PHPT test must run one after another, so the suite that
+            // orchestrates them becomes one PHPT unit rather than one unit per
+            // run: the runner rebuilds the suite from the unit and advances it
+            // as a whole, alongside the other PHPT tests.
+            if ($test instanceof PhptIterativeTestSuite) {
+                $file = $test->name();
+
+                assert($file !== '');
+
+                $numberOfRuns = 1;
+                $maxAttempts  = 1;
+                $repetitions  = [];
+
+                if ($test instanceof PhptRepeatTestSuite) {
+                    $numberOfRuns = $test->numberOfRuns();
+
+                    // Test selection, such as with --run-test-id, may have
+                    // picked only some of the repetitions; iterating the suite
+                    // yields those, as it does for a sequential run.
+                    foreach ($test as $repetition) {
+                        assert($repetition instanceof PhptTestCase);
+
+                        $repetitions[] = $repetition->repetition();
+                    }
+                } else {
+                    assert($test instanceof PhptRetryTestSuite);
+
+                    $maxAttempts = $test->maxAttempts();
+                }
+
+                $phpt[] = [
+                    'index'        => $index,
+                    'file'         => $file,
+                    'conflicts'    => $this->phptConflicts($file),
+                    'numberOfRuns' => $numberOfRuns,
+                    'maxAttempts'  => $maxAttempts,
+                    'repetitions'  => $repetitions,
+                ];
+
+                $index++;
+
+                continue;
+            }
+
+            // The repetitions of a repeated test method and the attempts of a
+            // retried test method are orchestrated by their suite's runTests()
+            // method; the suite therefore travels as one atomic member of its
+            // class' work unit instead of being flattened into its tests.
+            if ($test instanceof IterativeTestSuite) {
+                $tests = $test->tests();
+
+                assert($tests !== [] && $tests[0] instanceof TestCase);
+
+                $className = $tests[0]::class;
+
+                $this->addToClassUnit($suite, $className, $test, $byClass, $index);
+
+                continue;
+            }
+
+            // The tests of a data provider method travel as their
+            // DataProviderTestSuite so that the suite's "test suite started" /
+            // "test suite finished" envelope, which nests the tests in the
+            // logger output of a sequential run, is emitted inside the worker
+            // (or by the in-process run) in a parallel run, too.
+            if ($test instanceof DataProviderTestSuite) {
+                [$className] = explode('::', $test->name());
+
+                assert(class_exists($className) && is_subclass_of($className, TestCase::class));
+
+                $this->addToClassUnit($suite, $className, $test, $byClass, $index);
+
+                continue;
+            }
+
+            if ($test instanceof TestSuite) {
+                $this->collect($test, $byClass, $phpt, $standalone, $index);
+
+                continue;
+            }
+
+            if ($test instanceof TestCase) {
+                $className = $test::class;
+
+                $this->addToClassUnit($suite, $className, $test, $byClass, $index);
+
+                continue;
+            }
+
+            if ($test instanceof PhptTestCase) {
+                $file = $test->toString();
+
+                // A PHPT test cannot carry the #[DoNotRunInParallel] attribute,
+                // so it declares any tests it must not run alongside with a
+                // --CONFLICTS-- section. The runner honours those conflict keys
+                // while running the PHPT tests concurrently in the main process.
+                $phpt[] = [
+                    'index'        => $index,
+                    'file'         => $file,
+                    'conflicts'    => $this->phptConflicts($file),
+                    'numberOfRuns' => 1,
+                    'maxAttempts'  => 1,
+                    'repetitions'  => [],
+                ];
+
+                $index++;
+
+                continue;
+            }
+
+            // Any other kind of test cannot be reconstructed in a worker and is
+            // run as a standalone unit in the main process.
+            // @codeCoverageIgnoreStart
+            $standalone[] = [
+                'index' => $index,
+                'test'  => $test,
+            ];
+
+            $index++;
+            // @codeCoverageIgnoreEnd
+        }
+    }
+
+    /**
+     * Add a member — a single test case, or a suite that travels as one
+     * atomic member — to the work unit of its test class, creating the unit,
+     * with the next suite index, on the member's first appearance.
+     *
+     * The unit is that of the class in the test suite that holds the member:
+     * a class whose test suite appears more than once gets a unit for each
+     * appearance.
+     *
+     * @param class-string<TestCase>                                                                                                                                     $className
+     * @param array<non-empty-string, array{className: class-string<TestCase>, index: non-negative-int, tests: list<DataProviderTestSuite|IterativeTestSuite|TestCase>}> $byClass
+     * @param non-negative-int                                                                                                                                           $index
+     */
+    private function addToClassUnit(TestSuite $suite, string $className, DataProviderTestSuite|IterativeTestSuite|TestCase $test, array &$byClass, int &$index): void
+    {
+        $key = spl_object_id($suite) . ' ' . $className;
+
+        if (!isset($byClass[$key])) {
+            $byClass[$key] = [
+                'className' => $className,
+                'index'     => $index,
+                'tests'     => [],
+            ];
+
+            $index++;
+        }
+
+        $byClass[$key]['tests'][] = $test;
+    }
+
+    /**
+     * The conflict keys a PHPT test declares with a --CONFLICTS-- section. While
+     * a test that conflicts with a key is running, no other test that conflicts
+     * with the same key may run; the reserved key "all" conflicts with every
+     * other test. A test with no such section declares no conflicts.
+     *
+     * @param non-empty-string $file
+     *
+     * @return list<non-empty-string>
+     */
+    private function phptConflicts(string $file): array
+    {
+        $parser = new Parser;
+
+        try {
+            $sections = $parser->parse($file);
+            // @codeCoverageIgnoreStart
+        } catch (PhptException) {
+            // A malformed PHPT cannot meaningfully declare conflicts; it is run
+            // anyway and reports its own parse error at its suite position.
+            return [];
+            // @codeCoverageIgnoreEnd
+        }
+
+        if (!isset($sections['CONFLICTS'])) {
+            return [];
+        }
+
+        return $parser->parseConflictsSection($sections['CONFLICTS']);
+    }
+}
