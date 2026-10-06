@@ -7,15 +7,15 @@ use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\AssignOp\Mod as AssignOpMod;
 use PhpParser\Node\Expr\BinaryOp\Mod as BinaryOpMod;
 use PHPStan\Analyser\Scope;
-use PHPStan\Rules\Rule;
+use PHPStan\Rules\MultipleNodeTypesRule;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Type\VerbosityLevel;
 use function sprintf;
 
 /**
- * @implements Rule<Expr>
+ * @implements MultipleNodeTypesRule<Expr>
  */
-class OperandsInArithmeticModuloRule implements Rule
+class OperandsInArithmeticModuloRule implements MultipleNodeTypesRule
 {
 
 	private OperatorRuleHelper $helper;
@@ -23,6 +23,11 @@ class OperandsInArithmeticModuloRule implements Rule
 	public function __construct(OperatorRuleHelper $helper)
 	{
 		$this->helper = $helper;
+	}
+
+	public function getNodeTypes(): array
+	{
+		return [BinaryOpMod::class, AssignOpMod::class];
 	}
 
 	public function getNodeType(): string

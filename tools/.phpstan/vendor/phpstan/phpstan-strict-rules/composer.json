@@ -8,7 +8,7 @@
 	"keywords": ["static analysis"],
 	"require": {
 		"php": "^7.4 || ^8.0",
-		"phpstan/phpstan": "^2.1.52"
+		"phpstan/phpstan": "^2.3"
 	},
 	"require-dev": {
 		"php-parallel-lint/php-parallel-lint": "^1.2",
