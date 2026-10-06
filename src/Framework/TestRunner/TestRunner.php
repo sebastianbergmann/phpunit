@@ -232,8 +232,6 @@ final class TestRunner
                     $test->valueObjectForEvents(),
                     'This test does not contribute to code coverage',
                 );
-
-                $risky = true;
             }
         }
 
