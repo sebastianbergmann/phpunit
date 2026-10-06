@@ -954,19 +954,17 @@ final readonly class Loader
 
     private function parseColors(DOMDocument $document): string
     {
-        $colors = Configuration::COLOR_DEFAULT;
-
-        if ($document->documentElement->hasAttribute('colors')) {
-            /* only allow boolean for compatibility with previous versions
-              'always' only allowed from command line */
-            if ($this->booleanFromString($document->documentElement->getAttribute('colors'), false)) {
-                $colors = Configuration::COLOR_AUTO;
-            } else {
-                $colors = Configuration::COLOR_NEVER;
-            }
+        if (!$document->documentElement->hasAttribute('colors')) {
+            return Configuration::COLOR_DEFAULT;
         }
 
-        return $colors;
+        /* only allow boolean for compatibility with previous versions
+          'always' only allowed from command line */
+        if ($this->booleanFromString($document->documentElement->getAttribute('colors'), false)) {
+            return Configuration::COLOR_AUTO;
+        }
+
+        return Configuration::COLOR_NEVER;
     }
 
     private function parseColumns(DOMDocument $document): int|string
