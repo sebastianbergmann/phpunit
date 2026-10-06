@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Runner\ExecutionOrder\Stage;
 
+use function array_column;
+use function array_key_exists;
 use function usort;
 use PHPUnit\Framework\Reorderable;
 use PHPUnit\Framework\Test;
@@ -30,9 +32,14 @@ use PHPUnit\Runner\TestRunHistory\TestRunHistoryId;
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class ByDuration implements ReorderStage
+final class ByDuration implements ReorderStage
 {
-    private Direction $direction;
+    private readonly Direction $direction;
+
+    /**
+     * @var array<string, float>
+     */
+    private array $weights = [];
 
     public function __construct(Direction $direction)
     {
@@ -47,22 +54,19 @@ final readonly class ByDuration implements ReorderStage
     public function apply(array $tests, Context $context): array
     {
         $testRunHistory = $context->testRunHistory();
+        $weighted       = [];
 
-        if ($this->direction === Direction::Ascending) {
-            usort(
-                $tests,
-                fn (Test $left, Test $right) => $this->weight($left, $testRunHistory) <=> $this->weight($right, $testRunHistory),
-            );
-
-            return $tests;
+        foreach ($tests as $test) {
+            $weighted[] = [$this->weight($test, $testRunHistory), $test];
         }
 
-        usort(
-            $tests,
-            fn (Test $left, Test $right) => $this->weight($right, $testRunHistory) <=> $this->weight($left, $testRunHistory),
-        );
+        if ($this->direction === Direction::Ascending) {
+            usort($weighted, static fn (array $left, array $right) => $left[0] <=> $right[0]);
+        } else {
+            usort($weighted, static fn (array $left, array $right) => $right[0] <=> $left[0]);
+        }
 
-        return $tests;
+        return array_column($weighted, 1);
     }
 
     /**
@@ -80,13 +84,7 @@ final readonly class ByDuration implements ReorderStage
     private function weight(Test $test, TestRunHistory $testRunHistory): float
     {
         if ($test instanceof TestSuite) {
-            $sum = 0.0;
-
-            foreach ($test->tests() as $inner) {
-                $sum += $this->weight($inner, $testRunHistory);
-            }
-
-            return $sum;
+            return $this->weightOfTestSuite($test, $testRunHistory);
         }
 
         if ($test instanceof Reorderable) {
@@ -94,5 +92,30 @@ final readonly class ByDuration implements ReorderStage
         }
 
         return 0.0;
+    }
+
+    /**
+     * The weight of a test suite is needed when its parent test suite is
+     * reordered and again when the weight of that parent test suite is needed
+     * one level further up. Remembering it keeps the tree from being walked
+     * once per level.
+     */
+    private function weightOfTestSuite(TestSuite $testSuite, TestRunHistory $testRunHistory): float
+    {
+        $sortId = $testSuite->sortId();
+
+        if (array_key_exists($sortId, $this->weights)) {
+            return $this->weights[$sortId];
+        }
+
+        $weight = 0.0;
+
+        foreach ($testSuite->tests() as $test) {
+            $weight += $this->weight($test, $testRunHistory);
+        }
+
+        $this->weights[$sortId] = $weight;
+
+        return $weight;
     }
 }
