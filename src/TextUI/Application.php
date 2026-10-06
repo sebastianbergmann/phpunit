@@ -13,7 +13,6 @@ use const PHP_EOL;
 use const PHP_VERSION;
 use const SIGINT;
 use function array_reverse;
-use function assert;
 use function class_exists;
 use function count;
 use function defined;
@@ -428,8 +427,6 @@ final readonly class Application
 
             exit($result->shellExitCode());
         }
-
-        assert(isset($resultCollectedFromEvents));
 
         print 'There were errors:' . PHP_EOL;
 

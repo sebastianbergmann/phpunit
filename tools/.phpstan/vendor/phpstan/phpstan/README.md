@@ -65,7 +65,7 @@ Want your logo here? [Learn more »](https://phpstan.org/sponsor)
 &nbsp;&nbsp;&nbsp;
 <a href="https://www.shoptet.cz/"><img src="website/src/images/sponsor/shoptet.png" alt="Shoptet" width="283" height="64"></a>
 <br>
-<a href="https://zol.fr?utm_source=phpstan"><img src="website/src/images/sponsor/zol.png" alt="ZOL" width="283" height="64"></a>
+<a href="https://www.testmuai.com/"><img src="website/src/images/sponsor/testmu-ai.png" alt="TestMu AI" width="283" height="64"></a>
 &nbsp;&nbsp;&nbsp;
 <a href="https://inviqa.com/"><img src="website/src/images/sponsor/inviqa.png" alt="Inviqa" width="254" height="65"></a>
 <br>
@@ -77,7 +77,6 @@ Want your logo here? [Learn more »](https://phpstan.org/sponsor)
 &nbsp;&nbsp;&nbsp;
 <a href="https://www.campoint.net/"><img src="website/src/images/sponsor/campoint.png" alt="campoint AG" width="283" height="64"></a>
 <br>
-<a href="https://www.testmuai.com/"><img src="website/src/images/sponsor/testmu-ai.png" alt="TestMu AI" width="283" height="64"></a>
 
 
 [**You can sponsor my open-source work on PHPStan through GitHub Sponsors and also directly.**](https://phpstan.org/sponsor)

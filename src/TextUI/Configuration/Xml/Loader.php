@@ -1324,17 +1324,15 @@ final readonly class Loader
 
         assert($documentElement !== null);
 
-        $colors = Configuration::COLOR_DEFAULT;
-
-        if ($documentElement->hasAttribute('colors')) {
-            if ($this->booleanFromString($documentElement->getAttribute('colors'), false)) {
-                $colors = Configuration::COLOR_ALWAYS;
-            } else {
-                $colors = Configuration::COLOR_NEVER;
-            }
+        if (!$documentElement->hasAttribute('colors')) {
+            return Configuration::COLOR_DEFAULT;
         }
 
-        return $colors;
+        if ($this->booleanFromString($documentElement->getAttribute('colors'), false)) {
+            return Configuration::COLOR_ALWAYS;
+        }
+
+        return Configuration::COLOR_NEVER;
     }
 
     private function parseColumns(DOMDocument $document): int|string
