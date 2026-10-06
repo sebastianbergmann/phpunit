@@ -164,38 +164,8 @@ final class Generator
             throw new RuntimeException('Interfaces must not declare the same method');
         }
 
-        $unqualifiedNames = [];
-
-        foreach ($interfaces as $interface) {
-            $parts              = explode('\\', $interface);
-            $unqualifiedNames[] = array_pop($parts);
-        }
-
-        sort($unqualifiedNames);
-
-        do {
-            $intersectionName = sprintf(
-                'Intersection_%s_%s',
-                implode('_', $unqualifiedNames),
-                substr(md5((string) mt_rand()), 0, 8),
-            );
-        } while (interface_exists($intersectionName, false));
-
-        $template = $this->loadTemplate('intersection.tpl');
-
-        $template->setVar(
-            [
-                'intersection' => $intersectionName,
-                'interfaces'   => implode(', ', $interfaces),
-            ],
-        );
-
-        eval($template->render());
-
-        assert(interface_exists($intersectionName));
-
         return $this->testDouble(
-            $intersectionName,
+            $this->declareIntersectionInterface($interfaces),
             $mockObject,
             returnValueGeneration: $returnValueGeneration,
             displayName: implode('&', $interfaces),
@@ -811,6 +781,46 @@ final class Generator
         }
 
         return $methods;
+    }
+
+    /**
+     * @param list<class-string> $interfaces
+     *
+     * @return class-string
+     */
+    private function declareIntersectionInterface(array $interfaces): string
+    {
+        $unqualifiedNames = [];
+
+        foreach ($interfaces as $interface) {
+            $parts              = explode('\\', $interface);
+            $unqualifiedNames[] = array_pop($parts);
+        }
+
+        sort($unqualifiedNames);
+
+        do {
+            $intersectionName = sprintf(
+                'Intersection_%s_%s',
+                implode('_', $unqualifiedNames),
+                substr(md5((string) mt_rand()), 0, 8),
+            );
+        } while (interface_exists($intersectionName, false));
+
+        $template = $this->loadTemplate('intersection.tpl');
+
+        $template->setVar(
+            [
+                'intersection' => $intersectionName,
+                'interfaces'   => implode(', ', $interfaces),
+            ],
+        );
+
+        eval($template->render());
+
+        assert(interface_exists($intersectionName));
+
+        return $intersectionName;
     }
 
     /**
