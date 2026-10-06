@@ -7,15 +7,15 @@ use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\AssignOp\Minus as AssignOpMinus;
 use PhpParser\Node\Expr\BinaryOp\Minus as BinaryOpMinus;
 use PHPStan\Analyser\Scope;
-use PHPStan\Rules\Rule;
+use PHPStan\Rules\MultipleNodeTypesRule;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Type\VerbosityLevel;
 use function sprintf;
 
 /**
- * @implements Rule<Expr>
+ * @implements MultipleNodeTypesRule<Expr>
  */
-class OperandsInArithmeticSubtractionRule implements Rule
+class OperandsInArithmeticSubtractionRule implements MultipleNodeTypesRule
 {
 
 	private OperatorRuleHelper $helper;
@@ -23,6 +23,11 @@ class OperandsInArithmeticSubtractionRule implements Rule
 	public function __construct(OperatorRuleHelper $helper)
 	{
 		$this->helper = $helper;
+	}
+
+	public function getNodeTypes(): array
+	{
+		return [BinaryOpMinus::class, AssignOpMinus::class];
 	}
 
 	public function getNodeType(): string
