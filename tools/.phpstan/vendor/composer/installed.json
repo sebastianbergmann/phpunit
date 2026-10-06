@@ -201,22 +201,22 @@
         },
         {
             "name": "phpstan/phpstan-strict-rules",
-            "version": "2.0.12",
-            "version_normalized": "2.0.12.0",
+            "version": "2.1.0",
+            "version_normalized": "2.1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-strict-rules.git",
-                "reference": "2bc5ae19ae965663b62ac907ee6342c3903ec93b"
+                "reference": "24ec51589f896f048d0d36de373d993b5cf71786"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-strict-rules/zipball/2bc5ae19ae965663b62ac907ee6342c3903ec93b",
-                "reference": "2bc5ae19ae965663b62ac907ee6342c3903ec93b",
+                "url": "https://api.github.com/repos/phpstan/phpstan-strict-rules/zipball/24ec51589f896f048d0d36de373d993b5cf71786",
+                "reference": "24ec51589f896f048d0d36de373d993b5cf71786",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.4 || ^8.0",
-                "phpstan/phpstan": "^2.1.52"
+                "phpstan/phpstan": "^2.3"
             },
             "require-dev": {
                 "php-parallel-lint/php-parallel-lint": "^1.2",
@@ -225,7 +225,7 @@
                 "phpunit/phpunit": "^9.6",
                 "shipmonk/name-collision-detector": "^2.1"
             },
-            "time": "2026-07-19T07:24:06+00:00",
+            "time": "2026-10-01T21:30:37+00:00",
             "type": "phpstan-extension",
             "extra": {
                 "phpstan": {
@@ -250,7 +250,7 @@
             ],
             "support": {
                 "issues": "https://github.com/phpstan/phpstan-strict-rules/issues",
-                "source": "https://github.com/phpstan/phpstan-strict-rules/tree/2.0.12"
+                "source": "https://github.com/phpstan/phpstan-strict-rules/tree/2.1.0"
             },
             "install-path": "../phpstan/phpstan-strict-rules"
         }

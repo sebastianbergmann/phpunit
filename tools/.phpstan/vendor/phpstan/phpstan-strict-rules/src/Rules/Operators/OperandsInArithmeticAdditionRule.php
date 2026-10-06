@@ -7,16 +7,16 @@ use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\AssignOp\Plus as AssignOpPlus;
 use PhpParser\Node\Expr\BinaryOp\Plus as BinaryOpPlus;
 use PHPStan\Analyser\Scope;
-use PHPStan\Rules\Rule;
+use PHPStan\Rules\MultipleNodeTypesRule;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Type\VerbosityLevel;
 use function count;
 use function sprintf;
 
 /**
- * @implements Rule<Expr>
+ * @implements MultipleNodeTypesRule<Expr>
  */
-class OperandsInArithmeticAdditionRule implements Rule
+class OperandsInArithmeticAdditionRule implements MultipleNodeTypesRule
 {
 
 	private OperatorRuleHelper $helper;
@@ -24,6 +24,11 @@ class OperandsInArithmeticAdditionRule implements Rule
 	public function __construct(OperatorRuleHelper $helper)
 	{
 		$this->helper = $helper;
+	}
+
+	public function getNodeTypes(): array
+	{
+		return [BinaryOpPlus::class, AssignOpPlus::class];
 	}
 
 	public function getNodeType(): string

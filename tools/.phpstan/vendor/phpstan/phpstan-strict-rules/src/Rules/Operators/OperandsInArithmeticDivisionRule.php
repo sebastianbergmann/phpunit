@@ -7,15 +7,15 @@ use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\AssignOp\Div as AssignOpDiv;
 use PhpParser\Node\Expr\BinaryOp\Div as BinaryOpDiv;
 use PHPStan\Analyser\Scope;
-use PHPStan\Rules\Rule;
+use PHPStan\Rules\MultipleNodeTypesRule;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Type\VerbosityLevel;
 use function sprintf;
 
 /**
- * @implements Rule<Expr>
+ * @implements MultipleNodeTypesRule<Expr>
  */
-class OperandsInArithmeticDivisionRule implements Rule
+class OperandsInArithmeticDivisionRule implements MultipleNodeTypesRule
 {
 
 	private OperatorRuleHelper $helper;
@@ -23,6 +23,11 @@ class OperandsInArithmeticDivisionRule implements Rule
 	public function __construct(OperatorRuleHelper $helper)
 	{
 		$this->helper = $helper;
+	}
+
+	public function getNodeTypes(): array
+	{
+		return [BinaryOpDiv::class, AssignOpDiv::class];
 	}
 
 	public function getNodeType(): string
