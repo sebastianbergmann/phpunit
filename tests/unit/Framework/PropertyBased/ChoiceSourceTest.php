@@ -174,6 +174,19 @@ final class ChoiceSourceTest extends TestCase
         $this->assertSame($source->deriver(), $source->deriver());
     }
 
+    public function testRecordsHowObjectsWereConstructed(): void
+    {
+        $source = ChoiceSource::replay(new ChoiceSequence([]));
+        $object = new ChoiceSequence([]);
+
+        $this->assertSame($source->constructions(), $source->constructions());
+        $this->assertFalse($source->constructions()->has($object));
+
+        $source->constructions()->record($object, ChoiceSequence::class, ['choices' => []]);
+
+        $this->assertSame(['className' => ChoiceSequence::class, 'arguments' => ['choices' => []]], $source->constructions()->of($object));
+    }
+
     public function testCountsTheObjectsOfAClassThatAreBeingGenerated(): void
     {
         $source = ChoiceSource::replay(new ChoiceSequence([]));
