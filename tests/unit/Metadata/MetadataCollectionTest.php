@@ -644,6 +644,30 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isRetry());
     }
 
+    public function test_Can_be_filtered_for_ForAll(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isForAll();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isForAll());
+    }
+
+    public function test_Can_be_filtered_for_GeneratorFor(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isGeneratorFor();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isGeneratorFor());
+    }
+
+    public function test_Can_be_filtered_for_Property(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isProperty();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isProperty());
+    }
+
     public function test_Can_be_filtered_for_WithoutErrorHandler(): void
     {
         $collection = $this->collectionWithOneOfEach()->isWithoutErrorHandler();
@@ -732,6 +756,9 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::usesDirectoryRecursively(''),
                 Metadata::repeat(3, 1),
                 Metadata::retry(3),
+                Metadata::forAll('value', 'provider'),
+                Metadata::generatorFor(self::class),
+                Metadata::property(null),
                 Metadata::withEnvironmentVariableOnClass('foo', 'bar'),
                 Metadata::withoutErrorHandler(),
             ],
