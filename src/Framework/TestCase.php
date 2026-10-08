@@ -108,6 +108,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private bool $inIsolation                      = false;
     private ?string $emptyDataProviderSkipMessage  = null;
     private ?Throwable $throwableFromDeferredIssue = null;
+    private ?Throwable $throwableThatEndedTheTest  = null;
 
     /**
      * @var ?list<mixed>
@@ -851,6 +852,18 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * The throwable that ended the test: the one that caused its failure or
+     * error, as it was raised, or the TimeoutException when the test exceeded
+     * its time limit.
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    final public function throwableThatEndedTheTest(): ?Throwable
+    {
+        return $this->throwableThatEndedTheTest;
+    }
+
+    /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     final public function setStatus(TestStatus $status): void
@@ -1331,7 +1344,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 );
             }
 
-            $this->status = TestStatus::failure($t->getMessage());
+            $this->status                    = TestStatus::failure($t->getMessage());
+            $this->throwableThatEndedTheTest = $t;
 
             $this->emitter->testFailed(
                 $this->valueObjectForEvents(),
@@ -1343,11 +1357,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         if ($t instanceof TimeoutException) {
+            $this->throwableThatEndedTheTest = $t;
+
             return $t;
         }
 
         if ($this->isRegisteredFailure($t)) {
-            $this->status = TestStatus::failure($t->getMessage());
+            $this->status                    = TestStatus::failure($t->getMessage());
+            $this->throwableThatEndedTheTest = $t;
 
             $this->emitter->testFailed(
                 $this->valueObjectForEvents(),
@@ -1360,7 +1377,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $e = $this->transformException($t);
 
-        $this->status = TestStatus::error($e->getMessage());
+        $this->status                    = TestStatus::error($e->getMessage());
+        $this->throwableThatEndedTheTest = $t;
 
         if (!$this->wasPrepared) {
             if ($e instanceof AssertionFailedError) {
@@ -1403,7 +1421,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         try {
             $this->outputBuffer->performAssertions();
         } catch (ExpectationFailedException $e) {
-            $this->status = TestStatus::failure($e->getMessage());
+            $this->status                    = TestStatus::failure($e->getMessage());
+            $this->throwableThatEndedTheTest = $e;
 
             $this->emitter->testFailed(
                 $this->valueObjectForEvents(),
@@ -1425,7 +1444,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         try {
             $this->mockObjectRegistry->clear();
         } catch (Throwable $t) {
-            $this->status = TestStatus::error($t->getMessage());
+            $this->status                    = TestStatus::error($t->getMessage());
+            $this->throwableThatEndedTheTest = $t;
 
             $this->emitter->testErrored(
                 $this->valueObjectForEvents(),
@@ -1459,7 +1479,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             }
         } catch (AssertionError|AssertionFailedError $t) {
             if ($testPassed || $e instanceof SkippedWithMessageException) {
-                $this->status = TestStatus::failure($t->getMessage());
+                $this->status                    = TestStatus::failure($t->getMessage());
+                $this->throwableThatEndedTheTest = $t;
 
                 $this->emitter->testFailed(
                     $this->valueObjectForEvents(),
@@ -1471,7 +1492,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             }
         } catch (Throwable $t) {
             if ($testPassed || $e instanceof SkippedWithMessageException) {
-                $this->status = TestStatus::error($t->getMessage());
+                $this->status                    = TestStatus::error($t->getMessage());
+                $this->throwableThatEndedTheTest = $t;
 
                 $this->emitter->testErrored(
                     $this->valueObjectForEvents(),
