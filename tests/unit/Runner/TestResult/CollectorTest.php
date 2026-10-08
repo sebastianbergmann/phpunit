@@ -39,7 +39,9 @@ use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Event\TestRunner\ErrorTriggered as TestRunnerErrorTriggered;
 use PHPUnit\Event\TestRunner\PhpDeprecationTriggered as TestRunnerPhpDeprecationTriggered;
+use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
 use PHPUnit\Event\TestSuite\Skipped as TestSuiteSkipped;
+use PHPUnit\Event\TestSuite\TestSuiteForPropertyTestMethod;
 use PHPUnit\Event\TestSuite\TestSuiteWithName;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -112,6 +114,28 @@ final class CollectorTest extends TestCase
                 static fn (TestResult $result): array => $result->phpDeprecations(),
             ],
         ];
+    }
+
+    public function testDoesNotRegisterAPropertyAsPassedWhenItsTestSuiteFinishes(): void
+    {
+        $this->collector()->testSuiteFinished(
+            new TestSuiteFinished(
+                $this->telemetryInfo(),
+                new TestSuiteForPropertyTestMethod(
+                    'CollectorPropertyTest::testOne',
+                    1,
+                    TestCollection::fromArray([]),
+                    'CollectorPropertyTest',
+                    'testOne',
+                    'CollectorPropertyTest.php',
+                    1,
+                    100,
+                ),
+            ),
+        );
+
+        $this->assertFalse(PassedTests::instance()->hasTestClassPassed('CollectorPropertyTest'));
+        $this->assertFalse(PassedTests::instance()->hasTestMethodPassed('CollectorPropertyTest::testOne'));
     }
 
     public function testRemembersRetriedTestForFailedAttemptOfPhpt(): void
