@@ -529,6 +529,22 @@ final class LoaderTest extends TestCase
         $this->assertSame(['name'], $groups->exclude()->asArrayOfStrings());
     }
 
+    public function testPropertyBasedTestingConfigurationIsReadCorrectly(): void
+    {
+        $propertyBasedTesting = $this->configuration('configuration.xml')->propertyBasedTesting();
+
+        $this->assertSame(500, $propertyBasedTesting->examples());
+        $this->assertSame(50, $propertyBasedTesting->maximumShrinkingAttempts());
+    }
+
+    public function testPropertyBasedTestingConfigurationHasDefaults(): void
+    {
+        $propertyBasedTesting = $this->configuration('configuration_empty.xml')->propertyBasedTesting();
+
+        $this->assertSame(100, $propertyBasedTesting->examples());
+        $this->assertSame(1000, $propertyBasedTesting->maximumShrinkingAttempts());
+    }
+
     public function testExtensionConfigurationIsReadCorrectly(): void
     {
         $extensions = $this->configuration('configuration.xml')->extensions();
