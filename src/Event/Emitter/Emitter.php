@@ -166,6 +166,16 @@ interface Emitter
     public function testPropertyChecked(Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfExamplesRejected): void;
 
     /**
+     * @param non-negative-int                $seed
+     * @param positive-int                    $numberOfExamplesChecked
+     * @param non-negative-int                $numberOfShrinkingAttempts
+     * @param non-negative-int                $numberOfShrinkingSteps
+     * @param list<non-negative-int>          $choiceSequence
+     * @param array<non-empty-string, string> $counterexample
+     */
+    public function testPropertyFalsified(Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, array $choiceSequence, array $counterexample): void;
+
+    /**
      * @param non-empty-string $message
      */
     public function testConsideredRisky(Code\Test $test, string $message): void;
