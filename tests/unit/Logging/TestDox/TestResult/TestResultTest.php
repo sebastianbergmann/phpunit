@@ -51,6 +51,7 @@ final class TestResultTest extends TestCase
 
         $this->assertFalse($result->hasThrowable());
         $this->assertNull($result->throwable());
+        $this->assertNull($result->propertyFalsified());
     }
 
     private function testMethod(): TestMethod
