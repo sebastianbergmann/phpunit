@@ -155,6 +155,7 @@ final readonly class Loader
                 $this->php($configurationFileRealpath, $xpath),
                 $this->phpunit($configurationFileRealpath, $document, $xpath),
                 $this->testSuite($configurationFileRealpath, $xpath),
+                $this->propertyBasedTesting($xpath),
             );
         } catch (Throwable $t) {
             $message = sprintf(
@@ -781,6 +782,23 @@ final readonly class Loader
         }
 
         return FilterFileCollection::fromArray($files);
+    }
+
+    private function propertyBasedTesting(DOMXPath $xpath): PropertyBasedTesting
+    {
+        $element = $this->element($xpath, 'propertyBasedTesting');
+
+        if ($element === null) {
+            return new PropertyBasedTesting(
+                PropertyBasedTesting::DEFAULT_NUMBER_OF_EXAMPLES,
+                PropertyBasedTesting::DEFAULT_MAXIMUM_NUMBER_OF_SHRINKING_ATTEMPTS,
+            );
+        }
+
+        return new PropertyBasedTesting(
+            $this->parsePositiveIntegerAttribute($element, 'examples', PropertyBasedTesting::DEFAULT_NUMBER_OF_EXAMPLES),
+            $this->parseNonNegativeIntegerAttribute($element, 'maximumShrinkingAttempts', PropertyBasedTesting::DEFAULT_MAXIMUM_NUMBER_OF_SHRINKING_ATTEMPTS),
+        );
     }
 
     private function groups(DOMXPath $xpath): Groups
