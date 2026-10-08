@@ -15,8 +15,10 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\PropertyBased\ExampleRejectedByAssumptionException;
 use PHPUnit\TestFixture\PropertyBased\Examples\ExampleTest;
 use PHPUnit\TestFixture\PropertyBased\Examples\ExampleWithFailedAssertionInTearDownTest;
+use PHPUnit\TestFixture\PropertyBased\Examples\ExampleWithFailingTearDownTest;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 use RuntimeException;
 use Throwable;
@@ -27,6 +29,7 @@ use Throwable;
  * the test run that runs these tests.
  */
 #[CoversClass(TestCase::class)]
+#[CoversClass(ExampleRejectedByAssumptionException::class)]
 #[Small]
 #[Group('framework')]
 #[Group('framework/property-based-testing')]
@@ -51,6 +54,7 @@ final class TestCasePropertyExampleTest extends TestCase
         $test = new ExampleTest('testRecordsItsArguments');
 
         $this->assertFalse($test->isPropertyExample());
+        $this->assertFalse($test->wasRejectedByAssumption());
         $this->assertNull($test->throwableThatEndedTheTest());
     }
 
@@ -85,6 +89,40 @@ final class TestCasePropertyExampleTest extends TestCase
         $this->assertFalse(PassedTests::instance()->hasTestMethodPassed(ExampleTest::class . '::testRecordsItsArguments'));
     }
 
+    public function testAnExampleIsRejectedWhenAssumeIsCalledWithFalse(): void
+    {
+        $test = $this->example('testRejectsTheExample', [1]);
+
+        $this->runExample($test);
+
+        $this->assertTrue($test->wasRejectedByAssumption());
+        $this->assertTrue($test->status()->isUnknown());
+        $this->assertNull($test->throwableThatEndedTheTest());
+    }
+
+    public function testAnExampleIsRejectedWhenAssumeIsCalledWithFalseWhileAnExceptionIsExpected(): void
+    {
+        $test = $this->example('testRejectsTheExampleWhileAnExceptionIsExpected', [1]);
+
+        $this->runExample($test);
+
+        $this->assertTrue($test->wasRejectedByAssumption());
+    }
+
+    public function testAnErrorInTearDownIsReportedForAnExampleThatIsRejected(): void
+    {
+        $test = new ExampleWithFailingTearDownTest('testRejectsTheExample');
+
+        $test->setPropertyExample([1]);
+
+        $this->runExample($test);
+
+        $this->assertTrue($test->wasRejectedByAssumption());
+        $this->assertTrue($test->status()->isError());
+        $this->assertInstanceOf(RuntimeException::class, $test->throwableThatEndedTheTest());
+        $this->assertSame('tearDown', $test->throwableThatEndedTheTest()->getMessage());
+    }
+
     public function testKeepsTheThrowableOfAFailedAssertionInTearDown(): void
     {
         $test = new ExampleWithFailedAssertionInTearDownTest('testPasses');
@@ -106,6 +144,26 @@ final class TestCasePropertyExampleTest extends TestCase
 
         $this->assertInstanceOf(RuntimeException::class, $test->throwableThatEndedTheTest());
         $this->assertSame('destructor', $test->throwableThatEndedTheTest()->getMessage());
+    }
+
+    public function testAnExampleIsNotRejectedWhenAssumeIsCalledWithTrue(): void
+    {
+        $test = $this->example('testAcceptsTheExample', [1]);
+
+        $this->runExample($test);
+
+        $this->assertFalse($test->wasRejectedByAssumption());
+        $this->assertTrue($test->status()->isSuccess());
+    }
+
+    public function testAssumeCanOnlyBeUsedInAProperty(): void
+    {
+        $test = new ExampleTest('testUsesAssumeOutsideOfAProperty');
+
+        $this->runExample($test);
+
+        $this->assertTrue($test->status()->isError());
+        $this->assertSame('assume() can only be used in a property', $test->status()->message());
     }
 
     /**
