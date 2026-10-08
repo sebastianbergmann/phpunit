@@ -42,6 +42,16 @@ final readonly class PharLoader
     /**
      * @param non-empty-string $directory
      *
+     * @return list<non-empty-string>
+     */
+    public function pharFilesInDirectory(string $directory): array
+    {
+        return (new FileIteratorFacade)->getFilesAsArray($directory, '.phar');
+    }
+
+    /**
+     * @param non-empty-string $directory
+     *
      * @return list<string>
      */
     public function loadPharExtensionsInDirectory(string $directory): array
@@ -49,7 +59,7 @@ final readonly class PharLoader
         $pharExtensionLoaded = extension_loaded('phar');
         $loadedExtensions    = [];
 
-        foreach ((new FileIteratorFacade)->getFilesAsArray($directory, '.phar') as $file) {
+        foreach ($this->pharFilesInDirectory($directory) as $file) {
             if (!$pharExtensionLoaded) {
                 $this->emitter->testRunnerTriggeredPhpunitWarning(
                     sprintf(
