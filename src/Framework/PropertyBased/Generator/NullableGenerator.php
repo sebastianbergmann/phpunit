@@ -25,7 +25,7 @@ use PHPUnit\Framework\PropertyBased\Distribution\BernoulliDistribution;
  */
 final readonly class NullableGenerator extends AbstractGenerator
 {
-    private const float PROBABILITY_OF_VALUE = 0.8;
+    public const float DEFAULT_PROBABILITY_OF_VALUE = 0.8;
 
     /**
      * @var AbstractGenerator<T>
@@ -36,10 +36,10 @@ final readonly class NullableGenerator extends AbstractGenerator
     /**
      * @param AbstractGenerator<T> $generator
      */
-    public function __construct(AbstractGenerator $generator)
+    public function __construct(AbstractGenerator $generator, float $probabilityOfValue = self::DEFAULT_PROBABILITY_OF_VALUE)
     {
         $this->generator    = $generator;
-        $this->distribution = new BernoulliDistribution(self::PROBABILITY_OF_VALUE);
+        $this->distribution = new BernoulliDistribution($probabilityOfValue);
     }
 
     protected function generateValue(ChoiceSource $source): mixed
