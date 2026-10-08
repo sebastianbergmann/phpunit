@@ -1,0 +1,361 @@
+<?php declare(strict_types=1);
+/*
+ * This file is part of PHPUnit.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+namespace PHPUnit\Framework\PropertyBased;
+
+use function array_fill;
+use function array_slice;
+use function array_splice;
+use function array_values;
+use function assert;
+use function count;
+use function implode;
+use function intdiv;
+use function min;
+use function usort;
+use Closure;
+
+/**
+ * Shrinks the choice sequence of a counterexample: it repeatedly tries
+ * simpler choice sequences and keeps one when replaying it falsifies the
+ * property in the same way.
+ *
+ * The shrinker works on choice sequences only. It neither knows the
+ * generators that build values from the choices nor how a candidate is
+ * checked, so composed generators shrink as well as the ones they are
+ * composed of.
+ *
+ * Its passes are deleting spans, deleting blocks of consecutive choices,
+ * setting blocks of choices to 0, and minimizing individual choices by
+ * trying small values and then searching for the smallest value with a
+ * binary search. The passes are repeated until none of them succeeds or
+ * the maximum number of attempts has been made.
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ */
+final class Shrinker
+{
+    private const array BLOCK_SIZES       = [8, 4, 2, 1];
+    private const int LARGEST_SMALL_VALUE = 3;
+
+    /**
+     * @var Closure(ChoiceSequence): ?ChoiceSequence
+     */
+    private readonly Closure $test;
+
+    /**
+     * @var non-negative-int
+     */
+    private readonly int $maximumNumberOfAttempts;
+    private ChoiceSequence $current;
+
+    /**
+     * @var non-negative-int
+     */
+    private int $numberOfAttempts = 0;
+
+    /**
+     * @var non-negative-int
+     */
+    private int $numberOfSteps    = 0;
+    private bool $budgetExhausted = false;
+
+    /**
+     * @var array<string, true>
+     */
+    private array $tried = [];
+
+    /**
+     * @param Closure(ChoiceSequence): ?ChoiceSequence $test                    replays a candidate and returns the choice
+     *                                                                          sequence that the replay consumed when the
+     *                                                                          candidate falsifies the property in the
+     *                                                                          same way, and null otherwise
+     * @param non-negative-int                         $maximumNumberOfAttempts
+     */
+    public function __construct(Closure $test, int $maximumNumberOfAttempts)
+    {
+        $this->test                    = $test;
+        $this->maximumNumberOfAttempts = $maximumNumberOfAttempts;
+        $this->current                 = new ChoiceSequence([]);
+    }
+
+    public function shrink(ChoiceSequence $sequence): ShrinkingResult
+    {
+        $this->current          = $sequence;
+        $this->numberOfAttempts = 0;
+        $this->numberOfSteps    = 0;
+        $this->budgetExhausted  = false;
+        $this->tried            = [];
+
+        do {
+            $numberOfStepsBefore = $this->numberOfSteps;
+
+            $this->deleteSpans();
+            $this->deleteBlocks();
+            $this->zeroBlocks();
+            $this->minimizeChoices();
+        } while ($this->numberOfSteps > $numberOfStepsBefore && !$this->budgetExhausted);
+
+        return new ShrinkingResult(
+            $this->current,
+            $this->numberOfAttempts,
+            $this->numberOfSteps,
+            $this->budgetExhausted,
+        );
+    }
+
+    /**
+     * Deleting the span of an element of a collection deletes the element.
+     * Longer spans are tried first.
+     */
+    private function deleteSpans(): void
+    {
+        $index = 0;
+
+        while (!$this->budgetExhausted) {
+            $spans = $this->spansOfCurrentSequence();
+
+            if ($index >= count($spans)) {
+                return;
+            }
+
+            // after a successful deletion, the span at the same index of the
+            // simpler sequence is tried next
+            if (!$this->consider($this->withoutChoices($spans[$index]->start(), $spans[$index]->length()))) {
+                $index++;
+            }
+        }
+    }
+
+    private function deleteBlocks(): void
+    {
+        foreach (self::BLOCK_SIZES as $size) {
+            $start = $this->length() - $size;
+
+            while ($start >= 0 && !$this->budgetExhausted) {
+                if ($this->consider($this->withoutChoices($start, $size))) {
+                    $start = min($start, $this->length() - $size);
+
+                    continue;
+                }
+
+                $start--;
+            }
+        }
+    }
+
+    private function zeroBlocks(): void
+    {
+        foreach (self::BLOCK_SIZES as $size) {
+            for ($start = 0; $start + $size <= $this->length() && !$this->budgetExhausted; $start++) {
+                if ($this->isZero($start, $size)) {
+                    continue;
+                }
+
+                $this->consider($this->withZeroedChoices($start, $size));
+            }
+        }
+    }
+
+    private function minimizeChoices(): void
+    {
+        for ($index = 0; $index < $this->length() && !$this->budgetExhausted; $index++) {
+            $this->minimizeChoice($index);
+        }
+    }
+
+    /**
+     * @param non-negative-int $index
+     */
+    private function minimizeChoice(int $index): void
+    {
+        $choice = $this->choiceAt($index);
+
+        for ($value = 0; $value <= self::LARGEST_SMALL_VALUE && $value < $choice; $value++) {
+            if ($this->consider($this->withChoice($index, $value))) {
+                return;
+            }
+        }
+
+        // the largest small value that was tried is a lower bound that does
+        // not falsify the property, and the current choice is an upper bound
+        // that does
+        $lower = self::LARGEST_SMALL_VALUE;
+        $upper = $choice;
+
+        while ($upper - $lower > 1 && !$this->budgetExhausted) {
+            $middle = $lower + intdiv($upper - $lower, 2);
+
+            assert($middle >= 0);
+
+            if (!$this->consider($this->withChoice($index, $middle))) {
+                $lower = $middle;
+
+                continue;
+            }
+
+            if ($index >= $this->length()) {
+                return;
+            }
+
+            $upper = $this->choiceAt($index);
+        }
+    }
+
+    /**
+     * Replays the candidate, unless it has been tried before or the maximum
+     * number of attempts has been reached, and keeps the choice sequence that
+     * the replay consumed when the candidate falsifies the property in the
+     * same way and that sequence is simpler than the current one.
+     *
+     * @param list<non-negative-int> $choices
+     */
+    private function consider(array $choices): bool
+    {
+        $key = implode(',', $choices);
+
+        if (isset($this->tried[$key])) {
+            return false;
+        }
+
+        if ($this->numberOfAttempts >= $this->maximumNumberOfAttempts) {
+            $this->budgetExhausted = true;
+
+            return false;
+        }
+
+        $this->tried[$key] = true;
+
+        $this->numberOfAttempts++;
+
+        $consumed = ($this->test)(new ChoiceSequence($choices));
+
+        if ($consumed === null || !$consumed->isSimplerThan($this->current)) {
+            return false;
+        }
+
+        $this->current = $consumed;
+
+        $this->numberOfSteps++;
+
+        return true;
+    }
+
+    /**
+     * @return list<Span> the distinct spans of the current sequence, longest first
+     */
+    private function spansOfCurrentSequence(): array
+    {
+        $spans = [];
+
+        foreach ($this->current->spans() as $span) {
+            $spans[$span->start() . ':' . $span->end()] = $span;
+        }
+
+        $spans = array_values($spans);
+
+        usort(
+            $spans,
+            static function (Span $a, Span $b): int
+            {
+                if ($a->length() !== $b->length()) {
+                    return $b->length() <=> $a->length();
+                }
+
+                return $a->start() <=> $b->start();
+            },
+        );
+
+        return $spans;
+    }
+
+    /**
+     * @param non-negative-int $index
+     *
+     * @return non-negative-int
+     */
+    private function choiceAt(int $index): int
+    {
+        $choices = $this->current->choices();
+
+        assert(isset($choices[$index]));
+
+        return $choices[$index];
+    }
+
+    /**
+     * @return non-negative-int
+     */
+    private function length(): int
+    {
+        return count($this->current->choices());
+    }
+
+    /**
+     * @param non-negative-int $start
+     * @param positive-int     $size
+     */
+    private function isZero(int $start, int $size): bool
+    {
+        foreach (array_slice($this->current->choices(), $start, $size) as $choice) {
+            if ($choice !== 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param non-negative-int $start
+     * @param positive-int     $size
+     *
+     * @return list<non-negative-int>
+     */
+    private function withoutChoices(int $start, int $size): array
+    {
+        $choices = $this->current->choices();
+
+        array_splice($choices, $start, $size);
+
+        return $choices;
+    }
+
+    /**
+     * @param non-negative-int $start
+     * @param positive-int     $size
+     *
+     * @return list<non-negative-int>
+     */
+    private function withZeroedChoices(int $start, int $size): array
+    {
+        $choices = $this->current->choices();
+
+        array_splice($choices, $start, $size, array_fill(0, $size, 0));
+
+        return $choices;
+    }
+
+    /**
+     * @param non-negative-int $index
+     * @param non-negative-int $value
+     *
+     * @return list<non-negative-int>
+     */
+    private function withChoice(int $index, int $value): array
+    {
+        $choices = $this->current->choices();
+
+        array_splice($choices, $index, 1, [$value]);
+
+        return $choices;
+    }
+}
