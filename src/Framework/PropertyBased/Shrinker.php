@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\PropertyBased;
 
+use const PHP_INT_MAX;
 use function array_fill;
 use function array_slice;
 use function array_splice;
@@ -32,10 +33,12 @@ use Closure;
  * composed of.
  *
  * Its passes are deleting spans, deleting blocks of consecutive choices,
- * setting blocks of choices to 0, and minimizing individual choices by
- * trying small values and then searching for the smallest value with a
- * binary search. The passes are repeated until none of them succeeds or
- * the maximum number of attempts has been made.
+ * setting blocks of choices to 0, minimizing individual choices by trying
+ * small values and then searching for the smallest value with a binary
+ * search, and redistributing pairs of nearby choices by moving as much as
+ * possible from the first choice to the second. The passes are repeated
+ * until none of them succeeds or the maximum number of attempts has been
+ * made.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -43,8 +46,9 @@ use Closure;
  */
 final class Shrinker
 {
-    private const array BLOCK_SIZES       = [8, 4, 2, 1];
-    private const int LARGEST_SMALL_VALUE = 3;
+    private const array BLOCK_SIZES                   = [8, 4, 2, 1];
+    private const int LARGEST_SMALL_VALUE             = 3;
+    private const int LARGEST_REDISTRIBUTION_DISTANCE = 4;
 
     /**
      * @var Closure(ChoiceSequence): ?ChoiceSequence
@@ -102,6 +106,7 @@ final class Shrinker
             $this->deleteBlocks();
             $this->zeroBlocks();
             $this->minimizeChoices();
+            $this->redistributeChoices();
         } while ($this->numberOfSteps > $numberOfStepsBefore && !$this->budgetExhausted);
 
         return new ShrinkingResult(
@@ -207,6 +212,73 @@ final class Shrinker
             }
 
             $upper = $this->choiceAt($index);
+        }
+    }
+
+    /**
+     * A counterexample for a property such as $a + $b > 10 cannot be shrunk
+     * from [11, 0] to [0, 11] by minimizing one choice at a time. Moving an
+     * amount from a choice to a later one keeps their sum, while the choice
+     * sequence becomes simpler.
+     */
+    private function redistributeChoices(): void
+    {
+        for ($first = 0; $first < $this->length() && !$this->budgetExhausted; $first++) {
+            for ($second = $first + 1; $second <= $first + self::LARGEST_REDISTRIBUTION_DISTANCE && $second < $this->length() && !$this->budgetExhausted; $second++) {
+                $this->redistribute($first, $second);
+            }
+        }
+    }
+
+    /**
+     * Moves as much as possible from the choice at $first to the choice at
+     * $second: everything if that keeps the property falsified, otherwise the
+     * largest amount that a binary search finds.
+     *
+     * @param non-negative-int $first
+     * @param non-negative-int $second
+     */
+    private function redistribute(int $first, int $second): void
+    {
+        $firstChoice  = $this->choiceAt($first);
+        $secondChoice = $this->choiceAt($second);
+
+        // the amount that can be moved without exceeding the largest choice
+        $movable = min($firstChoice, PHP_INT_MAX - $secondChoice);
+
+        if ($movable < 1) {
+            return;
+        }
+
+        if ($this->consider($this->withMovedAmount($first, $second, $movable))) {
+            return;
+        }
+
+        // moving nothing keeps the property falsified, moving everything
+        // that can be moved does not
+        $lower = 0;
+        $upper = $movable;
+
+        while ($upper - $lower > 1 && !$this->budgetExhausted) {
+            $middle = $lower + intdiv($upper - $lower, 2);
+
+            assert($middle > 0);
+
+            $candidate = $this->withMovedAmount($first, $second, $middle, $firstChoice, $secondChoice);
+
+            if (!$this->consider($candidate)) {
+                $upper = $middle;
+
+                continue;
+            }
+
+            // the amounts are relative to the choices from which the pair is
+            // redistributed, which the consumed choice sequence may not have
+            if ($this->current->choices() !== $candidate) {
+                return;
+            }
+
+            $lower = $middle;
         }
     }
 
@@ -340,6 +412,38 @@ final class Shrinker
         $choices = $this->current->choices();
 
         array_splice($choices, $start, $size, array_fill(0, $size, 0));
+
+        return $choices;
+    }
+
+    /**
+     * @param non-negative-int  $first
+     * @param non-negative-int  $second
+     * @param positive-int      $amount
+     * @param ?non-negative-int $firstChoice  the choice at $first to move the amount from, the current one when null
+     * @param ?non-negative-int $secondChoice the choice at $second to move the amount to, the current one when null
+     *
+     * @return list<non-negative-int>
+     */
+    private function withMovedAmount(int $first, int $second, int $amount, ?int $firstChoice = null, ?int $secondChoice = null): array
+    {
+        if ($firstChoice === null) {
+            $firstChoice = $this->choiceAt($first);
+        }
+
+        if ($secondChoice === null) {
+            $secondChoice = $this->choiceAt($second);
+        }
+
+        $firstValue  = $firstChoice - $amount;
+        $secondValue = $secondChoice + $amount;
+
+        assert($firstValue >= 0 && $secondValue >= 0);
+
+        $choices = $this->current->choices();
+
+        array_splice($choices, $first, 1, [$firstValue]);
+        array_splice($choices, $second, 1, [$secondValue]);
 
         return $choices;
     }
