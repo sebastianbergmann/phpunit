@@ -13,6 +13,9 @@ use function array_key_exists;
 use function array_pop;
 use function assert;
 use function count;
+use function strtolower;
+use PHPUnit\Framework\PropertyBased\Derivation\GeneratorDeriver;
+use PHPUnit\Framework\PropertyBased\Derivation\GeneratorRegistry;
 use PHPUnit\Framework\PropertyBased\Distribution\Distribution;
 use Random\Randomizer;
 
@@ -24,6 +27,10 @@ use Random\Randomizer;
  * generator. When a choice sequence is replayed, the choices are read from
  * it instead: choices beyond its end are 0, and a choice that exceeds the
  * range it is drawn from is clamped to the range.
+ *
+ * It also provides the deriver for the generators that are derived from types
+ * while the example is generated, and keeps track of the objects that are
+ * being generated, so that recursive construction can be limited.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -58,32 +65,90 @@ final class ChoiceSource
      * @var list<non-negative-int>
      */
     private array $openSpans = [];
+    private ?GeneratorDeriver $deriver;
+
+    /**
+     * @var array<lowercase-string, positive-int>
+     */
+    private array $objectsBeingGenerated = [];
 
     /**
      * @param positive-int $maximumNumberOfChoices
      */
-    public static function random(Randomizer $randomizer, int $maximumNumberOfChoices = self::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES): self
+    public static function random(Randomizer $randomizer, int $maximumNumberOfChoices = self::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, ?GeneratorDeriver $deriver = null): self
     {
-        return new self($randomizer, [], $maximumNumberOfChoices);
+        return new self($randomizer, [], $maximumNumberOfChoices, $deriver);
     }
 
     /**
      * @param positive-int $maximumNumberOfChoices
      */
-    public static function replay(ChoiceSequence $sequence, int $maximumNumberOfChoices = self::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES): self
+    public static function replay(ChoiceSequence $sequence, int $maximumNumberOfChoices = self::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, ?GeneratorDeriver $deriver = null): self
     {
-        return new self(null, $sequence->choices(), $maximumNumberOfChoices);
+        return new self(null, $sequence->choices(), $maximumNumberOfChoices, $deriver);
     }
 
     /**
      * @param list<non-negative-int> $replayedChoices
      * @param positive-int           $maximumNumberOfChoices
      */
-    private function __construct(?Randomizer $randomizer, array $replayedChoices, int $maximumNumberOfChoices)
+    private function __construct(?Randomizer $randomizer, array $replayedChoices, int $maximumNumberOfChoices, ?GeneratorDeriver $deriver)
     {
         $this->randomizer             = $randomizer;
         $this->replayedChoices        = $replayedChoices;
         $this->maximumNumberOfChoices = $maximumNumberOfChoices;
+        $this->deriver                = $deriver;
+    }
+
+    /**
+     * The deriver for generators that are derived from types while the example
+     * is generated. Without one, a deriver without generators registered for
+     * types is used.
+     */
+    public function deriver(): GeneratorDeriver
+    {
+        if ($this->deriver === null) {
+            $this->deriver = new GeneratorDeriver(GeneratorRegistry::empty());
+        }
+
+        return $this->deriver;
+    }
+
+    /**
+     * Records that an object of the class is being generated.
+     *
+     * @param class-string $className
+     *
+     * @return positive-int the number of objects of the class that are being generated, including this one
+     */
+    public function startObject(string $className): int
+    {
+        $key   = strtolower($className);
+        $count = ($this->objectsBeingGenerated[$key] ?? 0) + 1;
+
+        $this->objectsBeingGenerated[$key] = $count;
+
+        return $count;
+    }
+
+    /**
+     * @param class-string $className
+     */
+    public function endObject(string $className): void
+    {
+        $key = strtolower($className);
+
+        assert(isset($this->objectsBeingGenerated[$key]));
+
+        $count = $this->objectsBeingGenerated[$key] - 1;
+
+        if ($count === 0) {
+            unset($this->objectsBeingGenerated[$key]);
+
+            return;
+        }
+
+        $this->objectsBeingGenerated[$key] = $count;
     }
 
     /**

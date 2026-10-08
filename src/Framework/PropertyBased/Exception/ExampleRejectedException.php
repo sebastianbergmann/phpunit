@@ -49,6 +49,21 @@ final class ExampleRejectedException extends RuntimeException implements Excepti
     }
 
     /**
+     * @param class-string $className
+     * @param positive-int $maximumNesting
+     */
+    public static function objectsNestedTooDeeply(string $className, int $maximumNesting): self
+    {
+        return new self(
+            sprintf(
+                'Generating the example required more than %d nested objects of class %s',
+                $maximumNesting,
+                $className,
+            ),
+        );
+    }
+
+    /**
      * @param positive-int $numberOfAttempts
      */
     public static function tooManyDuplicateElements(int $numberOfAttempts): self
