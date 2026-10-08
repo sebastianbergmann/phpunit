@@ -9,21 +9,28 @@
  */
 namespace PHPUnit\Framework\PropertyBased;
 
+use const DEBUG_BACKTRACE_IGNORE_ARGS;
 use const PHP_FLOAT_MAX;
 use const PHP_INT_MAX;
 use const PHP_INT_MIN;
 use function array_unique;
 use function array_values;
+use function class_exists;
+use function debug_backtrace;
 use function enum_exists;
+use function interface_exists;
 use function is_finite;
+use function lcfirst;
 use function mb_check_encoding;
 use function mb_str_split;
 use function sprintf;
+use PHPUnit\Framework\PropertyBased\Derivation\GeneratorDeriver;
 use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\ArrayGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\BooleanGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\BytesGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\ConstantGenerator;
+use PHPUnit\Framework\PropertyBased\Generator\DeferredGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\ElementsGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\FloatGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\IntegerGenerator;
@@ -33,6 +40,8 @@ use PHPUnit\Framework\PropertyBased\Generator\OneOfGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\RecordGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\StringGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\TupleGenerator;
+use PHPUnit\Framework\PropertyBased\Type\NameScope;
+use PHPUnit\Framework\PropertyBased\Type\TypeParser;
 use UnitEnum;
 
 /**
@@ -351,6 +360,82 @@ final class Generators
         }
 
         return new OneOfGenerator($oneOf);
+    }
+
+    /**
+     * Generates objects of the given class the way they are generated for a
+     * parameter of a property whose type is the class: with the generator
+     * that the test case class registers for it with #[GeneratorFor], as
+     * points in time or the cases of an enumeration, or with new, using
+     * arguments that are generated for the parameters of the constructor.
+     *
+     * @template T of object
+     *
+     * @param class-string<T> $className
+     *
+     * @throws InvalidGeneratorArgumentException
+     *
+     * @return ValueGenerator<T>
+     */
+    public static function objects(string $className): ValueGenerator
+    {
+        if (!class_exists($className) && !interface_exists($className)) {
+            throw new InvalidGeneratorArgumentException(
+                sprintf(
+                    '%s is neither a class nor an interface',
+                    $className,
+                ),
+            );
+        }
+
+        /** @var DeferredGenerator<T> $generator */
+        $generator = new DeferredGenerator(
+            static fn (GeneratorDeriver $deriver): AbstractGenerator => $deriver->forClass($className),
+            false,
+        );
+
+        return $generator;
+    }
+
+    /**
+     * Generates values the way they are generated for a parameter of a
+     * property whose type, in its @param tag, is $type. Class names in the
+     * type are resolved against the namespace and the imports that apply
+     * where fromType() is called.
+     *
+     * @throws InvalidGeneratorArgumentException
+     *
+     * @return ValueGenerator<mixed>
+     */
+    public static function fromType(string $type): ValueGenerator
+    {
+        try {
+            $parsed = (new TypeParser)->parse($type);
+        } catch (InvalidTypeException $e) {
+            throw new InvalidGeneratorArgumentException(
+                sprintf(
+                    'The type %s cannot be parsed: %s',
+                    $type,
+                    lcfirst($e->getMessage()),
+                ),
+                0,
+                $e,
+            );
+        }
+
+        $trace     = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+        $className = null;
+
+        if (isset($trace[1]['class']) && class_exists($trace[1]['class'])) {
+            $className = $trace[1]['class'];
+        }
+
+        $scope = NameScope::forCallSite($trace[0]['file'] ?? false, $trace[0]['line'] ?? false, $className);
+
+        return new DeferredGenerator(
+            static fn (GeneratorDeriver $deriver): AbstractGenerator => $deriver->forType($parsed, $scope),
+            false,
+        );
     }
 
     /**

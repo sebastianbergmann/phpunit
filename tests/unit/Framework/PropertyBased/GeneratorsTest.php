@@ -33,6 +33,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\PropertyBased\Derivation\GeneratorDeriver;
+use PHPUnit\Framework\PropertyBased\Derivation\GeneratorRegistry;
 use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\ArrayGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\BooleanGenerator;
@@ -54,6 +56,7 @@ use PHPUnit\Framework\PropertyBased\Generator\StringGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\TupleGenerator;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\PropertyBased\Currency;
+use PHPUnit\TestFixture\PropertyBased\Derivation\Money;
 use PHPUnit\TestFixture\PropertyBased\EnumerationWithoutCases;
 use Random\Engine\Xoshiro256StarStar;
 use Random\Randomizer;
@@ -761,6 +764,52 @@ final class GeneratorsTest extends TestCase
         $this->replay(Generators::integers()->flatMap(static fn (int $value): ValueGenerator => $foreignGenerator), []);
     }
 
+    public function testGeneratesObjectsOfAClass(): void
+    {
+        $this->assertEquals(new Money(0, Currency::EUR), $this->replay(Generators::objects(Money::class), []));
+    }
+
+    public function testObjectsCanOnlyBeGeneratedForAClassOrAnInterface(): void
+    {
+        $this->expectException(InvalidGeneratorArgumentException::class);
+        $this->expectExceptionMessage('Unknown is neither a class nor an interface');
+
+        Generators::objects('Unknown');
+    }
+
+    public function testGeneratesValuesOfATypeWhoseClassNamesAreResolvedWhereFromTypeIsCalled(): void
+    {
+        $this->assertSame([Currency::USD], $this->replay(Generators::fromType('list<Currency>'), [1, 1, 0]));
+    }
+
+    public function testTheTypePassedToFromTypeMustBeParsable(): void
+    {
+        $this->expectException(InvalidGeneratorArgumentException::class);
+        $this->expectExceptionMessage('The type list<int cannot be parsed: unexpected end of the type, expected ">"');
+
+        Generators::fromType('list<int');
+    }
+
+    public function testReportsATypePassedToFromTypeForWhichNoGeneratorCanBeDerivedWhenItsFirstValueIsGenerated(): void
+    {
+        $generator = Generators::fromType('mixed');
+
+        $this->expectException(CannotDeriveGeneratorException::class);
+        $this->expectExceptionMessage('mixed is not supported');
+
+        $this->replay($generator, []);
+    }
+
+    public function testGeneratorsDerivedFromTypesUseTheGeneratorsRegisteredWithTheDeriverOfTheChoiceSource(): void
+    {
+        $money   = new Money(42, Currency::GBP);
+        $deriver = new GeneratorDeriver(GeneratorRegistry::from([Money::class => Generators::constant($money)]));
+
+        $this->assertSame($money, $this->replay(Generators::objects(Money::class), [], $deriver));
+        $this->assertSame([$money], $this->replay(Generators::fromType('list<Money>'), [1, 0], $deriver));
+        $this->assertSame($money, $this->replay(Generators::integers(0, 1)->flatMap(static fn (int $value): ValueGenerator => Generators::fromType('Money')), [], $deriver));
+    }
+
     public function testRejectsTheExampleWhenItRequiresTooManyChoices(): void
     {
         $this->expectException(ExampleRejectedException::class);
@@ -773,9 +822,9 @@ final class GeneratorsTest extends TestCase
      * @param ValueGenerator<mixed>  $generator
      * @param list<non-negative-int> $choices
      */
-    private function replay(ValueGenerator $generator, array $choices): mixed
+    private function replay(ValueGenerator $generator, array $choices, ?GeneratorDeriver $deriver = null): mixed
     {
-        return AbstractGenerator::from($generator)->generate(ChoiceSource::replay(new ChoiceSequence($choices)));
+        return AbstractGenerator::from($generator)->generate(ChoiceSource::replay(new ChoiceSequence($choices), ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver));
     }
 
     /**
