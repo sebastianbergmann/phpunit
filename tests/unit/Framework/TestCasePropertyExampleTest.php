@@ -19,6 +19,7 @@ use PHPUnit\Framework\PropertyBased\ExampleRejectedByAssumptionException;
 use PHPUnit\TestFixture\PropertyBased\Examples\ExampleTest;
 use PHPUnit\TestFixture\PropertyBased\Examples\ExampleWithFailedAssertionInTearDownTest;
 use PHPUnit\TestFixture\PropertyBased\Examples\ExampleWithFailingTearDownTest;
+use PHPUnit\TestFixture\PropertyBased\Examples\ExampleWithOnNotSuccessfulTestTest;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 use RuntimeException;
 use Throwable;
@@ -186,6 +187,34 @@ final class TestCasePropertyExampleTest extends TestCase
 
         $this->assertInstanceOf($throwableClassName, $test->throwableThatEndedTheTest());
         $this->assertSame($message, $test->throwableThatEndedTheTest()->getMessage());
+    }
+
+    public function testOnNotSuccessfulTestIsNotCalledForAnExampleThatIsRejected(): void
+    {
+        ExampleWithOnNotSuccessfulTestTest::$onNotSuccessfulTestCalled = false;
+
+        $test = new ExampleWithOnNotSuccessfulTestTest('testRejectsTheExample');
+
+        $test->setPropertyExample([1]);
+
+        $this->runExample($test);
+
+        $this->assertTrue($test->wasRejectedByAssumption());
+        $this->assertFalse(ExampleWithOnNotSuccessfulTestTest::$onNotSuccessfulTestCalled);
+    }
+
+    public function testOnNotSuccessfulTestIsCalledForAnExampleThatFails(): void
+    {
+        ExampleWithOnNotSuccessfulTestTest::$onNotSuccessfulTestCalled = false;
+
+        $test = new ExampleWithOnNotSuccessfulTestTest('testFails');
+
+        $test->setPropertyExample([1]);
+
+        $this->runExample($test);
+
+        $this->assertTrue($test->status()->isFailure());
+        $this->assertTrue(ExampleWithOnNotSuccessfulTestTest::$onNotSuccessfulTestCalled);
     }
 
     /**
