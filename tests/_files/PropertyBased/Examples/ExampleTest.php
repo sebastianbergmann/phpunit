@@ -28,6 +28,25 @@ final class ExampleTest extends TestCase
         $this->assertTrue(true);
     }
 
+    public function testAcceptsTheExample(int $number): void
+    {
+        $this->assume(true);
+
+        $this->assertTrue(true);
+    }
+
+    public function testRejectsTheExample(int $number): void
+    {
+        $this->assume(false);
+    }
+
+    public function testRejectsTheExampleWhileAnExceptionIsExpected(int $number): void
+    {
+        $this->expectException(RuntimeException::class);
+
+        $this->assume(false);
+    }
+
     public function testFails(int $number): void
     {
         $this->fail('failure');
@@ -60,5 +79,10 @@ final class ExampleTest extends TestCase
     public function testUsesATestDoubleWhoseDestructorThrows(int $number): void
     {
         $this->createMock(ThrowsInDestructor::class)->expects($this->never())->method('doSomething');
+    }
+
+    public function testUsesAssumeOutsideOfAProperty(): void
+    {
+        $this->assume(true);
     }
 }
