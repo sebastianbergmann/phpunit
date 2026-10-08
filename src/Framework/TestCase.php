@@ -40,6 +40,7 @@ use PHPUnit\Framework\MockObject\Rule\InvokedCount as InvokedCountMatcher;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\MockObject\Stub\Exception as ExceptionStub;
 use PHPUnit\Framework\MockObject\TestStubBuilder;
+use PHPUnit\Framework\PropertyBased\ExampleRejectedByAssumptionException;
 use PHPUnit\Framework\TestCase\CustomRegistrations;
 use PHPUnit\Framework\TestCase\DataSet;
 use PHPUnit\Framework\TestCase\DependencyResolver;
@@ -112,7 +113,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @var ?list<mixed>
      */
-    private ?array $propertyArguments = null;
+    private ?array $propertyArguments  = null;
+    private bool $rejectedByAssumption = false;
 
     /**
      * @var positive-int
@@ -843,6 +845,17 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * Whether the example of a property was discarded because assume() was
+     * called with false.
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    final public function wasRejectedByAssumption(): bool
+    {
+        return $this->rejectedByAssumption;
+    }
+
+    /**
      * The throwable that ended the test: the one that caused its failure or
      * error, as it was raised, or the TimeoutException when the test exceeded
      * its time limit.
@@ -987,6 +1000,27 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     final protected function expectErrorLog(): void
     {
         $this->errorLogCapture->expect();
+    }
+
+    /**
+     * Discards the current example of a property when $condition is false. A
+     * discarded example neither passes nor fails, and it does not count towards
+     * the number of examples that are checked.
+     *
+     * @throws ExampleRejectedByAssumptionException
+     * @throws Exception                            when it is not called in a property
+     */
+    final protected function assume(bool $condition): void
+    {
+        if (!$this->isPropertyExample()) {
+            throw new Exception('assume() can only be used in a property');
+        }
+
+        if ($condition) {
+            return;
+        }
+
+        throw new ExampleRejectedByAssumptionException;
     }
 
     /**
@@ -1319,6 +1353,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     private function handleThrowableFromTest(Throwable $t): ?Throwable
     {
+        if ($t instanceof ExampleRejectedByAssumptionException) {
+            $this->rejectedByAssumption = true;
+
+            return $t;
+        }
+
         if ($t instanceof IncompleteTest) {
             $this->status = TestStatus::incomplete($t->getMessage());
 
@@ -1498,7 +1538,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             return $t;
         } catch (Throwable $t) {
-            if ($e === null || $e instanceof SkippedWithMessageException) {
+            if ($e === null || $e instanceof SkippedWithMessageException || $e instanceof ExampleRejectedByAssumptionException) {
                 $this->status                    = TestStatus::error($t->getMessage());
                 $this->throwableThatEndedTheTest = $t;
 
