@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\PropertyBased\Type;
 
 use function assert;
+use function get_parent_class;
 use function ltrim;
 use function str_starts_with;
 use function strtolower;
@@ -37,9 +38,9 @@ final readonly class NameScope
     private NameContext $context;
 
     /**
-     * @var class-string
+     * @var ?class-string
      */
-    private string $className;
+    private ?string $className;
 
     /**
      * @var ?class-string
@@ -65,10 +66,32 @@ final readonly class NameScope
     }
 
     /**
-     * @param class-string  $className
+     * Resolves the class names in a PHPDoc type that is written at the given
+     * line of the given file, for instance as the argument of a call, where
+     * self and static refer to the given class.
+     *
+     * @param ?class-string $className
+     */
+    public static function forCallSite(false|string $file, false|int $line, ?string $className): self
+    {
+        $parentClassName = null;
+
+        if ($className !== null) {
+            $parent = get_parent_class($className);
+
+            if ($parent !== false) {
+                $parentClassName = $parent;
+            }
+        }
+
+        return new self(NameContexts::at($file, $line), $className, $parentClassName);
+    }
+
+    /**
+     * @param ?class-string $className
      * @param ?class-string $parentClassName
      */
-    private function __construct(NameContext $context, string $className, ?string $parentClassName)
+    private function __construct(NameContext $context, ?string $className, ?string $parentClassName)
     {
         $this->context         = $context;
         $this->className       = $className;
@@ -88,7 +111,7 @@ final readonly class NameScope
     {
         $keyword = strtolower($name);
 
-        if ($keyword === 'self' || $keyword === 'static') {
+        if (($keyword === 'self' || $keyword === 'static') && $this->className !== null) {
             return $this->className;
         }
 
