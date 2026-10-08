@@ -446,7 +446,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $this->restoreEnvironment($currentWorkingDirectory);
 
-        if ($e !== null) {
+        // an example of a property that is rejected by assume() is discarded,
+        // it is not a test that was not successful
+        if ($e !== null && !$e instanceof ExampleRejectedByAssumptionException) {
             $this->onNotSuccessfulTest($e);
         }
     }
