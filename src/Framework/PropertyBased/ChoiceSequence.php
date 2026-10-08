@@ -56,4 +56,16 @@ final readonly class ChoiceSequence
     {
         return $this->spans;
     }
+
+    /**
+     * Choice sequences are ordered shortlex: a shorter sequence is simpler
+     * than a longer one, and among sequences of equal length the
+     * lexicographically smaller one is simpler.
+     */
+    public function isSimplerThan(self $other): bool
+    {
+        // PHP considers an array with fewer elements to be smaller, and
+        // compares lists with the same number of elements element by element
+        return $this->choices < $other->choices;
+    }
 }
