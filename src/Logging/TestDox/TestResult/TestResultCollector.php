@@ -36,6 +36,7 @@ use PHPUnit\Event\Test\PhpunitErrorTriggered;
 use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\Prepared;
+use PHPUnit\Event\Test\PropertyFalsified;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\Event\TestSuite\Skipped as TestSuiteSkipped;
@@ -60,6 +61,12 @@ final class TestResultCollector
     private ?TestStatus $status   = null;
     private ?Throwable $throwable = null;
     private bool $prepared        = false;
+
+    /**
+     * The event that describes how a property was falsified, which is
+     * dispatched before the event for its failure or error.
+     */
+    private ?PropertyFalsified $propertyFalsified = null;
 
     public function __construct(Facade $facade, IssueFilter $issueFilter)
     {
@@ -163,6 +170,15 @@ final class TestResultCollector
         assert($test instanceof TestMethod);
 
         $this->recordTestThatNeverStarted($test);
+    }
+
+    public function testPropertyFalsified(PropertyFalsified $event): void
+    {
+        if (!$event->test()->isTestMethod()) {
+            return;
+        }
+
+        $this->propertyFalsified = $event;
     }
 
     public function testFailed(Failed $event): void
@@ -349,9 +365,10 @@ final class TestResultCollector
 
         $this->process($test);
 
-        $this->status    = null;
-        $this->throwable = null;
-        $this->prepared  = false;
+        $this->status            = null;
+        $this->throwable         = null;
+        $this->prepared          = false;
+        $this->propertyFalsified = null;
     }
 
     /**
@@ -391,6 +408,7 @@ final class TestResultCollector
             new TestFinishedSubscriber($this),
             new TestMarkedIncompleteSubscriber($this),
             new TestPassedSubscriber($this),
+            new TestPropertyFalsifiedSubscriber($this),
             new TestPreparedSubscriber($this),
             new TestSkippedSubscriber($this),
             new TestSuiteSkippedSubscriber($this),
@@ -444,8 +462,9 @@ final class TestResultCollector
 
         $this->record($test, $this->status, $this->throwable);
 
-        $this->status    = null;
-        $this->throwable = null;
+        $this->status            = null;
+        $this->throwable         = null;
+        $this->propertyFalsified = null;
     }
 
     private function record(TestMethod $test, TestStatus $status, ?Throwable $throwable): void
@@ -458,6 +477,7 @@ final class TestResultCollector
             $test,
             $status,
             $throwable,
+            $this->propertyFalsified,
         );
     }
 }
