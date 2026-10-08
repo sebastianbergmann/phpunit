@@ -75,6 +75,22 @@ final class TimeLimitHandler
     }
 
     /**
+     * Whether the deadline of the test run has passed.
+     *
+     * This is needed by code that runs tests while their events are collected
+     * rather than dispatched, such as the examples of a property, because the
+     * deadline is otherwise only checked when a test has finished.
+     */
+    public static function deadlineReached(): bool
+    {
+        if (self::$instance === null) {
+            return false;
+        }
+
+        return self::$instance->alarmFired || hrtime(true) >= self::$instance->deadline;
+    }
+
+    /**
      * @param positive-int $timeLimit
      */
     private function __construct(Facade $facade, int $timeLimit)
