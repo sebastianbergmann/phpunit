@@ -3290,6 +3290,21 @@ final class BuilderTest extends TestCase
         $this->assertFalse($configuration->validateConfiguration());
     }
 
+    #[TestDox('--show-effective-configuration')]
+    public function testShowEffectiveConfiguration(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--show-effective-configuration']);
+
+        $this->assertTrue($configuration->showEffectiveConfiguration());
+    }
+
+    public function testShowEffectiveConfigurationDefaultsToFalse(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters([]);
+
+        $this->assertFalse($configuration->showEffectiveConfiguration());
+    }
+
     #[TestDox('--check-php-configuration')]
     public function testCheckPhpConfiguration(): void
     {

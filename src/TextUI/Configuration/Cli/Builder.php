@@ -115,6 +115,7 @@ final class Builder
         'log-teamcity=',
         'migrate-configuration',
         'validate-configuration',
+        'show-effective-configuration',
         'no-configuration',
         'no-coverage',
         'no-logging',
@@ -252,6 +253,7 @@ final class Builder
         '--list-tests',
         '--list-tests-xml',
         '--migrate-configuration',
+        '--show-effective-configuration',
         '--validate-configuration',
         '--version',
         '--warm-coverage-cache',
@@ -384,6 +386,7 @@ final class Builder
         $generateConfiguration                    = false;
         $migrateConfiguration                     = false;
         $validateConfiguration                    = false;
+        $showEffectiveConfiguration               = false;
         $groups                                   = null;
         $testsCovering                            = null;
         $testsUsing                               = null;
@@ -710,6 +713,11 @@ final class Builder
 
                 case '--validate-configuration':
                     $validateConfiguration = true;
+
+                    break;
+
+                case '--show-effective-configuration':
+                    $showEffectiveConfiguration = true;
 
                     break;
 
@@ -1527,6 +1535,7 @@ final class Builder
             $generateConfiguration,
             $migrateConfiguration,
             $validateConfiguration,
+            $showEffectiveConfiguration,
             $groups,
             $testsCovering,
             $testsUsing,

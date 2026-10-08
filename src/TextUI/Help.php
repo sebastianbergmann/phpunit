@@ -184,6 +184,7 @@ final class Help
                 ['arg' => '--generate-configuration', 'desc' => 'Generate configuration file with suggested settings'],
                 ['arg' => '--migrate-configuration', 'desc' => 'Migrate configuration file to current format'],
                 ['arg' => '--validate-configuration', 'desc' => 'Validate XML configuration file'],
+                ['arg' => '--show-effective-configuration', 'desc' => 'Show effective configuration without running bootstrap, extensions, or tests'],
                 ['arg' => '--generate-baseline <file>', 'desc' => 'Generate baseline for issues'],
                 ['arg' => '--use-baseline <file>', 'desc' => 'Use baseline to ignore issues'],
                 ['arg' => '--ignore-baseline', 'desc' => 'Do not use baseline to ignore issues'],

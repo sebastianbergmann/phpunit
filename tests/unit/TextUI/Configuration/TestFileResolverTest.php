@@ -384,6 +384,75 @@ final class TestFileResolverTest extends TestCase
         $this->assertSame([], new TestFileResolver($this->createStub(Emitter::class))->excludeTestSuites($configuration));
     }
 
+    public function testResolvesTestSuitesFromXmlConfigurationFileWhenNoTestFilesAreSelectedOnCommandLine(): void
+    {
+        $resolved = new TestFileResolver($this->createStub(Emitter::class))->resolve(
+            $this->configurationFromXmlConfigurationFile(),
+        );
+
+        // the XML configuration file configures "one" as the default test suite
+        $this->assertCount(1, $resolved);
+        $this->assertSame('one', $resolved[0]['name']);
+        $this->assertCount(1, $resolved[0]['files']);
+        $this->assertSame($this->fixturePath('SuccessTest.php'), realpath($resolved[0]['files'][0]['path']));
+    }
+
+    public function testResolvesTestSuitesThatAreSelectedOnCommandLine(): void
+    {
+        $resolved = new TestFileResolver($this->createStub(Emitter::class))->resolve(
+            $this->configurationFromXmlConfigurationFile('--testsuite', 'two'),
+        );
+
+        $this->assertCount(1, $resolved);
+        $this->assertSame('two', $resolved[0]['name']);
+    }
+
+    public function testResolvesAllTestSuitesWhenTestSelectionInXmlConfigurationFileIsIgnored(): void
+    {
+        $resolved = new TestFileResolver($this->createStub(Emitter::class))->resolve(
+            $this->configurationFromXmlConfigurationFile('--all'),
+        );
+
+        $this->assertCount(2, $resolved);
+        $this->assertSame('one', $resolved[0]['name']);
+        $this->assertSame('two', $resolved[1]['name']);
+    }
+
+    public function testResolvesTestFilesInDirectoryThatIsSelectedOnCommandLine(): void
+    {
+        $this->assertSame(
+            [
+                [
+                    'name'  => 'CLI Arguments',
+                    'files' => [
+                        ['path' => $this->fixturePath('ExcludedTest.php'), 'groups' => []],
+                        ['path' => $this->fixturePath('SuccessTest.php'), 'groups' => []],
+                    ],
+                ],
+            ],
+            new TestFileResolver($this->createStub(Emitter::class))->resolve(
+                $this->configurationFromCommandLine($this->fixturePath()),
+            ),
+        );
+    }
+
+    public function testResolvesTestFileThatIsSelectedOnCommandLine(): void
+    {
+        $this->assertSame(
+            [
+                [
+                    'name'  => 'CLI Arguments',
+                    'files' => [
+                        ['path' => $this->fixturePath('SuccessTest.php'), 'groups' => []],
+                    ],
+                ],
+            ],
+            new TestFileResolver($this->createStub(Emitter::class))->resolve(
+                $this->configurationFromCommandLine($this->fixturePath('SuccessTest.php')),
+            ),
+        );
+    }
+
     /**
      * @param non-empty-string ...$parameters
      */

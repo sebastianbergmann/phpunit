@@ -96,6 +96,7 @@ use PHPUnit\TextUI\Command\ListTestsAsXmlCommand;
 use PHPUnit\TextUI\Command\ListTestSuitesCommand;
 use PHPUnit\TextUI\Command\MigrateConfigurationCommand;
 use PHPUnit\TextUI\Command\Result;
+use PHPUnit\TextUI\Command\ShowEffectiveConfigurationCommand;
 use PHPUnit\TextUI\Command\ShowHelpCommand;
 use PHPUnit\TextUI\Command\ShowVersionCommand;
 use PHPUnit\TextUI\Command\ValidateConfigurationCommand;
@@ -158,6 +159,8 @@ final readonly class Application
                 $xmlConfiguration,
                 $this->emitter,
             );
+
+            $this->executeCommandsThatMustNotExecuteCodeFromTheConfiguration($configuration, $cliConfiguration);
 
             DifferBuilder::configureComparatorFactory();
 
@@ -551,6 +554,18 @@ final readonly class Application
 
         if ($cliConfiguration->help()) {
             $this->execute(new ShowHelpCommand(Result::SUCCESS));
+        }
+    }
+
+    /**
+     * These commands run before the configuration is applied, the bootstrap
+     * script is included, the extensions are loaded, and the test files are
+     * loaded: none of the code that the configuration names is executed.
+     */
+    private function executeCommandsThatMustNotExecuteCodeFromTheConfiguration(Configuration $configuration, CliConfiguration $cliConfiguration): void
+    {
+        if ($cliConfiguration->showEffectiveConfiguration()) {
+            $this->execute(new ShowEffectiveConfigurationCommand($configuration, $this->emitter));
         }
     }
 

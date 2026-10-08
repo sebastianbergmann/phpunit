@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="../../../../../phpunit.xsd"
+         bootstrap="bootstrap.php"
+         extensionsDirectory="extensions"
+         failOnRisky="true">
+    <testsuites>
+        <testsuite name="unit">
+            <directory>tests/unit</directory>
+            <exclude>tests/unit/ExcludedTest.php</exclude>
+        </testsuite>
+
+        <testsuite name="integration">
+            <directory groups="slow,database">tests/integration</directory>
+        </testsuite>
+    </testsuites>
+
+    <source>
+        <include>
+            <directory>src</directory>
+            <file includeInCodeCoverage="false">src/Generated.php</file>
+        </include>
+
+        <exclude>
+            <file>src/Excluded.php</file>
+        </exclude>
+    </source>
+
+    <php>
+        <includePath>src</includePath>
+        <ini name="memory_limit" value="-1"/>
+        <const name="PHPUNIT_SHOW_EFFECTIVE_CONFIGURATION_CONSTANT" value="value"/>
+        <env name="PHPUNIT_SHOW_EFFECTIVE_CONFIGURATION_ENV" value="value"/>
+    </php>
+
+    <extensions>
+        <bootstrap class="PHPUnit\TestFixture\ShowEffectiveConfiguration\Extension">
+            <parameter name="key" value="value"/>
+        </bootstrap>
+    </extensions>
+</phpunit>

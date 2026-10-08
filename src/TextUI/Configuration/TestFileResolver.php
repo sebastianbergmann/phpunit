@@ -46,6 +46,40 @@ final readonly class TestFileResolver
     }
 
     /**
+     * @throws RuntimeException
+     * @throws TestDirectoryNotFoundException
+     * @throws TestFileNotFoundException
+     *
+     * @return list<array{name: non-empty-string, files: list<array{path: non-empty-string, groups: list<non-empty-string>}>}>
+     */
+    public function resolve(Configuration $configuration): array
+    {
+        if (!$this->selectsTestFilesFromCommandLine($configuration)) {
+            return $this->filesInTestSuites(
+                $configuration->testSuite(),
+                $this->includeTestSuites($configuration),
+                $this->excludeTestSuites($configuration),
+            );
+        }
+
+        $files = [];
+
+        foreach ($this->pathsFromCommandLine($configuration) as $path) {
+            if (!is_dir($path)) {
+                $files[] = ['path' => $path, 'groups' => []];
+
+                continue;
+            }
+
+            foreach ($this->filesInDirectory($path, $configuration->testSuffixes()) as $file) {
+                $files[] = ['path' => $file, 'groups' => []];
+            }
+        }
+
+        return [['name' => 'CLI Arguments', 'files' => $files]];
+    }
+
+    /**
      * Test files that are selected on the command line, using arguments or the
      * --test-files-file option, replace the test suites that are configured in
      * the XML configuration file.
