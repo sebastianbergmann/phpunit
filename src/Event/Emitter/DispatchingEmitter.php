@@ -782,6 +782,27 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
+     * @param non-negative-int $seed
+     * @param non-negative-int $numberOfExamplesChecked
+     * @param non-negative-int $numberOfExamplesRejected
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
+    public function testPropertyChecked(Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfExamplesRejected): void
+    {
+        $this->dispatcher->dispatch(
+            new Test\PropertyChecked(
+                $this->telemetryInfo(),
+                $test,
+                $seed,
+                $numberOfExamplesChecked,
+                $numberOfExamplesRejected,
+            ),
+        );
+    }
+
+    /**
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
