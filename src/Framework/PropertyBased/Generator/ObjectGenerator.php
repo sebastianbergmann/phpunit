@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\PropertyBased\Generator;
 
+use function array_values;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
 use PHPUnit\Framework\PropertyBased\ExampleRejectedException;
 
@@ -61,13 +62,17 @@ final readonly class ObjectGenerator extends AbstractGenerator
 
             $arguments = [];
 
-            foreach ($this->arguments as $generator) {
-                $arguments[] = $generator->generate($source);
+            foreach ($this->arguments as $name => $generator) {
+                $arguments[$name] = $generator->generate($source);
             }
         } finally {
             $source->endObject($this->className);
         }
 
-        return new $this->className(...$arguments);
+        $object = new $this->className(...array_values($arguments));
+
+        $source->constructions()->record($object, $this->className, $arguments);
+
+        return $object;
     }
 }
