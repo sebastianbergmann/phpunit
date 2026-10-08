@@ -22,6 +22,7 @@ use PHPUnit\TextUI\RuntimeException;
 use PHPUnit\TextUI\TestDirectoryNotFoundException;
 use PHPUnit\TextUI\TestFileNotFoundException;
 use PHPUnit\TextUI\XmlConfiguration\DefaultConfiguration;
+use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\Util\VersionComparisonOperator;
 
 #[CoversClass(TestFileResolver::class)]
@@ -356,6 +357,41 @@ final class TestFileResolverTest extends TestCase
                 $this->fixturePath(),
                 ['SuccessTest.php'],
             ),
+        );
+    }
+
+    public function testSelectsDefaultTestSuiteThatIsConfiguredInXmlConfigurationFile(): void
+    {
+        $configuration = $this->configurationFromXmlConfigurationFile();
+
+        $this->assertSame(['one'], new TestFileResolver($this->createStub(Emitter::class))->includeTestSuites($configuration));
+        $this->assertSame([], new TestFileResolver($this->createStub(Emitter::class))->excludeTestSuites($configuration));
+    }
+
+    public function testSelectsTestSuitesThatAreIncludedAndExcludedOnCommandLine(): void
+    {
+        $configuration = $this->configurationFromXmlConfigurationFile('--testsuite', 'one,two', '--exclude-testsuite', 'one');
+
+        $this->assertSame(['one', 'two'], new TestFileResolver($this->createStub(Emitter::class))->includeTestSuites($configuration));
+        $this->assertSame(['one'], new TestFileResolver($this->createStub(Emitter::class))->excludeTestSuites($configuration));
+    }
+
+    public function testDoesNotSelectTestSuitesWhenTestSelectionInXmlConfigurationFileIsIgnored(): void
+    {
+        $configuration = $this->configurationFromXmlConfigurationFile('--all', '--exclude-testsuite', 'one');
+
+        $this->assertSame([], new TestFileResolver($this->createStub(Emitter::class))->includeTestSuites($configuration));
+        $this->assertSame([], new TestFileResolver($this->createStub(Emitter::class))->excludeTestSuites($configuration));
+    }
+
+    /**
+     * @param non-empty-string ...$parameters
+     */
+    private function configurationFromXmlConfigurationFile(string ...$parameters): Configuration
+    {
+        return new Merger($this->createStub(Emitter::class))->merge(
+            new CliConfigurationBuilder($this->createStub(Emitter::class))->fromParameters($parameters),
+            new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'test-file-resolver' . DIRECTORY_SEPARATOR . 'phpunit.xml'),
         );
     }
 

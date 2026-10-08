@@ -90,8 +90,8 @@ final readonly class TestSuiteBuilder
             $testSuite = new TestSuiteMapper($this->emitter, $this->skipper)->map(
                 $xmlConfigurationFile,
                 $configuration->testSuite(),
-                $configuration->ignoreTestSelectionInXmlConfiguration() ? [] : $configuration->includeTestSuites(),
-                $configuration->ignoreTestSelectionInXmlConfiguration() ? [] : $configuration->excludeTestSuites(),
+                $this->resolver->includeTestSuites($configuration),
+                $this->resolver->excludeTestSuites($configuration),
                 $numberOfRuns,
                 $maxAttempts,
             );

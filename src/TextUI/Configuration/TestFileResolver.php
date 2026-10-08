@@ -123,6 +123,30 @@ final readonly class TestFileResolver
     }
 
     /**
+     * @return list<non-empty-string>
+     */
+    public function includeTestSuites(Configuration $configuration): array
+    {
+        if ($configuration->ignoreTestSelectionInXmlConfiguration()) {
+            return [];
+        }
+
+        return $configuration->includeTestSuites();
+    }
+
+    /**
+     * @return list<non-empty-string>
+     */
+    public function excludeTestSuites(Configuration $configuration): array
+    {
+        if ($configuration->ignoreTestSelectionInXmlConfiguration()) {
+            return [];
+        }
+
+        return $configuration->excludeTestSuites();
+    }
+
+    /**
      * A test suite that has no test files is part of the result, a test file
      * is part of at most one test suite.
      *
