@@ -10,23 +10,24 @@
 namespace PHPUnit\TextUI\Output\Compact;
 
 use const PHP_EOL;
+use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Code\Phpt;
 use PHPUnit\Event\Code\TestDoxBuilder;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
+use PHPUnit\Event\Test\PropertyFalsified;
 use PHPUnit\Event\TestData\DataFromDataProvider;
 use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\TextUI\Output\Printer;
 
 #[CoversClass(Renderer::class)]
 #[Small]
 #[Group('textui')]
-final class RendererTest extends TestCase
+final class RendererTest extends AbstractEventTestCase
 {
     public function testRendersNameOfTestMethodThatDoesNotUseDataProvider(): void
     {
@@ -69,6 +70,31 @@ final class RendererTest extends TestCase
         /* @noinspection PhpPossiblePolymorphicInvocationInspection */
         $this->assertSame(
             'RuntimeException: outer' . PHP_EOL . PHP_EOL . 'FooTest.php:1' . PHP_EOL,
+            $printer->buffer(),
+        );
+    }
+
+    public function testRendersThrowableWithHowAPropertyWasFalsified(): void
+    {
+        $printer = $this->printer();
+
+        new Renderer($printer)->printThrowable(
+            new Throwable(
+                'RuntimeException',
+                'outer',
+                'RuntimeException: outer',
+                'FooTest.php:1',
+                null,
+            ),
+            new PropertyFalsified($this->telemetryInfo(), $this->testValueObject(), 1234, 2, 3, 1, false, [0], ['value' => '0']),
+        );
+
+        /* @noinspection PhpPossiblePolymorphicInvocationInspection */
+        $this->assertSame(
+            'RuntimeException: outer' . PHP_EOL .
+            PHP_EOL . 'Property falsified after 2 examples, counterexample shrunk in 1 step:' . PHP_EOL .
+            PHP_EOL . '    $value = 0;' . PHP_EOL .
+            PHP_EOL . 'FooTest.php:1' . PHP_EOL,
             $printer->buffer(),
         );
     }

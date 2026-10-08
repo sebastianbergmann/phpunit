@@ -11,12 +11,15 @@ namespace PHPUnit\TextUI\Output\Compact;
 
 use const PHP_EOL;
 use function assert;
+use function rtrim;
 use function str_replace;
 use function trim;
 use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
+use PHPUnit\Event\Test\PropertyFalsified;
 use PHPUnit\TextUI\Output\Printer;
+use PHPUnit\Util\PropertyFalsifiedToStringMapper;
 use PHPUnit\Util\Sanitizer;
 
 /**
@@ -69,15 +72,30 @@ final readonly class Renderer
         $this->printer->print(Sanitizer::sanitizeControlCharacters($body) . PHP_EOL);
     }
 
-    public function printThrowable(Throwable $throwable): void
+    public function printThrowable(Throwable $throwable, ?PropertyFalsified $propertyFalsified = null): void
     {
         $this->printBody(trim($throwable->description()));
+
+        if ($propertyFalsified !== null) {
+            $this->printPropertyFalsified($propertyFalsified);
+        }
+
         $this->printStackTrace($throwable->stackTrace());
 
         if ($throwable->hasPrevious()) {
             $this->printer->print('Caused by' . PHP_EOL);
             $this->printThrowable($throwable->previous());
         }
+    }
+
+    /**
+     * Prints how a property was falsified, with its minimal counterexample,
+     * below the message of the throwable that falsified it.
+     */
+    public function printPropertyFalsified(PropertyFalsified $event): void
+    {
+        $this->printer->print(PHP_EOL);
+        $this->printBody(rtrim(PropertyFalsifiedToStringMapper::map($event)));
     }
 
     public function printStackTrace(string $stackTrace): void
