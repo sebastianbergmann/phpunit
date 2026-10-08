@@ -29,8 +29,9 @@ use Random\Randomizer;
  * range it is drawn from is clamped to the range.
  *
  * It also provides the deriver for the generators that are derived from types
- * while the example is generated, and keeps track of the objects that are
- * being generated, so that recursive construction can be limited.
+ * while the example is generated, keeps track of the objects that are being
+ * generated, so that recursive construction can be limited, and records how
+ * objects were constructed, so that they can be exported.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -71,6 +72,7 @@ final class ChoiceSource
      * @var array<lowercase-string, positive-int>
      */
     private array $objectsBeingGenerated = [];
+    private readonly Constructions $constructions;
 
     /**
      * @param positive-int $maximumNumberOfChoices
@@ -98,6 +100,16 @@ final class ChoiceSource
         $this->replayedChoices        = $replayedChoices;
         $this->maximumNumberOfChoices = $maximumNumberOfChoices;
         $this->deriver                = $deriver;
+        $this->constructions          = new Constructions;
+    }
+
+    /**
+     * The objects that generators created with new while the example was
+     * generated, with the arguments that were passed to their constructors.
+     */
+    public function constructions(): Constructions
+    {
+        return $this->constructions;
     }
 
     /**
