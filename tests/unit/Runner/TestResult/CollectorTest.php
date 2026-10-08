@@ -35,6 +35,7 @@ use PHPUnit\Event\Test\NoticeTriggered;
 use PHPUnit\Event\Test\PhpDeprecationTriggered;
 use PHPUnit\Event\Test\PhpNoticeTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
+use PHPUnit\Event\Test\PropertyFalsified;
 use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Event\TestRunner\ErrorTriggered as TestRunnerErrorTriggered;
@@ -114,6 +115,18 @@ final class CollectorTest extends TestCase
                 static fn (TestResult $result): array => $result->phpDeprecations(),
             ],
         ];
+    }
+
+    public function testRemembersHowAPropertyWasFalsified(): void
+    {
+        $collector = $this->collector();
+        $property  = $this->testMethod('testProperty');
+        $event     = new PropertyFalsified($this->telemetryInfo(), $property, 1234, 2, 3, 1, false, [0], ['value' => '0']);
+
+        $collector->testPropertyFalsified($event);
+
+        $this->assertSame($event, $collector->result()->propertyFalsifiedEventFor($property));
+        $this->assertNull($collector->result()->propertyFalsifiedEventFor($this->testMethod('testOther')));
     }
 
     public function testDoesNotRegisterAPropertyAsPassedWhenItsTestSuiteFinishes(): void
