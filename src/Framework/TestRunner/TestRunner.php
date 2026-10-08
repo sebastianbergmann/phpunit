@@ -203,7 +203,7 @@ final class TestRunner
         }
 
         if ($collectCodeCoverage) {
-            $append                 = !$risky && !$incomplete && !$skipped;
+            $append                 = !$risky && !$incomplete && !$skipped && !$test->wasRejectedByAssumption();
             $coveredUnintentionally = false;
 
             if (!$append) {
