@@ -197,6 +197,9 @@
                                        first failure
   [32m--retry [36m<N>[0m                         [0m Attempt each test up to N times,
                                        stopping at the first success
+  [32m--property-examples [36m<N>[0m             [0m Check N examples for each property that
+                                       does not specify the number of its
+                                       examples
   [32m--reverse-order                     [0m Alias for "--order-by reverse"
 
 [33mReporting:[0m

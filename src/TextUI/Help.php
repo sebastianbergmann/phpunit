@@ -288,6 +288,7 @@ final class Help
                 ['arg' => '--random-seed <N>', 'desc' => 'Use the specified seed for PHP\'s Mt19937 random number generator (mt_rand(), rand(), shuffle(), ...) and for random test order'],
                 ['arg' => '--repeat <N>', 'desc' => 'Run each test N times, stopping at the first failure'],
                 ['arg' => '--retry <N>', 'desc' => 'Attempt each test up to N times, stopping at the first success'],
+                ['arg' => '--property-examples <N>', 'desc' => 'Check N examples for each property that does not specify the number of its examples'],
                 ['arg' => '--reverse-order', 'desc' => 'Alias for "--order-by reverse"'],
             ],
 
