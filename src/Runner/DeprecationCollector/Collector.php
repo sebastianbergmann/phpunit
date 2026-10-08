@@ -39,6 +39,14 @@ final class Collector
             new TestTriggeredDeprecationSubscriber($this),
         );
 
+        // the expectations for deprecations are verified while a test is
+        // running, so the deprecations of an attempt of a retried test must be
+        // seen while its events are collected rather than when they are forwarded
+        $facade->registerSubscribersForCollectedEvents(
+            new TestPreparedSubscriber($this),
+            new TestTriggeredDeprecationWhileEventsAreCollectedSubscriber($this),
+        );
+
         $this->issueFilter = $issueFilter;
     }
 
@@ -72,5 +80,16 @@ final class Collector
         }
 
         $this->filteredDeprecations[] = $event->message();
+    }
+
+    /**
+     * The deprecation is not added to the filtered deprecations, which count
+     * towards stopping the test run. A deprecation of collected events is
+     * added to them when, and only if, the collected events are forwarded,
+     * which notifies this collector through testTriggeredDeprecation().
+     */
+    public function testTriggeredDeprecationWhileEventsAreCollected(DeprecationTriggered $event): void
+    {
+        $this->deprecations[] = $event->message();
     }
 }

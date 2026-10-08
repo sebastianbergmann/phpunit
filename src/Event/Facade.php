@@ -72,6 +72,25 @@ final class Facade
     }
 
     /**
+     * Registers subscribers that are notified of events while they are being
+     * collected instead of dispatched, for instance for an attempt of a
+     * retried test.
+     *
+     * @throws EventFacadeIsSealedException
+     * @throws UnknownSubscriberTypeException
+     */
+    public function registerSubscribersForCollectedEvents(Subscriber ...$subscribers): void
+    {
+        if ($this->sealed) {
+            throw new EventFacadeIsSealedException;
+        }
+
+        foreach ($subscribers as $subscriber) {
+            $this->deferredDispatcher()->registerSubscriberForCollectedEvents($subscriber);
+        }
+    }
+
+    /**
      * @throws EventFacadeIsSealedException
      */
     public function registerTracer(Tracer\Tracer $tracer): void
@@ -167,6 +186,7 @@ final class Facade
     {
         if ($this->deferringDispatcher === null) {
             $this->deferringDispatcher = new DeferringDispatcher(
+                new DirectDispatcher($this->typeMap()),
                 new DirectDispatcher($this->typeMap()),
             );
         }
