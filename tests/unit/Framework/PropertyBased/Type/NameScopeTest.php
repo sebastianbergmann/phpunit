@@ -73,6 +73,21 @@ final class NameScopeTest extends TestCase
         ];
     }
 
+    public function testResolvesClassNamesAtACallSiteAgainstTheNamespaceAndTheImportsThatApplyThere(): void
+    {
+        $method = new ReflectionMethod(ClassWithImports::class, 'method');
+        $scope  = NameScope::forCallSite($method->getFileName(), $method->getStartLine(), ClassWithImports::class);
+
+        $this->assertSame(Currency::class, $scope->resolve('Money'));
+        $this->assertSame(ClassWithImports::class, $scope->resolve('self'));
+        $this->assertSame(ParentClass::class, $scope->resolve('parent'));
+    }
+
+    public function testSelfIsNotResolvedAtACallSiteOutsideOfAClass(): void
+    {
+        $this->assertSame('self', NameScope::forCallSite(false, false, null)->resolve('self'));
+    }
+
     /**
      * @param class-string     $expected
      * @param class-string     $className
