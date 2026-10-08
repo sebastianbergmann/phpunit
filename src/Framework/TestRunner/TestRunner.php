@@ -64,6 +64,8 @@ final class TestRunner
     }
 
     /**
+     * @param bool $collectCodeCoverage whether code coverage is collected for the test, if it is collected at all: it is not for the shrinking attempts and the final replay of a property, for instance
+     *
      * @throws \PHPUnit\Framework\Exception
      * @throws \PHPUnit\Util\Exception
      * @throws \SebastianBergmann\Template\InvalidArgumentException
@@ -73,7 +75,7 @@ final class TestRunner
      * @throws ProcessIsolationException
      * @throws UnintentionallyCoveredCodeException
      */
-    public function run(TestCase $test): void
+    public function run(TestCase $test, bool $collectCodeCoverage = true): void
     {
         if (new ProcessIsolation($this->emitter)->shouldBeUsedFor($test)) {
             new SeparateProcessTestRunner($this->emitter)->run($test);
@@ -84,7 +86,7 @@ final class TestRunner
         try {
             ShutdownHandler::setMessage(sprintf('Fatal error: Premature end of PHP process when running %s.', $test->toString()));
 
-            $this->runInProcess($test);
+            $this->runInProcess($test, $collectCodeCoverage);
         } finally {
             ShutdownHandler::resetMessage();
         }
@@ -95,7 +97,7 @@ final class TestRunner
      * @throws InvalidArgumentException
      * @throws UnintentionallyCoveredCodeException
      */
-    private function runInProcess(TestCase $test): void
+    private function runInProcess(TestCase $test, bool $collectCodeCoverageForTest): void
     {
         Assert::resetCount();
 
@@ -144,7 +146,8 @@ final class TestRunner
         }
 
         $collectCodeCoverage = CodeCoverage::instance()->isActive() &&
-                               $shouldCodeCoverageBeCollected;
+                               $shouldCodeCoverageBeCollected &&
+                               $collectCodeCoverageForTest;
 
         if ($collectCodeCoverage) {
             CodeCoverage::instance()->start($test);
