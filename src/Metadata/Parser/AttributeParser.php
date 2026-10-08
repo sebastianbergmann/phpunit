@@ -55,6 +55,8 @@ use PHPUnit\Framework\Attributes\DisableReturnValueGenerationForTestDoubles;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\ExcludeGlobalVariableFromBackup;
 use PHPUnit\Framework\Attributes\ExcludeStaticPropertyFromBackup;
+use PHPUnit\Framework\Attributes\ForAll;
+use PHPUnit\Framework\Attributes\GeneratorFor;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
@@ -64,6 +66,7 @@ use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\PostCondition;
 use PHPUnit\Framework\Attributes\PreCondition;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\Property;
 use PHPUnit\Framework\Attributes\Repeat;
 use PHPUnit\Framework\Attributes\RequiresClass;
 use PHPUnit\Framework\Attributes\RequiresEnvironmentVariable;
@@ -1052,6 +1055,35 @@ final class AttributeParser implements Parser
 
                     break;
 
+                case Property::class:
+                    assert($attributeInstance instanceof Property);
+
+                    $examples = $attributeInstance->examples();
+
+                    if ($examples !== null && $examples < 1) {
+                        $this->emitter->testRunnerTriggeredPhpunitWarning(
+                            sprintf(
+                                'Method %s::%s is annotated with #[Property] but %d is not a positive integer for the number of examples, the configured number of examples is used',
+                                $className,
+                                $methodName,
+                                $examples,
+                            ),
+                        );
+
+                        $examples = null;
+                    }
+
+                    $result[] = Metadata::property($examples);
+
+                    break;
+
+                case GeneratorFor::class:
+                    assert($attributeInstance instanceof GeneratorFor);
+
+                    $result[] = Metadata::generatorFor($attributeInstance->type());
+
+                    break;
+
                 case Retry::class:
                     assert($attributeInstance instanceof Retry);
 
@@ -1144,6 +1176,40 @@ final class AttributeParser implements Parser
                     $result[] = Metadata::ignorePhpunitWarnings($attributeInstance->messagePattern());
 
                     break;
+            }
+        }
+
+        foreach ($reflector->getParameters() as $parameter) {
+            foreach ($parameter->getAttributes(ForAll::class) as $attribute) {
+                try {
+                    $attributeInstance = $attribute->newInstance();
+                } catch (Error $e) {
+                    $file    = $reflector->getFileName();
+                    $line    = $reflector->getStartLine();
+                    $message = $e->getMessage();
+
+                    assert($file !== false && $file !== '');
+                    assert($line !== false);
+                    assert($message !== '');
+
+                    $result[] = Metadata::invalidAttributeOnMethod(
+                        $this->invalidAttributeMessage(
+                            $attribute->getName(),
+                            'parameter $' . $parameter->getName() . ' of method ' . $className . '::' . $methodName . '()',
+                            $file,
+                            $line,
+                            $message,
+                        ),
+                    );
+
+                    continue;
+                }
+
+                $parameterName = $parameter->getName();
+
+                assert($parameterName !== '');
+
+                $result[] = Metadata::forAll($parameterName, $attributeInstance->generator());
             }
         }
 
