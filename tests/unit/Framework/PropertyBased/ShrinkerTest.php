@@ -82,6 +82,24 @@ final class ShrinkerTest extends TestCase
                 static fn (array $value): bool => $value[1] > 10,
             ],
 
+            'tuple with an amount moved from the first to the second component' => [
+                [0, 11],
+                Generators::tuples(Generators::integers(0, 100), Generators::integers(0, 100)),
+                static fn (array $value): bool => $value[0] + $value[1] > 10,
+            ],
+
+            'tuple with the largest amount moved that keeps the property falsified' => [
+                [5, 15],
+                Generators::tuples(Generators::integers(0, 100), Generators::integers(0, 100)),
+                static fn (array $value): bool => $value[0] + $value[1] >= 20 && $value[1] <= 15,
+            ],
+
+            'tuple of integers that are drawn as two choices each' => [
+                [0, 11],
+                Generators::tuples(Generators::integers(), Generators::integers()),
+                static fn (array $value): bool => $value[0] + $value[1] > 10 && $value[0] >= 0 && $value[1] >= 0,
+            ],
+
             'mapped value' => [
                 102,
                 Generators::integers(0, 1000)->map(static fn (int $value): int => $value * 2),
@@ -230,6 +248,32 @@ final class ShrinkerTest extends TestCase
         );
 
         $this->assertSame([], $shrinker->shrink(new ChoiceSequence([100]))->sequence()->choices());
+    }
+
+    public function testStopsRedistributingAPairOfChoicesThatTheConsumedChoiceSequenceDoesNotHave(): void
+    {
+        // moving everything from the first choice to the second one does not
+        // falsify the property, moving half of it does, but the replay of
+        // that candidate consumes a different choice sequence
+        $shrinker = new Shrinker(
+            static function (ChoiceSequence $candidate): ?ChoiceSequence
+            {
+                $choices = $candidate->choices();
+
+                if (count($choices) !== 2 || $choices[0] + $choices[1] !== 20 || $choices[1] > 15) {
+                    return null;
+                }
+
+                if ($choices === [10, 10]) {
+                    return new ChoiceSequence([10, 9]);
+                }
+
+                return $candidate;
+            },
+            1000,
+        );
+
+        $this->assertSame([10, 9], $shrinker->shrink(new ChoiceSequence([20, 0]))->sequence()->choices());
     }
 
     /**
