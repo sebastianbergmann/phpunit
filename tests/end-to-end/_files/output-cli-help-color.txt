@@ -191,8 +191,9 @@
   [32m--random-order                      [0m Alias for "--order-by random"
   [32m--random-seed [36m<N>[0m                   [0m Use the specified seed for PHP's Mt19937
                                        random number generator (mt_rand(),
-                                       rand(), shuffle(), ...) and for random
-                                       test order
+                                       rand(), shuffle(), ...), for random test
+                                       order, and for generating the examples
+                                       of properties
   [32m--repeat [36m<N>[0m                        [0m Run each test N times, stopping at the
                                        first failure
   [32m--retry [36m<N>[0m                         [0m Attempt each test up to N times,
