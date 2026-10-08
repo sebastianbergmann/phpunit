@@ -266,6 +266,7 @@ final class Facade
             Test\PreparationFailed::class,
             Test\PrintedUnexpectedOutput::class,
             Test\PropertyChecked::class,
+            Test\PropertyFalsified::class,
             Test\Skipped::class,
             Test\WarningTriggered::class,
 
