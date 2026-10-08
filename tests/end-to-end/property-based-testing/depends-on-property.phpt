@@ -27,6 +27,10 @@ There was 1 failure:
 1) PHPUnit\TestFixture\PropertyBasedTesting\DependsOnPropertyTest::testDoesNotHold
 Failed asserting that 0 is of type string.
 
+Property falsified after 1 example, counterexample shrunk in 1 step:
+
+    $value = 0;
+
 %sDependsOnPropertyTest.php:%d
 
 --
