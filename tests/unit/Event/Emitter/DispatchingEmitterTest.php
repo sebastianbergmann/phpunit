@@ -1922,6 +1922,46 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($test, $event->test());
     }
 
+    #[TestDox('testPropertyChecked() emits Test\PropertyChecked event')]
+    public function testTestPropertyCheckedEmitsTestPropertyCheckedEvent(): void
+    {
+        $subscriber = new class extends RecordingSubscriber implements Test\PropertyCheckedSubscriber
+        {
+            public function notify(Test\PropertyChecked $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
+            Test\PropertyCheckedSubscriber::class,
+            Test\PropertyChecked::class,
+            $subscriber,
+        );
+
+        $telemetrySystem = $this->telemetrySystem();
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $telemetrySystem,
+        );
+
+        $test = $this->testValueObject();
+
+        $emitter->testPropertyChecked($test, 1234, 100, 3);
+
+        $this->assertSame(1, $subscriber->recordedEventCount());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(Test\PropertyChecked::class, $event);
+
+        $this->assertSame($test, $event->test());
+        $this->assertSame(1234, $event->seed());
+        $this->assertSame(100, $event->numberOfExamplesChecked());
+        $this->assertSame(3, $event->numberOfExamplesRejected());
+    }
+
     #[TestDox('testConsideredRisky() emits Test\ConsideredRisky event')]
     public function testTestConsideredRiskyEmitsTestConsideredRiskyEvent(): void
     {
