@@ -37,6 +37,7 @@ use PHPUnit\Event\Emitter;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Event\UnknownSubscriberTypeException;
+use PHPUnit\Framework\PropertyTestSuite;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Logging\EventLogger;
@@ -269,7 +270,7 @@ final readonly class Application
             if (!$configuration->debug() && !$extensionCapabilities->replacesOutput()) {
                 $this->writeRuntimeInformation($printer, $configuration);
                 $this->writePharExtensionInformation($printer, $pharExtensions);
-                $this->writeRandomSeedInformation($printer, $configuration);
+                $this->writeRandomSeedInformation($printer, $configuration, $testSuite);
 
                 $printer->print(PHP_EOL);
             }
@@ -694,15 +695,32 @@ final readonly class Application
         );
     }
 
-    private function writeRandomSeedInformation(Printer $printer, Configuration $configuration): void
+    private function writeRandomSeedInformation(Printer $printer, Configuration $configuration, TestSuite $testSuite): void
     {
-        if ($configuration->seedRandomNumberGenerators()) {
-            $this->writeMessage(
-                $printer,
-                'Random Seed',
-                (string) $configuration->randomSeed(),
-            );
+        if (!$configuration->seedRandomNumberGenerators() && !$this->containsProperty($testSuite)) {
+            return;
         }
+
+        $this->writeMessage(
+            $printer,
+            'Random Seed',
+            (string) $configuration->randomSeed(),
+        );
+    }
+
+    private function containsProperty(TestSuite $testSuite): bool
+    {
+        foreach ($testSuite->tests() as $test) {
+            if ($test instanceof PropertyTestSuite) {
+                return true;
+            }
+
+            if ($test instanceof TestSuite && $this->containsProperty($test)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function registerLogfileWriters(Configuration $configuration): void
