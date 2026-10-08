@@ -35,6 +35,8 @@ $finder = PhpCsFixer\Finder::create()
     ->notPath('error-handler/_files/php-deprecation/tests/PhpDeprecationTest.php')
     // CannotBeParsed.php is intentionally not valid PHP
     ->notPath('code-coverage/_files/parse-error/src/CannotBeParsed.php')
+    // the fixtures for resolving class names in PHPDoc types import classes that they do not use, and import a class after declaring one
+    ->notPath('PropertyBased/NameResolution/')
     ->notName('*.phpt');
 
 $config = new PhpCsFixer\Config;
