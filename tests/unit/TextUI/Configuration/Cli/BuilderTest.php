@@ -3313,6 +3313,41 @@ final class BuilderTest extends TestCase
         $configuration->retry();
     }
 
+    #[TestDox('--property-examples')]
+    public function testPropertyExamples(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--property-examples', '500']);
+
+        $this->assertTrue($configuration->hasPropertyExamples());
+        $this->assertSame(500, $configuration->propertyExamples());
+    }
+
+    public function testPropertyExamplesMayNotBeConfigured(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters([]);
+
+        $this->assertFalse($configuration->hasPropertyExamples());
+
+        $this->expectException(Exception::class);
+
+        $configuration->propertyExamples();
+    }
+
+    #[TestDox('--property-examples with a value that is not a positive integer is ignored')]
+    public function testPropertyExamplesIsIgnoredWhenValueIsNotAPositiveInteger(): void
+    {
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter
+            ->expects($this->once())
+            ->method('testRunnerTriggeredPhpunitWarning')
+            ->with('Option "--property-examples 0" ignored because "0" is not a positive integer');
+
+        $configuration = new Builder($emitter)->fromParameters(['--property-examples', '0']);
+
+        $this->assertFalse($configuration->hasPropertyExamples());
+    }
+
     #[TestDox('--timeout')]
     public function testTimeout(): void
     {

@@ -1081,6 +1081,14 @@ final readonly class Merger
             $randomSeed = time();
         }
 
+        if ($cliConfiguration->hasPropertyExamples()) {
+            $propertyExamples = $cliConfiguration->propertyExamples();
+        } else {
+            $propertyExamples = $xmlConfiguration->propertyBasedTesting()->examples();
+        }
+
+        $maximumShrinkingAttempts = $xmlConfiguration->propertyBasedTesting()->maximumShrinkingAttempts();
+
         $repeat = 1;
 
         if ($cliConfiguration->hasRepeat()) {
@@ -1504,6 +1512,8 @@ final readonly class Merger
             $repeat,
             $retry,
             $timeout,
+            $propertyExamples,
+            $maximumShrinkingAttempts,
             $includeUncoveredFiles,
             $xmlConfiguration->testSuite(),
             $includeTestSuite,
