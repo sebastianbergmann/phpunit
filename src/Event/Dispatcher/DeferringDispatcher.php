@@ -17,14 +17,16 @@ namespace PHPUnit\Event;
 final class DeferringDispatcher implements SubscribableDispatcher
 {
     private readonly SubscribableDispatcher $dispatcher;
+    private readonly SubscribableDispatcher $collectedEventsDispatcher;
     private EventCollection $events;
     private bool $recording                   = true;
     private ?EventCollection $collectedEvents = null;
 
-    public function __construct(SubscribableDispatcher $dispatcher)
+    public function __construct(SubscribableDispatcher $dispatcher, SubscribableDispatcher $collectedEventsDispatcher)
     {
-        $this->dispatcher = $dispatcher;
-        $this->events     = new EventCollection;
+        $this->dispatcher                = $dispatcher;
+        $this->collectedEventsDispatcher = $collectedEventsDispatcher;
+        $this->events                    = new EventCollection;
     }
 
     public function registerTracer(Tracer\Tracer $tracer): void
@@ -37,10 +39,26 @@ final class DeferringDispatcher implements SubscribableDispatcher
         $this->dispatcher->registerSubscriber($subscriber);
     }
 
+    /**
+     * Registers a subscriber that is notified of events as they are collected,
+     * in addition to any subscriber that is notified when they are forwarded.
+     *
+     * This is for state that is consulted while a test is running, for
+     * instance the deprecations that the expectations of a test are verified
+     * against, which cannot wait until the events of an attempt of a retried
+     * test have been collected and forwarded.
+     */
+    public function registerSubscriberForCollectedEvents(Subscriber $subscriber): void
+    {
+        $this->collectedEventsDispatcher->registerSubscriber($subscriber);
+    }
+
     public function dispatch(Event $event): void
     {
         if ($this->collectedEvents !== null) {
             $this->collectedEvents->add($event);
+
+            $this->collectedEventsDispatcher->dispatch($event);
 
             return;
         }

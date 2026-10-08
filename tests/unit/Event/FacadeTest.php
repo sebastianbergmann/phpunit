@@ -30,6 +30,16 @@ final class FacadeTest extends TestCase
         );
     }
 
+    public function testRegistrationOfSubscribersForCollectedEventsDoesNotWorkWhenEventFacadeIsSealed(): void
+    {
+        $this->expectException(EventFacadeIsSealedException::class);
+
+        Facade::instance()->registerSubscribersForCollectedEvents(
+            new class implements Subscriber
+            {},
+        );
+    }
+
     public function testTracerRegistrationDoesNotWorkWhenEventFacadeIsSealed(): void
     {
         $this->expectException(EventFacadeIsSealedException::class);

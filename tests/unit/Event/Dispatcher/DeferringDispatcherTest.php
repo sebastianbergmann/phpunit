@@ -31,7 +31,7 @@ final class DeferringDispatcherTest extends TestCase
             ->method('dispatch')
             ->seal();
 
-        $deferringDispatcher = new DeferringDispatcher($subscribableDispatcher);
+        $deferringDispatcher = new DeferringDispatcher($subscribableDispatcher, $this->createStub(SubscribableDispatcher::class));
 
         $deferringDispatcher->dispatch($this->createStub(Event::class));
     }
@@ -48,7 +48,7 @@ final class DeferringDispatcherTest extends TestCase
             ->with($this->identicalTo($event))
             ->seal();
 
-        $deferringDispatcher = new DeferringDispatcher($subscribableDispatcher);
+        $deferringDispatcher = new DeferringDispatcher($subscribableDispatcher, $this->createStub(SubscribableDispatcher::class));
 
         $deferringDispatcher->dispatch($event);
 
@@ -66,7 +66,7 @@ final class DeferringDispatcherTest extends TestCase
             ->method('dispatch')
             ->seal();
 
-        $deferringDispatcher = new DeferringDispatcher($subscribableDispatcher);
+        $deferringDispatcher = new DeferringDispatcher($subscribableDispatcher, $this->createStub(SubscribableDispatcher::class));
 
         $deferringDispatcher->flush();
 
@@ -91,7 +91,7 @@ final class DeferringDispatcherTest extends TestCase
             ->method('dispatch')
             ->seal();
 
-        $deferringDispatcher = new DeferringDispatcher($subscribableDispatcher);
+        $deferringDispatcher = new DeferringDispatcher($subscribableDispatcher, $this->createStub(SubscribableDispatcher::class));
 
         $deferringDispatcher->startCollectingEvents();
 
@@ -117,12 +117,65 @@ final class DeferringDispatcherTest extends TestCase
             ->with($this->identicalTo($event))
             ->seal();
 
-        $deferringDispatcher = new DeferringDispatcher($subscribableDispatcher);
+        $deferringDispatcher = new DeferringDispatcher($subscribableDispatcher, $this->createStub(SubscribableDispatcher::class));
 
         $deferringDispatcher->flush();
 
         $deferringDispatcher->startCollectingEvents();
         $deferringDispatcher->stopCollectingEvents();
+
+        $deferringDispatcher->dispatch($event);
+    }
+
+    public function testDispatchesEventsToSubscribersForCollectedEventsWhileCollectionIsActive(): void
+    {
+        $event = $this->createStub(Event::class);
+
+        $subscribableDispatcher = $this->createMock(SubscribableDispatcher::class);
+
+        $subscribableDispatcher
+            ->expects($this->never())
+            ->method('dispatch')
+            ->seal();
+
+        $collectedEventsDispatcher = $this->createMock(SubscribableDispatcher::class);
+
+        $collectedEventsDispatcher
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with($this->identicalTo($event))
+            ->seal();
+
+        $deferringDispatcher = new DeferringDispatcher($subscribableDispatcher, $collectedEventsDispatcher);
+
+        $deferringDispatcher->flush();
+
+        $deferringDispatcher->startCollectingEvents();
+
+        $deferringDispatcher->dispatch($event);
+
+        $events = $deferringDispatcher->stopCollectingEvents();
+
+        $this->assertCount(1, $events);
+        $this->assertSame($event, $events->asArray()[0]);
+    }
+
+    public function testDoesNotDispatchEventsToSubscribersForCollectedEventsWhileCollectionIsNotActive(): void
+    {
+        $event = $this->createStub(Event::class);
+
+        $collectedEventsDispatcher = $this->createMock(SubscribableDispatcher::class);
+
+        $collectedEventsDispatcher
+            ->expects($this->never())
+            ->method('dispatch')
+            ->seal();
+
+        $deferringDispatcher = new DeferringDispatcher($this->createStub(SubscribableDispatcher::class), $collectedEventsDispatcher);
+
+        $deferringDispatcher->dispatch($event);
+
+        $deferringDispatcher->flush();
 
         $deferringDispatcher->dispatch($event);
     }
@@ -136,7 +189,7 @@ final class DeferringDispatcherTest extends TestCase
             ->method('dispatch')
             ->seal();
 
-        $deferringDispatcher = new DeferringDispatcher($subscribableDispatcher);
+        $deferringDispatcher = new DeferringDispatcher($subscribableDispatcher, $this->createStub(SubscribableDispatcher::class));
 
         $deferringDispatcher->startCollectingEvents();
 
@@ -154,7 +207,7 @@ final class DeferringDispatcherTest extends TestCase
             ->method('dispatch')
             ->seal();
 
-        $deferringDispatcher = new DeferringDispatcher($subscribableDispatcher);
+        $deferringDispatcher = new DeferringDispatcher($subscribableDispatcher, $this->createStub(SubscribableDispatcher::class));
 
         $this->expectException(EventsAreNotBeingCollectedException::class);
 
@@ -173,9 +226,33 @@ final class DeferringDispatcherTest extends TestCase
             ->with($this->identicalTo($subscriber))
             ->seal();
 
-        $deferringDispatcher = new DeferringDispatcher($subscribableDispatcher);
+        $deferringDispatcher = new DeferringDispatcher($subscribableDispatcher, $this->createStub(SubscribableDispatcher::class));
 
         $deferringDispatcher->registerSubscriber($subscriber);
+    }
+
+    public function testSubscriberForCollectedEventsCanBeRegistered(): void
+    {
+        $subscriber = $this->createStub(DummySubscriber::class);
+
+        $subscribableDispatcher = $this->createMock(SubscribableDispatcher::class);
+
+        $subscribableDispatcher
+            ->expects($this->never())
+            ->method('registerSubscriber')
+            ->seal();
+
+        $collectedEventsDispatcher = $this->createMock(SubscribableDispatcher::class);
+
+        $collectedEventsDispatcher
+            ->expects($this->once())
+            ->method('registerSubscriber')
+            ->with($this->identicalTo($subscriber))
+            ->seal();
+
+        $deferringDispatcher = new DeferringDispatcher($subscribableDispatcher, $collectedEventsDispatcher);
+
+        $deferringDispatcher->registerSubscriberForCollectedEvents($subscriber);
     }
 
     public function testTracerCanBeRegistered(): void
@@ -190,7 +267,7 @@ final class DeferringDispatcherTest extends TestCase
             ->with($this->identicalTo($tracer))
             ->seal();
 
-        $deferringDispatcher = new DeferringDispatcher($subscribableDispatcher);
+        $deferringDispatcher = new DeferringDispatcher($subscribableDispatcher, $this->createStub(SubscribableDispatcher::class));
 
         $deferringDispatcher->registerTracer($tracer);
     }

@@ -9,6 +9,7 @@ All notable changes of the PHPUnit 13.4 release series are documented in this fi
 * [#7033](https://github.com/sebastianbergmann/phpunit/pull/7033): Compact printer is created although an extension replaces the progress output
 * [#7035](https://github.com/sebastianbergmann/phpunit/pull/7035): Sorting tests by duration recomputes the duration of a test suite for every comparison
 * Sorting tests by size recomputes the size of a test suite for every comparison
+* `expectUserDeprecationMessage()` and `expectUserDeprecationMessageMatches()` did not see the deprecations triggered by an attempt of a retried test and saw those of the previously run test instead
 
 ## [13.4.1] - 2026-10-05
 
