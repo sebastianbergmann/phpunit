@@ -12,6 +12,8 @@ namespace PHPUnit\Framework\PropertyBased;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\PropertyBased\Derivation\GeneratorDeriver;
+use PHPUnit\Framework\PropertyBased\Derivation\GeneratorRegistry;
 use PHPUnit\Framework\PropertyBased\Distribution\UniformDistribution;
 use PHPUnit\Framework\TestCase;
 use Random\Engine\Xoshiro256StarStar;
@@ -156,6 +158,38 @@ final class ChoiceSourceTest extends TestCase
         $this->assertSame('candidate', $source->suggest(['candidate'], 1.0));
         $this->assertNull($source->suggest(['candidate'], 0.0));
         $this->assertSame([], $source->sequence()->choices());
+    }
+
+    public function testProvidesTheDeriverItIsCreatedWith(): void
+    {
+        $deriver = new GeneratorDeriver(GeneratorRegistry::empty());
+
+        $this->assertSame($deriver, ChoiceSource::replay(new ChoiceSequence([]), ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver)->deriver());
+    }
+
+    public function testProvidesADeriverWithoutRegisteredGeneratorsWhenItIsCreatedWithoutOne(): void
+    {
+        $source = ChoiceSource::replay(new ChoiceSequence([]));
+
+        $this->assertSame($source->deriver(), $source->deriver());
+    }
+
+    public function testCountsTheObjectsOfAClassThatAreBeingGenerated(): void
+    {
+        $source = ChoiceSource::replay(new ChoiceSequence([]));
+
+        $this->assertSame(1, $source->startObject(self::class));
+        $this->assertSame(2, $source->startObject(self::class));
+        $this->assertSame(1, $source->startObject(TestCase::class));
+
+        $source->endObject(self::class);
+
+        $this->assertSame(2, $source->startObject(self::class));
+
+        $source->endObject(self::class);
+        $source->endObject(self::class);
+
+        $this->assertSame(1, $source->startObject(self::class));
     }
 
     public function testDoesNotSuggestACandidateWhileASequenceIsReplayed(): void
