@@ -264,6 +264,7 @@
             <xs:element name="logging" type="loggingType" minOccurs="0"/>
             <xs:element name="extensions" type="extensionsType" minOccurs="0"/>
             <xs:element name="php" type="phpType" minOccurs="0"/>
+            <xs:element name="propertyBasedTesting" type="propertyBasedTestingType" minOccurs="0"/>
         </xs:all>
     </xs:group>
     <xs:element name="testSuiteFacet" abstract="true"/>
@@ -341,6 +342,10 @@
     </xs:complexType>
     <xs:complexType name="logToDirectoryType">
         <xs:attribute name="outputDirectory" type="xs:anyURI" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="propertyBasedTestingType">
+        <xs:attribute name="examples" type="xs:positiveInteger" default="100"/>
+        <xs:attribute name="maximumShrinkingAttempts" type="xs:nonNegativeInteger" default="1000"/>
     </xs:complexType>
     <xs:complexType name="otrType">
         <xs:attribute name="outputFile" type="xs:anyURI" use="required"/>
