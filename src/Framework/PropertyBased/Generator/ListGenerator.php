@@ -33,10 +33,10 @@ final readonly class ListGenerator extends AbstractGenerator
      * @param non-negative-int     $minimumSize
      * @param ?non-negative-int    $maximumSize
      */
-    public function __construct(AbstractGenerator $elements, int $minimumSize, ?int $maximumSize)
+    public function __construct(AbstractGenerator $elements, int $minimumSize, ?int $maximumSize, float $probabilityOfAnotherElement = Repetition::DEFAULT_PROBABILITY_OF_ANOTHER_ELEMENT)
     {
         $this->elements   = $elements;
-        $this->repetition = new Repetition($minimumSize, $maximumSize);
+        $this->repetition = new Repetition($minimumSize, $maximumSize, $probabilityOfAnotherElement);
     }
 
     protected function generateValue(ChoiceSource $source): array

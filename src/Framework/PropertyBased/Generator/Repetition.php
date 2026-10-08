@@ -28,8 +28,8 @@ use PHPUnit\Framework\PropertyBased\ExampleRejectedException;
  */
 final readonly class Repetition
 {
-    private const float PROBABILITY_OF_ANOTHER_ELEMENT     = 0.8;
-    private const int MAXIMUM_NUMBER_OF_DUPLICATE_ELEMENTS = 10;
+    public const float DEFAULT_PROBABILITY_OF_ANOTHER_ELEMENT = 0.8;
+    private const int MAXIMUM_NUMBER_OF_DUPLICATE_ELEMENTS    = 10;
 
     /**
      * @var non-negative-int
@@ -46,11 +46,11 @@ final readonly class Repetition
      * @param non-negative-int  $minimumSize
      * @param ?non-negative-int $maximumSize
      */
-    public function __construct(int $minimumSize, ?int $maximumSize)
+    public function __construct(int $minimumSize, ?int $maximumSize, float $probabilityOfAnotherElement = self::DEFAULT_PROBABILITY_OF_ANOTHER_ELEMENT)
     {
         $this->minimumSize    = $minimumSize;
         $this->maximumSize    = $maximumSize;
-        $this->anotherElement = new BernoulliDistribution(self::PROBABILITY_OF_ANOTHER_ELEMENT);
+        $this->anotherElement = new BernoulliDistribution($probabilityOfAnotherElement);
     }
 
     /**
