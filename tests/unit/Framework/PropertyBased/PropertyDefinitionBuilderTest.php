@@ -49,6 +49,18 @@ final class PropertyDefinitionBuilderTest extends TestCase
                 '#[Property] cannot be combined with #[DataProvider], #[DataProviderClosure], #[DataProviderExternal], #[TestWith], or #[TestWithJson]',
             ],
 
+            'depends' => [
+                InvalidPropertiesTest::class,
+                'testWithDepends',
+                '#[Property] cannot be combined with #[Depends] or any of its variants',
+            ],
+
+            'variant of depends' => [
+                InvalidPropertiesTest::class,
+                'testWithVariantOfDepends',
+                '#[Property] cannot be combined with #[Depends] or any of its variants',
+            ],
+
             'variadic parameter' => [
                 InvalidPropertiesTest::class,
                 'testWithVariadicParameter',
