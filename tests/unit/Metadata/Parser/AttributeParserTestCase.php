@@ -10,14 +10,18 @@
 namespace PHPUnit\Metadata\Parser;
 
 use function assert;
+use Closure;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\DependsOnClass;
 use PHPUnit\Metadata\DependsOnMethod;
+use PHPUnit\Metadata\ForAll;
+use PHPUnit\Metadata\GeneratorFor;
 use PHPUnit\Metadata\Group;
 use PHPUnit\Metadata\InvalidAttribute;
 use PHPUnit\Metadata\MetadataCollection;
+use PHPUnit\Metadata\Property;
 use PHPUnit\Metadata\Repeat;
 use PHPUnit\Metadata\RequiresEnvironmentVariable;
 use PHPUnit\Metadata\RequiresPhp;
@@ -50,6 +54,9 @@ use PHPUnit\TestFixture\Metadata\Attribute\Example;
 use PHPUnit\TestFixture\Metadata\Attribute\ExampleTrait;
 use PHPUnit\TestFixture\Metadata\Attribute\ExtendsParentWithInvalidGroupAttributeTest;
 use PHPUnit\TestFixture\Metadata\Attribute\FirstExtendsParentWithSmallAndMediumTest;
+use PHPUnit\TestFixture\Metadata\Attribute\ForAllClosureTest;
+use PHPUnit\TestFixture\Metadata\Attribute\ForAllTest;
+use PHPUnit\TestFixture\Metadata\Attribute\GeneratorForTest;
 use PHPUnit\TestFixture\Metadata\Attribute\GroupNameThatCannotBeSelectedTest;
 use PHPUnit\TestFixture\Metadata\Attribute\GroupTest;
 use PHPUnit\TestFixture\Metadata\Attribute\IgnoreDeprecationsClassTest;
@@ -67,6 +74,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\NonPhpunitAttributeTest;
 use PHPUnit\TestFixture\Metadata\Attribute\PhpunitAttributeThatDoesNotExistTest;
 use PHPUnit\TestFixture\Metadata\Attribute\PreserveGlobalStateTest;
 use PHPUnit\TestFixture\Metadata\Attribute\ProcessIsolationTest;
+use PHPUnit\TestFixture\Metadata\Attribute\PropertyTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RepeatTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresClassTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresEnvironmentVariableTest;
@@ -91,6 +99,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\UsesTest;
 use PHPUnit\TestFixture\Metadata\Attribute\VersionRequirementWithoutOperatorTest;
 use PHPUnit\TestFixture\Metadata\Attribute\WithEnvironmentVariableTest;
 use PHPUnit\TestFixture\Metadata\Attribute\WithoutErrorHandlerTest;
+use PHPUnit\TestFixture\PropertyBased\Derivation\EmailAddress;
 
 abstract class AttributeParserTestCase extends TestCase
 {
@@ -923,6 +932,71 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertSame('propertyName', $metadata->asArray()[0]->propertyName());
     }
 
+    #[TestDox('Parses #[ForAll] attribute on parameter')]
+    public function test_parses_ForAll_attribute_on_parameter(): void
+    {
+        $metadata = $this->parser()->forMethod(ForAllTest::class, 'testOne')->isForAll();
+
+        $this->assertCount(1, $metadata);
+
+        $forAll = $metadata->asArray()[0];
+
+        assert($forAll instanceof ForAll);
+
+        $this->assertTrue($forAll->isForAll());
+        $this->assertTrue($forAll->isMethodLevel());
+        $this->assertSame('a', $forAll->parameterName());
+        $this->assertSame('smallIntegers', $forAll->generator());
+    }
+
+    #[TestDox('Parses #[ForAll] attribute with closure on parameter')]
+    public function test_parses_ForAll_attribute_with_closure_on_parameter(): void
+    {
+        $metadata = $this->parser()->forMethod(ForAllClosureTest::class, 'testOne')->isForAll();
+
+        $this->assertCount(1, $metadata);
+
+        $forAll = $metadata->asArray()[0];
+
+        assert($forAll instanceof ForAll);
+
+        $this->assertSame('a', $forAll->parameterName());
+        $this->assertInstanceOf(Closure::class, $forAll->generator());
+    }
+
+    #[TestDox('Parses invalid #[ForAll] attribute on parameter')]
+    public function test_parses_invalid_ForAll_attribute_on_parameter(): void
+    {
+        $metadata = $this->parser()->forMethod(ForAllTest::class, 'testWithInvalidForAll');
+
+        $this->assertCount(0, $metadata->isForAll());
+        $this->assertCount(1, $metadata->isInvalidAttribute());
+
+        $invalidAttribute = $metadata->isInvalidAttribute()->asArray()[0];
+
+        assert($invalidAttribute instanceof InvalidAttribute);
+
+        $this->assertStringStartsWith(
+            'Invalid attribute PHPUnit\Framework\Attributes\ForAll for parameter $a of method ' . ForAllTest::class . '::testWithInvalidForAll() in ',
+            $invalidAttribute->message(),
+        );
+    }
+
+    #[TestDox('Parses #[GeneratorFor] attribute on method')]
+    public function test_parses_GeneratorFor_attribute_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(GeneratorForTest::class, 'emailAddresses')->isGeneratorFor();
+
+        $this->assertCount(1, $metadata);
+
+        $generatorFor = $metadata->asArray()[0];
+
+        assert($generatorFor instanceof GeneratorFor);
+
+        $this->assertTrue($generatorFor->isGeneratorFor());
+        $this->assertSame(EmailAddress::class, $generatorFor->className());
+    }
+
     #[TestDox('Parses #[Group] attribute on method')]
     public function test_parses_Group_attribute_on_method(): void
     {
@@ -1313,6 +1387,46 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertCount(2, $metadata);
         $this->assertTrue($metadata->asArray()[1]->isGroup());
         $this->assertSame('another-ticket', $metadata->asArray()[1]->groupName());
+    }
+
+    #[TestDox('Parses #[Property] attribute on method')]
+    public function test_parses_Property_attribute_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(PropertyTest::class, 'testWithNumberOfExamples')->isProperty();
+
+        $this->assertCount(1, $metadata);
+
+        $property = $metadata->asArray()[0];
+
+        assert($property instanceof Property);
+
+        $this->assertTrue($property->isProperty());
+        $this->assertSame(500, $property->examples());
+    }
+
+    #[TestDox('Parses #[Property] attribute without number of examples on method')]
+    public function test_parses_Property_attribute_without_number_of_examples_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(PropertyTest::class, 'testWithoutNumberOfExamples')->isProperty();
+
+        $this->assertCount(1, $metadata);
+        $this->assertNull($metadata->asArray()[0]->examples());
+    }
+
+    public function testWarnsWhenNumberOfExamplesForPropertyIsNotPositive(): void
+    {
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter
+            ->expects($this->once())
+            ->method('testRunnerTriggeredPhpunitWarning')
+            ->with('Method ' . PropertyTest::class . '::testWithInvalidNumberOfExamples is annotated with #[Property] but 0 is not a positive integer for the number of examples, the configured number of examples is used')
+            ->seal();
+
+        $metadata = $this->parserWithEmitter($emitter)->forMethod(PropertyTest::class, 'testWithInvalidNumberOfExamples')->isProperty();
+
+        $this->assertCount(1, $metadata);
+        $this->assertNull($metadata->asArray()[0]->examples());
     }
 
     #[TestDox('Parses #[Repeat] attribute on method')]
