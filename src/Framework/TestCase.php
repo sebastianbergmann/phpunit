@@ -109,6 +109,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private ?Throwable $throwableFromDeferredIssue = null;
 
     /**
+     * @var ?list<mixed>
+     */
+    private ?array $propertyArguments = null;
+
+    /**
      * @var positive-int
      */
     private int $repetition = 1;
@@ -814,6 +819,29 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * Makes this test an example of a property: the test method is called with
+     * the given arguments instead of the data of a data provider and the return
+     * values of dependencies. The identity of the test does not change, and an
+     * example is neither registered as passed nor run in a separate process.
+     *
+     * @param list<mixed> $arguments
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    final public function setPropertyExample(array $arguments): void
+    {
+        $this->propertyArguments = $arguments;
+    }
+
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    final public function isPropertyExample(): bool
+    {
+        return $this->propertyArguments !== null;
+    }
+
+    /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     final public function setStatus(TestStatus $status): void
@@ -1471,8 +1499,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         );
 
         // a repeated test method is registered as passed once all of its
-        // repetitions have finished without failure or error
-        if (!$this->usesDataProvider() && $this->totalRepetitions === 1) {
+        // repetitions have finished without failure or error, and a property
+        // once all of its examples have
+        if (!$this->usesDataProvider() && $this->totalRepetitions === 1 && !$this->isPropertyExample()) {
             PassedTests::instance()->testMethodPassed(
                 $this->valueObjectForEvents(),
                 $this->testResult,
@@ -1488,7 +1517,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     private function runTest(): mixed
     {
-        $testArguments = array_merge($this->dataSet->data(), array_values($this->dependencyInput));
+        if ($this->propertyArguments !== null) {
+            $testArguments = $this->propertyArguments;
+        } else {
+            $testArguments = array_merge($this->dataSet->data(), array_values($this->dependencyInput));
+        }
 
         try {
             $testResult = $this->invokeTestMethod($this->methodName, $testArguments);
