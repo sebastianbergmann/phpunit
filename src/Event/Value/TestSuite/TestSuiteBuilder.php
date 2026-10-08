@@ -24,6 +24,7 @@ use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\IterativeTestSuite;
 use PHPUnit\Framework\PhptRepeatTestSuite;
 use PHPUnit\Framework\PhptRetryTestSuite;
+use PHPUnit\Framework\PropertyTestSuite;
 use PHPUnit\Framework\RetryTestSuite;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite as FrameworkTestSuite;
@@ -118,6 +119,19 @@ final readonly class TestSuiteBuilder
 
             assert($file !== false);
             assert($line !== false);
+
+            if ($testSuite instanceof PropertyTestSuite) {
+                return new TestSuiteForPropertyTestMethod(
+                    $name,
+                    $testSuite->count(),
+                    TestCollection::fromArray($tests),
+                    $className,
+                    $methodName,
+                    $file,
+                    $line,
+                    $testSuite->numberOfExamples(),
+                );
+            }
 
             if ($testSuite instanceof RetryTestSuite) {
                 return new TestSuiteForRetriedTestMethod(
