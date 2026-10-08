@@ -13,6 +13,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\PropertyBased\Properties\PropertyWithIneligibleAttributesTest;
 use PHPUnit\TestFixture\TestCaseTest;
 use ReflectionMethod;
 
@@ -30,6 +31,7 @@ final class TestTest extends TestCase
             [true, new ReflectionMethod(TestCaseTest::class, 'two')],
             [false, new ReflectionMethod(TestCaseTest::class, 'three')],
             [false, new ReflectionMethod(TestCaseTest::class, 'four')],
+            [true, new ReflectionMethod(PropertyWithIneligibleAttributesTest::class, 'propertyWithoutTestPrefix')],
         ];
     }
 
