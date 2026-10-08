@@ -69,6 +69,16 @@ final readonly class PropertyDefinitionBuilder
             );
         }
 
+        // the parameters of a property receive generated values, not the
+        // return values of the tests that it depends on
+        if ($metadata->isDepends()->isNotEmpty()) {
+            throw InvalidPropertyException::because(
+                $className,
+                $methodName,
+                '#[Property] cannot be combined with #[Depends] or any of its variants',
+            );
+        }
+
         $forAll = [];
 
         foreach ($metadata->isForAll() as $item) {

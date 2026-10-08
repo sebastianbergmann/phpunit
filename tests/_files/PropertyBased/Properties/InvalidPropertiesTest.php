@@ -10,6 +10,8 @@
 namespace PHPUnit\TestFixture\PropertyBased\Properties;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Depends;
+use PHPUnit\Framework\Attributes\DependsOnClassUsingDeepClone;
 use PHPUnit\Framework\Attributes\ForAll;
 use PHPUnit\Framework\Attributes\Property;
 use PHPUnit\Framework\Attributes\TestWith;
@@ -44,6 +46,18 @@ final class InvalidPropertiesTest extends TestCase
     #[Property]
     #[TestWith([1])]
     public function testWithTestWith(int $value): void
+    {
+    }
+
+    #[Property]
+    #[Depends('testWithTestWith')]
+    public function testWithDepends(int $value): void
+    {
+    }
+
+    #[Property]
+    #[DependsOnClassUsingDeepClone(ValidPropertiesTest::class)]
+    public function testWithVariantOfDepends(int $value): void
     {
     }
 
