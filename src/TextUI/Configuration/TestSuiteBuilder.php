@@ -9,17 +9,12 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
-use const DIRECTORY_SEPARATOR;
 use const PHP_EOL;
 use function assert;
 use function count;
-use function dirname;
-use function file;
 use function is_dir;
 use function is_file;
-use function realpath;
 use function str_ends_with;
-use function trim;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Exception;
 use PHPUnit\Framework\TestSuite;
@@ -30,7 +25,6 @@ use PHPUnit\TextUI\RuntimeException;
 use PHPUnit\TextUI\TestDirectoryNotFoundException;
 use PHPUnit\TextUI\TestFileNotFoundException;
 use PHPUnit\TextUI\XmlConfiguration\TestSuiteMapper;
-use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -41,6 +35,7 @@ final readonly class TestSuiteBuilder
 {
     private Emitter $emitter;
     private TestFileSkipper $skipper;
+    private TestFileResolver $resolver;
 
     public function __construct(Emitter $emitter, ?TestFileSkipper $skipper = null)
     {
@@ -48,8 +43,9 @@ final readonly class TestSuiteBuilder
             $skipper = new NullTestFileSkipper;
         }
 
-        $this->emitter = $emitter;
-        $this->skipper = $skipper;
+        $this->emitter  = $emitter;
+        $this->skipper  = $skipper;
+        $this->resolver = new TestFileResolver($emitter);
     }
 
     /**
@@ -68,70 +64,25 @@ final readonly class TestSuiteBuilder
             $maxAttempts = 1;
         }
 
-        if ($configuration->hasCliArguments() || $configuration->hasTestFilesFile()) {
-            $arguments = [];
+        if ($this->resolver->selectsTestFilesFromCommandLine($configuration)) {
+            $paths = $this->resolver->pathsFromCommandLine($configuration);
 
-            if ($configuration->hasCliArguments()) {
-                foreach ($configuration->cliArguments() as $cliArgument) {
-                    $argument = realpath($cliArgument);
-
-                    if ($argument === false) {
-                        throw new TestFileNotFoundException($cliArgument);
-                    }
-
-                    $arguments[] = $argument;
-                }
-            }
-
-            if ($configuration->hasTestFilesFile()) {
-                if (!is_file($configuration->testFilesFile())) {
-                    throw new RuntimeException('Cannot read from ' . $configuration->testFilesFile());
-                }
-
-                $directory = dirname($configuration->testFilesFile()) . DIRECTORY_SEPARATOR;
-
-                $fileLines = file($configuration->testFilesFile());
-
-                // @codeCoverageIgnoreStart
-                if ($fileLines === false) {
-                    throw new RuntimeException('Cannot read from ' . $configuration->testFilesFile());
-                }
-                // @codeCoverageIgnoreEnd
-
-                foreach ($fileLines as $file) {
-                    $file     = trim($file);
-                    $argument = realpath($file);
-
-                    if ($argument === false) {
-                        $argument = realpath($directory . $file);
-                    }
-
-                    if ($argument === false) {
-                        throw new TestFileNotFoundException($file);
-                    }
-
-                    $arguments[] = $argument;
-                }
-            }
-
-            if (count($arguments) === 1) {
+            if (count($paths) === 1) {
                 $testSuite = $this->testSuiteFromPath(
-                    $arguments[0],
+                    $paths[0],
                     $configuration->testSuffixes(),
                     $numberOfRuns,
                     $maxAttempts,
                 );
             } else {
                 $testSuite = $this->testSuiteFromPathList(
-                    $arguments,
+                    $paths,
                     $configuration->testSuffixes(),
                     $numberOfRuns,
                     $maxAttempts,
                 );
             }
-        }
-
-        if (!isset($testSuite)) {
+        } else {
             $xmlConfigurationFile = $configuration->hasConfigurationFile() ? $configuration->configurationFile() : 'Root Test Suite';
 
             assert($xmlConfigurationFile !== '');
@@ -178,7 +129,7 @@ final readonly class TestSuiteBuilder
         }
 
         if (is_dir($path)) {
-            $files = (new FileIteratorFacade)->getFilesAsArray($path, $suffixes);
+            $files = $this->resolver->filesInDirectory($path, $suffixes);
 
             if ($suite === null) {
                 $suite = TestSuite::empty('CLI Arguments', $this->emitter);

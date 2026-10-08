@@ -9,15 +9,21 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
+use const DIRECTORY_SEPARATOR;
 use const PHP_VERSION;
+use function dirname;
+use function file;
 use function in_array;
 use function is_dir;
 use function is_file;
+use function realpath;
 use function sprintf;
 use function str_contains;
+use function trim;
 use function version_compare;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Runner\Filter\CompiledGroupFilter;
+use PHPUnit\TextUI\RuntimeException;
 use PHPUnit\TextUI\TestDirectoryNotFoundException;
 use PHPUnit\TextUI\TestFileNotFoundException;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
@@ -37,6 +43,83 @@ final readonly class TestFileResolver
     public function __construct(Emitter $emitter)
     {
         $this->emitter = $emitter;
+    }
+
+    /**
+     * Test files that are selected on the command line, using arguments or the
+     * --test-files-file option, replace the test suites that are configured in
+     * the XML configuration file.
+     */
+    public function selectsTestFilesFromCommandLine(Configuration $configuration): bool
+    {
+        return $configuration->hasCliArguments() || $configuration->hasTestFilesFile();
+    }
+
+    /**
+     * @throws RuntimeException
+     * @throws TestFileNotFoundException
+     *
+     * @return list<non-empty-string>
+     */
+    public function pathsFromCommandLine(Configuration $configuration): array
+    {
+        $paths = [];
+
+        if ($configuration->hasCliArguments()) {
+            foreach ($configuration->cliArguments() as $cliArgument) {
+                $path = realpath($cliArgument);
+
+                if ($path === false) {
+                    throw new TestFileNotFoundException($cliArgument);
+                }
+
+                $paths[] = $path;
+            }
+        }
+
+        if ($configuration->hasTestFilesFile()) {
+            if (!is_file($configuration->testFilesFile())) {
+                throw new RuntimeException('Cannot read from ' . $configuration->testFilesFile());
+            }
+
+            $directory = dirname($configuration->testFilesFile()) . DIRECTORY_SEPARATOR;
+
+            $fileLines = file($configuration->testFilesFile());
+
+            // @codeCoverageIgnoreStart
+            if ($fileLines === false) {
+                throw new RuntimeException('Cannot read from ' . $configuration->testFilesFile());
+            }
+            // @codeCoverageIgnoreEnd
+
+            foreach ($fileLines as $file) {
+                $file = trim($file);
+                $path = realpath($file);
+
+                if ($path === false) {
+                    $path = realpath($directory . $file);
+                }
+
+                if ($path === false) {
+                    throw new TestFileNotFoundException($file);
+                }
+
+                $paths[] = $path;
+            }
+        }
+
+        return $paths;
+    }
+
+    /**
+     * @param non-empty-string       $directory
+     * @param list<non-empty-string> $suffixes
+     *
+     * @return list<non-empty-string>
+     */
+    public function filesInDirectory(string $directory, array $suffixes): array
+    {
+        return (new FileIteratorFacade)->getFilesAsArray($directory, $suffixes);
     }
 
     /**

@@ -17,8 +17,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TextUI\CliArguments\Builder as CliConfigurationBuilder;
+use PHPUnit\TextUI\RuntimeException;
 use PHPUnit\TextUI\TestDirectoryNotFoundException;
 use PHPUnit\TextUI\TestFileNotFoundException;
+use PHPUnit\TextUI\XmlConfiguration\DefaultConfiguration;
 use PHPUnit\Util\VersionComparisonOperator;
 
 #[CoversClass(TestFileResolver::class)]
@@ -257,6 +260,125 @@ final class TestFileResolverTest extends TestCase
             [],
             [],
         );
+    }
+
+    public function testSelectsTestFilesFromCommandLineWhenArgumentsAreGiven(): void
+    {
+        $this->assertTrue(
+            new TestFileResolver($this->createStub(Emitter::class))->selectsTestFilesFromCommandLine(
+                $this->configurationFromCommandLine($this->fixturePath('SuccessTest.php')),
+            ),
+        );
+    }
+
+    public function testSelectsTestFilesFromCommandLineWhenTestFilesFileIsGiven(): void
+    {
+        $this->assertTrue(
+            new TestFileResolver($this->createStub(Emitter::class))->selectsTestFilesFromCommandLine(
+                $this->configurationFromCommandLine('--test-files-file', $this->testFilesFile('test-files.txt')),
+            ),
+        );
+    }
+
+    public function testDoesNotSelectTestFilesFromCommandLineWhenNeitherArgumentsNorTestFilesFileAreGiven(): void
+    {
+        $this->assertFalse(
+            new TestFileResolver($this->createStub(Emitter::class))->selectsTestFilesFromCommandLine(
+                $this->configurationFromCommandLine(),
+            ),
+        );
+    }
+
+    public function testResolvesPathsThatAreGivenAsArguments(): void
+    {
+        $this->assertSame(
+            [
+                $this->fixturePath(),
+                $this->fixturePath('SuccessTest.php'),
+            ],
+            new TestFileResolver($this->createStub(Emitter::class))->pathsFromCommandLine(
+                $this->configurationFromCommandLine(
+                    $this->fixturePath() . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'testsuite-mapper',
+                    $this->fixturePath('SuccessTest.php'),
+                ),
+            ),
+        );
+    }
+
+    public function testResolvesPathsThatAreListedInTestFilesFileRelativeToIt(): void
+    {
+        $this->assertSame(
+            [
+                $this->fixturePath('SuccessTest.php'),
+                $this->fixturePath('ExcludedTest.php'),
+            ],
+            new TestFileResolver($this->createStub(Emitter::class))->pathsFromCommandLine(
+                $this->configurationFromCommandLine('--test-files-file', $this->testFilesFile('test-files.txt')),
+            ),
+        );
+    }
+
+    public function testRejectsPathGivenAsArgumentThatDoesNotExist(): void
+    {
+        $this->expectException(TestFileNotFoundException::class);
+        $this->expectExceptionMessage('Test file "does-not-exist" not found');
+
+        new TestFileResolver($this->createStub(Emitter::class))->pathsFromCommandLine(
+            $this->configurationFromCommandLine('does-not-exist'),
+        );
+    }
+
+    public function testRejectsPathListedInTestFilesFileThatDoesNotExist(): void
+    {
+        $this->expectException(TestFileNotFoundException::class);
+        $this->expectExceptionMessage('Test file "DoesNotExistTest.php" not found');
+
+        new TestFileResolver($this->createStub(Emitter::class))->pathsFromCommandLine(
+            $this->configurationFromCommandLine('--test-files-file', $this->testFilesFile('test-files-with-file-that-does-not-exist.txt')),
+        );
+    }
+
+    public function testRejectsTestFilesFileThatDoesNotExist(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Cannot read from does-not-exist.txt');
+
+        new TestFileResolver($this->createStub(Emitter::class))->pathsFromCommandLine(
+            $this->configurationFromCommandLine('--test-files-file', 'does-not-exist.txt'),
+        );
+    }
+
+    public function testResolvesTestFilesInDirectory(): void
+    {
+        $this->assertSame(
+            [$this->fixturePath('SuccessTest.php')],
+            new TestFileResolver($this->createStub(Emitter::class))->filesInDirectory(
+                $this->fixturePath(),
+                ['SuccessTest.php'],
+            ),
+        );
+    }
+
+    /**
+     * @param non-empty-string ...$parameters
+     */
+    private function configurationFromCommandLine(string ...$parameters): Configuration
+    {
+        return new Merger($this->createStub(Emitter::class))->merge(
+            // the first parameter is the name of the script that was invoked
+            new CliConfigurationBuilder($this->createStub(Emitter::class))->fromParameters(['phpunit', ...$parameters]),
+            DefaultConfiguration::create(),
+        );
+    }
+
+    /**
+     * @param non-empty-string $name
+     *
+     * @return non-empty-string
+     */
+    private function testFilesFile(string $name): string
+    {
+        return TEST_FILES_PATH . 'test-file-resolver' . DIRECTORY_SEPARATOR . $name;
     }
 
     private function twoTestSuites(): TestSuiteCollection

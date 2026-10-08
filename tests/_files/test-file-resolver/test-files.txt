@@ -1,0 +1,2 @@
+../testsuite-mapper/SuccessTest.php
+../testsuite-mapper/ExcludedTest.php
