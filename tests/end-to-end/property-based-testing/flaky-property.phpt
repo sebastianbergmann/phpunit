@@ -26,6 +26,10 @@ There was 1 error:
 1) PHPUnit\TestFixture\PropertyBasedTesting\FlakyPropertyTest::testFailsOnlyForTheThirdExample
 PHPUnit\Framework\PropertyBased\FlakyPropertyException: The property is flaky: it was not falsified when its minimal counterexample was replayed, so its outcome does not depend on its arguments alone
 
+Property falsified after 3 examples with this counterexample:
+
+    $value = -7;
+
 Caused by
 the third example fails
 Failed asserting that 3 is not identical to 3.
