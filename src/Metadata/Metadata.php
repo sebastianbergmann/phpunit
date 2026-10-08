@@ -10,6 +10,7 @@
 namespace PHPUnit\Metadata;
 
 use Closure;
+use PHPUnit\Framework\PropertyBased\ValueGenerator;
 use PHPUnit\Metadata\Version\Requirement;
 use PHPUnit\Runner\Extension\Extension;
 
@@ -244,6 +245,23 @@ abstract readonly class Metadata
     }
 
     /**
+     * @param non-empty-string                                  $parameterName
+     * @param Closure(): ValueGenerator<mixed>|non-empty-string $generator
+     */
+    public static function forAll(string $parameterName, Closure|string $generator): ForAll
+    {
+        return new ForAll(Level::METHOD_LEVEL, $parameterName, $generator);
+    }
+
+    /**
+     * @param class-string $className
+     */
+    public static function generatorFor(string $className): GeneratorFor
+    {
+        return new GeneratorFor(Level::METHOD_LEVEL, $className);
+    }
+
+    /**
      * @param non-empty-string $groupName
      */
     public static function groupOnClass(string $groupName): Group
@@ -315,6 +333,14 @@ abstract readonly class Metadata
     public static function preCondition(int $priority): PreCondition
     {
         return new PreCondition(Level::METHOD_LEVEL, $priority);
+    }
+
+    /**
+     * @param ?positive-int $examples
+     */
+    public static function property(?int $examples): Property
+    {
+        return new Property(Level::METHOD_LEVEL, $examples);
     }
 
     public static function preserveGlobalStateOnClass(bool $enabled): PreserveGlobalState
@@ -894,6 +920,22 @@ abstract readonly class Metadata
     }
 
     /**
+     * @phpstan-assert-if-true ForAll $this
+     */
+    public function isForAll(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true GeneratorFor $this
+     */
+    public function isGeneratorFor(): bool
+    {
+        return false;
+    }
+
+    /**
      * @phpstan-assert-if-true Group $this
      */
     public function isGroup(): bool
@@ -987,6 +1029,14 @@ abstract readonly class Metadata
      * @phpstan-assert-if-true PreserveGlobalState $this
      */
     public function isPreserveGlobalState(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true Property $this
+     */
+    public function isProperty(): bool
     {
         return false;
     }
