@@ -34,7 +34,7 @@ final readonly class LoadedFromFileConfiguration extends Configuration
     /**
      * @param non-empty-string $filename
      */
-    public function __construct(string $filename, ValidationResult $validationResult, ExtensionBootstrapCollection $extensions, Source $source, CodeCoverage $codeCoverage, Groups $groups, Logging $logging, Php $php, PHPUnit $phpunit, TestSuiteCollection $testSuite)
+    public function __construct(string $filename, ValidationResult $validationResult, ExtensionBootstrapCollection $extensions, Source $source, CodeCoverage $codeCoverage, Groups $groups, Logging $logging, Php $php, PHPUnit $phpunit, TestSuiteCollection $testSuite, PropertyBasedTesting $propertyBasedTesting)
     {
         $this->filename         = $filename;
         $this->validationResult = $validationResult;
@@ -48,6 +48,7 @@ final readonly class LoadedFromFileConfiguration extends Configuration
             $php,
             $phpunit,
             $testSuite,
+            $propertyBasedTesting,
         );
     }
 
