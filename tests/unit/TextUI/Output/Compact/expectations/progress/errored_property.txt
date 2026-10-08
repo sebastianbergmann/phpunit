@@ -1,0 +1,11 @@
+
+--- ERROR: FooTest::testBar
+RuntimeException: outer
+
+Property falsified after 2 examples, counterexample shrunk in 1 step:
+
+    $value = 0;
+%A
+Caused by
+LogicException: inner
+%A
