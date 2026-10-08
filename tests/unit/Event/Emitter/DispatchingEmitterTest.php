@@ -1917,6 +1917,50 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame(3, $event->numberOfExamplesRejected());
     }
 
+    #[TestDox('testPropertyFalsified() emits Test\PropertyFalsified event')]
+    public function testTestPropertyFalsifiedEmitsTestPropertyFalsifiedEvent(): void
+    {
+        $subscriber = new class extends RecordingSubscriber implements Test\PropertyFalsifiedSubscriber
+        {
+            public function notify(Test\PropertyFalsified $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
+            Test\PropertyFalsifiedSubscriber::class,
+            Test\PropertyFalsified::class,
+            $subscriber,
+        );
+
+        $telemetrySystem = $this->telemetrySystem();
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $telemetrySystem,
+        );
+
+        $test = $this->testValueObject();
+
+        $emitter->testPropertyFalsified($test, 1234, 2, 40, 17, true, [0, 2, 1], ['value' => '2']);
+
+        $this->assertSame(1, $subscriber->recordedEventCount());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(Test\PropertyFalsified::class, $event);
+
+        $this->assertSame($test, $event->test());
+        $this->assertSame(1234, $event->seed());
+        $this->assertSame(2, $event->numberOfExamplesChecked());
+        $this->assertSame(40, $event->numberOfShrinkingAttempts());
+        $this->assertSame(17, $event->numberOfShrinkingSteps());
+        $this->assertTrue($event->shrinkingBudgetExhausted());
+        $this->assertSame([0, 2, 1], $event->choiceSequence());
+        $this->assertSame(['value' => '2'], $event->counterexample());
+    }
+
     #[TestDox('testConsideredRisky() emits Test\ConsideredRisky event')]
     public function testTestConsideredRiskyEmitsTestConsideredRiskyEvent(): void
     {
