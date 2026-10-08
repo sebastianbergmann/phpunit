@@ -755,18 +755,12 @@ final readonly class Application
         }
 
         if ($configuration->hasLogfileOtr()) {
-            $randomSeed = null;
-
-            if ($configuration->seedRandomNumberGenerators()) {
-                $randomSeed = $configuration->randomSeed();
-            }
-
             try {
                 new OtrXmlLogger(
                     EventFacade::instance(),
                     $configuration->logfileOtr(),
                     $configuration->includeGitInformationInOtrLogfile(),
-                    $randomSeed,
+                    $configuration->randomSeed(),
                 );
             } catch (CannotOpenUriForWritingException $e) {
                 $this->emitter->testRunnerTriggeredPhpunitWarning(

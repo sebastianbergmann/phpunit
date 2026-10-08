@@ -31,6 +31,7 @@ unlink($logfile);
   <operatingSystem>%s</operatingSystem>
   <php:phpVersion>%s</php:phpVersion>
   <php:threadModel>%s</php:threadModel>
+  <phpunit:randomSeed>%d</phpunit:randomSeed>
  </infrastructure>
  <e:started id="1" name="PHPUnit\TestFixture\OpenTestReporting\NoticeIssueTest" time="%s">
   <metadata>

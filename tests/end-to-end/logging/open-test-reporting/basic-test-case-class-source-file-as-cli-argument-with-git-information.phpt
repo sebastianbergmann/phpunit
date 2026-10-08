@@ -35,6 +35,7 @@ unlink($logfile);
   <git:branch>%s</git:branch>
   <git:commit>%s</git:commit>
   <git:status clean="%s"><![CDATA[%A]]></git:status>
+  <phpunit:randomSeed>%d</phpunit:randomSeed>
  </infrastructure>
  <e:started id="1" name="PHPUnit\TestFixture\Basic\StatusTest" time="%s">
   <metadata>

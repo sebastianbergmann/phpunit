@@ -31,6 +31,7 @@ unlink($logfile);
   <operatingSystem>%s</operatingSystem>
   <php:phpVersion>%s</php:phpVersion>
   <php:threadModel>%s</php:threadModel>
+  <phpunit:randomSeed>%d</phpunit:randomSeed>
  </infrastructure>
  <e:started id="1" name="%sphpunit.xml" time="%s"/>
  <e:started id="2" parentId="1" name="default" time="%s"/>
