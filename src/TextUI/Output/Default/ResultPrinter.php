@@ -26,6 +26,7 @@ use function substr;
 use function trim;
 use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Code\TestMethod;
+use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Test\AfterLastTestMethodErrored;
 use PHPUnit\Event\Test\AfterLastTestMethodFailed;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
@@ -41,11 +42,13 @@ use PHPUnit\Event\Test\PhpunitErrorTriggered;
 use PHPUnit\Event\Test\PhpunitNoticeTriggered;
 use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
+use PHPUnit\Event\Test\PropertyFalsified;
 use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\Event\TestRunner\Issue as TestRunnerIssue;
 use PHPUnit\TestRunner\TestResult\Issues\Issue;
 use PHPUnit\TestRunner\TestResult\TestResult;
 use PHPUnit\TextUI\Output\Printer;
+use PHPUnit\Util\PropertyFalsifiedToStringMapper;
 use PHPUnit\Util\Sanitizer;
 
 /**
@@ -360,13 +363,15 @@ final class ResultPrinter
         foreach ($result->testErroredEvents() as $event) {
             if ($event instanceof AfterLastTestMethodErrored || $event instanceof BeforeFirstTestMethodErrored) {
                 $title = $event->testClassName();
+                $body  = $event->throwable()->asString();
             } else {
                 $title = $this->name($event->test());
+                $body  = $this->throwableAsString($event->throwable(), $result->propertyFalsifiedEventFor($event->test()));
             }
 
             $elements[] = [
                 'title' => $title,
-                'body'  => $event->throwable()->asString(),
+                'body'  => $body,
             ];
         }
 
@@ -385,11 +390,11 @@ final class ResultPrinter
         foreach ($result->testFailedEvents() as $event) {
             if ($event instanceof AfterLastTestMethodFailed || $event instanceof BeforeFirstTestMethodFailed) {
                 $title = $event->testClassName();
+                $body  = $event->throwable()->asString();
             } else {
                 $title = $this->name($event->test());
+                $body  = $this->throwableAsString($event->throwable(), $result->propertyFalsifiedEventFor($event->test()));
             }
-
-            $body = $event->throwable()->asString();
 
             if (str_starts_with($body, 'AssertionError: ')) {
                 $body = substr($body, strlen('AssertionError: '));
@@ -678,6 +683,30 @@ final class ResultPrinter
                 $body !== '' ? "\n" : '',
             ),
         );
+    }
+
+    /**
+     * The description of how a property was falsified, with its minimal
+     * counterexample, is printed below the message of the throwable and
+     * above its stack trace.
+     */
+    private function throwableAsString(Throwable $throwable, ?PropertyFalsified $propertyFalsified): string
+    {
+        if ($propertyFalsified === null) {
+            return $throwable->asString();
+        }
+
+        $buffer = $throwable->description() . PHP_EOL . PropertyFalsifiedToStringMapper::map($propertyFalsified);
+
+        if ($throwable->stackTrace() !== '') {
+            $buffer .= PHP_EOL . $throwable->stackTrace();
+        }
+
+        if ($throwable->hasPrevious()) {
+            $buffer .= PHP_EOL . 'Caused by' . PHP_EOL . $throwable->previous()->asString();
+        }
+
+        return $buffer;
     }
 
     private function name(Test $test): string
