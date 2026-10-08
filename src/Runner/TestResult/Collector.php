@@ -399,6 +399,12 @@ final class Collector
             return;
         }
 
+        if ($testSuite->isForPropertyTestMethod()) {
+            // a property registers itself as passed when all of its examples
+            // have passed
+            return;
+        }
+
         if ($testSuite->isForRepeatedPhpt() || $testSuite->isForRetriedPhpt()) {
             // PHPT tests do not register themselves with PassedTests
             return;
