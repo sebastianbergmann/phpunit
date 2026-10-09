@@ -520,7 +520,14 @@ final class ErrorHandler
     {
         $this->register();
 
-        $throwableFromDeferredIssue = $this->triggerTestCaseContextIssues($test);
+        $throwableFromDeferredIssue = null;
+
+        // the issues that were triggered in the test case context of a
+        // property are reported once for the property rather than for each
+        // of its examples, see triggerTestCaseContextIssuesOfProperty()
+        if (!$test->isPropertyExample()) {
+            $throwableFromDeferredIssue = $this->triggerTestCaseContextIssues($test->valueObjectForEvents());
+        }
 
         $this->maskErrorReportingLevel();
 
@@ -540,6 +547,19 @@ final class ErrorHandler
         $this->testNotOnCallStack = $test;
 
         $this->maskErrorReportingLevel();
+    }
+
+    /**
+     * Reports the issues that were triggered in the test case context of a
+     * property, while the test suite was built, for instance, once for the
+     * property rather than for each of its examples. The error handler must
+     * be enabled for the property with enableForTestNotOnCallStack().
+     */
+    public function triggerTestCaseContextIssuesOfProperty(TestMethod $test): ?Throwable
+    {
+        assert($this->enabled);
+
+        return $this->triggerTestCaseContextIssues($test);
     }
 
     public function disable(): void
@@ -1034,10 +1054,11 @@ final class ErrorHandler
         return $buffer;
     }
 
-    private function triggerTestCaseContextIssues(TestCase $test): ?Throwable
+    private function triggerTestCaseContextIssues(TestMethod $test): ?Throwable
     {
-        $testCaseContext          = $this->testCaseContext($test::class, $test->name());
-        $this->testNotOnCallStack = $test->valueObjectForEvents();
+        $testCaseContext          = $this->testCaseContext($test->className(), $test->methodName());
+        $testNotOnCallStack       = $this->testNotOnCallStack;
+        $this->testNotOnCallStack = $test;
 
         try {
             foreach ($this->testCaseContextIssues[$testCaseContext] ?? [] as $issue) {
@@ -1062,7 +1083,7 @@ final class ErrorHandler
                 }
             }
         } finally {
-            $this->testNotOnCallStack = null;
+            $this->testNotOnCallStack = $testNotOnCallStack;
         }
 
         return null;
