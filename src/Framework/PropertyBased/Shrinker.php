@@ -16,6 +16,7 @@ use function array_splice;
 use function array_values;
 use function assert;
 use function count;
+use function hash;
 use function implode;
 use function intdiv;
 use function min;
@@ -80,6 +81,9 @@ final class Shrinker
     private bool $interrupted     = false;
 
     /**
+     * The candidates that have been tried, by a hash of their choices, so
+     * that the memory this needs does not grow with the number of choices.
+     *
      * @var array<string, true>
      */
     private array $tried = [];
@@ -431,7 +435,7 @@ final class Shrinker
      */
     private function consider(array $choices): bool
     {
-        $key = implode(',', $choices);
+        $key = hash('xxh128', implode(',', $choices));
 
         if (isset($this->tried[$key])) {
             return false;
