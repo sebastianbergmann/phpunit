@@ -12,6 +12,7 @@ namespace PHPUnit\Runner\TestRunHistory;
 use const DIRECTORY_SEPARATOR;
 use const LOCK_EX;
 use const LOCK_UN;
+use function array_is_list;
 use function array_keys;
 use function dirname;
 use function fclose;
@@ -63,6 +64,14 @@ final class DefaultTestRunHistory implements TestRunHistory
     private array $times = [];
 
     /**
+     * The choice sequences of the minimal counterexamples of properties that
+     * were falsified.
+     *
+     * @var array<string, list<non-negative-int>>
+     */
+    private array $counterexamples = [];
+
+    /**
      * @var array<string, true>
      */
     private array $changedDefects = [];
@@ -71,6 +80,11 @@ final class DefaultTestRunHistory implements TestRunHistory
      * @var array<string, true>
      */
     private array $changedTimes = [];
+
+    /**
+     * @var array<string, true>
+     */
+    private array $changedCounterexamples = [];
 
     public function __construct(string $filepath)
     {
@@ -114,6 +128,27 @@ final class DefaultTestRunHistory implements TestRunHistory
         return $this->times[$id->asString()] ?? 0.0;
     }
 
+    /**
+     * @param list<non-negative-int> $choiceSequence
+     */
+    public function setCounterexample(TestRunHistoryId $id, array $choiceSequence): void
+    {
+        $this->counterexamples[$id->asString()]        = $choiceSequence;
+        $this->changedCounterexamples[$id->asString()] = true;
+    }
+
+    public function removeCounterexample(TestRunHistoryId $id): void
+    {
+        unset($this->counterexamples[$id->asString()]);
+
+        $this->changedCounterexamples[$id->asString()] = true;
+    }
+
+    public function counterexample(TestRunHistoryId $id): ?array
+    {
+        return $this->counterexamples[$id->asString()] ?? null;
+    }
+
     public function mergeWith(self $other): void
     {
         foreach ($other->defects as $id => $defect) {
@@ -124,6 +159,23 @@ final class DefaultTestRunHistory implements TestRunHistory
         foreach ($other->times as $id => $time) {
             $this->times[$id]        = $time;
             $this->changedTimes[$id] = true;
+        }
+
+        foreach ($other->counterexamples as $id => $choiceSequence) {
+            $this->counterexamples[$id]        = $choiceSequence;
+            $this->changedCounterexamples[$id] = true;
+        }
+
+        // a counterexample that was removed because the property held must
+        // not be brought back by the counterexamples this one still knows
+        foreach (array_keys($other->changedCounterexamples) as $id) {
+            if (isset($other->counterexamples[$id])) {
+                continue;
+            }
+
+            unset($this->counterexamples[$id]);
+
+            $this->changedCounterexamples[$id] = true;
         }
     }
 
@@ -147,10 +199,11 @@ final class DefaultTestRunHistory implements TestRunHistory
             return;
         }
 
-        [$this->defects, $this->times] = $parsed;
+        [$this->defects, $this->times, $this->counterexamples] = $parsed;
 
-        $this->changedDefects = [];
-        $this->changedTimes   = [];
+        $this->changedDefects         = [];
+        $this->changedTimes           = [];
+        $this->changedCounterexamples = [];
     }
 
     /**
@@ -211,6 +264,17 @@ final class DefaultTestRunHistory implements TestRunHistory
                     $times[$id] = $time;
                 }
             }
+
+            // The counterexample of a property that ran in this run without
+            // being falsified or passing, because it was skipped, for
+            // instance, must survive pruning
+            $counterexamples = [];
+
+            foreach ($this->counterexamples as $id => $choiceSequence) {
+                if (isset($this->changedCounterexamples[$id]) || isset($this->changedTimes[$id]) || isset($this->changedDefects[$id])) {
+                    $counterexamples[$id] = $choiceSequence;
+                }
+            }
         } else {
             // Another test run may have persisted its results between this
             // run's load() and now; only overlaying this run's changes onto
@@ -219,7 +283,7 @@ final class DefaultTestRunHistory implements TestRunHistory
             $parsed = $this->parse((string) stream_get_contents($handle));
 
             if ($parsed !== null) {
-                [$defects, $times] = $parsed;
+                [$defects, $times, $counterexamples] = $parsed;
 
                 foreach (array_keys($this->changedDefects) as $id) {
                     if (isset($this->defects[$id])) {
@@ -234,9 +298,18 @@ final class DefaultTestRunHistory implements TestRunHistory
                         $times[$id] = $time;
                     }
                 }
+
+                foreach (array_keys($this->changedCounterexamples) as $id) {
+                    if (isset($this->counterexamples[$id])) {
+                        $counterexamples[$id] = $this->counterexamples[$id];
+                    } else {
+                        unset($counterexamples[$id]);
+                    }
+                }
             } else {
-                $defects = $this->defects;
-                $times   = $this->times;
+                $defects         = $this->defects;
+                $times           = $this->times;
+                $counterexamples = $this->counterexamples;
             }
         }
 
@@ -248,6 +321,12 @@ final class DefaultTestRunHistory implements TestRunHistory
 
         foreach ($defects as $test => $status) {
             $data['defects'][$test] = $status->asInt();
+        }
+
+        // test run histories of test suites without properties are written as
+        // they were before counterexamples were remembered
+        if ($counterexamples !== []) {
+            $data['counterexamples'] = $counterexamples;
         }
 
         $json = json_encode($data);
@@ -263,7 +342,7 @@ final class DefaultTestRunHistory implements TestRunHistory
     }
 
     /**
-     * @return ?array{0: array<string, TestStatus>, 1: array<string, float>}
+     * @return ?array{0: array<string, TestStatus>, 1: array<string, float>, 2: array<string, list<non-negative-int>>}
      */
     private function parse(string $contents): ?array
     {
@@ -304,6 +383,39 @@ final class DefaultTestRunHistory implements TestRunHistory
             $times[$test] = (float) $time;
         }
 
-        return [$defects, $times];
+        return [$defects, $times, $this->parseCounterexamples($data)];
+    }
+
+    /**
+     * Test run histories that were written before counterexamples were
+     * remembered do not have counterexamples.
+     *
+     * @param array<mixed> $data
+     *
+     * @return array<string, list<non-negative-int>>
+     */
+    private function parseCounterexamples(array $data): array
+    {
+        if (!isset($data['counterexamples']) || !is_array($data['counterexamples'])) {
+            return [];
+        }
+
+        $counterexamples = [];
+
+        foreach ($data['counterexamples'] as $test => $choiceSequence) {
+            if (!is_string($test) || !is_array($choiceSequence) || !array_is_list($choiceSequence)) {
+                continue;
+            }
+
+            foreach ($choiceSequence as $choice) {
+                if (!is_int($choice) || $choice < 0) {
+                    continue 2;
+                }
+            }
+
+            $counterexamples[$test] = $choiceSequence;
+        }
+
+        return $counterexamples;
     }
 }
