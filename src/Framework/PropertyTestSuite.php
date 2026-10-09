@@ -38,6 +38,7 @@ use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\ErrorHandler;
+use PHPUnit\Runner\GarbageCollection\GarbageCollectionHandler;
 use PHPUnit\Runner\RandomNumberGeneratorSeeder;
 use PHPUnit\Runner\TestRunHistory\TestRunHistory;
 use PHPUnit\Runner\TestRunHistory\TestRunHistoryId;
@@ -819,7 +820,7 @@ final class PropertyTestSuite extends IterativeTestSuite
      */
     private function runExample(TestCase $example, Event\Emitter $emitter, bool $collectCodeCoverage): EventCollection
     {
-        return $this->collectingEvents(
+        $events = $this->collectingEvents(
             static function () use ($example, $emitter, $collectCodeCoverage): void
             {
                 $emitter->testPreparationStarted(
@@ -829,6 +830,10 @@ final class PropertyTestSuite extends IterativeTestSuite
                 new TestRunner($emitter)->run($example, $collectCodeCoverage);
             },
         );
+
+        GarbageCollectionHandler::propertyExampleFinished();
+
+        return $events;
     }
 
     private function shouldStop(): bool
