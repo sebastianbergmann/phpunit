@@ -780,6 +780,14 @@ final class GeneratorsTest extends TestCase
         $this->replay(Generators::integers()->filter(static fn (int $value): bool => false), []);
     }
 
+    public function testTheClosurePassedToFilterMustReturnABool(): void
+    {
+        $this->expectException(InvalidGeneratorArgumentException::class);
+        $this->expectExceptionMessageIs('The closure passed to filter() must return a bool, int was returned');
+
+        $this->replay(Generators::integers()->filter(static fn (int $value): int => 1), []);
+    }
+
     public function testFlatMapsTheValuesOfAGenerator(): void
     {
         $generator = Generators::integers(1, 3)->flatMap(static fn (int $size): ValueGenerator => Generators::lists(Generators::constant('x'), $size, $size));

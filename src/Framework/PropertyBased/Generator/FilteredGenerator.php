@@ -9,9 +9,13 @@
  */
 namespace PHPUnit\Framework\PropertyBased\Generator;
 
+use function get_debug_type;
+use function is_bool;
+use function sprintf;
 use Closure;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
 use PHPUnit\Framework\PropertyBased\ExampleRejectedException;
+use PHPUnit\Framework\PropertyBased\InvalidGeneratorArgumentException;
 
 /**
  * Generates values of the given generator until one satisfies the predicate.
@@ -53,9 +57,19 @@ final readonly class FilteredGenerator extends AbstractGenerator
     protected function generateValue(ChoiceSource $source): mixed
     {
         for ($attempt = 1; $attempt <= self::MAXIMUM_NUMBER_OF_ATTEMPTS; $attempt++) {
-            $value = $this->generator->generate($source);
+            $value     = $this->generator->generate($source);
+            $satisfied = ($this->predicate)($value);
 
-            if (($this->predicate)($value) === true) {
+            if (!is_bool($satisfied)) {
+                throw new InvalidGeneratorArgumentException(
+                    sprintf(
+                        'The closure passed to filter() must return a bool, %s was returned',
+                        get_debug_type($satisfied),
+                    ),
+                );
+            }
+
+            if ($satisfied) {
                 return $value;
             }
         }
