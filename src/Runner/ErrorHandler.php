@@ -102,7 +102,9 @@ final class ErrorHandler
      * The test that issues are attributed to while it is not on the call
      * stack: the issues that were triggered in its test case context before
      * it ran are reported when it is prepared, which happens outside of the
-     * test case for an example of a property, for instance.
+     * test case for an example of a property, for instance, and the issues
+     * that are triggered while the arguments for the examples of a property
+     * are generated are issues of the property.
      */
     private ?TestMethod $testNotOnCallStack = null;
     private readonly Event\Emitter $emitter;
@@ -516,22 +518,28 @@ final class ErrorHandler
 
     public function enable(TestCase $test): ?Throwable
     {
-        assert(!$this->enabled);
-
-        $previousErrorHandler = set_error_handler($this);
-
-        if ($previousErrorHandler !== null) {
-            $this->previousErrorHandler = $previousErrorHandler;
-        }
-
-        $this->enabled                     = true;
-        $this->originalErrorReportingLevel = error_reporting();
+        $this->register();
 
         $throwableFromDeferredIssue = $this->triggerTestCaseContextIssues($test);
 
-        error_reporting($this->originalErrorReportingLevel & self::UNHANDLEABLE_LEVELS);
+        $this->maskErrorReportingLevel();
 
         return $throwableFromDeferredIssue;
+    }
+
+    /**
+     * Handles the issues that are triggered until disable() is called as
+     * issues of the given test, which is not on the call stack meanwhile: the
+     * issues that are triggered while the arguments for the examples of a
+     * property are generated, for instance, are issues of the property.
+     */
+    public function enableForTestNotOnCallStack(TestMethod $test): void
+    {
+        $this->register();
+
+        $this->testNotOnCallStack = $test;
+
+        $this->maskErrorReportingLevel();
     }
 
     public function disable(): void
@@ -547,6 +555,7 @@ final class ErrorHandler
         $this->enabled                     = false;
         $this->originalErrorReportingLevel = null;
         $this->previousErrorHandler        = null;
+        $this->testNotOnCallStack          = null;
     }
 
     /**
@@ -636,6 +645,27 @@ final class ErrorHandler
     public function leaveTestCaseContext(): void
     {
         $this->testCaseContext = null;
+    }
+
+    private function register(): void
+    {
+        assert(!$this->enabled);
+
+        $previousErrorHandler = set_error_handler($this);
+
+        if ($previousErrorHandler !== null) {
+            $this->previousErrorHandler = $previousErrorHandler;
+        }
+
+        $this->enabled                     = true;
+        $this->originalErrorReportingLevel = error_reporting();
+    }
+
+    private function maskErrorReportingLevel(): void
+    {
+        assert($this->originalErrorReportingLevel !== null);
+
+        error_reporting($this->originalErrorReportingLevel & self::UNHANDLEABLE_LEVELS);
     }
 
     /**
