@@ -34,6 +34,7 @@ use PHPUnit\Framework\PropertyBased\Type\NameScope;
 use PHPUnit\Framework\PropertyBased\ValueGenerator;
 use PHPUnit\Framework\TestRunner\TestRunner;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
+use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\Runner\RandomNumberGeneratorSeeder;
 use PHPUnit\Runner\TestRunHistory\TestRunHistory;
@@ -445,6 +446,8 @@ final class PropertyTestSuite extends IterativeTestSuite
 
         assert($test !== null);
 
+        $this->decideHeldBackCodeCoverage($events, $test);
+
         $events->dispatch(
             $skeleton,
             $error,
@@ -465,6 +468,42 @@ final class PropertyTestSuite extends IterativeTestSuite
             },
             $this->numberOfAssertions,
         );
+    }
+
+    /**
+     * The code coverage data of the examples that passed without performing
+     * assertions was held back (see TestRunner): it is appended when the
+     * property as a whole performed assertions, and discarded otherwise, like
+     * the data of a test that is considered risky because it did not perform
+     * any assertions.
+     */
+    private function decideHeldBackCodeCoverage(EventAggregator $events, Event\Code\TestMethod $test): void
+    {
+        $codeCoverage = CodeCoverage::instance();
+
+        if (!$codeCoverage->isActive()) {
+            return;
+        }
+
+        if ($this->numberOfAssertions === 0) {
+            $codeCoverage->discardHeldBack($test->id());
+
+            return;
+        }
+
+        $facade = Event\Facade::instance();
+
+        $facade->startCollectingEvents();
+
+        try {
+            $contributed = $codeCoverage->appendHeldBack($test->id());
+        } finally {
+            $events->record($facade->stopCollectingEvents(), true);
+        }
+
+        if ($contributed !== null && $this->contributedToCodeCoverage !== true) {
+            $this->contributedToCodeCoverage = $contributed;
+        }
     }
 
     /**
