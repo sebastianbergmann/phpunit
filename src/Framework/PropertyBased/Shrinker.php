@@ -37,8 +37,9 @@ use Closure;
  * small values and then searching for the smallest value with a binary
  * search, redistributing pairs of nearby choices by moving as much as
  * possible from the first choice to the second, and lowering equal choices
- * together. The passes are repeated until none of them succeeds or the
- * maximum number of attempts has been made.
+ * together. The passes are repeated until none of them succeeds, the
+ * maximum number of attempts has been made, or shrinking is interrupted
+ * because the test run is to be stopped.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -59,6 +60,11 @@ final class Shrinker
      * @var non-negative-int
      */
     private readonly int $maximumNumberOfAttempts;
+
+    /**
+     * @var ?Closure(): bool
+     */
+    private readonly ?Closure $shouldStop;
     private ChoiceSequence $current;
 
     /**
@@ -71,6 +77,7 @@ final class Shrinker
      */
     private int $numberOfSteps    = 0;
     private bool $budgetExhausted = false;
+    private bool $interrupted     = false;
 
     /**
      * @var array<string, true>
@@ -83,11 +90,13 @@ final class Shrinker
      *                                                                          candidate falsifies the property in the
      *                                                                          same way, and null otherwise
      * @param non-negative-int                         $maximumNumberOfAttempts
+     * @param ?Closure(): bool                         $shouldStop              whether shrinking is to be interrupted, which is asked before each attempt
      */
-    public function __construct(Closure $test, int $maximumNumberOfAttempts)
+    public function __construct(Closure $test, int $maximumNumberOfAttempts, ?Closure $shouldStop = null)
     {
         $this->test                    = $test;
         $this->maximumNumberOfAttempts = $maximumNumberOfAttempts;
+        $this->shouldStop              = $shouldStop;
         $this->current                 = new ChoiceSequence([]);
     }
 
@@ -97,6 +106,7 @@ final class Shrinker
         $this->numberOfAttempts = 0;
         $this->numberOfSteps    = 0;
         $this->budgetExhausted  = false;
+        $this->interrupted      = false;
         $this->tried            = [];
 
         do {
@@ -108,13 +118,14 @@ final class Shrinker
             $this->minimizeChoices();
             $this->redistributeChoices();
             $this->lowerEqualChoices();
-        } while ($this->numberOfSteps > $numberOfStepsBefore && !$this->budgetExhausted);
+        } while ($this->numberOfSteps > $numberOfStepsBefore && !$this->isStopped());
 
         return new ShrinkingResult(
             $this->current,
             $this->numberOfAttempts,
             $this->numberOfSteps,
             $this->budgetExhausted,
+            $this->interrupted,
         );
     }
 
@@ -126,7 +137,7 @@ final class Shrinker
     {
         $index = 0;
 
-        while (!$this->budgetExhausted) {
+        while (!$this->isStopped()) {
             $spans = $this->spansOfCurrentSequence();
 
             if ($index >= count($spans)) {
@@ -146,7 +157,7 @@ final class Shrinker
         foreach (self::BLOCK_SIZES as $size) {
             $start = $this->length() - $size;
 
-            while ($start >= 0 && !$this->budgetExhausted) {
+            while ($start >= 0 && !$this->isStopped()) {
                 if ($this->consider($this->withoutChoices($start, $size))) {
                     $start = min($start, $this->length() - $size);
 
@@ -161,7 +172,7 @@ final class Shrinker
     private function zeroBlocks(): void
     {
         foreach (self::BLOCK_SIZES as $size) {
-            for ($start = 0; $start + $size <= $this->length() && !$this->budgetExhausted; $start++) {
+            for ($start = 0; $start + $size <= $this->length() && !$this->isStopped(); $start++) {
                 if ($this->isZero($start, $size)) {
                     continue;
                 }
@@ -173,7 +184,7 @@ final class Shrinker
 
     private function minimizeChoices(): void
     {
-        for ($index = 0; $index < $this->length() && !$this->budgetExhausted; $index++) {
+        for ($index = 0; $index < $this->length() && !$this->isStopped(); $index++) {
             $this->minimizeChoice($index);
         }
     }
@@ -197,7 +208,7 @@ final class Shrinker
         $lower = self::LARGEST_SMALL_VALUE;
         $upper = $choice;
 
-        while ($upper - $lower > 1 && !$this->budgetExhausted) {
+        while ($upper - $lower > 1 && !$this->isStopped()) {
             $middle = $lower + intdiv($upper - $lower, 2);
 
             assert($middle >= 0);
@@ -224,8 +235,8 @@ final class Shrinker
      */
     private function redistributeChoices(): void
     {
-        for ($first = 0; $first < $this->length() && !$this->budgetExhausted; $first++) {
-            for ($second = $first + 1; $second <= $first + self::LARGEST_REDISTRIBUTION_DISTANCE && $second < $this->length() && !$this->budgetExhausted; $second++) {
+        for ($first = 0; $first < $this->length() && !$this->isStopped(); $first++) {
+            for ($second = $first + 1; $second <= $first + self::LARGEST_REDISTRIBUTION_DISTANCE && $second < $this->length() && !$this->isStopped(); $second++) {
                 $this->redistribute($first, $second);
             }
         }
@@ -260,7 +271,7 @@ final class Shrinker
         $lower = 0;
         $upper = $movable;
 
-        while ($upper - $lower > 1 && !$this->budgetExhausted) {
+        while ($upper - $lower > 1 && !$this->isStopped()) {
             $middle = $lower + intdiv($upper - $lower, 2);
 
             assert($middle > 0);
@@ -305,7 +316,7 @@ final class Shrinker
                 continue;
             }
 
-            for ($offset = 0; $offset < $spans[0]->length() && !$this->budgetExhausted; $offset++) {
+            for ($offset = 0; $offset < $spans[0]->length() && !$this->isStopped(); $offset++) {
                 $indexes = [];
 
                 foreach ($spans as $span) {
@@ -345,7 +356,7 @@ final class Shrinker
         $lower = self::LARGEST_SMALL_VALUE;
         $upper = $choice;
 
-        while ($upper - $lower > 1 && !$this->budgetExhausted) {
+        while ($upper - $lower > 1 && !$this->isStopped()) {
             $middle = $lower + intdiv($upper - $lower, 2);
 
             assert($middle >= 0);
@@ -410,10 +421,11 @@ final class Shrinker
     }
 
     /**
-     * Replays the candidate, unless it has been tried before or the maximum
-     * number of attempts has been reached, and keeps the choice sequence that
-     * the replay consumed when the candidate falsifies the property in the
-     * same way and that sequence is simpler than the current one.
+     * Replays the candidate, unless it has been tried before, the maximum
+     * number of attempts has been reached, or shrinking is interrupted, and
+     * keeps the choice sequence that the replay consumed when the candidate
+     * falsifies the property in the same way and that sequence is simpler
+     * than the current one.
      *
      * @param list<non-negative-int> $choices
      */
@@ -427,6 +439,12 @@ final class Shrinker
 
         if ($this->numberOfAttempts >= $this->maximumNumberOfAttempts) {
             $this->budgetExhausted = true;
+
+            return false;
+        }
+
+        if ($this->shouldStop !== null && ($this->shouldStop)()) {
+            $this->interrupted = true;
 
             return false;
         }
@@ -446,6 +464,15 @@ final class Shrinker
         $this->numberOfSteps++;
 
         return true;
+    }
+
+    /**
+     * Whether no more candidates are replayed, because the maximum number of
+     * attempts has been made or shrinking was interrupted.
+     */
+    private function isStopped(): bool
+    {
+        return $this->budgetExhausted || $this->interrupted;
     }
 
     /**
