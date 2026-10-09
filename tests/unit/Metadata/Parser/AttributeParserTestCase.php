@@ -950,6 +950,7 @@ abstract class AttributeParserTestCase extends TestCase
     }
 
     #[TestDox('Parses #[ForAll] attribute with closure on parameter')]
+    #[\PHPUnit\Framework\Attributes\RequiresPhp('^8.5')]
     public function test_parses_ForAll_attribute_with_closure_on_parameter(): void
     {
         $metadata = $this->parser()->forMethod(ForAllClosureTest::class, 'testOne')->isForAll();

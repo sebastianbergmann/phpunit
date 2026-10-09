@@ -11,6 +11,7 @@ namespace PHPUnit\Event\Code;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\Metadata\Attribute\ForAllClosureTest;
@@ -29,6 +30,7 @@ final class TestMethodBuilderTest extends TestCase
         $this->assertCount(1, $metadata);
     }
 
+    #[RequiresPhp('^8.5')]
     public function testTheMetadataOfATestMethodDoesNotIncludeTheGeneratorsThatAreSpecifiedWithAClosure(): void
     {
         $this->assertCount(0, TestMethodBuilder::fromTestCase(new ForAllClosureTest('testOne'))->metadata()->isForAll());

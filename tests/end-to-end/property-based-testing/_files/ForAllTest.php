@@ -37,15 +37,4 @@ final class ForAllTest extends TestCase
     {
         $this->assertSame($bits, decbin(bindec($bits)));
     }
-
-    #[Property]
-    public function testGeneratorIsSpecifiedWithAClosure(
-        #[ForAll(static function (): ValueGenerator
-        {
-            return Generators::integers(1, 3);
-        })]
-        int $value,
-    ): void {
-        $this->assertContains($value, [1, 2, 3]);
-    }
 }
