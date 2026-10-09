@@ -35,6 +35,7 @@ use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\TestSuite\Skipped as TestSuiteSkipped;
 use PHPUnit\Event\TestSuite\Started;
 use PHPUnit\TextUI\Output\Printer;
+use PHPUnit\Util\PendingPropertyFalsified;
 use PHPUnit\Util\PropertyFalsifiedToStringMapper;
 use PHPUnit\Util\Xml;
 
@@ -99,11 +100,12 @@ final class JunitXmlLogger
      * The event that describes how a property was falsified, which is
      * dispatched before the event for its failure or error.
      */
-    private ?PropertyFalsified $propertyFalsified = null;
+    private readonly PendingPropertyFalsified $propertyFalsified;
 
     public function __construct(Printer $printer, Facade $facade)
     {
-        $this->printer = $printer;
+        $this->printer           = $printer;
+        $this->propertyFalsified = new PendingPropertyFalsified;
 
         $this->registerSubscribers($facade);
         $this->createDocument();
@@ -263,7 +265,7 @@ final class JunitXmlLogger
 
     public function testPropertyFalsified(PropertyFalsified $event): void
     {
-        $this->propertyFalsified = $event;
+        $this->propertyFalsified->remember($event);
     }
 
     /**
@@ -379,11 +381,11 @@ final class JunitXmlLogger
 
         // how a property was falsified, with its minimal counterexample, is
         // reported below the message of the throwable that falsified it
-        if ($this->propertyFalsified !== null && $this->propertyFalsified->test()->id() === $event->test()->id()) {
-            $description .= PHP_EOL . PropertyFalsifiedToStringMapper::map($this->propertyFalsified);
-        }
+        $propertyFalsified = $this->propertyFalsified->takeFor($event->test());
 
-        $this->propertyFalsified = null;
+        if ($propertyFalsified !== null) {
+            $description .= PHP_EOL . PropertyFalsifiedToStringMapper::map($propertyFalsified);
+        }
 
         $buffer .= trim(
             $description . "\n" .
