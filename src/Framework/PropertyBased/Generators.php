@@ -41,6 +41,7 @@ use PHPUnit\Framework\PropertyBased\Generator\ListGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\NullableGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\OneOfGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\RecordGenerator;
+use PHPUnit\Framework\PropertyBased\Generator\Repetition;
 use PHPUnit\Framework\PropertyBased\Generator\StringGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\TupleGenerator;
 use PHPUnit\Framework\PropertyBased\Type\NameScope;
@@ -238,6 +239,13 @@ final class Generators
     /**
      * Generates lists of $minimumSize to $maximumSize elements.
      *
+     * $recursive must be true when the elements can contain lists of this
+     * generator, for instance in the generator that is registered with
+     * #[GeneratorFor] for a class whose objects contain a list of objects of
+     * the same class: another element is then added less often, so that the
+     * generated values stay small. A generator that is derived from the type
+     * of a parameter does this on its own.
+     *
      * @template T
      *
      * @param ValueGenerator<T> $elements
@@ -247,16 +255,19 @@ final class Generators
      *
      * @return ValueGenerator<list<T>>
      */
-    public static function lists(ValueGenerator $elements, int $minimumSize = 0, ?int $maximumSize = null): ValueGenerator
+    public static function lists(ValueGenerator $elements, int $minimumSize = 0, ?int $maximumSize = null, bool $recursive = false): ValueGenerator
     {
         self::ensureValidSize('size', $minimumSize, $maximumSize);
 
-        return new ListGenerator(AbstractGenerator::from($elements), $minimumSize, $maximumSize);
+        return new ListGenerator(AbstractGenerator::from($elements), $minimumSize, $maximumSize, self::probabilityOfAnotherElement($recursive));
     }
 
     /**
      * Generates arrays of $minimumSize to $maximumSize elements. Each key
      * occurs only once.
+     *
+     * $recursive must be true when the values can contain arrays of this
+     * generator, as for lists().
      *
      * @template K of array-key
      * @template V
@@ -269,11 +280,11 @@ final class Generators
      *
      * @return ValueGenerator<array<K, V>>
      */
-    public static function arrays(ValueGenerator $keys, ValueGenerator $values, int $minimumSize = 0, ?int $maximumSize = null): ValueGenerator
+    public static function arrays(ValueGenerator $keys, ValueGenerator $values, int $minimumSize = 0, ?int $maximumSize = null, bool $recursive = false): ValueGenerator
     {
         self::ensureValidSize('size', $minimumSize, $maximumSize);
 
-        return new ArrayGenerator(AbstractGenerator::from($keys), AbstractGenerator::from($values), $minimumSize, $maximumSize);
+        return new ArrayGenerator(AbstractGenerator::from($keys), AbstractGenerator::from($values), $minimumSize, $maximumSize, self::probabilityOfAnotherElement($recursive));
     }
 
     /**
@@ -342,6 +353,13 @@ final class Generators
      * Generates null or a value of the given generator. null is the simplest
      * value.
      *
+     * $recursive must be true when the values of $generator can contain values
+     * of this generator, for instance in the generator that is registered with
+     * #[GeneratorFor] for a class whose objects can refer to another object of
+     * the same class: a value is then generated less often than null, so that
+     * the generated values stay small. A generator that is derived from the
+     * type of a parameter does this on its own.
+     *
      * @template T
      *
      * @param ValueGenerator<T> $generator
@@ -350,8 +368,12 @@ final class Generators
      *
      * @return ValueGenerator<?T>
      */
-    public static function nullable(ValueGenerator $generator): ValueGenerator
+    public static function nullable(ValueGenerator $generator, bool $recursive = false): ValueGenerator
     {
+        if ($recursive) {
+            return new NullableGenerator(AbstractGenerator::from($generator), GeneratorDeriver::PROBABILITY_OF_RECURSION);
+        }
+
         return new NullableGenerator(AbstractGenerator::from($generator));
     }
 
@@ -459,6 +481,15 @@ final class Generators
             static fn (GeneratorDeriver $deriver): AbstractGenerator => $deriver->forType($parsed, $scope),
             false,
         );
+    }
+
+    private static function probabilityOfAnotherElement(bool $recursive): float
+    {
+        if ($recursive) {
+            return GeneratorDeriver::PROBABILITY_OF_RECURSION;
+        }
+
+        return Repetition::DEFAULT_PROBABILITY_OF_ANOTHER_ELEMENT;
     }
 
     /**

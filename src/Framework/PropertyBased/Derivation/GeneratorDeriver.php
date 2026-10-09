@@ -90,9 +90,11 @@ final class GeneratorDeriver
     /**
      * The probability that a nullable value or a collection that can contain
      * an object of a class that is being constructed contains it, which is
-     * smaller than usual so that the recursive construction ends soon.
+     * smaller than usual so that the recursive construction ends soon. The
+     * collections and nullable values that are created with Generators for
+     * recursive values use it, too.
      */
-    private const float PROBABILITY_OF_RECURSION = 0.25;
+    public const float PROBABILITY_OF_RECURSION = 0.25;
 
     /**
      * @var list<lowercase-string>
