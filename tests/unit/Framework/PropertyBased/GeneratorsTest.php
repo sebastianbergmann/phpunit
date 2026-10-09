@@ -109,6 +109,7 @@ final class GeneratorsTest extends TestCase
             'arrays'             => [Generators::arrays(Generators::strings('abc', 1, 2), Generators::booleans())],
             'tuples'             => [Generators::tuples(Generators::integers(), Generators::strings())],
             'records'            => [Generators::records(['name' => Generators::strings(), 'age' => Generators::integers(0, 150)])],
+            'records (optional)' => [Generators::records(['name' => Generators::strings(), 'age' => Generators::integers(0, 150)], ['age'])],
             'nullable'           => [Generators::nullable(Generators::integers())],
             'one of'             => [Generators::oneOf(Generators::integers(), Generators::booleans())],
             'map'                => [Generators::integers(0, 9)->map(static fn (int $i): string => (string) $i)],
@@ -660,16 +661,24 @@ final class GeneratorsTest extends TestCase
 
     public function testOptionalKeysOfRecordsAreOmittedOrAddedDependingOnTheirChoice(): void
     {
-        $generator = new RecordGenerator(
-            [
-                'a' => AbstractGenerator::from(Generators::integers(0, 9)),
-                'b' => AbstractGenerator::from(Generators::integers(0, 9)),
-            ],
-            ['b'],
-        );
+        $generator = Generators::records(['a' => Generators::integers(0, 9), 'b' => Generators::integers(0, 9)], ['b']);
 
+        $this->assertSame(['a' => 0], $this->replay($generator, []));
         $this->assertSame(['a' => 3], $this->replay($generator, [3, 0]));
         $this->assertSame(['a' => 3, 'b' => 4], $this->replay($generator, [3, 1, 4]));
+    }
+
+    public function testANumericStringIsTheSameOptionalKeyAsTheIntegerThatPhpUsesAsTheKeyOfTheRecord(): void
+    {
+        $this->assertSame([], $this->replay(Generators::records([1 => Generators::integers(0, 9)], ['1']), [0]));
+    }
+
+    public function testTheOptionalKeysOfARecordMustBeKeysOfTheRecord(): void
+    {
+        $this->expectException(InvalidGeneratorArgumentException::class);
+        $this->expectExceptionMessage("The optional key 'c' must be one of the keys of the record");
+
+        Generators::records(['a' => Generators::integers(), 'b' => Generators::integers()], ['b', 'c']);
     }
 
     public function testGeneratesNullOrAValueOfTheGenerator(): void

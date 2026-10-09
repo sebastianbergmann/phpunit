@@ -13,6 +13,8 @@ use const DEBUG_BACKTRACE_IGNORE_ARGS;
 use const PHP_FLOAT_MAX;
 use const PHP_INT_MAX;
 use const PHP_INT_MIN;
+use function array_key_exists;
+use function array_keys;
 use function array_unique;
 use function array_values;
 use function class_exists;
@@ -24,6 +26,7 @@ use function lcfirst;
 use function mb_check_encoding;
 use function mb_str_split;
 use function sprintf;
+use function var_export;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorDeriver;
 use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\ArrayGenerator;
@@ -296,15 +299,18 @@ final class Generators
 
     /**
      * Generates arrays with the keys of $generators and a value of the
-     * respective generator for each of them.
+     * respective generator for each of them. A key in $optionalKeys is
+     * sometimes omitted, which is simpler than adding it.
      *
      * @param array<array-key, ValueGenerator<mixed>> $generators
+     * @param list<array-key>                         $optionalKeys
      *
+     * @throws InvalidGeneratorArgumentException
      * @throws ValueGeneratorNotSupportedException
      *
      * @return ValueGenerator<array<array-key, mixed>>
      */
-    public static function records(array $generators): ValueGenerator
+    public static function records(array $generators, array $optionalKeys = []): ValueGenerator
     {
         $record = [];
 
@@ -312,7 +318,24 @@ final class Generators
             $record[$key] = AbstractGenerator::from($generator);
         }
 
-        return new RecordGenerator($record);
+        // an optional key is used as an array key so that a numeric string
+        // becomes the integer that PHP uses as the key of the record
+        $optional = [];
+
+        foreach ($optionalKeys as $key) {
+            if (!array_key_exists($key, $record)) {
+                throw new InvalidGeneratorArgumentException(
+                    sprintf(
+                        'The optional key %s must be one of the keys of the record',
+                        var_export($key, true),
+                    ),
+                );
+            }
+
+            $optional[$key] = true;
+        }
+
+        return new RecordGenerator($record, array_keys($optional));
     }
 
     /**
