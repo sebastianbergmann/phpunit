@@ -233,12 +233,19 @@ final class TestRunner
             }
 
             if ($append && !$error && !$failure && !$coveredUnintentionally &&
-                $this->configuration->requireCoverageContribution() &&
-                !CodeCoverage::instance()->lastTestContributedToCoverage()) {
-                $this->emitter->testConsideredRisky(
-                    $test->valueObjectForEvents(),
-                    'This test does not contribute to code coverage',
-                );
+                $this->configuration->requireCoverageContribution()) {
+                $contributedToCodeCoverage = CodeCoverage::instance()->lastTestContributedToCoverage();
+
+                $test->setContributedToCodeCoverage($contributedToCodeCoverage);
+
+                // whether a property contributes to code coverage is decided
+                // on all of its examples
+                if (!$contributedToCodeCoverage && !$test->isPropertyExample()) {
+                    $this->emitter->testConsideredRisky(
+                        $test->valueObjectForEvents(),
+                        'This test does not contribute to code coverage',
+                    );
+                }
             }
         }
 
