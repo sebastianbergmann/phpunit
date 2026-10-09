@@ -10,6 +10,7 @@
 namespace PHPUnit\Runner\TestRunHistory;
 
 use const DIRECTORY_SEPARATOR;
+use function file_get_contents;
 use function file_put_contents;
 use function is_file;
 use function json_encode;
@@ -429,5 +430,198 @@ final class DefaultTestRunHistoryTest extends TestCase
 
         $this->assertTrue($target->status($id)->isError());
         $this->assertSame(5.0, $target->time($id));
+    }
+
+    public function testRemembersAndForgetsTheCounterexampleOfAProperty(): void
+    {
+        $cache = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-test-counterexample.cache');
+        $id    = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testProperty');
+
+        $this->assertNull($cache->counterexample($id));
+
+        $cache->setCounterexample($id, [0, 11]);
+
+        $this->assertSame([0, 11], $cache->counterexample($id));
+
+        $cache->removeCounterexample($id);
+
+        $this->assertNull($cache->counterexample($id));
+    }
+
+    public function testPersistsAndLoadsCounterexamples(): void
+    {
+        $file                 = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-counterexamples-' . uniqid() . '.cache';
+        $this->filesToClean[] = $file;
+
+        $id = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testProperty');
+
+        $cache = new DefaultTestRunHistory($file);
+        $cache->setCounterexample($id, [0, 11]);
+        $cache->persist();
+
+        $loaded = new DefaultTestRunHistory($file);
+        $loaded->load();
+
+        $this->assertSame([0, 11], $loaded->counterexample($id));
+    }
+
+    public function testDoesNotWriteCounterexamplesWhenNoneAreRemembered(): void
+    {
+        $file                 = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-counterexamples-' . uniqid() . '.cache';
+        $this->filesToClean[] = $file;
+
+        $cache = new DefaultTestRunHistory($file);
+        $cache->setTime(TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testOne'), 1.0);
+        $cache->persist();
+
+        $this->assertStringNotContainsString('counterexamples', (string) file_get_contents($file));
+    }
+
+    public function testLoadsTestRunHistoryWithoutCounterexamples(): void
+    {
+        $file                 = tempnam(sys_get_temp_dir(), 'phpunit-cache-');
+        $this->filesToClean[] = $file;
+
+        file_put_contents($file, json_encode(['version' => 2, 'defects' => [], 'times' => [self::class . '::testOne' => 1.0]]));
+
+        $id = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testOne');
+
+        $cache = new DefaultTestRunHistory($file);
+        $cache->load();
+
+        $this->assertSame(1.0, $cache->time($id));
+        $this->assertNull($cache->counterexample($id));
+    }
+
+    public function testLoadIgnoresCounterexamplesThatHaveUnexpectedTypes(): void
+    {
+        $file                 = tempnam(sys_get_temp_dir(), 'phpunit-cache-');
+        $this->filesToClean[] = $file;
+
+        $prefix = self::class . '::';
+
+        file_put_contents(
+            $file,
+            json_encode(
+                [
+                    'version'         => 2,
+                    'defects'         => [],
+                    'times'           => [],
+                    'counterexamples' => [
+                        $prefix . 'testValid'          => [0, 11],
+                        $prefix . 'testNotAList'       => ['a' => 1],
+                        $prefix . 'testNotAnArray'     => 1,
+                        $prefix . 'testNegativeChoice' => [0, -1],
+                        $prefix . 'testChoiceNotAnInt' => [0, '1'],
+                        '123'                          => [0],
+                    ],
+                ],
+            ),
+        );
+
+        $cache = new DefaultTestRunHistory($file);
+        $cache->load();
+
+        $this->assertSame([0, 11], $cache->counterexample(TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testValid')));
+        $this->assertNull($cache->counterexample(TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testNotAList')));
+        $this->assertNull($cache->counterexample(TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testNotAnArray')));
+        $this->assertNull($cache->counterexample(TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testNegativeChoice')));
+        $this->assertNull($cache->counterexample(TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testChoiceNotAnInt')));
+    }
+
+    public function testLoadIgnoresCounterexamplesThatAreNotAnArray(): void
+    {
+        $file                 = tempnam(sys_get_temp_dir(), 'phpunit-cache-');
+        $this->filesToClean[] = $file;
+
+        file_put_contents($file, json_encode(['version' => 2, 'defects' => [], 'times' => [], 'counterexamples' => 'invalid']));
+
+        $cache = new DefaultTestRunHistory($file);
+        $cache->load();
+
+        $this->assertNull($cache->counterexample(TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testProperty')));
+    }
+
+    public function testPersistAndPruneKeepsCounterexampleOfPropertyThatRanInThisRunAndDropsTheOthers(): void
+    {
+        $file                 = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-prune-' . uniqid() . '.cache';
+        $this->filesToClean[] = $file;
+
+        $idStale   = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testGone');
+        $idSkipped = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testSkippedThisTime');
+        $idNew     = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testFalsifiedThisTime');
+
+        $seed = new DefaultTestRunHistory($file);
+        $seed->setCounterexample($idStale, [1]);
+        $seed->setCounterexample($idSkipped, [2]);
+        $seed->persist();
+
+        $cache = new DefaultTestRunHistory($file);
+        $cache->load();
+        $cache->setStatus($idSkipped, TestStatus::skipped('not applicable'));
+        $cache->setCounterexample($idNew, [3]);
+        $cache->persistAndPrune();
+
+        $loaded = new DefaultTestRunHistory($file);
+        $loaded->load();
+
+        $this->assertNull($loaded->counterexample($idStale));
+        $this->assertSame([2], $loaded->counterexample($idSkipped));
+        $this->assertSame([3], $loaded->counterexample($idNew));
+    }
+
+    public function testPersistOverlaysChangedCounterexamplesOntoConcurrentlyPersistedFile(): void
+    {
+        $file                 = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-concurrent-' . uniqid() . '.cache';
+        $this->filesToClean[] = $file;
+
+        $idA = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testA');
+        $idB = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testB');
+        $idC = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testC');
+
+        $seed = new DefaultTestRunHistory($file);
+        $seed->setCounterexample($idB, [2]);
+        $seed->persist();
+
+        $one = new DefaultTestRunHistory($file);
+        $one->load();
+        $one->setCounterexample($idA, [1]);
+        $one->removeCounterexample($idB);
+
+        $other = new DefaultTestRunHistory($file);
+        $other->load();
+        $other->setCounterexample($idC, [3]);
+        $other->persist();
+
+        $one->persist();
+
+        $loaded = new DefaultTestRunHistory($file);
+        $loaded->load();
+
+        $this->assertSame([1], $loaded->counterexample($idA));
+        $this->assertNull($loaded->counterexample($idB));
+        $this->assertSame([3], $loaded->counterexample($idC));
+    }
+
+    public function testMergeWithCombinesCounterexamplesAndPropagatesTheirRemoval(): void
+    {
+        $target = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-test-target.cache');
+        $other  = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-test-other.cache');
+
+        $idA = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testA');
+        $idB = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testB');
+        $idC = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testC');
+
+        $target->setCounterexample($idA, [1]);
+        $target->setCounterexample($idB, [2]);
+
+        $other->removeCounterexample($idB);
+        $other->setCounterexample($idC, [3]);
+
+        $target->mergeWith($other);
+
+        $this->assertSame([1], $target->counterexample($idA));
+        $this->assertNull($target->counterexample($idB));
+        $this->assertSame([3], $target->counterexample($idC));
     }
 }

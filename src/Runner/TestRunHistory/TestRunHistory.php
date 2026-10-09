@@ -28,6 +28,24 @@ interface TestRunHistory
 
     public function time(TestRunHistoryId $id): float;
 
+    /**
+     * Remembers the choice sequence of the minimal counterexample of a
+     * property that was falsified.
+     *
+     * @param list<non-negative-int> $choiceSequence
+     */
+    public function setCounterexample(TestRunHistoryId $id, array $choiceSequence): void;
+
+    public function removeCounterexample(TestRunHistoryId $id): void;
+
+    /**
+     * Returns the choice sequence of the minimal counterexample of a property
+     * that was falsified, and null when none is remembered.
+     *
+     * @return ?list<non-negative-int>
+     */
+    public function counterexample(TestRunHistoryId $id): ?array;
+
     public function load(): void;
 
     public function persist(): void;
