@@ -81,6 +81,13 @@ final class ExampleTest extends TestCase
         $this->createMock(ThrowsInDestructor::class)->expects($this->never())->method('doSomething');
     }
 
+    public function testRejectsTheExampleAndUsesATestDoubleWhoseDestructorThrows(int $number): void
+    {
+        $this->createMock(ThrowsInDestructor::class)->expects($this->never())->method('doSomething');
+
+        $this->assume(false);
+    }
+
     public function testUsesAssumeOutsideOfAProperty(): void
     {
         $this->assume(true);
