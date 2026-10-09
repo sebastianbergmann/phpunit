@@ -113,6 +113,12 @@ final class Shrinker
         $this->interrupted      = false;
         $this->tried            = [];
 
+        // shrinking is turned off when no attempt may be made, which does not
+        // exhaust the budget for shrinking
+        if ($this->maximumNumberOfAttempts === 0) {
+            return new ShrinkingResult($sequence, 0, 0, false, false);
+        }
+
         do {
             $numberOfStepsBefore = $this->numberOfSteps;
 
