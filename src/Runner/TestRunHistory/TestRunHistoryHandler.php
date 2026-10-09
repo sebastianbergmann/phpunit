@@ -120,7 +120,9 @@ final class TestRunHistoryHandler
 
         // a property that holds no longer needs the counterexample that was
         // remembered for it, which it was checked for first
-        $this->testRunHistory->removeCounterexample($id);
+        if ($this->testRunHistory->counterexample($id) !== null) {
+            $this->testRunHistory->removeCounterexample($id);
+        }
 
         if (isset($this->statusesRecordedInThisRun[$id->asString()])) {
             return;
