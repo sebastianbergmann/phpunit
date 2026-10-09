@@ -33,6 +33,21 @@ final class IssuesTriggeredWhileArgumentsAreGeneratedTest extends TestCase
         return Generators::integers(0, 9);
     }
 
+    /**
+     * @return ValueGenerator<int>
+     */
+    public static function integersMappedByAClosureThatTriggersADeprecation(): ValueGenerator
+    {
+        return Generators::integers(0, 9)->map(
+            static function (int $value): int
+            {
+                trigger_error('deprecation triggered by closure passed to map()', E_USER_DEPRECATED);
+
+                return $value;
+            },
+        );
+    }
+
     #[Property(examples: 5)]
     public function testConstructorOfParameterTriggersAWarning(ClassWhoseConstructorTriggersAWarning $object): void
     {
@@ -40,20 +55,8 @@ final class IssuesTriggeredWhileArgumentsAreGeneratedTest extends TestCase
     }
 
     #[Property(examples: 5)]
-    public function testClosurePassedToMapTriggersADeprecation(
-        #[ForAll(static function (): ValueGenerator
-        {
-            return Generators::integers(0, 9)->map(
-                static function (int $value): int
-                {
-                    trigger_error('deprecation triggered by closure passed to map()', E_USER_DEPRECATED);
-
-                    return $value;
-                },
-            );
-        })]
-        int $value,
-    ): void {
+    public function testClosurePassedToMapTriggersADeprecation(#[ForAll('integersMappedByAClosureThatTriggersADeprecation')] int $value): void
+    {
         $this->assertTrue(is_int($value));
     }
 
