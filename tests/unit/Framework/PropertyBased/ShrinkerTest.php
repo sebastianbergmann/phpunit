@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework\PropertyBased;
 
+use function array_count_values;
+use function array_filter;
 use function array_sum;
 use function array_unique;
 use function array_values;
@@ -98,6 +100,29 @@ final class ShrinkerTest extends TestCase
                 [0, 11],
                 Generators::tuples(Generators::integers(), Generators::integers()),
                 static fn (array $value): bool => $value[0] + $value[1] > 10 && $value[0] >= 0 && $value[1] >= 0,
+            ],
+
+            'list with two equal elements' => [
+                [0, 0],
+                Generators::lists(Generators::integers()),
+                static fn (array $value): bool => count($value) !== count(array_unique($value)),
+            ],
+
+            'list with an element that occurs three times' => [
+                [0, 0, 0],
+                Generators::lists(Generators::integers(-100, 100)),
+                static fn (array $value): bool => $value !== [] && max(array_count_values($value)) >= 3,
+            ],
+
+            'list with two equal elements that are not small' => [
+                [50, 50],
+                Generators::lists(Generators::integers(0, 100)),
+                static function (array $value): bool
+                {
+                    $large = array_values(array_filter($value, static fn (int $element): bool => $element >= 50));
+
+                    return count($large) !== count(array_unique($large));
+                },
             ],
 
             'mapped value' => [
@@ -248,6 +273,52 @@ final class ShrinkerTest extends TestCase
         );
 
         $this->assertSame([], $shrinker->shrink(new ChoiceSequence([100]))->sequence()->choices());
+    }
+
+    public function testStopsLoweringEqualChoicesThatTheConsumedChoiceSequenceDoesNotHave(): void
+    {
+        // lowering both choices together to a small value does not falsify
+        // the property, lowering them to 51 does, but the replay of that
+        // candidate consumes a different choice sequence
+        $shrinker = new Shrinker(
+            static function (ChoiceSequence $candidate): ?ChoiceSequence
+            {
+                if ($candidate->choices() === [51, 51]) {
+                    return new ChoiceSequence([50, 51]);
+                }
+
+                return null;
+            },
+            1000,
+        );
+
+        $this->assertSame(
+            [50, 51],
+            $shrinker->shrink(new ChoiceSequence([100, 100], [new Span(0, 1), new Span(1, 2)]))->sequence()->choices(),
+        );
+    }
+
+    public function testDoesNotLowerChoicesThatAreNoLongerEqualTogether(): void
+    {
+        // lowering the first choices of both spans together falsifies the
+        // property, but the replay of that candidate consumes a choice
+        // sequence in which the second choices of the spans differ
+        $shrinker = new Shrinker(
+            static function (ChoiceSequence $candidate): ?ChoiceSequence
+            {
+                if ($candidate->choices() === [0, 7, 0, 7]) {
+                    return new ChoiceSequence([0, 7, 0, 8]);
+                }
+
+                return null;
+            },
+            1000,
+        );
+
+        $this->assertSame(
+            [0, 7, 0, 8],
+            $shrinker->shrink(new ChoiceSequence([5, 7, 5, 7], [new Span(0, 2), new Span(2, 4)]))->sequence()->choices(),
+        );
     }
 
     public function testStopsRedistributingAPairOfChoicesThatTheConsumedChoiceSequenceDoesNotHave(): void
