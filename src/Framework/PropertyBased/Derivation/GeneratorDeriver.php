@@ -409,10 +409,27 @@ final class GeneratorDeriver
                 return $this->lists($type, $scope, $keyword === 'non-empty-list');
         }
 
-        if ($arguments !== [] && $this->isKeyword($keyword)) {
+        $generator = $this->keyword($keyword);
+
+        if ($generator === null) {
+            return $this->classOrUnsupportedKeyword($type, $scope);
+        }
+
+        if ($arguments !== []) {
             throw CannotDeriveGeneratorException::invalidTypeArguments($type->asString(), sprintf('%s does not take type arguments', $type->name()));
         }
 
+        return $generator;
+    }
+
+    /**
+     * Returns the generator for a keyword that does not take type arguments,
+     * or null when $keyword is not such a keyword.
+     *
+     * @return ?AbstractGenerator<mixed>
+     */
+    private function keyword(string $keyword): ?AbstractGenerator
+    {
         return match ($keyword) {
             'integer'                           => new IntegerGenerator(PHP_INT_MIN, PHP_INT_MAX),
             'positive-int'                      => new IntegerGenerator(1, PHP_INT_MAX),
@@ -439,7 +456,7 @@ final class GeneratorDeriver
             ),
             'lowercase-string' => new MappedGenerator(new StringGenerator(null, 0, null), strtolower(...)),
             'array-key'        => $this->arrayKeys(),
-            default            => $this->classOrUnsupportedKeyword($type, $scope),
+            default            => null,
         };
     }
 
@@ -715,20 +732,6 @@ final class GeneratorDeriver
         }
 
         return new MappedGenerator($timestamps, static fn (int $timestamp): DateTimeImmutable => new DateTimeImmutable('@' . $timestamp));
-    }
-
-    private function isKeyword(string $keyword): bool
-    {
-        return in_array(
-            $keyword,
-            [
-                'integer', 'positive-int', 'negative-int', 'non-negative-int', 'non-positive-int', 'non-zero-int',
-                'float', 'double', 'bool', 'boolean', 'true', 'false', 'null',
-                'string', 'non-empty-string', 'non-falsy-string', 'truthy-string', 'numeric-string', 'lowercase-string',
-                'array-key',
-            ],
-            true,
-        );
     }
 
     /**
