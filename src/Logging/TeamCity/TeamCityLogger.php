@@ -17,7 +17,6 @@ use function round;
 use function sprintf;
 use function str_replace;
 use function stripos;
-use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Event;
@@ -44,6 +43,7 @@ use PHPUnit\Event\TestSuite\TestSuiteForTestClass;
 use PHPUnit\Event\TestSuite\TestSuiteForTestMethodWithDataProvider;
 use PHPUnit\Framework\Exception as FrameworkException;
 use PHPUnit\TextUI\Output\Printer;
+use PHPUnit\Util\PendingPropertyFalsified;
 use PHPUnit\Util\PropertyFalsifiedToStringMapper;
 use PHPUnit\Util\Sanitizer;
 
@@ -63,11 +63,12 @@ final class TeamCityLogger
      * The event that describes how a property was falsified, which is
      * dispatched before the event for its failure or error.
      */
-    private ?PropertyFalsified $propertyFalsified = null;
+    private readonly PendingPropertyFalsified $propertyFalsified;
 
     public function __construct(Printer $printer, Facade $facade)
     {
-        $this->printer = $printer;
+        $this->printer           = $printer;
+        $this->propertyFalsified = new PendingPropertyFalsified;
 
         $this->registerSubscribers($facade);
         $this->setFlowId();
@@ -261,7 +262,7 @@ final class TeamCityLogger
             [
                 'name'     => $event->test()->name(),
                 'message'  => $this->message($event->throwable()),
-                'details'  => $this->details($event->throwable(), $this->propertyFalsifiedFor($event->test())),
+                'details'  => $this->details($event->throwable(), $this->propertyFalsified->takeFor($event->test())),
                 'duration' => $this->duration($event),
             ],
         );
@@ -269,7 +270,7 @@ final class TeamCityLogger
 
     public function testPropertyFalsified(PropertyFalsified $event): void
     {
-        $this->propertyFalsified = $event;
+        $this->propertyFalsified->remember($event);
     }
 
     /**
@@ -280,7 +281,7 @@ final class TeamCityLogger
         $parameters = [
             'name'     => $event->test()->name(),
             'message'  => $this->message($event->throwable()),
-            'details'  => $this->details($event->throwable(), $this->propertyFalsifiedFor($event->test())),
+            'details'  => $this->details($event->throwable(), $this->propertyFalsified->takeFor($event->test())),
             'duration' => $this->duration($event),
         ];
 
@@ -464,19 +465,6 @@ final class TeamCityLogger
         }
 
         return $buffer;
-    }
-
-    private function propertyFalsifiedFor(Test $test): ?PropertyFalsified
-    {
-        $propertyFalsified = $this->propertyFalsified;
-
-        $this->propertyFalsified = null;
-
-        if ($propertyFalsified === null || $propertyFalsified->test()->id() !== $test->id()) {
-            return null;
-        }
-
-        return $propertyFalsified;
     }
 
     /**
