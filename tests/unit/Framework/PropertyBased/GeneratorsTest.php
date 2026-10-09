@@ -57,6 +57,7 @@ use PHPUnit\Framework\PropertyBased\Generator\TupleGenerator;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\PropertyBased\Currency;
 use PHPUnit\TestFixture\PropertyBased\Derivation\Money;
+use PHPUnit\TestFixture\PropertyBased\Derivation\Tree;
 use PHPUnit\TestFixture\PropertyBased\EnumerationWithoutCases;
 use Random\Engine\Xoshiro256StarStar;
 use Random\Randomizer;
@@ -580,6 +581,14 @@ final class GeneratorsTest extends TestCase
         $this->assertSame([7], $this->replay(Generators::lists(Generators::integers(0, 9)), [1, 7, 0]));
     }
 
+    public function testAddsAnotherElementToARecursiveListLessOften(): void
+    {
+        $this->assertLessThan(
+            $this->numberOfNonEmptyArrays($this->values(Generators::lists(Generators::integers()), 500)) / 2,
+            $this->numberOfNonEmptyArrays($this->values(Generators::lists(Generators::integers(), recursive: true), 500)),
+        );
+    }
+
     public function testTheSizeOfListsMustBeValid(): void
     {
         $this->expectException(InvalidGeneratorArgumentException::class);
@@ -627,6 +636,14 @@ final class GeneratorsTest extends TestCase
         }
 
         $this->assertSame(['a' => false], $this->replay(Generators::arrays(Generators::elements('a'), Generators::booleans()), $choices));
+    }
+
+    public function testAddsAnotherElementToARecursiveArrayLessOften(): void
+    {
+        $this->assertLessThan(
+            $this->numberOfNonEmptyArrays($this->values(Generators::arrays(Generators::integers(), Generators::integers()), 500)) / 2,
+            $this->numberOfNonEmptyArrays($this->values(Generators::arrays(Generators::integers(), Generators::integers(), recursive: true), 500)),
+        );
     }
 
     public function testTheKeysOfArraysMustBeIntegersOrStrings(): void
@@ -690,6 +707,34 @@ final class GeneratorsTest extends TestCase
         $this->assertNotEmpty(array_filter($values, static fn (?int $value): bool => $value !== null));
         $this->assertNull($this->replay($generator, []));
         $this->assertSame(1, $this->replay($generator, [1]));
+    }
+
+    public function testGeneratesAValueRatherThanNullLessOftenForARecursiveNullableValue(): void
+    {
+        $values = static fn (array $values): int => count(array_filter($values, static fn (?int $value): bool => $value !== null));
+
+        $this->assertLessThan(
+            $values($this->values(Generators::nullable(Generators::integers()), 500)) / 2,
+            $values($this->values(Generators::nullable(Generators::integers(), recursive: true), 500)),
+        );
+    }
+
+    public function testGeneratesObjectsOfARecursiveClassWithTheGeneratorThatIsRegisteredForIt(): void
+    {
+        $trees        = Generators::lists(Generators::objects(Tree::class), recursive: true)->map(static fn (array $children): Tree => new Tree($children));
+        $deriver      = new GeneratorDeriver(GeneratorRegistry::from([Tree::class => $trees]));
+        $withChildren = 0;
+
+        foreach ($this->values($trees, 200, 1, $deriver) as $tree) {
+            $this->assertInstanceOf(Tree::class, $tree);
+
+            if ($tree->children() !== []) {
+                $withChildren++;
+            }
+        }
+
+        $this->assertGreaterThan(0, $withChildren);
+        $this->assertEquals(new Tree([new Tree([])]), $this->replay($trees, [1, 0, 0], $deriver));
     }
 
     public function testGeneratesAValueOfOneOfTheGenerators(): void
@@ -847,14 +892,14 @@ final class GeneratorsTest extends TestCase
      *
      * @return list<T>
      */
-    private function values(ValueGenerator $generator, int $count, int $seed = 1): array
+    private function values(ValueGenerator $generator, int $count, int $seed = 1, ?GeneratorDeriver $deriver = null): array
     {
         $randomizer = new Randomizer(new Xoshiro256StarStar($seed));
         $values     = [];
 
         for ($attempt = 0; $attempt < 10 * $count && count($values) < $count; $attempt++) {
             try {
-                $values[] = AbstractGenerator::from($generator)->generate(ChoiceSource::random($randomizer));
+                $values[] = AbstractGenerator::from($generator)->generate(ChoiceSource::random($randomizer, ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver));
             } catch (ExampleRejectedException) {
                 continue;
             }
@@ -863,6 +908,14 @@ final class GeneratorsTest extends TestCase
         $this->assertCount($count, $values);
 
         return $values;
+    }
+
+    /**
+     * @param list<array<mixed>> $values
+     */
+    private function numberOfNonEmptyArrays(array $values): int
+    {
+        return count(array_filter($values, static fn (array $value): bool => $value !== []));
     }
 
     /**

@@ -1,5 +1,5 @@
 --TEST--
-A generator registered with #[GeneratorFor] is used for every value of its type, including values needed for constructor parameters
+A generator registered with #[GeneratorFor] is used for every value of its type, including values needed for constructor parameters and values of the type that the generator itself needs
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--no-configuration';
@@ -17,8 +17,8 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 Runtime: %s
 Random Seed:   1234
 
-..                                                                  2 / 2 (100%)
+...                                                                 3 / 3 (100%)
 
 Time: %s, Memory: %s
 
-OK (2 tests, %d assertions)
+OK (3 tests, %d assertions)
