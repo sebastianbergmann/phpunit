@@ -57,6 +57,19 @@ final class TestRunner
     private readonly Configuration $configuration;
     private readonly Emitter $emitter;
 
+    /**
+     * Whether PHPUnit's error handler handles the issues that are triggered
+     * by the test, which it does unless #[WithoutErrorHandler] is used.
+     */
+    public static function shouldErrorHandlerBeUsed(TestCase $test): bool
+    {
+        if (MetadataRegistry::parser()->forMethod($test::class, $test->name())->isWithoutErrorHandler()->isNotEmpty()) {
+            return false;
+        }
+
+        return true;
+    }
+
     public function __construct(Emitter $emitter)
     {
         $this->configuration = ConfigurationRegistry::get();
@@ -137,7 +150,7 @@ final class TestRunner
         $risky      = false;
         $skipped    = false;
 
-        if ($this->shouldErrorHandlerBeUsed($test)) {
+        if (self::shouldErrorHandlerBeUsed($test)) {
             $throwableFromDeferredIssue = ErrorHandler::instance()->enable($test);
 
             if ($throwableFromDeferredIssue !== null) {
@@ -414,15 +427,6 @@ final class TestRunner
         }
 
         return false;
-    }
-
-    private function shouldErrorHandlerBeUsed(TestCase $test): bool
-    {
-        if (MetadataRegistry::parser()->forMethod($test::class, $test->name())->isWithoutErrorHandler()->isNotEmpty()) {
-            return false;
-        }
-
-        return true;
     }
 
     private function performSanityChecks(TestCase $test, TargetCollection $coversTargets, TargetCollection $usesTargets, bool $coversNothingContradiction): void
