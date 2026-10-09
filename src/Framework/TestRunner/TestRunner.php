@@ -182,9 +182,20 @@ final class TestRunner
 
         $test->addToAssertionCount(Assert::getCount());
 
-        if ($this->configuration->reportUselessTests() &&
-            !$test->doesNotPerformAssertions() &&
-            $test->numberOfAssertionsPerformed() === 0) {
+        $performedNoAssertions = $this->configuration->reportUselessTests() &&
+                                 !$test->doesNotPerformAssertions() &&
+                                 $test->numberOfAssertionsPerformed() === 0;
+
+        // the code coverage data of an example of a property that passed
+        // without performing assertions is held back, because whether the
+        // property performed assertions, and therefore whether the data is
+        // appended, is decided on all of its examples
+        $holdBackCodeCoverage = $collectCodeCoverage &&
+                                $performedNoAssertions &&
+                                $test->isPropertyExample() &&
+                                $test->status()->isSuccess();
+
+        if ($performedNoAssertions) {
             $risky = true;
         }
 
@@ -199,7 +210,9 @@ final class TestRunner
             $risky = true;
         }
 
-        if ($collectCodeCoverage) {
+        if ($holdBackCodeCoverage) {
+            CodeCoverage::instance()->stopAndHoldBack($coversTargets, $usesTargets);
+        } elseif ($collectCodeCoverage) {
             $append                 = !$risky && !$incomplete && !$skipped && !$test->wasRejectedByAssumption();
             $coveredUnintentionally = false;
 
@@ -219,8 +232,7 @@ final class TestRunner
 
                 $this->emitter->testConsideredRisky(
                     $test->valueObjectForEvents(),
-                    "This test executed code that is not listed as code to be covered or used:\n" .
-                    $cce->getMessage(),
+                    CodeCoverage::unintentionallyCoveredCodeMessage($cce),
                 );
             } catch (CodeCoverageException) {
                 $error = true;
