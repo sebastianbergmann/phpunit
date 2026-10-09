@@ -35,7 +35,6 @@ use PHPUnit\Framework\PropertyBased\Type\NameScope;
 use PHPUnit\Framework\PropertyBased\ValueGenerator;
 use PHPUnit\Framework\TestRunner\TestRunner;
 use PHPUnit\Metadata\Api\Requirements;
-use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\Runner\GarbageCollection\GarbageCollectionHandler;
@@ -214,7 +213,7 @@ final class PropertyTestSuite extends IterativeTestSuite
         $this->seed          = RandomNumberGeneratorSeeder::derive(ConfigurationRegistry::get()->randomSeed(), $valueObject->id());
         $this->unusedExample = $test;
 
-        $this->usesErrorHandler = MetadataRegistry::parser()->forMethod($test::class, $test->name())->isWithoutErrorHandler()->isEmpty();
+        $this->usesErrorHandler = TestRunner::shouldErrorHandlerBeUsed($test);
 
         $events = new EventAggregator($emitter, Event\Facade::instance(), $valueObject);
 
