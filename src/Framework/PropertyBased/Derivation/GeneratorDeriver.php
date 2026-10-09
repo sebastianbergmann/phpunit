@@ -45,6 +45,7 @@ use PHPUnit\Framework\PropertyBased\Generator\Repetition;
 use PHPUnit\Framework\PropertyBased\Generator\StringGenerator;
 use PHPUnit\Framework\PropertyBased\InvalidTypeException;
 use PHPUnit\Framework\PropertyBased\Type\ArrayShapeType;
+use PHPUnit\Framework\PropertyBased\Type\DocComments;
 use PHPUnit\Framework\PropertyBased\Type\LiteralType;
 use PHPUnit\Framework\PropertyBased\Type\NamedType;
 use PHPUnit\Framework\PropertyBased\Type\NameScope;
@@ -64,7 +65,8 @@ use WeakMap;
 /**
  * Derives generators from the types of parameters: from the type in the
  * parameter's @param tag (including @phpstan-param and @psalm-param) if there
- * is one, and from its native type declaration otherwise.
+ * is one, and from its native type declaration otherwise. The @param tag is
+ * read from the source file when OPcache has discarded the doc comment.
  *
  * A generator that the test case class registers for a class with
  * #[GeneratorFor] is used for every value of exactly that class, including
@@ -157,7 +159,7 @@ final class GeneratorDeriver
         assert($method instanceof ReflectionMethod);
 
         try {
-            [$type, $declaration] = $this->typeOf($parameter, ParameterTypes::fromDocComment($method->getDocComment()));
+            [$type, $declaration] = $this->typeOf($parameter, ParameterTypes::fromDocComment(DocComments::of($method)));
         } catch (InvalidTypeException $e) {
             throw CannotDeriveGeneratorException::unparsableParameterType($parameter, $e);
         } catch (CannotDeriveGeneratorException $e) {
@@ -338,7 +340,7 @@ final class GeneratorDeriver
     private function constructorArguments(ReflectionMethod $constructor): array
     {
         $scope     = NameScope::forMethod($constructor);
-        $docTypes  = ParameterTypes::fromDocComment($constructor->getDocComment());
+        $docTypes  = ParameterTypes::fromDocComment(DocComments::of($constructor));
         $arguments = [];
 
         foreach ($constructor->getParameters() as $parameter) {
