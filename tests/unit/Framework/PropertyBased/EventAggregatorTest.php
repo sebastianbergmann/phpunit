@@ -114,22 +114,6 @@ final class EventAggregatorTest extends AbstractEventTestCase
         $this->assertSame($rejected->asArray()[0], $events[0]);
     }
 
-    public function testDoesNotReportRiskyEventsThatAreDecidedForThePropertyAsAWhole(): void
-    {
-        $example = $this->passedExample(
-            $this->risky('This test did not perform any assertions'),
-            $this->risky('This test is not expected to perform assertions but performed 1 assertion'),
-            $this->risky('This test was aborted after 1 second'),
-        );
-
-        $events = $this->dispatch([[$example, true]], $example, null, true, null, 0);
-
-        $this->assertSame(
-            ['PreparationStarted', 'Prepared', 'Passed', 'PropertyChecked', 'Finished: 0'],
-            $this->describe($events),
-        );
-    }
-
     public function testDispatchesTheEventsThatPrecedeTheOutcomeOfAFalsifiedProperty(): void
     {
         $example = $this->example(
@@ -164,7 +148,6 @@ final class EventAggregatorTest extends AbstractEventTestCase
         $example = $this->example(
             $this->preparationStarted(),
             $this->prepared(),
-            $this->risky('This test was aborted after 1 second'),
             $this->finished(0),
         );
 

@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework\PropertyBased;
 
 use function assert;
-use function str_starts_with;
 use Closure;
 use PHPUnit\Event;
 use PHPUnit\Event\Code;
@@ -57,15 +56,6 @@ use PHPUnit\Event\Test\WarningTriggered;
  */
 final class EventAggregator
 {
-    /**
-     * The messages of Test\ConsideredRisky events that are emitted for each
-     * example but are decided for the property as a whole.
-     */
-    private const array MESSAGES_DECIDED_FOR_THE_PROPERTY = [
-        'This test did not perform any assertions',
-        'This test is not expected to perform assertions but performed ',
-        'This test was aborted after ',
-    ];
     private readonly Event\Emitter $emitter;
     private readonly Event\Facade $facade;
     private readonly Code\Test $test;
@@ -256,14 +246,6 @@ final class EventAggregator
     {
         if (!$this->isIssue($event)) {
             return false;
-        }
-
-        if ($event instanceof ConsideredRisky) {
-            foreach (self::MESSAGES_DECIDED_FOR_THE_PROPERTY as $message) {
-                if (str_starts_with($event->message(), $message)) {
-                    return false;
-                }
-            }
         }
 
         if ($event instanceof ConsideredRisky ||
