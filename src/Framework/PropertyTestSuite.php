@@ -29,10 +29,12 @@ use PHPUnit\Framework\PropertyBased\FlakyPropertyException;
 use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
 use PHPUnit\Framework\PropertyBased\InvalidPropertyException;
 use PHPUnit\Framework\PropertyBased\PropertyDefinition;
+use PHPUnit\Framework\PropertyBased\PropertyDefinitionBuilder;
 use PHPUnit\Framework\PropertyBased\Shrinker;
 use PHPUnit\Framework\PropertyBased\Type\NameScope;
 use PHPUnit\Framework\PropertyBased\ValueGenerator;
 use PHPUnit\Framework\TestRunner\TestRunner;
+use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\ErrorHandler;
@@ -135,7 +137,7 @@ final class PropertyTestSuite extends IterativeTestSuite
 
     /**
      * @param non-empty-string       $name
-     * @param ?PropertyDefinition    $definition       null when the property is not checked because its requirements are not met
+     * @param ?PropertyDefinition    $definition       null when the requirements of the property were not met while the test suite was built
      * @param positive-int           $numberOfExamples
      * @param Closure(): TestCase    $exampleFactory
      * @param list<non-empty-string> $groups
@@ -217,11 +219,11 @@ final class PropertyTestSuite extends IterativeTestSuite
 
         try {
             [$deriver, $generators] = $this->handlingIssues(
-                function (): array
+                function () use ($test, $emitter): array
                 {
                     $this->triggerTestCaseContextIssues();
 
-                    return $this->generators();
+                    return $this->generators($test, $emitter);
                 },
                 $events,
             );
@@ -576,8 +578,19 @@ final class PropertyTestSuite extends IterativeTestSuite
      *
      * @return array{0: GeneratorDeriver, 1: array<non-empty-string, AbstractGenerator<mixed>>}
      */
-    private function generators(): array
+    private function generators(TestCase $test, Event\Emitter $emitter): array
     {
+        // the definition of a property whose requirements were not met while
+        // the test suite was built is built when the property runs and its
+        // requirements are met then, because the function that it requires
+        // is declared by setUpBeforeClass(), for instance
+        if ($this->definition === null &&
+            new Requirements($emitter)->requirementsNotSatisfiedFor($test::class, $test->name()) === []) {
+            $this->definition = new PropertyDefinitionBuilder()->build($test::class, $test->name());
+        }
+
+        // the examples of a property whose requirements are not met are
+        // skipped before arguments are passed to them
         if ($this->definition === null) {
             return [new GeneratorDeriver(GeneratorRegistry::empty()), []];
         }
