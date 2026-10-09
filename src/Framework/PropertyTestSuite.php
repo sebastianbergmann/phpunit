@@ -376,27 +376,26 @@ final class PropertyTestSuite extends IterativeTestSuite
         $replay         = $this->example($arguments);
         $replayEvents   = $this->runExample($replay, $emitter, false);
 
+        $error = null;
+
         // a final replay that is aborted because the deadline of the test run
-        // has passed is reported like any other example that is aborted by it
-        if ($replay->throwableThatEndedTheTest() instanceof TimeLimitExceededException) {
-            $this->report($events, $emitter, $replayEvents, null, false, null);
+        // has passed is reported with that error, like any other example that
+        // is aborted by it, and with the counterexample, which falsified the
+        // property while it was shrunk
+        if (!$replay->throwableThatEndedTheTest() instanceof TimeLimitExceededException) {
+            $replayFalsification = Falsification::of($replay);
 
-            return;
-        }
+            if ($replayFalsification === null) {
+                $error = Event\Code\ThrowableBuilder::from(
+                    FlakyPropertyException::originallyFalsifiedBy($falsifyingExample->throwableThatEndedTheTest()),
+                );
+            } elseif ($replayFalsification->isTimeout()) {
+                $timeout = $replay->throwableThatEndedTheTest();
 
-        $replayFalsification = Falsification::of($replay);
-        $error               = null;
+                assert($timeout !== null);
 
-        if ($replayFalsification === null) {
-            $error = Event\Code\ThrowableBuilder::from(
-                FlakyPropertyException::originallyFalsifiedBy($falsifyingExample->throwableThatEndedTheTest()),
-            );
-        } elseif ($replayFalsification->isTimeout()) {
-            $timeout = $replay->throwableThatEndedTheTest();
-
-            assert($timeout !== null);
-
-            $error = Event\Code\ThrowableBuilder::from($timeout);
+                $error = Event\Code\ThrowableBuilder::from($timeout);
+            }
         }
 
         $test = $this->test;
