@@ -30,17 +30,19 @@ final readonly class ShrinkingResult
      */
     private int $numberOfSteps;
     private bool $budgetExhausted;
+    private bool $interrupted;
 
     /**
      * @param non-negative-int $numberOfAttempts
      * @param non-negative-int $numberOfSteps
      */
-    public function __construct(ChoiceSequence $sequence, int $numberOfAttempts, int $numberOfSteps, bool $budgetExhausted)
+    public function __construct(ChoiceSequence $sequence, int $numberOfAttempts, int $numberOfSteps, bool $budgetExhausted, bool $interrupted)
     {
         $this->sequence         = $sequence;
         $this->numberOfAttempts = $numberOfAttempts;
         $this->numberOfSteps    = $numberOfSteps;
         $this->budgetExhausted  = $budgetExhausted;
+        $this->interrupted      = $interrupted;
     }
 
     /**
@@ -79,5 +81,15 @@ final readonly class ShrinkingResult
     public function budgetExhausted(): bool
     {
         return $this->budgetExhausted;
+    }
+
+    /**
+     * Whether shrinking was stopped because the test run is to be stopped,
+     * for instance because its deadline has passed, in which case a simpler
+     * counterexample may exist.
+     */
+    public function interrupted(): bool
+    {
+        return $this->interrupted;
     }
 }

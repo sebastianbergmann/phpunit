@@ -813,7 +813,7 @@ final class DispatchingEmitter implements Emitter
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
-    public function testPropertyFalsified(Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, array $choiceSequence, array $counterexample): void
+    public function testPropertyFalsified(Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, array $choiceSequence, array $counterexample): void
     {
         $this->dispatcher->dispatch(
             new Test\PropertyFalsified(
@@ -824,6 +824,7 @@ final class DispatchingEmitter implements Emitter
                 $numberOfShrinkingAttempts,
                 $numberOfShrinkingSteps,
                 $shrinkingBudgetExhausted,
+                $shrinkingInterrupted,
                 $choiceSequence,
                 $counterexample,
             ),
