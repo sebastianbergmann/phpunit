@@ -245,9 +245,12 @@ final class TestRunner
 
         ErrorHandler::instance()->disable();
 
+        // whether a property performs assertions is decided on all of its
+        // examples
         if (!$error &&
             !$incomplete &&
             !$skipped &&
+            !$test->isPropertyExample() &&
             $this->configuration->reportUselessTests() &&
             !$test->doesNotPerformAssertions() &&
             $test->numberOfAssertionsPerformed() === 0) {
@@ -257,7 +260,8 @@ final class TestRunner
             );
         }
 
-        if ($test->doesNotPerformAssertions() &&
+        if (!$test->isPropertyExample() &&
+            $test->doesNotPerformAssertions() &&
             $test->numberOfAssertionsPerformed() > 0) {
             $this->emitter->testConsideredRisky(
                 $test->valueObjectForEvents(),
@@ -368,14 +372,18 @@ final class TestRunner
         try {
             (new Invoker)->invoke($test->runLifecycle(...), [], $_timeout);
         } catch (TimeoutException) {
-            $this->emitter->testConsideredRisky(
-                $test->valueObjectForEvents(),
-                sprintf(
-                    'This test was aborted after %d second%s',
-                    $_timeout,
-                    $_timeout !== 1 ? 's' : '',
-                ),
-            );
+            // an example of a property that exceeds its time limit falsifies
+            // the property, which is reported as an error
+            if (!$test->isPropertyExample()) {
+                $this->emitter->testConsideredRisky(
+                    $test->valueObjectForEvents(),
+                    sprintf(
+                        'This test was aborted after %d second%s',
+                        $_timeout,
+                        $_timeout !== 1 ? 's' : '',
+                    ),
+                );
+            }
 
             return true;
         }
