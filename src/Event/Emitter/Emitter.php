@@ -173,7 +173,7 @@ interface Emitter
      * @param list<non-negative-int>          $choiceSequence
      * @param array<non-empty-string, string> $counterexample
      */
-    public function testPropertyFalsified(Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, array $choiceSequence, array $counterexample): void;
+    public function testPropertyFalsified(Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, array $choiceSequence, array $counterexample): void;
 
     /**
      * @param non-empty-string $message

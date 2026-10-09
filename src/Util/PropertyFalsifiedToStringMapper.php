@@ -66,6 +66,13 @@ final readonly class PropertyFalsifiedToStringMapper
             ) . PHP_EOL;
         }
 
+        if ($event->shrinkingInterrupted()) {
+            $buffer .= PHP_EOL . sprintf(
+                'Shrinking was stopped after %s because the test run was aborted, a simpler counterexample may exist.',
+                self::count($event->numberOfShrinkingAttempts(), 'attempt'),
+            ) . PHP_EOL;
+        }
+
         return $buffer;
     }
 
