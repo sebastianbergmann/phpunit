@@ -10,6 +10,7 @@
 namespace PHPUnit\TextUI;
 
 use PHPUnit\Event;
+use PHPUnit\Framework\PropertyTestSuite;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\ExecutionOrder\ReorderPipeline;
 use PHPUnit\Runner\RandomNumberGeneratorSeeder;
@@ -44,6 +45,8 @@ final class TestRunner
 
             $testRunHistory->load();
 
+            $this->provideTestRunHistoryToProperties($suite, $testRunHistory);
+
             $pipeline = ReorderPipeline::fromConfiguration(
                 $configuration->executionOrder(),
                 $configuration->resolveDependencies(),
@@ -71,6 +74,25 @@ final class TestRunner
                 (int) $t->getCode(),
                 $t,
             );
+        }
+    }
+
+    /**
+     * A property checks the counterexample that was remembered in the test
+     * run history when it was last falsified before any other example.
+     */
+    private function provideTestRunHistoryToProperties(TestSuite $suite, TestRunHistory $testRunHistory): void
+    {
+        foreach ($suite->tests() as $test) {
+            if ($test instanceof PropertyTestSuite) {
+                $test->setTestRunHistory($testRunHistory);
+
+                continue;
+            }
+
+            if ($test instanceof TestSuite) {
+                $this->provideTestRunHistoryToProperties($test, $testRunHistory);
+            }
         }
     }
 }

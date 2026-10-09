@@ -34,6 +34,8 @@ use PHPUnit\Framework\PropertyBased\Type\NameScope;
 use PHPUnit\Framework\PropertyBased\ValueGenerator;
 use PHPUnit\Framework\TestRunner\TestRunner;
 use PHPUnit\Runner\RandomNumberGeneratorSeeder;
+use PHPUnit\Runner\TestRunHistory\TestRunHistory;
+use PHPUnit\Runner\TestRunHistory\TestRunHistoryId;
 use PHPUnit\Runner\TimeLimit\TimeLimitExceededException;
 use PHPUnit\Runner\TimeLimit\TimeLimitHandler;
 use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
@@ -84,9 +86,10 @@ final class PropertyTestSuite extends IterativeTestSuite
     /**
      * @var ?Closure(): TestCase
      */
-    private ?Closure $exampleFactory     = null;
-    private ?TestCase $unusedExample     = null;
-    private ?Event\Code\TestMethod $test = null;
+    private ?Closure $exampleFactory        = null;
+    private ?TestCase $unusedExample        = null;
+    private ?Event\Code\TestMethod $test    = null;
+    private ?TestRunHistory $testRunHistory = null;
 
     /**
      * @var non-negative-int
@@ -140,6 +143,15 @@ final class PropertyTestSuite extends IterativeTestSuite
     }
 
     /**
+     * The test run history from which the counterexample that was remembered
+     * when the property was last falsified is taken.
+     */
+    public function setTestRunHistory(TestRunHistory $testRunHistory): void
+    {
+        $this->testRunHistory = $testRunHistory;
+    }
+
+    /**
      * @param list<Test> $tests
      *
      * @throws Event\RuntimeException
@@ -190,6 +202,7 @@ final class PropertyTestSuite extends IterativeTestSuite
 
         $randomizer = new Randomizer(new Xoshiro256StarStar($this->seed));
         $skeleton   = null;
+        $remembered = $this->testRunHistory?->counterexample(TestRunHistoryId::fromReorderable($test));
 
         for ($i = 1; $i <= $this->maximumNumberOfExamplesGenerated(); $i++) {
             if ($this->numberOfExamplesChecked === $this->numberOfExamples) {
@@ -200,7 +213,15 @@ final class PropertyTestSuite extends IterativeTestSuite
                 break;
             }
 
-            $source = ChoiceSource::random($randomizer, ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver);
+            // the counterexample that was remembered when the property was last
+            // falsified is checked first; it is replayed without drawing from
+            // the random number generator, so the examples that are generated
+            // after it are the same as without it
+            if ($i === 1 && $remembered !== null) {
+                $source = ChoiceSource::replay(new ChoiceSequence($remembered), ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver);
+            } else {
+                $source = ChoiceSource::random($randomizer, ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver);
+            }
 
             try {
                 $arguments = $this->generateArguments($generators, $source);
