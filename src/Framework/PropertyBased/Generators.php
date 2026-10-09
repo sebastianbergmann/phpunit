@@ -40,7 +40,6 @@ use PHPUnit\Framework\PropertyBased\Generator\ListGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\NullableGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\OneOfGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\RecordGenerator;
-use PHPUnit\Framework\PropertyBased\Generator\Repetition;
 use PHPUnit\Framework\PropertyBased\Generator\StringGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\TupleGenerator;
 use PHPUnit\Framework\PropertyBased\Type\NameScope;
@@ -258,7 +257,7 @@ final class Generators
     {
         self::ensureValidSize('size', $minimumSize, $maximumSize);
 
-        return new ListGenerator(AbstractGenerator::from($elements), $minimumSize, $maximumSize, self::probabilityOfAnotherElement($recursive));
+        return new ListGenerator(AbstractGenerator::from($elements), $minimumSize, $maximumSize, GeneratorDeriver::probabilityOfAnotherElement($recursive));
     }
 
     /**
@@ -283,7 +282,7 @@ final class Generators
     {
         self::ensureValidSize('size', $minimumSize, $maximumSize);
 
-        return new ArrayGenerator(AbstractGenerator::from($keys), AbstractGenerator::from($values), $minimumSize, $maximumSize, self::probabilityOfAnotherElement($recursive));
+        return new ArrayGenerator(AbstractGenerator::from($keys), AbstractGenerator::from($values), $minimumSize, $maximumSize, GeneratorDeriver::probabilityOfAnotherElement($recursive));
     }
 
     /**
@@ -472,15 +471,6 @@ final class Generators
         return new DeferredGenerator(
             static fn (GeneratorDeriver $deriver): AbstractGenerator => $deriver->forType($parsed, $scope),
         );
-    }
-
-    private static function probabilityOfAnotherElement(bool $recursive): float
-    {
-        if ($recursive) {
-            return GeneratorDeriver::PROBABILITY_OF_RECURSION;
-        }
-
-        return Repetition::DEFAULT_PROBABILITY_OF_ANOTHER_ELEMENT;
     }
 
     /**
