@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TestFixture\PropertyBased\Examples;
 
+use DomainException;
 use PHPUnit\Framework\TestCase;
 
 final class ExampleWithAssumptionInTearDownTest extends TestCase
@@ -31,5 +32,12 @@ final class ExampleWithAssumptionInTearDownTest extends TestCase
     public function testFails(int $number): void
     {
         $this->fail('failure');
+    }
+
+    public function testFailsWithAThrowableOfARegisteredFailureType(int $number): void
+    {
+        $this->registerFailureType(DomainException::class);
+
+        throw new DomainException('registered');
     }
 }
