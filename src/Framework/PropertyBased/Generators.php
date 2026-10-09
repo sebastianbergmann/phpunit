@@ -14,7 +14,6 @@ use const PHP_FLOAT_MAX;
 use const PHP_INT_MAX;
 use const PHP_INT_MIN;
 use function array_key_exists;
-use function array_keys;
 use function array_unique;
 use function array_values;
 use function class_exists;
@@ -329,10 +328,6 @@ final class Generators
             $record[$key] = AbstractGenerator::from($generator);
         }
 
-        // an optional key is used as an array key so that a numeric string
-        // becomes the integer that PHP uses as the key of the record
-        $optional = [];
-
         foreach ($optionalKeys as $key) {
             if (!array_key_exists($key, $record)) {
                 throw new InvalidGeneratorArgumentException(
@@ -342,11 +337,9 @@ final class Generators
                     ),
                 );
             }
-
-            $optional[$key] = true;
         }
 
-        return new RecordGenerator($record, array_keys($optional));
+        return new RecordGenerator($record, $optionalKeys);
     }
 
     /**

@@ -107,6 +107,7 @@ final class GeneratorDeriverTest extends TestCase
             'array suffix'                  => ['int[]', is_array(...), []],
             'array shape'                   => ['array{name: non-empty-string, age: int<0, 150>}', is_array(...), ['name' => 'a', 'age' => 0]],
             'array shape with optional key' => ['array{a: int, b?: string}', is_array(...), ['a' => 0]],
+            'optional numeric-string key'   => ["array{'1'?: int, b?: int}", is_array(...), []],
             'list shape'                    => ['list{int, string}', is_array(...), [0, '']],
             'array shape without keys'      => ['array{int, bool}', is_array(...), [0, false]],
             'nullable type'                 => ['?int', static fn (mixed $value): bool => $value === null || is_int($value), null],
