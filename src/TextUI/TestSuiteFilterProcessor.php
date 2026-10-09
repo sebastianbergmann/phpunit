@@ -41,8 +41,28 @@ final readonly class TestSuiteFilterProcessor
      */
     public function process(Configuration $configuration, TestSuite $suite): void
     {
-        $factory = new Factory;
+        $factory = $this->filter($configuration);
 
+        if ($factory === null) {
+            return;
+        }
+
+        $suite->injectFilter($factory);
+
+        $this->emitter->testSuiteFiltered(
+            Event\TestSuite\TestSuiteBuilder::from($suite),
+        );
+    }
+
+    /**
+     * Returns the filter for the test selection that is configured, null when
+     * no test selection is configured.
+     *
+     * @throws FilterNotConfiguredException
+     * @throws RuntimeException
+     */
+    public function filter(Configuration $configuration): ?Factory
+    {
         if (!$configuration->hasFilter() &&
             !$configuration->hasExcludeFilter() &&
             !$configuration->hasTestIdFilterFile() &&
@@ -52,8 +72,10 @@ final readonly class TestSuiteFilterProcessor
             !$configuration->hasTestsCovering() &&
             !$configuration->hasTestsUsing() &&
             !$configuration->hasTestsRequiringPhpExtension()) {
-            return;
+            return null;
         }
+
+        $factory = new Factory;
 
         if ($configuration->hasExcludeGroups()) {
             $factory->addExcludeGroupFilter(
@@ -134,10 +156,6 @@ final readonly class TestSuiteFilterProcessor
             }
         }
 
-        $suite->injectFilter($factory);
-
-        $this->emitter->testSuiteFiltered(
-            Event\TestSuite\TestSuiteBuilder::from($suite),
-        );
+        return $factory;
     }
 }
