@@ -1,5 +1,10 @@
 --TEST--
 A property whose #[ForAll] closure does not return a ValueGenerator is reported as an error
+--SKIPIF--
+<?php declare(strict_types=1);
+if (version_compare('8.5.0', PHP_VERSION, '>')) {
+    print 'skip: PHP >= 8.5 is required.';
+}
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--no-configuration';
