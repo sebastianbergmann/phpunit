@@ -624,4 +624,54 @@ final class DefaultTestRunHistoryTest extends TestCase
         $this->assertNull($target->counterexample($idB));
         $this->assertSame([3], $target->counterexample($idC));
     }
+
+    public function testMergeWithDoesNotBringBackACounterexampleThatAnotherMergedTestRunHistoryRemoved(): void
+    {
+        $file                 = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-merge-' . uniqid() . '.cache';
+        $this->filesToClean[] = $file;
+
+        $id = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testProperty');
+
+        $seed = new DefaultTestRunHistory($file);
+        $seed->setCounterexample($id, [1]);
+        $seed->persist();
+
+        $removed = new DefaultTestRunHistory($file);
+        $removed->load();
+        $removed->removeCounterexample($id);
+
+        $loaded = new DefaultTestRunHistory($file);
+        $loaded->load();
+
+        $removedFirst = new DefaultTestRunHistory($file);
+        $removedFirst->mergeWith($removed);
+        $removedFirst->mergeWith($loaded);
+
+        $loadedFirst = new DefaultTestRunHistory($file);
+        $loadedFirst->mergeWith($loaded);
+        $loadedFirst->mergeWith($removed);
+
+        $this->assertNull($removedFirst->counterexample($id));
+        $this->assertNull($loadedFirst->counterexample($id));
+    }
+
+    public function testMergeWithTakesOverACounterexampleThatTheOtherTestRunHistoryOnlyLoaded(): void
+    {
+        $file                 = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-merge-' . uniqid() . '.cache';
+        $this->filesToClean[] = $file;
+
+        $id = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testProperty');
+
+        $seed = new DefaultTestRunHistory($file);
+        $seed->setCounterexample($id, [1]);
+        $seed->persist();
+
+        $loaded = new DefaultTestRunHistory($file);
+        $loaded->load();
+
+        $target = new DefaultTestRunHistory($file);
+        $target->mergeWith($loaded);
+
+        $this->assertSame([1], $target->counterexample($id));
+    }
 }
