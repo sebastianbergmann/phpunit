@@ -161,19 +161,21 @@ final class DefaultTestRunHistory implements TestRunHistory
             $this->changedTimes[$id] = true;
         }
 
+        // a counterexample that the other test run history only loaded does
+        // not replace a change that this one knows of, such as the removal of
+        // a counterexample because the property held
         foreach ($other->counterexamples as $id => $choiceSequence) {
-            $this->counterexamples[$id]        = $choiceSequence;
-            $this->changedCounterexamples[$id] = true;
+            if (!isset($other->changedCounterexamples[$id]) && !isset($this->changedCounterexamples[$id])) {
+                $this->counterexamples[$id] = $choiceSequence;
+            }
         }
 
-        // a counterexample that was removed because the property held must
-        // not be brought back by the counterexamples this one still knows
         foreach (array_keys($other->changedCounterexamples) as $id) {
             if (isset($other->counterexamples[$id])) {
-                continue;
+                $this->counterexamples[$id] = $other->counterexamples[$id];
+            } else {
+                unset($this->counterexamples[$id]);
             }
-
-            unset($this->counterexamples[$id]);
 
             $this->changedCounterexamples[$id] = true;
         }
