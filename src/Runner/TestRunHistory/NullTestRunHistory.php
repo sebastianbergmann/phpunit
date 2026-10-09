@@ -40,6 +40,22 @@ final readonly class NullTestRunHistory implements TestRunHistory
         return 0;
     }
 
+    /**
+     * @param list<non-negative-int> $choiceSequence
+     */
+    public function setCounterexample(TestRunHistoryId $id, array $choiceSequence): void
+    {
+    }
+
+    public function removeCounterexample(TestRunHistoryId $id): void
+    {
+    }
+
+    public function counterexample(TestRunHistoryId $id): ?array
+    {
+        return null;
+    }
+
     public function load(): void
     {
     }

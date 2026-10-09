@@ -49,6 +49,26 @@ final class NullTestRunHistoryTest extends TestCase
         $this->assertTrue($cache->status($id)->isUnknown());
     }
 
+    public function testSetCounterexampleIsNoOp(): void
+    {
+        $cache = new NullTestRunHistory;
+        $id    = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testOne');
+
+        $cache->setCounterexample($id, [0, 11]);
+
+        $this->assertNull($cache->counterexample($id));
+    }
+
+    public function testRemoveCounterexampleIsNoOp(): void
+    {
+        $cache = new NullTestRunHistory;
+        $id    = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testOne');
+
+        $cache->removeCounterexample($id);
+
+        $this->assertNull($cache->counterexample($id));
+    }
+
     public function testSetTimeIsNoOp(): void
     {
         $cache = new NullTestRunHistory;
