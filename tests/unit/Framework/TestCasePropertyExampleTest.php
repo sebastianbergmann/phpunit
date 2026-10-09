@@ -17,6 +17,7 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\PropertyBased\ExampleRejectedByAssumptionException;
 use PHPUnit\TestFixture\PropertyBased\Examples\ExampleTest;
+use PHPUnit\TestFixture\PropertyBased\Examples\ExampleWithAssumptionInTearDownTest;
 use PHPUnit\TestFixture\PropertyBased\Examples\ExampleWithFailedAssertionInTearDownTest;
 use PHPUnit\TestFixture\PropertyBased\Examples\ExampleWithFailingTearDownTest;
 use PHPUnit\TestFixture\PropertyBased\Examples\ExampleWithOnNotSuccessfulTestTest;
@@ -123,6 +124,45 @@ final class TestCasePropertyExampleTest extends TestCase
         $this->assertTrue($test->status()->isError());
         $this->assertInstanceOf(RuntimeException::class, $test->throwableThatEndedTheTest());
         $this->assertSame('tearDown', $test->throwableThatEndedTheTest()->getMessage());
+    }
+
+    public function testAnExampleIsRejectedWhenAssumeIsCalledWithFalseInTearDown(): void
+    {
+        $test = new ExampleWithAssumptionInTearDownTest('testPasses');
+
+        $test->setPropertyExample([1]);
+
+        $this->runExample($test);
+
+        $this->assertTrue($test->wasRejectedByAssumption());
+        $this->assertTrue($test->status()->isUnknown());
+        $this->assertNull($test->throwableThatEndedTheTest());
+    }
+
+    public function testAnExampleThatIsRejectedIsNotAnErrorWhenAssumeIsCalledWithFalseInTearDown(): void
+    {
+        $test = new ExampleWithAssumptionInTearDownTest('testRejectsTheExample');
+
+        $test->setPropertyExample([1]);
+
+        $this->runExample($test);
+
+        $this->assertTrue($test->wasRejectedByAssumption());
+        $this->assertTrue($test->status()->isUnknown());
+        $this->assertNull($test->throwableThatEndedTheTest());
+    }
+
+    public function testAnExampleThatFailsIsNotRejectedWhenAssumeIsCalledWithFalseInTearDown(): void
+    {
+        $test = new ExampleWithAssumptionInTearDownTest('testFails');
+
+        $test->setPropertyExample([1]);
+
+        $this->runExample($test);
+
+        $this->assertFalse($test->wasRejectedByAssumption());
+        $this->assertTrue($test->status()->isFailure());
+        $this->assertInstanceOf(AssertionFailedError::class, $test->throwableThatEndedTheTest());
     }
 
     public function testKeepsTheThrowableOfAFailedAssertionInTearDown(): void
