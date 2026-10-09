@@ -9,6 +9,10 @@
  */
 namespace PHPUnit\Framework\PropertyBased\Type;
 
+use function file_put_contents;
+use function sys_get_temp_dir;
+use function uniqid;
+use function unlink;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -81,6 +85,20 @@ final class NameScopeTest extends TestCase
         $this->assertSame(Currency::class, $scope->resolve('Money'));
         $this->assertSame(ClassWithImports::class, $scope->resolve('self'));
         $this->assertSame(ParentClass::class, $scope->resolve('parent'));
+    }
+
+    public function testDoesNotReadTheFileUntilANameIsResolvedAgainstItsNamespaceAndImports(): void
+    {
+        $file  = sys_get_temp_dir() . '/' . uniqid('NameScopeTest_') . '.php';
+        $scope = NameScope::forCallSite($file, 3, null);
+
+        file_put_contents($file, "<?php\nnamespace App;\nfinal class Example {}\n");
+
+        try {
+            $this->assertSame('App\\Money', $scope->resolve('Money'));
+        } finally {
+            unlink($file);
+        }
     }
 
     public function testSelfIsNotResolvedAtACallSiteOutsideOfAClass(): void
