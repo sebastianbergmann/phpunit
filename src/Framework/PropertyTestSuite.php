@@ -33,6 +33,8 @@ use PHPUnit\Framework\PropertyBased\Shrinker;
 use PHPUnit\Framework\PropertyBased\Type\NameScope;
 use PHPUnit\Framework\PropertyBased\ValueGenerator;
 use PHPUnit\Framework\TestRunner\TestRunner;
+use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
+use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\Runner\RandomNumberGeneratorSeeder;
 use PHPUnit\Runner\TestRunHistory\TestRunHistory;
 use PHPUnit\Runner\TestRunHistory\TestRunHistoryId;
@@ -119,6 +121,12 @@ final class PropertyTestSuite extends IterativeTestSuite
     private ?bool $contributedToCodeCoverage = null;
 
     /**
+     * Whether PHPUnit's error handler handles the issues that are triggered
+     * by the property, which it does unless #[WithoutErrorHandler] is used.
+     */
+    private bool $usesErrorHandler = true;
+
+    /**
      * @param non-empty-string       $name
      * @param ?PropertyDefinition    $definition       null when the property is not checked because its requirements are not met
      * @param positive-int           $numberOfExamples
@@ -196,15 +204,19 @@ final class PropertyTestSuite extends IterativeTestSuite
         $this->seed          = RandomNumberGeneratorSeeder::derive(ConfigurationRegistry::get()->randomSeed(), $valueObject->id());
         $this->unusedExample = $test;
 
+        $this->usesErrorHandler = MetadataRegistry::parser()->forMethod($test::class, $test->name())->isWithoutErrorHandler()->isEmpty();
+
         $events = new EventAggregator($emitter, Event\Facade::instance(), $valueObject);
 
         try {
-            [$deriver, $generators] = $this->generators();
+            [[$deriver, $generators], $issues] = $this->handlingIssues($this->generators(...));
         } catch (Throwable $t) {
             $this->report($events, $emitter, null, Event\Code\ThrowableBuilder::from($t), false, null);
 
             return;
         }
+
+        $events->record($issues, true);
 
         $randomizer = new Randomizer(new Xoshiro256StarStar($this->seed));
         $skeleton   = null;
@@ -230,7 +242,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             }
 
             try {
-                $arguments = $this->generateArguments($generators, $source);
+                [$arguments, $issues] = $this->handlingIssues(fn (): array => $this->generateArguments($generators, $source));
             } catch (ExampleRejectedException) {
                 $this->numberOfExamplesRejected++;
 
@@ -265,6 +277,7 @@ final class PropertyTestSuite extends IterativeTestSuite
                 $this->contributedToCodeCoverage = $example->contributedToCodeCoverage();
             }
 
+            $events->record($issues, true);
             $events->record($exampleEvents, true);
 
             // an example that is aborted because the deadline of the test run
@@ -319,7 +332,7 @@ final class PropertyTestSuite extends IterativeTestSuite
                 $source = ChoiceSource::replay($candidate, ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver);
 
                 try {
-                    $arguments = $this->generateArguments($generators, $source);
+                    [$arguments] = $this->handlingIssues(fn (): array => $this->generateArguments($generators, $source));
                 } catch (Throwable) {
                     return null;
                 }
@@ -344,7 +357,7 @@ final class PropertyTestSuite extends IterativeTestSuite
         $source = ChoiceSource::replay($result->sequence(), ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver);
 
         try {
-            $arguments = $this->generateArguments($generators, $source);
+            [$arguments] = $this->handlingIssues(fn (): array => $this->generateArguments($generators, $source));
         } catch (Throwable $t) {
             $this->report($events, $emitter, null, Event\Code\ThrowableBuilder::from($t), false, null);
 
@@ -585,6 +598,45 @@ final class PropertyTestSuite extends IterativeTestSuite
         }
 
         return $generator;
+    }
+
+    /**
+     * Calls $callable, which generates values, with the issues that are
+     * triggered meanwhile handled as issues of the property, and returns what
+     * it returns together with the events for these issues: the issues that
+     * are triggered by the constructor of a class whose objects are generated
+     * or by a closure that is passed to map() or filter(), for instance.
+     *
+     * @template T
+     *
+     * @param Closure(): T $callable
+     *
+     * @throws Throwable
+     *
+     * @return array{0: T, 1: EventCollection}
+     */
+    private function handlingIssues(Closure $callable): array
+    {
+        $test   = $this->test;
+        $facade = Event\Facade::instance();
+
+        assert($test !== null);
+
+        $facade->startCollectingEvents();
+
+        if ($this->usesErrorHandler) {
+            ErrorHandler::instance()->enableForTestNotOnCallStack($test);
+        }
+
+        try {
+            $result = $callable();
+        } finally {
+            ErrorHandler::instance()->disable();
+
+            $issues = $facade->stopCollectingEvents();
+        }
+
+        return [$result, $issues];
     }
 
     /**
