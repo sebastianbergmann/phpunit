@@ -716,28 +716,20 @@ final class PropertyTestSuite extends IterativeTestSuite
     }
 
     /**
-     * Runs an example with its events collected instead of dispatched, the
-     * same way that runCollectingEvents() runs a test, but with the test
-     * runner rather than TestCase::run(), which would resolve dependencies
-     * that a property cannot have.
+     * Runs an example with its events collected instead of dispatched, with
+     * the test runner rather than TestCase::run(), which would resolve
+     * dependencies that a property cannot have.
      *
      * @throws Throwable
      */
     private function runExample(TestCase $example, Event\Emitter $emitter, bool $collectCodeCoverage): EventCollection
     {
-        $facade = Event\Facade::instance();
-
-        $facade->startCollectingEvents();
-
-        try {
-            new TestRunner($emitter)->run($example, $collectCodeCoverage);
-        } catch (Throwable $t) {
-            $facade->forward($facade->stopCollectingEvents());
-
-            throw $t;
-        }
-
-        return $facade->stopCollectingEvents();
+        return $this->collectingEvents(
+            static function () use ($example, $emitter, $collectCodeCoverage): void
+            {
+                new TestRunner($emitter)->run($example, $collectCodeCoverage);
+            },
+        );
     }
 
     private function shouldStop(): bool
