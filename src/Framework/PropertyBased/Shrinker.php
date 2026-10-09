@@ -35,10 +35,10 @@ use Closure;
  * Its passes are deleting spans, deleting blocks of consecutive choices,
  * setting blocks of choices to 0, minimizing individual choices by trying
  * small values and then searching for the smallest value with a binary
- * search, and redistributing pairs of nearby choices by moving as much as
- * possible from the first choice to the second. The passes are repeated
- * until none of them succeeds or the maximum number of attempts has been
- * made.
+ * search, redistributing pairs of nearby choices by moving as much as
+ * possible from the first choice to the second, and lowering equal choices
+ * together. The passes are repeated until none of them succeeds or the
+ * maximum number of attempts has been made.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -107,6 +107,7 @@ final class Shrinker
             $this->zeroBlocks();
             $this->minimizeChoices();
             $this->redistributeChoices();
+            $this->lowerEqualChoices();
         } while ($this->numberOfSteps > $numberOfStepsBefore && !$this->budgetExhausted);
 
         return new ShrinkingResult(
@@ -280,6 +281,132 @@ final class Shrinker
 
             $lower = $middle;
         }
+    }
+
+    /**
+     * A counterexample for a property such as "a list has no duplicates"
+     * cannot be shrunk from [-9, -9] to [0, 0] by minimizing one choice at a
+     * time, because lowering a choice of one of two equal values makes them
+     * unequal. Equal values are generated from spans of equal choices, and
+     * the choices at the same position in these spans are lowered together,
+     * which keeps the values equal while the choice sequence becomes simpler.
+     */
+    private function lowerEqualChoices(): void
+    {
+        $choices        = $this->current->choices();
+        $spansByChoices = [];
+
+        foreach ($this->spansOfCurrentSequence() as $span) {
+            $spansByChoices[implode(',', array_slice($choices, $span->start(), $span->length()))][] = $span;
+        }
+
+        foreach ($spansByChoices as $spans) {
+            if (count($spans) < 2) {
+                continue;
+            }
+
+            for ($offset = 0; $offset < $spans[0]->length() && !$this->budgetExhausted; $offset++) {
+                $indexes = [];
+
+                foreach ($spans as $span) {
+                    $indexes[] = $span->start() + $offset;
+                }
+
+                $this->lowerTogether($indexes);
+            }
+        }
+    }
+
+    /**
+     * Lowers the choices at the indexes, which have to be equal, to the
+     * smallest value that keeps the property falsified: a small value if
+     * possible, otherwise the value that a binary search finds.
+     *
+     * @param non-empty-list<non-negative-int> $indexes
+     */
+    private function lowerTogether(array $indexes): void
+    {
+        // an earlier step may have changed the choices at the indexes
+        $choice = $this->equalChoiceAt($indexes);
+
+        if ($choice === null || $choice === 0) {
+            return;
+        }
+
+        for ($value = 0; $value <= self::LARGEST_SMALL_VALUE && $value < $choice; $value++) {
+            if ($this->consider($this->withChoices($indexes, $value))) {
+                return;
+            }
+        }
+
+        // the largest small value that was tried is a lower bound that does
+        // not falsify the property, and the current choice is an upper bound
+        // that does
+        $lower = self::LARGEST_SMALL_VALUE;
+        $upper = $choice;
+
+        while ($upper - $lower > 1 && !$this->budgetExhausted) {
+            $middle = $lower + intdiv($upper - $lower, 2);
+
+            assert($middle >= 0);
+
+            $candidate = $this->withChoices($indexes, $middle);
+
+            if (!$this->consider($candidate)) {
+                $lower = $middle;
+
+                continue;
+            }
+
+            // the bounds refer to the choices at the indexes, which the
+            // consumed choice sequence may not have
+            if ($this->current->choices() !== $candidate) {
+                return;
+            }
+
+            $upper = $middle;
+        }
+    }
+
+    /**
+     * Returns the value of the choices at the indexes when the current choice
+     * sequence has all of them and they are equal, and null otherwise.
+     *
+     * @param non-empty-list<non-negative-int> $indexes
+     *
+     * @return ?non-negative-int
+     */
+    private function equalChoiceAt(array $indexes): ?int
+    {
+        $choices = $this->current->choices();
+        $choice  = null;
+
+        foreach ($indexes as $index) {
+            if (!isset($choices[$index]) || ($choice !== null && $choices[$index] !== $choice)) {
+                return null;
+            }
+
+            $choice = $choices[$index];
+        }
+
+        return $choice;
+    }
+
+    /**
+     * @param non-empty-list<non-negative-int> $indexes
+     * @param non-negative-int                 $value
+     *
+     * @return list<non-negative-int>
+     */
+    private function withChoices(array $indexes, int $value): array
+    {
+        $choices = $this->current->choices();
+
+        foreach ($indexes as $index) {
+            array_splice($choices, $index, 1, [$value]);
+        }
+
+        return $choices;
     }
 
     /**
