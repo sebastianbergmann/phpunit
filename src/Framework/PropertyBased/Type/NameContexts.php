@@ -9,10 +9,6 @@
  */
 namespace PHPUnit\Framework\PropertyBased\Type;
 
-use function assert;
-use function file_get_contents;
-use function is_file;
-use PhpParser\Error;
 use PhpParser\ErrorHandler\Throwing;
 use PhpParser\NameContext;
 use PhpParser\Node;
@@ -20,7 +16,6 @@ use PhpParser\Node\Stmt\ClassLike;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\NodeVisitorAbstract;
-use PhpParser\ParserFactory;
 
 /**
  * Determines the namespace and the imports that apply to the declaration of
@@ -79,26 +74,10 @@ final class NameContexts
      */
     private static function parse(string $file): array
     {
-        if (!is_file($file)) {
-            return [];
-        }
-
-        $code = file_get_contents($file);
-
-        assert($code !== false);
-
-        try {
-            $nodes = (new ParserFactory)->createForHostVersion()->parse($code);
-        } catch (Error) {
-            // for instance, the file uses syntax of a version of PHP that is
-            // newer than the one that the bundled parser supports
-            return [];
-        }
+        $nodes = SourceFileParser::parse($file);
 
         if ($nodes === null) {
-            // @codeCoverageIgnoreStart
             return [];
-            // @codeCoverageIgnoreEnd
         }
 
         $nameResolver = new NameResolver(null, ['replaceNodes' => false]);
