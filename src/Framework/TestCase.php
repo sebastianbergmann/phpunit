@@ -870,7 +870,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     /**
      * Whether the example of a property was discarded because assume() was
-     * called with false.
+     * called with false. An example that failed or errored afterwards, in
+     * tearDown() or in the destructor of a test double, for instance, was not
+     * discarded.
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
@@ -1528,6 +1530,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         } catch (Throwable $t) {
             $this->status                    = TestStatus::error($t->getMessage());
             $this->throwableThatEndedTheTest = $t;
+            $this->rejectedByAssumption      = false;
 
             $this->emitter->testErrored(
                 $this->valueObjectForEvents(),
@@ -1563,6 +1566,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             if ($testPassed || $e instanceof SkippedWithMessageException || $e instanceof ExampleRejectedByAssumptionException) {
                 $this->status                    = TestStatus::failure($t->getMessage());
                 $this->throwableThatEndedTheTest = $t;
+                $this->rejectedByAssumption      = false;
 
                 $this->emitter->testFailed(
                     $this->valueObjectForEvents(),
@@ -1590,6 +1594,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             if ($testPassed || $e instanceof SkippedWithMessageException || $e instanceof ExampleRejectedByAssumptionException) {
                 $this->status                    = TestStatus::error($t->getMessage());
                 $this->throwableThatEndedTheTest = $t;
+                $this->rejectedByAssumption      = false;
 
                 $this->emitter->testErrored(
                     $this->valueObjectForEvents(),
