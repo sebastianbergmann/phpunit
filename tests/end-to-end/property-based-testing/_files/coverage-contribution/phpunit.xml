@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="../../../../../phpunit.xsd"
+         bootstrap="bootstrap.php"
+         cacheDirectory=".phpunit.cache"
+         requireCoverageContribution="true">
+    <testsuites>
+        <testsuite name="default">
+            <file>tests/PropertyTest.php</file>
+        </testsuite>
+    </testsuites>
+
+    <source>
+        <include>
+            <file>src/Calculator.php</file>
+        </include>
+    </source>
+
+    <coverage driver="PHPUnit\TestFixture\PropertyBasedTesting\CoverageContribution\FakeDriver">
+        <report>
+            <text outputFile="php://stdout"/>
+        </report>
+    </coverage>
+</phpunit>
