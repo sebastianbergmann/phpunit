@@ -26,6 +26,11 @@ final class ExampleWithOnNotSuccessfulTestTest extends TestCase
         $this->fail('failure');
     }
 
+    public function testIsSkipped(int $number): void
+    {
+        $this->markTestSkipped('skipped');
+    }
+
     protected function onNotSuccessfulTest(Throwable $t): never
     {
         self::$onNotSuccessfulTestCalled = true;
