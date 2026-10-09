@@ -27,6 +27,10 @@ use ReflectionMethod;
  * namespace and the imports of the trait's file, while self and static refer
  * to the class that uses the trait.
  *
+ * The file is only parsed when a name is resolved against its namespace and
+ * imports, which most PHPDoc types do not require, so that the files of the
+ * properties are not parsed while the test suite is built.
+ *
  * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -35,7 +39,8 @@ use ReflectionMethod;
  */
 final readonly class NameScope
 {
-    private NameContext $context;
+    private false|string $file;
+    private false|int $line;
 
     /**
      * @var ?class-string
@@ -59,7 +64,8 @@ final readonly class NameScope
         }
 
         return new self(
-            NameContexts::at($method->getFileName(), $method->getStartLine()),
+            $method->getFileName(),
+            $method->getStartLine(),
             $class->getName(),
             $parentClassName,
         );
@@ -84,16 +90,17 @@ final readonly class NameScope
             }
         }
 
-        return new self(NameContexts::at($file, $line), $className, $parentClassName);
+        return new self($file, $line, $className, $parentClassName);
     }
 
     /**
      * @param ?class-string $className
      * @param ?class-string $parentClassName
      */
-    private function __construct(NameContext $context, ?string $className, ?string $parentClassName)
+    private function __construct(false|string $file, false|int $line, ?string $className, ?string $parentClassName)
     {
-        $this->context         = $context;
+        $this->file            = $file;
+        $this->line            = $line;
         $this->className       = $className;
         $this->parentClassName = $parentClassName;
     }
@@ -123,7 +130,7 @@ final readonly class NameScope
             return $this->nonEmpty(ltrim($name, '\\'));
         }
 
-        return $this->nonEmpty($this->context->getResolvedClassName(new Name($name))->toString());
+        return $this->nonEmpty($this->context()->getResolvedClassName(new Name($name))->toString());
     }
 
     /**
@@ -139,13 +146,18 @@ final readonly class NameScope
     public function shortName(string $className): string
     {
         $className = $this->nonEmpty(ltrim($className, '\\'));
-        $shortName = $this->context->getShortName($className, Use_::TYPE_NORMAL);
+        $shortName = $this->context()->getShortName($className, Use_::TYPE_NORMAL);
 
         if ($shortName instanceof FullyQualified) {
             return $this->nonEmpty('\\' . $shortName->toString());
         }
 
         return $this->nonEmpty($shortName->toString());
+    }
+
+    private function context(): NameContext
+    {
+        return NameContexts::at($this->file, $this->line);
     }
 
     /**
