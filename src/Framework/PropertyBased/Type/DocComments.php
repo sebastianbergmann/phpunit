@@ -9,15 +9,10 @@
  */
 namespace PHPUnit\Framework\PropertyBased\Type;
 
-use function assert;
-use function file_get_contents;
 use function ini_get;
-use function is_file;
 use function strtolower;
-use PhpParser\Error;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\NodeFinder;
-use PhpParser\ParserFactory;
 use ReflectionMethod;
 use SebastianBergmann\Environment\Runtime;
 
@@ -117,26 +112,10 @@ final class DocComments
      */
     private static function parse(string $file): array
     {
-        if (!is_file($file)) {
-            return [];
-        }
-
-        $code = file_get_contents($file);
-
-        assert($code !== false);
-
-        try {
-            $nodes = (new ParserFactory)->createForHostVersion()->parse($code);
-        } catch (Error) {
-            // for instance, the file uses syntax of a version of PHP that is
-            // newer than the one that the bundled parser supports
-            return [];
-        }
+        $nodes = SourceFileParser::parse($file);
 
         if ($nodes === null) {
-            // @codeCoverageIgnoreStart
             return [];
-            // @codeCoverageIgnoreEnd
         }
 
         $methods = [];
