@@ -195,19 +195,21 @@ final class TestRunner
         // the code coverage data of an example of a property that passed
         // without performing assertions is held back, because whether the
         // property performed assertions, and therefore whether the data is
-        // appended, is decided on all of its examples
+        // appended, is decided on all of its examples; it is not held back
+        // when the example would be considered risky for lacking code
+        // coverage metadata had it performed assertions
         $holdBackCodeCoverage = $collectCodeCoverage &&
                                 $performedNoAssertions &&
                                 $test->isPropertyExample() &&
-                                $test->status()->isSuccess();
+                                $test->status()->isSuccess() &&
+                                !$this->lacksRequiredCoverageMetadata($test);
 
         if ($performedNoAssertions) {
             $risky = true;
         }
 
         if (!$error && !$failure && !$incomplete && !$skipped && !$risky &&
-            $this->requiresCoverageMetadata($test) &&
-            !$this->hasCoverageMetadata($test::class, $test->name())) {
+            $this->lacksRequiredCoverageMetadata($test)) {
             $this->emitter->testConsideredRisky(
                 $test->valueObjectForEvents(),
                 'This test does not define a code coverage target but is expected to do so',
@@ -310,6 +312,12 @@ final class TestRunner
             $test->valueObjectForEvents(),
             $test->numberOfAssertionsPerformed(),
         );
+    }
+
+    private function lacksRequiredCoverageMetadata(TestCase $test): bool
+    {
+        return $this->requiresCoverageMetadata($test) &&
+               !$this->hasCoverageMetadata($test::class, $test->name());
     }
 
     private function requiresCoverageMetadata(TestCase $test): bool
