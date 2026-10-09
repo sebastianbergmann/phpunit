@@ -29,6 +29,7 @@ use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Metadata\Property;
 use ReflectionClass;
 use ReflectionMethod;
+use Throwable;
 
 /**
  * Validates the metadata of a property before it is checked.
@@ -122,6 +123,19 @@ final readonly class PropertyDefinitionBuilder
                 $deriver->forParameter($parameter);
             } catch (CannotDeriveGeneratorException $e) {
                 throw InvalidPropertyException::because($className, $methodName, lcfirst($e->getMessage()));
+            } catch (Throwable $t) {
+                // for instance, the class of the parameter cannot be loaded
+                // because its parent class does not exist
+                throw InvalidPropertyException::because(
+                    $className,
+                    $methodName,
+                    sprintf(
+                        'cannot derive a generator for parameter $%s, %s was raised: %s',
+                        $name,
+                        $t::class,
+                        $t->getMessage(),
+                    ),
+                );
             }
 
             $parameters[$name] = null;
