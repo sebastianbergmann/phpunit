@@ -1563,9 +1563,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         } catch (Throwable $t) {
             // an example of a property is discarded when assume() is called
             // with false in tearDown() or in an #[After] method, unless the
-            // example did not pass
+            // example did not pass, which its status tells because no
+            // throwable is passed on for a failure of a registered failure
+            // type
             if ($t instanceof ExampleRejectedByAssumptionException) {
-                if ($e === null || $e instanceof ExampleRejectedByAssumptionException) {
+                if ($this->status->isSuccess() || $e instanceof ExampleRejectedByAssumptionException) {
                     $this->status               = TestStatus::unknown();
                     $this->rejectedByAssumption = true;
 
