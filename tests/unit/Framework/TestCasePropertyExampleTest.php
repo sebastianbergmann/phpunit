@@ -166,6 +166,19 @@ final class TestCasePropertyExampleTest extends TestCase
         $this->assertInstanceOf(AssertionFailedError::class, $test->throwableThatEndedTheTest());
     }
 
+    public function testAnExampleThatFailsWithAThrowableOfARegisteredFailureTypeIsNotRejectedWhenAssumeIsCalledWithFalseInTearDown(): void
+    {
+        $test = new ExampleWithAssumptionInTearDownTest('testFailsWithAThrowableOfARegisteredFailureType');
+
+        $test->setPropertyExample([1]);
+
+        $this->runExample($test);
+
+        $this->assertFalse($test->wasRejectedByAssumption());
+        $this->assertTrue($test->status()->isFailure());
+        $this->assertInstanceOf(DomainException::class, $test->throwableThatEndedTheTest());
+    }
+
     public function testKeepsTheThrowableOfAFailedAssertionInTearDown(): void
     {
         $test = new ExampleWithFailedAssertionInTearDownTest('testPasses');
