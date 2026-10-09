@@ -26,7 +26,6 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\ForAll;
 use PHPUnit\Metadata\GeneratorFor;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
-use PHPUnit\Metadata\Property;
 use ReflectionClass;
 use ReflectionMethod;
 use Throwable;
@@ -56,9 +55,7 @@ final readonly class PropertyDefinitionBuilder
     {
         $metadata = MetadataRegistry::parser()->forMethod($className, $methodName);
 
-        $property = $metadata->isProperty()->asArray()[0] ?? null;
-
-        assert($property instanceof Property);
+        assert($metadata->isProperty()->isNotEmpty());
 
         if ($metadata->isDataProvider()->isNotEmpty() ||
             $metadata->isDataProviderClosure()->isNotEmpty() ||
@@ -141,7 +138,7 @@ final readonly class PropertyDefinitionBuilder
             $parameters[$name] = null;
         }
 
-        return new PropertyDefinition($className, $methodName, $property->examples(), $parameters, $registeredGenerators);
+        return new PropertyDefinition($className, $methodName, $parameters, $registeredGenerators);
     }
 
     /**
