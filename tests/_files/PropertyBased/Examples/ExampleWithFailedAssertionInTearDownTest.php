@@ -22,4 +22,9 @@ final class ExampleWithFailedAssertionInTearDownTest extends TestCase
     {
         $this->assertTrue(true);
     }
+
+    public function testRejectsTheExample(int $number): void
+    {
+        $this->assume(false);
+    }
 }

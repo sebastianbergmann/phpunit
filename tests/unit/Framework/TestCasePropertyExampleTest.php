@@ -113,7 +113,7 @@ final class TestCasePropertyExampleTest extends TestCase
         $this->assertTrue($test->wasRejectedByAssumption());
     }
 
-    public function testAnErrorInTearDownIsReportedForAnExampleThatIsRejected(): void
+    public function testAnExampleThatCalledAssumeWithFalseIsNotRejectedWhenTearDownErrors(): void
     {
         $test = new ExampleWithFailingTearDownTest('testRejectsTheExample');
 
@@ -121,10 +121,36 @@ final class TestCasePropertyExampleTest extends TestCase
 
         $this->runExample($test);
 
-        $this->assertTrue($test->wasRejectedByAssumption());
+        $this->assertFalse($test->wasRejectedByAssumption());
         $this->assertTrue($test->status()->isError());
         $this->assertInstanceOf(RuntimeException::class, $test->throwableThatEndedTheTest());
         $this->assertSame('tearDown', $test->throwableThatEndedTheTest()->getMessage());
+    }
+
+    public function testAnExampleThatCalledAssumeWithFalseIsNotRejectedWhenAnAssertionInTearDownFails(): void
+    {
+        $test = new ExampleWithFailedAssertionInTearDownTest('testRejectsTheExample');
+
+        $test->setPropertyExample([1]);
+
+        $this->runExample($test);
+
+        $this->assertFalse($test->wasRejectedByAssumption());
+        $this->assertTrue($test->status()->isFailure());
+        $this->assertInstanceOf(AssertionFailedError::class, $test->throwableThatEndedTheTest());
+        $this->assertSame('tearDown', $test->throwableThatEndedTheTest()->getMessage());
+    }
+
+    public function testAnExampleThatCalledAssumeWithFalseIsNotRejectedWhenTheDestructorOfATestDoubleErrors(): void
+    {
+        $test = $this->example('testRejectsTheExampleAndUsesATestDoubleWhoseDestructorThrows', [1]);
+
+        $this->runExample($test);
+
+        $this->assertFalse($test->wasRejectedByAssumption());
+        $this->assertTrue($test->status()->isError());
+        $this->assertInstanceOf(RuntimeException::class, $test->throwableThatEndedTheTest());
+        $this->assertSame('destructor', $test->throwableThatEndedTheTest()->getMessage());
     }
 
     public function testAnExampleIsRejectedWhenAssumeIsCalledWithFalseInTearDown(): void
