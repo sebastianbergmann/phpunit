@@ -216,21 +216,20 @@ final class PropertyTestSuite extends IterativeTestSuite
         $events = new EventAggregator($emitter, Event\Facade::instance(), $valueObject);
 
         try {
-            [[$deriver, $generators], $issues] = $this->handlingIssues(
+            [$deriver, $generators] = $this->handlingIssues(
                 function (): array
                 {
                     $this->triggerTestCaseContextIssues();
 
                     return $this->generators();
                 },
+                $events,
             );
         } catch (Throwable $t) {
             $this->report($events, $emitter, null, Event\Code\ThrowableBuilder::from($t), false, null);
 
             return;
         }
-
-        $events->record($issues, true);
 
         $randomizer = new Randomizer(new Xoshiro256StarStar($this->seed));
         $skeleton   = null;
@@ -258,7 +257,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             }
 
             try {
-                [$arguments, $issues] = $this->handlingIssues(fn (): array => $this->generateArguments($generators, $source));
+                $arguments = $this->handlingIssues(fn (): array => $this->generateArguments($generators, $source), $events);
             } catch (ExampleRejectedException) {
                 $this->numberOfExamplesRejected++;
 
@@ -293,7 +292,6 @@ final class PropertyTestSuite extends IterativeTestSuite
                 $this->contributedToCodeCoverage = $example->contributedToCodeCoverage();
             }
 
-            $events->record($issues, true);
             $events->record($exampleEvents, true);
 
             // an example that is aborted because the deadline of the test run
@@ -348,7 +346,7 @@ final class PropertyTestSuite extends IterativeTestSuite
                 $source = ChoiceSource::replay($candidate, ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver);
 
                 try {
-                    [$arguments] = $this->handlingIssues(fn (): array => $this->generateArguments($generators, $source));
+                    $arguments = $this->handlingIssues(fn (): array => $this->generateArguments($generators, $source), null);
                 } catch (Throwable) {
                     return null;
                 }
@@ -373,7 +371,7 @@ final class PropertyTestSuite extends IterativeTestSuite
         $source = ChoiceSource::replay($result->sequence(), ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver);
 
         try {
-            [$arguments, $issues] = $this->handlingIssues(fn (): array => $this->generateArguments($generators, $source));
+            $arguments = $this->handlingIssues(fn (): array => $this->generateArguments($generators, $source), $events);
         } catch (Throwable $t) {
             $this->report($events, $emitter, null, Event\Code\ThrowableBuilder::from($t), false, null);
 
@@ -387,7 +385,6 @@ final class PropertyTestSuite extends IterativeTestSuite
         // the issues of the final replay are reported like those of the
         // examples that were checked, the replay being the skeleton does not
         // report them
-        $events->record($issues, true);
         $events->record($replayEvents, true);
 
         $error = null;
@@ -670,9 +667,14 @@ final class PropertyTestSuite extends IterativeTestSuite
     /**
      * Calls $callable, which generates values, with the issues that are
      * triggered meanwhile handled as issues of the property, and returns what
-     * it returns together with the events for these issues: the issues that
-     * are triggered by the constructor of a class whose objects are generated
-     * or by a closure that is passed to map() or filter(), for instance.
+     * it returns: the issues that are triggered by the constructor of a class
+     * whose objects are generated or by a closure that is passed to map() or
+     * filter(), for instance.
+     *
+     * The events for these issues are recorded with $events, also when
+     * $callable raises an exception, because the example is rejected, for
+     * instance. They are not recorded when $events is null, as for a shrinking
+     * attempt.
      *
      * @template T
      *
@@ -680,9 +682,9 @@ final class PropertyTestSuite extends IterativeTestSuite
      *
      * @throws Throwable
      *
-     * @return array{0: T, 1: EventCollection}
+     * @return T
      */
-    private function handlingIssues(Closure $callable): array
+    private function handlingIssues(Closure $callable, ?EventAggregator $events): mixed
     {
         $test   = $this->test;
         $facade = Event\Facade::instance();
@@ -696,14 +698,14 @@ final class PropertyTestSuite extends IterativeTestSuite
         }
 
         try {
-            $result = $callable();
+            return $callable();
         } finally {
             ErrorHandler::instance()->disable();
 
             $issues = $facade->stopCollectingEvents();
-        }
 
-        return [$result, $issues];
+            $events?->record($issues, true);
+        }
     }
 
     /**
