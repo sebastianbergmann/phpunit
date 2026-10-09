@@ -373,7 +373,7 @@ final class PropertyTestSuite extends IterativeTestSuite
         $source = ChoiceSource::replay($result->sequence(), ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver);
 
         try {
-            [$arguments] = $this->handlingIssues(fn (): array => $this->generateArguments($generators, $source));
+            [$arguments, $issues] = $this->handlingIssues(fn (): array => $this->generateArguments($generators, $source));
         } catch (Throwable $t) {
             $this->report($events, $emitter, null, Event\Code\ThrowableBuilder::from($t), false, null);
 
@@ -383,6 +383,12 @@ final class PropertyTestSuite extends IterativeTestSuite
         $counterexample = $this->export($arguments, $source);
         $replay         = $this->example($arguments, true);
         $replayEvents   = $this->runExample($replay, $emitter, false);
+
+        // the issues of the final replay are reported like those of the
+        // examples that were checked, the replay being the skeleton does not
+        // report them
+        $events->record($issues, true);
+        $events->record($replayEvents, true);
 
         $error = null;
 
