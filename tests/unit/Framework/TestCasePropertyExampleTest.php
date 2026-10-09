@@ -47,6 +47,7 @@ final class TestCasePropertyExampleTest extends TestCase
             'unmet expectation for a test double'    => ['testDoesNotMeetTheExpectationForATestDouble', 'failure', ExpectationFailedException::class, 'Countable::count() was expected to be invoked once but was never invoked.'],
             'unmet expectation for the output'       => ['testDoesNotMeetTheExpectationForItsOutput', 'failure', ExpectationFailedException::class, 'Failed asserting that two strings are identical.'],
             'throwable of a registered failure type' => ['testFailsWithAThrowableOfARegisteredFailureType', 'failure', DomainException::class, 'registered'],
+            'exception in destructor of test double' => ['testUsesATestDoubleWhoseDestructorThrows', 'error', RuntimeException::class, 'destructor'],
         ];
     }
 
@@ -135,16 +136,6 @@ final class TestCasePropertyExampleTest extends TestCase
         $this->assertTrue($test->status()->isFailure());
         $this->assertInstanceOf(AssertionFailedError::class, $test->throwableThatEndedTheTest());
         $this->assertSame('tearDown', $test->throwableThatEndedTheTest()->getMessage());
-    }
-
-    public function testKeepsTheThrowableThatIsRaisedWhenATestDoubleIsDestructed(): void
-    {
-        $test = $this->example('testUsesATestDoubleWhoseDestructorThrows', [1]);
-
-        $this->runExample($test);
-
-        $this->assertInstanceOf(RuntimeException::class, $test->throwableThatEndedTheTest());
-        $this->assertSame('destructor', $test->throwableThatEndedTheTest()->getMessage());
     }
 
     public function testAnExampleIsNotRejectedWhenAssumeIsCalledWithTrue(): void
