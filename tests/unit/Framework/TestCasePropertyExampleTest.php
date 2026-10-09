@@ -248,7 +248,7 @@ final class TestCasePropertyExampleTest extends TestCase
         $this->assertFalse(ExampleWithOnNotSuccessfulTestTest::$onNotSuccessfulTestCalled);
     }
 
-    public function testOnNotSuccessfulTestIsCalledForAnExampleThatFails(): void
+    public function testOnNotSuccessfulTestIsNotCalledForAnExampleThatFalsifiesThePropertyWithoutBeingReported(): void
     {
         ExampleWithOnNotSuccessfulTestTest::$onNotSuccessfulTestCalled = false;
 
@@ -259,6 +259,35 @@ final class TestCasePropertyExampleTest extends TestCase
         $this->runExample($test);
 
         $this->assertTrue($test->status()->isFailure());
+        $this->assertInstanceOf(AssertionFailedError::class, $test->throwableThatEndedTheTest());
+        $this->assertFalse(ExampleWithOnNotSuccessfulTestTest::$onNotSuccessfulTestCalled);
+    }
+
+    public function testOnNotSuccessfulTestIsCalledForTheFinalReplayOfTheCounterexample(): void
+    {
+        ExampleWithOnNotSuccessfulTestTest::$onNotSuccessfulTestCalled = false;
+
+        $test = new ExampleWithOnNotSuccessfulTestTest('testFails');
+
+        $test->setPropertyExample([1], true);
+
+        $this->runExample($test);
+
+        $this->assertTrue($test->status()->isFailure());
+        $this->assertTrue(ExampleWithOnNotSuccessfulTestTest::$onNotSuccessfulTestCalled);
+    }
+
+    public function testOnNotSuccessfulTestIsCalledForAnExampleThatIsSkipped(): void
+    {
+        ExampleWithOnNotSuccessfulTestTest::$onNotSuccessfulTestCalled = false;
+
+        $test = new ExampleWithOnNotSuccessfulTestTest('testIsSkipped');
+
+        $test->setPropertyExample([1]);
+
+        $this->runExample($test);
+
+        $this->assertTrue($test->status()->isSkipped());
         $this->assertTrue(ExampleWithOnNotSuccessfulTestTest::$onNotSuccessfulTestCalled);
     }
 

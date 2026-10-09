@@ -373,7 +373,7 @@ final class PropertyTestSuite extends IterativeTestSuite
         }
 
         $counterexample = $this->export($arguments, $source);
-        $replay         = $this->example($arguments);
+        $replay         = $this->example($arguments, true);
         $replayEvents   = $this->runExample($replay, $emitter, false);
 
         $error = null;
@@ -697,8 +697,9 @@ final class PropertyTestSuite extends IterativeTestSuite
 
     /**
      * @param array<non-empty-string, mixed> $arguments
+     * @param bool                           $replayOfCounterexample whether the example is the final replay of the minimal counterexample
      */
-    private function example(array $arguments): TestCase
+    private function example(array $arguments, bool $replayOfCounterexample = false): TestCase
     {
         $example = $this->unusedExample;
 
@@ -710,7 +711,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             $example = ($this->exampleFactory)();
         }
 
-        $example->setPropertyExample(array_values($arguments));
+        $example->setPropertyExample(array_values($arguments), $replayOfCounterexample);
 
         return $example;
     }
