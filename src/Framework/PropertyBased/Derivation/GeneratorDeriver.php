@@ -143,6 +143,22 @@ final class GeneratorDeriver
      */
     private int $numberOfRecursiveReferences = 0;
 
+    /**
+     * The probability that a collection gets another element, which is
+     * PROBABILITY_OF_RECURSION when its elements can contain values of the
+     * generator for the collection, so that the generated values stay small.
+     *
+     * @param bool $recursive whether the generator for the elements refers to a class that is being derived, directly or nested in other types such as a union or a collection, or to the generator for the collection
+     */
+    public static function probabilityOfAnotherElement(bool $recursive): float
+    {
+        if ($recursive) {
+            return self::PROBABILITY_OF_RECURSION;
+        }
+
+        return Repetition::DEFAULT_PROBABILITY_OF_ANOTHER_ELEMENT;
+    }
+
     public function __construct(GeneratorRegistry $registry)
     {
         $this->registry = $registry;
@@ -545,7 +561,7 @@ final class GeneratorDeriver
             $values = $this->forType($arguments[count($arguments) - 1], $scope);
         }
 
-        return new ArrayGenerator($keys, $values, $this->minimumSize($nonEmpty), null, $this->probabilityOfAnotherElement($this->numberOfRecursiveReferences > $numberOfRecursiveReferences));
+        return new ArrayGenerator($keys, $values, $this->minimumSize($nonEmpty), null, self::probabilityOfAnotherElement($this->numberOfRecursiveReferences > $numberOfRecursiveReferences));
     }
 
     /**
@@ -568,7 +584,7 @@ final class GeneratorDeriver
             $elements = $this->forType($arguments[0], $scope);
         }
 
-        return new ListGenerator($elements, $this->minimumSize($nonEmpty), null, $this->probabilityOfAnotherElement($this->numberOfRecursiveReferences > $numberOfRecursiveReferences));
+        return new ListGenerator($elements, $this->minimumSize($nonEmpty), null, self::probabilityOfAnotherElement($this->numberOfRecursiveReferences > $numberOfRecursiveReferences));
     }
 
     /**
@@ -667,18 +683,6 @@ final class GeneratorDeriver
         }
 
         return new NullableGenerator($generator);
-    }
-
-    /**
-     * @param bool $recursive whether the generator for the elements refers to a class that is being derived, directly or nested in other types such as a union or a collection
-     */
-    private function probabilityOfAnotherElement(bool $recursive): float
-    {
-        if ($recursive) {
-            return self::PROBABILITY_OF_RECURSION;
-        }
-
-        return Repetition::DEFAULT_PROBABILITY_OF_ANOTHER_ELEMENT;
     }
 
     /**
