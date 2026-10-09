@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework\TestCase;
 
+use function ob_get_level;
+use function ob_start;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -85,6 +87,79 @@ final class OutputBufferTest extends TestCase
         $this->assertTrue($result->closedCleanly);
         $this->assertSame('captured', $buffer->output());
         $this->assertTrue($buffer->hasUnexpectedOutput());
+    }
+
+    public function testRetainsOutputCapturedBeforeBufferingWasSuspended(): void
+    {
+        $buffer = new OutputBuffer;
+
+        $buffer->start();
+
+        print 'before';
+
+        $buffer->suspend();
+
+        $this->assertSame('before', $buffer->output());
+
+        $buffer->resume();
+
+        print ' after';
+
+        $this->assertSame('before after', $buffer->output());
+
+        $result = $buffer->stop();
+
+        $this->assertTrue($result->closedCleanly);
+        $this->assertSame('before after', $buffer->output());
+    }
+
+    public function testReportsOutputBufferLeftOpenBeforeBufferingWasSuspended(): void
+    {
+        $buffer = new OutputBuffer;
+
+        $buffer->start();
+
+        ob_start();
+
+        $buffer->suspend();
+        $buffer->resume();
+
+        $result = $buffer->stop();
+
+        $this->assertFalse($result->closedCleanly);
+        $this->assertSame('Test code or tested code did not close its own output buffers', $result->riskyMessage);
+    }
+
+    public function testStoppingWhileSuspendedEndsBuffering(): void
+    {
+        $buffer = new OutputBuffer;
+
+        $buffer->start();
+        $buffer->suspend();
+
+        $level = ob_get_level();
+
+        $result = $buffer->stop();
+
+        $buffer->resume();
+
+        $this->assertTrue($result->closedCleanly);
+        $this->assertSame($level, ob_get_level());
+    }
+
+    public function testSuspendingAndResumingAfterBufferingWasStoppedDoesNotRestartBuffering(): void
+    {
+        $buffer = new OutputBuffer;
+
+        $buffer->start();
+        $buffer->stop();
+
+        $level = ob_get_level();
+
+        $buffer->suspend();
+        $buffer->resume();
+
+        $this->assertSame($level, ob_get_level());
     }
 
     public function testHasUnexpectedOutputIsFalseWhenOutputWasExpected(): void
