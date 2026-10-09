@@ -41,6 +41,7 @@ use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\MockObject\Stub\Exception as ExceptionStub;
 use PHPUnit\Framework\MockObject\TestStubBuilder;
 use PHPUnit\Framework\PropertyBased\ExampleRejectedByAssumptionException;
+use PHPUnit\Framework\PropertyBased\Falsification;
 use PHPUnit\Framework\TestCase\CustomRegistrations;
 use PHPUnit\Framework\TestCase\DataSet;
 use PHPUnit\Framework\TestCase\DependencyResolver;
@@ -63,6 +64,7 @@ use PHPUnit\Metadata\Api\HookMethods;
 use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\RandomNumberGeneratorSeeder;
+use PHPUnit\Runner\TimeLimit\TimeLimitExceededException;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use ReflectionMethod;
@@ -115,6 +117,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @var ?list<mixed>
      */
     private ?array $propertyArguments        = null;
+    private bool $replayOfCounterexample     = false;
     private bool $rejectedByAssumption       = false;
     private ?bool $contributedToCodeCoverage = null;
 
@@ -467,6 +470,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         // an example of a property that is rejected by assume() is discarded,
         // it is not a test that was not successful
         if ($e !== null && !$e instanceof ExampleRejectedByAssumptionException) {
+            if ($this->falsifiesPropertyWithoutBeingReported()) {
+                throw $e;
+            }
+
             $this->onNotSuccessfulTest($e);
         }
     }
@@ -839,13 +846,18 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * values of dependencies. The identity of the test does not change, and an
      * example is neither registered as passed nor run in a separate process.
      *
+     * onNotSuccessfulTest() is not called for an example that falsifies the
+     * property, unless the example is the final replay of the minimal
+     * counterexample, whose failure or error is the one that is reported.
+     *
      * @param list<mixed> $arguments
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    final public function setPropertyExample(array $arguments): void
+    final public function setPropertyExample(array $arguments, bool $replayOfCounterexample = false): void
     {
-        $this->propertyArguments = $arguments;
+        $this->propertyArguments      = $arguments;
+        $this->replayOfCounterexample = $replayOfCounterexample;
     }
 
     /**
@@ -1582,6 +1594,21 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         return $e;
+    }
+
+    /**
+     * Whether this is an example of a property that falsifies the property
+     * and whose failure or error is not reported, because the minimal
+     * counterexample is replayed for that: an example that is aborted
+     * because the deadline of the test run has passed does not falsify the
+     * property.
+     */
+    private function falsifiesPropertyWithoutBeingReported(): bool
+    {
+        return $this->isPropertyExample() &&
+               !$this->replayOfCounterexample &&
+               !$this->throwableThatEndedTheTest instanceof TimeLimitExceededException &&
+               Falsification::of($this) !== null;
     }
 
     private function registerAsPassed(): void
