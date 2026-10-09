@@ -30,6 +30,7 @@ use PHPUnit\Event\Test\PrintedUnexpectedOutput;
 use PHPUnit\Event\Test\PropertyFalsified;
 use PHPUnit\TextUI\Output\Compact\Renderer;
 use PHPUnit\TextUI\Output\Printer;
+use PHPUnit\Util\PendingPropertyFalsified;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -48,13 +49,14 @@ final class ProgressPrinter
      * The event that describes how a property was falsified, which is
      * dispatched before the event for its failure or error.
      */
-    private ?PropertyFalsified $propertyFalsified = null;
+    private readonly PendingPropertyFalsified $propertyFalsified;
 
     public function __construct(Printer $printer, Facade $facade, bool $displayUnexpectedOutput)
     {
         $this->printer                 = $printer;
         $this->renderer                = new Renderer($printer);
         $this->displayUnexpectedOutput = $displayUnexpectedOutput;
+        $this->propertyFalsified       = new PendingPropertyFalsified;
 
         $this->registerSubscribers($facade);
     }
@@ -66,7 +68,7 @@ final class ProgressPrinter
 
     public function testPropertyFalsified(PropertyFalsified $event): void
     {
-        $this->propertyFalsified = $event;
+        $this->propertyFalsified->remember($event);
     }
 
     public function testErrored(Errored $event): void
@@ -74,7 +76,7 @@ final class ProgressPrinter
         $this->printError(
             $this->renderer->nameOfTest($event->test()),
             $event->throwable(),
-            $this->propertyFalsifiedFor($event->test()),
+            $this->propertyFalsified->takeFor($event->test()),
         );
     }
 
@@ -83,7 +85,7 @@ final class ProgressPrinter
         $this->printFailure(
             $this->renderer->nameOfTest($event->test()),
             $event->throwable(),
-            $this->propertyFalsifiedFor($event->test()),
+            $this->propertyFalsified->takeFor($event->test()),
         );
     }
 
@@ -163,19 +165,6 @@ final class ProgressPrinter
         $this->renderer->printStackTrace($throwable->stackTrace());
 
         $this->hasPrintedRecords = true;
-    }
-
-    private function propertyFalsifiedFor(Test $test): ?PropertyFalsified
-    {
-        $propertyFalsified = $this->propertyFalsified;
-
-        $this->propertyFalsified = null;
-
-        if ($propertyFalsified === null || $propertyFalsified->test()->id() !== $test->id()) {
-            return null;
-        }
-
-        return $propertyFalsified;
     }
 
     private function registerSubscribers(Facade $facade): void
