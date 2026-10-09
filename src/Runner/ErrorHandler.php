@@ -97,6 +97,14 @@ final class ErrorHandler
      */
     private array $testCaseContextIssues = [];
     private ?string $testCaseContext     = null;
+
+    /**
+     * The test that issues are attributed to while it is not on the call
+     * stack: the issues that were triggered in its test case context before
+     * it ran are reported when it is prepared, which happens outside of the
+     * test case for an example of a property, for instance.
+     */
+    private ?TestMethod $testNotOnCallStack = null;
     private readonly Event\Emitter $emitter;
 
     /**
@@ -211,7 +219,11 @@ final class ErrorHandler
             // @codeCoverageIgnoreEnd
         }
 
-        $test = Event\Code\TestMethodBuilder::fromCallStack();
+        if ($this->testNotOnCallStack !== null) {
+            $test = $this->testNotOnCallStack;
+        } else {
+            $test = Event\Code\TestMethodBuilder::fromCallStack();
+        }
 
         if ($errorNumber === E_USER_DEPRECATED) {
             [$errorFile, $errorLine] = $this->applyDeprecationFrame($errorFile, $errorLine);
@@ -994,28 +1006,33 @@ final class ErrorHandler
 
     private function triggerTestCaseContextIssues(TestCase $test): ?Throwable
     {
-        $testCaseContext = $this->testCaseContext($test::class, $test->name());
+        $testCaseContext          = $this->testCaseContext($test::class, $test->name());
+        $this->testNotOnCallStack = $test->valueObjectForEvents();
 
-        foreach ($this->testCaseContextIssues[$testCaseContext] ?? [] as $issue) {
-            [$errorNumber, $errorString, $errorFile, $errorLine, $errorReportingLevel] = $issue;
+        try {
+            foreach ($this->testCaseContextIssues[$testCaseContext] ?? [] as $issue) {
+                [$errorNumber, $errorString, $errorFile, $errorLine, $errorReportingLevel] = $issue;
 
-            $this->deferredIssueErrorReportingLevel = $errorReportingLevel;
+                $this->deferredIssueErrorReportingLevel = $errorReportingLevel;
 
-            try {
-                $this->__invoke($errorNumber, $errorString, $errorFile, $errorLine);
-            } catch (Throwable $t) {
-                /**
-                 * A previously registered error handler may turn an issue that is
-                 * being forwarded to it into an exception: the exception is control
-                 * flow of the test the issue is attributed to and must not abort
-                 * the test runner.
-                 *
-                 * @see https://github.com/sebastianbergmann/phpunit/issues/6831
-                 */
-                return $t;
-            } finally {
-                $this->deferredIssueErrorReportingLevel = null;
+                try {
+                    $this->__invoke($errorNumber, $errorString, $errorFile, $errorLine);
+                } catch (Throwable $t) {
+                    /**
+                     * A previously registered error handler may turn an issue that is
+                     * being forwarded to it into an exception: the exception is control
+                     * flow of the test the issue is attributed to and must not abort
+                     * the test runner.
+                     *
+                     * @see https://github.com/sebastianbergmann/phpunit/issues/6831
+                     */
+                    return $t;
+                } finally {
+                    $this->deferredIssueErrorReportingLevel = null;
+                }
             }
+        } finally {
+            $this->testNotOnCallStack = null;
         }
 
         return null;
