@@ -113,8 +113,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @var ?list<mixed>
      */
-    private ?array $propertyArguments  = null;
-    private bool $rejectedByAssumption = false;
+    private ?array $propertyArguments        = null;
+    private bool $rejectedByAssumption       = false;
+    private ?bool $contributedToCodeCoverage = null;
 
     /**
      * @var positive-int
@@ -855,6 +856,26 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     final public function wasRejectedByAssumption(): bool
     {
         return $this->rejectedByAssumption;
+    }
+
+    /**
+     * Whether the test executed code for which code coverage is collected,
+     * null when this was not checked because contribution to code coverage
+     * is not required or no code coverage was collected for the test.
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    final public function contributedToCodeCoverage(): ?bool
+    {
+        return $this->contributedToCodeCoverage;
+    }
+
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    final public function setContributedToCodeCoverage(bool $contributedToCodeCoverage): void
+    {
+        $this->contributedToCodeCoverage = $contributedToCodeCoverage;
     }
 
     /**
