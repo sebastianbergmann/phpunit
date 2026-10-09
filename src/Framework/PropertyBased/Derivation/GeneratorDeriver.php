@@ -135,6 +135,14 @@ final class GeneratorDeriver
      */
     private WeakMap $deferred;
 
+    /**
+     * How often the generator of a class that is being derived was referred
+     * to from within the generators for the arguments of its constructor.
+     *
+     * @var non-negative-int
+     */
+    private int $numberOfRecursiveReferences = 0;
+
     public function __construct(GeneratorRegistry $registry)
     {
         $this->registry = $registry;
@@ -181,7 +189,10 @@ final class GeneratorDeriver
     public function forType(Type $type, NameScope $scope): AbstractGenerator
     {
         if ($type instanceof NullableType) {
-            return $this->nullable($this->forType($type->type(), $scope));
+            $numberOfRecursiveReferences = $this->numberOfRecursiveReferences;
+            $generator                   = $this->forType($type->type(), $scope);
+
+            return $this->nullable($generator, $this->numberOfRecursiveReferences > $numberOfRecursiveReferences);
         }
 
         if ($type instanceof UnionType) {
@@ -293,9 +304,10 @@ final class GeneratorDeriver
         }
 
         if (isset($this->classesBeingDerived[$key])) {
+            $this->numberOfRecursiveReferences++;
+
             return new DeferredGenerator(
                 static fn (self $deriver): AbstractGenerator => $deriver->forClass($className),
-                true,
             );
         }
 
@@ -503,7 +515,8 @@ final class GeneratorDeriver
             throw CannotDeriveGeneratorException::invalidTypeArguments($type->asString(), sprintf('%s takes at most a type for its keys and a type for its values', $type->name()));
         }
 
-        $keys = $this->arrayKeys();
+        $numberOfRecursiveReferences = $this->numberOfRecursiveReferences;
+        $keys                        = $this->arrayKeys();
 
         if (count($arguments) === 2) {
             $keys = $this->forType($arguments[0], $scope);
@@ -515,7 +528,7 @@ final class GeneratorDeriver
             $values = $this->forType($arguments[count($arguments) - 1], $scope);
         }
 
-        return new ArrayGenerator($keys, $values, $this->minimumSize($nonEmpty), null, $this->probabilityOfAnotherElement($values));
+        return new ArrayGenerator($keys, $values, $this->minimumSize($nonEmpty), null, $this->probabilityOfAnotherElement($this->numberOfRecursiveReferences > $numberOfRecursiveReferences));
     }
 
     /**
@@ -531,13 +544,14 @@ final class GeneratorDeriver
             throw CannotDeriveGeneratorException::invalidTypeArguments($type->asString(), sprintf('%s takes at most a type for its elements', $type->name()));
         }
 
-        $elements = $this->values();
+        $numberOfRecursiveReferences = $this->numberOfRecursiveReferences;
+        $elements                    = $this->values();
 
         if ($arguments !== []) {
             $elements = $this->forType($arguments[0], $scope);
         }
 
-        return new ListGenerator($elements, $this->minimumSize($nonEmpty), null, $this->probabilityOfAnotherElement($elements));
+        return new ListGenerator($elements, $this->minimumSize($nonEmpty), null, $this->probabilityOfAnotherElement($this->numberOfRecursiveReferences > $numberOfRecursiveReferences));
     }
 
     /**
@@ -590,8 +604,9 @@ final class GeneratorDeriver
      */
     private function union(UnionType $type, NameScope $scope): AbstractGenerator
     {
-        $generators = [];
-        $nullable   = false;
+        $numberOfRecursiveReferences = $this->numberOfRecursiveReferences;
+        $generators                  = [];
+        $nullable                    = false;
 
         foreach ($type->types() as $member) {
             if ($member instanceof NamedType && $member->arguments() === [] && strtolower($member->name()) === 'null') {
@@ -614,7 +629,7 @@ final class GeneratorDeriver
         }
 
         if ($nullable) {
-            return $this->nullable($generator);
+            return $this->nullable($generator, $this->numberOfRecursiveReferences > $numberOfRecursiveReferences);
         }
 
         return $generator;
@@ -624,12 +639,13 @@ final class GeneratorDeriver
      * @template T
      *
      * @param AbstractGenerator<T> $generator
+     * @param bool                 $recursive whether $generator refers to a class that is being derived, directly or nested in other types such as a union or a collection
      *
      * @return AbstractGenerator<?T>
      */
-    private function nullable(AbstractGenerator $generator): AbstractGenerator
+    private function nullable(AbstractGenerator $generator, bool $recursive): AbstractGenerator
     {
-        if ($this->isRecursive($generator)) {
+        if ($recursive) {
             return new NullableGenerator($generator, self::PROBABILITY_OF_RECURSION);
         }
 
@@ -637,23 +653,15 @@ final class GeneratorDeriver
     }
 
     /**
-     * @param AbstractGenerator<mixed> $elements
+     * @param bool $recursive whether the generator for the elements refers to a class that is being derived, directly or nested in other types such as a union or a collection
      */
-    private function probabilityOfAnotherElement(AbstractGenerator $elements): float
+    private function probabilityOfAnotherElement(bool $recursive): float
     {
-        if ($this->isRecursive($elements)) {
+        if ($recursive) {
             return self::PROBABILITY_OF_RECURSION;
         }
 
         return Repetition::DEFAULT_PROBABILITY_OF_ANOTHER_ELEMENT;
-    }
-
-    /**
-     * @param AbstractGenerator<mixed> $generator
-     */
-    private function isRecursive(AbstractGenerator $generator): bool
-    {
-        return $generator instanceof DeferredGenerator && $generator->isRecursive();
     }
 
     /**

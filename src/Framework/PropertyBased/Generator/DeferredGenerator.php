@@ -37,16 +37,13 @@ final readonly class DeferredGenerator extends AbstractGenerator
      * @var Closure(GeneratorDeriver): AbstractGenerator<T>
      */
     private Closure $derive;
-    private bool $recursive;
 
     /**
      * @param Closure(GeneratorDeriver): AbstractGenerator<T> $derive
-     * @param bool                                            $recursive whether it refers to the generator of a class from within the generators for the arguments of the class's constructor
      */
-    public function __construct(Closure $derive, bool $recursive)
+    public function __construct(Closure $derive)
     {
-        $this->derive    = $derive;
-        $this->recursive = $recursive;
+        $this->derive = $derive;
     }
 
     /**
@@ -55,11 +52,6 @@ final readonly class DeferredGenerator extends AbstractGenerator
     public function derive(GeneratorDeriver $deriver): AbstractGenerator
     {
         return ($this->derive)($deriver);
-    }
-
-    public function isRecursive(): bool
-    {
-        return $this->recursive;
     }
 
     protected function generateValue(ChoiceSource $source): mixed
