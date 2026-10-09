@@ -714,21 +714,17 @@ final class ResultPrinter
      */
     private function throwableAsString(Throwable $throwable, ?PropertyFalsified $propertyFalsified): string
     {
+        $buffer = $throwable->asString();
+
         if ($propertyFalsified === null) {
-            return $throwable->asString();
+            return $buffer;
         }
 
-        $buffer = $throwable->description() . PHP_EOL . PropertyFalsifiedToStringMapper::map($propertyFalsified);
+        $description = $throwable->description();
 
-        if ($throwable->stackTrace() !== '') {
-            $buffer .= PHP_EOL . $throwable->stackTrace();
-        }
+        assert(str_starts_with($buffer, $description));
 
-        if ($throwable->hasPrevious()) {
-            $buffer .= PHP_EOL . 'Caused by' . PHP_EOL . $throwable->previous()->asString();
-        }
-
-        return $buffer;
+        return $description . PHP_EOL . PropertyFalsifiedToStringMapper::map($propertyFalsified) . substr($buffer, strlen($description));
     }
 
     private function name(Test $test): string
