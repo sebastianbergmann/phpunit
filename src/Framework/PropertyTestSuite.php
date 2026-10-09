@@ -109,6 +109,12 @@ final class PropertyTestSuite extends IterativeTestSuite
     private int $numberOfExamplesRejected = 0;
 
     /**
+     * Whether no further examples were checked because the test run was
+     * aborted, for instance because its deadline has passed.
+     */
+    private bool $aborted = false;
+
+    /**
      * @var non-negative-int
      */
     private int $numberOfAssertions        = 0;
@@ -228,6 +234,8 @@ final class PropertyTestSuite extends IterativeTestSuite
             }
 
             if ($i > 1 && $this->shouldStop()) {
+                $this->aborted = true;
+
                 break;
             }
 
@@ -467,6 +475,14 @@ final class PropertyTestSuite extends IterativeTestSuite
                 $this->numberOfExamplesChecked,
                 $this->numberOfExamples,
                 $this->numberOfExamplesRejected,
+            );
+        }
+
+        if ($this->aborted) {
+            $messages[] = sprintf(
+                'This property was checked for only %d of %d examples because the test run was aborted',
+                $this->numberOfExamplesChecked,
+                $this->numberOfExamples,
             );
         }
 
