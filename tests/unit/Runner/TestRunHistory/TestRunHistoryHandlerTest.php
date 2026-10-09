@@ -142,6 +142,18 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
         $this->assertNull($cache->counterexample($id));
     }
 
+    public function testPassedDoesNotForgetACounterexampleForATestForWhichNoneWasRemembered(): void
+    {
+        $testRunHistory = $this->createMock(TestRunHistory::class);
+
+        $testRunHistory->method('counterexample')->willReturn(null);
+        $testRunHistory->expects($this->never())->method('removeCounterexample');
+
+        $handler = new TestRunHistoryHandler($testRunHistory, new Facade, false);
+
+        $handler->testPassed(new Passed($this->telemetryInfo(), $this->testValueObject()));
+    }
+
     public function testPassedDoesNotRemoveStatusRecordedInCurrentRun(): void
     {
         $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-test.cache');
