@@ -14,6 +14,7 @@ use function file_get_contents;
 use function ini_get;
 use function is_file;
 use function strtolower;
+use PhpParser\Error;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\NodeFinder;
 use PhpParser\ParserFactory;
@@ -74,7 +75,7 @@ final class DocComments
     /**
      * Returns the doc comment of the method as it is written in the source
      * file that declares it, or null when the method has none there or the
-     * file cannot be read.
+     * file cannot be read or parsed.
      */
     public static function inSourceFile(ReflectionMethod $method): ?string
     {
@@ -124,7 +125,13 @@ final class DocComments
 
         assert($code !== false);
 
-        $nodes = (new ParserFactory)->createForHostVersion()->parse($code);
+        try {
+            $nodes = (new ParserFactory)->createForHostVersion()->parse($code);
+        } catch (Error) {
+            // for instance, the file uses syntax of a version of PHP that is
+            // newer than the one that the bundled parser supports
+            return [];
+        }
 
         if ($nodes === null) {
             // @codeCoverageIgnoreStart

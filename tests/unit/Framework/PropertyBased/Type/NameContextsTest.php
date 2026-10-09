@@ -29,6 +29,14 @@ final class NameContextsTest extends TestCase
         $this->assertSame('Other', $context->getResolvedClassName(new Name('Other'))->toString());
     }
 
+    public function testReturnsTheContextOfTheGlobalNamespaceForAFileThatCannotBeParsed(): void
+    {
+        $context = NameContexts::at(__DIR__ . '/../../../../_files/PropertyBased/NameResolution/CannotBeParsed.php', 14);
+
+        $this->assertNull($context->getNamespace());
+        $this->assertSame('Currency', $context->getResolvedClassName(new Name('Currency'))->toString());
+    }
+
     public function testReturnsTheContextOfTheGlobalNamespaceForALineThatIsNotPartOfADeclaration(): void
     {
         $context = NameContexts::at(__DIR__ . '/../../../../_files/PropertyBased/NameResolution/ClassWithImports.php', 1);
