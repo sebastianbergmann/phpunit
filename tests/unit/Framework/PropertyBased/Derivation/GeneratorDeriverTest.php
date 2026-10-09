@@ -208,6 +208,17 @@ final class GeneratorDeriverTest extends TestCase
     }
 
     /**
+     * @return array<string, array{non-empty-string}>
+     */
+    public static function classThatIsRecursiveThroughAUnionOrANullableTypeProvider(): array
+    {
+        return [
+            'list of a union'         => ['TreeWithUnionChildren'],
+            'list of a nullable type' => ['TreeWithNullableChildren'],
+        ];
+    }
+
+    /**
      * @param Closure(mixed): bool $isValid
      */
     #[DataProvider('typeProvider')]
@@ -315,6 +326,27 @@ final class GeneratorDeriverTest extends TestCase
         $this->assertGreaterThan(0, $withChildren);
     }
 
+    /**
+     * @param non-empty-string $className
+     */
+    #[DataProvider('classThatIsRecursiveThroughAUnionOrANullableTypeProvider')]
+    public function testKeepsObjectsOfClassesThatAreRecursiveThroughAUnionOrANullableTypeSmall(string $className): void
+    {
+        $generator  = $this->derive($className);
+        $randomizer = new Randomizer(new Xoshiro256StarStar(1));
+        $rejected   = 0;
+
+        for ($i = 0; $i < 200; $i++) {
+            try {
+                $generator->generate(ChoiceSource::random($randomizer));
+            } catch (ExampleRejectedException) {
+                $rejected++;
+            }
+        }
+
+        $this->assertLessThan(10, $rejected);
+    }
+
     public function testRejectsTheExampleWhenTooManyObjectsOfTheSameClassAreNested(): void
     {
         $this->expectException(ExampleRejectedException::class);
@@ -353,10 +385,9 @@ final class GeneratorDeriverTest extends TestCase
     public function testDerivesADeferredGeneratorOnlyOnce(): void
     {
         $deriver   = $this->deriver();
-        $generator = new DeferredGenerator(static fn (GeneratorDeriver $deriver): AbstractGenerator => $deriver->forClass(Money::class), false);
+        $generator = new DeferredGenerator(static fn (GeneratorDeriver $deriver): AbstractGenerator => $deriver->forClass(Money::class));
 
         $this->assertSame($deriver->deferred($generator), $deriver->deferred($generator));
-        $this->assertFalse($generator->isRecursive());
     }
 
     /**
