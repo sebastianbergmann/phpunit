@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\PropertyBased\Generator;
 
-use function in_array;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
 use PHPUnit\Framework\PropertyBased\Distribution\BernoulliDistribution;
 
@@ -36,7 +35,7 @@ final readonly class RecordGenerator extends AbstractGenerator
     private array $generators;
 
     /**
-     * @var list<array-key>
+     * @var array<array-key, true>
      */
     private array $optionalKeys;
     private BernoulliDistribution $distribution;
@@ -47,8 +46,16 @@ final readonly class RecordGenerator extends AbstractGenerator
      */
     public function __construct(array $generators, array $optionalKeys = [])
     {
+        // an optional key is used as an array key so that a numeric string
+        // becomes the integer that PHP uses as the key of the record
+        $optional = [];
+
+        foreach ($optionalKeys as $key) {
+            $optional[$key] = true;
+        }
+
         $this->generators   = $generators;
-        $this->optionalKeys = $optionalKeys;
+        $this->optionalKeys = $optional;
         $this->distribution = new BernoulliDistribution(self::PROBABILITY_OF_OPTIONAL_KEY);
     }
 
@@ -57,7 +64,7 @@ final readonly class RecordGenerator extends AbstractGenerator
         $record = [];
 
         foreach ($this->generators as $key => $generator) {
-            if (!in_array($key, $this->optionalKeys, true)) {
+            if (!isset($this->optionalKeys[$key])) {
                 $record[$key] = $generator->generate($source);
 
                 continue;
