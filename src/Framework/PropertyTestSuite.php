@@ -514,7 +514,12 @@ final class PropertyTestSuite extends IterativeTestSuite
             }
 
             if ($generator instanceof Closure) {
-                $generators[$parameterName] = AbstractGenerator::from($generator());
+                $generators[$parameterName] = AbstractGenerator::from(
+                    $this->ensureIsValueGenerator(
+                        $generator(),
+                        sprintf('the closure that is specified with #[ForAll] for parameter $%s', $parameterName),
+                    ),
+                );
 
                 continue;
             }
@@ -537,16 +542,31 @@ final class PropertyTestSuite extends IterativeTestSuite
         assert($this->definition !== null);
 
         $className = $this->definition->className();
-        $generator = new ReflectionMethod($className, $methodName)->invoke(null);
+
+        return $this->ensureIsValueGenerator(
+            new ReflectionMethod($className, $methodName)->invoke(null),
+            sprintf('%s::%s()', $className, $methodName),
+        );
+    }
+
+    /**
+     * @param non-empty-string $source what returned $generator, for the message of the exception
+     *
+     * @throws InvalidPropertyException
+     *
+     * @return ValueGenerator<mixed>
+     */
+    private function ensureIsValueGenerator(mixed $generator, string $source): ValueGenerator
+    {
+        assert($this->definition !== null);
 
         if (!$generator instanceof ValueGenerator) {
             throw InvalidPropertyException::because(
-                $className,
+                $this->definition->className(),
                 $this->definition->methodName(),
                 sprintf(
-                    '%s::%s() does not return a %s',
-                    $className,
-                    $methodName,
+                    '%s does not return a %s',
+                    $source,
                     ValueGenerator::class,
                 ),
             );
