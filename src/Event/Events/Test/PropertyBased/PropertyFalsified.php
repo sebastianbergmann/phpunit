@@ -45,6 +45,7 @@ final readonly class PropertyFalsified implements Event
      */
     private int $numberOfShrinkingSteps;
     private bool $shrinkingBudgetExhausted;
+    private bool $shrinkingInterrupted;
 
     /**
      * @var list<non-negative-int>
@@ -66,7 +67,7 @@ final readonly class PropertyFalsified implements Event
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, array $choiceSequence, array $counterexample)
+    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, array $choiceSequence, array $counterexample)
     {
         $this->telemetryInfo             = $telemetryInfo;
         $this->test                      = $test;
@@ -75,6 +76,7 @@ final readonly class PropertyFalsified implements Event
         $this->numberOfShrinkingAttempts = $numberOfShrinkingAttempts;
         $this->numberOfShrinkingSteps    = $numberOfShrinkingSteps;
         $this->shrinkingBudgetExhausted  = $shrinkingBudgetExhausted;
+        $this->shrinkingInterrupted      = $shrinkingInterrupted;
         $this->choiceSequence            = $choiceSequence;
         $this->counterexample            = $counterexample;
     }
@@ -142,6 +144,16 @@ final readonly class PropertyFalsified implements Event
     }
 
     /**
+     * Whether shrinking was stopped because the test run was aborted, for
+     * instance because its deadline has passed, in which case a simpler
+     * counterexample may exist.
+     */
+    public function shrinkingInterrupted(): bool
+    {
+        return $this->shrinkingInterrupted;
+    }
+
+    /**
      * The choices from which the arguments of the minimal counterexample
      * were generated.
      *
@@ -168,10 +180,14 @@ final readonly class PropertyFalsified implements Event
      */
     public function asString(): string
     {
-        $budget = '';
+        $shrinkingStopped = '';
 
         if ($this->shrinkingBudgetExhausted) {
-            $budget = ', budget exhausted';
+            $shrinkingStopped = ', budget exhausted';
+        }
+
+        if ($this->shrinkingInterrupted) {
+            $shrinkingStopped = ', shrinking interrupted';
         }
 
         $buffer = sprintf(
@@ -181,7 +197,7 @@ final readonly class PropertyFalsified implements Event
             $this->numberOfExamplesChecked,
             $this->numberOfShrinkingSteps,
             $this->numberOfShrinkingAttempts,
-            $budget,
+            $shrinkingStopped,
         );
 
         foreach ($this->counterexample as $parameter => $value) {

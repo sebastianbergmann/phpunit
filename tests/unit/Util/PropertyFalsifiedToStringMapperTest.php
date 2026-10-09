@@ -34,7 +34,7 @@ Property falsified after 2 examples, counterexample shrunk in 17 steps:
 
 EOT,
             PropertyFalsifiedToStringMapper::map(
-                $this->event(2, 40, 17, false, ['money' => 'new Money(amount: 1, currency: Currency::EUR)', 'parts' => '2']),
+                $this->event(2, 40, 17, false, false, ['money' => 'new Money(amount: 1, currency: Currency::EUR)', 'parts' => '2']),
             ),
         );
     }
@@ -48,7 +48,7 @@ Property falsified after 1 example, counterexample shrunk in 1 step:
     $value = 0;
 
 EOT,
-            PropertyFalsifiedToStringMapper::map($this->event(1, 3, 1, false, ['value' => '0'])),
+            PropertyFalsifiedToStringMapper::map($this->event(1, 3, 1, false, false, ['value' => '0'])),
         );
     }
 
@@ -61,7 +61,7 @@ Property falsified after 3 examples with this counterexample:
     $value = -7;
 
 EOT,
-            PropertyFalsifiedToStringMapper::map($this->event(3, 4, 0, false, ['value' => '-7'])),
+            PropertyFalsifiedToStringMapper::map($this->event(3, 4, 0, false, false, ['value' => '-7'])),
         );
     }
 
@@ -76,7 +76,7 @@ Property falsified after 1 example, counterexample shrunk in 2 steps:
     ];
 
 EOT,
-            PropertyFalsifiedToStringMapper::map($this->event(1, 5, 2, false, ['values' => "[\n    0 => 1,\n]"])),
+            PropertyFalsifiedToStringMapper::map($this->event(1, 5, 2, false, false, ['values' => "[\n    0 => 1,\n]"])),
         );
     }
 
@@ -91,7 +91,22 @@ Property falsified after 2 examples, counterexample shrunk in 23 steps:
 Shrinking was stopped after 1000 attempts, a simpler counterexample may exist.
 
 EOT,
-            PropertyFalsifiedToStringMapper::map($this->event(2, 1000, 23, true, ['value' => '5'])),
+            PropertyFalsifiedToStringMapper::map($this->event(2, 1000, 23, true, false, ['value' => '5'])),
+        );
+    }
+
+    public function testStatesThatShrinkingWasStoppedWhenTheTestRunWasAborted(): void
+    {
+        $this->assertStringEqualsStringIgnoringLineEndings(
+            <<<'EOT'
+Property falsified after 2 examples, counterexample shrunk in 3 steps:
+
+    $value = 5;
+
+Shrinking was stopped after 12 attempts because the test run was aborted, a simpler counterexample may exist.
+
+EOT,
+            PropertyFalsifiedToStringMapper::map($this->event(2, 12, 3, false, true, ['value' => '5'])),
         );
     }
 
@@ -99,7 +114,7 @@ EOT,
     {
         $this->assertStringEqualsStringIgnoringLineEndings(
             "Property falsified after 1 example.\n",
-            PropertyFalsifiedToStringMapper::map($this->event(1, 0, 0, false, [])),
+            PropertyFalsifiedToStringMapper::map($this->event(1, 0, 0, false, false, [])),
         );
     }
 
@@ -109,7 +124,7 @@ EOT,
      * @param non-negative-int                $numberOfShrinkingSteps
      * @param array<non-empty-string, string> $counterexample
      */
-    private function event(int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, array $counterexample): PropertyFalsified
+    private function event(int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, array $counterexample): PropertyFalsified
     {
         return new PropertyFalsified(
             $this->telemetryInfo(),
@@ -119,6 +134,7 @@ EOT,
             $numberOfShrinkingAttempts,
             $numberOfShrinkingSteps,
             $shrinkingBudgetExhausted,
+            $shrinkingInterrupted,
             [],
             $counterexample,
         );

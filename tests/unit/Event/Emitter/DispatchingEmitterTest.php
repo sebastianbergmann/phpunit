@@ -1943,7 +1943,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $test = $this->testValueObject();
 
-        $emitter->testPropertyFalsified($test, 1234, 2, 40, 17, true, [0, 2, 1], ['value' => '2']);
+        $emitter->testPropertyFalsified($test, 1234, 2, 40, 17, true, true, [0, 2, 1], ['value' => '2']);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 
@@ -1957,6 +1957,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame(40, $event->numberOfShrinkingAttempts());
         $this->assertSame(17, $event->numberOfShrinkingSteps());
         $this->assertTrue($event->shrinkingBudgetExhausted());
+        $this->assertTrue($event->shrinkingInterrupted());
         $this->assertSame([0, 2, 1], $event->choiceSequence());
         $this->assertSame(['value' => '2'], $event->counterexample());
     }
