@@ -1,5 +1,5 @@
 --TEST--
-No further examples of a property are checked once the deadline of the test run has passed
+No further examples of a property are checked once the deadline of the test run has passed, and the property is considered risky
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--no-configuration';
@@ -27,6 +27,8 @@ Test Suite for Property Started (PHPUnit\TestFixture\PropertyBasedTesting\FastEx
 Test Preparation Started (PHPUnit\TestFixture\PropertyBasedTesting\FastExamplesTest::testHasMoreExamplesThanFitIntoTheTimeLimitOfTheTestRun)
 Test Prepared (PHPUnit\TestFixture\PropertyBasedTesting\FastExamplesTest::testHasMoreExamplesThanFitIntoTheTimeLimitOfTheTestRun)
 Test Passed (PHPUnit\TestFixture\PropertyBasedTesting\FastExamplesTest::testHasMoreExamplesThanFitIntoTheTimeLimitOfTheTestRun)
+Test Considered Risky (PHPUnit\TestFixture\PropertyBasedTesting\FastExamplesTest::testHasMoreExamplesThanFitIntoTheTimeLimitOfTheTestRun)
+This property was checked for only %d of 100000 examples because the test run was aborted
 Test Property Checked (PHPUnit\TestFixture\PropertyBasedTesting\FastExamplesTest::testHasMoreExamplesThanFitIntoTheTimeLimitOfTheTestRun, seed: %d, examples: %d, rejected: 0)
 Test Finished (PHPUnit\TestFixture\PropertyBasedTesting\FastExamplesTest::testHasMoreExamplesThanFitIntoTheTimeLimitOfTheTestRun)
 Test Runner Time Limit Exceeded (1 second)
