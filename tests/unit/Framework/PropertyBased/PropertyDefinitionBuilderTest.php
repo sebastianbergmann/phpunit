@@ -13,6 +13,7 @@ use Closure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\Metadata\Attribute\ForAllClosureTest;
@@ -114,6 +115,7 @@ final class PropertyDefinitionBuilderTest extends TestCase
         $this->assertSame(['small' => 'smallIntegers', 'name' => null, 'money' => null], $definition->parameters());
     }
 
+    #[RequiresPhp('^8.5')]
     public function testTheGeneratorForAParameterMayBeSpecifiedWithAClosure(): void
     {
         $parameters = (new PropertyDefinitionBuilder)->build(ForAllClosureTest::class, 'testOne')->parameters();
