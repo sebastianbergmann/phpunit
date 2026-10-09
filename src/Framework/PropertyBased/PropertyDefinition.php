@@ -13,9 +13,9 @@ use Closure;
 use PHPUnit\Framework\TestCase;
 
 /**
- * A property after its metadata has been validated: the number of examples to
- * check, where the generator for each of its parameters comes from, and the
- * methods of its test case class that are registered with #[GeneratorFor].
+ * A property after its metadata has been validated: where the generator for
+ * each of its parameters comes from, and the methods of its test case class
+ * that are registered with #[GeneratorFor].
  *
  * @immutable
  *
@@ -36,11 +36,6 @@ final readonly class PropertyDefinition
     private string $methodName;
 
     /**
-     * @var ?positive-int
-     */
-    private ?int $examples;
-
-    /**
      * @var array<non-empty-string, null|Closure(): ValueGenerator<mixed>|non-empty-string>
      */
     private array $parameters;
@@ -53,15 +48,13 @@ final readonly class PropertyDefinition
     /**
      * @param class-string<TestCase>                                                          $className
      * @param non-empty-string                                                                $methodName
-     * @param ?positive-int                                                                   $examples
      * @param array<non-empty-string, null|Closure(): ValueGenerator<mixed>|non-empty-string> $parameters           the generators that are specified with #[ForAll] by parameter name, in the order of the parameters, null for the parameters whose generator is derived from their type
      * @param array<class-string, non-empty-string>                                           $registeredGenerators the names of the methods that are registered with #[GeneratorFor] by class name
      */
-    public function __construct(string $className, string $methodName, ?int $examples, array $parameters, array $registeredGenerators)
+    public function __construct(string $className, string $methodName, array $parameters, array $registeredGenerators)
     {
         $this->className            = $className;
         $this->methodName           = $methodName;
-        $this->examples             = $examples;
         $this->parameters           = $parameters;
         $this->registeredGenerators = $registeredGenerators;
     }
@@ -80,16 +73,6 @@ final readonly class PropertyDefinition
     public function methodName(): string
     {
         return $this->methodName;
-    }
-
-    /**
-     * The number of examples to check, or null for the configured default.
-     *
-     * @return ?positive-int
-     */
-    public function examples(): ?int
-    {
-        return $this->examples;
     }
 
     /**

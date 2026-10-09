@@ -111,7 +111,6 @@ final class PropertyDefinitionBuilderTest extends TestCase
 
         $this->assertSame(ValidPropertiesTest::class, $definition->className());
         $this->assertSame('testWithParameters', $definition->methodName());
-        $this->assertSame(50, $definition->examples());
         $this->assertSame(['small' => 'smallIntegers', 'name' => null, 'money' => null], $definition->parameters());
     }
 
@@ -121,11 +120,6 @@ final class PropertyDefinitionBuilderTest extends TestCase
 
         $this->assertArrayHasKey('a', $parameters);
         $this->assertInstanceOf(Closure::class, $parameters['a']);
-    }
-
-    public function testTheNumberOfExamplesIsNullWhenTheConfiguredNumberOfExamplesIsUsed(): void
-    {
-        $this->assertNull((new PropertyDefinitionBuilder)->build(ValidPropertiesTest::class, 'testWithoutParameters')->examples());
     }
 
     public function testAPropertyMayHaveNoParameters(): void
