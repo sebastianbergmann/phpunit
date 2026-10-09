@@ -113,6 +113,12 @@ final class PropertyTestSuite extends IterativeTestSuite
     private bool $doesNotPerformAssertions = false;
 
     /**
+     * Whether one of the examples that were checked contributed to code
+     * coverage, null when this was not checked for any of them.
+     */
+    private ?bool $contributedToCodeCoverage = null;
+
+    /**
      * @param non-empty-string       $name
      * @param ?PropertyDefinition    $definition       null when the property is not checked because its requirements are not met
      * @param positive-int           $numberOfExamples
@@ -253,6 +259,10 @@ final class PropertyTestSuite extends IterativeTestSuite
 
             if ($example->doesNotPerformAssertions()) {
                 $this->doesNotPerformAssertions = true;
+            }
+
+            if ($example->contributedToCodeCoverage() !== null && $this->contributedToCodeCoverage !== true) {
+                $this->contributedToCodeCoverage = $example->contributedToCodeCoverage();
             }
 
             $events->record($exampleEvents, true);
@@ -445,6 +455,10 @@ final class PropertyTestSuite extends IterativeTestSuite
                 $this->numberOfExamples,
                 $this->numberOfExamplesRejected,
             );
+        }
+
+        if ($passed && $this->contributedToCodeCoverage === false) {
+            $messages[] = 'This test does not contribute to code coverage';
         }
 
         if ($passed &&
