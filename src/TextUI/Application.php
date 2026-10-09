@@ -40,6 +40,7 @@ use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Framework\PropertyTestSuite;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\Framework\TestSuiteIterator;
 use PHPUnit\Logging\EventLogger;
 use PHPUnit\Logging\JUnit\JunitXmlLogger;
 use PHPUnit\Logging\OpenTestReporting\CannotOpenUriForWritingException;
@@ -62,6 +63,7 @@ use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\Runner\Extension\ExtensionBootstrapper;
 use PHPUnit\Runner\Extension\ExtensionCapabilities;
 use PHPUnit\Runner\Extension\ExtensionFacade;
+use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\GarbageCollection\GarbageCollectionHandler;
 use PHPUnit\Runner\IssueTriggerResolver\Resolver;
 use PHPUnit\Runner\PhpConfiguration\PhpConfigurationChecker;
@@ -669,7 +671,7 @@ final readonly class Application
 
     private function writeRandomSeedInformation(Printer $printer, Configuration $configuration, TestSuite $testSuite): void
     {
-        if (!$configuration->seedRandomNumberGenerators() && !$this->containsProperty($testSuite)) {
+        if (!$configuration->seedRandomNumberGenerators() && !$this->containsProperty($testSuite, new TestSuiteFilterProcessor($this->emitter)->filter($configuration))) {
             return;
         }
 
@@ -680,14 +682,32 @@ final readonly class Application
         );
     }
 
-    private function containsProperty(TestSuite $testSuite): bool
+    /**
+     * Whether the test suite contains a property that the test selection
+     * selects. The test selection is only applied to the test suite when it is
+     * run, so it is applied here as it is then: to the test that a property
+     * aggregates.
+     */
+    private function containsProperty(TestSuite $testSuite, ?Factory $filter): bool
     {
         foreach ($testSuite->tests() as $test) {
             if ($test instanceof PropertyTestSuite) {
-                return true;
+                if ($filter === null) {
+                    return true;
+                }
+
+                $selected = $filter->factory(new TestSuiteIterator($test), $test);
+
+                $selected->rewind();
+
+                if ($selected->valid()) {
+                    return true;
+                }
+
+                continue;
             }
 
-            if ($test instanceof TestSuite && $this->containsProperty($test)) {
+            if ($test instanceof TestSuite && $this->containsProperty($test, $filter)) {
                 return true;
             }
         }
