@@ -12,6 +12,7 @@ namespace PHPUnit\Framework\PropertyBased\Type;
 use function assert;
 use function file_get_contents;
 use function is_file;
+use PhpParser\Error;
 use PhpParser\ErrorHandler\Throwing;
 use PhpParser\NameContext;
 use PhpParser\Node;
@@ -41,7 +42,7 @@ final class NameContexts
      * Returns the name context that applies to the declaration of the class
      * (or interface, trait, or enumeration) that contains the given line, or
      * the context of the global namespace without imports when the file
-     * cannot be read or no declaration contains the line.
+     * cannot be read or parsed or no declaration contains the line.
      */
     public static function at(false|string $file, false|int $line): NameContext
     {
@@ -86,7 +87,13 @@ final class NameContexts
 
         assert($code !== false);
 
-        $nodes = (new ParserFactory)->createForHostVersion()->parse($code);
+        try {
+            $nodes = (new ParserFactory)->createForHostVersion()->parse($code);
+        } catch (Error) {
+            // for instance, the file uses syntax of a version of PHP that is
+            // newer than the one that the bundled parser supports
+            return [];
+        }
 
         if ($nodes === null) {
             // @codeCoverageIgnoreStart

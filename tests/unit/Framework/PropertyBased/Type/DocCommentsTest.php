@@ -9,6 +9,10 @@
  */
 namespace PHPUnit\Framework\PropertyBased\Type;
 
+use function file_put_contents;
+use function sys_get_temp_dir;
+use function tempnam;
+use function unlink;
 use ArrayObject;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
@@ -68,6 +72,24 @@ final class DocCommentsTest extends TestCase
     {
         $this->assertNull(DocComments::inSourceFile(new ReflectionMethod(ArrayObject::class, 'count')));
         $this->assertNull(DocComments::inSourceFile(new ReflectionMethod(eval('return new class { /** @param int $value */ public function method(int $value): void {} };'), 'method')));
+    }
+
+    public function testAMethodWhoseSourceFileCannotBeParsedHasNoDocCommentInIt(): void
+    {
+        $file = tempnam(sys_get_temp_dir(), 'phpunit');
+
+        file_put_contents($file, '<?php return new class { /** @param int $value */ public function method(int $value): void {} };');
+
+        try {
+            $object = require $file;
+
+            // the source file changes after the class was declared
+            file_put_contents($file, '<?php $value = ;');
+
+            $this->assertNull(DocComments::inSourceFile(new ReflectionMethod($object, 'method')));
+        } finally {
+            unlink($file);
+        }
     }
 
     #[RequiresSetting('opcache.save_comments', '1')]
