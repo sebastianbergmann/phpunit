@@ -211,7 +211,35 @@ final class ShrinkerTest extends TestCase
 
         $this->assertSame(3, $result->numberOfAttempts());
         $this->assertTrue($result->budgetExhausted());
+        $this->assertFalse($result->interrupted());
         $this->assertFalse($original->isSimplerThan($result->sequence()));
+    }
+
+    public function testStopsWithoutCountingFurtherAttemptsWhenItIsInterrupted(): void
+    {
+        $attempts = 0;
+
+        $shrinker = new Shrinker(
+            static function (ChoiceSequence $candidate) use (&$attempts): ?ChoiceSequence
+            {
+                $attempts++;
+
+                return null;
+            },
+            1000,
+            static function () use (&$attempts): bool
+            {
+                return $attempts === 2;
+            },
+        );
+
+        $result = $shrinker->shrink(new ChoiceSequence([3, 9, 27, 81], [new Span(0, 2), new Span(2, 4)]));
+
+        $this->assertSame(2, $attempts);
+        $this->assertSame(2, $result->numberOfAttempts());
+        $this->assertTrue($result->interrupted());
+        $this->assertFalse($result->budgetExhausted());
+        $this->assertSame([3, 9, 27, 81], $result->sequence()->choices());
     }
 
     public function testDoesNotReplayTheSameCandidateTwice(): void

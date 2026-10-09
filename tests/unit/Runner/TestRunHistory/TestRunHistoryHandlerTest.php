@@ -120,7 +120,7 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
         $test = $this->testValueObject();
 
         $handler->testPropertyFalsified(
-            new PropertyFalsified($this->telemetryInfo(), $test, 1234, 2, 3, 1, false, [0, 11], ['a' => '0', 'b' => '11']),
+            new PropertyFalsified($this->telemetryInfo(), $test, 1234, 2, 3, 1, false, false, [0, 11], ['a' => '0', 'b' => '11']),
         );
 
         $this->assertSame([0, 11], $cache->counterexample(TestRunHistoryId::fromTest($test)));
