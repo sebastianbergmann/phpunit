@@ -25,6 +25,7 @@ use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Output\Printer;
 use PHPUnit\Util\Filesystem;
 use ReflectionClass;
+use SebastianBergmann\CodeCoverage\Data\RawCodeCoverageData;
 use SebastianBergmann\CodeCoverage\Driver\Driver;
 use SebastianBergmann\CodeCoverage\Driver\Granularity;
 use SebastianBergmann\CodeCoverage\Driver\Selector;
@@ -41,6 +42,7 @@ use SebastianBergmann\CodeCoverage\Test\Target\TargetCollection;
 use SebastianBergmann\CodeCoverage\Test\Target\ValidationFailure;
 use SebastianBergmann\CodeCoverage\Test\TestSize;
 use SebastianBergmann\CodeCoverage\Test\TestStatus;
+use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use SebastianBergmann\CodeCoverage\Version as CodeCoverageVersion;
 use SebastianBergmann\Comparator\Comparator;
 use SebastianBergmann\Environment\Runtime;
@@ -68,8 +70,20 @@ final class CodeCoverage
     private ?Timer $timer                       = null;
     private bool $requireCoverageContribution   = false;
     private bool $lastTestContributedToCoverage = false;
-    private bool $collectsBranchCoverage        = false;
-    private bool $collectsPathCoverage          = false;
+
+    /**
+     * The code coverage data of the examples of a property that passed
+     * without performing assertions, by the ID of the property: whether it is
+     * appended depends on whether the property as a whole performed
+     * assertions, which is only known once all of its examples were checked.
+     *
+     * @var array<string, list<array{test: TestCase, data: RawCodeCoverageData, time: float, covers: null|false|TargetCollection, uses: ?TargetCollection}>>
+     *
+     * @phpstan-ignore property.internalClass
+     */
+    private array $heldBack              = [];
+    private bool $collectsBranchCoverage = false;
+    private bool $collectsPathCoverage   = false;
     private readonly Emitter $emitter;
 
     public static function instance(): self
@@ -79,6 +93,15 @@ final class CodeCoverage
         }
 
         return self::$instance;
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    public static function unintentionallyCoveredCodeMessage(UnintentionallyCoveredCodeException $e): string
+    {
+        return "This test executed code that is not listed as code to be covered or used:\n" .
+               $e->getMessage();
     }
 
     public function __construct(Emitter $emitter)
@@ -211,23 +234,13 @@ final class CodeCoverage
             return;
         }
 
-        $size = TestSize::Unknown;
-
-        if ($test->size()->isSmall()) {
-            $size = TestSize::Small;
-        } elseif ($test->size()->isMedium()) {
-            $size = TestSize::Medium;
-        } elseif ($test->size()->isLarge()) {
-            $size = TestSize::Large;
-        }
-
         $this->test = $test;
 
         assert($this->codeCoverage !== null);
 
         $this->codeCoverage->start(
             $test->valueObjectForEvents()->id(),
-            $size,
+            $this->sizeOf($test),
         );
 
         $this->collecting = true;
@@ -253,55 +266,118 @@ final class CodeCoverage
             $status = TestStatus::Failure;
         }
 
-        if ($covers instanceof TargetCollection) {
-            $result = $this->codeCoverage->validate($covers);
-
-            if ($result->isFailure()) {
-                assert($result instanceof ValidationFailure);
-
-                $this->emitter->testTriggeredPhpunitWarning(
-                    $this->test->valueObjectForEvents(),
-                    $result->message(),
-                );
-
-                $append = false;
-            }
-        }
-
-        if ($uses instanceof TargetCollection) {
-            $result = $this->codeCoverage->validate($uses);
-
-            if ($result->isFailure()) {
-                assert($result instanceof ValidationFailure);
-
-                $this->emitter->testTriggeredPhpunitWarning(
-                    $this->test->valueObjectForEvents(),
-                    $result->message(),
-                );
-
-                $append = false;
-            }
+        if (!$this->targetsAreValid($this->test, $covers, $uses)) {
+            $append = false;
         }
 
         $rawData = $this->codeCoverage->stop($append, $status, $covers, $uses, $time);
 
         if ($this->requireCoverageContribution) {
-            $this->lastTestContributedToCoverage = false;
-
-            /** @phpstan-ignore method.internalClass */
-            foreach ($rawData->lineCoverage() as $lines) {
-                foreach ($lines as $lineStatus) {
-                    /** @phpstan-ignore classConstant.internalClass */
-                    if ($lineStatus === Driver::LINE_EXECUTED) {
-                        $this->lastTestContributedToCoverage = true;
-
-                        break 2;
-                    }
-                }
-            }
+            $this->lastTestContributedToCoverage = $this->contributes($rawData);
         }
 
         $this->test = null;
+    }
+
+    /**
+     * Stops collecting code coverage data for the current test, an example of
+     * a property that passed without performing assertions, and holds the
+     * data back instead of appending it, see appendHeldBack().
+     */
+    public function stopAndHoldBack(null|false|TargetCollection $covers, ?TargetCollection $uses): void
+    {
+        if (!$this->collecting) {
+            return;
+        }
+
+        assert($this->codeCoverage !== null);
+        assert($this->test !== null);
+
+        $time             = $this->timer()->stop()->asSeconds();
+        $this->collecting = false;
+
+        $this->heldBack[$this->test->valueObjectForEvents()->id()][] = [
+            'test'   => $this->test,
+            'data'   => $this->codeCoverage->stop(false),
+            'time'   => $time,
+            'covers' => $covers,
+            'uses'   => $uses,
+        ];
+
+        $this->test = null;
+    }
+
+    /**
+     * Appends the code coverage data that was held back for the examples of a
+     * property, and returns whether it contributed to code coverage, or null
+     * when that is not checked because contribution to code coverage is not
+     * required or no data was appended.
+     *
+     * The size, status, and time that are recorded for the property are not
+     * changed by this, they are those of the examples that were appended
+     * before.
+     *
+     * @param non-empty-string $id
+     */
+    public function appendHeldBack(string $id): ?bool
+    {
+        assert($this->codeCoverage !== null);
+
+        $heldBack    = $this->heldBack[$id] ?? [];
+        $contributed = null;
+
+        unset($this->heldBack[$id]);
+
+        foreach ($heldBack as $example) {
+            $test = $example['test'];
+
+            if (!$this->targetsAreValid($test, $example['covers'], $example['uses'])) {
+                continue;
+            }
+
+            $tests = $this->codeCoverage->getTests();
+
+            // php-code-coverage only learns the size of a test, which matters
+            // for the check for unintentionally covered code, when it starts
+            // collecting code coverage data for it, so it does that, without
+            // appending the data that is collected meanwhile
+            $this->codeCoverage->start($id, $this->sizeOf($test));
+
+            try {
+                $this->codeCoverage->append($example['data'], $id, true, TestStatus::Success, $example['covers'], $example['uses'], $example['time']);
+            } catch (UnintentionallyCoveredCodeException $e) {
+                $this->emitter->testConsideredRisky(
+                    $test->valueObjectForEvents(),
+                    self::unintentionallyCoveredCodeMessage($e),
+                );
+
+                continue;
+            } catch (CodeCoverageException) {
+                continue;
+            } finally {
+                $this->codeCoverage->stop(false);
+
+                if (isset($tests[$id])) {
+                    $this->codeCoverage->setTests($tests);
+                }
+            }
+
+            if ($this->requireCoverageContribution && $contributed !== true) {
+                $contributed = $this->contributes($example['data']);
+            }
+        }
+
+        return $contributed;
+    }
+
+    /**
+     * Discards the code coverage data that was held back for the examples of a
+     * property, like the data of a test that is considered risky because it
+     * did not perform any assertions.
+     */
+    public function discardHeldBack(string $id): void
+    {
+        unset($this->heldBack[$id]);
     }
 
     public function lastTestContributedToCoverage(): bool
@@ -747,5 +823,71 @@ final class CodeCoverage
         }
 
         return $this->timer;
+    }
+
+    private function sizeOf(TestCase $test): TestSize
+    {
+        if ($test->size()->isSmall()) {
+            return TestSize::Small;
+        }
+
+        if ($test->size()->isMedium()) {
+            return TestSize::Medium;
+        }
+
+        if ($test->size()->isLarge()) {
+            return TestSize::Large;
+        }
+
+        return TestSize::Unknown;
+    }
+
+    /**
+     * Emits a warning for each of the targets that are invalid.
+     */
+    private function targetsAreValid(TestCase $test, null|false|TargetCollection $covers, ?TargetCollection $uses): bool
+    {
+        assert($this->codeCoverage !== null);
+
+        $valid = true;
+
+        foreach ([$covers, $uses] as $targets) {
+            if (!$targets instanceof TargetCollection) {
+                continue;
+            }
+
+            $result = $this->codeCoverage->validate($targets);
+
+            if ($result->isFailure()) {
+                assert($result instanceof ValidationFailure);
+
+                $this->emitter->testTriggeredPhpunitWarning(
+                    $test->valueObjectForEvents(),
+                    $result->message(),
+                );
+
+                $valid = false;
+            }
+        }
+
+        return $valid;
+    }
+
+    /**
+     * @phpstan-ignore parameter.internalClass
+     */
+    private function contributes(RawCodeCoverageData $data): bool
+    {
+        /** @phpstan-ignore method.internalClass */
+        foreach ($data->lineCoverage() as $lines) {
+            foreach ($lines as $lineStatus) {
+                /** @phpstan-ignore classConstant.internalClass */
+                if ($lineStatus === Driver::LINE_EXECUTED) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
