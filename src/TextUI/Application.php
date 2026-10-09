@@ -211,7 +211,7 @@ final readonly class Application
             $testRunHistory = $this->initializeTestRunHistory($configuration);
 
             if ($configuration->controlGarbageCollector()) {
-                new GarbageCollectionHandler(
+                GarbageCollectionHandler::init(
                     EventFacade::instance(),
                     $configuration->numberOfTestsBeforeGarbageCollection(),
                 );
