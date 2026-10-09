@@ -716,35 +716,27 @@ final class PropertyTestSuite extends IterativeTestSuite
     }
 
     /**
-     * Runs an example with its events collected instead of dispatched, the
-     * same way that runCollectingEvents() runs a test, but with the test
-     * runner rather than TestCase::run(), which would resolve dependencies
-     * that a property cannot have. TestCase::run() also emits the
-     * Test\PreparationStarted event of a test, so it is emitted here: like
-     * every test, every example has exactly one sequence of events from
+     * Runs an example with its events collected instead of dispatched, with
+     * the test runner rather than TestCase::run(), which would resolve
+     * dependencies that a property cannot have. TestCase::run() also emits
+     * the Test\PreparationStarted event of a test, so it is emitted here:
+     * like every test, every example has exactly one sequence of events from
      * Test\PreparationStarted to Test\Finished.
      *
      * @throws Throwable
      */
     private function runExample(TestCase $example, Event\Emitter $emitter, bool $collectCodeCoverage): EventCollection
     {
-        $facade = Event\Facade::instance();
+        return $this->collectingEvents(
+            static function () use ($example, $emitter, $collectCodeCoverage): void
+            {
+                $emitter->testPreparationStarted(
+                    $example->valueObjectForEvents(),
+                );
 
-        $facade->startCollectingEvents();
-
-        try {
-            $emitter->testPreparationStarted(
-                $example->valueObjectForEvents(),
-            );
-
-            new TestRunner($emitter)->run($example, $collectCodeCoverage);
-        } catch (Throwable $t) {
-            $facade->forward($facade->stopCollectingEvents());
-
-            throw $t;
-        }
-
-        return $facade->stopCollectingEvents();
+                new TestRunner($emitter)->run($example, $collectCodeCoverage);
+            },
+        );
     }
 
     private function shouldStop(): bool
