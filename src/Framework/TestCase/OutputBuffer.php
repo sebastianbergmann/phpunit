@@ -38,12 +38,14 @@ final class OutputBuffer
     /**
      * @var list<string>
      */
-    private array $expectedStrings      = [];
-    private bool $bufferingActive       = false;
-    private int $bufferingLevel         = 0;
-    private string $bufferingCaptured   = '';
-    private bool $bufferingDestroyed    = false;
-    private bool $retrievedForAssertion = false;
+    private array $expectedStrings                        = [];
+    private bool $bufferingActive                         = false;
+    private int $bufferingLevel                           = 0;
+    private string $bufferingCaptured                     = '';
+    private bool $bufferingDestroyed                      = false;
+    private bool $bufferingSuspended                      = false;
+    private ?OutputBufferStopResult $suspensionStopResult = null;
+    private bool $retrievedForAssertion                   = false;
 
     public function expectRegularExpression(string $expectedRegularExpression): void
     {
@@ -115,7 +117,102 @@ final class OutputBuffer
 
     public function start(): void
     {
-        $this->bufferingCaptured  = '';
+        $this->bufferingCaptured = '';
+
+        $this->startBuffering();
+    }
+
+    public function suspend(): void
+    {
+        if (!$this->bufferingActive) {
+            return;
+        }
+
+        $stopResult = $this->stop();
+
+        if (!$stopResult->closedCleanly) {
+            $this->suspensionStopResult = $stopResult;
+        }
+
+        $this->bufferingSuspended = true;
+    }
+
+    public function resume(): void
+    {
+        if (!$this->bufferingSuspended) {
+            return;
+        }
+
+        $this->bufferingSuspended = false;
+
+        $this->startBuffering();
+    }
+
+    public function stop(): OutputBufferStopResult
+    {
+        if (!$this->bufferingActive) {
+            $this->bufferingSuspended = false;
+
+            return $this->suspensionStopResult ?? new OutputBufferStopResult(true, null);
+        }
+
+        $bufferingLevel = ob_get_level();
+
+        if ($bufferingLevel !== $this->bufferingLevel) {
+            if ($bufferingLevel > $this->bufferingLevel) {
+                $message = 'Test code or tested code did not close its own output buffers';
+            } else {
+                $message = 'Test code or tested code closed output buffers other than its own';
+            }
+
+            while (ob_get_level() >= $this->bufferingLevel) {
+                if (!ob_end_clean()) {
+                    break;
+                }
+            }
+
+            $this->output          = $this->bufferingCaptured;
+            $this->bufferingActive = false;
+            $this->bufferingLevel  = ob_get_level();
+
+            return $this->suspensionStopResult ?? new OutputBufferStopResult(false, $message);
+        }
+
+        $bufferWasSubstituted = $this->bufferingDestroyed;
+
+        ob_end_clean();
+
+        $this->output          = $this->bufferingCaptured;
+        $this->bufferingActive = false;
+        $this->bufferingLevel  = ob_get_level();
+
+        if ($bufferWasSubstituted) {
+            return $this->suspensionStopResult ?? new OutputBufferStopResult(
+                false,
+                'Test code or tested code closed output buffers other than its own',
+            );
+        }
+
+        return $this->suspensionStopResult ?? new OutputBufferStopResult(true, null);
+    }
+
+    /**
+     * @throws Exception
+     * @throws ExpectationFailedException
+     */
+    public function performAssertions(): void
+    {
+        foreach ($this->expectedRegularExpressions as $expectedRegularExpression) {
+            Assert::assertMatchesRegularExpression($expectedRegularExpression, $this->output);
+        }
+
+        foreach ($this->expectedStrings as $expectedString) {
+            Assert::assertSame($expectedString, $this->output);
+        }
+    }
+
+    private function startBuffering(): void
+    {
         $this->bufferingDestroyed = false;
 
         ob_start(function (string $buffer, int $phase): string
@@ -142,62 +239,5 @@ final class OutputBuffer
 
         $this->bufferingActive = true;
         $this->bufferingLevel  = ob_get_level();
-    }
-
-    public function stop(): OutputBufferStopResult
-    {
-        $bufferingLevel = ob_get_level();
-
-        if ($bufferingLevel !== $this->bufferingLevel) {
-            if ($bufferingLevel > $this->bufferingLevel) {
-                $message = 'Test code or tested code did not close its own output buffers';
-            } else {
-                $message = 'Test code or tested code closed output buffers other than its own';
-            }
-
-            while (ob_get_level() >= $this->bufferingLevel) {
-                if (!ob_end_clean()) {
-                    break;
-                }
-            }
-
-            $this->output          = $this->bufferingCaptured;
-            $this->bufferingActive = false;
-            $this->bufferingLevel  = ob_get_level();
-
-            return new OutputBufferStopResult(false, $message);
-        }
-
-        $bufferWasSubstituted = $this->bufferingDestroyed;
-
-        ob_end_clean();
-
-        $this->output          = $this->bufferingCaptured;
-        $this->bufferingActive = false;
-        $this->bufferingLevel  = ob_get_level();
-
-        if ($bufferWasSubstituted) {
-            return new OutputBufferStopResult(
-                false,
-                'Test code or tested code closed output buffers other than its own',
-            );
-        }
-
-        return new OutputBufferStopResult(true, null);
-    }
-
-    /**
-     * @throws Exception
-     * @throws ExpectationFailedException
-     */
-    public function performAssertions(): void
-    {
-        foreach ($this->expectedRegularExpressions as $expectedRegularExpression) {
-            Assert::assertMatchesRegularExpression($expectedRegularExpression, $this->output);
-        }
-
-        foreach ($this->expectedStrings as $expectedString) {
-            Assert::assertSame($expectedString, $this->output);
-        }
     }
 }
