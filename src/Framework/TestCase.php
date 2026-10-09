@@ -920,6 +920,16 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->outputBuffer->expectString($expectedString);
     }
 
+    final protected function suspendOutputBuffering(): void
+    {
+        $this->outputBuffer->suspend();
+    }
+
+    final protected function resumeOutputBuffering(): void
+    {
+        $this->outputBuffer->resume();
+    }
+
     final protected function expectErrorLog(): void
     {
         $this->errorLogCapture->expect();
