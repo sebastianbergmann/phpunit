@@ -16,6 +16,7 @@ use function is_subclass_of;
 use function sprintf;
 use function sys_get_temp_dir;
 use DateTimeImmutable;
+use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\TestCase;
@@ -75,8 +76,11 @@ final class CodeCoverage
      * without performing assertions, by the ID of the property: whether it is
      * appended depends on whether the property as a whole performed
      * assertions, which is only known once all of its examples were checked.
+     * Only what is needed to append the data is kept of an example, not the
+     * example itself, which would keep its arguments, test doubles, and
+     * fixture alive until the property is decided.
      *
-     * @var array<string, list<array{test: TestCase, data: RawCodeCoverageData, time: float, covers: null|false|TargetCollection, uses: ?TargetCollection}>>
+     * @var array<string, list<array{test: Test, size: TestSize, data: RawCodeCoverageData, time: float, covers: null|false|TargetCollection, uses: ?TargetCollection}>>
      *
      * @phpstan-ignore property.internalClass
      */
@@ -265,7 +269,7 @@ final class CodeCoverage
             $status = TestStatus::Failure;
         }
 
-        if (!$this->targetsAreValid($this->test, $covers, $uses)) {
+        if (!$this->targetsAreValid($this->test->valueObjectForEvents(), $covers, $uses)) {
             $append = false;
         }
 
@@ -295,8 +299,11 @@ final class CodeCoverage
         $time             = $this->timer()->stop()->asSeconds();
         $this->collecting = false;
 
-        $this->heldBack[$this->test->valueObjectForEvents()->id()][] = [
-            'test'   => $this->test,
+        $test = $this->test->valueObjectForEvents();
+
+        $this->heldBack[$test->id()][] = [
+            'test'   => $test,
+            'size'   => $this->sizeOf($this->test),
             'data'   => $this->codeCoverage->stop(false),
             'time'   => $time,
             'covers' => $covers,
@@ -340,13 +347,13 @@ final class CodeCoverage
             // for the check for unintentionally covered code, when it starts
             // collecting code coverage data for it, so it does that, without
             // appending the data that is collected meanwhile
-            $this->codeCoverage->start($id, $this->sizeOf($test));
+            $this->codeCoverage->start($id, $example['size']);
 
             try {
                 $this->codeCoverage->append($example['data'], $id, true, TestStatus::Success, $example['covers'], $example['uses'], $example['time']);
             } catch (UnintentionallyCoveredCodeException $e) {
                 $this->emitter->testConsideredRisky(
-                    $test->valueObjectForEvents(),
+                    $test,
                     self::unintentionallyCoveredCodeMessage($e),
                 );
 
@@ -803,7 +810,7 @@ final class CodeCoverage
     /**
      * Emits a warning for each of the targets that are invalid.
      */
-    private function targetsAreValid(TestCase $test, null|false|TargetCollection $covers, ?TargetCollection $uses): bool
+    private function targetsAreValid(Test $test, null|false|TargetCollection $covers, ?TargetCollection $uses): bool
     {
         assert($this->codeCoverage !== null);
 
@@ -820,7 +827,7 @@ final class CodeCoverage
                 assert($result instanceof ValidationFailure);
 
                 $this->emitter->testTriggeredPhpunitWarning(
-                    $test->valueObjectForEvents(),
+                    $test,
                     $result->message(),
                 );
 
