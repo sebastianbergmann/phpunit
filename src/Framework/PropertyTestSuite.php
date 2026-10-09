@@ -215,7 +215,14 @@ final class PropertyTestSuite extends IterativeTestSuite
         $events = new EventAggregator($emitter, Event\Facade::instance(), $valueObject);
 
         try {
-            [[$deriver, $generators], $issues] = $this->handlingIssues($this->generators(...));
+            [[$deriver, $generators], $issues] = $this->handlingIssues(
+                function (): array
+                {
+                    $this->triggerTestCaseContextIssues();
+
+                    return $this->generators();
+                },
+            );
         } catch (Throwable $t) {
             $this->report($events, $emitter, null, Event\Code\ThrowableBuilder::from($t), false, null);
 
@@ -652,6 +659,30 @@ final class PropertyTestSuite extends IterativeTestSuite
         }
 
         return [$result, $issues];
+    }
+
+    /**
+     * Reports the issues that were triggered in the test case context of the
+     * property, while the test suite was built, for instance, once for the
+     * property rather than for each of its examples.
+     *
+     * @throws Throwable when an error handler that was registered before PHPUnit's own turned one of these issues into an exception
+     */
+    private function triggerTestCaseContextIssues(): void
+    {
+        if (!$this->usesErrorHandler) {
+            return;
+        }
+
+        $test = $this->test;
+
+        assert($test !== null);
+
+        $throwable = ErrorHandler::instance()->triggerTestCaseContextIssuesOfProperty($test);
+
+        if ($throwable !== null) {
+            throw $throwable;
+        }
     }
 
     /**

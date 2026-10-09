@@ -1,5 +1,5 @@
 --TEST--
-An issue that is triggered while the generator for a parameter of a property is derived is reported for the property
+An issue that is triggered while the generator for a parameter of a property is derived is reported once for the property, not for each of its examples
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--no-configuration';
@@ -29,7 +29,7 @@ deprecation triggered when the class is loaded
 
 Triggered by:
 
-* PHPUnit\TestFixture\PropertyBasedTesting\IssueTriggeredWhileGeneratorIsDerivedTest::testParameterIsOfClassThatTriggersADeprecationWhenItIsLoaded (3 times)
+* PHPUnit\TestFixture\PropertyBasedTesting\IssueTriggeredWhileGeneratorIsDerivedTest::testParameterIsOfClassThatTriggersADeprecationWhenItIsLoaded
   %sIssueTriggeredWhileGeneratorIsDerivedTest.php:%d
 
 OK, but there were issues!
