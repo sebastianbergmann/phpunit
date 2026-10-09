@@ -22,11 +22,30 @@ use PHPUnit\Event\Facade;
  */
 final class GarbageCollectionHandler
 {
+    private static ?self $instance = null;
     private readonly Emitter $emitter;
     private readonly int $threshold;
     private int $tests = 0;
 
-    public function __construct(Facade $facade, int $threshold)
+    public static function init(Facade $facade, int $threshold): void
+    {
+        self::$instance = new self($facade, $threshold);
+    }
+
+    /**
+     * Counts an example of a property toward the number of tests after which
+     * garbage is collected.
+     *
+     * This is needed because the events of the examples of a property are
+     * collected rather than dispatched, and a test is otherwise only counted
+     * when its Test\Finished event is dispatched.
+     */
+    public static function propertyExampleFinished(): void
+    {
+        self::$instance?->testFinished();
+    }
+
+    private function __construct(Facade $facade, int $threshold)
     {
         $this->emitter   = $facade->emitter();
         $this->threshold = $threshold;
