@@ -9,12 +9,12 @@
  */
 namespace PHPUnit\Framework\PropertyBased;
 
-use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\PropertyBased\EventCollector;
 use PHPUnit\TestFixture\PropertyBased\Falsification\ExampleTest;
 use Throwable;
 
@@ -128,18 +128,18 @@ final class FalsificationTest extends TestCase
 
         $test->setPropertyExample([$argument]);
 
-        $facade = EventFacade::instance();
-
-        $facade->startCollectingEvents();
-
-        try {
-            $test->runLifecycle();
-        } catch (Throwable) {
-            // the lifecycle passes on the throwable that ended the test, which
-            // the assertions of these tests inspect through the test
-        } finally {
-            $facade->stopCollectingEvents();
-        }
+        EventCollector::collect(
+            static function () use ($test): void
+            {
+                try {
+                    $test->runLifecycle();
+                } catch (Throwable) {
+                    // the lifecycle passes on the throwable that ended the
+                    // test, which the assertions of these tests inspect
+                    // through the test
+                }
+            },
+        );
 
         return $test;
     }
