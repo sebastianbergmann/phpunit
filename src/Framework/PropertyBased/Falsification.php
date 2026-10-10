@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\PropertyBased;
 
-use function explode;
 use function sprintf;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\Filter;
@@ -72,7 +71,7 @@ final readonly class Falsification
 
     /**
      * Whether the example falsified the property, without describing how,
-     * which requires formatting the stack trace of the throwable that ended
+     * which requires filtering the stack trace of the throwable that ended
      * the example.
      */
     public static function exampleFalsifies(TestCase $example): bool
@@ -105,9 +104,9 @@ final readonly class Falsification
 
     private static function locationOf(Throwable $throwable): string
     {
-        $frame = explode("\n", Filter::stackTraceFromThrowableAsString($throwable, false))[0];
+        $frame = Filter::firstFrameFromThrowableAsString($throwable, false);
 
-        if ($frame !== '') {
+        if ($frame !== null) {
             return $frame;
         }
 
