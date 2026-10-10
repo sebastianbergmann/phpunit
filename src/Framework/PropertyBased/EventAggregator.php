@@ -46,15 +46,21 @@ use PHPUnit\Event\TestRunner\GarbageCollectionTriggered;
  * Test\Finished is reported for a property: the one of a single example, the
  * skeleton, whose Test\PreparationStarted and Test\Prepared events are
  * replaced with those of the first example, so that the duration of the
- * property covers all of its examples. The issues, the Test\ConsideredRisky
- * events, and the Test\AdditionalInformationProvided events of all examples
- * that were checked are reported within that sequence, those of the skeleton
- * included, and so is the output that they printed, as one
- * Test\PrintedUnexpectedOutput event. The issues of the examples that were
- * rejected are reported as well, and so are the TestRunner\GarbageCollectionTriggered
- * events of all examples, those of the shrinking attempts included. A Test\ConsideredRisky event and an
- * issue of PHPUnit's own are reported once per message, and the number of
- * assertions is the one that is passed in.
+ * property covers all of its examples. The issues and the
+ * Test\ConsideredRisky events of all examples that were checked are reported
+ * within that sequence, those of the skeleton included, and so is the output
+ * that they printed, as one Test\PrintedUnexpectedOutput event. The issues of
+ * the examples that were rejected are reported as well, and so are the
+ * TestRunner\GarbageCollectionTriggered events of all examples, those of the
+ * shrinking attempts included. A Test\ConsideredRisky event and an issue of
+ * PHPUnit's own are reported once per message, and the number of assertions
+ * is the one that is passed in.
+ *
+ * Only the Test\AdditionalInformationProvided events of the skeleton are
+ * reported, and only for a property that did not pass: the additional
+ * information is the one that was provided for the example whose outcome is
+ * reported, the minimal counterexample, for instance. For a property that
+ * passed, it would be the additional information of an arbitrary example.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -69,8 +75,7 @@ final class EventAggregator
     private ?Prepared $prepared                     = null;
 
     /**
-     * The issues, the Test\ConsideredRisky events, the
-     * Test\AdditionalInformationProvided events, and the
+     * The issues, the Test\ConsideredRisky events, and the
      * TestRunner\GarbageCollectionTriggered events of the examples.
      */
     private EventCollection $eventsOfExamples;
@@ -139,7 +144,7 @@ final class EventAggregator
                 continue;
             }
 
-            if ($event instanceof AdditionalInformationProvided || $this->isReportedOncePerProperty($event)) {
+            if ($this->isReportedOncePerProperty($event)) {
                 $this->eventsOfExamples->add($event);
             }
         }
@@ -163,7 +168,7 @@ final class EventAggregator
      *
      * @param ?EventCollection $skeleton           the events of the example whose sequence of events is reported, null when no example ran to its end
      * @param ?Code\Throwable  $error              when not null, replaces the outcome of the skeleton with a Test\Errored event
-     * @param bool             $passed             whether a Test\Passed event is dispatched when the skeleton has no outcome
+     * @param bool             $passed             whether the property passed: a Test\Passed event is dispatched when the skeleton has no outcome, and the additional information of the skeleton is not reported
      * @param ?Closure(): void $beforeOutcome      dispatches events that precede the outcome
      * @param Closure(): void  $beforeFinished     dispatches events that precede the Test\Finished event
      * @param non-negative-int $numberOfAssertions
@@ -199,9 +204,16 @@ final class EventAggregator
 
             // these events were recorded with those of the other examples
             if ($this->isIssue($event) ||
-                $event instanceof AdditionalInformationProvided ||
                 $event instanceof PrintedUnexpectedOutput ||
                 $event instanceof GarbageCollectionTriggered) {
+                continue;
+            }
+
+            if ($event instanceof AdditionalInformationProvided) {
+                if (!$passed) {
+                    $this->forward($event);
+                }
+
                 continue;
             }
 
