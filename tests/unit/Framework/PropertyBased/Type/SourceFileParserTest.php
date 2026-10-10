@@ -9,6 +9,13 @@
  */
 namespace PHPUnit\Framework\PropertyBased\Type;
 
+use const PHP_OS_FAMILY;
+use function chmod;
+use function file_put_contents;
+use function octdec;
+use function sys_get_temp_dir;
+use function tempnam;
+use function unlink;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
@@ -35,6 +42,25 @@ final class SourceFileParserTest extends TestCase
     public function testReturnsNullForAFileThatCannotBeRead(): void
     {
         $this->assertNull(SourceFileParser::parse(__DIR__ . '/does-not-exist.php'));
+    }
+
+    public function testReturnsNullForAFileThatExistsButCannotBeRead(): void
+    {
+        if (PHP_OS_FAMILY === 'Windows') {
+            $this->markTestSkipped('Cannot test this behaviour on Windows');
+        }
+
+        $file = tempnam(sys_get_temp_dir(), 'phpunit');
+
+        file_put_contents($file, '<?php final class Example {}');
+        chmod($file, octdec('0'));
+
+        try {
+            $this->assertNull(SourceFileParser::parse($file));
+        } finally {
+            chmod($file, octdec('600'));
+            unlink($file);
+        }
     }
 
     public function testReturnsNullForAFileThatCannotBeParsed(): void
