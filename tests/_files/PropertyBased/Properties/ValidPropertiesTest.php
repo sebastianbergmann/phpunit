@@ -11,6 +11,7 @@ namespace PHPUnit\TestFixture\PropertyBased\Properties;
 
 use PHPUnit\Framework\Attributes\ForAll;
 use PHPUnit\Framework\Attributes\Property;
+use PHPUnit\Framework\Attributes\RequireClassification;
 use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\Attributes\TestWithJson;
 use PHPUnit\Framework\PropertyBased\Generators;
@@ -51,6 +52,13 @@ final class ValidPropertiesTest extends TestCase
     #[TestWith([3, 'name' => 'three'])]
     #[TestWithJson('[4, "four"]')]
     public function testWithExplicitExamples(#[ForAll('smallIntegers')] int $small, string $name): void
+    {
+    }
+
+    #[Property]
+    #[RequireClassification('negative', 10)]
+    #[RequireClassification('zero', 100)]
+    public function testWithRequiredClassifications(int $value): void
     {
     }
 

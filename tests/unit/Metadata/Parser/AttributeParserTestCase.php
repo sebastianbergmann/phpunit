@@ -23,6 +23,7 @@ use PHPUnit\Metadata\InvalidAttribute;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Property;
 use PHPUnit\Metadata\Repeat;
+use PHPUnit\Metadata\RequireClassification;
 use PHPUnit\Metadata\RequiresEnvironmentVariable;
 use PHPUnit\Metadata\RequiresPhp;
 use PHPUnit\Metadata\RequiresPhpExtension;
@@ -1412,6 +1413,26 @@ abstract class AttributeParserTestCase extends TestCase
 
         $this->assertCount(1, $metadata);
         $this->assertNull($metadata->asArray()[0]->examples());
+    }
+
+    #[TestDox('Parses #[RequireClassification] attributes on method')]
+    public function test_parses_RequireClassification_attributes_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(PropertyTest::class, 'testWithRequiredClassifications')->isRequireClassification();
+
+        $this->assertCount(2, $metadata);
+
+        $first  = $metadata->asArray()[0];
+        $second = $metadata->asArray()[1];
+
+        assert($first instanceof RequireClassification);
+        assert($second instanceof RequireClassification);
+
+        $this->assertTrue($first->isRequireClassification());
+        $this->assertSame('negative', $first->label());
+        $this->assertSame(10.0, $first->minimumPercentage());
+        $this->assertSame('zero', $second->label());
+        $this->assertSame(0.5, $second->minimumPercentage());
     }
 
     public function testWarnsWhenNumberOfExamplesForPropertyIsNotPositive(): void

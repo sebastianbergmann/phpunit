@@ -768,6 +768,12 @@ final class PropertyTestSuite extends IterativeTestSuite
             );
         }
 
+        if ($passed && $this->numberOfExamplesChecked > 0) {
+            foreach ($this->unmetClassificationRequirements() as $message) {
+                $messages[] = $message;
+            }
+        }
+
         // the reasons that concern the property as a whole are decided like
         // those of a test, on all examples that were checked
         $checks  = new RiskyTestChecks(ConfigurationRegistry::get()->reportUselessTests());
@@ -786,6 +792,45 @@ final class PropertyTestSuite extends IterativeTestSuite
         foreach ($reasons as $reason) {
             if ($reason !== null) {
                 $messages[] = $reason;
+            }
+        }
+
+        return $messages;
+    }
+
+    /**
+     * The messages for the labels with which fewer of the generated examples
+     * that were checked were classified than #[RequireClassification]
+     * requires.
+     *
+     * @return list<non-empty-string>
+     */
+    private function unmetClassificationRequirements(): array
+    {
+        if ($this->definition === null) {
+            return [];
+        }
+
+        $messages = [];
+
+        foreach ($this->definition->requiredClassifications() as $requirement) {
+            $numberOfExamples = 0;
+
+            foreach ($this->classifications as $classification) {
+                if ($classification['label'] === $requirement['label']) {
+                    $numberOfExamples = $classification['numberOfExamples'];
+                }
+            }
+
+            $percentage = 100 * $numberOfExamples / $this->numberOfExamplesChecked;
+
+            if ($percentage < $requirement['minimumPercentage']) {
+                $messages[] = sprintf(
+                    'Only %.1f%% of the examples of this property were classified as "%s", but at least %.1f%% are required',
+                    $percentage,
+                    $requirement['label'],
+                    $requirement['minimumPercentage'],
+                );
             }
         }
 

@@ -14,6 +14,7 @@ use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\Attributes\DependsOnClassUsingDeepClone;
 use PHPUnit\Framework\Attributes\ForAll;
 use PHPUnit\Framework\Attributes\Property;
+use PHPUnit\Framework\Attributes\RequireClassification;
 use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\Attributes\TestWithJson;
 use PHPUnit\Framework\PropertyBased\Generators;
@@ -84,6 +85,31 @@ final class InvalidPropertiesTest extends TestCase
     #[TestWith([1], 'one')]
     #[TestWith([2], 'one')]
     public function testWithExplicitExamplesWithTheSameName(int $value): void
+    {
+    }
+
+    #[Property]
+    #[RequireClassification('', 10)]
+    public function testWithRequiredClassificationWithEmptyLabel(int $value): void
+    {
+    }
+
+    #[Property]
+    #[RequireClassification('negative', 0)]
+    public function testWithRequiredClassificationOfZeroPercent(int $value): void
+    {
+    }
+
+    #[Property]
+    #[RequireClassification('negative', 100.5)]
+    public function testWithRequiredClassificationOfMoreThanOneHundredPercent(int $value): void
+    {
+    }
+
+    #[Property]
+    #[RequireClassification('negative', 10)]
+    #[RequireClassification('negative', 20)]
+    public function testWithRequiredClassificationsForTheSameLabel(int $value): void
     {
     }
 
