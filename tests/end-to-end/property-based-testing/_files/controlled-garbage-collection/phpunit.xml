@@ -2,7 +2,7 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="../../../../../phpunit.xsd"
          controlGarbageCollector="true"
-         numberOfTestsBeforeGarbageCollection="2"
+         numberOfTestsBeforeGarbageCollection="3"
 >
     <testsuites>
         <testsuite name="default">
