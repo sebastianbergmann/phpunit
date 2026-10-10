@@ -754,6 +754,42 @@ EOT,
         );
     }
 
+    public function testExpectationThatMethodIsCalledWithNamedParameterCountsAsAssertionWhenMethodHasNoParameterWithThatName(): void
+    {
+        $double = $this->createMock(InterfaceWithMethodThatHasDefaultParameterValues::class);
+
+        $double->expects($this->once())->method('doSomething')->with(c: 7);
+
+        $numberOfAssertionsPerformed = $this->numberOfAssertionsPerformed();
+
+        try {
+            $double->doSomething(7);
+        } catch (ExpectationFailedException) {
+        } finally {
+            $this->resetMockObjects();
+        }
+
+        $this->assertSame($numberOfAssertionsPerformed + 1, $this->numberOfAssertionsPerformed());
+    }
+
+    public function testExpectationThatMethodIsCalledWithNamedParameterCountsAsAssertionWhenParameterWithThatNameIsAlsoConfiguredByPosition(): void
+    {
+        $double = $this->createMock(InterfaceWithMethodThatHasDefaultParameterValues::class);
+
+        $double->expects($this->once())->method('doSomething')->with(7, a: 7);
+
+        $numberOfAssertionsPerformed = $this->numberOfAssertionsPerformed();
+
+        try {
+            $double->doSomething(7);
+        } catch (ExpectationFailedException) {
+        } finally {
+            $this->resetMockObjects();
+        }
+
+        $this->assertSame($numberOfAssertionsPerformed + 1, $this->numberOfAssertionsPerformed());
+    }
+
     public function testExpectationThatMethodIsCalledWithNamedParameterSucceedsWhenVariadicParameterCollectsNamedArgumentWithExpectedValue(): void
     {
         $double = $this->createMock(MethodWIthVariadicVariables::class);

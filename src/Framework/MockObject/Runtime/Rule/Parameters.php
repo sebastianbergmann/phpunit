@@ -207,6 +207,8 @@ final class Parameters implements ParametersRule
 
             if (isset($positions[$key])) {
                 if (isset($parameters[$positions[$key]])) {
+                    $this->incrementAssertionCount();
+
                     throw new ExpectationFailedException(
                         sprintf(
                             'Named parameter $%s overwrites previous argument for invocation %s.',
@@ -222,6 +224,8 @@ final class Parameters implements ParametersRule
             }
 
             if (!$isVariadic) {
+                $this->incrementAssertionCount();
+
                 throw new ExpectationFailedException(
                     sprintf(
                         'Unknown named parameter $%s for invocation %s.',
