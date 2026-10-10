@@ -42,6 +42,10 @@ final readonly class Falsification
      */
     public static function of(TestCase $example): ?self
     {
+        if (!self::exampleFalsifies($example)) {
+            return null;
+        }
+
         $throwable = $example->throwableThatEndedTheTest();
 
         if ($throwable instanceof TimeoutException) {
@@ -49,10 +53,6 @@ final readonly class Falsification
         }
 
         $status = $example->status();
-
-        if (!$status->isFailure() && !$status->isError()) {
-            return null;
-        }
 
         if ($throwable === null) {
             // @codeCoverageIgnoreStart
@@ -68,6 +68,20 @@ final readonly class Falsification
             ),
             false,
         );
+    }
+
+    /**
+     * Whether the example falsified the property, without describing how,
+     * which requires formatting the stack trace of the throwable that ended
+     * the example.
+     */
+    public static function exampleFalsifies(TestCase $example): bool
+    {
+        if ($example->throwableThatEndedTheTest() instanceof TimeoutException) {
+            return true;
+        }
+
+        return $example->status()->isFailure() || $example->status()->isError();
     }
 
     private function __construct(string $signature, bool $timeout)
