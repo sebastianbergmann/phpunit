@@ -9,15 +9,21 @@
  */
 namespace PHPUnit\Framework\PropertyBased;
 
+use function array_keys;
 use Closure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RequiresPhp;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\PropertyBased\Derivation\GeneratorDeriver;
+use PHPUnit\Framework\PropertyBased\Derivation\GeneratorRegistry;
+use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\Metadata\Attribute\ForAllClosureTest;
+use PHPUnit\TestFixture\PropertyBased\Derivation\Customer;
 use PHPUnit\TestFixture\PropertyBased\Derivation\EmailAddress;
+use PHPUnit\TestFixture\PropertyBased\Derivation\ExampleEmailAddress;
 use PHPUnit\TestFixture\PropertyBased\Properties\DuplicateGeneratorForTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\DuplicateGeneratorForWithLeadingBackslashTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\GeneratorForUnknownClassTest;
@@ -25,6 +31,8 @@ use PHPUnit\TestFixture\PropertyBased\Properties\InvalidPropertiesTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\NonStaticGeneratorForTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\PropertyInSubclassTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\ValidPropertiesTest;
+use Random\Engine\Xoshiro256StarStar;
+use Random\Randomizer;
 
 #[CoversClass(PropertyDefinitionBuilder::class)]
 #[CoversClass(PropertyDefinition::class)]
@@ -120,7 +128,13 @@ final class PropertyDefinitionBuilderTest extends TestCase
 
         $this->assertSame(ValidPropertiesTest::class, $definition->className());
         $this->assertSame('testWithParameters', $definition->methodName());
-        $this->assertSame(['small' => 'smallIntegers', 'name' => null, 'money' => null], $definition->parameters());
+
+        $parameters = $definition->parameters();
+
+        $this->assertSame(['small', 'name', 'money'], array_keys($parameters));
+        $this->assertSame('smallIntegers', $parameters['small']);
+        $this->assertInstanceOf(AbstractGenerator::class, $parameters['name']);
+        $this->assertInstanceOf(AbstractGenerator::class, $parameters['money']);
     }
 
     #[RequiresPhp('^8.5')]
@@ -153,12 +167,25 @@ final class PropertyDefinitionBuilderTest extends TestCase
         );
     }
 
-    public function testTheTypesOfParametersMayRequireRegisteredGenerators(): void
+    public function testTheGeneratorsThatAreDerivedFromTypesUseTheRegisteredGeneratorsOfTheDeriverOfTheChoiceSource(): void
     {
-        $this->assertSame(
-            ['customer' => null, 'emailAddress' => null],
-            (new PropertyDefinitionBuilder)->build(ValidPropertiesTest::class, 'testWithRegisteredGenerator')->parameters(),
+        $parameters = (new PropertyDefinitionBuilder)->build(ValidPropertiesTest::class, 'testWithRegisteredGenerator')->parameters();
+
+        $this->assertInstanceOf(AbstractGenerator::class, $parameters['customer']);
+        $this->assertInstanceOf(AbstractGenerator::class, $parameters['emailAddress']);
+
+        $emailAddress = new ExampleEmailAddress;
+        $source       = ChoiceSource::random(
+            new Randomizer(new Xoshiro256StarStar(1234)),
+            ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES,
+            new GeneratorDeriver(GeneratorRegistry::from([EmailAddress::class => Generators::constant($emailAddress)])),
         );
+
+        $customer = $parameters['customer']->generate($source);
+
+        $this->assertInstanceOf(Customer::class, $customer);
+        $this->assertSame($emailAddress, $customer->emailAddress());
+        $this->assertSame($emailAddress, $parameters['emailAddress']->generate($source));
     }
 
     /**
