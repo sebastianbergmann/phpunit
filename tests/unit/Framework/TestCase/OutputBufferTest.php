@@ -153,6 +153,26 @@ final class OutputBufferTest extends TestCase
         $this->assertSame('Test code or tested code did not close its own output buffers', $result->riskyMessage);
     }
 
+    public function testStartingBufferingDiscardsProblemFoundWhenBufferingWasSuspendedPreviously(): void
+    {
+        $buffer = new OutputBuffer;
+
+        $buffer->start();
+
+        ob_start();
+
+        $buffer->suspend();
+        $buffer->resume();
+        $buffer->stop();
+
+        $buffer->start();
+
+        $result = $buffer->stop();
+
+        $this->assertTrue($result->closedCleanly);
+        $this->assertNull($result->riskyMessage);
+    }
+
     public function testStoppingWhileSuspendedEndsBuffering(): void
     {
         $buffer = new OutputBuffer;

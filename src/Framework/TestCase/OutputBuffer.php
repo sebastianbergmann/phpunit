@@ -117,7 +117,9 @@ final class OutputBuffer
 
     public function start(): void
     {
-        $this->bufferingCaptured = '';
+        $this->bufferingCaptured    = '';
+        $this->bufferingSuspended   = false;
+        $this->suspensionStopResult = null;
 
         $this->startBuffering();
     }
