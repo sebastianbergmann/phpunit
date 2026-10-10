@@ -50,7 +50,24 @@ final class FalsificationTest extends TestCase
     #[DataProvider('nonFalsifyingExampleProvider')]
     public function testExampleThatNeitherFailsNorErrorsDoesNotFalsifyTheProperty(string $methodName): void
     {
-        $this->assertNull(Falsification::of($this->example($methodName, 1)));
+        $example = $this->example($methodName, 1);
+
+        $this->assertNull(Falsification::of($example));
+        $this->assertFalse(Falsification::exampleFalsifies($example));
+    }
+
+    /**
+     * @param non-empty-string $methodName
+     */
+    #[DataProvider('falsifyingExampleProvider')]
+    public function testExampleThatFailsOrErrorsFalsifiesTheProperty(string $methodName): void
+    {
+        $this->assertTrue(Falsification::exampleFalsifies($this->example($methodName, 1)));
+    }
+
+    public function testExampleThatExceedsItsTimeLimitFalsifiesTheProperty(): void
+    {
+        $this->assertTrue(Falsification::exampleFalsifies($this->example('testExceedsItsTimeLimit', 1)));
     }
 
     /**
