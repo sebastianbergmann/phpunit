@@ -250,6 +250,11 @@ final class Generators
      * generated values stay small. A generator that is derived from the type
      * of a parameter does this on its own.
      *
+     * When $unique is true, no element of a list equals another one. Objects
+     * are equal when they are of the same class and assertEquals() considers
+     * them equal, other values when they are identical. The example is rejected when
+     * $elements does not generate enough different values for $minimumSize.
+     *
      * @template T
      *
      * @param ValueGenerator<T> $elements
@@ -259,11 +264,11 @@ final class Generators
      *
      * @return ValueGenerator<list<T>>
      */
-    public static function lists(ValueGenerator $elements, int $minimumSize = 0, ?int $maximumSize = null, bool $recursive = false): ValueGenerator
+    public static function lists(ValueGenerator $elements, int $minimumSize = 0, ?int $maximumSize = null, bool $recursive = false, bool $unique = false): ValueGenerator
     {
         self::ensureValidSize('size', $minimumSize, $maximumSize);
 
-        return new ListGenerator(AbstractGenerator::from($elements), $minimumSize, $maximumSize, GeneratorDeriver::probabilityOfAnotherElement($recursive));
+        return new ListGenerator(AbstractGenerator::from($elements), $minimumSize, $maximumSize, GeneratorDeriver::probabilityOfAnotherElement($recursive), $unique);
     }
 
     /**
