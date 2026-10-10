@@ -79,8 +79,6 @@ final class TestRunner
     }
 
     /**
-     * @param bool $collectCodeCoverage whether code coverage is collected for the test, if it is collected at all: it is not for the shrinking attempts and the final replay of a property, for instance
-     *
      * @throws \PHPUnit\Framework\Exception
      * @throws \PHPUnit\Util\Exception
      * @throws \SebastianBergmann\Template\InvalidArgumentException
@@ -90,7 +88,7 @@ final class TestRunner
      * @throws ProcessIsolationException
      * @throws UnintentionallyCoveredCodeException
      */
-    public function run(TestCase $test, bool $collectCodeCoverage = true): void
+    public function run(TestCase $test): void
     {
         if (new ProcessIsolation($this->emitter)->shouldBeUsedFor($test)) {
             new SeparateProcessTestRunner($this->emitter)->run($test);
@@ -101,7 +99,31 @@ final class TestRunner
         try {
             ShutdownHandler::setMessage(sprintf('Fatal error: Premature end of PHP process when running %s.', $test->toString()));
 
-            $this->runInProcess($test, $collectCodeCoverage);
+            $this->runInProcess($test, false, true);
+        } finally {
+            ShutdownHandler::resetMessage();
+        }
+    }
+
+    /**
+     * Runs an example of a property, in the process that runs the property.
+     * Whether the property is risky for the assertions that its examples
+     * performed, for their contribution to code coverage, or because one of
+     * them exceeded its time limit, is decided on all of its examples rather
+     * than on this one.
+     *
+     * @param bool $collectCodeCoverage whether code coverage is collected for the example, if it is collected at all: it is not for the shrinking attempts and the final replay of the minimal counterexample
+     *
+     * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws UnintentionallyCoveredCodeException
+     */
+    public function runExampleOfProperty(TestCase $example, bool $collectCodeCoverage): void
+    {
+        try {
+            ShutdownHandler::setMessage(sprintf('Fatal error: Premature end of PHP process when running %s.', $example->toString()));
+
+            $this->runInProcess($example, true, $collectCodeCoverage);
         } finally {
             ShutdownHandler::resetMessage();
         }
@@ -112,7 +134,7 @@ final class TestRunner
      * @throws InvalidArgumentException
      * @throws UnintentionallyCoveredCodeException
      */
-    private function runInProcess(TestCase $test, bool $collectCodeCoverageForTest): void
+    private function runInProcess(TestCase $test, bool $exampleOfProperty, bool $collectCodeCoverageForTest): void
     {
         Assert::resetCount();
 
@@ -182,7 +204,7 @@ final class TestRunner
 
             if ($this->canTimeLimitBeEnforced() &&
                 $this->shouldTimeLimitBeEnforced($test)) {
-                $risky = $this->runTestWithTimeout($test);
+                $risky = $this->runTestWithTimeout($test, $exampleOfProperty);
             } else {
                 $test->runLifecycle();
             }
@@ -228,7 +250,7 @@ final class TestRunner
         // coverage metadata had it performed assertions
         $holdBackCodeCoverage = $collectCodeCoverage &&
                                 $riskyBecauseOfNoAssertions !== null &&
-                                $test->isPropertyExample() &&
+                                $exampleOfProperty &&
                                 $test->status()->isSuccess() &&
                                 !$this->lacksRequiredCoverageMetadata($test);
 
@@ -284,7 +306,7 @@ final class TestRunner
 
                 // whether a property contributes to code coverage is decided
                 // on all of its examples
-                if ($riskyBecauseOfNoContribution !== null && !$test->isPropertyExample()) {
+                if ($riskyBecauseOfNoContribution !== null && !$exampleOfProperty) {
                     $this->emitter->testConsideredRisky(
                         $test->valueObjectForEvents(),
                         $riskyBecauseOfNoContribution,
@@ -301,7 +323,7 @@ final class TestRunner
             !$failure &&
             !$incomplete &&
             !$skipped &&
-            !$test->isPropertyExample() &&
+            !$exampleOfProperty &&
             $riskyBecauseOfNoAssertions !== null) {
             $this->emitter->testConsideredRisky(
                 $test->valueObjectForEvents(),
@@ -314,7 +336,7 @@ final class TestRunner
             $test->doesNotPerformAssertions(),
         );
 
-        if (!$test->isPropertyExample() && $riskyBecauseOfUnexpectedAssertions !== null) {
+        if (!$exampleOfProperty && $riskyBecauseOfUnexpectedAssertions !== null) {
             $this->emitter->testConsideredRisky(
                 $test->valueObjectForEvents(),
                 $riskyBecauseOfUnexpectedAssertions,
@@ -408,7 +430,7 @@ final class TestRunner
     /**
      * @throws Throwable
      */
-    private function runTestWithTimeout(TestCase $test): bool
+    private function runTestWithTimeout(TestCase $test, bool $exampleOfProperty): bool
     {
         $_timeout = $this->configuration->defaultTimeLimit();
         $testSize = $test->size();
@@ -426,7 +448,7 @@ final class TestRunner
         } catch (TimeoutException) {
             // an example of a property that exceeds its time limit falsifies
             // the property, which is reported as an error
-            if (!$test->isPropertyExample()) {
+            if (!$exampleOfProperty) {
                 $this->emitter->testConsideredRisky(
                     $test->valueObjectForEvents(),
                     sprintf(
