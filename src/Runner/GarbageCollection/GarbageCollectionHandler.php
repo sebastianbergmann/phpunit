@@ -79,6 +79,12 @@ final class GarbageCollectionHandler
             return;
         }
 
+        // the collected events of a test are forwarded, if at all, before the
+        // next test runs, so the tests that are still remembered when a test
+        // whose events were not collected has finished, an attempt that was
+        // retried, for instance, will not have a Test\Finished event dispatched
+        $this->countedWhileEventsWereCollected = [];
+
         $this->count();
     }
 
