@@ -23,6 +23,7 @@ use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\Finished;
+use PHPUnit\Event\Test\MockObjectCreated;
 use PHPUnit\Event\Test\Passed;
 use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PreparationStarted;
@@ -37,6 +38,7 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\TestFixture\PropertyBased\EventCollector;
 use ReflectionClass;
+use stdClass;
 
 #[CoversClass(EventAggregator::class)]
 #[Small]
@@ -47,12 +49,12 @@ final class EventAggregatorTest extends AbstractEventTestCase
     public function testReportsTheEventsOfTheSkeletonWithThePreparationOfTheFirstExample(): void
     {
         $first  = $this->passedExample();
-        $second = $this->passedExample(new AdditionalInformationProvided($this->telemetryInfo(), $this->testValueObject(), 'information'));
+        $second = $this->passedExample(new MockObjectCreated($this->telemetryInfo(), stdClass::class));
 
         $events = $this->dispatch([[$first, true], [$second, true]], $second, null, true, null, 2);
 
         $this->assertSame(
-            ['PreparationStarted', 'Prepared', 'AdditionalInformationProvided: information', 'Passed', 'PropertyChecked', 'Finished: 2'],
+            ['PreparationStarted', 'Prepared', 'MockObjectCreated', 'Passed', 'PropertyChecked', 'Finished: 2'],
             $this->describe($events),
         );
 
@@ -141,24 +143,43 @@ final class EventAggregatorTest extends AbstractEventTestCase
         );
     }
 
-    public function testReportsTheAdditionalInformationOfAllCheckedExamplesOnceTheSkeletonIsPrepared(): void
+    public function testReportsOnlyTheAdditionalInformationOfTheSkeletonForAPropertyThatDidNotPass(): void
     {
-        $first    = $this->passedExample($this->additionalInformation('first'));
+        $checked  = $this->passedExample($this->additionalInformation('checked'));
         $rejected = $this->example($this->preparationStarted(), $this->prepared(), $this->additionalInformation('rejected'), $this->finished(0));
-        $second   = $this->passedExample($this->additionalInformation('second'));
+        $replay   = $this->example(
+            $this->preparationStarted(),
+            $this->prepared(),
+            $this->additionalInformation('counterexample'),
+            new Failed($this->telemetryInfo(), $this->testValueObject(), ThrowableBuilder::from(new Exception('failure')), null),
+            $this->finished(1),
+        );
 
-        $events = $this->dispatch([[$first, true], [$rejected, false], [$second, true]], $second, null, true, null, 2);
+        $events = $this->dispatch([[$checked, true], [$rejected, false], [$replay, true]], $replay, null, false, $this->emitPropertyFalsified(...), 2);
 
         $this->assertSame(
             [
                 'PreparationStarted',
                 'Prepared',
-                'AdditionalInformationProvided: first',
-                'AdditionalInformationProvided: second',
-                'Passed',
+                'AdditionalInformationProvided: counterexample',
+                'PropertyFalsified',
+                'Failed',
                 'PropertyChecked',
                 'Finished: 2',
             ],
+            $this->describe($events),
+        );
+    }
+
+    public function testDoesNotReportAdditionalInformationForAPropertyThatPassed(): void
+    {
+        $first  = $this->passedExample($this->additionalInformation('first'));
+        $second = $this->passedExample($this->additionalInformation('second'));
+
+        $events = $this->dispatch([[$first, true], [$second, true]], $second, null, true, null, 2);
+
+        $this->assertSame(
+            ['PreparationStarted', 'Prepared', 'Passed', 'PropertyChecked', 'Finished: 2'],
             $this->describe($events),
         );
     }
