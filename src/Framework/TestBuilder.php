@@ -599,19 +599,36 @@ final readonly class TestBuilder
      */
     private function shouldTestMethodBeRunInSeparateProcess(string $className, string $methodName): bool
     {
-        $class = $className;
-
-        do {
-            if (MetadataRegistry::parser()->forClass($class)->isRunTestsInSeparateProcesses()->isNotEmpty()) {
-                return true;
-            }
-        } while (($class = get_parent_class($class)) !== false);
+        if ($this->classThatRunsTestsInSeparateProcesses($className) !== null) {
+            return true;
+        }
 
         if (MetadataRegistry::parser()->forMethod($className, $methodName)->isRunInSeparateProcess()->isNotEmpty()) {
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * Returns the class, the given one or one of its parent classes, that is
+     * annotated with #[RunTestsInSeparateProcesses], or null when none is.
+     *
+     * @param class-string $className
+     *
+     * @return ?class-string
+     */
+    private function classThatRunsTestsInSeparateProcesses(string $className): ?string
+    {
+        $class = $className;
+
+        do {
+            if (MetadataRegistry::parser()->forClass($class)->isRunTestsInSeparateProcesses()->isNotEmpty()) {
+                return $class;
+            }
+        } while (($class = get_parent_class($class)) !== false);
+
+        return null;
     }
 
     /**
@@ -726,22 +743,18 @@ final readonly class TestBuilder
             $this->warnAboutIneligibleProperty($className, $methodName, 'RunInSeparateProcess', 'run in a separate process');
         }
 
-        $class = $className;
+        $class = $this->classThatRunsTestsInSeparateProcesses($className);
 
-        do {
-            if (MetadataRegistry::parser()->forClass($class)->isRunTestsInSeparateProcesses()->isNotEmpty()) {
-                $this->emitter->testRunnerTriggeredPhpunitWarning(
-                    sprintf(
-                        'Class %s is annotated with #[RunTestsInSeparateProcesses] but %s::%s is a property and will not be run in a separate process',
-                        $class,
-                        $className,
-                        $methodName,
-                    ),
-                );
-
-                return;
-            }
-        } while (($class = get_parent_class($class)) !== false);
+        if ($class !== null) {
+            $this->emitter->testRunnerTriggeredPhpunitWarning(
+                sprintf(
+                    'Class %s is annotated with #[RunTestsInSeparateProcesses] but %s::%s is a property and will not be run in a separate process',
+                    $class,
+                    $className,
+                    $methodName,
+                ),
+            );
+        }
     }
 
     /**
