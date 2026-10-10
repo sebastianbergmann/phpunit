@@ -1948,7 +1948,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $test = $this->testValueObject();
 
-        $emitter->testPropertyChecked($test, 1234, 100, 3);
+        $emitter->testPropertyChecked($test, 1234, 100, 3, [['label' => 'negative', 'numberOfExamples' => 42]]);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 
@@ -1960,6 +1960,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame(1234, $event->seed());
         $this->assertSame(100, $event->numberOfExamplesChecked());
         $this->assertSame(3, $event->numberOfExamplesRejected());
+        $this->assertSame([['label' => 'negative', 'numberOfExamples' => 42]], $event->classifications());
     }
 
     #[TestDox('testPropertyFalsified() emits Test\PropertyFalsified event')]

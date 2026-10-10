@@ -782,14 +782,15 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
-     * @param non-negative-int $seed
-     * @param non-negative-int $numberOfExamplesChecked
-     * @param non-negative-int $numberOfExamplesRejected
+     * @param non-negative-int                                                     $seed
+     * @param non-negative-int                                                     $numberOfExamplesChecked
+     * @param non-negative-int                                                     $numberOfExamplesRejected
+     * @param list<array{label: non-empty-string, numberOfExamples: positive-int}> $classifications
      *
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
-    public function testPropertyChecked(Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfExamplesRejected): void
+    public function testPropertyChecked(Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfExamplesRejected, array $classifications): void
     {
         $this->dispatcher->dispatch(
             new Test\PropertyChecked(
@@ -798,6 +799,7 @@ final class DispatchingEmitter implements Emitter
                 $seed,
                 $numberOfExamplesChecked,
                 $numberOfExamplesRejected,
+                $classifications,
             ),
         );
     }
