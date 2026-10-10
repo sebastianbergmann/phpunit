@@ -25,6 +25,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\ForAll;
 use PHPUnit\Metadata\GeneratorFor;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
+use PHPUnit\Util\Reflection;
 use ReflectionClass;
 use ReflectionMethod;
 use Throwable;
@@ -200,7 +201,9 @@ final readonly class PropertyDefinitionBuilder
         $registeredGenerators = [];
         $registeredFor        = [];
 
-        foreach (new ReflectionClass($className)->getMethods() as $method) {
+        // the methods that TestCase and Assert declare are not registered
+        // with #[GeneratorFor], so their metadata is not looked at
+        foreach (Reflection::methodsDeclaredDirectlyInTestClass(new ReflectionClass($className)) as $method) {
             $name = $method->getName();
 
             assert($name !== '');
