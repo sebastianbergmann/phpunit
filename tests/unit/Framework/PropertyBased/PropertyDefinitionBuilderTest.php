@@ -23,6 +23,7 @@ use PHPUnit\TestFixture\PropertyBased\Properties\DuplicateGeneratorForWithLeadin
 use PHPUnit\TestFixture\PropertyBased\Properties\GeneratorForUnknownClassTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\InvalidPropertiesTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\NonStaticGeneratorForTest;
+use PHPUnit\TestFixture\PropertyBased\Properties\PropertyInSubclassTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\ValidPropertiesTest;
 
 #[CoversClass(PropertyDefinitionBuilder::class)]
@@ -141,6 +142,14 @@ final class PropertyDefinitionBuilderTest extends TestCase
         $this->assertSame(
             [EmailAddress::class => 'emailAddresses'],
             (new PropertyDefinitionBuilder)->build(ValidPropertiesTest::class, 'testWithRegisteredGenerator')->registeredGenerators(),
+        );
+    }
+
+    public function testCollectsTheGeneratorsRegisteredWithGeneratorForThatAreDeclaredInAParentClass(): void
+    {
+        $this->assertSame(
+            [EmailAddress::class => 'emailAddresses'],
+            (new PropertyDefinitionBuilder)->build(PropertyInSubclassTest::class, 'testOne')->registeredGenerators(),
         );
     }
 
