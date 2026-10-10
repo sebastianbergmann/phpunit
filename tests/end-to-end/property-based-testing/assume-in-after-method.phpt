@@ -21,4 +21,4 @@ Random Seed:   1234
 
 Time: %s, Memory: %s
 
-OK (1 test, 10 assertions)
+OK (1 test, 5 assertions)
