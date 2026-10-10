@@ -37,4 +37,4 @@ This test did not perform any assertions
 deprecation
 
 OK, but there were issues!
-Tests: 3, Assertions: 13, Deprecations: 1, Risky: 1.
+Tests: 3, Assertions: 15, Deprecations: 1, Risky: 1.
