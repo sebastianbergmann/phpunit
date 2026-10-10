@@ -118,23 +118,31 @@ final class TestRunner
      * @throws InvalidArgumentException
      * @throws UnintentionallyCoveredCodeException
      */
-    public function runExampleOfProperty(TestCase $example, bool $collectCodeCoverage): void
+    public function runExampleOfProperty(TestCase $example, bool $collectCodeCoverage): ExampleRun
     {
         try {
             ShutdownHandler::setMessage(sprintf('Fatal error: Premature end of PHP process when running %s.', $example->toString()));
 
-            $this->runInProcess($example, true, $collectCodeCoverage);
+            $contributedToCodeCoverage = $this->runInProcess($example, true, $collectCodeCoverage);
         } finally {
             ShutdownHandler::resetMessage();
         }
+
+        return new ExampleRun(
+            $example->numberOfAssertionsPerformed(),
+            $example->doesNotPerformAssertions(),
+            $contributedToCodeCoverage,
+        );
     }
 
     /**
      * @throws Exception
      * @throws InvalidArgumentException
      * @throws UnintentionallyCoveredCodeException
+     *
+     * @return ?bool whether the test contributed to code coverage, null when this was not checked
      */
-    private function runInProcess(TestCase $test, bool $exampleOfProperty, bool $collectCodeCoverageForTest): void
+    private function runInProcess(TestCase $test, bool $exampleOfProperty, bool $collectCodeCoverageForTest): ?bool
     {
         Assert::resetCount();
 
@@ -191,7 +199,8 @@ final class TestRunner
             }
         }
 
-        $collectCodeCoverage = CodeCoverage::instance()->isActive() &&
+        $contributedToCodeCoverage = null;
+        $collectCodeCoverage       = CodeCoverage::instance()->isActive() &&
                                $shouldCodeCoverageBeCollected &&
                                $collectCodeCoverageForTest;
 
@@ -291,8 +300,6 @@ final class TestRunner
                 $this->configuration->requireCoverageContribution()) {
                 $contributedToCodeCoverage = CodeCoverage::instance()->lastTestContributedToCoverage();
 
-                $test->setContributedToCodeCoverage($contributedToCodeCoverage);
-
                 $riskyBecauseOfNoContribution = $this->riskyTestChecks->didNotContributeToCodeCoverage($contributedToCodeCoverage);
 
                 // whether a property contributes to code coverage is decided
@@ -353,6 +360,8 @@ final class TestRunner
                 $test->numberOfAssertionsPerformed(),
             );
         }
+
+        return $contributedToCodeCoverage;
     }
 
     private function lacksRequiredCoverageMetadata(TestCase $test): bool
