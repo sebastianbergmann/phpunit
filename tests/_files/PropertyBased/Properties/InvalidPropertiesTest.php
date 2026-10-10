@@ -15,6 +15,7 @@ use PHPUnit\Framework\Attributes\DependsOnClassUsingDeepClone;
 use PHPUnit\Framework\Attributes\ForAll;
 use PHPUnit\Framework\Attributes\Property;
 use PHPUnit\Framework\Attributes\TestWith;
+use PHPUnit\Framework\Attributes\TestWithJson;
 use PHPUnit\Framework\PropertyBased\Generators;
 use PHPUnit\Framework\PropertyBased\ValueGenerator;
 use PHPUnit\Framework\TestCase;
@@ -44,13 +45,50 @@ final class InvalidPropertiesTest extends TestCase
     }
 
     #[Property]
-    #[TestWith([1])]
-    public function testWithTestWith(int $value): void
+    #[TestWithJson('1')]
+    public function testWithExplicitExampleThatIsNotAnArray(int $value): void
     {
     }
 
     #[Property]
-    #[Depends('testWithTestWith')]
+    #[TestWith([1, 2])]
+    public function testWithExplicitExampleWithMoreArgumentsThanParameters(int $value): void
+    {
+    }
+
+    #[Property]
+    #[TestWith([1])]
+    public function testWithExplicitExampleWithoutArgumentForEveryParameter(int $a, int $b): void
+    {
+    }
+
+    #[Property]
+    #[TestWith(['a' => 1, 'b' => 2, 'c' => 3], 'unknown parameter')]
+    public function testWithExplicitExampleWithArgumentForUnknownParameter(int $a, int $b): void
+    {
+    }
+
+    #[Property]
+    #[TestWith(['b' => 1, 2])]
+    public function testWithExplicitExampleWithPositionalArgumentAfterNamedArgument(int $a, int $b): void
+    {
+    }
+
+    #[Property]
+    #[TestWith([1, 'a' => 2])]
+    public function testWithExplicitExampleWithMoreThanOneArgumentForAParameter(int $a, int $b): void
+    {
+    }
+
+    #[Property]
+    #[TestWith([1], 'one')]
+    #[TestWith([2], 'one')]
+    public function testWithExplicitExamplesWithTheSameName(int $value): void
+    {
+    }
+
+    #[Property]
+    #[Depends('testWithDataProvider')]
     public function testWithDepends(int $value): void
     {
     }

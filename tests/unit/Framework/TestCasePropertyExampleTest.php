@@ -298,7 +298,7 @@ final class TestCasePropertyExampleTest extends TestCase
         $this->assertFalse(ExampleWithOnNotSuccessfulTestTest::$onNotSuccessfulTestCalled);
     }
 
-    public function testOnNotSuccessfulTestIsCalledForTheFinalReplayOfTheCounterexample(): void
+    public function testOnNotSuccessfulTestIsCalledForAnExampleWhoseFailureIsReportedForTheProperty(): void
     {
         ExampleWithOnNotSuccessfulTestTest::$onNotSuccessfulTestCalled = false;
 

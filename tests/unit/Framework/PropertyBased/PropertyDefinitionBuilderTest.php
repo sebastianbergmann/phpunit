@@ -36,6 +36,7 @@ use Random\Randomizer;
 
 #[CoversClass(PropertyDefinitionBuilder::class)]
 #[CoversClass(PropertyDefinition::class)]
+#[CoversClass(ExplicitExample::class)]
 #[CoversClass(InvalidPropertyException::class)]
 #[Small]
 #[Group('framework')]
@@ -51,13 +52,49 @@ final class PropertyDefinitionBuilderTest extends TestCase
             'data provider' => [
                 InvalidPropertiesTest::class,
                 'testWithDataProvider',
-                '#[Property] cannot be combined with #[DataProvider], #[DataProviderClosure], #[DataProviderExternal], #[TestWith], or #[TestWithJson]',
+                '#[Property] cannot be combined with #[DataProvider], #[DataProviderClosure], or #[DataProviderExternal]',
             ],
 
-            'test with' => [
+            'explicit example that is not an array' => [
                 InvalidPropertiesTest::class,
-                'testWithTestWith',
-                '#[Property] cannot be combined with #[DataProvider], #[DataProviderClosure], #[DataProviderExternal], #[TestWith], or #[TestWithJson]',
+                'testWithExplicitExampleThatIsNotAnArray',
+                'explicit example #0 is not an array, but int',
+            ],
+
+            'explicit example with more arguments than parameters' => [
+                InvalidPropertiesTest::class,
+                'testWithExplicitExampleWithMoreArgumentsThanParameters',
+                'explicit example #0 has more arguments than the property has parameters',
+            ],
+
+            'explicit example without argument for every parameter' => [
+                InvalidPropertiesTest::class,
+                'testWithExplicitExampleWithoutArgumentForEveryParameter',
+                'explicit example #0 has no argument for parameter $b',
+            ],
+
+            'explicit example with argument for unknown parameter' => [
+                InvalidPropertiesTest::class,
+                'testWithExplicitExampleWithArgumentForUnknownParameter',
+                'explicit example "unknown parameter" has an argument for parameter $c, which does not exist',
+            ],
+
+            'explicit example with positional argument after named argument' => [
+                InvalidPropertiesTest::class,
+                'testWithExplicitExampleWithPositionalArgumentAfterNamedArgument',
+                'explicit example #0 has a positional argument after a named argument',
+            ],
+
+            'explicit example with more than one argument for a parameter' => [
+                InvalidPropertiesTest::class,
+                'testWithExplicitExampleWithMoreThanOneArgumentForAParameter',
+                'explicit example #0 has more than one argument for parameter $a',
+            ],
+
+            'explicit examples with the same name' => [
+                InvalidPropertiesTest::class,
+                'testWithExplicitExamplesWithTheSameName',
+                'explicit example "one" is specified more than once',
             ],
 
             'depends' => [
@@ -135,6 +172,26 @@ final class PropertyDefinitionBuilderTest extends TestCase
         $this->assertSame('smallIntegers', $parameters['small']);
         $this->assertInstanceOf(AbstractGenerator::class, $parameters['name']);
         $this->assertInstanceOf(AbstractGenerator::class, $parameters['money']);
+        $this->assertSame([], $definition->explicitExamples());
+    }
+
+    public function testBuildsTheExplicitExamplesOfAPropertyWithTheirArgumentsByParameterName(): void
+    {
+        $explicitExamples = (new PropertyDefinitionBuilder)->build(ValidPropertiesTest::class, 'testWithExplicitExamples')->explicitExamples();
+
+        $this->assertCount(4, $explicitExamples);
+
+        $this->assertSame(0, $explicitExamples[0]->name());
+        $this->assertSame(['small' => 1, 'name' => 'one'], $explicitExamples[0]->arguments());
+
+        $this->assertSame('named arguments', $explicitExamples[1]->name());
+        $this->assertSame(['small' => 2, 'name' => 'two'], $explicitExamples[1]->arguments());
+
+        $this->assertSame(1, $explicitExamples[2]->name());
+        $this->assertSame(['small' => 3, 'name' => 'three'], $explicitExamples[2]->arguments());
+
+        $this->assertSame(2, $explicitExamples[3]->name());
+        $this->assertSame(['small' => 4, 'name' => 'four'], $explicitExamples[3]->arguments());
     }
 
     #[RequiresPhp('^8.5')]
