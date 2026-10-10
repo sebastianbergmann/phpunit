@@ -18,7 +18,7 @@ final class InvalidPropertyTest extends TestCase
 {
     #[Property]
     #[TestWith([1])]
-    public function testIsCombinedWithTestWith(int $value): void
+    public function testHasAnExplicitExampleWithoutArgumentForEveryParameter(int $a, int $b): void
     {
     }
 

@@ -9,10 +9,15 @@
  */
 namespace PHPUnit\Framework\PropertyBased;
 
+use function array_key_exists;
 use function array_keys;
 use function assert;
 use function class_exists;
+use function get_debug_type;
+use function in_array;
 use function interface_exists;
+use function is_array;
+use function is_int;
 use function is_string;
 use function lcfirst;
 use function method_exists;
@@ -25,7 +30,9 @@ use PHPUnit\Framework\PropertyBased\Generator\DeferredGenerator;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\ForAll;
 use PHPUnit\Metadata\GeneratorFor;
+use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
+use PHPUnit\Metadata\TestWith;
 use PHPUnit\Util\Reflection;
 use ReflectionClass;
 use ReflectionMethod;
@@ -42,6 +49,11 @@ use Throwable;
  * refers to a class for which a generator is registered with a deferred
  * generator, which uses the registered generator once it has been created
  * when the property is checked.
+ *
+ * The arguments of an explicit example, which is specified with #[TestWith]
+ * or #[TestWithJson], are passed to the parameters by position or by name,
+ * like the arguments of a data set are passed to a test method, and there
+ * has to be exactly one for each parameter.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -61,13 +73,14 @@ final readonly class PropertyDefinitionBuilder
 
         assert($metadata->isProperty()->isNotEmpty());
 
+        // the explicit examples of a property are specified with #[TestWith]
+        // and #[TestWithJson]
         if ($metadata->isDataProvider()->isNotEmpty() ||
-            $metadata->isDataProviderClosure()->isNotEmpty() ||
-            $metadata->isTestWith()->isNotEmpty()) {
+            $metadata->isDataProviderClosure()->isNotEmpty()) {
             throw InvalidPropertyException::because(
                 $className,
                 $methodName,
-                '#[Property] cannot be combined with #[DataProvider], #[DataProviderClosure], #[DataProviderExternal], #[TestWith], or #[TestWithJson]',
+                '#[Property] cannot be combined with #[DataProvider], #[DataProviderClosure], or #[DataProviderExternal]',
             );
         }
 
@@ -136,7 +149,153 @@ final readonly class PropertyDefinitionBuilder
             }
         }
 
-        return new PropertyDefinition($className, $methodName, $parameters, $registeredGenerators);
+        return new PropertyDefinition(
+            $className,
+            $methodName,
+            $parameters,
+            $this->explicitExamples($className, $methodName, $metadata->isTestWith(), array_keys($parameters)),
+            $registeredGenerators,
+        );
+    }
+
+    /**
+     * The explicit examples are numbered like the data sets of a data
+     * provider: an example for which no name is specified is numbered among
+     * the examples for which no name is specified.
+     *
+     * @param class-string<TestCase> $className
+     * @param non-empty-string       $methodName
+     * @param list<non-empty-string> $parameterNames
+     *
+     * @throws InvalidPropertyException
+     *
+     * @return list<ExplicitExample>
+     */
+    private function explicitExamples(string $className, string $methodName, MetadataCollection $testWith, array $parameterNames): array
+    {
+        $examples = [];
+        $labels   = [];
+        $number   = 0;
+
+        foreach ($testWith as $metadata) {
+            assert($metadata instanceof TestWith);
+
+            if ($metadata->hasName()) {
+                $name = $metadata->name();
+
+                assert($name !== null);
+            } else {
+                $name = $number;
+
+                $number++;
+            }
+
+            $label = ExplicitExample::labelFor($name);
+
+            if (isset($labels[$label])) {
+                throw InvalidPropertyException::because(
+                    $className,
+                    $methodName,
+                    sprintf('explicit example %s is specified more than once', $label),
+                );
+            }
+
+            $labels[$label] = true;
+
+            $examples[] = new ExplicitExample(
+                $name,
+                $this->argumentsOfExplicitExample($className, $methodName, $label, $metadata->data(), $parameterNames),
+            );
+        }
+
+        return $examples;
+    }
+
+    /**
+     * @param class-string<TestCase> $className
+     * @param non-empty-string       $methodName
+     * @param non-empty-string       $label
+     * @param list<non-empty-string> $parameterNames
+     *
+     * @throws InvalidPropertyException
+     *
+     * @return array<non-empty-string, mixed>
+     */
+    private function argumentsOfExplicitExample(string $className, string $methodName, string $label, mixed $data, array $parameterNames): array
+    {
+        if (!is_array($data)) {
+            throw InvalidPropertyException::because(
+                $className,
+                $methodName,
+                sprintf('explicit example %s is not an array, but %s', $label, get_debug_type($data)),
+            );
+        }
+
+        $arguments = [];
+        $position  = 0;
+        $named     = false;
+
+        foreach ($data as $key => $value) {
+            if (is_int($key)) {
+                if ($named) {
+                    throw InvalidPropertyException::because(
+                        $className,
+                        $methodName,
+                        sprintf('explicit example %s has a positional argument after a named argument', $label),
+                    );
+                }
+
+                if (!isset($parameterNames[$position])) {
+                    throw InvalidPropertyException::because(
+                        $className,
+                        $methodName,
+                        sprintf('explicit example %s has more arguments than the property has parameters', $label),
+                    );
+                }
+
+                $arguments[$parameterNames[$position]] = $value;
+
+                $position++;
+
+                continue;
+            }
+
+            $named = true;
+
+            if (!in_array($key, $parameterNames, true)) {
+                throw InvalidPropertyException::because(
+                    $className,
+                    $methodName,
+                    sprintf('explicit example %s has an argument for parameter $%s, which does not exist', $label, $key),
+                );
+            }
+
+            if (array_key_exists($key, $arguments)) {
+                throw InvalidPropertyException::because(
+                    $className,
+                    $methodName,
+                    sprintf('explicit example %s has more than one argument for parameter $%s', $label, $key),
+                );
+            }
+
+            $arguments[$key] = $value;
+        }
+
+        $argumentsInOrderOfParameters = [];
+
+        foreach ($parameterNames as $parameterName) {
+            if (!array_key_exists($parameterName, $arguments)) {
+                throw InvalidPropertyException::because(
+                    $className,
+                    $methodName,
+                    sprintf('explicit example %s has no argument for parameter $%s', $label, $parameterName),
+                );
+            }
+
+            $argumentsInOrderOfParameters[$parameterName] = $arguments[$parameterName];
+        }
+
+        return $argumentsInOrderOfParameters;
     }
 
     /**

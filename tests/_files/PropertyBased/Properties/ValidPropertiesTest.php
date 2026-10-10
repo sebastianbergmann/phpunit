@@ -11,6 +11,8 @@ namespace PHPUnit\TestFixture\PropertyBased\Properties;
 
 use PHPUnit\Framework\Attributes\ForAll;
 use PHPUnit\Framework\Attributes\Property;
+use PHPUnit\Framework\Attributes\TestWith;
+use PHPUnit\Framework\Attributes\TestWithJson;
 use PHPUnit\Framework\PropertyBased\Generators;
 use PHPUnit\Framework\PropertyBased\ValueGenerator;
 use PHPUnit\Framework\TestCase;
@@ -40,6 +42,15 @@ final class ValidPropertiesTest extends TestCase
 
     #[Property]
     public function testWithRegisteredGenerator(Customer $customer, EmailAddress $emailAddress): void
+    {
+    }
+
+    #[Property]
+    #[TestWith([1, 'one'])]
+    #[TestWith(['name' => 'two', 'small' => 2], 'named arguments')]
+    #[TestWith([3, 'name' => 'three'])]
+    #[TestWithJson('[4, "four"]')]
+    public function testWithExplicitExamples(#[ForAll('smallIntegers')] int $small, string $name): void
     {
     }
 

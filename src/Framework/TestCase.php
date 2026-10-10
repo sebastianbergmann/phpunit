@@ -116,9 +116,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @var ?list<mixed>
      */
-    private ?array $propertyArguments    = null;
-    private bool $replayOfCounterexample = false;
-    private bool $rejectedByAssumption   = false;
+    private ?array $propertyArguments  = null;
+    private bool $failureIsReported    = false;
+    private bool $rejectedByAssumption = false;
 
     /**
      * @var positive-int
@@ -846,17 +846,18 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * example is neither registered as passed nor run in a separate process.
      *
      * onNotSuccessfulTest() is not called for an example that falsifies the
-     * property, unless the example is the final replay of the minimal
-     * counterexample, whose failure or error is the one that is reported.
+     * property, unless the failure or error of the example is the one that is
+     * reported for the property, which it is for the final replay of the
+     * minimal counterexample and for an explicit example.
      *
      * @param list<mixed> $arguments
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    final public function setPropertyExample(array $arguments, bool $replayOfCounterexample = false): void
+    final public function setPropertyExample(array $arguments, bool $failureIsReported = false): void
     {
-        $this->propertyArguments      = $arguments;
-        $this->replayOfCounterexample = $replayOfCounterexample;
+        $this->propertyArguments = $arguments;
+        $this->failureIsReported = $failureIsReported;
     }
 
     /**
@@ -1590,7 +1591,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private function falsifiesPropertyWithoutBeingReported(): bool
     {
         return $this->isPropertyExample() &&
-               !$this->replayOfCounterexample &&
+               !$this->failureIsReported &&
                !$this->throwableThatEndedTheTest instanceof TimeLimitExceededException &&
                Falsification::exampleFalsifies($this);
     }
