@@ -1620,7 +1620,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         return $this->isPropertyExample() &&
                !$this->replayOfCounterexample &&
                !$this->throwableThatEndedTheTest instanceof TimeLimitExceededException &&
-               Falsification::of($this) !== null;
+               Falsification::exampleFalsifies($this);
     }
 
     /**
