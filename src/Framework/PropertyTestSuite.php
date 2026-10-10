@@ -829,7 +829,7 @@ final class PropertyTestSuite extends IterativeTestSuite
                     $example->valueObjectForEvents(),
                 );
 
-                new TestRunner($emitter)->run($example, $collectCodeCoverage);
+                new TestRunner($emitter)->runExampleOfProperty($example, $collectCodeCoverage);
             },
         );
     }
