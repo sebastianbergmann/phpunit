@@ -10,12 +10,12 @@
 namespace PHPUnit\Framework;
 
 use DomainException;
-use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\PropertyBased\ExampleRejectedByAssumptionException;
+use PHPUnit\TestFixture\PropertyBased\EventCollector;
 use PHPUnit\TestFixture\PropertyBased\Examples\ExampleTest;
 use PHPUnit\TestFixture\PropertyBased\Examples\ExampleWithAssumptionInTearDownTest;
 use PHPUnit\TestFixture\PropertyBased\Examples\ExampleWithFailedAssertionInTearDownTest;
@@ -342,17 +342,17 @@ final class TestCasePropertyExampleTest extends TestCase
 
     private function runExample(TestCase $test): void
     {
-        $facade = EventFacade::instance();
-
-        $facade->startCollectingEvents();
-
-        try {
-            $test->runLifecycle();
-        } catch (Throwable) {
-            // the lifecycle passes on the throwable that ended the test, which
-            // the assertions of these tests inspect through the test
-        } finally {
-            $facade->stopCollectingEvents();
-        }
+        EventCollector::collect(
+            static function () use ($test): void
+            {
+                try {
+                    $test->runLifecycle();
+                } catch (Throwable) {
+                    // the lifecycle passes on the throwable that ended the
+                    // test, which the assertions of these tests inspect
+                    // through the test
+                }
+            },
+        );
     }
 }
