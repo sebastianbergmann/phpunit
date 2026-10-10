@@ -428,6 +428,7 @@ final class Generators
         /** @var DeferredGenerator<T> $generator */
         $generator = new DeferredGenerator(
             static fn (GeneratorDeriver $deriver): AbstractGenerator => $deriver->forClass($className),
+            sprintf('objects of class %s', $className),
         );
 
         return $generator;
@@ -470,6 +471,7 @@ final class Generators
 
         return new DeferredGenerator(
             static fn (GeneratorDeriver $deriver): AbstractGenerator => $deriver->forType($parsed, $scope),
+            sprintf('values of type %s', $type),
         );
     }
 

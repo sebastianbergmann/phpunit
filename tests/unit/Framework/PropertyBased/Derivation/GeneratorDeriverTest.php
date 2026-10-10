@@ -35,6 +35,7 @@ use PHPUnit\Framework\PropertyBased\ExampleRejectedException;
 use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\DeferredGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\ObjectGenerator;
+use PHPUnit\Framework\PropertyBased\GeneratorRefersToItselfException;
 use PHPUnit\Framework\PropertyBased\Generators;
 use PHPUnit\Framework\PropertyBased\Type\NameScope;
 use PHPUnit\Framework\PropertyBased\Type\TypeParser;
@@ -59,6 +60,7 @@ use ReflectionParameter;
 #[CoversClass(DeferredGenerator::class)]
 #[CoversClass(CannotDeriveGeneratorException::class)]
 #[CoversClass(ExampleRejectedException::class)]
+#[CoversClass(GeneratorRefersToItselfException::class)]
 #[Small]
 #[Group('framework')]
 #[Group('framework/property-based-testing')]
@@ -376,6 +378,37 @@ final class GeneratorDeriverTest extends TestCase
         $this->assertSame($money, $this->replay($deriver->forType((new TypeParser)->parse('\\' . Money::class), $this->scope()), [], $deriver));
     }
 
+    public function testReportsAGeneratorRegisteredForAClassThatRefersToItselfBeforeItMakesAChoice(): void
+    {
+        $deriver = new GeneratorDeriver(
+            GeneratorRegistry::from(
+                [
+                    Money::class => Generators::objects(Money::class)->map(static fn (Money $money): Money => $money),
+                ],
+            ),
+        );
+
+        $this->expectException(GeneratorRefersToItselfException::class);
+        $this->expectExceptionMessageIsOrContains('Cannot generate objects of class ' . Money::class . ': the generator refers to itself before it makes a choice');
+
+        $this->replay($deriver->forClass(Money::class), [], $deriver);
+    }
+
+    public function testAGeneratorRegisteredForAClassMayReferToItselfAfterItMadeAChoice(): void
+    {
+        $deriver = new GeneratorDeriver(
+            GeneratorRegistry::from(
+                [
+                    Money::class => Generators::nullable(Generators::objects(Money::class), true)->map(
+                        static fn (?Money $money): Money => $money ?? new Money(0, Currency::EUR),
+                    ),
+                ],
+            ),
+        );
+
+        $this->assertEquals(new Money(0, Currency::EUR), $this->replay($deriver->forClass(Money::class), [1, 1, 0], $deriver));
+    }
+
     public function testDerivesTheGeneratorForAClassOnlyOnce(): void
     {
         $deriver = $this->deriver();
@@ -386,7 +419,7 @@ final class GeneratorDeriverTest extends TestCase
     public function testDerivesADeferredGeneratorOnlyOnce(): void
     {
         $deriver   = $this->deriver();
-        $generator = new DeferredGenerator(static fn (GeneratorDeriver $deriver): AbstractGenerator => $deriver->forClass(Money::class));
+        $generator = new DeferredGenerator(static fn (GeneratorDeriver $deriver): AbstractGenerator => $deriver->forClass(Money::class), 'money');
 
         $this->assertSame($deriver->deferred($generator), $deriver->deferred($generator));
     }
