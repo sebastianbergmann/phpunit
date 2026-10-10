@@ -35,6 +35,7 @@ use PHPUnit\Framework\PropertyBased\PropertyDefinitionBuilder;
 use PHPUnit\Framework\PropertyBased\Shrinker;
 use PHPUnit\Framework\PropertyBased\Type\NameScope;
 use PHPUnit\Framework\PropertyBased\ValueGenerator;
+use PHPUnit\Framework\TestRunner\RiskyTestChecks;
 use PHPUnit\Framework\TestRunner\TestRunner;
 use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Runner\CodeCoverage;
@@ -537,30 +538,25 @@ final class PropertyTestSuite extends IterativeTestSuite
             );
         }
 
-        if ($passed && $this->contributedToCodeCoverage === false) {
-            $messages[] = 'This test does not contribute to code coverage';
+        // the reasons that concern the property as a whole are decided like
+        // those of a test, on all examples that were checked
+        $checks  = new RiskyTestChecks(ConfigurationRegistry::get()->reportUselessTests());
+        $reasons = [];
+
+        if ($passed) {
+            $reasons[] = $checks->didNotContributeToCodeCoverage($this->contributedToCodeCoverage);
         }
 
-        if ($passed &&
-            $this->numberOfExamplesChecked > 0 &&
-            ConfigurationRegistry::get()->reportUselessTests() &&
-            !$this->doesNotPerformAssertions &&
-            $this->numberOfAssertions === 0) {
-            $messages[] = 'This test did not perform any assertions';
+        if ($passed && $this->numberOfExamplesChecked > 0) {
+            $reasons[] = $checks->performedNoAssertions($this->numberOfAssertions, $this->doesNotPerformAssertions);
         }
 
-        if ($this->doesNotPerformAssertions && $this->numberOfAssertions > 0) {
-            $plural = '';
+        $reasons[] = $checks->performedUnexpectedAssertions($this->numberOfAssertions, $this->doesNotPerformAssertions);
 
-            if ($this->numberOfAssertions > 1) {
-                $plural = 's';
+        foreach ($reasons as $reason) {
+            if ($reason !== null) {
+                $messages[] = $reason;
             }
-
-            $messages[] = sprintf(
-                'This test is not expected to perform assertions but performed %d assertion%s',
-                $this->numberOfAssertions,
-                $plural,
-            );
         }
 
         return $messages;
