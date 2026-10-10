@@ -108,6 +108,7 @@ final class GeneratorsTest extends TestCase
             'strings'            => [Generators::strings()],
             'strings (alphabet)' => [Generators::strings('01', 1, 8)],
             'bytes'              => [Generators::bytes()],
+            'regular expression' => [Generators::fromRegularExpression('/^[a-z]{1,3}(-\d+|\.[^a-z])?$/u')],
             'elements'           => [Generators::elements('a', 'b', 'c')],
             'cases'              => [Generators::cases(Currency::class)],
             'constant'           => [Generators::constant('constant')],

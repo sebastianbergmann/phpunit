@@ -75,4 +75,27 @@ final class ExampleRejectedException extends RuntimeException implements Excepti
             ),
         );
     }
+
+    /**
+     * @param positive-int $numberOfCharacters
+     */
+    public static function noCharacterOfClass(int $numberOfCharacters): self
+    {
+        return new self(
+            sprintf(
+                'None of %d characters that were tried is matched by the character class',
+                $numberOfCharacters,
+            ),
+        );
+    }
+
+    public static function doesNotMatchRegularExpression(string $regularExpression): self
+    {
+        return new self(
+            sprintf(
+                'The generated string is not matched by the regular expression %s',
+                $regularExpression,
+            ),
+        );
+    }
 }
