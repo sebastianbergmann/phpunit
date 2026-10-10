@@ -18,6 +18,8 @@ use function abs;
 use function array_filter;
 use function array_keys;
 use function array_map;
+use function array_unique;
+use function array_values;
 use function count;
 use function in_array;
 use function is_array;
@@ -63,6 +65,7 @@ use PHPUnit\TestFixture\PropertyBased\Derivation\Tree;
 use PHPUnit\TestFixture\PropertyBased\EnumerationWithoutCases;
 use Random\Engine\Xoshiro256StarStar;
 use Random\Randomizer;
+use stdClass;
 
 #[CoversClass(Generators::class)]
 #[CoversClass(AbstractGenerator::class)]
@@ -109,6 +112,7 @@ final class GeneratorsTest extends TestCase
             'cases'              => [Generators::cases(Currency::class)],
             'constant'           => [Generators::constant('constant')],
             'lists'              => [Generators::lists(Generators::integers(0, 100))],
+            'lists (unique)'     => [Generators::lists(Generators::integers(0, 9), unique: true)],
             'arrays'             => [Generators::arrays(Generators::strings('abc', 1, 2), Generators::booleans())],
             'tuples'             => [Generators::tuples(Generators::integers(), Generators::strings())],
             'records'            => [Generators::records(['name' => Generators::strings(), 'age' => Generators::integers(0, 150)])],
@@ -607,6 +611,37 @@ final class GeneratorsTest extends TestCase
             $this->numberOfNonEmptyArrays($this->values(Generators::lists(Generators::integers()), 500)) / 2,
             $this->numberOfNonEmptyArrays($this->values(Generators::lists(Generators::integers(), recursive: true), 500)),
         );
+    }
+
+    public function testGeneratesListsOfUniqueElements(): void
+    {
+        foreach ($this->values(Generators::lists(Generators::integers(0, 9), 0, 8, unique: true), 500) as $value) {
+            $this->assertIsList($value);
+            $this->assertSame($value, array_values(array_unique($value)));
+        }
+    }
+
+    public function testGeneratesListsOfUniqueObjectsThatAreNotEqual(): void
+    {
+        $objects = Generators::integers(0, 3)->map(static fn (int $value): stdClass => (object) ['value' => $value]);
+
+        foreach ($this->values(Generators::lists($objects, unique: true), 500) as $value) {
+            $this->assertIsList($value);
+            $this->assertSame(count($value), count(array_unique(array_map(static fn (stdClass $object): mixed => $object->value, $value))));
+        }
+    }
+
+    public function testAnElementThatEqualsAnEarlierElementOfAListOfUniqueElementsIsGeneratedAgain(): void
+    {
+        $this->assertSame([3, 4], $this->replay(Generators::lists(Generators::integers(0, 9), unique: true), [1, 3, 1, 3, 1, 4, 0]));
+    }
+
+    public function testRejectsTheExampleWhenNotEnoughUniqueElementsAreGenerated(): void
+    {
+        $this->expectException(ExampleRejectedException::class);
+        $this->expectExceptionMessageIs('No new element for the collection was generated in 10 attempts');
+
+        $this->replay(Generators::lists(Generators::elements('a', 'b'), 3, unique: true), []);
     }
 
     public function testTheSizeOfListsMustBeValid(): void
