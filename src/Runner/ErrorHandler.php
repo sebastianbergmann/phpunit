@@ -529,6 +529,13 @@ final class ErrorHandler
             $throwableFromDeferredIssue = $this->triggerTestCaseContextIssues($test->valueObjectForEvents());
         }
 
+        // an example of a property is run by the test runner rather than by
+        // TestCase::run(), so it is not on the call stack while code coverage
+        // data is collected for it, for instance
+        if ($test->isPropertyExample()) {
+            $this->testNotOnCallStack = $test->valueObjectForEvents();
+        }
+
         $this->maskErrorReportingLevel();
 
         return $throwableFromDeferredIssue;
