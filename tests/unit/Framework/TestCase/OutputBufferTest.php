@@ -182,12 +182,23 @@ final class OutputBufferTest extends TestCase
 
         $level = ob_get_level();
 
-        $result = $buffer->stop();
-
+        $buffer->stop();
         $buffer->resume();
 
-        $this->assertTrue($result->closedCleanly);
         $this->assertSame($level, ob_get_level());
+    }
+
+    public function testReportsBufferingThatWasSuspendedAndNotResumed(): void
+    {
+        $buffer = new OutputBuffer;
+
+        $buffer->start();
+        $buffer->suspend();
+
+        $result = $buffer->stop();
+
+        $this->assertFalse($result->closedCleanly);
+        $this->assertSame('Output buffering was suspended and not resumed', $result->riskyMessage);
     }
 
     public function testSuspendingAndResumingAfterBufferingWasStoppedDoesNotRestartBuffering(): void

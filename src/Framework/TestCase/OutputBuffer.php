@@ -152,10 +152,13 @@ final class OutputBuffer
 
     public function stop(): OutputBufferStopResult
     {
-        if (!$this->bufferingActive) {
+        if ($this->bufferingSuspended) {
             $this->bufferingSuspended = false;
 
-            return $this->suspensionStopResult ?? new OutputBufferStopResult(true, null);
+            return $this->suspensionStopResult ?? new OutputBufferStopResult(
+                false,
+                'Output buffering was suspended and not resumed',
+            );
         }
 
         $stopResult = $this->stopBuffering();
