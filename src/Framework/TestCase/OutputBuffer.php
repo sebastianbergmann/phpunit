@@ -128,9 +128,9 @@ final class OutputBuffer
             return;
         }
 
-        $stopResult = $this->stop();
+        $stopResult = $this->stopBuffering();
 
-        if (!$stopResult->closedCleanly) {
+        if (!$stopResult->closedCleanly && $this->suspensionStopResult === null) {
             $this->suspensionStopResult = $stopResult;
         }
 
@@ -156,44 +156,9 @@ final class OutputBuffer
             return $this->suspensionStopResult ?? new OutputBufferStopResult(true, null);
         }
 
-        $bufferingLevel = ob_get_level();
+        $stopResult = $this->stopBuffering();
 
-        if ($bufferingLevel !== $this->bufferingLevel) {
-            if ($bufferingLevel > $this->bufferingLevel) {
-                $message = 'Test code or tested code did not close its own output buffers';
-            } else {
-                $message = 'Test code or tested code closed output buffers other than its own';
-            }
-
-            while (ob_get_level() >= $this->bufferingLevel) {
-                if (!ob_end_clean()) {
-                    break;
-                }
-            }
-
-            $this->output          = $this->bufferingCaptured;
-            $this->bufferingActive = false;
-            $this->bufferingLevel  = ob_get_level();
-
-            return $this->suspensionStopResult ?? new OutputBufferStopResult(false, $message);
-        }
-
-        $bufferWasSubstituted = $this->bufferingDestroyed;
-
-        ob_end_clean();
-
-        $this->output          = $this->bufferingCaptured;
-        $this->bufferingActive = false;
-        $this->bufferingLevel  = ob_get_level();
-
-        if ($bufferWasSubstituted) {
-            return $this->suspensionStopResult ?? new OutputBufferStopResult(
-                false,
-                'Test code or tested code closed output buffers other than its own',
-            );
-        }
-
-        return $this->suspensionStopResult ?? new OutputBufferStopResult(true, null);
+        return $this->suspensionStopResult ?? $stopResult;
     }
 
     /**
@@ -239,5 +204,47 @@ final class OutputBuffer
 
         $this->bufferingActive = true;
         $this->bufferingLevel  = ob_get_level();
+    }
+
+    private function stopBuffering(): OutputBufferStopResult
+    {
+        $bufferingLevel = ob_get_level();
+
+        if ($bufferingLevel !== $this->bufferingLevel) {
+            if ($bufferingLevel > $this->bufferingLevel) {
+                $message = 'Test code or tested code did not close its own output buffers';
+            } else {
+                $message = 'Test code or tested code closed output buffers other than its own';
+            }
+
+            while (ob_get_level() >= $this->bufferingLevel) {
+                if (!ob_end_clean()) {
+                    break;
+                }
+            }
+
+            $this->output          = $this->bufferingCaptured;
+            $this->bufferingActive = false;
+            $this->bufferingLevel  = ob_get_level();
+
+            return new OutputBufferStopResult(false, $message);
+        }
+
+        $bufferWasSubstituted = $this->bufferingDestroyed;
+
+        ob_end_clean();
+
+        $this->output          = $this->bufferingCaptured;
+        $this->bufferingActive = false;
+        $this->bufferingLevel  = ob_get_level();
+
+        if ($bufferWasSubstituted) {
+            return new OutputBufferStopResult(
+                false,
+                'Test code or tested code closed output buffers other than its own',
+            );
+        }
+
+        return new OutputBufferStopResult(true, null);
     }
 }
