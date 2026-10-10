@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 ### Fixed
 
 * The status of a test whose mock object raises an exception in its destructor is success although the test is reported as errored, so `tearDown()` sees the wrong status and code coverage records the test as successful
+* Named arguments passed to `with()` were matched by position instead of by name, so an expectation such as `->with(b: 7)` compared the expected value with the first parameter of the method and the parameter named `$b` was not checked
 
 ## [12.5.38] - 2026-10-05
 
