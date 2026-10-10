@@ -13,10 +13,12 @@ use function array_key_exists;
 use function array_pop;
 use function assert;
 use function count;
+use function spl_object_id;
 use function strtolower;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorDeriver;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorRegistry;
 use PHPUnit\Framework\PropertyBased\Distribution\Distribution;
+use PHPUnit\Framework\PropertyBased\Generator\DeferredGenerator;
 use Random\Randomizer;
 
 /**
@@ -72,6 +74,14 @@ final class ChoiceSource
      * @var array<lowercase-string, positive-int>
      */
     private array $objectsBeingGenerated = [];
+
+    /**
+     * The number of choices that had been made when the deferred generators
+     * that are generating a value started to generate it, by their object ID.
+     *
+     * @var array<int, non-negative-int>
+     */
+    private array $deferredGeneratorsBeingGenerated = [];
     private readonly Constructions $constructions;
 
     /**
@@ -161,6 +171,53 @@ final class ChoiceSource
         }
 
         $this->objectsBeingGenerated[$key] = $count;
+    }
+
+    /**
+     * Records that the deferred generator starts to generate a value, and
+     * returns the number of choices that had been made when it started to
+     * generate the value that this one is part of, or null when it is not
+     * generating another value. When that is the number of choices that have
+     * been made so far, the deferred generator refers to itself before a
+     * choice is made.
+     *
+     * @param DeferredGenerator<mixed> $generator
+     *
+     * @return ?non-negative-int to be passed to endDeferred()
+     */
+    public function startDeferred(DeferredGenerator $generator): ?int
+    {
+        $id     = spl_object_id($generator);
+        $before = $this->deferredGeneratorsBeingGenerated[$id] ?? null;
+
+        $this->deferredGeneratorsBeingGenerated[$id] = count($this->choices);
+
+        return $before;
+    }
+
+    /**
+     * @param DeferredGenerator<mixed> $generator
+     * @param ?non-negative-int        $before    what startDeferred() returned
+     */
+    public function endDeferred(DeferredGenerator $generator, ?int $before): void
+    {
+        $id = spl_object_id($generator);
+
+        if ($before === null) {
+            unset($this->deferredGeneratorsBeingGenerated[$id]);
+
+            return;
+        }
+
+        $this->deferredGeneratorsBeingGenerated[$id] = $before;
+    }
+
+    /**
+     * @return non-negative-int
+     */
+    public function numberOfChoices(): int
+    {
+        return count($this->choices);
     }
 
     /**
