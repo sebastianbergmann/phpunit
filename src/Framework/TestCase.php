@@ -920,11 +920,23 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->outputBuffer->expectString($expectedString);
     }
 
+    /**
+     * Suspends the buffering of the test's output so that it can be resumed
+     * in another output buffering context, for instance inside a coroutine
+     * started by an implementation of invokeTestMethod().
+     *
+     * Output that was captured before buffering was suspended is retained.
+     * Output buffering that is not resumed causes the test to be considered risky.
+     */
     final protected function suspendOutputBuffering(): void
     {
         $this->outputBuffer->suspend();
     }
 
+    /**
+     * Resumes the buffering of the test's output that was suspended
+     * using suspendOutputBuffering().
+     */
     final protected function resumeOutputBuffering(): void
     {
         $this->outputBuffer->resume();
