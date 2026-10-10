@@ -520,21 +520,7 @@ final class ErrorHandler
     {
         $this->register();
 
-        $throwableFromDeferredIssue = null;
-
-        // the issues that were triggered in the test case context of a
-        // property are reported once for the property rather than for each
-        // of its examples, see triggerTestCaseContextIssuesOfProperty()
-        if (!$test->isPropertyExample()) {
-            $throwableFromDeferredIssue = $this->triggerTestCaseContextIssues($test->valueObjectForEvents());
-        }
-
-        // an example of a property is run by the test runner rather than by
-        // TestCase::run(), so it is not on the call stack while code coverage
-        // data is collected for it, for instance
-        if ($test->isPropertyExample()) {
-            $this->testNotOnCallStack = $test->valueObjectForEvents();
-        }
+        $throwableFromDeferredIssue = $this->triggerTestCaseContextIssues($test->valueObjectForEvents());
 
         $this->maskErrorReportingLevel();
 
@@ -545,7 +531,10 @@ final class ErrorHandler
      * Handles the issues that are triggered until disable() is called as
      * issues of the given test, which is not on the call stack meanwhile: the
      * issues that are triggered while the arguments for the examples of a
-     * property are generated, for instance, are issues of the property.
+     * property are generated, for instance, are issues of the property, and
+     * an example of a property, which is run by the test runner rather than
+     * by TestCase::run(), is not on the call stack while code coverage data
+     * is collected for it.
      */
     public function enableForTestNotOnCallStack(TestMethod $test): void
     {
