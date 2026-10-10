@@ -128,6 +128,12 @@ final class PropertyTestSuite extends IterativeTestSuite
     private bool $aborted = false;
 
     /**
+     * Whether no further examples were generated because every example that
+     * the generators can generate had been generated.
+     */
+    private bool $exhausted = false;
+
+    /**
      * @var non-negative-int
      */
     private int $numberOfAssertions        = 0;
@@ -304,6 +310,12 @@ final class PropertyTestSuite extends IterativeTestSuite
 
         for ($i = 1; $i <= $this->maximumNumberOfExamplesGenerated(); $i++) {
             if ($this->numberOfExamplesChecked === $this->numberOfExamples) {
+                break;
+            }
+
+            if ($tree->isExhausted()) {
+                $this->exhausted = true;
+
                 break;
             }
 
@@ -706,8 +718,12 @@ final class PropertyTestSuite extends IterativeTestSuite
     {
         $messages = [];
 
+        // a property for which fewer examples could be generated than were
+        // to be checked is only considered risky when none of them was
+        // checked because all of them were rejected
         if ($this->numberOfExamplesChecked < $this->numberOfExamples &&
-            $this->numberOfExamplesChecked + $this->numberOfExamplesRejected === $this->maximumNumberOfExamplesGenerated()) {
+            ($this->numberOfExamplesChecked + $this->numberOfExamplesRejected === $this->maximumNumberOfExamplesGenerated() ||
+             ($this->exhausted && $this->numberOfExamplesChecked === 0))) {
             $messages[] = sprintf(
                 'This property was checked for only %d of %d examples, %d examples were rejected',
                 $this->numberOfExamplesChecked,
