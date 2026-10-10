@@ -19,6 +19,7 @@ use Closure;
 use PHPUnit\Event;
 use PHPUnit\Event\EventCollection;
 use PHPUnit\Event\NoPreviousThrowableException;
+use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Framework\PropertyBased\ChoiceSequence;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
 use PHPUnit\Framework\PropertyBased\CounterexampleExporter;
@@ -302,6 +303,16 @@ final class PropertyTestSuite extends IterativeTestSuite
             // an example that is aborted because the deadline of the test run
             // has passed does not falsify the property
             if ($abortedByLimit) {
+                $this->report($events, $emitter, $exampleEvents, null, false, null);
+
+                return;
+            }
+
+            // an example that fails or errors before it is prepared, in setUp()
+            // or in another hook method that is called before the test method,
+            // does not falsify the property because the test method was not
+            // called with its arguments, so it is reported without being shrunk
+            if ($falsification !== null && $this->endedBeforeItWasPrepared($exampleEvents)) {
                 $this->report($events, $emitter, $exampleEvents, null, false, null);
 
                 return;
@@ -834,6 +845,22 @@ final class PropertyTestSuite extends IterativeTestSuite
         assert($run instanceof ExampleRun);
 
         return [$events, $run];
+    }
+
+    /**
+     * Whether an example ended before it was prepared, which its events tell
+     * because the Test\Prepared event is emitted once the hook methods that
+     * are called before the test method have been called.
+     */
+    private function endedBeforeItWasPrepared(EventCollection $exampleEvents): bool
+    {
+        foreach ($exampleEvents as $event) {
+            if ($event instanceof Prepared) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private function shouldStop(): bool
