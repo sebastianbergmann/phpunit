@@ -287,9 +287,7 @@ final class TestRunner
             !$incomplete &&
             !$skipped &&
             !$test->isPropertyExample() &&
-            $this->configuration->reportUselessTests() &&
-            !$test->doesNotPerformAssertions() &&
-            $test->numberOfAssertionsPerformed() === 0) {
+            $performedNoAssertions) {
             $this->emitter->testConsideredRisky(
                 $test->valueObjectForEvents(),
                 'This test did not perform any assertions',
