@@ -96,7 +96,6 @@ final class PropertyTestSuite extends IterativeTestSuite
      * @var ?Closure(): TestCase
      */
     private ?Closure $exampleFactory        = null;
-    private ?TestCase $unusedExample        = null;
     private ?Event\Code\TestMethod $test    = null;
     private ?TestRunHistory $testRunHistory = null;
 
@@ -213,9 +212,8 @@ final class PropertyTestSuite extends IterativeTestSuite
 
         $valueObject = $test->valueObjectForEvents();
 
-        $this->test          = $valueObject;
-        $this->seed          = RandomNumberGeneratorSeeder::derive(ConfigurationRegistry::get()->randomSeed(), $valueObject->id());
-        $this->unusedExample = $test;
+        $this->test = $valueObject;
+        $this->seed = RandomNumberGeneratorSeeder::derive(ConfigurationRegistry::get()->randomSeed(), $valueObject->id());
 
         $this->usesErrorHandler = TestRunner::shouldErrorHandlerBeUsed($test);
 
@@ -319,7 +317,19 @@ final class PropertyTestSuite extends IterativeTestSuite
             }
 
             if ($falsification !== null) {
-                $this->shrinkAndReport($events, $emitter, $deriver, $generators, $example, $falsification, $source->sequence());
+                $throwable       = $example->throwableThatEndedTheTest();
+                $originalFailure = null;
+
+                if ($throwable !== null) {
+                    $originalFailure = Event\Code\ThrowableBuilder::from($throwable);
+                }
+
+                // the example is released before its counterexample is shrunk,
+                // and so is the throwable that ended it, whose stack trace can
+                // hold the example as an argument
+                unset($example, $throwable);
+
+                $this->shrinkAndReport($events, $emitter, $deriver, $generators, $originalFailure, $falsification, $source->sequence());
 
                 return;
             }
@@ -347,7 +357,7 @@ final class PropertyTestSuite extends IterativeTestSuite
      * @throws NoPreviousThrowableException
      * @throws UnintentionallyCoveredCodeException
      */
-    private function shrinkAndReport(EventAggregator $events, Event\Emitter $emitter, GeneratorDeriver $deriver, array $generators, TestCase $falsifyingExample, Falsification $falsification, ChoiceSequence $sequence): void
+    private function shrinkAndReport(EventAggregator $events, Event\Emitter $emitter, GeneratorDeriver $deriver, array $generators, ?Event\Code\Throwable $originalFailure, Falsification $falsification, ChoiceSequence $sequence): void
     {
         $numberOfExamplesChecked = $this->numberOfExamplesChecked;
         $maximumNumberOfAttempts = ConfigurationRegistry::get()->maximumShrinkingAttempts();
@@ -413,8 +423,16 @@ final class PropertyTestSuite extends IterativeTestSuite
             $replayFalsification = Falsification::of($replay);
 
             if ($replayFalsification === null) {
-                $error = Event\Code\ThrowableBuilder::from(
-                    FlakyPropertyException::originallyFalsifiedBy($falsifyingExample->throwableThatEndedTheTest()),
+                $flaky = Event\Code\ThrowableBuilder::from(new FlakyPropertyException);
+
+                // the failure that was originally observed is reported as the
+                // cause of the error
+                $error = new Event\Code\Throwable(
+                    $flaky->className(),
+                    $flaky->message(),
+                    $flaky->description(),
+                    $flaky->stackTrace(),
+                    $originalFailure,
                 );
             } elseif ($replayFalsification->isTimeout()) {
                 $timeout = $replay->throwableThatEndedTheTest();
@@ -807,15 +825,9 @@ final class PropertyTestSuite extends IterativeTestSuite
      */
     private function example(array $arguments, bool $replayOfCounterexample = false): TestCase
     {
-        $example = $this->unusedExample;
+        assert($this->exampleFactory !== null);
 
-        $this->unusedExample = null;
-
-        if ($example === null) {
-            assert($this->exampleFactory !== null);
-
-            $example = ($this->exampleFactory)();
-        }
+        $example = ($this->exampleFactory)();
 
         $example->setPropertyExample(array_values($arguments), $replayOfCounterexample);
 

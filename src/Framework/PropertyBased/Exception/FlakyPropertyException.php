@@ -10,12 +10,10 @@
 namespace PHPUnit\Framework\PropertyBased;
 
 use RuntimeException;
-use Throwable;
 
 /**
  * Reports a property that was falsified by an example, but not when its
- * minimal counterexample was replayed, together with the failure that was
- * originally observed.
+ * minimal counterexample was replayed.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -23,12 +21,8 @@ use Throwable;
  */
 final class FlakyPropertyException extends RuntimeException implements Exception
 {
-    public static function originallyFalsifiedBy(?Throwable $throwable): self
+    public function __construct()
     {
-        return new self(
-            'The property is flaky: it was not falsified when its minimal counterexample was replayed, so its outcome does not depend on its arguments alone',
-            0,
-            $throwable,
-        );
+        parent::__construct('The property is flaky: it was not falsified when its minimal counterexample was replayed, so its outcome does not depend on its arguments alone');
     }
 }
