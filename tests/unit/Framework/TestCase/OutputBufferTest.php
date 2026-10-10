@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\TestCase;
 
+use function ob_end_clean;
 use function ob_get_level;
 use function ob_start;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -120,6 +121,28 @@ final class OutputBufferTest extends TestCase
         $buffer->start();
 
         ob_start();
+
+        $buffer->suspend();
+        $buffer->resume();
+
+        $result = $buffer->stop();
+
+        $this->assertFalse($result->closedCleanly);
+        $this->assertSame('Test code or tested code did not close its own output buffers', $result->riskyMessage);
+    }
+
+    public function testReportsFirstProblemFoundWhenBufferingWasSuspended(): void
+    {
+        $buffer = new OutputBuffer;
+
+        $buffer->start();
+
+        ob_start();
+
+        $buffer->suspend();
+        $buffer->resume();
+
+        ob_end_clean();
 
         $buffer->suspend();
         $buffer->resume();
