@@ -12,6 +12,7 @@ namespace PHPUnit\Framework\PropertyBased\Derivation;
 use const PHP_FLOAT_MAX;
 use const PHP_INT_MAX;
 use const PHP_INT_MIN;
+use function array_key_first;
 use function assert;
 use function class_exists;
 use function count;
@@ -19,6 +20,7 @@ use function enum_exists;
 use function in_array;
 use function interface_exists;
 use function is_int;
+use function is_string;
 use function ltrim;
 use function sprintf;
 use function strtolower;
@@ -606,15 +608,22 @@ final class GeneratorDeriver
 
         $generators   = [];
         $optionalKeys = [];
-        $index        = 0;
+        $nextIndex    = 0;
 
         foreach ($type->items() as $item) {
             $key = $item->key();
 
+            // like in PHPStan, an item without a key has the integer key that
+            // follows the largest integer key so far, and a string key that
+            // PHP stores as an integer, such as '1', is an integer key
             if ($key === null) {
-                $key = $index;
+                $key = $nextIndex;
+            } elseif (is_string($key) && is_int(array_key_first([$key => true]))) {
+                $key = (int) $key;
+            }
 
-                $index++;
+            if (is_int($key) && $key >= $nextIndex) {
+                $nextIndex = $key + 1;
             }
 
             $generators[$key] = $this->forType($item->type(), $scope);
