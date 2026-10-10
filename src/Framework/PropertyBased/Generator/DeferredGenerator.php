@@ -12,6 +12,7 @@ namespace PHPUnit\Framework\PropertyBased\Generator;
 use Closure;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorDeriver;
+use PHPUnit\Framework\PropertyBased\GeneratorRefersToItselfException;
 
 /**
  * A generator that is derived from a type only when it generates its first
@@ -21,7 +22,8 @@ use PHPUnit\Framework\PropertyBased\Derivation\GeneratorDeriver;
  *
  * It also refers to the generator of a class from within the generators for
  * the arguments of the class's constructor, so that the construction of the
- * class can be recursive.
+ * class can be recursive. A deferred generator that refers to itself before
+ * a choice is made, which would recurse infinitely, is reported.
  *
  * @template-covariant T
  *
@@ -39,11 +41,18 @@ final readonly class DeferredGenerator extends AbstractGenerator
     private Closure $derive;
 
     /**
-     * @param Closure(GeneratorDeriver): AbstractGenerator<T> $derive
+     * @var non-empty-string
      */
-    public function __construct(Closure $derive)
+    private string $what;
+
+    /**
+     * @param Closure(GeneratorDeriver): AbstractGenerator<T> $derive
+     * @param non-empty-string                                $what   what the generator generates, for the message of the exception that reports infinite recursion
+     */
+    public function __construct(Closure $derive, string $what)
     {
         $this->derive = $derive;
+        $this->what   = $what;
     }
 
     /**
@@ -54,8 +63,21 @@ final readonly class DeferredGenerator extends AbstractGenerator
         return ($this->derive)($deriver);
     }
 
+    /**
+     * @throws GeneratorRefersToItselfException
+     */
     protected function generateValue(ChoiceSource $source): mixed
     {
-        return $source->deriver()->deferred($this)->generate($source);
+        $numberOfChoicesBefore = $source->startDeferred($this);
+
+        if ($numberOfChoicesBefore === $source->numberOfChoices()) {
+            throw GeneratorRefersToItselfException::generating($this->what);
+        }
+
+        try {
+            return $source->deriver()->deferred($this)->generate($source);
+        } finally {
+            $source->endDeferred($this, $numberOfChoicesBefore);
+        }
     }
 }

@@ -324,6 +324,7 @@ final class GeneratorDeriver
 
             return new DeferredGenerator(
                 static fn (self $deriver): AbstractGenerator => $deriver->forClass($className),
+                sprintf('objects of class %s', $className),
             );
         }
 
