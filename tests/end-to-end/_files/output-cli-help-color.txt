@@ -234,6 +234,8 @@
                                        by tests
   [32m--display-all-issues                [0m Display details for all issues that are
                                        triggered
+  [32m--display-property-statistics       [0m Display statistics of the examples of
+                                       properties
   [32m--reverse-list                      [0m Print defects in reverse order
 
   [32m--compact                           [0m Replace default progress and result

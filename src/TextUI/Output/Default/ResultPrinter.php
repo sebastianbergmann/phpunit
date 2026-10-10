@@ -48,6 +48,7 @@ use PHPUnit\Event\TestRunner\Issue as TestRunnerIssue;
 use PHPUnit\TestRunner\TestResult\Issues\Issue;
 use PHPUnit\TestRunner\TestResult\TestResult;
 use PHPUnit\TextUI\Output\Printer;
+use PHPUnit\Util\PropertyCheckedToStringMapper;
 use PHPUnit\Util\PropertyFalsifiedToStringMapper;
 use PHPUnit\Util\Sanitizer;
 
@@ -73,9 +74,10 @@ final class ResultPrinter
     private readonly bool $displayDetailsOnTestsThatTriggerNotices;
     private readonly bool $displayDetailsOnTestsThatTriggerWarnings;
     private readonly bool $displayDefectsInReverseOrder;
+    private readonly bool $displayPropertyStatistics;
     private bool $listPrinted = false;
 
-    public function __construct(Printer $printer, bool $displayPhpunitDeprecations, bool $displayPhpunitErrors, bool $displayPhpunitNotices, bool $displayPhpunitWarnings, bool $displayTestsWithErrors, bool $displayTestsWithFailedAssertions, bool $displayRiskyTests, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $displayDefectsInReverseOrder)
+    public function __construct(Printer $printer, bool $displayPhpunitDeprecations, bool $displayPhpunitErrors, bool $displayPhpunitNotices, bool $displayPhpunitWarnings, bool $displayTestsWithErrors, bool $displayTestsWithFailedAssertions, bool $displayRiskyTests, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $displayDefectsInReverseOrder, bool $displayPropertyStatistics)
     {
         $this->printer                                      = $printer;
         $this->displayPhpunitDeprecations                   = $displayPhpunitDeprecations;
@@ -92,6 +94,7 @@ final class ResultPrinter
         $this->displayDetailsOnTestsThatTriggerNotices      = $displayDetailsOnTestsThatTriggerNotices;
         $this->displayDetailsOnTestsThatTriggerWarnings     = $displayDetailsOnTestsThatTriggerWarnings;
         $this->displayDefectsInReverseOrder                 = $displayDefectsInReverseOrder;
+        $this->displayPropertyStatistics                    = $displayPropertyStatistics;
     }
 
     public function print(TestResult $result, bool $stackTraceForDeprecations = false): void
@@ -183,6 +186,10 @@ final class ResultPrinter
         if ($this->displayDetailsOnTestsThatTriggerDeprecations) {
             $this->printIssueList('PHP deprecation', $result->phpDeprecations());
             $this->printIssueList('deprecation', $result->deprecations(), $stackTraceForDeprecations);
+        }
+
+        if ($this->displayPropertyStatistics) {
+            $this->printPropertyStatistics($result);
         }
     }
 
@@ -420,6 +427,34 @@ final class ResultPrinter
 
         $this->printListHeaderWithNumber($elements['numberOfTestsWithIssues'], 'risky test');
         $this->printList($elements['elements']);
+    }
+
+    private function printPropertyStatistics(TestResult $result): void
+    {
+        $events = $result->propertyCheckedEvents();
+
+        if ($events === []) {
+            return;
+        }
+
+        $plural = 'y';
+
+        if (count($events) !== 1) {
+            $plural = 'ies';
+        }
+
+        $this->printListHeader(sprintf("Statistics of %d propert%s:\n\n", count($events), $plural));
+
+        $elements = [];
+
+        foreach ($events as $event) {
+            $elements[] = [
+                'title' => $event->test()->id(),
+                'body'  => PropertyCheckedToStringMapper::map($event),
+            ];
+        }
+
+        $this->printList($elements);
     }
 
     private function printRetriedTests(TestResult $result): void
