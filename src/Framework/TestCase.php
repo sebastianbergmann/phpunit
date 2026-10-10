@@ -1380,6 +1380,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         try {
             $this->mockObjectRegistry->clear();
         } catch (Throwable $t) {
+            $this->status = TestStatus::error($t->getMessage());
+
             $this->emitter->testErrored(
                 $this->valueObjectForEvents(),
                 Event\Code\ThrowableBuilder::from($t),
