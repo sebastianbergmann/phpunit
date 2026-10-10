@@ -26,6 +26,6 @@ final readonly class TestFinishedSubscriber extends Subscriber implements Finish
      */
     public function notify(Finished $event): void
     {
-        $this->handler()->testFinished();
+        $this->handler()->testFinished($event);
     }
 }
