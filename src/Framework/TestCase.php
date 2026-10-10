@@ -1665,7 +1665,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             $this->errorLogCapture->verify();
         } catch (Throwable $exception) {
-            if (!$this->exceptionExpectation->shouldBeVerifiedFor($exception)) {
+            // an example of a property that is rejected by assume() is
+            // discarded, even when PHPUnit's own exceptions are expected
+            if ($exception instanceof ExampleRejectedByAssumptionException ||
+                !$this->exceptionExpectation->shouldBeVerifiedFor($exception)) {
                 throw $exception;
             }
 
