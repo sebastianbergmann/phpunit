@@ -118,13 +118,51 @@ EOT,
         );
     }
 
+    public function testDescribesHowAPropertyWasFalsifiedByANamedExplicitExample(): void
+    {
+        $this->assertStringEqualsStringIgnoringLineEndings(
+            <<<'EOT'
+Property falsified by explicit example "one cent":
+
+    $money = new Money(amount: 1, currency: Currency::EUR);
+    $parts = 2;
+
+EOT,
+            PropertyFalsifiedToStringMapper::map(
+                $this->event(0, 0, 0, false, false, ['money' => 'new Money(amount: 1, currency: Currency::EUR)', 'parts' => '2'], 'one cent'),
+            ),
+        );
+    }
+
+    public function testDescribesHowAPropertyWasFalsifiedByAnExplicitExampleWithoutName(): void
+    {
+        $this->assertStringEqualsStringIgnoringLineEndings(
+            <<<'EOT'
+Property falsified by explicit example #0:
+
+    $value = 5;
+
+EOT,
+            PropertyFalsifiedToStringMapper::map($this->event(0, 0, 0, false, false, ['value' => '5'], 0)),
+        );
+    }
+
+    public function testDescribesHowAPropertyWithoutParametersWasFalsifiedByAnExplicitExample(): void
+    {
+        $this->assertStringEqualsStringIgnoringLineEndings(
+            "Property falsified by explicit example #0.\n",
+            PropertyFalsifiedToStringMapper::map($this->event(0, 0, 0, false, false, [], 0)),
+        );
+    }
+
     /**
-     * @param positive-int                    $numberOfExamplesChecked
+     * @param non-negative-int                $numberOfExamplesChecked
      * @param non-negative-int                $numberOfShrinkingAttempts
      * @param non-negative-int                $numberOfShrinkingSteps
      * @param array<non-empty-string, string> $counterexample
+     * @param null|int|non-empty-string       $explicitExample
      */
-    private function event(int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, array $counterexample): PropertyFalsified
+    private function event(int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, array $counterexample, null|int|string $explicitExample = null): PropertyFalsified
     {
         return new PropertyFalsified(
             $this->telemetryInfo(),
@@ -137,6 +175,7 @@ EOT,
             $shrinkingInterrupted,
             [],
             $counterexample,
+            $explicitExample,
         );
     }
 }

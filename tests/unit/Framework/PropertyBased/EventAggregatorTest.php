@@ -406,7 +406,7 @@ final class EventAggregatorTest extends AbstractEventTestCase
 
     private function emitPropertyFalsified(): void
     {
-        EventFacade::emitter()->testPropertyFalsified($this->testValueObject(), 1, 1, 0, 0, false, false, [], []);
+        EventFacade::emitter()->testPropertyFalsified($this->testValueObject(), 1, 1, 0, 0, false, false, [], [], null);
     }
 
     private function passedExample(Event ...$events): EventCollection

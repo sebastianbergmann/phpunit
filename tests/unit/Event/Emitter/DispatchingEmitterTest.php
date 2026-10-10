@@ -1988,7 +1988,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $test = $this->testValueObject();
 
-        $emitter->testPropertyFalsified($test, 1234, 2, 40, 17, true, true, [0, 2, 1], ['value' => '2']);
+        $emitter->testPropertyFalsified($test, 1234, 2, 40, 17, true, true, [0, 2, 1], ['value' => '2'], 'two');
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 
@@ -2005,6 +2005,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertTrue($event->shrinkingInterrupted());
         $this->assertSame([0, 2, 1], $event->choiceSequence());
         $this->assertSame(['value' => '2'], $event->counterexample());
+        $this->assertSame('two', $event->explicitExample());
     }
 
     #[TestDox('testConsideredRisky() emits Test\ConsideredRisky event')]

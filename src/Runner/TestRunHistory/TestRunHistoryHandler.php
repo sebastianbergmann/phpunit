@@ -136,6 +136,13 @@ final class TestRunHistoryHandler
 
     public function testPropertyFalsified(PropertyFalsified $event): void
     {
+        // the explicit examples of a property are checked for every time it
+        // is checked, before the counterexample that is remembered for it,
+        // which is kept because it has not been checked for
+        if ($event->explicitExample() !== null) {
+            return;
+        }
+
         $this->testRunHistory->setCounterexample(
             TestRunHistoryId::fromTest($event->test()),
             $event->choiceSequence(),
