@@ -646,6 +646,17 @@ final class GeneratorsTest extends TestCase
         );
     }
 
+    public function testDoesNotUseStringKeysThatAreStoredAsIntegers(): void
+    {
+        foreach ($this->values(Generators::arrays(Generators::elements('0', '1', 'a', '01'), Generators::booleans()), 500) as $value) {
+            $this->assertIsArray($value);
+
+            foreach (array_keys($value) as $key) {
+                $this->assertIsString($key);
+            }
+        }
+    }
+
     public function testTheKeysOfArraysMustBeIntegersOrStrings(): void
     {
         $this->expectException(InvalidGeneratorArgumentException::class);
