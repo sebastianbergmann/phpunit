@@ -23,7 +23,7 @@ final class IndexedParameters implements ParametersRule
     private Parameters $parameters;
 
     /**
-     * @param list<mixed> $parameters
+     * @param array<int|string, mixed> $parameters
      *
      * @throws \PHPUnit\Framework\Exception
      */

@@ -12,6 +12,8 @@ All notable changes of the PHPUnit 13.4 release series are documented in this fi
 * `expectUserDeprecationMessage()` and `expectUserDeprecationMessageMatches()` did not see the deprecations triggered by an attempt of a retried test and saw those of the previously run test instead
 * The status of a test whose mock object raises an exception in its destructor is success although the test is reported as errored, so `#[Retry]` does not retry the test, `--repeat` does not skip the remaining repetitions, `tearDown()` sees the wrong status, and code coverage records the test as successful
 * Named arguments passed to `with()` were matched by position instead of by name, so an expectation such as `->with(b: 7)` compared the expected value with the first parameter of the method and the parameter named `$b` was not checked
+* String keys of the parameter sets passed to `withParameterSetsInOrder()`, `withParameterSetsInAnyOrder()`, and `withParameterSetsInPartialOrder()` were ignored, so a parameter set such as `['b' => 7]` compared the expected value with the first parameter of the method and the parameter
+  named `$b` was not checked
 
 ## [13.4.1] - 2026-10-05
 
