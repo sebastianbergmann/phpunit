@@ -64,6 +64,39 @@ final class FilterTest extends TestCase
         $this->assertIsString($result);
     }
 
+    public function testFirstFrameFromThrowableIsTheFirstLineOfItsStackTrace(): void
+    {
+        $e = new Exception('message');
+
+        $this->assertSame(__FILE__ . ':' . (__LINE__ - 2), Filter::firstFrameFromThrowableAsString($e));
+    }
+
+    public function testFirstFrameFromThrowableIsTakenFromThePreviousThrowableWhenItIsUnwrapped(): void
+    {
+        $first  = new Exception('first');
+        $second = new Exception('second', 0, $first);
+
+        $this->assertSame(__FILE__ . ':' . (__LINE__ - 3), Filter::firstFrameFromThrowableAsString($second));
+        $this->assertSame(__FILE__ . ':' . (__LINE__ - 3), Filter::firstFrameFromThrowableAsString($second, false));
+    }
+
+    public function testFirstFrameFromThrowableIsNullWhenItsStackTraceIsEmpty(): void
+    {
+        $e = new PhptAssertionFailedError(
+            'phpt assertion failed',
+            0,
+            '/does/not/exist.phpt',
+            42,
+            [
+                ['file' => '/does/not/exist.phpt', 'line' => 42, 'function' => 'main', 'type' => '->'],
+            ],
+            'expected diff',
+        );
+
+        $this->assertSame('', Filter::stackTraceFromThrowableAsString($e));
+        $this->assertNull(Filter::firstFrameFromThrowableAsString($e));
+    }
+
     public function testStackTraceFromThrowableWithUnwrapFalse(): void
     {
         $first  = new Exception('first');
