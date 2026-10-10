@@ -113,6 +113,16 @@ final class TestCasePropertyExampleTest extends TestCase
         $this->assertTrue($test->wasRejectedByAssumption());
     }
 
+    public function testAnExampleIsRejectedWhenAssumeIsCalledWithFalseWhileAnExceptionOfPHPUnitIsExpected(): void
+    {
+        $test = $this->example('testRejectsTheExampleWhileAnExceptionOfPHPUnitIsExpected', [1]);
+
+        $this->runExample($test);
+
+        $this->assertTrue($test->wasRejectedByAssumption());
+        $this->assertTrue($test->status()->isUnknown());
+    }
+
     public function testAnExampleThatCalledAssumeWithFalseIsNotRejectedWhenTearDownErrors(): void
     {
         $test = new ExampleWithFailingTearDownTest('testRejectsTheExample');

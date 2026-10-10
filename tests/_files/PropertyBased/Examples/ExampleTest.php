@@ -11,6 +11,7 @@ namespace PHPUnit\TestFixture\PropertyBased\Examples;
 
 use Countable;
 use DomainException;
+use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
@@ -43,6 +44,13 @@ final class ExampleTest extends TestCase
     public function testRejectsTheExampleWhileAnExceptionIsExpected(int $number): void
     {
         $this->expectException(RuntimeException::class);
+
+        $this->assume(false);
+    }
+
+    public function testRejectsTheExampleWhileAnExceptionOfPHPUnitIsExpected(int $number): void
+    {
+        $this->expectException(Exception::class);
 
         $this->assume(false);
     }
