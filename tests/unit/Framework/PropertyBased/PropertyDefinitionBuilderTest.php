@@ -19,6 +19,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\Metadata\Attribute\ForAllClosureTest;
 use PHPUnit\TestFixture\PropertyBased\Derivation\EmailAddress;
 use PHPUnit\TestFixture\PropertyBased\Properties\DuplicateGeneratorForTest;
+use PHPUnit\TestFixture\PropertyBased\Properties\DuplicateGeneratorForWithLeadingBackslashTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\GeneratorForUnknownClassTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\InvalidPropertiesTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\NonStaticGeneratorForTest;
@@ -90,6 +91,12 @@ final class PropertyDefinitionBuilderTest extends TestCase
                 DuplicateGeneratorForTest::class,
                 'testOne',
                 DuplicateGeneratorForTest::class . '::first() and ' . DuplicateGeneratorForTest::class . '::second() are both registered with #[GeneratorFor] for ' . EmailAddress::class,
+            ],
+
+            'duplicate registered generators, one for the class name with a leading backslash' => [
+                DuplicateGeneratorForWithLeadingBackslashTest::class,
+                'testOne',
+                DuplicateGeneratorForWithLeadingBackslashTest::class . '::first() and ' . DuplicateGeneratorForWithLeadingBackslashTest::class . '::second() are both registered with #[GeneratorFor] for ' . EmailAddress::class,
             ],
 
             'non-static registered generator' => [
