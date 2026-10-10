@@ -9,17 +9,24 @@
  */
 namespace PHPUnit\Framework\PropertyBased;
 
+use function array_map;
+use function array_unique;
+use function count;
+use function serialize;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorDeriver;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorRegistry;
+use PHPUnit\Framework\PropertyBased\Distribution\ExactDistribution;
 use PHPUnit\Framework\PropertyBased\Distribution\UniformDistribution;
 use PHPUnit\Framework\TestCase;
 use Random\Engine\Xoshiro256StarStar;
 use Random\Randomizer;
 
 #[CoversClass(ChoiceSource::class)]
+#[CoversClass(ChoiceTree::class)]
+#[CoversClass(ChoiceTreeNode::class)]
 #[CoversClass(ChoiceSequence::class)]
 #[CoversClass(Span::class)]
 #[CoversClass(ExampleRejectedException::class)]
@@ -210,5 +217,68 @@ final class ChoiceSourceTest extends TestCase
         $source = ChoiceSource::replay(new ChoiceSequence([]));
 
         $this->assertNull($source->suggest(['candidate'], 1.0));
+    }
+
+    public function testDoesNotDrawTheChoicesOfAnExampleThatWasGeneratedBefore(): void
+    {
+        $randomizer = new Randomizer(new Xoshiro256StarStar(1));
+        $tree       = new ChoiceTree;
+        $sequences  = [];
+
+        for ($i = 0; $i < 10; $i++) {
+            $source = ChoiceSource::random($randomizer, ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, null, $tree);
+
+            $source->draw(1, new UniformDistribution);
+            $source->draw(4, new UniformDistribution);
+            $source->exampleGenerated();
+
+            $sequences[] = $source->sequence()->choices();
+        }
+
+        $this->assertSame(10, count(array_unique(array_map(serialize(...), $sequences))));
+        $this->assertTrue($tree->isExhausted());
+    }
+
+    public function testRecordsTheChoicesOfAReplayedSequenceInTheChoiceTree(): void
+    {
+        $tree   = new ChoiceTree;
+        $source = ChoiceSource::replay(new ChoiceSequence([0]), ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, null, $tree);
+
+        $source->draw(1, new UniformDistribution);
+        $source->exampleGenerated();
+
+        $source = ChoiceSource::random(new Randomizer(new Xoshiro256StarStar(1)), ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, null, $tree);
+
+        $this->assertSame(1, $source->draw(1, new ExactDistribution(0)));
+    }
+
+    public function testNoLongerUsesTheChoiceTreeWhenAChoiceIsDrawnFromADifferentRangeThanBefore(): void
+    {
+        $tree   = new ChoiceTree;
+        $source = ChoiceSource::replay(new ChoiceSequence([0]), ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, null, $tree);
+
+        $source->draw(1, new UniformDistribution);
+        $source->exampleGenerated();
+
+        $source = ChoiceSource::replay(new ChoiceSequence([0]), ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, null, $tree);
+
+        $source->draw(2, new UniformDistribution);
+
+        $this->assertNull($tree->root());
+    }
+
+    public function testDrawsChoicesOfAnExampleThatWasGeneratedBeforeWhenEveryExampleWasGenerated(): void
+    {
+        $tree   = new ChoiceTree;
+        $source = ChoiceSource::random(new Randomizer(new Xoshiro256StarStar(1)), ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, null, $tree);
+
+        $source->draw(0, new UniformDistribution);
+        $source->exampleGenerated();
+
+        $this->assertTrue($tree->isExhausted());
+
+        $source = ChoiceSource::random(new Randomizer(new Xoshiro256StarStar(1)), ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, null, $tree);
+
+        $this->assertSame(0, $source->draw(0, new UniformDistribution));
     }
 }

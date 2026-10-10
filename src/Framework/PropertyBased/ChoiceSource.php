@@ -30,6 +30,10 @@ use Random\Randomizer;
  * it instead: choices beyond its end are 0, and a choice that exceeds the
  * range it is drawn from is clamped to the range.
  *
+ * With a choice tree, the choices are also recorded in the tree, and a choice
+ * that is drawn at random and would lead to an example that was generated
+ * before is replaced with one that does not (see ChoiceTree).
+ *
  * It also provides the deriver for the generators that are derived from types
  * while the example is generated, keeps track of the objects that are being
  * generated, so that recursive construction can be limited, and records how
@@ -42,7 +46,20 @@ use Random\Randomizer;
 final class ChoiceSource
 {
     public const int DEFAULT_MAXIMUM_NUMBER_OF_CHOICES = 8192;
+
+    /**
+     * How often a choice that would lead to an example that was generated
+     * before is drawn again before the next choice that does not is used.
+     */
+    private const int NUMBER_OF_ATTEMPTS_TO_DRAW_AN_UNEXHAUSTED_CHOICE = 3;
     private readonly ?Randomizer $randomizer;
+    private readonly ?ChoiceTree $tree;
+
+    /**
+     * The node of the choice tree for the choices that have been drawn, null
+     * when there is no choice tree or it is no longer used.
+     */
+    private ?ChoiceTreeNode $node;
 
     /**
      * @var list<non-negative-int>
@@ -87,30 +104,50 @@ final class ChoiceSource
     /**
      * @param positive-int $maximumNumberOfChoices
      */
-    public static function random(Randomizer $randomizer, int $maximumNumberOfChoices = self::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, ?GeneratorDeriver $deriver = null): self
+    public static function random(Randomizer $randomizer, int $maximumNumberOfChoices = self::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, ?GeneratorDeriver $deriver = null, ?ChoiceTree $tree = null): self
     {
-        return new self($randomizer, [], $maximumNumberOfChoices, $deriver);
+        return new self($randomizer, [], $maximumNumberOfChoices, $deriver, $tree);
     }
 
     /**
      * @param positive-int $maximumNumberOfChoices
      */
-    public static function replay(ChoiceSequence $sequence, int $maximumNumberOfChoices = self::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, ?GeneratorDeriver $deriver = null): self
+    public static function replay(ChoiceSequence $sequence, int $maximumNumberOfChoices = self::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, ?GeneratorDeriver $deriver = null, ?ChoiceTree $tree = null): self
     {
-        return new self(null, $sequence->choices(), $maximumNumberOfChoices, $deriver);
+        return new self(null, $sequence->choices(), $maximumNumberOfChoices, $deriver, $tree);
     }
 
     /**
      * @param list<non-negative-int> $replayedChoices
      * @param positive-int           $maximumNumberOfChoices
      */
-    private function __construct(?Randomizer $randomizer, array $replayedChoices, int $maximumNumberOfChoices, ?GeneratorDeriver $deriver)
+    private function __construct(?Randomizer $randomizer, array $replayedChoices, int $maximumNumberOfChoices, ?GeneratorDeriver $deriver, ?ChoiceTree $tree)
     {
         $this->randomizer             = $randomizer;
         $this->replayedChoices        = $replayedChoices;
         $this->maximumNumberOfChoices = $maximumNumberOfChoices;
         $this->deriver                = $deriver;
+        $this->tree                   = $tree;
+        $this->node                   = null;
         $this->constructions          = new Constructions;
+
+        // when every example has been generated, an example that was
+        // generated before cannot be avoided
+        if ($tree !== null && !$tree->isExhausted()) {
+            $this->node = $tree->root();
+        }
+    }
+
+    /**
+     * Records in the choice tree that the example whose choices have been
+     * drawn was generated, or rejected while it was generated, so that it is
+     * not generated again.
+     */
+    public function exampleGenerated(): void
+    {
+        $this->node?->exhaust();
+
+        $this->node = null;
     }
 
     /**
@@ -238,14 +275,27 @@ final class ChoiceSource
             throw ExampleRejectedException::tooManyChoices($this->maximumNumberOfChoices);
         }
 
+        if ($this->node !== null && !$this->node->draws($maximum)) {
+            // the generators do not draw the same choices as before
+            $this->tree?->discard();
+
+            $this->node = null;
+        }
+
         if ($this->randomizer !== null) {
-            $choice = $distribution->sample($this->randomizer, $maximum);
+            $choice = $this->randomChoice($maximum, $distribution);
         } else {
             $choice = $this->replayedChoices[$index] ?? 0;
 
             if ($choice > $maximum) {
                 $choice = $maximum;
             }
+        }
+
+        if ($this->node !== null) {
+            assert($this->tree !== null);
+
+            $this->node = $this->tree->child($this->node, $choice);
         }
 
         $this->choices[] = $choice;
@@ -331,5 +381,31 @@ final class ChoiceSource
     public function sequence(): ChoiceSequence
     {
         return new ChoiceSequence($this->choices, $this->spans);
+    }
+
+    /**
+     * Draws a choice at random that does not lead to an example that was
+     * generated before: it is drawn again a few times, and then the next
+     * choice that does not is used.
+     *
+     * @param non-negative-int $maximum
+     *
+     * @return non-negative-int
+     */
+    private function randomChoice(int $maximum, Distribution $distribution): int
+    {
+        assert($this->randomizer !== null);
+
+        $choice = $distribution->sample($this->randomizer, $maximum);
+
+        if ($this->node === null) {
+            return $choice;
+        }
+
+        for ($attempt = 1; $attempt < self::NUMBER_OF_ATTEMPTS_TO_DRAW_AN_UNEXHAUSTED_CHOICE && $this->node->leadsToExhaustedNode($choice); $attempt++) {
+            $choice = $distribution->sample($this->randomizer, $maximum);
+        }
+
+        return $this->node->unexhaustedChoice($choice);
     }
 }

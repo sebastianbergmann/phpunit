@@ -24,9 +24,9 @@ Time: %s, Memory: %s
 There was 1 risky test:
 
 1) PHPUnit\TestFixture\PropertyBasedTesting\RejectedExamplesTest::testRejectsAlmostAllExamples
-This property was checked for only 8 of 10 examples, 92 examples were rejected
+This property was checked for only 1 of 10 examples, 99 examples were rejected
 
 %sRejectedExamplesTest.php:%d
 
 OK, but there were issues!
-Tests: 1, Assertions: 8, Risky: 1.
+Tests: 1, Assertions: 1, Risky: 1.
