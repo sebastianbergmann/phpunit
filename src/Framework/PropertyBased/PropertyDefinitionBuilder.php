@@ -224,7 +224,26 @@ final readonly class PropertyDefinitionBuilder
                     );
                 }
 
-                if (!class_exists($registeredClassName) && !interface_exists($registeredClassName)) {
+                try {
+                    $exists = class_exists($registeredClassName) || interface_exists($registeredClassName);
+                } catch (Throwable $t) {
+                    // for instance, the class cannot be loaded because its
+                    // parent class does not exist
+                    throw InvalidPropertyException::because(
+                        $className,
+                        $methodName,
+                        sprintf(
+                            '%s::%s() is registered with #[GeneratorFor] for %s, which cannot be loaded, %s was raised: %s',
+                            $className,
+                            $name,
+                            $registeredClassName,
+                            $t::class,
+                            $t->getMessage(),
+                        ),
+                    );
+                }
+
+                if (!$exists) {
                     throw InvalidPropertyException::because(
                         $className,
                         $methodName,
