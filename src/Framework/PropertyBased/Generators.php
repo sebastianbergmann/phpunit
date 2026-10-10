@@ -21,6 +21,7 @@ use function class_exists;
 use function count;
 use function debug_backtrace;
 use function enum_exists;
+use function get_debug_type;
 use function interface_exists;
 use function is_finite;
 use function is_int;
@@ -29,6 +30,7 @@ use function mb_check_encoding;
 use function mb_str_split;
 use function sprintf;
 use function var_export;
+use Closure;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorDeriver;
 use PHPUnit\Framework\PropertyBased\Distribution\WeightedRangesDistribution;
 use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
@@ -465,6 +467,43 @@ final class Generators
     }
 
     /**
+     * Generates the values of the generator that $generator returns, which is
+     * called when the first value is generated rather than now. This way, a
+     * generator can refer to itself, for values that contain values of the
+     * same kind:
+     *
+     *     $values = Generators::deferred(
+     *         static function () use (&$values): ValueGenerator
+     *         {
+     *             return Generators::oneOf(
+     *                 Generators::integers(),
+     *                 Generators::lists($values, recursive: true),
+     *             );
+     *         },
+     *     );
+     *
+     * A generator that refers to itself has to make a choice before it does,
+     * as oneOf() does here, and it has to pass true for $recursive to lists(),
+     * arrays(), and nullable(), so that the generated values stay small.
+     *
+     * @template T
+     *
+     * @param Closure(): ValueGenerator<T> $generator
+     *
+     * @return ValueGenerator<T>
+     */
+    public static function deferred(Closure $generator): ValueGenerator
+    {
+        /** @var DeferredGenerator<T> $deferred */
+        $deferred = new DeferredGenerator(
+            static fn (GeneratorDeriver $deriver): AbstractGenerator => self::generatorReturnedBy($generator(), 'deferred'),
+            'the values of a generator that was created with Generators::deferred()',
+        );
+
+        return $deferred;
+    }
+
+    /**
      * Generates objects of the given class the way they are generated for a
      * parameter of a property whose type is the class: with the generator
      * that the test case class registers for it with #[GeneratorFor], as
@@ -538,6 +577,30 @@ final class Generators
             static fn (GeneratorDeriver $deriver): AbstractGenerator => $deriver->forType($parsed, $scope),
             sprintf('values of type %s', $type),
         );
+    }
+
+    /**
+     * @param non-empty-string $function the name of the function that the closure that returned $generator was passed to
+     *
+     * @throws InvalidGeneratorArgumentException
+     * @throws ValueGeneratorNotSupportedException
+     *
+     * @return AbstractGenerator<mixed>
+     */
+    private static function generatorReturnedBy(mixed $generator, string $function): AbstractGenerator
+    {
+        if (!$generator instanceof ValueGenerator) {
+            throw new InvalidGeneratorArgumentException(
+                sprintf(
+                    'The closure passed to %s() must return a %s, %s was returned',
+                    $function,
+                    ValueGenerator::class,
+                    get_debug_type($generator),
+                ),
+            );
+        }
+
+        return AbstractGenerator::from($generator);
     }
 
     /**
