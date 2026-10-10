@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\PropertyBased;
 
-use function array_fill_keys;
 use function array_keys;
 use function assert;
 use function class_exists;
@@ -21,6 +20,8 @@ use function sprintf;
 use Closure;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorDeriver;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorRegistry;
+use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
+use PHPUnit\Framework\PropertyBased\Generator\DeferredGenerator;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\ForAll;
 use PHPUnit\Metadata\GeneratorFor;
@@ -35,9 +36,12 @@ use Throwable;
  *
  * The generators for the parameters whose generator is not specified with
  * #[ForAll] are derived from their types, so that a parameter for which no
- * generator can be determined is reported before the property is checked.
- * The methods that are registered with #[GeneratorFor] are not called for
- * this: it is enough to know for which classes generators are registered.
+ * generator can be determined is reported before the property is checked,
+ * and they are kept for when it is checked. The methods that are registered
+ * with #[GeneratorFor] are not called for this: a generator that is derived
+ * refers to a class for which a generator is registered with a deferred
+ * generator, which uses the registered generator once it has been created
+ * when the property is checked.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -87,11 +91,7 @@ final readonly class PropertyDefinitionBuilder
 
         $registeredGenerators = $this->registeredGenerators($className, $methodName);
 
-        $deriver = new GeneratorDeriver(
-            GeneratorRegistry::from(
-                array_fill_keys(array_keys($registeredGenerators), Generators::constant(null)),
-            ),
-        );
+        $deriver = new GeneratorDeriver($this->deferredRegisteredGenerators($registeredGenerators));
 
         $parameters = [];
 
@@ -117,7 +117,7 @@ final readonly class PropertyDefinitionBuilder
             }
 
             try {
-                $deriver->forParameter($parameter);
+                $parameters[$name] = $deriver->forParameter($parameter);
             } catch (CannotDeriveGeneratorException $e) {
                 throw InvalidPropertyException::because($className, $methodName, lcfirst($e->getMessage()));
             } catch (Throwable $t) {
@@ -134,11 +134,30 @@ final readonly class PropertyDefinitionBuilder
                     ),
                 );
             }
-
-            $parameters[$name] = null;
         }
 
         return new PropertyDefinition($className, $methodName, $parameters, $registeredGenerators);
+    }
+
+    /**
+     * Returns the registry of the deferred generators that refer to the
+     * generators that are registered for classes, which are derived by the
+     * deriver of the choice source as the generators that it registers.
+     *
+     * @param array<class-string, non-empty-string> $registeredGenerators
+     */
+    private function deferredRegisteredGenerators(array $registeredGenerators): GeneratorRegistry
+    {
+        $deferred = [];
+
+        foreach (array_keys($registeredGenerators) as $className) {
+            $deferred[$className] = new DeferredGenerator(
+                static fn (GeneratorDeriver $deriver): AbstractGenerator => $deriver->forClass($className),
+                sprintf('objects of class %s', $className),
+            );
+        }
+
+        return GeneratorRegistry::from($deferred);
     }
 
     /**
