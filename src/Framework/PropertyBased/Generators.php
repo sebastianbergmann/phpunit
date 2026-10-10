@@ -504,6 +504,50 @@ final class Generators
     }
 
     /**
+     * Generates the values of $base and values that $extend builds from them,
+     * nested up to $maximumDepth levels. $extend receives a generator for the
+     * values of one level and returns a generator for the values of the next
+     * level, which contain them:
+     *
+     *     Generators::recursive(
+     *         Generators::integers(),
+     *         static fn (ValueGenerator $values): ValueGenerator => Generators::lists($values),
+     *     );
+     *
+     * generates integers, lists of integers, lists of lists of integers, and
+     * so on. The values of $base are generated as often as the values of all
+     * other levels together, and they are the simplest ones.
+     *
+     * @param ValueGenerator<mixed>                                 $base
+     * @param Closure(ValueGenerator<mixed>): ValueGenerator<mixed> $extend
+     *
+     * @throws InvalidGeneratorArgumentException
+     * @throws ValueGeneratorNotSupportedException
+     *
+     * @return ValueGenerator<mixed>
+     */
+    public static function recursive(ValueGenerator $base, Closure $extend, int $maximumDepth = 5): ValueGenerator
+    {
+        if ($maximumDepth < 0) {
+            throw new InvalidGeneratorArgumentException(
+                sprintf(
+                    'The maximum depth (%d) must not be negative',
+                    $maximumDepth,
+                ),
+            );
+        }
+
+        $baseGenerator = AbstractGenerator::from($base);
+        $generator     = $baseGenerator;
+
+        for ($depth = 1; $depth <= $maximumDepth; $depth++) {
+            $generator = new OneOfGenerator([$baseGenerator, self::generatorReturnedBy($extend($generator), 'recursive')]);
+        }
+
+        return $generator;
+    }
+
+    /**
      * Generates objects of the given class the way they are generated for a
      * parameter of a property whose type is the class: with the generator
      * that the test case class registers for it with #[GeneratorFor], as
