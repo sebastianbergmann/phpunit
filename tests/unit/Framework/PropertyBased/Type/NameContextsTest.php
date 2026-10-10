@@ -14,6 +14,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\PropertyBased\Currency;
+use PHPUnit\TestFixture\PropertyBased\EnumerationWithoutCases;
 
 #[CoversClass(NameContexts::class)]
 #[Small]
@@ -43,6 +45,23 @@ final class NameContextsTest extends TestCase
 
         $this->assertNull($context->getNamespace());
         $this->assertSame('Other', $context->getResolvedClassName(new Name('Other'))->toString());
+    }
+
+    public function testReturnsTheContextThatAppliesToTheDeclarationOfAFunction(): void
+    {
+        $context = NameContexts::at(__DIR__ . '/../../../../_files/PropertyBased/NameResolution/FunctionWithImports.php', 16);
+
+        $this->assertSame('PHPUnit\TestFixture\PropertyBased\NameResolution\Functions', $context->getNamespace()?->toString());
+        $this->assertSame(Currency::class, $context->getResolvedClassName(new Name('Money'))->toString());
+        $this->assertSame('PHPUnit\TestFixture\PropertyBased\NameResolution\Functions\Other', $context->getResolvedClassName(new Name('Other'))->toString());
+    }
+
+    public function testReturnsTheContextThatAppliesToAStatementOutsideOfADeclaration(): void
+    {
+        $context = NameContexts::at(__DIR__ . '/../../../../_files/PropertyBased/NameResolution/FunctionWithImports.php', 21);
+
+        $this->assertSame(Currency::class, $context->getResolvedClassName(new Name('Money'))->toString());
+        $this->assertSame(EnumerationWithoutCases::class, $context->getResolvedClassName(new Name('Other'))->toString());
     }
 
     public function testReturnsTheContextOfTheGlobalNamespaceWithoutAFileOrLine(): void
