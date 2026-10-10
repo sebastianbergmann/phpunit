@@ -699,8 +699,13 @@ final readonly class Application
 
     private function writeRandomSeedInformation(Printer $printer, Configuration $configuration, TestSuite $testSuite): void
     {
-        if (!$configuration->seedRandomNumberGenerators() && !$this->containsProperty($testSuite, new TestSuiteFilterProcessor($this->emitter)->filter($configuration))) {
-            return;
+        if (!$configuration->seedRandomNumberGenerators()) {
+            // the test selection is only built for a test suite that contains a
+            // property, which it may not select
+            if (!$this->containsProperty($testSuite, null) ||
+                !$this->containsProperty($testSuite, new TestSuiteFilterProcessor($this->emitter)->filter($configuration))) {
+                return;
+            }
         }
 
         $this->writeMessage(
@@ -714,7 +719,8 @@ final readonly class Application
      * Whether the test suite contains a property that the test selection
      * selects. The test selection is only applied to the test suite when it is
      * run, so it is applied here as it is then: to the test that a property
-     * aggregates.
+     * aggregates. Without a test selection, whether the test suite contains
+     * any property.
      */
     private function containsProperty(TestSuite $testSuite, ?Factory $filter): bool
     {
