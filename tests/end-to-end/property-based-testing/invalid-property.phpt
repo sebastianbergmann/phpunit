@@ -20,8 +20,8 @@ Time: %s, Memory: %s
 
 There were 3 PHPUnit errors:
 
-1) PHPUnit\TestFixture\PropertyBasedTesting\InvalidPropertyTest::testIsCombinedWithTestWith
-Property PHPUnit\TestFixture\PropertyBasedTesting\InvalidPropertyTest::testIsCombinedWithTestWith cannot be checked: #[Property] cannot be combined with #[DataProvider], #[DataProviderClosure], #[DataProviderExternal], #[TestWith], or #[TestWithJson]
+1) PHPUnit\TestFixture\PropertyBasedTesting\InvalidPropertyTest::testHasAnExplicitExampleWithoutArgumentForEveryParameter
+Property PHPUnit\TestFixture\PropertyBasedTesting\InvalidPropertyTest::testHasAnExplicitExampleWithoutArgumentForEveryParameter cannot be checked: explicit example #0 has no argument for parameter $b
 
 %sInvalidPropertyTest.php:%d
 

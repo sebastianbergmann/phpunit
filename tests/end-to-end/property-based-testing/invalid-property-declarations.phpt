@@ -17,7 +17,7 @@ Runtime: %s
 There were 5 PHPUnit errors:
 
 1) PHPUnit\TestFixture\PropertyBasedTesting\InvalidPropertyDeclarationsTest::testIsCombinedWithADataProvider
-Property PHPUnit\TestFixture\PropertyBasedTesting\InvalidPropertyDeclarationsTest::testIsCombinedWithADataProvider cannot be checked: #[Property] cannot be combined with #[DataProvider], #[DataProviderClosure], #[DataProviderExternal], #[TestWith], or #[TestWithJson]
+Property PHPUnit\TestFixture\PropertyBasedTesting\InvalidPropertyDeclarationsTest::testIsCombinedWithADataProvider cannot be checked: #[Property] cannot be combined with #[DataProvider], #[DataProviderClosure], or #[DataProviderExternal]
 
 %sInvalidPropertyDeclarationsTest.php:%d
 
