@@ -10,6 +10,7 @@
 namespace PHPUnit\TestFixture\Metadata\Attribute;
 
 use PHPUnit\Framework\Attributes\Property;
+use PHPUnit\Framework\Attributes\RequireClassification;
 use PHPUnit\Framework\TestCase;
 
 final class PropertyTest extends TestCase
@@ -26,6 +27,13 @@ final class PropertyTest extends TestCase
 
     #[Property(examples: 0)]
     public function testWithInvalidNumberOfExamples(int $value): void
+    {
+    }
+
+    #[Property]
+    #[RequireClassification('negative', 10)]
+    #[RequireClassification('zero', 0.5)]
+    public function testWithRequiredClassifications(int $value): void
     {
     }
 }

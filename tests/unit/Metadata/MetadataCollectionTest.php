@@ -660,6 +660,14 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isGeneratorFor());
     }
 
+    public function test_Can_be_filtered_for_RequireClassification(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isRequireClassification();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isRequireClassification());
+    }
+
     public function test_Can_be_filtered_for_Property(): void
     {
         $collection = $this->collectionWithOneOfEach()->isProperty();
@@ -758,6 +766,7 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::retry(3),
                 Metadata::forAll('value', 'provider'),
                 Metadata::generatorFor(self::class),
+                Metadata::requireClassification('label', 10.0),
                 Metadata::property(null),
                 Metadata::withEnvironmentVariableOnClass('foo', 'bar'),
                 Metadata::withoutErrorHandler(),

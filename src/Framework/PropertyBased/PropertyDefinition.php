@@ -16,8 +16,9 @@ use PHPUnit\Framework\TestCase;
 /**
  * A property after its metadata has been validated: the generator for each
  * of its parameters that is derived from its type or where it comes from
- * otherwise, its explicit examples, and the methods of its test case class
- * that are registered with #[GeneratorFor].
+ * otherwise, its explicit examples, the minimum percentages of its examples
+ * that are required to be classified with labels, and the methods of its test
+ * case class that are registered with #[GeneratorFor].
  *
  * @immutable
  *
@@ -48,6 +49,11 @@ final readonly class PropertyDefinition
     private array $explicitExamples;
 
     /**
+     * @var list<array{label: non-empty-string, minimumPercentage: float}>
+     */
+    private array $requiredClassifications;
+
+    /**
      * @var array<class-string, non-empty-string>
      */
     private array $registeredGenerators;
@@ -55,17 +61,19 @@ final readonly class PropertyDefinition
     /**
      * @param class-string<TestCase>                                                                              $className
      * @param non-empty-string                                                                                    $methodName
-     * @param array<non-empty-string, AbstractGenerator<mixed>|Closure(): ValueGenerator<mixed>|non-empty-string> $parameters           by parameter name, in the order of the parameters, the generators that are derived from types and the closures and names of the methods that are specified with #[ForAll]
-     * @param list<ExplicitExample>                                                                               $explicitExamples     the examples that are specified with #[TestWith] and #[TestWithJson], in the order in which they are specified
-     * @param array<class-string, non-empty-string>                                                               $registeredGenerators the names of the methods that are registered with #[GeneratorFor] by class name
+     * @param array<non-empty-string, AbstractGenerator<mixed>|Closure(): ValueGenerator<mixed>|non-empty-string> $parameters              by parameter name, in the order of the parameters, the generators that are derived from types and the closures and names of the methods that are specified with #[ForAll]
+     * @param list<ExplicitExample>                                                                               $explicitExamples        the examples that are specified with #[TestWith] and #[TestWithJson], in the order in which they are specified
+     * @param list<array{label: non-empty-string, minimumPercentage: float}>                                      $requiredClassifications the minimum percentages of the examples that are required with #[RequireClassification] to be classified with labels
+     * @param array<class-string, non-empty-string>                                                               $registeredGenerators    the names of the methods that are registered with #[GeneratorFor] by class name
      */
-    public function __construct(string $className, string $methodName, array $parameters, array $explicitExamples, array $registeredGenerators)
+    public function __construct(string $className, string $methodName, array $parameters, array $explicitExamples, array $requiredClassifications, array $registeredGenerators)
     {
-        $this->className            = $className;
-        $this->methodName           = $methodName;
-        $this->parameters           = $parameters;
-        $this->explicitExamples     = $explicitExamples;
-        $this->registeredGenerators = $registeredGenerators;
+        $this->className               = $className;
+        $this->methodName              = $methodName;
+        $this->parameters              = $parameters;
+        $this->explicitExamples        = $explicitExamples;
+        $this->requiredClassifications = $requiredClassifications;
+        $this->registeredGenerators    = $registeredGenerators;
     }
 
     /**
@@ -98,6 +106,14 @@ final readonly class PropertyDefinition
     public function explicitExamples(): array
     {
         return $this->explicitExamples;
+    }
+
+    /**
+     * @return list<array{label: non-empty-string, minimumPercentage: float}>
+     */
+    public function requiredClassifications(): array
+    {
+        return $this->requiredClassifications;
     }
 
     /**

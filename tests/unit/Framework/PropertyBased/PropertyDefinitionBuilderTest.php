@@ -91,6 +91,30 @@ final class PropertyDefinitionBuilderTest extends TestCase
                 'explicit example #0 has more than one argument for parameter $a',
             ],
 
+            'required classification with an empty label' => [
+                InvalidPropertiesTest::class,
+                'testWithRequiredClassificationWithEmptyLabel',
+                'the label that is passed to #[RequireClassification] must not be empty',
+            ],
+
+            'required classification of zero percent' => [
+                InvalidPropertiesTest::class,
+                'testWithRequiredClassificationOfZeroPercent',
+                'the minimum percentage of the examples that are classified as "negative" must be greater than 0 and not greater than 100, 0 was given',
+            ],
+
+            'required classification of more than one hundred percent' => [
+                InvalidPropertiesTest::class,
+                'testWithRequiredClassificationOfMoreThanOneHundredPercent',
+                'the minimum percentage of the examples that are classified as "negative" must be greater than 0 and not greater than 100, 100.5 was given',
+            ],
+
+            'required classifications for the same label' => [
+                InvalidPropertiesTest::class,
+                'testWithRequiredClassificationsForTheSameLabel',
+                '#[RequireClassification] is used more than once for "negative"',
+            ],
+
             'explicit examples with the same name' => [
                 InvalidPropertiesTest::class,
                 'testWithExplicitExamplesWithTheSameName',
@@ -173,6 +197,17 @@ final class PropertyDefinitionBuilderTest extends TestCase
         $this->assertInstanceOf(AbstractGenerator::class, $parameters['name']);
         $this->assertInstanceOf(AbstractGenerator::class, $parameters['money']);
         $this->assertSame([], $definition->explicitExamples());
+    }
+
+    public function testBuildsTheRequiredClassificationsOfAProperty(): void
+    {
+        $this->assertSame(
+            [
+                ['label' => 'negative', 'minimumPercentage' => 10.0],
+                ['label' => 'zero', 'minimumPercentage' => 100.0],
+            ],
+            (new PropertyDefinitionBuilder)->build(ValidPropertiesTest::class, 'testWithRequiredClassifications')->requiredClassifications(),
+        );
     }
 
     public function testBuildsTheExplicitExamplesOfAPropertyWithTheirArgumentsByParameterName(): void
