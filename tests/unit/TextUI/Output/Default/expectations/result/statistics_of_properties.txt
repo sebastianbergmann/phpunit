@@ -1,0 +1,11 @@
+Statistics of 2 properties:
+
+1) FooTest::testBar
+8 examples checked, 1 rejected
+
+     75.0% even
+     25.0% odd
+
+2) FooTest::testBar
+1 example checked, 0 rejected
+

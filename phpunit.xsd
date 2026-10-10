@@ -230,6 +230,7 @@
         <xs:attribute name="displayDetailsOnTestsThatTriggerNotices" type="xs:boolean" default="false"/>
         <xs:attribute name="displayDetailsOnTestsThatTriggerWarnings" type="xs:boolean" default="false"/>
         <xs:attribute name="triggeringTestsLimit" type="xs:integer" default="0"/>
+        <xs:attribute name="displayPropertyStatistics" type="xs:boolean" default="false"/>
         <xs:attribute name="shortenArraysForExportThreshold" type="xs:integer" default="10"/>
         <xs:attribute name="warnWhenPhpIsNotConfiguredForDevelopment" type="xs:boolean" default="false"/>
     </xs:attributeGroup>

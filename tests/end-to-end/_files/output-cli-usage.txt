@@ -141,6 +141,7 @@ Reporting:
   --display-warnings                   Display details for warnings triggered by tests
   --display-all-issues                 Display details for all issues that are triggered
   --triggering-tests-limit <n>         Group and limit the tests listed for each issue to <n> entries
+  --display-property-statistics        Display statistics of the examples of properties
   --reverse-list                       Print defects in reverse order
 
   --compact                            Replace default progress and result output with compact format
