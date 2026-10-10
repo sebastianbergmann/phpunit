@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\PropertyBased\Generator;
 
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
+use PHPUnit\Framework\PropertyBased\Distribution\Distribution;
 use PHPUnit\Framework\PropertyBased\Distribution\UniformDistribution;
 
 /**
@@ -30,15 +31,20 @@ final readonly class OneOfGenerator extends AbstractGenerator
      * @var non-empty-list<AbstractGenerator<T>>
      */
     private array $generators;
-    private UniformDistribution $distribution;
+    private Distribution $distribution;
 
     /**
      * @param non-empty-list<AbstractGenerator<T>> $generators
+     * @param ?Distribution                        $distribution how one of the generators is chosen, uniformly when it is null
      */
-    public function __construct(array $generators)
+    public function __construct(array $generators, ?Distribution $distribution = null)
     {
+        if ($distribution === null) {
+            $distribution = new UniformDistribution;
+        }
+
         $this->generators   = $generators;
-        $this->distribution = new UniformDistribution;
+        $this->distribution = $distribution;
     }
 
     protected function generateValue(ChoiceSource $source): mixed

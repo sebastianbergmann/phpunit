@@ -28,6 +28,7 @@ use function trait_exists;
 use DateTime;
 use DateTimeImmutable;
 use PHPUnit\Framework\PropertyBased\CannotDeriveGeneratorException;
+use PHPUnit\Framework\PropertyBased\Distribution\BernoulliDistribution;
 use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\ArrayGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\BooleanGenerator;
@@ -648,7 +649,8 @@ final class GeneratorDeriver
     private function union(UnionType $type, NameScope $scope): AbstractGenerator
     {
         $numberOfRecursiveReferences = $this->numberOfRecursiveReferences;
-        $generators                  = [];
+        $nonRecursive                = [];
+        $recursive                   = [];
         $nullable                    = false;
 
         foreach ($type->types() as $member) {
@@ -658,17 +660,32 @@ final class GeneratorDeriver
                 continue;
             }
 
-            $generators[] = $this->forType($member, $scope);
+            $numberOfRecursiveReferencesBefore = $this->numberOfRecursiveReferences;
+            $generator                         = $this->forType($member, $scope);
+
+            if ($this->numberOfRecursiveReferences > $numberOfRecursiveReferencesBefore) {
+                $recursive[] = $generator;
+            } else {
+                $nonRecursive[] = $generator;
+            }
         }
 
-        if ($generators === []) {
+        if ($nonRecursive === [] && $recursive === []) {
             return new ConstantGenerator(null);
         }
 
-        if (count($generators) === 1) {
-            $generator = $generators[0];
+        if ($recursive === []) {
+            $generator = $this->oneOf($nonRecursive);
+        } elseif ($nonRecursive === []) {
+            $generator = $this->oneOf($recursive);
         } else {
-            $generator = new OneOfGenerator($generators);
+            // the members that refer to a class that is being derived are
+            // chosen less often than the others, which are the simplest, so
+            // that the generated values stay small
+            $generator = new OneOfGenerator(
+                [$this->oneOf($nonRecursive), $this->oneOf($recursive)],
+                new BernoulliDistribution(self::PROBABILITY_OF_RECURSION),
+            );
         }
 
         if ($nullable) {
@@ -676,6 +693,20 @@ final class GeneratorDeriver
         }
 
         return $generator;
+    }
+
+    /**
+     * @param non-empty-list<AbstractGenerator<mixed>> $generators
+     *
+     * @return AbstractGenerator<mixed>
+     */
+    private function oneOf(array $generators): AbstractGenerator
+    {
+        if (count($generators) === 1) {
+            return $generators[0];
+        }
+
+        return new OneOfGenerator($generators);
     }
 
     /**
