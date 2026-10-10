@@ -314,6 +314,7 @@ final class Help
                 ['arg' => '--display-notices', 'desc' => 'Display details for notices triggered by tests'],
                 ['arg' => '--display-warnings', 'desc' => 'Display details for warnings triggered by tests'],
                 ['arg' => '--display-all-issues', 'desc' => 'Display details for all issues that are triggered'],
+                ['arg' => '--display-property-statistics', 'desc' => 'Display statistics of the examples of properties'],
                 ['arg' => '--reverse-list', 'desc' => 'Print defects in reverse order'],
                 ['spacer' => ''],
 

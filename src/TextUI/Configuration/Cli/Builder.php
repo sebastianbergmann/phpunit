@@ -84,6 +84,7 @@ final class Builder
         'display-errors',
         'display-notices',
         'display-warnings',
+        'display-property-statistics',
         'default-time-limit=',
         'diff-context=',
         'enforce-time-limit',
@@ -339,6 +340,7 @@ final class Builder
         $displayErrors                            = null;
         $displayNotices                           = null;
         $displayWarnings                          = null;
+        $displayPropertyStatistics                = null;
         $enforceTimeLimit                         = null;
         $excludeGroups                            = null;
         $executionOrder                           = null;
@@ -1233,6 +1235,11 @@ final class Builder
 
                     break;
 
+                case '--display-property-statistics':
+                    $displayPropertyStatistics = true;
+
+                    break;
+
                 case '--default-time-limit':
                     $defaultTimeLimit = (int) $option[1];
 
@@ -1633,6 +1640,7 @@ final class Builder
             $displayErrors,
             $displayNotices,
             $displayWarnings,
+            $displayPropertyStatistics,
             $version,
             $coverageFilter,
             $logEventsText,

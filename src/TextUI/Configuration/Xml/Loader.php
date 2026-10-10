@@ -1259,6 +1259,7 @@ final readonly class Loader
             $this->parseBooleanAttribute($documentElement, 'displayDetailsOnTestsThatTriggerErrors', false),
             $this->parseBooleanAttribute($documentElement, 'displayDetailsOnTestsThatTriggerNotices', false),
             $this->parseBooleanAttribute($documentElement, 'displayDetailsOnTestsThatTriggerWarnings', false),
+            $this->parseBooleanAttribute($documentElement, 'displayPropertyStatistics', false),
             $this->parseBooleanAttribute($documentElement, 'reverseDefectList', false),
             $requireCoverageMetadata,
             $requireCoverageMetadataOnSmallTests,

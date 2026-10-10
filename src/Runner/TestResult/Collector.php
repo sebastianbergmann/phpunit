@@ -38,6 +38,7 @@ use PHPUnit\Event\Test\PhpunitErrorTriggered;
 use PHPUnit\Event\Test\PhpunitNoticeTriggered;
 use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
+use PHPUnit\Event\Test\PropertyChecked;
 use PHPUnit\Event\Test\PropertyFalsified;
 use PHPUnit\Event\Test\Skipped as TestSkipped;
 use PHPUnit\Event\Test\WarningTriggered;
@@ -244,6 +245,11 @@ final class Collector
      */
     private array $propertyFalsifiedEvents = [];
 
+    /**
+     * @var array<non-empty-string, PropertyChecked>
+     */
+    private array $propertyCheckedEvents = [];
+
     public function __construct(Facade $facade, IssueFilter $issueFilter)
     {
         $facade->registerSubscribers(
@@ -262,6 +268,7 @@ final class Collector
             new TestAttemptErroredSubscriber($this),
             new TestAttemptFailedSubscriber($this),
             new TestPropertyFalsifiedSubscriber($this),
+            new TestPropertyCheckedSubscriber($this),
             new TestMarkedIncompleteSubscriber($this),
             new TestSkippedSubscriber($this),
             new TestConsideredRiskySubscriber($this),
@@ -336,6 +343,7 @@ final class Collector
             $this->retriedTests,
             $this->timeLimitExceededEvent,
             $this->propertyFalsifiedEvents,
+            $this->propertyCheckedEvents,
         );
     }
 
@@ -493,6 +501,11 @@ final class Collector
     public function testPropertyFalsified(PropertyFalsified $event): void
     {
         $this->propertyFalsifiedEvents[$event->test()->id()] = $event;
+    }
+
+    public function testPropertyChecked(PropertyChecked $event): void
+    {
+        $this->propertyCheckedEvents[$event->test()->id()] = $event;
     }
 
     public function testMarkedIncomplete(MarkedIncomplete $event): void
