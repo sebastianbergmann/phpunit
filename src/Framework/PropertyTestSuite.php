@@ -53,7 +53,6 @@ use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use Random\Engine\Xoshiro256StarStar;
 use Random\Randomizer;
 use ReflectionMethod;
-use ReflectionParameter;
 use SebastianBergmann\CodeCoverage\InvalidArgumentException;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use Throwable;
@@ -630,22 +629,21 @@ final class PropertyTestSuite extends IterativeTestSuite
             return [new GeneratorDeriver(GeneratorRegistry::empty()), []];
         }
 
-        $className  = $this->definition->className();
-        $methodName = $this->definition->methodName();
         $registered = [];
 
         foreach ($this->definition->registeredGenerators() as $registeredClassName => $generatorMethodName) {
             $registered[$registeredClassName] = $this->callGeneratorMethod($generatorMethodName);
         }
 
+        // the generators that were derived from the types of the parameters
+        // when the definition was built use the registered generators through
+        // the deriver of the choice source
         $deriver    = new GeneratorDeriver(GeneratorRegistry::from($registered));
         $generators = [];
 
         foreach ($this->definition->parameters() as $parameterName => $generator) {
-            if ($generator === null) {
-                $generators[$parameterName] = $deriver->forParameter(
-                    new ReflectionParameter([$className, $methodName], $parameterName),
-                );
+            if ($generator instanceof AbstractGenerator) {
+                $generators[$parameterName] = $generator;
 
                 continue;
             }
