@@ -28,6 +28,7 @@ use function is_int;
 use function lcfirst;
 use function mb_check_encoding;
 use function mb_str_split;
+use function preg_match;
 use function sprintf;
 use function var_export;
 use Closure;
@@ -46,8 +47,10 @@ use PHPUnit\Framework\PropertyBased\Generator\ListGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\NullableGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\OneOfGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\RecordGenerator;
+use PHPUnit\Framework\PropertyBased\Generator\RegularExpressionGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\StringGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\TupleGenerator;
+use PHPUnit\Framework\PropertyBased\RegularExpression\Parser;
 use PHPUnit\Framework\PropertyBased\Type\NameScope;
 use PHPUnit\Framework\PropertyBased\Type\TypeParser;
 use UnitEnum;
@@ -165,6 +168,47 @@ final class Generators
         self::ensureValidSize('length', $minimumLength, $maximumLength);
 
         return new BytesGenerator($minimumLength, $maximumLength);
+    }
+
+    /**
+     * Generates strings that the given regular expression, with its
+     * delimiters and modifiers, matches as a whole, for instance
+     * '/\A[a-z]+-\d{2,4}\z/'.
+     *
+     * Literal and escaped characters, the dot, character classes, the escape
+     * sequences \d, \D, \w, \W, \s, \S, \h, \H, \v, and \V, quantifiers,
+     * groups, alternation, \Q...\E, comments, and all modifiers are
+     * supported. Anchors and the other assertions that consume no characters,
+     * such as ^, $, and \b, are supported where they hold for the strings that
+     * are generated, at their start or end, for instance; an example is
+     * rejected when the regular expression does not match the generated
+     * string. Lookahead and lookbehind assertions, backreferences, recursion,
+     * conditional subpatterns, inline options, and Unicode properties are not
+     * supported.
+     *
+     * With the u modifier, the strings are valid UTF-8, and \d, \w, and \s, as
+     * well as \D, \W, and \S, only generate ASCII characters. Without it, the
+     * strings are binary strings: the dot and negated character classes can
+     * generate any byte. The simplest string consists of the simplest
+     * characters, the minimum number of repetitions, and the first
+     * alternatives.
+     *
+     * @throws InvalidGeneratorArgumentException
+     *
+     * @return ValueGenerator<string>
+     */
+    public static function fromRegularExpression(string $regularExpression): ValueGenerator
+    {
+        if ($regularExpression === '' || @preg_match($regularExpression, '') === false) {
+            throw new InvalidGeneratorArgumentException(
+                sprintf(
+                    '%s is not a valid regular expression',
+                    $regularExpression,
+                ),
+            );
+        }
+
+        return new RegularExpressionGenerator($regularExpression, new Parser($regularExpression)->parse());
     }
 
     /**
