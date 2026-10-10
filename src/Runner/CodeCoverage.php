@@ -320,9 +320,8 @@ final class CodeCoverage
      * when that is not checked because contribution to code coverage is not
      * required or no data was appended.
      *
-     * The size, status, and time that are recorded for the property are not
-     * changed by this, they are those of the examples that were appended
-     * before.
+     * The status and time that are recorded for the property are not changed
+     * by this, they are those of the examples that were appended before.
      *
      * @param non-empty-string $id
      */
@@ -342,16 +341,19 @@ final class CodeCoverage
                 continue;
             }
 
-            $tests = $this->codeCoverage->getTests();
+            $status = TestStatus::Success;
+            $time   = $example['time'];
+            $record = $this->codeCoverage->getTests()[$id] ?? null;
 
-            // php-code-coverage only learns the size of a test, which matters
-            // for the check for unintentionally covered code, when it starts
-            // collecting code coverage data for it, so it does that, without
-            // appending the data that is collected meanwhile
-            $this->codeCoverage->start($id, $example['size']);
+            // the status and the time that the examples that were appended
+            // before recorded for the property are kept
+            if ($record !== null) {
+                $status = TestStatus::from($record['status']);
+                $time   = $record['time'];
+            }
 
             try {
-                $this->codeCoverage->append($example['data'], $id, true, TestStatus::Success, $example['covers'], $example['uses'], $example['time']);
+                $this->codeCoverage->append($example['data'], $id, true, $status, $example['covers'], $example['uses'], $time, $example['size']);
             } catch (UnintentionallyCoveredCodeException $e) {
                 $this->emitter->testConsideredRisky(
                     $test,
@@ -361,12 +363,6 @@ final class CodeCoverage
                 continue;
             } catch (CodeCoverageException) {
                 continue;
-            } finally {
-                $this->codeCoverage->stop(false);
-
-                if (isset($tests[$id])) {
-                    $this->codeCoverage->setTests($tests);
-                }
             }
 
             if ($this->requireCoverageContribution && $contributed !== true) {
