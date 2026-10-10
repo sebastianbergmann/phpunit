@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\PropertyBased\Type;
 
-use function assert;
 use function file_get_contents;
 use function is_file;
 use PhpParser\Error;
@@ -61,9 +60,11 @@ final class SourceFileParser
             return null;
         }
 
-        $code = file_get_contents($file);
+        $code = @file_get_contents($file);
 
-        assert($code !== false);
+        if ($code === false) {
+            return null;
+        }
 
         try {
             return (new ParserFactory)->createForHostVersion()->parse($code);
