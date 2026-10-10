@@ -12,15 +12,18 @@ namespace PHPUnit\Framework\PropertyBased\Type;
 use PhpParser\ErrorHandler\Throwing;
 use PhpParser\NameContext;
 use PhpParser\Node;
+use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\ClassLike;
+use PhpParser\Node\Stmt\Namespace_;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\NodeVisitorAbstract;
 
 /**
  * Determines the namespace and the imports that apply to the declaration of
- * a class, an interface, a trait, or an enumeration, the way PHP resolves
- * names. Each file is parsed only once.
+ * a class, an interface, a trait, or an enumeration, or to a statement
+ * outside of such a declaration, the way PHP resolves names. Each file is
+ * parsed only once.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -36,8 +39,10 @@ final class NameContexts
     /**
      * Returns the name context that applies to the declaration of the class
      * (or interface, trait, or enumeration) that contains the given line, or
-     * the context of the global namespace without imports when the file
-     * cannot be read or parsed or no declaration contains the line.
+     * to the statement outside of such a declaration that contains it, such
+     * as the declaration of a function, or the context of the global
+     * namespace without imports when the file cannot be read or parsed or no
+     * declaration or statement contains the line.
      */
     public static function at(false|string $file, false|int $line): NameContext
     {
@@ -90,6 +95,12 @@ final class NameContexts
             public array $declarations = [];
             private readonly NameResolver $nameResolver;
 
+            /**
+             * The number of statements, other than namespace declarations,
+             * that contain the node that is traversed.
+             */
+            private int $depth = 0;
+
             public function __construct(NameResolver $nameResolver)
             {
                 $this->nameResolver = $nameResolver;
@@ -97,15 +108,32 @@ final class NameContexts
 
             public function enterNode(Node $node): null
             {
-                if ($node instanceof ClassLike) {
-                    // the name context changes while the remainder of the file
-                    // is traversed, so the state that applies to the
-                    // declaration is kept as a copy
+                $isStatement = $node instanceof Stmt && !$node instanceof Namespace_;
+
+                // besides the declarations of classes, wherever they are, the
+                // statements outside of them are recorded, the declaration of
+                // a function, for instance; the name context changes while
+                // the remainder of the file is traversed, so the state that
+                // applies to them is kept as a copy
+                if ($node instanceof ClassLike || ($isStatement && $this->depth === 0)) {
                     $this->declarations[] = [
                         'startLine' => $node->getStartLine(),
                         'endLine'   => $node->getEndLine(),
                         'context'   => clone $this->nameResolver->getNameContext(),
                     ];
+                }
+
+                if ($isStatement) {
+                    $this->depth++;
+                }
+
+                return null;
+            }
+
+            public function leaveNode(Node $node): null
+            {
+                if ($node instanceof Stmt && !$node instanceof Namespace_) {
+                    $this->depth--;
                 }
 
                 return null;
