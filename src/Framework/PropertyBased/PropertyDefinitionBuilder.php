@@ -32,6 +32,7 @@ use PHPUnit\Metadata\ForAll;
 use PHPUnit\Metadata\GeneratorFor;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
+use PHPUnit\Metadata\RequireClassification;
 use PHPUnit\Metadata\TestWith;
 use PHPUnit\Util\Reflection;
 use ReflectionClass;
@@ -154,8 +155,64 @@ final readonly class PropertyDefinitionBuilder
             $methodName,
             $parameters,
             $this->explicitExamples($className, $methodName, $metadata->isTestWith(), array_keys($parameters)),
+            $this->requiredClassifications($className, $methodName, $metadata->isRequireClassification()),
             $registeredGenerators,
         );
+    }
+
+    /**
+     * @param class-string<TestCase> $className
+     * @param non-empty-string       $methodName
+     *
+     * @throws InvalidPropertyException
+     *
+     * @return list<array{label: non-empty-string, minimumPercentage: float}>
+     */
+    private function requiredClassifications(string $className, string $methodName, MetadataCollection $requireClassification): array
+    {
+        $requiredClassifications = [];
+        $labels                  = [];
+
+        foreach ($requireClassification as $metadata) {
+            assert($metadata instanceof RequireClassification);
+
+            $label             = $metadata->label();
+            $minimumPercentage = $metadata->minimumPercentage();
+
+            if ($label === '') {
+                throw InvalidPropertyException::because(
+                    $className,
+                    $methodName,
+                    'the label that is passed to #[RequireClassification] must not be empty',
+                );
+            }
+
+            if ($minimumPercentage <= 0.0 || $minimumPercentage > 100.0) {
+                throw InvalidPropertyException::because(
+                    $className,
+                    $methodName,
+                    sprintf(
+                        'the minimum percentage of the examples that are classified as "%s" must be greater than 0 and not greater than 100, %s was given',
+                        $label,
+                        $minimumPercentage,
+                    ),
+                );
+            }
+
+            if (in_array($label, $labels, true)) {
+                throw InvalidPropertyException::because(
+                    $className,
+                    $methodName,
+                    sprintf('#[RequireClassification] is used more than once for "%s"', $label),
+                );
+            }
+
+            $labels[] = $label;
+
+            $requiredClassifications[] = ['label' => $label, 'minimumPercentage' => $minimumPercentage];
+        }
+
+        return $requiredClassifications;
     }
 
     /**

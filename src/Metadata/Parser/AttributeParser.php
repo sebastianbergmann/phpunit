@@ -68,6 +68,7 @@ use PHPUnit\Framework\Attributes\PreCondition;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\Attributes\Property;
 use PHPUnit\Framework\Attributes\Repeat;
+use PHPUnit\Framework\Attributes\RequireClassification;
 use PHPUnit\Framework\Attributes\RequiresClass;
 use PHPUnit\Framework\Attributes\RequiresEnvironmentVariable;
 use PHPUnit\Framework\Attributes\RequiresFunction;
@@ -1081,6 +1082,13 @@ final class AttributeParser implements Parser
                     assert($attributeInstance instanceof GeneratorFor);
 
                     $result[] = Metadata::generatorFor($attributeInstance->type());
+
+                    break;
+
+                case RequireClassification::class:
+                    assert($attributeInstance instanceof RequireClassification);
+
+                    $result[] = Metadata::requireClassification($attributeInstance->label(), $attributeInstance->minimumPercentage());
 
                     break;
 
