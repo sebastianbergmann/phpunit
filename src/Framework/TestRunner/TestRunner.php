@@ -56,6 +56,7 @@ final class TestRunner
 {
     private readonly Configuration $configuration;
     private readonly Emitter $emitter;
+    private readonly RiskyTestChecks $riskyTestChecks;
 
     /**
      * Whether PHPUnit's error handler handles the issues that are triggered
@@ -72,8 +73,9 @@ final class TestRunner
 
     public function __construct(Emitter $emitter)
     {
-        $this->configuration = ConfigurationRegistry::get();
-        $this->emitter       = $emitter;
+        $this->configuration   = ConfigurationRegistry::get();
+        $this->emitter         = $emitter;
+        $this->riskyTestChecks = new RiskyTestChecks($this->configuration->reportUselessTests());
     }
 
     /**
@@ -209,10 +211,14 @@ final class TestRunner
 
         $test->addToAssertionCount(Assert::getCount());
 
-        $performedNoAssertions = !$failure &&
-                                 $this->configuration->reportUselessTests() &&
-                                 !$test->doesNotPerformAssertions() &&
-                                 $test->numberOfAssertionsPerformed() === 0;
+        $riskyBecauseOfNoAssertions = null;
+
+        if (!$failure) {
+            $riskyBecauseOfNoAssertions = $this->riskyTestChecks->performedNoAssertions(
+                $test->numberOfAssertionsPerformed(),
+                $test->doesNotPerformAssertions(),
+            );
+        }
 
         // the code coverage data of an example of a property that passed
         // without performing assertions is held back, because whether the
@@ -221,12 +227,12 @@ final class TestRunner
         // when the example would be considered risky for lacking code
         // coverage metadata had it performed assertions
         $holdBackCodeCoverage = $collectCodeCoverage &&
-                                $performedNoAssertions &&
+                                $riskyBecauseOfNoAssertions !== null &&
                                 $test->isPropertyExample() &&
                                 $test->status()->isSuccess() &&
                                 !$this->lacksRequiredCoverageMetadata($test);
 
-        if ($performedNoAssertions) {
+        if ($riskyBecauseOfNoAssertions !== null) {
             $risky = true;
         }
 
@@ -274,12 +280,14 @@ final class TestRunner
 
                 $test->setContributedToCodeCoverage($contributedToCodeCoverage);
 
+                $riskyBecauseOfNoContribution = $this->riskyTestChecks->didNotContributeToCodeCoverage($contributedToCodeCoverage);
+
                 // whether a property contributes to code coverage is decided
                 // on all of its examples
-                if (!$contributedToCodeCoverage && !$test->isPropertyExample()) {
+                if ($riskyBecauseOfNoContribution !== null && !$test->isPropertyExample()) {
                     $this->emitter->testConsideredRisky(
                         $test->valueObjectForEvents(),
-                        'This test does not contribute to code coverage',
+                        $riskyBecauseOfNoContribution,
                     );
                 }
             }
@@ -294,23 +302,22 @@ final class TestRunner
             !$incomplete &&
             !$skipped &&
             !$test->isPropertyExample() &&
-            $performedNoAssertions) {
+            $riskyBecauseOfNoAssertions !== null) {
             $this->emitter->testConsideredRisky(
                 $test->valueObjectForEvents(),
-                'This test did not perform any assertions',
+                $riskyBecauseOfNoAssertions,
             );
         }
 
-        if (!$test->isPropertyExample() &&
-            $test->doesNotPerformAssertions() &&
-            $test->numberOfAssertionsPerformed() > 0) {
+        $riskyBecauseOfUnexpectedAssertions = $this->riskyTestChecks->performedUnexpectedAssertions(
+            $test->numberOfAssertionsPerformed(),
+            $test->doesNotPerformAssertions(),
+        );
+
+        if (!$test->isPropertyExample() && $riskyBecauseOfUnexpectedAssertions !== null) {
             $this->emitter->testConsideredRisky(
                 $test->valueObjectForEvents(),
-                sprintf(
-                    'This test is not expected to perform assertions but performed %d assertion%s',
-                    $test->numberOfAssertionsPerformed(),
-                    $test->numberOfAssertionsPerformed() > 1 ? 's' : '',
-                ),
+                $riskyBecauseOfUnexpectedAssertions,
             );
         }
 
