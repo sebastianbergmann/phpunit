@@ -114,35 +114,44 @@ final class TestRunner
     {
         Assert::resetCount();
 
-        $codeCoverageMetadataApi    = new CodeCoverageMetadataApi;
-        $coversTargets              = TargetCollection::fromArray([]);
-        $usesTargets                = TargetCollection::fromArray([]);
-        $coversNothingContradiction = false;
+        $codeCoverageMetadataApi       = new CodeCoverageMetadataApi;
+        $coversTargets                 = TargetCollection::fromArray([]);
+        $usesTargets                   = TargetCollection::fromArray([]);
+        $shouldCodeCoverageBeCollected = false;
 
-        if ($this->configuration->disableCoverageTargeting()) {
-            $shouldCodeCoverageBeCollected = true;
-        } else {
-            $coversTargets = $codeCoverageMetadataApi->coversTargets(
-                $test::class,
-                $test->name(),
-            );
+        // the code coverage metadata of a test for which no code coverage data
+        // is collected is not looked at: this is an example of a property
+        // that is run while the property is shrunk, or for the final replay of
+        // its minimal counterexample, and the examples of the property that
+        // were checked before report the issues with this metadata
+        if ($collectCodeCoverageForTest) {
+            $coversNothingContradiction = false;
 
-            $usesTargets = $codeCoverageMetadataApi->usesTargets(
-                $test::class,
-                $test->name(),
-            );
+            if ($this->configuration->disableCoverageTargeting()) {
+                $shouldCodeCoverageBeCollected = true;
+            } else {
+                $coversTargets = $codeCoverageMetadataApi->coversTargets(
+                    $test::class,
+                    $test->name(),
+                );
 
-            $coversTargets = $this->removeFilesystemTargetsThatAreNotFirstPartyCode($test, $coversTargets);
-            $usesTargets   = $this->removeFilesystemTargetsThatAreNotFirstPartyCode($test, $usesTargets);
+                $usesTargets = $codeCoverageMetadataApi->usesTargets(
+                    $test::class,
+                    $test->name(),
+                );
 
-            $shouldCodeCoverageBeCollected = $codeCoverageMetadataApi->shouldCodeCoverageBeCollectedFor($test);
+                $coversTargets = $this->removeFilesystemTargetsThatAreNotFirstPartyCode($test, $coversTargets);
+                $usesTargets   = $this->removeFilesystemTargetsThatAreNotFirstPartyCode($test, $usesTargets);
 
-            $coversNothingContradiction = $codeCoverageMetadataApi->coversNothingContradictsCoversOrUses(
-                $test::class,
-            );
+                $shouldCodeCoverageBeCollected = $codeCoverageMetadataApi->shouldCodeCoverageBeCollectedFor($test);
+
+                $coversNothingContradiction = $codeCoverageMetadataApi->coversNothingContradictsCoversOrUses(
+                    $test::class,
+                );
+            }
+
+            $this->performSanityChecks($test, $coversTargets, $usesTargets, $coversNothingContradiction);
         }
-
-        $this->performSanityChecks($test, $coversTargets, $usesTargets, $coversNothingContradiction);
 
         $error      = false;
         $failure    = false;
