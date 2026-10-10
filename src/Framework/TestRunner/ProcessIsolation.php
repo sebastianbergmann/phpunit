@@ -45,11 +45,6 @@ final readonly class ProcessIsolation
             return false;
         }
 
-        // all examples of a property are run in the process that runs the property
-        if ($test->isPropertyExample()) {
-            return false;
-        }
-
         if (!$this->isRequestedFor($test)) {
             return false;
         }
