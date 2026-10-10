@@ -14,6 +14,7 @@ use function gc_disable;
 use function gc_enable;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Event\Facade;
+use PHPUnit\Event\Test\Finished;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -22,30 +23,23 @@ use PHPUnit\Event\Facade;
  */
 final class GarbageCollectionHandler
 {
-    private static ?self $instance = null;
     private readonly Emitter $emitter;
     private readonly int $threshold;
     private int $tests = 0;
 
-    public static function init(Facade $facade, int $threshold): void
-    {
-        self::$instance = new self($facade, $threshold);
-    }
-
     /**
-     * Counts an example of a property toward the number of tests after which
-     * garbage is collected.
+     * The tests, by their ID, that were counted when their Test\Finished
+     * event was collected rather than dispatched: the attempts of a retried
+     * test or the examples of a property, for instance. The Test\Finished
+     * event that is dispatched for such a test afterwards, the forwarded one
+     * of the last attempt or the one that is reported for the property, is
+     * not counted again.
      *
-     * This is needed because the events of the examples of a property are
-     * collected rather than dispatched, and a test is otherwise only counted
-     * when its Test\Finished event is dispatched.
+     * @var array<non-empty-string, true>
      */
-    public static function propertyExampleFinished(): void
-    {
-        self::$instance?->testFinished();
-    }
+    private array $countedWhileEventsWereCollected = [];
 
-    private function __construct(Facade $facade, int $threshold)
+    public function __construct(Facade $facade, int $threshold)
     {
         $this->emitter   = $facade->emitter();
         $this->threshold = $threshold;
@@ -75,7 +69,32 @@ final class GarbageCollectionHandler
         $this->emitter->testRunnerEnabledGarbageCollection();
     }
 
-    public function testFinished(): void
+    public function testFinished(Finished $event): void
+    {
+        $id = $event->test()->id();
+
+        if (isset($this->countedWhileEventsWereCollected[$id])) {
+            unset($this->countedWhileEventsWereCollected[$id]);
+
+            return;
+        }
+
+        $this->count();
+    }
+
+    /**
+     * Garbage that the tests whose events are collected rather than
+     * dispatched leave behind is collected as well. The event that reports
+     * this is collected with the events of the test.
+     */
+    public function testFinishedWhileEventsAreCollected(Finished $event): void
+    {
+        $this->countedWhileEventsWereCollected[$event->test()->id()] = true;
+
+        $this->count();
+    }
+
+    private function count(): void
     {
         $this->tests++;
 
@@ -94,6 +113,10 @@ final class GarbageCollectionHandler
             new ExecutionStartedSubscriber($this),
             new ExecutionFinishedSubscriber($this),
             new TestFinishedSubscriber($this),
+        );
+
+        $facade->registerSubscribersForCollectedEvents(
+            new TestFinishedWhileEventsAreCollectedSubscriber($this),
         );
     }
 }
