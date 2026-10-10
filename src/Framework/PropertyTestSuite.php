@@ -22,11 +22,13 @@ use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Framework\PropertyBased\ChoiceSequence;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
+use PHPUnit\Framework\PropertyBased\Constructions;
 use PHPUnit\Framework\PropertyBased\CounterexampleExporter;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorDeriver;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorRegistry;
 use PHPUnit\Framework\PropertyBased\EventAggregator;
 use PHPUnit\Framework\PropertyBased\ExampleRejectedException;
+use PHPUnit\Framework\PropertyBased\ExplicitExample;
 use PHPUnit\Framework\PropertyBased\Falsification;
 use PHPUnit\Framework\PropertyBased\FlakyPropertyException;
 use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
@@ -58,9 +60,9 @@ use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use Throwable;
 
 /**
- * Checks a property: runs its examples, each as a new instance of the test
- * case class with generated arguments, shrinks the first counterexample that
- * is found, and replays the minimal counterexample.
+ * Checks a property: runs its explicit examples and then its generated
+ * examples, each as a new instance of the test case class, shrinks the first
+ * counterexample that is generated, and replays the minimal counterexample.
  *
  * The events of the examples, of the shrinking attempts, and of the final
  * replay are collected rather than dispatched, and the property is reported
@@ -112,6 +114,11 @@ final class PropertyTestSuite extends IterativeTestSuite
      * @var non-negative-int
      */
     private int $numberOfExamplesRejected = 0;
+
+    /**
+     * @var non-negative-int
+     */
+    private int $numberOfExplicitExamplesChecked = 0;
 
     /**
      * Whether no further examples were checked because the test run was
@@ -234,8 +241,63 @@ final class PropertyTestSuite extends IterativeTestSuite
             return;
         }
 
+        $skeleton = null;
+
+        // the test run is aborted before an example is checked, but not before
+        // the first one
+        $attempted = false;
+
+        // the explicit examples are checked first, in the order in which they
+        // are specified; they are neither generated nor shrunk, and they do not
+        // count towards the number of examples
+        foreach ($this->explicitExamples() as $explicitExample) {
+            if ($attempted && $this->shouldStop()) {
+                $this->aborted = true;
+
+                break;
+            }
+
+            $attempted = true;
+
+            // the arguments are exported before the example is run, which can
+            // change the state of an object that is passed to it
+            $exportedArguments     = $this->export($explicitExample->arguments(), new Constructions);
+            $example               = $this->example($explicitExample->arguments(), true);
+            [$exampleEvents, $run] = $this->runExample($example, $emitter, true);
+            $falsification         = Falsification::of($example);
+
+            if ($this->wasRejected($example, $falsification)) {
+                $events->record($exampleEvents, false);
+
+                $this->recordPhpunitWarning(
+                    $events,
+                    $emitter,
+                    sprintf('Explicit example %s was rejected by assume()', $explicitExample->label()),
+                );
+
+                continue;
+            }
+
+            $this->numberOfExplicitExamplesChecked++;
+
+            $this->recordCheckedExample($events, $exampleEvents, $run);
+
+            if ($this->endsCheckWithoutFalsification($example, $falsification, $exampleEvents)) {
+                $this->report($events, $emitter, $exampleEvents, null, false, null);
+
+                return;
+            }
+
+            if ($falsification !== null) {
+                $this->reportFalsificationByExplicitExample($events, $emitter, $example, $falsification, $exampleEvents, $explicitExample, $exportedArguments);
+
+                return;
+            }
+
+            $skeleton = $exampleEvents;
+        }
+
         $randomizer = new Randomizer(new Xoshiro256StarStar($this->seed));
-        $skeleton   = null;
         $remembered = $this->testRunHistory?->counterexample(TestRunHistoryId::fromReorderable($test));
 
         for ($i = 1; $i <= $this->maximumNumberOfExamplesGenerated(); $i++) {
@@ -243,16 +305,19 @@ final class PropertyTestSuite extends IterativeTestSuite
                 break;
             }
 
-            if ($i > 1 && $this->shouldStop()) {
+            if ($attempted && $this->shouldStop()) {
                 $this->aborted = true;
 
                 break;
             }
 
+            $attempted = true;
+
             // the counterexample that was remembered when the property was last
-            // falsified is checked first; it is replayed without drawing from
-            // the random number generator, so the examples that are generated
-            // after it are the same as without it
+            // falsified is checked before examples are generated; it is
+            // replayed without drawing from the random number generator, so
+            // the examples that are generated after it are the same as without
+            // it
             if ($i === 1 && $remembered !== null) {
                 $source = ChoiceSource::replay(new ChoiceSequence($remembered), ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver);
             } else {
@@ -274,9 +339,8 @@ final class PropertyTestSuite extends IterativeTestSuite
             $example               = $this->example($arguments);
             [$exampleEvents, $run] = $this->runExample($example, $emitter, true);
             $falsification         = Falsification::of($example);
-            $abortedByLimit        = $example->throwableThatEndedTheTest() instanceof TimeLimitExceededException;
 
-            if ($falsification === null && !$abortedByLimit && $example->wasRejectedByAssumption()) {
+            if ($this->wasRejected($example, $falsification)) {
                 $this->numberOfExamplesRejected++;
 
                 $events->record($exampleEvents, false);
@@ -285,31 +349,10 @@ final class PropertyTestSuite extends IterativeTestSuite
             }
 
             $this->numberOfExamplesChecked++;
-            $this->numberOfAssertions += $run->numberOfAssertions();
 
-            if ($run->doesNotPerformAssertions()) {
-                $this->doesNotPerformAssertions = true;
-            }
+            $this->recordCheckedExample($events, $exampleEvents, $run);
 
-            if ($run->contributedToCodeCoverage() !== null && $this->contributedToCodeCoverage !== true) {
-                $this->contributedToCodeCoverage = $run->contributedToCodeCoverage();
-            }
-
-            $events->record($exampleEvents, true);
-
-            // an example that is aborted because the deadline of the test run
-            // has passed does not falsify the property
-            if ($abortedByLimit) {
-                $this->report($events, $emitter, $exampleEvents, null, false, null);
-
-                return;
-            }
-
-            // an example that fails or errors before it is prepared, in setUp()
-            // or in another hook method that is called before the test method,
-            // does not falsify the property because the test method was not
-            // called with its arguments, so it is reported without being shrunk
-            if ($falsification !== null && $this->endedBeforeItWasPrepared($exampleEvents)) {
+            if ($this->endsCheckWithoutFalsification($example, $falsification, $exampleEvents)) {
                 $this->report($events, $emitter, $exampleEvents, null, false, null);
 
                 return;
@@ -329,12 +372,6 @@ final class PropertyTestSuite extends IterativeTestSuite
                 unset($example, $throwable);
 
                 $this->shrinkAndReport($events, $emitter, $deriver, $generators, $originalFailure, $falsification, $source->sequence());
-
-                return;
-            }
-
-            if ($example->status()->isSkipped() || $example->status()->isIncomplete()) {
-                $this->report($events, $emitter, $exampleEvents, null, false, null);
 
                 return;
             }
@@ -405,7 +442,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             return;
         }
 
-        $counterexample = $this->export($arguments, $source);
+        $counterexample = $this->export($arguments, $source->constructions());
         $replay         = $this->example($arguments, true);
         [$replayEvents] = $this->runExample($replay, $emitter, false);
 
@@ -473,6 +510,121 @@ final class PropertyTestSuite extends IterativeTestSuite
                 );
             },
         );
+    }
+
+    /**
+     * Reports a property that was falsified by an explicit example with the
+     * failure or error of that example, which is not shrunk, and with its
+     * arguments.
+     *
+     * @param array<non-empty-string, string> $exportedArguments the arguments of the example, exported as PHP code
+     */
+    private function reportFalsificationByExplicitExample(EventAggregator $events, Event\Emitter $emitter, TestCase $example, Falsification $falsification, EventCollection $exampleEvents, ExplicitExample $explicitExample, array $exportedArguments): void
+    {
+        $error = null;
+
+        // an example that exceeded its time limit is reported with that error
+        // rather than as risky, because it falsified the property
+        if ($falsification->isTimeout()) {
+            $timeout = $example->throwableThatEndedTheTest();
+
+            assert($timeout !== null);
+
+            $error = Event\Code\ThrowableBuilder::from($timeout);
+        }
+
+        $test = $this->test;
+        $seed = $this->seed;
+        $name = $explicitExample->name();
+
+        assert($test !== null);
+
+        $this->report(
+            $events,
+            $emitter,
+            $exampleEvents,
+            $error,
+            false,
+            static function () use ($emitter, $test, $seed, $exportedArguments, $name): void
+            {
+                $emitter->testPropertyFalsified($test, $seed, 0, 0, 0, false, false, [], $exportedArguments, $name);
+            },
+        );
+    }
+
+    /**
+     * Whether an example was discarded because assume() was called with
+     * false: an example that falsified the property or was aborted because
+     * the deadline of the test run has passed was not.
+     */
+    private function wasRejected(TestCase $example, ?Falsification $falsification): bool
+    {
+        return $falsification === null &&
+               !$example->throwableThatEndedTheTest() instanceof TimeLimitExceededException &&
+               $example->wasRejectedByAssumption();
+    }
+
+    private function recordCheckedExample(EventAggregator $events, EventCollection $exampleEvents, ExampleRun $run): void
+    {
+        $this->numberOfAssertions += $run->numberOfAssertions();
+
+        if ($run->doesNotPerformAssertions()) {
+            $this->doesNotPerformAssertions = true;
+        }
+
+        if ($run->contributedToCodeCoverage() !== null && $this->contributedToCodeCoverage !== true) {
+            $this->contributedToCodeCoverage = $run->contributedToCodeCoverage();
+        }
+
+        $events->record($exampleEvents, true);
+    }
+
+    /**
+     * Whether the property is reported with the events of an example that was
+     * checked, without the example falsifying it, so that no further examples
+     * are checked:
+     *
+     * - an example that is aborted because the deadline of the test run has
+     *   passed does not falsify the property
+     * - an example that fails or errors before it is prepared, in setUp() or
+     *   in another hook method that is called before the test method, does
+     *   not falsify the property because the test method was not called with
+     *   its arguments, so it is reported without being shrunk
+     * - when an example is skipped or marked incomplete, so is the property
+     */
+    private function endsCheckWithoutFalsification(TestCase $example, ?Falsification $falsification, EventCollection $exampleEvents): bool
+    {
+        if ($example->throwableThatEndedTheTest() instanceof TimeLimitExceededException) {
+            return true;
+        }
+
+        if ($falsification !== null) {
+            return $this->endedBeforeItWasPrepared($exampleEvents);
+        }
+
+        return $example->status()->isSkipped() || $example->status()->isIncomplete();
+    }
+
+    /**
+     * Records a PHPUnit warning for the property, which is reported with the
+     * issues of its examples.
+     *
+     * @param non-empty-string $message
+     */
+    private function recordPhpunitWarning(EventAggregator $events, Event\Emitter $emitter, string $message): void
+    {
+        $test   = $this->test;
+        $facade = Event\Facade::instance();
+
+        assert($test !== null);
+
+        $facade->startCollectingEvents();
+
+        try {
+            $emitter->testTriggeredPhpunitWarning($test, $message);
+        } finally {
+            $events->record($facade->stopCollectingEvents(), true);
+        }
     }
 
     /**
@@ -579,7 +731,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             $reasons[] = $checks->didNotContributeToCodeCoverage($this->contributedToCodeCoverage);
         }
 
-        if ($passed && $this->numberOfExamplesChecked > 0) {
+        if ($passed && $this->numberOfExamplesChecked + $this->numberOfExplicitExamplesChecked > 0) {
             $reasons[] = $checks->performedNoAssertions($this->numberOfAssertions, $this->doesNotPerformAssertions);
         }
 
@@ -664,6 +816,21 @@ final class PropertyTestSuite extends IterativeTestSuite
         }
 
         return [$deriver, $generators];
+    }
+
+    /**
+     * The explicit examples of a property whose requirements are not met are
+     * not checked, because its first example is skipped.
+     *
+     * @return list<ExplicitExample>
+     */
+    private function explicitExamples(): array
+    {
+        if ($this->definition === null) {
+            return [];
+        }
+
+        return $this->definition->explicitExamples();
     }
 
     /**
@@ -799,16 +966,17 @@ final class PropertyTestSuite extends IterativeTestSuite
 
     /**
      * @param array<non-empty-string, mixed> $arguments
+     * @param Constructions                  $constructions the objects that generators created with new while the arguments were generated
      *
      * @return array<non-empty-string, string>
      */
-    private function export(array $arguments, ChoiceSource $source): array
+    private function export(array $arguments, Constructions $constructions): array
     {
         assert($this->definition !== null);
 
         $exporter = new CounterexampleExporter(
             NameScope::forMethod(new ReflectionMethod($this->definition->className(), $this->definition->methodName())),
-            $source->constructions(),
+            $constructions,
         );
 
         $exported = [];
@@ -822,15 +990,15 @@ final class PropertyTestSuite extends IterativeTestSuite
 
     /**
      * @param array<non-empty-string, mixed> $arguments
-     * @param bool                           $replayOfCounterexample whether the example is the final replay of the minimal counterexample
+     * @param bool                           $failureIsReported whether the failure or error of the example is the one that is reported for the property, which it is for the final replay of the minimal counterexample and for an explicit example
      */
-    private function example(array $arguments, bool $replayOfCounterexample = false): TestCase
+    private function example(array $arguments, bool $failureIsReported = false): TestCase
     {
         assert($this->exampleFactory !== null);
 
         $example = ($this->exampleFactory)();
 
-        $example->setPropertyExample(array_values($arguments), $replayOfCounterexample);
+        $example->setPropertyExample(array_values($arguments), $failureIsReported);
 
         return $example;
     }
