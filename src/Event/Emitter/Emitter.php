@@ -159,11 +159,12 @@ interface Emitter
     public function testPassed(Code\Test $test): void;
 
     /**
-     * @param non-negative-int $seed
-     * @param non-negative-int $numberOfExamplesChecked
-     * @param non-negative-int $numberOfExamplesRejected
+     * @param non-negative-int                                                     $seed
+     * @param non-negative-int                                                     $numberOfExamplesChecked
+     * @param non-negative-int                                                     $numberOfExamplesRejected
+     * @param list<array{label: non-empty-string, numberOfExamples: positive-int}> $classifications
      */
-    public function testPropertyChecked(Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfExamplesRejected): void;
+    public function testPropertyChecked(Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfExamplesRejected, array $classifications): void;
 
     /**
      * @param non-negative-int                $seed

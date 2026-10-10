@@ -122,6 +122,14 @@ final class PropertyTestSuite extends IterativeTestSuite
     private int $numberOfExplicitExamplesChecked = 0;
 
     /**
+     * How many of the generated examples that were checked were classified
+     * with each label, in the order in which the labels were first used.
+     *
+     * @var list<array{label: non-empty-string, numberOfExamples: positive-int}>
+     */
+    private array $classifications = [];
+
+    /**
      * Whether no further examples were checked because the test run was
      * aborted, for instance because its deadline has passed.
      */
@@ -364,6 +372,7 @@ final class PropertyTestSuite extends IterativeTestSuite
 
             $this->numberOfExamplesChecked++;
 
+            $this->countClassifications($example->classificationsOfPropertyExample());
             $this->recordCheckedExample($events, $exampleEvents, $run);
 
             if ($this->endsCheckWithoutFalsification($example, $falsification, $exampleEvents)) {
@@ -567,6 +576,24 @@ final class PropertyTestSuite extends IterativeTestSuite
     }
 
     /**
+     * @param list<non-empty-string> $labels the labels with which an example was classified
+     */
+    private function countClassifications(array $labels): void
+    {
+        foreach ($labels as $label) {
+            foreach ($this->classifications as $index => $classification) {
+                if ($classification['label'] === $label) {
+                    $this->classifications[$index]['numberOfExamples']++;
+
+                    continue 2;
+                }
+            }
+
+            $this->classifications[] = ['label' => $label, 'numberOfExamples' => 1];
+        }
+    }
+
+    /**
      * Whether an example was discarded because assume() was called with
      * false: an example that falsified the property or was aborted because
      * the deadline of the test run has passed was not.
@@ -669,6 +696,7 @@ final class PropertyTestSuite extends IterativeTestSuite
                     $this->seed,
                     $this->numberOfExamplesChecked,
                     $this->numberOfExamplesRejected,
+                    $this->classifications,
                 );
             },
             $this->numberOfAssertions,
