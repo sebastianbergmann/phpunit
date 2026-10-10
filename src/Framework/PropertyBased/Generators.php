@@ -262,7 +262,9 @@ final class Generators
 
     /**
      * Generates arrays of $minimumSize to $maximumSize elements. Each key
-     * occurs only once.
+     * occurs only once. A string key that PHP stores as an integer, such as
+     * '1', is not used, so that the keys are of the type that $keys
+     * generates.
      *
      * $recursive must be true when the values can contain arrays of this
      * generator, as for lists().

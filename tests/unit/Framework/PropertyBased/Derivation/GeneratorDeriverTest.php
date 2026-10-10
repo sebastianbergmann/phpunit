@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\PropertyBased\Derivation;
 
 use function array_is_list;
+use function array_keys;
 use function count;
 use function in_array;
 use function is_array;
@@ -357,6 +358,17 @@ final class GeneratorDeriverTest extends TestCase
 
         // choosing a left node, rather than null, for every node
         $this->replay($this->derive('Node'), [1, 1, 1, 1, 1, 1, 1, 1]);
+    }
+
+    public function testTheKeysOfAnArrayWithStringKeysAreStrings(): void
+    {
+        foreach ($this->values($this->derive('array<string, int>'), 500) as $value) {
+            $this->assertIsArray($value);
+
+            foreach (array_keys($value) as $key) {
+                $this->assertIsString($key);
+            }
+        }
     }
 
     public function testUsesTheGeneratorRegisteredForAClass(): void
