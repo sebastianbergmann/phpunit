@@ -47,6 +47,7 @@ use PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithVariadicConstructor;
 use PHPUnit\TestFixture\PropertyBased\Derivation\Customer;
 use PHPUnit\TestFixture\PropertyBased\Derivation\EmailAddress;
 use PHPUnit\TestFixture\PropertyBased\Derivation\ExampleEmailAddress;
+use PHPUnit\TestFixture\PropertyBased\Derivation\Expression;
 use PHPUnit\TestFixture\PropertyBased\Derivation\Money;
 use PHPUnit\TestFixture\PropertyBased\Derivation\Node;
 use PHPUnit\TestFixture\PropertyBased\Derivation\Parameters;
@@ -222,6 +223,7 @@ final class GeneratorDeriverTest extends TestCase
         return [
             'list of a union'         => ['TreeWithUnionChildren'],
             'list of a nullable type' => ['TreeWithNullableChildren'],
+            'union without null'      => ['Expression'],
         ];
     }
 
@@ -352,6 +354,11 @@ final class GeneratorDeriverTest extends TestCase
         }
 
         $this->assertLessThan(10, $rejected);
+    }
+
+    public function testTheMembersOfAUnionThatDoNotReferToAClassThatIsBeingDerivedAreTheSimplest(): void
+    {
+        $this->assertEquals(new Expression(0, 0), $this->replay($this->derive('Expression'), []));
     }
 
     public function testRejectsTheExampleWhenTooManyObjectsOfTheSameClassAreNested(): void
