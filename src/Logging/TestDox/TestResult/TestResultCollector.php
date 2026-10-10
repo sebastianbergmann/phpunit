@@ -43,6 +43,7 @@ use PHPUnit\Event\TestSuite\Skipped as TestSuiteSkipped;
 use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Logging\TestDox\TestResult as TestDoxTestMethod;
 use PHPUnit\TestRunner\IssueFilter;
+use PHPUnit\Util\PendingPropertyFalsified;
 use ReflectionMethod;
 
 /**
@@ -65,11 +66,12 @@ final class TestResultCollector
      * The event that describes how a property was falsified, which is
      * dispatched before the event for its failure or error.
      */
-    private ?PropertyFalsified $propertyFalsified = null;
+    private readonly PendingPropertyFalsified $propertyFalsified;
 
     public function __construct(Facade $facade, IssueFilter $issueFilter)
     {
-        $this->issueFilter = $issueFilter;
+        $this->issueFilter       = $issueFilter;
+        $this->propertyFalsified = new PendingPropertyFalsified;
 
         $this->registerSubscribers($facade);
     }
@@ -169,7 +171,7 @@ final class TestResultCollector
             return;
         }
 
-        $this->propertyFalsified = $event;
+        $this->propertyFalsified->remember($event);
     }
 
     public function testFailed(Failed $event): void
@@ -341,9 +343,8 @@ final class TestResultCollector
 
         $this->process($test);
 
-        $this->status            = null;
-        $this->throwable         = null;
-        $this->propertyFalsified = null;
+        $this->status    = null;
+        $this->throwable = null;
     }
 
     /**
@@ -430,7 +431,7 @@ final class TestResultCollector
             $test,
             $status,
             $throwable,
-            $this->propertyFalsified,
+            $this->propertyFalsified->takeFor($test),
         );
     }
 }
