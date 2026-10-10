@@ -22,6 +22,7 @@ use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Framework\PropertyBased\ChoiceSequence;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
+use PHPUnit\Framework\PropertyBased\ChoiceTree;
 use PHPUnit\Framework\PropertyBased\Constructions;
 use PHPUnit\Framework\PropertyBased\CounterexampleExporter;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorDeriver;
@@ -298,6 +299,7 @@ final class PropertyTestSuite extends IterativeTestSuite
         }
 
         $randomizer = new Randomizer(new Xoshiro256StarStar($this->seed));
+        $tree       = new ChoiceTree;
         $remembered = $this->testRunHistory?->counterexample(TestRunHistoryId::fromReorderable($test));
 
         for ($i = 1; $i <= $this->maximumNumberOfExamplesGenerated(); $i++) {
@@ -319,9 +321,9 @@ final class PropertyTestSuite extends IterativeTestSuite
             // the examples that are generated after it are the same as without
             // it
             if ($i === 1 && $remembered !== null) {
-                $source = ChoiceSource::replay(new ChoiceSequence($remembered), ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver);
+                $source = ChoiceSource::replay(new ChoiceSequence($remembered), ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver, $tree);
             } else {
-                $source = ChoiceSource::random($randomizer, ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver);
+                $source = ChoiceSource::random($randomizer, ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver, $tree);
             }
 
             try {
@@ -957,8 +959,14 @@ final class PropertyTestSuite extends IterativeTestSuite
     {
         $arguments = [];
 
-        foreach ($generators as $parameterName => $generator) {
-            $arguments[$parameterName] = $generator->generate($source);
+        try {
+            foreach ($generators as $parameterName => $generator) {
+                $arguments[$parameterName] = $generator->generate($source);
+            }
+        } finally {
+            // the same choices generate the same arguments, or are rejected
+            // again, so they are not drawn again
+            $source->exampleGenerated();
         }
 
         return $arguments;
