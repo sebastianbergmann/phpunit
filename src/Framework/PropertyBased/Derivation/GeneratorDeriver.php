@@ -147,6 +147,15 @@ final class GeneratorDeriver
     private int $numberOfRecursiveReferences = 0;
 
     /**
+     * The types that the doc comments of methods declare for their
+     * parameters, by method, so that the doc comment of a method is parsed
+     * once rather than once for each of its parameters.
+     *
+     * @var array<non-empty-string, ParameterTypes>
+     */
+    private array $parameterTypes = [];
+
+    /**
      * The probability that a collection gets another element, which is
      * PROBABILITY_OF_RECURSION when its elements can contain values of the
      * generator for the collection, so that the generated values stay small.
@@ -186,7 +195,7 @@ final class GeneratorDeriver
         assert($method instanceof ReflectionMethod);
 
         try {
-            [$type, $declaration] = $this->typeOf($parameter, ParameterTypes::fromDocComment(DocComments::of($method)));
+            [$type, $declaration] = $this->typeOf($parameter, $this->parameterTypesOf($method));
         } catch (InvalidTypeException $e) {
             throw CannotDeriveGeneratorException::unparsableParameterType($parameter, $e);
         } catch (CannotDeriveGeneratorException $e) {
@@ -372,7 +381,7 @@ final class GeneratorDeriver
     private function constructorArguments(ReflectionMethod $constructor): array
     {
         $scope     = NameScope::forMethod($constructor);
-        $docTypes  = ParameterTypes::fromDocComment(DocComments::of($constructor));
+        $docTypes  = $this->parameterTypesOf($constructor);
         $arguments = [];
 
         foreach ($constructor->getParameters() as $parameter) {
@@ -693,6 +702,17 @@ final class GeneratorDeriver
         }
 
         return $generator;
+    }
+
+    private function parameterTypesOf(ReflectionMethod $method): ParameterTypes
+    {
+        $key = $method->getDeclaringClass()->getName() . '::' . $method->getName();
+
+        if (!isset($this->parameterTypes[$key])) {
+            $this->parameterTypes[$key] = ParameterTypes::fromDocComment(DocComments::of($method));
+        }
+
+        return $this->parameterTypes[$key];
     }
 
     /**
