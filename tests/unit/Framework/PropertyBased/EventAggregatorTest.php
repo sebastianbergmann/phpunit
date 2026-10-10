@@ -34,6 +34,7 @@ use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\TestFixture\PropertyBased\EventCollector;
 use ReflectionClass;
 
 #[CoversClass(EventAggregator::class)]
@@ -302,33 +303,28 @@ final class EventAggregatorTest extends AbstractEventTestCase
      */
     private function dispatch(array $examples, ?EventCollection $skeleton, ?Throwable $error, bool $passed, ?Closure $beforeOutcome, int $numberOfAssertions): array
     {
-        $facade = EventFacade::instance();
+        return EventCollector::collect(
+            function () use ($examples, $skeleton, $error, $passed, $beforeOutcome, $numberOfAssertions): void
+            {
+                $aggregator = new EventAggregator(EventFacade::emitter(), EventFacade::instance(), $this->testValueObject());
 
-        $facade->startCollectingEvents();
+                foreach ($examples as [$events, $checked]) {
+                    $aggregator->record($events, $checked);
+                }
 
-        try {
-            $aggregator = new EventAggregator(EventFacade::emitter(), $facade, $this->testValueObject());
-
-            foreach ($examples as [$events, $checked]) {
-                $aggregator->record($events, $checked);
-            }
-
-            $aggregator->dispatch(
-                $skeleton,
-                $error,
-                $passed,
-                $beforeOutcome,
-                function (): void
-                {
-                    EventFacade::emitter()->testPropertyChecked($this->testValueObject(), 1, 1, 0);
-                },
-                $numberOfAssertions,
-            );
-        } finally {
-            $collected = $facade->stopCollectingEvents();
-        }
-
-        return $collected->asArray();
+                $aggregator->dispatch(
+                    $skeleton,
+                    $error,
+                    $passed,
+                    $beforeOutcome,
+                    function (): void
+                    {
+                        EventFacade::emitter()->testPropertyChecked($this->testValueObject(), 1, 1, 0);
+                    },
+                    $numberOfAssertions,
+                );
+            },
+        )->asArray();
     }
 
     /**
