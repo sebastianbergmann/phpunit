@@ -20,8 +20,10 @@ use function array_keys;
 use function array_map;
 use function count;
 use function in_array;
+use function is_array;
 use function is_infinite;
 use function is_nan;
+use function max;
 use function mb_check_encoding;
 use function mb_str_split;
 use function mb_strlen;
@@ -114,6 +116,7 @@ final class GeneratorsTest extends TestCase
             'nullable'           => [Generators::nullable(Generators::integers())],
             'one of'             => [Generators::oneOf(Generators::integers(), Generators::booleans())],
             'frequency'          => [Generators::frequency([3, Generators::integers()], [1, Generators::booleans()])],
+            'deferred'           => [Generators::deferred(static fn (): ValueGenerator => Generators::integers(0, 9))],
             'map'                => [Generators::integers(0, 9)->map(static fn (int $i): string => (string) $i)],
             'filter'             => [Generators::integers(0, 9)->filter(static fn (int $i): bool => $i % 2 === 0)],
             'flatMap'            => [Generators::integers(0, 3)->flatMap(static fn (int $n): ValueGenerator => Generators::lists(Generators::booleans(), $n, $n))],
@@ -805,6 +808,71 @@ final class GeneratorsTest extends TestCase
         Generators::frequency(...$arguments);
     }
 
+    public function testGeneratesTheValuesOfTheGeneratorThatTheClosurePassedToDeferredReturns(): void
+    {
+        $called    = false;
+        $generator = Generators::deferred(
+            static function () use (&$called): ValueGenerator
+            {
+                $called = true;
+
+                return Generators::integers(0, 9);
+            },
+        );
+
+        $this->assertFalse($called);
+        $this->assertSame(3, $this->replay($generator, [3]));
+        $this->assertTrue($called);
+    }
+
+    public function testADeferredGeneratorCanReferToItself(): void
+    {
+        $values = Generators::deferred(
+            static function () use (&$values): ValueGenerator
+            {
+                return Generators::oneOf(
+                    Generators::integers(0, 9),
+                    Generators::lists($values, recursive: true),
+                );
+            },
+        );
+
+        $nested = 0;
+
+        foreach ($this->values($values, 200) as $value) {
+            if ($this->depth($value) > 1) {
+                $nested++;
+            }
+        }
+
+        $this->assertGreaterThan(0, $nested);
+        $this->assertSame(0, $this->replay($values, []));
+        $this->assertSame([[7]], $this->replay($values, [1, 1, 1, 1, 0, 7, 0, 0]));
+    }
+
+    public function testTheClosurePassedToDeferredMustReturnAValueGenerator(): void
+    {
+        $this->expectException(InvalidGeneratorArgumentException::class);
+        $this->expectExceptionMessage('The closure passed to deferred() must return a PHPUnit\Framework\PropertyBased\ValueGenerator, int was returned');
+
+        $this->replay(Generators::deferred(static fn (): int => 1), []);
+    }
+
+    public function testADeferredGeneratorThatRefersToItselfBeforeItMakesAChoiceIsReported(): void
+    {
+        $values = Generators::deferred(
+            static function () use (&$values): ValueGenerator
+            {
+                return $values;
+            },
+        );
+
+        $this->expectException(GeneratorRefersToItselfException::class);
+        $this->expectExceptionMessage('Cannot generate the values of a generator that was created with Generators::deferred(): the generator refers to itself before it makes a choice');
+
+        $this->replay($values, []);
+    }
+
     public function testMapsTheValuesOfAGenerator(): void
     {
         $this->assertSame('3', $this->replay(Generators::integers(0, 9)->map(static fn (int $value): string => (string) $value), [3]));
@@ -967,6 +1035,25 @@ final class GeneratorsTest extends TestCase
         $this->assertCount($count, $values);
 
         return $values;
+    }
+
+    /**
+     * The depth of nested lists: 0 for a value that is not a list, 1 for a
+     * list without nested lists, and so on.
+     */
+    private function depth(mixed $value): int
+    {
+        if (!is_array($value)) {
+            return 0;
+        }
+
+        $depth = 0;
+
+        foreach ($value as $element) {
+            $depth = max($depth, $this->depth($element));
+        }
+
+        return $depth + 1;
     }
 
     /**
