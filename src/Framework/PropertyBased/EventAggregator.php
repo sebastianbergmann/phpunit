@@ -50,7 +50,8 @@ use PHPUnit\Event\Test\WarningTriggered;
  * events, and the Test\AdditionalInformationProvided events of all examples
  * that were checked are reported within that sequence, those of the skeleton
  * included, and so is the output that they printed, as one
- * Test\PrintedUnexpectedOutput event. A Test\ConsideredRisky event and an
+ * Test\PrintedUnexpectedOutput event. The issues of the examples that were
+ * rejected are reported as well. A Test\ConsideredRisky event and an
  * issue of PHPUnit's own are reported once per message, and the number of
  * assertions is the one that is passed in.
  *
@@ -94,8 +95,8 @@ final class EventAggregator
 
     /**
      * Records the events of an example. Only the Test\PreparationStarted and
-     * Test\Prepared events of an example that was not checked, because it was
-     * rejected, are kept.
+     * Test\Prepared events and the issues of an example that was not checked,
+     * because it was rejected, are kept.
      *
      * The events of the skeleton must have been recorded before they are
      * dispatched.
@@ -111,7 +112,15 @@ final class EventAggregator
                 $this->prepared = $event;
             }
 
+            // the issues that an example triggered before it was rejected are
+            // reported, like those that are triggered while the arguments of
+            // an example that is rejected are generated, but an example that
+            // was rejected is not considered risky
             if (!$checked) {
+                if (!$event instanceof ConsideredRisky && $this->isReportedOncePerProperty($event)) {
+                    $this->eventsOfExamples->add($event);
+                }
+
                 continue;
             }
 
