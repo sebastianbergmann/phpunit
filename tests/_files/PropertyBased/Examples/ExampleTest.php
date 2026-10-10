@@ -100,4 +100,21 @@ final class ExampleTest extends TestCase
     {
         $this->assume(true);
     }
+
+    public function testClassifiesTheExample(int $number): void
+    {
+        $this->classify('first');
+        $this->classify('second');
+        $this->classify('first');
+    }
+
+    public function testClassifiesTheExampleWithAnEmptyLabel(int $number): void
+    {
+        $this->classify('');
+    }
+
+    public function testUsesClassifyOutsideOfAProperty(): void
+    {
+        $this->classify('label');
+    }
 }

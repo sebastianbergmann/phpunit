@@ -19,6 +19,7 @@ use function clearstatcache;
 use function error_clear_last;
 use function getcwd;
 use function implode;
+use function in_array;
 use function is_callable;
 use function libxml_clear_errors;
 use function method_exists;
@@ -118,6 +119,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private ?array $propertyArguments  = null;
     private bool $failureIsReported    = false;
     private bool $rejectedByAssumption = false;
+
+    /**
+     * @var list<non-empty-string>
+     */
+    private array $classifications = [];
 
     /**
      * @var positive-int
@@ -852,6 +858,19 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * The labels with which the example of a property was classified by
+     * classify().
+     *
+     * @return list<non-empty-string>
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    final public function classificationsOfPropertyExample(): array
+    {
+        return $this->classifications;
+    }
+
+    /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     final public function isPropertyExample(): bool
@@ -1038,6 +1057,30 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         throw new ExampleRejectedByAssumptionException;
+    }
+
+    /**
+     * Classifies the current example of a property with the given label, so
+     * that the statistics of the property state how many of its examples were
+     * classified with it. An example can be classified with several labels.
+     *
+     * @param non-empty-string $label
+     *
+     * @throws Exception when it is not called in a property or the label is empty
+     */
+    final protected function classify(string $label): void
+    {
+        if (!$this->isPropertyExample()) {
+            throw new Exception('classify() can only be used in a property');
+        }
+
+        if ($label === '') {
+            throw new Exception('The label passed to classify() must not be empty');
+        }
+
+        if (!in_array($label, $this->classifications, true)) {
+            $this->classifications[] = $label;
+        }
     }
 
     /**
