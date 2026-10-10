@@ -822,7 +822,7 @@ final class PropertyTestSuite extends IterativeTestSuite
         return $this->collectingEvents(
             static function () use ($example, $emitter, $collectCodeCoverage): void
             {
-                new TestRunner($emitter)->run($example, $collectCodeCoverage);
+                new TestRunner($emitter)->runExampleOfProperty($example, $collectCodeCoverage);
             },
         );
     }

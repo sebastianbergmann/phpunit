@@ -58,25 +58,6 @@ final class ProcessIsolationTest extends TestCase
         $this->assertFalse(new ProcessIsolation($this->createStub(Emitter::class))->shouldBeUsedFor($test));
     }
 
-    public function testIsNotUsedForAnExampleOfAPropertyWhenTheTestRequestsIt(): void
-    {
-        $test = new TestWithDifferentNames('testWithName');
-
-        $test->setRunTestInSeparateProcess(true);
-        $test->setPropertyExample([]);
-
-        $this->assertFalse(new ProcessIsolation($this->createStub(Emitter::class))->shouldBeUsedFor($test));
-    }
-
-    public function testIsNotUsedForAnExampleOfAPropertyWhenTheConfigurationRequestsIt(): void
-    {
-        $test = new TestWithDifferentNames('testWithName');
-
-        $test->setPropertyExample([]);
-
-        $this->assertFalse($this->withProcessIsolationConfigured()->shouldBeUsedFor($test));
-    }
-
     public function testIsNotUsedForTestWhoseRequirementsAreNotSatisfied(): void
     {
         $test = new RequiresFunctionTest('testOne');
