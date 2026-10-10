@@ -192,10 +192,17 @@ final class TestRunner
         $skipped    = false;
 
         if (self::shouldErrorHandlerBeUsed($test)) {
-            $throwableFromDeferredIssue = ErrorHandler::instance()->enable($test);
+            if ($exampleOfProperty) {
+                // the issues that were triggered in the test case context of
+                // a property are reported once for the property rather than
+                // for each of its examples, see PropertyTestSuite
+                ErrorHandler::instance()->enableForTestNotOnCallStack($test->valueObjectForEvents());
+            } else {
+                $throwableFromDeferredIssue = ErrorHandler::instance()->enable($test);
 
-            if ($throwableFromDeferredIssue !== null) {
-                $test->setThrowableFromDeferredIssue($throwableFromDeferredIssue);
+                if ($throwableFromDeferredIssue !== null) {
+                    $test->setThrowableFromDeferredIssue($throwableFromDeferredIssue);
+                }
             }
         }
 
