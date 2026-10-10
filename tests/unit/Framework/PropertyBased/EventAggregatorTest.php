@@ -188,6 +188,24 @@ final class EventAggregatorTest extends AbstractEventTestCase
         );
     }
 
+    public function testDispatchesEveryOutcomeOfTheSkeleton(): void
+    {
+        $example = $this->example(
+            $this->preparationStarted(),
+            $this->prepared(),
+            new Failed($this->telemetryInfo(), $this->testValueObject(), ThrowableBuilder::from(new Exception('failure')), null),
+            new Errored($this->telemetryInfo(), $this->testValueObject(), ThrowableBuilder::from(new Exception('error in destructor of test double'))),
+            $this->finished(1),
+        );
+
+        $events = $this->dispatch([[$example, true]], $example, null, false, $this->emitPropertyFalsified(...), 1);
+
+        $this->assertSame(
+            ['PreparationStarted', 'Prepared', 'PropertyFalsified', 'Failed', 'Errored: error in destructor of test double', 'PropertyChecked', 'Finished: 1'],
+            $this->describe($events),
+        );
+    }
+
     public function testReplacesTheOutcomeOfTheSkeletonWithAnError(): void
     {
         $example = $this->passedExample();
