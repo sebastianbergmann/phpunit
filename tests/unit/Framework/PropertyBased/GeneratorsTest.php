@@ -117,6 +117,7 @@ final class GeneratorsTest extends TestCase
             'one of'             => [Generators::oneOf(Generators::integers(), Generators::booleans())],
             'frequency'          => [Generators::frequency([3, Generators::integers()], [1, Generators::booleans()])],
             'deferred'           => [Generators::deferred(static fn (): ValueGenerator => Generators::integers(0, 9))],
+            'recursive'          => [Generators::recursive(Generators::integers(0, 9), static fn (ValueGenerator $values): ValueGenerator => Generators::lists($values, 0, 3))],
             'map'                => [Generators::integers(0, 9)->map(static fn (int $i): string => (string) $i)],
             'filter'             => [Generators::integers(0, 9)->filter(static fn (int $i): bool => $i % 2 === 0)],
             'flatMap'            => [Generators::integers(0, 3)->flatMap(static fn (int $n): ValueGenerator => Generators::lists(Generators::booleans(), $n, $n))],
@@ -871,6 +872,52 @@ final class GeneratorsTest extends TestCase
         $this->expectExceptionMessageIsOrContains('Cannot generate the values of a generator that was created with Generators::deferred(): the generator refers to itself before it makes a choice');
 
         $this->replay($values, []);
+    }
+
+    public function testGeneratesValuesThatAreNestedUpToTheMaximumDepth(): void
+    {
+        $generator = Generators::recursive(
+            Generators::integers(0, 9),
+            static fn (ValueGenerator $values): ValueGenerator => Generators::lists($values, 1, 2),
+            3,
+        );
+
+        $depths = array_map($this->depth(...), $this->values($generator, 500));
+
+        $this->assertContains(0, $depths);
+        $this->assertContains(3, $depths);
+        $this->assertLessThanOrEqual(3, max($depths));
+        $this->assertSame(0, $this->replay($generator, []));
+        $this->assertSame([5], $this->replay($generator, [1, 0, 5, 0]));
+    }
+
+    public function testGeneratesOnlyTheValuesOfTheBaseGeneratorForAMaximumDepthOfZero(): void
+    {
+        $generator = Generators::recursive(
+            Generators::integers(0, 9),
+            static fn (ValueGenerator $values): ValueGenerator => Generators::lists($values),
+            0,
+        );
+
+        foreach ($this->values($generator, 100) as $value) {
+            $this->assertIsInt($value);
+        }
+    }
+
+    public function testTheMaximumDepthOfRecursiveValuesMustNotBeNegative(): void
+    {
+        $this->expectException(InvalidGeneratorArgumentException::class);
+        $this->expectExceptionMessageIs('The maximum depth (-1) must not be negative');
+
+        Generators::recursive(Generators::integers(), static fn (ValueGenerator $values): ValueGenerator => Generators::lists($values), -1);
+    }
+
+    public function testTheClosurePassedToRecursiveMustReturnAValueGenerator(): void
+    {
+        $this->expectException(InvalidGeneratorArgumentException::class);
+        $this->expectExceptionMessageIs('The closure passed to recursive() must return a PHPUnit\Framework\PropertyBased\ValueGenerator, null was returned');
+
+        Generators::recursive(Generators::integers(), static fn (ValueGenerator $values): null => null);
     }
 
     public function testMapsTheValuesOfAGenerator(): void
