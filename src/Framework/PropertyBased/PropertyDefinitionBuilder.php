@@ -18,7 +18,6 @@ use function is_string;
 use function lcfirst;
 use function method_exists;
 use function sprintf;
-use function strtolower;
 use Closure;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorDeriver;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorRegistry;
@@ -256,7 +255,7 @@ final readonly class PropertyDefinitionBuilder
                     );
                 }
 
-                $key = strtolower($registeredClassName);
+                $key = GeneratorRegistry::key($registeredClassName);
 
                 if (isset($registeredFor[$key])) {
                     throw InvalidPropertyException::because(
