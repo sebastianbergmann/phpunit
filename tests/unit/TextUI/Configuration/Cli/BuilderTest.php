@@ -2681,6 +2681,26 @@ final class BuilderTest extends TestCase
         $configuration->displayDetailsOnSkippedTests();
     }
 
+    #[TestDox('--display-property-statistics')]
+    public function testDisplayPropertyStatistics(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--display-property-statistics']);
+
+        $this->assertTrue($configuration->hasDisplayPropertyStatistics());
+        $this->assertTrue($configuration->displayPropertyStatistics());
+    }
+
+    public function testDisplayPropertyStatisticsMayNotBeConfigured(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters([]);
+
+        $this->assertFalse($configuration->hasDisplayPropertyStatistics());
+
+        $this->expectException(Exception::class);
+
+        $configuration->displayPropertyStatistics();
+    }
+
     #[TestDox('--display-deprecations')]
     public function testDisplayDeprecations(): void
     {

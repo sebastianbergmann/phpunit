@@ -236,6 +236,8 @@
                                        triggered
   [32m--triggering-tests-limit [36m<n>[0m        [0m Group and limit the tests listed for
                                        each issue to <n> entries
+  [32m--display-property-statistics       [0m Display statistics of the examples of
+                                       properties
   [32m--reverse-list                      [0m Print defects in reverse order
 
   [32m--compact                           [0m Replace default progress and result

@@ -1076,6 +1076,7 @@ final class ResultPrinterTest extends TestCase
             $displayDetailsOnPhpunitDeprecations,
             $displayDetailsOnPhpunitNotices,
             $triggeringTestsLimit,
+            true,
         );
 
         $resultPrinter->print($result);

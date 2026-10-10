@@ -68,6 +68,7 @@ final class LoaderTest extends TestCase
             'failOnRisky'                        => ['failOnRisky', 'true', true],
             'processIsolation'                   => ['processIsolation', 'true', true],
             'reverseDefectList'                  => ['reverseDefectList', 'true', true],
+            'displayPropertyStatistics'          => ['displayPropertyStatistics', 'true', true],
             'diffContext'                        => ['diffContext', '5', 5],
             'triggeringTestsLimit'               => ['triggeringTestsLimit', '5', 5],
         ];

@@ -851,6 +851,12 @@ final readonly class Merger
             $displayDetailsOnTestsThatTriggerWarnings = $xmlConfiguration->phpunit()->displayDetailsOnTestsThatTriggerWarnings();
         }
 
+        if ($cliConfiguration->hasDisplayPropertyStatistics()) {
+            $displayPropertyStatistics = $cliConfiguration->displayPropertyStatistics();
+        } else {
+            $displayPropertyStatistics = $xmlConfiguration->phpunit()->displayPropertyStatistics();
+        }
+
         if ($cliConfiguration->hasReverseList()) {
             $reverseDefectList = $cliConfiguration->reverseList();
         } else {
@@ -1456,6 +1462,7 @@ final readonly class Merger
             $displayDetailsOnTestsThatTriggerErrors,
             $displayDetailsOnTestsThatTriggerNotices,
             $displayDetailsOnTestsThatTriggerWarnings,
+            $displayPropertyStatistics,
             $reverseDefectList,
             $requireCoverageMetadata,
             $requireCoverageMetadataOnSmallTests,
