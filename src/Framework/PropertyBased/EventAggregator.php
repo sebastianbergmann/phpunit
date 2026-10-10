@@ -244,6 +244,13 @@ final class EventAggregator
     private function dispatchOutcome(?AnyEvent $outcome, ?Code\Throwable $error, bool $passed, ?Closure $beforeOutcome): void
     {
         if ($this->outcomeDispatched) {
+            // a later outcome of the skeleton, for instance a failure in
+            // tearDown() after the test method failed, is dispatched as it
+            // is, like it is for a test
+            if ($outcome !== null) {
+                $this->forward($outcome);
+            }
+
             return;
         }
 
