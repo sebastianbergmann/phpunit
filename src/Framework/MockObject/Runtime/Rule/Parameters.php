@@ -185,7 +185,7 @@ final class Parameters implements ParametersRule
         $isVariadic = false;
 
         if (method_exists($invocation->object(), $invocation->methodName())) {
-            foreach ((new ReflectionMethod($invocation->object(), $invocation->methodName()))->getParameters() as $parameter) {
+            foreach (new ReflectionMethod($invocation->object(), $invocation->methodName())->getParameters() as $parameter) {
                 if ($parameter->isVariadic()) {
                     $isVariadic = true;
 
