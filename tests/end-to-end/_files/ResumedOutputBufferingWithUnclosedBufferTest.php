@@ -13,18 +13,13 @@ use function ob_end_clean;
 use function ob_start;
 use PHPUnit\Framework\TestCase;
 
-final class SuspendedOutputBufferingTest extends TestCase
+final class ResumedOutputBufferingWithUnclosedBufferTest extends TestCase
 {
-    protected function setUp(): void
+    public function testOne(): void
     {
-        print 'setUp ';
-    }
+        $this->assertTrue(true);
 
-    public function testOutputExpectationIncludesOutputPrintedBeforeOutputBufferingWasSuspended(): void
-    {
-        $this->expectOutputString('setUp test');
-
-        print 'test';
+        ob_start();
     }
 
     protected function invokeTestMethod(string $methodName, array $testArguments): mixed

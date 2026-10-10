@@ -1,5 +1,5 @@
 --TEST--
-An output expectation includes output that was printed before output buffering was suspended and resumed
+An output expectation includes output that was printed before output buffering was suspended and output that was printed after it was resumed at another output buffering level
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-record-test-run-history';

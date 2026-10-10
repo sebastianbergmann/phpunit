@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\TestCase;
 
 use function ob_end_clean;
+use function ob_flush;
 use function ob_get_level;
 use function ob_start;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -112,6 +113,67 @@ final class OutputBufferTest extends TestCase
 
         $this->assertTrue($result->closedCleanly);
         $this->assertSame('before after', $buffer->output());
+    }
+
+    public function testCapturesOutputWhenBufferingIsResumedAtAnotherOutputBufferingLevel(): void
+    {
+        $buffer = new OutputBuffer;
+
+        $buffer->start();
+
+        print 'before';
+
+        $buffer->suspend();
+
+        ob_start();
+
+        $buffer->resume();
+
+        print ' flushed';
+
+        ob_flush();
+
+        print ' inside';
+
+        $this->assertSame('before flushed inside', $buffer->output());
+
+        $buffer->suspend();
+
+        ob_end_clean();
+
+        $buffer->resume();
+
+        print ' after';
+
+        $result = $buffer->stop();
+
+        $this->assertTrue($result->closedCleanly);
+        $this->assertSame('before flushed inside after', $buffer->output());
+    }
+
+    public function testReportsOutputBufferLeftOpenAfterBufferingWasResumedAtAnotherOutputBufferingLevel(): void
+    {
+        $buffer = new OutputBuffer;
+
+        $buffer->start();
+        $buffer->suspend();
+
+        ob_start();
+
+        $buffer->resume();
+
+        ob_start();
+
+        $buffer->suspend();
+
+        ob_end_clean();
+
+        $buffer->resume();
+
+        $result = $buffer->stop();
+
+        $this->assertFalse($result->closedCleanly);
+        $this->assertSame('Test code or tested code did not close its own output buffers', $result->riskyMessage);
     }
 
     public function testReportsOutputBufferLeftOpenBeforeBufferingWasSuspended(): void
