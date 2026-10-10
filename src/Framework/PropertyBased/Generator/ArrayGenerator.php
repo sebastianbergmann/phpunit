@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\PropertyBased\Generator;
 
 use function array_key_exists;
+use function array_key_first;
 use function get_debug_type;
 use function is_int;
 use function is_string;
@@ -75,7 +76,10 @@ final readonly class ArrayGenerator extends AbstractGenerator
                     );
                 }
 
-                if (array_key_exists($key, $array)) {
+                // a string that PHP stores as an integer key, such as '1',
+                // is not used, so that the keys of the array are of the type
+                // that the generator for the keys generates
+                if (array_key_exists($key, $array) || (is_string($key) && is_int(array_key_first([$key => true])))) {
                     return false;
                 }
 
