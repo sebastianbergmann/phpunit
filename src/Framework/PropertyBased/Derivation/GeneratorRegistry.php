@@ -55,6 +55,18 @@ final readonly class GeneratorRegistry
     }
 
     /**
+     * Returns the key under which a generator is registered for the class:
+     * class names are case-insensitive and may be written with a leading
+     * backslash.
+     *
+     * @return lowercase-string
+     */
+    public static function key(string $className): string
+    {
+        return strtolower(ltrim($className, '\\'));
+    }
+
+    /**
      * @param array<lowercase-string, AbstractGenerator<mixed>> $generators
      */
     private function __construct(array $generators)
@@ -77,15 +89,5 @@ final readonly class GeneratorRegistry
         assert(isset($this->generators[$key]));
 
         return $this->generators[$key];
-    }
-
-    /**
-     * Class names are case-insensitive.
-     *
-     * @return lowercase-string
-     */
-    private static function key(string $className): string
-    {
-        return strtolower(ltrim($className, '\\'));
     }
 }
