@@ -1062,7 +1062,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * Classifies the current example of a property with the given label, so
      * that the statistics of the property state how many of its examples were
-     * classified with it. An example can be classified with several labels.
+     * classified with it, and #[RequireClassification] can require a minimum
+     * percentage of them. An example can be classified with several labels.
      *
      * @param non-empty-string $label
      *

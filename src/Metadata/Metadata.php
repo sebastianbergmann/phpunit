@@ -262,6 +262,14 @@ abstract readonly class Metadata
     }
 
     /**
+     * @param non-empty-string $label
+     */
+    public static function requireClassification(string $label, float $minimumPercentage): RequireClassification
+    {
+        return new RequireClassification(Level::METHOD_LEVEL, $label, $minimumPercentage);
+    }
+
+    /**
      * @param non-empty-string $groupName
      */
     public static function groupOnClass(string $groupName): Group
@@ -1037,6 +1045,14 @@ abstract readonly class Metadata
      * @phpstan-assert-if-true Property $this
      */
     public function isProperty(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true RequireClassification $this
+     */
+    public function isRequireClassification(): bool
     {
         return false;
     }
