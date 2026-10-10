@@ -237,6 +237,35 @@ final class TestCasePropertyExampleTest extends TestCase
         $this->assertTrue($test->status()->isSuccess());
     }
 
+    public function testAnExampleIsClassifiedWithEachLabelOnce(): void
+    {
+        $test = $this->example('testClassifiesTheExample', [1]);
+
+        $this->runExample($test);
+
+        $this->assertSame(['first', 'second'], $test->classificationsOfPropertyExample());
+    }
+
+    public function testAnExampleCannotBeClassifiedWithAnEmptyLabel(): void
+    {
+        $test = $this->example('testClassifiesTheExampleWithAnEmptyLabel', [1]);
+
+        $this->runExample($test);
+
+        $this->assertTrue($test->status()->isError());
+        $this->assertSame('The label passed to classify() must not be empty', $test->status()->message());
+    }
+
+    public function testClassifyCanOnlyBeUsedInAProperty(): void
+    {
+        $test = new ExampleTest('testUsesClassifyOutsideOfAProperty');
+
+        $this->runExample($test);
+
+        $this->assertTrue($test->status()->isError());
+        $this->assertSame('classify() can only be used in a property', $test->status()->message());
+    }
+
     public function testAssumeCanOnlyBeUsedInAProperty(): void
     {
         $test = new ExampleTest('testUsesAssumeOutsideOfAProperty');

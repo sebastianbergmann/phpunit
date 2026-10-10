@@ -25,19 +25,44 @@ final class PropertyCheckedTest extends AbstractEventTestCase
         $telemetryInfo = $this->telemetryInfo();
         $test          = $this->testValueObject();
 
-        $event = new PropertyChecked($telemetryInfo, $test, 1234, 100, 3);
+        $event = new PropertyChecked($telemetryInfo, $test, 1234, 100, 3, [['label' => 'negative', 'numberOfExamples' => 42]]);
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
         $this->assertSame($test, $event->test());
         $this->assertSame(1234, $event->seed());
         $this->assertSame(100, $event->numberOfExamplesChecked());
         $this->assertSame(3, $event->numberOfExamplesRejected());
+        $this->assertSame([['label' => 'negative', 'numberOfExamples' => 42]], $event->classifications());
     }
 
     public function testCanBeRepresentedAsString(): void
     {
-        $event = new PropertyChecked($this->telemetryInfo(), $this->testValueObject(), 1234, 100, 3);
+        $event = new PropertyChecked($this->telemetryInfo(), $this->testValueObject(), 1234, 100, 3, []);
 
         $this->assertSame('Test Property Checked (FooTest::testBar, seed: 1234, examples: 100, rejected: 3)', $event->asString());
+    }
+
+    public function testStringRepresentationHasTheNumberAndThePercentageOfTheExamplesThatWereClassifiedWithEachLabel(): void
+    {
+        $event = new PropertyChecked(
+            $this->telemetryInfo(),
+            $this->testValueObject(),
+            1234,
+            8,
+            0,
+            [
+                ['label' => 'negative', 'numberOfExamples' => 3],
+                ['label' => '0', 'numberOfExamples' => 1],
+            ],
+        );
+
+        $this->assertStringEqualsStringIgnoringLineEndings(
+            <<<'EOT'
+Test Property Checked (FooTest::testBar, seed: 1234, examples: 8, rejected: 0)
+negative: 3 (37.5%)
+0: 1 (12.5%)
+EOT,
+            $event->asString(),
+        );
     }
 }
