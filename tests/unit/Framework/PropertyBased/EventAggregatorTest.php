@@ -95,12 +95,13 @@ final class EventAggregatorTest extends AbstractEventTestCase
         );
     }
 
-    public function testDoesNotReportTheIssuesOfExamplesThatWereNotChecked(): void
+    public function testReportsTheIssuesOfExamplesThatWereNotCheckedButDoesNotConsiderThemRisky(): void
     {
         $rejected = $this->example(
             $this->preparationStarted(),
             $this->prepared(),
             $this->warning('warning of rejected example'),
+            $this->risky('risky rejected example'),
             $this->finished(0),
         );
 
@@ -109,7 +110,7 @@ final class EventAggregatorTest extends AbstractEventTestCase
         $events = $this->dispatch([[$rejected, false], [$checked, true]], $checked, null, true, null, 1);
 
         $this->assertSame(
-            ['PreparationStarted', 'Prepared', 'Passed', 'PropertyChecked', 'Finished: 1'],
+            ['PreparationStarted', 'Prepared', 'WarningTriggered: warning of rejected example', 'Passed', 'PropertyChecked', 'Finished: 1'],
             $this->describe($events),
         );
 
