@@ -9,8 +9,10 @@
  */
 namespace PHPUnit\Framework;
 
+use const PHP_INT_MAX;
 use function array_values;
 use function assert;
+use function intdiv;
 use function min;
 use function sprintf;
 use Closure;
@@ -570,6 +572,12 @@ final class PropertyTestSuite extends IterativeTestSuite
      */
     private function maximumNumberOfExamplesGenerated(): int
     {
+        // the number of examples is not limited, so the product could exceed
+        // the largest integer
+        if ($this->numberOfExamples > intdiv(PHP_INT_MAX, self::MAXIMUM_NUMBER_OF_EXAMPLES_GENERATED_PER_EXAMPLE)) {
+            return PHP_INT_MAX;
+        }
+
         return $this->numberOfExamples * self::MAXIMUM_NUMBER_OF_EXAMPLES_GENERATED_PER_EXAMPLE;
     }
 
