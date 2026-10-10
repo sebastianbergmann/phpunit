@@ -31,6 +31,7 @@ use PHPUnit\Event\Test\PrintedUnexpectedOutput;
 use PHPUnit\Event\Test\PropertyChecked;
 use PHPUnit\Event\Test\PropertyFalsified;
 use PHPUnit\Event\Test\WarningTriggered;
+use PHPUnit\Event\TestRunner\GarbageCollectionTriggered;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
@@ -115,6 +116,29 @@ final class EventAggregatorTest extends AbstractEventTestCase
         );
 
         $this->assertSame($rejected->asArray()[0], $events[0]);
+    }
+
+    public function testReportsTheGarbageCollectionsOfAllExamplesAndShrinkingAttemptsOnceTheSkeletonIsPrepared(): void
+    {
+        $checked  = $this->passedExample($this->garbageCollection());
+        $rejected = $this->example($this->preparationStarted(), $this->prepared(), $this->garbageCollection(), $this->finished(0));
+        $attempt  = $this->example($this->preparationStarted(), $this->prepared(), $this->garbageCollection(), $this->finished(0));
+
+        $events = $this->dispatch([[$checked, true], [$rejected, false]], $checked, null, true, null, 1, [$attempt]);
+
+        $this->assertSame(
+            [
+                'PreparationStarted',
+                'Prepared',
+                'GarbageCollectionTriggered',
+                'GarbageCollectionTriggered',
+                'GarbageCollectionTriggered',
+                'Passed',
+                'PropertyChecked',
+                'Finished: 1',
+            ],
+            $this->describe($events),
+        );
     }
 
     public function testReportsTheAdditionalInformationOfAllCheckedExamplesOnceTheSkeletonIsPrepared(): void
@@ -317,18 +341,23 @@ final class EventAggregatorTest extends AbstractEventTestCase
      * @param list<array{EventCollection, bool}> $examples
      * @param ?Closure(): void                   $beforeOutcome
      * @param non-negative-int                   $numberOfAssertions
+     * @param list<EventCollection>              $shrinkingAttempts
      *
      * @return list<Event>
      */
-    private function dispatch(array $examples, ?EventCollection $skeleton, ?Throwable $error, bool $passed, ?Closure $beforeOutcome, int $numberOfAssertions): array
+    private function dispatch(array $examples, ?EventCollection $skeleton, ?Throwable $error, bool $passed, ?Closure $beforeOutcome, int $numberOfAssertions, array $shrinkingAttempts = []): array
     {
         return EventCollector::collect(
-            function () use ($examples, $skeleton, $error, $passed, $beforeOutcome, $numberOfAssertions): void
+            function () use ($examples, $skeleton, $error, $passed, $beforeOutcome, $numberOfAssertions, $shrinkingAttempts): void
             {
                 $aggregator = new EventAggregator(EventFacade::emitter(), EventFacade::instance(), $this->testValueObject());
 
                 foreach ($examples as [$events, $checked]) {
                     $aggregator->record($events, $checked);
+                }
+
+                foreach ($shrinkingAttempts as $events) {
+                    $aggregator->recordShrinkingAttempt($events);
                 }
 
                 $aggregator->dispatch(
@@ -435,6 +464,11 @@ final class EventAggregatorTest extends AbstractEventTestCase
     private function printedOutput(string $output): PrintedUnexpectedOutput
     {
         return new PrintedUnexpectedOutput($this->telemetryInfo(), $output);
+    }
+
+    private function garbageCollection(): GarbageCollectionTriggered
+    {
+        return new GarbageCollectionTriggered($this->telemetryInfo());
     }
 
     private function warning(string $message): WarningTriggered
