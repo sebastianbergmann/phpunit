@@ -36,6 +36,7 @@ use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Event\Test\PrintedUnexpectedOutput;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\Test\WarningTriggered;
+use PHPUnit\Event\TestRunner\GarbageCollectionTriggered;
 
 /**
  * Aggregates the events of the examples of a property, which are collected
@@ -50,7 +51,8 @@ use PHPUnit\Event\Test\WarningTriggered;
  * that were checked are reported within that sequence, those of the skeleton
  * included, and so is the output that they printed, as one
  * Test\PrintedUnexpectedOutput event. The issues of the examples that were
- * rejected are reported as well. A Test\ConsideredRisky event and an
+ * rejected are reported as well, and so are the TestRunner\GarbageCollectionTriggered
+ * events of all examples, those of the shrinking attempts included. A Test\ConsideredRisky event and an
  * issue of PHPUnit's own are reported once per message, and the number of
  * assertions is the one that is passed in.
  *
@@ -67,8 +69,9 @@ final class EventAggregator
     private ?Prepared $prepared                     = null;
 
     /**
-     * The issues, the Test\ConsideredRisky events, and the
-     * Test\AdditionalInformationProvided events of the examples.
+     * The issues, the Test\ConsideredRisky events, the
+     * Test\AdditionalInformationProvided events, and the
+     * TestRunner\GarbageCollectionTriggered events of the examples.
      */
     private EventCollection $eventsOfExamples;
 
@@ -94,8 +97,9 @@ final class EventAggregator
 
     /**
      * Records the events of an example. Only the Test\PreparationStarted and
-     * Test\Prepared events and the issues of an example that was not checked,
-     * because it was rejected, are kept.
+     * Test\Prepared events, the issues, and the TestRunner\GarbageCollectionTriggered
+     * events of an example that was not checked, because it was rejected, are
+     * kept.
      *
      * The events of the skeleton must have been recorded before they are
      * dispatched.
@@ -109,6 +113,12 @@ final class EventAggregator
 
             if ($event instanceof Prepared && $this->prepared === null) {
                 $this->prepared = $event;
+            }
+
+            if ($event instanceof GarbageCollectionTriggered) {
+                $this->eventsOfExamples->add($event);
+
+                continue;
             }
 
             // the issues that an example triggered before it was rejected are
@@ -130,6 +140,19 @@ final class EventAggregator
             }
 
             if ($event instanceof AdditionalInformationProvided || $this->isReportedOncePerProperty($event)) {
+                $this->eventsOfExamples->add($event);
+            }
+        }
+    }
+
+    /**
+     * Records the events of a shrinking attempt, of which only the
+     * TestRunner\GarbageCollectionTriggered events are kept.
+     */
+    public function recordShrinkingAttempt(EventCollection $events): void
+    {
+        foreach ($events as $event) {
+            if ($event instanceof GarbageCollectionTriggered) {
                 $this->eventsOfExamples->add($event);
             }
         }
@@ -177,7 +200,8 @@ final class EventAggregator
             // these events were recorded with those of the other examples
             if ($this->isIssue($event) ||
                 $event instanceof AdditionalInformationProvided ||
-                $event instanceof PrintedUnexpectedOutput) {
+                $event instanceof PrintedUnexpectedOutput ||
+                $event instanceof GarbageCollectionTriggered) {
                 continue;
             }
 

@@ -367,7 +367,7 @@ final class PropertyTestSuite extends IterativeTestSuite
         }
 
         $shrinker = new Shrinker(
-            function (ChoiceSequence $candidate) use ($emitter, $deriver, $generators, $falsification): ?ChoiceSequence
+            function (ChoiceSequence $candidate) use ($events, $emitter, $deriver, $generators, $falsification): ?ChoiceSequence
             {
                 $source = ChoiceSource::replay($candidate, ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver);
 
@@ -379,7 +379,9 @@ final class PropertyTestSuite extends IterativeTestSuite
 
                 $example = $this->example($arguments);
 
-                $this->runExample($example, $emitter, false);
+                [$attemptEvents] = $this->runExample($example, $emitter, false);
+
+                $events->recordShrinkingAttempt($attemptEvents);
 
                 $candidateFalsification = Falsification::of($example);
 
