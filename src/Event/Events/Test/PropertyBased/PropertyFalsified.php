@@ -10,6 +10,7 @@
 namespace PHPUnit\Event\Test;
 
 use const PHP_EOL;
+use function is_int;
 use function sprintf;
 use PHPUnit\Event\Code;
 use PHPUnit\Event\Event;
@@ -31,7 +32,7 @@ final readonly class PropertyFalsified implements Event
     private int $seed;
 
     /**
-     * @var positive-int
+     * @var non-negative-int
      */
     private int $numberOfExamplesChecked;
 
@@ -58,16 +59,22 @@ final readonly class PropertyFalsified implements Event
     private array $counterexample;
 
     /**
+     * @var null|int|non-empty-string
+     */
+    private null|int|string $explicitExample;
+
+    /**
      * @param non-negative-int                $seed
-     * @param positive-int                    $numberOfExamplesChecked
+     * @param non-negative-int                $numberOfExamplesChecked
      * @param non-negative-int                $numberOfShrinkingAttempts
      * @param non-negative-int                $numberOfShrinkingSteps
      * @param list<non-negative-int>          $choiceSequence
      * @param array<non-empty-string, string> $counterexample
+     * @param null|int|non-empty-string       $explicitExample
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, array $choiceSequence, array $counterexample)
+    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, array $choiceSequence, array $counterexample, null|int|string $explicitExample)
     {
         $this->telemetryInfo             = $telemetryInfo;
         $this->test                      = $test;
@@ -79,6 +86,7 @@ final readonly class PropertyFalsified implements Event
         $this->shrinkingInterrupted      = $shrinkingInterrupted;
         $this->choiceSequence            = $choiceSequence;
         $this->counterexample            = $counterexample;
+        $this->explicitExample           = $explicitExample;
     }
 
     public function telemetryInfo(): Telemetry\Info
@@ -103,10 +111,13 @@ final readonly class PropertyFalsified implements Event
     }
 
     /**
-     * The number of examples for which the property was checked until it was
-     * falsified, including the example that falsified it.
+     * The number of generated examples for which the property was checked
+     * until it was falsified, including the example that falsified it.
+     * Explicit examples are not counted, and they are checked before examples
+     * are generated, so it is 0 when an explicit example falsified the
+     * property.
      *
-     * @return positive-int
+     * @return non-negative-int
      */
     public function numberOfExamplesChecked(): int
     {
@@ -165,8 +176,9 @@ final readonly class PropertyFalsified implements Event
     }
 
     /**
-     * The arguments of the minimal counterexample, exported as PHP code, by
-     * the name of the parameter they were passed to.
+     * The arguments of the minimal counterexample, or of the explicit example
+     * that falsified the property, exported as PHP code, by the name of the
+     * parameter they were passed to.
      *
      * @return array<non-empty-string, string>
      */
@@ -176,10 +188,37 @@ final readonly class PropertyFalsified implements Event
     }
 
     /**
+     * The name of the explicit example, specified with #[TestWith] or
+     * #[TestWithJson], that falsified the property, or its number among the
+     * explicit examples for which no name is specified. Null when the property
+     * was falsified by a generated example.
+     *
+     * An explicit example is not shrunk, so there are no shrinking attempts,
+     * and its arguments are not generated from a choice sequence, so the
+     * choice sequence is empty.
+     *
+     * @return null|int|non-empty-string
+     */
+    public function explicitExample(): null|int|string
+    {
+        return $this->explicitExample;
+    }
+
+    /**
      * @return non-empty-string
      */
     public function asString(): string
     {
+        if ($this->explicitExample !== null) {
+            return $this->withCounterexample(
+                sprintf(
+                    'Test Property Falsified (%s, explicit example %s)',
+                    $this->test->id(),
+                    $this->labelOfExplicitExample($this->explicitExample),
+                ),
+            );
+        }
+
         $shrinkingStopped = '';
 
         if ($this->shrinkingBudgetExhausted) {
@@ -190,16 +229,26 @@ final readonly class PropertyFalsified implements Event
             $shrinkingStopped = ', shrinking interrupted';
         }
 
-        $buffer = sprintf(
-            'Test Property Falsified (%s, seed: %d, examples: %d, shrinking steps: %d, shrinking attempts: %d%s)',
-            $this->test->id(),
-            $this->seed,
-            $this->numberOfExamplesChecked,
-            $this->numberOfShrinkingSteps,
-            $this->numberOfShrinkingAttempts,
-            $shrinkingStopped,
+        return $this->withCounterexample(
+            sprintf(
+                'Test Property Falsified (%s, seed: %d, examples: %d, shrinking steps: %d, shrinking attempts: %d%s)',
+                $this->test->id(),
+                $this->seed,
+                $this->numberOfExamplesChecked,
+                $this->numberOfShrinkingSteps,
+                $this->numberOfShrinkingAttempts,
+                $shrinkingStopped,
+            ),
         );
+    }
 
+    /**
+     * @param non-empty-string $buffer
+     *
+     * @return non-empty-string
+     */
+    private function withCounterexample(string $buffer): string
+    {
         foreach ($this->counterexample as $parameter => $value) {
             $buffer .= sprintf(
                 PHP_EOL . '$%s = %s;',
@@ -209,5 +258,19 @@ final readonly class PropertyFalsified implements Event
         }
 
         return $buffer;
+    }
+
+    /**
+     * @param int|non-empty-string $name
+     *
+     * @return non-empty-string
+     */
+    private function labelOfExplicitExample(int|string $name): string
+    {
+        if (is_int($name)) {
+            return '#' . $name;
+        }
+
+        return sprintf('"%s"', $name);
     }
 }

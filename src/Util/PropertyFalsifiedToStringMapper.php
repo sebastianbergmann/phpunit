@@ -12,6 +12,7 @@ namespace PHPUnit\Util;
 use const PHP_EOL;
 use function explode;
 use function implode;
+use function is_int;
 use function sprintf;
 use PHPUnit\Event\Test\PropertyFalsified;
 
@@ -24,6 +25,12 @@ use PHPUnit\Event\Test\PropertyFalsified;
  *         $money = new Money(amount: 1, currency: Currency::EUR);
  *         $parts = 2;
  *
+ * or with the arguments of the explicit example that falsified it:
+ *
+ *     Property falsified by explicit example "minus one":
+ *
+ *         $value = -1;
+ *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -34,6 +41,12 @@ final readonly class PropertyFalsifiedToStringMapper
 
     public static function map(PropertyFalsified $event): string
     {
+        $explicitExample = $event->explicitExample();
+
+        if ($explicitExample !== null) {
+            return self::mapExplicitExample($event, $explicitExample);
+        }
+
         $examples = self::count($event->numberOfExamplesChecked(), 'example');
 
         if ($event->counterexample() === []) {
@@ -50,14 +63,7 @@ final readonly class PropertyFalsifiedToStringMapper
             );
         }
 
-        $buffer .= PHP_EOL . PHP_EOL;
-
-        foreach ($event->counterexample() as $parameter => $value) {
-            $buffer .= self::INDENTATION . implode(
-                PHP_EOL . self::INDENTATION,
-                explode("\n", sprintf('$%s = %s;', $parameter, $value)),
-            ) . PHP_EOL;
-        }
+        $buffer .= PHP_EOL . PHP_EOL . self::arguments($event);
 
         if ($event->shrinkingBudgetExhausted()) {
             $buffer .= PHP_EOL . sprintf(
@@ -70,6 +76,38 @@ final readonly class PropertyFalsifiedToStringMapper
             $buffer .= PHP_EOL . sprintf(
                 'Shrinking was stopped after %s because the test run was aborted, a simpler counterexample may exist.',
                 self::count($event->numberOfShrinkingAttempts(), 'attempt'),
+            ) . PHP_EOL;
+        }
+
+        return $buffer;
+    }
+
+    /**
+     * @param int|non-empty-string $explicitExample
+     */
+    private static function mapExplicitExample(PropertyFalsified $event, int|string $explicitExample): string
+    {
+        if (is_int($explicitExample)) {
+            $label = '#' . $explicitExample;
+        } else {
+            $label = sprintf('"%s"', $explicitExample);
+        }
+
+        if ($event->counterexample() === []) {
+            return sprintf('Property falsified by explicit example %s.', $label) . PHP_EOL;
+        }
+
+        return sprintf('Property falsified by explicit example %s:', $label) . PHP_EOL . PHP_EOL . self::arguments($event);
+    }
+
+    private static function arguments(PropertyFalsified $event): string
+    {
+        $buffer = '';
+
+        foreach ($event->counterexample() as $parameter => $value) {
+            $buffer .= self::INDENTATION . implode(
+                PHP_EOL . self::INDENTATION,
+                explode("\n", sprintf('$%s = %s;', $parameter, $value)),
             ) . PHP_EOL;
         }
 

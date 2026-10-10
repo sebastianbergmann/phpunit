@@ -121,10 +121,27 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
         $test = $this->testValueObject();
 
         $handler->testPropertyFalsified(
-            new PropertyFalsified($this->telemetryInfo(), $test, 1234, 2, 3, 1, false, false, [0, 11], ['a' => '0', 'b' => '11']),
+            new PropertyFalsified($this->telemetryInfo(), $test, 1234, 2, 3, 1, false, false, [0, 11], ['a' => '0', 'b' => '11'], null),
         );
 
         $this->assertSame([0, 11], $cache->counterexample(TestRunHistoryId::fromTest($test)));
+    }
+
+    public function testPropertyFalsifiedByAnExplicitExampleKeepsTheCounterexampleThatWasRememberedForTheProperty(): void
+    {
+        $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-test.cache');
+        $handler = new TestRunHistoryHandler($cache, new Facade, false);
+
+        $test = $this->testValueObject();
+        $id   = TestRunHistoryId::fromTest($test);
+
+        $cache->setCounterexample($id, [0, 11]);
+
+        $handler->testPropertyFalsified(
+            new PropertyFalsified($this->telemetryInfo(), $test, 1234, 0, 0, 0, false, false, [], ['a' => '1', 'b' => '2'], 'one and two'),
+        );
+
+        $this->assertSame([0, 11], $cache->counterexample($id));
     }
 
     public function testPassedForgetsTheCounterexampleThatWasRememberedForAProperty(): void
