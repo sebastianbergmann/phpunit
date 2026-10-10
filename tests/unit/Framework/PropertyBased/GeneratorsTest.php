@@ -113,6 +113,7 @@ final class GeneratorsTest extends TestCase
             'records (optional)' => [Generators::records(['name' => Generators::strings(), 'age' => Generators::integers(0, 150)], ['age'])],
             'nullable'           => [Generators::nullable(Generators::integers())],
             'one of'             => [Generators::oneOf(Generators::integers(), Generators::booleans())],
+            'frequency'          => [Generators::frequency([3, Generators::integers()], [1, Generators::booleans()])],
             'map'                => [Generators::integers(0, 9)->map(static fn (int $i): string => (string) $i)],
             'filter'             => [Generators::integers(0, 9)->filter(static fn (int $i): bool => $i % 2 === 0)],
             'flatMap'            => [Generators::integers(0, 3)->flatMap(static fn (int $n): ValueGenerator => Generators::lists(Generators::booleans(), $n, $n))],
@@ -213,6 +214,21 @@ final class GeneratorsTest extends TestCase
             'invalid UTF-8 in alphabet'        => ["\xFF", 0, null, 'The alphabet must be a non-empty, valid UTF-8 string'],
             'negative minimum length'          => [null, -1, null, 'The minimum length (-1) must not be negative'],
             'maximum length less than minimum' => [null, 3, 2, 'The maximum length (2) must not be smaller than the minimum length (3)'],
+        ];
+    }
+
+    /**
+     * @return array<string, array{list<mixed>, string}>
+     */
+    public static function invalidFrequencyArgumentsProvider(): array
+    {
+        return [
+            'no weighted generator'   => [[], 'At least one weighted generator must be passed to frequency()'],
+            'weight that is not int'  => [[['1', Generators::booleans()]], 'Argument #1 of frequency() must be a list of a weight and a generator'],
+            'no generator'            => [[[1, Generators::booleans()], [1, true]], 'Argument #2 of frequency() must be a list of a weight and a generator'],
+            'more than two elements'  => [[[1, Generators::booleans(), 'extra']], 'Argument #1 of frequency() must be a list of a weight and a generator'],
+            'weight that is zero'     => [[[0, Generators::booleans()]], 'The weight in argument #1 of frequency() (0) must be positive'],
+            'weight that is negative' => [[[1, Generators::booleans()], [-1, Generators::booleans()]], 'The weight in argument #2 of frequency() (-1) must be positive'],
         ];
     }
 
@@ -763,6 +779,30 @@ final class GeneratorsTest extends TestCase
         $this->expectExceptionMessage('At least one generator must be passed to oneOf()');
 
         Generators::oneOf();
+    }
+
+    public function testGeneratesTheValuesOfTheGeneratorsInProportionToTheirWeights(): void
+    {
+        $generator = Generators::frequency([9, Generators::constant('a')], [1, Generators::constant('b')]);
+        $values    = $this->values($generator, 1000);
+        $b         = count(array_filter($values, static fn (string $value): bool => $value === 'b'));
+
+        $this->assertGreaterThan(50, $b);
+        $this->assertLessThan(150, $b);
+        $this->assertSame('a', $this->replay($generator, []));
+        $this->assertSame('b', $this->replay($generator, [1]));
+    }
+
+    /**
+     * @param list<mixed> $arguments
+     */
+    #[DataProvider('invalidFrequencyArgumentsProvider')]
+    public function testTheArgumentsOfFrequencyMustBeWeightedGenerators(array $arguments, string $message): void
+    {
+        $this->expectException(InvalidGeneratorArgumentException::class);
+        $this->expectExceptionMessage($message);
+
+        Generators::frequency(...$arguments);
     }
 
     public function testMapsTheValuesOfAGenerator(): void

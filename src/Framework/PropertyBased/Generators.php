@@ -13,20 +13,24 @@ use const DEBUG_BACKTRACE_IGNORE_ARGS;
 use const PHP_FLOAT_MAX;
 use const PHP_INT_MAX;
 use const PHP_INT_MIN;
+use function array_is_list;
 use function array_key_exists;
 use function array_unique;
 use function array_values;
 use function class_exists;
+use function count;
 use function debug_backtrace;
 use function enum_exists;
 use function interface_exists;
 use function is_finite;
+use function is_int;
 use function lcfirst;
 use function mb_check_encoding;
 use function mb_str_split;
 use function sprintf;
 use function var_export;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorDeriver;
+use PHPUnit\Framework\PropertyBased\Distribution\WeightedRangesDistribution;
 use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\ArrayGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\BooleanGenerator;
@@ -399,6 +403,65 @@ final class Generators
         }
 
         return new OneOfGenerator($oneOf);
+    }
+
+    /**
+     * Generates a value of one of the given generators, each of which is
+     * chosen with a probability that is proportional to its weight. Each
+     * argument is a list of a weight and a generator:
+     *
+     *     Generators::frequency([9, Generators::integers()], [1, Generators::constant(null)])
+     *
+     * The values of the first generator are the simplest ones.
+     *
+     * @template T
+     *
+     * @param array{positive-int, ValueGenerator<T>} ...$weightedGenerators
+     *
+     * @throws InvalidGeneratorArgumentException
+     * @throws ValueGeneratorNotSupportedException
+     *
+     * @return ValueGenerator<T>
+     */
+    public static function frequency(array ...$weightedGenerators): ValueGenerator
+    {
+        $generators = [];
+        $ranges     = [];
+
+        foreach (array_values($weightedGenerators) as $index => $weightedGenerator) {
+            if (!array_is_list($weightedGenerator) ||
+                count($weightedGenerator) !== 2 ||
+                !is_int($weightedGenerator[0]) ||
+                !$weightedGenerator[1] instanceof ValueGenerator) {
+                throw new InvalidGeneratorArgumentException(
+                    sprintf(
+                        'Argument #%d of frequency() must be a list of a weight and a generator',
+                        $index + 1,
+                    ),
+                );
+            }
+
+            if ($weightedGenerator[0] < 1) {
+                throw new InvalidGeneratorArgumentException(
+                    sprintf(
+                        'The weight in argument #%d of frequency() (%d) must be positive',
+                        $index + 1,
+                        $weightedGenerator[0],
+                    ),
+                );
+            }
+
+            $generators[] = AbstractGenerator::from($weightedGenerator[1]);
+            $ranges[]     = ['weight' => (float) $weightedGenerator[0], 'minimum' => $index, 'maximum' => $index];
+        }
+
+        if ($generators === []) {
+            throw new InvalidGeneratorArgumentException(
+                'At least one weighted generator must be passed to frequency()',
+            );
+        }
+
+        return new OneOfGenerator($generators, new WeightedRangesDistribution($ranges));
     }
 
     /**
