@@ -153,6 +153,20 @@ final class TestResultCollectorTest extends TestCase
         $this->assertNull($collector->testMethodsGroupedByClass()[TestDoxTest::class]->asArray()[1]->propertyFalsified());
     }
 
+    public function test_How_another_property_was_falsified_is_not_recorded_for_a_test(): void
+    {
+        $collector = $this->collector();
+        $property  = $this->testMethod('testOne');
+        $test      = $this->testMethod('testTwo');
+
+        $collector->testPropertyFalsified($this->propertyFalsified($property));
+        $collector->testPrepared(new Prepared($this->telemetryInfo(), $test));
+        $collector->testFailed(new Failed($this->telemetryInfo(), $test, $this->throwable('failure message'), null));
+        $collector->testFinished(new Finished($this->telemetryInfo(), $test, 1));
+
+        $this->assertNull($collector->testMethodsGroupedByClass()[TestDoxTest::class]->asArray()[0]->propertyFalsified());
+    }
+
     public function test_Test_method_that_errors_after_being_prepared_is_recorded_on_finish(): void
     {
         $collector = $this->collector();
