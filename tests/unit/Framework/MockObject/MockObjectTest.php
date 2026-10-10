@@ -36,6 +36,7 @@ use PHPUnit\TestFixture\MockObject\InterfaceExtendingAnotherInterface;
 use PHPUnit\TestFixture\MockObject\InterfaceWithImplicitProtocol;
 use PHPUnit\TestFixture\MockObject\InterfaceWithMethodNamedRecordInvocationsIn;
 use PHPUnit\TestFixture\MockObject\InterfaceWithPropertyWithGetHook;
+use PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatHasDefaultParameterValues;
 use PHPUnit\TestFixture\MockObject\InterfaceWithPropertyWithSetHook;
 use PHPUnit\TestFixture\MockObject\InterfaceWithReturnTypeDeclaration;
 use PHPUnit\TestFixture\MockObject\MethodWIthVariadicVariables;
@@ -590,6 +591,120 @@ EOT,
         $double->doSomethingElse(1);
         $double->doSomethingElse(2);
         $double->doSomethingElse(3);
+    }
+
+    public function testExpectationThatMethodIsCalledWithNamedParameterSucceedsWhenMethodIsCalledWithExpectedValueForThatParameter(): void
+    {
+        $double = $this->createMock(InterfaceWithMethodThatHasDefaultParameterValues::class);
+
+        $double->expects($this->once())->method('doSomething')->with(b: 7);
+
+        $double->doSomething(1, 7);
+    }
+
+    public function testExpectationThatMethodIsCalledWithNamedParameterFailsWhenMethodIsCalledWithUnexpectedValueForThatParameter(): void
+    {
+        $double = $this->createMock(InterfaceWithMethodThatHasDefaultParameterValues::class);
+
+        $double->expects($this->once())->method('doSomething')->with(b: 7);
+
+        $this->assertThatMockObjectExpectationFails(
+            <<<'EOT'
+Expectation for PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatHasDefaultParameterValues::doSomething() failed.
+Parameter $b for invocation PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatHasDefaultParameterValues::doSomething(7, 3): int does not match expected value.
+Failed asserting that 3 matches expected 7.
+EOT,
+            $double,
+            'doSomething',
+            [7, 3],
+        );
+    }
+
+    public function testExpectationThatMethodIsCalledWithPositionalAndNamedParametersSucceedsWhenNamedParameterHasExpectedDefaultValue(): void
+    {
+        $double = $this->createMock(InterfaceWithMethodThatHasDefaultParameterValues::class);
+
+        $double->expects($this->once())->method('doSomething')->with(5, b: 1);
+
+        $double->doSomething(5);
+    }
+
+    public function testExpectationThatMethodIsCalledWithNamedParameterFailsWhenMethodHasNoParameterWithThatName(): void
+    {
+        $double = $this->createMock(InterfaceWithMethodThatHasDefaultParameterValues::class);
+
+        $double->expects($this->once())->method('doSomething')->with(c: 7);
+
+        $this->assertThatMockObjectExpectationFails(
+            <<<'EOT'
+Expectation for PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatHasDefaultParameterValues::doSomething() failed.
+Unknown named parameter $c for invocation PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatHasDefaultParameterValues::doSomething(7, 1): int.
+EOT,
+            $double,
+            'doSomething',
+            [7],
+        );
+    }
+
+    public function testExpectationThatMethodIsCalledWithNamedParameterFailsWhenParameterWithThatNameIsAlsoConfiguredByPosition(): void
+    {
+        $double = $this->createMock(InterfaceWithMethodThatHasDefaultParameterValues::class);
+
+        $double->expects($this->once())->method('doSomething')->with(7, a: 7);
+
+        $this->assertThatMockObjectExpectationFails(
+            <<<'EOT'
+Expectation for PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatHasDefaultParameterValues::doSomething() failed.
+Named parameter $a overwrites previous argument for invocation PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatHasDefaultParameterValues::doSomething(7, 1): int.
+EOT,
+            $double,
+            'doSomething',
+            [7],
+        );
+    }
+
+    public function testExpectationThatMethodIsCalledWithNamedParameterSucceedsWhenVariadicParameterCollectsNamedArgumentWithExpectedValue(): void
+    {
+        $double = $this->createMock(MethodWIthVariadicVariables::class);
+
+        $double->expects($this->once())->method('testVariadic')->with('foo', biz: 'kuz');
+
+        $double->testVariadic('foo', biz: 'kuz');
+    }
+
+    public function testExpectationThatMethodIsCalledWithNamedParameterFailsWhenVariadicParameterCollectsNamedArgumentWithUnexpectedValue(): void
+    {
+        $double = $this->createMock(MethodWIthVariadicVariables::class);
+
+        $double->expects($this->once())->method('testVariadic')->with('foo', biz: 'kuz');
+
+        $this->assertThatMockObjectExpectationFails(
+            <<<'EOT'
+Expectation for PHPUnit\TestFixture\MockObject\MethodWIthVariadicVariables::testVariadic() failed.
+Parameter $biz for invocation PHPUnit\TestFixture\MockObject\MethodWIthVariadicVariables::testVariadic('foo', 'bar'): array does not match expected value.
+Failed asserting that two strings are equal.
+EOT,
+            $double,
+            'testVariadic',
+            ['foo', 'biz' => 'bar'],
+        );
+    }
+
+    public function testExpectationThatMethodIsCalledWithNamedParameterFailsWhenVariadicParameterDoesNotCollectNamedArgumentWithThatName(): void
+    {
+        $double = $this->createMock(MethodWIthVariadicVariables::class);
+
+        $double->expects($this->once())->method('testVariadic')->with('foo', biz: 'kuz');
+
+        $this->assertThatMockObjectExpectationFails(
+            <<<'EOT'
+Expectation for PHPUnit\TestFixture\MockObject\MethodWIthVariadicVariables::testVariadic() failed.
+Parameter count for invocation PHPUnit\TestFixture\MockObject\MethodWIthVariadicVariables::testVariadic('foo', 'kuz'): array is too low.
+EOT,
+            $double,
+            'testVariadic',
+            ['foo', 'baz' => 'kuz'],
+        );
     }
 
     /**
