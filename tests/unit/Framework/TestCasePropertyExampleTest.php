@@ -59,7 +59,6 @@ final class TestCasePropertyExampleTest extends TestCase
         $this->assertFalse($test->isPropertyExample());
         $this->assertFalse($test->wasRejectedByAssumption());
         $this->assertNull($test->throwableThatEndedTheTest());
-        $this->assertNull($test->contributedToCodeCoverage());
     }
 
     public function testAnExampleIsRunWithTheGivenArguments(): void

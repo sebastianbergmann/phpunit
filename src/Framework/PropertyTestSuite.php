@@ -35,6 +35,7 @@ use PHPUnit\Framework\PropertyBased\PropertyDefinitionBuilder;
 use PHPUnit\Framework\PropertyBased\Shrinker;
 use PHPUnit\Framework\PropertyBased\Type\NameScope;
 use PHPUnit\Framework\PropertyBased\ValueGenerator;
+use PHPUnit\Framework\TestRunner\ExampleRun;
 use PHPUnit\Framework\TestRunner\RiskyTestChecks;
 use PHPUnit\Framework\TestRunner\TestRunner;
 use PHPUnit\Metadata\Api\Requirements;
@@ -272,10 +273,10 @@ final class PropertyTestSuite extends IterativeTestSuite
                 return;
             }
 
-            $example        = $this->example($arguments);
-            $exampleEvents  = $this->runExample($example, $emitter, true);
-            $falsification  = Falsification::of($example);
-            $abortedByLimit = $example->throwableThatEndedTheTest() instanceof TimeLimitExceededException;
+            $example               = $this->example($arguments);
+            [$exampleEvents, $run] = $this->runExample($example, $emitter, true);
+            $falsification         = Falsification::of($example);
+            $abortedByLimit        = $example->throwableThatEndedTheTest() instanceof TimeLimitExceededException;
 
             if ($falsification === null && !$abortedByLimit && $example->wasRejectedByAssumption()) {
                 $this->numberOfExamplesRejected++;
@@ -286,14 +287,14 @@ final class PropertyTestSuite extends IterativeTestSuite
             }
 
             $this->numberOfExamplesChecked++;
-            $this->numberOfAssertions += $example->numberOfAssertionsPerformed();
+            $this->numberOfAssertions += $run->numberOfAssertions();
 
-            if ($example->doesNotPerformAssertions()) {
+            if ($run->doesNotPerformAssertions()) {
                 $this->doesNotPerformAssertions = true;
             }
 
-            if ($example->contributedToCodeCoverage() !== null && $this->contributedToCodeCoverage !== true) {
-                $this->contributedToCodeCoverage = $example->contributedToCodeCoverage();
+            if ($run->contributedToCodeCoverage() !== null && $this->contributedToCodeCoverage !== true) {
+                $this->contributedToCodeCoverage = $run->contributedToCodeCoverage();
             }
 
             $events->record($exampleEvents, true);
@@ -384,7 +385,7 @@ final class PropertyTestSuite extends IterativeTestSuite
 
         $counterexample = $this->export($arguments, $source);
         $replay         = $this->example($arguments, true);
-        $replayEvents   = $this->runExample($replay, $emitter, false);
+        [$replayEvents] = $this->runExample($replay, $emitter, false);
 
         // the issues of the final replay are reported like those of the
         // examples that were checked, the replay being the skeleton does not
@@ -819,19 +820,27 @@ final class PropertyTestSuite extends IterativeTestSuite
      * Test\PreparationStarted to Test\Finished.
      *
      * @throws Throwable
+     *
+     * @return array{0: EventCollection, 1: ExampleRun}
      */
-    private function runExample(TestCase $example, Event\Emitter $emitter, bool $collectCodeCoverage): EventCollection
+    private function runExample(TestCase $example, Event\Emitter $emitter, bool $collectCodeCoverage): array
     {
-        return $this->collectingEvents(
-            static function () use ($example, $emitter, $collectCodeCoverage): void
+        $run = null;
+
+        $events = $this->collectingEvents(
+            static function () use ($example, $emitter, $collectCodeCoverage, &$run): void
             {
                 $emitter->testPreparationStarted(
                     $example->valueObjectForEvents(),
                 );
 
-                new TestRunner($emitter)->runExampleOfProperty($example, $collectCodeCoverage);
+                $run = new TestRunner($emitter)->runExampleOfProperty($example, $collectCodeCoverage);
             },
         );
+
+        assert($run instanceof ExampleRun);
+
+        return [$events, $run];
     }
 
     private function shouldStop(): bool
