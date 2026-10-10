@@ -781,16 +781,17 @@ final class DispatchingEmitter implements Emitter
 
     /**
      * @param non-negative-int                $seed
-     * @param positive-int                    $numberOfExamplesChecked
+     * @param non-negative-int                $numberOfExamplesChecked
      * @param non-negative-int                $numberOfShrinkingAttempts
      * @param non-negative-int                $numberOfShrinkingSteps
      * @param list<non-negative-int>          $choiceSequence
      * @param array<non-empty-string, string> $counterexample
+     * @param null|int|non-empty-string       $explicitExample
      *
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
-    public function testPropertyFalsified(Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, array $choiceSequence, array $counterexample): void
+    public function testPropertyFalsified(Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, array $choiceSequence, array $counterexample, null|int|string $explicitExample): void
     {
         $this->dispatcher->dispatch(
             new Test\PropertyFalsified(
@@ -804,6 +805,7 @@ final class DispatchingEmitter implements Emitter
                 $shrinkingInterrupted,
                 $choiceSequence,
                 $counterexample,
+                $explicitExample,
             ),
         );
     }

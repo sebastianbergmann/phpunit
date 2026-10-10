@@ -469,6 +469,7 @@ final class PropertyTestSuite extends IterativeTestSuite
                     $result->interrupted(),
                     $result->sequence()->choices(),
                     $counterexample,
+                    null,
                 );
             },
         );
