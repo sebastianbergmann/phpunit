@@ -59,7 +59,7 @@ final class PartiallyOrderedParameterSets implements ParametersRule
                     }
                 }
 
-                $parameters = new IndexedParameters(array_values($parameters), $index, $strict);
+                $parameters = new IndexedParameters($parameters, $index, $strict);
             } else {
                 $parameters = new IndexedParameters([$parameters], $index, false);
             }

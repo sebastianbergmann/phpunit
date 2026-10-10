@@ -593,6 +593,97 @@ EOT,
         $double->doSomethingElse(3);
     }
 
+    public function testExpectationThatMethodIsCalledWithConsecutiveParameterSetsUsingNamedParametersSucceedsWhenMethodIsCalledConsecutivelyWithExpectedValuesForThoseParameters(): void
+    {
+        $double = $this->createMock(InterfaceWithMethodThatHasDefaultParameterValues::class);
+
+        $double->expects($this->exactly(2))->method('doSomething')->withParameterSetsInOrder(['b' => 7], ['b' => 8]);
+
+        $double->doSomething(1, 7);
+        $double->doSomething(1, 8);
+    }
+
+    public function testExpectationThatMethodIsCalledWithConsecutiveParameterSetsUsingNamedParametersFailsWhenMethodIsCalledWithUnexpectedValueForThatParameter(): void
+    {
+        $double = $this->createMock(InterfaceWithMethodThatHasDefaultParameterValues::class);
+
+        $double->expects($this->once())->method('doSomething')->withParameterSetsInOrder(['b' => 7]);
+
+        $this->assertThatMockObjectExpectationFails(
+            <<<'EOT'
+Expectation for PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatHasDefaultParameterValues::doSomething() failed.
+Parameter $b for invocation PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatHasDefaultParameterValues::doSomething(7, 3): int does not match expected value.
+Failed asserting that 3 matches expected 7.
+EOT,
+            $double,
+            'doSomething',
+            [7, 3],
+        );
+    }
+
+    public function testExpectationThatMethodIsCalledWithParameterSetsInAnyOrderUsingNamedParametersSucceedsWhenMethodIsCalledWithExpectedValuesForThoseParameters(): void
+    {
+        $double = $this->createMock(InterfaceWithMethodThatHasDefaultParameterValues::class);
+
+        $double->expects($this->exactly(2))->method('doSomething')->withParameterSetsInAnyOrder(['b' => 7], ['b' => 8]);
+
+        $double->doSomething(1, 8);
+        $double->doSomething(1, 7);
+    }
+
+    public function testExpectationThatMethodIsCalledWithParameterSetsInAnyOrderUsingNamedParametersFailsWhenMethodIsCalledWithUnexpectedValueForThatParameter(): void
+    {
+        $double = $this->createMock(InterfaceWithMethodThatHasDefaultParameterValues::class);
+
+        $double->expects($this->exactly(2))->method('doSomething')->withParameterSetsInAnyOrder(['b' => 7], ['b' => 8]);
+
+        $double->doSomething(7, 8);
+        $double->doSomething(8, 3);
+        $this->assertThatMockObjectExpectationFails(
+            <<<'EOT'
+Expectation for PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatHasDefaultParameterValues::doSomething() failed.
+1 out of 2 expected unordered parameter sets was called, index [0] was not called.
+
+EOT,
+            $double,
+        );
+    }
+
+    public function testExpectationThatMethodIsCalledWithParameterSetsInPartialOrderUsingNamedParametersSucceedsWhenMethodIsCalledWithExpectedValuesForThoseParameters(): void
+    {
+        $double = $this->createMock(InterfaceWithMethodThatHasDefaultParameterValues::class);
+
+        $double->expects($this->exactly(2))->method('doSomething')
+            ->withParameterSetsInPartialOrder(
+                ['b' => 7],
+                ['pinned' => ['b' => 8]],
+            );
+
+        $double->doSomething(1, 7);
+        $double->doSomething(1, 8);
+    }
+
+    public function testExpectationThatMethodIsCalledWithParameterSetsInPartialOrderUsingNamedParametersFailsWhenPinnedParameterSetIsCalledWithUnexpectedValueForThatParameter(): void
+    {
+        $double = $this->createMock(InterfaceWithMethodThatHasDefaultParameterValues::class);
+
+        $double->expects($this->once())->method('doSomething')
+            ->withParameterSetsInPartialOrder(
+                ['pinned' => ['b' => 7]],
+            );
+
+        $this->assertThatMockObjectExpectationFails(
+            <<<'EOT'
+Expectation for PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatHasDefaultParameterValues::doSomething() failed.
+Parameter $b for invocation PHPUnit\TestFixture\MockObject\InterfaceWithMethodThatHasDefaultParameterValues::doSomething(7, 3): int does not match expected value.
+Failed asserting that 3 matches expected 7.
+EOT,
+            $double,
+            'doSomething',
+            [7, 3],
+        );
+    }
+
     public function testExpectationThatMethodIsCalledWithNamedParameterSucceedsWhenMethodIsCalledWithExpectedValueForThatParameter(): void
     {
         $double = $this->createMock(InterfaceWithMethodThatHasDefaultParameterValues::class);
