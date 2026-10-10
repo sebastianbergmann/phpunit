@@ -27,6 +27,7 @@ use PHPUnit\Event\Test\Passed;
 use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PreparationStarted;
 use PHPUnit\Event\Test\Prepared;
+use PHPUnit\Event\Test\PrintedUnexpectedOutput;
 use PHPUnit\Event\Test\PropertyChecked;
 use PHPUnit\Event\Test\PropertyFalsified;
 use PHPUnit\Event\Test\WarningTriggered;
@@ -49,7 +50,7 @@ final class EventAggregatorTest extends AbstractEventTestCase
         $events = $this->dispatch([[$first, true], [$second, true]], $second, null, true, null, 2);
 
         $this->assertSame(
-            ['PreparationStarted', 'Prepared', 'AdditionalInformationProvided', 'Passed', 'PropertyChecked', 'Finished: 2'],
+            ['PreparationStarted', 'Prepared', 'AdditionalInformationProvided: information', 'Passed', 'PropertyChecked', 'Finished: 2'],
             $this->describe($events),
         );
 
@@ -112,6 +113,61 @@ final class EventAggregatorTest extends AbstractEventTestCase
         );
 
         $this->assertSame($rejected->asArray()[0], $events[0]);
+    }
+
+    public function testReportsTheAdditionalInformationOfAllCheckedExamplesOnceTheSkeletonIsPrepared(): void
+    {
+        $first    = $this->passedExample($this->additionalInformation('first'));
+        $rejected = $this->example($this->preparationStarted(), $this->prepared(), $this->additionalInformation('rejected'), $this->finished(0));
+        $second   = $this->passedExample($this->additionalInformation('second'));
+
+        $events = $this->dispatch([[$first, true], [$rejected, false], [$second, true]], $second, null, true, null, 2);
+
+        $this->assertSame(
+            [
+                'PreparationStarted',
+                'Prepared',
+                'AdditionalInformationProvided: first',
+                'AdditionalInformationProvided: second',
+                'Passed',
+                'PropertyChecked',
+                'Finished: 2',
+            ],
+            $this->describe($events),
+        );
+    }
+
+    public function testReportsTheOutputOfAllCheckedExamplesAsOneEventAfterTheOutcome(): void
+    {
+        $first    = $this->passedExample($this->printedOutput("first\n"));
+        $rejected = $this->example($this->preparationStarted(), $this->prepared(), $this->printedOutput("rejected\n"), $this->finished(0));
+        $second   = $this->passedExample($this->printedOutput("second\n"));
+
+        $events = $this->dispatch([[$first, true], [$rejected, false], [$second, true]], $second, null, true, null, 2);
+
+        $this->assertSame(
+            [
+                'PreparationStarted',
+                'Prepared',
+                'Passed',
+                "PrintedUnexpectedOutput: first\nsecond\n",
+                'PropertyChecked',
+                'Finished: 2',
+            ],
+            $this->describe($events),
+        );
+    }
+
+    public function testDoesNotReportOutputWhenNoExamplePrintedAny(): void
+    {
+        $example = $this->passedExample();
+
+        $events = $this->dispatch([[$example, true]], $example, null, true, null, 1);
+
+        $this->assertSame(
+            ['PreparationStarted', 'Prepared', 'Passed', 'PropertyChecked', 'Finished: 1'],
+            $this->describe($events),
+        );
     }
 
     public function testDispatchesTheEventsThatPrecedeTheOutcomeOfAFalsifiedProperty(): void
@@ -286,18 +342,20 @@ final class EventAggregatorTest extends AbstractEventTestCase
             static function (Event $event): string
             {
                 return match (true) {
-                    $event instanceof PreparationStarted      => 'PreparationStarted',
-                    $event instanceof Prepared                => 'Prepared',
-                    $event instanceof Passed                  => 'Passed',
-                    $event instanceof Failed                  => 'Failed',
-                    $event instanceof Errored                 => 'Errored: ' . $event->throwable()->message(),
-                    $event instanceof Finished                => 'Finished: ' . $event->numberOfAssertionsPerformed(),
-                    $event instanceof WarningTriggered        => 'WarningTriggered: ' . $event->message(),
-                    $event instanceof PhpunitWarningTriggered => 'PhpunitWarningTriggered: ' . $event->message(),
-                    $event instanceof ConsideredRisky         => 'ConsideredRisky: ' . $event->message(),
-                    $event instanceof PropertyChecked         => 'PropertyChecked',
-                    $event instanceof PropertyFalsified       => 'PropertyFalsified',
-                    default                                   => new ReflectionClass($event)->getShortName(),
+                    $event instanceof PreparationStarted            => 'PreparationStarted',
+                    $event instanceof Prepared                      => 'Prepared',
+                    $event instanceof Passed                        => 'Passed',
+                    $event instanceof Failed                        => 'Failed',
+                    $event instanceof Errored                       => 'Errored: ' . $event->throwable()->message(),
+                    $event instanceof Finished                      => 'Finished: ' . $event->numberOfAssertionsPerformed(),
+                    $event instanceof WarningTriggered              => 'WarningTriggered: ' . $event->message(),
+                    $event instanceof PhpunitWarningTriggered       => 'PhpunitWarningTriggered: ' . $event->message(),
+                    $event instanceof ConsideredRisky               => 'ConsideredRisky: ' . $event->message(),
+                    $event instanceof PropertyChecked               => 'PropertyChecked',
+                    $event instanceof PropertyFalsified             => 'PropertyFalsified',
+                    $event instanceof AdditionalInformationProvided => 'AdditionalInformationProvided: ' . $event->additionalInformation(),
+                    $event instanceof PrintedUnexpectedOutput       => 'PrintedUnexpectedOutput: ' . $event->output(),
+                    default                                         => new ReflectionClass($event)->getShortName(),
                 };
             },
             $events,
@@ -346,6 +404,22 @@ final class EventAggregatorTest extends AbstractEventTestCase
     private function finished(int $numberOfAssertions): Finished
     {
         return new Finished($this->telemetryInfo(), $this->testValueObject(), $numberOfAssertions);
+    }
+
+    /**
+     * @param non-empty-string $additionalInformation
+     */
+    private function additionalInformation(string $additionalInformation): AdditionalInformationProvided
+    {
+        return new AdditionalInformationProvided($this->telemetryInfo(), $this->testValueObject(), $additionalInformation);
+    }
+
+    /**
+     * @param non-empty-string $output
+     */
+    private function printedOutput(string $output): PrintedUnexpectedOutput
+    {
+        return new PrintedUnexpectedOutput($this->telemetryInfo(), $output);
     }
 
     private function warning(string $message): WarningTriggered
