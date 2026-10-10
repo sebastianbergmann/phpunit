@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="../../../../../phpunit.xsd"
+         bootstrap="bootstrap.php"
+         beStrictAboutCoverageMetadata="true"
+         cacheDirectory=".phpunit.cache">
+    <testsuites>
+        <testsuite name="default">
+            <file>tests/MediumPropertyTest.php</file>
+            <file>tests/SmallPropertyTest.php</file>
+        </testsuite>
+    </testsuites>
+
+    <source>
+        <include>
+            <directory>src</directory>
+        </include>
+        <exclude>
+            <file>src/FakeDriver.php</file>
+        </exclude>
+    </source>
+
+    <coverage driver="PHPUnit\TestFixture\PropertyBasedTesting\CoverageOfExamplesWithoutAssertions\FakeDriver">
+        <report>
+            <text outputFile="php://stdout" showUncoveredFiles="true"/>
+        </report>
+    </coverage>
+</phpunit>
