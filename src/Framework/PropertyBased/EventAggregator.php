@@ -14,6 +14,7 @@ use PHPUnit\Event;
 use PHPUnit\Event\Code;
 use PHPUnit\Event\Event as AnyEvent;
 use PHPUnit\Event\EventCollection;
+use PHPUnit\Event\Test\AdditionalInformationProvided;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\DeprecationTriggered;
 use PHPUnit\Event\Test\Errored;
@@ -32,6 +33,7 @@ use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\PreparationStarted;
 use PHPUnit\Event\Test\Prepared;
+use PHPUnit\Event\Test\PrintedUnexpectedOutput;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\Test\WarningTriggered;
 
@@ -43,11 +45,13 @@ use PHPUnit\Event\Test\WarningTriggered;
  * Test\Finished is reported for a property: the one of a single example, the
  * skeleton, whose Test\PreparationStarted and Test\Prepared events are
  * replaced with those of the first example, so that the duration of the
- * property covers all of its examples. The issues and the Test\ConsideredRisky
- * events of all examples that were checked are reported within that sequence,
- * those of the skeleton included. A Test\ConsideredRisky event and an issue of
- * PHPUnit's own are reported once per message, and the number of assertions is
- * the one that is passed in.
+ * property covers all of its examples. The issues, the Test\ConsideredRisky
+ * events, and the Test\AdditionalInformationProvided events of all examples
+ * that were checked are reported within that sequence, those of the skeleton
+ * included, and so is the output that they printed, as one
+ * Test\PrintedUnexpectedOutput event. A Test\ConsideredRisky event and an
+ * issue of PHPUnit's own are reported once per message, and the number of
+ * assertions is the one that is passed in.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -60,27 +64,40 @@ final class EventAggregator
     private readonly Code\Test $test;
     private ?PreparationStarted $preparationStarted = null;
     private ?Prepared $prepared                     = null;
-    private EventCollection $issues;
+
+    /**
+     * The issues, the Test\ConsideredRisky events, and the
+     * Test\AdditionalInformationProvided events of the examples.
+     */
+    private EventCollection $eventsOfExamples;
+
+    /**
+     * The output that the examples printed.
+     */
+    private string $output = '';
 
     /**
      * @var array<non-empty-string, true>
      */
-    private array $reportedMessages = [];
-    private bool $issuesDispatched  = false;
-    private bool $outcomeDispatched = false;
+    private array $reportedMessages          = [];
+    private bool $eventsOfExamplesDispatched = false;
+    private bool $outcomeDispatched          = false;
 
     public function __construct(Event\Emitter $emitter, Event\Facade $facade, Code\Test $test)
     {
-        $this->emitter = $emitter;
-        $this->facade  = $facade;
-        $this->test    = $test;
-        $this->issues  = new EventCollection;
+        $this->emitter          = $emitter;
+        $this->facade           = $facade;
+        $this->test             = $test;
+        $this->eventsOfExamples = new EventCollection;
     }
 
     /**
      * Records the events of an example. Only the Test\PreparationStarted and
      * Test\Prepared events of an example that was not checked, because it was
      * rejected, are kept.
+     *
+     * The events of the skeleton must have been recorded before they are
+     * dispatched.
      */
     public function record(EventCollection $events, bool $checked): void
     {
@@ -93,8 +110,18 @@ final class EventAggregator
                 $this->prepared = $event;
             }
 
-            if ($checked && $this->isReportedOncePerProperty($event)) {
-                $this->issues->add($event);
+            if (!$checked) {
+                continue;
+            }
+
+            if ($event instanceof PrintedUnexpectedOutput) {
+                $this->output .= $event->output();
+
+                continue;
+            }
+
+            if ($event instanceof AdditionalInformationProvided || $this->isReportedOncePerProperty($event)) {
+                $this->eventsOfExamples->add($event);
             }
         }
     }
@@ -113,8 +140,9 @@ final class EventAggregator
     {
         if ($skeleton === null) {
             $this->dispatchPreparation();
-            $this->dispatchIssues();
+            $this->dispatchEventsOfExamples();
             $this->dispatchOutcome(null, $error, $passed, $beforeOutcome);
+            $this->dispatchOutput();
 
             $beforeFinished();
 
@@ -132,25 +160,29 @@ final class EventAggregator
 
             if ($event instanceof Prepared) {
                 $this->forward($this->prepared ?? $event);
-                $this->dispatchIssues();
+                $this->dispatchEventsOfExamples();
 
                 continue;
             }
 
-            if ($this->isIssue($event)) {
+            // these events were recorded with those of the other examples
+            if ($this->isIssue($event) ||
+                $event instanceof AdditionalInformationProvided ||
+                $event instanceof PrintedUnexpectedOutput) {
                 continue;
             }
 
             if ($this->isOutcome($event)) {
-                $this->dispatchIssues();
+                $this->dispatchEventsOfExamples();
                 $this->dispatchOutcome($event, $error, $passed, $beforeOutcome);
 
                 continue;
             }
 
             if ($event instanceof Finished) {
-                $this->dispatchIssues();
+                $this->dispatchEventsOfExamples();
                 $this->dispatchOutcome(null, $error, $passed, $beforeOutcome);
+                $this->dispatchOutput();
 
                 $beforeFinished();
 
@@ -164,8 +196,9 @@ final class EventAggregator
 
         // the skeleton has no Test\Finished event when the example ended
         // before it was prepared
-        $this->dispatchIssues();
+        $this->dispatchEventsOfExamples();
         $this->dispatchOutcome(null, $error, $passed, $beforeOutcome);
+        $this->dispatchOutput();
 
         $beforeFinished();
     }
@@ -185,15 +218,24 @@ final class EventAggregator
         }
     }
 
-    private function dispatchIssues(): void
+    private function dispatchEventsOfExamples(): void
     {
-        if ($this->issuesDispatched) {
+        if ($this->eventsOfExamplesDispatched) {
             return;
         }
 
-        $this->issuesDispatched = true;
+        $this->eventsOfExamplesDispatched = true;
 
-        $this->facade->forward($this->issues);
+        $this->facade->forward($this->eventsOfExamples);
+    }
+
+    private function dispatchOutput(): void
+    {
+        if ($this->output === '') {
+            return;
+        }
+
+        $this->emitter->testPrintedUnexpectedOutput($this->output);
     }
 
     /**
