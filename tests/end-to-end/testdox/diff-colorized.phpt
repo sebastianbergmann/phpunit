@@ -1,10 +1,5 @@
 --TEST--
-TestDox: Diff; Colorized; *nix
---SKIPIF--
-<?php declare(strict_types=1);
-if (stripos(\PHP_OS, 'WIN') === 0) {
-    print 'skip: Colorized diff is different on Windows.';
-}
+TestDox: Diff; Colorized
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-record-test-run-history';
