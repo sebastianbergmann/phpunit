@@ -224,6 +224,7 @@ final class GeneratorDeriverTest extends TestCase
             'list of a union'         => ['TreeWithUnionChildren'],
             'list of a nullable type' => ['TreeWithNullableChildren'],
             'union without null'      => ['Expression'],
+            'union of null and class' => ['LinkedList'],
         ];
     }
 
