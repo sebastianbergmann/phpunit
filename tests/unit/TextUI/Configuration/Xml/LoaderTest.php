@@ -535,6 +535,7 @@ final class LoaderTest extends TestCase
         $propertyBasedTesting = $this->configuration('configuration.xml')->propertyBasedTesting();
 
         $this->assertSame(500, $propertyBasedTesting->examples());
+        $this->assertSame(10, $propertyBasedTesting->examplesMultiplier());
         $this->assertSame(50, $propertyBasedTesting->maximumShrinkingAttempts());
     }
 
@@ -543,6 +544,7 @@ final class LoaderTest extends TestCase
         $propertyBasedTesting = $this->configuration('configuration_empty.xml')->propertyBasedTesting();
 
         $this->assertSame(100, $propertyBasedTesting->examples());
+        $this->assertSame(1, $propertyBasedTesting->examplesMultiplier());
         $this->assertSame(1000, $propertyBasedTesting->maximumShrinkingAttempts());
     }
 
