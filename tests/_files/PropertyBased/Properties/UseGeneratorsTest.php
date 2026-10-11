@@ -36,6 +36,12 @@ final class UseGeneratorsTest extends TestCase
     }
 
     #[Property]
+    #[UseGenerators('')]
+    public function testUsesAClassWhoseNameIsEmpty(int $value): void
+    {
+    }
+
+    #[Property]
     #[UseGenerators('PHPUnit\TestFixture\PropertyBased\Properties\DoesNotExist')]
     public function testUsesAClassThatDoesNotExist(int $value): void
     {
