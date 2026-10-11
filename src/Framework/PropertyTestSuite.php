@@ -802,8 +802,12 @@ final class PropertyTestSuite extends IterativeTestSuite
      */
     private function unmetClassificationRequirements(): array
     {
+        // the examples of a property without a definition are skipped, so the
+        // property does not pass and this is not asked for
         if ($this->definition === null) {
+            // @codeCoverageIgnoreStart
             return [];
+            // @codeCoverageIgnoreEnd
         }
 
         $messages = [];
