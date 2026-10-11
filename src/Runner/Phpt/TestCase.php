@@ -120,11 +120,26 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
      * The directory the temporary files that are used to collect code coverage
      * for a PHPT test are created in.
      *
+     * The path of the system's temporary directory is resolved because PHP
+     * reports the resolved path of a file in stack traces and in the list of
+     * included files. Otherwise, the file with the code of a PHPT test would
+     * not be found in $GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST'] when the
+     * path of the system's temporary directory contains a symbolic link, for
+     * instance on macOS, where /var is a symbolic link to /private/var.
+     *
      * @return non-empty-string
      */
     public static function coverageFilesDirectory(): string
     {
-        return sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-phpt';
+        $temporaryDirectory = realpath(sys_get_temp_dir());
+
+        if ($temporaryDirectory === false) {
+            // @codeCoverageIgnoreStart
+            $temporaryDirectory = sys_get_temp_dir();
+            // @codeCoverageIgnoreEnd
+        }
+
+        return $temporaryDirectory . DIRECTORY_SEPARATOR . 'phpunit-phpt';
     }
 
     /**
