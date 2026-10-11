@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Util;
 
+use const PHP_EOL;
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Test\PropertyChecked;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -26,7 +27,7 @@ final class PropertyCheckedToStringMapperTest extends AbstractEventTestCase
     public function testDescribesHowManyExamplesWereCheckedAndRejected(): void
     {
         $this->assertSame(
-            "100 examples checked, 3 rejected\n",
+            '100 examples checked, 3 rejected' . PHP_EOL,
             PropertyCheckedToStringMapper::map($this->event(100, 3, [])),
         );
     }
@@ -34,7 +35,7 @@ final class PropertyCheckedToStringMapperTest extends AbstractEventTestCase
     public function testUsesTheSingularForOneExample(): void
     {
         $this->assertSame(
-            "1 example checked, 0 rejected\n",
+            '1 example checked, 0 rejected' . PHP_EOL,
             PropertyCheckedToStringMapper::map($this->event(1, 0, [])),
         );
     }
