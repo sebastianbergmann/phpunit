@@ -143,6 +143,11 @@ final class InvalidPropertiesTest extends TestCase
     }
 
     #[Property]
+    public function testWithGeneratorSpecifiedMoreThanOnce(#[ForAll('unknown')] #[ForAllExternal(EmailAddressGenerators::class, 'emailAddresses')] int $value): void
+    {
+    }
+
+    #[Property]
     public function testWithGeneratorMethodWhoseNameIsEmpty(#[ForAll('')] int $value): void
     {
     }

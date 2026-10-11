@@ -161,6 +161,12 @@ final class PropertyDefinitionBuilderTest extends TestCase
                 'the generator for parameter $value is specified as ' . InvalidPropertiesTest::class . '::nonStaticGenerator(), which is not public and static',
             ],
 
+            'generator specified more than once' => [
+                InvalidPropertiesTest::class,
+                'testWithGeneratorSpecifiedMoreThanOnce',
+                'the generator for parameter $value is specified more than once',
+            ],
+
             'generator method whose name is empty' => [
                 InvalidPropertiesTest::class,
                 'testWithGeneratorMethodWhoseNameIsEmpty',
