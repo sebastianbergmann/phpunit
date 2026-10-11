@@ -24,15 +24,15 @@ unlink($junitFile);
   <testsuite name="PHPUnit\TestFixture\Repeat\FailureThresholdReachedTest" file="%sFailureThresholdReachedTest.php" tests="5" assertions="2" errors="0" failures="2" skipped="3" time="%f">
     <testsuite name="PHPUnit\TestFixture\Repeat\FailureThresholdReachedTest::testOne" tests="5" assertions="2" errors="0" failures="2" skipped="3" time="%f">
       <testcase name="testOne (repetition 1 of 5)" file="%sFailureThresholdReachedTest.php" line="21" class="PHPUnit\TestFixture\Repeat\FailureThresholdReachedTest" classname="PHPUnit.TestFixture.Repeat.FailureThresholdReachedTest" assertions="1" time="%f">
-        <failure type="PHPUnit\Framework\AssertionFailedError">PHPUnit\TestFixture\Repeat\FailureThresholdReachedTest::testOne (repetition 1 of 5)%A
+        <failure type="PHPUnit\Framework\AssertionFailedError">PHPUnit\TestFixture\Repeat\FailureThresholdReachedTest::testOne (repetition 1 of 5)
 Failure on repetition 1
-%A
+
 %sFailureThresholdReachedTest.php:26</failure>
       </testcase>
       <testcase name="testOne (repetition 2 of 5)" file="%sFailureThresholdReachedTest.php" line="21" class="PHPUnit\TestFixture\Repeat\FailureThresholdReachedTest" classname="PHPUnit.TestFixture.Repeat.FailureThresholdReachedTest" assertions="1" time="%f">
-        <failure type="PHPUnit\Framework\AssertionFailedError">PHPUnit\TestFixture\Repeat\FailureThresholdReachedTest::testOne (repetition 2 of 5)%A
+        <failure type="PHPUnit\Framework\AssertionFailedError">PHPUnit\TestFixture\Repeat\FailureThresholdReachedTest::testOne (repetition 2 of 5)
 Failure on repetition 2
-%A
+
 %sFailureThresholdReachedTest.php:26</failure>
       </testcase>
       <testcase name="testOne (repetition 3 of 5)" file="%sFailureThresholdReachedTest.php" line="21" class="PHPUnit\TestFixture\Repeat\FailureThresholdReachedTest" classname="PHPUnit.TestFixture.Repeat.FailureThresholdReachedTest" assertions="0" time="%f">

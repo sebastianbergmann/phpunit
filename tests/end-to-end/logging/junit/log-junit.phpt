@@ -30,9 +30,9 @@ unlink($logfile);
         <testcase name="testAdd with data set #0" file="%sDataProviderTest.php" line="%d" class="PHPUnit\TestFixture\DataProviderTest" classname="PHPUnit.TestFixture.DataProviderTest" assertions="1" time="%s"/>
         <testcase name="testAdd with data set #1" file="%sDataProviderTest.php" line="%d" class="PHPUnit\TestFixture\DataProviderTest" classname="PHPUnit.TestFixture.DataProviderTest" assertions="1" time="%s"/>
         <testcase name="testAdd with data set #2" file="%sDataProviderTest.php" line="%d" class="PHPUnit\TestFixture\DataProviderTest" classname="PHPUnit.TestFixture.DataProviderTest" assertions="1" time="%s">
-          <failure type="PHPUnit\Framework\ExpectationFailedException">PHPUnit\TestFixture\DataProviderTest::testAdd with data set #2%A
+          <failure type="PHPUnit\Framework\ExpectationFailedException">PHPUnit\TestFixture\DataProviderTest::testAdd with data set #2
 Failed asserting that 2 matches expected 3.
-%A
+
 %sDataProviderTest.php:%d</failure>
         </testcase>
         <testcase name="testAdd with data set #3" file="%sDataProviderTest.php" line="%d" class="PHPUnit\TestFixture\DataProviderTest" classname="PHPUnit.TestFixture.DataProviderTest" assertions="1" time="%s"/>
@@ -43,9 +43,9 @@ Failed asserting that 2 matches expected 3.
         <testcase name="testAdd with data set &quot;0 + 0 = 0&quot;" file="%sDataProviderWithStringKeysTest.php" line="%d" class="PHPUnit\TestFixture\DataProviderWithStringKeysTest" classname="PHPUnit.TestFixture.DataProviderWithStringKeysTest" assertions="1" time="%s"/>
         <testcase name="testAdd with data set &quot;0 + 1 = 1&quot;" file="%sDataProviderWithStringKeysTest.php" line="%d" class="PHPUnit\TestFixture\DataProviderWithStringKeysTest" classname="PHPUnit.TestFixture.DataProviderWithStringKeysTest" assertions="1" time="%s"/>
         <testcase name="testAdd with data set &quot;1 + 1 = 3&quot;" file="%sDataProviderWithStringKeysTest.php" line="%d" class="PHPUnit\TestFixture\DataProviderWithStringKeysTest" classname="PHPUnit.TestFixture.DataProviderWithStringKeysTest" assertions="1" time="%s">
-          <failure type="PHPUnit\Framework\ExpectationFailedException">PHPUnit\TestFixture\DataProviderWithStringKeysTest::testAdd with data set "1 + 1 = 3"%A
+          <failure type="PHPUnit\Framework\ExpectationFailedException">PHPUnit\TestFixture\DataProviderWithStringKeysTest::testAdd with data set "1 + 1 = 3"
 Failed asserting that 2 matches expected 3.
-%A
+
 %sDataProviderWithStringKeysTest.php:%d</failure>
         </testcase>
         <testcase name="testAdd with data set &quot;1 + 0 = 1&quot;" file="%sDataProviderWithStringKeysTest.php" line="%d" class="PHPUnit\TestFixture\DataProviderWithStringKeysTest" classname="PHPUnit.TestFixture.DataProviderWithStringKeysTest" assertions="1" time="%s"/>
@@ -53,13 +53,13 @@ Failed asserting that 2 matches expected 3.
     </testsuite>
     <testcase name="success.phpt" file="%ssuccess.phpt" assertions="1" time="%s"/>
     <testcase name="failure.phpt" file="%sfailure.phpt" assertions="1" time="%s">
-      <failure type="PHPUnit\Framework\PhptAssertionFailedError">failure.phptFailed asserting that two strings are equal.%A
+      <failure type="PHPUnit\Framework\PhptAssertionFailedError">failure.phptFailed asserting that two strings are equal.
 --- Expected
 +++ Actual
 @@ @@
 -'success'
 +'failure'
-%A
+
 %s:%d</failure>
     </testcase>
   </testsuite>
