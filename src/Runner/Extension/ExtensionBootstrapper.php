@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Runner\Extension;
 
-use const PHP_EOL;
 use function assert;
 use function class_exists;
 use function class_implements;
@@ -80,10 +79,9 @@ final readonly class ExtensionBootstrapper
         } catch (Throwable $t) {
             $this->emitter->testRunnerTriggeredPhpunitWarning(
                 sprintf(
-                    'Bootstrapping of extension %s failed: %s%s%s',
+                    "Bootstrapping of extension %s failed: %s\n%s",
                     $className,
                     $t->getMessage(),
-                    PHP_EOL,
                     $t->getTraceAsString(),
                 ),
             );

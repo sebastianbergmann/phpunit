@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Runner\Extension;
 
-use const PHP_EOL;
 use function assert;
 use function class_exists;
 use function class_implements;
@@ -84,10 +83,9 @@ final class ChildProcessExtensionBootstrapper
         } catch (Throwable $t) {
             $this->emitter->testRunnerTriggeredPhpunitWarning(
                 sprintf(
-                    'Bootstrapping of extension %s in a separate process failed: %s%s%s',
+                    "Bootstrapping of extension %s in a separate process failed: %s\n%s",
                     $className,
                     $t->getMessage(),
-                    PHP_EOL,
                     $t->getTraceAsString(),
                 ),
             );
@@ -111,10 +109,9 @@ final class ChildProcessExtensionBootstrapper
             } catch (Throwable $t) {
                 $this->emitter->testRunnerTriggeredPhpunitWarning(
                     sprintf(
-                        'Shutdown of extension %s in a separate process failed: %s%s%s',
+                        "Shutdown of extension %s in a separate process failed: %s\n%s",
                         $extension::class,
                         $t->getMessage(),
-                        PHP_EOL,
                         $t->getTraceAsString(),
                     ),
                 );

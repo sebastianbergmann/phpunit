@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Event;
 
-use const PHP_EOL;
 use function array_key_exists;
 use function dirname;
 use function sprintf;
@@ -118,9 +117,8 @@ final class DirectDispatcher implements SubscribableDispatcher
         if ($this->isThrowableFromThirdPartySubscriber($t)) {
             Facade::emitter()->testRunnerTriggeredPhpunitWarning(
                 sprintf(
-                    'Exception in third-party event subscriber: %s%s%s',
+                    "Exception in third-party event subscriber: %s\n%s",
                     $t->getMessage(),
-                    PHP_EOL,
                     $t->getTraceAsString(),
                 ),
             );

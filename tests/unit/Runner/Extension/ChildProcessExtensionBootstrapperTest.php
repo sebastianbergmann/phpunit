@@ -103,7 +103,7 @@ final class ChildProcessExtensionBootstrapperTest extends TestCase
         $emitter
             ->expects($this->once())
             ->method('testRunnerTriggeredPhpunitWarning')
-            ->with($this->stringStartsWith('Bootstrapping of extension ' . FailingChildProcessExtension::class . ' in a separate process failed: the child process bootstrap failed'))
+            ->with($this->stringStartsWith('Bootstrapping of extension ' . FailingChildProcessExtension::class . " in a separate process failed: the child process bootstrap failed\n"))
             ->seal();
 
         $bootstrapper = new ChildProcessExtensionBootstrapper(ConfigurationRegistry::get(), $this->createStub(ChildProcessFacade::class), $emitter);
@@ -132,7 +132,7 @@ final class ChildProcessExtensionBootstrapperTest extends TestCase
         $emitter
             ->expects($this->once())
             ->method('testRunnerTriggeredPhpunitWarning')
-            ->with($this->stringStartsWith('Shutdown of extension ' . ShutdownFailingChildProcessExtension::class . ' in a separate process failed: the child process shutdown failed'))
+            ->with($this->stringStartsWith('Shutdown of extension ' . ShutdownFailingChildProcessExtension::class . " in a separate process failed: the child process shutdown failed\n"))
             ->seal();
 
         $bootstrapper = new ChildProcessExtensionBootstrapper(ConfigurationRegistry::get(), $this->createStub(ChildProcessFacade::class), $emitter);
