@@ -20,14 +20,14 @@ require __DIR__ . '/../../../bootstrap.php';
   <testsuite name="PHPUnit\TestFixture\PropertyBasedTesting\FalsifiedPropertyTest" file="%sFalsifiedPropertyTest.php" tests="1" assertions="2" errors="0" failures="1" skipped="0" time="%f">
     <testsuite name="PHPUnit\TestFixture\PropertyBasedTesting\FalsifiedPropertyTest::testSumIsAtMostTen" tests="1" assertions="2" errors="0" failures="1" skipped="0" time="%f">
       <testcase name="testSumIsAtMostTen" file="%sFalsifiedPropertyTest.php" line="22" class="PHPUnit\TestFixture\PropertyBasedTesting\FalsifiedPropertyTest" classname="PHPUnit.TestFixture.PropertyBasedTesting.FalsifiedPropertyTest" assertions="2" time="%f">
-        <failure type="PHPUnit\Framework\ExpectationFailedException">PHPUnit\TestFixture\PropertyBasedTesting\FalsifiedPropertyTest::testSumIsAtMostTen
+        <failure type="PHPUnit\Framework\ExpectationFailedException">PHPUnit\TestFixture\PropertyBasedTesting\FalsifiedPropertyTest::testSumIsAtMostTen%r(&#13;)?%r
 Failed asserting that 11 is equal to 10 or is less than 10.
-
+%r(&#13;)?%r
 Property falsified after 1 example, counterexample shrunk in 2 steps:
 
     $a = 0;
     $b = 11;
-
+%r(&#13;)?%r
 %sFalsifiedPropertyTest.php:%d</failure>
       </testcase>
     </testsuite>
