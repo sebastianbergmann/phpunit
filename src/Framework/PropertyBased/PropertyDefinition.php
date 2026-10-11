@@ -39,7 +39,7 @@ final readonly class PropertyDefinition
     private string $methodName;
 
     /**
-     * @var array<non-empty-string, AbstractGenerator<mixed>|Closure(): ValueGenerator<mixed>|non-empty-string>
+     * @var array<non-empty-string, AbstractGenerator<mixed>|Closure(): ValueGenerator<mixed>|GeneratorMethod>
      */
     private array $parameters;
 
@@ -54,17 +54,17 @@ final readonly class PropertyDefinition
     private array $requiredClassifications;
 
     /**
-     * @var array<class-string, non-empty-string>
+     * @var array<class-string, GeneratorMethod>
      */
     private array $registeredGenerators;
 
     /**
-     * @param class-string<TestCase>                                                                              $className
-     * @param non-empty-string                                                                                    $methodName
-     * @param array<non-empty-string, AbstractGenerator<mixed>|Closure(): ValueGenerator<mixed>|non-empty-string> $parameters              by parameter name, in the order of the parameters, the generators that are derived from types and the closures and names of the methods that are specified with #[ForAll]
-     * @param list<ExplicitExample>                                                                               $explicitExamples        the examples that are specified with #[TestWith] and #[TestWithJson], in the order in which they are specified
-     * @param list<array{label: non-empty-string, minimumPercentage: float}>                                      $requiredClassifications the minimum percentages of the examples that are required with #[RequireClassification] to be classified with labels
-     * @param array<class-string, non-empty-string>                                                               $registeredGenerators    the names of the methods that are registered with #[GeneratorFor] by class name
+     * @param class-string<TestCase>                                                                             $className
+     * @param non-empty-string                                                                                   $methodName
+     * @param array<non-empty-string, AbstractGenerator<mixed>|Closure(): ValueGenerator<mixed>|GeneratorMethod> $parameters              by parameter name, in the order of the parameters, the generators that are derived from types and the closures and methods that are specified with #[ForAll]
+     * @param list<ExplicitExample>                                                                              $explicitExamples        the examples that are specified with #[TestWith] and #[TestWithJson], in the order in which they are specified
+     * @param list<array{label: non-empty-string, minimumPercentage: float}>                                     $requiredClassifications the minimum percentages of the examples that are required with #[RequireClassification] to be classified with labels
+     * @param array<class-string, GeneratorMethod>                                                               $registeredGenerators    the methods that are registered with #[GeneratorFor], by the class they are registered for
      */
     public function __construct(string $className, string $methodName, array $parameters, array $explicitExamples, array $requiredClassifications, array $registeredGenerators)
     {
@@ -93,7 +93,7 @@ final readonly class PropertyDefinition
     }
 
     /**
-     * @return array<non-empty-string, AbstractGenerator<mixed>|Closure(): ValueGenerator<mixed>|non-empty-string>
+     * @return array<non-empty-string, AbstractGenerator<mixed>|Closure(): ValueGenerator<mixed>|GeneratorMethod>
      */
     public function parameters(): array
     {
@@ -117,7 +117,7 @@ final readonly class PropertyDefinition
     }
 
     /**
-     * @return array<class-string, non-empty-string>
+     * @return array<class-string, GeneratorMethod>
      */
     public function registeredGenerators(): array
     {

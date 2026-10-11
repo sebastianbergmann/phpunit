@@ -22,6 +22,7 @@ use function is_string;
 use function lcfirst;
 use function method_exists;
 use function sprintf;
+use function strtolower;
 use Closure;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorDeriver;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorRegistry;
@@ -34,6 +35,7 @@ use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Metadata\RequireClassification;
 use PHPUnit\Metadata\TestWith;
+use PHPUnit\Metadata\UseGenerators;
 use PHPUnit\Util\Reflection;
 use ReflectionClass;
 use ReflectionMethod;
@@ -123,9 +125,7 @@ final readonly class PropertyDefinitionBuilder
             }
 
             if (isset($forAll[$name])) {
-                $this->ensureGeneratorMethodExists($className, $methodName, $name, $forAll[$name]);
-
-                $parameters[$name] = $forAll[$name];
+                $parameters[$name] = $this->generatorSpecifiedWithForAll($className, $methodName, $name, $forAll[$name]);
 
                 continue;
             }
@@ -360,7 +360,7 @@ final readonly class PropertyDefinitionBuilder
      * generators that are registered for classes, which are derived by the
      * deriver of the choice source as the generators that it registers.
      *
-     * @param array<class-string, non-empty-string> $registeredGenerators
+     * @param array<class-string, GeneratorMethod> $registeredGenerators
      */
     private function deferredRegisteredGenerators(array $registeredGenerators): GeneratorRegistry
     {
@@ -383,11 +383,13 @@ final readonly class PropertyDefinitionBuilder
      * @param Closure(): ValueGenerator<mixed>|non-empty-string $generator
      *
      * @throws InvalidPropertyException
+     *
+     * @return Closure(): ValueGenerator<mixed>|GeneratorMethod
      */
-    private function ensureGeneratorMethodExists(string $className, string $methodName, string $parameterName, Closure|string $generator): void
+    private function generatorSpecifiedWithForAll(string $className, string $methodName, string $parameterName, Closure|string $generator): Closure|GeneratorMethod
     {
         if (!is_string($generator)) {
-            return;
+            return $generator;
         }
 
         if (!method_exists($className, $generator)) {
@@ -417,45 +419,158 @@ final readonly class PropertyDefinitionBuilder
                 ),
             );
         }
+
+        return new GeneratorMethod($className, $generator);
     }
 
     /**
-     * Returns the methods of the test case class, including inherited methods
-     * and methods that are declared in traits, that are registered with
-     * #[GeneratorFor], by the class they are registered for.
+     * Returns the methods that are registered with #[GeneratorFor] for a
+     * property, by the class they are registered for: the methods of the test
+     * case class, including inherited methods and methods that are declared
+     * in traits, take precedence over the methods of the classes that are
+     * used with #[UseGenerators] for the property, which take precedence over
+     * the methods of the classes that are used with #[UseGenerators] for the
+     * test case class. Two methods that are registered for the same class with
+     * the same precedence are reported.
      *
      * @param class-string<TestCase> $className
      * @param non-empty-string       $methodName
      *
      * @throws InvalidPropertyException
      *
-     * @return array<class-string, non-empty-string>
+     * @return array<class-string, GeneratorMethod>
      */
     private function registeredGenerators(string $className, string $methodName): array
     {
-        $registeredGenerators = [];
-        $registeredFor        = [];
+        $levels = [
+            $this->generatorsOfUsedClasses($className, $methodName, MetadataRegistry::parser()->forClass($className)->isUseGenerators()),
+            $this->generatorsOfUsedClasses($className, $methodName, MetadataRegistry::parser()->forMethod($className, $methodName)->isUseGenerators()),
+            // the methods that TestCase and Assert declare are not registered
+            // with #[GeneratorFor], so their metadata is not looked at
+            $this->generatorsOf($className, $methodName, $className, Reflection::methodsDeclaredDirectlyInTestClass(new ReflectionClass($className))),
+        ];
 
-        // the methods that TestCase and Assert declare are not registered
-        // with #[GeneratorFor], so their metadata is not looked at
-        foreach (Reflection::methodsDeclaredDirectlyInTestClass(new ReflectionClass($className)) as $method) {
+        $registered = [];
+
+        foreach ($levels as $level) {
+            foreach ($level as $key => $registration) {
+                $registered[$key] = $registration;
+            }
+        }
+
+        $registeredGenerators = [];
+
+        foreach ($registered as [$registeredClassName, $generatorMethod]) {
+            $registeredGenerators[$registeredClassName] = $generatorMethod;
+        }
+
+        return $registeredGenerators;
+    }
+
+    /**
+     * @param class-string<TestCase> $className
+     * @param non-empty-string       $methodName
+     *
+     * @throws InvalidPropertyException
+     *
+     * @return array<string, array{class-string, GeneratorMethod}> by the key of the class that a generator is registered for in GeneratorRegistry
+     */
+    private function generatorsOfUsedClasses(string $className, string $methodName, MetadataCollection $useGenerators): array
+    {
+        $usedClassNames = [];
+
+        foreach ($useGenerators as $metadata) {
+            assert($metadata instanceof UseGenerators);
+
+            $usedClassName = $metadata->className();
+
+            try {
+                $exists = class_exists($usedClassName);
+            } catch (Throwable $t) {
+                // for instance, the class cannot be loaded because its parent
+                // class does not exist
+                throw InvalidPropertyException::because(
+                    $className,
+                    $methodName,
+                    sprintf(
+                        'the class %s that is used with #[UseGenerators] cannot be loaded, %s was raised: %s',
+                        $usedClassName,
+                        $t::class,
+                        $t->getMessage(),
+                    ),
+                );
+            }
+
+            if (!$exists) {
+                throw InvalidPropertyException::because(
+                    $className,
+                    $methodName,
+                    sprintf('the class %s that is used with #[UseGenerators] does not exist', $usedClassName),
+                );
+            }
+
+            $usedClassNames[strtolower($usedClassName)] = $usedClassName;
+        }
+
+        $generators = [];
+
+        foreach ($usedClassNames as $usedClassName) {
+            $generatorsOfUsedClass = $this->generatorsOf($className, $methodName, $usedClassName, new ReflectionClass($usedClassName)->getMethods());
+
+            if ($generatorsOfUsedClass === []) {
+                throw InvalidPropertyException::because(
+                    $className,
+                    $methodName,
+                    sprintf('the class %s that is used with #[UseGenerators] does not register a generator with #[GeneratorFor]', $usedClassName),
+                );
+            }
+
+            foreach ($generatorsOfUsedClass as $key => $registration) {
+                if (isset($generators[$key])) {
+                    $this->reportGeneratorsRegisteredForTheSameClass($className, $methodName, $generators[$key][1], $registration[1], $registration[0]);
+                }
+
+                $generators[$key] = $registration;
+            }
+        }
+
+        return $generators;
+    }
+
+    /**
+     * Returns the methods of a class that are registered with #[GeneratorFor].
+     *
+     * @param class-string<TestCase>  $className      the test case class of the property
+     * @param non-empty-string        $methodName     the property
+     * @param class-string            $declaringClass the class on which the methods are called
+     * @param array<ReflectionMethod> $methods
+     *
+     * @throws InvalidPropertyException
+     *
+     * @return array<string, array{class-string, GeneratorMethod}> by the key of the class that a generator is registered for in GeneratorRegistry
+     */
+    private function generatorsOf(string $className, string $methodName, string $declaringClass, array $methods): array
+    {
+        $generators = [];
+
+        foreach ($methods as $method) {
             $name = $method->getName();
 
             assert($name !== '');
 
-            foreach (MetadataRegistry::parser()->forMethod($className, $name)->isGeneratorFor() as $metadata) {
+            foreach (MetadataRegistry::parser()->forMethod($declaringClass, $name)->isGeneratorFor() as $metadata) {
                 assert($metadata instanceof GeneratorFor);
 
                 $registeredClassName = $metadata->className();
+                $generatorMethod     = new GeneratorMethod($declaringClass, $name);
 
                 if (!$method->isPublic() || !$method->isStatic()) {
                     throw InvalidPropertyException::because(
                         $className,
                         $methodName,
                         sprintf(
-                            '%s::%s() is registered with #[GeneratorFor] for %s, but it is not public and static',
-                            $className,
-                            $name,
+                            '%s is registered with #[GeneratorFor] for %s, but it is not public and static',
+                            $generatorMethod->asString(),
                             $registeredClassName,
                         ),
                     );
@@ -470,9 +585,8 @@ final readonly class PropertyDefinitionBuilder
                         $className,
                         $methodName,
                         sprintf(
-                            '%s::%s() is registered with #[GeneratorFor] for %s, which cannot be loaded, %s was raised: %s',
-                            $className,
-                            $name,
+                            '%s is registered with #[GeneratorFor] for %s, which cannot be loaded, %s was raised: %s',
+                            $generatorMethod->asString(),
                             $registeredClassName,
                             $t::class,
                             $t->getMessage(),
@@ -485,9 +599,8 @@ final readonly class PropertyDefinitionBuilder
                         $className,
                         $methodName,
                         sprintf(
-                            '%s::%s() is registered with #[GeneratorFor] for %s, which is neither a class nor an interface',
-                            $className,
-                            $name,
+                            '%s is registered with #[GeneratorFor] for %s, which is neither a class nor an interface',
+                            $generatorMethod->asString(),
                             $registeredClassName,
                         ),
                     );
@@ -495,26 +608,35 @@ final readonly class PropertyDefinitionBuilder
 
                 $key = GeneratorRegistry::key($registeredClassName);
 
-                if (isset($registeredFor[$key])) {
-                    throw InvalidPropertyException::because(
-                        $className,
-                        $methodName,
-                        sprintf(
-                            '%s::%s() and %s::%s() are both registered with #[GeneratorFor] for %s',
-                            $className,
-                            $registeredFor[$key],
-                            $className,
-                            $name,
-                            $registeredClassName,
-                        ),
-                    );
+                if (isset($generators[$key])) {
+                    $this->reportGeneratorsRegisteredForTheSameClass($className, $methodName, $generators[$key][1], $generatorMethod, $registeredClassName);
                 }
 
-                $registeredFor[$key]                        = $name;
-                $registeredGenerators[$registeredClassName] = $name;
+                $generators[$key] = [$registeredClassName, $generatorMethod];
             }
         }
 
-        return $registeredGenerators;
+        return $generators;
+    }
+
+    /**
+     * @param class-string<TestCase> $className
+     * @param non-empty-string       $methodName
+     * @param class-string           $registeredClassName
+     *
+     * @throws InvalidPropertyException
+     */
+    private function reportGeneratorsRegisteredForTheSameClass(string $className, string $methodName, GeneratorMethod $first, GeneratorMethod $second, string $registeredClassName): never
+    {
+        throw InvalidPropertyException::because(
+            $className,
+            $methodName,
+            sprintf(
+                '%s and %s are both registered with #[GeneratorFor] for %s',
+                $first->asString(),
+                $second->asString(),
+                $registeredClassName,
+            ),
+        );
     }
 }
