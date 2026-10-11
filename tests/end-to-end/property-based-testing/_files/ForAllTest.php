@@ -14,7 +14,6 @@ use function decbin;
 use PHPUnit\Framework\Attributes\ForAll;
 use PHPUnit\Framework\Attributes\ForAllExternal;
 use PHPUnit\Framework\Attributes\Property;
-use PHPUnit\Framework\PropertyBased\Generators;
 use PHPUnit\Framework\PropertyBased\ValueGenerator;
 use PHPUnit\Framework\TestCase;
 
@@ -27,12 +26,7 @@ final class ForAllTest extends TestCase
      */
     public static function bitStringsWithoutLeadingZeros(): ValueGenerator
     {
-        return Generators::strings(alphabet: '01', maximumLength: 62)->map(
-            static function (string $bits): string
-            {
-                return '1' . $bits;
-            },
-        );
+        return BitStrings::withoutLeadingZeros();
     }
 
     #[Property]
