@@ -33,6 +33,7 @@ use PHPUnit\Framework\PropertyBased\ExplicitExample;
 use PHPUnit\Framework\PropertyBased\Falsification;
 use PHPUnit\Framework\PropertyBased\FlakyPropertyException;
 use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
+use PHPUnit\Framework\PropertyBased\GeneratorMethod;
 use PHPUnit\Framework\PropertyBased\InvalidPropertyException;
 use PHPUnit\Framework\PropertyBased\PropertyDefinition;
 use PHPUnit\Framework\PropertyBased\PropertyDefinitionBuilder;
@@ -875,8 +876,8 @@ final class PropertyTestSuite extends IterativeTestSuite
 
         $registered = [];
 
-        foreach ($this->definition->registeredGenerators() as $registeredClassName => $generatorMethodName) {
-            $registered[$registeredClassName] = $this->callGeneratorMethod($generatorMethodName);
+        foreach ($this->definition->registeredGenerators() as $registeredClassName => $generatorMethod) {
+            $registered[$registeredClassName] = $this->callGeneratorMethod($generatorMethod);
         }
 
         // the generators that were derived from the types of the parameters
@@ -925,21 +926,15 @@ final class PropertyTestSuite extends IterativeTestSuite
     }
 
     /**
-     * @param non-empty-string $methodName
-     *
      * @throws InvalidPropertyException
      *
      * @return ValueGenerator<mixed>
      */
-    private function callGeneratorMethod(string $methodName): ValueGenerator
+    private function callGeneratorMethod(GeneratorMethod $generatorMethod): ValueGenerator
     {
-        assert($this->definition !== null);
-
-        $className = $this->definition->className();
-
         return $this->ensureIsValueGenerator(
-            new ReflectionMethod($className, $methodName)->invoke(null),
-            sprintf('%s::%s()', $className, $methodName),
+            new ReflectionMethod($generatorMethod->className(), $generatorMethod->methodName())->invoke(null),
+            $generatorMethod->asString(),
         );
     }
 

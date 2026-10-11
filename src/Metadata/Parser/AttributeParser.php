@@ -91,6 +91,7 @@ use PHPUnit\Framework\Attributes\TestDoxFormatterExternal;
 use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\Attributes\TestWithJson;
 use PHPUnit\Framework\Attributes\Ticket;
+use PHPUnit\Framework\Attributes\UseGenerators;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\Attributes\UsesClassesThatExtendClass;
 use PHPUnit\Framework\Attributes\UsesClassesThatImplementInterface;
@@ -507,6 +508,13 @@ final class AttributeParser implements Parser
                         $attributeInstance->environmentVariableName(),
                         $attributeInstance->value(),
                     );
+
+                    break;
+
+                case UseGenerators::class:
+                    assert($attributeInstance instanceof UseGenerators);
+
+                    $result[] = Metadata::useGeneratorsOnClass($attributeInstance->className());
 
                     break;
 
@@ -1082,6 +1090,13 @@ final class AttributeParser implements Parser
                     assert($attributeInstance instanceof GeneratorFor);
 
                     $result[] = Metadata::generatorFor($attributeInstance->type());
+
+                    break;
+
+                case UseGenerators::class:
+                    assert($attributeInstance instanceof UseGenerators);
+
+                    $result[] = Metadata::useGeneratorsOnMethod($attributeInstance->className());
 
                     break;
 
