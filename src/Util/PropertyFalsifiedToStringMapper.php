@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Util;
 
-use const PHP_EOL;
 use function explode;
 use function implode;
 use function is_int;
@@ -50,7 +49,7 @@ final readonly class PropertyFalsifiedToStringMapper
         $examples = self::count($event->numberOfExamplesChecked(), 'example');
 
         if ($event->counterexample() === []) {
-            return sprintf('Property falsified after %s.', $examples) . PHP_EOL;
+            return sprintf('Property falsified after %s.', $examples) . "\n";
         }
 
         if ($event->numberOfShrinkingSteps() === 0) {
@@ -63,20 +62,20 @@ final readonly class PropertyFalsifiedToStringMapper
             );
         }
 
-        $buffer .= PHP_EOL . PHP_EOL . self::arguments($event);
+        $buffer .= "\n\n" . self::arguments($event);
 
         if ($event->shrinkingBudgetExhausted()) {
-            $buffer .= PHP_EOL . sprintf(
+            $buffer .= "\n" . sprintf(
                 'Shrinking was stopped after %s, a simpler counterexample may exist.',
                 self::count($event->numberOfShrinkingAttempts(), 'attempt'),
-            ) . PHP_EOL;
+            ) . "\n";
         }
 
         if ($event->shrinkingInterrupted()) {
-            $buffer .= PHP_EOL . sprintf(
+            $buffer .= "\n" . sprintf(
                 'Shrinking was stopped after %s because the test run was aborted, a simpler counterexample may exist.',
                 self::count($event->numberOfShrinkingAttempts(), 'attempt'),
-            ) . PHP_EOL;
+            ) . "\n";
         }
 
         return $buffer;
@@ -94,10 +93,10 @@ final readonly class PropertyFalsifiedToStringMapper
         }
 
         if ($event->counterexample() === []) {
-            return sprintf('Property falsified by explicit example %s.', $label) . PHP_EOL;
+            return sprintf('Property falsified by explicit example %s.', $label) . "\n";
         }
 
-        return sprintf('Property falsified by explicit example %s:', $label) . PHP_EOL . PHP_EOL . self::arguments($event);
+        return sprintf('Property falsified by explicit example %s:', $label) . "\n\n" . self::arguments($event);
     }
 
     private static function arguments(PropertyFalsified $event): string
@@ -106,9 +105,9 @@ final readonly class PropertyFalsifiedToStringMapper
 
         foreach ($event->counterexample() as $parameter => $value) {
             $buffer .= self::INDENTATION . implode(
-                PHP_EOL . self::INDENTATION,
+                "\n" . self::INDENTATION,
                 explode("\n", sprintf('$%s = %s;', $parameter, $value)),
-            ) . PHP_EOL;
+            ) . "\n";
         }
 
         return $buffer;
