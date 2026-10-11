@@ -7432,7 +7432,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeForAll(): void
     {
-        $metadata = Metadata::forAll('value', 'provider');
+        $metadata = Metadata::forAll('value', self::class, 'provider');
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -7505,6 +7505,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isWithoutErrorHandler());
 
         $this->assertSame('value', $metadata->parameterName());
+        $this->assertSame(self::class, $metadata->className());
         $this->assertSame('provider', $metadata->generator());
 
         $this->assertTrue($metadata->isMethodLevel());

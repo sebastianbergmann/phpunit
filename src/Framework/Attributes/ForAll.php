@@ -14,11 +14,10 @@ use Closure;
 use PHPUnit\Framework\PropertyBased\ValueGenerator;
 
 /**
- * Specifies the generator for a parameter of a property: the name of a public
- * static method of the test case class that returns the generator, a list of
- * the name of a class and the name of a public static method of that class
- * that returns it, for instance [MoneyGenerators::class, 'smallAmounts'], or
- * a static closure that returns it.
+ * Specifies the generator for a parameter of a property: either the name of a
+ * public static method of the test case class that returns the generator, or
+ * a static closure that returns it. A public static method of another class
+ * is specified with #[ForAllExternal].
  *
  * @immutable
  */
@@ -26,22 +25,22 @@ use PHPUnit\Framework\PropertyBased\ValueGenerator;
 final readonly class ForAll
 {
     /**
-     * @var array{class-string, non-empty-string}|Closure(): ValueGenerator<mixed>|non-empty-string
+     * @var Closure(): ValueGenerator<mixed>|non-empty-string
      */
-    private array|Closure|string $generator;
+    private Closure|string $generator;
 
     /**
-     * @param array{class-string, non-empty-string}|Closure(): ValueGenerator<mixed>|non-empty-string $generator
+     * @param Closure(): ValueGenerator<mixed>|non-empty-string $generator
      */
-    public function __construct(array|Closure|string $generator)
+    public function __construct(Closure|string $generator)
     {
         $this->generator = $generator;
     }
 
     /**
-     * @return array{class-string, non-empty-string}|Closure(): ValueGenerator<mixed>|non-empty-string
+     * @return Closure(): ValueGenerator<mixed>|non-empty-string
      */
-    public function generator(): array|Closure|string
+    public function generator(): Closure|string
     {
         return $this->generator;
     }

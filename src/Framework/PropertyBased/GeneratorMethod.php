@@ -11,7 +11,8 @@ namespace PHPUnit\Framework\PropertyBased;
 
 /**
  * A public static method that returns a generator: a method that is
- * registered with #[GeneratorFor], or one that is specified with #[ForAll].
+ * registered with #[GeneratorFor], or one that is specified with #[ForAll] or
+ * #[ForAllExternal].
  *
  * @immutable
  *
