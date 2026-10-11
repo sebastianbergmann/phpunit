@@ -100,22 +100,25 @@ final class TypeParserTest extends TestCase
     public static function invalidTypeProvider(): array
     {
         return [
-            'empty type'                    => ['', 'Unexpected end of the type, expected a type'],
-            'unclosed generic type'         => ['list<int', 'Unexpected end of the type, expected ">"'],
-            'unclosed array shape'          => ['array{a: int', 'Unexpected end of the type, expected "}"'],
-            'unclosed parentheses'          => ['(int', 'Unexpected end of the type, expected ")"'],
-            'text after the type'           => ['int>', 'Unexpected ">" at offset 3, expected end of the type'],
-            'intersection type'             => ['A&B', 'Unexpected "&" at offset 1, expected end of the type'],
-            'callable type'                 => ['callable(int): string', 'Unexpected "(" at offset 8, expected end of the type'],
-            'class constant'                => ['Foo::BAR', 'Unexpected ":" at offset 3, expected end of the type'],
-            'variable'                      => ['$x', 'Unexpected "$x" at offset 0, expected a type'],
-            'missing type of shape item'    => ['array{a: }', 'Unexpected "}" at offset 9, expected a type'],
-            'unterminated string literal'   => ["'unterminated", 'Unterminated string literal at offset 0'],
-            'unexpected character'          => ['int#', 'Unexpected character "#" at offset 3'],
-            'too large integer literal'     => ['9223372036854775808', 'Integer literal 9223372036854775808 at offset 0 is out of range'],
-            'too small integer literal'     => ['-9223372036854775809', 'Integer literal -9223372036854775809 at offset 0 is out of range'],
-            'too large hexadecimal literal' => ['0x8000000000000000', 'Integer literal 0x8000000000000000 at offset 0 is out of range'],
-            'too large octal literal'       => ['01000000000000000000000', 'Integer literal 01000000000000000000000 at offset 0 is out of range'],
+            'empty type'                         => ['', 'Unexpected end of the type, expected a type'],
+            'unclosed generic type'              => ['list<int', 'Unexpected end of the type, expected ">"'],
+            'unclosed array shape'               => ['array{a: int', 'Unexpected end of the type, expected "}"'],
+            'unclosed parentheses'               => ['(int', 'Unexpected end of the type, expected ")"'],
+            'text after the type'                => ['int>', 'Unexpected ">" at offset 3, expected end of the type'],
+            'intersection type'                  => ['A&B', 'Unexpected "&" at offset 1, expected end of the type'],
+            'callable type'                      => ['callable(int): string', 'Unexpected "(" at offset 8, expected end of the type'],
+            'class constant'                     => ['Foo::BAR', 'Unexpected ":" at offset 3, expected end of the type'],
+            'variable'                           => ['$x', 'Unexpected "$x" at offset 0, expected a type'],
+            'missing type of shape item'         => ['array{a: }', 'Unexpected "}" at offset 9, expected a type'],
+            'unterminated string literal'        => ["'unterminated", 'Unterminated string literal at offset 0'],
+            'unexpected character'               => ['int#', 'Unexpected character "#" at offset 3'],
+            'too large integer literal'          => ['9223372036854775808', 'Integer literal 9223372036854775808 at offset 0 is out of range'],
+            'too small integer literal'          => ['-9223372036854775809', 'Integer literal -9223372036854775809 at offset 0 is out of range'],
+            'too large hexadecimal literal'      => ['0x8000000000000000', 'Integer literal 0x8000000000000000 at offset 0 is out of range'],
+            'too large octal literal'            => ['01000000000000000000000', 'Integer literal 01000000000000000000000 at offset 0 is out of range'],
+            'too large code point'               => ['int|"a\\u{110000}"', 'Escape sequence \\u{110000} at offset 6 is not a valid Unicode code point'],
+            'code point larger than PHP_INT_MAX' => ['"\\u{10000000000000000}"', 'Escape sequence \\u{10000000000000000} at offset 1 is not a valid Unicode code point'],
+            'surrogate code point'               => ['"\\u{D800}"', 'Escape sequence \\u{D800} at offset 1 is not a valid Unicode code point'],
         ];
     }
 
@@ -125,11 +128,12 @@ final class TypeParserTest extends TestCase
     public static function literalProvider(): array
     {
         return [
-            'PHP_INT_MIN'                                => ['-9223372036854775808', PHP_INT_MIN],
-            'PHP_INT_MAX'                                => ['9223372036854775807', PHP_INT_MAX],
-            'float'                                      => ['1.5', 1.5],
-            'single-quoted string with escape sequences' => ["'it\\'s a \\\\ and a \\n'", 'it\'s a \\ and a \\n'],
-            'double-quoted string with escape sequences' => ['"a\\nb\\t\\"c\\" \\x41\\101 \\u{1F600} \\$ \\q"', "a\nb\t\"c\" AA \u{1F600} \$ \\q"],
+            'PHP_INT_MIN'                                  => ['-9223372036854775808', PHP_INT_MIN],
+            'PHP_INT_MAX'                                  => ['9223372036854775807', PHP_INT_MAX],
+            'float'                                        => ['1.5', 1.5],
+            'single-quoted string with escape sequences'   => ["'it\\'s a \\\\ and a \\n'", 'it\'s a \\ and a \\n'],
+            'double-quoted string with escape sequences'   => ['"a\\nb\\t\\"c\\" \\x41\\101 \\u{1F600} \\$ \\q"', "a\nb\t\"c\" AA \u{1F600} \$ \\q"],
+            'double-quoted string with largest code point' => ['"\\u{0010FFFF}"', "\u{10FFFF}"],
         ];
     }
 
