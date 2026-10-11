@@ -289,6 +289,7 @@ final class Help
                 ['arg' => '--repeat <N>', 'desc' => 'Run each test N times, stopping at the first failure'],
                 ['arg' => '--retry <N>', 'desc' => 'Attempt each test up to N times, stopping at the first success'],
                 ['arg' => '--property-examples <N>', 'desc' => 'Check N examples for each property that does not specify the number of its examples'],
+                ['arg' => '--property-examples-multiplier <N>', 'desc' => 'Multiply the number of examples of every property by N, including properties that specify the number of their examples'],
                 ['arg' => '--reverse-order', 'desc' => 'Alias for "--order-by reverse"'],
             ],
 
