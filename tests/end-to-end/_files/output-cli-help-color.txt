@@ -201,6 +201,9 @@
   [32m--property-examples [36m<N>[0m             [0m Check N examples for each property that
                                        does not specify the number of its
                                        examples
+  [32m--property-examples-multiplier [36m<N>[0m  [0m Multiply the number of examples of every
+                                       property by N, including properties that
+                                       specify the number of their examples
   [32m--reverse-order                     [0m Alias for "--order-by reverse"
 
 [33mReporting:[0m
