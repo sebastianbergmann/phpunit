@@ -12,7 +12,6 @@ namespace PHPUnit\TextUI\Output\TestDox;
 use const PHP_EOL;
 use function array_map;
 use function assert;
-use function explode;
 use function implode;
 use function preg_match;
 use function preg_split;
@@ -298,7 +297,11 @@ final readonly class ResultPrinter
         $lines = [];
 
         if ($buffer !== '') {
-            $lines = array_map(rtrim(...), explode(PHP_EOL, $buffer));
+            $lines = preg_split('/\r\n|\r|\n/', $buffer);
+
+            assert($lines !== false);
+
+            $lines = array_map(rtrim(...), $lines);
         }
 
         $message    = [];
@@ -351,10 +354,14 @@ final readonly class ResultPrinter
             return rtrim($stackTrace);
         }
 
+        $stackTraceLines = preg_split('/\r\n|\r|\n/', $stackTrace);
+
+        assert($stackTraceLines !== false);
+
         $lines        = [];
         $previousPath = '';
 
-        foreach (explode(PHP_EOL, $stackTrace) as $line) {
+        foreach ($stackTraceLines as $line) {
             if (preg_match('/^(.+):(\d+)$/', $line, $matches) > 0) {
                 if ($previousPath === '') {
                     $colorizedPath = Color::colorizePath($matches[1]);
