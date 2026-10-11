@@ -143,6 +143,21 @@ final class InvalidPropertiesTest extends TestCase
     }
 
     #[Property]
+    public function testWithGeneratorMethodWhoseNameIsEmpty(#[ForAll('')] int $value): void
+    {
+    }
+
+    #[Property]
+    public function testWithGeneratorOfClassWhoseNameIsEmpty(#[ForAllExternal('', 'generator')] int $value): void
+    {
+    }
+
+    #[Property]
+    public function testWithGeneratorMethodOfAnotherClassWhoseNameIsEmpty(#[ForAllExternal(EmailAddressGenerators::class, '')] int $value): void
+    {
+    }
+
+    #[Property]
     public function testWithGeneratorOfClassThatDoesNotExist(#[ForAllExternal('PHPUnit\TestFixture\PropertyBased\Properties\DoesNotExist', 'generator')] int $value): void
     {
     }
