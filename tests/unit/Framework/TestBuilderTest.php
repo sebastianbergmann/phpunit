@@ -162,7 +162,7 @@ final class TestBuilderTest extends TestCase
 
         $this->assertInstanceOf(PropertyTestSuite::class, $suite);
         $this->assertSame(ValidPropertiesTest::class . '::testWithParameters', $suite->name());
-        $this->assertSame(50, $suite->numberOfExamples());
+        $this->assertSame(50 * ConfigurationRegistry::get()->propertyExamplesMultiplier(), $suite->numberOfExamples());
         $this->assertCount(1, $suite);
         $this->assertInstanceOf(ValidPropertiesTest::class, $suite->tests()[0]);
     }
@@ -175,7 +175,7 @@ final class TestBuilderTest extends TestCase
         );
 
         $this->assertInstanceOf(PropertyTestSuite::class, $suite);
-        $this->assertSame(ConfigurationRegistry::get()->propertyExamples(), $suite->numberOfExamples());
+        $this->assertSame(ConfigurationRegistry::get()->propertyExamples() * ConfigurationRegistry::get()->propertyExamplesMultiplier(), $suite->numberOfExamples());
     }
 
     public function testPropertyIsNeitherRepeatedNorRetried(): void

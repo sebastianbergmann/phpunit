@@ -9,9 +9,11 @@
  */
 namespace PHPUnit\Framework;
 
+use const PHP_INT_MAX;
 use function array_merge;
 use function assert;
 use function get_parent_class;
+use function intdiv;
 use function preg_match;
 use function range;
 use function sprintf;
@@ -449,10 +451,31 @@ final readonly class TestBuilder
             $this->emitter,
             $factory(),
             $definition,
-            $metadata->examples() ?? ConfigurationRegistry::get()->propertyExamples(),
+            $this->numberOfExamples($metadata),
             $factory,
             $groups,
         );
+    }
+
+    /**
+     * The number of examples of a property is the one that is specified for
+     * it, or else the configured default, multiplied by the configured
+     * multiplier.
+     *
+     * @return positive-int
+     */
+    private function numberOfExamples(PropertyMetadata $metadata): int
+    {
+        $numberOfExamples = $metadata->examples() ?? ConfigurationRegistry::get()->propertyExamples();
+        $multiplier       = ConfigurationRegistry::get()->propertyExamplesMultiplier();
+
+        // the number of examples is not limited, so the product could exceed
+        // the largest integer
+        if ($numberOfExamples > intdiv(PHP_INT_MAX, $multiplier)) {
+            return PHP_INT_MAX;
+        }
+
+        return $numberOfExamples * $multiplier;
     }
 
     /**
