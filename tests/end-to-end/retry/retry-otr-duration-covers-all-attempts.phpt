@@ -21,7 +21,7 @@ $document->load($logfile);
 unlink($logfile);
 
 $xpath = new DOMXPath($document);
-$xpath->registerNamespace('phpunit', 'https://schema.phpunit.de/otr/phpunit/0.2.0');
+$xpath->registerNamespace('phpunit', 'https://schema.phpunit.de/otr/phpunit/0.3.0');
 
 // Each of the three attempts of each test sleeps for 150 milliseconds, so the
 // duration of every test (and every test suite that wraps a retried test

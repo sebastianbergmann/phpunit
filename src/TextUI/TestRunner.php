@@ -41,7 +41,7 @@ final class TestRunner
             $this->emitter->testRunnerStarted();
 
             if ($configuration->executionOrder() === TestSuiteSorter::ORDER_RANDOMIZED) {
-                mt_srand($configuration->randomOrderSeed());
+                mt_srand($configuration->randomSeed());
             }
 
             $testRunHistory->load();

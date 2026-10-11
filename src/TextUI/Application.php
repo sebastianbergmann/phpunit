@@ -700,7 +700,7 @@ final readonly class Application
             $this->writeMessage(
                 $printer,
                 'Random Seed',
-                (string) $configuration->randomOrderSeed(),
+                (string) $configuration->randomSeed(),
             );
         }
     }
@@ -760,7 +760,7 @@ final readonly class Application
                     EventFacade::instance(),
                     $configuration->logfileOtr(),
                     $configuration->includeGitInformationInOtrLogfile(),
-                    $configuration->executionOrder() === TestSuiteSorter::ORDER_RANDOMIZED ? $configuration->randomOrderSeed() : null,
+                    $configuration->executionOrder() === TestSuiteSorter::ORDER_RANDOMIZED ? $configuration->randomSeed() : null,
                 );
             } catch (CannotOpenUriForWritingException $e) {
                 $this->emitter->testRunnerTriggeredPhpunitWarning(

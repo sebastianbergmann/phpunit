@@ -14,6 +14,7 @@ require __DIR__ . '/../../bootstrap.php';
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
 PHPUnit Started (%s)
+Test Runner Triggered PHPUnit Deprecation (The "--random-order-seed" CLI option is deprecated and will be removed in PHPUnit 14. Use "--random-seed" instead.)
 Test Runner Triggered PHPUnit Warning (--random-order-seed is only used when execution order is "random" (use --order-by random or --random-order))
 Test Runner Configured
 Event Facade Sealed

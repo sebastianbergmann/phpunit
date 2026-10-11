@@ -189,7 +189,7 @@
   [32m--ignore-dependencies               [0m Do not reorder tests to resolve
                                        dependencies between them
   [32m--random-order                      [0m Alias for "--order-by random"
-  [32m--random-order-seed [36m<N>[0m             [0m Use the specified random seed when
+  [32m--random-seed [36m<N>[0m                   [0m Use the specified random seed when
                                        running tests in random order
   [32m--repeat [36m<N>[0m                        [0m Run each test N times, stopping at the
                                        first failure

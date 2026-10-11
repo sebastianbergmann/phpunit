@@ -333,6 +333,20 @@ final class MergerTest extends TestCase
         $this->assertSame(60, $mergedConfig->timeout());
     }
 
+    public function testRandomSeedIsCarriedOverFromCliConfiguration(): void
+    {
+        $fromFile = new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration_empty.xml');
+
+        $fromCli = new Builder($this->createStub(Emitter::class))->fromParameters([
+            '--order-by=random',
+            '--random-seed=1234',
+        ]);
+
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge($fromCli, $fromFile);
+
+        $this->assertSame(1234, $mergedConfig->randomSeed());
+    }
+
     public function testInvalidRandomOrderSeedIsReplacedWithSmallestValidSeed(): void
     {
         $fromFile = new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration_empty.xml');
@@ -344,7 +358,7 @@ final class MergerTest extends TestCase
 
         $mergedConfig = new Merger($this->createStub(Emitter::class))->merge($fromCli, $fromFile);
 
-        $this->assertSame(1, $mergedConfig->randomOrderSeed());
+        $this->assertSame(1, $mergedConfig->randomSeed());
     }
 
     public function testIncludePathsAreCarriedOverFromXmlConfiguration(): void

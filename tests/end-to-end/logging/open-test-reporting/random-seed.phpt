@@ -1,5 +1,5 @@
 --TEST--
-phpunit --order-by=random --random-order-seed=12345 --log-otr /path/to/logfile ../_files/SuccessTest.php
+phpunit --order-by=random --random-seed=12345 --log-otr /path/to/logfile ../_files/SuccessTest.php
 --FILE--
 <?php declare(strict_types=1);
 use function PHPUnit\TestFixture\validate_and_print;
@@ -10,7 +10,7 @@ $_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--no-output';
 $_SERVER['argv'][] = '--order-by=random';
-$_SERVER['argv'][] = '--random-order-seed=12345';
+$_SERVER['argv'][] = '--random-seed=12345';
 $_SERVER['argv'][] = '--log-otr';
 $_SERVER['argv'][] = $logfile;
 $_SERVER['argv'][] = __DIR__ . '/_files/SuccessTest.php';
@@ -25,14 +25,14 @@ validate_and_print($logfile);
 unlink($logfile);
 --EXPECTF--
 <?xml version="1.0"?>
-<e:events xmlns="https://schemas.opentest4j.org/reporting/core/0.2.0" xmlns:e="https://schemas.opentest4j.org/reporting/events/0.2.0" xmlns:php="https://schema.phpunit.de/otr/php/0.1.0" xmlns:phpunit="https://schema.phpunit.de/otr/phpunit/0.2.0">
+<e:events xmlns="https://schemas.opentest4j.org/reporting/core/0.2.0" xmlns:e="https://schemas.opentest4j.org/reporting/events/0.2.0" xmlns:php="https://schema.phpunit.de/otr/php/0.1.0" xmlns:phpunit="https://schema.phpunit.de/otr/phpunit/0.3.0">
  <infrastructure>
   <hostName>%s</hostName>
   <userName>%s</userName>
   <operatingSystem>%s</operatingSystem>
   <php:phpVersion>%s</php:phpVersion>
   <php:threadModel>%s</php:threadModel>
-  <phpunit:randomOrderSeed>12345</phpunit:randomOrderSeed>
+  <phpunit:randomSeed>12345</phpunit:randomSeed>
  </infrastructure>
  <e:started id="1" name="PHPUnit\TestFixture\OpenTestReporting\SuccessTest" time="%s">
   <metadata>

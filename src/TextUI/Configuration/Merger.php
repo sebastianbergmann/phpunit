@@ -1070,10 +1070,10 @@ final readonly class Merger
 
         $excludeGroups = array_diff($excludeGroups, $groups);
 
-        if ($cliConfiguration->hasRandomOrderSeed()) {
-            $randomOrderSeed = $cliConfiguration->randomOrderSeed();
+        if ($cliConfiguration->hasRandomSeed()) {
+            $randomSeed = $cliConfiguration->randomSeed();
         } else {
-            $randomOrderSeed = time();
+            $randomSeed = time();
         }
 
         $repeat = 1;
@@ -1288,7 +1288,7 @@ final readonly class Merger
         $logEventsVerboseText               = $this->nullableNonEmptyString($logEventsVerboseText);
         $testIdFilterFile                   = $this->nullableNonEmptyString($testIdFilterFile);
         $testIdFilter                       = $this->nullableNonEmptyString($testIdFilter);
-        $randomOrderSeed                    = $this->clampPositiveInt($randomOrderSeed);
+        $randomSeed                         = $this->clampPositiveInt($randomSeed);
 
         $normalizedGroups = [];
 
@@ -1494,7 +1494,7 @@ final readonly class Merger
             $testIdFilter,
             $groups,
             $excludeGroups,
-            $randomOrderSeed,
+            $randomSeed,
             $repeat,
             $retry,
             $timeout,

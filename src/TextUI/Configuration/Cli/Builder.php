@@ -128,6 +128,7 @@ final class Builder
         'do-not-report-useless-tests',
         'random-order',
         'random-order-seed=',
+        'random-seed=',
         'repeat=',
         'retry=',
         'timeout=',
@@ -411,6 +412,7 @@ final class Builder
         $noLogging                                = null;
         $processIsolation                         = null;
         $randomOrderSeed                          = null;
+        $randomSeed                               = null;
         $repeat                                   = null;
         $retry                                    = null;
         $timeout                                  = null;
@@ -1288,6 +1290,29 @@ final class Builder
                 case '--random-order-seed':
                     $randomOrderSeed = (int) $option[1];
 
+                    $this->emitter->testRunnerTriggeredPhpunitDeprecation(
+                        'The "--random-order-seed" CLI option is deprecated and will be removed in PHPUnit 14. Use "--random-seed" instead.',
+                    );
+
+                    break;
+
+                case '--random-seed':
+                    if (!is_numeric($option[1]) ||
+                        (string) (int) $option[1] !== $option[1] ||
+                        (int) $option[1] < 1) {
+                        $this->emitter->testRunnerTriggeredPhpunitWarning(
+                            sprintf(
+                                'Option "--random-seed %s" ignored because "%s" is not a positive integer',
+                                $option[1],
+                                $option[1],
+                            ),
+                        );
+
+                        break;
+                    }
+
+                    $randomSeed = (int) $option[1];
+
                     break;
 
                 case '--repeat':
@@ -1427,10 +1452,20 @@ final class Builder
 
         $this->warnAboutConflictingOptions();
 
+        if ($randomSeed !== null && $executionOrder !== TestSuiteSorter::ORDER_RANDOMIZED) {
+            $this->emitter->testRunnerTriggeredPhpunitWarning(
+                '--random-seed is only used when execution order is "random" (use --order-by random or --random-order)',
+            );
+        }
+
         if ($randomOrderSeed !== null && $executionOrder !== TestSuiteSorter::ORDER_RANDOMIZED) {
             $this->emitter->testRunnerTriggeredPhpunitWarning(
                 '--random-order-seed is only used when execution order is "random" (use --order-by random or --random-order)',
             );
+        }
+
+        if ($randomSeed === null) {
+            $randomSeed = $randomOrderSeed;
         }
 
         $arguments = [];
@@ -1559,7 +1594,7 @@ final class Builder
             $noResults,
             $noLogging,
             $processIsolation,
-            $randomOrderSeed,
+            $randomSeed,
             $repeat,
             $retry,
             $timeout,
