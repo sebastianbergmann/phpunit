@@ -117,6 +117,7 @@ Execution:
   --repeat <N>                         Run each test N times, stopping at the first failure
   --retry <N>                          Attempt each test up to N times, stopping at the first success
   --property-examples <N>              Check N examples for each property that does not specify the number of its examples
+  --property-examples-multiplier <N>   Multiply the number of examples of every property by N, including properties that specify the number of their examples
   --reverse-order                      Alias for "--order-by reverse"
 
 Reporting:
