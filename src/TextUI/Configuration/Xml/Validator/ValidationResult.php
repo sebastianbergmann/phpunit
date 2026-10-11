@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
-use const PHP_EOL;
 use function sprintf;
 use function trim;
 use LibXMLError;
@@ -64,10 +63,10 @@ final readonly class ValidationResult
         $buffer = '';
 
         foreach ($this->validationErrors as $line => $validationErrorsOnLine) {
-            $buffer .= sprintf(PHP_EOL . '  Line %d:' . PHP_EOL, $line);
+            $buffer .= sprintf("\n  Line %d:\n", $line);
 
             foreach ($validationErrorsOnLine as $validationError) {
-                $buffer .= sprintf('  - %s' . PHP_EOL, $validationError);
+                $buffer .= sprintf("  - %s\n", $validationError);
             }
         }
 

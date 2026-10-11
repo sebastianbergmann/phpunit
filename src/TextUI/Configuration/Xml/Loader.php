@@ -10,7 +10,6 @@
 namespace PHPUnit\TextUI\XmlConfiguration;
 
 use const DIRECTORY_SEPARATOR;
-use const PHP_EOL;
 use const PHP_VERSION;
 use function assert;
 use function defined;
@@ -164,7 +163,7 @@ final readonly class Loader
             );
 
             if ($validationResult->hasValidationErrors()) {
-                $message .= ' because it has validation errors:' . PHP_EOL . $validationResult->asString();
+                $message .= " because it has validation errors:\n" . $validationResult->asString();
             }
 
             throw new Exception($message, previous: $t);
@@ -1605,7 +1604,7 @@ final readonly class Loader
 
         throw new Exception(
             sprintf(
-                'XML configuration file %s does not validate against any supported PHPUnit schema:' . PHP_EOL . '%s',
+                "XML configuration file %s does not validate against any supported PHPUnit schema:\n%s",
                 $configurationFile,
                 $validationResult->asString(),
             ),

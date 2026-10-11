@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
-use function file_get_contents;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
@@ -46,8 +45,16 @@ final class ValidatorTest extends TestCase
         );
 
         $this->assertTrue($result->hasValidationErrors());
-        $this->assertStringEqualsStringIgnoringLineEndings(
-            file_get_contents(__DIR__ . '/../../../../_files/invalid-configuration.txt'),
+        $this->assertSame(
+            "\n" .
+            "  Line 10:\n" .
+            "  - Element 'phpunit', attribute 'forceCoversAnnotation': The attribute 'forceCoversAnnotation' is not allowed.\n" .
+            "  - Element 'phpunit', attribute 'beStrictAboutCoversAnnotation': The attribute 'beStrictAboutCoversAnnotation' is not allowed.\n" .
+            "  - Element 'phpunit', attribute 'beStrictAboutTodoAnnotatedTests': The attribute 'beStrictAboutTodoAnnotatedTests' is not allowed.\n" .
+            "  - Element 'phpunit', attribute 'verbose': The attribute 'verbose' is not allowed.\n" .
+            "\n" .
+            "  Line 17:\n" .
+            "  - Element 'filter': This element is not expected.\n",
             $result->asString(),
         );
     }

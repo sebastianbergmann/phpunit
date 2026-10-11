@@ -84,7 +84,7 @@ final class LoaderTest extends TestCase
     public function testExceptionIsThrownForConfigurationFileThatDoesNotValidateAgainstAnySupportedSchema(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('does not validate against any supported PHPUnit schema');
+        $this->expectExceptionMessage("does not validate against any supported PHPUnit schema:\n");
 
         /* @noinspection UnusedFunctionResultInspection */
         $this->configuration('configuration_invalid_root_element.xml');
