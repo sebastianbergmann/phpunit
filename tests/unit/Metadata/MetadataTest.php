@@ -73,6 +73,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -154,6 +155,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -233,6 +235,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -311,6 +314,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -390,6 +394,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -469,6 +474,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -548,6 +554,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -629,6 +636,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -709,6 +717,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -788,6 +797,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -870,6 +880,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -950,6 +961,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -1030,6 +1042,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -1110,6 +1123,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -1190,6 +1204,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -1271,6 +1286,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -1349,6 +1365,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -1427,6 +1444,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -1509,6 +1527,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -1591,6 +1610,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -1673,6 +1693,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -1753,6 +1774,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -1839,6 +1861,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -1920,6 +1943,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -2002,6 +2026,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -2085,6 +2110,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -2163,6 +2189,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -2241,6 +2268,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -2319,6 +2347,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -2398,6 +2427,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -2477,6 +2507,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -2558,6 +2589,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -2639,6 +2671,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -2721,6 +2754,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -2800,6 +2834,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -2878,6 +2913,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -2956,6 +2992,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -3034,6 +3071,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -3111,6 +3149,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -3188,6 +3227,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -3267,6 +3307,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -3347,6 +3388,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -3423,6 +3465,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -3501,6 +3544,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -3581,6 +3625,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -3662,6 +3707,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -3734,6 +3780,7 @@ final class MetadataTest extends TestCase
         $this->assertTrue($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -3807,6 +3854,7 @@ final class MetadataTest extends TestCase
         $this->assertTrue($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -3887,6 +3935,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertTrue($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -3968,6 +4017,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertTrue($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -4049,6 +4099,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertTrue($metadata->isRequiresFunction());
@@ -4129,6 +4180,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertTrue($metadata->isRequiresFunction());
@@ -4209,6 +4261,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertTrue($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -4289,6 +4342,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertTrue($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -4369,6 +4423,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -4449,6 +4504,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -4529,6 +4585,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -4609,6 +4666,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -4694,6 +4752,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -4779,6 +4838,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -4859,6 +4919,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -4949,6 +5010,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -5031,6 +5093,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -5121,6 +5184,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -5208,6 +5272,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -5288,6 +5353,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -5373,6 +5439,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -5453,6 +5520,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -5533,6 +5601,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -5614,6 +5683,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -5695,6 +5765,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -5776,6 +5847,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -5857,6 +5929,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -5938,6 +6011,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -6019,6 +6093,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -6099,6 +6174,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -6179,6 +6255,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -6260,6 +6337,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -6343,6 +6421,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -6423,6 +6502,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -6503,6 +6583,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -6583,6 +6664,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -6663,6 +6745,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -6742,6 +6825,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -6823,6 +6907,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -6905,6 +6990,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -6987,6 +7073,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -7069,6 +7156,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -7149,6 +7237,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -7226,6 +7315,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -7306,6 +7396,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -7385,6 +7476,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -7465,6 +7557,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -7544,6 +7637,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertFalse($metadata->isProperty());
         $this->assertTrue($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());
@@ -7573,6 +7667,166 @@ final class MetadataTest extends TestCase
 
         $this->assertSame('negative', $metadata->label());
         $this->assertSame(10.0, $metadata->minimumPercentage());
+
+        $this->assertTrue($metadata->isMethodLevel());
+        $this->assertFalse($metadata->isClassLevel());
+    }
+
+    public function testCanBeUseGeneratorsOnClass(): void
+    {
+        $metadata = Metadata::useGeneratorsOnClass(self::class);
+
+        $this->assertFalse($metadata->isAfter());
+        $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
+        $this->assertFalse($metadata->isBackupGlobals());
+        $this->assertFalse($metadata->isBackupStaticProperties());
+        $this->assertFalse($metadata->isBeforeClass());
+        $this->assertFalse($metadata->isBefore());
+        $this->assertFalse($metadata->isCoversNamespace());
+        $this->assertFalse($metadata->isCoversClass());
+        $this->assertFalse($metadata->isCoversClassesThatExtendClass());
+        $this->assertFalse($metadata->isCoversClassesThatImplementInterface());
+        $this->assertFalse($metadata->isCoversDirectory());
+        $this->assertFalse($metadata->isCoversDirectoryRecursively());
+        $this->assertFalse($metadata->isCoversFile());
+        $this->assertFalse($metadata->isCoversFunction());
+        $this->assertFalse($metadata->isCoversMethod());
+        $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
+        $this->assertFalse($metadata->isDataProvider());
+        $this->assertFalse($metadata->isDataProviderClosure());
+        $this->assertFalse($metadata->isDependsOnClass());
+        $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
+        $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
+        $this->assertFalse($metadata->isForAll());
+        $this->assertFalse($metadata->isGeneratorFor());
+        $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
+        $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
+        $this->assertFalse($metadata->isRetry());
+        $this->assertFalse($metadata->isRunInSeparateProcess());
+        $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
+        $this->assertFalse($metadata->isTest());
+        $this->assertFalse($metadata->isPreCondition());
+        $this->assertFalse($metadata->isPostCondition());
+        $this->assertFalse($metadata->isPreserveGlobalState());
+        $this->assertFalse($metadata->isProperty());
+        $this->assertFalse($metadata->isRequireClassification());
+        $this->assertTrue($metadata->isUseGenerators());
+        $this->assertFalse($metadata->isRequiresMethod());
+        $this->assertFalse($metadata->isRequiresClass());
+        $this->assertFalse($metadata->isRequiresFunction());
+        $this->assertFalse($metadata->isRequiresOperatingSystem());
+        $this->assertFalse($metadata->isRequiresOperatingSystemFamily());
+        $this->assertFalse($metadata->isRequiresPhp());
+        $this->assertFalse($metadata->isRequiresPhpExtension());
+        $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
+        $this->assertFalse($metadata->isRequiresEnvironmentVariable());
+        $this->assertFalse($metadata->isWithEnvironmentVariable());
+        $this->assertFalse($metadata->isRequiresSetting());
+        $this->assertFalse($metadata->isTestDox());
+        $this->assertFalse($metadata->isTestDoxFormatter());
+        $this->assertFalse($metadata->isTestWith());
+        $this->assertFalse($metadata->isUsesNamespace());
+        $this->assertFalse($metadata->isUsesClass());
+        $this->assertFalse($metadata->isUsesClassesThatExtendClass());
+        $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
+        $this->assertFalse($metadata->isUsesDirectory());
+        $this->assertFalse($metadata->isUsesDirectoryRecursively());
+        $this->assertFalse($metadata->isUsesFile());
+        $this->assertFalse($metadata->isUsesFunction());
+        $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
+        $this->assertFalse($metadata->isWithoutErrorHandler());
+
+        $this->assertSame(self::class, $metadata->className());
+
+        $this->assertTrue($metadata->isClassLevel());
+        $this->assertFalse($metadata->isMethodLevel());
+    }
+
+    public function testCanBeUseGeneratorsOnMethod(): void
+    {
+        $metadata = Metadata::useGeneratorsOnMethod(self::class);
+
+        $this->assertFalse($metadata->isAfter());
+        $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isAllowMockObjectsWithoutExpectations());
+        $this->assertFalse($metadata->isBackupGlobals());
+        $this->assertFalse($metadata->isBackupStaticProperties());
+        $this->assertFalse($metadata->isBeforeClass());
+        $this->assertFalse($metadata->isBefore());
+        $this->assertFalse($metadata->isCoversNamespace());
+        $this->assertFalse($metadata->isCoversClass());
+        $this->assertFalse($metadata->isCoversClassesThatExtendClass());
+        $this->assertFalse($metadata->isCoversClassesThatImplementInterface());
+        $this->assertFalse($metadata->isCoversDirectory());
+        $this->assertFalse($metadata->isCoversDirectoryRecursively());
+        $this->assertFalse($metadata->isCoversFile());
+        $this->assertFalse($metadata->isCoversFunction());
+        $this->assertFalse($metadata->isCoversMethod());
+        $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isCoversTrait());
+        $this->assertFalse($metadata->isDataProvider());
+        $this->assertFalse($metadata->isDataProviderClosure());
+        $this->assertFalse($metadata->isDependsOnClass());
+        $this->assertFalse($metadata->isDependsOnMethod());
+        $this->assertFalse($metadata->isDisableReturnValueGenerationForTestDoubles());
+        $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
+        $this->assertFalse($metadata->isForAll());
+        $this->assertFalse($metadata->isGeneratorFor());
+        $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isIgnoreDeprecations());
+        $this->assertFalse($metadata->isIgnorePhpunitDeprecations());
+        $this->assertFalse($metadata->isIgnorePHPUnitWarnings());
+        $this->assertFalse($metadata->isRepeat());
+        $this->assertFalse($metadata->isRetry());
+        $this->assertFalse($metadata->isRunInSeparateProcess());
+        $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
+        $this->assertFalse($metadata->isTest());
+        $this->assertFalse($metadata->isPreCondition());
+        $this->assertFalse($metadata->isPostCondition());
+        $this->assertFalse($metadata->isPreserveGlobalState());
+        $this->assertFalse($metadata->isProperty());
+        $this->assertFalse($metadata->isRequireClassification());
+        $this->assertTrue($metadata->isUseGenerators());
+        $this->assertFalse($metadata->isRequiresMethod());
+        $this->assertFalse($metadata->isRequiresClass());
+        $this->assertFalse($metadata->isRequiresFunction());
+        $this->assertFalse($metadata->isRequiresOperatingSystem());
+        $this->assertFalse($metadata->isRequiresOperatingSystemFamily());
+        $this->assertFalse($metadata->isRequiresPhp());
+        $this->assertFalse($metadata->isRequiresPhpExtension());
+        $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresPhpunitExtension());
+        $this->assertFalse($metadata->isRequiresEnvironmentVariable());
+        $this->assertFalse($metadata->isWithEnvironmentVariable());
+        $this->assertFalse($metadata->isRequiresSetting());
+        $this->assertFalse($metadata->isTestDox());
+        $this->assertFalse($metadata->isTestDoxFormatter());
+        $this->assertFalse($metadata->isTestWith());
+        $this->assertFalse($metadata->isUsesNamespace());
+        $this->assertFalse($metadata->isUsesClass());
+        $this->assertFalse($metadata->isUsesClassesThatExtendClass());
+        $this->assertFalse($metadata->isUsesClassesThatImplementInterface());
+        $this->assertFalse($metadata->isUsesDirectory());
+        $this->assertFalse($metadata->isUsesDirectoryRecursively());
+        $this->assertFalse($metadata->isUsesFile());
+        $this->assertFalse($metadata->isUsesFunction());
+        $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesTrait());
+        $this->assertFalse($metadata->isWithoutErrorHandler());
+
+        $this->assertSame(self::class, $metadata->className());
 
         $this->assertTrue($metadata->isMethodLevel());
         $this->assertFalse($metadata->isClassLevel());
@@ -7624,6 +7878,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreserveGlobalState());
         $this->assertTrue($metadata->isProperty());
         $this->assertFalse($metadata->isRequireClassification());
+        $this->assertFalse($metadata->isUseGenerators());
         $this->assertFalse($metadata->isRequiresMethod());
         $this->assertFalse($metadata->isRequiresClass());
         $this->assertFalse($metadata->isRequiresFunction());

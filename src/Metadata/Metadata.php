@@ -262,6 +262,22 @@ abstract readonly class Metadata
     }
 
     /**
+     * @param class-string $className
+     */
+    public static function useGeneratorsOnClass(string $className): UseGenerators
+    {
+        return new UseGenerators(Level::CLASS_LEVEL, $className);
+    }
+
+    /**
+     * @param class-string $className
+     */
+    public static function useGeneratorsOnMethod(string $className): UseGenerators
+    {
+        return new UseGenerators(Level::METHOD_LEVEL, $className);
+    }
+
+    /**
      * @param non-empty-string $label
      */
     public static function requireClassification(string $label, float $minimumPercentage): RequireClassification
@@ -1053,6 +1069,14 @@ abstract readonly class Metadata
      * @phpstan-assert-if-true RequireClassification $this
      */
     public function isRequireClassification(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true UseGenerators $this
+     */
+    public function isUseGenerators(): bool
     {
         return false;
     }
