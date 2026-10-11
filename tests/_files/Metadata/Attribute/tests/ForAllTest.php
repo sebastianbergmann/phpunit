@@ -31,6 +31,11 @@ final class ForAllTest extends TestCase
     }
 
     #[Property]
+    public function testWithGeneratorOfAnotherClass(#[ForAll([self::class, 'smallIntegers'])] int $a): void
+    {
+    }
+
+    #[Property]
     public function testWithInvalidForAll(#[ForAll(42)] int $a): void
     {
     }

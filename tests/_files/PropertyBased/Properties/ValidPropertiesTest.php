@@ -63,6 +63,11 @@ final class ValidPropertiesTest extends TestCase
     }
 
     #[Property]
+    public function testWithGeneratorOfAnotherClass(#[ForAll([EmailAddressGenerators::class, 'emailAddresses'])] EmailAddress $emailAddress): void
+    {
+    }
+
+    #[Property]
     public function testWithoutParameters(): void
     {
     }

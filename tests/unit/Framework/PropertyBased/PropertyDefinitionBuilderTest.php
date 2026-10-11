@@ -157,6 +157,30 @@ final class PropertyDefinitionBuilderTest extends TestCase
                 'the generator for parameter $value is specified as ' . InvalidPropertiesTest::class . '::nonStaticGenerator(), which is not public and static',
             ],
 
+            'generator that is not a list of a class and a method' => [
+                InvalidPropertiesTest::class,
+                'testWithGeneratorThatIsNotAListOfAClassAndAMethod',
+                'the generator for parameter $value must be specified as the name of a method, as a list of the name of a class and the name of a method, or as a closure',
+            ],
+
+            'generator of a class that does not exist' => [
+                InvalidPropertiesTest::class,
+                'testWithGeneratorOfClassThatDoesNotExist',
+                'the generator for parameter $value is specified as PHPUnit\TestFixture\PropertyBased\Properties\DoesNotExist::generator(), but class PHPUnit\TestFixture\PropertyBased\Properties\DoesNotExist does not exist',
+            ],
+
+            'unknown generator method of another class' => [
+                InvalidPropertiesTest::class,
+                'testWithUnknownGeneratorMethodOfAnotherClass',
+                'the generator for parameter $value is specified as ' . EmailAddressGenerators::class . '::unknown(), which does not exist',
+            ],
+
+            'non-static generator method of another class' => [
+                InvalidPropertiesTest::class,
+                'testWithNonStaticGeneratorMethodOfAnotherClass',
+                'the generator for parameter $value is specified as ' . InvalidPropertiesTest::class . '::nonStaticGenerator(), which is not public and static',
+            ],
+
             'unsupported type' => [
                 InvalidPropertiesTest::class,
                 'testWithUnsupportedType',
@@ -280,6 +304,14 @@ final class PropertyDefinitionBuilderTest extends TestCase
         $this->assertEquals(
             [EmailAddress::class => new GeneratorMethod(PropertyInSubclassTest::class, 'emailAddresses')],
             (new PropertyDefinitionBuilder)->build(PropertyInSubclassTest::class, 'testOne')->registeredGenerators(),
+        );
+    }
+
+    public function testTheGeneratorForAParameterMayBeSpecifiedWithAMethodOfAnotherClass(): void
+    {
+        $this->assertEquals(
+            new GeneratorMethod(EmailAddressGenerators::class, 'emailAddresses'),
+            (new PropertyDefinitionBuilder)->build(ValidPropertiesTest::class, 'testWithGeneratorOfAnotherClass')->parameters()['emailAddress'],
         );
     }
 
