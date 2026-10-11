@@ -38,6 +38,22 @@ final class ChoiceTreeTest extends TestCase
         $this->assertTrue($tree->isExhausted());
     }
 
+    public function testANodeThatIsExhaustedAgainIsCountedOnlyOnceTowardsTheExhaustionOfItsParent(): void
+    {
+        $tree = new ChoiceTree;
+        $root = $tree->root();
+
+        $this->assertNotNull($root);
+        $this->assertTrue($root->draws(1));
+
+        $child = $this->child($tree, $root, 0);
+
+        $child->exhaust();
+        $child->exhaust();
+
+        $this->assertFalse($tree->isExhausted());
+    }
+
     public function testAChoiceThatLeadsToAnExhaustedNodeIsReplacedWithTheNextOneThatDoesNot(): void
     {
         $tree = new ChoiceTree;
