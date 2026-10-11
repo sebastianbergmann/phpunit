@@ -346,6 +346,7 @@
     </xs:complexType>
     <xs:complexType name="propertyBasedTestingType">
         <xs:attribute name="examples" type="xs:positiveInteger" default="100"/>
+        <xs:attribute name="examplesMultiplier" type="xs:positiveInteger" default="1"/>
         <xs:attribute name="maximumShrinkingAttempts" type="xs:nonNegativeInteger" default="1000"/>
     </xs:complexType>
     <xs:complexType name="otrType">

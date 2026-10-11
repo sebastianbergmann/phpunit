@@ -791,12 +791,14 @@ final readonly class Loader
         if ($element === null) {
             return new PropertyBasedTesting(
                 PropertyBasedTesting::DEFAULT_NUMBER_OF_EXAMPLES,
+                PropertyBasedTesting::DEFAULT_EXAMPLES_MULTIPLIER,
                 PropertyBasedTesting::DEFAULT_MAXIMUM_NUMBER_OF_SHRINKING_ATTEMPTS,
             );
         }
 
         return new PropertyBasedTesting(
             $this->parsePositiveIntegerAttribute($element, 'examples', PropertyBasedTesting::DEFAULT_NUMBER_OF_EXAMPLES),
+            $this->parsePositiveIntegerAttribute($element, 'examplesMultiplier', PropertyBasedTesting::DEFAULT_EXAMPLES_MULTIPLIER),
             $this->parseNonNegativeIntegerAttribute($element, 'maximumShrinkingAttempts', PropertyBasedTesting::DEFAULT_MAXIMUM_NUMBER_OF_SHRINKING_ATTEMPTS),
         );
     }
