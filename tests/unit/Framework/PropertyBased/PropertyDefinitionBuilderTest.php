@@ -28,6 +28,7 @@ use PHPUnit\TestFixture\PropertyBased\Properties\ClassWithoutGeneratorFor;
 use PHPUnit\TestFixture\PropertyBased\Properties\DuplicateGeneratorForTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\DuplicateGeneratorForWithLeadingBackslashTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\EmailAddressGenerators;
+use PHPUnit\TestFixture\PropertyBased\Properties\GeneratorForEmailAddresses;
 use PHPUnit\TestFixture\PropertyBased\Properties\GeneratorForUnknownClassTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\InvalidGenerators;
 use PHPUnit\TestFixture\PropertyBased\Properties\InvalidPropertiesTest;
@@ -161,7 +162,19 @@ final class PropertyDefinitionBuilderTest extends TestCase
             'generator of a class that does not exist' => [
                 InvalidPropertiesTest::class,
                 'testWithGeneratorOfClassThatDoesNotExist',
-                'the generator for parameter $value is specified as PHPUnit\TestFixture\PropertyBased\Properties\DoesNotExist::generator(), but class PHPUnit\TestFixture\PropertyBased\Properties\DoesNotExist does not exist',
+                'the generator for parameter $value is specified as a method of PHPUnit\TestFixture\PropertyBased\Properties\DoesNotExist, which does not exist',
+            ],
+
+            'generator of an interface' => [
+                InvalidPropertiesTest::class,
+                'testWithGeneratorOfInterface',
+                'the generator for parameter $value is specified as a method of ' . EmailAddress::class . ', which is an interface, not a class',
+            ],
+
+            'generator of a trait' => [
+                InvalidPropertiesTest::class,
+                'testWithGeneratorOfTrait',
+                'the generator for parameter $value is specified as a method of ' . GeneratorForEmailAddresses::class . ', which is a trait, not a class',
             ],
 
             'unknown generator method of another class' => [
@@ -209,7 +222,19 @@ final class PropertyDefinitionBuilderTest extends TestCase
             'class used with #[UseGenerators] that does not exist' => [
                 UseGeneratorsTest::class,
                 'testUsesAClassThatDoesNotExist',
-                'the class PHPUnit\TestFixture\PropertyBased\Properties\DoesNotExist that is used with #[UseGenerators] does not exist',
+                '#[UseGenerators] is used with PHPUnit\TestFixture\PropertyBased\Properties\DoesNotExist, which does not exist',
+            ],
+
+            'interface used with #[UseGenerators]' => [
+                UseGeneratorsTest::class,
+                'testUsesAnInterface',
+                '#[UseGenerators] is used with ' . EmailAddress::class . ', which is an interface, not a class',
+            ],
+
+            'trait used with #[UseGenerators]' => [
+                UseGeneratorsTest::class,
+                'testUsesATrait',
+                '#[UseGenerators] is used with ' . GeneratorForEmailAddresses::class . ', which is a trait, not a class',
             ],
 
             'class used with #[UseGenerators] that does not register a generator' => [
