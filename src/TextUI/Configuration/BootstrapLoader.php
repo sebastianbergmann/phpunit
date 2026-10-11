@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
-use const PHP_EOL;
 use function in_array;
 use function is_readable;
 use function sprintf;
@@ -68,23 +67,17 @@ final class BootstrapLoader
             include_once $filename;
         } catch (Throwable $t) {
             $message = sprintf(
-                'Error in bootstrap script: %s:%s%s%s%s',
+                "Error in bootstrap script: %s:\n%s\n%s",
                 $t::class,
-                PHP_EOL,
                 $t->getMessage(),
-                PHP_EOL,
                 $t->getTraceAsString(),
             );
 
             while (($t = $t->getPrevious()) !== null) {
                 $message .= sprintf(
-                    '%s%sPrevious error: %s:%s%s%s%s',
-                    PHP_EOL,
-                    PHP_EOL,
+                    "\n\nPrevious error: %s:\n%s\n%s",
                     $t::class,
-                    PHP_EOL,
                     $t->getMessage(),
-                    PHP_EOL,
                     $t->getTraceAsString(),
                 );
             }
