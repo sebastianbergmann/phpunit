@@ -25,11 +25,11 @@ Time: %s, Memory: %s
    [33m┐[0m
    [33m├[0m [43;30mException: Outer[0m
    [33m│[0m
-   [33m│[0m [2m%sThrowsWithPreviousExceptionTest.php[2m:[22m[34m%d[0m%A
+   [33m│[0m %sThrowsWithPreviousExceptionTest.php[2m:[22m[34m%d[0m%A
    [33m│[0m Caused by:
    [33m├[0m [43;30mException: Inner[0m
    [33m│[0m
-   [33m│[0m [2m%sThrowsWithPreviousExceptionTest.php[2m:[22m[34m%d[0m%A
+   [33m│[0m %sThrowsWithPreviousExceptionTest.php[2m:[22m[34m%d[0m%A
    [33m┴[0m
 
 [37;41mERRORS![0m
