@@ -19,6 +19,7 @@ namespace PHPUnit\TextUI\XmlConfiguration;
 final readonly class PropertyBasedTesting
 {
     public const int DEFAULT_NUMBER_OF_EXAMPLES                   = 100;
+    public const int DEFAULT_EXAMPLES_MULTIPLIER                  = 1;
     public const int DEFAULT_MAXIMUM_NUMBER_OF_SHRINKING_ATTEMPTS = 1000;
 
     /**
@@ -27,17 +28,24 @@ final readonly class PropertyBasedTesting
     private int $examples;
 
     /**
+     * @var positive-int
+     */
+    private int $examplesMultiplier;
+
+    /**
      * @var non-negative-int
      */
     private int $maximumShrinkingAttempts;
 
     /**
      * @param positive-int     $examples
+     * @param positive-int     $examplesMultiplier
      * @param non-negative-int $maximumShrinkingAttempts
      */
-    public function __construct(int $examples, int $maximumShrinkingAttempts)
+    public function __construct(int $examples, int $examplesMultiplier, int $maximumShrinkingAttempts)
     {
         $this->examples                 = $examples;
+        $this->examplesMultiplier       = $examplesMultiplier;
         $this->maximumShrinkingAttempts = $maximumShrinkingAttempts;
     }
 
@@ -50,6 +58,17 @@ final readonly class PropertyBasedTesting
     public function examples(): int
     {
         return $this->examples;
+    }
+
+    /**
+     * The number by which the number of examples of every property is
+     * multiplied, whether it is specified for the property or not.
+     *
+     * @return positive-int
+     */
+    public function examplesMultiplier(): int
+    {
+        return $this->examplesMultiplier;
     }
 
     /**
