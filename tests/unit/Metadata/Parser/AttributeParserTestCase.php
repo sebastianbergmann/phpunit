@@ -954,6 +954,20 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertSame('smallIntegers', $forAll->generator());
     }
 
+    #[TestDox('Parses #[ForAll] attribute with a method of another class on parameter')]
+    public function test_parses_ForAll_attribute_with_a_method_of_another_class_on_parameter(): void
+    {
+        $metadata = $this->parser()->forMethod(ForAllTest::class, 'testWithGeneratorOfAnotherClass')->isForAll();
+
+        $this->assertCount(1, $metadata);
+
+        $forAll = $metadata->asArray()[0];
+
+        assert($forAll instanceof ForAll);
+
+        $this->assertSame([ForAllTest::class, 'smallIntegers'], $forAll->generator());
+    }
+
     #[TestDox('Parses #[ForAll] attribute with closure on parameter')]
     #[\PHPUnit\Framework\Attributes\RequiresPhp('^8.5')]
     public function test_parses_ForAll_attribute_with_closure_on_parameter(): void

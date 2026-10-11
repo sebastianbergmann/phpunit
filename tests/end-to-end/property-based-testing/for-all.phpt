@@ -1,5 +1,5 @@
 --TEST--
-The generator for a parameter can be specified with #[ForAll] as the name of a method
+The generator for a parameter can be specified with #[ForAll] as the name of a method of the test case class or of another class
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--no-configuration';
@@ -17,8 +17,8 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 Runtime: %s
 Random Seed:   1234
 
-.                                                                   1 / 1 (100%)
+..                                                                  2 / 2 (100%)
 
 Time: %s, Memory: %s
 
-OK (1 test, %d assertions)
+OK (2 tests, %d assertions)
