@@ -192,6 +192,7 @@ final readonly class DefaultConfiguration extends Configuration
             TestSuiteCollection::fromArray([]),
             new PropertyBasedTesting(
                 PropertyBasedTesting::DEFAULT_NUMBER_OF_EXAMPLES,
+                PropertyBasedTesting::DEFAULT_EXAMPLES_MULTIPLIER,
                 PropertyBasedTesting::DEFAULT_MAXIMUM_NUMBER_OF_SHRINKING_ATTEMPTS,
             ),
         );
