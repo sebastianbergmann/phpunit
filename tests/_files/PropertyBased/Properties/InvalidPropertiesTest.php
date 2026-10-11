@@ -168,6 +168,16 @@ final class InvalidPropertiesTest extends TestCase
     }
 
     #[Property]
+    public function testWithAbstractGeneratorMethod(#[ForAllExternal(InvalidGenerators::class, 'abstractGenerator')] int $value): void
+    {
+    }
+
+    #[Property]
+    public function testWithGeneratorMethodWithRequiredParameters(#[ForAllExternal(InvalidGenerators::class, 'generatorWithRequiredParameter')] int $value): void
+    {
+    }
+
+    #[Property]
     public function testWithUnsupportedType(mixed $value): void
     {
     }

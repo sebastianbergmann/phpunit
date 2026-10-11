@@ -35,6 +35,14 @@ final class ValidPropertiesTest extends TestCase
     }
 
     /**
+     * @return ValueGenerator<int>
+     */
+    public static function integersUpTo(int $maximum = 9): ValueGenerator
+    {
+        return Generators::integers(0, $maximum);
+    }
+
+    /**
      * @param non-empty-string $name
      */
     #[Property(examples: 50)]
@@ -65,6 +73,11 @@ final class ValidPropertiesTest extends TestCase
 
     #[Property]
     public function testWithGeneratorOfAnotherClass(#[ForAllExternal(EmailAddressGenerators::class, 'emailAddresses')] EmailAddress $emailAddress): void
+    {
+    }
+
+    #[Property]
+    public function testWithGeneratorMethodWithOptionalParameter(#[ForAll('integersUpTo')] int $value): void
     {
     }
 

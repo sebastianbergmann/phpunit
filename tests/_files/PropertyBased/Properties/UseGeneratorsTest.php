@@ -54,6 +54,12 @@ final class UseGeneratorsTest extends TestCase
     }
 
     #[Property]
+    #[UseGenerators(ClassWithAbstractGeneratorFor::class)]
+    public function testUsesAClassThatRegistersAnAbstractGenerator(int $value): void
+    {
+    }
+
+    #[Property]
     #[UseGenerators(ClassWithoutGeneratorFor::class)]
     public function testUsesAClassThatDoesNotRegisterAGenerator(int $value): void
     {
