@@ -59,17 +59,8 @@ final class ThrowableTest extends TestCase
         $this->assertSame("Exception: first message\n", $previous->description());
         $this->assertSame(Filter::stackTraceFromThrowableAsString($first), $previous->stackTrace());
 
-        $this->assertStringMatchesFormat(
-            <<<'EOD'
-Exception: second message
-
-%A
-Caused by
-Exception: first message
-
-%A
-EOD
-            ,
+        $this->assertSame(
+            "Exception: second message\n\n" . $t->stackTrace() . "\nCaused by\nException: first message\n\n" . $previous->stackTrace(),
             $t->asString(),
         );
     }

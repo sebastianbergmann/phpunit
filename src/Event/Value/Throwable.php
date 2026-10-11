@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Event\Code;
 
-use const PHP_EOL;
 use PHPUnit\Event\NoPreviousThrowableException;
 
 /**
@@ -50,11 +49,11 @@ final readonly class Throwable
         $buffer = $this->description();
 
         if ($this->stackTrace() !== '') {
-            $buffer .= PHP_EOL . $this->stackTrace();
+            $buffer .= "\n" . $this->stackTrace();
         }
 
         if ($this->hasPrevious()) {
-            $buffer .= PHP_EOL . 'Caused by' . PHP_EOL . $this->previous()->asString();
+            $buffer .= "\nCaused by\n" . $this->previous()->asString();
         }
 
         return $buffer;
