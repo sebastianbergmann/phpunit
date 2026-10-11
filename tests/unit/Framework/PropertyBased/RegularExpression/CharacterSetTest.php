@@ -70,6 +70,19 @@ final class CharacterSetTest extends TestCase
         $this->assertSame('z', $set->member(25));
     }
 
+    public function testComplementWithinASetOfSeveralRangesContainsTheCharactersOfEachRangeThatAreNotInTheSet(): void
+    {
+        $set = CharacterSet::fromCharacters([0x35, 0x62], false)->complementWithin(CharacterSet::fromRanges([[0x30, 0x39], [0x61, 0x63]], false));
+
+        $this->assertSame(11, $set->size());
+        $this->assertFalse($set->contains(0x35));
+        $this->assertFalse($set->contains(0x62));
+        $this->assertSame('a', $set->member(0));
+        $this->assertSame('c', $set->member(1));
+        $this->assertSame('0', $set->member(2));
+        $this->assertSame('9', $set->member(10));
+    }
+
     public function testComplementOfTheEmptySetIsTheSetItIsTakenWithin(): void
     {
         $this->assertSame(256, CharacterSet::fromRanges([], false)->complementWithin(CharacterSet::all(false))->size());
