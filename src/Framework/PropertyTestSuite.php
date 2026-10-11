@@ -226,12 +226,6 @@ final class PropertyTestSuite extends IterativeTestSuite
      */
     private function check(TestCase $test, Event\Emitter $emitter): void
     {
-        if (TestResultFacade::shouldStop()) {
-            $emitter->testRunnerExecutionAborted();
-
-            return;
-        }
-
         $valueObject = $test->valueObjectForEvents();
 
         $this->test = $valueObject;
