@@ -58,6 +58,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\ExtendsParentWithInvalidGroupAttribut
 use PHPUnit\TestFixture\Metadata\Attribute\FirstExtendsParentWithSmallAndMediumTest;
 use PHPUnit\TestFixture\Metadata\Attribute\ForAllClosureTest;
 use PHPUnit\TestFixture\Metadata\Attribute\ForAllTest;
+use PHPUnit\TestFixture\Metadata\Attribute\ForAllWithOtherParameterAttributeTest;
 use PHPUnit\TestFixture\Metadata\Attribute\GeneratorForTest;
 use PHPUnit\TestFixture\Metadata\Attribute\GroupNameThatCannotBeSelectedTest;
 use PHPUnit\TestFixture\Metadata\Attribute\GroupTest;
@@ -952,6 +953,23 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertTrue($forAll->isMethodLevel());
         $this->assertSame('a', $forAll->parameterName());
         $this->assertSame(ForAllTest::class, $forAll->className());
+        $this->assertSame('smallIntegers', $forAll->generator());
+    }
+
+    #[TestDox('Ignores attributes other than #[ForAll] on parameter')]
+    public function test_ignores_attributes_other_than_ForAll_on_parameter(): void
+    {
+        $metadata = $this->parser()->forMethod(ForAllWithOtherParameterAttributeTest::class, 'testOne');
+
+        $this->assertCount(2, $metadata);
+        $this->assertCount(1, $metadata->isProperty());
+        $this->assertCount(1, $metadata->isForAll());
+
+        $forAll = $metadata->isForAll()->asArray()[0];
+
+        assert($forAll instanceof ForAll);
+
+        $this->assertSame('a', $forAll->parameterName());
         $this->assertSame('smallIntegers', $forAll->generator());
     }
 
