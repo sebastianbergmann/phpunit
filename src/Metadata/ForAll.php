@@ -14,7 +14,7 @@ use PHPUnit\Framework\PropertyBased\ValueGenerator;
 
 /**
  * The generator that is specified for a parameter of a property with the
- * #[ForAll] attribute of the parameter.
+ * #[ForAll] or #[ForAllExternal] attribute of the parameter.
  *
  * @immutable
  *
@@ -28,19 +28,26 @@ final readonly class ForAll extends Metadata
     private string $parameterName;
 
     /**
-     * @var array{class-string, non-empty-string}|Closure(): ValueGenerator<mixed>|non-empty-string
+     * @var class-string
      */
-    private array|Closure|string $generator;
+    private string $className;
 
     /**
-     * @param non-empty-string                                                                        $parameterName
-     * @param array{class-string, non-empty-string}|Closure(): ValueGenerator<mixed>|non-empty-string $generator
+     * @var Closure(): ValueGenerator<mixed>|non-empty-string
      */
-    protected function __construct(Level $level, string $parameterName, array|Closure|string $generator)
+    private Closure|string $generator;
+
+    /**
+     * @param non-empty-string                                  $parameterName
+     * @param class-string                                      $className
+     * @param Closure(): ValueGenerator<mixed>|non-empty-string $generator
+     */
+    protected function __construct(Level $level, string $parameterName, string $className, Closure|string $generator)
     {
         parent::__construct($level);
 
         $this->parameterName = $parameterName;
+        $this->className     = $className;
         $this->generator     = $generator;
     }
 
@@ -58,14 +65,25 @@ final readonly class ForAll extends Metadata
     }
 
     /**
-     * The name of a public static method of the test case class that returns
-     * the generator, a list of the name of a class and the name of a public
-     * static method of that class that returns it, or a static closure that
+     * The class on which the method that returns the generator is called:
+     * the test case class, unless the generator is specified with
+     * #[ForAllExternal].
+     *
+     * @return class-string
+     */
+    public function className(): string
+    {
+        return $this->className;
+    }
+
+    /**
+     * The name of a public static method of the class that is returned by
+     * className() that returns the generator, or a static closure that
      * returns it.
      *
-     * @return array{class-string, non-empty-string}|Closure(): ValueGenerator<mixed>|non-empty-string
+     * @return Closure(): ValueGenerator<mixed>|non-empty-string
      */
-    public function generator(): array|Closure|string
+    public function generator(): Closure|string
     {
         return $this->generator;
     }

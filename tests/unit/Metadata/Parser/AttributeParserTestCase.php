@@ -951,11 +951,12 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertTrue($forAll->isForAll());
         $this->assertTrue($forAll->isMethodLevel());
         $this->assertSame('a', $forAll->parameterName());
+        $this->assertSame(ForAllTest::class, $forAll->className());
         $this->assertSame('smallIntegers', $forAll->generator());
     }
 
-    #[TestDox('Parses #[ForAll] attribute with a method of another class on parameter')]
-    public function test_parses_ForAll_attribute_with_a_method_of_another_class_on_parameter(): void
+    #[TestDox('Parses #[ForAllExternal] attribute on parameter')]
+    public function test_parses_ForAllExternal_attribute_on_parameter(): void
     {
         $metadata = $this->parser()->forMethod(ForAllTest::class, 'testWithGeneratorOfAnotherClass')->isForAll();
 
@@ -965,7 +966,10 @@ abstract class AttributeParserTestCase extends TestCase
 
         assert($forAll instanceof ForAll);
 
-        $this->assertSame([ForAllTest::class, 'smallIntegers'], $forAll->generator());
+        $this->assertTrue($forAll->isMethodLevel());
+        $this->assertSame('a', $forAll->parameterName());
+        $this->assertSame(GeneratorForTest::class, $forAll->className());
+        $this->assertSame('emailAddresses', $forAll->generator());
     }
 
     #[TestDox('Parses #[ForAll] attribute with closure on parameter')]

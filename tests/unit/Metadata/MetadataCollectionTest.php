@@ -772,7 +772,7 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::usesDirectoryRecursively(''),
                 Metadata::repeat(3, 1),
                 Metadata::retry(3),
-                Metadata::forAll('value', 'provider'),
+                Metadata::forAll('value', self::class, 'provider'),
                 Metadata::generatorFor(self::class),
                 Metadata::requireClassification('label', 10.0),
                 Metadata::useGeneratorsOnMethod(self::class),
