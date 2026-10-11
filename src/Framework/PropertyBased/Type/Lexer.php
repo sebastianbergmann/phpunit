@@ -9,13 +9,14 @@
  */
 namespace PHPUnit\Framework\PropertyBased\Type;
 
+use const PHP_INT_MAX;
 use function array_shift;
 use function assert;
-use function bindec;
 use function chr;
 use function count;
 use function hexdec;
-use function is_int;
+use function intdiv;
+use function intval;
 use function mb_chr;
 use function octdec;
 use function preg_match;
@@ -23,6 +24,7 @@ use function preg_replace_callback;
 use function sprintf;
 use function str_contains;
 use function str_replace;
+use function str_split;
 use function str_starts_with;
 use function strlen;
 use function strspn;
@@ -172,13 +174,13 @@ final class Lexer
         $digits   = strtolower(str_replace('_', '', substr($text, (int) $negative)));
 
         if (str_starts_with($digits, '0x')) {
-            $value = hexdec(substr($digits, 2));
+            $value = $this->integerInBase(substr($digits, 2), 16, $text, $offset);
         } elseif (str_starts_with($digits, '0b')) {
-            $value = bindec(substr($digits, 2));
+            $value = $this->integerInBase(substr($digits, 2), 2, $text, $offset);
         } elseif (str_starts_with($digits, '0o')) {
-            $value = octdec(substr($digits, 2));
+            $value = $this->integerInBase(substr($digits, 2), 8, $text, $offset);
         } elseif (strlen($digits) > 1 && str_starts_with($digits, '0')) {
-            $value = octdec(substr($digits, 1));
+            $value = $this->integerInBase(substr($digits, 1), 8, $text, $offset);
         } elseif ($negative) {
             // the magnitude of PHP_INT_MIN cannot be represented as an integer
             $value = (int) ('-' . $digits);
@@ -196,12 +198,34 @@ final class Lexer
             }
         }
 
-        if (!is_int($value)) {
-            throw $this->integerOutOfRange($text, $offset);
-        }
-
         if ($negative) {
             return -$value;
+        }
+
+        return $value;
+    }
+
+    /**
+     * The digits are converted one by one, as hexdec(), bindec(), and octdec()
+     * return a float for a number that is larger than PHP_INT_MAX and, as of
+     * PHP 8.6, trigger a notice for it.
+     *
+     * @param 16|2|8 $base
+     *
+     * @throws InvalidTypeException
+     */
+    private function integerInBase(string $digits, int $base, string $text, int $offset): int
+    {
+        $value = 0;
+
+        foreach (str_split($digits) as $digit) {
+            $digit = intval($digit, $base);
+
+            if ($value > intdiv(PHP_INT_MAX - $digit, $base)) {
+                throw $this->integerOutOfRange($text, $offset);
+            }
+
+            $value = $value * $base + $digit;
         }
 
         return $value;

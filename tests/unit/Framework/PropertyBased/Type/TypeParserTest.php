@@ -73,6 +73,7 @@ final class TypeParserTest extends TestCase
             'binary integer literal'                   => ['0b101', '5'],
             'octal integer literal'                    => ['0o17', '15'],
             'octal integer literal with leading 0'     => ['017', '15'],
+            'largest hexadecimal integer literal'      => ['0x7FFFFFFFFFFFFFFF', '9223372036854775807'],
             'float literal'                            => ['-1.5', '-1.5'],
             'float literal with exponent'              => ['1e3', '1000.0'],
             'float literal without integer part'       => ['.5', '0.5'],
@@ -114,6 +115,7 @@ final class TypeParserTest extends TestCase
             'too large integer literal'     => ['9223372036854775808', 'Integer literal 9223372036854775808 at offset 0 is out of range'],
             'too small integer literal'     => ['-9223372036854775809', 'Integer literal -9223372036854775809 at offset 0 is out of range'],
             'too large hexadecimal literal' => ['0x8000000000000000', 'Integer literal 0x8000000000000000 at offset 0 is out of range'],
+            'too large octal literal'       => ['01000000000000000000000', 'Integer literal 01000000000000000000000 at offset 0 is out of range'],
         ];
     }
 
