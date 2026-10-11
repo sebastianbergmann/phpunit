@@ -187,7 +187,7 @@ final class ResultPrinterTest extends TestCase
         );
 
         /* @noinspection PhpPossiblePolymorphicInvocationInspection */
-        $this->assertStringContainsString(
+        $this->assertStringContainsStringIgnoringLineEndings(
             <<<'EOT'
    │ RuntimeException: message
    │
