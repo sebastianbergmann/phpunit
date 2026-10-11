@@ -285,7 +285,7 @@ final class Help
                 ['arg' => '--resolve-dependencies', 'desc' => 'Reorder tests to resolve dependencies between them (default)'],
                 ['arg' => '--ignore-dependencies', 'desc' => 'Do not reorder tests to resolve dependencies between them'],
                 ['arg' => '--random-order', 'desc' => 'Alias for "--order-by random"'],
-                ['arg' => '--random-seed <N>', 'desc' => 'Use the specified random seed when running tests in random order'],
+                ['arg' => '--random-seed <N>', 'desc' => 'Use the specified seed for PHP\'s Mt19937 random number generator (mt_rand(), rand(), shuffle(), ...) and for random test order'],
                 ['arg' => '--repeat <N>', 'desc' => 'Run each test N times, stopping at the first failure'],
                 ['arg' => '--retry <N>', 'desc' => 'Attempt each test up to N times, stopping at the first success'],
                 ['arg' => '--reverse-order', 'desc' => 'Alias for "--order-by reverse"'],

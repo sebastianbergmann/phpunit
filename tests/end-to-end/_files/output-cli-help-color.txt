@@ -189,8 +189,10 @@
   [32m--ignore-dependencies               [0m Do not reorder tests to resolve
                                        dependencies between them
   [32m--random-order                      [0m Alias for "--order-by random"
-  [32m--random-seed [36m<N>[0m                   [0m Use the specified random seed when
-                                       running tests in random order
+  [32m--random-seed [36m<N>[0m                   [0m Use the specified seed for PHP's Mt19937
+                                       random number generator (mt_rand(),
+                                       rand(), shuffle(), ...) and for random
+                                       test order
   [32m--repeat [36m<N>[0m                        [0m Run each test N times, stopping at the
                                        first failure
   [32m--retry [36m<N>[0m                         [0m Attempt each test up to N times,

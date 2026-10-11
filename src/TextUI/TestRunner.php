@@ -9,10 +9,10 @@
  */
 namespace PHPUnit\TextUI;
 
-use function mt_srand;
 use PHPUnit\Event;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\ExecutionOrder\ReorderPipeline;
+use PHPUnit\Runner\RandomNumberGeneratorSeeder;
 use PHPUnit\Runner\TestRunHistory\TestRunHistory;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\Configuration\Configuration;
@@ -40,9 +40,7 @@ final class TestRunner
         try {
             $this->emitter->testRunnerStarted();
 
-            if ($configuration->executionOrder() === TestSuiteSorter::ORDER_RANDOMIZED) {
-                mt_srand($configuration->randomSeed());
-            }
+            new RandomNumberGeneratorSeeder($configuration)->seed();
 
             $testRunHistory->load();
 

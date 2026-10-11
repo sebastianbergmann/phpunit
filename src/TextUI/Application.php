@@ -696,7 +696,7 @@ final readonly class Application
 
     private function writeRandomSeedInformation(Printer $printer, Configuration $configuration): void
     {
-        if ($configuration->executionOrder() === TestSuiteSorter::ORDER_RANDOMIZED) {
+        if ($configuration->seedRandomNumberGenerators()) {
             $this->writeMessage(
                 $printer,
                 'Random Seed',
@@ -755,12 +755,18 @@ final readonly class Application
         }
 
         if ($configuration->hasLogfileOtr()) {
+            $randomSeed = null;
+
+            if ($configuration->seedRandomNumberGenerators()) {
+                $randomSeed = $configuration->randomSeed();
+            }
+
             try {
                 new OtrXmlLogger(
                     EventFacade::instance(),
                     $configuration->logfileOtr(),
                     $configuration->includeGitInformationInOtrLogfile(),
-                    $configuration->executionOrder() === TestSuiteSorter::ORDER_RANDOMIZED ? $configuration->randomSeed() : null,
+                    $randomSeed,
                 );
             } catch (CannotOpenUriForWritingException $e) {
                 $this->emitter->testRunnerTriggeredPhpunitWarning(

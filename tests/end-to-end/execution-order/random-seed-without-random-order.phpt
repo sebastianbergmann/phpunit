@@ -1,5 +1,5 @@
 --TEST--
---random-seed without --order-by random triggers warning
+--random-seed without --order-by random does not trigger warning
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--no-configuration';
@@ -14,7 +14,6 @@ require __DIR__ . '/../../bootstrap.php';
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
 PHPUnit Started (%s)
-Test Runner Triggered PHPUnit Warning (--random-seed is only used when execution order is "random" (use --order-by random or --random-order))
 Test Runner Configured
 Event Facade Sealed
 Test Suite Loaded (6 tests)
@@ -53,4 +52,4 @@ Test Suite Finished (PHPUnit\TestFixture\ExecutionOrder\Duration\FooTest, 3 test
 Test Suite Finished (CLI Arguments, 6 tests)
 Test Runner Execution Finished
 Test Runner Finished
-PHPUnit Finished (Shell Exit Code: 1)
+PHPUnit Finished (Shell Exit Code: 0)

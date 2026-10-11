@@ -3171,15 +3171,14 @@ final class BuilderTest extends TestCase
         $this->assertFalse($configuration->hasRandomSeed());
     }
 
-    #[TestDox('--random-seed without random execution order triggers warning')]
-    public function testRandomSeedWithoutRandomExecutionOrderTriggersWarning(): void
+    #[TestDox('--random-seed without random execution order does not trigger warning')]
+    public function testRandomSeedWithoutRandomExecutionOrderDoesNotTriggerWarning(): void
     {
         $emitter = $this->createMock(Emitter::class);
 
         $emitter
-            ->expects($this->once())
-            ->method('testRunnerTriggeredPhpunitWarning')
-            ->with('--random-seed is only used when execution order is "random" (use --order-by random or --random-order)');
+            ->expects($this->never())
+            ->method('testRunnerTriggeredPhpunitWarning');
 
         $configuration = new Builder($emitter)->fromParameters(['--random-seed', '1234']);
 
@@ -3198,8 +3197,20 @@ final class BuilderTest extends TestCase
 
         $configuration = new Builder($emitter)->fromParameters(['--random-order', '--random-order-seed', '1234']);
 
-        $this->assertTrue($configuration->hasRandomSeed());
-        $this->assertSame(1234, $configuration->randomSeed());
+        $this->assertTrue($configuration->hasRandomOrderSeed());
+        $this->assertSame(1234, $configuration->randomOrderSeed());
+        $this->assertFalse($configuration->hasRandomSeed());
+    }
+
+    public function testRandomOrderSeedMayNotBeConfigured(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters([]);
+
+        $this->assertFalse($configuration->hasRandomOrderSeed());
+
+        $this->expectException(Exception::class);
+
+        $configuration->randomOrderSeed();
     }
 
     #[TestDox('--random-order-seed without random execution order triggers warning')]
@@ -3214,31 +3225,16 @@ final class BuilderTest extends TestCase
 
         $configuration = new Builder($emitter)->fromParameters(['--random-order-seed', '1234']);
 
-        $this->assertSame(1234, $configuration->randomSeed());
+        $this->assertSame(1234, $configuration->randomOrderSeed());
     }
 
-    #[TestDox('--random-seed takes precedence over --random-order-seed that is used after it')]
-    public function testRandomSeedTakesPrecedenceOverRandomOrderSeedThatIsUsedAfterIt(): void
+    #[TestDox('--random-seed and --random-order-seed can be used together')]
+    public function testRandomSeedAndRandomOrderSeedCanBeUsedTogether(): void
     {
         $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--random-order', '--random-seed', '1234', '--random-order-seed', '5678']);
 
         $this->assertSame(1234, $configuration->randomSeed());
-    }
-
-    #[TestDox('--random-seed takes precedence over --random-order-seed that is used before it')]
-    public function testRandomSeedTakesPrecedenceOverRandomOrderSeedThatIsUsedBeforeIt(): void
-    {
-        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--random-order', '--random-order-seed', '5678', '--random-seed', '1234']);
-
-        $this->assertSame(1234, $configuration->randomSeed());
-    }
-
-    #[TestDox('--random-order-seed is used when --random-seed is ignored because its value is not a positive integer')]
-    public function testRandomOrderSeedIsUsedWhenRandomSeedIsIgnored(): void
-    {
-        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--random-order', '--random-seed', 'foo', '--random-order-seed', '5678']);
-
-        $this->assertSame(5678, $configuration->randomSeed());
+        $this->assertSame(5678, $configuration->randomOrderSeed());
     }
 
     #[TestDox('--debug')]

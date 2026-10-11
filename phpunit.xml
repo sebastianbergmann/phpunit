@@ -42,6 +42,7 @@
             <directory suffix=".phpt">tests/end-to-end/metadata</directory>
             <directory suffix=".phpt">tests/end-to-end/migration</directory>
             <directory suffix=".phpt">tests/end-to-end/phpt</directory>
+            <directory suffix=".phpt">tests/end-to-end/random-seed</directory>
             <directory suffix=".phpt">tests/end-to-end/regression</directory>
             <directory suffix=".phpt">tests/end-to-end/repeat</directory>
             <directory suffix=".phpt">tests/end-to-end/require-coverage-metadata</directory>
@@ -56,6 +57,7 @@
             <exclude>tests/end-to-end/groups-from-configuration/_files</exclude>
             <exclude>tests/end-to-end/logging/_files</exclude>
             <exclude>tests/end-to-end/migration/_files</exclude>
+            <exclude>tests/end-to-end/random-seed/_files</exclude>
             <exclude>tests/end-to-end/repeat/_files</exclude>
             <exclude>tests/end-to-end/retry/_files</exclude>
             <exclude>tests/end-to-end/test-run-history/_files</exclude>

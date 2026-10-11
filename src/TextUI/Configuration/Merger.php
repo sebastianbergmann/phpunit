@@ -1070,8 +1070,13 @@ final readonly class Merger
 
         $excludeGroups = array_diff($excludeGroups, $groups);
 
+        $seedRandomNumberGenerators = $executionOrder === TestSuiteSorter::ORDER_RANDOMIZED;
+
         if ($cliConfiguration->hasRandomSeed()) {
-            $randomSeed = $cliConfiguration->randomSeed();
+            $randomSeed                 = $cliConfiguration->randomSeed();
+            $seedRandomNumberGenerators = true;
+        } elseif ($cliConfiguration->hasRandomOrderSeed()) {
+            $randomSeed = $cliConfiguration->randomOrderSeed();
         } else {
             $randomSeed = time();
         }
@@ -1495,6 +1500,7 @@ final readonly class Merger
             $groups,
             $excludeGroups,
             $randomSeed,
+            $seedRandomNumberGenerators,
             $repeat,
             $retry,
             $timeout,

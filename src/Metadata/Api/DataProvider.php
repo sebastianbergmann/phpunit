@@ -27,6 +27,8 @@ use PHPUnit\Metadata\DataProviderClosure as DataProviderClosureMetadata;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Metadata\TestWith;
+use PHPUnit\Runner\RandomNumberGeneratorSeeder;
+use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\Util\Test;
 use ReflectionMethod;
 use Throwable;
@@ -162,6 +164,8 @@ final readonly class DataProvider
                     );
                 }
 
+                new RandomNumberGeneratorSeeder(ConfigurationRegistry::get())->seedFor($providerLabel);
+
                 /** @phpstan-ignore staticMethod.dynamicName */
                 $data = $className::$methodName();
 
@@ -261,7 +265,10 @@ final readonly class DataProvider
 
             try {
                 $callable = $_dataProvider->closure();
-                $data     = $callable();
+
+                new RandomNumberGeneratorSeeder(ConfigurationRegistry::get())->seedFor($providerLabel);
+
+                $data = $callable();
 
                 if (!is_iterable($data)) {
                     throw new InvalidDataProviderException(

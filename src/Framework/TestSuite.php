@@ -40,8 +40,10 @@ use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\Exception as RunnerException;
 use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
+use PHPUnit\Runner\RandomNumberGeneratorSeeder;
 use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
+use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\Util\Filter;
 use PHPUnit\Util\Reflection;
 use PHPUnit\Util\Test as TestUtil;
@@ -846,6 +848,8 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
         $calledMethods   = [];
         $emitCalledEvent = true;
         $result          = true;
+
+        new RandomNumberGeneratorSeeder(ConfigurationRegistry::get())->seedFor($this->name);
 
         foreach ($methods as $method) {
             if (Reflection::methodDoesNotExistOrIsDeclaredInTestCase($reflector, $method)) {

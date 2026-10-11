@@ -61,7 +61,9 @@ use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\HookMethods;
 use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
+use PHPUnit\Runner\RandomNumberGeneratorSeeder;
 use PHPUnit\TestRunner\TestResult\PassedTests;
+use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use ReflectionMethod;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use SebastianBergmann\Comparator\Comparator;
@@ -1228,8 +1230,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $this->markTestSkipped($this->emptyDataProviderSkipMessage);
         }
 
+        $randomNumberGeneratorSeeder = new RandomNumberGeneratorSeeder(ConfigurationRegistry::get());
+
         if ($this->inIsolation) {
             // @codeCoverageIgnoreStart
+            $randomNumberGeneratorSeeder->seedFor(static::class);
+
             HookMethodInvoker::invokeBeforeClass($this, $hookMethods, $this->emitter);
             // @codeCoverageIgnoreEnd
         }
@@ -1238,6 +1244,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             MetadataRegistry::parser()->forClassAndMethod(static::class, $this->methodName)->isDoesNotPerformAssertions()->isNotEmpty()) {
             $this->doesNotPerformAssertions = true;
         }
+
+        $randomNumberGeneratorSeeder->seedFor($this->valueObjectForEvents()->id());
 
         HookMethodInvoker::invokeBeforeTest($this, $hookMethods, $this->emitter);
         HookMethodInvoker::invokePreCondition($this, $hookMethods, $this->emitter);

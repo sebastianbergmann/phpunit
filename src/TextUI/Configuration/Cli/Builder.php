@@ -1452,20 +1452,10 @@ final class Builder
 
         $this->warnAboutConflictingOptions();
 
-        if ($randomSeed !== null && $executionOrder !== TestSuiteSorter::ORDER_RANDOMIZED) {
-            $this->emitter->testRunnerTriggeredPhpunitWarning(
-                '--random-seed is only used when execution order is "random" (use --order-by random or --random-order)',
-            );
-        }
-
         if ($randomOrderSeed !== null && $executionOrder !== TestSuiteSorter::ORDER_RANDOMIZED) {
             $this->emitter->testRunnerTriggeredPhpunitWarning(
                 '--random-order-seed is only used when execution order is "random" (use --order-by random or --random-order)',
             );
-        }
-
-        if ($randomSeed === null) {
-            $randomSeed = $randomOrderSeed;
         }
 
         $arguments = [];
@@ -1594,6 +1584,7 @@ final class Builder
             $noResults,
             $noLogging,
             $processIsolation,
+            $randomOrderSeed,
             $randomSeed,
             $repeat,
             $retry,

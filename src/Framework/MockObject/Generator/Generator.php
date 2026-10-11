@@ -15,6 +15,7 @@ use function array_merge;
 use function array_pop;
 use function array_unique;
 use function assert;
+use function bin2hex;
 use function class_exists;
 use function count;
 use function explode;
@@ -23,8 +24,8 @@ use function in_array;
 use function interface_exists;
 use function is_array;
 use function md5;
-use function mt_rand;
 use function preg_match;
+use function random_bytes;
 use function serialize;
 use function sort;
 use function sprintf;
@@ -557,7 +558,7 @@ final class Generator
         if ($className === '') {
             do {
                 $className = $prefix . $type . '_' .
-                             substr(md5((string) mt_rand()), 0, 8);
+                             bin2hex(random_bytes(4));
             } while (class_exists($className, false));
         }
 
@@ -803,7 +804,7 @@ final class Generator
             $intersectionName = sprintf(
                 'Intersection_%s_%s',
                 implode('_', $unqualifiedNames),
-                substr(md5((string) mt_rand()), 0, 8),
+                bin2hex(random_bytes(4)),
             );
         } while (interface_exists($intersectionName, false));
 
