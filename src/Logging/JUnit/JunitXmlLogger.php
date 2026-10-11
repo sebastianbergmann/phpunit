@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Logging\JUnit;
 
-use const PHP_EOL;
 use function assert;
 use function basename;
 use function sprintf;
@@ -398,7 +397,7 @@ final class JunitXmlLogger
 
         $throwable = $event->throwable();
         $buffer .= trim(
-            $throwable->description() . PHP_EOL .
+            $throwable->description() . "\n" .
             $throwable->stackTrace(),
         );
 
@@ -451,10 +450,9 @@ final class JunitXmlLogger
         assert($test instanceof TestMethod);
 
         return sprintf(
-            '%s::%s%s',
+            "%s::%s\n",
             $test->className(),
             $this->name($test),
-            PHP_EOL,
         );
     }
 
