@@ -29,6 +29,7 @@ use PHPUnit\TestFixture\PropertyBased\Properties\DuplicateGeneratorForTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\DuplicateGeneratorForWithLeadingBackslashTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\EmailAddressGenerators;
 use PHPUnit\TestFixture\PropertyBased\Properties\GeneratorForUnknownClassTest;
+use PHPUnit\TestFixture\PropertyBased\Properties\InvalidGenerators;
 use PHPUnit\TestFixture\PropertyBased\Properties\InvalidPropertiesTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\NonStaticGeneratorForTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\OtherEmailAddressGenerators;
@@ -157,12 +158,6 @@ final class PropertyDefinitionBuilderTest extends TestCase
                 'the generator for parameter $value is specified as ' . InvalidPropertiesTest::class . '::nonStaticGenerator(), which is not public and static',
             ],
 
-            'generator that is not a list of a class and a method' => [
-                InvalidPropertiesTest::class,
-                'testWithGeneratorThatIsNotAListOfAClassAndAMethod',
-                'the generator for parameter $value must be specified as the name of a method, as a list of the name of a class and the name of a method, or as a closure',
-            ],
-
             'generator of a class that does not exist' => [
                 InvalidPropertiesTest::class,
                 'testWithGeneratorOfClassThatDoesNotExist',
@@ -178,7 +173,7 @@ final class PropertyDefinitionBuilderTest extends TestCase
             'non-static generator method of another class' => [
                 InvalidPropertiesTest::class,
                 'testWithNonStaticGeneratorMethodOfAnotherClass',
-                'the generator for parameter $value is specified as ' . InvalidPropertiesTest::class . '::nonStaticGenerator(), which is not public and static',
+                'the generator for parameter $value is specified as ' . InvalidGenerators::class . '::nonStaticGenerator(), which is not public and static',
             ],
 
             'unsupported type' => [

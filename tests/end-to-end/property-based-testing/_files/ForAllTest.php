@@ -12,6 +12,7 @@ namespace PHPUnit\TestFixture\PropertyBasedTesting;
 use function bindec;
 use function decbin;
 use PHPUnit\Framework\Attributes\ForAll;
+use PHPUnit\Framework\Attributes\ForAllExternal;
 use PHPUnit\Framework\Attributes\Property;
 use PHPUnit\Framework\PropertyBased\Generators;
 use PHPUnit\Framework\PropertyBased\ValueGenerator;
@@ -41,7 +42,7 @@ final class ForAllTest extends TestCase
     }
 
     #[Property]
-    public function testGeneratorIsSpecifiedWithAMethodOfAnotherClass(#[ForAll([BitStrings::class, 'withoutLeadingZeros'])] string $bits): void
+    public function testGeneratorIsSpecifiedWithAMethodOfAnotherClass(#[ForAllExternal(BitStrings::class, 'withoutLeadingZeros')] string $bits): void
     {
         $this->assertSame($bits, decbin(bindec($bits)));
     }

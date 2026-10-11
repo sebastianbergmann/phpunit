@@ -57,6 +57,7 @@ use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\ExcludeGlobalVariableFromBackup;
 use PHPUnit\Framework\Attributes\ExcludeStaticPropertyFromBackup;
 use PHPUnit\Framework\Attributes\ForAll;
+use PHPUnit\Framework\Attributes\ForAllExternal;
 use PHPUnit\Framework\Attributes\GeneratorFor;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\IgnoreDeprecations;
@@ -1121,7 +1122,11 @@ final class AttributeParser implements Parser
         }
 
         foreach ($reflector->getParameters() as $parameter) {
-            foreach ($parameter->getAttributes(ForAll::class) as $attribute) {
+            foreach ($parameter->getAttributes() as $attribute) {
+                if ($attribute->getName() !== ForAll::class && $attribute->getName() !== ForAllExternal::class) {
+                    continue;
+                }
+
                 try {
                     $attributeInstance = $attribute->newInstance();
                 } catch (Error $e) {
@@ -1150,7 +1155,15 @@ final class AttributeParser implements Parser
 
                 assert($parameterName !== '');
 
-                $result[] = Metadata::forAll($parameterName, $attributeInstance->generator());
+                if ($attributeInstance instanceof ForAllExternal) {
+                    $result[] = Metadata::forAll($parameterName, $attributeInstance->className(), $attributeInstance->methodName());
+
+                    continue;
+                }
+
+                assert($attributeInstance instanceof ForAll);
+
+                $result[] = Metadata::forAll($parameterName, $className, $attributeInstance->generator());
             }
         }
 
