@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\TestWithJson;
 use PHPUnit\Framework\PropertyBased\Generators;
 use PHPUnit\Framework\PropertyBased\ValueGenerator;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\PropertyBased\Derivation\EmailAddress;
 
 final class InvalidPropertiesTest extends TestCase
 {
@@ -143,6 +144,16 @@ final class InvalidPropertiesTest extends TestCase
 
     #[Property]
     public function testWithGeneratorOfClassThatDoesNotExist(#[ForAllExternal('PHPUnit\TestFixture\PropertyBased\Properties\DoesNotExist', 'generator')] int $value): void
+    {
+    }
+
+    #[Property]
+    public function testWithGeneratorOfInterface(#[ForAllExternal(EmailAddress::class, 'asString')] int $value): void
+    {
+    }
+
+    #[Property]
+    public function testWithGeneratorOfTrait(#[ForAllExternal(GeneratorForEmailAddresses::class, 'emailAddresses')] int $value): void
     {
     }
 

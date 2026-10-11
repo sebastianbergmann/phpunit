@@ -42,6 +42,18 @@ final class UseGeneratorsTest extends TestCase
     }
 
     #[Property]
+    #[UseGenerators(EmailAddress::class)]
+    public function testUsesAnInterface(int $value): void
+    {
+    }
+
+    #[Property]
+    #[UseGenerators(GeneratorForEmailAddresses::class)]
+    public function testUsesATrait(int $value): void
+    {
+    }
+
+    #[Property]
     #[UseGenerators(ClassWithoutGeneratorFor::class)]
     public function testUsesAClassThatDoesNotRegisterAGenerator(int $value): void
     {
