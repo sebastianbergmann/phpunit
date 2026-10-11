@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework\Constraint;
 
 use const DIRECTORY_SEPARATOR;
-use const PHP_EOL;
 use function str_repeat;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
@@ -471,7 +470,7 @@ EOD
     public function testCanBeRepresentedAsString(): void
     {
         $this->assertSame(
-            'matches format description:' . PHP_EOL . 'string',
+            "matches format description:\n" . 'string',
             new StringMatchesFormatDescription('string')->toString(),
         );
     }
@@ -480,7 +479,7 @@ EOD
     {
         $constraint = new LogicalNot(new StringMatchesFormatDescription('%d'));
 
-        $this->assertSame('does not match format description:' . PHP_EOL . '%d', $constraint->toString());
+        $this->assertSame("does not match format description:\n" . '%d', $constraint->toString());
 
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessageIs('Failed asserting that string does not match format description.');
@@ -522,7 +521,7 @@ EOD
     public function testReturnsAffirmativeStringInNonLogicalNotContext(): void
     {
         $this->assertSame(
-            'matches format description:' . PHP_EOL . 'string',
+            "matches format description:\n" . 'string',
             LogicalAnd::fromConstraints(new StringMatchesFormatDescription('string'))->toString(),
         );
     }

@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework\Constraint;
 
 use const DIRECTORY_SEPARATOR;
-use const PHP_EOL;
 use function array_slice;
 use function assert;
 use function explode;
@@ -44,7 +43,7 @@ final class StringMatchesFormatDescription extends Constraint
 
     public function toString(): string
     {
-        return 'matches format description:' . PHP_EOL . $this->formatDescription;
+        return "matches format description:\n" . $this->formatDescription;
     }
 
     /**
@@ -52,7 +51,7 @@ final class StringMatchesFormatDescription extends Constraint
      */
     protected function negatedToString(): string
     {
-        return 'does not match format description:' . PHP_EOL . $this->formatDescription;
+        return "does not match format description:\n" . $this->formatDescription;
     }
 
     /**
