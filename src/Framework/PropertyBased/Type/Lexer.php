@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\PropertyBased\Type;
 
 use const PHP_INT_MAX;
+use const PREG_OFFSET_CAPTURE;
 use function array_shift;
 use function assert;
 use function chr;
@@ -17,6 +18,7 @@ use function count;
 use function hexdec;
 use function intdiv;
 use function intval;
+use function ltrim;
 use function mb_chr;
 use function octdec;
 use function preg_match;
@@ -129,7 +131,7 @@ final class Lexer
         }
 
         if (preg_match(self::STRING, $this->text, $matches, 0, $offset) === 1) {
-            return $this->token(TokenKind::String, $matches[0], $this->string($matches[0]));
+            return $this->token(TokenKind::String, $matches[0], $this->string($matches[0], $offset));
         }
 
         $character = $this->text[$offset];
@@ -245,8 +247,10 @@ final class Lexer
     /**
      * Single-quoted strings support the escape sequences \' and \\, double-quoted
      * strings the escape sequences of double-quoted PHP strings.
+     *
+     * @throws InvalidTypeException
      */
-    private function string(string $text): string
+    private function string(string $text, int $offset): string
     {
         $quote   = $text[0];
         $content = substr($text, 1, -1);
@@ -265,9 +269,9 @@ final class Lexer
 
         $content = preg_replace_callback(
             '/\\\\(u\{[0-9a-fA-F]+\}|x[0-9a-fA-F]{1,2}|[0-7]{1,3}|.)/s',
-            static function (array $matches): string
+            static function (array $matches) use ($offset): string
             {
-                $escape = $matches[1];
+                $escape = $matches[1][0];
 
                 return match (true) {
                     $escape === 'n'                       => "\n",
@@ -279,17 +283,43 @@ final class Lexer
                     $escape === '\\'                      => '\\',
                     $escape === '$'                       => '$',
                     $escape === '"'                       => '"',
-                    str_starts_with($escape, 'u{')        => (string) mb_chr((int) hexdec(substr($escape, 2, -1)), 'UTF-8'),
+                    str_starts_with($escape, 'u{')        => self::unicodeEscape($escape, $offset + 1 + $matches[0][1]),
                     str_starts_with($escape, 'x')         => chr((int) hexdec(substr($escape, 1))),
                     preg_match('/^[0-7]/', $escape) === 1 => chr((int) octdec($escape) & 0xFF),
                     default                               => '\\' . $escape,
                 };
             },
             $content,
+            flags: PREG_OFFSET_CAPTURE,
         );
 
         assert($content !== null);
 
         return $content;
+    }
+
+    /**
+     * @throws InvalidTypeException
+     */
+    private static function unicodeEscape(string $escape, int $offset): string
+    {
+        $codePoint = ltrim(substr($escape, 2, -1), '0');
+
+        // hexdec() triggers a notice, as of PHP 8.6, for a number that is larger than PHP_INT_MAX
+        if (strlen($codePoint) <= 6) {
+            $character = mb_chr((int) hexdec($codePoint), 'UTF-8');
+
+            if ($character !== false) {
+                return $character;
+            }
+        }
+
+        throw new InvalidTypeException(
+            sprintf(
+                'Escape sequence \\%s at offset %d is not a valid Unicode code point',
+                $escape,
+                $offset,
+            ),
+        );
     }
 }
