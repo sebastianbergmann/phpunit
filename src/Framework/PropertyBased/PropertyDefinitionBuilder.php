@@ -399,8 +399,16 @@ final readonly class PropertyDefinitionBuilder
             $className,
             $methodName,
             $generatorClassName,
-            sprintf('the generator for parameter $%s is specified as a method of %s', $parameterName, $generatorClassName),
+            sprintf('the generator for parameter $%s is specified as a method of', $parameterName),
         );
+
+        if ($generator === '') {
+            throw InvalidPropertyException::because(
+                $className,
+                $methodName,
+                sprintf('the generator for parameter $%s is specified as a method whose name is empty', $parameterName),
+            );
+        }
 
         if (!method_exists($generatorClassName, $generator)) {
             throw InvalidPropertyException::because(
@@ -499,7 +507,7 @@ final readonly class PropertyDefinitionBuilder
                 $className,
                 $methodName,
                 $usedClassName,
-                sprintf('#[UseGenerators] is used with %s', $usedClassName),
+                '#[UseGenerators] is used with',
             );
 
             $usedClassNames[strtolower($usedClassName)] = $usedClassName;
@@ -641,17 +649,28 @@ final readonly class PropertyDefinitionBuilder
 
     /**
      * Reports a class on which methods that return generators are to be
-     * called that cannot be loaded, that does not exist, or that is an
-     * interface or a trait, whose static methods cannot be called.
+     * called whose name is empty, that cannot be loaded, that does not exist,
+     * or that is an interface or a trait, whose static methods cannot be
+     * called.
      *
      * @param class-string<TestCase> $className
      * @param non-empty-string       $methodName
-     * @param non-empty-string       $reference  how the class is referred to in the message, which continues with ", which does not exist", for instance
+     * @param non-empty-string       $usage      the beginning of the message, which continues with the name of the class, for instance "#[UseGenerators] is used with"
      *
      * @throws InvalidPropertyException
      */
-    private function ensureIsClass(string $className, string $methodName, string $generatorClassName, string $reference): void
+    private function ensureIsClass(string $className, string $methodName, string $generatorClassName, string $usage): void
     {
+        if ($generatorClassName === '') {
+            throw InvalidPropertyException::because(
+                $className,
+                $methodName,
+                sprintf('%s a class whose name is empty', $usage),
+            );
+        }
+
+        $reference = $usage . ' ' . $generatorClassName;
+
         try {
             $exists = class_exists($generatorClassName);
         } catch (Throwable $t) {

@@ -161,6 +161,24 @@ final class PropertyDefinitionBuilderTest extends TestCase
                 'the generator for parameter $value is specified as ' . InvalidPropertiesTest::class . '::nonStaticGenerator(), which is not public and static',
             ],
 
+            'generator method whose name is empty' => [
+                InvalidPropertiesTest::class,
+                'testWithGeneratorMethodWhoseNameIsEmpty',
+                'the generator for parameter $value is specified as a method whose name is empty',
+            ],
+
+            'generator of a class whose name is empty' => [
+                InvalidPropertiesTest::class,
+                'testWithGeneratorOfClassWhoseNameIsEmpty',
+                'the generator for parameter $value is specified as a method of a class whose name is empty',
+            ],
+
+            'generator method of another class whose name is empty' => [
+                InvalidPropertiesTest::class,
+                'testWithGeneratorMethodOfAnotherClassWhoseNameIsEmpty',
+                'the generator for parameter $value is specified as a method whose name is empty',
+            ],
+
             'generator of a class that does not exist' => [
                 InvalidPropertiesTest::class,
                 'testWithGeneratorOfClassThatDoesNotExist',
@@ -243,6 +261,12 @@ final class PropertyDefinitionBuilderTest extends TestCase
                 UseGeneratorsTest::class,
                 'testUsesTwoClassesThatRegisterAGeneratorForTheSameClass',
                 EmailAddressGenerators::class . '::emailAddresses() and ' . OtherEmailAddressGenerators::class . '::otherEmailAddresses() are both registered with #[GeneratorFor] for ' . EmailAddress::class,
+            ],
+
+            'class whose name is empty used with #[UseGenerators]' => [
+                UseGeneratorsTest::class,
+                'testUsesAClassWhoseNameIsEmpty',
+                '#[UseGenerators] is used with a class whose name is empty',
             ],
 
             'class used with #[UseGenerators] that does not exist' => [
