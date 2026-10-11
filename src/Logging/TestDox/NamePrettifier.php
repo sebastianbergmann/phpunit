@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Logging\TestDox;
 
-use const PHP_EOL;
 use function array_key_exists;
 use function array_keys;
 use function array_map;
@@ -465,11 +464,10 @@ final class NamePrettifier
             $this->emitter->testTriggeredPhpunitError(
                 TestMethodBuilder::fromTestCase($test, false),
                 sprintf(
-                    'TestDox formatter %s::%s() triggered an error: %s%s%s',
+                    "TestDox formatter %s::%s() triggered an error: %s\n%s",
                     $className,
                     $methodName,
                     $t->getMessage(),
-                    PHP_EOL,
                     Filter::stackTraceFromThrowableAsString($t),
                 ),
             );

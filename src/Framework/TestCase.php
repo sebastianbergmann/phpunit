@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-use const PHP_EOL;
 use function array_any;
 use function array_keys;
 use function array_merge;
@@ -856,7 +855,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         if ($requiredInvocations < 1) {
             Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
                 $this->valueObjectForEvents(),
-                'Calling atLeast() with an argument that is not positive is deprecated.' . PHP_EOL .
+                "Calling atLeast() with an argument that is not positive is deprecated.\n" .
                 'This will become an error in PHPUnit 14.',
             );
         }
@@ -1524,7 +1523,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         );
 
         if ($missingRequirements !== []) {
-            $this->markTestSkipped(implode(PHP_EOL, $missingRequirements));
+            $this->markTestSkipped(implode("\n", $missingRequirements));
         }
     }
 

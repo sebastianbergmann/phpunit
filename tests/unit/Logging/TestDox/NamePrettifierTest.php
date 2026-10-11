@@ -288,7 +288,7 @@ final class NamePrettifierTest extends TestCase
             ->method('testTriggeredPhpunitError')
             ->with(
                 $this->isInstanceOf(TestMethod::class),
-                $this->stringStartsWith('TestDox formatter ' . TestDoxFormatterErrorTest::class . '::formatterThatThrows() triggered an error: message'),
+                $this->stringStartsWith('TestDox formatter ' . TestDoxFormatterErrorTest::class . "::formatterThatThrows() triggered an error: message\n"),
             )
             ->seal();
 

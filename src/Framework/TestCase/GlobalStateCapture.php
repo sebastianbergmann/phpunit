@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\TestCase;
 
-use const PHP_EOL;
 use function array_keys;
 use function array_reverse;
 use function count;
@@ -298,7 +297,7 @@ final class GlobalStateCapture
 
         $emitter->testConsideredRisky(
             $test->valueObjectForEvents(),
-            'This test modified global state but was not expected to do so' . PHP_EOL .
+            "This test modified global state but was not expected to do so\n" .
             trim(
                 $differ->diff(
                     Exporter::export($before),

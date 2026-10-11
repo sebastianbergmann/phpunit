@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-use const PHP_EOL;
 use function array_all;
 use function array_merge;
 use function array_pop;
@@ -867,7 +866,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                 if ($missingRequirements !== []) {
                     $emitCalledEvent = false;
 
-                    $this->markTestSuiteSkipped(implode(PHP_EOL, $missingRequirements));
+                    $this->markTestSuiteSkipped(implode("\n", $missingRequirements));
                 }
 
                 /** @var callable $callback */

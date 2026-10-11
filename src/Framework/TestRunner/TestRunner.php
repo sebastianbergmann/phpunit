@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework\TestRunner;
 
 use const DIRECTORY_SEPARATOR;
-use const PHP_EOL;
 use function array_diff_assoc;
 use function array_intersect;
 use function array_unique;
@@ -217,8 +216,7 @@ final class TestRunner
 
                 $this->emitter->testConsideredRisky(
                     $test->valueObjectForEvents(),
-                    'This test executed code that is not listed as code to be covered or used:' .
-                    PHP_EOL .
+                    "This test executed code that is not listed as code to be covered or used:\n" .
                     $cce->getMessage(),
                 );
             } catch (CodeCoverageException) {

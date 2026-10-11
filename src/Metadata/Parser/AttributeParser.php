@@ -10,7 +10,6 @@
 namespace PHPUnit\Metadata\Parser;
 
 use const JSON_THROW_ON_ERROR;
-use const PHP_EOL;
 use function assert;
 use function class_exists;
 use function is_numeric;
@@ -1371,12 +1370,11 @@ final class AttributeParser implements Parser
     private function invalidAttributeMessage(string $attributeName, string $target, string $file, int $line, string $message): string
     {
         return sprintf(
-            'Invalid attribute %s for %s in %s:%d%s%s',
+            "Invalid attribute %s for %s in %s:%d\n%s",
             $attributeName,
             $target,
             $file,
             $line,
-            PHP_EOL,
             $message,
         );
     }
