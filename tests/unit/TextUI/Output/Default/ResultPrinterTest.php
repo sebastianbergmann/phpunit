@@ -9,9 +9,7 @@
  */
 namespace PHPUnit\TextUI\Output\Default;
 
-use const PHP_OS;
 use function hrtime;
-use function stripos;
 use Exception;
 use PHPUnit\Event\Code\ClassMethod;
 use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
@@ -154,9 +152,7 @@ final class ResultPrinterTest extends TestCase
             ],
 
             'risky test with multiple reasons with multi-line messages' => [
-                (stripos(PHP_OS, 'WIN') === 0) ?
-                    'risky_test_with_multiple_reasons_with_multi_line_messages_windows.txt' :
-                    'risky_test_with_multiple_reasons_with_multi_line_messages.txt',
+                'risky_test_with_multiple_reasons_with_multi_line_messages.txt',
                 self::createTestResult(
                     testConsideredRiskyEvents: [
                         'Foo::testBar' => [

@@ -16,8 +16,8 @@ use function array_reverse;
 use function array_unique;
 use function assert;
 use function count;
-use function explode;
 use function ksort;
+use function preg_split;
 use function range;
 use function sprintf;
 use function str_starts_with;
@@ -770,7 +770,10 @@ final class ResultPrinter
             return $message . PHP_EOL;
         }
 
-        $lines  = explode(PHP_EOL, $message);
+        $lines = preg_split('/\r\n|\r|\n/', $message);
+
+        assert($lines !== false && $lines !== []);
+
         $buffer = '* ' . $lines[0] . PHP_EOL;
 
         if (count($lines) > 1) {
