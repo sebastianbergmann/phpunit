@@ -245,10 +245,10 @@ abstract readonly class Metadata
     }
 
     /**
-     * @param non-empty-string                                  $parameterName
-     * @param Closure(): ValueGenerator<mixed>|non-empty-string $generator
+     * @param non-empty-string                                                                        $parameterName
+     * @param array{class-string, non-empty-string}|Closure(): ValueGenerator<mixed>|non-empty-string $generator
      */
-    public static function forAll(string $parameterName, Closure|string $generator): ForAll
+    public static function forAll(string $parameterName, array|Closure|string $generator): ForAll
     {
         return new ForAll(Level::METHOD_LEVEL, $parameterName, $generator);
     }

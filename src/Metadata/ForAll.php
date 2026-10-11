@@ -28,15 +28,15 @@ final readonly class ForAll extends Metadata
     private string $parameterName;
 
     /**
-     * @var Closure(): ValueGenerator<mixed>|non-empty-string
+     * @var array{class-string, non-empty-string}|Closure(): ValueGenerator<mixed>|non-empty-string
      */
-    private Closure|string $generator;
+    private array|Closure|string $generator;
 
     /**
-     * @param non-empty-string                                  $parameterName
-     * @param Closure(): ValueGenerator<mixed>|non-empty-string $generator
+     * @param non-empty-string                                                                        $parameterName
+     * @param array{class-string, non-empty-string}|Closure(): ValueGenerator<mixed>|non-empty-string $generator
      */
-    protected function __construct(Level $level, string $parameterName, Closure|string $generator)
+    protected function __construct(Level $level, string $parameterName, array|Closure|string $generator)
     {
         parent::__construct($level);
 
@@ -59,11 +59,13 @@ final readonly class ForAll extends Metadata
 
     /**
      * The name of a public static method of the test case class that returns
-     * the generator, or a static closure that returns it.
+     * the generator, a list of the name of a class and the name of a public
+     * static method of that class that returns it, or a static closure that
+     * returns it.
      *
-     * @return Closure(): ValueGenerator<mixed>|non-empty-string
+     * @return array{class-string, non-empty-string}|Closure(): ValueGenerator<mixed>|non-empty-string
      */
-    public function generator(): Closure|string
+    public function generator(): array|Closure|string
     {
         return $this->generator;
     }

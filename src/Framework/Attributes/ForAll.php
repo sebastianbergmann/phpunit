@@ -14,8 +14,10 @@ use Closure;
 use PHPUnit\Framework\PropertyBased\ValueGenerator;
 
 /**
- * Specifies the generator for a parameter of a property: either the name of a
- * public static method of the test case class that returns the generator, or
+ * Specifies the generator for a parameter of a property: the name of a public
+ * static method of the test case class that returns the generator, a list of
+ * the name of a class and the name of a public static method of that class
+ * that returns it, for instance [MoneyGenerators::class, 'smallAmounts'], or
  * a static closure that returns it.
  *
  * @immutable
@@ -24,22 +26,22 @@ use PHPUnit\Framework\PropertyBased\ValueGenerator;
 final readonly class ForAll
 {
     /**
-     * @var Closure(): ValueGenerator<mixed>|non-empty-string
+     * @var array{class-string, non-empty-string}|Closure(): ValueGenerator<mixed>|non-empty-string
      */
-    private Closure|string $generator;
+    private array|Closure|string $generator;
 
     /**
-     * @param Closure(): ValueGenerator<mixed>|non-empty-string $generator
+     * @param array{class-string, non-empty-string}|Closure(): ValueGenerator<mixed>|non-empty-string $generator
      */
-    public function __construct(Closure|string $generator)
+    public function __construct(array|Closure|string $generator)
     {
         $this->generator = $generator;
     }
 
     /**
-     * @return Closure(): ValueGenerator<mixed>|non-empty-string
+     * @return array{class-string, non-empty-string}|Closure(): ValueGenerator<mixed>|non-empty-string
      */
-    public function generator(): Closure|string
+    public function generator(): array|Closure|string
     {
         return $this->generator;
     }

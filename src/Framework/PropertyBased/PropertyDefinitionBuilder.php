@@ -9,10 +9,12 @@
  */
 namespace PHPUnit\Framework\PropertyBased;
 
+use function array_is_list;
 use function array_key_exists;
 use function array_keys;
 use function assert;
 use function class_exists;
+use function count;
 use function get_debug_type;
 use function in_array;
 use function interface_exists;
@@ -377,35 +379,70 @@ final readonly class PropertyDefinitionBuilder
     }
 
     /**
-     * @param class-string<TestCase>                            $className
-     * @param non-empty-string                                  $methodName
-     * @param non-empty-string                                  $parameterName
-     * @param Closure(): ValueGenerator<mixed>|non-empty-string $generator
+     * @param class-string<TestCase>                                                                  $className
+     * @param non-empty-string                                                                        $methodName
+     * @param non-empty-string                                                                        $parameterName
+     * @param array{class-string, non-empty-string}|Closure(): ValueGenerator<mixed>|non-empty-string $generator
      *
      * @throws InvalidPropertyException
      *
      * @return Closure(): ValueGenerator<mixed>|GeneratorMethod
      */
-    private function generatorSpecifiedWithForAll(string $className, string $methodName, string $parameterName, Closure|string $generator): Closure|GeneratorMethod
+    private function generatorSpecifiedWithForAll(string $className, string $methodName, string $parameterName, array|Closure|string $generator): Closure|GeneratorMethod
     {
-        if (!is_string($generator)) {
+        if ($generator instanceof Closure) {
             return $generator;
         }
 
-        if (!method_exists($className, $generator)) {
+        $generatorClassName = $className;
+
+        if (is_array($generator)) {
+            if (!array_is_list($generator) ||
+                count($generator) !== 2 ||
+                !is_string($generator[0]) ||
+                !is_string($generator[1]) ||
+                $generator[1] === '') {
+                throw InvalidPropertyException::because(
+                    $className,
+                    $methodName,
+                    sprintf(
+                        'the generator for parameter $%s must be specified as the name of a method, as a list of the name of a class and the name of a method, or as a closure',
+                        $parameterName,
+                    ),
+                );
+            }
+
+            if (!class_exists($generator[0])) {
+                throw InvalidPropertyException::because(
+                    $className,
+                    $methodName,
+                    sprintf(
+                        'the generator for parameter $%s is specified as %s::%s(), but class %s does not exist',
+                        $parameterName,
+                        $generator[0],
+                        $generator[1],
+                        $generator[0],
+                    ),
+                );
+            }
+
+            [$generatorClassName, $generator] = $generator;
+        }
+
+        if (!method_exists($generatorClassName, $generator)) {
             throw InvalidPropertyException::because(
                 $className,
                 $methodName,
                 sprintf(
                     'the generator for parameter $%s is specified as %s::%s(), which does not exist',
                     $parameterName,
-                    $className,
+                    $generatorClassName,
                     $generator,
                 ),
             );
         }
 
-        $method = new ReflectionMethod($className, $generator);
+        $method = new ReflectionMethod($generatorClassName, $generator);
 
         if (!$method->isPublic() || !$method->isStatic()) {
             throw InvalidPropertyException::because(
@@ -414,13 +451,13 @@ final readonly class PropertyDefinitionBuilder
                 sprintf(
                     'the generator for parameter $%s is specified as %s::%s(), which is not public and static',
                     $parameterName,
-                    $className,
+                    $generatorClassName,
                     $generator,
                 ),
             );
         }
 
-        return new GeneratorMethod($className, $generator);
+        return new GeneratorMethod($generatorClassName, $generator);
     }
 
     /**
