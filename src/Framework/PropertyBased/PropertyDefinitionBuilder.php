@@ -9,18 +9,15 @@
  */
 namespace PHPUnit\Framework\PropertyBased;
 
-use function array_is_list;
 use function array_key_exists;
 use function array_keys;
 use function assert;
 use function class_exists;
-use function count;
 use function get_debug_type;
 use function in_array;
 use function interface_exists;
 use function is_array;
 use function is_int;
-use function is_string;
 use function lcfirst;
 use function method_exists;
 use function sprintf;
@@ -47,13 +44,13 @@ use Throwable;
  * Validates the metadata of a property before it is checked.
  *
  * The generators for the parameters whose generator is not specified with
- * #[ForAll] are derived from their types, so that a parameter for which no
- * generator can be determined is reported before the property is checked,
- * and they are kept for when it is checked. The methods that are registered
- * with #[GeneratorFor] are not called for this: a generator that is derived
- * refers to a class for which a generator is registered with a deferred
- * generator, which uses the registered generator once it has been created
- * when the property is checked.
+ * #[ForAll] or #[ForAllExternal] are derived from their types, so that a
+ * parameter for which no generator can be determined is reported before the
+ * property is checked, and they are kept for when it is checked. The methods
+ * that are registered with #[GeneratorFor] are not called for this: a
+ * generator that is derived refers to a class for which a generator is
+ * registered with a deferred generator, which uses the registered generator
+ * once it has been created when the property is checked.
  *
  * The arguments of an explicit example, which is specified with #[TestWith]
  * or #[TestWithJson], are passed to the parameters by position or by name,
@@ -104,7 +101,7 @@ final readonly class PropertyDefinitionBuilder
         foreach ($metadata->isForAll() as $item) {
             assert($item instanceof ForAll);
 
-            $forAll[$item->parameterName()] = $item->generator();
+            $forAll[$item->parameterName()] = $item;
         }
 
         $registeredGenerators = $this->registeredGenerators($className, $methodName);
@@ -127,7 +124,7 @@ final readonly class PropertyDefinitionBuilder
             }
 
             if (isset($forAll[$name])) {
-                $parameters[$name] = $this->generatorSpecifiedWithForAll($className, $methodName, $name, $forAll[$name]);
+                $parameters[$name] = $this->generatorSpecifiedWithForAll($className, $methodName, $forAll[$name]);
 
                 continue;
             }
@@ -379,54 +376,36 @@ final readonly class PropertyDefinitionBuilder
     }
 
     /**
-     * @param class-string<TestCase>                                                                  $className
-     * @param non-empty-string                                                                        $methodName
-     * @param non-empty-string                                                                        $parameterName
-     * @param array{class-string, non-empty-string}|Closure(): ValueGenerator<mixed>|non-empty-string $generator
+     * @param class-string<TestCase> $className
+     * @param non-empty-string       $methodName
      *
      * @throws InvalidPropertyException
      *
      * @return Closure(): ValueGenerator<mixed>|GeneratorMethod
      */
-    private function generatorSpecifiedWithForAll(string $className, string $methodName, string $parameterName, array|Closure|string $generator): Closure|GeneratorMethod
+    private function generatorSpecifiedWithForAll(string $className, string $methodName, ForAll $forAll): Closure|GeneratorMethod
     {
+        $generator = $forAll->generator();
+
         if ($generator instanceof Closure) {
             return $generator;
         }
 
-        $generatorClassName = $className;
+        $parameterName      = $forAll->parameterName();
+        $generatorClassName = $forAll->className();
 
-        if (is_array($generator)) {
-            if (!array_is_list($generator) ||
-                count($generator) !== 2 ||
-                !is_string($generator[0]) ||
-                !is_string($generator[1]) ||
-                $generator[1] === '') {
-                throw InvalidPropertyException::because(
-                    $className,
-                    $methodName,
-                    sprintf(
-                        'the generator for parameter $%s must be specified as the name of a method, as a list of the name of a class and the name of a method, or as a closure',
-                        $parameterName,
-                    ),
-                );
-            }
-
-            if (!class_exists($generator[0])) {
-                throw InvalidPropertyException::because(
-                    $className,
-                    $methodName,
-                    sprintf(
-                        'the generator for parameter $%s is specified as %s::%s(), but class %s does not exist',
-                        $parameterName,
-                        $generator[0],
-                        $generator[1],
-                        $generator[0],
-                    ),
-                );
-            }
-
-            [$generatorClassName, $generator] = $generator;
+        if (!class_exists($generatorClassName)) {
+            throw InvalidPropertyException::because(
+                $className,
+                $methodName,
+                sprintf(
+                    'the generator for parameter $%s is specified as %s::%s(), but class %s does not exist',
+                    $parameterName,
+                    $generatorClassName,
+                    $generator,
+                    $generatorClassName,
+                ),
+            );
         }
 
         if (!method_exists($generatorClassName, $generator)) {

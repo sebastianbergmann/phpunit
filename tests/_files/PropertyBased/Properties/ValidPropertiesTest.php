@@ -10,6 +10,7 @@
 namespace PHPUnit\TestFixture\PropertyBased\Properties;
 
 use PHPUnit\Framework\Attributes\ForAll;
+use PHPUnit\Framework\Attributes\ForAllExternal;
 use PHPUnit\Framework\Attributes\Property;
 use PHPUnit\Framework\Attributes\RequireClassification;
 use PHPUnit\Framework\Attributes\TestWith;
@@ -63,7 +64,7 @@ final class ValidPropertiesTest extends TestCase
     }
 
     #[Property]
-    public function testWithGeneratorOfAnotherClass(#[ForAll([EmailAddressGenerators::class, 'emailAddresses'])] EmailAddress $emailAddress): void
+    public function testWithGeneratorOfAnotherClass(#[ForAllExternal(EmailAddressGenerators::class, 'emailAddresses')] EmailAddress $emailAddress): void
     {
     }
 

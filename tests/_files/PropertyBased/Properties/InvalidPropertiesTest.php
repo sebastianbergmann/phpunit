@@ -13,6 +13,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\Attributes\DependsOnClassUsingDeepClone;
 use PHPUnit\Framework\Attributes\ForAll;
+use PHPUnit\Framework\Attributes\ForAllExternal;
 use PHPUnit\Framework\Attributes\Property;
 use PHPUnit\Framework\Attributes\RequireClassification;
 use PHPUnit\Framework\Attributes\TestWith;
@@ -141,22 +142,17 @@ final class InvalidPropertiesTest extends TestCase
     }
 
     #[Property]
-    public function testWithGeneratorThatIsNotAListOfAClassAndAMethod(#[ForAll([EmailAddressGenerators::class])] int $value): void
+    public function testWithGeneratorOfClassThatDoesNotExist(#[ForAllExternal('PHPUnit\TestFixture\PropertyBased\Properties\DoesNotExist', 'generator')] int $value): void
     {
     }
 
     #[Property]
-    public function testWithGeneratorOfClassThatDoesNotExist(#[ForAll(['PHPUnit\TestFixture\PropertyBased\Properties\DoesNotExist', 'generator'])] int $value): void
+    public function testWithUnknownGeneratorMethodOfAnotherClass(#[ForAllExternal(EmailAddressGenerators::class, 'unknown')] int $value): void
     {
     }
 
     #[Property]
-    public function testWithUnknownGeneratorMethodOfAnotherClass(#[ForAll([EmailAddressGenerators::class, 'unknown'])] int $value): void
-    {
-    }
-
-    #[Property]
-    public function testWithNonStaticGeneratorMethodOfAnotherClass(#[ForAll([self::class, 'nonStaticGenerator'])] int $value): void
+    public function testWithNonStaticGeneratorMethodOfAnotherClass(#[ForAllExternal(InvalidGenerators::class, 'nonStaticGenerator')] int $value): void
     {
     }
 
