@@ -10,6 +10,7 @@
 namespace PHPUnit\TestFixture\Metadata\Attribute;
 
 use PHPUnit\Framework\Attributes\ForAll;
+use PHPUnit\Framework\Attributes\ForAllExternal;
 use PHPUnit\Framework\Attributes\Property;
 use PHPUnit\Framework\PropertyBased\Generators;
 use PHPUnit\Framework\PropertyBased\ValueGenerator;
@@ -31,7 +32,7 @@ final class ForAllTest extends TestCase
     }
 
     #[Property]
-    public function testWithGeneratorOfAnotherClass(#[ForAll([self::class, 'smallIntegers'])] int $a): void
+    public function testWithGeneratorOfAnotherClass(#[ForAllExternal(GeneratorForTest::class, 'emailAddresses')] int $a): void
     {
     }
 
