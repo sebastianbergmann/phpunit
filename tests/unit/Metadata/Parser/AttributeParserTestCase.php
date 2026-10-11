@@ -29,6 +29,7 @@ use PHPUnit\Metadata\RequiresPhpunit;
 use PHPUnit\Metadata\RequiresPhpunitExtension;
 use PHPUnit\Metadata\RequiresSetting;
 use PHPUnit\Metadata\Retry;
+use PHPUnit\Metadata\UseGenerators;
 use PHPUnit\Metadata\Version\ComparisonRequirement;
 use PHPUnit\Metadata\Version\ConstraintRequirement;
 use PHPUnit\Metadata\WithEnvironmentVariable;
@@ -86,12 +87,15 @@ use PHPUnit\TestFixture\Metadata\Attribute\SmallAndMediumTest;
 use PHPUnit\TestFixture\Metadata\Attribute\SmallTest;
 use PHPUnit\TestFixture\Metadata\Attribute\TestDoxTest;
 use PHPUnit\TestFixture\Metadata\Attribute\TestWithTest;
+use PHPUnit\TestFixture\Metadata\Attribute\UseGeneratorsTest;
 use PHPUnit\TestFixture\Metadata\Attribute\UsesFilesystemTest;
 use PHPUnit\TestFixture\Metadata\Attribute\UsesTest;
 use PHPUnit\TestFixture\Metadata\Attribute\VersionRequirementWithoutOperatorTest;
 use PHPUnit\TestFixture\Metadata\Attribute\WithEnvironmentVariableTest;
 use PHPUnit\TestFixture\Metadata\Attribute\WithoutErrorHandlerTest;
 use PHPUnit\TestFixture\PropertyBased\Derivation\EmailAddress;
+use PHPUnit\TestFixture\PropertyBased\Properties\EmailAddressGenerators;
+use PHPUnit\TestFixture\PropertyBased\Properties\OtherEmailAddressGenerators;
 
 abstract class AttributeParserTestCase extends TestCase
 {
@@ -1425,6 +1429,36 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertSame(10.0, $first->minimumPercentage());
         $this->assertSame('zero', $second->label());
         $this->assertSame(0.5, $second->minimumPercentage());
+    }
+
+    #[TestDox('Parses #[UseGenerators] attribute on class')]
+    public function test_parses_UseGenerators_attribute_on_class(): void
+    {
+        $metadata = $this->parser()->forClass(UseGeneratorsTest::class)->isUseGenerators();
+
+        $this->assertCount(1, $metadata);
+
+        $useGenerators = $metadata->asArray()[0];
+
+        assert($useGenerators instanceof UseGenerators);
+
+        $this->assertTrue($useGenerators->isClassLevel());
+        $this->assertSame(EmailAddressGenerators::class, $useGenerators->className());
+    }
+
+    #[TestDox('Parses #[UseGenerators] attribute on method')]
+    public function test_parses_UseGenerators_attribute_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(UseGeneratorsTest::class, 'testOne')->isUseGenerators();
+
+        $this->assertCount(1, $metadata);
+
+        $useGenerators = $metadata->asArray()[0];
+
+        assert($useGenerators instanceof UseGenerators);
+
+        $this->assertTrue($useGenerators->isMethodLevel());
+        $this->assertSame(OtherEmailAddressGenerators::class, $useGenerators->className());
     }
 
     public function testWarnsWhenNumberOfExamplesForPropertyIsNotPositive(): void

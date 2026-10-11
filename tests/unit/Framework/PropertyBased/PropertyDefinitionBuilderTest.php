@@ -24,12 +24,17 @@ use PHPUnit\TestFixture\Metadata\Attribute\ForAllClosureTest;
 use PHPUnit\TestFixture\PropertyBased\Derivation\Customer;
 use PHPUnit\TestFixture\PropertyBased\Derivation\EmailAddress;
 use PHPUnit\TestFixture\PropertyBased\Derivation\ExampleEmailAddress;
+use PHPUnit\TestFixture\PropertyBased\Properties\ClassWithoutGeneratorFor;
 use PHPUnit\TestFixture\PropertyBased\Properties\DuplicateGeneratorForTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\DuplicateGeneratorForWithLeadingBackslashTest;
+use PHPUnit\TestFixture\PropertyBased\Properties\EmailAddressGenerators;
 use PHPUnit\TestFixture\PropertyBased\Properties\GeneratorForUnknownClassTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\InvalidPropertiesTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\NonStaticGeneratorForTest;
+use PHPUnit\TestFixture\PropertyBased\Properties\OtherEmailAddressGenerators;
 use PHPUnit\TestFixture\PropertyBased\Properties\PropertyInSubclassTest;
+use PHPUnit\TestFixture\PropertyBased\Properties\UseGeneratorsTest;
+use PHPUnit\TestFixture\PropertyBased\Properties\UseGeneratorsWithOwnGeneratorForTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\ValidPropertiesTest;
 use Random\Engine\Xoshiro256StarStar;
 use Random\Randomizer;
@@ -37,6 +42,7 @@ use Random\Randomizer;
 #[CoversClass(PropertyDefinitionBuilder::class)]
 #[CoversClass(PropertyDefinition::class)]
 #[CoversClass(ExplicitExample::class)]
+#[CoversClass(GeneratorMethod::class)]
 #[CoversClass(InvalidPropertyException::class)]
 #[Small]
 #[Group('framework')]
@@ -175,6 +181,24 @@ final class PropertyDefinitionBuilderTest extends TestCase
                 NonStaticGeneratorForTest::class . '::emailAddresses() is registered with #[GeneratorFor] for ' . EmailAddress::class . ', but it is not public and static',
             ],
 
+            'classes used with #[UseGenerators] that register a generator for the same class' => [
+                UseGeneratorsTest::class,
+                'testUsesTwoClassesThatRegisterAGeneratorForTheSameClass',
+                EmailAddressGenerators::class . '::emailAddresses() and ' . OtherEmailAddressGenerators::class . '::otherEmailAddresses() are both registered with #[GeneratorFor] for ' . EmailAddress::class,
+            ],
+
+            'class used with #[UseGenerators] that does not exist' => [
+                UseGeneratorsTest::class,
+                'testUsesAClassThatDoesNotExist',
+                'the class PHPUnit\TestFixture\PropertyBased\Properties\DoesNotExist that is used with #[UseGenerators] does not exist',
+            ],
+
+            'class used with #[UseGenerators] that does not register a generator' => [
+                UseGeneratorsTest::class,
+                'testUsesAClassThatDoesNotRegisterAGenerator',
+                'the class ' . ClassWithoutGeneratorFor::class . ' that is used with #[UseGenerators] does not register a generator with #[GeneratorFor]',
+            ],
+
             'generator registered for unknown class' => [
                 GeneratorForUnknownClassTest::class,
                 'testOne',
@@ -193,7 +217,7 @@ final class PropertyDefinitionBuilderTest extends TestCase
         $parameters = $definition->parameters();
 
         $this->assertSame(['small', 'name', 'money'], array_keys($parameters));
-        $this->assertSame('smallIntegers', $parameters['small']);
+        $this->assertEquals(new GeneratorMethod(ValidPropertiesTest::class, 'smallIntegers'), $parameters['small']);
         $this->assertInstanceOf(AbstractGenerator::class, $parameters['name']);
         $this->assertInstanceOf(AbstractGenerator::class, $parameters['money']);
         $this->assertSame([], $definition->explicitExamples());
@@ -245,17 +269,41 @@ final class PropertyDefinitionBuilderTest extends TestCase
 
     public function testCollectsTheGeneratorsRegisteredWithGeneratorForIncludingThoseDeclaredInTraits(): void
     {
-        $this->assertSame(
-            [EmailAddress::class => 'emailAddresses'],
+        $this->assertEquals(
+            [EmailAddress::class => new GeneratorMethod(ValidPropertiesTest::class, 'emailAddresses')],
             (new PropertyDefinitionBuilder)->build(ValidPropertiesTest::class, 'testWithRegisteredGenerator')->registeredGenerators(),
         );
     }
 
     public function testCollectsTheGeneratorsRegisteredWithGeneratorForThatAreDeclaredInAParentClass(): void
     {
-        $this->assertSame(
-            [EmailAddress::class => 'emailAddresses'],
+        $this->assertEquals(
+            [EmailAddress::class => new GeneratorMethod(PropertyInSubclassTest::class, 'emailAddresses')],
             (new PropertyDefinitionBuilder)->build(PropertyInSubclassTest::class, 'testOne')->registeredGenerators(),
+        );
+    }
+
+    public function testUsesTheGeneratorsThatAClassThatIsUsedForTheTestCaseClassRegisters(): void
+    {
+        $this->assertEquals(
+            [EmailAddress::class => new GeneratorMethod(EmailAddressGenerators::class, 'emailAddresses')],
+            (new PropertyDefinitionBuilder)->build(UseGeneratorsTest::class, 'testUsesTheGeneratorsOfTheClassThatIsUsedForTheTestCaseClass')->registeredGenerators(),
+        );
+    }
+
+    public function testTheGeneratorsThatAClassThatIsUsedForThePropertyRegistersTakePrecedenceOverThoseOfAClassThatIsUsedForTheTestCaseClass(): void
+    {
+        $this->assertEquals(
+            [EmailAddress::class => new GeneratorMethod(OtherEmailAddressGenerators::class, 'otherEmailAddresses')],
+            (new PropertyDefinitionBuilder)->build(UseGeneratorsTest::class, 'testUsesTheGeneratorsOfTheClassThatIsUsedForTheProperty')->registeredGenerators(),
+        );
+    }
+
+    public function testTheGeneratorsThatTheTestCaseClassRegistersTakePrecedenceOverThoseOfTheClassesThatAreUsed(): void
+    {
+        $this->assertEquals(
+            [EmailAddress::class => new GeneratorMethod(UseGeneratorsWithOwnGeneratorForTest::class, 'emailAddresses')],
+            (new PropertyDefinitionBuilder)->build(UseGeneratorsWithOwnGeneratorForTest::class, 'testUsesTheGeneratorOfTheTestCaseClass')->registeredGenerators(),
         );
     }
 
