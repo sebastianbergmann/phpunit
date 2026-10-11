@@ -92,8 +92,8 @@ final class RendererTest extends AbstractEventTestCase
         /* @noinspection PhpPossiblePolymorphicInvocationInspection */
         $this->assertSame(
             'RuntimeException: outer' . PHP_EOL .
-            PHP_EOL . 'Property falsified after 2 examples, counterexample shrunk in 1 step:' . PHP_EOL .
-            PHP_EOL . '    $value = 0;' . PHP_EOL .
+            PHP_EOL . 'Property falsified after 2 examples, counterexample shrunk in 1 step:' . "\n" .
+            "\n" . '    $value = 0;' . PHP_EOL .
             PHP_EOL . 'FooTest.php:1' . PHP_EOL,
             $printer->buffer(),
         );
