@@ -415,17 +415,18 @@ final readonly class PropertyDefinitionBuilder
             );
         }
 
-        $method = new ReflectionMethod($generatorClassName, $generator);
+        $reason = $this->whyGeneratorCannotBeCreatedWith(new ReflectionMethod($generatorClassName, $generator));
 
-        if (!$method->isPublic() || !$method->isStatic()) {
+        if ($reason !== null) {
             throw InvalidPropertyException::because(
                 $className,
                 $methodName,
                 sprintf(
-                    'the generator for parameter $%s is specified as %s::%s(), which is not public and static',
+                    'the generator for parameter $%s is specified as %s::%s(), which %s',
                     $parameterName,
                     $generatorClassName,
                     $generator,
+                    $reason,
                 ),
             );
         }
@@ -555,15 +556,17 @@ final readonly class PropertyDefinitionBuilder
 
                 $registeredClassName = $metadata->className();
                 $generatorMethod     = new GeneratorMethod($declaringClass, $name);
+                $reason              = $this->whyGeneratorCannotBeCreatedWith($method);
 
-                if (!$method->isPublic() || !$method->isStatic()) {
+                if ($reason !== null) {
                     throw InvalidPropertyException::because(
                         $className,
                         $methodName,
                         sprintf(
-                            '%s is registered with #[GeneratorFor] for %s, but it is not public and static',
+                            '%s is registered with #[GeneratorFor] for %s, but it %s',
                             $generatorMethod->asString(),
                             $registeredClassName,
+                            $reason,
                         ),
                     );
                 }
@@ -609,6 +612,31 @@ final readonly class PropertyDefinitionBuilder
         }
 
         return $generators;
+    }
+
+    /**
+     * Returns why a generator cannot be created by calling a method on its
+     * class without arguments, which is how the methods that are specified
+     * with #[ForAll] or #[ForAllExternal] and the methods that are registered
+     * with #[GeneratorFor] are called, or null if it can be.
+     *
+     * @return ?non-empty-string
+     */
+    private function whyGeneratorCannotBeCreatedWith(ReflectionMethod $method): ?string
+    {
+        if (!$method->isPublic() || !$method->isStatic()) {
+            return 'is not public and static';
+        }
+
+        if ($method->isAbstract()) {
+            return 'is abstract';
+        }
+
+        if ($method->getNumberOfRequiredParameters() > 0) {
+            return 'has required parameters';
+        }
+
+        return null;
     }
 
     /**

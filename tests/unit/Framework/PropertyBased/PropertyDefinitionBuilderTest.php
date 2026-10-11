@@ -24,12 +24,14 @@ use PHPUnit\TestFixture\Metadata\Attribute\ForAllClosureTest;
 use PHPUnit\TestFixture\PropertyBased\Derivation\Customer;
 use PHPUnit\TestFixture\PropertyBased\Derivation\EmailAddress;
 use PHPUnit\TestFixture\PropertyBased\Derivation\ExampleEmailAddress;
+use PHPUnit\TestFixture\PropertyBased\Properties\ClassWithAbstractGeneratorFor;
 use PHPUnit\TestFixture\PropertyBased\Properties\ClassWithoutGeneratorFor;
 use PHPUnit\TestFixture\PropertyBased\Properties\DuplicateGeneratorForTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\DuplicateGeneratorForWithLeadingBackslashTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\EmailAddressGenerators;
 use PHPUnit\TestFixture\PropertyBased\Properties\GeneratorForEmailAddresses;
 use PHPUnit\TestFixture\PropertyBased\Properties\GeneratorForUnknownClassTest;
+use PHPUnit\TestFixture\PropertyBased\Properties\GeneratorForWithRequiredParametersTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\InvalidGenerators;
 use PHPUnit\TestFixture\PropertyBased\Properties\InvalidPropertiesTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\NonStaticGeneratorForTest;
@@ -189,6 +191,18 @@ final class PropertyDefinitionBuilderTest extends TestCase
                 'the generator for parameter $value is specified as ' . InvalidGenerators::class . '::nonStaticGenerator(), which is not public and static',
             ],
 
+            'abstract generator method' => [
+                InvalidPropertiesTest::class,
+                'testWithAbstractGeneratorMethod',
+                'the generator for parameter $value is specified as ' . InvalidGenerators::class . '::abstractGenerator(), which is abstract',
+            ],
+
+            'generator method with required parameters' => [
+                InvalidPropertiesTest::class,
+                'testWithGeneratorMethodWithRequiredParameters',
+                'the generator for parameter $value is specified as ' . InvalidGenerators::class . '::generatorWithRequiredParameter(), which has required parameters',
+            ],
+
             'unsupported type' => [
                 InvalidPropertiesTest::class,
                 'testWithUnsupportedType',
@@ -211,6 +225,18 @@ final class PropertyDefinitionBuilderTest extends TestCase
                 NonStaticGeneratorForTest::class,
                 'testOne',
                 NonStaticGeneratorForTest::class . '::emailAddresses() is registered with #[GeneratorFor] for ' . EmailAddress::class . ', but it is not public and static',
+            ],
+
+            'registered generator with required parameters' => [
+                GeneratorForWithRequiredParametersTest::class,
+                'testOne',
+                GeneratorForWithRequiredParametersTest::class . '::emailAddresses() is registered with #[GeneratorFor] for ' . EmailAddress::class . ', but it has required parameters',
+            ],
+
+            'abstract registered generator of a class used with #[UseGenerators]' => [
+                UseGeneratorsTest::class,
+                'testUsesAClassThatRegistersAnAbstractGenerator',
+                ClassWithAbstractGeneratorFor::class . '::emailAddresses() is registered with #[GeneratorFor] for ' . EmailAddress::class . ', but it is abstract',
             ],
 
             'classes used with #[UseGenerators] that register a generator for the same class' => [
@@ -324,6 +350,14 @@ final class PropertyDefinitionBuilderTest extends TestCase
         $this->assertEquals(
             [EmailAddress::class => new GeneratorMethod(PropertyInSubclassTest::class, 'emailAddresses')],
             (new PropertyDefinitionBuilder)->build(PropertyInSubclassTest::class, 'testOne')->registeredGenerators(),
+        );
+    }
+
+    public function testTheMethodThatIsSpecifiedAsTheGeneratorForAParameterMayHaveOptionalParameters(): void
+    {
+        $this->assertEquals(
+            new GeneratorMethod(ValidPropertiesTest::class, 'integersUpTo'),
+            (new PropertyDefinitionBuilder)->build(ValidPropertiesTest::class, 'testWithGeneratorMethodWithOptionalParameter')->parameters()['value'],
         );
     }
 
