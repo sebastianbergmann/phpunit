@@ -9,7 +9,9 @@
  */
 namespace PHPUnit\Runner\Phpt;
 
+use const DIRECTORY_SEPARATOR;
 use function realpath;
+use function sys_get_temp_dir;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Test\Passed;
@@ -54,6 +56,14 @@ final class TestCaseTest extends FrameworkTestCase
         $testCase = new TestCase('/this/file/does/not/exist.phpt');
 
         $this->assertSame(1, $testCase->count());
+    }
+
+    public function testCoverageFilesAreCreatedBelowResolvedPathOfSystemTemporaryDirectory(): void
+    {
+        $this->assertSame(
+            realpath(sys_get_temp_dir()) . DIRECTORY_SEPARATOR . 'phpunit-phpt',
+            TestCase::coverageFilesDirectory(),
+        );
     }
 
     #[TestDox('Runs the code of the file referenced by the FILE_EXTERNAL section')]
