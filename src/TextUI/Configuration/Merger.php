@@ -1093,6 +1093,12 @@ final readonly class Merger
             $propertyExamples = $xmlConfiguration->propertyBasedTesting()->examples();
         }
 
+        if ($cliConfiguration->hasPropertyExamplesMultiplier()) {
+            $propertyExamplesMultiplier = $cliConfiguration->propertyExamplesMultiplier();
+        } else {
+            $propertyExamplesMultiplier = $xmlConfiguration->propertyBasedTesting()->examplesMultiplier();
+        }
+
         $maximumShrinkingAttempts = $xmlConfiguration->propertyBasedTesting()->maximumShrinkingAttempts();
 
         $repeat = 1;
@@ -1520,6 +1526,7 @@ final readonly class Merger
             $retry,
             $timeout,
             $propertyExamples,
+            $propertyExamplesMultiplier,
             $maximumShrinkingAttempts,
             $includeUncoveredFiles,
             $xmlConfiguration->testSuite(),
