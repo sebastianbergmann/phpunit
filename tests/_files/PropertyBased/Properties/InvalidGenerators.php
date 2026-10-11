@@ -12,8 +12,21 @@ namespace PHPUnit\TestFixture\PropertyBased\Properties;
 use PHPUnit\Framework\PropertyBased\Generators;
 use PHPUnit\Framework\PropertyBased\ValueGenerator;
 
-final class InvalidGenerators
+abstract class InvalidGenerators
 {
+    /**
+     * @return ValueGenerator<int>
+     */
+    public static function generatorWithRequiredParameter(int $maximum): ValueGenerator
+    {
+        return Generators::integers(0, $maximum);
+    }
+
+    /**
+     * @return ValueGenerator<int>
+     */
+    abstract public static function abstractGenerator(): ValueGenerator;
+
     /**
      * @return ValueGenerator<int>
      */
