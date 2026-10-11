@@ -384,7 +384,7 @@ final class JunitXmlLogger
         $propertyFalsified = $this->propertyFalsified->takeFor($event->test());
 
         if ($propertyFalsified !== null) {
-            $description .= PHP_EOL . PropertyFalsifiedToStringMapper::map($propertyFalsified);
+            $description .= "\n" . PropertyFalsifiedToStringMapper::map($propertyFalsified);
         }
 
         $buffer .= trim(
