@@ -102,7 +102,19 @@ final readonly class PropertyDefinitionBuilder
         foreach ($metadata->isForAll() as $item) {
             assert($item instanceof ForAll);
 
-            $forAll[$item->parameterName()] = $item;
+            $parameterName = $item->parameterName();
+
+            // #[ForAll] and #[ForAllExternal] cannot be repeated, but they can
+            // be combined
+            if (isset($forAll[$parameterName])) {
+                throw InvalidPropertyException::because(
+                    $className,
+                    $methodName,
+                    sprintf('the generator for parameter $%s is specified more than once', $parameterName),
+                );
+            }
+
+            $forAll[$parameterName] = $item;
         }
 
         $registeredGenerators = $this->registeredGenerators($className, $methodName);
