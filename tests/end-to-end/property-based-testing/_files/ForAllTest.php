@@ -17,6 +17,8 @@ use PHPUnit\Framework\PropertyBased\Generators;
 use PHPUnit\Framework\PropertyBased\ValueGenerator;
 use PHPUnit\Framework\TestCase;
 
+require_once __DIR__ . '/BitStrings.php';
+
 final class ForAllTest extends TestCase
 {
     /**
@@ -34,6 +36,12 @@ final class ForAllTest extends TestCase
 
     #[Property]
     public function testGeneratorIsSpecifiedWithAMethod(#[ForAll('bitStringsWithoutLeadingZeros')] string $bits): void
+    {
+        $this->assertSame($bits, decbin(bindec($bits)));
+    }
+
+    #[Property]
+    public function testGeneratorIsSpecifiedWithAMethodOfAnotherClass(#[ForAll([BitStrings::class, 'withoutLeadingZeros'])] string $bits): void
     {
         $this->assertSame($bits, decbin(bindec($bits)));
     }
