@@ -153,11 +153,18 @@ final readonly class ChildProcessResultProcessor
             return;
         }
 
-        // @codeCoverageIgnoreStart
         if (!$childResult->codeCoverage instanceof \SebastianBergmann\CodeCoverage\CodeCoverage) {
+            $this->emitter->testRunnerTriggeredPhpunitWarning(
+                sprintf(
+                    'Code coverage could not be collected for %s',
+                    TestMethodBuilder::fromTestCase($test)->id(),
+                ),
+            );
+
             return;
         }
 
+        // @codeCoverageIgnoreStart
         CodeCoverage::instance()->codeCoverage()->merge(
             $childResult->codeCoverage,
         );

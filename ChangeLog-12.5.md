@@ -9,6 +9,7 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 * [#7053](https://github.com/sebastianbergmann/phpunit/issues/7053): Extensions loaded using `-d extension` or `-d zend_extension` are not loaded in child processes
 * The status of a test whose mock object raises an exception in its destructor is success although the test is reported as errored, so `tearDown()` sees the wrong status and code coverage records the test as successful
 * Named arguments passed to `with()` were matched by position instead of by name, so an expectation such as `->with(b: 7)` compared the expected value with the first parameter of the method and the parameter named `$b` was not checked
+* When code coverage is collected and no code coverage driver is available in a child process, a test that is run in process isolation errors and a PHPT test fails instead of a warning being emitted
 
 ## [12.5.38] - 2026-10-05
 

@@ -481,7 +481,17 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
                 ],
             );
 
-            if ($coverage === false) {
+            /**
+             * @phpstan-ignore instanceof.internalClass
+             */
+            if (!$coverage instanceof RawCodeCoverageData) {
+                EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
+                    sprintf(
+                        'Code coverage could not be collected for %s',
+                        $this->filename,
+                    ),
+                );
+
                 /**
                  * @phpstan-ignore staticMethod.internalClass
                  */

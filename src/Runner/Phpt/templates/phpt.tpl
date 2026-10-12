@@ -27,16 +27,22 @@ if ('{bootstrap}' !== '') {
 if (class_exists('SebastianBergmann\CodeCoverage\CodeCoverage')) {
     $__phpunit_filter = new Filter;
 
-    $__phpunit_coverage = new CodeCoverage(
-        (new Selector)->{driverMethod}($__phpunit_filter),
-        $__phpunit_filter
-    );
-
-    if ({codeCoverageCacheDirectory}) {
-        $__phpunit_coverage->cacheStaticAnalysis({codeCoverageCacheDirectory});
+    try {
+        $__phpunit_coverage = new CodeCoverage(
+            (new Selector)->{driverMethod}($__phpunit_filter),
+            $__phpunit_filter
+        );
+    } catch (SebastianBergmann\CodeCoverage\Exception) {
+        // The main process emits a warning when no code coverage data is available
     }
 
-    $__phpunit_coverage->start(__FILE__);
+    if ($__phpunit_coverage !== null) {
+        if ({codeCoverageCacheDirectory}) {
+            $__phpunit_coverage->cacheStaticAnalysis({codeCoverageCacheDirectory});
+        }
+
+        $__phpunit_coverage->start(__FILE__);
+    }
 }
 
 register_shutdown_function(
