@@ -12,6 +12,7 @@ namespace PHPUnit\Runner\Phpt;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Driver\Granularity;
 use SebastianBergmann\CodeCoverage\Driver\Selector;
+use SebastianBergmann\CodeCoverage\Exception;
 use SebastianBergmann\CodeCoverage\Filter;
 
 /**
@@ -24,9 +25,12 @@ use SebastianBergmann\CodeCoverage\Filter;
 final readonly class CodeCoverageBootstrapper
 {
     /**
+     * Returns null when no code coverage driver is available. The main process
+     * then emits a warning because no code coverage data has been collected.
+     *
      * @param ?non-empty-string $codeCoverageCacheDirectory
      */
-    public static function bootstrap(?string $codeCoverageCacheDirectory, bool $branchCoverage, bool $pathCoverage): CodeCoverage
+    public static function bootstrap(?string $codeCoverageCacheDirectory, bool $branchCoverage, bool $pathCoverage): ?CodeCoverage
     {
         $filter = new Filter;
 
@@ -40,10 +44,13 @@ final readonly class CodeCoverageBootstrapper
             $granularity = Granularity::LineBranchAndPath;
         }
 
-        $coverage = new CodeCoverage(
-            (new Selector)->select($filter, $granularity),
-            $filter,
-        );
+        try {
+            $driver = (new Selector)->select($filter, $granularity);
+        } catch (Exception) {
+            return null;
+        }
+
+        $coverage = new CodeCoverage($driver, $filter);
 
         if ($codeCoverageCacheDirectory !== null) {
             $coverage->cacheStaticAnalysis($codeCoverageCacheDirectory);

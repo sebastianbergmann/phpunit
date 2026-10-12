@@ -294,7 +294,13 @@ final readonly class JobRunner
             }
         }
 
-        $phpSettings = array_merge($phpSettings, $this->cliIniOverrides($phpSettings));
+        $phpSettings = array_merge(
+            ExtensionSettings::forChildProcess(
+                fn (): array => $this->settingsToParameters(array_values($this->cliIniOverrides([]))),
+            ),
+            $phpSettings,
+            $this->cliIniOverrides($phpSettings),
+        );
 
         $command = array_merge($command, $this->settingsToParameters(array_values($phpSettings)));
 

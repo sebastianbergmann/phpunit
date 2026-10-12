@@ -355,7 +355,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
 
         if (CodeCoverage::instance()->isActive()) {
             // @codeCoverageIgnoreStart
-            $coverage = $this->cleanupForCoverage();
+            $coverage = $this->cleanupForCoverage($emitter);
 
             CodeCoverage::instance()->codeCoverage()->start($this->filename, TestSize::Large);
 
@@ -757,7 +757,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
      *
      * @phpstan-ignore return.internalClass
      */
-    private function cleanupForCoverage(): RawCodeCoverageData
+    private function cleanupForCoverage(Emitter $emitter): RawCodeCoverageData
     {
         /**
          * @phpstan-ignore staticMethod.internalClass
@@ -785,6 +785,13 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
             /** @phpstan-ignore instanceof.internalClass */
             if ($unserialized instanceof RawCodeCoverageData) {
                 $coverage = $unserialized;
+            } else {
+                $emitter->testRunnerTriggeredPhpunitWarning(
+                    sprintf(
+                        'Code coverage could not be collected for %s',
+                        $this->filename,
+                    ),
+                );
             }
         }
 
