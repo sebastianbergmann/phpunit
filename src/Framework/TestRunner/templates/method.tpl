@@ -96,13 +96,19 @@ function __phpunit_run_isolated_test()
 
     $output = ChildProcessOutputCollector::collect($test);
 
+    $codeCoverage = null;
+
+    if ({collectCodeCoverageInformation} && CodeCoverage::instance()->isActive()) {
+        $codeCoverage = CodeCoverage::instance()->codeCoverage();
+    }
+
     file_put_contents(
         '{processResultFile}',
         '{processResultNonce}' . serialize(
             (object)[
                 'testResult'    => $test->result(),
                 'status'        => $test->status(),
-                'codeCoverage'  => {collectCodeCoverageInformation} ? CodeCoverage::instance()->codeCoverage() : null,
+                'codeCoverage'  => $codeCoverage,
                 'numAssertions' => $test->numberOfAssertionsPerformed(),
                 'output'        => $output,
                 'events'        => $dispatcher->flush(),
