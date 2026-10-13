@@ -148,6 +148,7 @@ final class Facade implements EventCollector
     {
         $dispatcher = new CollectingDispatcher(
             new DirectDispatcher($this->typeMap()),
+            new DirectDispatcher($this->typeMap()),
         );
 
         DeprecationCollector::initForIsolation($dispatcher);
@@ -186,6 +187,7 @@ final class Facade implements EventCollector
     public function collectingEmitter(): CollectingEmitter
     {
         $dispatcher = new CollectingDispatcher(
+            new DirectDispatcher($this->typeMap()),
             new DirectDispatcher($this->typeMap()),
         );
 

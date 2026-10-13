@@ -12,6 +12,7 @@ namespace PHPUnit\Runner\DeprecationCollector;
 use const E_USER_DEPRECATED;
 use function hrtime;
 use function trigger_error;
+use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
 use PHPUnit\Event\Code\TestMethodBuilder;
 use PHPUnit\Event\CollectingDispatcher;
 use PHPUnit\Event\DirectDispatcher;
@@ -84,6 +85,48 @@ final class FacadeTest extends TestCase
         }
     }
 
+    #[IgnoreDeprecations]
+    public function testSeesTheDeprecationsOfATestWhoseEventsAreCollectedInAnIsolatedProcess(): void
+    {
+        $property    = new ReflectionProperty(Facade::class, 'inIsolation');
+        $inIsolation = $property->getValue();
+
+        try {
+            $dispatcher = $this->dispatcher();
+
+            Facade::initForIsolation($dispatcher);
+
+            trigger_error('message of previous test', E_USER_DEPRECATED);
+
+            $dispatcher->startCollectingEvents();
+
+            $dispatcher->dispatch(new Prepared($this->telemetryInfo(), TestMethodBuilder::fromTestCase($this)));
+
+            $this->assertSame([], Facade::deprecations());
+
+            $dispatcher->dispatch(
+                new DeprecationTriggered(
+                    $this->telemetryInfo(),
+                    TestMethodBuilder::fromTestCase($this),
+                    'message of collected test',
+                    'file.php',
+                    1,
+                    false,
+                    false,
+                    false,
+                    false,
+                    IssueTrigger::from(null, null),
+                    'stack trace',
+                ),
+            );
+
+            $this->assertSame(['message of collected test'], Facade::deprecations());
+            $this->assertCount(2, $dispatcher->stopCollectingEvents());
+        } finally {
+            $property->setValue(null, $inIsolation);
+        }
+    }
+
     public function testDoesNotReportFilteredDeprecationsInAnIsolatedProcess(): void
     {
         $inIsolationProperty          = new ReflectionProperty(Facade::class, 'inIsolation');
@@ -120,7 +163,7 @@ final class FacadeTest extends TestCase
         $typeMap->addMapping(DeprecationTriggeredSubscriber::class, DeprecationTriggered::class);
         $typeMap->addMapping(PreparedSubscriber::class, Prepared::class);
 
-        return new CollectingDispatcher(new DirectDispatcher($typeMap));
+        return new CollectingDispatcher(new DirectDispatcher($typeMap), new DirectDispatcher($typeMap));
     }
 
     private function telemetryInfo(): Telemetry\Info
