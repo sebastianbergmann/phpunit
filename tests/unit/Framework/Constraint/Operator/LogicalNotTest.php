@@ -61,59 +61,6 @@ final class LogicalNotTest extends TestCase
         ];
     }
 
-    /**
-     * @return non-empty-list<array{string, string}>
-     */
-    public static function negateProvider(): array
-    {
-        return [
-            ['ocean contains water', 'ocean does not contain water'],
-            [
-                '\'this is water\' contains "water" and contains "is"',
-                '\'this is water\' does not contain "water" and does not contain "is"',
-            ],
-            ['what it contains', 'what it contains'],
-            ['life exists in outer space', 'life does not exist in outer space'],
-            ['alien exists', 'alien does not exist'],
-            ['it coexists', 'it coexists'],
-            ['the dog has a bone', 'the dog does not have a bone'],
-            ['whatever it has', 'whatever it has'],
-            ['apple is red', 'apple is not red'],
-            ['yes, it is', 'yes, it is'],
-            ['this is clock', 'this is not clock'],
-            ['how are you?', 'how are not you?'],
-            ['how dare you!', 'how dare you!'],
-            ['what they are', 'what they are'],
-            ['that matches my preferences', 'that does not match my preferences'],
-            ['dinner starts with desert', 'dinner starts not with desert'],
-            ['it starts with', 'it starts with'],
-            ['dinner ends with desert', 'dinner ends not with desert'],
-            ['it ends with', 'it ends with'],
-            ['you reference me', 'you don\'t reference me'],
-            ['it\'s not not false', 'it\'s not false'],
-
-            // The exported representation of an array or object contains
-            // single-quoted keys and values. The constraint's wording, which
-            // sits outside of those quotes, must still be negated while the
-            // quoted segments are left untouched. See issue #6683.
-            [
-                "Array &0 [\n    'key' => 'value',\n] is equal to Array &0 [\n    'key' => 'value',\n]",
-                "Array &0 [\n    'key' => 'value',\n] is not equal to Array &0 [\n    'key' => 'value',\n]",
-            ],
-            [
-                "stdClass Object #1 (\n    'name' => 'foo',\n) is equal to stdClass Object #2 (\n    'name' => 'foo',\n)",
-                "stdClass Object #1 (\n    'name' => 'foo',\n) is not equal to stdClass Object #2 (\n    'name' => 'foo',\n)",
-            ],
-
-            // A negatable word inside an exported string value must not be
-            // rewritten, even when the description contains many quotes.
-            [
-                "Array &0 [\n    'note' => 'this contains water',\n] is equal to Array &0 [\n    'note' => 'this contains water',\n]",
-                "Array &0 [\n    'note' => 'this contains water',\n] is not equal to Array &0 [\n    'note' => 'this contains water',\n]",
-            ],
-        ];
-    }
-
     #[DataProvider('provider')]
     public function testCanBeEvaluated(bool $result, string $failureDescription, LogicalNot $constraint, mixed $actual): void
     {
@@ -127,12 +74,6 @@ final class LogicalNotTest extends TestCase
         $this->expectExceptionMessageIs($failureDescription);
 
         $constraint->evaluate($actual);
-    }
-
-    #[DataProvider('negateProvider')]
-    public function testCanNegateStatement(string $input, string $expected): void
-    {
-        $this->assertSame($expected, LogicalNot::negate($input));
     }
 
     public function testCanBeRepresentedAsString(): void
@@ -235,7 +176,28 @@ final class LogicalNotTest extends TestCase
         $this->assertSame('context-aware string', $operator->toString());
     }
 
-    public function testNegatesAffirmativeFailureDescriptionOfConstraintWithoutContextString(): void
+    public function testDefaultOperandFailureDescriptionTransformsAffirmativeFailureDescription(): void
+    {
+        $operator = new class(new IsTrue) extends UnaryOperator
+        {
+            public function operator(): string
+            {
+                return 'identity';
+            }
+
+            public function precedence(): int
+            {
+                return 1;
+            }
+        };
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageIs("Failed asserting that 'value' is true.");
+
+        $operator->evaluate('value');
+    }
+
+    public function testWrapsAffirmativeDescriptionOfConstraintThatDoesNotAuthorItsNegation(): void
     {
         $constraint = new LogicalNot(
             new class extends Constraint
@@ -253,7 +215,7 @@ final class LogicalNotTest extends TestCase
         );
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessageIs("Failed asserting that 'value' is not anything.");
+        $this->expectExceptionMessageIs("Failed asserting that 'value' not (is anything).");
 
         $constraint->evaluate('value');
     }
