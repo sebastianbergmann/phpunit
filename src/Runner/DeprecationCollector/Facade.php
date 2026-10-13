@@ -41,6 +41,12 @@ final class Facade
      * expectations of a test are verified against are forgotten when the next
      * test is prepared, as they are in the main process.
      *
+     * A worker process also runs the attempts of a retried test, whose events
+     * are collected instead of being dispatched. The expectations of an attempt
+     * are verified while it is running, so its deprecations must be seen while
+     * its events are collected rather than when they are forwarded, as they
+     * are in the main process.
+     *
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
      */
@@ -52,6 +58,9 @@ final class Facade
 
         if ($collector instanceof Collector) {
             $dispatcher->registerSubscriber(new TestPreparedSubscriber($collector));
+
+            $dispatcher->registerSubscriberForCollectedEvents(new TestPreparedSubscriber($collector));
+            $dispatcher->registerSubscriberForCollectedEvents(new TestTriggeredDeprecationWhileEventsAreCollectedSubscriber($collector));
         }
     }
 

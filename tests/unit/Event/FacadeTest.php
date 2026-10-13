@@ -96,6 +96,7 @@ final class FacadeTest extends TestCase
 
         $dispatcher = new CollectingDispatcher(
             new DirectDispatcher(new ReflectionMethod(Facade::class, 'typeMap')->invoke($facade)),
+            new DirectDispatcher(new ReflectionMethod(Facade::class, 'typeMap')->invoke($facade)),
         );
 
         new ReflectionProperty(Facade::class, 'isolationDispatcher')->setValue($facade, $dispatcher);
