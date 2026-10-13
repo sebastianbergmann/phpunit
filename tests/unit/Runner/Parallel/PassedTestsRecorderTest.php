@@ -204,7 +204,7 @@ final class PassedTestsRecorderTest extends TestCase
         $typeMap->addMapping(FailedSubscriber::class, Failed::class);
         $typeMap->addMapping(FinishedSubscriber::class, Finished::class);
 
-        return new CollectingDispatcher(new DirectDispatcher($typeMap));
+        return new CollectingDispatcher(new DirectDispatcher($typeMap), new DirectDispatcher($typeMap));
     }
 
     private function telemetryInfo(): Telemetry\Info

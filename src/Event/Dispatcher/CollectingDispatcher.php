@@ -22,11 +22,13 @@ final class CollectingDispatcher implements Dispatcher
     use CollectionWindow;
     private EventCollection $events;
     private DirectDispatcher $isolatedDirectDispatcher;
+    private DirectDispatcher $collectedEventsDispatcher;
 
-    public function __construct(DirectDispatcher $directDispatcher)
+    public function __construct(DirectDispatcher $directDispatcher, DirectDispatcher $collectedEventsDispatcher)
     {
-        $this->isolatedDirectDispatcher = $directDispatcher;
-        $this->events                   = new EventCollection;
+        $this->isolatedDirectDispatcher  = $directDispatcher;
+        $this->collectedEventsDispatcher = $collectedEventsDispatcher;
+        $this->events                    = new EventCollection;
 
         $this->isolatedDirectDispatcher->registerSubscriber(new TestTriggeredDeprecationSubscriber(DeprecationCollector::collector()));
     }
@@ -34,6 +36,12 @@ final class CollectingDispatcher implements Dispatcher
     public function dispatch(Event $event): void
     {
         if ($this->collectDispatchedEvent($event)) {
+            try {
+                $this->collectedEventsDispatcher->dispatch($event);
+            } catch (UnknownEventTypeException) {
+                // Do nothing.
+            }
+
             return;
         }
 
@@ -60,6 +68,24 @@ final class CollectingDispatcher implements Dispatcher
     public function registerSubscriber(Subscriber $subscriber): void
     {
         $this->isolatedDirectDispatcher->registerSubscriber($subscriber);
+    }
+
+    /**
+     * Registers a subscriber that is notified of events as they are diverted
+     * by a collection window, in addition to any subscriber that is notified
+     * when the window's owner forwards them.
+     *
+     * This is for state that is consulted while a test is running, for
+     * instance the deprecations that the expectations of a test are verified
+     * against, which cannot wait until the events of an attempt of a retried
+     * test that runs in a worker of a parallel test run have been collected
+     * and forwarded.
+     *
+     * @throws UnknownSubscriberTypeException
+     */
+    public function registerSubscriberForCollectedEvents(Subscriber $subscriber): void
+    {
+        $this->collectedEventsDispatcher->registerSubscriber($subscriber);
     }
 
     public function flush(): EventCollection
