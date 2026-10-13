@@ -26,7 +26,7 @@ final class CollectingDispatcherTest extends AbstractEventTestCase
         $typeMap = new TypeMap;
         $typeMap->addMapping(Test\DeprecationTriggeredSubscriber::class, Test\DeprecationTriggered::class);
 
-        $dispatcher = new CollectingDispatcher(new DirectDispatcher($typeMap));
+        $dispatcher = new CollectingDispatcher(new DirectDispatcher($typeMap), new DirectDispatcher($typeMap));
 
         $this->assertEmpty($dispatcher->flush());
     }
@@ -36,7 +36,7 @@ final class CollectingDispatcherTest extends AbstractEventTestCase
         $typeMap = new TypeMap;
         $typeMap->addMapping(Test\DeprecationTriggeredSubscriber::class, Test\DeprecationTriggered::class);
 
-        $dispatcher = new CollectingDispatcher(new DirectDispatcher($typeMap));
+        $dispatcher = new CollectingDispatcher(new DirectDispatcher($typeMap), new DirectDispatcher($typeMap));
         $event      = $this->createStub(Event::class);
 
         $dispatcher->dispatch($event);
@@ -50,7 +50,7 @@ final class CollectingDispatcherTest extends AbstractEventTestCase
         $typeMap->addMapping(Test\DeprecationTriggeredSubscriber::class, Test\DeprecationTriggered::class);
         $typeMap->addMapping(DummySubscriber::class, DummyEvent::class);
 
-        $dispatcher = new CollectingDispatcher(new DirectDispatcher($typeMap));
+        $dispatcher = new CollectingDispatcher(new DirectDispatcher($typeMap), new DirectDispatcher($typeMap));
         $event      = new DummyEvent;
         $subscriber = $this->createMock(DummySubscriber::class);
 
@@ -72,7 +72,7 @@ final class CollectingDispatcherTest extends AbstractEventTestCase
         $typeMap = new TypeMap;
         $typeMap->addMapping(Test\DeprecationTriggeredSubscriber::class, Test\DeprecationTriggered::class);
 
-        $dispatcher = new CollectingDispatcher(new DirectDispatcher($typeMap));
+        $dispatcher = new CollectingDispatcher(new DirectDispatcher($typeMap), new DirectDispatcher($typeMap));
 
         $this->expectException(UnknownSubscriberTypeException::class);
 
@@ -85,7 +85,7 @@ final class CollectingDispatcherTest extends AbstractEventTestCase
         $typeMap->addMapping(Test\DeprecationTriggeredSubscriber::class, Test\DeprecationTriggered::class);
         $typeMap->addMapping(TestRunner\WarningTriggeredSubscriber::class, TestRunner\WarningTriggered::class);
 
-        $dispatcher = new CollectingDispatcher(new DirectDispatcher($typeMap));
+        $dispatcher = new CollectingDispatcher(new DirectDispatcher($typeMap), new DirectDispatcher($typeMap));
 
         $messages = [];
 
@@ -124,5 +124,78 @@ final class CollectingDispatcherTest extends AbstractEventTestCase
 
         $this->assertSame(['collected'], $messages);
         $this->assertCount(1, $dispatcher->stopCollectingEvents());
+    }
+
+    public function testDispatchesEventsDivertedByACollectionWindowToSubscribersForCollectedEvents(): void
+    {
+        $typeMap = new TypeMap;
+        $typeMap->addMapping(Test\DeprecationTriggeredSubscriber::class, Test\DeprecationTriggered::class);
+        $typeMap->addMapping(TestRunner\WarningTriggeredSubscriber::class, TestRunner\WarningTriggered::class);
+
+        $dispatcher = new CollectingDispatcher(new DirectDispatcher($typeMap), new DirectDispatcher($typeMap));
+
+        $messages = [];
+
+        $dispatcher->registerSubscriberForCollectedEvents(
+            new class($messages) implements TestRunner\WarningTriggeredSubscriber
+            {
+                /**
+                 * @var list<string>
+                 */
+                private array $messages;
+
+                /**
+                 * @param list<string> $messages
+                 */
+                public function __construct(array &$messages)
+                {
+                    $this->messages = &$messages;
+                }
+
+                public function notify(TestRunner\WarningTriggered $event): void
+                {
+                    $this->messages[] = $event->message();
+                }
+            },
+        );
+
+        $dispatcher->dispatch(new TestRunner\WarningTriggered($this->telemetryInfo(), 'collected'));
+
+        $this->assertSame([], $messages);
+
+        $dispatcher->startCollectingEvents();
+
+        $dispatcher->dispatch(new TestRunner\WarningTriggered($this->telemetryInfo(), 'diverted'));
+
+        $this->assertSame(['diverted'], $messages);
+        $this->assertCount(1, $dispatcher->stopCollectingEvents());
+        $this->assertCount(1, $dispatcher->flush());
+    }
+
+    public function testDivertsEventOfUnknownTypeWithoutDispatchingItToSubscribersForCollectedEvents(): void
+    {
+        $typeMap = new TypeMap;
+        $typeMap->addMapping(Test\DeprecationTriggeredSubscriber::class, Test\DeprecationTriggered::class);
+
+        $dispatcher = new CollectingDispatcher(new DirectDispatcher($typeMap), new DirectDispatcher($typeMap));
+        $event      = $this->createStub(Event::class);
+
+        $dispatcher->startCollectingEvents();
+
+        $dispatcher->dispatch($event);
+
+        $this->assertSame([$event], $dispatcher->stopCollectingEvents()->asArray());
+    }
+
+    public function testRejectsSubscriberForCollectedEventsOfUnknownType(): void
+    {
+        $typeMap = new TypeMap;
+        $typeMap->addMapping(Test\DeprecationTriggeredSubscriber::class, Test\DeprecationTriggered::class);
+
+        $dispatcher = new CollectingDispatcher(new DirectDispatcher($typeMap), new DirectDispatcher($typeMap));
+
+        $this->expectException(UnknownSubscriberTypeException::class);
+
+        $dispatcher->registerSubscriberForCollectedEvents($this->createStub(DummySubscriber::class));
     }
 }
