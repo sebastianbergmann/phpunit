@@ -1485,7 +1485,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             return true;
         }
 
-        $passedTests = PassedTests::instance();
+        $passedTests         = PassedTests::instance();
+        $dependsOnLargerTest = false;
 
         foreach ($this->dependencies as $dependency) {
             if (!$dependency->isValid()) {
@@ -1525,16 +1526,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             }
 
             if ($passedTests->isGreaterThan($dependencyTarget, $this->size())) {
-                Event\Facade::emitter()->testConsideredRisky(
-                    $this->valueObjectForEvents(),
-                    'This test depends on a test that is larger than itself',
-                );
-
-                return true;
+                $dependsOnLargerTest = true;
             }
 
             if (!$passedTests->hasReturnValue($dependencyTarget)) {
-                return true;
+                continue;
             }
 
             $returnValue = $passedTests->returnValue($dependencyTarget);
@@ -1552,6 +1548,17 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         $this->testValueObjectForEvents = null;
+
+        // This is done after all dependencies have been resolved so that a
+        // test that is skipped because another of its dependencies did not
+        // pass is not also considered risky, and so that a test that depends
+        // on more than one larger test is only considered risky once
+        if ($dependsOnLargerTest) {
+            Event\Facade::emitter()->testConsideredRisky(
+                $this->valueObjectForEvents(),
+                'This test depends on a test that is larger than itself',
+            );
+        }
 
         return true;
     }
