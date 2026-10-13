@@ -42,8 +42,9 @@ final class DependencyResolver
             return true;
         }
 
-        $passedTests     = PassedTests::instance();
-        $dependencyInput = [];
+        $passedTests         = PassedTests::instance();
+        $dependencyInput     = [];
+        $dependsOnLargerTest = false;
 
         foreach ($dependencies as $dependency) {
             if ($dependency->targetIsClass()) {
@@ -74,20 +75,11 @@ final class DependencyResolver
                 }
 
                 if ($passedTests->isGreaterThan($dependencyTarget, $test->size())) {
-                    $emitter->testConsideredRisky(
-                        $test->valueObjectForEvents(),
-                        'This test depends on a test that is larger than itself',
-                    );
-
-                    $test->setDependencyInput($dependencyInput);
-
-                    return true;
+                    $dependsOnLargerTest = true;
                 }
 
                 if (!$passedTests->hasReturnValue($dependencyTarget)) {
-                    $test->setDependencyInput($dependencyInput);
-
-                    return true;
+                    continue;
                 }
 
                 $returnValue = $passedTests->returnValue($dependencyTarget);
@@ -106,6 +98,17 @@ final class DependencyResolver
         }
 
         $test->setDependencyInput($dependencyInput);
+
+        // This is done after all dependencies have been resolved so that a
+        // test that is skipped because another of its dependencies did not
+        // pass is not also considered risky, and so that a test that depends
+        // on more than one larger test is only considered risky once
+        if ($dependsOnLargerTest) {
+            $emitter->testConsideredRisky(
+                $test->valueObjectForEvents(),
+                'This test depends on a test that is larger than itself',
+            );
+        }
 
         return true;
     }
