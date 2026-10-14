@@ -2,6 +2,16 @@
 
 All notable changes of the PHPUnit 12.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [12.5.40] - 2026-MM-DD
+
+### Fixed
+
+* The dependencies of a test that are listed after a dependency on a test that does not return a value, or after a dependency on a larger test, were not checked, so the test was run instead of being skipped when one of these dependencies had not passed
+* Tests could not be run in process isolation when the namespace of the test class begins with a name that the code of the child process imports, for instance `CodeCoverage` or `Facade`
+* A test that is run in process isolation aborts the test run when its data set or a value returned by a test it depends on cannot be serialized, for instance because it is a closure
+* The Open Test Reporting XML logfile has no start for a test that errors before it is prepared, for instance because it depends on a test that does not exist, and no end for the test that is run after a test that is skipped because a test it depends on did not pass or because one of its
+  requirements is not met
+
 ## [12.5.39] - 2026-10-12
 
 ### Fixed
@@ -339,6 +349,7 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 * [#6380](https://github.com/sebastianbergmann/phpunit/pull/6380): Allow `Throwable` in `expectExceptionObject()`
 * A PHPUnit notice is now emitted for test methods that create a mock object but do not configure an expectation for it
 
+[12.5.40]: https://github.com/sebastianbergmann/phpunit/compare/12.5.39...12.5
 [12.5.39]: https://github.com/sebastianbergmann/phpunit/compare/12.5.38...12.5.39
 [12.5.38]: https://github.com/sebastianbergmann/phpunit/compare/12.5.37...12.5.38
 [12.5.37]: https://github.com/sebastianbergmann/phpunit/compare/12.5.36...12.5.37
