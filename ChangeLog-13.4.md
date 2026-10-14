@@ -2,6 +2,16 @@
 
 All notable changes of the PHPUnit 13.4 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [13.4.3] - 2026-MM-DD
+
+### Fixed
+
+* The dependencies of a test that are listed after a dependency on a test that does not return a value, or after a dependency on a larger test, were not checked, so the test was run instead of being skipped when one of these dependencies had not passed
+* Tests could not be run in process isolation when the namespace of the test class begins with a name that the code of the child process imports, for instance `CodeCoverage` or `Facade`
+* A test that is run in process isolation aborts the test run when its data set or a value returned by a test it depends on cannot be serialized, for instance because it is a closure
+* The Open Test Reporting XML logfile has no start for a test that errors before it is prepared, for instance because it depends on a test that does not exist, and no end for the test that is run after a test that is skipped because a test it depends on did not pass or because one of its
+  requirements is not met
+
 ## [13.4.2] - 2026-10-12
 
 ### Fixed
@@ -65,6 +75,7 @@ All notable changes of the PHPUnit 13.4 release series are documented in this fi
 * A test that is run in process isolation aborts the test run when its result cannot be unserialized, for instance because it returns an object that holds a test double
 * A test that uses `#[DataProviderClosure]` errors when it is run in process isolation
 
+[13.4.3]: https://github.com/sebastianbergmann/phpunit/compare/13.4.2...13.4
 [13.4.2]: https://github.com/sebastianbergmann/phpunit/compare/13.4.1...13.4.2
 [13.4.1]: https://github.com/sebastianbergmann/phpunit/compare/13.4.0...13.4.1
 [13.4.0]: https://github.com/sebastianbergmann/phpunit/compare/13.3.6...13.4.0
