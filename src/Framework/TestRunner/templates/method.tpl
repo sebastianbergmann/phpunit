@@ -83,7 +83,7 @@ function __phpunit_run_isolated_test()
         }
     }
 
-    $test = new {className}('{methodName}');
+    $test = new \{className}('{methodName}');
 
     $test->setData('{dataName}', unserialize('{data}'));
     $test->setDependencyInput(unserialize('{dependencyInput}'));
