@@ -175,6 +175,32 @@ final class HookMethodInvokerTest extends TestCase
         );
     }
 
+    public function testStopsInvokingFurtherHooksAfterSkippedTest(): void
+    {
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter
+            ->expects($this->once())
+            ->method('beforeTestMethodCalled');
+
+        $emitter
+            ->expects($this->once())
+            ->method('beforeTestMethodFinished')
+            ->seal();
+
+        $this->expectException(SkippedWithMessageException::class);
+
+        HookMethodInvoker::invokeBeforeTest(
+            new HookFixture('testOne'),
+            $this->hookMethods(
+                HookMethodCollection::defaultBefore()
+                    ->add(new HookMethod('skippingHook', 100))
+                    ->add(new HookMethod('secondSuccessfulHook', 50)),
+            ),
+            $emitter,
+        );
+    }
+
     public function testInvokesStaticHookMethodStatically(): void
     {
         $emitter = $this->createMock(Emitter::class);

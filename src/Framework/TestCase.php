@@ -1235,7 +1235,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             // @codeCoverageIgnoreStart
             $randomNumberGeneratorSeeder->seedFor(static::class);
 
-            HookMethodInvoker::invokeBeforeClass($this, $hookMethods, $this->emitter);
+            HookMethodInvoker::invokeBeforeClass($this, $hookMethods);
             // @codeCoverageIgnoreEnd
         }
 
@@ -1435,7 +1435,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             if ($this->inIsolation) {
                 // @codeCoverageIgnoreStart
-                HookMethodInvoker::invokeAfterClass($this, $hookMethods, $this->emitter);
+                HookMethodInvoker::invokeAfterClass($this, $hookMethods);
                 // @codeCoverageIgnoreEnd
             }
         } catch (AssertionError|AssertionFailedError $t) {

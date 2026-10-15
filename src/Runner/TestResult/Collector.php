@@ -77,6 +77,12 @@ final class Collector
     private bool $childProcessErrored = false;
 
     /**
+     * When a before-first-test method errors or fails, none of the tests of
+     * its test class, the test class that was started last, are run.
+     */
+    private int $numberOfTestsOfTestClass = 0;
+
+    /**
      * @var non-negative-int
      */
     private int $numberOfIssuesIgnoredByBaseline = 0;
@@ -350,6 +356,8 @@ final class Collector
         if (!$testSuite->isForTestClass()) {
             return;
         }
+
+        $this->numberOfTestsOfTestClass = $testSuite->count();
     }
 
     public function testSuiteFinished(TestSuiteFinished $event): void
@@ -416,14 +424,14 @@ final class Collector
     {
         $this->testErroredEvents[] = $event;
 
-        $this->numberOfTestsRun++;
+        $this->numberOfTestsRun += $this->numberOfTestsOfTestClass;
     }
 
     public function beforeTestClassMethodFailed(BeforeFirstTestMethodFailed $event): void
     {
         $this->testFailedEvents[] = $event;
 
-        $this->numberOfTestsRun++;
+        $this->numberOfTestsRun += $this->numberOfTestsOfTestClass;
     }
 
     public function afterTestClassMethodErrored(AfterLastTestMethodErrored $event): void

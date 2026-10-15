@@ -25,9 +25,6 @@ Before First Test Method Finished:
 - PHPUnit\TestFixture\Event\TemplateMethodsTest::setUpBeforeClass
 Child Process Started (test requiring process isolation)
 Test Preparation Started (PHPUnit\TestFixture\Event\TemplateMethodsTest::testOne)
-Before First Test Method Called (PHPUnit\TestFixture\Event\TemplateMethodsTest::setUpBeforeClass)
-Before First Test Method Finished:
-- PHPUnit\TestFixture\Event\TemplateMethodsTest::setUpBeforeClass
 Before Test Method Called (PHPUnit\TestFixture\Event\TemplateMethodsTest::setUp)
 Before Test Method Finished:
 - PHPUnit\TestFixture\Event\TemplateMethodsTest::setUp
@@ -41,17 +38,11 @@ Post Condition Method Finished:
 After Test Method Called (PHPUnit\TestFixture\Event\TemplateMethodsTest::tearDown)
 After Test Method Finished:
 - PHPUnit\TestFixture\Event\TemplateMethodsTest::tearDown
-After Last Test Method Called (PHPUnit\TestFixture\Event\TemplateMethodsTest::tearDownAfterClass)
-After Last Test Method Finished:
-- PHPUnit\TestFixture\Event\TemplateMethodsTest::tearDownAfterClass
 Test Passed (PHPUnit\TestFixture\Event\TemplateMethodsTest::testOne)
 Test Finished (PHPUnit\TestFixture\Event\TemplateMethodsTest::testOne)
 Child Process Finished (test requiring process isolation)
 Child Process Started (test requiring process isolation)
 Test Preparation Started (PHPUnit\TestFixture\Event\TemplateMethodsTest::testTwo)
-Before First Test Method Called (PHPUnit\TestFixture\Event\TemplateMethodsTest::setUpBeforeClass)
-Before First Test Method Finished:
-- PHPUnit\TestFixture\Event\TemplateMethodsTest::setUpBeforeClass
 Before Test Method Called (PHPUnit\TestFixture\Event\TemplateMethodsTest::setUp)
 Before Test Method Finished:
 - PHPUnit\TestFixture\Event\TemplateMethodsTest::setUp
@@ -65,9 +56,6 @@ Post Condition Method Finished:
 After Test Method Called (PHPUnit\TestFixture\Event\TemplateMethodsTest::tearDown)
 After Test Method Finished:
 - PHPUnit\TestFixture\Event\TemplateMethodsTest::tearDown
-After Last Test Method Called (PHPUnit\TestFixture\Event\TemplateMethodsTest::tearDownAfterClass)
-After Last Test Method Finished:
-- PHPUnit\TestFixture\Event\TemplateMethodsTest::tearDownAfterClass
 Test Passed (PHPUnit\TestFixture\Event\TemplateMethodsTest::testTwo)
 Test Finished (PHPUnit\TestFixture\Event\TemplateMethodsTest::testTwo)
 Child Process Finished (test requiring process isolation)

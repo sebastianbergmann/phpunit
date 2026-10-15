@@ -39,6 +39,8 @@ use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Event\TestRunner\ChildProcessErrored;
 use PHPUnit\Event\TestRunner\ChildProcessReason;
 use PHPUnit\Event\TestRunner\ExecutionStarted;
+use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
+use PHPUnit\Event\TestSuite\TestSuiteForTestClass;
 use PHPUnit\Event\TestSuite\TestSuiteWithName;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
@@ -69,16 +71,32 @@ final class ProgressPrinterTest extends TestCase
         $this->assertStringContainsString('1 / 1 (100%)', $buffer());
     }
 
-    public function testPrintsErrorBeforeTestClassMethodErrored(): void
+    public function testPrintsErrorForEachTestOfTestClassWhoseBeforeFirstTestMethodErrored(): void
     {
         [$printer, $buffer] = $this->printer();
         $progress           = $this->progressPrinter($printer);
 
-        $progress->testRunnerExecutionStarted($this->executionStarted(1));
+        $progress->testRunnerExecutionStarted($this->executionStarted(3));
+        $progress->testSuiteStarted($this->testSuiteStartedForTestClass(2));
         $progress->beforeTestClassMethodErrored();
+        $progress->testPrepared();
         $progress->testFinished();
 
-        $this->assertStringStartsWith('E', $buffer());
+        $this->assertStringStartsWith('EE.', $buffer());
+    }
+
+    public function testPrintsFailureForEachTestOfTestClassWhoseBeforeFirstTestMethodFailed(): void
+    {
+        [$printer, $buffer] = $this->printer();
+        $progress           = $this->progressPrinter($printer);
+
+        $progress->testRunnerExecutionStarted($this->executionStarted(3));
+        $progress->testSuiteStarted($this->testSuiteStartedForTestClass(2));
+        $progress->beforeTestClassMethodFailed();
+        $progress->testPrepared();
+        $progress->testFinished();
+
+        $this->assertStringStartsWith('FF.', $buffer());
     }
 
     public function testPrintsSkippedWhenSkippedBeforePrepare(): void
@@ -846,6 +864,14 @@ final class ProgressPrinterTest extends TestCase
             $ignoreDirectDeprecations,
             $ignoreIndirectDeprecations,
             true,
+        );
+    }
+
+    private function testSuiteStartedForTestClass(int $numberOfTests): TestSuiteStarted
+    {
+        return new TestSuiteStarted(
+            $this->telemetryInfo(),
+            new TestSuiteForTestClass('FooTest', $numberOfTests, TestCollection::fromArray([]), 'Foo', 'FooTest.php', 1),
         );
     }
 
