@@ -857,6 +857,8 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                 $method,
             );
 
+            $t = null;
+
             try {
                 $missingRequirements = new Requirements($emitter)->requirementsNotSatisfiedFor($this->name, $method);
 
@@ -910,6 +912,8 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                 }
 
                 $result = false;
+
+                break;
             }
         }
 
@@ -947,6 +951,8 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                 $method,
             );
 
+            $t = null;
+
             try {
                 /** @var callable $callback */
                 $callback = [$this->name, $method];
@@ -976,6 +982,8 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                         Event\Code\ThrowableBuilder::from($t),
                     );
                 }
+
+                break;
             }
         }
 
