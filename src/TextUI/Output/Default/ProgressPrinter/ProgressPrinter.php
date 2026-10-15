@@ -73,7 +73,6 @@ final class ProgressPrinter
     public function beforeTestClassMethodErrored(): void
     {
         $this->printProgressForError();
-        $this->updateTestStatus(TestStatus::error());
     }
 
     public function testPrepared(): void
