@@ -53,9 +53,12 @@ final class ProgressPrinter
     private bool $childProcessErrored = false;
 
     /**
-     * @var ?non-negative-int
+     * When a before-first-test method errors or fails, none of the tests of
+     * its test class, the test class that was started last, are run.
+     *
+     * @var non-negative-int
      */
-    private ?int $numberOfTestsOfTestClassThatHasNotStartedTests = null;
+    private int $numberOfTestsOfTestClass = 0;
 
     public function __construct(Printer $printer, Facade $facade, bool $colors, int $numberOfColumns, Source $source)
     {
@@ -82,24 +85,19 @@ final class ProgressPrinter
             return;
         }
 
-        $this->numberOfTestsOfTestClassThatHasNotStartedTests = $event->testSuite()->count();
-    }
-
-    public function testPreparationStarted(): void
-    {
-        $this->numberOfTestsOfTestClassThatHasNotStartedTests = null;
+        $this->numberOfTestsOfTestClass = $event->testSuite()->count();
     }
 
     public function beforeTestClassMethodErrored(): void
     {
-        for ($i = 0; $i < $this->numberOfTestsThatAreNotRun(); $i++) {
+        for ($i = 0; $i < $this->numberOfTestsOfTestClass; $i++) {
             $this->printProgressForError();
         }
     }
 
     public function beforeTestClassMethodFailed(): void
     {
-        for ($i = 0; $i < $this->numberOfTestsThatAreNotRun(); $i++) {
+        for ($i = 0; $i < $this->numberOfTestsOfTestClass; $i++) {
             $this->printProgressForFailure();
         }
     }
@@ -351,7 +349,6 @@ final class ProgressPrinter
             new TestFailedSubscriber($this),
             new TestFinishedSubscriber($this),
             new TestMarkedIncompleteSubscriber($this),
-            new TestPreparationStartedSubscriber($this),
             new TestPreparedSubscriber($this),
             new TestRunnerExecutionStartedSubscriber($this),
             new TestSkippedSubscriber($this),
@@ -368,19 +365,6 @@ final class ProgressPrinter
             new TestTriggeredWarningSubscriber($this),
             new ChildProcessErroredSubscriber($this),
         );
-    }
-
-    /**
-     * When a before-first-test method errors or fails before a test of its test
-     * class has started, none of the tests of that test class are run.
-     */
-    private function numberOfTestsThatAreNotRun(): int
-    {
-        if ($this->numberOfTestsOfTestClassThatHasNotStartedTests === null) {
-            return 1;
-        }
-
-        return $this->numberOfTestsOfTestClassThatHasNotStartedTests;
     }
 
     private function updateTestStatus(TestStatus $status): void

@@ -64,9 +64,12 @@ final class Collector
     private bool $childProcessErrored = false;
 
     /**
-     * @var ?non-negative-int
+     * When a before-first-test method errors or fails, none of the tests of
+     * its test class, the test class that was started last, are run.
+     *
+     * @var non-negative-int
      */
-    private ?int $numberOfTestsOfTestClassThatHasNotStartedTests = null;
+    private int $numberOfTestsOfTestClass = 0;
 
     /**
      * @var non-negative-int
@@ -180,7 +183,6 @@ final class Collector
             new TestSuiteSkippedSubscriber($this),
             new TestSuiteStartedSubscriber($this),
             new TestSuiteFinishedSubscriber($this),
-            new TestPreparationStartedSubscriber($this),
             new TestPreparedSubscriber($this),
             new TestFinishedSubscriber($this),
             new BeforeTestClassMethodErroredSubscriber($this),
@@ -268,7 +270,7 @@ final class Collector
             return;
         }
 
-        $this->numberOfTestsOfTestClassThatHasNotStartedTests = $testSuite->count();
+        $this->numberOfTestsOfTestClass = $testSuite->count();
     }
 
     public function testSuiteFinished(TestSuiteFinished $event): void
@@ -307,11 +309,6 @@ final class Collector
         PassedTests::instance()->testClassPassed($testSuite->className());
     }
 
-    public function testPreparationStarted(): void
-    {
-        $this->numberOfTestsOfTestClassThatHasNotStartedTests = null;
-    }
-
     public function testPrepared(): void
     {
         $this->prepared = true;
@@ -331,14 +328,14 @@ final class Collector
     {
         $this->testErroredEvents[] = $event;
 
-        $this->numberOfTestsRun += $this->numberOfTestsThatAreNotRun();
+        $this->numberOfTestsRun += $this->numberOfTestsOfTestClass;
     }
 
     public function beforeTestClassMethodFailed(BeforeFirstTestMethodFailed $event): void
     {
         $this->testFailedEvents[] = $event;
 
-        $this->numberOfTestsRun += $this->numberOfTestsThatAreNotRun();
+        $this->numberOfTestsRun += $this->numberOfTestsOfTestClass;
     }
 
     public function afterTestClassMethodErrored(AfterLastTestMethodErrored $event): void
@@ -692,19 +689,6 @@ final class Collector
                $this->phpWarnings !== [] ||
                $this->testTriggeredPhpunitWarningEvents !== [] ||
                $this->testRunnerTriggeredWarningEvents !== [];
-    }
-
-    /**
-     * When a before-first-test method errors or fails before a test of its test
-     * class has started, none of the tests of that test class are run.
-     */
-    private function numberOfTestsThatAreNotRun(): int
-    {
-        if ($this->numberOfTestsOfTestClassThatHasNotStartedTests === null) {
-            return 1;
-        }
-
-        return $this->numberOfTestsOfTestClassThatHasNotStartedTests;
     }
 
     /**
