@@ -67,6 +67,38 @@ final class ProcessIsolationTest extends TestCase
         $this->assertFalse(new ProcessIsolation($this->createStub(Emitter::class))->shouldBeUsedFor($test));
     }
 
+    public function testIsNotRequestedWhenNeitherTestNorConfigurationRequestsIt(): void
+    {
+        $test = new TestWithDifferentNames('testWithName');
+
+        $this->assertFalse(new ProcessIsolation($this->createStub(Emitter::class))->isRequestedFor($test));
+    }
+
+    public function testIsRequestedWhenTestRequestsIt(): void
+    {
+        $test = new TestWithDifferentNames('testWithName');
+
+        $test->setRunTestInSeparateProcess(true);
+
+        $this->assertTrue(new ProcessIsolation($this->createStub(Emitter::class))->isRequestedFor($test));
+    }
+
+    public function testIsRequestedWhenConfigurationRequestsIt(): void
+    {
+        $test = new TestWithDifferentNames('testWithName');
+
+        $this->assertTrue($this->withProcessIsolationConfigured()->isRequestedFor($test));
+    }
+
+    public function testIsRequestedForTestWhoseRequirementsAreNotSatisfied(): void
+    {
+        $test = new RequiresFunctionTest('testOne');
+
+        $test->setRunTestInSeparateProcess(true);
+
+        $this->assertTrue(new ProcessIsolation($this->createStub(Emitter::class))->isRequestedFor($test));
+    }
+
     private function withProcessIsolationConfigured(): ProcessIsolation
     {
         $property              = new ReflectionProperty(ConfigurationRegistry::class, 'instance');

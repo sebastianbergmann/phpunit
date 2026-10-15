@@ -1,0 +1,25 @@
+--TEST--
+The right events are emitted in the right order when a requirement of a before-first-test method of a test class whose tests are all run in separate processes is not satisfied
+--FILE--
+<?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-record-test-run-history';
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--debug';
+$_SERVER['argv'][] = __DIR__ . '/_files/UnsatisfiedRequirementOfBeforeClassMethodOfTestClassWhoseTestsAllRunInSeparateProcessesTest.php';
+
+require __DIR__ . '/../../bootstrap.php';
+
+(new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
+--EXPECTF--
+PHPUnit Started (PHPUnit %s using %s)
+Test Runner Configured
+Event Facade Sealed
+Test Suite Loaded (1 test)
+Test Runner Started
+Test Suite Sorted
+Test Runner Execution Started (1 test)
+Test Suite Started (PHPUnit\TestFixture\Event\UnsatisfiedRequirementOfBeforeClassMethodOfTestClassWhoseTestsAllRunInSeparateProcessesTest, 1 test)
+Test Suite Skipped (PHPUnit\TestFixture\Event\UnsatisfiedRequirementOfBeforeClassMethodOfTestClassWhoseTestsAllRunInSeparateProcessesTest, PHP ^100.0 is required, but PHP %s is being used.)
+Test Runner Execution Finished
+Test Runner Finished
+PHPUnit Finished (Shell Exit Code: 0)

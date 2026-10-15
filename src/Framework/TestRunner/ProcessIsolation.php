@@ -45,10 +45,23 @@ final readonly class ProcessIsolation
             return false;
         }
 
-        if (!$test->runsTestInSeparateProcess() && !$this->configuration->processIsolation()) {
+        if (!$this->isRequestedFor($test)) {
             return false;
         }
 
         return new Requirements($this->emitter)->requirementsNotSatisfiedFor($test::class, $test->name()) === [];
+    }
+
+    /**
+     * A test requests to be run in a separate process, or the configuration
+     * requests this for all tests.
+     */
+    public function isRequestedFor(TestCase $test): bool
+    {
+        if ($test->runsTestInSeparateProcess()) {
+            return true;
+        }
+
+        return $this->configuration->processIsolation();
     }
 }

@@ -29,6 +29,7 @@ use IteratorAggregate;
 use PHPUnit\Event;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\NoPreviousThrowableException;
+use PHPUnit\Framework\TestRunner\ProcessIsolation;
 use PHPUnit\Metadata\Api\Dependencies;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\HookMethods;
@@ -422,7 +423,16 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
 
         $emitter->testSuiteStarted($testSuiteValueObjectForEvents);
 
-        if (!$this->invokeMethodsBeforeFirstTest($emitter, $testSuiteValueObjectForEvents)) {
+        // When no test of a test class is run in this process, its
+        // before-first-test methods and after-last-test methods are only
+        // called in the child processes that run its tests
+        $hookMethodsAreCalled = !$this->isForTestClass() || $this->hasTestThatIsRunInThisProcess(new ProcessIsolation($emitter));
+
+        if ($hookMethodsAreCalled) {
+            if (!$this->invokeMethodsBeforeFirstTest($emitter, $testSuiteValueObjectForEvents)) {
+                return;
+            }
+        } elseif (!$this->requirementsOfMethodsBeforeFirstTestAreSatisfied($emitter, $testSuiteValueObjectForEvents)) {
             return;
         }
 
@@ -431,7 +441,9 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
         // object to be destructed as soon as it has run (see #5875)
         $this->runTests($this->takeTests(), $emitter);
 
-        $this->invokeMethodsAfterLastTest($emitter);
+        if ($hookMethodsAreCalled) {
+            $this->invokeMethodsAfterLastTest($emitter);
+        }
 
         $emitter->testSuiteFinished($testSuiteValueObjectForEvents);
     }
@@ -932,6 +944,60 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
         }
 
         return $result;
+    }
+
+    /**
+     * The requirements of the before-first-test methods of a test class whose
+     * tests are all run in child processes are checked even though they are not
+     * called in this process, so that the test class is skipped without starting
+     * a child process for each of its tests when they are not satisfied.
+     */
+    private function requirementsOfMethodsBeforeFirstTestAreSatisfied(Event\Emitter $emitter, Event\TestSuite\TestSuite $testSuiteValueObjectForEvents): bool
+    {
+        if (!$this->isForTestClass()) {
+            return true;
+        }
+
+        $methods   = new HookMethods($emitter)->hookMethods($this->name)['beforeClass']->methodNamesSortedByPriority();
+        $reflector = new ReflectionClass($this->name);
+
+        foreach ($methods as $method) {
+            if (Reflection::methodDoesNotExistOrIsDeclaredInTestCase($reflector, $method)) {
+                continue;
+            }
+
+            $missingRequirements = new Requirements($emitter)->requirementsNotSatisfiedFor($this->name, $method);
+
+            if ($missingRequirements !== []) {
+                $emitter->testSuiteSkipped(
+                    $testSuiteValueObjectForEvents,
+                    implode("\n", $missingRequirements),
+                );
+
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private function hasTestThatIsRunInThisProcess(ProcessIsolation $processIsolation): bool
+    {
+        foreach ($this as $test) {
+            if ($test instanceof self) {
+                if ($test->hasTestThatIsRunInThisProcess($processIsolation)) {
+                    return true;
+                }
+
+                continue;
+            }
+
+            if (!$test instanceof TestCase || !$processIsolation->isRequestedFor($test)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function invokeMethodsAfterLastTest(Event\Emitter $emitter): void

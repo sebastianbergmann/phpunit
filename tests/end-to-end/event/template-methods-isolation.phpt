@@ -20,9 +20,6 @@ Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (2 tests)
 Test Suite Started (PHPUnit\TestFixture\Event\TemplateMethodsTest, 2 tests)
-Before First Test Method Called (PHPUnit\TestFixture\Event\TemplateMethodsTest::setUpBeforeClass)
-Before First Test Method Finished:
-- PHPUnit\TestFixture\Event\TemplateMethodsTest::setUpBeforeClass
 Child Process Started (test requiring process isolation)
 Test Preparation Started (PHPUnit\TestFixture\Event\TemplateMethodsTest::testOne)
 Before Test Method Called (PHPUnit\TestFixture\Event\TemplateMethodsTest::setUp)
@@ -59,9 +56,6 @@ After Test Method Finished:
 Test Passed (PHPUnit\TestFixture\Event\TemplateMethodsTest::testTwo)
 Test Finished (PHPUnit\TestFixture\Event\TemplateMethodsTest::testTwo)
 Child Process Finished (test requiring process isolation)
-After Last Test Method Called (PHPUnit\TestFixture\Event\TemplateMethodsTest::tearDownAfterClass)
-After Last Test Method Finished:
-- PHPUnit\TestFixture\Event\TemplateMethodsTest::tearDownAfterClass
 Test Suite Finished (PHPUnit\TestFixture\Event\TemplateMethodsTest, 2 tests)
 Test Runner Execution Finished
 Test Runner Finished

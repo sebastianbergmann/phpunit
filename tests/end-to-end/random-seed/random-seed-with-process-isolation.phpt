@@ -20,7 +20,6 @@ Runtime:       PHP %s
 Random Seed:   1234
 
 setUpBeforeClass(): 453129364
-setUpBeforeClass(): 453129364
 testOne(): 1872927752
 setUpBeforeClass(): 453129364
 testTwo(): 1511467534

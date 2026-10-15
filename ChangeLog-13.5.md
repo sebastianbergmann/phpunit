@@ -14,6 +14,7 @@ All notable changes of the PHPUnit 13.5 release series are documented in this fi
 
 * [#7049](https://github.com/sebastianbergmann/phpunit/issues/7049): Renamed `phpunit:randomOrderSeed` to `phpunit:randomSeed` in Open Test Reporting XML logfiles
 * [#7051](https://github.com/sebastianbergmann/phpunit/issues/7051): Seed random number generators using `--random-seed <N>`, regardless of whether PHPUnit needs random number generation
+* Before-first-test and after-last-test methods of a test class whose tests all run in separate processes are no longer called in the test runner's process
 
 ### Deprecated
 
