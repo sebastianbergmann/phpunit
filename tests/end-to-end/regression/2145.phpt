@@ -14,7 +14,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 
-E
+EE                                                                  2 / 2 (100%)
 
 Time: %s, Memory: %s
 
@@ -26,4 +26,4 @@ Exception: message
 %s:%d
 
 ERRORS!
-Tests: 1, Assertions: 0, Errors: 1.
+Tests: 2, Assertions: 0, Errors: 1.

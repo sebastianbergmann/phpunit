@@ -25,6 +25,7 @@ use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\Event\TestRunner\ChildProcessErrored;
 use PHPUnit\Event\TestRunner\ExecutionStarted;
+use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
 use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\TextUI\Configuration\Source;
 use PHPUnit\TextUI\Configuration\SourceFilter;
@@ -51,6 +52,11 @@ final class ProgressPrinter
     private bool $prepared            = false;
     private bool $childProcessErrored = false;
 
+    /**
+     * @var ?non-negative-int
+     */
+    private ?int $numberOfTestsOfTestClassThatHasNotStartedTests = null;
+
     public function __construct(Printer $printer, Facade $facade, bool $colors, int $numberOfColumns, Source $source)
     {
         $this->printer         = $printer;
@@ -70,9 +76,25 @@ final class ProgressPrinter
         $this->maxColumn          = $this->numberOfColumns - strlen('  /  (XXX%)') - (2 * $this->numberOfTestsWidth);
     }
 
+    public function testSuiteStarted(TestSuiteStarted $event): void
+    {
+        if (!$event->testSuite()->isForTestClass()) {
+            return;
+        }
+
+        $this->numberOfTestsOfTestClassThatHasNotStartedTests = $event->testSuite()->count();
+    }
+
+    public function testPreparationStarted(): void
+    {
+        $this->numberOfTestsOfTestClassThatHasNotStartedTests = null;
+    }
+
     public function beforeTestClassMethodErrored(): void
     {
-        $this->printProgressForError();
+        for ($i = 0; $i < $this->numberOfTestsThatAreNotRun(); $i++) {
+            $this->printProgressForError();
+        }
     }
 
     public function testPrepared(): void
@@ -321,10 +343,12 @@ final class ProgressPrinter
             new TestFailedSubscriber($this),
             new TestFinishedSubscriber($this),
             new TestMarkedIncompleteSubscriber($this),
+            new TestPreparationStartedSubscriber($this),
             new TestPreparedSubscriber($this),
             new TestRunnerExecutionStartedSubscriber($this),
             new TestSkippedSubscriber($this),
             new TestSuiteSkippedSubscriber($this),
+            new TestSuiteStartedSubscriber($this),
             new TestTriggeredDeprecationSubscriber($this),
             new TestTriggeredNoticeSubscriber($this),
             new TestTriggeredPhpDeprecationSubscriber($this),
@@ -336,6 +360,19 @@ final class ProgressPrinter
             new TestTriggeredWarningSubscriber($this),
             new ChildProcessErroredSubscriber($this),
         );
+    }
+
+    /**
+     * When a before-first-test method errors before a test of its test class
+     * has started, none of the tests of that test class are run.
+     */
+    private function numberOfTestsThatAreNotRun(): int
+    {
+        if ($this->numberOfTestsOfTestClassThatHasNotStartedTests === null) {
+            return 1;
+        }
+
+        return $this->numberOfTestsOfTestClassThatHasNotStartedTests;
     }
 
     private function updateTestStatus(TestStatus $status): void
