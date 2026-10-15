@@ -14,7 +14,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 
-...
+FFF...                                                              6 / 6 (100%)
 
 Time: %s, Memory: %s
 
@@ -36,4 +36,4 @@ failure in tearDownAfterClass
 %sFailureInTearDownAfterClassTest.php:%d
 
 FAILURES!
-Tests: 5, Assertions: 3, Failures: 3.
+Tests: 6, Assertions: 3, Failures: 3.

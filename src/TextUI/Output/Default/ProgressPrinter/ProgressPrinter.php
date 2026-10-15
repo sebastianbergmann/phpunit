@@ -97,6 +97,13 @@ final class ProgressPrinter
         }
     }
 
+    public function beforeTestClassMethodFailed(): void
+    {
+        for ($i = 0; $i < $this->numberOfTestsThatAreNotRun(); $i++) {
+            $this->printProgressForFailure();
+        }
+    }
+
     public function testPrepared(): void
     {
         $this->prepared = true;
@@ -338,6 +345,7 @@ final class ProgressPrinter
     {
         $facade->registerSubscribers(
             new BeforeTestClassMethodErroredSubscriber($this),
+            new BeforeTestClassMethodFailedSubscriber($this),
             new TestConsideredRiskySubscriber($this),
             new TestErroredSubscriber($this),
             new TestFailedSubscriber($this),
@@ -363,8 +371,8 @@ final class ProgressPrinter
     }
 
     /**
-     * When a before-first-test method errors before a test of its test class
-     * has started, none of the tests of that test class are run.
+     * When a before-first-test method errors or fails before a test of its test
+     * class has started, none of the tests of that test class are run.
      */
     private function numberOfTestsThatAreNotRun(): int
     {

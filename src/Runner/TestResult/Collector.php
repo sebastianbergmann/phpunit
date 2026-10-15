@@ -338,7 +338,7 @@ final class Collector
     {
         $this->testFailedEvents[] = $event;
 
-        $this->numberOfTestsRun++;
+        $this->numberOfTestsRun += $this->numberOfTestsThatAreNotRun();
     }
 
     public function afterTestClassMethodErrored(AfterLastTestMethodErrored $event): void
@@ -695,8 +695,8 @@ final class Collector
     }
 
     /**
-     * When a before-first-test method errors before a test of its test class
-     * has started, none of the tests of that test class are run.
+     * When a before-first-test method errors or fails before a test of its test
+     * class has started, none of the tests of that test class are run.
      */
     private function numberOfTestsThatAreNotRun(): int
     {
