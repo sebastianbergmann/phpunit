@@ -2249,19 +2249,21 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             $methodsInvoked[] = $methodInvoked;
 
-            if (isset($t) && !$t instanceof SkippedTest) {
-                if ($t instanceof AssertionFailedError) {
-                    $method = $failedMethod;
-                } else {
-                    $method = $erroredMethod;
-                }
+            if (isset($t)) {
+                if (!$t instanceof SkippedTest) {
+                    if ($t instanceof AssertionFailedError) {
+                        $method = $failedMethod;
+                    } else {
+                        $method = $erroredMethod;
+                    }
 
-                /** @phpstan-ignore method.dynamicName */
-                $emitter->{$method}(
-                    $test,
-                    $methodInvoked,
-                    Event\Code\ThrowableBuilder::from($t),
-                );
+                    /** @phpstan-ignore method.dynamicName */
+                    $emitter->{$method}(
+                        $test,
+                        $methodInvoked,
+                        Event\Code\ThrowableBuilder::from($t),
+                    );
+                }
 
                 break;
             }
