@@ -21,10 +21,8 @@ Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\ExceptionInFirstOfTwoBeforeClassMethodsTest, 1 test)
 Before First Test Method Called (PHPUnit\TestFixture\Event\ExceptionInFirstOfTwoBeforeClassMethodsTest::beforeClassOne)
 Before First Test Method Errored (PHPUnit\TestFixture\Event\ExceptionInFirstOfTwoBeforeClassMethodsTest::beforeClassOne)
-Before First Test Method Called (PHPUnit\TestFixture\Event\ExceptionInFirstOfTwoBeforeClassMethodsTest::beforeClassTwo)
 Before First Test Method Finished:
 - PHPUnit\TestFixture\Event\ExceptionInFirstOfTwoBeforeClassMethodsTest::beforeClassOne
-- PHPUnit\TestFixture\Event\ExceptionInFirstOfTwoBeforeClassMethodsTest::beforeClassTwo
 Test Suite Finished (PHPUnit\TestFixture\Event\ExceptionInFirstOfTwoBeforeClassMethodsTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished

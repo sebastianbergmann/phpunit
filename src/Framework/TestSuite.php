@@ -693,6 +693,8 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                 }
 
                 $result = false;
+
+                break;
             }
         }
 
@@ -757,6 +759,8 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                         Event\Code\ThrowableBuilder::from($t),
                     );
                 }
+
+                break;
             }
         }
 

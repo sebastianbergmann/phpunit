@@ -25,10 +25,8 @@ Test Passed (PHPUnit\TestFixture\Event\ExceptionInFirstOfTwoAfterClassMethodsTes
 Test Finished (PHPUnit\TestFixture\Event\ExceptionInFirstOfTwoAfterClassMethodsTest::testOne)
 After Last Test Method Called (PHPUnit\TestFixture\Event\ExceptionInFirstOfTwoAfterClassMethodsTest::afterClassOne)
 After Last Test Method Errored (PHPUnit\TestFixture\Event\ExceptionInFirstOfTwoAfterClassMethodsTest::afterClassOne)
-After Last Test Method Called (PHPUnit\TestFixture\Event\ExceptionInFirstOfTwoAfterClassMethodsTest::afterClassTwo)
 After Last Test Method Finished:
 - PHPUnit\TestFixture\Event\ExceptionInFirstOfTwoAfterClassMethodsTest::afterClassOne
-- PHPUnit\TestFixture\Event\ExceptionInFirstOfTwoAfterClassMethodsTest::afterClassTwo
 Test Suite Finished (PHPUnit\TestFixture\Event\ExceptionInFirstOfTwoAfterClassMethodsTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished
