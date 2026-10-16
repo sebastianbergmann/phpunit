@@ -751,8 +751,6 @@ The maintainers of this project ask contributors to follow the [code of conduct]
 
 The maintainers of this project provide limited support.
 
-You can support the maintenance of this project by [sponsoring @ergebnis](https://github.com/sponsors/ergebnis).
-
 ## PHP Version Support Policy
 
 This project currently supports the following PHP versions:
@@ -781,4 +779,4 @@ The method [`FinalRule::isWhitelistedClass()`](src/Classes/FinalRule.php) is ins
 
 ## Social
 
-Follow [@localheinz](https://twitter.com/intent/follow?screen_name=localheinz) and [@ergebnis](https://twitter.com/intent/follow?screen_name=ergebnis) on Twitter.
+Follow [@localheinz](https://x.com/intent/follow?screen_name=localheinz) and [@ergebnis](https://x.com/intent/follow?screen_name=ergebnis) on X.
