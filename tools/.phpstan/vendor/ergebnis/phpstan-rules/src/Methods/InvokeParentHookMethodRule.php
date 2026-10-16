@@ -223,46 +223,79 @@ final class InvokeParentHookMethodRule implements Rules\Rule
         $statementCount = \count($statementsWithOperations);
 
         foreach ($statementsWithOperations as $index => $statement) {
-            if (!$statement instanceof Node\Stmt\Expression) {
-                continue;
-            }
-
-            if (!$statement->expr instanceof Node\Expr\StaticCall) {
-                continue;
-            }
-
-            if (!$statement->expr->class instanceof Node\Name) {
-                continue;
-            }
-
-            $className = (string) $statement->expr->class;
-
-            if (\mb_strtolower($className) !== 'parent') {
-                continue;
-            }
-
-            if (!$statement->expr->name instanceof Node\Identifier) {
-                continue;
-            }
-
-            if (\mb_strtolower($statement->expr->name->toString()) === \mb_strtolower($hookMethod->methodName()->toString())) {
-                if (1 === $statementCount) {
-                    return $hookMethod->invocation();
+            if ($statement instanceof Node\Stmt\TryCatch) {
+                if (!$statement->finally instanceof Node\Stmt\Finally_) {
+                    continue;
                 }
 
-                if (0 === $index) {
-                    return Invocation::first();
+                $finallyInvocation = self::findParentHookMethodInvocation(
+                    \array_values($statement->finally->stmts),
+                    $hookMethod,
+                );
+
+                if ($finallyInvocation->equals(Invocation::never())) {
+                    continue;
                 }
 
-                if ($statementCount - 1 === $index) {
+                if (
+                    $finallyInvocation->equals(Invocation::last())
+                    && $statementCount - 1 === $index
+                ) {
                     return Invocation::last();
                 }
 
                 return Invocation::any();
             }
+
+            if (!self::isParentHookMethodInvocation($statement, $hookMethod)) {
+                continue;
+            }
+
+            if (1 === $statementCount) {
+                return $hookMethod->invocation();
+            }
+
+            if (0 === $index) {
+                return Invocation::first();
+            }
+
+            if ($statementCount - 1 === $index) {
+                return Invocation::last();
+            }
+
+            return Invocation::any();
         }
 
         return Invocation::never();
+    }
+
+    private static function isParentHookMethodInvocation(
+        Node\Stmt $statement,
+        HookMethod $hookMethod
+    ): bool {
+        if (!$statement instanceof Node\Stmt\Expression) {
+            return false;
+        }
+
+        if (!$statement->expr instanceof Node\Expr\StaticCall) {
+            return false;
+        }
+
+        if (!$statement->expr->class instanceof Node\Name) {
+            return false;
+        }
+
+        $className = (string) $statement->expr->class;
+
+        if (\mb_strtolower($className) !== 'parent') {
+            return false;
+        }
+
+        if (!$statement->expr->name instanceof Node\Identifier) {
+            return false;
+        }
+
+        return \mb_strtolower($statement->expr->name->toString()) === \mb_strtolower($hookMethod->methodName()->toString());
     }
 
     /**
