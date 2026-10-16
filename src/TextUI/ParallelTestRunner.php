@@ -28,10 +28,10 @@ use PHPUnit\Framework\PhptRetryTestSuite;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestRunner\ChildProcessResultProcessor;
+use PHPUnit\Framework\TestRunner\ProcessIsolation;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Metadata\Api\Dependencies;
 use PHPUnit\Metadata\Api\Requirements;
-use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\Exception as PhptException;
@@ -211,7 +211,7 @@ final class ParallelTestRunner
             },
         );
 
-        $processIsolation = $configuration->processIsolation();
+        $processIsolation = new ProcessIsolation(Event\Facade::emitter());
 
         $runs           = [];
         $poolIsNeeded   = false;
@@ -232,7 +232,7 @@ final class ParallelTestRunner
                 }
 
                 $mustNotRunInParallel     = $unit instanceof TestClassWorkUnit && $this->mustNotRunInParallel($unit, $testCases);
-                $requiresProcessIsolation = $unit instanceof TestClassWorkUnit && ($processIsolation || $this->requiresProcessIsolation($unit, $testCases));
+                $requiresProcessIsolation = $unit instanceof TestClassWorkUnit && $this->requiresProcessIsolation($testCases, $processIsolation);
 
                 // A unit that runs in the main process for a reason its
                 // author did not ask for is reported with a test runner
@@ -842,18 +842,30 @@ final class ParallelTestRunner
     /**
      * A work unit is the whole of a test class, so a single test method that is
      * attributed with #[DoNotRunInParallel] excludes its entire class from the
-     * parallel phase.
+     * parallel phase, as does the attribute on its test class or on one of
+     * that class' ancestors.
      *
      * @param list<TestCase> $testCases
      */
     private function mustNotRunInParallel(TestClassWorkUnit $unit, array $testCases): bool
     {
-        return $this->unitHasMetadata(
-            $unit,
-            $testCases,
-            static fn (MetadataCollection $metadata): bool => $metadata->isDoNotRunInParallel()->isNotEmpty(),
-            static fn (MetadataCollection $metadata): bool => $metadata->isDoNotRunInParallel()->isNotEmpty(),
-        );
+        $className = $unit->className();
+
+        $class = $className;
+
+        do {
+            if (MetadataRegistry::parser()->forClass($class)->isDoNotRunInParallel()->isNotEmpty()) {
+                return true;
+            }
+        } while (($class = get_parent_class($class)) !== false);
+
+        foreach ($testCases as $test) {
+            if (MetadataRegistry::parser()->forMethod($className, $test->name())->isDoNotRunInParallel()->isNotEmpty()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -870,36 +882,6 @@ final class ParallelTestRunner
 
         foreach ($testCases as $testCase) {
             if ($requirements->requiresXdebug($unit->className(), $testCase->name())) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Whether the unit's test class — or one of its ancestors — carries class
-     * metadata matched by the first filter, or any of the unit's test methods
-     * carries method metadata matched by the second.
-     *
-     * @param list<TestCase>                     $testCases
-     * @param callable(MetadataCollection): bool $classMetadataMatches
-     * @param callable(MetadataCollection): bool $methodMetadataMatches
-     */
-    private function unitHasMetadata(TestClassWorkUnit $unit, array $testCases, callable $classMetadataMatches, callable $methodMetadataMatches): bool
-    {
-        $className = $unit->className();
-
-        $class = $className;
-
-        do {
-            if ($classMetadataMatches(MetadataRegistry::parser()->forClass($class))) {
-                return true;
-            }
-        } while (($class = get_parent_class($class)) !== false);
-
-        foreach ($testCases as $test) {
-            if ($methodMetadataMatches(MetadataRegistry::parser()->forMethod($className, $test->name()))) {
                 return true;
             }
         }
@@ -1001,21 +983,23 @@ final class ParallelTestRunner
     }
 
     /**
-     * Whether any of the unit's tests is configured to run in a separate
-     * process. Such a test relies on process isolation that a shared worker
+     * Whether any of the unit's tests is to be run in a separate process,
+     * because the test requests it or the configuration requests it for all
+     * tests. Such a test relies on process isolation that a shared worker
      * cannot provide; it is therefore run in the main process, where the test
      * runner spawns the isolated child process for it as usual.
      *
      * @param list<TestCase> $testCases
      */
-    private function requiresProcessIsolation(TestClassWorkUnit $unit, array $testCases): bool
+    private function requiresProcessIsolation(array $testCases, ProcessIsolation $processIsolation): bool
     {
-        return $this->unitHasMetadata(
-            $unit,
-            $testCases,
-            static fn (MetadataCollection $metadata): bool => $metadata->isRunTestsInSeparateProcesses()->isNotEmpty(),
-            static fn (MetadataCollection $metadata): bool => $metadata->isRunInSeparateProcess()->isNotEmpty(),
-        );
+        foreach ($testCases as $testCase) {
+            if ($processIsolation->isRequestedFor($testCase)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
