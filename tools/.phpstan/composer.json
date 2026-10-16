@@ -3,7 +3,7 @@
         "phpstan/phpstan": "^2.3.1",
         "phpstan/extension-installer": "^1.4.3",
         "phpstan/phpstan-strict-rules": "^2.1.0",
-        "ergebnis/phpstan-rules": "^2.14.0"
+        "ergebnis/phpstan-rules": "^2.14.2"
     },
     "config": {
         "allow-plugins": {

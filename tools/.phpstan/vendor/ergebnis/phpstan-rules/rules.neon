@@ -13,6 +13,8 @@ conditionalTags:
 		phpstan.rules.rule: %ergebnis.noParameterPassedByReference.enabled%
 	Ergebnis\PHPStan\Rules\Closures\NoParameterWithNullableTypeDeclarationRule:
 		phpstan.rules.rule: %ergebnis.noParameterWithNullableTypeDeclaration.enabled%
+	Ergebnis\PHPStan\Rules\Closures\NoParameterWithNullDefaultValueRule:
+		phpstan.rules.rule: %ergebnis.noParameterWithNullDefaultValue.enabled%
 	Ergebnis\PHPStan\Rules\Expressions\NoAssignByReferenceRule:
 		phpstan.rules.rule: %ergebnis.noAssignByReference.enabled%
 	Ergebnis\PHPStan\Rules\Expressions\NoCompactRule:
@@ -226,6 +228,9 @@ services:
 
 	-
 		class: Ergebnis\PHPStan\Rules\Closures\NoParameterWithNullableTypeDeclarationRule
+
+	-
+		class: Ergebnis\PHPStan\Rules\Closures\NoParameterWithNullDefaultValueRule
 
 	-
 		class: Ergebnis\PHPStan\Rules\Expressions\NoAssignByReferenceRule
