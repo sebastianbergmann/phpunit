@@ -6,7 +6,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased
 
-For a full diff see [`2.14.0...main`][2.14.0...main].
+For a full diff see [`2.14.2...main`][2.14.2...main].
+
+## [`2.14.2`][2.14.2]
+
+For a full diff see [`2.14.1...2.14.2`][2.14.1...2.14.2].
+
+### Fixed
+
+- Adjusted `rules.neon` to register `Closures\NoParameterWithNullDefaultValueRule` ([#1140]), by [@alfredbez]
+
+## [`2.14.1`][2.14.1]
+
+For a full diff see [`2.14.0...2.14.1`][2.14.0...2.14.1].
+
+### Fixed
+
+- Adjusted `Methods\InvokeParentHookMethodRule` to detect the invocation of a parent hook method in a `finally` block ([#1139]), by [@localheinz]
 
 ## [`2.14.0`][2.14.0]
 
@@ -676,7 +692,11 @@ For a full diff see [`362c7ea...0.1.0`][362c7ea...0.1.0].
 [2.13.0...2.13.1]: https://github.com/ergebnis/phpstan-rules/compare/2.13.0...2.13.1
 [2.13.1...2.14.0]: https://github.com/ergebnis/phpstan-rules/compare/2.13.1...2.14.0
 [2.14.0]: https://github.com/ergebnis/phpstan-rules/releases/tag/2.14.0
-[2.14.0...main]: https://github.com/ergebnis/phpstan-rules/compare/2.14.0...main
+[2.14.0...2.14.1]: https://github.com/ergebnis/phpstan-rules/compare/2.14.0...2.14.1
+[2.14.1]: https://github.com/ergebnis/phpstan-rules/releases/tag/2.14.1
+[2.14.1...2.14.2]: https://github.com/ergebnis/phpstan-rules/compare/2.14.1...2.14.2
+[2.14.2]: https://github.com/ergebnis/phpstan-rules/releases/tag/2.14.2
+[2.14.2...main]: https://github.com/ergebnis/phpstan-rules/compare/2.14.2...main
 
 [#1]: https://github.com/ergebnis/phpstan-rules/pull/1
 [#4]: https://github.com/ergebnis/phpstan-rules/pull/4
@@ -780,7 +800,10 @@ For a full diff see [`362c7ea...0.1.0`][362c7ea...0.1.0].
 [#1011]: https://github.com/ergebnis/phpstan-rules/pull/1011
 [#1036]: https://github.com/ergebnis/phpstan-rules/pull/1036
 [#1101]: https://github.com/ergebnis/phpstan-rules/pull/1101
+[#1139]: https://github.com/ergebnis/phpstan-rules/pull/1139
+[#1140]: https://github.com/ergebnis/phpstan-rules/pull/1140
 
+[@alfredbez]: https://github.com/alfredbez
 [@cosmastech]: https://github.com/cosmastech
 [@dmecke]: https://github.com/dmecke
 [@enumag]: https://github.com/enumag
