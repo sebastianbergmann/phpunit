@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="../../../../../../phpunit.xsd"
+         bootstrap="../tests/Probe.php"
+         numberOfTestClassesBeforeWorkerRecycling="1">
+    <testsuites>
+        <testsuite name="one">
+            <file>../tests/FirstTest.php</file>
+            <file>../tests/SecondTest.php</file>
+        </testsuite>
+        <testsuite name="two">
+            <file>../tests/ThirdTest.php</file>
+            <file>../tests/FourthTest.php</file>
+        </testsuite>
+    </testsuites>
+</phpunit>

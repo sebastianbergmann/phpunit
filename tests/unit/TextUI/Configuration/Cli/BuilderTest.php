@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\CliArguments;
 
+use Fidry\CpuCoreCounter\CpuCoreCounter;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
@@ -1591,6 +1592,67 @@ final class BuilderTest extends TestCase
         $this->expectException(Exception::class);
 
         $configuration->processIsolation();
+    }
+
+    #[TestDox('--parallel')]
+    public function testParallel(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--parallel', '4']);
+
+        $this->assertTrue($configuration->hasNumberOfParallelWorkers());
+        $this->assertSame(4, $configuration->numberOfParallelWorkers());
+    }
+
+    #[TestDox('--parallel auto')]
+    public function testParallelAuto(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--parallel', 'auto']);
+
+        $this->assertTrue($configuration->hasNumberOfParallelWorkers());
+        $this->assertSame(
+            (new CpuCoreCounter)->getAvailableForParallelisation()->availableCpus,
+            $configuration->numberOfParallelWorkers(),
+        );
+    }
+
+    #[TestDox('--recycle-workers-after')]
+    public function testRecycleWorkersAfter(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--recycle-workers-after', '25']);
+
+        $this->assertTrue($configuration->hasNumberOfTestClassesBeforeWorkerRecycling());
+        $this->assertSame(25, $configuration->numberOfTestClassesBeforeWorkerRecycling());
+    }
+
+    #[TestDox('--recycle-workers-after 0')]
+    public function testRecycleWorkersAfterZero(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--recycle-workers-after', '0']);
+
+        $this->assertTrue($configuration->hasNumberOfTestClassesBeforeWorkerRecycling());
+        $this->assertSame(0, $configuration->numberOfTestClassesBeforeWorkerRecycling());
+    }
+
+    public function testNumberOfTestClassesBeforeWorkerRecyclingMayNotBeConfigured(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters([]);
+
+        $this->assertFalse($configuration->hasNumberOfTestClassesBeforeWorkerRecycling());
+
+        $this->expectException(Exception::class);
+
+        $configuration->numberOfTestClassesBeforeWorkerRecycling();
+    }
+
+    public function testNumberOfParallelWorkersMayNotBeConfigured(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters([]);
+
+        $this->assertFalse($configuration->hasNumberOfParallelWorkers());
+
+        $this->expectException(Exception::class);
+
+        $configuration->numberOfParallelWorkers();
     }
 
     #[TestDox('--stderr')]
