@@ -1,0 +1,124 @@
+<?php declare(strict_types=1);
+/*
+ * This file is part of PHPUnit.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+namespace PHPUnit\Util;
+
+use function explode;
+use function implode;
+use function is_int;
+use function sprintf;
+use PHPUnit\Event\Test\PropertyFalsified;
+
+/**
+ * Describes how a property was falsified, with its minimal counterexample
+ * written as PHP code that can be copied into a data provider, for instance:
+ *
+ *     Property falsified after 2 examples, counterexample shrunk in 17 steps:
+ *
+ *         $money = new Money(amount: 1, currency: Currency::EUR);
+ *         $parts = 2;
+ *
+ * or with the arguments of the explicit example that falsified it:
+ *
+ *     Property falsified by explicit example "minus one":
+ *
+ *         $value = -1;
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ */
+final readonly class PropertyFalsifiedToStringMapper
+{
+    private const string INDENTATION = '    ';
+
+    public static function map(PropertyFalsified $event): string
+    {
+        $explicitExample = $event->explicitExample();
+
+        if ($explicitExample !== null) {
+            return self::mapExplicitExample($event, $explicitExample);
+        }
+
+        $examples = self::count($event->numberOfExamplesChecked(), 'example');
+
+        if ($event->counterexample() === []) {
+            return sprintf('Property falsified after %s.', $examples) . "\n";
+        }
+
+        if ($event->numberOfShrinkingSteps() === 0) {
+            $buffer = sprintf('Property falsified after %s with this counterexample:', $examples);
+        } else {
+            $buffer = sprintf(
+                'Property falsified after %s, counterexample shrunk in %s:',
+                $examples,
+                self::count($event->numberOfShrinkingSteps(), 'step'),
+            );
+        }
+
+        $buffer .= "\n\n" . self::arguments($event);
+
+        if ($event->shrinkingBudgetExhausted()) {
+            $buffer .= "\n" . sprintf(
+                'Shrinking was stopped after %s, a simpler counterexample may exist.',
+                self::count($event->numberOfShrinkingAttempts(), 'attempt'),
+            ) . "\n";
+        }
+
+        if ($event->shrinkingInterrupted()) {
+            $buffer .= "\n" . sprintf(
+                'Shrinking was stopped after %s because the test run was aborted, a simpler counterexample may exist.',
+                self::count($event->numberOfShrinkingAttempts(), 'attempt'),
+            ) . "\n";
+        }
+
+        return $buffer;
+    }
+
+    /**
+     * @param int|non-empty-string $explicitExample
+     */
+    private static function mapExplicitExample(PropertyFalsified $event, int|string $explicitExample): string
+    {
+        if (is_int($explicitExample)) {
+            $label = '#' . $explicitExample;
+        } else {
+            $label = sprintf('"%s"', $explicitExample);
+        }
+
+        if ($event->counterexample() === []) {
+            return sprintf('Property falsified by explicit example %s.', $label) . "\n";
+        }
+
+        return sprintf('Property falsified by explicit example %s:', $label) . "\n\n" . self::arguments($event);
+    }
+
+    private static function arguments(PropertyFalsified $event): string
+    {
+        $buffer = '';
+
+        foreach ($event->counterexample() as $parameter => $value) {
+            $buffer .= self::INDENTATION . implode(
+                "\n" . self::INDENTATION,
+                explode("\n", sprintf('$%s = %s;', $parameter, $value)),
+            ) . "\n";
+        }
+
+        return $buffer;
+    }
+
+    private static function count(int $number, string $noun): string
+    {
+        if ($number === 1) {
+            return '1 ' . $noun;
+        }
+
+        return $number . ' ' . $noun . 's';
+    }
+}

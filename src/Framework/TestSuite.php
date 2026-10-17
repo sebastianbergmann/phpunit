@@ -29,6 +29,7 @@ use IteratorAggregate;
 use PHPUnit\Event;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\NoPreviousThrowableException;
+use PHPUnit\Framework\PropertyBased\InvalidPropertyException;
 use PHPUnit\Framework\TestRunner\ProcessIsolation;
 use PHPUnit\Metadata\Api\Dependencies;
 use PHPUnit\Metadata\Api\Groups;
@@ -737,6 +738,32 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
 
             assert($file !== false && $file !== '');
             assert($line !== false);
+
+            $this->emitter->testTriggeredPhpunitError(
+                new TestMethod(
+                    $className,
+                    $methodName,
+                    $file,
+                    $line,
+                    Event\Code\TestDoxBuilder::fromClassNameAndMethodName(
+                        $className,
+                        $methodName,
+                    ),
+                    MetadataCollection::fromArray([]),
+                    Event\TestData\TestDataCollection::fromArray([]),
+                ),
+                $message,
+            );
+
+            return;
+        } catch (InvalidPropertyException $e) {
+            $file    = $method->getFileName();
+            $line    = $method->getStartLine();
+            $message = $e->getMessage();
+
+            assert($file !== false && $file !== '');
+            assert($line !== false);
+            assert($message !== '');
 
             $this->emitter->testTriggeredPhpunitError(
                 new TestMethod(

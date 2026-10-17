@@ -285,9 +285,11 @@ final class Help
                 ['arg' => '--resolve-dependencies', 'desc' => 'Reorder tests to resolve dependencies between them (default)'],
                 ['arg' => '--ignore-dependencies', 'desc' => 'Do not reorder tests to resolve dependencies between them'],
                 ['arg' => '--random-order', 'desc' => 'Alias for "--order-by random"'],
-                ['arg' => '--random-seed <N>', 'desc' => 'Use the specified seed for PHP\'s Mt19937 random number generator (mt_rand(), rand(), shuffle(), ...) and for random test order'],
+                ['arg' => '--random-seed <N>', 'desc' => 'Use the specified seed for PHP\'s Mt19937 random number generator (mt_rand(), rand(), shuffle(), ...), for random test order, and for generating the examples of properties'],
                 ['arg' => '--repeat <N>', 'desc' => 'Run each test N times, stopping at the first failure'],
                 ['arg' => '--retry <N>', 'desc' => 'Attempt each test up to N times, stopping at the first success'],
+                ['arg' => '--property-examples <N>', 'desc' => 'Check N examples for each property that does not specify the number of its examples'],
+                ['arg' => '--property-examples-multiplier <N>', 'desc' => 'Multiply the number of examples of every property by N, including properties that specify the number of their examples'],
                 ['arg' => '--reverse-order', 'desc' => 'Alias for "--order-by reverse"'],
             ],
 
@@ -313,6 +315,7 @@ final class Help
                 ['arg' => '--display-notices', 'desc' => 'Display details for notices triggered by tests'],
                 ['arg' => '--display-warnings', 'desc' => 'Display details for warnings triggered by tests'],
                 ['arg' => '--display-all-issues', 'desc' => 'Display details for all issues that are triggered'],
+                ['arg' => '--display-property-statistics', 'desc' => 'Display statistics of the examples of properties'],
                 ['arg' => '--reverse-list', 'desc' => 'Print defects in reverse order'],
                 ['spacer' => ''],
 

@@ -125,6 +125,7 @@ final readonly class DefaultConfiguration extends Configuration
                 false,
                 false,
                 false,
+                false,
                 null,
                 [],
                 false,
@@ -191,6 +192,11 @@ final readonly class DefaultConfiguration extends Configuration
                 false,
             ),
             TestSuiteCollection::fromArray([]),
+            new PropertyBasedTesting(
+                PropertyBasedTesting::DEFAULT_NUMBER_OF_EXAMPLES,
+                PropertyBasedTesting::DEFAULT_EXAMPLES_MULTIPLIER,
+                PropertyBasedTesting::DEFAULT_MAXIMUM_NUMBER_OF_SHRINKING_ATTEMPTS,
+            ),
         );
     }
 

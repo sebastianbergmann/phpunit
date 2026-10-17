@@ -20,6 +20,7 @@ use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\MarkedIncomplete;
 use PHPUnit\Event\Test\Passed;
 use PHPUnit\Event\Test\Prepared;
+use PHPUnit\Event\Test\PropertyFalsified;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Framework\InvalidArgumentException;
 use PHPUnit\Framework\TestStatus\TestStatus;
@@ -120,11 +121,32 @@ final class TestRunHistoryHandler
     {
         $id = TestRunHistoryId::fromTest($event->test());
 
+        // a property that holds no longer needs the counterexample that was
+        // remembered for it, which it was checked for first
+        if ($this->testRunHistory->counterexample($id) !== null) {
+            $this->testRunHistory->removeCounterexample($id);
+        }
+
         if (isset($this->statusesRecordedInThisRun[$id->asString()])) {
             return;
         }
 
         $this->testRunHistory->remove($id);
+    }
+
+    public function testPropertyFalsified(PropertyFalsified $event): void
+    {
+        // the explicit examples of a property are checked for every time it
+        // is checked, before the counterexample that is remembered for it,
+        // which is kept because it has not been checked for
+        if ($event->explicitExample() !== null) {
+            return;
+        }
+
+        $this->testRunHistory->setCounterexample(
+            TestRunHistoryId::fromTest($event->test()),
+            $event->choiceSequence(),
+        );
     }
 
     public function testSkipped(Skipped $event): void
@@ -191,6 +213,7 @@ final class TestRunHistoryHandler
             new TestErroredSubscriber($this),
             new TestFailedSubscriber($this),
             new TestPassedSubscriber($this),
+            new TestPropertyFalsifiedSubscriber($this),
             new TestSkippedSubscriber($this),
             new TestFinishedSubscriber($this),
             new TestRunnerExecutionAbortedSubscriber($this),

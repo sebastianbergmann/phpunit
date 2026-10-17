@@ -1,0 +1,276 @@
+<?php declare(strict_types=1);
+/*
+ * This file is part of PHPUnit.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+namespace PHPUnit\Event\Test;
+
+use const PHP_EOL;
+use function is_int;
+use function sprintf;
+use PHPUnit\Event\Code;
+use PHPUnit\Event\Event;
+use PHPUnit\Event\Telemetry;
+
+/**
+ * @immutable
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ */
+final readonly class PropertyFalsified implements Event
+{
+    private Telemetry\Info $telemetryInfo;
+    private Code\Test $test;
+
+    /**
+     * @var non-negative-int
+     */
+    private int $seed;
+
+    /**
+     * @var non-negative-int
+     */
+    private int $numberOfExamplesChecked;
+
+    /**
+     * @var non-negative-int
+     */
+    private int $numberOfShrinkingAttempts;
+
+    /**
+     * @var non-negative-int
+     */
+    private int $numberOfShrinkingSteps;
+    private bool $shrinkingBudgetExhausted;
+    private bool $shrinkingInterrupted;
+
+    /**
+     * @var list<non-negative-int>
+     */
+    private array $choiceSequence;
+
+    /**
+     * @var array<non-empty-string, string>
+     */
+    private array $counterexample;
+
+    /**
+     * @var null|int|non-empty-string
+     */
+    private null|int|string $explicitExample;
+
+    /**
+     * @param non-negative-int                $seed
+     * @param non-negative-int                $numberOfExamplesChecked
+     * @param non-negative-int                $numberOfShrinkingAttempts
+     * @param non-negative-int                $numberOfShrinkingSteps
+     * @param list<non-negative-int>          $choiceSequence
+     * @param array<non-empty-string, string> $counterexample
+     * @param null|int|non-empty-string       $explicitExample
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, array $choiceSequence, array $counterexample, null|int|string $explicitExample)
+    {
+        $this->telemetryInfo             = $telemetryInfo;
+        $this->test                      = $test;
+        $this->seed                      = $seed;
+        $this->numberOfExamplesChecked   = $numberOfExamplesChecked;
+        $this->numberOfShrinkingAttempts = $numberOfShrinkingAttempts;
+        $this->numberOfShrinkingSteps    = $numberOfShrinkingSteps;
+        $this->shrinkingBudgetExhausted  = $shrinkingBudgetExhausted;
+        $this->shrinkingInterrupted      = $shrinkingInterrupted;
+        $this->choiceSequence            = $choiceSequence;
+        $this->counterexample            = $counterexample;
+        $this->explicitExample           = $explicitExample;
+    }
+
+    public function telemetryInfo(): Telemetry\Info
+    {
+        return $this->telemetryInfo;
+    }
+
+    public function test(): Code\Test
+    {
+        return $this->test;
+    }
+
+    /**
+     * The seed of the random number generator of the property, which is
+     * derived from the seed of the test run and the ID of the test.
+     *
+     * @return non-negative-int
+     */
+    public function seed(): int
+    {
+        return $this->seed;
+    }
+
+    /**
+     * The number of generated examples for which the property was checked
+     * until it was falsified, including the example that falsified it.
+     * Explicit examples are not counted, and they are checked before examples
+     * are generated, so it is 0 when an explicit example falsified the
+     * property.
+     *
+     * @return non-negative-int
+     */
+    public function numberOfExamplesChecked(): int
+    {
+        return $this->numberOfExamplesChecked;
+    }
+
+    /**
+     * The number of simpler examples that were tried while the counterexample
+     * was shrunk.
+     *
+     * @return non-negative-int
+     */
+    public function numberOfShrinkingAttempts(): int
+    {
+        return $this->numberOfShrinkingAttempts;
+    }
+
+    /**
+     * The number of shrinking attempts that found a simpler counterexample.
+     *
+     * @return non-negative-int
+     */
+    public function numberOfShrinkingSteps(): int
+    {
+        return $this->numberOfShrinkingSteps;
+    }
+
+    /**
+     * Whether shrinking was stopped because the maximum number of shrinking
+     * attempts was reached, in which case a simpler counterexample may exist.
+     */
+    public function shrinkingBudgetExhausted(): bool
+    {
+        return $this->shrinkingBudgetExhausted;
+    }
+
+    /**
+     * Whether shrinking was stopped because the test run was aborted, for
+     * instance because its deadline has passed, in which case a simpler
+     * counterexample may exist.
+     */
+    public function shrinkingInterrupted(): bool
+    {
+        return $this->shrinkingInterrupted;
+    }
+
+    /**
+     * The choices from which the arguments of the minimal counterexample
+     * were generated.
+     *
+     * @return list<non-negative-int>
+     */
+    public function choiceSequence(): array
+    {
+        return $this->choiceSequence;
+    }
+
+    /**
+     * The arguments of the minimal counterexample, or of the explicit example
+     * that falsified the property, exported as PHP code, by the name of the
+     * parameter they were passed to.
+     *
+     * @return array<non-empty-string, string>
+     */
+    public function counterexample(): array
+    {
+        return $this->counterexample;
+    }
+
+    /**
+     * The name of the explicit example, specified with #[TestWith] or
+     * #[TestWithJson], that falsified the property, or its number among the
+     * explicit examples for which no name is specified. Null when the property
+     * was falsified by a generated example.
+     *
+     * An explicit example is not shrunk, so there are no shrinking attempts,
+     * and its arguments are not generated from a choice sequence, so the
+     * choice sequence is empty.
+     *
+     * @return null|int|non-empty-string
+     */
+    public function explicitExample(): null|int|string
+    {
+        return $this->explicitExample;
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    public function asString(): string
+    {
+        if ($this->explicitExample !== null) {
+            return $this->withCounterexample(
+                sprintf(
+                    'Test Property Falsified (%s, explicit example %s)',
+                    $this->test->id(),
+                    $this->labelOfExplicitExample($this->explicitExample),
+                ),
+            );
+        }
+
+        $shrinkingStopped = '';
+
+        if ($this->shrinkingBudgetExhausted) {
+            $shrinkingStopped = ', budget exhausted';
+        }
+
+        if ($this->shrinkingInterrupted) {
+            $shrinkingStopped = ', shrinking interrupted';
+        }
+
+        return $this->withCounterexample(
+            sprintf(
+                'Test Property Falsified (%s, seed: %d, examples: %d, shrinking steps: %d, shrinking attempts: %d%s)',
+                $this->test->id(),
+                $this->seed,
+                $this->numberOfExamplesChecked,
+                $this->numberOfShrinkingSteps,
+                $this->numberOfShrinkingAttempts,
+                $shrinkingStopped,
+            ),
+        );
+    }
+
+    /**
+     * @param non-empty-string $buffer
+     *
+     * @return non-empty-string
+     */
+    private function withCounterexample(string $buffer): string
+    {
+        foreach ($this->counterexample as $parameter => $value) {
+            $buffer .= sprintf(
+                PHP_EOL . '$%s = %s;',
+                $parameter,
+                $value,
+            );
+        }
+
+        return $buffer;
+    }
+
+    /**
+     * @param int|non-empty-string $name
+     *
+     * @return non-empty-string
+     */
+    private function labelOfExplicitExample(int|string $name): string
+    {
+        if (is_int($name)) {
+            return '#' . $name;
+        }
+
+        return sprintf('"%s"', $name);
+    }
+}

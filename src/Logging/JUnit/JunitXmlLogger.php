@@ -31,10 +31,13 @@ use PHPUnit\Event\Test\MarkedIncomplete;
 use PHPUnit\Event\Test\PreparationStarted;
 use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Event\Test\PrintedUnexpectedOutput;
+use PHPUnit\Event\Test\PropertyFalsified;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\TestSuite\Skipped as TestSuiteSkipped;
 use PHPUnit\Event\TestSuite\Started;
 use PHPUnit\TextUI\Output\Printer;
+use PHPUnit\Util\PendingPropertyFalsified;
+use PHPUnit\Util\PropertyFalsifiedToStringMapper;
 use PHPUnit\Util\Xml;
 
 /**
@@ -96,9 +99,16 @@ final class JunitXmlLogger
      */
     private float $retriedAttemptsTime = 0.0;
 
+    /**
+     * The event that describes how a property was falsified, which is
+     * dispatched before the event for its failure or error.
+     */
+    private readonly PendingPropertyFalsified $propertyFalsified;
+
     public function __construct(Printer $printer, Facade $facade)
     {
-        $this->printer = $printer;
+        $this->printer           = $printer;
+        $this->propertyFalsified = new PendingPropertyFalsified;
 
         $this->registerSubscribers($facade);
         $this->createDocument();
@@ -279,6 +289,11 @@ final class JunitXmlLogger
         $this->handleIncompleteOrSkipped($event);
     }
 
+    public function testPropertyFalsified(PropertyFalsified $event): void
+    {
+        $this->propertyFalsified->remember($event);
+    }
+
     /**
      * @throws InvalidArgumentException
      */
@@ -367,6 +382,7 @@ final class JunitXmlLogger
             new TestFinishedSubscriber($this),
             new TestErroredSubscriber($this),
             new TestFailedSubscriber($this),
+            new TestPropertyFalsifiedSubscriber($this),
             new TestMarkedIncompleteSubscriber($this),
             new TestSkippedSubscriber($this),
             new TestRunnerExecutionFinishedSubscriber($this),
@@ -395,9 +411,19 @@ final class JunitXmlLogger
 
         $buffer = $this->testAsString($event->test());
 
-        $throwable = $event->throwable();
+        $throwable   = $event->throwable();
+        $description = $throwable->description();
+
+        // how a property was falsified, with its minimal counterexample, is
+        // reported below the message of the throwable that falsified it
+        $propertyFalsified = $this->propertyFalsified->takeFor($event->test());
+
+        if ($propertyFalsified !== null) {
+            $description .= "\n" . PropertyFalsifiedToStringMapper::map($propertyFalsified);
+        }
+
         $buffer .= trim(
-            $throwable->description() . "\n" .
+            $description . "\n" .
             $throwable->stackTrace(),
         );
 

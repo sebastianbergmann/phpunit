@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event\Code;
 
+use Closure;
 use PHPUnit\Event\TestData\DataFromDataProvider;
 use PHPUnit\Event\TestData\DataFromTestDependency;
 use PHPUnit\Event\TestData\TestDataCollection;
@@ -76,6 +77,11 @@ final readonly class TestMethodBuilder
 
         foreach (MetadataRegistry::parser()->forClassAndMethod($className, $methodName) as $item) {
             if ($item->isDataProviderClosure()) {
+                continue;
+            }
+
+            // closures cannot be serialized, which events must be
+            if ($item->isForAll() && $item->generator() instanceof Closure) {
                 continue;
             }
 

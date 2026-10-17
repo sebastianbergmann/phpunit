@@ -69,6 +69,7 @@ final class LoaderTest extends TestCase
             'failOnRisky'                        => ['failOnRisky', 'true', true],
             'processIsolation'                   => ['processIsolation', 'true', true],
             'reverseDefectList'                  => ['reverseDefectList', 'true', true],
+            'displayPropertyStatistics'          => ['displayPropertyStatistics', 'true', true],
             'diffContext'                        => ['diffContext', '5', 5],
         ];
     }
@@ -523,6 +524,24 @@ final class LoaderTest extends TestCase
 
         $this->assertTrue($groups->hasExclude());
         $this->assertSame(['name'], $groups->exclude()->asArrayOfStrings());
+    }
+
+    public function testPropertyBasedTestingConfigurationIsReadCorrectly(): void
+    {
+        $propertyBasedTesting = $this->configuration('configuration.xml')->propertyBasedTesting();
+
+        $this->assertSame(500, $propertyBasedTesting->examples());
+        $this->assertSame(10, $propertyBasedTesting->examplesMultiplier());
+        $this->assertSame(50, $propertyBasedTesting->maximumShrinkingAttempts());
+    }
+
+    public function testPropertyBasedTestingConfigurationHasDefaults(): void
+    {
+        $propertyBasedTesting = $this->configuration('configuration_empty.xml')->propertyBasedTesting();
+
+        $this->assertSame(100, $propertyBasedTesting->examples());
+        $this->assertSame(1, $propertyBasedTesting->examplesMultiplier());
+        $this->assertSame(1000, $propertyBasedTesting->maximumShrinkingAttempts());
     }
 
     public function testExtensionConfigurationIsReadCorrectly(): void

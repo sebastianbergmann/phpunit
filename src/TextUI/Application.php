@@ -37,8 +37,10 @@ use PHPUnit\Event\Emitter;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Event\UnknownSubscriberTypeException;
+use PHPUnit\Framework\PropertyTestSuite;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\Framework\TestSuiteIterator;
 use PHPUnit\Logging\EventLogger;
 use PHPUnit\Logging\JUnit\JunitXmlLogger;
 use PHPUnit\Logging\OpenTestReporting\CannotOpenUriForWritingException;
@@ -62,6 +64,7 @@ use PHPUnit\Runner\Extension\ExtensionBootstrapper;
 use PHPUnit\Runner\Extension\ExtensionCapabilities;
 use PHPUnit\Runner\Extension\ExtensionFacade;
 use PHPUnit\Runner\Extension\PharLoader;
+use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\GarbageCollection\GarbageCollectionHandler;
 use PHPUnit\Runner\IssueTriggerResolver\Resolver;
 use PHPUnit\Runner\PhpConfiguration\PhpConfigurationChecker;
@@ -269,7 +272,7 @@ final readonly class Application
             if (!$configuration->debug() && !$extensionCapabilities->replacesOutput()) {
                 $this->writeRuntimeInformation($printer, $configuration);
                 $this->writePharExtensionInformation($printer, $pharExtensions);
-                $this->writeRandomSeedInformation($printer, $configuration);
+                $this->writeRandomSeedInformation($printer, $configuration, $testSuite);
 
                 $printer->print(PHP_EOL);
             }
@@ -694,15 +697,56 @@ final readonly class Application
         );
     }
 
-    private function writeRandomSeedInformation(Printer $printer, Configuration $configuration): void
+    private function writeRandomSeedInformation(Printer $printer, Configuration $configuration, TestSuite $testSuite): void
     {
-        if ($configuration->seedRandomNumberGenerators()) {
-            $this->writeMessage(
-                $printer,
-                'Random Seed',
-                (string) $configuration->randomSeed(),
-            );
+        if (!$configuration->seedRandomNumberGenerators()) {
+            // the test selection is only built for a test suite that contains a
+            // property, which it may not select
+            if (!$this->containsProperty($testSuite, null) ||
+                !$this->containsProperty($testSuite, new TestSuiteFilterProcessor($this->emitter)->filter($configuration))) {
+                return;
+            }
         }
+
+        $this->writeMessage(
+            $printer,
+            'Random Seed',
+            (string) $configuration->randomSeed(),
+        );
+    }
+
+    /**
+     * Whether the test suite contains a property that the test selection
+     * selects. The test selection is only applied to the test suite when it is
+     * run, so it is applied here as it is then: to the test that a property
+     * aggregates. Without a test selection, whether the test suite contains
+     * any property.
+     */
+    private function containsProperty(TestSuite $testSuite, ?Factory $filter): bool
+    {
+        foreach ($testSuite->tests() as $test) {
+            if ($test instanceof PropertyTestSuite) {
+                if ($filter === null) {
+                    return true;
+                }
+
+                $selected = $filter->factory(new TestSuiteIterator($test), $test);
+
+                $selected->rewind();
+
+                if ($selected->valid()) {
+                    return true;
+                }
+
+                continue;
+            }
+
+            if ($test instanceof TestSuite && $this->containsProperty($test, $filter)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function registerLogfileWriters(Configuration $configuration): void

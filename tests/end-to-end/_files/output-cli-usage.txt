@@ -113,9 +113,11 @@ Execution:
   --resolve-dependencies               Reorder tests to resolve dependencies between them (default)
   --ignore-dependencies                Do not reorder tests to resolve dependencies between them
   --random-order                       Alias for "--order-by random"
-  --random-seed <N>                    Use the specified seed for PHP's Mt19937 random number generator (mt_rand(), rand(), shuffle(), ...) and for random test order
+  --random-seed <N>                    Use the specified seed for PHP's Mt19937 random number generator (mt_rand(), rand(), shuffle(), ...), for random test order, and for generating the examples of properties
   --repeat <N>                         Run each test N times, stopping at the first failure
   --retry <N>                          Attempt each test up to N times, stopping at the first success
+  --property-examples <N>              Check N examples for each property that does not specify the number of its examples
+  --property-examples-multiplier <N>   Multiply the number of examples of every property by N, including properties that specify the number of their examples
   --reverse-order                      Alias for "--order-by reverse"
 
 Reporting:
@@ -139,6 +141,7 @@ Reporting:
   --display-notices                    Display details for notices triggered by tests
   --display-warnings                   Display details for warnings triggered by tests
   --display-all-issues                 Display details for all issues that are triggered
+  --display-property-statistics        Display statistics of the examples of properties
   --reverse-list                       Print defects in reverse order
 
   --compact                            Replace default progress and result output with compact format

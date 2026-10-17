@@ -36,12 +36,14 @@ use PHPUnit\Event\Test\PhpunitErrorTriggered;
 use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\Prepared;
+use PHPUnit\Event\Test\PropertyFalsified;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\Event\TestSuite\Skipped as TestSuiteSkipped;
 use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Logging\TestDox\TestResult as TestDoxTestMethod;
 use PHPUnit\TestRunner\IssueFilter;
+use PHPUnit\Util\PendingPropertyFalsified;
 use ReflectionMethod;
 
 /**
@@ -61,9 +63,16 @@ final class TestResultCollector
     private ?Throwable $throwable = null;
     private bool $prepared        = false;
 
+    /**
+     * The event that describes how a property was falsified, which is
+     * dispatched before the event for its failure or error.
+     */
+    private readonly PendingPropertyFalsified $propertyFalsified;
+
     public function __construct(Facade $facade, IssueFilter $issueFilter)
     {
-        $this->issueFilter = $issueFilter;
+        $this->issueFilter       = $issueFilter;
+        $this->propertyFalsified = new PendingPropertyFalsified;
 
         $this->registerSubscribers($facade);
     }
@@ -163,6 +172,15 @@ final class TestResultCollector
         assert($test instanceof TestMethod);
 
         $this->recordTestThatNeverStarted($test);
+    }
+
+    public function testPropertyFalsified(PropertyFalsified $event): void
+    {
+        if (!$event->test()->isTestMethod()) {
+            return;
+        }
+
+        $this->propertyFalsified->remember($event);
     }
 
     public function testFailed(Failed $event): void
@@ -391,6 +409,7 @@ final class TestResultCollector
             new TestFinishedSubscriber($this),
             new TestMarkedIncompleteSubscriber($this),
             new TestPassedSubscriber($this),
+            new TestPropertyFalsifiedSubscriber($this),
             new TestPreparedSubscriber($this),
             new TestSkippedSubscriber($this),
             new TestSuiteSkippedSubscriber($this),
@@ -458,6 +477,7 @@ final class TestResultCollector
             $test,
             $status,
             $throwable,
+            $this->propertyFalsified->takeFor($test),
         );
     }
 }
