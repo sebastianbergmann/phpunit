@@ -9,8 +9,10 @@
  */
 namespace PHPUnit\Framework\PropertyBased;
 
+use const PHP_INT_MAX;
 use function array_count_values;
 use function array_filter;
+use function array_search;
 use function array_sum;
 use function array_unique;
 use function array_values;
@@ -427,6 +429,35 @@ final class ShrinkerTest extends TestCase
         );
 
         $this->assertSame([10, 100], $shrinker->shrink(new ChoiceSequence([20, 50]))->sequence()->choices());
+    }
+
+    public function testStartsEachRoundOfPassesWithThePassesThatMadeTheCounterexampleSimplerMostOftenInTheRoundBefore(): void
+    {
+        $candidates = [];
+
+        // only lowering the first choice while raising the second one to its
+        // largest value makes the counterexample simpler in the first round
+        $shrinker = new Shrinker(
+            static function (ChoiceSequence $candidate) use (&$candidates): ?ChoiceSequence
+            {
+                $candidates[] = $candidate->choices();
+
+                if ($candidate->choices() !== [4, PHP_INT_MAX]) {
+                    return null;
+                }
+
+                return $candidate;
+            },
+            1000,
+        );
+
+        $shrinker->shrink(new ChoiceSequence([5, 5]));
+
+        $index = array_search([4, PHP_INT_MAX], $candidates, true);
+
+        $this->assertIsInt($index);
+        $this->assertArrayHasKey($index + 1, $candidates);
+        $this->assertSame([3, PHP_INT_MAX], $candidates[$index + 1]);
     }
 
     public function testSortsSpansThatArePartOfTheSameSpanAndHaveTheSameLabel(): void
