@@ -1,0 +1,112 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of PHP CS Fixer.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace PhpCsFixer;
+
+use Composer\XdebugHandler\XdebugHandler;
+use PhpCsFixer\Console\Application;
+
+error_reporting(\E_ALL & ~\E_DEPRECATED & ~\E_USER_DEPRECATED);
+
+set_error_handler(static function (int $severity, string $message, string $file, int $line): bool {
+    if (0 !== ($severity & error_reporting())) {
+        throw new \ErrorException($message, 0, $severity, $file, $line);
+    }
+
+    return true;
+});
+
+// check environment requirements
+(static function (): void {
+    if (\PHP_VERSION_ID === (int) '80000') { // TODO use 8_00_00 once only PHP 7.4+ is supported by this entry file
+        fwrite(\STDERR, "PHP CS Fixer is not able run on PHP 8.0.0 due to bug in PHP tokenizer (https://bugs.php.net/bug.php?id=80462).\n");
+        fwrite(\STDERR, "Update PHP version to unblock execution.\n");
+
+        exit(1);
+    }
+
+    // PHPStan knows our min PHP version, but we want to check the min version here
+    // because entrypoint file allows wider PHP range than project itself
+    // @phpstan-ignore smaller.alwaysFalse
+    if (\PHP_VERSION_ID < (int) '70400') {
+        fwrite(\STDERR, "PHP needs to be a minimum version of PHP 7.4.0.\n");
+        fwrite(\STDERR, 'Current PHP version: '.\PHP_VERSION.".\n");
+
+        exit(1);
+    }
+
+    // @TODO 4.0 cleanup
+    if (false !== getenv('PHP_CS_FIXER_IGNORE_ENV')) {
+        fwrite(\STDERR, "Setting PHP_CS_FIXER_IGNORE_ENV environment variable is deprecated and will be removed in 4.0, use unsupportedPhpVersionAllowed config instead.\n");
+    }
+
+    foreach (['json', 'tokenizer'] as $extension) {
+        if (!\extension_loaded($extension)) {
+            fwrite(\STDERR, \sprintf("PHP extension ext-%s is missing from your system. Install or enable it.\n", $extension));
+
+            if (filter_var(getenv('PHP_CS_FIXER_IGNORE_ENV'), \FILTER_VALIDATE_BOOLEAN)) {
+                fwrite(\STDERR, "Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Execution may be unstable.\n");
+            } else {
+                exit(1);
+            }
+        }
+    }
+})();
+
+// load dependencies
+(static function (): void {
+    $require = true;
+    if (class_exists(\Phar::class)) {
+        // Maybe this file is used as phar-stub? Let's try!
+        try {
+            \Phar::mapPhar('php-cs-fixer.phar');
+
+            /** @phpstan-ignore requireOnce.fileNotFound */
+            require_once 'phar://php-cs-fixer.phar/vendor/autoload.php';
+
+            $require = false;
+        } catch (\PharException $e) {
+        }
+    }
+
+    if ($require) {
+        // OK, it's not, let give Composer autoloader a try!
+        $possibleFiles = [__DIR__.'/../../autoload.php', __DIR__.'/../autoload.php', __DIR__.'/vendor/autoload.php'];
+        $file = null;
+        foreach ($possibleFiles as $possibleFile) {
+            if (file_exists($possibleFile)) {
+                $file = $possibleFile;
+
+                break;
+            }
+        }
+
+        if (null === $file) {
+            throw new \RuntimeException('Unable to locate autoload.php file.');
+        }
+
+        require_once $file;
+    }
+})();
+
+// Restart if xdebug is loaded, unless the environment variable PHP_CS_FIXER_ALLOW_XDEBUG is set.
+$xdebug = new XdebugHandler('PHP_CS_FIXER');
+$xdebug->check();
+unset($xdebug);
+
+$application = new Application();
+$application->run();
+
+__HALT_COMPILER();
