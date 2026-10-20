@@ -35,6 +35,8 @@ use function strrpos;
 use function substr;
 use function substr_count;
 use Closure;
+use DateTimeImmutable;
+use DateTimeInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -271,6 +273,12 @@ final class ShrinkerTest extends TestCase
                 'http://a.a.aa',
                 Generators::urls(),
                 static fn (string $value): bool => substr_count((string) parse_url($value, PHP_URL_HOST), '.') === 2 && preg_match('/[a-z]$/', (string) parse_url($value, PHP_URL_HOST)) === 1,
+            ],
+
+            'point in time after the turn of the millennium' => [
+                '2000-01-01T00:00:00+00:00',
+                Generators::dateTimes()->map(static fn (DateTimeImmutable $value): string => $value->format(DateTimeInterface::ATOM)),
+                static fn (string $value): bool => $value >= '2000-01-01T00:00:00+00:00',
             ],
 
             'value that is falsified by every example' => [
