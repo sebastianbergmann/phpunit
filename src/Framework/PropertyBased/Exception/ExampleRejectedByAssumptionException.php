@@ -10,7 +10,8 @@
 namespace PHPUnit\Framework\PropertyBased;
 
 /**
- * Thrown by TestCase::assume() to discard the current example of a property.
+ * Thrown by TestCase::assume(), and by TestCase::draw() when no value can be
+ * generated, to discard the current example of a property.
  *
  * It extends PHPUnit\Framework\Exception, so that an expectation for an
  * exception, for instance expectException(RuntimeException::class), does not
