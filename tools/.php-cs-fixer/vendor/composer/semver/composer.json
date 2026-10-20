@@ -1,0 +1,59 @@
+{
+    "name": "composer/semver",
+    "description": "Version comparison library that offers utilities, version constraint parsing and validation.",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "semver",
+        "semantic",
+        "versioning",
+        "validation"
+    ],
+    "authors": [
+        {
+            "name": "Nils Adermann",
+            "email": "naderman@naderman.de",
+            "homepage": "http://www.naderman.de"
+        },
+        {
+            "name": "Jordi Boggiano",
+            "email": "j.boggiano@seld.be",
+            "homepage": "http://seld.be"
+        },
+        {
+            "name": "Rob Bast",
+            "email": "rob.bast@gmail.com",
+            "homepage": "http://robbast.nl"
+        }
+    ],
+    "support": {
+        "irc": "ircs://irc.libera.chat:6697/composer",
+        "issues": "https://github.com/composer/semver/issues"
+    },
+    "require": {
+        "php": "^5.3.2 || ^7.0 || ^8.0"
+    },
+    "require-dev": {
+        "symfony/phpunit-bridge": "^3 || ^7",
+        "phpstan/phpstan": "^1.11"
+    },
+    "autoload": {
+        "psr-4": {
+            "Composer\\Semver\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Composer\\Semver\\": "tests"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "3.x-dev"
+        }
+    },
+    "scripts": {
+        "test": "SYMFONY_PHPUNIT_REMOVE_RETURN_TYPEHINT=1 vendor/bin/simple-phpunit",
+        "phpstan": "@php vendor/bin/phpstan analyse"
+    }
+}

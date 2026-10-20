@@ -1,0 +1,74 @@
+{
+  "name": "ergebnis/agent-detector",
+  "description": "Provides a detector for detecting the presence of an agent.",
+  "license": "MIT",
+  "type": "library",
+  "authors": [
+    {
+      "name": "Andreas Möller",
+      "email": "am@localheinz.com",
+      "homepage": "https://localheinz.com"
+    }
+  ],
+  "homepage": "https://github.com/ergebnis/agent-detector",
+  "support": {
+    "issues": "https://github.com/ergebnis/agent-detector/issues",
+    "source": "https://github.com/ergebnis/agent-detector",
+    "security": "https://github.com/ergebnis/agent-detector/blob/main/.github/SECURITY.md"
+  },
+  "require": {
+    "php": "~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0 || ~8.6.0"
+  },
+  "require-dev": {
+    "ergebnis/composer-normalize": "^2.54.0",
+    "ergebnis/license": "^2.8.0",
+    "ergebnis/php-cs-fixer-config": "^6.60.2",
+    "ergebnis/phpstan-rules": "^2.14.0",
+    "ergebnis/phpunit-slow-test-detector": "^2.26.0",
+    "ergebnis/rector-rules": "^1.18.5",
+    "fakerphp/faker": "^1.24.1",
+    "infection/infection": "^0.26.6",
+    "phpstan/extension-installer": "^1.4.3",
+    "phpstan/phpstan": "^2.2.14",
+    "phpstan/phpstan-deprecation-rules": "^2.0.5",
+    "phpstan/phpstan-phpunit": "^2.1.1",
+    "phpstan/phpstan-strict-rules": "^2.1.0",
+    "phpunit/phpunit": "^9.6.34",
+    "rector/rector": "^2.7.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Ergebnis\\AgentDetector\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Ergebnis\\AgentDetector\\Test\\": "test/"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "composer/package-versions-deprecated": true,
+      "ergebnis/composer-normalize": true,
+      "infection/extension-installer": true,
+      "phpstan/extension-installer": true
+    },
+    "audit": {
+      "abandoned": "report"
+    },
+    "platform": {
+      "php": "7.4.33"
+    },
+    "preferred-install": "dist",
+    "sort-packages": true
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-main": "1.3-dev"
+    },
+    "composer-normalize": {
+      "indent-size": 2,
+      "indent-style": "space"
+    }
+  }
+}
