@@ -37,14 +37,26 @@ final readonly class IntegerGenerator extends AbstractGenerator
     private BoundaryDistribution $magnitude;
     private UniformDistribution $half;
 
+    /**
+     * @var non-empty-string
+     */
+    private string $label;
+
     public function __construct(int $minimum, int $maximum)
     {
+        $this->label = self::labelOf('integers', (string) $minimum, (string) $maximum);
+
         assert($minimum <= $maximum);
 
         $this->minimum   = $minimum;
         $this->maximum   = $maximum;
         $this->magnitude = new BoundaryDistribution;
         $this->half      = new UniformDistribution;
+    }
+
+    public function label(): string
+    {
+        return $this->label;
     }
 
     protected function generateValue(ChoiceSource $source): int

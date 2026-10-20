@@ -11,6 +11,7 @@ namespace PHPUnit\Framework\PropertyBased\Generator;
 
 use function in_array;
 use function is_object;
+use function var_export;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
 use SebastianBergmann\Comparator\ComparisonFailure;
 use SebastianBergmann\Comparator\Factory as ComparatorFactory;
@@ -39,15 +40,27 @@ final readonly class ListGenerator extends AbstractGenerator
     private bool $unique;
 
     /**
+     * @var non-empty-string
+     */
+    private string $label;
+
+    /**
      * @param AbstractGenerator<T> $elements
      * @param non-negative-int     $minimumSize
      * @param ?non-negative-int    $maximumSize
      */
     public function __construct(AbstractGenerator $elements, int $minimumSize, ?int $maximumSize, float $probabilityOfAnotherElement = Repetition::DEFAULT_PROBABILITY_OF_ANOTHER_ELEMENT, bool $unique = false)
     {
+        $this->label = self::labelOf('lists', $elements->label(), (string) $minimumSize, var_export($maximumSize, true), (string) (int) $unique);
+
         $this->elements   = $elements;
-        $this->repetition = new Repetition($minimumSize, $maximumSize, $probabilityOfAnotherElement);
+        $this->repetition = new Repetition(self::labelOf('element', $this->label), $minimumSize, $maximumSize, $probabilityOfAnotherElement);
         $this->unique     = $unique;
+    }
+
+    public function label(): string
+    {
+        return $this->label;
     }
 
     protected function generateValue(ChoiceSource $source): array

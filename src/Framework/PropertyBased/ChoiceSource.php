@@ -13,6 +13,7 @@ use function array_key_exists;
 use function array_pop;
 use function assert;
 use function count;
+use function end;
 use function spl_object_id;
 use function strtolower;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorDeriver;
@@ -77,11 +78,16 @@ final class ChoiceSource
     private array $choices = [];
 
     /**
-     * @var list<Span>
+     * The spans that were started, in the order in which they were started.
+     * The end of a span is null until it is ended.
+     *
+     * @var list<array{start: non-negative-int, end: ?non-negative-int, label: non-empty-string}>
      */
     private array $spans = [];
 
     /**
+     * The indexes of the spans that were started and not yet ended.
+     *
      * @var list<non-negative-int>
      */
     private array $openSpans = [];
@@ -359,28 +365,71 @@ final class ChoiceSource
     /**
      * Marks the start of a span: the choices that are drawn until the span is
      * ended form one part of the value, for instance an element of a list.
+     *
+     * @param non-empty-string $label identifies how the choices of the span are drawn (see AbstractGenerator::label())
      */
-    public function startSpan(): void
+    public function startSpan(string $label): void
     {
-        $this->openSpans[] = count($this->choices);
+        $this->openSpans[] = count($this->spans);
+
+        $this->spans[] = [
+            'start' => count($this->choices),
+            'end'   => null,
+            'label' => $label,
+        ];
     }
 
     public function endSpan(): void
     {
-        $start = array_pop($this->openSpans);
+        $index = array_pop($this->openSpans);
 
-        assert($start !== null);
+        assert($index !== null);
 
-        $end = count($this->choices);
-
-        if ($end > $start) {
-            $this->spans[] = new Span($start, $end);
-        }
+        $this->spans[$index]['end'] = count($this->choices);
     }
 
+    /**
+     * The choices that have been drawn, with the spans that were ended and
+     * contain at least one choice. The parent of a span is the closest of
+     * these spans that it is part of.
+     */
     public function sequence(): ChoiceSequence
     {
-        return new ChoiceSequence($this->choices, $this->spans);
+        $spans = [];
+
+        // the ends and the indexes of the spans that the next span can be
+        // part of, the innermost one last: spans are ended in the reverse
+        // order in which they are started, so they are either part of each
+        // other or do not overlap
+        $enclosingEnds    = [];
+        $enclosingIndexes = [];
+
+        foreach ($this->spans as $span) {
+            $start = $span['start'];
+            $end   = $span['end'];
+
+            if ($end === null || $end <= $start) {
+                continue;
+            }
+
+            while ($enclosingEnds !== [] && end($enclosingEnds) <= $start) {
+                array_pop($enclosingEnds);
+                array_pop($enclosingIndexes);
+            }
+
+            $parent = null;
+
+            if ($enclosingIndexes !== []) {
+                $parent = end($enclosingIndexes);
+            }
+
+            $enclosingEnds[]    = $end;
+            $enclosingIndexes[] = count($spans);
+
+            $spans[] = new Span($start, $end, $span['label'], $parent);
+        }
+
+        return new ChoiceSequence($this->choices, $spans);
     }
 
     /**

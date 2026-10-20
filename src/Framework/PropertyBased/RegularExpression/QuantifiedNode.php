@@ -9,7 +9,9 @@
  */
 namespace PHPUnit\Framework\PropertyBased\RegularExpression;
 
+use function var_export;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
+use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\Repetition;
 
 /**
@@ -34,7 +36,7 @@ final readonly class QuantifiedNode implements Node
     public function __construct(Node $node, int $minimum, ?int $maximum)
     {
         $this->node       = $node;
-        $this->repetition = new Repetition($minimum, $maximum);
+        $this->repetition = new Repetition(AbstractGenerator::labelOf('quantified', (string) $minimum, var_export($maximum, true)), $minimum, $maximum);
     }
 
     public function generate(ChoiceSource $source): string
