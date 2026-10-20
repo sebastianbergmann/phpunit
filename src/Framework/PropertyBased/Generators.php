@@ -52,6 +52,7 @@ use PHPUnit\Framework\PropertyBased\Generator\RecordGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\RegularExpressionGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\StringGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\TupleGenerator;
+use PHPUnit\Framework\PropertyBased\Generator\UuidGenerator;
 use PHPUnit\Framework\PropertyBased\RegularExpression\Parser;
 use PHPUnit\Framework\PropertyBased\Type\NameScope;
 use PHPUnit\Framework\PropertyBased\Type\TypeParser;
@@ -734,6 +735,54 @@ final class Generators
             static fn (GeneratorDeriver $deriver): AbstractGenerator => $deriver->forType($parsed, $scope),
             sprintf('values of type %s', $type),
         );
+    }
+
+    /**
+     * Generates UUIDs (RFC 9562) of the versions in $versions, in their
+     * canonical form: lowercase hexadecimal digits in groups of 8, 4, 4, 4,
+     * and 12. The version and the variant (RFC 9562) are set, the other bits
+     * are biased towards all zeros and all ones in each field. The timestamp
+     * of versions 1, 6, and 7 is one field, which is laid out as the version
+     * requires, so that it shrinks towards the epoch of the version. The bits
+     * of the other versions are not derived from anything: a UUID of version
+     * 3 or 5 is not the hash of a name, for instance.
+     *
+     * With $nilAndMax, the nil UUID and the max UUID are generated as well,
+     * which do not have a version.
+     *
+     * The first version is the simplest one, and the simplest UUID of a
+     * version has only zeros in its other bits, for instance
+     * 00000000-0000-4000-8000-000000000000 for version 4. With $nilAndMax,
+     * the nil UUID is the simplest one.
+     *
+     * @param list<int> $versions
+     *
+     * @throws InvalidGeneratorArgumentException
+     *
+     * @return ValueGenerator<non-empty-string>
+     */
+    public static function uuids(array $versions = [1, 2, 3, 4, 5, 6, 7, 8], bool $nilAndMax = false): ValueGenerator
+    {
+        if ($versions === []) {
+            throw new InvalidGeneratorArgumentException('At least one version of UUIDs must be specified');
+        }
+
+        $valid = [];
+
+        foreach ($versions as $version) {
+            if ($version < 1 || $version > 8) {
+                throw new InvalidGeneratorArgumentException(
+                    sprintf(
+                        'The version of UUIDs (%d) must be from 1 to 8',
+                        $version,
+                    ),
+                );
+            }
+
+            $valid[] = $version;
+        }
+
+        return new UuidGenerator(array_values(array_unique($valid)), $nilAndMax);
     }
 
     /**
