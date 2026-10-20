@@ -9,22 +9,18 @@
  */
 namespace PHPUnit\TestFixture\PropertyBasedTesting;
 
-use function hrtime;
+use function assert;
+use function is_float;
+use function microtime;
 use function usleep;
 use PHPUnit\Framework\Attributes\Property;
 use PHPUnit\Framework\TestCase;
 
 final class SlowFinalReplayTest extends TestCase
 {
-    private static ?int $start = null;
-
     #[Property(examples: 10)]
     public function testTakesLongerToReplayTheCounterexampleThanTheTimeLimitOfTheTestRun(int $value): void
     {
-        if (self::$start === null) {
-            self::$start = hrtime(true);
-        }
-
         if ($value < 1000) {
             $this->assertLessThan(1000, $value);
 
@@ -32,8 +28,14 @@ final class SlowFinalReplayTest extends TestCase
         }
 
         // the final replay of the counterexample starts after the deadline of
-        // the test run has passed, which interrupts shrinking
-        if (hrtime(true) - self::$start > 1000000000) {
+        // the test run has passed, which interrupts shrinking; the test run
+        // starts after the process, so more than a second has passed since
+        // the process started when the deadline has passed
+        $start = $_SERVER['REQUEST_TIME_FLOAT'];
+
+        assert(is_float($start));
+
+        if (microtime(true) - $start > 1.0) {
             usleep(3000000);
         } else {
             usleep(300000);
