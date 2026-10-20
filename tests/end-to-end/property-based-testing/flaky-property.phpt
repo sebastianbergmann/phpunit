@@ -1,5 +1,5 @@
 --TEST--
-A property that is not falsified when its minimal counterexample is replayed is reported as flaky, together with the failure that was originally observed
+A property that is not falsified when the example that falsified it is replayed is reported as flaky, without shrinking its counterexample, together with the failure that was originally observed
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--no-configuration';
@@ -24,7 +24,7 @@ Time: %s, Memory: %s
 There was 1 error:
 
 1) PHPUnit\TestFixture\PropertyBasedTesting\FlakyPropertyTest::testFailsOnlyForTheThirdExample
-PHPUnit\Framework\PropertyBased\FlakyPropertyException: The property is flaky: it was not falsified when its minimal counterexample was replayed, so its outcome does not depend on its arguments alone
+PHPUnit\Framework\PropertyBased\FlakyPropertyException: The property is flaky: it was not falsified when the example that falsified it was replayed 4 times, so its outcome does not depend on its arguments alone
 
 Property falsified after 3 examples with this counterexample:
 
