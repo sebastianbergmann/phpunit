@@ -30,12 +30,18 @@ Property falsified after %s, counterexample shrunk in %s:
 
     $size = 1;
 
+    Draw 1 (list): [5]
+    Draw 2 (index): 0
+
 %sDrawTest.php:%d
 
 2) PHPUnit\TestFixture\PropertyBasedTesting\DrawTest::testDrawsValuesWithoutParameters
 Failed asserting that 100 is less than 100.
 
-Property falsified after %s.
+Property falsified after %s, counterexample shrunk in %s:
+
+    Draw 1: 0
+    Draw 2: 100
 
 %sDrawTest.php:%d
 

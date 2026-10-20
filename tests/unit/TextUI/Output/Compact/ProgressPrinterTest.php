@@ -476,6 +476,7 @@ final class ProgressPrinterTest extends TestCase
             [0],
             ['value' => '0'],
             null,
+            [],
         );
     }
 
