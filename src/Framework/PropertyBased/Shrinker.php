@@ -44,7 +44,10 @@ use Closure;
  * and sorting the spans that are part of the same span and have the same
  * label. The passes are repeated until none of them succeeds, the
  * maximum number of attempts has been made, or shrinking is interrupted
- * because the test run is to be stopped.
+ * because the test run is to be stopped. Each round of passes starts with
+ * the passes that made the counterexample simpler most often in the round
+ * before, so that the attempts are spent on the passes that are most likely
+ * to succeed.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -124,19 +127,40 @@ final class Shrinker
             return new ShrinkingResult($sequence, 0, 0, false, false);
         }
 
-        do {
-            $numberOfStepsBefore = $this->numberOfSteps;
+        $passes = [];
 
-            $this->deleteSpans();
-            $this->replaceSpansWithDescendants();
-            $this->deleteBlocks();
-            $this->zeroBlocks();
-            $this->minimizeChoices();
-            $this->redistributeChoices();
-            $this->lowerChoicesRaisingLaterOnes();
-            $this->lowerEqualChoices();
-            $this->sortSiblingSpans();
-        } while ($this->numberOfSteps > $numberOfStepsBefore && !$this->isStopped());
+        foreach ([
+            $this->deleteSpans(...),
+            $this->replaceSpansWithDescendants(...),
+            $this->deleteBlocks(...),
+            $this->zeroBlocks(...),
+            $this->minimizeChoices(...),
+            $this->redistributeChoices(...),
+            $this->lowerChoicesRaisingLaterOnes(...),
+            $this->lowerEqualChoices(...),
+            $this->sortSiblingSpans(...),
+        ] as $pass) {
+            $passes[] = ['pass' => $pass, 'numberOfSteps' => 0];
+        }
+
+        do {
+            $numberOfSteps = 0;
+
+            foreach ($passes as $index => $pass) {
+                $numberOfStepsOfPass = $this->numberOfStepsOf($pass['pass']);
+
+                $passes[$index]['numberOfSteps'] = $numberOfStepsOfPass;
+
+                $numberOfSteps += $numberOfStepsOfPass;
+            }
+
+            // the sort is stable, so passes that made the counterexample
+            // simpler equally often keep their order
+            usort(
+                $passes,
+                static fn (array $a, array $b): int => $b['numberOfSteps'] <=> $a['numberOfSteps'],
+            );
+        } while ($numberOfSteps > 0 && !$this->isStopped());
 
         return new ShrinkingResult(
             $this->current,
@@ -145,6 +169,22 @@ final class Shrinker
             $this->budgetExhausted,
             $this->interrupted,
         );
+    }
+
+    /**
+     * Runs a pass and returns how often it made the counterexample simpler.
+     *
+     * @param Closure(): void $pass
+     *
+     * @phpstan-impure
+     */
+    private function numberOfStepsOf(Closure $pass): int
+    {
+        $numberOfStepsBefore = $this->numberOfSteps;
+
+        $pass();
+
+        return $this->numberOfSteps - $numberOfStepsBefore;
     }
 
     /**
