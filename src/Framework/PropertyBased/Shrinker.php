@@ -11,6 +11,7 @@ namespace PHPUnit\Framework\PropertyBased;
 
 use const PHP_INT_MAX;
 use function array_fill;
+use function array_map;
 use function array_slice;
 use function array_splice;
 use function array_values;
@@ -38,8 +39,9 @@ use Closure;
  * setting blocks of choices to 0, minimizing individual choices by trying
  * small values and then searching for the smallest value with a binary
  * search, redistributing pairs of nearby choices by moving as much as
- * possible from the first choice to the second, and lowering equal choices
- * together. The passes are repeated until none of them succeeds, the
+ * possible from the first choice to the second, lowering equal choices
+ * together, and sorting the spans that are part of the same span and have
+ * the same label. The passes are repeated until none of them succeeds, the
  * maximum number of attempts has been made, or shrinking is interrupted
  * because the test run is to be stopped.
  *
@@ -130,6 +132,7 @@ final class Shrinker
             $this->minimizeChoices();
             $this->redistributeChoices();
             $this->lowerEqualChoices();
+            $this->sortSiblingSpans();
         } while ($this->numberOfSteps > $numberOfStepsBefore && !$this->isStopped());
 
         return new ShrinkingResult(
@@ -416,6 +419,98 @@ final class Shrinker
     }
 
     /**
+     * A counterexample for a property such as "a list does not contain both
+     * [5, 6] and [1, 2]" can have its elements in any order, and the values
+     * of parameters that are generated the same way can be swapped, too. The
+     * spans of these values have the same label and are part of the same
+     * span, or of none. They are sorted, so that the counterexample becomes
+     * simpler, first all of them and then adjacent ones that are out of order.
+     */
+    private function sortSiblingSpans(): void
+    {
+        while (!$this->isStopped()) {
+            $sorted = false;
+
+            foreach ($this->siblingSpansWithTheSameLabel() as $siblings) {
+                if ($this->sortSiblings($siblings)) {
+                    $sorted = true;
+
+                    break;
+                }
+            }
+
+            if (!$sorted) {
+                return;
+            }
+        }
+    }
+
+    /**
+     * @return list<non-empty-list<Span>> the spans of the current sequence that have the same label and are part of the same span, in order, where there are at least two of them
+     */
+    private function siblingSpansWithTheSameLabel(): array
+    {
+        $groups = [];
+
+        foreach ($this->current->spans() as $span) {
+            $groups[$span->parent() . ':' . $span->label()][] = $span;
+        }
+
+        $siblings = [];
+
+        foreach ($groups as $group) {
+            if (count($group) > 1) {
+                $siblings[] = $group;
+            }
+        }
+
+        return $siblings;
+    }
+
+    /**
+     * Considers the siblings in sorted order and, if that does not keep the
+     * property falsified, with adjacent siblings that are out of order
+     * swapped.
+     *
+     * @param non-empty-list<Span> $siblings
+     *
+     * @return bool whether the siblings were reordered
+     */
+    private function sortSiblings(array $siblings): bool
+    {
+        $choices = $this->current->choices();
+        $slices  = [];
+
+        foreach ($siblings as $sibling) {
+            $slices[] = array_slice($choices, $sibling->start(), $sibling->length());
+        }
+
+        $sorted = $slices;
+
+        usort($sorted, self::compareSlices(...));
+
+        if ($sorted !== $slices && $this->consider($this->withSiblingsReplacedBy($siblings, $sorted))) {
+            return true;
+        }
+
+        $previous = null;
+
+        foreach ($slices as $position => $slice) {
+            if ($previous !== null && self::compareSlices($previous, $slice) > 0) {
+                $swapped = [...array_slice($slices, 0, $position - 1), $slice, $previous, ...array_slice($slices, $position + 1)];
+
+                if ($this->consider($this->withSiblingsReplacedBy($siblings, $swapped))) {
+                    return true;
+                }
+            }
+
+            $previous = $slice;
+        }
+
+        return false;
+    }
+
+    /**
      * Lowers the choices at the indexes, which have to be equal, to the
      * smallest value that keeps the property falsified: a small value if
      * possible, otherwise the value that a binary search finds.
@@ -643,6 +738,34 @@ final class Shrinker
     }
 
     /**
+     * @param non-empty-list<Span>                   $siblings spans that do not overlap, in order
+     * @param non-empty-list<list<non-negative-int>> $slices   the choices that replace those of the siblings, in the same order
+     *
+     * @return list<non-negative-int>
+     */
+    private function withSiblingsReplacedBy(array $siblings, array $slices): array
+    {
+        $choices   = $this->current->choices();
+        $reordered = [];
+        $end       = 0;
+
+        // the choices before, between, and after the siblings stay where they
+        // are
+        $replacements = array_map(
+            static fn (Span $sibling, array $slice): array => ['sibling' => $sibling, 'slice' => $slice],
+            $siblings,
+            $slices,
+        );
+
+        foreach ($replacements as $replacement) {
+            $reordered = [...$reordered, ...array_slice($choices, $end, $replacement['sibling']->start() - $end), ...$replacement['slice']];
+            $end       = $replacement['sibling']->end();
+        }
+
+        return [...$reordered, ...array_slice($choices, $end)];
+    }
+
+    /**
      * @return list<non-negative-int>
      */
     private function withChoicesOfSpanInsteadOf(Span $replacement, Span $span): array
@@ -714,5 +837,19 @@ final class Shrinker
         array_splice($choices, $index, 1, [$value]);
 
         return $choices;
+    }
+
+    /**
+     * Compares the choices of two spans so that sorting spans by it makes the
+     * choices they form together as simple as possible: a span comes first
+     * when its choices followed by those of the other span are simpler than
+     * the other way round.
+     *
+     * @param list<non-negative-int> $a
+     * @param list<non-negative-int> $b
+     */
+    private static function compareSlices(array $a, array $b): int
+    {
+        return [...$a, ...$b] <=> [...$b, ...$a];
     }
 }
