@@ -33,7 +33,9 @@ use function mb_str_split;
 use function mb_strlen;
 use function preg_match;
 use function serialize;
+use function sort;
 use function strlen;
+use function substr;
 use Closure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -60,6 +62,7 @@ use PHPUnit\Framework\PropertyBased\Generator\RecordGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\Repetition;
 use PHPUnit\Framework\PropertyBased\Generator\StringGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\TupleGenerator;
+use PHPUnit\Framework\PropertyBased\Generator\UuidGenerator;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\PropertyBased\Currency;
 use PHPUnit\TestFixture\PropertyBased\Derivation\Money;
@@ -88,6 +91,7 @@ use stdClass;
 #[CoversClass(Repetition::class)]
 #[CoversClass(StringGenerator::class)]
 #[CoversClass(TupleGenerator::class)]
+#[CoversClass(UuidGenerator::class)]
 #[CoversClass(ExampleRejectedException::class)]
 #[CoversClass(InvalidGeneratorArgumentException::class)]
 #[CoversClass(ValueGeneratorNotSupportedException::class)]
@@ -130,6 +134,7 @@ final class GeneratorsTest extends TestCase
             'map'                => [Generators::integers(0, 9)->map(static fn (int $i): string => (string) $i)],
             'filter'             => [Generators::integers(0, 9)->filter(static fn (int $i): bool => $i % 2 === 0)],
             'flatMap'            => [Generators::integers(0, 3)->flatMap(static fn (int $n): ValueGenerator => Generators::lists(Generators::booleans(), $n, $n))],
+            'uuids'              => [Generators::uuids(nilAndMax: true)],
         ];
     }
 
@@ -533,6 +538,78 @@ final class GeneratorsTest extends TestCase
         $this->expectExceptionMessageIs('Either an alphabet or code point ranges can be specified, not both');
 
         Generators::strings('ab', codePointRanges: [[0x41, 0x5A]]);
+    }
+
+    public function testGeneratesUuidsOfEveryVersionInTheirCanonicalFormWithTheirVersionAndTheVariant(): void
+    {
+        $versions = [];
+
+        foreach ($this->values(Generators::uuids(), 1000) as $value) {
+            $this->assertMatchesRegularExpression('/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/', $value);
+
+            $versions[$value[14]] = true;
+        }
+
+        $versions = array_keys($versions);
+
+        sort($versions);
+
+        $this->assertSame([1, 2, 3, 4, 5, 6, 7, 8], $versions);
+    }
+
+    public function testGeneratesUuidsOfTheVersionsThatAreSpecified(): void
+    {
+        foreach ($this->values(Generators::uuids([4, 7]), 500) as $value) {
+            $this->assertContains($value[14], ['4', '7']);
+        }
+    }
+
+    public function testGeneratesUuidsWithFieldsOfOnlyZerosAndOfOnlyOnes(): void
+    {
+        $nodes = array_map(static fn (string $value): string => substr($value, 24), $this->values(Generators::uuids([4]), 1000));
+
+        $this->assertContains('000000000000', $nodes);
+        $this->assertContains('ffffffffffff', $nodes);
+    }
+
+    public function testTheTimestampOfAUuidIsLaidOutAsItsVersionRequires(): void
+    {
+        $this->assertSame('89abcdef-4567-1123-8000-000000000000', $this->replay(Generators::uuids([1]), [0, 0x123456789ABCDEF]));
+        $this->assertSame('12345678-9abc-6def-8000-000000000000', $this->replay(Generators::uuids([6]), [0, 0x123456789ABCDEF]));
+        $this->assertSame('00000000-0001-7000-8000-000000000000', $this->replay(Generators::uuids([7]), [0, 1]));
+    }
+
+    public function testTheSimplestUuidIsOfTheFirstVersionWithOnlyZerosInItsOtherBits(): void
+    {
+        $this->assertSame('00000000-0000-1000-8000-000000000000', $this->replay(Generators::uuids(), []));
+        $this->assertSame('00000000-0000-4000-8000-000000000000', $this->replay(Generators::uuids([4]), []));
+    }
+
+    public function testGeneratesTheNilAndTheMaxUuidOnlyWhenTheyAreRequested(): void
+    {
+        $values = $this->values(Generators::uuids(nilAndMax: true), 1000);
+
+        $this->assertContains('00000000-0000-0000-0000-000000000000', $values);
+        $this->assertContains('ffffffff-ffff-ffff-ffff-ffffffffffff', $values);
+        $this->assertSame('00000000-0000-0000-0000-000000000000', $this->replay(Generators::uuids(nilAndMax: true), []));
+
+        $this->assertNotContains('00000000-0000-0000-0000-000000000000', $this->values(Generators::uuids(), 1000));
+    }
+
+    public function testAtLeastOneVersionOfUuidsMustBeSpecified(): void
+    {
+        $this->expectException(InvalidGeneratorArgumentException::class);
+        $this->expectExceptionMessageIs('At least one version of UUIDs must be specified');
+
+        Generators::uuids([]);
+    }
+
+    public function testTheVersionsOfUuidsMustBeFromOneToEight(): void
+    {
+        $this->expectException(InvalidGeneratorArgumentException::class);
+        $this->expectExceptionMessageIs('The version of UUIDs (9) must be from 1 to 8');
+
+        Generators::uuids([4, 9]);
     }
 
     public function testGeneratesBothBooleans(): void
