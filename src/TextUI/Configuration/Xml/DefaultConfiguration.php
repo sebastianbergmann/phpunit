@@ -196,6 +196,9 @@ final readonly class DefaultConfiguration extends Configuration
                 PropertyBasedTesting::DEFAULT_NUMBER_OF_EXAMPLES,
                 PropertyBasedTesting::DEFAULT_EXAMPLES_MULTIPLIER,
                 PropertyBasedTesting::DEFAULT_MAXIMUM_NUMBER_OF_SHRINKING_ATTEMPTS,
+                PropertyBasedTesting::DEFAULT_EXAMPLES_CHECKED_UNTIL_HEALTH_IS_ASSUMED,
+                PropertyBasedTesting::DEFAULT_MAXIMUM_REJECTED_EXAMPLES_UNTIL_HEALTH_IS_ASSUMED,
+                PropertyBasedTesting::DEFAULT_MAXIMUM_TOO_LARGE_EXAMPLES_UNTIL_HEALTH_IS_ASSUMED,
             ),
         );
     }
