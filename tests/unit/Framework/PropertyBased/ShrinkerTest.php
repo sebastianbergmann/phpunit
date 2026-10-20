@@ -14,8 +14,10 @@ use function array_filter;
 use function array_sum;
 use function array_unique;
 use function array_values;
+use function array_walk_recursive;
 use function count;
 use function implode;
+use function is_array;
 use function max;
 use function mb_strlen;
 use function strlen;
@@ -141,6 +143,55 @@ final class ShrinkerTest extends TestCase
                 [5],
                 Generators::integers(1, 5)->flatMap(static fn (int $size): ValueGenerator => Generators::lists(Generators::integers(0, 9), $size, $size)),
                 static fn (array $value): bool => max($value) >= 5,
+            ],
+
+            'recursive value' => [
+                50,
+                Generators::recursive(
+                    Generators::integers(0, 100),
+                    static fn (ValueGenerator $values): ValueGenerator => Generators::lists($values),
+                ),
+                static function (mixed $value): bool
+                {
+                    $integers = [$value];
+
+                    if (is_array($value)) {
+                        $integers = [];
+
+                        array_walk_recursive(
+                            $value,
+                            static function (int $integer) use (&$integers): void
+                            {
+                                $integers[] = $integer;
+                            },
+                        );
+                    }
+
+                    return $integers !== [] && max($integers) >= 50;
+                },
+            ],
+
+            'tree that a deferred generator generates' => [
+                50,
+                self::trees(),
+                static function (mixed $value): bool
+                {
+                    $integers = [$value];
+
+                    if (is_array($value)) {
+                        $integers = [];
+
+                        array_walk_recursive(
+                            $value,
+                            static function (int $integer) use (&$integers): void
+                            {
+                                $integers[] = $integer;
+                            },
+                        );
+                    }
+
+                    return max($integers) >= 50;
+                },
             ],
 
             'value that is falsified by every example' => [
@@ -278,6 +329,88 @@ final class ShrinkerTest extends TestCase
         $shrinker->shrink(new ChoiceSequence([3, 9, 27, 81], [new Span(0, 2, 'element', null), new Span(2, 4, 'element', null)]));
 
         $this->assertSame($candidates, array_values(array_unique($candidates)));
+    }
+
+    public function testReplacesASpanWithAShorterSpanThatItContainsAndThatHasTheSameLabel(): void
+    {
+        $shrinker = new Shrinker(
+            static function (ChoiceSequence $candidate): ?ChoiceSequence
+            {
+                if ($candidate->choices() !== [3]) {
+                    return null;
+                }
+
+                return new ChoiceSequence([3], [new Span(0, 1, 'tree', null)]);
+            },
+            1000,
+        );
+
+        $result = $shrinker->shrink(
+            new ChoiceSequence(
+                [1, 2, 3, 4, 5],
+                [new Span(0, 5, 'tree', null), new Span(1, 4, 'list', 0), new Span(2, 3, 'tree', 1)],
+            ),
+        );
+
+        $this->assertSame([3], $result->sequence()->choices());
+        $this->assertSame(1, $result->numberOfSteps());
+    }
+
+    public function testReplacesSpansOfTheSameLengthWithShorterSpansTheyContainAndThatHaveTheSameLabel(): void
+    {
+        $falsifying = [
+            '2,4,5,6' => [new Span(0, 1, 'tree', null), new Span(1, 4, 'tree', null), new Span(2, 3, 'tree', 1)],
+            '1,2,3,5' => [new Span(0, 3, 'tree', null), new Span(1, 2, 'tree', 0), new Span(3, 4, 'tree', null)],
+            '2,5'     => [new Span(0, 1, 'tree', null), new Span(1, 2, 'tree', null)],
+        ];
+
+        $shrinker = new Shrinker(
+            static function (ChoiceSequence $candidate) use ($falsifying): ?ChoiceSequence
+            {
+                $key = implode(',', $candidate->choices());
+
+                if (!isset($falsifying[$key])) {
+                    return null;
+                }
+
+                return new ChoiceSequence($candidate->choices(), $falsifying[$key]);
+            },
+            1000,
+        );
+
+        $result = $shrinker->shrink(
+            new ChoiceSequence(
+                [1, 2, 3, 4, 5, 6],
+                [new Span(0, 3, 'tree', null), new Span(1, 2, 'tree', 0), new Span(3, 6, 'tree', null), new Span(4, 5, 'tree', 2)],
+            ),
+        );
+
+        $this->assertSame([2, 5], $result->sequence()->choices());
+        $this->assertSame(2, $result->numberOfSteps());
+    }
+
+    public function testDoesNotReplaceASpanWithASpanThatItContainsAndThatHasAnotherLabel(): void
+    {
+        $shrinker = new Shrinker(
+            static function (ChoiceSequence $candidate): ?ChoiceSequence
+            {
+                if ($candidate->choices() !== [3]) {
+                    return null;
+                }
+
+                return new ChoiceSequence([3], [new Span(0, 1, 'leaf', null)]);
+            },
+            1000,
+        );
+
+        $result = $shrinker->shrink(
+            new ChoiceSequence(
+                [1, 2, 3, 4, 5],
+                [new Span(0, 5, 'tree', null), new Span(2, 3, 'leaf', 0)],
+            ),
+        );
+
+        $this->assertSame([1, 2, 3, 4, 5], $result->sequence()->choices());
     }
 
     public function testKeepsTheChoiceSequenceThatTheReplayOfACandidateConsumed(): void
@@ -460,5 +593,15 @@ final class ShrinkerTest extends TestCase
     private function replay(ValueGenerator $generator, ChoiceSequence $sequence): mixed
     {
         return AbstractGenerator::from($generator)->generate(ChoiceSource::replay($sequence));
+    }
+
+    /**
+     * @return ValueGenerator<mixed>
+     */
+    private static function trees(): ValueGenerator
+    {
+        return Generators::deferred(
+            static fn (): ValueGenerator => Generators::oneOf(Generators::integers(0, 100), Generators::tuples(self::trees(), self::trees())),
+        );
     }
 }
