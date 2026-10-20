@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Framework\PropertyBased;
 
+use const FILTER_FLAG_IPV4;
+use const FILTER_FLAG_NO_PRIV_RANGE;
+use const FILTER_VALIDATE_IP;
 use const PHP_INT_MAX;
 use function array_count_values;
 use function array_filter;
@@ -18,6 +21,7 @@ use function array_unique;
 use function array_values;
 use function array_walk_recursive;
 use function count;
+use function filter_var;
 use function implode;
 use function is_array;
 use function max;
@@ -231,6 +235,12 @@ final class ShrinkerTest extends TestCase
                 '00000000-0000-4000-8000-000000000001',
                 Generators::uuids([4]),
                 static fn (string $value): bool => substr($value, 24) !== '000000000000',
+            ],
+
+            'IPv4 address of a private network' => [
+                '10.0.0.0',
+                Generators::ipv4Addresses(),
+                static fn (string $value): bool => filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE) === false,
             ],
 
             'value that is falsified by every example' => [
