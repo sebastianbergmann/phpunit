@@ -14,7 +14,7 @@ use PHPUnit\Event\UnknownSubscriberTypeException;
 
 /**
  * What a child process offers an extension that is bootstrapped in it: the
- * registration of subscribers that receive the events of the test that the
+ * registration of subscribers that receive the events of the tests that the
  * child process runs.
  *
  * Nothing else that the main process offers an extension applies in a child

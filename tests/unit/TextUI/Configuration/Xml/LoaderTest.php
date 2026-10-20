@@ -649,6 +649,7 @@ final class LoaderTest extends TestCase
         $this->assertTrue($phpunit->resolveDependencies());
         $this->assertTrue($phpunit->controlGarbageCollector());
         $this->assertSame(1000, $phpunit->numberOfTestsBeforeGarbageCollection());
+        $this->assertSame(50, $phpunit->numberOfTestClassesBeforeWorkerRecycling());
         $this->assertSame(10, $phpunit->shortenArraysForExportThreshold());
         $this->assertTrue($phpunit->warnWhenPhpIsNotConfiguredForDevelopment());
     }

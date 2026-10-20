@@ -34,7 +34,7 @@ final class ChildProcessExtensionFacadeTest extends TestCase
         $typeMap->addMapping(DeprecationTriggeredSubscriber::class, DeprecationTriggered::class);
         $typeMap->addMapping(DummySubscriber::class, DummyEvent::class);
 
-        $dispatcher = new CollectingDispatcher(new DirectDispatcher($typeMap));
+        $dispatcher = new CollectingDispatcher(new DirectDispatcher($typeMap), new DirectDispatcher($typeMap));
         $event      = new DummyEvent;
 
         $first = $this->createMock(DummySubscriber::class);

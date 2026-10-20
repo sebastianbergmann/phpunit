@@ -1,5 +1,7 @@
 --TEST--
 Order by defects (with test run history): Top-level testsuite order is preserved when child suites contain equally-weighted defects
+--CONFLICTS--
+all
 --FILE--
 <?php declare(strict_types=1);
 $testRunHistoryFile = sys_get_temp_dir() . '/test-run-history';

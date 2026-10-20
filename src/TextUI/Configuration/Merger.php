@@ -1099,6 +1099,18 @@ final readonly class Merger
             $timeout = $cliConfiguration->timeout();
         }
 
+        $numberOfParallelWorkers = 1;
+
+        if ($cliConfiguration->hasNumberOfParallelWorkers()) {
+            $numberOfParallelWorkers = $cliConfiguration->numberOfParallelWorkers();
+        }
+
+        if ($cliConfiguration->hasNumberOfTestClassesBeforeWorkerRecycling()) {
+            $numberOfTestClassesBeforeWorkerRecycling = $cliConfiguration->numberOfTestClassesBeforeWorkerRecycling();
+        } else {
+            $numberOfTestClassesBeforeWorkerRecycling = $xmlConfiguration->phpunit()->numberOfTestClassesBeforeWorkerRecycling();
+        }
+
         if ($xmlConfiguration->wasLoadedFromFile() && $xmlConfiguration->hasValidationErrors()) {
             if ((new SchemaDetector)->detect($xmlConfiguration->filename())->detected()) {
                 $this->emitter->testRunnerTriggeredPhpunitDeprecation(
@@ -1532,6 +1544,8 @@ final readonly class Merger
             $xmlConfiguration->phpunit()->shortenArraysForExportThreshold(),
             $warnWhenPhpIsNotConfiguredForDevelopment,
             $cacheTestIndex,
+            $numberOfParallelWorkers,
+            $numberOfTestClassesBeforeWorkerRecycling,
         );
     }
 
