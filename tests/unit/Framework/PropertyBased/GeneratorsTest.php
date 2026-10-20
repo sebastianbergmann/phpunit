@@ -10,8 +10,10 @@
 namespace PHPUnit\Framework\PropertyBased;
 
 use const FILTER_FLAG_GLOBAL_RANGE;
+use const FILTER_FLAG_HOSTNAME;
 use const FILTER_FLAG_IPV4;
 use const FILTER_FLAG_IPV6;
+use const FILTER_VALIDATE_DOMAIN;
 use const FILTER_VALIDATE_IP;
 use const INF;
 use const NAN;
@@ -24,10 +26,12 @@ use function abs;
 use function array_filter;
 use function array_keys;
 use function array_map;
+use function array_merge;
 use function array_unique;
 use function array_values;
 use function bin2hex;
 use function count;
+use function end;
 use function explode;
 use function filter_var;
 use function implode;
@@ -55,11 +59,13 @@ use function str_split;
 use function str_starts_with;
 use function strlen;
 use function substr;
+use function substr_count;
 use Closure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorDeriver;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorRegistry;
 use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
@@ -68,6 +74,7 @@ use PHPUnit\Framework\PropertyBased\Generator\BooleanGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\BytesGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\CodePoints;
 use PHPUnit\Framework\PropertyBased\Generator\ConstantGenerator;
+use PHPUnit\Framework\PropertyBased\Generator\DomainNameGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\ElementsGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\FilteredGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\FlatMappedGenerator;
@@ -99,6 +106,7 @@ use stdClass;
 #[CoversClass(BooleanGenerator::class)]
 #[CoversClass(BytesGenerator::class)]
 #[CoversClass(ConstantGenerator::class)]
+#[CoversClass(DomainNameGenerator::class)]
 #[CoversClass(ElementsGenerator::class)]
 #[CoversClass(FilteredGenerator::class)]
 #[CoversClass(FlatMappedGenerator::class)]
@@ -160,6 +168,7 @@ final class GeneratorsTest extends TestCase
             'uuids'              => [Generators::uuids(nilAndMax: true)],
             'IPv4 addresses'     => [Generators::ipv4Addresses()],
             'IPv6 addresses'     => [Generators::ipv6Addresses()],
+            'domain names'       => [Generators::domainNames()],
         ];
     }
 
@@ -846,6 +855,66 @@ final class GeneratorsTest extends TestCase
         $this->expectExceptionMessageIs('The address of the network (2001:DB8::1/32) must be its network address, whose host bits are zero: 2001:db8::/32');
 
         Generators::ipv6Addresses('2001:DB8::1/32');
+    }
+
+    public function testGeneratesValidDomainNames(): void
+    {
+        foreach ($this->values(Generators::domainNames(), 1000) as $value) {
+            $this->assertNotFalse(filter_var($value, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME));
+            $this->assertLessThanOrEqual(253, strlen($value));
+
+            $labels = explode('.', $value);
+
+            $this->assertGreaterThanOrEqual(2, count($labels));
+            $this->assertMatchesRegularExpression('/^[a-z]{2,63}$/', (string) end($labels));
+
+            foreach ($labels as $label) {
+                $this->assertMatchesRegularExpression('/^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$/', $label);
+                $this->assertDoesNotMatchRegularExpression('/^..--/', $label);
+            }
+        }
+    }
+
+    public function testGeneratesDomainNamesWithLongLabelsNumericLabelsAndManyLabelsAndOfTheMaximumLength(): void
+    {
+        $values = $this->values(Generators::domainNames(), 1000);
+        $labels = array_merge(...array_map(static fn (string $value): array => explode('.', $value), $values));
+
+        $this->assertNotEmpty(array_filter($labels, static fn (string $label): bool => strlen($label) === 63));
+        $this->assertNotEmpty(array_filter($labels, static fn (string $label): bool => preg_match('/^[0-9]{2,}$/', $label) === 1));
+        $this->assertNotEmpty(array_filter($values, static fn (string $value): bool => substr_count($value, '.') >= 9));
+        $this->assertNotEmpty(array_filter($values, static fn (string $value): bool => strlen($value) === 253));
+    }
+
+    public function testGeneratesDomainNamesOfAtMostTheMaximumLength(): void
+    {
+        $lengths = array_map(strlen(...), $this->values(Generators::domainNames(20), 500));
+
+        $this->assertLessThanOrEqual(20, max($lengths));
+        $this->assertContains(20, $lengths);
+        $this->assertContains(4, $lengths);
+    }
+
+    public function testGeneratesDomainNamesOfTheShortestMaximumLength(): void
+    {
+        foreach ($this->values(Generators::domainNames(4), 100) as $value) {
+            $this->assertMatchesRegularExpression('/^[a-z0-9]\.[a-z]{2}$/', $value);
+        }
+    }
+
+    public function testTheSimplestDomainNameHasALabelOfOneLetterAndATopLevelDomainOfTwoLetters(): void
+    {
+        $this->assertSame('a.aa', $this->replay(Generators::domainNames(), []));
+    }
+
+    #[TestWith([3])]
+    #[TestWith([254])]
+    public function testTheMaximumLengthOfDomainNamesMustBeFromFourTo253(int $maximumLength): void
+    {
+        $this->expectException(InvalidGeneratorArgumentException::class);
+        $this->expectExceptionMessageIs('The maximum length of domain names (' . $maximumLength . ') must be from 4 to 253');
+
+        Generators::domainNames($maximumLength);
     }
 
     public function testGeneratesBothBooleans(): void
