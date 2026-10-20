@@ -478,6 +478,8 @@ final class ProgressPrinterTest extends TestCase
             null,
             [],
             [],
+            0,
+            0,
         );
     }
 

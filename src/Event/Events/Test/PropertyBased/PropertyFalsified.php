@@ -74,6 +74,16 @@ final readonly class PropertyFalsified implements Event
     private array $otherFalsifications;
 
     /**
+     * @var non-negative-int
+     */
+    private int $numberOfReplays;
+
+    /**
+     * @var non-negative-int
+     */
+    private int $numberOfReproductions;
+
+    /**
      * @param non-negative-int                                                                                                                                                                                       $seed
      * @param non-negative-int                                                                                                                                                                                       $numberOfExamplesChecked
      * @param non-negative-int                                                                                                                                                                                       $numberOfShrinkingAttempts
@@ -83,10 +93,12 @@ final readonly class PropertyFalsified implements Event
      * @param null|int|non-empty-string                                                                                                                                                                              $explicitExample
      * @param list<array{label: ?non-empty-string, value: string}>                                                                                                                                                   $drawnValues
      * @param list<array{description: non-empty-string, choiceSequence: list<non-negative-int>, counterexample: array<non-empty-string, string>, drawnValues: list<array{label: ?non-empty-string, value: string}>}> $otherFalsifications
+     * @param non-negative-int                                                                                                                                                                                       $numberOfReplays
+     * @param non-negative-int                                                                                                                                                                                       $numberOfReproductions
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, array $choiceSequence, array $counterexample, null|int|string $explicitExample, array $drawnValues, array $otherFalsifications)
+    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, array $choiceSequence, array $counterexample, null|int|string $explicitExample, array $drawnValues, array $otherFalsifications, int $numberOfReplays, int $numberOfReproductions)
     {
         $this->telemetryInfo             = $telemetryInfo;
         $this->test                      = $test;
@@ -101,6 +113,8 @@ final readonly class PropertyFalsified implements Event
         $this->explicitExample           = $explicitExample;
         $this->drawnValues               = $drawnValues;
         $this->otherFalsifications       = $otherFalsifications;
+        $this->numberOfReplays           = $numberOfReplays;
+        $this->numberOfReproductions     = $numberOfReproductions;
     }
 
     public function telemetryInfo(): Telemetry\Info
@@ -246,6 +260,34 @@ final readonly class PropertyFalsified implements Event
     }
 
     /**
+     * How often the example that first falsified the property was replayed
+     * before its counterexample was shrunk, to tell whether it falsifies the
+     * property again. Replays whose generators did not generate the same
+     * arguments are not counted. It is 0 when the property was falsified by an
+     * explicit example, which is not replayed, or by an example that exceeded
+     * its time limit, which would take as long as the time limit again.
+     *
+     * @return non-negative-int
+     */
+    public function numberOfReplays(): int
+    {
+        return $this->numberOfReplays;
+    }
+
+    /**
+     * How many of the replays of the example that first falsified the
+     * property falsified it again in the same way. When this is less than the
+     * number of replays, the outcome of the property does not depend on its
+     * arguments alone.
+     *
+     * @return non-negative-int
+     */
+    public function numberOfReproductions(): int
+    {
+        return $this->numberOfReproductions;
+    }
+
+    /**
      * @return non-empty-string
      */
     public function asString(): string
@@ -270,15 +312,22 @@ final readonly class PropertyFalsified implements Event
             $shrinkingStopped = ', shrinking interrupted';
         }
 
+        $reproduced = '';
+
+        if ($this->numberOfReproductions < $this->numberOfReplays) {
+            $reproduced = sprintf(', reproduced in %d of %d replays', $this->numberOfReproductions, $this->numberOfReplays);
+        }
+
         return $this->withCounterexample(
             sprintf(
-                'Test Property Falsified (%s, seed: %d, examples: %d, shrinking steps: %d, shrinking attempts: %d%s)',
+                'Test Property Falsified (%s, seed: %d, examples: %d, shrinking steps: %d, shrinking attempts: %d%s%s)',
                 $this->test->id(),
                 $this->seed,
                 $this->numberOfExamplesChecked,
                 $this->numberOfShrinkingSteps,
                 $this->numberOfShrinkingAttempts,
                 $shrinkingStopped,
+                $reproduced,
             ),
         );
     }
