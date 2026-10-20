@@ -483,6 +483,12 @@ final class PropertyTestSuite extends IterativeTestSuite
             return;
         }
 
+        if ($replays['numberOfReplays'] > 0 && $replays['numberOfReproductions'] === 0) {
+            $this->reportExampleThatDidNotFalsifyAgain($events, $emitter, $originalFailure, $sequence, $replays);
+
+            return;
+        }
+
         $numberOfReplays         = $replays['numberOfReplays'];
         $numberOfReproductions   = $replays['numberOfReproductions'];
         $maximumNumberOfAttempts = ConfigurationRegistry::get()->maximumShrinkingAttempts();
@@ -557,7 +563,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             $replayFalsification = Falsification::of($replay);
 
             if ($replayFalsification === null) {
-                $flaky = Event\Code\ThrowableBuilder::from(new FlakyPropertyException);
+                $flaky = Event\Code\ThrowableBuilder::from(FlakyPropertyException::minimalCounterexampleNotFalsifyingAgain());
 
                 // the failure that was originally observed is reported as the
                 // cause of the error
@@ -629,13 +635,16 @@ final class PropertyTestSuite extends IterativeTestSuite
      *
      * @param array<non-empty-string, AbstractGenerator<mixed>> $generators
      *
-     * @return ?array{numberOfReplays: non-negative-int, numberOfReproductions: non-negative-int} the number of replays that were counted and how many of them falsified the property again, or null when the arguments could not be generated again, which was reported
+     * @return ?array{numberOfReplays: non-negative-int, numberOfReproductions: non-negative-int, counterexample: array<non-empty-string, string>, drawnValues: list<array{label: ?non-empty-string, value: string}>, events: ?EventCollection} the replays, with the arguments and values of the last replay that was counted, exported, and its events, or null when the arguments could not be generated again, which was reported
      */
     private function replayFalsifyingExample(EventAggregator $events, Event\Emitter $emitter, GeneratorDeriver $deriver, array $generators, Falsification $falsification, ChoiceSequence $sequence): ?array
     {
         $replays = [
             'numberOfReplays'       => 0,
             'numberOfReproductions' => 0,
+            'counterexample'        => [],
+            'drawnValues'           => [],
+            'events'                => null,
         ];
 
         if ($falsification->isTimeout()) {
@@ -653,7 +662,9 @@ final class PropertyTestSuite extends IterativeTestSuite
                 return null;
             }
 
-            $example = $this->example($arguments, false, DrawnValues::from($source));
+            $counterexample = $this->export($arguments, $source->constructions());
+            $drawnValues    = DrawnValues::reportedFrom($source, $this->exporter($source->constructions()));
+            $example        = $this->example($arguments, false, $drawnValues);
 
             [$replayEvents] = $this->runExample($example, $emitter, false);
 
@@ -670,6 +681,9 @@ final class PropertyTestSuite extends IterativeTestSuite
             }
 
             $replays['numberOfReplays']++;
+            $replays['counterexample'] = $counterexample;
+            $replays['drawnValues']    = $drawnValues->exported();
+            $replays['events']         = $replayEvents;
 
             $replayFalsification = Falsification::of($example);
 
@@ -679,6 +693,68 @@ final class PropertyTestSuite extends IterativeTestSuite
         }
 
         return $replays;
+    }
+
+    /**
+     * Reports a property as flaky whose example that falsified it did not
+     * falsify it again when it was replayed, without shrinking its
+     * counterexample, with the events of its last replay and with the failure
+     * that was originally observed as the cause of the error.
+     *
+     * @param array{numberOfReplays: non-negative-int, numberOfReproductions: non-negative-int, counterexample: array<non-empty-string, string>, drawnValues: list<array{label: ?non-empty-string, value: string}>, events: ?EventCollection} $replays
+     */
+    private function reportExampleThatDidNotFalsifyAgain(EventAggregator $events, Event\Emitter $emitter, ?Event\Code\Throwable $originalFailure, ChoiceSequence $sequence, array $replays): void
+    {
+        $numberOfReplays = $replays['numberOfReplays'];
+
+        assert($numberOfReplays > 0);
+
+        $flaky = Event\Code\ThrowableBuilder::from(FlakyPropertyException::exampleNotFalsifyingAgain($numberOfReplays));
+
+        $error = new Event\Code\Throwable(
+            $flaky->className(),
+            $flaky->message(),
+            $flaky->description(),
+            $flaky->stackTrace(),
+            $originalFailure,
+        );
+
+        $test                    = $this->test;
+        $seed                    = $this->seed;
+        $numberOfExamplesChecked = $this->numberOfExamplesChecked;
+        $counterexample          = $replays['counterexample'];
+        $drawnValues             = $replays['drawnValues'];
+
+        assert($test !== null);
+
+        $this->report(
+            $events,
+            $emitter,
+            $replays['events'],
+            $error,
+            false,
+            static function () use ($emitter, $test, $seed, $numberOfExamplesChecked, $sequence, $counterexample, $drawnValues, $numberOfReplays): void
+            {
+                assert($numberOfExamplesChecked > 0);
+
+                $emitter->testPropertyFalsified(
+                    $test,
+                    $seed,
+                    $numberOfExamplesChecked,
+                    0,
+                    0,
+                    false,
+                    false,
+                    $sequence->choices(),
+                    $counterexample,
+                    null,
+                    $drawnValues,
+                    [],
+                    $numberOfReplays,
+                    0,
+                );
+            },
+        );
     }
 
     /**
