@@ -25,7 +25,7 @@ Time: %s, Memory: %s
 There was 1 risky test:
 
 1) PHPUnit\TestFixture\PropertyBasedTesting\IssuesTriggeredWhileArgumentsOfRejectedExamplesAreGeneratedTest::testClosurePassedToFilterTriggersADeprecationAndRejectsEveryValue
-This property was checked for only 0 of 1 examples, 10 examples were rejected
+This property was checked for only 0 of 1 examples, 10 examples were rejected because no value that satisfies a filter was generated; generate the values that the property needs instead of rejecting the others
 
 %sIssuesTriggeredWhileArgumentsOfRejectedExamplesAreGeneratedTest.php:%d
 
