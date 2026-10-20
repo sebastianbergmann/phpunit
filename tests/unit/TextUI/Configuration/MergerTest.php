@@ -374,6 +374,28 @@ final class MergerTest extends TestCase
         $this->assertSame(50, $mergedConfig->maximumShrinkingAttempts());
     }
 
+    public function testHealthChecksForPropertiesAreCarriedOverFromXmlConfiguration(): void
+    {
+        $fromFile = new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration.xml');
+
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge(new Builder($this->createStub(Emitter::class))->fromParameters([]), $fromFile);
+
+        $this->assertSame(5, $mergedConfig->examplesCheckedUntilHealthIsAssumed());
+        $this->assertSame(25, $mergedConfig->maximumRejectedExamplesUntilHealthIsAssumed());
+        $this->assertSame(15, $mergedConfig->maximumTooLargeExamplesUntilHealthIsAssumed());
+    }
+
+    public function testHealthChecksForPropertiesHaveDefaults(): void
+    {
+        $fromFile = new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration_empty.xml');
+
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge(new Builder($this->createStub(Emitter::class))->fromParameters([]), $fromFile);
+
+        $this->assertSame(10, $mergedConfig->examplesCheckedUntilHealthIsAssumed());
+        $this->assertSame(50, $mergedConfig->maximumRejectedExamplesUntilHealthIsAssumed());
+        $this->assertSame(20, $mergedConfig->maximumTooLargeExamplesUntilHealthIsAssumed());
+    }
+
     public function testNumberOfExamplesForPropertiesFromCliTakesPrecedenceOverXmlConfiguration(): void
     {
         $fromFile = (new Loader)->load(TEST_FILES_PATH . 'configuration.xml');
