@@ -39,6 +39,7 @@ use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\ArrayGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\BooleanGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\BytesGenerator;
+use PHPUnit\Framework\PropertyBased\Generator\CodePointRanges;
 use PHPUnit\Framework\PropertyBased\Generator\ConstantGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\DeferredGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\ElementsGenerator;
@@ -165,16 +166,32 @@ final class Generators
     /**
      * Generates valid UTF-8 strings of $minimumLength to $maximumLength
      * characters. $alphabet is a string of the characters to choose from.
-     * Without it, the strings consist of any Unicode characters, including
+     * Alternatively, $codePointRanges are the ranges of the code points of
+     * the characters to choose from, as lists of their first and their last
+     * code point, for instance [[0x41, 0x5A], [0x30, 0x39]]; the characters of
+     * each range are chosen about equally often, and surrogates are left out.
+     * Without either, the strings consist of any Unicode characters, including
      * ASCII, multibyte, and combining characters, and emoji.
+     *
+     * @param ?list<array{0: int, 1: int}> $codePointRanges
      *
      * @throws InvalidGeneratorArgumentException
      *
      * @return ValueGenerator<string>
      */
-    public static function strings(?string $alphabet = null, int $minimumLength = 0, ?int $maximumLength = null): ValueGenerator
+    public static function strings(?string $alphabet = null, int $minimumLength = 0, ?int $maximumLength = null, ?array $codePointRanges = null): ValueGenerator
     {
         self::ensureValidSize('length', $minimumLength, $maximumLength);
+
+        if ($codePointRanges !== null) {
+            if ($alphabet !== null) {
+                throw new InvalidGeneratorArgumentException(
+                    'Either an alphabet or code point ranges can be specified, not both',
+                );
+            }
+
+            return new StringGenerator(null, $minimumLength, $maximumLength, CodePointRanges::from($codePointRanges));
+        }
 
         if ($alphabet === null) {
             return new StringGenerator(null, $minimumLength, $maximumLength);
