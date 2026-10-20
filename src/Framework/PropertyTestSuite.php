@@ -105,7 +105,13 @@ final class PropertyTestSuite extends IterativeTestSuite
      * How many examples can be rejected before enough examples were checked.
      */
     private const int MAXIMUM_NUMBER_OF_REJECTED_EXAMPLES_UNTIL_HEALTH_IS_ASSUMED = 50;
-    private ?PropertyDefinition $definition                                       = null;
+
+    /**
+     * How many examples can be rejected because they were too large before
+     * enough examples were checked.
+     */
+    private const int MAXIMUM_NUMBER_OF_TOO_LARGE_EXAMPLES_UNTIL_HEALTH_IS_ASSUMED = 20;
+    private ?PropertyDefinition $definition                                        = null;
 
     /**
      * @var positive-int
@@ -649,12 +655,31 @@ final class PropertyTestSuite extends IterativeTestSuite
      */
     private function reasonWhyExamplesAreNoLongerGenerated(): ?RejectionReason
     {
-        if ($this->numberOfExamplesChecked >= self::NUMBER_OF_EXAMPLES_CHECKED_UNTIL_HEALTH_IS_ASSUMED) {
+        if ($this->numberOfExamplesChecked >= self::NUMBER_OF_EXAMPLES_CHECKED_UNTIL_HEALTH_IS_ASSUMED || $this->rejections === []) {
             return null;
         }
 
         if ($this->numberOfExamplesRejected >= self::MAXIMUM_NUMBER_OF_REJECTED_EXAMPLES_UNTIL_HEALTH_IS_ASSUMED) {
             return $this->mostFrequentRejectionReason();
+        }
+
+        $numberOfTooLargeExamples = 0;
+        $mostFrequentTooLarge     = null;
+
+        foreach ($this->rejectionsByFrequency() as $rejection) {
+            if (!$rejection['reason']->meansTooLarge()) {
+                continue;
+            }
+
+            $numberOfTooLargeExamples += $rejection['numberOfExamples'];
+
+            if ($mostFrequentTooLarge === null) {
+                $mostFrequentTooLarge = $rejection['reason'];
+            }
+        }
+
+        if ($numberOfTooLargeExamples >= self::MAXIMUM_NUMBER_OF_TOO_LARGE_EXAMPLES_UNTIL_HEALTH_IS_ASSUMED) {
+            return $mostFrequentTooLarge;
         }
 
         return null;
