@@ -35,6 +35,13 @@ use PHPUnit\Event\Test\PropertyFalsified;
  *         Draw 1 (list): [5]
  *         Draw 2 (index): 0
  *
+ * When the property was falsified in other ways while the counterexample was
+ * shrunk, the simplest counterexample for each of them follows:
+ *
+ *     Property also falsified by RuntimeException at /path/to/FooTest.php:12 with this counterexample:
+ *
+ *         $size = 3;
+ *
  * A property can also be falsified by one of its explicit examples, which is
  * reported with its arguments:
  *
@@ -74,7 +81,7 @@ final readonly class PropertyFalsifiedToStringMapper
             );
         }
 
-        $buffer .= "\n\n" . self::arguments($event);
+        $buffer .= "\n\n" . self::arguments($event->counterexample(), $event->drawnValues());
 
         if ($event->shrinkingBudgetExhausted()) {
             $buffer .= "\n" . sprintf(
@@ -88,6 +95,11 @@ final readonly class PropertyFalsifiedToStringMapper
                 'Shrinking was stopped after %s because the test run was aborted, a simpler counterexample may exist.',
                 self::count($event->numberOfShrinkingAttempts(), 'attempt'),
             ) . "\n";
+        }
+
+        foreach ($event->otherFalsifications() as $otherFalsification) {
+            $buffer .= "\n" . sprintf('Property also falsified by %s with this counterexample:', $otherFalsification['description']) . "\n\n";
+            $buffer .= self::arguments($otherFalsification['counterexample'], $otherFalsification['drawnValues']);
         }
 
         return $buffer;
@@ -108,22 +120,26 @@ final readonly class PropertyFalsifiedToStringMapper
             return sprintf('Property falsified by explicit example %s.', $label) . "\n";
         }
 
-        return sprintf('Property falsified by explicit example %s:', $label) . "\n\n" . self::arguments($event);
+        return sprintf('Property falsified by explicit example %s:', $label) . "\n\n" . self::arguments($event->counterexample(), []);
     }
 
-    private static function arguments(PropertyFalsified $event): string
+    /**
+     * @param array<non-empty-string, string>                      $counterexample
+     * @param list<array{label: ?non-empty-string, value: string}> $drawnValues
+     */
+    private static function arguments(array $counterexample, array $drawnValues): string
     {
         $buffer = '';
 
-        foreach ($event->counterexample() as $parameter => $value) {
+        foreach ($counterexample as $parameter => $value) {
             $buffer .= self::indented(sprintf('$%s = %s;', $parameter, $value));
         }
 
-        if ($buffer !== '' && $event->drawnValues() !== []) {
+        if ($buffer !== '' && $drawnValues !== []) {
             $buffer .= "\n";
         }
 
-        foreach ($event->drawnValues() as $index => $drawnValue) {
+        foreach ($drawnValues as $index => $drawnValue) {
             if ($drawnValue['label'] === null) {
                 $description = sprintf('Draw %d', $index + 1);
             } else {

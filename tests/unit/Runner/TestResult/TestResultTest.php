@@ -78,7 +78,7 @@ final class TestResultTest extends AbstractEventTestCase
     public function testProvidesHowAPropertyWasFalsified(): void
     {
         $collector = $this->collector();
-        $event     = new PropertyFalsified($this->telemetryInfo(), $this->testValueObject(), 1234, 2, 3, 1, false, false, [0], ['value' => '0'], null, []);
+        $event     = new PropertyFalsified($this->telemetryInfo(), $this->testValueObject(), 1234, 2, 3, 1, false, false, [0], ['value' => '0'], null, [], []);
 
         $collector->testPropertyFalsified($event);
 
