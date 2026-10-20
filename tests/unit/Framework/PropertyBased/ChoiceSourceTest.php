@@ -317,6 +317,23 @@ final class ChoiceSourceTest extends TestCase
         $this->assertNull($tree->root());
     }
 
+    public function testKnowsWhetherAChoiceWasDrawnFromADifferentRangeThanBefore(): void
+    {
+        $tree   = new ChoiceTree;
+        $source = ChoiceSource::replay(new ChoiceSequence([0]), ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, null, $tree);
+
+        $source->draw(1, new UniformDistribution);
+        $source->exampleGenerated();
+
+        $this->assertFalse($source->drewDifferentlyThanBefore());
+
+        $source = ChoiceSource::replay(new ChoiceSequence([0]), ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, null, $tree);
+
+        $source->draw(2, new UniformDistribution);
+
+        $this->assertTrue($source->drewDifferentlyThanBefore());
+    }
+
     public function testDrawsChoicesOfAnExampleThatWasGeneratedBeforeWhenEveryExampleWasGenerated(): void
     {
         $tree   = new ChoiceTree;
