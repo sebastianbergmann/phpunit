@@ -52,6 +52,7 @@ use PHPUnit\Framework\PropertyBased\Generator\ConstantGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\DeferredGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\DomainNameGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\ElementsGenerator;
+use PHPUnit\Framework\PropertyBased\Generator\EmailAddressGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\FloatGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\IntegerGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\Ipv4AddressGenerator;
@@ -935,6 +936,35 @@ final class Generators
         }
 
         return new DomainNameGenerator($maximumLength);
+    }
+
+    /**
+     * Generates email addresses (RFC 5321) of at most 254 characters, with a
+     * local part of at most 64 characters and a domain name from
+     * domainNames().
+     *
+     * The local part consists of the characters that RFC 5322 allows in an
+     * atom (letters, digits, and !#$%&'*+-/=?^_`{|}~) and of dots, but
+     * neither starts nor ends with a dot nor has two dots in a row. These
+     * email addresses pass filter_var() with FILTER_VALIDATE_EMAIL.
+     *
+     * With $quotedLocalParts, some local parts are quoted strings of
+     * printable ASCII characters, including spaces, in which quotes and
+     * backslashes are escaped with a backslash. With $ipAddressLiterals, some
+     * domains are address literals of an IPv4 or an IPv6 address, for
+     * instance [192.0.2.1] or [IPv6:2001:db8::1].
+     *
+     * Local parts of 64 characters and email addresses of 254 characters are
+     * generated often. The simplest email address is a@a.aa. With
+     * $ipAddressLiterals, the counterexample of a property whose outcome
+     * does not depend on the domain can have the domain [0.0.0.0] or
+     * [IPv6:::] instead, which take fewer choices than a.aa.
+     *
+     * @return ValueGenerator<non-empty-string>
+     */
+    public static function emailAddresses(bool $quotedLocalParts = false, bool $ipAddressLiterals = false): ValueGenerator
+    {
+        return new EmailAddressGenerator($quotedLocalParts, $ipAddressLiterals);
     }
 
     /**

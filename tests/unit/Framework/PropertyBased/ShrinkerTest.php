@@ -27,7 +27,9 @@ use function is_array;
 use function max;
 use function mb_strlen;
 use function preg_match;
+use function str_contains;
 use function strlen;
+use function strrpos;
 use function substr;
 use function substr_count;
 use Closure;
@@ -255,6 +257,12 @@ final class ShrinkerTest extends TestCase
                 'a.a.aa',
                 Generators::domainNames(),
                 static fn (string $value): bool => substr_count($value, '.') >= 2,
+            ],
+
+            'email address whose local part has a dot' => [
+                'a.a@a.aa',
+                Generators::emailAddresses(),
+                static fn (string $value): bool => str_contains(substr($value, 0, (int) strrpos($value, '@')), '.'),
             ],
 
             'value that is falsified by every example' => [

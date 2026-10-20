@@ -14,6 +14,7 @@ use const FILTER_FLAG_HOSTNAME;
 use const FILTER_FLAG_IPV4;
 use const FILTER_FLAG_IPV6;
 use const FILTER_VALIDATE_DOMAIN;
+use const FILTER_VALIDATE_EMAIL;
 use const FILTER_VALIDATE_IP;
 use const INF;
 use const NAN;
@@ -58,6 +59,7 @@ use function str_contains;
 use function str_split;
 use function str_starts_with;
 use function strlen;
+use function strrpos;
 use function substr;
 use function substr_count;
 use Closure;
@@ -76,6 +78,7 @@ use PHPUnit\Framework\PropertyBased\Generator\CodePoints;
 use PHPUnit\Framework\PropertyBased\Generator\ConstantGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\DomainNameGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\ElementsGenerator;
+use PHPUnit\Framework\PropertyBased\Generator\EmailAddressGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\FilteredGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\FlatMappedGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\FloatGenerator;
@@ -108,6 +111,7 @@ use stdClass;
 #[CoversClass(ConstantGenerator::class)]
 #[CoversClass(DomainNameGenerator::class)]
 #[CoversClass(ElementsGenerator::class)]
+#[CoversClass(EmailAddressGenerator::class)]
 #[CoversClass(FilteredGenerator::class)]
 #[CoversClass(FlatMappedGenerator::class)]
 #[CoversClass(FloatGenerator::class)]
@@ -131,6 +135,11 @@ use stdClass;
 #[Group('framework/property-based-testing')]
 final class GeneratorsTest extends TestCase
 {
+    /**
+     * An unquoted local part of an email address (RFC 5322).
+     */
+    private const string DOT_ATOM = '/^[a-zA-Z0-9!#$%&\'*+\/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&\'*+\/=?^_`{|}~-]+)*$/';
+
     /**
      * @return array<string, array{ValueGenerator<mixed>}>
      */
@@ -169,6 +178,7 @@ final class GeneratorsTest extends TestCase
             'IPv4 addresses'     => [Generators::ipv4Addresses()],
             'IPv6 addresses'     => [Generators::ipv6Addresses()],
             'domain names'       => [Generators::domainNames()],
+            'email addresses'    => [Generators::emailAddresses(true, true)],
         ];
     }
 
@@ -915,6 +925,99 @@ final class GeneratorsTest extends TestCase
         $this->expectExceptionMessage('The maximum length of domain names (' . $maximumLength . ') must be from 4 to 253');
 
         Generators::domainNames($maximumLength);
+    }
+
+    public function testGeneratesEmailAddressesThatPassFilterVar(): void
+    {
+        foreach ([false, true] as $ipAddressLiterals) {
+            foreach ($this->values(Generators::emailAddresses(ipAddressLiterals: $ipAddressLiterals), 1000) as $value) {
+                $this->assertNotFalse(filter_var($value, FILTER_VALIDATE_EMAIL), $value);
+                $this->assertLessThanOrEqual(254, strlen($value));
+                $this->assertLessThanOrEqual(64, strlen($this->localPartOf($value)));
+                $this->assertMatchesRegularExpression(self::DOT_ATOM, $this->localPartOf($value));
+            }
+        }
+    }
+
+    public function testGeneratesEmailAddressesWithLongLocalPartsAndSpecialCharactersAndOfTheMaximumLength(): void
+    {
+        $values     = $this->values(Generators::emailAddresses(), 1000);
+        $localParts = array_map($this->localPartOf(...), $values);
+
+        $this->assertContains(64, array_map(strlen(...), $localParts));
+        $this->assertContains(254, array_map(strlen(...), $values));
+
+        foreach (['/\+/', '/[A-Z]/', '/\./', '/[!#$%&\'*\/=?^_`{|}~-]/'] as $pattern) {
+            $this->assertNotEmpty(preg_grep($pattern, $localParts), $pattern);
+        }
+    }
+
+    public function testGeneratesEmailAddressesWithQuotedLocalPartsOnlyWhenRequested(): void
+    {
+        $localParts = array_map($this->localPartOf(...), $this->values(Generators::emailAddresses(quotedLocalParts: true), 1000));
+        $quoted     = preg_grep('/^"/', $localParts);
+
+        foreach ($localParts as $localPart) {
+            $this->assertLessThanOrEqual(64, strlen($localPart));
+        }
+
+        foreach ($quoted as $localPart) {
+            $this->assertMatchesRegularExpression('/^"(?:[\x20\x21\x23-\x5B\x5D-\x7E]|\\\\["\\\\])+"$/', $localPart);
+        }
+
+        $this->assertGreaterThan(100, count($quoted));
+        $this->assertNotEmpty(preg_grep('/ /', $quoted));
+        $this->assertNotEmpty(preg_grep('/\\\\["\\\\]/', $quoted));
+        $this->assertCount(1000 - count($quoted), preg_grep(self::DOT_ATOM, $localParts));
+    }
+
+    public function testAQuoteOrABackslashInAQuotedLocalPartIsEscapedWhenItFits(): void
+    {
+        // the choices of the domain a.aa: two letters for the top-level
+        // domain, a label of one letter, and no further label
+        $domain = [0, 0, 0, 0, 0, 0, 0];
+
+        $this->assertSame('"\\""@a.aa', $this->replay(Generators::emailAddresses(quotedLocalParts: true), [...$domain, 1, 1, 93]));
+        $this->assertSame('"\\\\"@a.aa', $this->replay(Generators::emailAddresses(quotedLocalParts: true), [...$domain, 1, 1, 94]));
+        $this->assertSame('"~"@a.aa', $this->replay(Generators::emailAddresses(quotedLocalParts: true), [...$domain, 1, 0, 93]));
+    }
+
+    public function testGeneratesEmailAddressesWithAddressLiteralsOnlyWhenRequested(): void
+    {
+        $domains = array_map(
+            static fn (string $value): string => substr($value, (int) strrpos($value, '@') + 1),
+            $this->values(Generators::emailAddresses(ipAddressLiterals: true), 1000),
+        );
+
+        $ipv4Addresses = [];
+        $ipv6Addresses = [];
+
+        foreach ($domains as $domain) {
+            if (preg_match('/^\[IPv6:(.+)\]$/', $domain, $matches) === 1) {
+                $ipv6Addresses[] = $matches[1];
+            } elseif (preg_match('/^\[(.+)\]$/', $domain, $matches) === 1) {
+                $ipv4Addresses[] = $matches[1];
+            }
+        }
+
+        $this->assertNotEmpty($ipv4Addresses);
+        $this->assertNotEmpty($ipv6Addresses);
+
+        foreach ($ipv4Addresses as $address) {
+            $this->assertNotFalse(filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4));
+        }
+
+        foreach ($ipv6Addresses as $address) {
+            $this->assertNotFalse(filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6));
+        }
+
+        $this->assertEmpty(preg_grep('/\[/', $this->values(Generators::emailAddresses(), 1000)));
+    }
+
+    public function testTheSimplestEmailAddressIsAAtAAa(): void
+    {
+        $this->assertSame('a@a.aa', $this->replay(Generators::emailAddresses(), []));
+        $this->assertSame('a@a.aa', $this->replay(Generators::emailAddresses(true, true), []));
     }
 
     public function testGeneratesBothBooleans(): void
@@ -1694,6 +1797,18 @@ final class GeneratorsTest extends TestCase
         }
 
         return $before . $after;
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    private function localPartOf(string $emailAddress): string
+    {
+        $localPart = substr($emailAddress, 0, (int) strrpos($emailAddress, '@'));
+
+        $this->assertNotSame('', $localPart);
+
+        return $localPart;
     }
 
     /**
