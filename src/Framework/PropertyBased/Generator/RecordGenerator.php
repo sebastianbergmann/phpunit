@@ -35,10 +35,17 @@ final readonly class RecordGenerator extends AbstractGenerator
     private array $generators;
 
     /**
-     * @var array<array-key, true>
+     * The labels of the spans of the optional keys, by key.
+     *
+     * @var array<array-key, non-empty-string>
      */
     private array $optionalKeys;
     private BernoulliDistribution $distribution;
+
+    /**
+     * @var non-empty-string
+     */
+    private string $label;
 
     /**
      * @param array<array-key, AbstractGenerator<mixed>> $generators
@@ -54,9 +61,32 @@ final readonly class RecordGenerator extends AbstractGenerator
             $optional[$key] = true;
         }
 
+        $components = [];
+
+        foreach ($generators as $key => $generator) {
+            $component = $key . ':' . $generator->label();
+
+            if (isset($optional[$key])) {
+                $component .= '?';
+            }
+
+            $components[] = $component;
+        }
+
+        $this->label = self::labelOf('records', ...$components);
+
+        foreach ($optional as $key => $true) {
+            $optional[$key] = self::labelOf('optional', $this->label, (string) $key);
+        }
+
         $this->generators   = $generators;
         $this->optionalKeys = $optional;
         $this->distribution = new BernoulliDistribution(self::PROBABILITY_OF_OPTIONAL_KEY);
+    }
+
+    public function label(): string
+    {
+        return $this->label;
     }
 
     protected function generateValue(ChoiceSource $source): array
@@ -70,7 +100,7 @@ final readonly class RecordGenerator extends AbstractGenerator
                 continue;
             }
 
-            $source->startSpan();
+            $source->startSpan($this->optionalKeys[$key]);
 
             if ($source->draw(1, $this->distribution) === 1) {
                 $record[$key] = $generator->generate($source);

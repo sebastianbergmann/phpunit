@@ -11,6 +11,7 @@ namespace PHPUnit\Framework\PropertyBased\Generator;
 
 use function assert;
 use function chr;
+use function var_export;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
 use PHPUnit\Framework\PropertyBased\Distribution\WeightedRangesDistribution;
 
@@ -29,12 +30,19 @@ final readonly class BytesGenerator extends AbstractGenerator
     private WeightedRangesDistribution $byte;
 
     /**
+     * @var non-empty-string
+     */
+    private string $label;
+
+    /**
      * @param non-negative-int  $minimumLength
      * @param ?non-negative-int $maximumLength
      */
     public function __construct(int $minimumLength, ?int $maximumLength)
     {
-        $this->repetition = new Repetition($minimumLength, $maximumLength);
+        $this->label = self::labelOf('bytes', (string) $minimumLength, var_export($maximumLength, true));
+
+        $this->repetition = new Repetition(self::labelOf('element', $this->label), $minimumLength, $maximumLength);
 
         $this->byte = new WeightedRangesDistribution(
             [
@@ -44,6 +52,11 @@ final readonly class BytesGenerator extends AbstractGenerator
                 ['weight' => 0.3, 'minimum' => 0x00, 'maximum' => 0xFF],
             ],
         );
+    }
+
+    public function label(): string
+    {
+        return $this->label;
     }
 
     protected function generateValue(ChoiceSource $source): string

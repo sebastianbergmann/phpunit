@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\PropertyBased\Generator;
 
+use function count;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
 use PHPUnit\Framework\PropertyBased\Distribution\UniformDistribution;
 
@@ -33,12 +34,24 @@ final readonly class ElementsGenerator extends AbstractGenerator
     private UniformDistribution $distribution;
 
     /**
+     * @var non-empty-string
+     */
+    private string $label;
+
+    /**
      * @param non-empty-list<T> $values
      */
     public function __construct(array $values)
     {
+        $this->label = self::labelOf('elements', (string) count($values));
+
         $this->values       = $values;
         $this->distribution = new UniformDistribution;
+    }
+
+    public function label(): string
+    {
+        return $this->label;
     }
 
     protected function generateValue(ChoiceSource $source): mixed

@@ -45,13 +45,25 @@ final readonly class FilteredGenerator extends AbstractGenerator
     private Closure $predicate;
 
     /**
+     * @var non-empty-string
+     */
+    private string $label;
+
+    /**
      * @param AbstractGenerator<T> $generator
      * @param Closure(T): bool     $predicate
      */
     public function __construct(AbstractGenerator $generator, Closure $predicate)
     {
+        $this->label = self::labelOf('filter', $generator->label());
+
         $this->generator = $generator;
         $this->predicate = $predicate;
+    }
+
+    public function label(): string
+    {
+        return $this->label;
     }
 
     protected function generateValue(ChoiceSource $source): mixed

@@ -15,6 +15,7 @@ use function get_debug_type;
 use function is_int;
 use function is_string;
 use function sprintf;
+use function var_export;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
 use PHPUnit\Framework\PropertyBased\InvalidGeneratorArgumentException;
 
@@ -45,6 +46,11 @@ final readonly class ArrayGenerator extends AbstractGenerator
     private Repetition $repetition;
 
     /**
+     * @var non-empty-string
+     */
+    private string $label;
+
+    /**
      * @param AbstractGenerator<K> $keys
      * @param AbstractGenerator<V> $values
      * @param non-negative-int     $minimumSize
@@ -52,9 +58,16 @@ final readonly class ArrayGenerator extends AbstractGenerator
      */
     public function __construct(AbstractGenerator $keys, AbstractGenerator $values, int $minimumSize, ?int $maximumSize, float $probabilityOfAnotherElement = Repetition::DEFAULT_PROBABILITY_OF_ANOTHER_ELEMENT)
     {
+        $this->label = self::labelOf('arrays', $keys->label(), $values->label(), (string) $minimumSize, var_export($maximumSize, true));
+
         $this->keys       = $keys;
         $this->values     = $values;
-        $this->repetition = new Repetition($minimumSize, $maximumSize, $probabilityOfAnotherElement);
+        $this->repetition = new Repetition(self::labelOf('element', $this->label), $minimumSize, $maximumSize, $probabilityOfAnotherElement);
+    }
+
+    public function label(): string
+    {
+        return $this->label;
     }
 
     protected function generateValue(ChoiceSource $source): array

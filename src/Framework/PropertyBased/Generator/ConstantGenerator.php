@@ -30,11 +30,23 @@ final readonly class ConstantGenerator extends AbstractGenerator
     private mixed $value;
 
     /**
+     * @var non-empty-string
+     */
+    private string $label;
+
+    /**
      * @param T $value
      */
     public function __construct(mixed $value)
     {
+        $this->label = self::labelOf('constant');
+
         $this->value = $value;
+    }
+
+    public function label(): string
+    {
+        return $this->label;
     }
 
     protected function generateValue(ChoiceSource $source): mixed

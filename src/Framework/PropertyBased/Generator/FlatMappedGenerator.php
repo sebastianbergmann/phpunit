@@ -42,13 +42,25 @@ final readonly class FlatMappedGenerator extends AbstractGenerator
     private Closure $mapper;
 
     /**
+     * @var non-empty-string
+     */
+    private string $label;
+
+    /**
      * @param AbstractGenerator<T>          $generator
      * @param Closure(T): ValueGenerator<U> $mapper
      */
     public function __construct(AbstractGenerator $generator, Closure $mapper)
     {
+        $this->label = self::labelOf('flatMap', $generator->label());
+
         $this->generator = $generator;
         $this->mapper    = $mapper;
+    }
+
+    public function label(): string
+    {
+        return $this->label;
     }
 
     protected function generateValue(ChoiceSource $source): mixed

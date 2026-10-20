@@ -43,11 +43,18 @@ final readonly class Repetition
     private BernoulliDistribution $anotherElement;
 
     /**
+     * @var non-empty-string
+     */
+    private string $label;
+
+    /**
+     * @param non-empty-string  $label       the label of the spans of the elements (see AbstractGenerator::label())
      * @param non-negative-int  $minimumSize
      * @param ?non-negative-int $maximumSize
      */
-    public function __construct(int $minimumSize, ?int $maximumSize, float $probabilityOfAnotherElement = self::DEFAULT_PROBABILITY_OF_ANOTHER_ELEMENT)
+    public function __construct(string $label, int $minimumSize, ?int $maximumSize, float $probabilityOfAnotherElement = self::DEFAULT_PROBABILITY_OF_ANOTHER_ELEMENT)
     {
+        $this->label          = $label;
         $this->minimumSize    = $minimumSize;
         $this->maximumSize    = $maximumSize;
         $this->anotherElement = new BernoulliDistribution($probabilityOfAnotherElement);
@@ -66,7 +73,7 @@ final readonly class Repetition
         $duplicates = 0;
 
         while ($this->maximumSize === null || $size < $this->maximumSize) {
-            $source->startSpan();
+            $source->startSpan($this->label);
 
             if ($size >= $this->minimumSize && $source->draw(1, $this->anotherElement) === 0) {
                 $source->endSpan();
