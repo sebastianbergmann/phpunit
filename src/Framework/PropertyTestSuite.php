@@ -92,7 +92,20 @@ final class PropertyTestSuite extends IterativeTestSuite
      * few attempts.
      */
     private const int MAXIMUM_NUMBER_OF_SHRINKING_ATTEMPTS_AFTER_TIMEOUT = 10;
-    private ?PropertyDefinition $definition                              = null;
+
+    /**
+     * While fewer examples than this have been checked, no further examples
+     * are generated once too many examples were rejected: the property would
+     * be checked for few examples, if any, and the examples that were
+     * rejected suffice to tell why.
+     */
+    private const int NUMBER_OF_EXAMPLES_CHECKED_UNTIL_HEALTH_IS_ASSUMED = 10;
+
+    /**
+     * How many examples can be rejected before enough examples were checked.
+     */
+    private const int MAXIMUM_NUMBER_OF_REJECTED_EXAMPLES_UNTIL_HEALTH_IS_ASSUMED = 50;
+    private ?PropertyDefinition $definition                                       = null;
 
     /**
      * @var positive-int
@@ -128,6 +141,13 @@ final class PropertyTestSuite extends IterativeTestSuite
      * @var list<array{reason: RejectionReason, numberOfExamples: positive-int}>
      */
     private array $rejections = [];
+
+    /**
+     * The reason for which examples were rejected whose advice is given
+     * because no further examples were generated once too many examples were
+     * rejected before enough were checked, null when this did not happen.
+     */
+    private ?RejectionReason $unhealthyBecauseOf = null;
 
     /**
      * @var non-negative-int
@@ -331,6 +351,12 @@ final class PropertyTestSuite extends IterativeTestSuite
             if ($tree->isExhausted()) {
                 $this->exhausted = true;
 
+                break;
+            }
+
+            $this->unhealthyBecauseOf = $this->reasonWhyExamplesAreNoLongerGenerated();
+
+            if ($this->unhealthyBecauseOf !== null) {
                 break;
             }
 
@@ -616,25 +642,35 @@ final class PropertyTestSuite extends IterativeTestSuite
     }
 
     /**
+     * Returns, when no further examples are generated because too many
+     * examples were rejected before enough examples were checked, the reason
+     * for which examples were rejected whose advice is given, and null
+     * otherwise.
+     */
+    private function reasonWhyExamplesAreNoLongerGenerated(): ?RejectionReason
+    {
+        if ($this->numberOfExamplesChecked >= self::NUMBER_OF_EXAMPLES_CHECKED_UNTIL_HEALTH_IS_ASSUMED) {
+            return null;
+        }
+
+        if ($this->numberOfExamplesRejected >= self::MAXIMUM_NUMBER_OF_REJECTED_EXAMPLES_UNTIL_HEALTH_IS_ASSUMED) {
+            return $this->mostFrequentRejectionReason();
+        }
+
+        return null;
+    }
+
+    /**
      * Describes how many of the generated examples were rejected and why, for
      * instance "12 examples were rejected (10 by assume(), 2 because no value
      * that satisfies a filter was generated)", with the most frequent reason
-     * first, and advises how fewer examples can be rejected for it.
+     * first.
      *
      * @return non-empty-string
      */
     private function rejectedExamples(): string
     {
-        $rejections = $this->rejections;
-
-        assert($rejections !== []);
-
-        // the sort is stable, so reasons that occurred equally often stay in
-        // the order in which they first occurred
-        usort(
-            $rejections,
-            static fn (array $a, array $b): int => $b['numberOfExamples'] <=> $a['numberOfExamples'],
-        );
+        $rejections = $this->rejectionsByFrequency();
 
         if ($this->numberOfExamplesRejected === 1) {
             $buffer = '1 example was rejected';
@@ -654,7 +690,31 @@ final class PropertyTestSuite extends IterativeTestSuite
             $buffer .= ' (' . implode(', ', $reasons) . ')';
         }
 
-        return $buffer . '; ' . $rejections[0]['reason']->advice();
+        return $buffer;
+    }
+
+    private function mostFrequentRejectionReason(): RejectionReason
+    {
+        return $this->rejectionsByFrequency()[0]['reason'];
+    }
+
+    /**
+     * @return non-empty-list<array{reason: RejectionReason, numberOfExamples: positive-int}>
+     */
+    private function rejectionsByFrequency(): array
+    {
+        $rejections = $this->rejections;
+
+        assert($rejections !== []);
+
+        // the sort is stable, so reasons that occurred equally often stay in
+        // the order in which they first occurred
+        usort(
+            $rejections,
+            static fn (array $a, array $b): int => $b['numberOfExamples'] <=> $a['numberOfExamples'],
+        );
+
+        return $rejections;
     }
 
     /**
@@ -813,14 +873,24 @@ final class PropertyTestSuite extends IterativeTestSuite
         // a property for which fewer examples could be generated than were
         // to be checked is only considered risky when none of them was
         // checked because all of them were rejected
-        if ($this->numberOfExamplesChecked < $this->numberOfExamples &&
-            ($this->numberOfExamplesChecked + $this->numberOfExamplesRejected === $this->maximumNumberOfExamplesGenerated() ||
-             ($this->exhausted && $this->numberOfExamplesChecked === 0))) {
+        if ($this->unhealthyBecauseOf !== null) {
             $messages[] = sprintf(
-                'This property was checked for only %d of %d examples, %s',
+                'This property was checked for only %d of %d examples because generating examples was stopped after %s while fewer than %d examples were checked; %s',
                 $this->numberOfExamplesChecked,
                 $this->numberOfExamples,
                 $this->rejectedExamples(),
+                self::NUMBER_OF_EXAMPLES_CHECKED_UNTIL_HEALTH_IS_ASSUMED,
+                $this->unhealthyBecauseOf->advice(),
+            );
+        } elseif ($this->numberOfExamplesChecked < $this->numberOfExamples &&
+            ($this->numberOfExamplesChecked + $this->numberOfExamplesRejected === $this->maximumNumberOfExamplesGenerated() ||
+             ($this->exhausted && $this->numberOfExamplesChecked === 0))) {
+            $messages[] = sprintf(
+                'This property was checked for only %d of %d examples, %s; %s',
+                $this->numberOfExamplesChecked,
+                $this->numberOfExamples,
+                $this->rejectedExamples(),
+                $this->mostFrequentRejectionReason()->advice(),
             );
         }
 

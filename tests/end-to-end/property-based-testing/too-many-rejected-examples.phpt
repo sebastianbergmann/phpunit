@@ -1,5 +1,5 @@
 --TEST--
-A property for which fewer examples than configured could be checked because too many examples were rejected is considered risky
+No further examples of a property are generated once 50 of its examples were rejected before 10 of them were checked, and the property is considered risky
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--no-configuration';
@@ -24,7 +24,7 @@ Time: %s, Memory: %s
 There was 1 risky test:
 
 1) PHPUnit\TestFixture\PropertyBasedTesting\RejectedExamplesTest::testRejectsAlmostAllExamples
-This property was checked for only 1 of 10 examples, 99 examples were rejected by assume(); generate the values that the property needs instead of rejecting the others
+This property was checked for only 1 of 10 examples because generating examples was stopped after 50 examples were rejected by assume() while fewer than 10 examples were checked; generate the values that the property needs instead of rejecting the others
 
 %sRejectedExamplesTest.php:%d
 
