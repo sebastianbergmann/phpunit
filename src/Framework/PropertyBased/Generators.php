@@ -64,6 +64,7 @@ use PHPUnit\Framework\PropertyBased\Generator\RecordGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\RegularExpressionGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\StringGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\TupleGenerator;
+use PHPUnit\Framework\PropertyBased\Generator\UrlGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\UuidGenerator;
 use PHPUnit\Framework\PropertyBased\RegularExpression\Parser;
 use PHPUnit\Framework\PropertyBased\Type\NameScope;
@@ -965,6 +966,64 @@ final class Generators
     public static function emailAddresses(bool $quotedLocalParts = false, bool $ipAddressLiterals = false): ValueGenerator
     {
         return new EmailAddressGenerator($quotedLocalParts, $ipAddressLiterals);
+    }
+
+    /**
+     * Generates URLs (RFC 3986) of the schemes in $schemes with an authority:
+     * a scheme, a host, an optional port, a path, an optional query, and an
+     * optional fragment. With $userInformation, some URLs have user
+     * information, a user name and an optional password, in front of the
+     * host.
+     *
+     * The host is a domain name from domainNames(), an IPv4 address, or an
+     * IPv6 address in brackets. The port is biased towards 1, 65535, and
+     * common default ports. The path consists of segments, of which the last
+     * one is empty for a trailing slash, and is empty often. The query
+     * consists of key-value pairs, which are separated by "&".
+     *
+     * The URLs are normalized, as far as their syntax goes: the scheme and
+     * the host are lowercase, characters are percent-encoded only when they
+     * have to be, the hexadecimal digits of their encoding are uppercase, and
+     * no segment is "." or "..". Reserved characters, spaces, and characters
+     * that are encoded with two, three, and four bytes in UTF-8 are
+     * percent-encoded often. These URLs pass filter_var() with
+     * FILTER_VALIDATE_URL, except for some with user information: filter_var()
+     * rejects a percent-encoded byte in the user information whose first
+     * hexadecimal digit is a letter, such as %C3 of ä.
+     *
+     * The first scheme is the simplest one, and the simplest URL is
+     * http://a.aa by default. An IP address takes fewer choices than a.aa,
+     * though, so that the counterexample of a property whose outcome does
+     * not depend on the host can have the host 0.0.0.0 or [::] instead.
+     *
+     * @param list<string> $schemes
+     *
+     * @throws InvalidGeneratorArgumentException
+     *
+     * @return ValueGenerator<non-empty-string>
+     */
+    public static function urls(array $schemes = ['http', 'https'], bool $userInformation = false): ValueGenerator
+    {
+        if ($schemes === []) {
+            throw new InvalidGeneratorArgumentException('At least one scheme of URLs must be specified');
+        }
+
+        $valid = [];
+
+        foreach ($schemes as $scheme) {
+            if (preg_match('/^[a-z][a-z0-9+.-]*$/D', $scheme) !== 1) {
+                throw new InvalidGeneratorArgumentException(
+                    sprintf(
+                        'The scheme of URLs (%s) must be a lowercase letter followed by lowercase letters, digits, "+", "-", and "."',
+                        $scheme,
+                    ),
+                );
+            }
+
+            $valid[] = $scheme;
+        }
+
+        return new UrlGenerator(array_values(array_unique($valid)), $userInformation);
     }
 
     /**
