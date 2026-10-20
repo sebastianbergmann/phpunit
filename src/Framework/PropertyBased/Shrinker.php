@@ -12,6 +12,7 @@ namespace PHPUnit\Framework\PropertyBased;
 use const PHP_INT_MAX;
 use function array_fill;
 use function array_map;
+use function array_reverse;
 use function array_slice;
 use function array_splice;
 use function array_values;
@@ -40,9 +41,10 @@ use Closure;
  * small values and then searching for the smallest value with a binary
  * search, redistributing pairs of nearby choices by moving as much as
  * possible from the first choice to the second, lowering a choice while
- * raising a later one to its largest value, lowering equal choices together,
- * and sorting the spans that are part of the same span and have the same
- * label. The passes are repeated until none of them succeeds, the
+ * raising a later one to its largest value, lowering a choice while deleting
+ * as many spans of a group of spans that are part of the same span and have
+ * the same label after it, lowering equal choices together, and sorting the
+ * spans that are part of the same span and have the same label. The passes are repeated until none of them succeeds, the
  * maximum number of attempts has been made, or shrinking is interrupted
  * because the test run is to be stopped. Each round of passes starts with
  * the passes that made the counterexample simpler most often in the round
@@ -59,6 +61,13 @@ final class Shrinker
     private const int LARGEST_SMALL_VALUE             = 3;
     private const int LARGEST_REDISTRIBUTION_DISTANCE = 4;
     private const int LARGEST_RAISING_DISTANCE        = 3;
+
+    /**
+     * How many of the groups of spans that are part of the same span, have the
+     * same label, and follow a choice, the nearest first, are considered for
+     * deleting spans while the choice is lowered.
+     */
+    private const int LARGEST_NUMBER_OF_GROUPS_AFTER_A_CHOICE = 2;
 
     /**
      * @var Closure(ChoiceSequence): ?ChoiceSequence
@@ -137,6 +146,7 @@ final class Shrinker
             $this->minimizeChoices(...),
             $this->redistributeChoices(...),
             $this->lowerChoicesRaisingLaterOnes(...),
+            $this->lowerChoicesDeletingLaterSpans(...),
             $this->lowerEqualChoices(...),
             $this->sortSiblingSpans(...),
         ] as $pass) {
@@ -449,6 +459,129 @@ final class Shrinker
                 }
             }
         }
+    }
+
+    /**
+     * A choice can determine how many values are drawn after it, for instance
+     * the size of a list that is drawn with Generators::lists($elements,
+     * $size, $size) followed by an index into it. Lowering such a choice alone
+     * makes the choices of the elements that are no longer drawn be read as
+     * the index, and deleting the choices of elements alone makes the list
+     * read the choice of the index as an element. The choice is therefore
+     * lowered by an amount while as many of the last spans of a group of
+     * spans that are part of the same span, have the same label, and follow
+     * the choice are deleted: the elements of the list that the lower choice
+     * no longer draws. The amount is doubled after each success and starts
+     * over at one after a failure.
+     */
+    private function lowerChoicesDeletingLaterSpans(): void
+    {
+        $groups = $this->groupsOfSpans();
+
+        for ($index = 0; $index < $this->length() && !$this->isStopped(); $index++) {
+            $amount = 1;
+
+            while ($index < $this->length() && $this->choiceAt($index) > 0) {
+                if ($this->lowerChoiceDeletingLaterSpans($index, $amount, $groups)) {
+                    $groups = $this->groupsOfSpans();
+                    $amount *= 2;
+
+                    continue;
+                }
+
+                if ($amount === 1) {
+                    break;
+                }
+
+                $amount = 1;
+            }
+        }
+    }
+
+    /**
+     * @param non-negative-int           $index
+     * @param positive-int               $amount
+     * @param list<non-empty-list<Span>> $groups the groups of spans of the current sequence (see groupsOfSpans())
+     *
+     * @return bool whether the choice was lowered
+     */
+    private function lowerChoiceDeletingLaterSpans(int $index, int $amount, array $groups): bool
+    {
+        $choice = $this->choiceAt($index);
+
+        foreach ($this->groupsOfSpansAfter($index, $groups) as $spans) {
+            $deleted = min($amount, $choice, count($spans));
+
+            assert($deleted > 0);
+
+            if ($this->consider($this->withLoweredChoiceAndWithoutLastSpans($index, $deleted, $spans))) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * The spans of the current sequence grouped by the span they are part of
+     * and by their label, each group in order.
+     *
+     * @return list<non-empty-list<Span>>
+     */
+    private function groupsOfSpans(): array
+    {
+        $groups = [];
+
+        foreach ($this->current->spans() as $span) {
+            $groups[$span->parent() . ':' . $span->label()][] = $span;
+        }
+
+        return array_values($groups);
+    }
+
+    /**
+     * The groups of spans, with only the spans that start after the choice at
+     * the index, the groups whose first such span is nearest to the choice
+     * first. A group of which a span contains the choice is left out, because
+     * the choice is part of one of the values it groups rather than a choice
+     * that determines how many values it has. So is a group with fewer than
+     * two spans after the choice: such a span is mostly that of a value that
+     * is composed of others, a tuple or a list as a whole, rather than one of
+     * several values that are drawn the same way.
+     *
+     * @param non-negative-int           $index
+     * @param list<non-empty-list<Span>> $groups
+     *
+     * @return list<non-empty-list<Span>>
+     */
+    private function groupsOfSpansAfter(int $index, array $groups): array
+    {
+        $groupsAfter = [];
+
+        foreach ($groups as $group) {
+            $after = [];
+
+            foreach ($group as $span) {
+                if ($span->start() <= $index && $index < $span->end()) {
+                    continue 2;
+                }
+
+                if ($span->start() > $index) {
+                    $after[] = $span;
+                }
+            }
+
+            if (count($after) > 1) {
+                $groupsAfter[] = $after;
+            }
+        }
+
+        usort(
+            $groupsAfter,
+            static fn (array $a, array $b): int => $a[0]->start() <=> $b[0]->start(),
+        );
+
+        return array_slice($groupsAfter, 0, self::LARGEST_NUMBER_OF_GROUPS_AFTER_A_CHOICE);
     }
 
     /**
@@ -830,6 +963,39 @@ final class Shrinker
         }
 
         return [...$reordered, ...array_slice($choices, $end)];
+    }
+
+    /**
+     * Lowers the choice at the index by the amount and deletes as many of the
+     * last spans.
+     *
+     * @param non-negative-int     $index
+     * @param positive-int         $amount
+     * @param non-empty-list<Span> $spans  spans that follow the choice and do not overlap, in order, at least as many as the amount
+     *
+     * @return list<non-negative-int>
+     */
+    private function withLoweredChoiceAndWithoutLastSpans(int $index, int $amount, array $spans): array
+    {
+        $lowered = $this->choiceAt($index) - $amount;
+
+        assert($lowered >= 0);
+
+        $choices = $this->current->choices();
+
+        // the spans are deleted from the last one, so that the positions of
+        // the others do not change
+        foreach (array_reverse($spans) as $position => $span) {
+            if ($position === $amount) {
+                break;
+            }
+
+            array_splice($choices, $span->start(), $span->length());
+        }
+
+        array_splice($choices, $index, 1, [$lowered]);
+
+        return $choices;
     }
 
     /**
