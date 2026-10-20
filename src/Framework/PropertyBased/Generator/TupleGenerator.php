@@ -28,11 +28,29 @@ final readonly class TupleGenerator extends AbstractGenerator
     private array $generators;
 
     /**
+     * @var non-empty-string
+     */
+    private string $label;
+
+    /**
      * @param list<AbstractGenerator<mixed>> $generators
      */
     public function __construct(array $generators)
     {
+        $labels = [];
+
+        foreach ($generators as $generator) {
+            $labels[] = $generator->label();
+        }
+
+        $this->label = self::labelOf('tuples', ...$labels);
+
         $this->generators = $generators;
+    }
+
+    public function label(): string
+    {
+        return $this->label;
     }
 
     protected function generateValue(ChoiceSource $source): array

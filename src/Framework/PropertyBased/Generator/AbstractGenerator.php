@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework\PropertyBased\Generator;
 
+use function hash;
+use function implode;
 use Closure;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
 use PHPUnit\Framework\PropertyBased\ExampleRejectedException;
@@ -48,6 +50,20 @@ abstract readonly class AbstractGenerator implements ValueGenerator
         return $generator;
     }
 
+    /**
+     * Returns a label that identifies how choices are drawn for a span from
+     * the components of the label, for instance the name of the generator and
+     * the labels of the generators it is composed of.
+     *
+     * @param non-empty-string $name
+     *
+     * @return non-empty-string
+     */
+    final public static function labelOf(string $name, string ...$components): string
+    {
+        return hash('xxh3', $name . '(' . implode(',', $components) . ')');
+    }
+
     final public function map(Closure $mapper): ValueGenerator
     {
         return new MappedGenerator($this, $mapper);
@@ -64,6 +80,17 @@ abstract readonly class AbstractGenerator implements ValueGenerator
     }
 
     /**
+     * Identifies how the generator draws choices: generators that are composed
+     * and configured the same way, and hence draw choices the same way, have
+     * the same label. The span of the choices that a generator consumed is
+     * labelled with it, which tells the shrinker which spans can be swapped
+     * or replaced with each other.
+     *
+     * @return non-empty-string
+     */
+    abstract public function label(): string;
+
+    /**
      * Generates a value and marks the choices it consumed as a span.
      *
      * @throws ExampleRejectedException
@@ -72,7 +99,7 @@ abstract readonly class AbstractGenerator implements ValueGenerator
      */
     final public function generate(ChoiceSource $source): mixed
     {
-        $source->startSpan();
+        $source->startSpan($this->label());
 
         $value = $this->generateValue($source);
 

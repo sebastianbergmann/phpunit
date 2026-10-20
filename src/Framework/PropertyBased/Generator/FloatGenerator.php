@@ -76,6 +76,11 @@ final readonly class FloatGenerator extends AbstractGenerator
     private BoundaryDistribution $integralMagnitude;
 
     /**
+     * @var non-empty-string
+     */
+    private string $label;
+
+    /**
      * @return array{0|1, 0|1, non-negative-int}
      */
     public static function encode(float $value): array
@@ -136,6 +141,8 @@ final readonly class FloatGenerator extends AbstractGenerator
     {
         assert(is_finite($minimum) && is_finite($maximum) && $minimum <= $maximum);
 
+        $this->label = self::labelOf('floats', (string) $minimum, (string) $maximum, (string) (int) $allowInfinity, (string) (int) $allowNan);
+
         $this->minimum               = $minimum;
         $this->maximum               = $maximum;
         $this->allowPositiveInfinity = $allowInfinity && $maximum === PHP_FLOAT_MAX;
@@ -145,6 +152,11 @@ final readonly class FloatGenerator extends AbstractGenerator
         $this->uniform               = new UniformDistribution;
         $this->kind                  = new BernoulliDistribution(0.5);
         $this->integralMagnitude     = new BoundaryDistribution;
+    }
+
+    public function label(): string
+    {
+        return $this->label;
     }
 
     protected function generateValue(ChoiceSource $source): float

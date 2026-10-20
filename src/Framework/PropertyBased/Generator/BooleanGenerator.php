@@ -25,9 +25,21 @@ final readonly class BooleanGenerator extends AbstractGenerator
 {
     private UniformDistribution $distribution;
 
+    /**
+     * @var non-empty-string
+     */
+    private string $label;
+
     public function __construct()
     {
+        $this->label = self::labelOf('booleans');
+
         $this->distribution = new UniformDistribution;
+    }
+
+    public function label(): string
+    {
+        return $this->label;
     }
 
     protected function generateValue(ChoiceSource $source): bool

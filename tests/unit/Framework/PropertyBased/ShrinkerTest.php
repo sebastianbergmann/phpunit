@@ -252,7 +252,7 @@ final class ShrinkerTest extends TestCase
             },
         );
 
-        $result = $shrinker->shrink(new ChoiceSequence([3, 9, 27, 81], [new Span(0, 2), new Span(2, 4)]));
+        $result = $shrinker->shrink(new ChoiceSequence([3, 9, 27, 81], [new Span(0, 2, 'element', null), new Span(2, 4, 'element', null)]));
 
         $this->assertSame(2, $attempts);
         $this->assertSame(2, $result->numberOfAttempts());
@@ -275,7 +275,7 @@ final class ShrinkerTest extends TestCase
             1000,
         );
 
-        $shrinker->shrink(new ChoiceSequence([3, 9, 27, 81], [new Span(0, 2), new Span(2, 4)]));
+        $shrinker->shrink(new ChoiceSequence([3, 9, 27, 81], [new Span(0, 2, 'element', null), new Span(2, 4, 'element', null)]));
 
         $this->assertSame($candidates, array_values(array_unique($candidates)));
     }
@@ -341,7 +341,7 @@ final class ShrinkerTest extends TestCase
 
         $this->assertSame(
             [50, 51],
-            $shrinker->shrink(new ChoiceSequence([100, 100], [new Span(0, 1), new Span(1, 2)]))->sequence()->choices(),
+            $shrinker->shrink(new ChoiceSequence([100, 100], [new Span(0, 1, 'element', null), new Span(1, 2, 'element', null)]))->sequence()->choices(),
         );
     }
 
@@ -364,7 +364,7 @@ final class ShrinkerTest extends TestCase
 
         $this->assertSame(
             [0, 7, 0, 8],
-            $shrinker->shrink(new ChoiceSequence([5, 7, 5, 7], [new Span(0, 2), new Span(2, 4)]))->sequence()->choices(),
+            $shrinker->shrink(new ChoiceSequence([5, 7, 5, 7], [new Span(0, 2, 'element', null), new Span(2, 4, 'element', null)]))->sequence()->choices(),
         );
     }
 

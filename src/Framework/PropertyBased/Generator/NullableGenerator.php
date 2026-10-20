@@ -34,12 +34,24 @@ final readonly class NullableGenerator extends AbstractGenerator
     private BernoulliDistribution $distribution;
 
     /**
+     * @var non-empty-string
+     */
+    private string $label;
+
+    /**
      * @param AbstractGenerator<T> $generator
      */
     public function __construct(AbstractGenerator $generator, float $probabilityOfValue = self::DEFAULT_PROBABILITY_OF_VALUE)
     {
+        $this->label = self::labelOf('nullable', $generator->label());
+
         $this->generator    = $generator;
         $this->distribution = new BernoulliDistribution($probabilityOfValue);
+    }
+
+    public function label(): string
+    {
+        return $this->label;
     }
 
     protected function generateValue(ChoiceSource $source): mixed

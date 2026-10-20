@@ -9,8 +9,10 @@
  */
 namespace PHPUnit\Framework\PropertyBased\RegularExpression;
 
+use function count;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
 use PHPUnit\Framework\PropertyBased\Distribution\UniformDistribution;
+use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
 
 /**
  * Alternatives of a regular expression, separated by |, of which the first
@@ -31,17 +33,23 @@ final readonly class AlternationNode implements Node
     private UniformDistribution $distribution;
 
     /**
+     * @var non-empty-string
+     */
+    private string $label;
+
+    /**
      * @param non-empty-list<Node> $alternatives
      */
     public function __construct(array $alternatives)
     {
+        $this->label        = AbstractGenerator::labelOf('alternation', (string) count($alternatives));
         $this->alternatives = $alternatives;
         $this->distribution = new UniformDistribution;
     }
 
     public function generate(ChoiceSource $source): string
     {
-        $source->startSpan();
+        $source->startSpan($this->label);
 
         $string = $source->choose($this->alternatives, $this->distribution)->generate($source);
 

@@ -10,7 +10,9 @@
 namespace PHPUnit\Framework\PropertyBased\Generator;
 
 use function assert;
+use function count;
 use function mb_chr;
+use function var_export;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
 use PHPUnit\Framework\PropertyBased\Distribution\Distribution;
 use PHPUnit\Framework\PropertyBased\Distribution\UniformDistribution;
@@ -40,14 +42,27 @@ final readonly class StringGenerator extends AbstractGenerator
     private Distribution $character;
 
     /**
+     * @var non-empty-string
+     */
+    private string $label;
+
+    /**
      * @param ?non-empty-list<non-empty-string> $alphabet      the characters to choose from, or null for all Unicode scalar values
      * @param non-negative-int                  $minimumLength
      * @param ?non-negative-int                 $maximumLength
      */
     public function __construct(?array $alphabet, int $minimumLength, ?int $maximumLength)
     {
+        $alphabetSize = 'unicode';
+
+        if ($alphabet !== null) {
+            $alphabetSize = (string) count($alphabet);
+        }
+
+        $this->label = self::labelOf('strings', $alphabetSize, (string) $minimumLength, var_export($maximumLength, true));
+
         $this->alphabet   = $alphabet;
-        $this->repetition = new Repetition($minimumLength, $maximumLength);
+        $this->repetition = new Repetition(self::labelOf('element', $this->label), $minimumLength, $maximumLength);
 
         if ($alphabet !== null) {
             $this->character = new UniformDistribution;
@@ -73,6 +88,11 @@ final readonly class StringGenerator extends AbstractGenerator
                 ['weight' => 0.05, 'minimum' => 0, 'maximum' => CodePoints::LARGEST_INDEX],
             ],
         );
+    }
+
+    public function label(): string
+    {
+        return $this->label;
     }
 
     protected function generateValue(ChoiceSource $source): string

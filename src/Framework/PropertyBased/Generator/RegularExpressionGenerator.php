@@ -35,12 +35,24 @@ final readonly class RegularExpressionGenerator extends AbstractGenerator
     private Node $node;
 
     /**
+     * @var non-empty-string
+     */
+    private string $label;
+
+    /**
      * @param non-empty-string $regularExpression
      */
     public function __construct(string $regularExpression, Node $node)
     {
+        $this->label = self::labelOf('regularExpression', $regularExpression);
+
         $this->regularExpression = $regularExpression;
         $this->node              = $node;
+    }
+
+    public function label(): string
+    {
+        return $this->label;
     }
 
     protected function generateValue(ChoiceSource $source): string
