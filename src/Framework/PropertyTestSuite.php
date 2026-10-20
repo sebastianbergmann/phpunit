@@ -151,6 +151,16 @@ final class PropertyTestSuite extends IterativeTestSuite
     private array $classifications = [];
 
     /**
+     * The other ways in which the property was falsified while its
+     * counterexample was shrunk, by their description, in the order in which
+     * they were first seen, each with the simplest choice sequence that
+     * falsified the property that way.
+     *
+     * @var array<non-empty-string, array{falsification: Falsification, sequence: ChoiceSequence}>
+     */
+    private array $otherFalsifications = [];
+
+    /**
      * Whether no further examples were checked because the test run was
      * aborted, for instance because its deadline has passed.
      */
@@ -474,7 +484,13 @@ final class PropertyTestSuite extends IterativeTestSuite
 
                 $candidateFalsification = Falsification::of($example);
 
-                if ($candidateFalsification === null || !$candidateFalsification->isSameAs($falsification)) {
+                if ($candidateFalsification === null) {
+                    return null;
+                }
+
+                if (!$candidateFalsification->isSameAs($falsification)) {
+                    $this->rememberOtherFalsification($example, $candidateFalsification, $attemptEvents, $source->sequence());
+
                     return null;
                 }
 
@@ -538,6 +554,7 @@ final class PropertyTestSuite extends IterativeTestSuite
         $test                = $this->test;
         $seed                = $this->seed;
         $exportedDrawnValues = $drawnValues->exported();
+        $otherFalsifications = $this->replayOtherFalsifications($events, $emitter, $deriver, $generators);
 
         assert($test !== null);
 
@@ -547,7 +564,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             $replayEvents,
             $error,
             false,
-            static function () use ($emitter, $test, $seed, $numberOfExamplesChecked, $result, $counterexample, $exportedDrawnValues): void
+            static function () use ($emitter, $test, $seed, $numberOfExamplesChecked, $result, $counterexample, $exportedDrawnValues, $otherFalsifications): void
             {
                 assert($numberOfExamplesChecked > 0);
 
@@ -563,9 +580,81 @@ final class PropertyTestSuite extends IterativeTestSuite
                     $counterexample,
                     null,
                     $exportedDrawnValues,
+                    $otherFalsifications,
                 );
             },
         );
+    }
+
+    /**
+     * Remembers the choice sequence of a shrinking attempt that falsified the
+     * property in another way than the counterexample that is shrunk, unless
+     * a simpler one is remembered for that way. An attempt that was aborted
+     * because the deadline of the test run has passed, or that ended before
+     * it was prepared, did not falsify the property.
+     */
+    private function rememberOtherFalsification(TestCase $example, Falsification $falsification, EventCollection $attemptEvents, ChoiceSequence $sequence): void
+    {
+        if ($example->throwableThatEndedTheTest() instanceof TimeLimitExceededException || $this->endedBeforeItWasPrepared($attemptEvents)) {
+            return;
+        }
+
+        $description = $falsification->description();
+
+        if (isset($this->otherFalsifications[$description]) && !$sequence->isSimplerThan($this->otherFalsifications[$description]['sequence'])) {
+            return;
+        }
+
+        $this->otherFalsifications[$description] = ['falsification' => $falsification, 'sequence' => $sequence];
+    }
+
+    /**
+     * Replays the simplest choice sequence of each of the other ways in which
+     * the property was falsified while its counterexample was shrunk, so that
+     * the arguments that it generates and the values that it draws are
+     * exported. A choice sequence that does not falsify the property in the
+     * same way again is not reported.
+     *
+     * @param array<non-empty-string, AbstractGenerator<mixed>> $generators
+     *
+     * @return list<array{description: non-empty-string, choiceSequence: list<non-negative-int>, counterexample: array<non-empty-string, string>, drawnValues: list<array{label: ?non-empty-string, value: string}>}>
+     */
+    private function replayOtherFalsifications(EventAggregator $events, Event\Emitter $emitter, GeneratorDeriver $deriver, array $generators): array
+    {
+        $replayed = [];
+
+        foreach ($this->otherFalsifications as $description => $other) {
+            $source = ChoiceSource::replay($other['sequence'], ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver);
+
+            try {
+                $arguments = $this->handlingIssues(fn (): array => $this->generateArguments($generators, $source), null);
+            } catch (Throwable) {
+                continue;
+            }
+
+            $counterexample = $this->export($arguments, $source->constructions());
+            $drawnValues    = DrawnValues::reportedFrom($source, $this->exporter($source->constructions()));
+            $example        = $this->example($arguments, false, $drawnValues);
+
+            [$replayEvents] = $this->runExample($example, $emitter, false);
+
+            $events->recordShrinkingAttempt($replayEvents);
+
+            $falsification = Falsification::of($example);
+
+            if ($falsification === null || !$falsification->isSameAs($other['falsification'])) {
+                continue;
+            }
+
+            $replayed[] = [
+                'description'    => $description,
+                'choiceSequence' => $source->sequence()->choices(),
+                'counterexample' => $counterexample,
+                'drawnValues'    => $drawnValues->exported(),
+            ];
+        }
+
+        return $replayed;
     }
 
     /**
@@ -603,7 +692,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             false,
             static function () use ($emitter, $test, $seed, $exportedArguments, $name): void
             {
-                $emitter->testPropertyFalsified($test, $seed, 0, 0, 0, false, false, [], $exportedArguments, $name, []);
+                $emitter->testPropertyFalsified($test, $seed, 0, 0, 0, false, false, [], $exportedArguments, $name, [], []);
             },
         );
     }

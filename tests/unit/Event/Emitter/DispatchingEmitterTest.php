@@ -1989,7 +1989,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $test = $this->testValueObject();
 
-        $emitter->testPropertyFalsified($test, 1234, 2, 40, 17, true, true, [0, 2, 1], ['value' => '2'], 'two', [['label' => 'index', 'value' => '0']]);
+        $emitter->testPropertyFalsified($test, 1234, 2, 40, 17, true, true, [0, 2, 1], ['value' => '2'], 'two', [['label' => 'index', 'value' => '0']], [['description' => 'RuntimeException at /path/to/FooTest.php:12', 'choiceSequence' => [3, 0], 'counterexample' => ['size' => '3'], 'drawnValues' => [['label' => null, 'value' => '0']]]]);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 
@@ -2008,6 +2008,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame(['value' => '2'], $event->counterexample());
         $this->assertSame('two', $event->explicitExample());
         $this->assertSame([['label' => 'index', 'value' => '0']], $event->drawnValues());
+        $this->assertSame([['description' => 'RuntimeException at /path/to/FooTest.php:12', 'choiceSequence' => [3, 0], 'counterexample' => ['size' => '3'], 'drawnValues' => [['label' => null, 'value' => '0']]]], $event->otherFalsifications());
     }
 
     #[TestDox('testConsideredRisky() emits Test\ConsideredRisky event')]

@@ -115,6 +115,29 @@ EOT,
         );
     }
 
+    public function testDescribesTheOtherWaysInWhichThePropertyWasFalsifiedAfterHowShrinkingWasStopped(): void
+    {
+        $this->assertStringEqualsStringIgnoringLineEndings(
+            <<<'EOT'
+Property falsified after 2 examples, counterexample shrunk in 1 step:
+
+    $size = 5;
+
+Shrinking was stopped after 3 attempts, a simpler counterexample may exist.
+
+Property also falsified by RuntimeException at /path/to/FooTest.php:12 with this counterexample:
+
+    $size = 3;
+
+    Draw 1: 0
+
+EOT,
+            PropertyFalsifiedToStringMapper::map(
+                $this->event(2, 3, 1, true, false, ['size' => '5'], null, [], [['description' => 'RuntimeException at /path/to/FooTest.php:12', 'choiceSequence' => [3, 0], 'counterexample' => ['size' => '3'], 'drawnValues' => [['label' => null, 'value' => '0']]]]),
+            ),
+        );
+    }
+
     public function testStatesThatShrinkingWasStoppedWhenTheBudgetWasExhausted(): void
     {
         $this->assertStringEqualsStringIgnoringLineEndings(
@@ -191,14 +214,15 @@ EOT,
     }
 
     /**
-     * @param non-negative-int                                     $numberOfExamplesChecked
-     * @param non-negative-int                                     $numberOfShrinkingAttempts
-     * @param non-negative-int                                     $numberOfShrinkingSteps
-     * @param array<non-empty-string, string>                      $counterexample
-     * @param null|int|non-empty-string                            $explicitExample
-     * @param list<array{label: ?non-empty-string, value: string}> $drawnValues
+     * @param non-negative-int                                                                                                                                                                                       $numberOfExamplesChecked
+     * @param non-negative-int                                                                                                                                                                                       $numberOfShrinkingAttempts
+     * @param non-negative-int                                                                                                                                                                                       $numberOfShrinkingSteps
+     * @param array<non-empty-string, string>                                                                                                                                                                        $counterexample
+     * @param null|int|non-empty-string                                                                                                                                                                              $explicitExample
+     * @param list<array{label: ?non-empty-string, value: string}>                                                                                                                                                   $drawnValues
+     * @param list<array{description: non-empty-string, choiceSequence: list<non-negative-int>, counterexample: array<non-empty-string, string>, drawnValues: list<array{label: ?non-empty-string, value: string}>}> $otherFalsifications
      */
-    private function event(int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, array $counterexample, null|int|string $explicitExample = null, array $drawnValues = []): PropertyFalsified
+    private function event(int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, array $counterexample, null|int|string $explicitExample = null, array $drawnValues = [], array $otherFalsifications = []): PropertyFalsified
     {
         return new PropertyFalsified(
             $this->telemetryInfo(),
@@ -213,6 +237,7 @@ EOT,
             $counterexample,
             $explicitExample,
             $drawnValues,
+            $otherFalsifications,
         );
     }
 }

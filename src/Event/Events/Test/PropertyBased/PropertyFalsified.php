@@ -69,18 +69,24 @@ final readonly class PropertyFalsified implements Event
     private array $drawnValues;
 
     /**
-     * @param non-negative-int                                     $seed
-     * @param non-negative-int                                     $numberOfExamplesChecked
-     * @param non-negative-int                                     $numberOfShrinkingAttempts
-     * @param non-negative-int                                     $numberOfShrinkingSteps
-     * @param list<non-negative-int>                               $choiceSequence
-     * @param array<non-empty-string, string>                      $counterexample
-     * @param null|int|non-empty-string                            $explicitExample
-     * @param list<array{label: ?non-empty-string, value: string}> $drawnValues
+     * @var list<array{description: non-empty-string, choiceSequence: list<non-negative-int>, counterexample: array<non-empty-string, string>, drawnValues: list<array{label: ?non-empty-string, value: string}>}>
+     */
+    private array $otherFalsifications;
+
+    /**
+     * @param non-negative-int                                                                                                                                                                                       $seed
+     * @param non-negative-int                                                                                                                                                                                       $numberOfExamplesChecked
+     * @param non-negative-int                                                                                                                                                                                       $numberOfShrinkingAttempts
+     * @param non-negative-int                                                                                                                                                                                       $numberOfShrinkingSteps
+     * @param list<non-negative-int>                                                                                                                                                                                 $choiceSequence
+     * @param array<non-empty-string, string>                                                                                                                                                                        $counterexample
+     * @param null|int|non-empty-string                                                                                                                                                                              $explicitExample
+     * @param list<array{label: ?non-empty-string, value: string}>                                                                                                                                                   $drawnValues
+     * @param list<array{description: non-empty-string, choiceSequence: list<non-negative-int>, counterexample: array<non-empty-string, string>, drawnValues: list<array{label: ?non-empty-string, value: string}>}> $otherFalsifications
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, array $choiceSequence, array $counterexample, null|int|string $explicitExample, array $drawnValues)
+    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, array $choiceSequence, array $counterexample, null|int|string $explicitExample, array $drawnValues, array $otherFalsifications)
     {
         $this->telemetryInfo             = $telemetryInfo;
         $this->test                      = $test;
@@ -94,6 +100,7 @@ final readonly class PropertyFalsified implements Event
         $this->counterexample            = $counterexample;
         $this->explicitExample           = $explicitExample;
         $this->drawnValues               = $drawnValues;
+        $this->otherFalsifications       = $otherFalsifications;
     }
 
     public function telemetryInfo(): Telemetry\Info
@@ -225,6 +232,20 @@ final readonly class PropertyFalsified implements Event
     }
 
     /**
+     * The other ways in which the property was falsified while the
+     * counterexample was shrunk, each with the simplest counterexample that
+     * falsified it that way, in the order in which they were first seen. It
+     * is empty when the property was falsified by an explicit example, which
+     * is not shrunk.
+     *
+     * @return list<array{description: non-empty-string, choiceSequence: list<non-negative-int>, counterexample: array<non-empty-string, string>, drawnValues: list<array{label: ?non-empty-string, value: string}>}>
+     */
+    public function otherFalsifications(): array
+    {
+        return $this->otherFalsifications;
+    }
+
+    /**
      * @return non-empty-string
      */
     public function asString(): string
@@ -269,16 +290,14 @@ final readonly class PropertyFalsified implements Event
      */
     private function withCounterexample(string $buffer): string
     {
-        foreach ($this->counterexample as $parameter => $value) {
-            $buffer .= sprintf(
-                PHP_EOL . '$%s = %s;',
-                $parameter,
-                $value,
-            );
-        }
+        $buffer = self::withArguments($buffer, $this->counterexample, $this->drawnValues);
 
-        foreach ($this->drawnValues as $number => $drawnValue) {
-            $buffer .= PHP_EOL . self::describeDrawnValue($number + 1, $drawnValue['label']) . ': ' . $drawnValue['value'];
+        foreach ($this->otherFalsifications as $otherFalsification) {
+            $buffer = self::withArguments(
+                $buffer . PHP_EOL . 'Also falsified by ' . $otherFalsification['description'] . ':',
+                $otherFalsification['counterexample'],
+                $otherFalsification['drawnValues'],
+            );
         }
 
         return $buffer;
@@ -296,6 +315,30 @@ final readonly class PropertyFalsified implements Event
         }
 
         return sprintf('"%s"', $name);
+    }
+
+    /**
+     * @param non-empty-string                                     $buffer
+     * @param array<non-empty-string, string>                      $counterexample
+     * @param list<array{label: ?non-empty-string, value: string}> $drawnValues
+     *
+     * @return non-empty-string
+     */
+    private static function withArguments(string $buffer, array $counterexample, array $drawnValues): string
+    {
+        foreach ($counterexample as $parameter => $value) {
+            $buffer .= sprintf(
+                PHP_EOL . '$%s = %s;',
+                $parameter,
+                $value,
+            );
+        }
+
+        foreach ($drawnValues as $number => $drawnValue) {
+            $buffer .= PHP_EOL . self::describeDrawnValue($number + 1, $drawnValue['label']) . ': ' . $drawnValue['value'];
+        }
+
+        return $buffer;
     }
 
     /**
