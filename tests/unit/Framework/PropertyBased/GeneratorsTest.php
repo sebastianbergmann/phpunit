@@ -11,6 +11,7 @@ namespace PHPUnit\Framework\PropertyBased;
 
 use const FILTER_FLAG_GLOBAL_RANGE;
 use const FILTER_FLAG_IPV4;
+use const FILTER_FLAG_IPV6;
 use const FILTER_VALIDATE_IP;
 use const INF;
 use const NAN;
@@ -18,15 +19,21 @@ use const PHP_FLOAT_MAX;
 use const PHP_FLOAT_MIN;
 use const PHP_INT_MAX;
 use const PHP_INT_MIN;
+use const PREG_OFFSET_CAPTURE;
 use function abs;
 use function array_filter;
 use function array_keys;
 use function array_map;
 use function array_unique;
 use function array_values;
+use function bin2hex;
 use function count;
+use function explode;
 use function filter_var;
+use function implode;
 use function in_array;
+use function inet_ntop;
+use function inet_pton;
 use function ip2long;
 use function is_array;
 use function is_infinite;
@@ -37,9 +44,15 @@ use function mb_check_encoding;
 use function mb_ord;
 use function mb_str_split;
 use function mb_strlen;
+use function preg_grep;
 use function preg_match;
+use function preg_match_all;
+use function preg_replace;
 use function serialize;
 use function sort;
+use function str_contains;
+use function str_split;
+use function str_starts_with;
 use function strlen;
 use function substr;
 use Closure;
@@ -61,6 +74,7 @@ use PHPUnit\Framework\PropertyBased\Generator\FlatMappedGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\FloatGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\IntegerGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\Ipv4AddressGenerator;
+use PHPUnit\Framework\PropertyBased\Generator\Ipv6AddressGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\ListGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\MappedGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\NullableGenerator;
@@ -91,6 +105,7 @@ use stdClass;
 #[CoversClass(FloatGenerator::class)]
 #[CoversClass(IntegerGenerator::class)]
 #[CoversClass(Ipv4AddressGenerator::class)]
+#[CoversClass(Ipv6AddressGenerator::class)]
 #[CoversClass(ListGenerator::class)]
 #[CoversClass(MappedGenerator::class)]
 #[CoversClass(NullableGenerator::class)]
@@ -144,6 +159,7 @@ final class GeneratorsTest extends TestCase
             'flatMap'            => [Generators::integers(0, 3)->flatMap(static fn (int $n): ValueGenerator => Generators::lists(Generators::booleans(), $n, $n))],
             'uuids'              => [Generators::uuids(nilAndMax: true)],
             'IPv4 addresses'     => [Generators::ipv4Addresses()],
+            'IPv6 addresses'     => [Generators::ipv6Addresses()],
         ];
     }
 
@@ -289,6 +305,22 @@ final class GeneratorsTest extends TestCase
             'too few octets'             => ['10.0.0/8'],
             'IPv6 address'               => ['::/0'],
             'empty'                      => [''],
+        ];
+    }
+
+    /**
+     * @return array<non-empty-string, array{string}>
+     */
+    public static function invalidIpv6NetworkProvider(): array
+    {
+        return [
+            'without prefix'               => ['2001:db8::'],
+            'prefix longer than 128 bits'  => ['2001:db8::/129'],
+            'prefix with leading zero'     => ['2001:db8::/032'],
+            'zone identifier'              => ['fe80::%eth0/64'],
+            'two runs of zeros compressed' => ['2001::db8::/32'],
+            'IPv4 address'                 => ['10.0.0.0/8'],
+            'empty'                        => [''],
         ];
     }
 
@@ -717,6 +749,103 @@ final class GeneratorsTest extends TestCase
         $this->expectExceptionMessageIs('The address of the network (192.168.1.1/16) must be its network address, whose host bits are zero: 192.168.0.0/16');
 
         Generators::ipv4Addresses('192.168.1.1/16');
+    }
+
+    public function testGeneratesValidIpv6AddressesInTheirCanonicalTextRepresentation(): void
+    {
+        foreach ($this->values(Generators::ipv6Addresses(), 2000) as $value) {
+            $this->assertNotFalse(filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6));
+
+            $bytes = inet_pton($value);
+
+            $this->assertNotFalse($bytes);
+            $this->assertSame($this->canonicalIpv6Address($bytes), $value);
+        }
+    }
+
+    public function testGeneratesIpv6AddressesFromTheSpecialPurposeRanges(): void
+    {
+        $values = $this->values(Generators::ipv6Addresses(), 2000);
+
+        $this->assertContains('::', $values);
+        $this->assertContains('::1', $values);
+
+        foreach (['/^::ffff:\d+\.\d+\.\d+\.\d+$/', '/^64:ff9b::/', '/^2001:db8:/', '/^f[cd][0-9a-f]{2}:/', '/^fe[89ab][0-9a-f]:/', '/^ff[0-9a-f]{2}:/'] as $pattern) {
+            $this->assertNotEmpty(preg_grep($pattern, $values), $pattern);
+        }
+    }
+
+    public function testGeneratesIpv6AddressesWithRunsOfZerosOfEveryLength(): void
+    {
+        $lengths = [];
+
+        foreach ($this->values(Generators::ipv6Addresses(), 2000) as $value) {
+            if (str_contains($value, '::') && !str_contains($value, '.')) {
+                $lengths[8 - count(array_filter(explode(':', $value), static fn (string $group): bool => $group !== ''))] = true;
+            }
+        }
+
+        $lengths = array_keys($lengths);
+
+        sort($lengths);
+
+        $this->assertSame([2, 3, 4, 5, 6, 7, 8], $lengths);
+    }
+
+    public function testGeneratesIpv6AddressesOfTheNetworkThatIsSpecified(): void
+    {
+        $values = $this->values(Generators::ipv6Addresses('2001:db8::/120'), 1000);
+
+        foreach ($values as $value) {
+            $this->assertMatchesRegularExpression('/^2001:db8::([0-9a-f]{1,2})?$/', $value);
+        }
+
+        $this->assertContains('2001:db8::', $values);
+        $this->assertContains('2001:db8::ff', $values);
+    }
+
+    public function testGeneratesIpv6AddressesOfANetworkInASpecialPurposeRange(): void
+    {
+        foreach ($this->values(Generators::ipv6Addresses('fe80::/64'), 200) as $value) {
+            $this->assertStringStartsWith('fe80::', $value);
+        }
+    }
+
+    public function testGeneratesTheSpecialPurposeAddressesOfANetworkThatContainsThemOnly(): void
+    {
+        $values = array_values(array_unique($this->values(Generators::ipv6Addresses('::/127'), 100)));
+
+        sort($values);
+
+        $this->assertSame(['::', '::1'], $values);
+    }
+
+    public function testTheLast32BitsOfAnIpv4MappedAddressAreInDottedDecimalNotation(): void
+    {
+        $this->assertSame('::ffff:192.0.2.1', $this->replay(Generators::ipv6Addresses('::ffff:0:0/96'), [0, 0xC000, 0x201]));
+    }
+
+    public function testTheSimplestIpv6AddressIsTheNetworkAddress(): void
+    {
+        $this->assertSame('::', $this->replay(Generators::ipv6Addresses(), []));
+        $this->assertSame('2001:db8::', $this->replay(Generators::ipv6Addresses('2001:db8::/32'), []));
+    }
+
+    #[DataProvider('invalidIpv6NetworkProvider')]
+    public function testTheNetworkOfIpv6AddressesMustBeGivenInCidrNotation(string $network): void
+    {
+        $this->expectException(InvalidGeneratorArgumentException::class);
+        $this->expectExceptionMessageIs('The network (' . $network . ') must be an IPv6 address and the length of its prefix, from 0 to 128, in CIDR notation, for instance 2001:db8::/32');
+
+        Generators::ipv6Addresses($network);
+    }
+
+    public function testTheNetworkOfIpv6AddressesMustBeGivenAsItsNetworkAddress(): void
+    {
+        $this->expectException(InvalidGeneratorArgumentException::class);
+        $this->expectExceptionMessageIs('The address of the network (2001:DB8::1/32) must be its network address, whose host bits are zero: 2001:db8::/32');
+
+        Generators::ipv6Addresses('2001:DB8::1/32');
     }
 
     public function testGeneratesBothBooleans(): void
@@ -1450,6 +1579,52 @@ final class GeneratorsTest extends TestCase
     private function replay(ValueGenerator $generator, array $choices, ?GeneratorDeriver $deriver = null): mixed
     {
         return AbstractGenerator::from($generator)->generate(ChoiceSource::replay(new ChoiceSequence($choices), ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver));
+    }
+
+    /**
+     * The canonical text representation (RFC 5952) of the address with the
+     * bytes: the hexadecimal groups without leading zeros, of which the first
+     * longest run of at least two groups of zeros is compressed, or the
+     * dotted decimal notation of the last 32 bits for an IPv4-mapped address.
+     */
+    private function canonicalIpv6Address(string $bytes): string
+    {
+        if (str_starts_with($bytes, "\0\0\0\0\0\0\0\0\0\0\xFF\xFF")) {
+            return '::ffff:' . inet_ntop(substr($bytes, 12));
+        }
+
+        $uncompressed = preg_replace('/(?<=^|:)0+(?=[0-9a-f])/', '', implode(':', str_split(bin2hex($bytes), 4)));
+
+        $this->assertIsString($uncompressed);
+
+        $runs = [];
+
+        preg_match_all('/(?<![0-9a-f])0(?::0)+(?![0-9a-f])/', $uncompressed, $runs, PREG_OFFSET_CAPTURE);
+
+        $longest = null;
+
+        foreach ($runs[0] as $run) {
+            if ($longest === null || strlen($run[0]) > strlen($longest[0])) {
+                $longest = $run;
+            }
+        }
+
+        if ($longest === null) {
+            return $uncompressed;
+        }
+
+        $before = substr($uncompressed, 0, $longest[1]);
+        $after  = substr($uncompressed, $longest[1] + strlen($longest[0]));
+
+        if ($before === '') {
+            $before = ':';
+        }
+
+        if ($after === '') {
+            $after = ':';
+        }
+
+        return $before . $after;
     }
 
     /**
