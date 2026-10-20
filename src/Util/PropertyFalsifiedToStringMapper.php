@@ -97,6 +97,10 @@ final readonly class PropertyFalsifiedToStringMapper
             ) . "\n";
         }
 
+        if ($event->numberOfReproductions() < $event->numberOfReplays()) {
+            $buffer .= "\n" . self::reproductions($event->numberOfReproductions(), $event->numberOfReplays()) . "\n";
+        }
+
         foreach ($event->otherFalsifications() as $otherFalsification) {
             $buffer .= "\n" . sprintf('Property also falsified by %s with this counterexample:', $otherFalsification['description']) . "\n\n";
             $buffer .= self::arguments($otherFalsification['counterexample'], $otherFalsification['drawnValues']);
@@ -155,6 +159,26 @@ final readonly class PropertyFalsifiedToStringMapper
     private static function indented(string $lines): string
     {
         return self::INDENTATION . implode("\n" . self::INDENTATION, explode("\n", $lines)) . "\n";
+    }
+
+    /**
+     * @param non-negative-int $numberOfReproductions
+     * @param positive-int     $numberOfReplays
+     */
+    private static function reproductions(int $numberOfReproductions, int $numberOfReplays): string
+    {
+        if ($numberOfReproductions === 0) {
+            return sprintf(
+                'The example that falsified the property did not falsify it again in %s.',
+                self::count($numberOfReplays, 'replay'),
+            );
+        }
+
+        return sprintf(
+            'The example that falsified the property falsified it again in only %d of %s, so its outcome does not depend on its arguments alone.',
+            $numberOfReproductions,
+            self::count($numberOfReplays, 'replay'),
+        );
     }
 
     private static function count(int $number, string $noun): string

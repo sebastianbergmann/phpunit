@@ -18,6 +18,7 @@ use PHPUnit\Framework\TestCase;
 final class NondeterministicGeneratorsTest extends TestCase
 {
     private static int $maximum = 0;
+    private static int $size    = 0;
 
     /**
      * @return ValueGenerator<int>
@@ -34,9 +35,33 @@ final class NondeterministicGeneratorsTest extends TestCase
         );
     }
 
+    /**
+     * @return ValueGenerator<list<int>>
+     */
+    public static function listsWhoseSizeGrows(): ValueGenerator
+    {
+        return Generators::integers(0, 9)->flatMap(
+            static function (int $value): ValueGenerator
+            {
+                self::$size++;
+
+                return Generators::lists(Generators::integers(0, 9), self::$size, self::$size);
+            },
+        );
+    }
+
     #[Property(examples: 20)]
     public function testDrawsFromARangeThatGrows(#[ForAll('integersUpToAMaximumThatGrows')] int $value): void
     {
         $this->assertGreaterThanOrEqual(0, $value);
+    }
+
+    /**
+     * @param list<int> $values
+     */
+    #[Property]
+    public function testIsFalsifiedByListsWhoseSizeGrows(#[ForAll('listsWhoseSizeGrows')] array $values): void
+    {
+        $this->assertCount(0, $values);
     }
 }
