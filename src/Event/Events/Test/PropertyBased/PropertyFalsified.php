@@ -64,17 +64,23 @@ final readonly class PropertyFalsified implements Event
     private null|int|string $explicitExample;
 
     /**
-     * @param non-negative-int                $seed
-     * @param non-negative-int                $numberOfExamplesChecked
-     * @param non-negative-int                $numberOfShrinkingAttempts
-     * @param non-negative-int                $numberOfShrinkingSteps
-     * @param list<non-negative-int>          $choiceSequence
-     * @param array<non-empty-string, string> $counterexample
-     * @param null|int|non-empty-string       $explicitExample
+     * @var list<array{label: ?non-empty-string, value: string}>
+     */
+    private array $drawnValues;
+
+    /**
+     * @param non-negative-int                                     $seed
+     * @param non-negative-int                                     $numberOfExamplesChecked
+     * @param non-negative-int                                     $numberOfShrinkingAttempts
+     * @param non-negative-int                                     $numberOfShrinkingSteps
+     * @param list<non-negative-int>                               $choiceSequence
+     * @param array<non-empty-string, string>                      $counterexample
+     * @param null|int|non-empty-string                            $explicitExample
+     * @param list<array{label: ?non-empty-string, value: string}> $drawnValues
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, array $choiceSequence, array $counterexample, null|int|string $explicitExample)
+    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, array $choiceSequence, array $counterexample, null|int|string $explicitExample, array $drawnValues)
     {
         $this->telemetryInfo             = $telemetryInfo;
         $this->test                      = $test;
@@ -87,6 +93,7 @@ final readonly class PropertyFalsified implements Event
         $this->choiceSequence            = $choiceSequence;
         $this->counterexample            = $counterexample;
         $this->explicitExample           = $explicitExample;
+        $this->drawnValues               = $drawnValues;
     }
 
     public function telemetryInfo(): Telemetry\Info
@@ -205,6 +212,19 @@ final readonly class PropertyFalsified implements Event
     }
 
     /**
+     * The values that the minimal counterexample drew with draw(), exported
+     * as PHP code, in the order in which they were drawn, with the labels
+     * that were passed to draw(). It is empty when the property was falsified
+     * by an explicit example, for which values cannot be drawn.
+     *
+     * @return list<array{label: ?non-empty-string, value: string}>
+     */
+    public function drawnValues(): array
+    {
+        return $this->drawnValues;
+    }
+
+    /**
      * @return non-empty-string
      */
     public function asString(): string
@@ -257,6 +277,10 @@ final readonly class PropertyFalsified implements Event
             );
         }
 
+        foreach ($this->drawnValues as $number => $drawnValue) {
+            $buffer .= PHP_EOL . self::describeDrawnValue($number + 1, $drawnValue['label']) . ': ' . $drawnValue['value'];
+        }
+
         return $buffer;
     }
 
@@ -272,5 +296,23 @@ final readonly class PropertyFalsified implements Event
         }
 
         return sprintf('"%s"', $name);
+    }
+
+    /**
+     * Describes a value that was drawn with draw() by its number and its
+     * label, for instance "Draw 2 (index)".
+     *
+     * @param positive-int      $number
+     * @param ?non-empty-string $label
+     *
+     * @return non-empty-string
+     */
+    private static function describeDrawnValue(int $number, ?string $label): string
+    {
+        if ($label === null) {
+            return 'Draw ' . $number;
+        }
+
+        return sprintf('Draw %d (%s)', $number, $label);
     }
 }
