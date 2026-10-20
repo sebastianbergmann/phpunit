@@ -1,0 +1,29 @@
+{
+    "name": "evenement/evenement",
+    "description": "Événement is a very simple event dispatching library for PHP",
+    "keywords": ["event-dispatcher", "event-emitter"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Igor Wiedler",
+            "email": "igor@wiedler.ch"
+        }
+    ],
+    "require": {
+        "php": ">=7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9 || ^6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Evenement\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Evenement\\Tests\\": "tests/"
+        },
+        "files": ["tests/functions.php"]
+    }
+}
