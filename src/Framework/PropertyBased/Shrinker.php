@@ -33,7 +33,8 @@ use Closure;
  * checked, so composed generators shrink as well as the ones they are
  * composed of.
  *
- * Its passes are deleting spans, deleting blocks of consecutive choices,
+ * Its passes are deleting spans, replacing spans with shorter spans they
+ * contain that have the same label, deleting blocks of consecutive choices,
  * setting blocks of choices to 0, minimizing individual choices by trying
  * small values and then searching for the smallest value with a binary
  * search, redistributing pairs of nearby choices by moving as much as
@@ -123,6 +124,7 @@ final class Shrinker
             $numberOfStepsBefore = $this->numberOfSteps;
 
             $this->deleteSpans();
+            $this->replaceSpansWithDescendants();
             $this->deleteBlocks();
             $this->zeroBlocks();
             $this->minimizeChoices();
@@ -160,6 +162,81 @@ final class Shrinker
                 $index++;
             }
         }
+    }
+
+    /**
+     * A recursive value, a tree for instance, contains values that were
+     * generated the same way, its subtrees, whose spans have the same label as
+     * the span of the value. Replacing the span of the value with the span of
+     * one of these values shrinks it by many levels at once. Longer spans are
+     * replaced first, each with the shortest spans first.
+     */
+    private function replaceSpansWithDescendants(): void
+    {
+        while (!$this->isStopped()) {
+            $replaced = false;
+
+            foreach ($this->descendantsWithTheSameLabel() as [$span, $descendant]) {
+                // once shrinking is stopped, no further candidate is replayed
+                if ($this->consider($this->withChoicesOfSpanInsteadOf($descendant, $span))) {
+                    $replaced = true;
+
+                    break;
+                }
+            }
+
+            if (!$replaced) {
+                return;
+            }
+        }
+    }
+
+    /**
+     * The pairs of a span of the current sequence and a shorter span that it
+     * contains and that has the same label, longer spans first, and for each
+     * of them shorter descendants first.
+     *
+     * @return list<array{Span, Span}>
+     */
+    private function descendantsWithTheSameLabel(): array
+    {
+        $spansByLabel = [];
+
+        foreach ($this->current->spans() as $span) {
+            $spansByLabel[$span->label()][] = $span;
+        }
+
+        $pairs = [];
+
+        foreach ($spansByLabel as $spans) {
+            // the spans are in the order in which they were started, so the
+            // spans that a span contains follow it
+            foreach ($spans as $index => $span) {
+                for ($next = $index + 1; isset($spans[$next]) && $spans[$next]->start() < $span->end(); $next++) {
+                    if ($spans[$next]->end() <= $span->end() && $spans[$next]->length() < $span->length()) {
+                        $pairs[] = [$span, $spans[$next]];
+                    }
+                }
+            }
+        }
+
+        usort(
+            $pairs,
+            static function (array $a, array $b): int
+            {
+                if ($a[0]->length() !== $b[0]->length()) {
+                    return $b[0]->length() <=> $a[0]->length();
+                }
+
+                if ($a[0]->start() !== $b[0]->start()) {
+                    return $a[0]->start() <=> $b[0]->start();
+                }
+
+                return $a[1]->length() <=> $b[1]->length();
+            },
+        );
+
+        return $pairs;
     }
 
     private function deleteBlocks(): void
@@ -561,6 +638,18 @@ final class Shrinker
         $choices = $this->current->choices();
 
         array_splice($choices, $start, $size);
+
+        return $choices;
+    }
+
+    /**
+     * @return list<non-negative-int>
+     */
+    private function withChoicesOfSpanInsteadOf(Span $replacement, Span $span): array
+    {
+        $choices = $this->current->choices();
+
+        array_splice($choices, $span->start(), $span->length(), array_slice($choices, $replacement->start(), $replacement->length()));
 
         return $choices;
     }
