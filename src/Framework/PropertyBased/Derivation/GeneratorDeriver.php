@@ -466,7 +466,7 @@ final class GeneratorDeriver
             'non-negative-int'                  => new IntegerGenerator(0, PHP_INT_MAX),
             'non-positive-int'                  => new IntegerGenerator(PHP_INT_MIN, 0),
             'non-zero-int'                      => new OneOfGenerator([new IntegerGenerator(1, PHP_INT_MAX), new IntegerGenerator(PHP_INT_MIN, -1)]),
-            'float', 'double'                   => new FloatGenerator(-PHP_FLOAT_MAX, PHP_FLOAT_MAX, false, false),
+            'float', 'double'                   => new FloatGenerator(-PHP_FLOAT_MAX, PHP_FLOAT_MAX, false, false, true),
             'bool', 'boolean'                   => new BooleanGenerator,
             'true'                              => new ConstantGenerator(true),
             'false'                             => new ConstantGenerator(false),
@@ -480,7 +480,7 @@ final class GeneratorDeriver
             'numeric-string' => new OneOfGenerator(
                 [
                     new MappedGenerator(new IntegerGenerator(PHP_INT_MIN, PHP_INT_MAX), static fn (int $value): string => (string) $value),
-                    new MappedGenerator(new FloatGenerator(-PHP_FLOAT_MAX, PHP_FLOAT_MAX, false, false), static fn (float $value): string => (string) $value),
+                    new MappedGenerator(new FloatGenerator(-PHP_FLOAT_MAX, PHP_FLOAT_MAX, false, false, true), static fn (float $value): string => (string) $value),
                 ],
             ),
             'lowercase-string' => new MappedGenerator(new StringGenerator(null, 0, null), strtolower(...)),
@@ -776,7 +776,7 @@ final class GeneratorDeriver
                 new IntegerGenerator(PHP_INT_MIN, PHP_INT_MAX),
                 new StringGenerator(null, 0, null),
                 new BooleanGenerator,
-                new FloatGenerator(-PHP_FLOAT_MAX, PHP_FLOAT_MAX, false, false),
+                new FloatGenerator(-PHP_FLOAT_MAX, PHP_FLOAT_MAX, false, false, true),
                 new ConstantGenerator(null),
             ],
         );
