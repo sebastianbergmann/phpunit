@@ -23,6 +23,7 @@ use function is_array;
 use function max;
 use function mb_strlen;
 use function strlen;
+use function substr;
 use Closure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -224,6 +225,12 @@ final class ShrinkerTest extends TestCase
 
                     return max($integers) >= 50;
                 },
+            ],
+
+            'UUID whose node is not zero' => [
+                '00000000-0000-4000-8000-000000000001',
+                Generators::uuids([4]),
+                static fn (string $value): bool => substr($value, 24) !== '000000000000',
             ],
 
             'value that is falsified by every example' => [
