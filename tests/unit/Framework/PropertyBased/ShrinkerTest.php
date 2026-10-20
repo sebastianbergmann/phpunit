@@ -413,6 +413,51 @@ final class ShrinkerTest extends TestCase
         $this->assertSame([1, 2, 3, 4, 5], $result->sequence()->choices());
     }
 
+    public function testSortsSpansThatArePartOfTheSameSpanAndHaveTheSameLabel(): void
+    {
+        $elements = [new Span(0, 2, 'element', null), new Span(2, 4, 'element', null)];
+
+        $result = $this->shrinkerAccepting(['5,6,1,2' => $elements, '1,2,5,6' => $elements])->shrink(new ChoiceSequence([5, 6, 1, 2], $elements));
+
+        $this->assertSame([1, 2, 5, 6], $result->sequence()->choices());
+    }
+
+    public function testDoesNotSortSpansThatHaveDifferentLabels(): void
+    {
+        $elements = [new Span(0, 2, 'element', null), new Span(2, 4, 'other element', null)];
+
+        $result = $this->shrinkerAccepting(['5,6,1,2' => $elements, '1,2,5,6' => $elements])->shrink(new ChoiceSequence([5, 6, 1, 2], $elements));
+
+        $this->assertSame([5, 6, 1, 2], $result->sequence()->choices());
+    }
+
+    public function testDoesNotSortSpansThatArePartOfDifferentSpans(): void
+    {
+        $elements = [new Span(0, 2, 'pair', null), new Span(0, 2, 'element', 0), new Span(2, 4, 'other pair', null), new Span(2, 4, 'element', 2)];
+
+        $result = $this->shrinkerAccepting(['5,6,1,2' => $elements, '1,2,5,6' => $elements])->shrink(new ChoiceSequence([5, 6, 1, 2], $elements));
+
+        $this->assertSame([5, 6, 1, 2], $result->sequence()->choices());
+    }
+
+    public function testSwapsAdjacentSpansThatAreOutOfOrderWhenSortingAllOfThemDoesNotKeepThePropertyFalsified(): void
+    {
+        $elements = [new Span(0, 2, 'element', null), new Span(2, 4, 'element', null), new Span(4, 6, 'element', null)];
+
+        $result = $this->shrinkerAccepting(['5,6,3,4,1,2' => $elements, '3,4,5,6,1,2' => $elements])->shrink(new ChoiceSequence([5, 6, 3, 4, 1, 2], $elements));
+
+        $this->assertSame([3, 4, 5, 6, 1, 2], $result->sequence()->choices());
+    }
+
+    public function testKeepsTheChoicesBetweenSpansThatAreSortedWhereTheyAre(): void
+    {
+        $elements = [new Span(0, 2, 'element', null), new Span(3, 5, 'element', null)];
+
+        $result = $this->shrinkerAccepting(['5,6,9,1,2,9' => $elements, '1,2,9,5,6,9' => $elements])->shrink(new ChoiceSequence([5, 6, 9, 1, 2, 9], $elements));
+
+        $this->assertSame([1, 2, 9, 5, 6, 9], $result->sequence()->choices());
+    }
+
     public function testKeepsTheChoiceSequenceThatTheReplayOfACandidateConsumed(): void
     {
         $shrinker = new Shrinker(
@@ -593,6 +638,26 @@ final class ShrinkerTest extends TestCase
     private function replay(ValueGenerator $generator, ChoiceSequence $sequence): mixed
     {
         return AbstractGenerator::from($generator)->generate(ChoiceSource::replay($sequence));
+    }
+
+    /**
+     * @param array<string, list<Span>> $falsifying the spans of the choice sequences that falsify the property, by their choices separated by commas
+     */
+    private function shrinkerAccepting(array $falsifying): Shrinker
+    {
+        return new Shrinker(
+            static function (ChoiceSequence $candidate) use ($falsifying): ?ChoiceSequence
+            {
+                $key = implode(',', $candidate->choices());
+
+                if (!isset($falsifying[$key])) {
+                    return null;
+                }
+
+                return new ChoiceSequence($candidate->choices(), $falsifying[$key]);
+            },
+            1000,
+        );
     }
 
     /**
