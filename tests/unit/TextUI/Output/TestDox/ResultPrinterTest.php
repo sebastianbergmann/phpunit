@@ -303,7 +303,7 @@ EOT,
 
     private function propertyFalsified(): PropertyFalsified
     {
-        return new PropertyFalsified($this->telemetryInfo(), $this->testMethod(), 1234, 2, 3, 1, false, false, [0], ['value' => '0'], null, []);
+        return new PropertyFalsified($this->telemetryInfo(), $this->testMethod(), 1234, 2, 3, 1, false, false, [0], ['value' => '0'], null, [], []);
     }
 
     private function testMethod(): TestMethod
