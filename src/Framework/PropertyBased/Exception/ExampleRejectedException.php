@@ -22,6 +22,8 @@ use RuntimeException;
  */
 final class ExampleRejectedException extends RuntimeException implements Exception
 {
+    private readonly RejectionReason $reason;
+
     /**
      * @param positive-int $numberOfAttempts
      */
@@ -32,6 +34,7 @@ final class ExampleRejectedException extends RuntimeException implements Excepti
                 'No value that satisfies the filter was generated in %d attempts',
                 $numberOfAttempts,
             ),
+            RejectionReason::FilterNotSatisfied,
         );
     }
 
@@ -45,6 +48,7 @@ final class ExampleRejectedException extends RuntimeException implements Excepti
                 'Generating the example required more than %d choices',
                 $maximumNumberOfChoices,
             ),
+            RejectionReason::TooManyChoices,
         );
     }
 
@@ -60,6 +64,7 @@ final class ExampleRejectedException extends RuntimeException implements Excepti
                 $maximumNesting,
                 $className,
             ),
+            RejectionReason::ObjectsNestedTooDeeply,
         );
     }
 
@@ -73,6 +78,7 @@ final class ExampleRejectedException extends RuntimeException implements Excepti
                 'No new element for the collection was generated in %d attempts',
                 $numberOfAttempts,
             ),
+            RejectionReason::TooManyDuplicateElements,
         );
     }
 
@@ -86,6 +92,7 @@ final class ExampleRejectedException extends RuntimeException implements Excepti
                 'None of %d characters that were tried is matched by the character class',
                 $numberOfCharacters,
             ),
+            RejectionReason::NoCharacterOfClass,
         );
     }
 
@@ -96,6 +103,19 @@ final class ExampleRejectedException extends RuntimeException implements Excepti
                 'The generated string is not matched by the regular expression %s',
                 $regularExpression,
             ),
+            RejectionReason::DoesNotMatchRegularExpression,
         );
+    }
+
+    private function __construct(string $message, RejectionReason $reason)
+    {
+        parent::__construct($message);
+
+        $this->reason = $reason;
+    }
+
+    public function reason(): RejectionReason
+    {
+        return $this->reason;
     }
 }
