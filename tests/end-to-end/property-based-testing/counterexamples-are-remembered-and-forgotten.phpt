@@ -16,7 +16,7 @@ file_put_contents(
             'defects'         => [],
             'times'           => [],
             'counterexamples' => [
-                'PHPUnit\TestFixture\PropertyBasedTesting\RememberedCounterexampleTest::testHolds' => [0, 5],
+                'PHPUnit\TestFixture\PropertyBasedTesting\RememberedCounterexampleTest::testHolds' => [[0, 5]],
             ],
         ],
     ),
@@ -45,4 +45,4 @@ foreach ($data['counterexamples'] as $test => $choiceSequence) {
 unlink($historyFile);
 rmdir($cacheDirectory);
 --EXPECT--
-PHPUnit\TestFixture\PropertyBasedTesting\RememberedCounterexampleTest::testSumIsAtMostTen: [0,11]
+PHPUnit\TestFixture\PropertyBasedTesting\RememberedCounterexampleTest::testSumIsAtMostTen: [[0,11]]

@@ -16,7 +16,7 @@ file_put_contents(
             'defects'         => [],
             'times'           => [],
             'counterexamples' => [
-                'PHPUnit\TestFixture\PropertyBasedTesting\RememberedCounterexampleTest::testValueIsNotMagic' => [0, 12345],
+                'PHPUnit\TestFixture\PropertyBasedTesting\RememberedCounterexampleTest::testValueIsNotMagic' => [[0, 12345]],
             ],
         ],
     ),
