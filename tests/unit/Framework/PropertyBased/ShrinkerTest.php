@@ -104,6 +104,12 @@ final class ShrinkerTest extends TestCase
                 static fn (array $value): bool => $value[0] + $value[1] > 10 && $value[0] >= 0 && $value[1] >= 0,
             ],
 
+            'tuple of integers whose product is at least a threshold' => [
+                [10, 100],
+                Generators::tuples(Generators::integers(0, 100), Generators::integers(0, 100)),
+                static fn (array $value): bool => $value[0] * $value[1] >= 1000,
+            ],
+
             'list with two equal elements' => [
                 [0, 0],
                 Generators::lists(Generators::integers()),
@@ -411,6 +417,16 @@ final class ShrinkerTest extends TestCase
         );
 
         $this->assertSame([1, 2, 3, 4, 5], $result->sequence()->choices());
+    }
+
+    public function testLowersAChoiceWhileRaisingALaterChoiceToTheLargestValue(): void
+    {
+        $shrinker = $this->shrinker(
+            Generators::tuples(Generators::integers(0, 100), Generators::integers(0, 100)),
+            static fn (array $value): bool => $value[0] * $value[1] >= 1000,
+        );
+
+        $this->assertSame([10, 100], $shrinker->shrink(new ChoiceSequence([20, 50]))->sequence()->choices());
     }
 
     public function testSortsSpansThatArePartOfTheSameSpanAndHaveTheSameLabel(): void
