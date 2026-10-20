@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Framework\PropertyBased;
 
+use const FILTER_FLAG_GLOBAL_RANGE;
+use const FILTER_FLAG_IPV4;
+use const FILTER_VALIDATE_IP;
 use const INF;
 use const NAN;
 use const PHP_FLOAT_MAX;
@@ -22,10 +25,13 @@ use function array_map;
 use function array_unique;
 use function array_values;
 use function count;
+use function filter_var;
 use function in_array;
+use function ip2long;
 use function is_array;
 use function is_infinite;
 use function is_nan;
+use function long2ip;
 use function max;
 use function mb_check_encoding;
 use function mb_ord;
@@ -54,6 +60,7 @@ use PHPUnit\Framework\PropertyBased\Generator\FilteredGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\FlatMappedGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\FloatGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\IntegerGenerator;
+use PHPUnit\Framework\PropertyBased\Generator\Ipv4AddressGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\ListGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\MappedGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\NullableGenerator;
@@ -83,6 +90,7 @@ use stdClass;
 #[CoversClass(FlatMappedGenerator::class)]
 #[CoversClass(FloatGenerator::class)]
 #[CoversClass(IntegerGenerator::class)]
+#[CoversClass(Ipv4AddressGenerator::class)]
 #[CoversClass(ListGenerator::class)]
 #[CoversClass(MappedGenerator::class)]
 #[CoversClass(NullableGenerator::class)]
@@ -135,6 +143,7 @@ final class GeneratorsTest extends TestCase
             'filter'             => [Generators::integers(0, 9)->filter(static fn (int $i): bool => $i % 2 === 0)],
             'flatMap'            => [Generators::integers(0, 3)->flatMap(static fn (int $n): ValueGenerator => Generators::lists(Generators::booleans(), $n, $n))],
             'uuids'              => [Generators::uuids(nilAndMax: true)],
+            'IPv4 addresses'     => [Generators::ipv4Addresses()],
         ];
     }
 
@@ -263,6 +272,23 @@ final class GeneratorsTest extends TestCase
             'excluded negative minimum without subnormals' => [-PHP_FLOAT_MIN, 1.0, true, false, false, -0.0, 1.0],
             'excluded negative maximum without subnormals' => [-1.0, 0.0, false, true, false, -1.0, -PHP_FLOAT_MIN],
             'excluded positive maximum without subnormals' => [-1.0, PHP_FLOAT_MIN, false, true, false, -1.0, 0.0],
+        ];
+    }
+
+    /**
+     * @return array<non-empty-string, array{string}>
+     */
+    public static function invalidIpv4NetworkProvider(): array
+    {
+        return [
+            'without prefix'             => ['192.168.0.0'],
+            'prefix longer than 32 bits' => ['192.168.0.0/33'],
+            'prefix with leading zero'   => ['10.0.0.0/08'],
+            'octet greater than 255'     => ['256.0.0.0/8'],
+            'octet with leading zero'    => ['010.0.0.0/8'],
+            'too few octets'             => ['10.0.0/8'],
+            'IPv6 address'               => ['::/0'],
+            'empty'                      => [''],
         ];
     }
 
@@ -610,6 +636,87 @@ final class GeneratorsTest extends TestCase
         $this->expectExceptionMessage('The version of UUIDs (9) must be from 1 to 8');
 
         Generators::uuids([4, 9]);
+    }
+
+    public function testGeneratesValidIpv4AddressesInDottedDecimalNotation(): void
+    {
+        foreach ($this->values(Generators::ipv4Addresses(), 1000) as $value) {
+            $this->assertNotFalse(filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4));
+
+            $address = ip2long($value);
+
+            $this->assertNotFalse($address);
+            $this->assertSame($value, long2ip($address));
+        }
+    }
+
+    public function testGeneratesIpv4AddressesFromTheSpecialPurposeRangesAndRightNextToThem(): void
+    {
+        $values = $this->values(Generators::ipv4Addresses(), 2000);
+
+        $special = array_filter(
+            $values,
+            static fn (string $value): bool => filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_GLOBAL_RANGE) === false,
+        );
+
+        $this->assertGreaterThan(800, count($special));
+        $this->assertContains('9.255.255.255', $values);
+        $this->assertContains('11.0.0.0', $values);
+        $this->assertContains('0.0.0.0', $values);
+        $this->assertContains('255.255.255.255', $values);
+    }
+
+    public function testGeneratesTheFirstAndTheLastAddressOfTheSpecialPurposeRanges(): void
+    {
+        $this->assertSame('10.0.0.0', $this->replay(Generators::ipv4Addresses('10.0.0.0/8'), [1, 0, 0]));
+        $this->assertSame('10.255.255.255', $this->replay(Generators::ipv4Addresses('10.0.0.0/8'), [1, 0, 0xFFFFFF]));
+    }
+
+    public function testGeneratesIpv4AddressesOfTheNetworkThatIsSpecified(): void
+    {
+        $values = $this->values(Generators::ipv4Addresses('192.168.0.0/16'), 1000);
+
+        foreach ($values as $value) {
+            $this->assertStringStartsWith('192.168.', $value);
+        }
+
+        $this->assertContains('192.168.0.0', $values);
+        $this->assertContains('192.168.255.255', $values);
+    }
+
+    public function testGeneratesIpv4AddressesOfANetworkThatOverlapsNoSpecialPurposeRange(): void
+    {
+        foreach ($this->values(Generators::ipv4Addresses('8.8.8.0/24'), 200) as $value) {
+            $this->assertStringStartsWith('8.8.8.', $value);
+        }
+    }
+
+    public function testGeneratesTheOnlyIpv4AddressOfANetworkWithAPrefixOf32Bits(): void
+    {
+        $this->assertSame(['1.2.3.4'], array_values(array_unique($this->values(Generators::ipv4Addresses('1.2.3.4/32'), 100))));
+    }
+
+    public function testTheSimplestIpv4AddressIsTheNetworkAddress(): void
+    {
+        $this->assertSame('0.0.0.0', $this->replay(Generators::ipv4Addresses(), []));
+        $this->assertSame('192.168.0.0', $this->replay(Generators::ipv4Addresses('192.168.0.0/16'), []));
+    }
+
+    #[DataProvider('invalidIpv4NetworkProvider')]
+    public function testTheNetworkOfIpv4AddressesMustBeGivenInCidrNotation(string $network): void
+    {
+        $this->expectException(InvalidGeneratorArgumentException::class);
+        $this->expectExceptionMessage('The network (' . $network . ') must be an IPv4 address and the length of its prefix, from 0 to 32, in CIDR notation, for instance 192.168.0.0/16');
+
+        Generators::ipv4Addresses($network);
+    }
+
+    public function testTheNetworkOfIpv4AddressesMustBeGivenAsItsNetworkAddress(): void
+    {
+        $this->expectException(InvalidGeneratorArgumentException::class);
+        $this->expectExceptionMessage('The address of the network (192.168.1.1/16) must be its network address, whose host bits are zero: 192.168.0.0/16');
+
+        Generators::ipv4Addresses('192.168.1.1/16');
     }
 
     public function testGeneratesBothBooleans(): void
