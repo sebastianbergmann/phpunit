@@ -92,26 +92,7 @@ final class PropertyTestSuite extends IterativeTestSuite
      * few attempts.
      */
     private const int MAXIMUM_NUMBER_OF_SHRINKING_ATTEMPTS_AFTER_TIMEOUT = 10;
-
-    /**
-     * While fewer examples than this have been checked, no further examples
-     * are generated once too many examples were rejected: the property would
-     * be checked for few examples, if any, and the examples that were
-     * rejected suffice to tell why.
-     */
-    private const int NUMBER_OF_EXAMPLES_CHECKED_UNTIL_HEALTH_IS_ASSUMED = 10;
-
-    /**
-     * How many examples can be rejected before enough examples were checked.
-     */
-    private const int MAXIMUM_NUMBER_OF_REJECTED_EXAMPLES_UNTIL_HEALTH_IS_ASSUMED = 50;
-
-    /**
-     * How many examples can be rejected because they were too large before
-     * enough examples were checked.
-     */
-    private const int MAXIMUM_NUMBER_OF_TOO_LARGE_EXAMPLES_UNTIL_HEALTH_IS_ASSUMED = 20;
-    private ?PropertyDefinition $definition                                        = null;
+    private ?PropertyDefinition $definition                              = null;
 
     /**
      * @var positive-int
@@ -655,11 +636,13 @@ final class PropertyTestSuite extends IterativeTestSuite
      */
     private function reasonWhyExamplesAreNoLongerGenerated(): ?RejectionReason
     {
-        if ($this->numberOfExamplesChecked >= self::NUMBER_OF_EXAMPLES_CHECKED_UNTIL_HEALTH_IS_ASSUMED || $this->rejections === []) {
+        $configuration = ConfigurationRegistry::get();
+
+        if ($this->numberOfExamplesChecked >= $configuration->examplesCheckedUntilHealthIsAssumed() || $this->rejections === []) {
             return null;
         }
 
-        if ($this->numberOfExamplesRejected >= self::MAXIMUM_NUMBER_OF_REJECTED_EXAMPLES_UNTIL_HEALTH_IS_ASSUMED) {
+        if ($this->numberOfExamplesRejected >= $configuration->maximumRejectedExamplesUntilHealthIsAssumed()) {
             return $this->mostFrequentRejectionReason();
         }
 
@@ -678,7 +661,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             }
         }
 
-        if ($numberOfTooLargeExamples >= self::MAXIMUM_NUMBER_OF_TOO_LARGE_EXAMPLES_UNTIL_HEALTH_IS_ASSUMED) {
+        if ($numberOfTooLargeExamples >= $configuration->maximumTooLargeExamplesUntilHealthIsAssumed()) {
             return $mostFrequentTooLarge;
         }
 
@@ -904,7 +887,7 @@ final class PropertyTestSuite extends IterativeTestSuite
                 $this->numberOfExamplesChecked,
                 $this->numberOfExamples,
                 $this->rejectedExamples(),
-                self::NUMBER_OF_EXAMPLES_CHECKED_UNTIL_HEALTH_IS_ASSUMED,
+                ConfigurationRegistry::get()->examplesCheckedUntilHealthIsAssumed(),
                 $this->unhealthyBecauseOf->advice(),
             );
         } elseif ($this->numberOfExamplesChecked < $this->numberOfExamples &&
