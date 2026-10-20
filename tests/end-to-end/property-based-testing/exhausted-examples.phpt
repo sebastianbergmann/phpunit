@@ -47,7 +47,7 @@ Test Preparation Started (PHPUnit\TestFixture\PropertyBasedTesting\ExhaustedExam
 Test Prepared (PHPUnit\TestFixture\PropertyBasedTesting\ExhaustedExamplesTest::testRejectsEveryExample)
 Test Passed (PHPUnit\TestFixture\PropertyBasedTesting\ExhaustedExamplesTest::testRejectsEveryExample)
 Test Considered Risky (PHPUnit\TestFixture\PropertyBasedTesting\ExhaustedExamplesTest::testRejectsEveryExample)
-This property was checked for only 0 of 100 examples, 2 examples were rejected
+This property was checked for only 0 of 100 examples, 2 examples were rejected by assume(); generate the values that the property needs instead of rejecting the others
 Test Property Checked (PHPUnit\TestFixture\PropertyBasedTesting\ExhaustedExamplesTest::testRejectsEveryExample, seed: %d, examples: 0, rejected: 2)
 Test Finished (PHPUnit\TestFixture\PropertyBasedTesting\ExhaustedExamplesTest::testRejectsEveryExample)
 Test Suite for Property Finished (PHPUnit\TestFixture\PropertyBasedTesting\ExhaustedExamplesTest::testRejectsEveryExample, 100 examples)

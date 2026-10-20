@@ -12,9 +12,12 @@ namespace PHPUnit\Framework;
 use const PHP_INT_MAX;
 use function array_values;
 use function assert;
+use function count;
+use function implode;
 use function intdiv;
 use function min;
 use function sprintf;
+use function usort;
 use Closure;
 use PHPUnit\Event;
 use PHPUnit\Event\EventCollection;
@@ -37,6 +40,7 @@ use PHPUnit\Framework\PropertyBased\GeneratorMethod;
 use PHPUnit\Framework\PropertyBased\InvalidPropertyException;
 use PHPUnit\Framework\PropertyBased\PropertyDefinition;
 use PHPUnit\Framework\PropertyBased\PropertyDefinitionBuilder;
+use PHPUnit\Framework\PropertyBased\RejectionReason;
 use PHPUnit\Framework\PropertyBased\Shrinker;
 use PHPUnit\Framework\PropertyBased\Type\NameScope;
 use PHPUnit\Framework\PropertyBased\ValueGenerator;
@@ -116,6 +120,14 @@ final class PropertyTestSuite extends IterativeTestSuite
      * @var non-negative-int
      */
     private int $numberOfExamplesRejected = 0;
+
+    /**
+     * How many of the generated examples were rejected for each reason, in
+     * the order in which the reasons first occurred.
+     *
+     * @var list<array{reason: RejectionReason, numberOfExamples: positive-int}>
+     */
+    private array $rejections = [];
 
     /**
      * @var non-negative-int
@@ -343,8 +355,8 @@ final class PropertyTestSuite extends IterativeTestSuite
 
             try {
                 $arguments = $this->handlingIssues(fn (): array => $this->generateArguments($generators, $source), $events);
-            } catch (ExampleRejectedException) {
-                $this->numberOfExamplesRejected++;
+            } catch (ExampleRejectedException $e) {
+                $this->countRejection($e->reason());
 
                 continue;
             } catch (Throwable $t) {
@@ -358,7 +370,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             $falsification         = Falsification::of($example);
 
             if ($this->wasRejected($example, $falsification)) {
-                $this->numberOfExamplesRejected++;
+                $this->countRejection(RejectionReason::Assumption);
 
                 $events->record($exampleEvents, false);
 
@@ -588,6 +600,63 @@ final class PropertyTestSuite extends IterativeTestSuite
         }
     }
 
+    private function countRejection(RejectionReason $reason): void
+    {
+        $this->numberOfExamplesRejected++;
+
+        foreach ($this->rejections as $index => $rejection) {
+            if ($rejection['reason'] === $reason) {
+                $this->rejections[$index]['numberOfExamples']++;
+
+                return;
+            }
+        }
+
+        $this->rejections[] = ['reason' => $reason, 'numberOfExamples' => 1];
+    }
+
+    /**
+     * Describes how many of the generated examples were rejected and why, for
+     * instance "12 examples were rejected (10 by assume(), 2 because no value
+     * that satisfies a filter was generated)", with the most frequent reason
+     * first, and advises how fewer examples can be rejected for it.
+     *
+     * @return non-empty-string
+     */
+    private function rejectedExamples(): string
+    {
+        $rejections = $this->rejections;
+
+        assert($rejections !== []);
+
+        // the sort is stable, so reasons that occurred equally often stay in
+        // the order in which they first occurred
+        usort(
+            $rejections,
+            static fn (array $a, array $b): int => $b['numberOfExamples'] <=> $a['numberOfExamples'],
+        );
+
+        if ($this->numberOfExamplesRejected === 1) {
+            $buffer = '1 example was rejected';
+        } else {
+            $buffer = sprintf('%d examples were rejected', $this->numberOfExamplesRejected);
+        }
+
+        if (count($rejections) === 1) {
+            $buffer .= ' ' . $rejections[0]['reason']->description();
+        } else {
+            $reasons = [];
+
+            foreach ($rejections as $rejection) {
+                $reasons[] = $rejection['numberOfExamples'] . ' ' . $rejection['reason']->description();
+            }
+
+            $buffer .= ' (' . implode(', ', $reasons) . ')';
+        }
+
+        return $buffer . '; ' . $rejections[0]['reason']->advice();
+    }
+
     /**
      * Whether an example was discarded because assume() was called with
      * false: an example that falsified the property or was aborted because
@@ -748,10 +817,10 @@ final class PropertyTestSuite extends IterativeTestSuite
             ($this->numberOfExamplesChecked + $this->numberOfExamplesRejected === $this->maximumNumberOfExamplesGenerated() ||
              ($this->exhausted && $this->numberOfExamplesChecked === 0))) {
             $messages[] = sprintf(
-                'This property was checked for only %d of %d examples, %d examples were rejected',
+                'This property was checked for only %d of %d examples, %s',
                 $this->numberOfExamplesChecked,
                 $this->numberOfExamples,
-                $this->numberOfExamplesRejected,
+                $this->rejectedExamples(),
             );
         }
 
