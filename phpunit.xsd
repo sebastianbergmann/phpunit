@@ -326,6 +326,9 @@
         <xs:attribute name="examples" type="xs:positiveInteger" default="100"/>
         <xs:attribute name="examplesMultiplier" type="xs:positiveInteger" default="1"/>
         <xs:attribute name="maximumShrinkingAttempts" type="xs:nonNegativeInteger" default="1000"/>
+        <xs:attribute name="examplesCheckedUntilHealthIsAssumed" type="xs:nonNegativeInteger" default="10"/>
+        <xs:attribute name="maximumRejectedExamplesUntilHealthIsAssumed" type="xs:positiveInteger" default="50"/>
+        <xs:attribute name="maximumTooLargeExamplesUntilHealthIsAssumed" type="xs:positiveInteger" default="20"/>
     </xs:complexType>
     <xs:complexType name="otrType">
         <xs:attribute name="outputFile" type="xs:anyURI" use="required"/>

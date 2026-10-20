@@ -18,9 +18,12 @@ namespace PHPUnit\TextUI\XmlConfiguration;
  */
 final readonly class PropertyBasedTesting
 {
-    public const int DEFAULT_NUMBER_OF_EXAMPLES                   = 100;
-    public const int DEFAULT_EXAMPLES_MULTIPLIER                  = 1;
-    public const int DEFAULT_MAXIMUM_NUMBER_OF_SHRINKING_ATTEMPTS = 1000;
+    public const int DEFAULT_NUMBER_OF_EXAMPLES                                 = 100;
+    public const int DEFAULT_EXAMPLES_MULTIPLIER                                = 1;
+    public const int DEFAULT_MAXIMUM_NUMBER_OF_SHRINKING_ATTEMPTS               = 1000;
+    public const int DEFAULT_EXAMPLES_CHECKED_UNTIL_HEALTH_IS_ASSUMED           = 10;
+    public const int DEFAULT_MAXIMUM_REJECTED_EXAMPLES_UNTIL_HEALTH_IS_ASSUMED  = 50;
+    public const int DEFAULT_MAXIMUM_TOO_LARGE_EXAMPLES_UNTIL_HEALTH_IS_ASSUMED = 20;
 
     /**
      * @var positive-int
@@ -38,15 +41,36 @@ final readonly class PropertyBasedTesting
     private int $maximumShrinkingAttempts;
 
     /**
+     * @var non-negative-int
+     */
+    private int $examplesCheckedUntilHealthIsAssumed;
+
+    /**
+     * @var positive-int
+     */
+    private int $maximumRejectedExamplesUntilHealthIsAssumed;
+
+    /**
+     * @var positive-int
+     */
+    private int $maximumTooLargeExamplesUntilHealthIsAssumed;
+
+    /**
      * @param positive-int     $examples
      * @param positive-int     $examplesMultiplier
      * @param non-negative-int $maximumShrinkingAttempts
+     * @param non-negative-int $examplesCheckedUntilHealthIsAssumed
+     * @param positive-int     $maximumRejectedExamplesUntilHealthIsAssumed
+     * @param positive-int     $maximumTooLargeExamplesUntilHealthIsAssumed
      */
-    public function __construct(int $examples, int $examplesMultiplier, int $maximumShrinkingAttempts)
+    public function __construct(int $examples, int $examplesMultiplier, int $maximumShrinkingAttempts, int $examplesCheckedUntilHealthIsAssumed, int $maximumRejectedExamplesUntilHealthIsAssumed, int $maximumTooLargeExamplesUntilHealthIsAssumed)
     {
-        $this->examples                 = $examples;
-        $this->examplesMultiplier       = $examplesMultiplier;
-        $this->maximumShrinkingAttempts = $maximumShrinkingAttempts;
+        $this->examples                                    = $examples;
+        $this->examplesMultiplier                          = $examplesMultiplier;
+        $this->maximumShrinkingAttempts                    = $maximumShrinkingAttempts;
+        $this->examplesCheckedUntilHealthIsAssumed         = $examplesCheckedUntilHealthIsAssumed;
+        $this->maximumRejectedExamplesUntilHealthIsAssumed = $maximumRejectedExamplesUntilHealthIsAssumed;
+        $this->maximumTooLargeExamplesUntilHealthIsAssumed = $maximumTooLargeExamplesUntilHealthIsAssumed;
     }
 
     /**
@@ -77,5 +101,39 @@ final readonly class PropertyBasedTesting
     public function maximumShrinkingAttempts(): int
     {
         return $this->maximumShrinkingAttempts;
+    }
+
+    /**
+     * While fewer examples of a property than this have been checked, no
+     * further examples are generated once too many of them were rejected.
+     * With 0, examples are generated regardless of how many were rejected.
+     *
+     * @return non-negative-int
+     */
+    public function examplesCheckedUntilHealthIsAssumed(): int
+    {
+        return $this->examplesCheckedUntilHealthIsAssumed;
+    }
+
+    /**
+     * How many examples of a property can be rejected before enough of them
+     * were checked.
+     *
+     * @return positive-int
+     */
+    public function maximumRejectedExamplesUntilHealthIsAssumed(): int
+    {
+        return $this->maximumRejectedExamplesUntilHealthIsAssumed;
+    }
+
+    /**
+     * How many examples of a property can be rejected because they were too
+     * large before enough of them were checked.
+     *
+     * @return positive-int
+     */
+    public function maximumTooLargeExamplesUntilHealthIsAssumed(): int
+    {
+        return $this->maximumTooLargeExamplesUntilHealthIsAssumed;
     }
 }

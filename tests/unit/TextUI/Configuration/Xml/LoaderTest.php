@@ -537,6 +537,9 @@ final class LoaderTest extends TestCase
         $this->assertSame(500, $propertyBasedTesting->examples());
         $this->assertSame(10, $propertyBasedTesting->examplesMultiplier());
         $this->assertSame(50, $propertyBasedTesting->maximumShrinkingAttempts());
+        $this->assertSame(5, $propertyBasedTesting->examplesCheckedUntilHealthIsAssumed());
+        $this->assertSame(25, $propertyBasedTesting->maximumRejectedExamplesUntilHealthIsAssumed());
+        $this->assertSame(15, $propertyBasedTesting->maximumTooLargeExamplesUntilHealthIsAssumed());
     }
 
     public function testPropertyBasedTestingConfigurationHasDefaults(): void
@@ -546,6 +549,9 @@ final class LoaderTest extends TestCase
         $this->assertSame(100, $propertyBasedTesting->examples());
         $this->assertSame(1, $propertyBasedTesting->examplesMultiplier());
         $this->assertSame(1000, $propertyBasedTesting->maximumShrinkingAttempts());
+        $this->assertSame(10, $propertyBasedTesting->examplesCheckedUntilHealthIsAssumed());
+        $this->assertSame(50, $propertyBasedTesting->maximumRejectedExamplesUntilHealthIsAssumed());
+        $this->assertSame(20, $propertyBasedTesting->maximumTooLargeExamplesUntilHealthIsAssumed());
     }
 
     public function testExtensionConfigurationIsReadCorrectly(): void
