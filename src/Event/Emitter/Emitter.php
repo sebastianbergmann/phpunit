@@ -183,8 +183,10 @@ interface Emitter
      * @param null|int|non-empty-string                                                                                                                                                                              $explicitExample
      * @param list<array{label: ?non-empty-string, value: string}>                                                                                                                                                   $drawnValues
      * @param list<array{description: non-empty-string, choiceSequence: list<non-negative-int>, counterexample: array<non-empty-string, string>, drawnValues: list<array{label: ?non-empty-string, value: string}>}> $otherFalsifications
+     * @param non-negative-int                                                                                                                                                                                       $numberOfReplays
+     * @param non-negative-int                                                                                                                                                                                       $numberOfReproductions
      */
-    public function testPropertyFalsified(Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, array $choiceSequence, array $counterexample, null|int|string $explicitExample, array $drawnValues, array $otherFalsifications): void;
+    public function testPropertyFalsified(Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, array $choiceSequence, array $counterexample, null|int|string $explicitExample, array $drawnValues, array $otherFalsifications, int $numberOfReplays, int $numberOfReproductions): void;
 
     /**
      * @param non-empty-string $message

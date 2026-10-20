@@ -30,6 +30,8 @@ Property falsified after 3 examples with this counterexample:
 
     $value = -7;
 
+The example that falsified the property did not falsify it again in 4 replays.
+
 Caused by
 the third example fails
 Failed asserting that 3 is not identical to 3.

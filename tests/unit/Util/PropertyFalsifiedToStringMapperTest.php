@@ -138,6 +138,49 @@ EOT,
         );
     }
 
+    public function testStatesHowOftenTheExampleThatFalsifiedThePropertyFalsifiedItAgainWhenThatWasNotEveryTime(): void
+    {
+        $this->assertStringEqualsStringIgnoringLineEndings(
+            <<<'EOT'
+Property falsified after 2 examples, counterexample shrunk in 5 steps:
+
+    $value = 100;
+
+The example that falsified the property falsified it again in only 2 of 4 replays, so its outcome does not depend on its arguments alone.
+
+EOT,
+            PropertyFalsifiedToStringMapper::map($this->event(2, 9, 5, false, false, ['value' => '100'], null, [], [], 4, 2)),
+        );
+    }
+
+    public function testStatesThatTheExampleThatFalsifiedThePropertyDidNotFalsifyItAgain(): void
+    {
+        $this->assertStringEqualsStringIgnoringLineEndings(
+            <<<'EOT'
+Property falsified after 3 examples with this counterexample:
+
+    $value = -7;
+
+The example that falsified the property did not falsify it again in 1 replay.
+
+EOT,
+            PropertyFalsifiedToStringMapper::map($this->event(3, 0, 0, false, false, ['value' => '-7'], null, [], [], 1, 0)),
+        );
+    }
+
+    public function testDoesNotMentionTheReplaysOfTheExampleThatFalsifiedThePropertyWhenItFalsifiedItAgainEveryTime(): void
+    {
+        $this->assertStringEqualsStringIgnoringLineEndings(
+            <<<'EOT'
+Property falsified after 3 examples, counterexample shrunk in 2 steps:
+
+    $value = 7;
+
+EOT,
+            PropertyFalsifiedToStringMapper::map($this->event(3, 4, 2, false, false, ['value' => '7'], null, [], [], 4, 4)),
+        );
+    }
+
     public function testStatesThatShrinkingWasStoppedWhenTheBudgetWasExhausted(): void
     {
         $this->assertStringEqualsStringIgnoringLineEndings(
@@ -221,8 +264,10 @@ EOT,
      * @param null|int|non-empty-string                                                                                                                                                                              $explicitExample
      * @param list<array{label: ?non-empty-string, value: string}>                                                                                                                                                   $drawnValues
      * @param list<array{description: non-empty-string, choiceSequence: list<non-negative-int>, counterexample: array<non-empty-string, string>, drawnValues: list<array{label: ?non-empty-string, value: string}>}> $otherFalsifications
+     * @param non-negative-int                                                                                                                                                                                       $numberOfReplays
+     * @param non-negative-int                                                                                                                                                                                       $numberOfReproductions
      */
-    private function event(int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, array $counterexample, null|int|string $explicitExample = null, array $drawnValues = [], array $otherFalsifications = []): PropertyFalsified
+    private function event(int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, array $counterexample, null|int|string $explicitExample = null, array $drawnValues = [], array $otherFalsifications = [], int $numberOfReplays = 0, int $numberOfReproductions = 0): PropertyFalsified
     {
         return new PropertyFalsified(
             $this->telemetryInfo(),
@@ -238,6 +283,8 @@ EOT,
             $explicitExample,
             $drawnValues,
             $otherFalsifications,
+            $numberOfReplays,
+            $numberOfReproductions,
         );
     }
 }

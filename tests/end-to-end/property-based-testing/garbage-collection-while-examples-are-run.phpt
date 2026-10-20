@@ -1,5 +1,5 @@
 --TEST--
-The garbage collections that are triggered while the examples of a property are run, or while its counterexample is shrunk, are reported when the garbage collector is controlled
+The garbage collections that are triggered while the examples of a property are run, while the example that falsified it is replayed, or while its counterexample is shrunk, are reported when the garbage collector is controlled
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-record-test-run-history';
@@ -36,6 +36,8 @@ Test Suite for Property Finished (PHPUnit\TestFixture\PropertyBasedTesting\Garba
 Test Suite for Property Started (PHPUnit\TestFixture\PropertyBasedTesting\GarbageCollectionWhileExamplesAreRun\GarbageCollectionWhileExamplesAreRunTest::testPropertyThatIsFalsified, 4 examples)
 Test Preparation Started (PHPUnit\TestFixture\PropertyBasedTesting\GarbageCollectionWhileExamplesAreRun\GarbageCollectionWhileExamplesAreRunTest::testPropertyThatIsFalsified)
 Test Prepared (PHPUnit\TestFixture\PropertyBasedTesting\GarbageCollectionWhileExamplesAreRun\GarbageCollectionWhileExamplesAreRunTest::testPropertyThatIsFalsified)
+Test Runner Triggered Garbage Collection
+Test Runner Triggered Garbage Collection
 Test Runner Triggered Garbage Collection
 Test Property Falsified (PHPUnit\TestFixture\PropertyBasedTesting\GarbageCollectionWhileExamplesAreRun\GarbageCollectionWhileExamplesAreRunTest::testPropertyThatIsFalsified, seed: %d, examples: 1, shrinking steps: 0, shrinking attempts: 2)
 $value = true;
