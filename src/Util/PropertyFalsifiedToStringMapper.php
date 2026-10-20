@@ -24,7 +24,19 @@ use PHPUnit\Event\Test\PropertyFalsified;
  *         $money = new Money(amount: 1, currency: Currency::EUR);
  *         $parts = 2;
  *
- * or with the arguments of the explicit example that falsified it:
+ * The values that the minimal counterexample drew with draw() follow its
+ * arguments, numbered in the order in which they were drawn and described by
+ * their labels:
+ *
+ *     Property falsified after 8 examples, counterexample shrunk in 2 steps:
+ *
+ *         $size = 1;
+ *
+ *         Draw 1 (list): [5]
+ *         Draw 2 (index): 0
+ *
+ * A property can also be falsified by one of its explicit examples, which is
+ * reported with its arguments:
  *
  *     Property falsified by explicit example "minus one":
  *
@@ -48,7 +60,7 @@ final readonly class PropertyFalsifiedToStringMapper
 
         $examples = self::count($event->numberOfExamplesChecked(), 'example');
 
-        if ($event->counterexample() === []) {
+        if ($event->counterexample() === [] && $event->drawnValues() === []) {
             return sprintf('Property falsified after %s.', $examples) . "\n";
         }
 
@@ -104,13 +116,29 @@ final readonly class PropertyFalsifiedToStringMapper
         $buffer = '';
 
         foreach ($event->counterexample() as $parameter => $value) {
-            $buffer .= self::INDENTATION . implode(
-                "\n" . self::INDENTATION,
-                explode("\n", sprintf('$%s = %s;', $parameter, $value)),
-            ) . "\n";
+            $buffer .= self::indented(sprintf('$%s = %s;', $parameter, $value));
+        }
+
+        if ($buffer !== '' && $event->drawnValues() !== []) {
+            $buffer .= "\n";
+        }
+
+        foreach ($event->drawnValues() as $index => $drawnValue) {
+            if ($drawnValue['label'] === null) {
+                $description = sprintf('Draw %d', $index + 1);
+            } else {
+                $description = sprintf('Draw %d (%s)', $index + 1, $drawnValue['label']);
+            }
+
+            $buffer .= self::indented($description . ': ' . $drawnValue['value']);
         }
 
         return $buffer;
+    }
+
+    private static function indented(string $lines): string
+    {
+        return self::INDENTATION . implode("\n" . self::INDENTATION, explode("\n", $lines)) . "\n";
     }
 
     private static function count(int $number, string $noun): string

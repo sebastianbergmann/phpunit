@@ -80,6 +80,41 @@ EOT,
         );
     }
 
+    public function testDescribesTheValuesThatTheMinimalCounterexampleDrewAfterItsArguments(): void
+    {
+        $this->assertStringEqualsStringIgnoringLineEndings(
+            <<<'EOT'
+Property falsified after 8 examples, counterexample shrunk in 2 steps:
+
+    $size = 1;
+
+    Draw 1 (list): [5]
+    Draw 2: 0
+
+EOT,
+            PropertyFalsifiedToStringMapper::map(
+                $this->event(8, 30, 2, false, false, ['size' => '1'], null, [['label' => 'list', 'value' => '[5]'], ['label' => null, 'value' => '0']]),
+            ),
+        );
+    }
+
+    public function testDescribesTheValuesThatTheMinimalCounterexampleOfAPropertyWithoutParametersDrew(): void
+    {
+        $this->assertStringEqualsStringIgnoringLineEndings(
+            <<<'EOT'
+Property falsified after 6 examples, counterexample shrunk in 1 step:
+
+    Draw 1: [
+        0 => 1,
+    ]
+
+EOT,
+            PropertyFalsifiedToStringMapper::map(
+                $this->event(6, 10, 1, false, false, [], null, [['label' => null, 'value' => "[\n    0 => 1,\n]"]]),
+            ),
+        );
+    }
+
     public function testStatesThatShrinkingWasStoppedWhenTheBudgetWasExhausted(): void
     {
         $this->assertStringEqualsStringIgnoringLineEndings(
@@ -156,13 +191,14 @@ EOT,
     }
 
     /**
-     * @param non-negative-int                $numberOfExamplesChecked
-     * @param non-negative-int                $numberOfShrinkingAttempts
-     * @param non-negative-int                $numberOfShrinkingSteps
-     * @param array<non-empty-string, string> $counterexample
-     * @param null|int|non-empty-string       $explicitExample
+     * @param non-negative-int                                     $numberOfExamplesChecked
+     * @param non-negative-int                                     $numberOfShrinkingAttempts
+     * @param non-negative-int                                     $numberOfShrinkingSteps
+     * @param array<non-empty-string, string>                      $counterexample
+     * @param null|int|non-empty-string                            $explicitExample
+     * @param list<array{label: ?non-empty-string, value: string}> $drawnValues
      */
-    private function event(int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, array $counterexample, null|int|string $explicitExample = null): PropertyFalsified
+    private function event(int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, array $counterexample, null|int|string $explicitExample = null, array $drawnValues = []): PropertyFalsified
     {
         return new PropertyFalsified(
             $this->telemetryInfo(),
@@ -176,6 +212,7 @@ EOT,
             [],
             $counterexample,
             $explicitExample,
+            $drawnValues,
         );
     }
 }
