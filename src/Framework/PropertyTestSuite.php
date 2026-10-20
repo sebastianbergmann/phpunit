@@ -30,6 +30,7 @@ use PHPUnit\Framework\PropertyBased\Constructions;
 use PHPUnit\Framework\PropertyBased\CounterexampleExporter;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorDeriver;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorRegistry;
+use PHPUnit\Framework\PropertyBased\DrawnValues;
 use PHPUnit\Framework\PropertyBased\EventAggregator;
 use PHPUnit\Framework\PropertyBased\ExampleRejectedException;
 use PHPUnit\Framework\PropertyBased\ExplicitExample;
@@ -369,6 +370,10 @@ final class PropertyTestSuite extends IterativeTestSuite
             try {
                 $arguments = $this->handlingIssues(fn (): array => $this->generateArguments($generators, $source), $events);
             } catch (ExampleRejectedException $e) {
+                // the same choices are rejected again, so they are not drawn
+                // again
+                $source->exampleGenerated();
+
                 $this->countRejection($e->reason());
 
                 continue;
@@ -378,12 +383,17 @@ final class PropertyTestSuite extends IterativeTestSuite
                 return;
             }
 
-            $example               = $this->example($arguments);
+            $example               = $this->example($arguments, false, DrawnValues::from($source));
             [$exampleEvents, $run] = $this->runExample($example, $emitter, true);
             $falsification         = Falsification::of($example);
 
+            // the same choices generate the same arguments and draw the same
+            // values, or are rejected again, so they are not drawn again; the
+            // example draws choices with draw() until it ends
+            $source->exampleGenerated();
+
             if ($this->wasRejected($example, $falsification)) {
-                $this->countRejection(RejectionReason::Assumption);
+                $this->countRejection($example->rejectionReasonOfPropertyExample());
 
                 $events->record($exampleEvents, false);
 
@@ -456,7 +466,7 @@ final class PropertyTestSuite extends IterativeTestSuite
                     return null;
                 }
 
-                $example = $this->example($arguments);
+                $example = $this->example($arguments, false, DrawnValues::from($source));
 
                 [$attemptEvents] = $this->runExample($example, $emitter, false);
 
@@ -486,7 +496,7 @@ final class PropertyTestSuite extends IterativeTestSuite
         }
 
         $counterexample = $this->export($arguments, $source->constructions());
-        $replay         = $this->example($arguments, true);
+        $replay         = $this->example($arguments, true, DrawnValues::from($source));
         [$replayEvents] = $this->runExample($replay, $emitter, false);
 
         // the issues of the final replay are reported like those of the
@@ -1188,14 +1198,8 @@ final class PropertyTestSuite extends IterativeTestSuite
     {
         $arguments = [];
 
-        try {
-            foreach ($generators as $parameterName => $generator) {
-                $arguments[$parameterName] = $generator->generate($source);
-            }
-        } finally {
-            // the same choices generate the same arguments, or are rejected
-            // again, so they are not drawn again
-            $source->exampleGenerated();
+        foreach ($generators as $parameterName => $generator) {
+            $arguments[$parameterName] = $generator->generate($source);
         }
 
         return $arguments;
@@ -1228,14 +1232,15 @@ final class PropertyTestSuite extends IterativeTestSuite
     /**
      * @param array<non-empty-string, mixed> $arguments
      * @param bool                           $failureIsReported whether the failure or error of the example is the one that is reported for the property, which it is for the final replay of the minimal counterexample and for an explicit example
+     * @param ?DrawnValues                   $drawnValues       from which the example draws values with draw(), null for an explicit example
      */
-    private function example(array $arguments, bool $failureIsReported = false): TestCase
+    private function example(array $arguments, bool $failureIsReported = false, ?DrawnValues $drawnValues = null): TestCase
     {
         assert($this->exampleFactory !== null);
 
         $example = ($this->exampleFactory)();
 
-        $example->setPropertyExample(array_values($arguments), $failureIsReported);
+        $example->setPropertyExample(array_values($arguments), $failureIsReported, $drawnValues);
 
         return $example;
     }
