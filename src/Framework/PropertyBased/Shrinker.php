@@ -39,9 +39,10 @@ use Closure;
  * setting blocks of choices to 0, minimizing individual choices by trying
  * small values and then searching for the smallest value with a binary
  * search, redistributing pairs of nearby choices by moving as much as
- * possible from the first choice to the second, lowering equal choices
- * together, and sorting the spans that are part of the same span and have
- * the same label. The passes are repeated until none of them succeeds, the
+ * possible from the first choice to the second, lowering a choice while
+ * raising a later one to its largest value, lowering equal choices together,
+ * and sorting the spans that are part of the same span and have the same
+ * label. The passes are repeated until none of them succeeds, the
  * maximum number of attempts has been made, or shrinking is interrupted
  * because the test run is to be stopped.
  *
@@ -54,6 +55,7 @@ final class Shrinker
     private const array BLOCK_SIZES                   = [8, 4, 2, 1];
     private const int LARGEST_SMALL_VALUE             = 3;
     private const int LARGEST_REDISTRIBUTION_DISTANCE = 4;
+    private const int LARGEST_RAISING_DISTANCE        = 3;
 
     /**
      * @var Closure(ChoiceSequence): ?ChoiceSequence
@@ -131,6 +133,7 @@ final class Shrinker
             $this->zeroBlocks();
             $this->minimizeChoices();
             $this->redistributeChoices();
+            $this->lowerChoicesRaisingLaterOnes();
             $this->lowerEqualChoices();
             $this->sortSiblingSpans();
         } while ($this->numberOfSteps > $numberOfStepsBefore && !$this->isStopped());
@@ -381,6 +384,30 @@ final class Shrinker
             }
 
             $lower = $middle;
+        }
+    }
+
+    /**
+     * A counterexample for a property such as $a * $b < 1000, with $a and $b
+     * between 0 and 100, cannot be shrunk from [20, 50] to [10, 100] by
+     * minimizing one choice at a time or by moving an amount from $a to $b,
+     * which keeps their sum. Lowering a choice by one can keep the property
+     * falsified when a later choice is raised to the largest value it can
+     * have, which the choice source clamps a larger choice to, and from which
+     * the other passes lower it again.
+     */
+    private function lowerChoicesRaisingLaterOnes(): void
+    {
+        for ($index = 0; $index < $this->length() && !$this->isStopped(); $index++) {
+            for ($later = $index + 1; $later <= $index + self::LARGEST_RAISING_DISTANCE && $later < $this->length(); $later++) {
+                if ($this->choiceAt($index) === 0) {
+                    break;
+                }
+
+                if ($this->consider($this->withLoweredAndRaisedChoice($index, $later))) {
+                    break;
+                }
+            }
         }
     }
 
@@ -763,6 +790,26 @@ final class Shrinker
         }
 
         return [...$reordered, ...array_slice($choices, $end)];
+    }
+
+    /**
+     * @param non-negative-int $index
+     * @param non-negative-int $later
+     *
+     * @return list<non-negative-int>
+     */
+    private function withLoweredAndRaisedChoice(int $index, int $later): array
+    {
+        $lowered = $this->choiceAt($index) - 1;
+
+        assert($lowered >= 0);
+
+        $choices = $this->current->choices();
+
+        array_splice($choices, $index, 1, [$lowered]);
+        array_splice($choices, $later, 1, [PHP_INT_MAX]);
+
+        return $choices;
     }
 
     /**
