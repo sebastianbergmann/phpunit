@@ -22,7 +22,7 @@ use PHPUnit\Framework\TestCase;
 final class RejectionReasonTest extends TestCase
 {
     /**
-     * @return array<string, array{RejectionReason, non-empty-string, non-empty-string}>
+     * @return array<string, array{RejectionReason, non-empty-string, non-empty-string, bool}>
      */
     public static function reasonProvider(): array
     {
@@ -31,49 +31,62 @@ final class RejectionReasonTest extends TestCase
                 RejectionReason::Assumption,
                 'by assume()',
                 'generate the values that the property needs instead of rejecting the others',
+                false,
             ],
             'filter not satisfied' => [
                 RejectionReason::FilterNotSatisfied,
                 'because no value that satisfies a filter was generated',
                 'generate the values that the property needs instead of rejecting the others',
+                false,
             ],
             'too many choices' => [
                 RejectionReason::TooManyChoices,
                 'because generating them required too many choices',
                 'generate smaller values',
+                true,
             ],
             'objects nested too deeply' => [
                 RejectionReason::ObjectsNestedTooDeeply,
                 'because generating them required too many nested objects',
                 'generate smaller values',
+                true,
             ],
             'too many duplicate elements' => [
                 RejectionReason::TooManyDuplicateElements,
                 'because no new element for a collection was generated',
                 'generate the elements of collections from more values',
+                false,
             ],
             'no character of class' => [
                 RejectionReason::NoCharacterOfClass,
                 'because no character that a character class matches was generated',
                 'generate the values that the property needs instead of rejecting the others',
+                false,
             ],
             'does not match regular expression' => [
                 RejectionReason::DoesNotMatchRegularExpression,
                 'because a generated string is not matched by its regular expression',
                 'generate the values that the property needs instead of rejecting the others',
+                false,
             ],
         ];
     }
 
     #[DataProvider('reasonProvider')]
-    public function testDescribesWhyExamplesWereRejected(RejectionReason $reason, string $description, string $advice): void
+    public function testDescribesWhyExamplesWereRejected(RejectionReason $reason, string $description, string $advice, bool $tooLarge): void
     {
         $this->assertSame($description, $reason->description());
     }
 
     #[DataProvider('reasonProvider')]
-    public function testAdvisesHowFewerExamplesCanBeRejected(RejectionReason $reason, string $description, string $advice): void
+    public function testAdvisesHowFewerExamplesCanBeRejected(RejectionReason $reason, string $description, string $advice, bool $tooLarge): void
     {
         $this->assertSame($advice, $reason->advice());
+    }
+
+    #[DataProvider('reasonProvider')]
+    public function testKnowsWhetherExamplesThatAreRejectedForItWereTooLarge(RejectionReason $reason, string $description, string $advice, bool $tooLarge): void
+    {
+        $this->assertSame($tooLarge, $reason->meansTooLarge());
     }
 }

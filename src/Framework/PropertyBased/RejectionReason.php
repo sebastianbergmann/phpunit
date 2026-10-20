@@ -38,6 +38,18 @@ enum RejectionReason
     }
 
     /**
+     * Whether examples that are rejected for this reason were too large.
+     */
+    public function meansTooLarge(): bool
+    {
+        return match ($this) {
+            self::TooManyChoices,
+            self::ObjectsNestedTooDeeply => true,
+            default                      => false,
+        };
+    }
+
+    /**
      * How fewer examples can be rejected for this reason.
      *
      * @return non-empty-string
