@@ -41,8 +41,12 @@ use PHPUnit\Framework\MockObject\Rule\InvokedCount as InvokedCountMatcher;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\MockObject\Stub\Exception as ExceptionStub;
 use PHPUnit\Framework\MockObject\TestStubBuilder;
+use PHPUnit\Framework\PropertyBased\DrawnValues;
 use PHPUnit\Framework\PropertyBased\ExampleRejectedByAssumptionException;
+use PHPUnit\Framework\PropertyBased\ExampleRejectedException;
 use PHPUnit\Framework\PropertyBased\Falsification;
+use PHPUnit\Framework\PropertyBased\RejectionReason;
+use PHPUnit\Framework\PropertyBased\ValueGenerator;
 use PHPUnit\Framework\TestCase\CustomRegistrations;
 use PHPUnit\Framework\TestCase\DataSet;
 use PHPUnit\Framework\TestCase\DependencyResolver;
@@ -118,7 +122,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     private ?array $propertyArguments  = null;
     private bool $failureIsReported    = false;
+    private ?DrawnValues $drawnValues  = null;
     private bool $rejectedByAssumption = false;
+
+    /**
+     * Why the example of a property was rejected, if it was: by assume(), or
+     * because draw() could not generate a value.
+     */
+    private RejectionReason $rejectionReason = RejectionReason::Assumption;
 
     /**
      * @var list<non-empty-string>
@@ -847,14 +858,29 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * reported for the property, which it is for the final replay of the
      * minimal counterexample and for an explicit example.
      *
+     * The values that the test method draws with draw() are drawn from
+     * $drawnValues, which is null for an explicit example, for which values
+     * cannot be drawn.
+     *
      * @param list<mixed> $arguments
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    final public function setPropertyExample(array $arguments, bool $failureIsReported = false): void
+    final public function setPropertyExample(array $arguments, bool $failureIsReported = false, ?DrawnValues $drawnValues = null): void
     {
         $this->propertyArguments = $arguments;
         $this->failureIsReported = $failureIsReported;
+        $this->drawnValues       = $drawnValues;
+    }
+
+    /**
+     * Why the example of a property was rejected, when it was.
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    final public function rejectionReasonOfPropertyExample(): RejectionReason
+    {
+        return $this->rejectionReason;
     }
 
     /**
@@ -1057,6 +1083,49 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         throw new ExampleRejectedByAssumptionException;
+    }
+
+    /**
+     * Draws a value from a generator in the body of a property, for instance
+     * a value that depends on the arguments of the property or on values that
+     * were drawn before. The values that are drawn are replayed and shrunk
+     * together with the arguments of the property, and the values that the
+     * minimal counterexample draws are reported, described by their labels.
+     *
+     * The current example is discarded, as by assume(), when no value can be
+     * generated, because no value satisfies a filter, for instance.
+     *
+     * @template T
+     *
+     * @param ValueGenerator<T> $generator
+     * @param ?non-empty-string $label     describes the value in the report of the minimal counterexample
+     *
+     * @throws ExampleRejectedByAssumptionException
+     * @throws Exception                            when it is not called in a property, it is called for an explicit example, or the label is empty
+     *
+     * @return T
+     */
+    final protected function draw(ValueGenerator $generator, ?string $label = null): mixed
+    {
+        if (!$this->isPropertyExample()) {
+            throw new Exception('draw() can only be used in a property');
+        }
+
+        if ($this->drawnValues === null) {
+            throw new Exception('draw() cannot be used while an explicit example is checked');
+        }
+
+        if ($label === '') {
+            throw new Exception('The label passed to draw() must not be empty');
+        }
+
+        try {
+            return $this->drawnValues->draw($generator, $label);
+        } catch (ExampleRejectedException $e) {
+            $this->rejectionReason = $e->reason();
+
+            throw new ExampleRejectedByAssumptionException;
+        }
     }
 
     /**
