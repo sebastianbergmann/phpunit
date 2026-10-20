@@ -121,7 +121,7 @@ final class CollectorTest extends TestCase
     {
         $collector = $this->collector();
         $property  = $this->testMethod('testProperty');
-        $event     = new PropertyFalsified($this->telemetryInfo(), $property, 1234, 2, 3, 1, false, false, [0], ['value' => '0'], null);
+        $event     = new PropertyFalsified($this->telemetryInfo(), $property, 1234, 2, 3, 1, false, false, [0], ['value' => '0'], null, []);
 
         $collector->testPropertyFalsified($event);
 

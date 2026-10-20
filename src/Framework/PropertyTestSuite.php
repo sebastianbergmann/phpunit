@@ -496,7 +496,8 @@ final class PropertyTestSuite extends IterativeTestSuite
         }
 
         $counterexample = $this->export($arguments, $source->constructions());
-        $replay         = $this->example($arguments, true, DrawnValues::from($source));
+        $drawnValues    = DrawnValues::reportedFrom($source, $this->exporter($source->constructions()));
+        $replay         = $this->example($arguments, true, $drawnValues);
         [$replayEvents] = $this->runExample($replay, $emitter, false);
 
         // the issues of the final replay are reported like those of the
@@ -534,8 +535,9 @@ final class PropertyTestSuite extends IterativeTestSuite
             }
         }
 
-        $test = $this->test;
-        $seed = $this->seed;
+        $test                = $this->test;
+        $seed                = $this->seed;
+        $exportedDrawnValues = $drawnValues->exported();
 
         assert($test !== null);
 
@@ -545,7 +547,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             $replayEvents,
             $error,
             false,
-            static function () use ($emitter, $test, $seed, $numberOfExamplesChecked, $result, $counterexample): void
+            static function () use ($emitter, $test, $seed, $numberOfExamplesChecked, $result, $counterexample, $exportedDrawnValues): void
             {
                 assert($numberOfExamplesChecked > 0);
 
@@ -560,6 +562,7 @@ final class PropertyTestSuite extends IterativeTestSuite
                     $result->sequence()->choices(),
                     $counterexample,
                     null,
+                    $exportedDrawnValues,
                 );
             },
         );
@@ -600,7 +603,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             false,
             static function () use ($emitter, $test, $seed, $exportedArguments, $name): void
             {
-                $emitter->testPropertyFalsified($test, $seed, 0, 0, 0, false, false, [], $exportedArguments, $name);
+                $emitter->testPropertyFalsified($test, $seed, 0, 0, 0, false, false, [], $exportedArguments, $name, []);
             },
         );
     }
@@ -1213,13 +1216,7 @@ final class PropertyTestSuite extends IterativeTestSuite
      */
     private function export(array $arguments, Constructions $constructions): array
     {
-        assert($this->definition !== null);
-
-        $exporter = new CounterexampleExporter(
-            NameScope::forMethod(new ReflectionMethod($this->definition->className(), $this->definition->methodName())),
-            $constructions,
-        );
-
+        $exporter = $this->exporter($constructions);
         $exported = [];
 
         foreach ($arguments as $parameterName => $argument) {
@@ -1227,6 +1224,19 @@ final class PropertyTestSuite extends IterativeTestSuite
         }
 
         return $exported;
+    }
+
+    /**
+     * @param Constructions $constructions the objects that generators created with new while the values to be exported were generated
+     */
+    private function exporter(Constructions $constructions): CounterexampleExporter
+    {
+        assert($this->definition !== null);
+
+        return new CounterexampleExporter(
+            NameScope::forMethod(new ReflectionMethod($this->definition->className(), $this->definition->methodName())),
+            $constructions,
+        );
     }
 
     /**

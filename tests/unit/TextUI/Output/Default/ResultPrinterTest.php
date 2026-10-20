@@ -1088,6 +1088,7 @@ final class ResultPrinterTest extends TestCase
             [0],
             ['value' => '0'],
             null,
+            [],
         );
     }
 
