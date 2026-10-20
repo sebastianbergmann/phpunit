@@ -1102,6 +1102,8 @@ final class ResultPrinterTest extends TestCase
             null,
             [],
             [],
+            0,
+            0,
         );
     }
 

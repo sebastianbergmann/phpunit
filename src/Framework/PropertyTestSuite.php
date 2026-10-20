@@ -94,7 +94,14 @@ final class PropertyTestSuite extends IterativeTestSuite
      * few attempts.
      */
     private const int MAXIMUM_NUMBER_OF_SHRINKING_ATTEMPTS_AFTER_TIMEOUT = 10;
-    private ?PropertyDefinition $definition                              = null;
+
+    /**
+     * How often the example that first falsified a property is replayed
+     * before its counterexample is shrunk, to tell whether it falsifies the
+     * property again.
+     */
+    private const int NUMBER_OF_REPLAYS_OF_FALSIFYING_EXAMPLE = 4;
+    private ?PropertyDefinition $definition                   = null;
 
     /**
      * @var positive-int
@@ -190,6 +197,12 @@ final class PropertyTestSuite extends IterativeTestSuite
      * by the property, which it does unless #[WithoutErrorHandler] is used.
      */
     private bool $usesErrorHandler = true;
+
+    /**
+     * Whether a PHPUnit warning was recorded because the generators of the
+     * property do not generate the same values from the same choices.
+     */
+    private bool $warnedAboutNondeterministicGenerators = false;
 
     /**
      * @param non-empty-string       $name
@@ -464,6 +477,14 @@ final class PropertyTestSuite extends IterativeTestSuite
     private function shrinkAndReport(EventAggregator $events, Event\Emitter $emitter, GeneratorDeriver $deriver, array $generators, ?Event\Code\Throwable $originalFailure, Falsification $falsification, ChoiceSequence $sequence): void
     {
         $numberOfExamplesChecked = $this->numberOfExamplesChecked;
+        $replays                 = $this->replayFalsifyingExample($events, $emitter, $deriver, $generators, $falsification, $sequence);
+
+        if ($replays === null) {
+            return;
+        }
+
+        $numberOfReplays         = $replays['numberOfReplays'];
+        $numberOfReproductions   = $replays['numberOfReproductions'];
         $maximumNumberOfAttempts = ConfigurationRegistry::get()->maximumShrinkingAttempts();
 
         if ($falsification->isTimeout()) {
@@ -569,7 +590,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             $replayEvents,
             $error,
             false,
-            static function () use ($emitter, $test, $seed, $numberOfExamplesChecked, $result, $counterexample, $exportedDrawnValues, $otherFalsifications): void
+            static function () use ($emitter, $test, $seed, $numberOfExamplesChecked, $result, $counterexample, $exportedDrawnValues, $otherFalsifications, $numberOfReplays, $numberOfReproductions): void
             {
                 assert($numberOfExamplesChecked > 0);
 
@@ -586,9 +607,78 @@ final class PropertyTestSuite extends IterativeTestSuite
                     null,
                     $exportedDrawnValues,
                     $otherFalsifications,
+                    $numberOfReplays,
+                    $numberOfReproductions,
                 );
             },
         );
+    }
+
+    /**
+     * Replays the example that first falsified the property before its
+     * counterexample is shrunk, and counts how often it falsifies the
+     * property in the same way again. A failure that depends on something
+     * other than the arguments, timing or shared state, for instance, is told
+     * this way before the budget for shrinking is spent on it.
+     *
+     * An example that exceeded its time limit is not replayed, because every
+     * replay would take as long as the time limit. A replay that is aborted
+     * because the deadline of the test run has passed ends the replays and is
+     * not counted, and neither is a replay whose generators did not generate
+     * the same arguments and values from the same choices.
+     *
+     * @param array<non-empty-string, AbstractGenerator<mixed>> $generators
+     *
+     * @return ?array{numberOfReplays: non-negative-int, numberOfReproductions: non-negative-int} the number of replays that were counted and how many of them falsified the property again, or null when the arguments could not be generated again, which was reported
+     */
+    private function replayFalsifyingExample(EventAggregator $events, Event\Emitter $emitter, GeneratorDeriver $deriver, array $generators, Falsification $falsification, ChoiceSequence $sequence): ?array
+    {
+        $replays = [
+            'numberOfReplays'       => 0,
+            'numberOfReproductions' => 0,
+        ];
+
+        if ($falsification->isTimeout()) {
+            return $replays;
+        }
+
+        for ($replay = 1; $replay <= self::NUMBER_OF_REPLAYS_OF_FALSIFYING_EXAMPLE && !$this->shouldStop(); $replay++) {
+            $source = ChoiceSource::replay($sequence, ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver);
+
+            try {
+                $arguments = $this->handlingIssues(fn (): array => $this->generateArguments($generators, $source), null);
+            } catch (Throwable $t) {
+                $this->report($events, $emitter, null, Event\Code\ThrowableBuilder::from($t), false, null);
+
+                return null;
+            }
+
+            $example = $this->example($arguments, false, DrawnValues::from($source));
+
+            [$replayEvents] = $this->runExample($example, $emitter, false);
+
+            $events->recordShrinkingAttempt($replayEvents);
+
+            if ($example->throwableThatEndedTheTest() instanceof TimeLimitExceededException) {
+                break;
+            }
+
+            if ($source->sequence()->choices() !== $sequence->choices()) {
+                $this->warnAboutNondeterministicGenerators($events, $emitter);
+
+                continue;
+            }
+
+            $replays['numberOfReplays']++;
+
+            $replayFalsification = Falsification::of($example);
+
+            if ($replayFalsification !== null && $replayFalsification->isSameAs($falsification)) {
+                $replays['numberOfReproductions']++;
+            }
+        }
+
+        return $replays;
     }
 
     /**
@@ -606,14 +696,19 @@ final class PropertyTestSuite extends IterativeTestSuite
     }
 
     /**
-     * Records a PHPUnit warning because the generators of the property did not
-     * generate the same arguments and values from the same choices: its
-     * examples can then be generated more than once, and its counterexamples
-     * cannot be replayed and shrunk reliably. The choice tree is no longer
-     * used once this was found, so it is found once per property.
+     * Records a PHPUnit warning, once per property, because its generators
+     * did not generate the same arguments and values from the same choices:
+     * its examples can then be generated more than once, and its
+     * counterexamples cannot be replayed and shrunk reliably.
      */
     private function warnAboutNondeterministicGenerators(EventAggregator $events, Event\Emitter $emitter): void
     {
+        if ($this->warnedAboutNondeterministicGenerators) {
+            return;
+        }
+
+        $this->warnedAboutNondeterministicGenerators = true;
+
         $this->recordPhpunitWarning(
             $events,
             $emitter,
@@ -727,7 +822,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             false,
             static function () use ($emitter, $test, $seed, $exportedArguments, $name): void
             {
-                $emitter->testPropertyFalsified($test, $seed, 0, 0, 0, false, false, [], $exportedArguments, $name, [], []);
+                $emitter->testPropertyFalsified($test, $seed, 0, 0, 0, false, false, [], $exportedArguments, $name, [], [], 0, 0);
             },
         );
     }
