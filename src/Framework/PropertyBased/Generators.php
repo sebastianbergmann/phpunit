@@ -11,6 +11,7 @@ namespace PHPUnit\Framework\PropertyBased;
 
 use const DEBUG_BACKTRACE_IGNORE_ARGS;
 use const PHP_FLOAT_MAX;
+use const PHP_FLOAT_MIN;
 use const PHP_INT_MAX;
 use const PHP_INT_MIN;
 use function array_is_list;
@@ -89,14 +90,20 @@ final class Generators
      * Generates floating-point numbers from $minimum to $maximum, including
      * 0.0, -0.0, and very small and very large magnitudes.
      *
-     * Positive infinity can only be generated when $maximum is PHP_FLOAT_MAX,
-     * and negative infinity only when $minimum is -PHP_FLOAT_MAX.
+     * Positive infinity can only be generated when $maximum is PHP_FLOAT_MAX
+     * and not excluded, and negative infinity only when $minimum is
+     * -PHP_FLOAT_MAX and not excluded.
+     *
+     * With $excludeMinimum or $excludeMaximum, the range does not include the
+     * respective bound, but the next float towards the other bound. Without
+     * $allowSubnormals, no subnormal float, whose magnitude is smaller than
+     * PHP_FLOAT_MIN, is generated: it is replaced with 0.0 or -0.0.
      *
      * @throws InvalidGeneratorArgumentException
      *
      * @return ValueGenerator<float>
      */
-    public static function floats(float $minimum = -PHP_FLOAT_MAX, float $maximum = PHP_FLOAT_MAX, bool $allowInfinity = false, bool $allowNan = false): ValueGenerator
+    public static function floats(float $minimum = -PHP_FLOAT_MAX, float $maximum = PHP_FLOAT_MAX, bool $allowInfinity = false, bool $allowNan = false, bool $excludeMinimum = false, bool $excludeMaximum = false, bool $allowSubnormals = true): ValueGenerator
     {
         if (!is_finite($minimum) || !is_finite($maximum)) {
             throw new InvalidGeneratorArgumentException(
@@ -114,7 +121,37 @@ final class Generators
             );
         }
 
-        return new FloatGenerator($minimum, $maximum, $allowInfinity, $allowNan);
+        // without subnormal floats, the next float after an excluded bound is
+        // the next one that is not subnormal
+        if ($excludeMinimum) {
+            $minimum = FloatGenerator::nextUp($minimum);
+
+            if (!$allowSubnormals && FloatGenerator::isSubnormal($minimum)) {
+                $minimum = self::nextFloatThatIsNotSubnormal($minimum, PHP_FLOAT_MIN, -0.0);
+            }
+        }
+
+        if ($excludeMaximum) {
+            $maximum = FloatGenerator::nextDown($maximum);
+
+            if (!$allowSubnormals && FloatGenerator::isSubnormal($maximum)) {
+                $maximum = self::nextFloatThatIsNotSubnormal($maximum, 0.0, -PHP_FLOAT_MIN);
+            }
+        }
+
+        if ($minimum > $maximum) {
+            throw new InvalidGeneratorArgumentException(
+                'The range contains no float when its excluded bounds are left out',
+            );
+        }
+
+        if (!$allowSubnormals && (FloatGenerator::isSubnormal($minimum) || FloatGenerator::isSubnormal($maximum))) {
+            throw new InvalidGeneratorArgumentException(
+                'The minimum and the maximum must not be subnormal when subnormal floats are not allowed',
+            );
+        }
+
+        return new FloatGenerator($minimum, $maximum, $allowInfinity, $allowNan, $allowSubnormals);
     }
 
     /**
@@ -704,6 +741,15 @@ final class Generators
         }
 
         return AbstractGenerator::from($generator);
+    }
+
+    private static function nextFloatThatIsNotSubnormal(float $subnormal, float $positive, float $negative): float
+    {
+        if ($subnormal > 0.0) {
+            return $positive;
+        }
+
+        return $negative;
     }
 
     /**
