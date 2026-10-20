@@ -16,12 +16,18 @@ use const FILTER_FLAG_IPV6;
 use const FILTER_VALIDATE_DOMAIN;
 use const FILTER_VALIDATE_EMAIL;
 use const FILTER_VALIDATE_IP;
+use const FILTER_VALIDATE_URL;
 use const INF;
 use const NAN;
 use const PHP_FLOAT_MAX;
 use const PHP_FLOAT_MIN;
 use const PHP_INT_MAX;
 use const PHP_INT_MIN;
+use const PHP_URL_HOST;
+use const PHP_URL_PATH;
+use const PHP_URL_PORT;
+use const PHP_URL_SCHEME;
+use const PHP_URL_USER;
 use const PREG_OFFSET_CAPTURE;
 use function abs;
 use function array_filter;
@@ -49,6 +55,7 @@ use function mb_check_encoding;
 use function mb_ord;
 use function mb_str_split;
 use function mb_strlen;
+use function parse_url;
 use function preg_grep;
 use function preg_match;
 use function preg_match_all;
@@ -56,6 +63,7 @@ use function preg_replace;
 use function serialize;
 use function sort;
 use function str_contains;
+use function str_replace;
 use function str_split;
 use function str_starts_with;
 use function strlen;
@@ -93,6 +101,7 @@ use PHPUnit\Framework\PropertyBased\Generator\RecordGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\Repetition;
 use PHPUnit\Framework\PropertyBased\Generator\StringGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\TupleGenerator;
+use PHPUnit\Framework\PropertyBased\Generator\UrlGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\UuidGenerator;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\PropertyBased\Currency;
@@ -126,6 +135,7 @@ use stdClass;
 #[CoversClass(Repetition::class)]
 #[CoversClass(StringGenerator::class)]
 #[CoversClass(TupleGenerator::class)]
+#[CoversClass(UrlGenerator::class)]
 #[CoversClass(UuidGenerator::class)]
 #[CoversClass(ExampleRejectedException::class)]
 #[CoversClass(InvalidGeneratorArgumentException::class)]
@@ -179,6 +189,7 @@ final class GeneratorsTest extends TestCase
             'IPv6 addresses'     => [Generators::ipv6Addresses()],
             'domain names'       => [Generators::domainNames()],
             'email addresses'    => [Generators::emailAddresses(true, true)],
+            'urls'               => [Generators::urls(userInformation: true)],
         ];
     }
 
@@ -1018,6 +1029,101 @@ final class GeneratorsTest extends TestCase
     {
         $this->assertSame('a@a.aa', $this->replay(Generators::emailAddresses(), []));
         $this->assertSame('a@a.aa', $this->replay(Generators::emailAddresses(true, true), []));
+    }
+
+    public function testGeneratesNormalizedUrlsThatPassFilterVar(): void
+    {
+        foreach ($this->values(Generators::urls(), 1000) as $value) {
+            $this->assertNotFalse(filter_var($value, FILTER_VALIDATE_URL), $value);
+
+            $this->assertMatchesRegularExpression('/^https?:\/\/[^\/?#]+(?:\/(?:[A-Za-z0-9\-._~!$&\'()*+,;=:@]|%[0-9A-F]{2})*)*(?:\?(?:[A-Za-z0-9\-._~!$&\'()*+,;=:@\/?]|%[0-9A-F]{2})*)?(?:#(?:[A-Za-z0-9\-._~!$&\'()*+,;=:@\/?]|%[0-9A-F]{2})*)?$/', $value);
+            $this->assertDoesNotMatchRegularExpression('/^[^?#]*\/\.\.?(?:[\/?#]|$)/', $value);
+            $this->assertDoesNotMatchRegularExpression('/%(?:3[0-9]|4[1-9A-F]|5[0-9A]|6[1-9A-F]|7[0-9A]|2D|2E|5F|7E)/', $value);
+        }
+    }
+
+    public function testGeneratesUrlsWithEveryKindOfHostPortsPathsQueriesAndFragments(): void
+    {
+        $values = $this->values(Generators::urls(), 1000);
+        $hosts  = array_map(static fn (string $value): string => (string) parse_url($value, PHP_URL_HOST), $values);
+        $ports  = array_map(static fn (string $value): ?int => parse_url($value, PHP_URL_PORT), $values);
+        $paths  = array_map(static fn (string $value): string => (string) parse_url($value, PHP_URL_PATH), $values);
+
+        $this->assertNotEmpty(array_filter($hosts, static fn (string $host): bool => filter_var($host, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) !== false));
+        $this->assertNotEmpty(preg_grep('/^\[.+\]$/', $hosts));
+        $this->assertNotEmpty(preg_grep('/^[a-z0-9.-]+$/', $hosts));
+
+        $this->assertContains(1, $ports);
+        $this->assertContains(65535, $ports);
+        $this->assertContains(80, $ports);
+        $this->assertContains(null, $ports);
+
+        $this->assertContains('', $paths);
+        $this->assertNotEmpty(preg_grep('/.\/$/', $paths));
+
+        foreach (['/\?/', '/#/', '/%20/', '/%2F/', '/%C3%A4/', '/%E2%82%AC/', '/%F0%9F%98%80/'] as $pattern) {
+            $this->assertNotEmpty(preg_grep($pattern, $values), $pattern);
+        }
+    }
+
+    public function testGeneratesUrlsOfTheSchemesThatAreSpecified(): void
+    {
+        $schemes = array_values(array_unique(array_map(static fn (string $value): string => (string) parse_url($value, PHP_URL_SCHEME), $this->values(Generators::urls(['ftp', 'git+ssh']), 200))));
+
+        sort($schemes);
+
+        $this->assertSame(['ftp', 'git+ssh'], $schemes);
+    }
+
+    public function testGeneratesUrlsWithUserInformationOnlyWhenRequested(): void
+    {
+        $values = $this->values(Generators::urls(userInformation: true), 1000);
+        $users  = [];
+
+        foreach ($values as $value) {
+            if (preg_match('/^https?:\/\/([^\/?#@]+)@/', $value, $matches) !== 1) {
+                continue;
+            }
+
+            $this->assertMatchesRegularExpression('/^(?:[A-Za-z0-9\-._~!$&\'()*+,;=]|%[0-9A-F]{2})+(?::(?:[A-Za-z0-9\-._~!$&\'()*+,;=]|%[0-9A-F]{2})+)?$/', $matches[1]);
+            $this->assertNotFalse(filter_var(str_replace($matches[1] . '@', '', $value), FILTER_VALIDATE_URL));
+
+            $users[] = $matches[1];
+        }
+
+        $this->assertGreaterThan(200, count($users));
+        $this->assertNotEmpty(preg_grep('/:/', $users));
+        $this->assertNotEmpty(preg_grep('/^[^:]+$/', $users));
+
+        foreach ($this->values(Generators::urls(), 1000) as $value) {
+            $this->assertNull(parse_url($value, PHP_URL_USER));
+        }
+    }
+
+    public function testTheSimplestUrlIsOfTheFirstSchemeAndHasTheSimplestDomainNameAsItsHost(): void
+    {
+        $this->assertSame('http://a.aa', $this->replay(Generators::urls(), []));
+        $this->assertSame('https://a.aa', $this->replay(Generators::urls(['https', 'http'], true), []));
+    }
+
+    public function testAtLeastOneSchemeOfUrlsMustBeSpecified(): void
+    {
+        $this->expectException(InvalidGeneratorArgumentException::class);
+        $this->expectExceptionMessage('At least one scheme of URLs must be specified');
+
+        Generators::urls([]);
+    }
+
+    #[TestWith(['HTTP'])]
+    #[TestWith(['1http'])]
+    #[TestWith(['http:'])]
+    #[TestWith([''])]
+    public function testTheSchemesOfUrlsMustBeValidAndLowercase(string $scheme): void
+    {
+        $this->expectException(InvalidGeneratorArgumentException::class);
+        $this->expectExceptionMessage('The scheme of URLs (' . $scheme . ') must be a lowercase letter followed by lowercase letters, digits, "+", "-", and "."');
+
+        Generators::urls(['http', $scheme]);
     }
 
     public function testGeneratesBothBooleans(): void

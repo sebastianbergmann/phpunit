@@ -13,6 +13,7 @@ use const FILTER_FLAG_IPV4;
 use const FILTER_FLAG_NO_PRIV_RANGE;
 use const FILTER_VALIDATE_IP;
 use const PHP_INT_MAX;
+use const PHP_URL_HOST;
 use function array_count_values;
 use function array_filter;
 use function array_search;
@@ -26,6 +27,7 @@ use function implode;
 use function is_array;
 use function max;
 use function mb_strlen;
+use function parse_url;
 use function preg_match;
 use function str_contains;
 use function strlen;
@@ -263,6 +265,12 @@ final class ShrinkerTest extends TestCase
                 'a.a@a.aa',
                 Generators::emailAddresses(),
                 static fn (string $value): bool => str_contains(substr($value, 0, (int) strrpos($value, '@')), '.'),
+            ],
+
+            'URL whose host has three labels' => [
+                'http://a.a.aa',
+                Generators::urls(),
+                static fn (string $value): bool => substr_count((string) parse_url($value, PHP_URL_HOST), '.') === 2 && preg_match('/[a-z]$/', (string) parse_url($value, PHP_URL_HOST)) === 1,
             ],
 
             'value that is falsified by every example' => [
