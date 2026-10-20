@@ -387,7 +387,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             } catch (ExampleRejectedException $e) {
                 // the same choices are rejected again, so they are not drawn
                 // again
-                $source->exampleGenerated();
+                $this->exampleGenerated($source, $events, $emitter);
 
                 $this->countRejection($e->reason());
 
@@ -405,7 +405,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             // the same choices generate the same arguments and draw the same
             // values, or are rejected again, so they are not drawn again; the
             // example draws choices with draw() until it ends
-            $source->exampleGenerated();
+            $this->exampleGenerated($source, $events, $emitter);
 
             if ($this->wasRejected($example, $falsification)) {
                 $this->countRejection($example->rejectionReasonOfPropertyExample());
@@ -588,6 +588,36 @@ final class PropertyTestSuite extends IterativeTestSuite
                     $otherFalsifications,
                 );
             },
+        );
+    }
+
+    /**
+     * Records in the choice tree that the example was generated and records a
+     * PHPUnit warning when its generators did not draw the same choices as
+     * before from the same choices.
+     */
+    private function exampleGenerated(ChoiceSource $source, EventAggregator $events, Event\Emitter $emitter): void
+    {
+        $source->exampleGenerated();
+
+        if ($source->drewDifferentlyThanBefore()) {
+            $this->warnAboutNondeterministicGenerators($events, $emitter);
+        }
+    }
+
+    /**
+     * Records a PHPUnit warning because the generators of the property did not
+     * generate the same arguments and values from the same choices: its
+     * examples can then be generated more than once, and its counterexamples
+     * cannot be replayed and shrunk reliably. The choice tree is no longer
+     * used once this was found, so it is found once per property.
+     */
+    private function warnAboutNondeterministicGenerators(EventAggregator $events, Event\Emitter $emitter): void
+    {
+        $this->recordPhpunitWarning(
+            $events,
+            $emitter,
+            'The generators of this property did not generate the same values from the same choices, so its examples may be generated more than once and its counterexamples may not be reproducible; values must not depend on anything but the choices they are generated from',
         );
     }
 

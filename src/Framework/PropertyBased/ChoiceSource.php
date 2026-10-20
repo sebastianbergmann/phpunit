@@ -94,6 +94,12 @@ final class ChoiceSource
     private ?GeneratorDeriver $deriver;
 
     /**
+     * Whether a choice was drawn from another range than when the same
+     * choices were drawn before it, see drewDifferentlyThanBefore().
+     */
+    private bool $drewDifferentlyThanBefore = false;
+
+    /**
      * @var array<lowercase-string, positive-int>
      */
     private array $objectsBeingGenerated = [];
@@ -154,6 +160,17 @@ final class ChoiceSource
         $this->node?->exhaust();
 
         $this->node = null;
+    }
+
+    /**
+     * Whether a choice was drawn from another range than when the same choices
+     * were drawn before it, which the choice tree tells: the generators do
+     * not generate the same values from the same choices, because a value
+     * depends on something else, a random number or the time, for instance.
+     */
+    public function drewDifferentlyThanBefore(): bool
+    {
+        return $this->drewDifferentlyThanBefore;
     }
 
     /**
@@ -285,7 +302,8 @@ final class ChoiceSource
             // the generators do not draw the same choices as before
             $this->tree?->discard();
 
-            $this->node = null;
+            $this->node                      = null;
+            $this->drewDifferentlyThanBefore = true;
         }
 
         if ($this->randomizer !== null) {
