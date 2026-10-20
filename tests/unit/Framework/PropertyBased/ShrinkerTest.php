@@ -123,6 +123,19 @@ final class ShrinkerTest extends TestCase
                 static fn (array $value): bool => array_search($value[0][$value[1]], $value[0], true) !== $value[1],
             ],
 
+            'list whose size an earlier value determines, with collections between them and an index into it' => [
+                ['aa', 'cc', [0, 0], 1],
+                Generators::integers(1, 10)->flatMap(
+                    static fn (int $size): ValueGenerator => Generators::tuples(
+                        Generators::strings('ab', 2, 5),
+                        Generators::strings('cd', 2, 5),
+                        Generators::lists(Generators::integers(0, 9), $size, $size),
+                        Generators::integers(0, $size - 1),
+                    ),
+                ),
+                static fn (array $value): bool => array_search($value[2][$value[3]], $value[2], true) !== $value[3],
+            ],
+
             'list with two equal elements' => [
                 [0, 0],
                 Generators::lists(Generators::integers()),
