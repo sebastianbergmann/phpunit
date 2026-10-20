@@ -587,11 +587,17 @@ final class Generators
         }
 
         $baseGenerator = AbstractGenerator::from($base);
-        $generator     = $baseGenerator;
 
-        // the levels draw their choices the same way, so that the shrinker can
-        // replace the span of a value with the span of a value it contains
-        $label = AbstractGenerator::labelOf('recursive', $baseGenerator->label());
+        if ($maximumDepth === 0) {
+            return $baseGenerator;
+        }
+
+        // every level, the deepest one included, chooses between the base
+        // generator and the next level, so that its values are drawn the same
+        // way, and the shrinker can replace the span of a value with the span
+        // of a value it contains, which has the same label
+        $label     = AbstractGenerator::labelOf('recursive', $baseGenerator->label());
+        $generator = new OneOfGenerator([$baseGenerator], null, $label);
 
         for ($depth = 1; $depth <= $maximumDepth; $depth++) {
             $generator = new OneOfGenerator([$baseGenerator, self::generatorReturnedBy($extend($generator), 'recursive')], null, $label);
