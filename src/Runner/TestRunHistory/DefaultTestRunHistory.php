@@ -64,10 +64,10 @@ final class DefaultTestRunHistory implements TestRunHistory
     private array $times = [];
 
     /**
-     * The choice sequences of the minimal counterexamples of properties that
-     * were falsified.
+     * The choice sequences of the counterexamples of properties that were
+     * falsified, one for each way in which a property was falsified.
      *
-     * @var array<string, list<non-negative-int>>
+     * @var array<string, non-empty-list<list<non-negative-int>>>
      */
     private array $counterexamples = [];
 
@@ -129,24 +129,28 @@ final class DefaultTestRunHistory implements TestRunHistory
     }
 
     /**
-     * @param list<non-negative-int> $choiceSequence
+     * @param non-empty-list<list<non-negative-int>> $choiceSequences
      */
-    public function setCounterexample(TestRunHistoryId $id, array $choiceSequence): void
+    public function setCounterexamples(TestRunHistoryId $id, array $choiceSequences): void
     {
-        $this->counterexamples[$id->asString()]        = $choiceSequence;
+        $this->counterexamples[$id->asString()]        = $choiceSequences;
         $this->changedCounterexamples[$id->asString()] = true;
     }
 
-    public function removeCounterexample(TestRunHistoryId $id): void
+    public function removeCounterexamples(TestRunHistoryId $id): void
     {
         unset($this->counterexamples[$id->asString()]);
 
         $this->changedCounterexamples[$id->asString()] = true;
     }
 
-    public function counterexample(TestRunHistoryId $id): ?array
+    public function counterexamples(TestRunHistoryId $id): array
     {
-        return $this->counterexamples[$id->asString()] ?? null;
+        if (!isset($this->counterexamples[$id->asString()])) {
+            return [];
+        }
+
+        return $this->counterexamples[$id->asString()];
     }
 
     public function mergeWith(self $other): void
@@ -164,9 +168,9 @@ final class DefaultTestRunHistory implements TestRunHistory
         // a counterexample that the other test run history only loaded does
         // not replace a change that this one knows of, such as the removal of
         // a counterexample because the property held
-        foreach ($other->counterexamples as $id => $choiceSequence) {
+        foreach ($other->counterexamples as $id => $choiceSequences) {
             if (!isset($other->changedCounterexamples[$id]) && !isset($this->changedCounterexamples[$id])) {
-                $this->counterexamples[$id] = $choiceSequence;
+                $this->counterexamples[$id] = $choiceSequences;
             }
         }
 
@@ -272,9 +276,9 @@ final class DefaultTestRunHistory implements TestRunHistory
             // instance, must survive pruning
             $counterexamples = [];
 
-            foreach ($this->counterexamples as $id => $choiceSequence) {
+            foreach ($this->counterexamples as $id => $choiceSequences) {
                 if (isset($this->changedCounterexamples[$id]) || isset($this->changedTimes[$id]) || isset($this->changedDefects[$id])) {
-                    $counterexamples[$id] = $choiceSequence;
+                    $counterexamples[$id] = $choiceSequences;
                 }
             }
         } else {
@@ -344,7 +348,7 @@ final class DefaultTestRunHistory implements TestRunHistory
     }
 
     /**
-     * @return ?array{0: array<string, TestStatus>, 1: array<string, float>, 2: array<string, list<non-negative-int>>}
+     * @return ?array{0: array<string, TestStatus>, 1: array<string, float>, 2: array<string, non-empty-list<list<non-negative-int>>>}
      */
     private function parse(string $contents): ?array
     {
@@ -394,7 +398,7 @@ final class DefaultTestRunHistory implements TestRunHistory
      *
      * @param array<mixed> $data
      *
-     * @return array<string, list<non-negative-int>>
+     * @return array<string, non-empty-list<list<non-negative-int>>>
      */
     private function parseCounterexamples(array $data): array
     {
@@ -404,18 +408,34 @@ final class DefaultTestRunHistory implements TestRunHistory
 
         $counterexamples = [];
 
-        foreach ($data['counterexamples'] as $test => $choiceSequence) {
-            if (!is_string($test) || !is_array($choiceSequence) || !array_is_list($choiceSequence)) {
+        foreach ($data['counterexamples'] as $test => $choiceSequences) {
+            if (!is_string($test) || !is_array($choiceSequences) || !array_is_list($choiceSequences)) {
                 continue;
             }
 
-            foreach ($choiceSequence as $choice) {
-                if (!is_int($choice) || $choice < 0) {
+            $validChoiceSequences = [];
+
+            foreach ($choiceSequences as $choiceSequence) {
+                if (!is_array($choiceSequence) || !array_is_list($choiceSequence)) {
                     continue 2;
                 }
+
+                $choices = [];
+
+                foreach ($choiceSequence as $choice) {
+                    if (!is_int($choice) || $choice < 0) {
+                        continue 3;
+                    }
+
+                    $choices[] = $choice;
+                }
+
+                $validChoiceSequences[] = $choices;
             }
 
-            $counterexamples[$test] = $choiceSequence;
+            if ($validChoiceSequences !== []) {
+                $counterexamples[$test] = $validChoiceSequences;
+            }
         }
 
         return $counterexamples;

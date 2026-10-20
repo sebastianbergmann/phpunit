@@ -432,20 +432,20 @@ final class DefaultTestRunHistoryTest extends TestCase
         $this->assertSame(5.0, $target->time($id));
     }
 
-    public function testRemembersAndForgetsTheCounterexampleOfAProperty(): void
+    public function testRemembersAndForgetsTheCounterexamplesOfAProperty(): void
     {
         $cache = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-test-counterexample.cache');
         $id    = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testProperty');
 
-        $this->assertNull($cache->counterexample($id));
+        $this->assertSame([], $cache->counterexamples($id));
 
-        $cache->setCounterexample($id, [0, 11]);
+        $cache->setCounterexamples($id, [[0, 11]]);
 
-        $this->assertSame([0, 11], $cache->counterexample($id));
+        $this->assertSame([[0, 11]], $cache->counterexamples($id));
 
-        $cache->removeCounterexample($id);
+        $cache->removeCounterexamples($id);
 
-        $this->assertNull($cache->counterexample($id));
+        $this->assertSame([], $cache->counterexamples($id));
     }
 
     public function testPersistsAndLoadsCounterexamples(): void
@@ -456,13 +456,13 @@ final class DefaultTestRunHistoryTest extends TestCase
         $id = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testProperty');
 
         $cache = new DefaultTestRunHistory($file);
-        $cache->setCounterexample($id, [0, 11]);
+        $cache->setCounterexamples($id, [[0, 11]]);
         $cache->persist();
 
         $loaded = new DefaultTestRunHistory($file);
         $loaded->load();
 
-        $this->assertSame([0, 11], $loaded->counterexample($id));
+        $this->assertSame([[0, 11]], $loaded->counterexamples($id));
     }
 
     public function testDoesNotWriteCounterexamplesWhenNoneAreRemembered(): void
@@ -490,7 +490,7 @@ final class DefaultTestRunHistoryTest extends TestCase
         $cache->load();
 
         $this->assertSame(1.0, $cache->time($id));
-        $this->assertNull($cache->counterexample($id));
+        $this->assertSame([], $cache->counterexamples($id));
     }
 
     public function testLoadIgnoresCounterexamplesThatHaveUnexpectedTypes(): void
@@ -508,12 +508,15 @@ final class DefaultTestRunHistoryTest extends TestCase
                     'defects'         => [],
                     'times'           => [],
                     'counterexamples' => [
-                        $prefix . 'testValid'          => [0, 11],
-                        $prefix . 'testNotAList'       => ['a' => 1],
-                        $prefix . 'testNotAnArray'     => 1,
-                        $prefix . 'testNegativeChoice' => [0, -1],
-                        $prefix . 'testChoiceNotAnInt' => [0, '1'],
-                        '123'                          => [0],
+                        $prefix . 'testValid'                    => [[0, 11], [3]],
+                        $prefix . 'testNotAList'                 => ['a' => [1]],
+                        $prefix . 'testNotAnArray'               => 1,
+                        $prefix . 'testNoChoiceSequence'         => [],
+                        $prefix . 'testChoiceSequenceNotAList'   => [['a' => 1]],
+                        $prefix . 'testChoiceSequenceNotAnArray' => [0, 11],
+                        $prefix . 'testNegativeChoice'           => [[0, -1]],
+                        $prefix . 'testChoiceNotAnInt'           => [[0, '1']],
+                        '123'                                    => [[0]],
                     ],
                 ],
             ),
@@ -522,11 +525,14 @@ final class DefaultTestRunHistoryTest extends TestCase
         $cache = new DefaultTestRunHistory($file);
         $cache->load();
 
-        $this->assertSame([0, 11], $cache->counterexample(TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testValid')));
-        $this->assertNull($cache->counterexample(TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testNotAList')));
-        $this->assertNull($cache->counterexample(TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testNotAnArray')));
-        $this->assertNull($cache->counterexample(TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testNegativeChoice')));
-        $this->assertNull($cache->counterexample(TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testChoiceNotAnInt')));
+        $this->assertSame([[0, 11], [3]], $cache->counterexamples(TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testValid')));
+        $this->assertSame([], $cache->counterexamples(TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testNotAList')));
+        $this->assertSame([], $cache->counterexamples(TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testNotAnArray')));
+        $this->assertSame([], $cache->counterexamples(TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testNoChoiceSequence')));
+        $this->assertSame([], $cache->counterexamples(TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testChoiceSequenceNotAList')));
+        $this->assertSame([], $cache->counterexamples(TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testChoiceSequenceNotAnArray')));
+        $this->assertSame([], $cache->counterexamples(TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testNegativeChoice')));
+        $this->assertSame([], $cache->counterexamples(TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testChoiceNotAnInt')));
     }
 
     public function testLoadIgnoresCounterexamplesThatAreNotAnArray(): void
@@ -539,7 +545,7 @@ final class DefaultTestRunHistoryTest extends TestCase
         $cache = new DefaultTestRunHistory($file);
         $cache->load();
 
-        $this->assertNull($cache->counterexample(TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testProperty')));
+        $this->assertSame([], $cache->counterexamples(TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testProperty')));
     }
 
     public function testPersistAndPruneKeepsCounterexampleOfPropertyThatRanInThisRunAndDropsTheOthers(): void
@@ -552,22 +558,22 @@ final class DefaultTestRunHistoryTest extends TestCase
         $idNew     = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testFalsifiedThisTime');
 
         $seed = new DefaultTestRunHistory($file);
-        $seed->setCounterexample($idStale, [1]);
-        $seed->setCounterexample($idSkipped, [2]);
+        $seed->setCounterexamples($idStale, [[1]]);
+        $seed->setCounterexamples($idSkipped, [[2]]);
         $seed->persist();
 
         $cache = new DefaultTestRunHistory($file);
         $cache->load();
         $cache->setStatus($idSkipped, TestStatus::skipped('not applicable'));
-        $cache->setCounterexample($idNew, [3]);
+        $cache->setCounterexamples($idNew, [[3]]);
         $cache->persistAndPrune();
 
         $loaded = new DefaultTestRunHistory($file);
         $loaded->load();
 
-        $this->assertNull($loaded->counterexample($idStale));
-        $this->assertSame([2], $loaded->counterexample($idSkipped));
-        $this->assertSame([3], $loaded->counterexample($idNew));
+        $this->assertSame([], $loaded->counterexamples($idStale));
+        $this->assertSame([[2]], $loaded->counterexamples($idSkipped));
+        $this->assertSame([[3]], $loaded->counterexamples($idNew));
     }
 
     public function testPersistOverlaysChangedCounterexamplesOntoConcurrentlyPersistedFile(): void
@@ -580,17 +586,17 @@ final class DefaultTestRunHistoryTest extends TestCase
         $idC = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testC');
 
         $seed = new DefaultTestRunHistory($file);
-        $seed->setCounterexample($idB, [2]);
+        $seed->setCounterexamples($idB, [[2]]);
         $seed->persist();
 
         $one = new DefaultTestRunHistory($file);
         $one->load();
-        $one->setCounterexample($idA, [1]);
-        $one->removeCounterexample($idB);
+        $one->setCounterexamples($idA, [[1]]);
+        $one->removeCounterexamples($idB);
 
         $other = new DefaultTestRunHistory($file);
         $other->load();
-        $other->setCounterexample($idC, [3]);
+        $other->setCounterexamples($idC, [[3]]);
         $other->persist();
 
         $one->persist();
@@ -598,9 +604,9 @@ final class DefaultTestRunHistoryTest extends TestCase
         $loaded = new DefaultTestRunHistory($file);
         $loaded->load();
 
-        $this->assertSame([1], $loaded->counterexample($idA));
-        $this->assertNull($loaded->counterexample($idB));
-        $this->assertSame([3], $loaded->counterexample($idC));
+        $this->assertSame([[1]], $loaded->counterexamples($idA));
+        $this->assertSame([], $loaded->counterexamples($idB));
+        $this->assertSame([[3]], $loaded->counterexamples($idC));
     }
 
     public function testMergeWithCombinesCounterexamplesAndPropagatesTheirRemoval(): void
@@ -612,17 +618,17 @@ final class DefaultTestRunHistoryTest extends TestCase
         $idB = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testB');
         $idC = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testC');
 
-        $target->setCounterexample($idA, [1]);
-        $target->setCounterexample($idB, [2]);
+        $target->setCounterexamples($idA, [[1]]);
+        $target->setCounterexamples($idB, [[2]]);
 
-        $other->removeCounterexample($idB);
-        $other->setCounterexample($idC, [3]);
+        $other->removeCounterexamples($idB);
+        $other->setCounterexamples($idC, [[3]]);
 
         $target->mergeWith($other);
 
-        $this->assertSame([1], $target->counterexample($idA));
-        $this->assertNull($target->counterexample($idB));
-        $this->assertSame([3], $target->counterexample($idC));
+        $this->assertSame([[1]], $target->counterexamples($idA));
+        $this->assertSame([], $target->counterexamples($idB));
+        $this->assertSame([[3]], $target->counterexamples($idC));
     }
 
     public function testMergeWithDoesNotBringBackACounterexampleThatAnotherMergedTestRunHistoryRemoved(): void
@@ -633,12 +639,12 @@ final class DefaultTestRunHistoryTest extends TestCase
         $id = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testProperty');
 
         $seed = new DefaultTestRunHistory($file);
-        $seed->setCounterexample($id, [1]);
+        $seed->setCounterexamples($id, [[1]]);
         $seed->persist();
 
         $removed = new DefaultTestRunHistory($file);
         $removed->load();
-        $removed->removeCounterexample($id);
+        $removed->removeCounterexamples($id);
 
         $loaded = new DefaultTestRunHistory($file);
         $loaded->load();
@@ -651,8 +657,8 @@ final class DefaultTestRunHistoryTest extends TestCase
         $loadedFirst->mergeWith($loaded);
         $loadedFirst->mergeWith($removed);
 
-        $this->assertNull($removedFirst->counterexample($id));
-        $this->assertNull($loadedFirst->counterexample($id));
+        $this->assertSame([], $removedFirst->counterexamples($id));
+        $this->assertSame([], $loadedFirst->counterexamples($id));
     }
 
     public function testMergeWithTakesOverACounterexampleThatTheOtherTestRunHistoryOnlyLoaded(): void
@@ -663,7 +669,7 @@ final class DefaultTestRunHistoryTest extends TestCase
         $id = TestRunHistoryId::fromTestClassAndMethodName(self::class, 'testProperty');
 
         $seed = new DefaultTestRunHistory($file);
-        $seed->setCounterexample($id, [1]);
+        $seed->setCounterexamples($id, [[1]]);
         $seed->persist();
 
         $loaded = new DefaultTestRunHistory($file);
@@ -672,6 +678,6 @@ final class DefaultTestRunHistoryTest extends TestCase
         $target = new DefaultTestRunHistory($file);
         $target->mergeWith($loaded);
 
-        $this->assertSame([1], $target->counterexample($id));
+        $this->assertSame([[1]], $target->counterexamples($id));
     }
 }

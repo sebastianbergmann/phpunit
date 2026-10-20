@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework;
 
 use const PHP_INT_MAX;
+use function array_shift;
 use function array_values;
 use function assert;
 use function count;
@@ -221,8 +222,8 @@ final class PropertyTestSuite extends IterativeTestSuite
     }
 
     /**
-     * The test run history from which the counterexample that was remembered
-     * when the property was last falsified is taken.
+     * The test run history from which the counterexamples that were
+     * remembered when the property was last falsified are taken.
      */
     public function setTestRunHistory(TestRunHistory $testRunHistory): void
     {
@@ -339,7 +340,11 @@ final class PropertyTestSuite extends IterativeTestSuite
 
         $randomizer = new Randomizer(new Xoshiro256StarStar($this->seed));
         $tree       = new ChoiceTree;
-        $remembered = $this->testRunHistory?->counterexample(TestRunHistoryId::fromReorderable($test));
+        $remembered = [];
+
+        if ($this->testRunHistory !== null) {
+            $remembered = $this->testRunHistory->counterexamples(TestRunHistoryId::fromReorderable($test));
+        }
 
         for ($i = 1; $i <= $this->maximumNumberOfExamplesGenerated(); $i++) {
             if ($this->numberOfExamplesChecked === $this->numberOfExamples) {
@@ -366,13 +371,13 @@ final class PropertyTestSuite extends IterativeTestSuite
 
             $attempted = true;
 
-            // the counterexample that was remembered when the property was last
-            // falsified is checked before examples are generated; it is
-            // replayed without drawing from the random number generator, so
-            // the examples that are generated after it are the same as without
-            // it
-            if ($i === 1 && $remembered !== null) {
-                $source = ChoiceSource::replay(new ChoiceSequence($remembered), ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver, $tree);
+            // the counterexamples that were remembered when the property was
+            // last falsified, one for each way in which it was falsified, are
+            // checked before examples are generated; they are replayed without
+            // drawing from the random number generator, so the examples that
+            // are generated after them are the same as without them
+            if ($remembered !== []) {
+                $source = ChoiceSource::replay(new ChoiceSequence(array_shift($remembered)), ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver, $tree);
             } else {
                 $source = ChoiceSource::random($randomizer, ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver, $tree);
             }
