@@ -46,13 +46,25 @@ final readonly class DeferredGenerator extends AbstractGenerator
     private string $what;
 
     /**
+     * @var non-empty-string
+     */
+    private string $label;
+
+    /**
      * @param Closure(GeneratorDeriver): AbstractGenerator<T> $derive
      * @param non-empty-string                                $what   what the generator generates, for the message of the exception that reports infinite recursion
      */
     public function __construct(Closure $derive, string $what)
     {
+        $this->label = self::labelOf('deferred', $what);
+
         $this->derive = $derive;
         $this->what   = $what;
+    }
+
+    public function label(): string
+    {
+        return $this->label;
     }
 
     /**

@@ -44,13 +44,25 @@ final readonly class ObjectGenerator extends AbstractGenerator
     private array $arguments;
 
     /**
+     * @var non-empty-string
+     */
+    private string $label;
+
+    /**
      * @param class-string<T>                                   $className
      * @param array<non-empty-string, AbstractGenerator<mixed>> $arguments the generators for the arguments of the constructor by the names of its parameters, in the order of the parameters
      */
     public function __construct(string $className, array $arguments)
     {
+        $this->label = self::labelOf('objects', $className);
+
         $this->className = $className;
         $this->arguments = $arguments;
+    }
+
+    public function label(): string
+    {
+        return $this->label;
     }
 
     protected function generateValue(ChoiceSource $source): object

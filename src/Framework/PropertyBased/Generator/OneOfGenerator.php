@@ -34,17 +34,40 @@ final readonly class OneOfGenerator extends AbstractGenerator
     private Distribution $distribution;
 
     /**
+     * @var non-empty-string
+     */
+    private string $label;
+
+    /**
      * @param non-empty-list<AbstractGenerator<T>> $generators
      * @param ?Distribution                        $distribution how one of the generators is chosen, uniformly when it is null
+     * @param ?non-empty-string                    $label        the label of the generator, which is derived from the labels of the generators when it is null
      */
-    public function __construct(array $generators, ?Distribution $distribution = null)
+    public function __construct(array $generators, ?Distribution $distribution = null, ?string $label = null)
     {
+        if ($label === null) {
+            $labels = [];
+
+            foreach ($generators as $generator) {
+                $labels[] = $generator->label();
+            }
+
+            $label = self::labelOf('oneOf', ...$labels);
+        }
+
+        $this->label = $label;
+
         if ($distribution === null) {
             $distribution = new UniformDistribution;
         }
 
         $this->generators   = $generators;
         $this->distribution = $distribution;
+    }
+
+    public function label(): string
+    {
+        return $this->label;
     }
 
     protected function generateValue(ChoiceSource $source): mixed

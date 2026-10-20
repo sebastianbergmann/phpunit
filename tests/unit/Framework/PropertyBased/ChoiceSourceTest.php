@@ -114,13 +114,13 @@ final class ChoiceSourceTest extends TestCase
         $source->draw(1, new UniformDistribution);
     }
 
-    public function testRecordsSpansOfTheChoicesThatWereDrawnBetweenTheirStartAndEnd(): void
+    public function testRecordsSpansOfTheChoicesThatWereDrawnBetweenTheirStartAndEndInTheOrderInWhichTheyWereStarted(): void
     {
         $source = ChoiceSource::replay(new ChoiceSequence([]));
 
-        $source->startSpan();
+        $source->startSpan('outer');
         $source->draw(1, new UniformDistribution);
-        $source->startSpan();
+        $source->startSpan('inner');
         $source->draw(1, new UniformDistribution);
         $source->draw(1, new UniformDistribution);
         $source->endSpan();
@@ -130,23 +130,73 @@ final class ChoiceSourceTest extends TestCase
 
         $this->assertCount(2, $spans);
 
-        $this->assertSame(1, $spans[0]->start());
+        $this->assertSame(0, $spans[0]->start());
         $this->assertSame(3, $spans[0]->end());
-        $this->assertSame(2, $spans[0]->length());
+        $this->assertSame(3, $spans[0]->length());
+        $this->assertSame('outer', $spans[0]->label());
 
-        $this->assertSame(0, $spans[1]->start());
+        $this->assertSame(1, $spans[1]->start());
         $this->assertSame(3, $spans[1]->end());
-        $this->assertSame(3, $spans[1]->length());
+        $this->assertSame(2, $spans[1]->length());
+        $this->assertSame('inner', $spans[1]->label());
+    }
+
+    public function testRecordsTheSpanThatASpanIsPartOf(): void
+    {
+        $source = ChoiceSource::replay(new ChoiceSequence([]));
+
+        $source->startSpan('outer');
+        $source->startSpan('first');
+        $source->draw(1, new UniformDistribution);
+        $source->endSpan();
+        $source->startSpan('second');
+        $source->draw(1, new UniformDistribution);
+        $source->endSpan();
+        $source->endSpan();
+        $source->startSpan('next');
+        $source->draw(1, new UniformDistribution);
+        $source->endSpan();
+
+        $spans = $source->sequence()->spans();
+
+        $this->assertSame(['outer', 'first', 'second', 'next'], array_map(static fn (Span $span): string => $span->label(), $spans));
+        $this->assertSame([null, 0, 0, null], array_map(static fn (Span $span): ?int => $span->parent(), $spans));
     }
 
     public function testDoesNotRecordSpansWithoutChoices(): void
     {
         $source = ChoiceSource::replay(new ChoiceSequence([]));
 
-        $source->startSpan();
+        $source->startSpan('outer');
+        $source->startSpan('empty');
+        $source->endSpan();
+        $source->startSpan('inner');
+        $source->draw(1, new UniformDistribution);
+        $source->endSpan();
         $source->endSpan();
 
-        $this->assertSame([], $source->sequence()->spans());
+        $spans = $source->sequence()->spans();
+
+        $this->assertSame(['outer', 'inner'], array_map(static fn (Span $span): string => $span->label(), $spans));
+        $this->assertSame([null, 0], array_map(static fn (Span $span): ?int => $span->parent(), $spans));
+    }
+
+    public function testDoesNotRecordSpansThatWereNotEnded(): void
+    {
+        $source = ChoiceSource::replay(new ChoiceSequence([]));
+
+        $source->startSpan('outer');
+        $source->startSpan('ended');
+        $source->draw(1, new UniformDistribution);
+        $source->endSpan();
+        $source->startSpan('not ended');
+        $source->draw(1, new UniformDistribution);
+
+        $spans = $source->sequence()->spans();
+
+        $this->assertCount(1, $spans);
+        $this->assertSame('ended', $spans[0]->label());
+        $this->assertNull($spans[0]->parent());
     }
 
     public function testChoosesTheElementAtTheDrawnIndex(): void

@@ -13,7 +13,8 @@ use function assert;
 
 /**
  * The part of a choice sequence that a generator, or one element of a
- * collection, consumed.
+ * collection, consumed. It is labelled with how the choices were drawn, and
+ * it knows the span it is part of.
  *
  * @immutable
  *
@@ -34,13 +35,27 @@ final readonly class Span
     private int $end;
 
     /**
-     * @param non-negative-int $start the index of the first choice of the span
-     * @param positive-int     $end   the index after the last choice of the span
+     * @var non-empty-string
      */
-    public function __construct(int $start, int $end)
+    private string $label;
+
+    /**
+     * @var ?non-negative-int
+     */
+    private ?int $parent;
+
+    /**
+     * @param non-negative-int  $start  the index of the first choice of the span
+     * @param positive-int      $end    the index after the last choice of the span
+     * @param non-empty-string  $label  identifies how the choices of the span were drawn (see AbstractGenerator::label())
+     * @param ?non-negative-int $parent the index of the span this span is part of among the spans of the choice sequence, null when it is not part of another span
+     */
+    public function __construct(int $start, int $end, string $label, ?int $parent)
     {
-        $this->start = $start;
-        $this->end   = $end;
+        $this->start  = $start;
+        $this->end    = $end;
+        $this->label  = $label;
+        $this->parent = $parent;
     }
 
     /**
@@ -57,6 +72,22 @@ final readonly class Span
     public function end(): int
     {
         return $this->end;
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    public function label(): string
+    {
+        return $this->label;
+    }
+
+    /**
+     * @return ?non-negative-int
+     */
+    public function parent(): ?int
+    {
+        return $this->parent;
     }
 
     /**

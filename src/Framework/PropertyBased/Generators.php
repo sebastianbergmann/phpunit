@@ -589,8 +589,12 @@ final class Generators
         $baseGenerator = AbstractGenerator::from($base);
         $generator     = $baseGenerator;
 
+        // the levels draw their choices the same way, so that the shrinker can
+        // replace the span of a value with the span of a value it contains
+        $label = AbstractGenerator::labelOf('recursive', $baseGenerator->label());
+
         for ($depth = 1; $depth <= $maximumDepth; $depth++) {
-            $generator = new OneOfGenerator([$baseGenerator, self::generatorReturnedBy($extend($generator), 'recursive')]);
+            $generator = new OneOfGenerator([$baseGenerator, self::generatorReturnedBy($extend($generator), 'recursive')], null, $label);
         }
 
         return $generator;

@@ -35,13 +35,25 @@ final readonly class MappedGenerator extends AbstractGenerator
     private Closure $mapper;
 
     /**
+     * @var non-empty-string
+     */
+    private string $label;
+
+    /**
      * @param AbstractGenerator<T> $generator
      * @param Closure(T): U        $mapper
      */
     public function __construct(AbstractGenerator $generator, Closure $mapper)
     {
+        $this->label = self::labelOf('map', $generator->label());
+
         $this->generator = $generator;
         $this->mapper    = $mapper;
+    }
+
+    public function label(): string
+    {
+        return $this->label;
     }
 
     protected function generateValue(ChoiceSource $source): mixed
