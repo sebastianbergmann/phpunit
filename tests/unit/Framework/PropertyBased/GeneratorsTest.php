@@ -645,6 +645,33 @@ final class GeneratorsTest extends TestCase
         );
     }
 
+    public function testTheDeepestLevelOfARecursiveValueChoosesTheValueOfTheBaseGeneratorLikeTheOtherLevels(): void
+    {
+        $generator = AbstractGenerator::from(
+            Generators::recursive(
+                Generators::integers(0, 9),
+                static fn (ValueGenerator $values): ValueGenerator => Generators::lists($values),
+                1,
+            ),
+        );
+
+        $source = ChoiceSource::replay(new ChoiceSequence([1, 1, 0, 5, 0]));
+
+        $this->assertSame([5], $generator->generate($source));
+
+        $spansOfLevels = array_values(
+            array_filter(
+                $source->sequence()->spans(),
+                static fn (Span $span): bool => $span->label() === $generator->label(),
+            ),
+        );
+
+        $this->assertSame(
+            [[0, 5], [2, 4]],
+            array_map(static fn (Span $span): array => [$span->start(), $span->end()], $spansOfLevels),
+        );
+    }
+
     public function testDeletingTheSpanOfAnElementFromTheChoiceSequenceDeletesTheElement(): void
     {
         $this->assertSame([7], $this->replay(Generators::lists(Generators::integers(0, 9)), [1, 7, 0]));
