@@ -83,6 +83,40 @@ use UnitEnum;
 final class Generators
 {
     /**
+     * Time zones whose offset from UTC or whose transitions between standard
+     * time and daylight saving time are notable.
+     *
+     * @var non-empty-list<non-empty-string>
+     */
+    private const array NOTABLE_TIMEZONES = [
+        'UTC',
+        // the largest and the smallest offset from UTC
+        'Pacific/Kiritimati',
+        'Pacific/Pago_Pago',
+        // offsets that are not whole hours
+        'Asia/Kathmandu',
+        'Asia/Tehran',
+        'America/St_Johns',
+        'Pacific/Chatham',
+        // daylight saving time of 30 minutes, of two hours, and negative
+        // daylight saving time
+        'Australia/Lord_Howe',
+        'Antarctica/Troll',
+        'Europe/Dublin',
+        // daylight saving time in the southern hemisphere, and daylight
+        // saving time that is suspended during Ramadan
+        'America/Santiago',
+        'Africa/Casablanca',
+        // the day that was skipped when the time zone crossed the
+        // international date line
+        'Pacific/Apia',
+        // time zones that are used often
+        'America/New_York',
+        'Europe/London',
+        'Asia/Tokyo',
+    ];
+
+    /**
      * Generates integers from $minimum to $maximum, biased towards the
      * boundaries of the range, towards the value closest to zero, and towards
      * small magnitudes.
@@ -1119,6 +1153,27 @@ final class Generators
         assert($lowest[1] >= 0 && $lowest[1] <= 999999 && $highest[1] >= 0 && $highest[1] <= 999999);
 
         return new DateTimeGenerator($lowest, $highest, $valid, $microseconds);
+    }
+
+    /**
+     * Generates the identifiers of time zones, such as Europe/Berlin. Half of
+     * them are from time zones whose offsets or transitions between standard
+     * time and daylight saving time are notable, such as Asia/Kathmandu
+     * (UTC+05:45), Pacific/Kiritimati (UTC+14:00), Australia/Lord_Howe
+     * (daylight saving time of 30 minutes), Europe/Dublin (negative daylight
+     * saving time), or Pacific/Apia (which skipped a day), the other half
+     * are from all time zones that DateTimeZone::listIdentifiers() lists.
+     *
+     * The simplest time zone is UTC.
+     *
+     * @return ValueGenerator<string>
+     */
+    public static function timezones(): ValueGenerator
+    {
+        return self::oneOf(
+            self::elements(...self::NOTABLE_TIMEZONES),
+            self::elements(...DateTimeZone::listIdentifiers()),
+        );
     }
 
     /**

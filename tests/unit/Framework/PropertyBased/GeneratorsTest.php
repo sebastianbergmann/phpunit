@@ -73,6 +73,7 @@ use function substr_count;
 use Closure;
 use DateTimeImmutable;
 use DateTimeInterface;
+use DateTimeZone;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -195,6 +196,7 @@ final class GeneratorsTest extends TestCase
             'email addresses'    => [Generators::emailAddresses(true, true)],
             'urls'               => [Generators::urls(userInformation: true)],
             'date times'         => [Generators::dateTimes(timezones: ['UTC', 'Europe/Berlin'], microseconds: true)],
+            'time zones'         => [Generators::timezones()],
         ];
     }
 
@@ -1258,6 +1260,22 @@ final class GeneratorsTest extends TestCase
         $this->expectExceptionMessage('The range from the minimum (2020-01-01T00:00:00.100+00:00) to the maximum (2020-01-01T00:00:00.900+00:00) must contain a whole second, use $microseconds to generate points in time with microseconds');
 
         Generators::dateTimes(new DateTimeImmutable('2020-01-01 00:00:00.1 UTC'), new DateTimeImmutable('2020-01-01 00:00:00.9 UTC'));
+    }
+
+    public function testGeneratesIdentifiersOfTimeZonesIncludingNotableOnes(): void
+    {
+        $values = $this->values(Generators::timezones(), 2000);
+
+        foreach ($values as $value) {
+            $this->assertContains($value, DateTimeZone::listIdentifiers());
+        }
+
+        foreach (['UTC', 'Asia/Kathmandu', 'Australia/Lord_Howe', 'Pacific/Apia'] as $timezone) {
+            $this->assertContains($timezone, $values);
+        }
+
+        $this->assertGreaterThan(200, count(array_unique($values)));
+        $this->assertSame('UTC', $this->replay(Generators::timezones(), []));
     }
 
     public function testGeneratesBothBooleans(): void
