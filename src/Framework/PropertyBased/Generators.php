@@ -10,6 +10,8 @@
 namespace PHPUnit\Framework\PropertyBased;
 
 use const DEBUG_BACKTRACE_IGNORE_ARGS;
+use const FILTER_FLAG_IPV4;
+use const FILTER_VALIDATE_IP;
 use const PHP_FLOAT_MAX;
 use const PHP_FLOAT_MIN;
 use const PHP_INT_MAX;
@@ -18,15 +20,19 @@ use function array_is_list;
 use function array_key_exists;
 use function array_unique;
 use function array_values;
+use function assert;
 use function class_exists;
 use function count;
 use function debug_backtrace;
 use function enum_exists;
+use function filter_var;
 use function get_debug_type;
 use function interface_exists;
+use function ip2long;
 use function is_finite;
 use function is_int;
 use function lcfirst;
+use function long2ip;
 use function mb_check_encoding;
 use function mb_str_split;
 use function preg_match;
@@ -45,6 +51,7 @@ use PHPUnit\Framework\PropertyBased\Generator\DeferredGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\ElementsGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\FloatGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\IntegerGenerator;
+use PHPUnit\Framework\PropertyBased\Generator\Ipv4AddressGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\ListGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\NullableGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\OneOfGenerator;
@@ -783,6 +790,57 @@ final class Generators
         }
 
         return new UuidGenerator(array_values(array_unique($valid)), $nilAndMax);
+    }
+
+    /**
+     * Generates IPv4 addresses of $network, given in CIDR notation, in dotted
+     * decimal notation without leading zeros.
+     *
+     * Half of the addresses are from the special-purpose ranges (RFC 6890)
+     * that $network overlaps, such as the private networks, loopback,
+     * link-local, multicast, and the networks for documentation, or are right
+     * next to one of them. The addresses are biased towards the first and the
+     * last address of $network and of each range.
+     *
+     * The simplest address is the network address of $network, 0.0.0.0 by
+     * default.
+     *
+     * @throws InvalidGeneratorArgumentException
+     *
+     * @return ValueGenerator<non-empty-string>
+     */
+    public static function ipv4Addresses(string $network = '0.0.0.0/0'): ValueGenerator
+    {
+        if (preg_match('/^([0-9.]+)\/(0|[1-9][0-9]?)$/', $network, $matches) !== 1 ||
+            filter_var($matches[1], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === false ||
+            (int) $matches[2] > 32) {
+            throw new InvalidGeneratorArgumentException(
+                sprintf(
+                    'The network (%s) must be an IPv4 address and the length of its prefix, from 0 to 32, in CIDR notation, for instance 192.168.0.0/16',
+                    $network,
+                ),
+            );
+        }
+
+        $address      = ip2long($matches[1]);
+        $prefixLength = (int) $matches[2];
+
+        assert($address !== false && $prefixLength >= 0);
+
+        $hostBits = (1 << (32 - $prefixLength)) - 1;
+
+        if (($address & $hostBits) !== 0) {
+            throw new InvalidGeneratorArgumentException(
+                sprintf(
+                    'The address of the network (%s) must be its network address, whose host bits are zero: %s/%d',
+                    $network,
+                    long2ip($address & ~$hostBits),
+                    $prefixLength,
+                ),
+            );
+        }
+
+        return new Ipv4AddressGenerator($address, $prefixLength);
     }
 
     /**
