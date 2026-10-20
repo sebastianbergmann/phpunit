@@ -794,6 +794,9 @@ final readonly class Loader
                 PropertyBasedTesting::DEFAULT_NUMBER_OF_EXAMPLES,
                 PropertyBasedTesting::DEFAULT_EXAMPLES_MULTIPLIER,
                 PropertyBasedTesting::DEFAULT_MAXIMUM_NUMBER_OF_SHRINKING_ATTEMPTS,
+                PropertyBasedTesting::DEFAULT_EXAMPLES_CHECKED_UNTIL_HEALTH_IS_ASSUMED,
+                PropertyBasedTesting::DEFAULT_MAXIMUM_REJECTED_EXAMPLES_UNTIL_HEALTH_IS_ASSUMED,
+                PropertyBasedTesting::DEFAULT_MAXIMUM_TOO_LARGE_EXAMPLES_UNTIL_HEALTH_IS_ASSUMED,
             );
         }
 
@@ -801,6 +804,9 @@ final readonly class Loader
             $this->parsePositiveIntegerAttribute($element, 'examples', PropertyBasedTesting::DEFAULT_NUMBER_OF_EXAMPLES),
             $this->parsePositiveIntegerAttribute($element, 'examplesMultiplier', PropertyBasedTesting::DEFAULT_EXAMPLES_MULTIPLIER),
             $this->parseNonNegativeIntegerAttribute($element, 'maximumShrinkingAttempts', PropertyBasedTesting::DEFAULT_MAXIMUM_NUMBER_OF_SHRINKING_ATTEMPTS),
+            $this->parseNonNegativeIntegerAttribute($element, 'examplesCheckedUntilHealthIsAssumed', PropertyBasedTesting::DEFAULT_EXAMPLES_CHECKED_UNTIL_HEALTH_IS_ASSUMED),
+            $this->parsePositiveIntegerAttribute($element, 'maximumRejectedExamplesUntilHealthIsAssumed', PropertyBasedTesting::DEFAULT_MAXIMUM_REJECTED_EXAMPLES_UNTIL_HEALTH_IS_ASSUMED),
+            $this->parsePositiveIntegerAttribute($element, 'maximumTooLargeExamplesUntilHealthIsAssumed', PropertyBasedTesting::DEFAULT_MAXIMUM_TOO_LARGE_EXAMPLES_UNTIL_HEALTH_IS_ASSUMED),
         );
     }
 
