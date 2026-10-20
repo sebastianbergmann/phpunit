@@ -12,6 +12,7 @@ namespace PHPUnit\Framework\PropertyBased;
 use const INF;
 use const NAN;
 use const PHP_FLOAT_MAX;
+use const PHP_FLOAT_MIN;
 use const PHP_INT_MAX;
 use const PHP_INT_MIN;
 use function abs;
@@ -104,6 +105,7 @@ final class GeneratorsTest extends TestCase
             'bounded integers'   => [Generators::integers(-10, 10)],
             'floats'             => [Generators::floats(allowInfinity: true, allowNan: true)],
             'bounded floats'     => [Generators::floats(-1.5, 2.5)],
+            'floats (options)'   => [Generators::floats(-1.5, 2.5, excludeMinimum: true, excludeMaximum: true, allowSubnormals: false)],
             'booleans'           => [Generators::booleans()],
             'strings'            => [Generators::strings()],
             'strings (alphabet)' => [Generators::strings('01', 1, 8)],
@@ -427,6 +429,71 @@ final class GeneratorsTest extends TestCase
         $this->expectExceptionMessage($message);
 
         Generators::floats($minimum, $maximum);
+    }
+
+    /**
+     * @return array<string, array{float, float, bool, bool, bool, float, float}>
+     */
+    public static function rangeOfFloatsWithExcludedBoundsProvider(): array
+    {
+        return [
+            'excluded minimum'                                          => [0.0, 1.0, true, false, true, 4.9E-324, 1.0],
+            'excluded maximum'                                          => [0.0, 1.0, false, true, true, 0.0, 0.9999999999999999],
+            'excluded minimum and maximum'                              => [-1.0, 1.0, true, true, true, -0.9999999999999999, 0.9999999999999999],
+            'excluded positive minimum without subnormals'              => [0.0, 1.0, true, false, false, PHP_FLOAT_MIN, 1.0],
+            'excluded negative minimum without subnormals'              => [-PHP_FLOAT_MIN, 1.0, true, false, false, -0.0, 1.0],
+            'excluded negative maximum without subnormals'              => [-1.0, 0.0, false, true, false, -1.0, -PHP_FLOAT_MIN],
+            'excluded positive maximum without subnormals'              => [-1.0, PHP_FLOAT_MIN, false, true, false, -1.0, 0.0],
+        ];
+    }
+
+    #[DataProvider('rangeOfFloatsWithExcludedBoundsProvider')]
+    public function testGeneratesFloatsWithinTheRangeWithoutItsExcludedBounds(float $minimum, float $maximum, bool $excludeMinimum, bool $excludeMaximum, bool $allowSubnormals, float $smallest, float $largest): void
+    {
+        $values = $this->values(Generators::floats($minimum, $maximum, excludeMinimum: $excludeMinimum, excludeMaximum: $excludeMaximum, allowSubnormals: $allowSubnormals), 2000);
+
+        foreach ($values as $value) {
+            $this->assertGreaterThanOrEqual($smallest, $value);
+            $this->assertLessThanOrEqual($largest, $value);
+        }
+
+        // the bounds of the range are among the special values, which are
+        // generated often
+        $this->assertContains(serialize($smallest), array_map(serialize(...), $values));
+        $this->assertContains(serialize($largest), array_map(serialize(...), $values));
+    }
+
+    public function testGeneratesNoSubnormalFloatsWhenTheyAreNotAllowed(): void
+    {
+        $values = $this->values(Generators::floats(allowSubnormals: false), 2000);
+
+        $this->assertEmpty(array_filter($values, static fn (float $value): bool => $value !== 0.0 && abs($value) < PHP_FLOAT_MIN));
+        $this->assertContains(serialize(-0.0), array_map(serialize(...), $values));
+        $this->assertContains(serialize(PHP_FLOAT_MIN), array_map(serialize(...), $values));
+    }
+
+    public function testReplacesASubnormalFloatWithTheZeroOfItsSignWhenSubnormalFloatsAreNotAllowed(): void
+    {
+        $generator = Generators::floats(-1.0, 1.0, allowSubnormals: false);
+
+        $this->assertSame(serialize(0.0), serialize($this->replay($generator, FloatGenerator::encode(4.9E-324))));
+        $this->assertSame(serialize(-0.0), serialize($this->replay($generator, FloatGenerator::encode(-4.9E-324))));
+    }
+
+    public function testExcludingTheBoundsOfARangeMustLeaveAFloatInIt(): void
+    {
+        $this->expectException(InvalidGeneratorArgumentException::class);
+        $this->expectExceptionMessage('The range contains no float when its excluded bounds are left out');
+
+        Generators::floats(1.0, 1.0, excludeMinimum: true);
+    }
+
+    public function testTheBoundsOfARangeMustNotBeSubnormalWhenSubnormalFloatsAreNotAllowed(): void
+    {
+        $this->expectException(InvalidGeneratorArgumentException::class);
+        $this->expectExceptionMessage('The minimum and the maximum must not be subnormal when subnormal floats are not allowed');
+
+        Generators::floats(4.9E-324, 1.0, allowSubnormals: false);
     }
 
     public function testGeneratesBothBooleans(): void
