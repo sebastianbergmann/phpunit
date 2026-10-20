@@ -41,6 +41,10 @@ use function preg_match;
 use function sprintf;
 use function var_export;
 use Closure;
+use DateTimeImmutable;
+use DateTimeInterface;
+use DateTimeZone;
+use Exception;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorDeriver;
 use PHPUnit\Framework\PropertyBased\Distribution\WeightedRangesDistribution;
 use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
@@ -49,6 +53,7 @@ use PHPUnit\Framework\PropertyBased\Generator\BooleanGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\BytesGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\CodePointRanges;
 use PHPUnit\Framework\PropertyBased\Generator\ConstantGenerator;
+use PHPUnit\Framework\PropertyBased\Generator\DateTimeGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\DeferredGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\DomainNameGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\ElementsGenerator;
@@ -1024,6 +1029,96 @@ final class Generators
         }
 
         return new UrlGenerator(array_values(array_unique($valid)), $userInformation);
+    }
+
+    /**
+     * Generates points in time from $minimum to $maximum as DateTimeImmutable
+     * objects in one of the time zones in $timezones, which are given as
+     * their identifier, their abbreviation, or their offset from UTC. By
+     * default, the points in time are from 0001-01-01 00:00:00 UTC to
+     * 9999-12-31 23:59:59 UTC, in UTC, and without microseconds.
+     *
+     * Half of the points in time are notable: points in time where 32-bit
+     * timestamps overflow, the turn of the millennium, the first second of a
+     * month or a year and the second before it, leap days, and the
+     * transitions between standard time and daylight saving time of the time
+     * zone, with the second before them. The other half are from the whole
+     * range, biased towards the epoch, $minimum, and $maximum.
+     *
+     * The first time zone is the simplest one, and the simplest point in
+     * time is the epoch, 1970-01-01 00:00:00 UTC, or the bound of the range
+     * that is closest to it.
+     *
+     * @param list<string> $timezones
+     *
+     * @throws InvalidGeneratorArgumentException
+     *
+     * @return ValueGenerator<DateTimeImmutable>
+     */
+    public static function dateTimes(?DateTimeInterface $minimum = null, ?DateTimeInterface $maximum = null, array $timezones = ['UTC'], bool $microseconds = false): ValueGenerator
+    {
+        if ($minimum === null) {
+            $minimum = new DateTimeImmutable('0001-01-01 00:00:00 UTC');
+        }
+
+        if ($maximum === null) {
+            $maximum = new DateTimeImmutable('9999-12-31 23:59:59.999999 UTC');
+        }
+
+        if ($minimum > $maximum) {
+            throw new InvalidGeneratorArgumentException(
+                sprintf(
+                    'The minimum (%s) must not be greater than the maximum (%s)',
+                    $minimum->format(DateTimeInterface::RFC3339_EXTENDED),
+                    $maximum->format(DateTimeInterface::RFC3339_EXTENDED),
+                ),
+            );
+        }
+
+        if ($timezones === []) {
+            throw new InvalidGeneratorArgumentException('At least one time zone must be specified');
+        }
+
+        $valid = [];
+
+        foreach (array_values(array_unique($timezones)) as $timezone) {
+            try {
+                $valid[] = new DateTimeZone($timezone);
+            } catch (Exception) {
+                throw new InvalidGeneratorArgumentException(
+                    sprintf(
+                        'The time zone (%s) must be an identifier, an abbreviation, or an offset from UTC',
+                        $timezone,
+                    ),
+                );
+            }
+        }
+
+        $lowest  = [$minimum->getTimestamp(), (int) $minimum->format('u')];
+        $highest = [$maximum->getTimestamp(), (int) $maximum->format('u')];
+
+        // without microseconds, the range is narrowed to whole seconds
+        if (!$microseconds) {
+            if ($lowest[1] > 0) {
+                $lowest = [$lowest[0] + 1, 0];
+            }
+
+            $highest = [$highest[0], 0];
+
+            if ($lowest[0] > $highest[0]) {
+                throw new InvalidGeneratorArgumentException(
+                    sprintf(
+                        'The range from the minimum (%s) to the maximum (%s) must contain a whole second, use $microseconds to generate points in time with microseconds',
+                        $minimum->format(DateTimeInterface::RFC3339_EXTENDED),
+                        $maximum->format(DateTimeInterface::RFC3339_EXTENDED),
+                    ),
+                );
+            }
+        }
+
+        assert($lowest[1] >= 0 && $lowest[1] <= 999999 && $highest[1] >= 0 && $highest[1] <= 999999);
+
+        return new DateTimeGenerator($lowest, $highest, $valid, $microseconds);
     }
 
     /**

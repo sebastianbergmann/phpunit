@@ -71,6 +71,8 @@ use function strrpos;
 use function substr;
 use function substr_count;
 use Closure;
+use DateTimeImmutable;
+use DateTimeInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -84,6 +86,7 @@ use PHPUnit\Framework\PropertyBased\Generator\BooleanGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\BytesGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\CodePoints;
 use PHPUnit\Framework\PropertyBased\Generator\ConstantGenerator;
+use PHPUnit\Framework\PropertyBased\Generator\DateTimeGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\DomainNameGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\ElementsGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\EmailAddressGenerator;
@@ -118,6 +121,7 @@ use stdClass;
 #[CoversClass(BooleanGenerator::class)]
 #[CoversClass(BytesGenerator::class)]
 #[CoversClass(ConstantGenerator::class)]
+#[CoversClass(DateTimeGenerator::class)]
 #[CoversClass(DomainNameGenerator::class)]
 #[CoversClass(ElementsGenerator::class)]
 #[CoversClass(EmailAddressGenerator::class)]
@@ -190,6 +194,7 @@ final class GeneratorsTest extends TestCase
             'domain names'       => [Generators::domainNames()],
             'email addresses'    => [Generators::emailAddresses(true, true)],
             'urls'               => [Generators::urls(userInformation: true)],
+            'date times'         => [Generators::dateTimes(timezones: ['UTC', 'Europe/Berlin'], microseconds: true)],
         ];
     }
 
@@ -1126,6 +1131,135 @@ final class GeneratorsTest extends TestCase
         Generators::urls(['http', $scheme]);
     }
 
+    public function testGeneratesPointsInTimeWithinTheRangeInTheTimeZones(): void
+    {
+        $minimum = new DateTimeImmutable('2000-01-01 00:00:00 UTC');
+        $maximum = new DateTimeImmutable('2030-12-31 23:59:59 UTC');
+
+        foreach ($this->values(Generators::dateTimes($minimum, $maximum, ['Europe/Berlin', 'Asia/Kathmandu']), 1000) as $value) {
+            $this->assertGreaterThanOrEqual($minimum, $value);
+            $this->assertLessThanOrEqual($maximum, $value);
+            $this->assertContains($value->getTimezone()->getName(), ['Europe/Berlin', 'Asia/Kathmandu']);
+            $this->assertSame('000000', $value->format('u'));
+        }
+    }
+
+    public function testGeneratesPointsInTimeInTimeZonesThatAreGivenAsOffsetsOrAbbreviations(): void
+    {
+        foreach ($this->values(Generators::dateTimes(timezones: ['+05:30', 'EST']), 500) as $value) {
+            $this->assertContains($value->getOffset(), [19800, -18000]);
+        }
+    }
+
+    public function testGeneratesNotablePointsInTimeAndTheBoundsOfTheRange(): void
+    {
+        $values     = $this->values(Generators::dateTimes(), 2000);
+        $timestamps = array_map(static fn (DateTimeImmutable $value): int => $value->getTimestamp(), $values);
+        $formatted  = array_map(static fn (DateTimeImmutable $value): string => $value->format('Y-m-d H:i:s'), $values);
+
+        foreach ([0, 2147483647, 2147483648, -2147483648, -2147483649, 946684799, 946684800, 4294967295, 4294967296] as $timestamp) {
+            $this->assertContains($timestamp, $timestamps);
+        }
+
+        $this->assertContains('0001-01-01 00:00:00', $formatted);
+        $this->assertContains('9999-12-31 23:59:59', $formatted);
+
+        foreach (['/-02-29 /', '/-(0[2-9]|1[0-2])-01 00:00:00$/', '/-(0[13578]|1[02])-31 23:59:59$/', '/-12-31 23:59:59$/'] as $pattern) {
+            $this->assertNotEmpty(preg_grep($pattern, $formatted), $pattern);
+        }
+    }
+
+    public function testGeneratesTheTransitionsBetweenStandardTimeAndDaylightSavingTimeAndTheSecondBeforeThem(): void
+    {
+        $values = $this->values(Generators::dateTimes(timezones: ['Europe/Berlin']), 1000);
+
+        $this->assertNotEmpty(array_filter($values, static fn (DateTimeImmutable $value): bool => $value->getOffset() !== $value->modify('-1 second')->getOffset()));
+        $this->assertNotEmpty(array_filter($values, static fn (DateTimeImmutable $value): bool => $value->getOffset() !== $value->modify('+1 second')->getOffset()));
+    }
+
+    public function testGeneratesLeapDaysOfTheLeapYearsInTheRangeOnly(): void
+    {
+        $values = $this->values(Generators::dateTimes(new DateTimeImmutable('2096-01-01 UTC'), new DateTimeImmutable('2104-12-31 UTC')), 500);
+        $years  = array_values(array_unique(array_map(static fn (DateTimeImmutable $value): string => $value->format('Y'), array_filter($values, static fn (DateTimeImmutable $value): bool => $value->format('m-d') === '02-29'))));
+
+        sort($years);
+
+        $this->assertSame(['2096', '2104'], $years);
+
+        foreach ($this->values(Generators::dateTimes(new DateTimeImmutable('2001-01-01 UTC'), new DateTimeImmutable('2003-12-31 UTC')), 200) as $value) {
+            $this->assertNotSame('02-29', $value->format('m-d'));
+        }
+    }
+
+    public function testGeneratesPointsInTimeWithMicrosecondsOnlyWhenRequested(): void
+    {
+        foreach ($this->values(Generators::dateTimes(), 500) as $value) {
+            $this->assertSame('000000', $value->format('u'));
+        }
+
+        $microseconds = array_map(static fn (DateTimeImmutable $value): string => $value->format('u'), $this->values(Generators::dateTimes(microseconds: true), 500));
+
+        $this->assertContains('999999', $microseconds);
+        $this->assertGreaterThan(100, count(array_filter($microseconds, static fn (string $value): bool => $value !== '000000')));
+    }
+
+    public function testGeneratesPointsInTimeOnlyFromTheRangeWhoseBoundsHaveMicroseconds(): void
+    {
+        $minimum = new DateTimeImmutable('2020-01-01 00:00:00.5 UTC');
+        $maximum = new DateTimeImmutable('2020-01-01 00:00:02.25 UTC');
+
+        $this->assertSame(
+            ['2020-01-01 00:00:01.000000', '2020-01-01 00:00:02.000000'],
+            $this->sortedUnique(array_map(static fn (DateTimeImmutable $value): string => $value->format('Y-m-d H:i:s.u'), $this->values(Generators::dateTimes($minimum, $maximum), 200))),
+        );
+
+        foreach ($this->values(Generators::dateTimes($minimum, $maximum, microseconds: true), 200) as $value) {
+            $this->assertGreaterThanOrEqual($minimum, $value);
+            $this->assertLessThanOrEqual($maximum, $value);
+        }
+
+        $this->assertSame('2020-01-01 00:00:00.500000', $this->replay(Generators::dateTimes($minimum, $maximum, microseconds: true), [])->format('Y-m-d H:i:s.u'));
+    }
+
+    public function testTheSimplestPointInTimeIsTheEpochInTheFirstTimeZoneOrTheBoundClosestToIt(): void
+    {
+        $this->assertSame('1970-01-01T00:00:00+00:00', $this->replay(Generators::dateTimes(), [])->format(DateTimeInterface::ATOM));
+        $this->assertSame('1970-01-01T09:00:00+09:00', $this->replay(Generators::dateTimes(timezones: ['Asia/Tokyo', 'UTC']), [])->format(DateTimeInterface::ATOM));
+        $this->assertSame('2000-01-01T00:00:00+00:00', $this->replay(Generators::dateTimes(new DateTimeImmutable('2000-01-01 UTC')), [])->format(DateTimeInterface::ATOM));
+    }
+
+    public function testTheMinimumOfPointsInTimeMustNotBeGreaterThanTheirMaximum(): void
+    {
+        $this->expectException(InvalidGeneratorArgumentException::class);
+        $this->expectExceptionMessageIs('The minimum (2020-01-02T00:00:00.000+00:00) must not be greater than the maximum (2020-01-01T00:00:00.000+00:00)');
+
+        Generators::dateTimes(new DateTimeImmutable('2020-01-02 UTC'), new DateTimeImmutable('2020-01-01 UTC'));
+    }
+
+    public function testAtLeastOneTimeZoneMustBeSpecified(): void
+    {
+        $this->expectException(InvalidGeneratorArgumentException::class);
+        $this->expectExceptionMessageIs('At least one time zone must be specified');
+
+        Generators::dateTimes(timezones: []);
+    }
+
+    public function testTheTimeZonesMustBeValid(): void
+    {
+        $this->expectException(InvalidGeneratorArgumentException::class);
+        $this->expectExceptionMessageIs('The time zone (Mars/Olympus_Mons) must be an identifier, an abbreviation, or an offset from UTC');
+
+        Generators::dateTimes(timezones: ['UTC', 'Mars/Olympus_Mons']);
+    }
+
+    public function testTheRangeOfPointsInTimeWithoutMicrosecondsMustContainAWholeSecond(): void
+    {
+        $this->expectException(InvalidGeneratorArgumentException::class);
+        $this->expectExceptionMessageIs('The range from the minimum (2020-01-01T00:00:00.100+00:00) to the maximum (2020-01-01T00:00:00.900+00:00) must contain a whole second, use $microseconds to generate points in time with microseconds');
+
+        Generators::dateTimes(new DateTimeImmutable('2020-01-01 00:00:00.1 UTC'), new DateTimeImmutable('2020-01-01 00:00:00.9 UTC'));
+    }
+
     public function testGeneratesBothBooleans(): void
     {
         $values = $this->values(Generators::booleans(), 100);
@@ -1915,6 +2049,20 @@ final class GeneratorsTest extends TestCase
         $this->assertNotSame('', $localPart);
 
         return $localPart;
+    }
+
+    /**
+     * @param list<string> $values
+     *
+     * @return list<string>
+     */
+    private function sortedUnique(array $values): array
+    {
+        $values = array_values(array_unique($values));
+
+        sort($values);
+
+        return $values;
     }
 
     /**
