@@ -119,6 +119,22 @@ final class FalsificationTest extends TestCase
         $this->assertFalse($first->isSameAs($error));
     }
 
+    public function testDescribesHowTheExampleFalsifiedThePropertyByTheClassOfTheThrowableAndWhereItWasRaised(): void
+    {
+        $falsification = Falsification::of($this->example('testErrors', 1));
+
+        $this->assertNotNull($falsification);
+        $this->assertStringMatchesFormat('RuntimeException at %sExampleTest.php:%d', $falsification->description());
+    }
+
+    public function testDescribesThatTheExampleFalsifiedThePropertyByExceedingTheTimeLimit(): void
+    {
+        $falsification = Falsification::of($this->example('testExceedsItsTimeLimit', 1));
+
+        $this->assertNotNull($falsification);
+        $this->assertSame('exceeding the time limit', $falsification->description());
+    }
+
     /**
      * @param non-empty-string $methodName
      */

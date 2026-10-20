@@ -32,6 +32,9 @@ use Throwable;
  */
 final readonly class Falsification
 {
+    /**
+     * @var non-empty-string
+     */
     private string $signature;
     private bool $timeout;
 
@@ -83,6 +86,9 @@ final readonly class Falsification
         return $example->status()->isFailure() || $example->status()->isError();
     }
 
+    /**
+     * @param non-empty-string $signature
+     */
     private function __construct(string $signature, bool $timeout)
     {
         $this->signature = $signature;
@@ -100,6 +106,22 @@ final readonly class Falsification
     public function isSameAs(self $other): bool
     {
         return $this->signature === $other->signature;
+    }
+
+    /**
+     * Describes how the example falsified the property, for instance
+     * "RuntimeException at /path/to/FooTest.php:12" or "exceeding the time
+     * limit".
+     *
+     * @return non-empty-string
+     */
+    public function description(): string
+    {
+        if ($this->timeout) {
+            return 'exceeding the time limit';
+        }
+
+        return $this->signature;
     }
 
     private static function locationOf(Throwable $throwable): string
