@@ -11,6 +11,7 @@ namespace PHPUnit\Framework\PropertyBased;
 
 use const DEBUG_BACKTRACE_IGNORE_ARGS;
 use const FILTER_FLAG_IPV4;
+use const FILTER_FLAG_IPV6;
 use const FILTER_VALIDATE_IP;
 use const PHP_FLOAT_MAX;
 use const PHP_FLOAT_MIN;
@@ -27,6 +28,7 @@ use function debug_backtrace;
 use function enum_exists;
 use function filter_var;
 use function get_debug_type;
+use function inet_pton;
 use function interface_exists;
 use function ip2long;
 use function is_finite;
@@ -52,6 +54,7 @@ use PHPUnit\Framework\PropertyBased\Generator\ElementsGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\FloatGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\IntegerGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\Ipv4AddressGenerator;
+use PHPUnit\Framework\PropertyBased\Generator\Ipv6AddressGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\ListGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\NullableGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\OneOfGenerator;
@@ -841,6 +844,61 @@ final class Generators
         }
 
         return new Ipv4AddressGenerator($address, $prefixLength);
+    }
+
+    /**
+     * Generates IPv6 addresses of $network, given in CIDR notation, in their
+     * canonical text representation (RFC 5952): lowercase hexadecimal digits
+     * without leading zeros, the first longest run of at least two groups of
+     * zeros compressed to "::", and the last 32 bits of an IPv4-mapped
+     * address in dotted decimal notation. No zone identifier is generated.
+     *
+     * Half of the addresses are from the special-purpose ranges (RFC 6890)
+     * in $network, such as the unspecified address, loopback, IPv4-mapped
+     * addresses, the network for documentation, unique local addresses,
+     * link-local addresses, and multicast. Half of the addresses have a run
+     * of zeros of any length and at any position. The groups of 16 bits are
+     * biased towards all zeros and all ones.
+     *
+     * The simplest address is the network address of $network, :: by default.
+     *
+     * @throws InvalidGeneratorArgumentException
+     *
+     * @return ValueGenerator<non-empty-string>
+     */
+    public static function ipv6Addresses(string $network = '::/0'): ValueGenerator
+    {
+        if (preg_match('/^([0-9A-Fa-f:.]+)\/(0|[1-9][0-9]{0,2})$/', $network, $matches) !== 1 ||
+            filter_var($matches[1], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === false ||
+            (int) $matches[2] > 128) {
+            throw new InvalidGeneratorArgumentException(
+                sprintf(
+                    'The network (%s) must be an IPv6 address and the length of its prefix, from 0 to 128, in CIDR notation, for instance 2001:db8::/32',
+                    $network,
+                ),
+            );
+        }
+
+        $bytes        = inet_pton($matches[1]);
+        $prefixLength = (int) $matches[2];
+
+        assert($bytes !== false && $prefixLength >= 0);
+
+        $groups        = Ipv6AddressGenerator::groupsOf($bytes);
+        $networkGroups = Ipv6AddressGenerator::withoutHostBits($groups, $prefixLength);
+
+        if ($networkGroups !== $groups) {
+            throw new InvalidGeneratorArgumentException(
+                sprintf(
+                    'The address of the network (%s) must be its network address, whose host bits are zero: %s/%d',
+                    $network,
+                    Ipv6AddressGenerator::format($networkGroups),
+                    $prefixLength,
+                ),
+            );
+        }
+
+        return new Ipv6AddressGenerator($groups, $prefixLength);
     }
 
     /**

@@ -26,6 +26,7 @@ use function implode;
 use function is_array;
 use function max;
 use function mb_strlen;
+use function preg_match;
 use function strlen;
 use function substr;
 use Closure;
@@ -241,6 +242,12 @@ final class ShrinkerTest extends TestCase
                 '10.0.0.0',
                 Generators::ipv4Addresses(),
                 static fn (string $value): bool => filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE) === false,
+            ],
+
+            'IPv6 address that is link-local' => [
+                'fe80::',
+                Generators::ipv6Addresses(),
+                static fn (string $value): bool => preg_match('/^fe[89ab][0-9a-f]:/', $value) === 1,
             ],
 
             'value that is falsified by every example' => [
