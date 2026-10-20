@@ -29,6 +29,7 @@ use function mb_strlen;
 use function preg_match;
 use function strlen;
 use function substr;
+use function substr_count;
 use Closure;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -248,6 +249,12 @@ final class ShrinkerTest extends TestCase
                 'fe80::',
                 Generators::ipv6Addresses(),
                 static fn (string $value): bool => preg_match('/^fe[89ab][0-9a-f]:/', $value) === 1,
+            ],
+
+            'domain name of at least three labels' => [
+                'a.a.aa',
+                Generators::domainNames(),
+                static fn (string $value): bool => substr_count($value, '.') >= 2,
             ],
 
             'value that is falsified by every example' => [

@@ -50,6 +50,7 @@ use PHPUnit\Framework\PropertyBased\Generator\BytesGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\CodePointRanges;
 use PHPUnit\Framework\PropertyBased\Generator\ConstantGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\DeferredGenerator;
+use PHPUnit\Framework\PropertyBased\Generator\DomainNameGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\ElementsGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\FloatGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\IntegerGenerator;
@@ -899,6 +900,41 @@ final class Generators
         }
 
         return new Ipv6AddressGenerator($groups, $prefixLength);
+    }
+
+    /**
+     * Generates domain names of at most $maximumLength characters, which
+     * consist of letters, digits, and hyphens (RFC 1123), in lowercase and
+     * without a trailing dot.
+     *
+     * A domain name has at least two labels, each with 1 to 63 characters,
+     * neither starting nor ending with a hyphen, and without hyphens as their
+     * third and fourth character, which are reserved for internationalized
+     * domain names. The top-level domain has at least two letters and no
+     * other characters. Labels of 63 characters, labels of digits only,
+     * domain names of many labels, and domain names of $maximumLength
+     * characters are generated often.
+     *
+     * The simplest domain name is a.aa.
+     *
+     * @throws InvalidGeneratorArgumentException
+     *
+     * @return ValueGenerator<non-empty-string>
+     */
+    public static function domainNames(int $maximumLength = DomainNameGenerator::LONGEST_LENGTH): ValueGenerator
+    {
+        if ($maximumLength < DomainNameGenerator::SHORTEST_LENGTH || $maximumLength > DomainNameGenerator::LONGEST_LENGTH) {
+            throw new InvalidGeneratorArgumentException(
+                sprintf(
+                    'The maximum length of domain names (%d) must be from %d to %d',
+                    $maximumLength,
+                    DomainNameGenerator::SHORTEST_LENGTH,
+                    DomainNameGenerator::LONGEST_LENGTH,
+                ),
+            );
+        }
+
+        return new DomainNameGenerator($maximumLength);
     }
 
     /**
