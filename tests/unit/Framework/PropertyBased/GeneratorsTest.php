@@ -28,6 +28,7 @@ use function is_infinite;
 use function is_nan;
 use function max;
 use function mb_check_encoding;
+use function mb_ord;
 use function mb_str_split;
 use function mb_strlen;
 use function preg_match;
@@ -109,6 +110,7 @@ final class GeneratorsTest extends TestCase
             'booleans'           => [Generators::booleans()],
             'strings'            => [Generators::strings()],
             'strings (alphabet)' => [Generators::strings('01', 1, 8)],
+            'strings (ranges)'   => [Generators::strings(codePointRanges: [[0x41, 0x5A], [0x1F600, 0x1F64F]])],
             'bytes'              => [Generators::bytes()],
             'regular expression' => [Generators::fromRegularExpression('/^[a-z]{1,3}(-\d+|\.[^a-z])?$/u')],
             'elements'           => [Generators::elements('a', 'b', 'c')],
@@ -240,6 +242,22 @@ final class GeneratorsTest extends TestCase
             'more than two elements'  => [[[1, Generators::booleans(), 'extra']], 'Argument #1 of frequency() must be a list of a weight and a generator'],
             'weight that is zero'     => [[[0, Generators::booleans()]], 'The weight in argument #1 of frequency() (0) must be positive'],
             'weight that is negative' => [[[1, Generators::booleans()], [-1, Generators::booleans()]], 'The weight in argument #2 of frequency() (-1) must be positive'],
+        ];
+    }
+
+    /**
+     * @return array<string, array{float, float, bool, bool, bool, float, float}>
+     */
+    public static function rangeOfFloatsWithExcludedBoundsProvider(): array
+    {
+        return [
+            'excluded minimum'                             => [0.0, 1.0, true, false, true, 4.9E-324, 1.0],
+            'excluded maximum'                             => [0.0, 1.0, false, true, true, 0.0, 0.9999999999999999],
+            'excluded minimum and maximum'                 => [-1.0, 1.0, true, true, true, -0.9999999999999999, 0.9999999999999999],
+            'excluded positive minimum without subnormals' => [0.0, 1.0, true, false, false, PHP_FLOAT_MIN, 1.0],
+            'excluded negative minimum without subnormals' => [-PHP_FLOAT_MIN, 1.0, true, false, false, -0.0, 1.0],
+            'excluded negative maximum without subnormals' => [-1.0, 0.0, false, true, false, -1.0, -PHP_FLOAT_MIN],
+            'excluded positive maximum without subnormals' => [-1.0, PHP_FLOAT_MIN, false, true, false, -1.0, 0.0],
         ];
     }
 
@@ -431,22 +449,6 @@ final class GeneratorsTest extends TestCase
         Generators::floats($minimum, $maximum);
     }
 
-    /**
-     * @return array<string, array{float, float, bool, bool, bool, float, float}>
-     */
-    public static function rangeOfFloatsWithExcludedBoundsProvider(): array
-    {
-        return [
-            'excluded minimum'                                          => [0.0, 1.0, true, false, true, 4.9E-324, 1.0],
-            'excluded maximum'                                          => [0.0, 1.0, false, true, true, 0.0, 0.9999999999999999],
-            'excluded minimum and maximum'                              => [-1.0, 1.0, true, true, true, -0.9999999999999999, 0.9999999999999999],
-            'excluded positive minimum without subnormals'              => [0.0, 1.0, true, false, false, PHP_FLOAT_MIN, 1.0],
-            'excluded negative minimum without subnormals'              => [-PHP_FLOAT_MIN, 1.0, true, false, false, -0.0, 1.0],
-            'excluded negative maximum without subnormals'              => [-1.0, 0.0, false, true, false, -1.0, -PHP_FLOAT_MIN],
-            'excluded positive maximum without subnormals'              => [-1.0, PHP_FLOAT_MIN, false, true, false, -1.0, 0.0],
-        ];
-    }
-
     #[DataProvider('rangeOfFloatsWithExcludedBoundsProvider')]
     public function testGeneratesFloatsWithinTheRangeWithoutItsExcludedBounds(float $minimum, float $maximum, bool $excludeMinimum, bool $excludeMaximum, bool $allowSubnormals, float $smallest, float $largest): void
     {
@@ -494,6 +496,43 @@ final class GeneratorsTest extends TestCase
         $this->expectExceptionMessage('The minimum and the maximum must not be subnormal when subnormal floats are not allowed');
 
         Generators::floats(4.9E-324, 1.0, allowSubnormals: false);
+    }
+
+    public function testGeneratesStringsOfCharactersFromCodePointRanges(): void
+    {
+        $characters = [];
+
+        foreach ($this->values(Generators::strings(minimumLength: 1, maximumLength: 10, codePointRanges: [[0x30, 0x39], [0x4E00, 0x9FFF]]), 500) as $value) {
+            $this->assertTrue(mb_check_encoding($value, 'UTF-8'));
+
+            foreach (mb_str_split($value) as $character) {
+                $codePoint = mb_ord($character);
+
+                $this->assertTrue(($codePoint >= 0x30 && $codePoint <= 0x39) || ($codePoint >= 0x4E00 && $codePoint <= 0x9FFF));
+
+                $characters[] = $codePoint;
+            }
+        }
+
+        // the characters of the small range are chosen about as often as
+        // those of the large one
+        $digits = count(array_filter($characters, static fn (int $codePoint): bool => $codePoint <= 0x39));
+
+        $this->assertGreaterThan(count($characters) / 4, $digits);
+        $this->assertLessThan(3 * count($characters) / 4, $digits);
+    }
+
+    public function testTheSimplestStringOfCharactersFromCodePointRangesConsistsOfTheLowestCodePoint(): void
+    {
+        $this->assertSame('00', $this->replay(Generators::strings(minimumLength: 2, codePointRanges: [[0x41, 0x5A], [0x30, 0x39]]), []));
+    }
+
+    public function testEitherAnAlphabetOrCodePointRangesCanBeSpecified(): void
+    {
+        $this->expectException(InvalidGeneratorArgumentException::class);
+        $this->expectExceptionMessage('Either an alphabet or code point ranges can be specified, not both');
+
+        Generators::strings('ab', codePointRanges: [[0x41, 0x5A]]);
     }
 
     public function testGeneratesBothBooleans(): void

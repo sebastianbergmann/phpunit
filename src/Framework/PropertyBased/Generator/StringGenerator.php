@@ -38,6 +38,7 @@ final readonly class StringGenerator extends AbstractGenerator
      * @var ?non-empty-list<non-empty-string>
      */
     private ?array $alphabet;
+    private ?CodePointRanges $codePointRanges;
     private Repetition $repetition;
     private Distribution $character;
 
@@ -47,25 +48,47 @@ final readonly class StringGenerator extends AbstractGenerator
     private string $label;
 
     /**
-     * @param ?non-empty-list<non-empty-string> $alphabet      the characters to choose from, or null for all Unicode scalar values
+     * @param ?non-empty-list<non-empty-string> $alphabet        the characters to choose from, or null for all Unicode scalar values or the code point ranges
      * @param non-negative-int                  $minimumLength
      * @param ?non-negative-int                 $maximumLength
+     * @param ?CodePointRanges                  $codePointRanges the code points of the characters to choose from when there is no alphabet, or null for all Unicode scalar values
      */
-    public function __construct(?array $alphabet, int $minimumLength, ?int $maximumLength)
+    public function __construct(?array $alphabet, int $minimumLength, ?int $maximumLength, ?CodePointRanges $codePointRanges = null)
     {
+        assert($alphabet === null || $codePointRanges === null);
+
         $alphabetSize = 'unicode';
 
         if ($alphabet !== null) {
             $alphabetSize = (string) count($alphabet);
         }
 
+        if ($codePointRanges !== null) {
+            $alphabetSize = $codePointRanges->asString();
+        }
+
         $this->label = self::labelOf('strings', $alphabetSize, (string) $minimumLength, var_export($maximumLength, true));
 
-        $this->alphabet   = $alphabet;
-        $this->repetition = new Repetition(self::labelOf('element', $this->label), $minimumLength, $maximumLength);
+        $this->alphabet        = $alphabet;
+        $this->codePointRanges = $codePointRanges;
+        $this->repetition      = new Repetition(self::labelOf('element', $this->label), $minimumLength, $maximumLength);
 
         if ($alphabet !== null) {
             $this->character = new UniformDistribution;
+
+            return;
+        }
+
+        // the characters of each range are chosen equally often, so that a
+        // small range is not drowned out by a large one
+        if ($codePointRanges !== null) {
+            $ranges = [];
+
+            foreach ($codePointRanges->indexRanges() as $indexRange) {
+                $ranges[] = ['weight' => 1.0, 'minimum' => $indexRange['minimum'], 'maximum' => $indexRange['maximum']];
+            }
+
+            $this->character = new WeightedRangesDistribution($ranges);
 
             return;
         }
@@ -119,6 +142,14 @@ final readonly class StringGenerator extends AbstractGenerator
     {
         if ($this->alphabet !== null) {
             return $source->choose($this->alphabet, $this->character);
+        }
+
+        if ($this->codePointRanges !== null) {
+            $character = mb_chr($this->codePointRanges->codePoint($source->draw($this->codePointRanges->numberOfCodePoints() - 1, $this->character)), 'UTF-8');
+
+            assert($character !== false && $character !== '');
+
+            return $character;
         }
 
         $index = $source->draw(CodePoints::LARGEST_INDEX, $this->character);
