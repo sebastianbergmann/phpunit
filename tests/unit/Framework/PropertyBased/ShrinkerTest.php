@@ -112,6 +112,17 @@ final class ShrinkerTest extends TestCase
                 static fn (array $value): bool => $value[0] * $value[1] >= 1000,
             ],
 
+            'list whose size an earlier value determines, with an index into it' => [
+                [[0, 0], 1],
+                Generators::integers(1, 10)->flatMap(
+                    static fn (int $size): ValueGenerator => Generators::tuples(
+                        Generators::lists(Generators::integers(0, 9), $size, $size),
+                        Generators::integers(0, $size - 1),
+                    ),
+                ),
+                static fn (array $value): bool => array_search($value[0][$value[1]], $value[0], true) !== $value[1],
+            ],
+
             'list with two equal elements' => [
                 [0, 0],
                 Generators::lists(Generators::integers()),
