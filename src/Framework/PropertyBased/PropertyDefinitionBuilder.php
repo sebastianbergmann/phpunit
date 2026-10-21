@@ -19,10 +19,8 @@ use function interface_exists;
 use function is_array;
 use function is_int;
 use function lcfirst;
-use function method_exists;
 use function sprintf;
 use function strtolower;
-use function trait_exists;
 use Closure;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorDeriver;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorRegistry;
@@ -398,60 +396,11 @@ final readonly class PropertyDefinitionBuilder
      */
     private function generatorSpecifiedWithForAll(string $className, string $methodName, ForAll $forAll): Closure|GeneratorMethod
     {
-        $generator = $forAll->generator();
-
-        if ($generator instanceof Closure) {
-            return $generator;
+        try {
+            return new GeneratorMethodValidator()->specifiedWithForAll($forAll);
+        } catch (InvalidGeneratorMethodException $e) {
+            throw InvalidPropertyException::because($className, $methodName, $e->getMessage());
         }
-
-        $parameterName      = $forAll->parameterName();
-        $generatorClassName = $forAll->className();
-
-        $this->ensureIsClass(
-            $className,
-            $methodName,
-            $generatorClassName,
-            sprintf('the generator for parameter $%s is specified as a method of', $parameterName),
-        );
-
-        if ($generator === '') {
-            throw InvalidPropertyException::because(
-                $className,
-                $methodName,
-                sprintf('the generator for parameter $%s is specified as a method whose name is empty', $parameterName),
-            );
-        }
-
-        if (!method_exists($generatorClassName, $generator)) {
-            throw InvalidPropertyException::because(
-                $className,
-                $methodName,
-                sprintf(
-                    'the generator for parameter $%s is specified as %s::%s(), which does not exist',
-                    $parameterName,
-                    $generatorClassName,
-                    $generator,
-                ),
-            );
-        }
-
-        $reason = $this->whyGeneratorCannotBeCreatedWith(new ReflectionMethod($generatorClassName, $generator));
-
-        if ($reason !== null) {
-            throw InvalidPropertyException::because(
-                $className,
-                $methodName,
-                sprintf(
-                    'the generator for parameter $%s is specified as %s::%s(), which %s',
-                    $parameterName,
-                    $generatorClassName,
-                    $generator,
-                    $reason,
-                ),
-            );
-        }
-
-        return new GeneratorMethod($generatorClassName, $generator);
     }
 
     /**
@@ -515,12 +464,11 @@ final readonly class PropertyDefinitionBuilder
 
             $usedClassName = $metadata->className();
 
-            $this->ensureIsClass(
-                $className,
-                $methodName,
-                $usedClassName,
-                '#[UseGenerators] is used with',
-            );
+            try {
+                new GeneratorMethodValidator()->ensureIsClass($usedClassName, '#[UseGenerators] is used with');
+            } catch (InvalidGeneratorMethodException $e) {
+                throw InvalidPropertyException::because($className, $methodName, $e->getMessage());
+            }
 
             $usedClassNames[strtolower($usedClassName)] = $usedClassName;
         }
@@ -576,7 +524,7 @@ final readonly class PropertyDefinitionBuilder
 
                 $registeredClassName = $metadata->className();
                 $generatorMethod     = new GeneratorMethod($declaringClass, $name);
-                $reason              = $this->whyGeneratorCannotBeCreatedWith($method);
+                $reason              = new GeneratorMethodValidator()->whyGeneratorCannotBeCreatedWith($method);
 
                 if ($reason !== null) {
                     throw InvalidPropertyException::because(
@@ -632,95 +580,6 @@ final readonly class PropertyDefinitionBuilder
         }
 
         return $generators;
-    }
-
-    /**
-     * Returns why a generator cannot be created by calling a method on its
-     * class without arguments, which is how the methods that are specified
-     * with #[ForAll] or #[ForAllExternal] and the methods that are registered
-     * with #[GeneratorFor] are called, or null if it can be.
-     *
-     * @return ?non-empty-string
-     */
-    private function whyGeneratorCannotBeCreatedWith(ReflectionMethod $method): ?string
-    {
-        if (!$method->isPublic() || !$method->isStatic()) {
-            return 'is not public and static';
-        }
-
-        if ($method->isAbstract()) {
-            return 'is abstract';
-        }
-
-        if ($method->getNumberOfRequiredParameters() > 0) {
-            return 'has required parameters';
-        }
-
-        return null;
-    }
-
-    /**
-     * Reports a class on which methods that return generators are to be
-     * called whose name is empty, that cannot be loaded, that does not exist,
-     * or that is an interface or a trait, whose static methods cannot be
-     * called.
-     *
-     * @param class-string<TestCase> $className
-     * @param non-empty-string       $methodName
-     * @param non-empty-string       $usage      the beginning of the message, which continues with the name of the class, for instance "#[UseGenerators] is used with"
-     *
-     * @throws InvalidPropertyException
-     */
-    private function ensureIsClass(string $className, string $methodName, string $generatorClassName, string $usage): void
-    {
-        if ($generatorClassName === '') {
-            throw InvalidPropertyException::because(
-                $className,
-                $methodName,
-                sprintf('%s a class whose name is empty', $usage),
-            );
-        }
-
-        $reference = $usage . ' ' . $generatorClassName;
-
-        try {
-            $exists = class_exists($generatorClassName);
-        } catch (Throwable $t) {
-            // for instance, the class cannot be loaded because its parent
-            // class does not exist
-            throw InvalidPropertyException::because(
-                $className,
-                $methodName,
-                sprintf('%s, which cannot be loaded, %s was raised: %s', $reference, $t::class, $t->getMessage()),
-            );
-        }
-
-        if ($exists) {
-            return;
-        }
-
-        // the autoloader has already been invoked by class_exists()
-        if (interface_exists($generatorClassName, false)) {
-            throw InvalidPropertyException::because(
-                $className,
-                $methodName,
-                sprintf('%s, which is an interface, not a class', $reference),
-            );
-        }
-
-        if (trait_exists($generatorClassName, false)) {
-            throw InvalidPropertyException::because(
-                $className,
-                $methodName,
-                sprintf('%s, which is a trait, not a class', $reference),
-            );
-        }
-
-        throw InvalidPropertyException::because(
-            $className,
-            $methodName,
-            sprintf('%s, which does not exist', $reference),
-        );
     }
 
     /**

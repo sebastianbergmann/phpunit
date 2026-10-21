@@ -47,6 +47,8 @@ use Random\Randomizer;
 #[CoversClass(PropertyDefinition::class)]
 #[CoversClass(ExplicitExample::class)]
 #[CoversClass(GeneratorMethod::class)]
+#[CoversClass(GeneratorMethodValidator::class)]
+#[CoversClass(InvalidGeneratorMethodException::class)]
 #[CoversClass(InvalidPropertyException::class)]
 #[Small]
 #[Group('framework')]
