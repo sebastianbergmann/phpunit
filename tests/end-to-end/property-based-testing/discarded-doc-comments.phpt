@@ -1,6 +1,7 @@
 --TEST--
 The types in the @param tags of a property and of the constructors that objects are derived from are read from the source file when opcache.save_comments is disabled
 --INI--
+opcache.enable=1
 opcache.enable_cli=1
 opcache.save_comments=0
 opcache.file_update_protection=0
