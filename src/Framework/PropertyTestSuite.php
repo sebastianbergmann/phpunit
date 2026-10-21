@@ -135,6 +135,20 @@ final class PropertyTestSuite extends IterativeTestSuite
     private int $numberOfExamplesRejected = 0;
 
     /**
+     * How many of the generated examples that were checked ran a state
+     * machine, and how many of these took no step because none of its rules
+     * could be applied.
+     *
+     * @var non-negative-int
+     */
+    private int $numberOfExamplesThatRanAStateMachine = 0;
+
+    /**
+     * @var non-negative-int
+     */
+    private int $numberOfExamplesWhoseStateMachineTookNoStep = 0;
+
+    /**
      * How many of the generated examples were rejected for each reason, in
      * the order in which the reasons first occurred.
      *
@@ -456,6 +470,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             $this->numberOfExamplesChecked++;
 
             $this->countClassifications($example->classificationsOfPropertyExample());
+            $this->countStepsOfStateMachine($example->numberOfStepsOfStateMachineOfPropertyExample());
             $this->observations()->record($example->observationsOfPropertyExample());
             $search->exampleChecked($source->sequence(), $example->targetsOfPropertyExample());
             $this->recordCheckedExample($events, $exampleEvents, $run);
@@ -974,6 +989,22 @@ final class PropertyTestSuite extends IterativeTestSuite
         }
     }
 
+    /**
+     * @param ?non-negative-int $numberOfSteps the number of steps that the state machine of an example took, null when it did not run one
+     */
+    private function countStepsOfStateMachine(?int $numberOfSteps): void
+    {
+        if ($numberOfSteps === null) {
+            return;
+        }
+
+        $this->numberOfExamplesThatRanAStateMachine++;
+
+        if ($numberOfSteps === 0) {
+            $this->numberOfExamplesWhoseStateMachineTookNoStep++;
+        }
+    }
+
     private function observations(): Observations
     {
         if ($this->observations === null) {
@@ -1305,6 +1336,16 @@ final class PropertyTestSuite extends IterativeTestSuite
             foreach ($this->unmetClassificationRequirements() as $message) {
                 $messages[] = $message;
             }
+        }
+
+        // the steps are drawn so that most examples take at least one step,
+        // so a state machine that took no step in most of them is stuck
+        if ($passed && $this->numberOfExamplesWhoseStateMachineTookNoStep * 2 > $this->numberOfExamplesThatRanAStateMachine) {
+            $messages[] = sprintf(
+                'The state machine of this property took no step in %d of %d examples because none of its rules could be applied; make sure that the preconditions of the rules hold and that values are produced for the pools from which they take values',
+                $this->numberOfExamplesWhoseStateMachineTookNoStep,
+                $this->numberOfExamplesThatRanAStateMachine,
+            );
         }
 
         // the reasons that concern the property as a whole are decided like

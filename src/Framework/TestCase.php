@@ -130,6 +130,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private bool $stateMachineWasRun   = false;
 
     /**
+     * @var ?non-negative-int
+     */
+    private ?int $numberOfStepsOfStateMachine = null;
+
+    /**
      * Why the example of a property was rejected, if it was: by assume(), or
      * because draw() could not generate a value.
      */
@@ -937,6 +942,20 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * The number of steps that the state machine that the example of a
+     * property ran with runStateMachine() took, null when it did not run one
+     * or the state machine did not finish.
+     *
+     * @return ?non-negative-int
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    final public function numberOfStepsOfStateMachineOfPropertyExample(): ?int
+    {
+        return $this->numberOfStepsOfStateMachine;
+    }
+
+    /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     final public function isPropertyExample(): bool
@@ -1217,6 +1236,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             throw new ExampleRejectedByAssumptionException;
         }
+
+        $this->numberOfStepsOfStateMachine = $stateMachine->numberOfSteps();
 
         $this->observe('steps', $stateMachine->numberOfSteps());
 
