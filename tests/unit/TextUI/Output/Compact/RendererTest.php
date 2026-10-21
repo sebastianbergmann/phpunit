@@ -86,7 +86,7 @@ final class RendererTest extends AbstractEventTestCase
                 'FooTest.php:1',
                 null,
             ),
-            new PropertyFalsified($this->telemetryInfo(), $this->testValueObject(), 1234, 2, 3, 1, false, false, [0], ['value' => '0'], null, [], [], 0, 0),
+            new PropertyFalsified($this->telemetryInfo(), $this->testValueObject(), 1234, 2, 3, 1, false, false, [0], ['value' => '0'], null, [], [], [], 0, 0),
         );
 
         /* @noinspection PhpPossiblePolymorphicInvocationInspection */

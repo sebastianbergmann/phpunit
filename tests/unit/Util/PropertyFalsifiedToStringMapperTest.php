@@ -115,6 +115,48 @@ EOT,
         );
     }
 
+    public function testDescribesTheStepsOfTheStateMachineThatTheMinimalCounterexampleRan(): void
+    {
+        $this->assertStringEqualsStringIgnoringLineEndings(
+            <<<'EOT'
+Property falsified after 3 examples, counterexample shrunk in 25 steps:
+
+    $accounts1 = $machine->open();
+    $machine->deposit(account: $accounts1, amount: 1); // [
+    //     0 => 1,
+    // ]
+    $machine->balanceIsNotNegative(); // invariant failed
+
+EOT,
+            PropertyFalsifiedToStringMapper::map(
+                $this->event(3, 40, 25, false, false, [], null, [], [], 0, 0, ['$accounts1 = $machine->open();', "\$machine->deposit(account: \$accounts1, amount: 1); // [\n//     0 => 1,\n// ]", '$machine->balanceIsNotNegative(); // invariant failed']),
+            ),
+        );
+    }
+
+    public function testDescribesTheStepsOfTheStateMachineThatTheMinimalCounterexampleRanAfterItsArgumentsAndTheValuesThatItDrew(): void
+    {
+        $this->assertStringEqualsStringIgnoringLineEndings(
+            <<<'EOT'
+Property falsified after 3 examples, counterexample shrunk in 25 steps:
+
+    $size = 1;
+
+    Draw 1: 0
+
+    $machine->push(value: 0);
+
+Property also falsified by RuntimeException at /path/to/FooTest.php:12 with this counterexample:
+
+    $machine->pop();
+
+EOT,
+            PropertyFalsifiedToStringMapper::map(
+                $this->event(3, 40, 25, false, false, ['size' => '1'], null, [['label' => null, 'value' => '0']], [['description' => 'RuntimeException at /path/to/FooTest.php:12', 'choiceSequence' => [1, 1, 0], 'counterexample' => [], 'drawnValues' => [], 'steps' => ['$machine->pop();']]], 0, 0, ['$machine->push(value: 0);']),
+            ),
+        );
+    }
+
     public function testDescribesTheOtherWaysInWhichThePropertyWasFalsifiedAfterHowShrinkingWasStopped(): void
     {
         $this->assertStringEqualsStringIgnoringLineEndings(
@@ -133,7 +175,7 @@ Property also falsified by RuntimeException at /path/to/FooTest.php:12 with this
 
 EOT,
             PropertyFalsifiedToStringMapper::map(
-                $this->event(2, 3, 1, true, false, ['size' => '5'], null, [], [['description' => 'RuntimeException at /path/to/FooTest.php:12', 'choiceSequence' => [3, 0], 'counterexample' => ['size' => '3'], 'drawnValues' => [['label' => null, 'value' => '0']]]]),
+                $this->event(2, 3, 1, true, false, ['size' => '5'], null, [], [['description' => 'RuntimeException at /path/to/FooTest.php:12', 'choiceSequence' => [3, 0], 'counterexample' => ['size' => '3'], 'drawnValues' => [['label' => null, 'value' => '0']], 'steps' => []]]),
             ),
         );
     }
@@ -267,7 +309,7 @@ EOT,
      * @param non-negative-int                                                                                                                                                                                       $numberOfReplays
      * @param non-negative-int                                                                                                                                                                                       $numberOfReproductions
      */
-    private function event(int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, array $counterexample, null|int|string $explicitExample = null, array $drawnValues = [], array $otherFalsifications = [], int $numberOfReplays = 0, int $numberOfReproductions = 0): PropertyFalsified
+    private function event(int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, array $counterexample, null|int|string $explicitExample = null, array $drawnValues = [], array $otherFalsifications = [], int $numberOfReplays = 0, int $numberOfReproductions = 0, array $steps = []): PropertyFalsified
     {
         return new PropertyFalsified(
             $this->telemetryInfo(),
@@ -282,6 +324,7 @@ EOT,
             $counterexample,
             $explicitExample,
             $drawnValues,
+            $steps,
             $otherFalsifications,
             $numberOfReplays,
             $numberOfReproductions,

@@ -809,22 +809,23 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
-     * @param non-negative-int                                                                                                                                                                                       $seed
-     * @param non-negative-int                                                                                                                                                                                       $numberOfExamplesChecked
-     * @param non-negative-int                                                                                                                                                                                       $numberOfShrinkingAttempts
-     * @param non-negative-int                                                                                                                                                                                       $numberOfShrinkingSteps
-     * @param list<non-negative-int>                                                                                                                                                                                 $choiceSequence
-     * @param array<non-empty-string, string>                                                                                                                                                                        $counterexample
-     * @param null|int|non-empty-string                                                                                                                                                                              $explicitExample
-     * @param list<array{label: ?non-empty-string, value: string}>                                                                                                                                                   $drawnValues
-     * @param list<array{description: non-empty-string, choiceSequence: list<non-negative-int>, counterexample: array<non-empty-string, string>, drawnValues: list<array{label: ?non-empty-string, value: string}>}> $otherFalsifications
-     * @param non-negative-int                                                                                                                                                                                       $numberOfReplays
-     * @param non-negative-int                                                                                                                                                                                       $numberOfReproductions
+     * @param non-negative-int                                                                                                                                                                                                                      $seed
+     * @param non-negative-int                                                                                                                                                                                                                      $numberOfExamplesChecked
+     * @param non-negative-int                                                                                                                                                                                                                      $numberOfShrinkingAttempts
+     * @param non-negative-int                                                                                                                                                                                                                      $numberOfShrinkingSteps
+     * @param list<non-negative-int>                                                                                                                                                                                                                $choiceSequence
+     * @param array<non-empty-string, string>                                                                                                                                                                                                       $counterexample
+     * @param null|int|non-empty-string                                                                                                                                                                                                             $explicitExample
+     * @param list<array{label: ?non-empty-string, value: string}>                                                                                                                                                                                  $drawnValues
+     * @param list<non-empty-string>                                                                                                                                                                                                                $steps
+     * @param list<array{description: non-empty-string, choiceSequence: list<non-negative-int>, counterexample: array<non-empty-string, string>, drawnValues: list<array{label: ?non-empty-string, value: string}>, steps: list<non-empty-string>}> $otherFalsifications
+     * @param non-negative-int                                                                                                                                                                                                                      $numberOfReplays
+     * @param non-negative-int                                                                                                                                                                                                                      $numberOfReproductions
      *
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
-    public function testPropertyFalsified(Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, array $choiceSequence, array $counterexample, null|int|string $explicitExample, array $drawnValues, array $otherFalsifications, int $numberOfReplays, int $numberOfReproductions): void
+    public function testPropertyFalsified(Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, array $choiceSequence, array $counterexample, null|int|string $explicitExample, array $drawnValues, array $steps, array $otherFalsifications, int $numberOfReplays, int $numberOfReproductions): void
     {
         $this->dispatcher->dispatch(
             new Test\PropertyFalsified(
@@ -840,6 +841,7 @@ final class DispatchingEmitter implements Emitter
                 $counterexample,
                 $explicitExample,
                 $drawnValues,
+                $steps,
                 $otherFalsifications,
                 $numberOfReplays,
                 $numberOfReproductions,

@@ -21,9 +21,9 @@ use Throwable;
  * arguments, so that they are replayed and shrunk together with the
  * arguments.
  *
- * The values that the minimal counterexample draws are reported. They are
- * exported when they are drawn, before the example can change the state of
- * an object it drew.
+ * The values that the minimal counterexample draws and the steps that it
+ * takes are reported. They are exported when they are drawn, before the
+ * example can change the state of an object it drew.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -42,7 +42,8 @@ final class DrawnValues
     /**
      * @var list<array{label: ?non-empty-string, value: string}>
      */
-    private array $exported = [];
+    private array $exported                   = [];
+    private ?StateMachineRunner $stateMachine = null;
 
     /**
      * Draws values that are not reported, for an example that is generated or
@@ -99,16 +100,16 @@ final class DrawnValues
      */
     public function runStateMachine(object $machine, int $maximumNumberOfSteps): StateMachineRunner
     {
-        $stateMachine = new StateMachineRunner(
+        $this->stateMachine = new StateMachineRunner(
             $this->source,
             $this->exporter,
             new StateMachineDefinitionBuilder()->build($machine::class, $this->source->deriver()),
             $machine,
         );
 
-        $stateMachine->run($maximumNumberOfSteps);
+        $this->stateMachine->run($maximumNumberOfSteps);
 
-        return $stateMachine;
+        return $this->stateMachine;
     }
 
     /**
@@ -121,5 +122,21 @@ final class DrawnValues
     public function exported(): array
     {
         return $this->exported;
+    }
+
+    /**
+     * The steps of the state machine that was run, written as PHP code, in
+     * the order in which they were taken. Steps that are not reported are not
+     * recorded.
+     *
+     * @return list<non-empty-string>
+     */
+    public function steps(): array
+    {
+        if ($this->stateMachine === null) {
+            return [];
+        }
+
+        return $this->stateMachine->steps();
     }
 }
