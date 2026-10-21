@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework;
 
 use function array_any;
+use function array_key_exists;
 use function array_keys;
 use function array_merge;
 use function array_values;
@@ -142,6 +143,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @var list<array{label: non-empty-string, value: float|int}>
      */
     private array $observations = [];
+
+    /**
+     * @var array<non-empty-string, float|int>
+     */
+    private array $targets = [];
 
     /**
      * @var positive-int
@@ -925,6 +931,19 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * The scores that the example of a property targeted with target(), by
+     * their label.
+     *
+     * @return array<non-empty-string, float|int>
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    final public function targetsOfPropertyExample(): array
+    {
+        return $this->targets;
+    }
+
+    /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     final public function isPropertyExample(): bool
@@ -1186,6 +1205,45 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         $this->observations[] = ['label' => $label, 'value' => $value];
+    }
+
+    /**
+     * Targets a score for the current example of a property: once half of
+     * the examples of the property have been checked, the other half are
+     * spent on searching for examples with higher scores, by changing the
+     * choices of the example with the highest score so far. A property that
+     * fails only for rare examples is falsified more often when a score
+     * measures how close an example comes to them. The highest score of each
+     * label is stated in the statistics of the property.
+     *
+     * @param non-empty-string $label
+     *
+     * @throws Exception when it is not called in a property, the label is empty, the score is not finite, or a score was already targeted with the label
+     */
+    final protected function target(string $label, float|int $score): void
+    {
+        if (!$this->isPropertyExample()) {
+            throw new Exception('target() can only be used in a property');
+        }
+
+        if ($label === '') {
+            throw new Exception('The label passed to target() must not be empty');
+        }
+
+        if (!is_finite($score)) {
+            throw new Exception('The score passed to target() must be finite');
+        }
+
+        if (array_key_exists($label, $this->targets)) {
+            throw new Exception(
+                sprintf(
+                    'target() can only be used once per example with the label "%s"',
+                    $label,
+                ),
+            );
+        }
+
+        $this->targets[$label] = $score;
     }
 
     /**

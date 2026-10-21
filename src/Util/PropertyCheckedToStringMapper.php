@@ -19,8 +19,9 @@ use PHPUnit\Event\Test\PropertyChecked;
  * Describes the statistics of a property: how many of its examples were
  * checked and rejected, the percentage of the examples that were checked
  * that were classified with each label, from the largest to the smallest
- * percentage, and the statistics of the values that were observed with each
- * label, for instance:
+ * percentage, the statistics of the values that were observed with each
+ * label, and the highest score that was targeted with each label, for
+ * instance:
  *
  *     100 examples checked, 3 rejected
  *
@@ -29,6 +30,8 @@ use PHPUnit\Event\Test\PropertyChecked;
  *           1.0% zero
  *
  *     size: count 100, min 0, median 4, mean 5.12, p90 11, max 32
+ *
+ *     sum: highest targeted score 1250
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -47,7 +50,7 @@ final readonly class PropertyCheckedToStringMapper
             $event->numberOfExamplesRejected(),
         ) . PHP_EOL;
 
-        return $buffer . self::classifications($event) . self::observations($event);
+        return $buffer . self::classifications($event) . self::observations($event) . self::targets($event);
     }
 
     private static function classifications(PropertyChecked $event): string
@@ -94,6 +97,25 @@ final readonly class PropertyCheckedToStringMapper
                 self::number($observation['mean']),
                 self::number($observation['percentile90']),
                 self::number($observation['maximum']),
+            ) . PHP_EOL;
+        }
+
+        return $buffer;
+    }
+
+    private static function targets(PropertyChecked $event): string
+    {
+        if ($event->targets() === []) {
+            return '';
+        }
+
+        $buffer = PHP_EOL;
+
+        foreach ($event->targets() as $target) {
+            $buffer .= self::INDENTATION . sprintf(
+                '%s: highest targeted score %s',
+                $target['label'],
+                self::number($target['highestScore']),
             ) . PHP_EOL;
         }
 

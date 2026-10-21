@@ -388,7 +388,7 @@ final class EventAggregatorTest extends AbstractEventTestCase
                     $beforeOutcome,
                     function (): void
                     {
-                        EventFacade::emitter()->testPropertyChecked($this->testValueObject(), 1, 1, 0, [], []);
+                        EventFacade::emitter()->testPropertyChecked($this->testValueObject(), 1, 1, 0, [], [], []);
                     },
                     $numberOfAssertions,
                 );
