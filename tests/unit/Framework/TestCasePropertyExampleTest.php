@@ -22,6 +22,7 @@ use PHPUnit\TestFixture\PropertyBased\Examples\ExampleWithFailedAssertionInTearD
 use PHPUnit\TestFixture\PropertyBased\Examples\ExampleWithFailingTearDownTest;
 use PHPUnit\TestFixture\PropertyBased\Examples\ExampleWithOnNotSuccessfulTestTest;
 use PHPUnit\TestFixture\PropertyBased\Examples\ObservingExampleTest;
+use PHPUnit\TestFixture\PropertyBased\Examples\TargetingExampleTest;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 use RuntimeException;
 use Throwable;
@@ -62,6 +63,19 @@ final class TestCasePropertyExampleTest extends TestCase
             'empty label'       => ['testObservesAValueWithAnEmptyLabel', 'The label passed to observe() must not be empty'],
             'NAN'               => ['testObservesNan', 'The value passed to observe() must be finite'],
             'negative infinity' => ['testObservesInfinity', 'The value passed to observe() must be finite'],
+        ];
+    }
+
+    /**
+     * @return array<string, array{non-empty-string, non-empty-string}>
+     */
+    public static function invalidTargetProvider(): array
+    {
+        return [
+            'empty label'      => ['testTargetsAScoreWithAnEmptyLabel', 'The label passed to target() must not be empty'],
+            'NAN'              => ['testTargetsNan', 'The score passed to target() must be finite'],
+            'infinity'         => ['testTargetsInfinity', 'The score passed to target() must be finite'],
+            'label used twice' => ['testTargetsAScoreWithTheSameLabelTwice', 'target() can only be used once per example with the label "size"'],
         ];
     }
 
@@ -322,6 +336,41 @@ final class TestCasePropertyExampleTest extends TestCase
         $this->assertSame('observe() can only be used in a property', $test->status()->message());
     }
 
+    public function testAnExampleTargetsScoresWithTheirLabels(): void
+    {
+        $test = $this->targetingExample('testTargetsScores');
+
+        $this->runExample($test);
+
+        $this->assertTrue($test->status()->isSuccess());
+        $this->assertSame(['size' => 3, 'ratio' => 0.5], $test->targetsOfPropertyExample());
+    }
+
+    /**
+     * @param non-empty-string $methodName
+     * @param non-empty-string $message
+     */
+    #[DataProvider('invalidTargetProvider')]
+    public function testAnExampleCannotTargetAScoreWithAnEmptyLabelAScoreThatIsNotFiniteOrTwoScoresWithTheSameLabel(string $methodName, string $message): void
+    {
+        $test = $this->targetingExample($methodName);
+
+        $this->runExample($test);
+
+        $this->assertTrue($test->status()->isError());
+        $this->assertSame($message, $test->status()->message());
+    }
+
+    public function testTargetCanOnlyBeUsedInAProperty(): void
+    {
+        $test = new TargetingExampleTest('testUsesTargetOutsideOfAProperty');
+
+        $this->runExample($test);
+
+        $this->assertTrue($test->status()->isError());
+        $this->assertSame('target() can only be used in a property', $test->status()->message());
+    }
+
     public function testAssumeCanOnlyBeUsedInAProperty(): void
     {
         $test = new ExampleTest('testUsesAssumeOutsideOfAProperty');
@@ -430,6 +479,18 @@ final class TestCasePropertyExampleTest extends TestCase
     private function observingExample(string $methodName): ObservingExampleTest
     {
         $test = new ObservingExampleTest($methodName);
+
+        $test->setPropertyExample([3]);
+
+        return $test;
+    }
+
+    /**
+     * @param non-empty-string $methodName
+     */
+    private function targetingExample(string $methodName): TargetingExampleTest
+    {
+        $test = new TargetingExampleTest($methodName);
 
         $test->setPropertyExample([3]);
 
