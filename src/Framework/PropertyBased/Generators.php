@@ -962,7 +962,7 @@ final class Generators
      *
      * @return ValueGenerator<non-empty-string>
      */
-    public static function domainNames(int $maximumLength = DomainNameGenerator::LONGEST_LENGTH): ValueGenerator
+    public static function domainNames(int $maximumLength = 253): ValueGenerator
     {
         if ($maximumLength < DomainNameGenerator::SHORTEST_LENGTH || $maximumLength > DomainNameGenerator::LONGEST_LENGTH) {
             throw new InvalidGeneratorArgumentException(
