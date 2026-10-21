@@ -263,6 +263,18 @@ final class ShrinkerTest extends TestCase
                 static fn (string $value): bool => substr_count($value, '.') >= 2,
             ],
 
+            'domain name with a hyphen' => [
+                'a-a.aa',
+                Generators::domainNames(),
+                static fn (string $value): bool => str_contains($value, '-'),
+            ],
+
+            'email address with a plus sign' => [
+                '+@a.aa',
+                Generators::emailAddresses(),
+                static fn (string $value): bool => str_contains($value, '+'),
+            ],
+
             'email address whose local part has a dot' => [
                 'a.a@a.aa',
                 Generators::emailAddresses(),

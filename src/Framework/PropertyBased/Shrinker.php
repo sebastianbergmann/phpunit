@@ -627,7 +627,12 @@ final class Shrinker
 
             assert($deleted > 0);
 
-            if ($this->consider($this->withLoweredChoiceAndWithoutLastSpans($index, $deleted, $spans))) {
+            // the first spans are deleted when deleting the last ones does not
+            // keep the property falsified, because the value that falsifies
+            // it is one of the last ones, the last character of a string, for
+            // instance
+            if ($this->consider($this->withLoweredChoiceAndWithoutSpans($index, $deleted, array_slice($spans, -$deleted))) ||
+                $this->consider($this->withLoweredChoiceAndWithoutSpans($index, $deleted, array_slice($spans, 0, $deleted)))) {
                 return true;
             }
         }
@@ -1079,16 +1084,15 @@ final class Shrinker
     }
 
     /**
-     * Lowers the choice at the index by the amount and deletes as many of the
-     * last spans.
+     * Lowers the choice at the index by the amount and deletes the spans.
      *
-     * @param non-negative-int     $index
-     * @param positive-int         $amount
-     * @param non-empty-list<Span> $spans  spans that follow the choice and do not overlap, in order, at least as many as the amount
+     * @param non-negative-int $index
+     * @param positive-int     $amount
+     * @param list<Span>       $spans  spans that follow the choice and do not overlap, in order
      *
      * @return list<non-negative-int>
      */
-    private function withLoweredChoiceAndWithoutLastSpans(int $index, int $amount, array $spans): array
+    private function withLoweredChoiceAndWithoutSpans(int $index, int $amount, array $spans): array
     {
         $lowered = $this->choiceAt($index) - $amount;
 
@@ -1098,11 +1102,7 @@ final class Shrinker
 
         // the spans are deleted from the last one, so that the positions of
         // the others do not change
-        foreach (array_reverse($spans) as $position => $span) {
-            if ($position === $amount) {
-                break;
-            }
-
+        foreach (array_reverse($spans) as $span) {
             array_splice($choices, $span->start(), $span->length());
         }
 
