@@ -21,6 +21,7 @@ use function getcwd;
 use function implode;
 use function in_array;
 use function is_callable;
+use function is_finite;
 use function libxml_clear_errors;
 use function method_exists;
 use function sprintf;
@@ -135,6 +136,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @var list<non-empty-string>
      */
     private array $classifications = [];
+
+    /**
+     * @var list<array{label: non-empty-string, value: float|int}>
+     */
+    private array $observations = [];
 
     /**
      * @var positive-int
@@ -897,6 +903,19 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * The numeric values that the example of a property observed with
+     * observe(), with their labels, in the order in which they were observed.
+     *
+     * @return list<array{label: non-empty-string, value: float|int}>
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    final public function observationsOfPropertyExample(): array
+    {
+        return $this->observations;
+    }
+
+    /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     final public function isPropertyExample(): bool
@@ -1151,6 +1170,34 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         if (!in_array($label, $this->classifications, true)) {
             $this->classifications[] = $label;
         }
+    }
+
+    /**
+     * Observes a numeric value of the current example of a property, for
+     * instance the size of a generated list, so that the statistics of the
+     * property state how many values were observed with the label, and
+     * their minimum, median, mean, 90th percentile, and maximum. An example
+     * can observe more than one value with the same label.
+     *
+     * @param non-empty-string $label
+     *
+     * @throws Exception when it is not called in a property, the label is empty, or the value is not finite
+     */
+    final protected function observe(string $label, float|int $value): void
+    {
+        if (!$this->isPropertyExample()) {
+            throw new Exception('observe() can only be used in a property');
+        }
+
+        if ($label === '') {
+            throw new Exception('The label passed to observe() must not be empty');
+        }
+
+        if (!is_finite($value)) {
+            throw new Exception('The value passed to observe() must be finite');
+        }
+
+        $this->observations[] = ['label' => $label, 'value' => $value];
     }
 
     /**
