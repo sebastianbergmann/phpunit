@@ -16,6 +16,7 @@ use const PHP_INT_MAX;
 use const PHP_URL_HOST;
 use function array_count_values;
 use function array_filter;
+use function array_key_exists;
 use function array_search;
 use function array_sum;
 use function array_unique;
@@ -27,6 +28,7 @@ use function implode;
 use function is_array;
 use function max;
 use function mb_strlen;
+use function min;
 use function parse_url;
 use function preg_match;
 use function str_contains;
@@ -577,6 +579,33 @@ final class ShrinkerTest extends TestCase
         $this->assertSame([10, 100], $shrinker->shrink(new ChoiceSequence([20, 50]))->sequence()->choices());
     }
 
+    public function testLowersAChoiceThatDeterminesTheLengthOfAStringWhileRaisingTheChoiceThatDeterminesTheLengthOfALaterString(): void
+    {
+        // lowering the length of the first string while deleting one of its
+        // characters makes the strings too short together, unless the length
+        // of the second string is raised by as much
+        $shrinker = new Shrinker(
+            static function (ChoiceSequence $candidate): ?ChoiceSequence
+            {
+                [$sequence, $totalLength] = self::twoStrings($candidate);
+
+                if ($totalLength < 3) {
+                    return null;
+                }
+
+                return $sequence;
+            },
+            1000,
+        );
+
+        $result = $shrinker->shrink(self::twoStrings(new ChoiceSequence([2, 0, 0, 1, 0]))[0]);
+
+        // the first string cannot become shorter than one character this
+        // way, because a choice is only lowered while at least two spans of
+        // the same kind follow it
+        $this->assertSame([1, 0, 2, 0, 0], $result->sequence()->choices());
+    }
+
     public function testStartsEachRoundOfPassesWithThePassesThatMadeTheCounterexampleSimplerMostOftenInTheRoundBefore(): void
     {
         $candidates = [];
@@ -767,40 +796,29 @@ final class ShrinkerTest extends TestCase
 
     public function testFindsTheValuesWithTheSameLabelAgainWhenMovingAValueChangedWhichChoicesAreValues(): void
     {
-        // three values, of which the second is only drawn while the first is
-        // not zero; the property is falsified when the first and the last
-        // value add up to at least 5
+        // once the first value is 0, the choice between the values is a value
+        // as well, which is adjacent to both of them
         $shrinker = new Shrinker(
             static function (ChoiceSequence $candidate): ?ChoiceSequence
             {
-                $choices = $candidate->choices();
+                $choices = [];
 
-                if (count($choices) < 2 || $choices[0] > 5 || $choices[1] > 5) {
+                for ($index = 0; $index < 3; $index++) {
+                    $choices[] = self::choiceAt($candidate->choices(), $index, 10);
+                }
+
+                if ($choices[0] + $choices[2] < 7) {
                     return null;
                 }
 
-                if ($choices[0] === 0) {
-                    if ($choices[1] < 5) {
-                        return null;
-                    }
-
-                    return new ChoiceSequence([0, $choices[1]], [new Span(0, 1, 'value', null), new Span(1, 2, 'value', null)], [5, 5]);
-                }
-
-                if (count($choices) !== 3 || $choices[2] > 5 || $choices[0] + $choices[2] < 5) {
-                    return null;
-                }
-
-                return new ChoiceSequence($choices, [new Span(0, 1, 'value', null), new Span(1, 2, 'value', null), new Span(2, 3, 'value', null)], [5, 5, 5]);
+                return self::twoValuesWithAChoiceBetweenThem($choices);
             },
             1000,
         );
 
-        $result = $shrinker->shrink(
-            new ChoiceSequence([4, 5, 1], [new Span(0, 1, 'value', null), new Span(1, 2, 'value', null), new Span(2, 3, 'value', null)], [5, 5, 5]),
-        );
+        $result = $shrinker->shrink(self::twoValuesWithAChoiceBetweenThem([3, 0, 4]));
 
-        $this->assertSame([0, 5], $result->sequence()->choices());
+        $this->assertSame([0, 0, 7], $result->sequence()->choices());
     }
 
     /**
@@ -889,6 +907,82 @@ final class ShrinkerTest extends TestCase
             },
             1000,
         );
+    }
+
+    /**
+     * Replays the choices as two strings whose lengths, of up to 10
+     * characters, are drawn before their characters, like the labels of a
+     * domain name.
+     *
+     * @return array{ChoiceSequence, non-negative-int} the choices that were consumed, with their spans and the largest choices that they could have been, and the total length of the strings
+     */
+    private static function twoStrings(ChoiceSequence $candidate): array
+    {
+        $choices     = [];
+        $spans       = [];
+        $maxima      = [];
+        $totalLength = 0;
+
+        for ($string = 0; $string < 2; $string++) {
+            $start  = count($choices);
+            $length = self::choiceAt($candidate->choices(), $start, 10);
+            $parent = count($spans);
+
+            $choices[] = $length;
+            $maxima[]  = 10;
+            $spans[]   = new Span($start, $start + 1 + $length, 'string', null);
+
+            for ($character = 0; $character < $length; $character++) {
+                $index = count($choices);
+
+                $choices[] = self::choiceAt($candidate->choices(), $index, 25);
+                $maxima[]  = 25;
+                $spans[]   = new Span($index, $index + 1, 'character', $parent);
+            }
+
+            $totalLength += $length;
+        }
+
+        return [new ChoiceSequence($choices, $spans, $maxima), $totalLength];
+    }
+
+    /**
+     * Two values of up to 10 with a choice between them, which is a value
+     * as well when the first value is 0.
+     *
+     * @param list<non-negative-int> $choices
+     */
+    private static function twoValuesWithAChoiceBetweenThem(array $choices): ChoiceSequence
+    {
+        $between = 'between';
+
+        if ($choices[0] === 0) {
+            $between = 'value';
+        }
+
+        return new ChoiceSequence(
+            $choices,
+            [new Span(0, 1, 'value', null), new Span(1, 2, $between, null), new Span(2, 3, 'value', null)],
+            [10, 10, 10],
+        );
+    }
+
+    /**
+     * The choice at the index, 0 beyond the end of the choices, and clamped
+     * to the maximum, like a choice source replays a choice sequence.
+     *
+     * @param list<non-negative-int> $choices
+     * @param non-negative-int       $maximum
+     *
+     * @return non-negative-int
+     */
+    private static function choiceAt(array $choices, int $index, int $maximum): int
+    {
+        if (!array_key_exists($index, $choices)) {
+            return 0;
+        }
+
+        return min($choices[$index], $maximum);
     }
 
     /**
