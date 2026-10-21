@@ -344,6 +344,18 @@ final class ShrinkerTest extends TestCase
         $this->assertSame('a.a@a.aa', $this->replay($generator, $result->sequence()));
     }
 
+    public function testMovesTheLengthOfALabelThatIsShortenedToTheTopLevelDomainWhenTheCounterexampleDependsOnTheLengthOfTheDomainName(): void
+    {
+        // the first counterexample that is generated with this seed is
+        // shrunk to aa.aaaaaaaa unless the length of its label is moved
+        $generator = Generators::domainNames();
+        $falsifies = static fn (string $value): bool => strlen($value) > 10;
+
+        $result = $this->shrinker($generator, $falsifies)->shrink($this->falsifyingSequence($generator, $falsifies, 2));
+
+        $this->assertSame('a.aaaaaaaaa', $this->replay($generator, $result->sequence()));
+    }
+
     public function testDoesNotChangeACounterexampleForWhichNoSimplerCounterexampleExists(): void
     {
         $generator = Generators::integers(0, 1000);

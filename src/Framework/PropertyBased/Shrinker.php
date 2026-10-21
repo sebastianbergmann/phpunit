@@ -15,9 +15,11 @@ use function array_map;
 use function array_reverse;
 use function array_slice;
 use function array_splice;
+use function array_sum;
 use function array_values;
 use function assert;
 use function count;
+use function end;
 use function hash;
 use function implode;
 use function intdiv;
@@ -627,17 +629,69 @@ final class Shrinker
 
             assert($deleted > 0);
 
+            $lastSpans        = array_slice($spans, -$deleted);
+            $withoutLastSpans = $this->withLoweredChoiceAndWithoutSpans($index, $deleted, $lastSpans);
+
             // the first spans are deleted when deleting the last ones does not
             // keep the property falsified, because the value that falsifies
             // it is one of the last ones, the last character of a string, for
             // instance
-            if ($this->consider($this->withLoweredChoiceAndWithoutSpans($index, $deleted, array_slice($spans, -$deleted))) ||
+            if ($this->consider($withoutLastSpans) ||
                 $this->consider($this->withLoweredChoiceAndWithoutSpans($index, $deleted, array_slice($spans, 0, $deleted)))) {
                 return true;
+            }
+
+            // what the deleted spans contributed to the counterexample can be
+            // needed to keep the property falsified, the length of a domain
+            // name, for instance, and can be moved to a later group of spans
+            // of the same kind by raising the choice that determines how
+            // many spans it has
+            $deletedChoices = array_sum(array_map(static fn (Span $span): int => $span->length(), $lastSpans));
+
+            foreach ($this->choicesThatDetermineGroupsAfter(end($spans)->end(), $spans[0]->label(), $groups) as $later) {
+                $raised = $later - $deletedChoices;
+
+                // the deleted spans precede the raised choice
+                assert($raised >= 0);
+
+                if ($this->consider($this->withRaisedChoice($withoutLastSpans, $raised, $later, $deleted))) {
+                    return true;
+                }
             }
         }
 
         return false;
+    }
+
+    /**
+     * The indexes of the choices that are followed by the first span of a
+     * group of spans with the label, that are at most LARGEST_RAISING_DISTANCE
+     * choices after the index, and that can be raised: the choices that
+     * determine how many spans these groups have, such as the length of the
+     * top-level domain of a domain name.
+     *
+     * @param non-negative-int           $index
+     * @param non-empty-string           $label
+     * @param list<non-empty-list<Span>> $groups
+     *
+     * @return list<non-negative-int>
+     */
+    private function choicesThatDetermineGroupsAfter(int $index, string $label, array $groups): array
+    {
+        $choices = [];
+
+        foreach ($groups as $group) {
+            $choice = $group[0]->start() - 1;
+
+            // a choice that is as large as it can be cannot be raised
+            if ($group[0]->label() === $label && $choice >= $index && $choice < $index + self::LARGEST_RAISING_DISTANCE && $this->room($choice) > 0) {
+                $choices[] = $choice;
+            }
+        }
+
+        sort($choices);
+
+        return $choices;
     }
 
     /**
@@ -1186,6 +1240,25 @@ final class Shrinker
 
         array_splice($choices, $first, 1, [$firstValue]);
         array_splice($choices, $second, 1, [$secondValue]);
+
+        return $choices;
+    }
+
+    /**
+     * The choices with the choice at the index replaced by the choice at
+     * $later of the current sequence, raised by the amount as far as it can
+     * be raised.
+     *
+     * @param list<non-negative-int> $choices
+     * @param non-negative-int       $index
+     * @param non-negative-int       $later
+     * @param positive-int           $amount
+     *
+     * @return list<non-negative-int>
+     */
+    private function withRaisedChoice(array $choices, int $index, int $later, int $amount): array
+    {
+        array_splice($choices, $index, 1, [$this->choiceAt($later) + min($amount, $this->room($later))]);
 
         return $choices;
     }
