@@ -45,4 +45,18 @@ final class ChoiceSequenceTest extends TestCase
     {
         $this->assertSame($expected, new ChoiceSequence($choices)->isSimplerThan(new ChoiceSequence($otherChoices)));
     }
+
+    public function testHasTheLargestChoiceThatEachChoiceCouldHaveBeen(): void
+    {
+        $sequence = new ChoiceSequence([3, 0], [], [10, 1]);
+
+        $this->assertSame(10, $sequence->maximumAt(0));
+        $this->assertSame(1, $sequence->maximumAt(1));
+        $this->assertNull($sequence->maximumAt(2));
+    }
+
+    public function testTheLargestChoiceThatAChoiceCouldHaveBeenIsNotKnownForASequenceThatWasNotDrawnByAChoiceSource(): void
+    {
+        $this->assertNull(new ChoiceSequence([3, 0])->maximumAt(0));
+    }
 }
