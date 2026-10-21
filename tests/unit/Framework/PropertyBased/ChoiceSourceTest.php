@@ -93,6 +93,22 @@ final class ChoiceSourceTest extends TestCase
         $this->assertSame([3, 0, 0], $source->sequence()->choices());
     }
 
+    public function testRecordsTheLargestChoiceThatEachChoiceItDrawsCouldHaveBeen(): void
+    {
+        $source = ChoiceSource::replay(new ChoiceSequence([7, 1]));
+
+        $source->draw(10, new UniformDistribution);
+        $source->draw(1, new UniformDistribution);
+        $source->draw(5, new UniformDistribution);
+
+        $sequence = $source->sequence();
+
+        $this->assertSame([7, 1, 0], $sequence->choices());
+        $this->assertSame(10, $sequence->maximumAt(0));
+        $this->assertSame(1, $sequence->maximumAt(1));
+        $this->assertSame(5, $sequence->maximumAt(2));
+    }
+
     public function testClampsAReplayedChoiceThatExceedsItsRange(): void
     {
         $source = ChoiceSource::replay(new ChoiceSequence([7]));
