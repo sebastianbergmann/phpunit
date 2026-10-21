@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\PropertyBased\Generator;
 
+use function assert;
 use function implode;
 use function min;
 use function strlen;
@@ -27,12 +28,17 @@ use PHPUnit\Framework\PropertyBased\Distribution\UniformDistribution;
  * domain names (RFC 5891). The top-level domain has at least two letters
  * and no other characters.
  *
- * The top-level domain is drawn first, then the other labels from left to
- * right, as long as they fit into the maximum length. The lengths of the
- * labels are biased towards 1 and the longest length that fits, so that
- * labels of 63 characters, domain names of the maximum length, and domain
- * names of many labels are generated often. Some labels consist of digits
- * only.
+ * The labels other than the top-level domain are drawn first, from left to
+ * right, as long as they leave room for the shortest top-level domain, and
+ * the top-level domain is drawn last, from the room they leave. A
+ * counterexample that depends on the length of a domain name rather than on
+ * its labels is therefore shrunk to a label of one letter and a top-level
+ * domain of the other letters, a.aaaaaaaaa for 11 characters, for instance,
+ * by moving the length of the other labels to the top-level domain. The
+ * lengths of the labels are biased towards 1 and the longest length that
+ * fits, so that labels of 63 characters, domain names of the maximum length,
+ * and domain names of many labels are generated often. Some labels consist
+ * of digits only.
  *
  * @template-extends AbstractGenerator<non-empty-string>
  *
@@ -42,15 +48,16 @@ use PHPUnit\Framework\PropertyBased\Distribution\UniformDistribution;
  */
 final readonly class DomainNameGenerator extends AbstractGenerator
 {
-    public const int SHORTEST_LENGTH = 4;
-    public const int LONGEST_LENGTH  = 253;
-    private const int LONGEST_LABEL  = 63;
-    private const string LETTERS     = 'abcdefghijklmnopqrstuvwxyz';
-    private const string DIGITS      = '0123456789';
+    public const int SHORTEST_LENGTH            = 4;
+    public const int LONGEST_LENGTH             = 253;
+    private const int LONGEST_LABEL             = 63;
+    private const int SHORTEST_TOP_LEVEL_DOMAIN = 2;
+    private const string LETTERS                = 'abcdefghijklmnopqrstuvwxyz';
+    private const string DIGITS                 = '0123456789';
 
     /**
      * The probability that another label is added after the labels that have
-     * been drawn, while one fits into the maximum length, and the
+     * been drawn, while it leaves room for the top-level domain, and the
      * probability that a label other than the top-level domain consists of
      * digits only.
      */
@@ -105,14 +112,13 @@ final readonly class DomainNameGenerator extends AbstractGenerator
 
     protected function generateValue(ChoiceSource $source): string
     {
-        $topLevelDomain = $this->topLevelDomain($source);
-
         // each label other than the top-level domain takes one character
-        // more than its length, for the dot that follows it
-        $remaining = $this->maximumLength - strlen($topLevelDomain);
+        // more than its length, for the dot that follows it, and leaves room
+        // for the shortest top-level domain
+        $remaining = $this->maximumLength;
         $labels    = [];
 
-        while ($remaining >= 2) {
+        while ($remaining >= 2 + self::SHORTEST_TOP_LEVEL_DOMAIN) {
             $source->startSpan($this->labelOfLabels);
 
             if ($labels !== [] && $source->draw(1, $this->anotherLabel) === 0) {
@@ -121,7 +127,7 @@ final readonly class DomainNameGenerator extends AbstractGenerator
                 break;
             }
 
-            $label = $this->otherLabel($source, min(self::LONGEST_LABEL, $remaining - 1));
+            $label = $this->otherLabel($source, min(self::LONGEST_LABEL, $remaining - 1 - self::SHORTEST_TOP_LEVEL_DOMAIN));
 
             $source->endSpan();
 
@@ -129,16 +135,20 @@ final readonly class DomainNameGenerator extends AbstractGenerator
             $remaining -= strlen($label) + 1;
         }
 
-        return implode('.', $labels) . '.' . $topLevelDomain;
+        // the labels leave room for the shortest top-level domain
+        assert($remaining >= self::SHORTEST_TOP_LEVEL_DOMAIN);
+
+        return implode('.', $labels) . '.' . $this->topLevelDomain($source, $remaining);
     }
 
     /**
+     * @param int<2, max> $room the number of characters that the other labels leave for the top-level domain
+     *
      * @return non-empty-string
      */
-    private function topLevelDomain(ChoiceSource $source): string
+    private function topLevelDomain(ChoiceSource $source, int $room): string
     {
-        // there is room for a label of one character in front of it
-        $length = 2 + $source->draw(min(self::LONGEST_LABEL, $this->maximumLength - 2) - 2, $this->length);
+        $length = self::SHORTEST_TOP_LEVEL_DOMAIN + $source->draw(min(self::LONGEST_LABEL, $room) - self::SHORTEST_TOP_LEVEL_DOMAIN, $this->length);
 
         $topLevelDomain = $this->character($source, self::LETTERS);
 
