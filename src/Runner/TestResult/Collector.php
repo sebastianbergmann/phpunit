@@ -38,6 +38,8 @@ use PHPUnit\Event\Test\PhpunitErrorTriggered;
 use PHPUnit\Event\Test\PhpunitNoticeTriggered;
 use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
+use PHPUnit\Event\Test\PropertyChecked;
+use PHPUnit\Event\Test\PropertyFalsified;
 use PHPUnit\Event\Test\Skipped as TestSkipped;
 use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\Event\TestRunner\ChildProcessErrored;
@@ -238,6 +240,16 @@ final class Collector
     private array $retriedTests                        = [];
     private ?TimeLimitExceeded $timeLimitExceededEvent = null;
 
+    /**
+     * @var array<non-empty-string, PropertyFalsified>
+     */
+    private array $propertyFalsifiedEvents = [];
+
+    /**
+     * @var array<non-empty-string, PropertyChecked>
+     */
+    private array $propertyCheckedEvents = [];
+
     public function __construct(Facade $facade, IssueFilter $issueFilter)
     {
         $facade->registerSubscribers(
@@ -255,6 +267,8 @@ final class Collector
             new TestFailedSubscriber($this),
             new TestAttemptErroredSubscriber($this),
             new TestAttemptFailedSubscriber($this),
+            new TestPropertyFalsifiedSubscriber($this),
+            new TestPropertyCheckedSubscriber($this),
             new TestMarkedIncompleteSubscriber($this),
             new TestSkippedSubscriber($this),
             new TestConsideredRiskySubscriber($this),
@@ -328,6 +342,8 @@ final class Collector
             ],
             $this->retriedTests,
             $this->timeLimitExceededEvent,
+            $this->propertyFalsifiedEvents,
+            $this->propertyCheckedEvents,
         );
     }
 
@@ -392,6 +408,12 @@ final class Collector
             // a retried test method registers itself as passed when an attempt
             // passes, a retried data set is handled by the enclosing data
             // provider test suite
+            return;
+        }
+
+        if ($testSuite->isForPropertyTestMethod()) {
+            // a property registers itself as passed when all of its examples
+            // have passed
             return;
         }
 
@@ -474,6 +496,16 @@ final class Collector
     public function testAttemptFailed(AttemptFailed $event): void
     {
         $this->rememberRetriedTest($event->test());
+    }
+
+    public function testPropertyFalsified(PropertyFalsified $event): void
+    {
+        $this->propertyFalsifiedEvents[$event->test()->id()] = $event;
+    }
+
+    public function testPropertyChecked(PropertyChecked $event): void
+    {
+        $this->propertyCheckedEvents[$event->test()->id()] = $event;
     }
 
     public function testMarkedIncomplete(MarkedIncomplete $event): void

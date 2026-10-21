@@ -33,6 +33,24 @@ final readonly class RandomNumberGeneratorSeeder
 {
     private Configuration $configuration;
 
+    /**
+     * Derives a seed from the seed of the test run and the given ID.
+     *
+     * @return non-negative-int
+     */
+    public static function derive(int $seedOfTestRun, string $id): int
+    {
+        $hash = unpack('J', hash('xxh64', $seedOfTestRun . "\0" . $id, true));
+
+        assert($hash !== false && isset($hash[1]) && is_int($hash[1]));
+
+        $seed = $hash[1] & PHP_INT_MAX;
+
+        assert($seed >= 0);
+
+        return $seed;
+    }
+
     public function __construct(Configuration $configuration)
     {
         $this->configuration = $configuration;
@@ -62,23 +80,7 @@ final readonly class RandomNumberGeneratorSeeder
             return;
         }
 
-        $this->seedWith($this->derive($this->configuration->randomSeed(), $id));
-    }
-
-    /**
-     * @return non-negative-int
-     */
-    private function derive(int $seedOfTestRun, string $id): int
-    {
-        $hash = unpack('J', hash('xxh64', $seedOfTestRun . "\0" . $id, true));
-
-        assert($hash !== false && isset($hash[1]) && is_int($hash[1]));
-
-        $seed = $hash[1] & PHP_INT_MAX;
-
-        assert($seed >= 0);
-
-        return $seed;
+        $this->seedWith(self::derive($this->configuration->randomSeed(), $id));
     }
 
     private function seedWith(int $seed): void

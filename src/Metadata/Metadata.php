@@ -10,6 +10,7 @@
 namespace PHPUnit\Metadata;
 
 use Closure;
+use PHPUnit\Framework\PropertyBased\ValueGenerator;
 use PHPUnit\Metadata\Version\Requirement;
 use PHPUnit\Runner\Extension\Extension;
 
@@ -244,6 +245,71 @@ abstract readonly class Metadata
     }
 
     /**
+     * @param non-empty-string                                  $parameterName
+     * @param class-string                                      $className
+     * @param Closure(): ValueGenerator<mixed>|non-empty-string $generator
+     */
+    public static function forAll(string $parameterName, string $className, Closure|string $generator): ForAll
+    {
+        return new ForAll(Level::METHOD_LEVEL, $parameterName, $className, $generator);
+    }
+
+    /**
+     * @param class-string $className
+     */
+    public static function generatorFor(string $className): GeneratorFor
+    {
+        return new GeneratorFor(Level::METHOD_LEVEL, $className);
+    }
+
+    /**
+     * @param class-string $className
+     */
+    public static function useGeneratorsOnClass(string $className): UseGenerators
+    {
+        return new UseGenerators(Level::CLASS_LEVEL, $className);
+    }
+
+    /**
+     * @param class-string $className
+     */
+    public static function useGeneratorsOnMethod(string $className): UseGenerators
+    {
+        return new UseGenerators(Level::METHOD_LEVEL, $className);
+    }
+
+    /**
+     * @param non-empty-string $label
+     */
+    public static function requireClassification(string $label, float $minimumPercentage): RequireClassification
+    {
+        return new RequireClassification(Level::METHOD_LEVEL, $label, $minimumPercentage);
+    }
+
+    public static function rule(?string $precondition, ?string $produces): Rule
+    {
+        return new Rule(Level::METHOD_LEVEL, $precondition, $produces);
+    }
+
+    public static function initialize(?string $produces): Initialize
+    {
+        return new Initialize(Level::METHOD_LEVEL, $produces);
+    }
+
+    public static function invariant(bool $atEnd): Invariant
+    {
+        return new Invariant(Level::METHOD_LEVEL, $atEnd);
+    }
+
+    /**
+     * @param non-empty-string $parameterName
+     */
+    public static function fromPool(string $parameterName, string $pool, bool $consume): FromPool
+    {
+        return new FromPool(Level::METHOD_LEVEL, $parameterName, $pool, $consume);
+    }
+
+    /**
      * @param non-empty-string $groupName
      */
     public static function groupOnClass(string $groupName): Group
@@ -315,6 +381,14 @@ abstract readonly class Metadata
     public static function preCondition(int $priority): PreCondition
     {
         return new PreCondition(Level::METHOD_LEVEL, $priority);
+    }
+
+    /**
+     * @param ?positive-int $examples
+     */
+    public static function property(?int $examples): Property
+    {
+        return new Property(Level::METHOD_LEVEL, $examples);
     }
 
     public static function preserveGlobalStateOnClass(bool $enabled): PreserveGlobalState
@@ -894,6 +968,22 @@ abstract readonly class Metadata
     }
 
     /**
+     * @phpstan-assert-if-true ForAll $this
+     */
+    public function isForAll(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true GeneratorFor $this
+     */
+    public function isGeneratorFor(): bool
+    {
+        return false;
+    }
+
+    /**
      * @phpstan-assert-if-true Group $this
      */
     public function isGroup(): bool
@@ -987,6 +1077,62 @@ abstract readonly class Metadata
      * @phpstan-assert-if-true PreserveGlobalState $this
      */
     public function isPreserveGlobalState(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true Property $this
+     */
+    public function isProperty(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true RequireClassification $this
+     */
+    public function isRequireClassification(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true Rule $this
+     */
+    public function isRule(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true Initialize $this
+     */
+    public function isInitialize(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true Invariant $this
+     */
+    public function isInvariant(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true FromPool $this
+     */
+    public function isFromPool(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true UseGenerators $this
+     */
+    public function isUseGenerators(): bool
     {
         return false;
     }

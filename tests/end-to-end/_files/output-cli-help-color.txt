@@ -191,12 +191,23 @@
   [32m--random-order                      [0m Alias for "--order-by random"
   [32m--random-seed [36m<N>[0m                   [0m Use the specified seed for PHP's Mt19937
                                        random number generator (mt_rand(),
-                                       rand(), shuffle(), ...) and for random
-                                       test order
+                                       rand(), shuffle(), ...), for random test
+                                       order, and for generating the examples
+                                       of properties
+  [32m--random-seed-from-git-commit       [0m Use a seed that is derived from the Git
+                                       commit that is checked out, so that test
+                                       runs of the same commit use the same
+                                       seed
   [32m--repeat [36m<N>[0m                        [0m Run each test N times, stopping at the
                                        first failure
   [32m--retry [36m<N>[0m                         [0m Attempt each test up to N times,
                                        stopping at the first success
+  [32m--property-examples [36m<N>[0m             [0m Check N examples for each property that
+                                       does not specify the number of its
+                                       examples
+  [32m--property-examples-multiplier [36m<N>[0m  [0m Multiply the number of examples of every
+                                       property by N, including properties that
+                                       specify the number of their examples
   [32m--reverse-order                     [0m Alias for "--order-by reverse"
 
 [33mReporting:[0m
@@ -230,6 +241,8 @@
                                        by tests
   [32m--display-all-issues                [0m Display details for all issues that are
                                        triggered
+  [32m--display-property-statistics       [0m Display statistics of the examples of
+                                       properties
   [32m--reverse-list                      [0m Print defects in reverse order
 
   [32m--compact                           [0m Replace default progress and result

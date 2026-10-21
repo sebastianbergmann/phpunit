@@ -20,6 +20,7 @@ use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\MarkedIncomplete;
 use PHPUnit\Event\Test\Passed;
 use PHPUnit\Event\Test\Prepared;
+use PHPUnit\Event\Test\PropertyFalsified;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Framework\InvalidArgumentException;
 use PHPUnit\Framework\TestStatus\TestStatus;
@@ -120,11 +121,41 @@ final class TestRunHistoryHandler
     {
         $id = TestRunHistoryId::fromTest($event->test());
 
+        // a property that holds no longer needs the counterexamples that were
+        // remembered for it, which it was checked for first
+        if ($this->testRunHistory->counterexamples($id) !== []) {
+            $this->testRunHistory->removeCounterexamples($id);
+        }
+
         if (isset($this->statusesRecordedInThisRun[$id->asString()])) {
             return;
         }
 
         $this->testRunHistory->remove($id);
+    }
+
+    public function testPropertyFalsified(PropertyFalsified $event): void
+    {
+        // the explicit examples of a property are checked for every time it
+        // is checked, before the counterexamples that are remembered for it,
+        // which are kept because they have not been checked for
+        if ($event->explicitExample() !== null) {
+            return;
+        }
+
+        // the minimal counterexample is remembered first, followed by the
+        // counterexamples of the other ways in which the property was
+        // falsified
+        $choiceSequences = [$event->choiceSequence()];
+
+        foreach ($event->otherFalsifications() as $otherFalsification) {
+            $choiceSequences[] = $otherFalsification['choiceSequence'];
+        }
+
+        $this->testRunHistory->setCounterexamples(
+            TestRunHistoryId::fromTest($event->test()),
+            $choiceSequences,
+        );
     }
 
     public function testSkipped(Skipped $event): void
@@ -191,6 +222,7 @@ final class TestRunHistoryHandler
             new TestErroredSubscriber($this),
             new TestFailedSubscriber($this),
             new TestPassedSubscriber($this),
+            new TestPropertyFalsifiedSubscriber($this),
             new TestSkippedSubscriber($this),
             new TestFinishedSubscriber($this),
             new TestRunnerExecutionAbortedSubscriber($this),

@@ -10,13 +10,21 @@
 namespace PHPUnit\Metadata\Parser;
 
 use function assert;
+use Closure;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\DependsOnClass;
 use PHPUnit\Metadata\DependsOnMethod;
+use PHPUnit\Metadata\ForAll;
+use PHPUnit\Metadata\FromPool;
+use PHPUnit\Metadata\GeneratorFor;
+use PHPUnit\Metadata\Initialize;
 use PHPUnit\Metadata\InvalidAttribute;
+use PHPUnit\Metadata\Invariant;
+use PHPUnit\Metadata\Property;
 use PHPUnit\Metadata\Repeat;
+use PHPUnit\Metadata\RequireClassification;
 use PHPUnit\Metadata\RequiresEnvironmentVariable;
 use PHPUnit\Metadata\RequiresPhp;
 use PHPUnit\Metadata\RequiresPhpExtension;
@@ -24,6 +32,8 @@ use PHPUnit\Metadata\RequiresPhpunit;
 use PHPUnit\Metadata\RequiresPhpunitExtension;
 use PHPUnit\Metadata\RequiresSetting;
 use PHPUnit\Metadata\Retry;
+use PHPUnit\Metadata\Rule;
+use PHPUnit\Metadata\UseGenerators;
 use PHPUnit\Metadata\Version\ComparisonRequirement;
 use PHPUnit\Metadata\Version\ConstraintRequirement;
 use PHPUnit\Metadata\WithEnvironmentVariable;
@@ -44,6 +54,10 @@ use PHPUnit\TestFixture\Metadata\Attribute\DuplicateSmallAttributeTest;
 use PHPUnit\TestFixture\Metadata\Attribute\DuplicateTestAttributeTest;
 use PHPUnit\TestFixture\Metadata\Attribute\Example;
 use PHPUnit\TestFixture\Metadata\Attribute\ExampleTrait;
+use PHPUnit\TestFixture\Metadata\Attribute\ForAllClosureTest;
+use PHPUnit\TestFixture\Metadata\Attribute\ForAllTest;
+use PHPUnit\TestFixture\Metadata\Attribute\ForAllWithOtherParameterAttributeTest;
+use PHPUnit\TestFixture\Metadata\Attribute\GeneratorForTest;
 use PHPUnit\TestFixture\Metadata\Attribute\GroupNameThatCannotBeSelectedTest;
 use PHPUnit\TestFixture\Metadata\Attribute\GroupTest;
 use PHPUnit\TestFixture\Metadata\Attribute\IgnoreDeprecationsClassTest;
@@ -59,6 +73,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\NonPhpunitAttributeTest;
 use PHPUnit\TestFixture\Metadata\Attribute\PhpunitAttributeThatDoesNotExistTest;
 use PHPUnit\TestFixture\Metadata\Attribute\PreserveGlobalStateTest;
 use PHPUnit\TestFixture\Metadata\Attribute\ProcessIsolationTest;
+use PHPUnit\TestFixture\Metadata\Attribute\PropertyTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RepeatTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresClassTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresEnvironmentVariableTest;
@@ -75,13 +90,18 @@ use PHPUnit\TestFixture\Metadata\Attribute\RetryTest;
 use PHPUnit\TestFixture\Metadata\Attribute\SizeAsGroupNameTest;
 use PHPUnit\TestFixture\Metadata\Attribute\SmallAndMediumTest;
 use PHPUnit\TestFixture\Metadata\Attribute\SmallTest;
+use PHPUnit\TestFixture\Metadata\Attribute\StateMachine;
 use PHPUnit\TestFixture\Metadata\Attribute\TestDoxTest;
 use PHPUnit\TestFixture\Metadata\Attribute\TestWithTest;
+use PHPUnit\TestFixture\Metadata\Attribute\UseGeneratorsTest;
 use PHPUnit\TestFixture\Metadata\Attribute\UsesFilesystemTest;
 use PHPUnit\TestFixture\Metadata\Attribute\UsesTest;
 use PHPUnit\TestFixture\Metadata\Attribute\VersionRequirementWithoutOperatorTest;
 use PHPUnit\TestFixture\Metadata\Attribute\WithEnvironmentVariableTest;
 use PHPUnit\TestFixture\Metadata\Attribute\WithoutErrorHandlerTest;
+use PHPUnit\TestFixture\PropertyBased\Derivation\EmailAddress;
+use PHPUnit\TestFixture\PropertyBased\Properties\EmailAddressGenerators;
+use PHPUnit\TestFixture\PropertyBased\Properties\OtherEmailAddressGenerators;
 
 abstract class AttributeParserTestCase extends TestCase
 {
@@ -915,6 +935,107 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertSame('propertyName', $metadata->asArray()[0]->propertyName());
     }
 
+    #[TestDox('Parses #[ForAll] attribute on parameter')]
+    public function test_parses_ForAll_attribute_on_parameter(): void
+    {
+        $metadata = $this->parser()->forMethod(ForAllTest::class, 'testOne')->isForAll();
+
+        $this->assertCount(1, $metadata);
+
+        $forAll = $metadata->asArray()[0];
+
+        assert($forAll instanceof ForAll);
+
+        $this->assertTrue($forAll->isForAll());
+        $this->assertTrue($forAll->isMethodLevel());
+        $this->assertSame('a', $forAll->parameterName());
+        $this->assertSame(ForAllTest::class, $forAll->className());
+        $this->assertSame('smallIntegers', $forAll->generator());
+    }
+
+    #[TestDox('Ignores attributes other than #[ForAll] on parameter')]
+    public function test_ignores_attributes_other_than_ForAll_on_parameter(): void
+    {
+        $metadata = $this->parser()->forMethod(ForAllWithOtherParameterAttributeTest::class, 'testOne');
+
+        $this->assertCount(2, $metadata);
+        $this->assertCount(1, $metadata->isProperty());
+        $this->assertCount(1, $metadata->isForAll());
+
+        $forAll = $metadata->isForAll()->asArray()[0];
+
+        assert($forAll instanceof ForAll);
+
+        $this->assertSame('a', $forAll->parameterName());
+        $this->assertSame('smallIntegers', $forAll->generator());
+    }
+
+    #[TestDox('Parses #[ForAllExternal] attribute on parameter')]
+    public function test_parses_ForAllExternal_attribute_on_parameter(): void
+    {
+        $metadata = $this->parser()->forMethod(ForAllTest::class, 'testWithGeneratorOfAnotherClass')->isForAll();
+
+        $this->assertCount(1, $metadata);
+
+        $forAll = $metadata->asArray()[0];
+
+        assert($forAll instanceof ForAll);
+
+        $this->assertTrue($forAll->isMethodLevel());
+        $this->assertSame('a', $forAll->parameterName());
+        $this->assertSame(GeneratorForTest::class, $forAll->className());
+        $this->assertSame('emailAddresses', $forAll->generator());
+    }
+
+    #[TestDox('Parses #[ForAll] attribute with closure on parameter')]
+    #[\PHPUnit\Framework\Attributes\RequiresPhp('^8.5')]
+    public function test_parses_ForAll_attribute_with_closure_on_parameter(): void
+    {
+        $metadata = $this->parser()->forMethod(ForAllClosureTest::class, 'testOne')->isForAll();
+
+        $this->assertCount(1, $metadata);
+
+        $forAll = $metadata->asArray()[0];
+
+        assert($forAll instanceof ForAll);
+
+        $this->assertSame('a', $forAll->parameterName());
+        $this->assertInstanceOf(Closure::class, $forAll->generator());
+    }
+
+    #[TestDox('Parses invalid #[ForAll] attribute on parameter')]
+    public function test_parses_invalid_ForAll_attribute_on_parameter(): void
+    {
+        $metadata = $this->parser()->forMethod(ForAllTest::class, 'testWithInvalidForAll');
+
+        $this->assertCount(0, $metadata->isForAll());
+        $this->assertCount(1, $metadata->isInvalidAttribute());
+
+        $invalidAttribute = $metadata->isInvalidAttribute()->asArray()[0];
+
+        assert($invalidAttribute instanceof InvalidAttribute);
+
+        $this->assertStringStartsWith(
+            'Invalid attribute PHPUnit\Framework\Attributes\ForAll for parameter $a of method ' . ForAllTest::class . '::testWithInvalidForAll() in ',
+            $invalidAttribute->message(),
+        );
+    }
+
+    #[TestDox('Parses #[GeneratorFor] attribute on method')]
+    public function test_parses_GeneratorFor_attribute_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(GeneratorForTest::class, 'emailAddresses')->isGeneratorFor();
+
+        $this->assertCount(1, $metadata);
+
+        $generatorFor = $metadata->asArray()[0];
+
+        assert($generatorFor instanceof GeneratorFor);
+
+        $this->assertTrue($generatorFor->isGeneratorFor());
+        $this->assertSame(EmailAddress::class, $generatorFor->className());
+    }
+
     #[TestDox('Parses #[Group] attribute on method')]
     public function test_parses_Group_attribute_on_method(): void
     {
@@ -1305,6 +1426,187 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertCount(2, $metadata);
         $this->assertTrue($metadata->asArray()[1]->isGroup());
         $this->assertSame('another-ticket', $metadata->asArray()[1]->groupName());
+    }
+
+    #[TestDox('Parses #[Property] attribute on method')]
+    public function test_parses_Property_attribute_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(PropertyTest::class, 'testWithNumberOfExamples')->isProperty();
+
+        $this->assertCount(1, $metadata);
+
+        $property = $metadata->asArray()[0];
+
+        assert($property instanceof Property);
+
+        $this->assertTrue($property->isProperty());
+        $this->assertSame(500, $property->examples());
+    }
+
+    #[TestDox('Parses #[Property] attribute without number of examples on method')]
+    public function test_parses_Property_attribute_without_number_of_examples_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(PropertyTest::class, 'testWithoutNumberOfExamples')->isProperty();
+
+        $this->assertCount(1, $metadata);
+        $this->assertNull($metadata->asArray()[0]->examples());
+    }
+
+    #[TestDox('Parses #[RequireClassification] attributes on method')]
+    public function test_parses_RequireClassification_attributes_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(PropertyTest::class, 'testWithRequiredClassifications')->isRequireClassification();
+
+        $this->assertCount(2, $metadata);
+
+        $first  = $metadata->asArray()[0];
+        $second = $metadata->asArray()[1];
+
+        assert($first instanceof RequireClassification);
+        assert($second instanceof RequireClassification);
+
+        $this->assertTrue($first->isRequireClassification());
+        $this->assertSame('negative', $first->label());
+        $this->assertSame(10.0, $first->minimumPercentage());
+        $this->assertSame('zero', $second->label());
+        $this->assertSame(0.5, $second->minimumPercentage());
+    }
+
+    #[TestDox('Parses #[Rule] attribute on method')]
+    public function test_parses_Rule_attribute_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(StateMachine::class, 'withdraw')->isRule();
+
+        $this->assertCount(1, $metadata);
+
+        $rule = $metadata->asArray()[0];
+
+        assert($rule instanceof Rule);
+
+        $this->assertTrue($rule->isRule());
+        $this->assertSame('canWithdraw', $rule->preconditionMethod());
+        $this->assertSame('receipts', $rule->produces());
+    }
+
+    #[TestDox('Parses #[Rule] attribute without precondition and pool on method')]
+    public function test_parses_Rule_attribute_without_precondition_and_pool_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(StateMachine::class, 'rule')->isRule();
+
+        $this->assertCount(1, $metadata);
+
+        $rule = $metadata->asArray()[0];
+
+        assert($rule instanceof Rule);
+
+        $this->assertNull($rule->preconditionMethod());
+        $this->assertNull($rule->produces());
+    }
+
+    #[TestDox('Parses #[Initialize] attribute on method')]
+    public function test_parses_Initialize_attribute_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(StateMachine::class, 'initialize')->isInitialize();
+
+        $this->assertCount(1, $metadata);
+
+        $initialize = $metadata->asArray()[0];
+
+        assert($initialize instanceof Initialize);
+
+        $this->assertTrue($initialize->isInitialize());
+        $this->assertSame('accounts', $initialize->produces());
+    }
+
+    #[TestDox('Parses #[Invariant] attribute on method')]
+    public function test_parses_Invariant_attribute_on_method(): void
+    {
+        $everyStep = $this->parser()->forMethod(StateMachine::class, 'invariant')->isInvariant();
+        $atEnd     = $this->parser()->forMethod(StateMachine::class, 'invariantAtEnd')->isInvariant();
+
+        $this->assertCount(1, $everyStep);
+        $this->assertCount(1, $atEnd);
+
+        $invariant = $everyStep->asArray()[0];
+
+        assert($invariant instanceof Invariant);
+
+        $this->assertTrue($invariant->isInvariant());
+        $this->assertFalse($invariant->atEnd());
+
+        $invariant = $atEnd->asArray()[0];
+
+        assert($invariant instanceof Invariant);
+
+        $this->assertTrue($invariant->atEnd());
+    }
+
+    #[TestDox('Parses #[FromPool] attribute on parameter')]
+    public function test_parses_FromPool_attribute_on_parameter(): void
+    {
+        $metadata = $this->parser()->forMethod(StateMachine::class, 'withdraw')->isFromPool();
+
+        $this->assertCount(2, $metadata);
+
+        $account = $metadata->asArray()[0];
+        $receipt = $metadata->asArray()[1];
+
+        assert($account instanceof FromPool);
+        assert($receipt instanceof FromPool);
+
+        $this->assertTrue($account->isFromPool());
+        $this->assertSame('account', $account->parameterName());
+        $this->assertSame('accounts', $account->pool());
+        $this->assertFalse($account->consume());
+        $this->assertSame('receipt', $receipt->parameterName());
+        $this->assertSame('receipts', $receipt->pool());
+        $this->assertTrue($receipt->consume());
+    }
+
+    #[TestDox('Parses #[UseGenerators] attribute on class')]
+    public function test_parses_UseGenerators_attribute_on_class(): void
+    {
+        $metadata = $this->parser()->forClass(UseGeneratorsTest::class)->isUseGenerators();
+
+        $this->assertCount(1, $metadata);
+
+        $useGenerators = $metadata->asArray()[0];
+
+        assert($useGenerators instanceof UseGenerators);
+
+        $this->assertTrue($useGenerators->isClassLevel());
+        $this->assertSame(EmailAddressGenerators::class, $useGenerators->className());
+    }
+
+    #[TestDox('Parses #[UseGenerators] attribute on method')]
+    public function test_parses_UseGenerators_attribute_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(UseGeneratorsTest::class, 'testOne')->isUseGenerators();
+
+        $this->assertCount(1, $metadata);
+
+        $useGenerators = $metadata->asArray()[0];
+
+        assert($useGenerators instanceof UseGenerators);
+
+        $this->assertTrue($useGenerators->isMethodLevel());
+        $this->assertSame(OtherEmailAddressGenerators::class, $useGenerators->className());
+    }
+
+    public function testWarnsWhenNumberOfExamplesForPropertyIsNotPositive(): void
+    {
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter
+            ->expects($this->once())
+            ->method('testRunnerTriggeredPhpunitWarning')
+            ->with('Method ' . PropertyTest::class . '::testWithInvalidNumberOfExamples is annotated with #[Property] but 0 is not a positive integer for the number of examples, the configured number of examples is used')
+            ->seal();
+
+        $metadata = $this->parserWithEmitter($emitter)->forMethod(PropertyTest::class, 'testWithInvalidNumberOfExamples')->isProperty();
+
+        $this->assertCount(1, $metadata);
+        $this->assertNull($metadata->asArray()[0]->examples());
     }
 
     #[TestDox('Parses #[Repeat] attribute on method')]

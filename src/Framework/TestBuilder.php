@@ -9,13 +9,17 @@
  */
 namespace PHPUnit\Framework;
 
+use const PHP_INT_MAX;
 use function array_merge;
 use function assert;
 use function get_parent_class;
+use function intdiv;
 use function preg_match;
 use function range;
 use function sprintf;
 use PHPUnit\Event\Emitter;
+use PHPUnit\Framework\PropertyBased\InvalidPropertyException;
+use PHPUnit\Framework\PropertyBased\PropertyDefinitionBuilder;
 use PHPUnit\Metadata\Api\DataProvider;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\ProvidedData;
@@ -28,6 +32,7 @@ use PHPUnit\Metadata\Metadata;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Metadata\PreserveGlobalState;
+use PHPUnit\Metadata\Property as PropertyMetadata;
 use PHPUnit\Metadata\Repeat as RepeatMetadata;
 use PHPUnit\Metadata\Retry as RetryMetadata;
 use PHPUnit\Runner\ErrorHandler;
@@ -62,6 +67,7 @@ final readonly class TestBuilder
      * @param positive-int              $maxAttempts
      *
      * @throws InvalidDataProviderException
+     * @throws InvalidPropertyException
      */
     public function build(ReflectionClass $theClass, string $methodName, array $groups = [], int $numberOfRuns = 1, int $failureThreshold = 1, int $maxAttempts = 1): Test
     {
@@ -69,6 +75,24 @@ final readonly class TestBuilder
         $runTestInSeparateProcess = $this->shouldTestMethodBeRunInSeparateProcess($className, $methodName);
         $preserveGlobalState      = $this->shouldGlobalStateBePreserved($className, $methodName);
         $backupSettings           = $this->backupSettings($className, $methodName);
+
+        $propertyMetadata = MetadataRegistry::parser()->forMethod($className, $methodName)->isProperty();
+
+        // repetition, retrying, and process isolation do not apply to a property
+        if ($propertyMetadata->isNotEmpty()) {
+            $metadata = $propertyMetadata->asArray()[0];
+
+            assert($metadata instanceof PropertyMetadata);
+
+            return $this->buildPropertyTestSuite(
+                $className,
+                $methodName,
+                $metadata,
+                $preserveGlobalState,
+                $backupSettings,
+                $groups,
+            );
+        }
 
         $repeatMetadata = MetadataRegistry::parser()->forMethod($className, $methodName)->isRepeat();
 
@@ -376,6 +400,85 @@ final readonly class TestBuilder
     }
 
     /**
+     * @param class-string<TestCase> $className
+     * @param non-empty-string       $methodName
+     * @param BackupSettings         $backupSettings
+     * @param list<non-empty-string> $groups
+     *
+     * @throws InvalidPropertyException
+     */
+    private function buildPropertyTestSuite(string $className, string $methodName, PropertyMetadata $metadata, ?bool $preserveGlobalState, array $backupSettings, array $groups): PropertyTestSuite
+    {
+        $this->warnWhenPropertyIsAnnotatedWithIneligibleAttributes($className, $methodName);
+
+        $definition = null;
+
+        try {
+            ErrorHandler::instance()->enterTestCaseContext($className, $methodName);
+
+            // a property whose requirements are not met is skipped before
+            // arguments are generated for it, and one that the filter excludes
+            // is not run at all
+            if ($this->requirementsSatisfied($className, $methodName) &&
+                !$this->filterExcludesMethod($className, $methodName)) {
+                $definition = new PropertyDefinitionBuilder()->build($className, $methodName);
+            }
+        } finally {
+            ErrorHandler::instance()->leaveTestCaseContext();
+        }
+
+        $factory = function () use ($className, $methodName, $preserveGlobalState, $backupSettings): TestCase
+        {
+            $test = new $className($methodName);
+
+            $this->configureTestCase(
+                $test,
+                false,
+                $preserveGlobalState,
+                $backupSettings,
+            );
+
+            return $test;
+        };
+
+        $groups = array_merge(
+            $groups,
+            (new Groups)->groups($className, $methodName),
+        );
+
+        return PropertyTestSuite::fromTestCase(
+            $className . '::' . $methodName,
+            $this->emitter,
+            $factory(),
+            $definition,
+            $this->numberOfExamples($metadata),
+            $factory,
+            $groups,
+        );
+    }
+
+    /**
+     * The number of examples of a property is the one that is specified for
+     * it, or else the configured default, multiplied by the configured
+     * multiplier.
+     *
+     * @return positive-int
+     */
+    private function numberOfExamples(PropertyMetadata $metadata): int
+    {
+        $numberOfExamples = $metadata->examples() ?? ConfigurationRegistry::get()->propertyExamples();
+        $multiplier       = ConfigurationRegistry::get()->propertyExamplesMultiplier();
+
+        // the number of examples is not limited, so the product could exceed
+        // the largest integer
+        if ($numberOfExamples > intdiv(PHP_INT_MAX, $multiplier)) {
+            return PHP_INT_MAX;
+        }
+
+        return $numberOfExamples * $multiplier;
+    }
+
+    /**
      * @param BackupSettings $backupSettings
      */
     private function configureTestCase(TestCase $test, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, array $backupSettings): void
@@ -519,19 +622,36 @@ final readonly class TestBuilder
      */
     private function shouldTestMethodBeRunInSeparateProcess(string $className, string $methodName): bool
     {
-        $class = $className;
-
-        do {
-            if (MetadataRegistry::parser()->forClass($class)->isRunTestsInSeparateProcesses()->isNotEmpty()) {
-                return true;
-            }
-        } while (($class = get_parent_class($class)) !== false);
+        if ($this->classThatRunsTestsInSeparateProcesses($className) !== null) {
+            return true;
+        }
 
         if (MetadataRegistry::parser()->forMethod($className, $methodName)->isRunInSeparateProcess()->isNotEmpty()) {
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * Returns the class, the given one or one of its parent classes, that is
+     * annotated with #[RunTestsInSeparateProcesses], or null when none is.
+     *
+     * @param class-string $className
+     *
+     * @return ?class-string
+     */
+    private function classThatRunsTestsInSeparateProcesses(string $className): ?string
+    {
+        $class = $className;
+
+        do {
+            if (MetadataRegistry::parser()->forClass($class)->isRunTestsInSeparateProcesses()->isNotEmpty()) {
+                return $class;
+            }
+        } while (($class = get_parent_class($class)) !== false);
+
+        return null;
     }
 
     /**
@@ -616,6 +736,67 @@ final readonly class TestBuilder
                 ),
             );
         }
+    }
+
+    /**
+     * @param class-string<TestCase> $className
+     * @param non-empty-string       $methodName
+     */
+    private function warnWhenPropertyIsAnnotatedWithIneligibleAttributes(string $className, string $methodName): void
+    {
+        $metadata = MetadataRegistry::parser()->forMethod($className, $methodName);
+
+        foreach ($metadata->isRepeat() as $repeat) {
+            assert($repeat instanceof RepeatMetadata);
+
+            if ($repeat->times() > 1) {
+                $this->warnAboutIneligibleProperty($className, $methodName, 'Repeat', 'repeated');
+            }
+        }
+
+        foreach ($metadata->isRetry() as $retry) {
+            assert($retry instanceof RetryMetadata);
+
+            if ($retry->maxAttempts() > 1) {
+                $this->warnAboutIneligibleProperty($className, $methodName, 'Retry', 'retried');
+            }
+        }
+
+        if ($metadata->isRunInSeparateProcess()->isNotEmpty()) {
+            $this->warnAboutIneligibleProperty($className, $methodName, 'RunInSeparateProcess', 'run in a separate process');
+        }
+
+        $class = $this->classThatRunsTestsInSeparateProcesses($className);
+
+        if ($class !== null) {
+            $this->emitter->testRunnerTriggeredPhpunitWarning(
+                sprintf(
+                    'Class %s is annotated with #[RunTestsInSeparateProcesses] but %s::%s is a property and will not be run in a separate process',
+                    $class,
+                    $className,
+                    $methodName,
+                ),
+            );
+        }
+    }
+
+    /**
+     * @param class-string<TestCase>                           $className
+     * @param non-empty-string                                 $methodName
+     * @param 'Repeat'|'Retry'|'RunInSeparateProcess'          $attribute
+     * @param 'repeated'|'retried'|'run in a separate process' $consequence
+     */
+    private function warnAboutIneligibleProperty(string $className, string $methodName, string $attribute, string $consequence): void
+    {
+        $this->emitter->testRunnerTriggeredPhpunitWarning(
+            sprintf(
+                'Method %s::%s is annotated with #[%s] but is a property and will not be %s',
+                $className,
+                $methodName,
+                $attribute,
+                $consequence,
+            ),
+        );
     }
 
     private function hasVoidReturnType(ReflectionMethod $method): bool

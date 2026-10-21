@@ -1,0 +1,12 @@
+There was 1 error:
+
+1) FooTest::testBar
+Exception: message
+
+Property falsified after 2 examples, counterexample shrunk in 1 step:
+
+    $value = 0;
+
+%ACaused by
+Exception: previous
+%A

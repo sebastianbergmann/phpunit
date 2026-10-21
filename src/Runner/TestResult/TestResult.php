@@ -11,8 +11,10 @@ namespace PHPUnit\TestRunner\TestResult;
 
 use function array_map;
 use function array_sum;
+use function array_values;
 use function assert;
 use function count;
+use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Test\AfterLastTestMethodErrored;
 use PHPUnit\Event\Test\AfterLastTestMethodFailed;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
@@ -25,6 +27,8 @@ use PHPUnit\Event\Test\PhpunitDeprecationTriggered;
 use PHPUnit\Event\Test\PhpunitErrorTriggered;
 use PHPUnit\Event\Test\PhpunitNoticeTriggered;
 use PHPUnit\Event\Test\PhpunitWarningTriggered;
+use PHPUnit\Event\Test\PropertyChecked;
+use PHPUnit\Event\Test\PropertyFalsified;
 use PHPUnit\Event\Test\Skipped as TestSkipped;
 use PHPUnit\Event\TestRunner\DeprecationTriggered as TestRunnerDeprecationTriggered;
 use PHPUnit\Event\TestRunner\ErrorTriggered as TestRunnerIssueErrorTriggered;
@@ -203,6 +207,16 @@ final readonly class TestResult
     private ?TimeLimitExceeded $timeLimitExceededEvent;
 
     /**
+     * @var array<non-empty-string, PropertyFalsified>
+     */
+    private array $propertyFalsifiedEvents;
+
+    /**
+     * @var array<non-empty-string, PropertyChecked>
+     */
+    private array $propertyCheckedEvents;
+
+    /**
      * @param list<AfterLastTestMethodErrored|BeforeFirstTestMethodErrored|Errored>                                          $testErroredEvents
      * @param list<AfterLastTestMethodFailed|BeforeFirstTestMethodFailed|Failed>                                             $testFailedEvents
      * @param array<string,list<ConsideredRisky>>                                                                            $testConsideredRiskyEvents
@@ -233,8 +247,10 @@ final readonly class TestResult
      * @param non-negative-int                                                                                               $numberOfIssuesIgnoredByBaseline
      * @param array{self: non-negative-int, direct: non-negative-int, indirect: non-negative-int, unknown: non-negative-int} $numberOfDeprecationsByTrigger
      * @param array<non-empty-string, positive-int>                                                                          $retriedTests
+     * @param array<non-empty-string, PropertyFalsified>                                                                     $propertyFalsifiedEvents
+     * @param array<non-empty-string, PropertyChecked>                                                                       $propertyCheckedEvents
      */
-    public function __construct(int $numberOfTests, int $numberOfTestsRun, int $numberOfAssertions, array $testErroredEvents, array $testFailedEvents, array $testConsideredRiskyEvents, array $testSuiteSkippedEvents, array $testSkippedEvents, array $testMarkedIncompleteEvents, array $testTriggeredPhpunitDeprecationEvents, array $testTriggeredPhpunitErrorEvents, array $testTriggeredPhpunitNoticeEvents, array $testTriggeredPhpunitWarningEvents, array $testRunnerTriggeredDeprecationEvents, array $testRunnerTriggeredNoticeEvents, array $testRunnerTriggeredWarningEvents, array $testRunnerTriggeredIssueDeprecationEvents, array $testRunnerTriggeredIssueErrorEvents, array $testRunnerTriggeredIssueNoticeEvents, array $testRunnerTriggeredIssuePhpDeprecationEvents, array $testRunnerTriggeredIssuePhpNoticeEvents, array $testRunnerTriggeredIssuePhpWarningEvents, array $testRunnerTriggeredIssueWarningEvents, array $errors, array $deprecations, array $notices, array $warnings, array $phpDeprecations, array $phpNotices, array $phpWarnings, int $numberOfIssuesIgnoredByBaseline, array $numberOfDeprecationsByTrigger, array $retriedTests = [], ?TimeLimitExceeded $timeLimitExceededEvent = null)
+    public function __construct(int $numberOfTests, int $numberOfTestsRun, int $numberOfAssertions, array $testErroredEvents, array $testFailedEvents, array $testConsideredRiskyEvents, array $testSuiteSkippedEvents, array $testSkippedEvents, array $testMarkedIncompleteEvents, array $testTriggeredPhpunitDeprecationEvents, array $testTriggeredPhpunitErrorEvents, array $testTriggeredPhpunitNoticeEvents, array $testTriggeredPhpunitWarningEvents, array $testRunnerTriggeredDeprecationEvents, array $testRunnerTriggeredNoticeEvents, array $testRunnerTriggeredWarningEvents, array $testRunnerTriggeredIssueDeprecationEvents, array $testRunnerTriggeredIssueErrorEvents, array $testRunnerTriggeredIssueNoticeEvents, array $testRunnerTriggeredIssuePhpDeprecationEvents, array $testRunnerTriggeredIssuePhpNoticeEvents, array $testRunnerTriggeredIssuePhpWarningEvents, array $testRunnerTriggeredIssueWarningEvents, array $errors, array $deprecations, array $notices, array $warnings, array $phpDeprecations, array $phpNotices, array $phpWarnings, int $numberOfIssuesIgnoredByBaseline, array $numberOfDeprecationsByTrigger, array $retriedTests = [], ?TimeLimitExceeded $timeLimitExceededEvent = null, array $propertyFalsifiedEvents = [], array $propertyCheckedEvents = [])
     {
         $this->numberOfTests                                = $numberOfTests;
         $this->numberOfTestsRun                             = $numberOfTestsRun;
@@ -270,6 +286,29 @@ final readonly class TestResult
         $this->numberOfDeprecationsByTrigger                = $numberOfDeprecationsByTrigger;
         $this->retriedTests                                 = $retriedTests;
         $this->timeLimitExceededEvent                       = $timeLimitExceededEvent;
+        $this->propertyFalsifiedEvents                      = $propertyFalsifiedEvents;
+        $this->propertyCheckedEvents                        = $propertyCheckedEvents;
+    }
+
+    /**
+     * The events that describe how many examples of the properties that were
+     * checked were checked and classified, in the order in which the
+     * properties were checked.
+     *
+     * @return list<PropertyChecked>
+     */
+    public function propertyCheckedEvents(): array
+    {
+        return array_values($this->propertyCheckedEvents);
+    }
+
+    /**
+     * Returns the event that describes how a property was falsified when the
+     * test is a property that was falsified, and null otherwise.
+     */
+    public function propertyFalsifiedEventFor(Test $test): ?PropertyFalsified
+    {
+        return $this->propertyFalsifiedEvents[$test->id()] ?? null;
     }
 
     /**

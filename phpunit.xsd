@@ -252,6 +252,7 @@
         <xs:attribute name="displayDetailsOnTestsThatTriggerErrors" type="xs:boolean" default="false"/>
         <xs:attribute name="displayDetailsOnTestsThatTriggerNotices" type="xs:boolean" default="false"/>
         <xs:attribute name="displayDetailsOnTestsThatTriggerWarnings" type="xs:boolean" default="false"/>
+        <xs:attribute name="displayPropertyStatistics" type="xs:boolean" default="false"/>
         <xs:attribute name="shortenArraysForExportThreshold" type="xs:integer" default="10"/>
         <xs:attribute name="warnWhenPhpIsNotConfiguredForDevelopment" type="xs:boolean" default="false"/>
     </xs:attributeGroup>
@@ -264,6 +265,7 @@
             <xs:element name="logging" type="loggingType" minOccurs="0"/>
             <xs:element name="extensions" type="extensionsType" minOccurs="0"/>
             <xs:element name="php" type="phpType" minOccurs="0"/>
+            <xs:element name="propertyBasedTesting" type="propertyBasedTestingType" minOccurs="0"/>
         </xs:all>
     </xs:group>
     <xs:element name="testSuiteFacet" abstract="true"/>
@@ -341,6 +343,14 @@
     </xs:complexType>
     <xs:complexType name="logToDirectoryType">
         <xs:attribute name="outputDirectory" type="xs:anyURI" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="propertyBasedTestingType">
+        <xs:attribute name="examples" type="xs:positiveInteger" default="100"/>
+        <xs:attribute name="examplesMultiplier" type="xs:positiveInteger" default="1"/>
+        <xs:attribute name="maximumShrinkingAttempts" type="xs:nonNegativeInteger" default="1000"/>
+        <xs:attribute name="examplesCheckedUntilHealthIsAssumed" type="xs:nonNegativeInteger" default="10"/>
+        <xs:attribute name="maximumRejectedExamplesUntilHealthIsAssumed" type="xs:positiveInteger" default="50"/>
+        <xs:attribute name="maximumTooLargeExamplesUntilHealthIsAssumed" type="xs:positiveInteger" default="20"/>
     </xs:complexType>
     <xs:complexType name="otrType">
         <xs:attribute name="outputFile" type="xs:anyURI" use="required"/>

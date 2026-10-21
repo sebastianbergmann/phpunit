@@ -33,8 +33,9 @@ abstract readonly class Configuration
     private Php $php;
     private PHPUnit $phpunit;
     private TestSuiteCollection $testSuite;
+    private PropertyBasedTesting $propertyBasedTesting;
 
-    public function __construct(ExtensionBootstrapCollection $extensions, Source $source, CodeCoverage $codeCoverage, Groups $groups, Logging $logging, Php $php, PHPUnit $phpunit, TestSuiteCollection $testSuite)
+    public function __construct(ExtensionBootstrapCollection $extensions, Source $source, CodeCoverage $codeCoverage, Groups $groups, Logging $logging, Php $php, PHPUnit $phpunit, TestSuiteCollection $testSuite, PropertyBasedTesting $propertyBasedTesting)
     {
         $this->extensions   = $extensions;
         $this->source       = $source;
@@ -44,6 +45,8 @@ abstract readonly class Configuration
         $this->php          = $php;
         $this->phpunit      = $phpunit;
         $this->testSuite    = $testSuite;
+
+        $this->propertyBasedTesting = $propertyBasedTesting;
     }
 
     public function extensions(): ExtensionBootstrapCollection
@@ -84,6 +87,11 @@ abstract readonly class Configuration
     public function testSuite(): TestSuiteCollection
     {
         return $this->testSuite;
+    }
+
+    public function propertyBasedTesting(): PropertyBasedTesting
+    {
+        return $this->propertyBasedTesting;
     }
 
     /**

@@ -19,6 +19,7 @@ use function is_string;
 use function realpath;
 use function sprintf;
 use function str_starts_with;
+use Generator;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\PhptAssertionFailedError;
 use Throwable;
@@ -34,6 +35,39 @@ final readonly class Filter
      * @throws Exception
      */
     public static function stackTraceFromThrowableAsString(Throwable $t, bool $unwrap = true): string
+    {
+        $buffer = '';
+
+        foreach (self::printableFrames(self::framesOf($t, $unwrap)) as $frame) {
+            $buffer .= $frame . "\n";
+        }
+
+        return $buffer;
+    }
+
+    /**
+     * Returns the first line of the stack trace that is returned for a
+     * throwable by stackTraceFromThrowableAsString(), without its line break,
+     * or null when that stack trace is empty. The frames after the first one
+     * are not looked at.
+     *
+     * @throws Exception
+     */
+    public static function firstFrameFromThrowableAsString(Throwable $t, bool $unwrap = true): ?string
+    {
+        foreach (self::printableFrames(self::framesOf($t, $unwrap)) as $frame) {
+            return $frame;
+        }
+
+        return null;
+    }
+
+    /**
+     * @throws Exception
+     *
+     * @return list<array{file?: string, line?: int, ...}>
+     */
+    private static function framesOf(Throwable $t, bool $unwrap): array
     {
         if ($t instanceof PhptAssertionFailedError) {
             $stackTrace = $t->syntheticTrace();
@@ -60,15 +94,16 @@ final readonly class Filter
             );
         }
 
-        return self::stackTraceAsString($stackTrace);
+        return $stackTrace;
     }
 
     /**
      * @param list<array{file?: string, line?: int, ...}> $frames
+     *
+     * @return Generator<int, non-empty-string>
      */
-    private static function stackTraceAsString(array $frames): string
+    private static function printableFrames(array $frames): Generator
     {
-        $buffer      = '';
         $prefix      = false;
         $excludeList = new ExcludeList;
 
@@ -80,15 +115,13 @@ final readonly class Filter
 
         foreach ($frames as $frame) {
             if (isset($frame['file']) && self::shouldPrintFrame($frame, $prefix, $excludeList)) {
-                $buffer .= sprintf(
-                    "%s:%s\n",
+                yield sprintf(
+                    '%s:%s',
                     $frame['file'],
                     $frame['line'] ?? '?',
                 );
             }
         }
-
-        return $buffer;
     }
 
     /**

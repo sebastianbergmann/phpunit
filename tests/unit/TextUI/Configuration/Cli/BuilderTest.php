@@ -2863,6 +2863,26 @@ final class BuilderTest extends TestCase
         $configuration->displayDetailsOnSkippedTests();
     }
 
+    #[TestDox('--display-property-statistics')]
+    public function testDisplayPropertyStatistics(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--display-property-statistics']);
+
+        $this->assertTrue($configuration->hasDisplayPropertyStatistics());
+        $this->assertTrue($configuration->displayPropertyStatistics());
+    }
+
+    public function testDisplayPropertyStatisticsMayNotBeConfigured(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters([]);
+
+        $this->assertFalse($configuration->hasDisplayPropertyStatistics());
+
+        $this->expectException(Exception::class);
+
+        $configuration->displayPropertyStatistics();
+    }
+
     #[TestDox('--display-deprecations')]
     public function testDisplayDeprecations(): void
     {
@@ -3185,6 +3205,21 @@ final class BuilderTest extends TestCase
         $this->assertSame(1234, $configuration->randomSeed());
     }
 
+    #[TestDox('--random-seed-from-git-commit')]
+    public function testRandomSeedFromGitCommit(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--random-seed-from-git-commit']);
+
+        $this->assertTrue($configuration->randomSeedFromGitCommit());
+    }
+
+    public function testRandomSeedIsNotDerivedFromGitCommitByDefault(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters([]);
+
+        $this->assertFalse($configuration->randomSeedFromGitCommit());
+    }
+
     #[TestDox('--random-order-seed (deprecated)')]
     public function testRandomOrderSeed(): void
     {
@@ -3311,6 +3346,76 @@ final class BuilderTest extends TestCase
         $this->expectException(Exception::class);
 
         $configuration->retry();
+    }
+
+    #[TestDox('--property-examples')]
+    public function testPropertyExamples(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--property-examples', '500']);
+
+        $this->assertTrue($configuration->hasPropertyExamples());
+        $this->assertSame(500, $configuration->propertyExamples());
+    }
+
+    public function testPropertyExamplesMayNotBeConfigured(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters([]);
+
+        $this->assertFalse($configuration->hasPropertyExamples());
+
+        $this->expectException(Exception::class);
+
+        $configuration->propertyExamples();
+    }
+
+    #[TestDox('--property-examples with a value that is not a positive integer is ignored')]
+    public function testPropertyExamplesIsIgnoredWhenValueIsNotAPositiveInteger(): void
+    {
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter
+            ->expects($this->once())
+            ->method('testRunnerTriggeredPhpunitWarning')
+            ->with('Option "--property-examples 0" ignored because "0" is not a positive integer');
+
+        $configuration = new Builder($emitter)->fromParameters(['--property-examples', '0']);
+
+        $this->assertFalse($configuration->hasPropertyExamples());
+    }
+
+    #[TestDox('--property-examples-multiplier')]
+    public function testPropertyExamplesMultiplier(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--property-examples-multiplier', '10']);
+
+        $this->assertTrue($configuration->hasPropertyExamplesMultiplier());
+        $this->assertSame(10, $configuration->propertyExamplesMultiplier());
+    }
+
+    public function testPropertyExamplesMultiplierMayNotBeConfigured(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters([]);
+
+        $this->assertFalse($configuration->hasPropertyExamplesMultiplier());
+
+        $this->expectException(Exception::class);
+
+        $configuration->propertyExamplesMultiplier();
+    }
+
+    #[TestDox('--property-examples-multiplier with a value that is not a positive integer is ignored')]
+    public function testPropertyExamplesMultiplierIsIgnoredWhenValueIsNotAPositiveInteger(): void
+    {
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter
+            ->expects($this->once())
+            ->method('testRunnerTriggeredPhpunitWarning')
+            ->with('Option "--property-examples-multiplier 0" ignored because "0" is not a positive integer');
+
+        $configuration = new Builder($emitter)->fromParameters(['--property-examples-multiplier', '0']);
+
+        $this->assertFalse($configuration->hasPropertyExamplesMultiplier());
     }
 
     #[TestDox('--timeout')]

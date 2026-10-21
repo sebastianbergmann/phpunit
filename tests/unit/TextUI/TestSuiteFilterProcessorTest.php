@@ -34,18 +34,36 @@ final class TestSuiteFilterProcessorTest extends TestCase
         $this->expectExceptionMessage('Cannot read from ' . $file);
 
         new TestSuiteFilterProcessor($this->createStub(Emitter::class))->process(
-            $this->configuration($file),
+            $this->configuration(['--test-id-filter-file', $file]),
             TestSuite::empty('test suite', $this->createStub(Emitter::class)),
         );
     }
 
-    private function configuration(string $testIdFilterFile): Configuration
+    public function testHasNoFilterWhenNoTestSelectionIsConfigured(): void
+    {
+        $this->assertNull(
+            new TestSuiteFilterProcessor($this->createStub(Emitter::class))->filter(
+                $this->configuration([]),
+            ),
+        );
+    }
+
+    public function testHasAFilterWhenATestSelectionIsConfigured(): void
+    {
+        $this->assertNotNull(
+            new TestSuiteFilterProcessor($this->createStub(Emitter::class))->filter(
+                $this->configuration(['--filter', 'testOne']),
+            ),
+        );
+    }
+
+    /**
+     * @param list<string> $parameters
+     */
+    private function configuration(array $parameters): Configuration
     {
         return new Merger($this->createStub(Emitter::class))->merge(
-            new CliBuilder($this->createStub(Emitter::class))->fromParameters([
-                '--test-id-filter-file',
-                $testIdFilterFile,
-            ]),
+            new CliBuilder($this->createStub(Emitter::class))->fromParameters($parameters),
             DefaultConfiguration::create(),
         );
     }

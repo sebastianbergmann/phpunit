@@ -13,6 +13,7 @@ use const PHP_EOL;
 use function assert;
 use function implode;
 use function ksort;
+use function rtrim;
 use function sprintf;
 use function trim;
 use PHPUnit\Event\Test\PhpunitDeprecationTriggered;
@@ -27,6 +28,7 @@ use PHPUnit\Event\TestRunner\PhpWarningTriggered;
 use PHPUnit\TestRunner\TestResult\Issues\Issue;
 use PHPUnit\TestRunner\TestResult\TestResult;
 use PHPUnit\TextUI\Output\Printer;
+use PHPUnit\Util\PropertyCheckedToStringMapper;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -45,8 +47,9 @@ final readonly class ResultPrinter
     private bool $displayDetailsOnTestsThatTriggerWarnings;
     private bool $displayDetailsOnPhpunitDeprecations;
     private bool $displayDetailsOnPhpunitNotices;
+    private bool $displayPropertyStatistics;
 
-    public function __construct(Printer $printer, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $displayDetailsOnPhpunitDeprecations, bool $displayDetailsOnPhpunitNotices)
+    public function __construct(Printer $printer, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $displayDetailsOnPhpunitDeprecations, bool $displayDetailsOnPhpunitNotices, bool $displayPropertyStatistics)
     {
         $this->printer                                      = $printer;
         $this->renderer                                     = new Renderer($printer);
@@ -58,6 +61,7 @@ final readonly class ResultPrinter
         $this->displayDetailsOnTestsThatTriggerWarnings     = $displayDetailsOnTestsThatTriggerWarnings;
         $this->displayDetailsOnPhpunitDeprecations          = $displayDetailsOnPhpunitDeprecations;
         $this->displayDetailsOnPhpunitNotices               = $displayDetailsOnPhpunitNotices;
+        $this->displayPropertyStatistics                    = $displayPropertyStatistics;
     }
 
     public function print(TestResult $result): void
@@ -122,6 +126,10 @@ final readonly class ResultPrinter
 
         if ($this->displayDetailsOnSkippedTests) {
             $this->printSkippedTests($result);
+        }
+
+        if ($this->displayPropertyStatistics) {
+            $this->printPropertyStatistics($result);
         }
     }
 
@@ -396,6 +404,14 @@ final readonly class ResultPrinter
             $this->renderer->printHeader($type, $event->file() . ':' . $event->line());
 
             $this->renderer->printBody(trim($event->message()));
+        }
+    }
+
+    private function printPropertyStatistics(TestResult $result): void
+    {
+        foreach ($result->propertyCheckedEvents() as $event) {
+            $this->renderer->printHeader('STATISTICS', $this->renderer->nameOfTest($event->test()));
+            $this->renderer->printBody(rtrim(PropertyCheckedToStringMapper::map($event)));
         }
     }
 

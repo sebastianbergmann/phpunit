@@ -63,6 +63,21 @@ final readonly class Finished implements Event
             );
         }
 
+        if ($this->testSuite->isForPropertyTestMethod()) {
+            $plural = '';
+
+            if ($this->testSuite->numberOfExamples() !== 1) {
+                $plural = 's';
+            }
+
+            return sprintf(
+                'Test Suite for Property Finished (%s, %d example%s)',
+                $this->testSuite->name(),
+                $this->testSuite->numberOfExamples(),
+                $plural,
+            );
+        }
+
         $prefix = 'Test Suite Finished';
         $unit   = 'test';
 
