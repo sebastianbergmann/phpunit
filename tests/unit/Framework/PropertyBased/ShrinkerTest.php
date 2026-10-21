@@ -281,6 +281,18 @@ final class ShrinkerTest extends TestCase
                 static fn (string $value): bool => $value >= '2000-01-01T00:00:00+00:00',
             ],
 
+            'list whose sum exceeds 1000' => [
+                [1, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
+                Generators::lists(Generators::integers(0, 100)),
+                static fn (array $value): bool => array_sum($value) > 1000,
+            ],
+
+            'sum of two values that are generated alike and far apart' => [
+                [1, 'aaaaa', 10],
+                Generators::tuples(Generators::integers(0, 10), Generators::strings('ab', 5, 5), Generators::integers(0, 10)),
+                static fn (array $value): bool => $value[0] + $value[2] > 10,
+            ],
+
             'value that is falsified by every example' => [
                 [],
                 Generators::lists(Generators::strings()),
@@ -696,6 +708,44 @@ final class ShrinkerTest extends TestCase
         );
 
         $this->assertSame([10, 9], $shrinker->shrink(new ChoiceSequence([20, 0]))->sequence()->choices());
+    }
+
+    public function testFindsTheValuesWithTheSameLabelAgainWhenMovingAValueChangedWhichChoicesAreValues(): void
+    {
+        // three values, of which the second is only drawn while the first is
+        // not zero; the property is falsified when the first and the last
+        // value add up to at least 5
+        $shrinker = new Shrinker(
+            static function (ChoiceSequence $candidate): ?ChoiceSequence
+            {
+                $choices = $candidate->choices();
+
+                if (count($choices) < 2 || $choices[0] > 5 || $choices[1] > 5) {
+                    return null;
+                }
+
+                if ($choices[0] === 0) {
+                    if ($choices[1] < 5) {
+                        return null;
+                    }
+
+                    return new ChoiceSequence([0, $choices[1]], [new Span(0, 1, 'value', null), new Span(1, 2, 'value', null)], [5, 5]);
+                }
+
+                if (count($choices) !== 3 || $choices[2] > 5 || $choices[0] + $choices[2] < 5) {
+                    return null;
+                }
+
+                return new ChoiceSequence($choices, [new Span(0, 1, 'value', null), new Span(1, 2, 'value', null), new Span(2, 3, 'value', null)], [5, 5, 5]);
+            },
+            1000,
+        );
+
+        $result = $shrinker->shrink(
+            new ChoiceSequence([4, 5, 1], [new Span(0, 1, 'value', null), new Span(1, 2, 'value', null), new Span(2, 3, 'value', null)], [5, 5, 5]),
+        );
+
+        $this->assertSame([0, 5], $result->sequence()->choices());
     }
 
     /**
