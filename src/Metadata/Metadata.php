@@ -286,6 +286,29 @@ abstract readonly class Metadata
         return new RequireClassification(Level::METHOD_LEVEL, $label, $minimumPercentage);
     }
 
+    public static function rule(?string $precondition, ?string $produces): Rule
+    {
+        return new Rule(Level::METHOD_LEVEL, $precondition, $produces);
+    }
+
+    public static function initialize(?string $produces): Initialize
+    {
+        return new Initialize(Level::METHOD_LEVEL, $produces);
+    }
+
+    public static function invariant(bool $atEnd): Invariant
+    {
+        return new Invariant(Level::METHOD_LEVEL, $atEnd);
+    }
+
+    /**
+     * @param non-empty-string $parameterName
+     */
+    public static function fromPool(string $parameterName, string $pool, bool $consume): FromPool
+    {
+        return new FromPool(Level::METHOD_LEVEL, $parameterName, $pool, $consume);
+    }
+
     /**
      * @param non-empty-string $groupName
      */
@@ -1070,6 +1093,38 @@ abstract readonly class Metadata
      * @phpstan-assert-if-true RequireClassification $this
      */
     public function isRequireClassification(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true Rule $this
+     */
+    public function isRule(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true Initialize $this
+     */
+    public function isInitialize(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true Invariant $this
+     */
+    public function isInvariant(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true FromPool $this
+     */
+    public function isFromPool(): bool
     {
         return false;
     }
