@@ -3052,6 +3052,21 @@ final class BuilderTest extends TestCase
         $this->assertSame(1234, $configuration->randomSeed());
     }
 
+    #[TestDox('--random-seed-from-git-commit')]
+    public function testRandomSeedFromGitCommit(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--random-seed-from-git-commit']);
+
+        $this->assertTrue($configuration->randomSeedFromGitCommit());
+    }
+
+    public function testRandomSeedIsNotDerivedFromGitCommitByDefault(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters([]);
+
+        $this->assertFalse($configuration->randomSeedFromGitCommit());
+    }
+
     #[TestDox('--debug')]
     public function testDebug(): void
     {

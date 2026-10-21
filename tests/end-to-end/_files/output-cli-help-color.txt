@@ -194,6 +194,10 @@
                                        rand(), shuffle(), ...), for random test
                                        order, and for generating the examples
                                        of properties
+  [32m--random-seed-from-git-commit       [0m Use a seed that is derived from the Git
+                                       commit that is checked out, so that test
+                                       runs of the same commit use the same
+                                       seed
   [32m--repeat [36m<N>[0m                        [0m Run each test N times, stopping at the
                                        first failure
   [32m--retry [36m<N>[0m                         [0m Attempt each test up to N times,

@@ -286,6 +286,7 @@ final class Help
                 ['arg' => '--ignore-dependencies', 'desc' => 'Do not reorder tests to resolve dependencies between them'],
                 ['arg' => '--random-order', 'desc' => 'Alias for "--order-by random"'],
                 ['arg' => '--random-seed <N>', 'desc' => 'Use the specified seed for PHP\'s Mt19937 random number generator (mt_rand(), rand(), shuffle(), ...), for random test order, and for generating the examples of properties'],
+                ['arg' => '--random-seed-from-git-commit', 'desc' => 'Use a seed that is derived from the Git commit that is checked out, so that test runs of the same commit use the same seed'],
                 ['arg' => '--repeat <N>', 'desc' => 'Run each test N times, stopping at the first failure'],
                 ['arg' => '--retry <N>', 'desc' => 'Attempt each test up to N times, stopping at the first success'],
                 ['arg' => '--property-examples <N>', 'desc' => 'Check N examples for each property that does not specify the number of its examples'],
