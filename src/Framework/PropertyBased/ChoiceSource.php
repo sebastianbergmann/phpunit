@@ -78,6 +78,13 @@ final class ChoiceSource
     private array $choices = [];
 
     /**
+     * The largest choice that each choice could have been.
+     *
+     * @var list<non-negative-int>
+     */
+    private array $maxima = [];
+
+    /**
      * The spans that were started, in the order in which they were started.
      * The end of a span is null until it is ended.
      *
@@ -323,6 +330,7 @@ final class ChoiceSource
         }
 
         $this->choices[] = $choice;
+        $this->maxima[]  = $maximum;
 
         return $choice;
     }
@@ -408,8 +416,9 @@ final class ChoiceSource
 
     /**
      * The choices that have been drawn, with the spans that were ended and
-     * contain at least one choice. The parent of a span is the closest of
-     * these spans that it is part of.
+     * contain at least one choice, and the largest choice that each choice
+     * could have been. The parent of a span is the closest of these spans
+     * that it is part of.
      */
     public function sequence(): ChoiceSequence
     {
@@ -447,7 +456,7 @@ final class ChoiceSource
             $spans[] = new Span($start, $end, $span['label'], $parent);
         }
 
-        return new ChoiceSequence($this->choices, $spans);
+        return new ChoiceSequence($this->choices, $spans, $this->maxima);
     }
 
     /**
