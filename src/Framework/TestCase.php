@@ -47,6 +47,7 @@ use PHPUnit\Framework\PropertyBased\DrawnValues;
 use PHPUnit\Framework\PropertyBased\ExampleRejectedByAssumptionException;
 use PHPUnit\Framework\PropertyBased\ExampleRejectedException;
 use PHPUnit\Framework\PropertyBased\Falsification;
+use PHPUnit\Framework\PropertyBased\InvalidStateMachineException;
 use PHPUnit\Framework\PropertyBased\RejectionReason;
 use PHPUnit\Framework\PropertyBased\ValueGenerator;
 use PHPUnit\Framework\TestCase\CustomRegistrations;
@@ -126,6 +127,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private bool $failureIsReported    = false;
     private ?DrawnValues $drawnValues  = null;
     private bool $rejectedByAssumption = false;
+    private bool $stateMachineWasRun   = false;
 
     /**
      * Why the example of a property was rejected, if it was: by assume(), or
@@ -1163,6 +1165,63 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $this->rejectionReason = $e->reason();
 
             throw new ExampleRejectedByAssumptionException;
+        }
+    }
+
+    /**
+     * Runs a state machine in the body of a property: an object whose methods
+     * with #[Rule] are the steps that can be taken, whose methods with
+     * #[Initialize] are called before the first step, and whose methods with
+     * #[Invariant] are called after each step, or only after the last one with
+     * #[Invariant(atEnd: true)]. The steps are drawn like the
+     * values that are drawn with draw(), so they are replayed and shrunk
+     * together with the arguments of the property, and the steps that the
+     * minimal counterexample takes are reported as PHP code that calls the
+     * methods of the state machine, which is referred to as $machine.
+     *
+     * The number of steps that each example takes, and the number of steps
+     * that it takes with each rule, are observed as by observe(). The current
+     * example is discarded, as by assume(), when no arguments can be
+     * generated for a step.
+     *
+     * @param positive-int $maximumNumberOfSteps
+     *
+     * @throws ExampleRejectedByAssumptionException
+     * @throws Exception                            when it is not called in a property, it is called for an explicit example, it is called more than once in the same example, or the maximum number of steps is not positive
+     * @throws InvalidStateMachineException         when the attributes of the state machine are not valid or a precondition does not return a bool
+     */
+    final protected function runStateMachine(object $machine, int $maximumNumberOfSteps = 50): void
+    {
+        if (!$this->isPropertyExample()) {
+            throw new Exception('runStateMachine() can only be used in a property');
+        }
+
+        if ($this->drawnValues === null) {
+            throw new Exception('runStateMachine() cannot be used while an explicit example is checked');
+        }
+
+        if ($maximumNumberOfSteps < 1) {
+            throw new Exception('The maximum number of steps passed to runStateMachine() must be positive');
+        }
+
+        if ($this->stateMachineWasRun) {
+            throw new Exception('runStateMachine() can only be used once per example');
+        }
+
+        $this->stateMachineWasRun = true;
+
+        try {
+            $stateMachine = $this->drawnValues->runStateMachine($machine, $maximumNumberOfSteps);
+        } catch (ExampleRejectedException $e) {
+            $this->rejectionReason = $e->reason();
+
+            throw new ExampleRejectedByAssumptionException;
+        }
+
+        $this->observe('steps', $stateMachine->numberOfSteps());
+
+        foreach ($stateMachine->numberOfStepsByRule() as $rule => $numberOfSteps) {
+            $this->observe(sprintf('steps with %s()', $rule), $numberOfSteps);
         }
     }
 
