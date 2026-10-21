@@ -263,6 +263,12 @@ final class ShrinkerTest extends TestCase
                 static fn (string $value): bool => substr_count($value, '.') >= 2,
             ],
 
+            'domain name of more than 10 characters' => [
+                'a.aaaaaaaaa',
+                Generators::domainNames(),
+                static fn (string $value): bool => strlen($value) > 10,
+            ],
+
             'domain name with a hyphen' => [
                 'a-a.aa',
                 Generators::domainNames(),
