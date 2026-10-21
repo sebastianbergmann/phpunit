@@ -21,6 +21,7 @@ use PHPUnit\TestFixture\PropertyBased\Examples\ExampleWithAssumptionInTearDownTe
 use PHPUnit\TestFixture\PropertyBased\Examples\ExampleWithFailedAssertionInTearDownTest;
 use PHPUnit\TestFixture\PropertyBased\Examples\ExampleWithFailingTearDownTest;
 use PHPUnit\TestFixture\PropertyBased\Examples\ExampleWithOnNotSuccessfulTestTest;
+use PHPUnit\TestFixture\PropertyBased\Examples\ObservingExampleTest;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 use RuntimeException;
 use Throwable;
@@ -49,6 +50,18 @@ final class TestCasePropertyExampleTest extends TestCase
             'unmet expectation for the output'       => ['testDoesNotMeetTheExpectationForItsOutput', 'failure', ExpectationFailedException::class, 'Failed asserting that two strings are identical.'],
             'throwable of a registered failure type' => ['testFailsWithAThrowableOfARegisteredFailureType', 'failure', DomainException::class, 'registered'],
             'exception in destructor of test double' => ['testUsesATestDoubleWhoseDestructorThrows', 'error', RuntimeException::class, 'destructor'],
+        ];
+    }
+
+    /**
+     * @return array<string, array{non-empty-string, non-empty-string}>
+     */
+    public static function invalidObservationProvider(): array
+    {
+        return [
+            'empty label'       => ['testObservesAValueWithAnEmptyLabel', 'The label passed to observe() must not be empty'],
+            'NAN'               => ['testObservesNan', 'The value passed to observe() must be finite'],
+            'negative infinity' => ['testObservesInfinity', 'The value passed to observe() must be finite'],
         ];
     }
 
@@ -266,6 +279,49 @@ final class TestCasePropertyExampleTest extends TestCase
         $this->assertSame('classify() can only be used in a property', $test->status()->message());
     }
 
+    public function testAnExampleObservesValuesWithTheirLabels(): void
+    {
+        $test = $this->observingExample('testObservesValues');
+
+        $this->runExample($test);
+
+        $this->assertTrue($test->status()->isSuccess());
+        $this->assertSame(
+            [
+                ['label' => 'size', 'value' => 3],
+                ['label' => 'ratio', 'value' => 0.5],
+                ['label' => 'size', 'value' => 6],
+            ],
+            $test->observationsOfPropertyExample(),
+        );
+    }
+
+    /**
+     * @param non-empty-string $methodName
+     * @param non-empty-string $message
+     */
+    #[DataProvider('invalidObservationProvider')]
+    public function testAnExampleCannotObserveAValueWithAnEmptyLabelOrAValueThatIsNotFinite(string $methodName, string $message): void
+    {
+        $test = $this->observingExample($methodName);
+
+        $this->runExample($test);
+
+        $this->assertTrue($test->status()->isError());
+        $this->assertSame($message, $test->status()->message());
+        $this->assertSame([], $test->observationsOfPropertyExample());
+    }
+
+    public function testObserveCanOnlyBeUsedInAProperty(): void
+    {
+        $test = new ObservingExampleTest('testUsesObserveOutsideOfAProperty');
+
+        $this->runExample($test);
+
+        $this->assertTrue($test->status()->isError());
+        $this->assertSame('observe() can only be used in a property', $test->status()->message());
+    }
+
     public function testAssumeCanOnlyBeUsedInAProperty(): void
     {
         $test = new ExampleTest('testUsesAssumeOutsideOfAProperty');
@@ -364,6 +420,18 @@ final class TestCasePropertyExampleTest extends TestCase
         $test = new ExampleTest($methodName);
 
         $test->setPropertyExample($arguments);
+
+        return $test;
+    }
+
+    /**
+     * @param non-empty-string $methodName
+     */
+    private function observingExample(string $methodName): ObservingExampleTest
+    {
+        $test = new ObservingExampleTest($methodName);
+
+        $test->setPropertyExample([3]);
 
         return $test;
     }

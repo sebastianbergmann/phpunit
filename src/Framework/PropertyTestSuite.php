@@ -40,6 +40,7 @@ use PHPUnit\Framework\PropertyBased\FlakyPropertyException;
 use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
 use PHPUnit\Framework\PropertyBased\GeneratorMethod;
 use PHPUnit\Framework\PropertyBased\InvalidPropertyException;
+use PHPUnit\Framework\PropertyBased\Observations;
 use PHPUnit\Framework\PropertyBased\PropertyDefinition;
 use PHPUnit\Framework\PropertyBased\PropertyDefinitionBuilder;
 use PHPUnit\Framework\PropertyBased\RejectionReason;
@@ -157,6 +158,12 @@ final class PropertyTestSuite extends IterativeTestSuite
      * @var list<array{label: non-empty-string, numberOfExamples: positive-int}>
      */
     private array $classifications = [];
+
+    /**
+     * The values that the generated examples that were checked observed,
+     * null when none was checked yet.
+     */
+    private ?Observations $observations = null;
 
     /**
      * The other ways in which the property was falsified while its
@@ -431,6 +438,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             $this->numberOfExamplesChecked++;
 
             $this->countClassifications($example->classificationsOfPropertyExample());
+            $this->observations()->record($example->observationsOfPropertyExample());
             $this->recordCheckedExample($events, $exampleEvents, $run);
 
             if ($this->endsCheckWithoutFalsification($example, $falsification, $exampleEvents)) {
@@ -921,6 +929,15 @@ final class PropertyTestSuite extends IterativeTestSuite
         }
     }
 
+    private function observations(): Observations
+    {
+        if ($this->observations === null) {
+            $this->observations = new Observations;
+        }
+
+        return $this->observations;
+    }
+
     private function countRejection(RejectionReason $reason): void
     {
         $this->numberOfExamplesRejected++;
@@ -1137,6 +1154,7 @@ final class PropertyTestSuite extends IterativeTestSuite
                     $this->numberOfExamplesChecked,
                     $this->numberOfExamplesRejected,
                     $this->classifications,
+                    $this->observations()->statistics(),
                 );
             },
             $this->numberOfAssertions,

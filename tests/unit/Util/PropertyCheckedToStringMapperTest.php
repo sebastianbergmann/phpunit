@@ -28,7 +28,7 @@ final class PropertyCheckedToStringMapperTest extends AbstractEventTestCase
     {
         $this->assertSame(
             '100 examples checked, 3 rejected' . PHP_EOL,
-            PropertyCheckedToStringMapper::map($this->event(100, 3, [])),
+            PropertyCheckedToStringMapper::map($this->event(100, 3, [], [])),
         );
     }
 
@@ -36,7 +36,7 @@ final class PropertyCheckedToStringMapperTest extends AbstractEventTestCase
     {
         $this->assertSame(
             '1 example checked, 0 rejected' . PHP_EOL,
-            PropertyCheckedToStringMapper::map($this->event(1, 0, [])),
+            PropertyCheckedToStringMapper::map($this->event(1, 0, [], [])),
         );
     }
 
@@ -60,17 +60,60 @@ EOT,
                         ['label' => 'odd', 'numberOfExamples' => 48],
                         ['label' => 'even', 'numberOfExamples' => 52],
                     ],
+                    [],
                 ),
             ),
         );
     }
 
+    public function testDescribesTheStatisticsOfTheValuesThatWereObservedWithEachLabelAfterTheClassifications(): void
+    {
+        $this->assertStringEqualsStringIgnoringLineEndings(
+            <<<'EOT'
+100 examples checked, 3 rejected
+
+    100.0% any
+
+    size: count 100, min 0, median 4, mean 5.12, p90 11, max 32
+    ratio: count 7, min -1.5, median 0.25, mean 0.333333, p90 2, max 2
+
+EOT,
+            PropertyCheckedToStringMapper::map(
+                $this->event(
+                    100,
+                    3,
+                    [['label' => 'any', 'numberOfExamples' => 100]],
+                    [
+                        ['label' => 'size', 'numberOfValues' => 100, 'minimum' => 0, 'median' => 4, 'mean' => 5.12, 'percentile90' => 11, 'maximum' => 32],
+                        ['label' => 'ratio', 'numberOfValues' => 7, 'minimum' => -1.5, 'median' => 0.25, 'mean' => 0.33333333, 'percentile90' => 2.0, 'maximum' => 2.0],
+                    ],
+                ),
+            ),
+        );
+    }
+
+    public function testDescribesTheStatisticsOfObservedValuesWithoutClassifications(): void
+    {
+        $this->assertStringEqualsStringIgnoringLineEndings(
+            <<<'EOT'
+1 example checked, 0 rejected
+
+    size: count 1, min 3, median 3, mean 3, p90 3, max 3
+
+EOT,
+            PropertyCheckedToStringMapper::map(
+                $this->event(1, 0, [], [['label' => 'size', 'numberOfValues' => 1, 'minimum' => 3, 'median' => 3, 'mean' => 3.0, 'percentile90' => 3, 'maximum' => 3]]),
+            ),
+        );
+    }
+
     /**
-     * @param non-negative-int                                                     $numberOfExamplesChecked
-     * @param non-negative-int                                                     $numberOfExamplesRejected
-     * @param list<array{label: non-empty-string, numberOfExamples: positive-int}> $classifications
+     * @param non-negative-int                                                                                                                                                    $numberOfExamplesChecked
+     * @param non-negative-int                                                                                                                                                    $numberOfExamplesRejected
+     * @param list<array{label: non-empty-string, numberOfExamples: positive-int}>                                                                                                $classifications
+     * @param list<array{label: non-empty-string, numberOfValues: positive-int, minimum: float|int, median: float|int, mean: float, percentile90: float|int, maximum: float|int}> $observations
      */
-    private function event(int $numberOfExamplesChecked, int $numberOfExamplesRejected, array $classifications): PropertyChecked
+    private function event(int $numberOfExamplesChecked, int $numberOfExamplesRejected, array $classifications, array $observations): PropertyChecked
     {
         return new PropertyChecked(
             $this->telemetryInfo(),
@@ -79,6 +122,7 @@ EOT,
             $numberOfExamplesChecked,
             $numberOfExamplesRejected,
             $classifications,
+            $observations,
         );
     }
 }

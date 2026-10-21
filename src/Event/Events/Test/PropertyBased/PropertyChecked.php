@@ -10,6 +10,7 @@
 namespace PHPUnit\Event\Test;
 
 use const PHP_EOL;
+use function is_int;
 use function sprintf;
 use PHPUnit\Event\Code;
 use PHPUnit\Event\Event;
@@ -46,14 +47,20 @@ final readonly class PropertyChecked implements Event
     private array $classifications;
 
     /**
-     * @param non-negative-int                                                     $seed
-     * @param non-negative-int                                                     $numberOfExamplesChecked
-     * @param non-negative-int                                                     $numberOfExamplesRejected
-     * @param list<array{label: non-empty-string, numberOfExamples: positive-int}> $classifications
+     * @var list<array{label: non-empty-string, numberOfValues: positive-int, minimum: float|int, median: float|int, mean: float, percentile90: float|int, maximum: float|int}>
+     */
+    private array $observations;
+
+    /**
+     * @param non-negative-int                                                                                                                                                    $seed
+     * @param non-negative-int                                                                                                                                                    $numberOfExamplesChecked
+     * @param non-negative-int                                                                                                                                                    $numberOfExamplesRejected
+     * @param list<array{label: non-empty-string, numberOfExamples: positive-int}>                                                                                                $classifications
+     * @param list<array{label: non-empty-string, numberOfValues: positive-int, minimum: float|int, median: float|int, mean: float, percentile90: float|int, maximum: float|int}> $observations
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfExamplesRejected, array $classifications)
+    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfExamplesRejected, array $classifications, array $observations)
     {
         $this->telemetryInfo            = $telemetryInfo;
         $this->test                     = $test;
@@ -61,6 +68,7 @@ final readonly class PropertyChecked implements Event
         $this->numberOfExamplesChecked  = $numberOfExamplesChecked;
         $this->numberOfExamplesRejected = $numberOfExamplesRejected;
         $this->classifications          = $classifications;
+        $this->observations             = $observations;
     }
 
     public function telemetryInfo(): Telemetry\Info
@@ -122,6 +130,22 @@ final readonly class PropertyChecked implements Event
     }
 
     /**
+     * The labels with which TestCase::observe() observed numeric values of
+     * the examples for which the property was checked, in the order in which
+     * they were first used, each with the number of values that were
+     * observed with it and their minimum, median, mean, 90th percentile, and
+     * maximum. The median and the 90th percentile are values that were
+     * observed: the smallest ones that at least 50 and 90 percent of the
+     * values are not greater than. Explicit examples do not observe values.
+     *
+     * @return list<array{label: non-empty-string, numberOfValues: positive-int, minimum: float|int, median: float|int, mean: float, percentile90: float|int, maximum: float|int}>
+     */
+    public function observations(): array
+    {
+        return $this->observations;
+    }
+
+    /**
      * @return non-empty-string
      */
     public function asString(): string
@@ -143,6 +167,32 @@ final readonly class PropertyChecked implements Event
             );
         }
 
+        foreach ($this->observations as $observation) {
+            $buffer .= sprintf(
+                PHP_EOL . '%s: count %d, min %s, median %s, mean %s, p90 %s, max %s',
+                $observation['label'],
+                $observation['numberOfValues'],
+                self::number($observation['minimum']),
+                self::number($observation['median']),
+                self::number($observation['mean']),
+                self::number($observation['percentile90']),
+                self::number($observation['maximum']),
+            );
+        }
+
         return $buffer;
+    }
+
+    /**
+     * Formats an integer as it is, and a float with at most six significant
+     * digits.
+     */
+    private static function number(float|int $number): string
+    {
+        if (is_int($number)) {
+            return (string) $number;
+        }
+
+        return sprintf('%.6g', $number);
     }
 }
