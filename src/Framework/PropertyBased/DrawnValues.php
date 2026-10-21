@@ -10,11 +10,16 @@
 namespace PHPUnit\Framework\PropertyBased;
 
 use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
+use PHPUnit\Framework\PropertyBased\StateMachine\StateMachineDefinitionBuilder;
+use PHPUnit\Framework\PropertyBased\StateMachine\StateMachineRunner;
+use Throwable;
 
 /**
  * Draws the values that the body of an example of a property draws with
- * TestCase::draw() from the choice source that generated its arguments, so
- * that they are replayed and shrunk together with the arguments.
+ * TestCase::draw(), and the steps of the state machine that it runs with
+ * TestCase::runStateMachine(), from the choice source that generated its
+ * arguments, so that they are replayed and shrunk together with the
+ * arguments.
  *
  * The values that the minimal counterexample draws are reported. They are
  * exported when they are drawn, before the example can change the state of
@@ -83,6 +88,27 @@ final class DrawnValues
         }
 
         return $value;
+    }
+
+    /**
+     * @param positive-int $maximumNumberOfSteps
+     *
+     * @throws ExampleRejectedException
+     * @throws InvalidStateMachineException
+     * @throws Throwable                    when a step or an invariant of the state machine fails
+     */
+    public function runStateMachine(object $machine, int $maximumNumberOfSteps): StateMachineRunner
+    {
+        $stateMachine = new StateMachineRunner(
+            $this->source,
+            $this->exporter,
+            new StateMachineDefinitionBuilder()->build($machine::class, $this->source->deriver()),
+            $machine,
+        );
+
+        $stateMachine->run($maximumNumberOfSteps);
+
+        return $stateMachine;
     }
 
     /**
