@@ -114,6 +114,7 @@ Execution:
   --ignore-dependencies                Do not reorder tests to resolve dependencies between them
   --random-order                       Alias for "--order-by random"
   --random-seed <N>                    Use the specified seed for PHP's Mt19937 random number generator (mt_rand(), rand(), shuffle(), ...), for random test order, and for generating the examples of properties
+  --random-seed-from-git-commit        Use a seed that is derived from the Git commit that is checked out, so that test runs of the same commit use the same seed
   --repeat <N>                         Run each test N times, stopping at the first failure
   --retry <N>                          Attempt each test up to N times, stopping at the first success
   --property-examples <N>              Check N examples for each property that does not specify the number of its examples

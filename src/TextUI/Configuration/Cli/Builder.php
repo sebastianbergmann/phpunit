@@ -131,6 +131,7 @@ final class Builder
         'do-not-report-useless-tests',
         'random-order',
         'random-seed=',
+        'random-seed-from-git-commit',
         'repeat=',
         'retry=',
         'timeout=',
@@ -411,6 +412,7 @@ final class Builder
         $noLogging                                = null;
         $processIsolation                         = null;
         $randomSeed                               = null;
+        $randomSeedFromGitCommit                  = false;
         $propertyExamples                         = null;
         $propertyExamplesMultiplier               = null;
         $repeat                                   = null;
@@ -1283,6 +1285,11 @@ final class Builder
 
                     break;
 
+                case '--random-seed-from-git-commit':
+                    $randomSeedFromGitCommit = true;
+
+                    break;
+
                 case '--repeat':
                     if (!is_numeric($option[1]) ||
                         (string) (int) $option[1] !== $option[1] ||
@@ -1570,6 +1577,7 @@ final class Builder
             $noLogging,
             $processIsolation,
             $randomSeed,
+            $randomSeedFromGitCommit,
             $propertyExamples,
             $propertyExamplesMultiplier,
             $repeat,
