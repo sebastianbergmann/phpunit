@@ -21,7 +21,9 @@ use function count;
 use function hash;
 use function implode;
 use function intdiv;
+use function max;
 use function min;
+use function sort;
 use function usort;
 use Closure;
 
@@ -36,7 +38,9 @@ use Closure;
  * composed of.
  *
  * Its passes are deleting spans, replacing spans with shorter spans they
- * contain that have the same label, deleting blocks of consecutive choices,
+ * contain that have the same label, moving the values of spans that consist
+ * of one choice into the later values of spans with the same label as far
+ * as these can take them, deleting blocks of consecutive choices,
  * setting blocks of choices to 0, minimizing individual choices by trying
  * small values and then searching for the smallest value with a binary
  * search, redistributing pairs of nearby choices by moving as much as
@@ -141,6 +145,7 @@ final class Shrinker
         foreach ([
             $this->deleteSpans(...),
             $this->replaceSpansWithDescendants(...),
+            $this->moveValuesToLaterValuesWithTheSameLabel(...),
             $this->deleteBlocks(...),
             $this->zeroBlocks(...),
             $this->minimizeChoices(...),
@@ -293,6 +298,98 @@ final class Shrinker
         );
 
         return $pairs;
+    }
+
+    /**
+     * A counterexample for a property such as "the sum of the elements of a
+     * list does not exceed 1000" has a sum just above 1000 once as many of its
+     * elements as possible were deleted: deleting or lowering any element
+     * then makes the property hold. It has fewer elements when the values of the earlier
+     * elements are moved into the later ones, as far as these can take them,
+     * so that the earlier ones become zero and can be deleted. A value is the
+     * choice of a span that consists of one choice, and it is moved into the
+     * values whose spans have the same label, the last ones first, wherever
+     * they are: the elements of a list, or the parameters that are generated
+     * alike. How much a value can take is known from the largest choice that
+     * it could have been.
+     */
+    private function moveValuesToLaterValuesWithTheSameLabel(): void
+    {
+        $groups = $this->valuesWithTheSameLabel();
+
+        foreach ($groups as $indexes) {
+            foreach ($indexes as $position => $first) {
+                foreach (array_reverse(array_slice($indexes, $position + 1)) as $second) {
+                    if ($this->isStopped() || $this->choiceAt($first) === 0) {
+                        break;
+                    }
+
+                    $room = $this->room($second);
+
+                    if ($room === 0) {
+                        continue;
+                    }
+
+                    if (!$this->consider($this->withMovedAmount($first, $second, min($this->choiceAt($first), $room)))) {
+                        break;
+                    }
+
+                    // the values are found again in the next round when
+                    // moving a value changed which choices are values
+                    if ($this->valuesWithTheSameLabel() !== $groups) {
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * The indexes of the choices of spans that consist of one choice, grouped
+     * by the label of the spans, for the labels of at least two such spans.
+     *
+     * @return list<non-empty-list<non-negative-int>>
+     */
+    private function valuesWithTheSameLabel(): array
+    {
+        $indexes = [];
+
+        foreach ($this->current->spans() as $span) {
+            if ($span->length() === 1) {
+                $indexes[$span->label()][$span->start()] = $span->start();
+            }
+        }
+
+        $groups = [];
+
+        foreach ($indexes as $group) {
+            if (count($group) > 1) {
+                sort($group);
+
+                $groups[] = $group;
+            }
+        }
+
+        return $groups;
+    }
+
+    /**
+     * How much the choice at the index can be raised without exceeding the
+     * largest choice it can be.
+     *
+     * @param non-negative-int $index
+     *
+     * @return non-negative-int
+     */
+    private function room(int $index): int
+    {
+        $maximum = $this->current->maximumAt($index);
+
+        if ($maximum === null) {
+            $maximum = PHP_INT_MAX;
+        }
+
+        return max(0, $maximum - $this->choiceAt($index));
     }
 
     private function deleteBlocks(): void
