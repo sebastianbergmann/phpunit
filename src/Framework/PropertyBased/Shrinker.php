@@ -346,7 +346,11 @@ final class Shrinker
 
     /**
      * The indexes of the choices of spans that consist of one choice, grouped
-     * by the label of the spans, for the labels of at least two such spans.
+     * by the label of the spans, for the labels of at least two such spans
+     * of which no two are adjacent. Adjacent values with the same label are
+     * the characters of a string, for instance, whose value would be moved
+     * from character to character, and redistributeChoices() moves values
+     * between adjacent choices anyway.
      *
      * @return list<non-empty-list<non-negative-int>>
      */
@@ -363,11 +367,23 @@ final class Shrinker
         $groups = [];
 
         foreach ($indexes as $group) {
-            if (count($group) > 1) {
-                sort($group);
-
-                $groups[] = $group;
+            if (count($group) < 2) {
+                continue;
             }
+
+            sort($group);
+
+            $previous = null;
+
+            foreach ($group as $index) {
+                if ($previous !== null && $index === $previous + 1) {
+                    continue 2;
+                }
+
+                $previous = $index;
+            }
+
+            $groups[] = $group;
         }
 
         return $groups;

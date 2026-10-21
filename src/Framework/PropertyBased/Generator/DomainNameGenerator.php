@@ -78,12 +78,18 @@ final readonly class DomainNameGenerator extends AbstractGenerator
     private string $labelOfLabels;
 
     /**
+     * @var non-empty-string
+     */
+    private string $labelOfCharacters;
+
+    /**
      * @param int<4, 253> $maximumLength
      */
     public function __construct(int $maximumLength)
     {
-        $this->label         = self::labelOf('domainNames', (string) $maximumLength);
-        $this->labelOfLabels = self::labelOf('label', $this->label);
+        $this->label             = self::labelOf('domainNames', (string) $maximumLength);
+        $this->labelOfLabels     = self::labelOf('label', $this->label);
+        $this->labelOfCharacters = self::labelOf('character', $this->label);
 
         $this->maximumLength = $maximumLength;
         $this->anotherLabel  = new BernoulliDistribution(self::PROBABILITY_OF_ANOTHER_LABEL);
@@ -176,12 +182,21 @@ final readonly class DomainNameGenerator extends AbstractGenerator
     }
 
     /**
+     * Each character is a span, so that a label is shortened by lowering its
+     * length while its last characters are deleted.
+     *
      * @param non-empty-string $alphabet
      *
      * @return non-empty-string
      */
     private function character(ChoiceSource $source, string $alphabet): string
     {
-        return $alphabet[$source->draw(strlen($alphabet) - 1, $this->character)];
+        $source->startSpan($this->labelOfCharacters);
+
+        $character = $alphabet[$source->draw(strlen($alphabet) - 1, $this->character)];
+
+        $source->endSpan();
+
+        return $character;
     }
 }
