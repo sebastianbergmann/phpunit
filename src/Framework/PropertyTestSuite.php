@@ -14,6 +14,7 @@ use function array_shift;
 use function array_values;
 use function assert;
 use function count;
+use function hash;
 use function implode;
 use function intdiv;
 use function min;
@@ -45,6 +46,7 @@ use PHPUnit\Framework\PropertyBased\PropertyDefinition;
 use PHPUnit\Framework\PropertyBased\PropertyDefinitionBuilder;
 use PHPUnit\Framework\PropertyBased\RejectionReason;
 use PHPUnit\Framework\PropertyBased\Shrinker;
+use PHPUnit\Framework\PropertyBased\TargetedSearch;
 use PHPUnit\Framework\PropertyBased\Type\NameScope;
 use PHPUnit\Framework\PropertyBased\ValueGenerator;
 use PHPUnit\Framework\TestRunner\ExampleRun;
@@ -164,6 +166,13 @@ final class PropertyTestSuite extends IterativeTestSuite
      * null when none was checked yet.
      */
     private ?Observations $observations = null;
+
+    /**
+     * The search for examples with higher scores than the ones that the
+     * examples that were checked targeted, null before examples are
+     * generated.
+     */
+    private ?TargetedSearch $targetedSearch = null;
 
     /**
      * The other ways in which the property was falsified while its
@@ -362,6 +371,12 @@ final class PropertyTestSuite extends IterativeTestSuite
         $tree       = new ChoiceTree;
         $remembered = [];
 
+        // the search draws from a random number generator of its own, so the
+        // examples that are generated are the same with and without it
+        $search = new TargetedSearch(new Randomizer(new Xoshiro256StarStar(hash('sha256', 'targeted search ' . $this->seed, true))));
+
+        $this->targetedSearch = $search;
+
         if ($this->testRunHistory !== null) {
             $remembered = $this->testRunHistory->counterexamples(TestRunHistoryId::fromReorderable($test));
         }
@@ -399,7 +414,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             if ($remembered !== []) {
                 $source = ChoiceSource::replay(new ChoiceSequence(array_shift($remembered)), ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver, $tree);
             } else {
-                $source = ChoiceSource::random($randomizer, ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver, $tree);
+                $source = $this->sourceOfGeneratedExample($search, $randomizer, $deriver, $tree);
             }
 
             try {
@@ -410,6 +425,7 @@ final class PropertyTestSuite extends IterativeTestSuite
                 $this->exampleGenerated($source, $events, $emitter);
 
                 $this->countRejection($e->reason());
+                $search->exampleRejected();
 
                 continue;
             } catch (Throwable $t) {
@@ -429,6 +445,7 @@ final class PropertyTestSuite extends IterativeTestSuite
 
             if ($this->wasRejected($example, $falsification)) {
                 $this->countRejection($example->rejectionReasonOfPropertyExample());
+                $search->exampleRejected();
 
                 $events->record($exampleEvents, false);
 
@@ -439,6 +456,7 @@ final class PropertyTestSuite extends IterativeTestSuite
 
             $this->countClassifications($example->classificationsOfPropertyExample());
             $this->observations()->record($example->observationsOfPropertyExample());
+            $search->exampleChecked($source->sequence(), $example->targetsOfPropertyExample());
             $this->recordCheckedExample($events, $exampleEvents, $run);
 
             if ($this->endsCheckWithoutFalsification($example, $falsification, $exampleEvents)) {
@@ -471,6 +489,25 @@ final class PropertyTestSuite extends IterativeTestSuite
         $this->report($events, $emitter, $skeleton, null, true, null);
 
         PassedTests::instance()->testMethodPassed($valueObject, null);
+    }
+
+    /**
+     * Once half of the examples have been checked, the other half are spent
+     * on searching for examples with higher scores, if the examples target
+     * scores, until the search reaches local maxima; all other examples are
+     * generated at random.
+     */
+    private function sourceOfGeneratedExample(TargetedSearch $search, Randomizer $randomizer, GeneratorDeriver $deriver, ChoiceTree $tree): ChoiceSource
+    {
+        if ($this->numberOfExamplesChecked >= intdiv($this->numberOfExamples, 2)) {
+            $candidate = $search->nextCandidate();
+
+            if ($candidate !== null) {
+                return ChoiceSource::replay($candidate, ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver, $tree);
+            }
+        }
+
+        return ChoiceSource::random($randomizer, ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver, $tree);
     }
 
     /**
@@ -938,6 +975,18 @@ final class PropertyTestSuite extends IterativeTestSuite
         return $this->observations;
     }
 
+    /**
+     * @return list<array{label: non-empty-string, highestScore: float|int}>
+     */
+    private function highestTargetedScores(): array
+    {
+        if ($this->targetedSearch === null) {
+            return [];
+        }
+
+        return $this->targetedSearch->highestScores();
+    }
+
     private function countRejection(RejectionReason $reason): void
     {
         $this->numberOfExamplesRejected++;
@@ -1155,6 +1204,7 @@ final class PropertyTestSuite extends IterativeTestSuite
                     $this->numberOfExamplesRejected,
                     $this->classifications,
                     $this->observations()->statistics(),
+                    $this->highestTargetedScores(),
                 );
             },
             $this->numberOfAssertions,

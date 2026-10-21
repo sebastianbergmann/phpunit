@@ -1948,7 +1948,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $test = $this->testValueObject();
 
-        $emitter->testPropertyChecked($test, 1234, 100, 3, [['label' => 'negative', 'numberOfExamples' => 42]], [['label' => 'size', 'numberOfValues' => 100, 'minimum' => 0, 'median' => 4, 'mean' => 5.12, 'percentile90' => 11, 'maximum' => 32]]);
+        $emitter->testPropertyChecked($test, 1234, 100, 3, [['label' => 'negative', 'numberOfExamples' => 42]], [['label' => 'size', 'numberOfValues' => 100, 'minimum' => 0, 'median' => 4, 'mean' => 5.12, 'percentile90' => 11, 'maximum' => 32]], [['label' => 'sum', 'highestScore' => 1250]]);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 
@@ -1962,6 +1962,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame(3, $event->numberOfExamplesRejected());
         $this->assertSame([['label' => 'negative', 'numberOfExamples' => 42]], $event->classifications());
         $this->assertSame([['label' => 'size', 'numberOfValues' => 100, 'minimum' => 0, 'median' => 4, 'mean' => 5.12, 'percentile90' => 11, 'maximum' => 32]], $event->observations());
+        $this->assertSame([['label' => 'sum', 'highestScore' => 1250]], $event->targets());
     }
 
     #[TestDox('testPropertyFalsified() emits Test\PropertyFalsified event')]

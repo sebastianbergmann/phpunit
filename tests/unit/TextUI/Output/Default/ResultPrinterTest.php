@@ -131,6 +131,7 @@ final class ResultPrinterTest extends TestCase
                                 ['label' => 'even', 'numberOfExamples' => 6],
                             ],
                             [],
+                            [],
                         ),
                         'FooTest::testBaz' => new PropertyChecked(
                             self::telemetryInfo(),
@@ -138,6 +139,7 @@ final class ResultPrinterTest extends TestCase
                             1234,
                             1,
                             0,
+                            [],
                             [],
                             [],
                         ),
