@@ -58,11 +58,14 @@ use PHPUnit\Framework\Attributes\ExcludeGlobalVariableFromBackup;
 use PHPUnit\Framework\Attributes\ExcludeStaticPropertyFromBackup;
 use PHPUnit\Framework\Attributes\ForAll;
 use PHPUnit\Framework\Attributes\ForAllExternal;
+use PHPUnit\Framework\Attributes\FromPool;
 use PHPUnit\Framework\Attributes\GeneratorFor;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\IgnorePhpunitWarnings;
+use PHPUnit\Framework\Attributes\Initialize;
+use PHPUnit\Framework\Attributes\Invariant;
 use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\PostCondition;
@@ -83,6 +86,7 @@ use PHPUnit\Framework\Attributes\RequiresPhpunit;
 use PHPUnit\Framework\Attributes\RequiresPhpunitExtension;
 use PHPUnit\Framework\Attributes\RequiresSetting;
 use PHPUnit\Framework\Attributes\Retry;
+use PHPUnit\Framework\Attributes\Rule;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\Attributes\Small;
@@ -1026,6 +1030,27 @@ final class AttributeParser implements Parser
 
                     break;
 
+                case Rule::class:
+                    assert($attributeInstance instanceof Rule);
+
+                    $result[] = Metadata::rule($attributeInstance->precondition(), $attributeInstance->produces());
+
+                    break;
+
+                case Initialize::class:
+                    assert($attributeInstance instanceof Initialize);
+
+                    $result[] = Metadata::initialize($attributeInstance->produces());
+
+                    break;
+
+                case Invariant::class:
+                    assert($attributeInstance instanceof Invariant);
+
+                    $result[] = Metadata::invariant($attributeInstance->atEnd());
+
+                    break;
+
                 case Retry::class:
                     assert($attributeInstance instanceof Retry);
 
@@ -1123,7 +1148,9 @@ final class AttributeParser implements Parser
 
         foreach ($reflector->getParameters() as $parameter) {
             foreach ($parameter->getAttributes() as $attribute) {
-                if ($attribute->getName() !== ForAll::class && $attribute->getName() !== ForAllExternal::class) {
+                if ($attribute->getName() !== ForAll::class &&
+                    $attribute->getName() !== ForAllExternal::class &&
+                    $attribute->getName() !== FromPool::class) {
                     continue;
                 }
 
@@ -1157,6 +1184,12 @@ final class AttributeParser implements Parser
 
                 if ($attributeInstance instanceof ForAllExternal) {
                     $result[] = Metadata::forAll($parameterName, $attributeInstance->className(), $attributeInstance->methodName());
+
+                    continue;
+                }
+
+                if ($attributeInstance instanceof FromPool) {
+                    $result[] = Metadata::fromPool($parameterName, $attributeInstance->pool(), $attributeInstance->consume());
 
                     continue;
                 }
