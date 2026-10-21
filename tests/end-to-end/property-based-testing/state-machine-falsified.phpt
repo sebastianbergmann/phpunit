@@ -29,20 +29,8 @@ Failed asserting that 2 is identical to 0.
 Property falsified after 5 examples, counterexample shrunk in 34 steps:
 
     $accounts1 = $machine->open();
-    $machine->deposit(account: $accounts1, amount: 1);
-    // [PHPUnit\TestFixture\PropertyBasedTesting\StateMachine\MoneyDeposited Object #%d (
-    //     'account' => PHPUnit\TestFixture\PropertyBasedTesting\StateMachine\AccountId Object #%d (
-    //         'value' => 'account-1',
-    //     ),
-    //     'amount' => 1,
-    // )]
-    $machine->withdraw(account: $accounts1, amount: 1);
-    // [PHPUnit\TestFixture\PropertyBasedTesting\StateMachine\MoneyWithdrawn Object #%d (
-    //     'account' => PHPUnit\TestFixture\PropertyBasedTesting\StateMachine\AccountId Object #%d (
-    //         'value' => 'account-1',
-    //     ),
-    //     'amount' => 1,
-    // )]
+    $machine->deposit(account: $accounts1, amount: 1); // [new MoneyDeposited(account: new AccountId(value: 'account-1'), amount: 1)]
+    $machine->withdraw(account: $accounts1, amount: 1); // [new MoneyWithdrawn(account: new AccountId(value: 'account-1'), amount: 1)]
     $machine->accountsRebuiltFromTheirEventsMatchTheModel(); // invariant failed
 
 %sBankMachine.php:%d

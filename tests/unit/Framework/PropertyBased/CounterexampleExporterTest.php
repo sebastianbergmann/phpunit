@@ -16,6 +16,7 @@ use const PHP_INT_MIN;
 use function fclose;
 use function fopen;
 use function serialize;
+use ArrayObject;
 use DateTime;
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -35,8 +36,17 @@ use PHPUnit\TestFixture\PropertyBased\Derivation\ExampleEmailAddress;
 use PHPUnit\TestFixture\PropertyBased\Derivation\Money;
 use PHPUnit\TestFixture\PropertyBased\Derivation\Node;
 use PHPUnit\TestFixture\PropertyBased\Derivation\Parameters;
+use PHPUnit\TestFixture\PropertyBased\Exporting\AccountNumber;
+use PHPUnit\TestFixture\PropertyBased\Exporting\MoneyDeposited;
+use PHPUnit\TestFixture\PropertyBased\Exporting\ObjectWithMutableProperty;
+use PHPUnit\TestFixture\PropertyBased\Exporting\ObjectWithParameterThatIsNotPromoted;
+use PHPUnit\TestFixture\PropertyBased\Exporting\ObjectWithParentClass;
+use PHPUnit\TestFixture\PropertyBased\Exporting\ObjectWithPrivateConstructor;
+use PHPUnit\TestFixture\PropertyBased\Exporting\ObjectWithPropertyThatIsNotPromoted;
+use PHPUnit\TestFixture\PropertyBased\Exporting\Ping;
 use PHPUnit\TestFixture\PropertyBased\NameResolution\ClassWithImports;
 use PropertyBasedNameResolutionClassInGlobalNamespace;
+use ReflectionClass;
 use ReflectionMethod;
 
 #[CoversClass(CounterexampleExporter::class)]
@@ -123,6 +133,27 @@ final class CounterexampleExporterTest extends TestCase
         return $values;
     }
 
+    /**
+     * @return array<non-empty-string, array{object}>
+     */
+    public static function objectsThatCannotBeCreatedWithTheValuesOfTheirProperties(): array
+    {
+        return [
+            'mutable property'               => [new ObjectWithMutableProperty(1)],
+            'property that is not promoted'  => [new ObjectWithPropertyThatIsNotPromoted(1)],
+            'parameter that is not promoted' => [new ObjectWithParameterThatIsNotPromoted(1, 2)],
+            'constructor that is not public' => [ObjectWithPrivateConstructor::create(1)],
+            'parent class'                   => [new ObjectWithParentClass(1)],
+            'object of an internal class'    => [new ArrayObject],
+            'object of an anonymous class'   => [new readonly class(1)
+            {
+                public function __construct(public int $value)
+                {
+                }
+            }],
+        ];
+    }
+
     #[DataProvider('valueProvider')]
     public function testExportsValuesAsPhpExpressions(string $expected, mixed $value): void
     {
@@ -206,6 +237,39 @@ final class CounterexampleExporterTest extends TestCase
         $scope = NameScope::forMethod(new ReflectionMethod(PropertyBasedNameResolutionClassInGlobalNamespace::class, 'method'));
 
         $this->assertEquals($value, eval('return ' . new CounterexampleExporter($scope, $constructions)->export($value) . ';'));
+    }
+
+    public function testExportsAnObjectWhosePropertiesAreAllReadonlyPromotedConstructorParametersAsTheExpressionThatCreatesIt(): void
+    {
+        $value = new MoneyDeposited(new AccountNumber('a'), 1, ['first']);
+
+        $this->assertSame(
+            "new \\PHPUnit\\TestFixture\\PropertyBased\\Exporting\\MoneyDeposited(account: new \\PHPUnit\\TestFixture\\PropertyBased\\Exporting\\AccountNumber(value: 'a'), amount: 1, tags: ['first'])",
+            $this->exporter(new Constructions)->export($value),
+        );
+
+        $this->assertEquals($value, eval('return ' . $this->exporter(new Constructions)->export($value) . ';'));
+    }
+
+    public function testExportsAnObjectWhoseConstructorHasNoParametersAndThatHasNoPropertiesAsTheExpressionThatCreatesIt(): void
+    {
+        $this->assertSame(
+            'new \\PHPUnit\\TestFixture\\PropertyBased\\Exporting\\Ping',
+            $this->exporter(new Constructions)->export(new Ping),
+        );
+    }
+
+    #[DataProvider('objectsThatCannotBeCreatedWithTheValuesOfTheirProperties')]
+    public function testExportsAnObjectThatCannotBeCreatedWithTheValuesOfItsPropertiesWithTheExporter(object $value): void
+    {
+        $this->assertStringContainsString(' Object #', $this->exporter(new Constructions)->export($value));
+    }
+
+    public function testExportsAnObjectWhosePropertyIsNotInitializedWithTheExporter(): void
+    {
+        $value = new ReflectionClass(AccountNumber::class)->newInstanceWithoutConstructor();
+
+        $this->assertStringContainsString(' Object #', $this->exporter(new Constructions)->export($value));
     }
 
     public function testExportsOtherObjectsWithTheExporter(): void
