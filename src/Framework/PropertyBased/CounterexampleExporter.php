@@ -12,6 +12,7 @@ namespace PHPUnit\Framework\PropertyBased;
 use const INF;
 use const PHP_INT_MIN;
 use function array_is_list;
+use function assert;
 use function implode;
 use function is_array;
 use function is_bool;
@@ -36,6 +37,7 @@ use DateTimeInterface;
 use DateTimeZone;
 use PHPUnit\Framework\PropertyBased\Type\NameScope;
 use PHPUnit\Util\Exporter;
+use ReflectionClass;
 use UnitEnum;
 
 /**
@@ -45,7 +47,10 @@ use UnitEnum;
  * Scalars and arrays are exported as PHP literals, the cases of enumerations
  * as constant expressions such as Currency::EUR, objects that generators
  * created with new as the expression that created them, and points in time
- * as new DateTimeImmutable('...'), with their time zone when it has a name.
+ * as new DateTimeImmutable('...'), with their time zone when it has a name,
+ * and the objects whose properties are all readonly and promoted constructor
+ * parameters, such as value objects and domain events, as the expression
+ * that creates them with the values of their properties.
  * Class names are written the way the file
  * that declares the property imports them, or fully qualified when it does
  * not import them. Other objects are exported with sebastian/exporter.
@@ -105,6 +110,12 @@ final readonly class CounterexampleExporter
 
         if ($value instanceof DateTimeInterface && ($value::class === DateTimeImmutable::class || $value::class === DateTime::class)) {
             return $this->pointInTime($value);
+        }
+
+        $arguments = $this->argumentsOfPromotedConstructorParameters($value);
+
+        if ($arguments !== null) {
+            return $this->newExpression($value::class, $arguments);
         }
 
         return Exporter::export($value);
@@ -238,19 +249,83 @@ final readonly class CounterexampleExporter
     private function constructed(object $value): string
     {
         $construction = $this->constructions->of($value);
-        $className    = $this->scope->shortName($construction['className']);
 
-        if ($construction['arguments'] === []) {
-            return 'new ' . $className;
+        return $this->newExpression($construction['className'], $construction['arguments']);
+    }
+
+    /**
+     * The arguments with which the constructor of an object that was not
+     * created by a generator creates an equal object, by the names of its
+     * parameters, when the object is one of a user-defined class without a
+     * parent class whose properties are all readonly and promoted constructor
+     * parameters, such as a value object or a domain event, and null
+     * otherwise. Such an object cannot refer to itself, so exporting the
+     * arguments ends.
+     *
+     * @return ?array<non-empty-string, mixed>
+     */
+    private function argumentsOfPromotedConstructorParameters(object $value): ?array
+    {
+        $class = new ReflectionClass($value);
+
+        if ($class->isInternal() || $class->isAnonymous() || $class->getParentClass() !== false) {
+            return null;
+        }
+
+        $constructor = $class->getConstructor();
+
+        if ($constructor === null || !$constructor->isPublic()) {
+            return null;
+        }
+
+        foreach ($class->getProperties() as $property) {
+            if (!$property->isStatic() && !$property->isPromoted()) {
+                return null;
+            }
         }
 
         $arguments = [];
 
-        foreach ($construction['arguments'] as $name => $argument) {
-            $arguments[] = $name . ': ' . $this->export($argument);
+        foreach ($constructor->getParameters() as $parameter) {
+            $name = $parameter->getName();
+
+            assert($name !== '');
+
+            if (!$parameter->isPromoted()) {
+                return null;
+            }
+
+            $property = $class->getProperty($name);
+
+            if (!$property->isReadOnly() || !$property->isInitialized($value)) {
+                return null;
+            }
+
+            $arguments[$name] = $property->getValue($value);
         }
 
-        return 'new ' . $className . '(' . implode(', ', $arguments) . ')';
+        return $arguments;
+    }
+
+    /**
+     * @param class-string                   $className
+     * @param array<non-empty-string, mixed> $arguments
+     */
+    private function newExpression(string $className, array $arguments): string
+    {
+        $className = $this->scope->shortName($className);
+
+        if ($arguments === []) {
+            return 'new ' . $className;
+        }
+
+        $exported = [];
+
+        foreach ($arguments as $name => $argument) {
+            $exported[] = $name . ': ' . $this->export($argument);
+        }
+
+        return 'new ' . $className . '(' . implode(', ', $exported) . ')';
     }
 
     /**
