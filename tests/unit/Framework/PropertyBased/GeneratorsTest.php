@@ -935,6 +935,16 @@ final class GeneratorsTest extends TestCase
         $this->assertSame('a.aa', $this->replay(Generators::domainNames(), []));
     }
 
+    public function testTheTopLevelDomainIsDrawnAfterTheOtherLabelsFromTheRoomThatTheyLeave(): void
+    {
+        // a label of one letter, no further label, and a top-level domain of
+        // two and seven more letters
+        $this->assertSame('a.aaaaaaaaa', $this->replay(Generators::domainNames(), [0, 0, 0, 0, 7]));
+
+        // a label of seven letters leaves room for two letters
+        $this->assertSame('aaaaaaa.aa', $this->replay(Generators::domainNames(10), [0, 6, 0, 0, 0, 0, 0, 0, 0, 63]));
+    }
+
     #[TestWith([3])]
     #[TestWith([254])]
     public function testTheMaximumLengthOfDomainNamesMustBeFromFourTo253(int $maximumLength): void
