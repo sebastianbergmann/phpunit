@@ -52,15 +52,21 @@ final readonly class PropertyChecked implements Event
     private array $observations;
 
     /**
+     * @var list<array{label: non-empty-string, highestScore: float|int}>
+     */
+    private array $targets;
+
+    /**
      * @param non-negative-int                                                                                                                                                    $seed
      * @param non-negative-int                                                                                                                                                    $numberOfExamplesChecked
      * @param non-negative-int                                                                                                                                                    $numberOfExamplesRejected
      * @param list<array{label: non-empty-string, numberOfExamples: positive-int}>                                                                                                $classifications
      * @param list<array{label: non-empty-string, numberOfValues: positive-int, minimum: float|int, median: float|int, mean: float, percentile90: float|int, maximum: float|int}> $observations
+     * @param list<array{label: non-empty-string, highestScore: float|int}>                                                                                                       $targets
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfExamplesRejected, array $classifications, array $observations)
+    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfExamplesRejected, array $classifications, array $observations, array $targets)
     {
         $this->telemetryInfo            = $telemetryInfo;
         $this->test                     = $test;
@@ -69,6 +75,7 @@ final readonly class PropertyChecked implements Event
         $this->numberOfExamplesRejected = $numberOfExamplesRejected;
         $this->classifications          = $classifications;
         $this->observations             = $observations;
+        $this->targets                  = $targets;
     }
 
     public function telemetryInfo(): Telemetry\Info
@@ -146,6 +153,19 @@ final readonly class PropertyChecked implements Event
     }
 
     /**
+     * The labels with which TestCase::target() targeted scores for the
+     * examples for which the property was checked, in the order in which
+     * they were first used, each with the highest score that an example
+     * reached. Explicit examples do not target scores.
+     *
+     * @return list<array{label: non-empty-string, highestScore: float|int}>
+     */
+    public function targets(): array
+    {
+        return $this->targets;
+    }
+
+    /**
      * @return non-empty-string
      */
     public function asString(): string
@@ -177,6 +197,14 @@ final readonly class PropertyChecked implements Event
                 self::number($observation['mean']),
                 self::number($observation['percentile90']),
                 self::number($observation['maximum']),
+            );
+        }
+
+        foreach ($this->targets as $target) {
+            $buffer .= sprintf(
+                PHP_EOL . '%s: highest targeted score %s',
+                $target['label'],
+                self::number($target['highestScore']),
             );
         }
 
