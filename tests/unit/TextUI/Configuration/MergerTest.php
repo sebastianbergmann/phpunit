@@ -364,6 +364,17 @@ final class MergerTest extends TestCase
         $this->assertSame(1234, $mergedConfig->randomSeed());
     }
 
+    public function testRandomSeedFromCliConfigurationTakesPrecedenceOverRandomSeedFromGitCommit(): void
+    {
+        $fromFile = new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration_empty.xml');
+        $fromCli  = new Builder($this->createStub(Emitter::class))->fromParameters(['--random-seed-from-git-commit', '--random-seed=1234']);
+
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge($fromCli, $fromFile);
+
+        $this->assertTrue($mergedConfig->seedRandomNumberGenerators());
+        $this->assertSame(1234, $mergedConfig->randomSeed());
+    }
+
     public function testRandomNumberGeneratorsAreNotSeededWithRandomOrderSeedFromCliConfigurationWhenTestsAreNotRunInRandomOrder(): void
     {
         $fromFile = new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration_empty.xml');

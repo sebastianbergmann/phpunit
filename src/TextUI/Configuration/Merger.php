@@ -1078,12 +1078,28 @@ final readonly class Merger
 
         $seedRandomNumberGenerators = $executionOrder === TestSuiteSorter::ORDER_RANDOMIZED;
 
+        $randomSeed = null;
+
         if ($cliConfiguration->hasRandomSeed()) {
             $randomSeed                 = $cliConfiguration->randomSeed();
             $seedRandomNumberGenerators = true;
-        } elseif ($cliConfiguration->hasRandomOrderSeed()) {
+        } elseif ($cliConfiguration->randomSeedFromGitCommit()) {
+            $randomSeed = RandomSeedFromGitCommit::seed();
+
+            if ($randomSeed === null) {
+                $this->emitter->testRunnerTriggeredPhpunitWarning(
+                    'Option "--random-seed-from-git-commit" ignored because no Git commit is checked out in the working directory',
+                );
+            } else {
+                $seedRandomNumberGenerators = true;
+            }
+        }
+
+        if ($randomSeed === null && $cliConfiguration->hasRandomOrderSeed()) {
             $randomSeed = $cliConfiguration->randomOrderSeed();
-        } else {
+        }
+
+        if ($randomSeed === null) {
             $randomSeed = time();
         }
 
