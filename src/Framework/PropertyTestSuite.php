@@ -41,6 +41,7 @@ use PHPUnit\Framework\PropertyBased\FlakyPropertyException;
 use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
 use PHPUnit\Framework\PropertyBased\GeneratorMethod;
 use PHPUnit\Framework\PropertyBased\InvalidPropertyException;
+use PHPUnit\Framework\PropertyBased\InvalidStateMachineException;
 use PHPUnit\Framework\PropertyBased\Observations;
 use PHPUnit\Framework\PropertyBased\PropertyDefinition;
 use PHPUnit\Framework\PropertyBased\PropertyDefinitionBuilder;
@@ -1142,6 +1143,13 @@ final class PropertyTestSuite extends IterativeTestSuite
     private function endsCheckWithoutFalsification(TestCase $example, ?Falsification $falsification, EventCollection $exampleEvents): bool
     {
         if ($example->throwableThatEndedTheTest() instanceof TimeLimitExceededException) {
+            return true;
+        }
+
+        // a state machine that cannot be run is a mistake in the test, not a
+        // counterexample, so the error of the example is the error of the
+        // property, and its counterexample is not shrunk
+        if ($example->throwableThatEndedTheTest() instanceof InvalidStateMachineException) {
             return true;
         }
 
