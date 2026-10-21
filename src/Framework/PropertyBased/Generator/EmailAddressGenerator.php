@@ -71,9 +71,15 @@ final readonly class EmailAddressGenerator extends AbstractGenerator
      */
     private string $label;
 
+    /**
+     * @var non-empty-string
+     */
+    private string $labelOfCharacters;
+
     public function __construct(bool $quotedLocalParts, bool $ipAddressLiterals)
     {
-        $this->label = self::labelOf('emailAddresses', (string) (int) $quotedLocalParts, (string) (int) $ipAddressLiterals);
+        $this->label             = self::labelOf('emailAddresses', (string) (int) $quotedLocalParts, (string) (int) $ipAddressLiterals);
+        $this->labelOfCharacters = self::labelOf('character', $this->label);
 
         $this->quotedLocalParts  = $quotedLocalParts;
         $this->ipAddressLiterals = $ipAddressLiterals;
@@ -178,7 +184,11 @@ final readonly class EmailAddressGenerator extends AbstractGenerator
                 $maximum += 2;
             }
 
+            $source->startSpan($this->labelOfCharacters);
+
             $choice = $source->draw($maximum, $this->uniform);
+
+            $source->endSpan();
 
             if ($choice < strlen(self::QUOTED_CHARACTERS)) {
                 $content .= self::QUOTED_CHARACTERS[$choice];
@@ -193,12 +203,21 @@ final readonly class EmailAddressGenerator extends AbstractGenerator
     }
 
     /**
+     * Each character is a span, so that a local part is shortened by lowering
+     * its length while its last characters are deleted.
+     *
      * @param non-empty-string $alphabet
      *
      * @return non-empty-string
      */
     private function character(ChoiceSource $source, string $alphabet): string
     {
-        return $alphabet[$source->draw(strlen($alphabet) - 1, $this->uniform)];
+        $source->startSpan($this->labelOfCharacters);
+
+        $character = $alphabet[$source->draw(strlen($alphabet) - 1, $this->uniform)];
+
+        $source->endSpan();
+
+        return $character;
     }
 }

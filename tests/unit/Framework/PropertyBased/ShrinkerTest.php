@@ -314,6 +314,18 @@ final class ShrinkerTest extends TestCase
         $this->assertFalse($result->budgetExhausted());
     }
 
+    public function testShortensTheLabelsOfTheDomainOfAnEmailAddressThatTheCounterexampleDoesNotDependOn(): void
+    {
+        // the first counterexample that is generated with this seed has a
+        // domain whose labels are longer than they need to be
+        $generator = Generators::emailAddresses();
+        $falsifies = static fn (string $value): bool => str_contains(substr($value, 0, (int) strrpos($value, '@')), '.');
+
+        $result = $this->shrinker($generator, $falsifies)->shrink($this->falsifyingSequence($generator, $falsifies, 3));
+
+        $this->assertSame('a.a@a.aa', $this->replay($generator, $result->sequence()));
+    }
+
     public function testDoesNotChangeACounterexampleForWhichNoSimplerCounterexampleExists(): void
     {
         $generator = Generators::integers(0, 1000);
@@ -786,10 +798,10 @@ final class ShrinkerTest extends TestCase
      * @param ValueGenerator<mixed> $generator
      * @param Closure(mixed): bool  $falsifies
      */
-    private function falsifyingSequence(ValueGenerator $generator, Closure $falsifies): ChoiceSequence
+    private function falsifyingSequence(ValueGenerator $generator, Closure $falsifies, int $seed = 1): ChoiceSequence
     {
         $generator  = AbstractGenerator::from($generator);
-        $randomizer = new Randomizer(new Xoshiro256StarStar(1));
+        $randomizer = new Randomizer(new Xoshiro256StarStar($seed));
 
         for ($attempt = 0; $attempt < 1000; $attempt++) {
             $source = ChoiceSource::random($randomizer);
