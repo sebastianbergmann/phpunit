@@ -121,7 +121,7 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
         $test = $this->testValueObject();
 
         $handler->testPropertyFalsified(
-            new PropertyFalsified($this->telemetryInfo(), $test, 1234, 2, 3, 1, false, false, [0, 11], ['a' => '0', 'b' => '11'], null, [], [], 0, 0),
+            new PropertyFalsified($this->telemetryInfo(), $test, 1234, 2, 3, 1, false, false, [0, 11], ['a' => '0', 'b' => '11'], null, [], [], [], 0, 0),
         );
 
         $this->assertSame([[0, 11]], $cache->counterexamples(TestRunHistoryId::fromTest($test)));
@@ -148,9 +148,10 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
                 ['a' => '0', 'b' => '11'],
                 null,
                 [],
+                [],
                 [
-                    ['description' => 'RuntimeException at FooTest.php:12', 'choiceSequence' => [3, 4], 'counterexample' => ['a' => '3', 'b' => '4'], 'drawnValues' => []],
-                    ['description' => 'LogicException at FooTest.php:15', 'choiceSequence' => [5], 'counterexample' => ['a' => '5', 'b' => '0'], 'drawnValues' => []],
+                    ['description' => 'RuntimeException at FooTest.php:12', 'choiceSequence' => [3, 4], 'counterexample' => ['a' => '3', 'b' => '4'], 'drawnValues' => [], 'steps' => []],
+                    ['description' => 'LogicException at FooTest.php:15', 'choiceSequence' => [5], 'counterexample' => ['a' => '5', 'b' => '0'], 'drawnValues' => [], 'steps' => []],
                 ],
                 0,
                 0,
@@ -171,7 +172,7 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
         $cache->setCounterexamples($id, [[0, 11]]);
 
         $handler->testPropertyFalsified(
-            new PropertyFalsified($this->telemetryInfo(), $test, 1234, 0, 0, 0, false, false, [], ['a' => '1', 'b' => '2'], 'one and two', [], [], 0, 0),
+            new PropertyFalsified($this->telemetryInfo(), $test, 1234, 0, 0, 0, false, false, [], ['a' => '1', 'b' => '2'], 'one and two', [], [], [], 0, 0),
         );
 
         $this->assertSame([[0, 11]], $cache->counterexamples($id));

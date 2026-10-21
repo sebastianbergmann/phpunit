@@ -23,4 +23,20 @@ final class BankTest extends TestCase
 
         $this->runStateMachine(new BankMachine(new Bank($store, false), $store, new BalanceProjection(false)));
     }
+
+    #[Property]
+    public function testAccountsAreRebuiltFromTheirEvents(): void
+    {
+        $store = new EventStore;
+
+        $this->runStateMachine(new BankMachine(new Bank($store, true), $store, new BalanceProjection(false)));
+    }
+
+    #[Property]
+    public function testProjectionCatchesUpWithTheEventStore(): void
+    {
+        $store = new EventStore;
+
+        $this->runStateMachine(new BankMachine(new Bank($store, false), $store, new BalanceProjection(true)));
+    }
 }

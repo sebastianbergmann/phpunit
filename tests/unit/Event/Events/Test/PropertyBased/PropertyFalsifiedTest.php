@@ -39,6 +39,7 @@ final class PropertyFalsifiedTest extends AbstractEventTestCase
             null,
             [],
             [],
+            [],
             0,
             0,
         );
@@ -60,7 +61,7 @@ final class PropertyFalsifiedTest extends AbstractEventTestCase
 
     public function testHasHowOftenTheExampleThatFalsifiedThePropertyWasReplayedAndFalsifiedItAgain(): void
     {
-        $event = new PropertyFalsified($this->telemetryInfo(), $this->testValueObject(), 1234, 2, 3, 1, false, false, [5], ['size' => '5'], null, [], [], 4, 2);
+        $event = new PropertyFalsified($this->telemetryInfo(), $this->testValueObject(), 1234, 2, 3, 1, false, false, [5], ['size' => '5'], null, [], [], [], 4, 2);
 
         $this->assertSame(4, $event->numberOfReplays());
         $this->assertSame(2, $event->numberOfReproductions());
@@ -68,7 +69,7 @@ final class PropertyFalsifiedTest extends AbstractEventTestCase
 
     public function testStringRepresentationStatesHowOftenTheExampleThatFalsifiedThePropertyFalsifiedItAgainWhenThatWasNotEveryTime(): void
     {
-        $event = new PropertyFalsified($this->telemetryInfo(), $this->testValueObject(), 1234, 2, 3, 1, false, false, [5], ['size' => '5'], null, [], [], 4, 2);
+        $event = new PropertyFalsified($this->telemetryInfo(), $this->testValueObject(), 1234, 2, 3, 1, false, false, [5], ['size' => '5'], null, [], [], [], 4, 2);
 
         $this->assertStringEqualsStringIgnoringLineEndings(
             <<<'EOT'
@@ -81,14 +82,14 @@ EOT,
 
     public function testHasTheOtherWaysInWhichThePropertyWasFalsified(): void
     {
-        $event = new PropertyFalsified($this->telemetryInfo(), $this->testValueObject(), 1234, 2, 3, 1, false, false, [5], ['size' => '5'], null, [], [['description' => 'RuntimeException at /path/to/FooTest.php:12', 'choiceSequence' => [3, 0], 'counterexample' => ['size' => '3'], 'drawnValues' => [['label' => null, 'value' => '0']]]], 0, 0);
+        $event = new PropertyFalsified($this->telemetryInfo(), $this->testValueObject(), 1234, 2, 3, 1, false, false, [5], ['size' => '5'], null, [], [], [['description' => 'RuntimeException at /path/to/FooTest.php:12', 'choiceSequence' => [3, 0], 'counterexample' => ['size' => '3'], 'drawnValues' => [['label' => null, 'value' => '0']], 'steps' => []]], 0, 0);
 
-        $this->assertSame([['description' => 'RuntimeException at /path/to/FooTest.php:12', 'choiceSequence' => [3, 0], 'counterexample' => ['size' => '3'], 'drawnValues' => [['label' => null, 'value' => '0']]]], $event->otherFalsifications());
+        $this->assertSame([['description' => 'RuntimeException at /path/to/FooTest.php:12', 'choiceSequence' => [3, 0], 'counterexample' => ['size' => '3'], 'drawnValues' => [['label' => null, 'value' => '0']], 'steps' => []]], $event->otherFalsifications());
     }
 
     public function testStringRepresentationHasTheOtherWaysInWhichThePropertyWasFalsified(): void
     {
-        $event = new PropertyFalsified($this->telemetryInfo(), $this->testValueObject(), 1234, 2, 3, 1, false, false, [5], ['size' => '5'], null, [], [['description' => 'RuntimeException at /path/to/FooTest.php:12', 'choiceSequence' => [3, 0], 'counterexample' => ['size' => '3'], 'drawnValues' => [['label' => null, 'value' => '0']]]], 0, 0);
+        $event = new PropertyFalsified($this->telemetryInfo(), $this->testValueObject(), 1234, 2, 3, 1, false, false, [5], ['size' => '5'], null, [], [], [['description' => 'RuntimeException at /path/to/FooTest.php:12', 'choiceSequence' => [3, 0], 'counterexample' => ['size' => '3'], 'drawnValues' => [['label' => null, 'value' => '0']], 'steps' => []]], 0, 0);
 
         $this->assertStringEqualsStringIgnoringLineEndings(
             <<<'EOT'
@@ -104,14 +105,14 @@ EOT,
 
     public function testHasTheValuesThatTheMinimalCounterexampleDrew(): void
     {
-        $event = new PropertyFalsified($this->telemetryInfo(), $this->testValueObject(), 1234, 2, 3, 1, false, false, [1, 5, 0], ['size' => '1'], null, [['label' => 'list', 'value' => '[5]'], ['label' => null, 'value' => '0']], [], 0, 0);
+        $event = new PropertyFalsified($this->telemetryInfo(), $this->testValueObject(), 1234, 2, 3, 1, false, false, [1, 5, 0], ['size' => '1'], null, [['label' => 'list', 'value' => '[5]'], ['label' => null, 'value' => '0']], [], [], 0, 0);
 
         $this->assertSame([['label' => 'list', 'value' => '[5]'], ['label' => null, 'value' => '0']], $event->drawnValues());
     }
 
     public function testStringRepresentationHasTheValuesThatTheMinimalCounterexampleDrew(): void
     {
-        $event = new PropertyFalsified($this->telemetryInfo(), $this->testValueObject(), 1234, 2, 3, 1, false, false, [1, 5, 0], ['size' => '1'], null, [['label' => 'list', 'value' => '[5]'], ['label' => null, 'value' => '0']], [], 0, 0);
+        $event = new PropertyFalsified($this->telemetryInfo(), $this->testValueObject(), 1234, 2, 3, 1, false, false, [1, 5, 0], ['size' => '1'], null, [['label' => 'list', 'value' => '[5]'], ['label' => null, 'value' => '0']], [], [], 0, 0);
 
         $this->assertStringEqualsStringIgnoringLineEndings(
             <<<'EOT'
@@ -124,9 +125,32 @@ EOT,
         );
     }
 
+    public function testHasTheStepsOfTheStateMachineThatTheMinimalCounterexampleRan(): void
+    {
+        $event = new PropertyFalsified($this->telemetryInfo(), $this->testValueObject(), 1234, 2, 3, 1, false, false, [1, 0, 0], [], null, [], ['$accounts1 = $machine->open();'], [], 0, 0);
+
+        $this->assertSame(['$accounts1 = $machine->open();'], $event->steps());
+    }
+
+    public function testStringRepresentationHasTheStepsOfTheStateMachineThatTheMinimalCounterexamplesRan(): void
+    {
+        $event = new PropertyFalsified($this->telemetryInfo(), $this->testValueObject(), 1234, 2, 3, 1, false, false, [1, 0, 0], [], null, [], ['$accounts1 = $machine->open();', '$machine->close(account: $accounts1);'], [['description' => 'RuntimeException at /path/to/FooTest.php:12', 'choiceSequence' => [1, 1, 0], 'counterexample' => [], 'drawnValues' => [], 'steps' => ['$machine->audit();']]], 0, 0);
+
+        $this->assertStringEqualsStringIgnoringLineEndings(
+            <<<'EOT'
+Test Property Falsified (FooTest::testBar, seed: 1234, examples: 2, shrinking steps: 1, shrinking attempts: 3)
+$accounts1 = $machine->open();
+$machine->close(account: $accounts1);
+Also falsified by RuntimeException at /path/to/FooTest.php:12:
+$machine->audit();
+EOT,
+            $event->asString(),
+        );
+    }
+
     public function testHasTheNameOfTheExplicitExampleThatFalsifiedTheProperty(): void
     {
-        $event = new PropertyFalsified($this->telemetryInfo(), $this->testValueObject(), 1234, 0, 0, 0, false, false, [], ['value' => '5'], 'five', [], [], 0, 0);
+        $event = new PropertyFalsified($this->telemetryInfo(), $this->testValueObject(), 1234, 0, 0, 0, false, false, [], ['value' => '5'], 'five', [], [], [], 0, 0);
 
         $this->assertSame('five', $event->explicitExample());
     }
@@ -145,6 +169,7 @@ EOT,
             [0, 2, 1],
             ['money' => 'new Money(amount: 1, currency: Currency::EUR)', 'parts' => '2'],
             null,
+            [],
             [],
             [],
             0,
@@ -177,6 +202,7 @@ EOT,
             null,
             [],
             [],
+            [],
             0,
             0,
         );
@@ -206,6 +232,7 @@ EOT,
             null,
             [],
             [],
+            [],
             0,
             0,
         );
@@ -221,7 +248,7 @@ EOT,
 
     public function testStringRepresentationOfAPropertyThatWasFalsifiedByANamedExplicitExampleHasItsName(): void
     {
-        $event = new PropertyFalsified($this->telemetryInfo(), $this->testValueObject(), 1234, 0, 0, 0, false, false, [], ['value' => '5'], 'five', [], [], 0, 0);
+        $event = new PropertyFalsified($this->telemetryInfo(), $this->testValueObject(), 1234, 0, 0, 0, false, false, [], ['value' => '5'], 'five', [], [], [], 0, 0);
 
         $this->assertStringEqualsStringIgnoringLineEndings(
             <<<'EOT'
@@ -234,7 +261,7 @@ EOT,
 
     public function testStringRepresentationOfAPropertyThatWasFalsifiedByAnExplicitExampleWithoutNameHasItsNumber(): void
     {
-        $event = new PropertyFalsified($this->telemetryInfo(), $this->testValueObject(), 1234, 0, 0, 0, false, false, [], ['value' => '5'], 1, [], [], 0, 0);
+        $event = new PropertyFalsified($this->telemetryInfo(), $this->testValueObject(), 1234, 0, 0, 0, false, false, [], ['value' => '5'], 1, [], [], [], 0, 0);
 
         $this->assertStringEqualsStringIgnoringLineEndings(
             <<<'EOT'
@@ -247,7 +274,7 @@ EOT,
 
     public function testStringRepresentationOfAPropertyWithoutParametersHasNoCounterexample(): void
     {
-        $event = new PropertyFalsified($this->telemetryInfo(), $this->testValueObject(), 1234, 1, 0, 0, false, false, [], [], null, [], [], 0, 0);
+        $event = new PropertyFalsified($this->telemetryInfo(), $this->testValueObject(), 1234, 1, 0, 0, false, false, [], [], null, [], [], [], 0, 0);
 
         $this->assertSame('Test Property Falsified (FooTest::testBar, seed: 1234, examples: 1, shrinking steps: 0, shrinking attempts: 0)', $event->asString());
     }
