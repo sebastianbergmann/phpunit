@@ -26,6 +26,7 @@ use function preg_replace;
 use function realpath;
 use function rmdir;
 use function scandir;
+use function str_replace;
 use function strlen;
 use function sys_get_temp_dir;
 use function uniqid;
@@ -39,6 +40,7 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\DirectoryDoesNotExistException;
 use PHPUnit\Runner\Version;
+use PHPUnit\TestFixture\TestIndex\ChangedDataProviderTest;
 use PHPUnit\TestFixture\TestIndex\ChangedFileTest;
 use PHPUnit\TestFixture\TestIndex\ChangedParentTest;
 use PHPUnit\TestFixture\TestIndex\ChangedTraitTest;
@@ -80,7 +82,7 @@ final class TestIndexTest extends TestCase
         $index = static function (mixed $groups, mixed $entries): array
         {
             return [
-                'version' => 4,
+                'version' => 5,
                 'phpunit' => Version::id(),
                 'php'     => PHP_VERSION_ID,
                 'groups'  => $groups,
@@ -107,7 +109,7 @@ final class TestIndexTest extends TestCase
 
         return [
             'not an array'                   => ['a string'],
-            'without keys'                   => [['version' => 4]],
+            'without keys'                   => [['version' => 5]],
             'written in a different format'  => [$index([], []) + ['version' => 4711]],
             'group table is not an array'    => [$index('a string', [])],
             'group name is not a string'     => [$index([4711], [])],
@@ -227,6 +229,31 @@ final class TestIndexTest extends TestCase
         $this->assertNotNull($this->loadedIndex($indexDirectory)->entryFor($files['class']));
 
         $this->changeGroupNameIn($files['trait']);
+
+        $this->assertNull($this->loadedIndex($indexDirectory)->entryFor($files['class']));
+    }
+
+    #[TestDox('Invalidates an entry when the file of an external data provider changes')]
+    public function testInvalidatesEntryWhenFileOfExternalDataProviderChanges(): void
+    {
+        $directory = $this->temporaryDirectory();
+        $files     = $this->writeTestClassWithExternalDataProvider($directory, 'ChangedDataProvider');
+
+        $indexDirectory = $this->temporaryDirectory();
+
+        $index = new TestIndex($indexDirectory);
+        $index->record(new ReflectionClass(ChangedDataProviderTest::class), false);
+        $index->persist();
+
+        $entry = $this->loadedIndex($indexDirectory)->entryFor($files['class']);
+
+        $this->assertNotNull($entry);
+        $this->assertArrayHasKey($files['provider'], $entry->dependencies());
+
+        file_put_contents(
+            $files['provider'],
+            str_replace('[1, 2, 3]', '[4, 5, 9]', (string) file_get_contents($files['provider'])),
+        );
 
         $this->assertNull($this->loadedIndex($indexDirectory)->entryFor($files['class']));
     }
@@ -708,6 +735,60 @@ final class TestIndexTest extends TestCase
         require_once $file;
 
         return $file;
+    }
+
+    /**
+     * @param non-empty-string $directory
+     * @param non-empty-string $name
+     *
+     * @return array{class: non-empty-string, provider: non-empty-string}
+     */
+    private function writeTestClassWithExternalDataProvider(string $directory, string $name): array
+    {
+        $providerFile = $directory . DIRECTORY_SEPARATOR . $name . 'Provider.php';
+
+        file_put_contents(
+            $providerFile,
+            <<<PHP
+                <?php declare(strict_types=1);
+                namespace PHPUnit\TestFixture\TestIndex;
+
+                final class {$name}Provider
+                {
+                    public static function provide(): array
+                    {
+                        return [[1, 2, 3]];
+                    }
+                }
+                PHP,
+        );
+
+        $classFile = $directory . DIRECTORY_SEPARATOR . $name . 'Test.php';
+
+        file_put_contents(
+            $classFile,
+            <<<PHP
+                <?php declare(strict_types=1);
+                namespace PHPUnit\TestFixture\TestIndex;
+
+                use PHPUnit\Framework\Attributes\DataProviderExternal;
+                use PHPUnit\Framework\TestCase;
+
+                final class {$name}Test extends TestCase
+                {
+                    #[DataProviderExternal({$name}Provider::class, 'provide')]
+                    public function testOne(int \$a, int \$b, int \$c): void
+                    {
+                    }
+                }
+                PHP,
+        );
+
+        require_once $providerFile;
+
+        require_once $classFile;
+
+        return ['class' => $classFile, 'provider' => $providerFile];
     }
 
     /**

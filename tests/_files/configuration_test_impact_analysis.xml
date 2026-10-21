@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="../../phpunit.xsd">
+    <testImpactAnalysis>
+        <watch>
+            <directory>config</directory>
+            <directory prefix="services" suffix=".yaml">/path/to/config</directory>
+            <file>.env.testing</file>
+        </watch>
+    </testImpactAnalysis>
+</phpunit>
