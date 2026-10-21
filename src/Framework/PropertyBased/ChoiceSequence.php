@@ -9,9 +9,13 @@
  */
 namespace PHPUnit\Framework\PropertyBased;
 
+use function array_key_exists;
+
 /**
  * The choices from which the arguments of an example were generated, together
- * with the spans that generators marked while they consumed them.
+ * with the spans that generators marked while they consumed them, and, when
+ * the choices were drawn by a choice source, the largest choice that each
+ * choice could have been.
  *
  * @immutable
  *
@@ -32,13 +36,20 @@ final readonly class ChoiceSequence
     private array $spans;
 
     /**
+     * @var list<non-negative-int>
+     */
+    private array $maxima;
+
+    /**
      * @param list<non-negative-int> $choices
      * @param list<Span>             $spans
+     * @param list<non-negative-int> $maxima  the largest choice that each choice could have been, empty when this is not known
      */
-    public function __construct(array $choices, array $spans = [])
+    public function __construct(array $choices, array $spans = [], array $maxima = [])
     {
         $this->choices = $choices;
         $this->spans   = $spans;
+        $this->maxima  = $maxima;
     }
 
     /**
@@ -55,6 +66,23 @@ final readonly class ChoiceSequence
     public function spans(): array
     {
         return $this->spans;
+    }
+
+    /**
+     * The largest choice that the choice at the index could have been, null
+     * when this is not known.
+     *
+     * @param non-negative-int $index
+     *
+     * @return ?non-negative-int
+     */
+    public function maximumAt(int $index): ?int
+    {
+        if (!array_key_exists($index, $this->maxima)) {
+            return null;
+        }
+
+        return $this->maxima[$index];
     }
 
     /**
