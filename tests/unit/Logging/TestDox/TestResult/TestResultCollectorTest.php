@@ -482,7 +482,7 @@ final class TestResultCollectorTest extends TestCase
         $throwable = $this->throwable('boom');
 
         $collector->testPreparationStarted(new PreparationStarted($this->telemetryInfo(), $phpt));
-        $collector->testPropertyFalsified(new PropertyFalsified($this->telemetryInfo(), $phpt, 1234, 1, 0, 0, false, false, [], [], null, [], [], 0, 0));
+        $collector->testPropertyFalsified(new PropertyFalsified($this->telemetryInfo(), $phpt, 1234, 1, 0, 0, false, false, [], [], null, [], [], [], 0, 0));
         $collector->testErrored(new Errored($this->telemetryInfo(), $phpt, $throwable));
         $collector->testFailed(new Failed($this->telemetryInfo(), $phpt, $throwable, null));
         $collector->testPassed(new Passed($this->telemetryInfo(), $phpt));
@@ -603,7 +603,7 @@ final class TestResultCollectorTest extends TestCase
 
     private function propertyFalsified(TestMethod $test): PropertyFalsified
     {
-        return new PropertyFalsified($this->telemetryInfo(), $test, 1234, 2, 3, 1, false, false, [0], ['value' => '0'], null, [], [], 0, 0);
+        return new PropertyFalsified($this->telemetryInfo(), $test, 1234, 2, 3, 1, false, false, [0], ['value' => '0'], null, [], [], [], 0, 0);
     }
 
     private function throwable(string $message): Throwable
