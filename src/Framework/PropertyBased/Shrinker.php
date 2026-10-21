@@ -221,10 +221,47 @@ final class Shrinker
 
             // after a successful deletion, the span at the same index of the
             // simpler sequence is tried next
-            if (!$this->consider($this->withoutChoices($spans[$index]->start(), $spans[$index]->length()))) {
+            if (!$this->consider($this->withoutChoices($spans[$index]->start(), $spans[$index]->length())) &&
+                !$this->deleteSpanRaisingLaterChoice($spans[$index])) {
                 $index++;
             }
         }
+    }
+
+    /**
+     * What a span contributed to the counterexample can be needed to keep the
+     * property falsified, the length of a domain name to which a label
+     * contributes, for instance. The span is deleted while its contribution
+     * is moved to a later group of spans of a kind that it contains, the
+     * top-level domain, for instance, by raising the choice that determines
+     * how many spans the group has by the number of choices of the span.
+     * Other passes lower the raised choice again, as far as the property
+     * stays falsified.
+     */
+    private function deleteSpanRaisingLaterChoice(Span $span): bool
+    {
+        $labels = [];
+
+        foreach ($this->current->spans() as $other) {
+            if ($other->start() >= $span->start() && $other->end() <= $span->end() && $other->length() < $span->length()) {
+                $labels[$other->label()] = $other->label();
+            }
+        }
+
+        foreach ($labels as $label) {
+            foreach ($this->choicesThatDetermineGroupsAfter($span->end(), $label, $this->groupsOfSpans()) as $later) {
+                $raised = $later - $span->length();
+
+                // the deleted span precedes the raised choice
+                assert($raised >= 0);
+
+                if ($this->consider($this->withRaisedChoice($this->withoutChoices($span->start(), $span->length()), $raised, $later, $span->length()))) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
