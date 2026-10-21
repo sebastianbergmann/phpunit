@@ -45,7 +45,8 @@ use UnitEnum;
  * Scalars and arrays are exported as PHP literals, the cases of enumerations
  * as constant expressions such as Currency::EUR, objects that generators
  * created with new as the expression that created them, and points in time
- * as new DateTimeImmutable('...'). Class names are written the way the file
+ * as new DateTimeImmutable('...'), with their time zone when it has a name.
+ * Class names are written the way the file
  * that declares the property imports them, or fully qualified when it does
  * not import them. Other objects are exported with sebastian/exporter.
  *
@@ -254,8 +255,13 @@ final readonly class CounterexampleExporter
 
     /**
      * A point in time whose time zone is an offset from UTC, such as the
-     * generated ones, is exported with the offset. For any other time zone,
+     * derived ones, is exported with the offset. For any other time zone,
      * the name of the time zone is exported, too.
+     *
+     * When daylight saving time ends, the local time of the hour before
+     * occurs twice, and a point in time that is created from it is the later
+     * of the two. The earlier one is exported with its offset, and its time
+     * zone is set afterwards.
      */
     private function pointInTime(DateTimeInterface $value): string
     {
@@ -272,6 +278,18 @@ final readonly class CounterexampleExporter
                 'new %s(%s)',
                 $this->scope->shortName($value::class),
                 var_export($value->format($format . 'P'), true),
+            );
+        }
+
+        $created = new DateTimeImmutable($value->format($format), $value->getTimezone());
+
+        if ($created->getTimestamp() !== $value->getTimestamp()) {
+            return sprintf(
+                '(new %s(%s))->setTimezone(new %s(%s))',
+                $this->scope->shortName($value::class),
+                var_export($value->format($format . 'P'), true),
+                $this->scope->shortName(DateTimeZone::class),
+                var_export($timeZone, true),
             );
         }
 

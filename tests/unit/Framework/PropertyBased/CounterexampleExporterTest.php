@@ -18,6 +18,8 @@ use function fopen;
 use function serialize;
 use DateTime;
 use DateTimeImmutable;
+use DateTimeInterface;
+use DateTimeZone;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -85,6 +87,9 @@ final class CounterexampleExporterTest extends TestCase
             'point in time with microseconds'            => ["new \\DateTimeImmutable('2026-10-08T12:34:56.789000', new \\DateTimeZone('Europe/Berlin'))", new DateTimeImmutable('2026-10-08 12:34:56.789 Europe/Berlin')],
             'point in time with time zone offset'        => ["new \\DateTimeImmutable('2026-10-08T12:34:56-05:00')", new DateTimeImmutable('2026-10-08T12:34:56-05:00')],
             'mutable point in time'                      => ["new \\DateTime('1970-01-01T00:00:00+00:00')", new DateTime('@0')],
+            'earlier of two equal local times'           => ["(new \\DateTimeImmutable('2020-10-25T02:59:59+02:00'))->setTimezone(new \\DateTimeZone('Europe/Berlin'))", new DateTimeImmutable('2020-10-25T02:59:59+02:00')->setTimezone(new DateTimeZone('Europe/Berlin'))],
+            'later of two equal local times'             => ["new \\DateTimeImmutable('2020-10-25T02:59:59', new \\DateTimeZone('Europe/Berlin'))", new DateTimeImmutable('2020-10-25T02:59:59+01:00')->setTimezone(new DateTimeZone('Europe/Berlin'))],
+            'mutable, earlier of two local times'        => ["(new \\DateTime('2020-10-25T02:59:59+02:00'))->setTimezone(new \\DateTimeZone('Europe/Berlin'))", new DateTime('2020-10-25T02:59:59+02:00')->setTimezone(new DateTimeZone('Europe/Berlin'))],
         ];
     }
 
@@ -102,6 +107,22 @@ final class CounterexampleExporterTest extends TestCase
         return $values;
     }
 
+    /**
+     * @return array<string, array{DateTimeInterface}>
+     */
+    public static function pointInTimeProvider(): array
+    {
+        $values = [];
+
+        foreach (self::valueProvider() as $name => [, $value]) {
+            if ($value instanceof DateTimeInterface) {
+                $values[$name] = [$value];
+            }
+        }
+
+        return $values;
+    }
+
     #[DataProvider('valueProvider')]
     public function testExportsValuesAsPhpExpressions(string $expected, mixed $value): void
     {
@@ -114,6 +135,21 @@ final class CounterexampleExporterTest extends TestCase
         $scope = NameScope::forMethod(new ReflectionMethod(PropertyBasedNameResolutionClassInGlobalNamespace::class, 'method'));
 
         $this->assertSame(serialize($value), serialize(eval('return ' . new CounterexampleExporter($scope, new Constructions)->export($value) . ';')));
+    }
+
+    /**
+     * The serialized form of a point in time has its local time and the
+     * name of its time zone, which does not tell the two points in time
+     * apart at which a local time occurs when daylight saving time ends.
+     */
+    #[DataProvider('pointInTimeProvider')]
+    public function testEvaluatingTheExportedExpressionOfAPointInTimeYieldsTheSamePointInTime(DateTimeInterface $value): void
+    {
+        $scope    = NameScope::forMethod(new ReflectionMethod(PropertyBasedNameResolutionClassInGlobalNamespace::class, 'method'));
+        $exported = eval('return ' . new CounterexampleExporter($scope, new Constructions)->export($value) . ';');
+
+        $this->assertInstanceOf($value::class, $exported);
+        $this->assertSame($value->format('U.u P e'), $exported->format('U.u P e'));
     }
 
     public function testExportsAnObjectThatWasCreatedWithNewAsTheExpressionThatCreatedIt(): void
