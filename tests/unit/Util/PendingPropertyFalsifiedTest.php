@@ -61,7 +61,7 @@ final class PendingPropertyFalsifiedTest extends AbstractEventTestCase
 
     private function event(): PropertyFalsified
     {
-        return new PropertyFalsified($this->telemetryInfo(), $this->testValueObject(), 1234, 2, 3, 1, false, false, [0], ['value' => '0'], null, [], [], 0, 0);
+        return new PropertyFalsified($this->telemetryInfo(), $this->testValueObject(), 1234, 2, 3, 1, false, false, [0], ['value' => '0'], null, [], [], [], 0, 0);
     }
 
     private function otherTest(): TestMethod

@@ -632,6 +632,7 @@ final class PropertyTestSuite extends IterativeTestSuite
         $test                = $this->test;
         $seed                = $this->seed;
         $exportedDrawnValues = $drawnValues->exported();
+        $steps               = $drawnValues->steps();
         $otherFalsifications = $this->replayOtherFalsifications($events, $emitter, $deriver, $generators);
 
         assert($test !== null);
@@ -642,7 +643,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             $replayEvents,
             $error,
             false,
-            static function () use ($emitter, $test, $seed, $numberOfExamplesChecked, $result, $counterexample, $exportedDrawnValues, $otherFalsifications, $numberOfReplays, $numberOfReproductions): void
+            static function () use ($emitter, $test, $seed, $numberOfExamplesChecked, $result, $counterexample, $exportedDrawnValues, $steps, $otherFalsifications, $numberOfReplays, $numberOfReproductions): void
             {
                 assert($numberOfExamplesChecked > 0);
 
@@ -658,6 +659,7 @@ final class PropertyTestSuite extends IterativeTestSuite
                     $counterexample,
                     null,
                     $exportedDrawnValues,
+                    $steps,
                     $otherFalsifications,
                     $numberOfReplays,
                     $numberOfReproductions,
@@ -681,7 +683,7 @@ final class PropertyTestSuite extends IterativeTestSuite
      *
      * @param array<non-empty-string, AbstractGenerator<mixed>> $generators
      *
-     * @return ?array{numberOfReplays: non-negative-int, numberOfReproductions: non-negative-int, counterexample: array<non-empty-string, string>, drawnValues: list<array{label: ?non-empty-string, value: string}>, events: ?EventCollection} the replays, with the arguments and values of the last replay that was counted, exported, and its events, or null when the arguments could not be generated again, which was reported
+     * @return ?array{numberOfReplays: non-negative-int, numberOfReproductions: non-negative-int, counterexample: array<non-empty-string, string>, drawnValues: list<array{label: ?non-empty-string, value: string}>, steps: list<non-empty-string>, events: ?EventCollection} the replays, with the arguments and values of the last replay that was counted, exported, and its events, or null when the arguments could not be generated again, which was reported
      */
     private function replayFalsifyingExample(EventAggregator $events, Event\Emitter $emitter, GeneratorDeriver $deriver, array $generators, Falsification $falsification, ChoiceSequence $sequence): ?array
     {
@@ -690,6 +692,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             'numberOfReproductions' => 0,
             'counterexample'        => [],
             'drawnValues'           => [],
+            'steps'                 => [],
             'events'                => null,
         ];
 
@@ -729,6 +732,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             $replays['numberOfReplays']++;
             $replays['counterexample'] = $counterexample;
             $replays['drawnValues']    = $drawnValues->exported();
+            $replays['steps']          = $drawnValues->steps();
             $replays['events']         = $replayEvents;
 
             $replayFalsification = Falsification::of($example);
@@ -747,7 +751,7 @@ final class PropertyTestSuite extends IterativeTestSuite
      * counterexample, with the events of its last replay and with the failure
      * that was originally observed as the cause of the error.
      *
-     * @param array{numberOfReplays: non-negative-int, numberOfReproductions: non-negative-int, counterexample: array<non-empty-string, string>, drawnValues: list<array{label: ?non-empty-string, value: string}>, events: ?EventCollection} $replays
+     * @param array{numberOfReplays: non-negative-int, numberOfReproductions: non-negative-int, counterexample: array<non-empty-string, string>, drawnValues: list<array{label: ?non-empty-string, value: string}>, steps: list<non-empty-string>, events: ?EventCollection} $replays
      */
     private function reportExampleThatDidNotFalsifyAgain(EventAggregator $events, Event\Emitter $emitter, ?Event\Code\Throwable $originalFailure, ChoiceSequence $sequence, array $replays): void
     {
@@ -770,6 +774,7 @@ final class PropertyTestSuite extends IterativeTestSuite
         $numberOfExamplesChecked = $this->numberOfExamplesChecked;
         $counterexample          = $replays['counterexample'];
         $drawnValues             = $replays['drawnValues'];
+        $steps                   = $replays['steps'];
 
         assert($test !== null);
 
@@ -779,7 +784,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             $replays['events'],
             $error,
             false,
-            static function () use ($emitter, $test, $seed, $numberOfExamplesChecked, $sequence, $counterexample, $drawnValues, $numberOfReplays): void
+            static function () use ($emitter, $test, $seed, $numberOfExamplesChecked, $sequence, $counterexample, $drawnValues, $steps, $numberOfReplays): void
             {
                 assert($numberOfExamplesChecked > 0);
 
@@ -795,6 +800,7 @@ final class PropertyTestSuite extends IterativeTestSuite
                     $counterexample,
                     null,
                     $drawnValues,
+                    $steps,
                     [],
                     $numberOfReplays,
                     0,
@@ -869,7 +875,7 @@ final class PropertyTestSuite extends IterativeTestSuite
      *
      * @param array<non-empty-string, AbstractGenerator<mixed>> $generators
      *
-     * @return list<array{description: non-empty-string, choiceSequence: list<non-negative-int>, counterexample: array<non-empty-string, string>, drawnValues: list<array{label: ?non-empty-string, value: string}>}>
+     * @return list<array{description: non-empty-string, choiceSequence: list<non-negative-int>, counterexample: array<non-empty-string, string>, drawnValues: list<array{label: ?non-empty-string, value: string}>, steps: list<non-empty-string>}>
      */
     private function replayOtherFalsifications(EventAggregator $events, Event\Emitter $emitter, GeneratorDeriver $deriver, array $generators): array
     {
@@ -903,6 +909,7 @@ final class PropertyTestSuite extends IterativeTestSuite
                 'choiceSequence' => $source->sequence()->choices(),
                 'counterexample' => $counterexample,
                 'drawnValues'    => $drawnValues->exported(),
+                'steps'          => $drawnValues->steps(),
             ];
         }
 
@@ -944,7 +951,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             false,
             static function () use ($emitter, $test, $seed, $exportedArguments, $name): void
             {
-                $emitter->testPropertyFalsified($test, $seed, 0, 0, 0, false, false, [], $exportedArguments, $name, [], [], 0, 0);
+                $emitter->testPropertyFalsified($test, $seed, 0, 0, 0, false, false, [], $exportedArguments, $name, [], [], [], 0, 0);
             },
         );
     }

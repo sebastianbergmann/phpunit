@@ -35,6 +35,16 @@ use PHPUnit\Event\Test\PropertyFalsified;
  *         Draw 1 (list): [5]
  *         Draw 2 (index): 0
  *
+ * The steps of the state machine that the minimal counterexample ran with
+ * runStateMachine() follow, as calls of the methods of the state machine,
+ * which is referred to as $machine:
+ *
+ *     Property falsified after 3 examples, counterexample shrunk in 25 steps:
+ *
+ *         $accounts1 = $machine->open();
+ *         $machine->deposit(account: $accounts1, amount: 1);
+ *         $machine->projectionMatchesTheModel(); // invariant failed
+ *
  * When the property was falsified in other ways while the counterexample was
  * shrunk, the simplest counterexample for each of them follows:
  *
@@ -67,7 +77,7 @@ final readonly class PropertyFalsifiedToStringMapper
 
         $examples = self::count($event->numberOfExamplesChecked(), 'example');
 
-        if ($event->counterexample() === [] && $event->drawnValues() === []) {
+        if ($event->counterexample() === [] && $event->drawnValues() === [] && $event->steps() === []) {
             return sprintf('Property falsified after %s.', $examples) . "\n";
         }
 
@@ -81,7 +91,7 @@ final readonly class PropertyFalsifiedToStringMapper
             );
         }
 
-        $buffer .= "\n\n" . self::arguments($event->counterexample(), $event->drawnValues());
+        $buffer .= "\n\n" . self::arguments($event->counterexample(), $event->drawnValues(), $event->steps());
 
         if ($event->shrinkingBudgetExhausted()) {
             $buffer .= "\n" . sprintf(
@@ -103,7 +113,7 @@ final readonly class PropertyFalsifiedToStringMapper
 
         foreach ($event->otherFalsifications() as $otherFalsification) {
             $buffer .= "\n" . sprintf('Property also falsified by %s with this counterexample:', $otherFalsification['description']) . "\n\n";
-            $buffer .= self::arguments($otherFalsification['counterexample'], $otherFalsification['drawnValues']);
+            $buffer .= self::arguments($otherFalsification['counterexample'], $otherFalsification['drawnValues'], $otherFalsification['steps']);
         }
 
         return $buffer;
@@ -124,14 +134,15 @@ final readonly class PropertyFalsifiedToStringMapper
             return sprintf('Property falsified by explicit example %s.', $label) . "\n";
         }
 
-        return sprintf('Property falsified by explicit example %s:', $label) . "\n\n" . self::arguments($event->counterexample(), []);
+        return sprintf('Property falsified by explicit example %s:', $label) . "\n\n" . self::arguments($event->counterexample(), [], []);
     }
 
     /**
      * @param array<non-empty-string, string>                      $counterexample
      * @param list<array{label: ?non-empty-string, value: string}> $drawnValues
+     * @param list<non-empty-string>                               $steps
      */
-    private static function arguments(array $counterexample, array $drawnValues): string
+    private static function arguments(array $counterexample, array $drawnValues, array $steps): string
     {
         $buffer = '';
 
@@ -151,6 +162,14 @@ final readonly class PropertyFalsifiedToStringMapper
             }
 
             $buffer .= self::indented($description . ': ' . $drawnValue['value']);
+        }
+
+        if ($buffer !== '' && $steps !== []) {
+            $buffer .= "\n";
+        }
+
+        foreach ($steps as $step) {
+            $buffer .= self::indented($step);
         }
 
         return $buffer;
