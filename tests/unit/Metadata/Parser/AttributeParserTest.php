@@ -42,8 +42,11 @@ use PHPUnit\Framework\Attributes\DependsUsingShallowClone;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\ExcludeGlobalVariableFromBackup;
 use PHPUnit\Framework\Attributes\ExcludeStaticPropertyFromBackup;
+use PHPUnit\Framework\Attributes\FromPool;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\IgnorePhpunitWarnings;
+use PHPUnit\Framework\Attributes\Initialize;
+use PHPUnit\Framework\Attributes\Invariant;
 use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\PostCondition;
@@ -60,6 +63,7 @@ use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use PHPUnit\Framework\Attributes\RequiresPhpunit;
 use PHPUnit\Framework\Attributes\RequiresPhpunitExtension;
 use PHPUnit\Framework\Attributes\RequiresSetting;
+use PHPUnit\Framework\Attributes\Rule;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\Attributes\Small;
@@ -160,6 +164,10 @@ use PHPUnit\Metadata\InvalidAttribute;
 #[CoversClass(WithEnvironmentVariable::class)]
 #[CoversClass(WithoutErrorHandler::class)]
 #[CoversClass(IgnorePhpunitWarnings::class)]
+#[CoversClass(Rule::class)]
+#[CoversClass(Initialize::class)]
+#[CoversClass(Invariant::class)]
+#[CoversClass(FromPool::class)]
 #[Small]
 #[Group('metadata')]
 #[Group('metadata/attributes')]
