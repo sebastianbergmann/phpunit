@@ -31,7 +31,6 @@ final class InvocationMockerImplementation extends AbstractInvocationImplementat
     {
         $this->ensureParametersCanBeConfigured();
         $this->ensureNoOtherMatcherHasParametersRuleForSameMethod();
-        $this->emitDeprecationWhenCreatedWithoutExplicitExpects();
 
         $this->matcher->setParametersRule(new Rule\Parameters($arguments));
 
@@ -42,7 +41,6 @@ final class InvocationMockerImplementation extends AbstractInvocationImplementat
     {
         $this->ensureParametersCanBeConfigured();
         $this->ensureNoOtherMatcherHasParametersRuleForSameMethod();
-        $this->emitDeprecationWhenCreatedWithoutExplicitExpects();
 
         $this->matcher->setParametersRule(new Rule\OrderedParameterSets($arguments));
 
@@ -53,7 +51,6 @@ final class InvocationMockerImplementation extends AbstractInvocationImplementat
     {
         $this->ensureParametersCanBeConfigured();
         $this->ensureNoOtherMatcherHasParametersRuleForSameMethod();
-        $this->emitDeprecationWhenCreatedWithoutExplicitExpects();
 
         $this->matcher->setParametersRule(new Rule\UnorderedParameterSets($arguments));
 
@@ -64,7 +61,6 @@ final class InvocationMockerImplementation extends AbstractInvocationImplementat
     {
         $this->ensureParametersCanBeConfigured();
         $this->ensureNoOtherMatcherHasParametersRuleForSameMethod();
-        $this->emitDeprecationWhenCreatedWithoutExplicitExpects();
 
         $this->matcher->setParametersRule(new Rule\PartiallyOrderedParameterSets($arguments));
 
@@ -82,7 +78,6 @@ final class InvocationMockerImplementation extends AbstractInvocationImplementat
     {
         $this->ensureParametersCanBeConfigured();
         $this->ensureNoOtherMatcherHasParametersRuleForSameMethod();
-        $this->emitDeprecationWhenCreatedWithoutExplicitExpects();
 
         $this->matcher->setParametersRule(new Rule\AnyParameters);
 
@@ -140,17 +135,5 @@ final class InvocationMockerImplementation extends AbstractInvocationImplementat
                 throw new MethodParametersAlreadyConfiguredForAnotherMatcherException($method->name());
             }
         }
-    }
-
-    private function emitDeprecationWhenCreatedWithoutExplicitExpects(): void
-    {
-        if (!$this->createdWithoutExplicitExpects) {
-            return;
-        }
-
-        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
-            null,
-            'Using with*() without expects() is deprecated and will no longer be possible in PHPUnit 14.',
-        );
     }
 }

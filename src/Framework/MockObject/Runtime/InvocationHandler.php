@@ -17,6 +17,7 @@ use function sprintf;
 use function strtolower;
 use Exception;
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 use PHPUnit\Framework\MockObject\Rule\InvokedCount;
 use PHPUnit\Framework\MockObject\Rule\MethodName;
@@ -185,7 +186,7 @@ final class InvocationHandler
     /**
      * @throws TestDoubleSealedException
      */
-    public function expects(InvocationOrder $rule): InvocationMocker|InvocationStubber
+    public function expects(InvocationOrder $rule): InvocationMocker
     {
         if ($this->sealed) {
             throw new TestDoubleSealedException;
@@ -194,13 +195,24 @@ final class InvocationHandler
         $matcher = new Matcher($rule, $this->className);
         $this->addMatcher($matcher);
 
-        if ($this->isMockObject) {
-            return new InvocationMockerImplementation(
-                $this,
-                $matcher,
-                ...$this->configurableMethods,
-            );
+        return new InvocationMockerImplementation(
+            $this,
+            $matcher,
+            ...$this->configurableMethods,
+        );
+    }
+
+    /**
+     * @throws TestDoubleSealedException
+     */
+    public function stub(): InvocationStubber
+    {
+        if ($this->sealed) {
+            throw new TestDoubleSealedException;
         }
+
+        $matcher = new Matcher(new AnyInvokedCount, $this->className);
+        $this->addMatcher($matcher);
 
         return new InvocationStubberImplementation(
             $this,

@@ -13,7 +13,6 @@ use function assert;
 use Closure;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Generator\Generator;
@@ -120,28 +119,6 @@ final class MockObjectRegistryTest extends TestCase
         $registry->verify($test, $emitter);
 
         $this->assertSame(0, $test->numberOfAssertionsPerformed());
-    }
-
-    #[IgnorePhpunitDeprecations]
-    public function testNoticeIsNotTriggeredWhenMockObjectHasParametersRule(): void
-    {
-        $test     = new TestOutsideOfPhpunitNamespace('testOne');
-        $emitter  = $this->createMock(Emitter::class);
-        $registry = new MockObjectRegistry;
-        $mock     = $this->mockObject();
-
-        $emitter
-            ->expects($this->never())
-            ->method($this->anything());
-
-        $mock
-            ->method('doSomething')
-            ->with()
-            ->willReturn(true);
-
-        $registry->register(AnInterface::class, $mock);
-
-        $registry->verify($test, $emitter);
     }
 
     public function testNoticeIsNotTriggeredWhenTestAllowsMockObjectsWithoutExpectations(): void

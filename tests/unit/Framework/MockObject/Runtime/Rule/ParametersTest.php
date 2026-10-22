@@ -11,7 +11,6 @@ namespace PHPUnit\Framework\MockObject\Rule;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
-use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -36,30 +35,24 @@ final class ParametersTest extends TestCase
         $rule->verify();
     }
 
-    #[IgnorePhpunitDeprecations]
     public function testThrowsWhenTooFewArgumentsProvided(): void
     {
-        $double = $this->createMock(AnInterface::class);
-
-        $double->method('doSomething')->with(1);
+        $rule = new Parameters([1]);
 
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessageIsOrContains('is too low');
 
-        $double->doSomething();
+        $rule->apply($this->invocationWithoutArguments());
     }
 
-    #[IgnorePhpunitDeprecations]
     public function testThrowsHintMessageWhenWithAnythingUsedAndZeroArgs(): void
     {
-        $double = $this->createMock(AnInterface::class);
-
-        $double->method('doSomething')->with($this->anything());
+        $rule = new Parameters([$this->anything()]);
 
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessageIsOrContains('withAnyParameters');
 
-        $double->doSomething();
+        $rule->apply($this->invocationWithoutArguments());
     }
 
     public function testCachedFailureResultIsRethrownOnVerify(): void
@@ -95,5 +88,14 @@ final class ParametersTest extends TestCase
         $result = $double->doSomethingElse(1);
 
         $this->assertSame(2, $result);
+    }
+
+    private function invocationWithoutArguments(): Invocation
+    {
+        $double = $this->createStub(AnInterface::class);
+
+        $this->assertInstanceOf(StubInternal::class, $double);
+
+        return new Invocation(AnInterface::class, 'doSomething', [], 'bool', $double);
     }
 }

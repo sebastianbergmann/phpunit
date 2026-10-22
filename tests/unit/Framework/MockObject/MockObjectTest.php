@@ -1305,27 +1305,12 @@ EOT,
         $this->fail();
     }
 
-    #[DoesNotPerformAssertions]
-    #[IgnorePhpunitDeprecations]
-    #[TestDox('with() can be used without expects() and is not verified when the method is not called')]
-    public function testWithCanBeUsedWithoutExpectsAndIsNotVerifiedWhenTheMethodIsNotCalled(): void
+    #[TestDox('method() does not return an InvocationMocker, so with*() cannot be used without expects()')]
+    public function testMethodDoesNotReturnInvocationMocker(): void
     {
         $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
 
-        $double->method('doSomethingElse')->with(1)->willReturn(2);
-    }
-
-    #[IgnorePhpunitDeprecations]
-    #[TestDox('with() can be used without expects() and is verified when the method is called')]
-    public function testWithCanBeUsedWithoutExpectsAndIsVerifiedWhenTheMethodIsCalled(): void
-    {
-        $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
-
-        $double->method('doSomethingElse')->with(1)->willReturn(2);
-
-        $this->expectException(ExpectationFailedException::class);
-
-        $double->doSomethingElse(0);
+        $this->assertNotInstanceOf(InvocationMocker::class, $double->method('doSomethingElse'));
     }
 
     #[DoesNotPerformAssertions]
@@ -1620,7 +1605,6 @@ EOT,
         );
     }
 
-    #[IgnorePhpunitDeprecations]
     #[TestDox('Invocation is recorded even when it does not satisfy the expectation configured using with()')]
     public function testInvocationIsRecordedEvenWhenItDoesNotSatisfyExpectationConfiguredUsingWith(): void
     {
@@ -1629,13 +1613,15 @@ EOT,
 
         $double->recordInvocationsIn($journal, 'double');
 
-        $double->method('doSomethingElse')->with(1)->willReturn(2);
+        $double->expects($this->once())->method('doSomethingElse')->with(1)->willReturn(2);
 
         try {
             $double->doSomethingElse(0);
 
             $this->fail();
         } catch (ExpectationFailedException) {
+        } finally {
+            $this->resetMockObjects();
         }
 
         $this->assertSame(['double::doSomethingElse()'], $journal->asArray());
