@@ -33,15 +33,6 @@ This functionality is currently [hard-deprecated](https://phpunit.de/backward-co
 
 | Issue                                                             | Description                                                   | Since  | Replacement                                                     |
 |-------------------------------------------------------------------|---------------------------------------------------------------|--------|-----------------------------------------------------------------|
-| [#6075](https://github.com/sebastianbergmann/phpunit/issues/6075) | `--order-by duration` CLI option                              | 13.2.0 | Use `--order-by duration-ascending` instead                     |
-| [#6075](https://github.com/sebastianbergmann/phpunit/issues/6075) | `--order-by size` CLI option                                  | 13.2.0 | Use `--order-by size-ascending` instead                         |
-| [#6075](https://github.com/sebastianbergmann/phpunit/issues/6075) | `executionOrder="duration"` XML configuration attribute value | 13.2.0 | Use `executionOrder="duration-ascending"` instead               |
-| [#6075](https://github.com/sebastianbergmann/phpunit/issues/6075) | `executionOrder="size"` XML configuration attribute value     | 13.2.0 | Use `executionOrder="size-ascending"` instead                   |
-| [#6585](https://github.com/sebastianbergmann/phpunit/issues/6585) | `depends` for `--order-by` or `executionOrder`                 | 13.4.0 | Use `--resolve-dependencies` or `resolveDependencies="true"` instead |
-| [#6585](https://github.com/sebastianbergmann/phpunit/issues/6585) | `no-depends` for `--order-by` or `executionOrder`              | 13.4.0 | Use `--ignore-dependencies` or `resolveDependencies="false"` instead |
-| [#6585](https://github.com/sebastianbergmann/phpunit/issues/6585) | `defects` written before the order                            | 13.4.0 | Write the order first, for example `duration-ascending,defects` |
-| [#6585](https://github.com/sebastianbergmann/phpunit/issues/6585) | More than one order for `--order-by` or `executionOrder`       | 13.4.0 | Configure exactly one order                                     |
-| [#6585](https://github.com/sebastianbergmann/phpunit/issues/6585) | Unknown value for the `executionOrder` XML attribute           | 13.4.0 | Use a value the schema allows                                   |
 |                                                                   | `--cache-result` CLI option                                   | 13.3.0 | Use `--record-test-run-history` instead                         |
 |                                                                   | `--do-not-cache-result` CLI option                            | 13.3.0 | Use `--do-not-record-test-run-history` instead                  |
 |                                                                   | `cacheResult` XML configuration attribute                     | 13.3.0 | Use `recordTestRunHistory` instead                              |
