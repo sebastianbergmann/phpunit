@@ -100,6 +100,11 @@ final class InvocationMockerImplementation extends AbstractInvocationImplementat
      */
     public function id(string $id): InvocationMocker
     {
+        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+            null,
+            'id() for mock object expectations is deprecated and will be removed in PHPUnit 15.',
+        );
+
         $this->invocationHandler->registerMatcher($id, $this->matcher);
 
         return $this;
@@ -114,6 +119,11 @@ final class InvocationMockerImplementation extends AbstractInvocationImplementat
      */
     public function after(string $id): InvocationMocker
     {
+        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+            null,
+            'after() for mock object expectations is deprecated and will be removed in PHPUnit 15.',
+        );
+
         $this->matcher->setAfterMatchBuilderId($id);
 
         return $this;

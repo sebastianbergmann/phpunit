@@ -842,6 +842,7 @@ EOT,
      * we configure an expectation that two() is called once. However, this expectation will only be verified
      * if/after one() has been called.
      */
+    #[IgnorePhpunitDeprecations]
     public function testMethodCallCanBeExpectedContingentOnWhetherAnotherMethodWasPreviouslyCalled(): void
     {
         $id     = 'the-id';
@@ -859,6 +860,7 @@ EOT,
         $double->two();
     }
 
+    #[IgnorePhpunitDeprecations]
     public function testContingentExpectationsAreNotEvaluatedUntilTheirConditionIsMet(): void
     {
         $id     = 'the-id';
@@ -877,6 +879,7 @@ EOT,
         $double->two();
     }
 
+    #[IgnorePhpunitDeprecations]
     public function testContingentExpectationsAreEvaluatedWhenTheirConditionIsMet(): void
     {
         $id     = 'the-id';
@@ -899,6 +902,7 @@ EOT,
         );
     }
 
+    #[IgnorePhpunitDeprecations]
     public function testExpectationCannotBeContingentOnExpectationThatHasNotBeenConfigured(): void
     {
         $double = $this->createMock(InterfaceWithImplicitProtocol::class);
@@ -914,6 +918,7 @@ EOT,
         );
     }
 
+    #[IgnorePhpunitDeprecations]
     public function testExpectationsCannotHaveDuplicateIds(): void
     {
         $id     = 'the-id';
@@ -1591,6 +1596,7 @@ EOT,
         $this->assertSame(['double::doSomething()'], $journal->asArray());
     }
 
+    #[IgnorePhpunitDeprecations]
     #[TestDox('Invocation is recorded even when the expectation it matches is contingent on another method having been called')]
     public function testInvocationIsRecordedEvenWhenExpectationIsContingentOnAnotherMethodHavingBeenCalled(): void
     {

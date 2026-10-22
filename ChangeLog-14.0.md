@@ -10,6 +10,7 @@ All notable changes of the PHPUnit 14.0 release series are documented in this fi
 
 ### Deprecated
 
+* [#6538](https://github.com/sebastianbergmann/phpunit/issues/6538): `id()` and `after()` for mock object expectations
 * [#6561](https://github.com/sebastianbergmann/phpunit/issues/6561): `expectExceptionMessage()`
 
 ### Removed
