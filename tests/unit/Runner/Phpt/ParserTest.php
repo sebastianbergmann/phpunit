@@ -91,7 +91,7 @@ final class ParserTest extends TestCase
         $parser = new Parser;
 
         $this->expectException(InvalidPhptFileException::class);
-        $this->expectExceptionMessage('PHPT file must not contain text before its first section (line 1)');
+        $this->expectExceptionMessageIs('PHPT file must not contain text before its first section (line 1)');
 
         $parser->parse(__DIR__ . '/../../../_files/phpt/invalid/content-before-section.phpt');
     }
@@ -101,7 +101,7 @@ final class ParserTest extends TestCase
         $parser = new Parser;
 
         $this->expectException(InvalidPhptFileException::class);
-        $this->expectExceptionMessage('PHPT file must contain one of the sections --FILE--, --FILEEOF--, --FILE_EXTERNAL--');
+        $this->expectExceptionMessageIs('PHPT file must contain one of the sections --FILE--, --FILEEOF--, --FILE_EXTERNAL--');
 
         $parser->parse(__DIR__ . '/../../../_files/phpt/invalid/no-test-code.phpt');
     }
@@ -111,7 +111,7 @@ final class ParserTest extends TestCase
         $parser = new Parser;
 
         $this->expectException(InvalidPhptFileException::class);
-        $this->expectExceptionMessage('PHPT file must contain one of the sections --EXPECT--, --EXPECT_EXTERNAL--, --EXPECTF--, --EXPECTF_EXTERNAL--, --EXPECTREGEX--, --EXPECTREGEX_EXTERNAL--');
+        $this->expectExceptionMessageIs('PHPT file must contain one of the sections --EXPECT--, --EXPECT_EXTERNAL--, --EXPECTF--, --EXPECTF_EXTERNAL--, --EXPECTREGEX--, --EXPECTREGEX_EXTERNAL--');
 
         $parser->parse(__DIR__ . '/../../../_files/phpt/invalid/no-expectation-code.phpt');
     }
@@ -121,7 +121,7 @@ final class ParserTest extends TestCase
         $parser = new Parser;
 
         $this->expectException(InvalidPhptFileException::class);
-        $this->expectExceptionMessage('--FILE-- section is empty');
+        $this->expectExceptionMessageIs('--FILE-- section is empty');
 
         $parser->parse(__DIR__ . '/../../../_files/phpt/invalid/empty-file-section.phpt');
     }
@@ -131,7 +131,7 @@ final class ParserTest extends TestCase
         $parser = new Parser;
 
         $this->expectException(InvalidPhptFileException::class);
-        $this->expectExceptionMessage('--FILEEOF-- section is empty');
+        $this->expectExceptionMessageIs('--FILEEOF-- section is empty');
 
         $parser->parse(__DIR__ . '/../../../_files/phpt/invalid/empty-fileeof-section.phpt');
     }
@@ -141,7 +141,7 @@ final class ParserTest extends TestCase
         $parser = new Parser;
 
         $this->expectException(InvalidPhptFileException::class);
-        $this->expectExceptionMessage('File referenced by --FILE_EXTERNAL-- section is empty');
+        $this->expectExceptionMessageIs('File referenced by --FILE_EXTERNAL-- section is empty');
 
         $parser->parse(__DIR__ . '/../../../_files/phpt/invalid/empty-file-external-section.phpt');
     }
@@ -161,7 +161,7 @@ final class ParserTest extends TestCase
         $parser = new Parser;
 
         $this->expectException(UnknownPhptSectionException::class);
-        $this->expectExceptionMessage('--SKIPFI-- is not a valid PHPT section');
+        $this->expectExceptionMessageIs('--SKIPFI-- is not a valid PHPT section');
 
         $parser->parse(__DIR__ . '/../../../_files/phpt/unknown-section.phpt');
     }
@@ -171,7 +171,7 @@ final class ParserTest extends TestCase
         $parser = new Parser;
 
         $this->expectException(DuplicatePhptSectionException::class);
-        $this->expectExceptionMessage('--EXPECT-- section occurs more than once');
+        $this->expectExceptionMessageIs('--EXPECT-- section occurs more than once');
 
         $parser->parse(__DIR__ . '/../../../_files/phpt/duplicate-section.phpt');
     }
@@ -181,7 +181,7 @@ final class ParserTest extends TestCase
         $parser = new Parser;
 
         $this->expectException(ConflictingPhptSectionsException::class);
-        $this->expectExceptionMessage('PHPT file must not contain more than one of the sections --FILE--, --FILEEOF--');
+        $this->expectExceptionMessageIs('PHPT file must not contain more than one of the sections --FILE--, --FILEEOF--');
 
         $parser->parse(__DIR__ . '/../../../_files/phpt/conflicting-file-sections.phpt');
     }
@@ -191,7 +191,7 @@ final class ParserTest extends TestCase
         $parser = new Parser;
 
         $this->expectException(ConflictingPhptSectionsException::class);
-        $this->expectExceptionMessage('PHPT file must not contain more than one of the sections --EXPECT--, --EXPECTF--');
+        $this->expectExceptionMessageIs('PHPT file must not contain more than one of the sections --EXPECT--, --EXPECTF--');
 
         $parser->parse(__DIR__ . '/../../../_files/phpt/conflicting-expectation-sections.phpt');
     }

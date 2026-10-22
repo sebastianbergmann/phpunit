@@ -250,7 +250,7 @@ final class CountTest extends TestCase
         };
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('IteratorAggregate::getIterator() returned an object that was already seen');
+        $this->expectExceptionMessageIs('IteratorAggregate::getIterator() returned an object that was already seen');
 
         new Count(0)->evaluate($cyclic);
     }

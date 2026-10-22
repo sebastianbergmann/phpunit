@@ -256,7 +256,7 @@ final class TestSuiteMapperTest extends TestCase
             ->seal();
 
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('BrokenInDirectoryTest.php cannot be loaded');
+        $this->expectExceptionMessageIs('BrokenInDirectoryTest.php cannot be loaded');
 
         new TestSuiteMapper($this->createStub(Emitter::class), $skipper)->map(
             __FILE__,
@@ -313,7 +313,7 @@ final class TestSuiteMapperTest extends TestCase
             ->seal();
 
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('BrokenFileTest.php cannot be loaded');
+        $this->expectExceptionMessageIs('BrokenFileTest.php cannot be loaded');
 
         new TestSuiteMapper($this->createStub(Emitter::class), $skipper)->map(
             __FILE__,

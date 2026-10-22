@@ -29,7 +29,7 @@ final class LoggingTest extends TestCase
         $this->assertFalse($logging->hasJunit());
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Logger "JUnit XML" is not configured');
+        $this->expectExceptionMessageIs('Logger "JUnit XML" is not configured');
 
         $logging->junit();
     }
@@ -41,7 +41,7 @@ final class LoggingTest extends TestCase
         $this->assertFalse($logging->hasOtr());
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Logger "Open Test Reporting XML" is not configured');
+        $this->expectExceptionMessageIs('Logger "Open Test Reporting XML" is not configured');
 
         $logging->otr();
     }
@@ -53,7 +53,7 @@ final class LoggingTest extends TestCase
         $this->assertFalse($logging->hasTeamCity());
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Logger "Team City" is not configured');
+        $this->expectExceptionMessageIs('Logger "Team City" is not configured');
 
         $logging->teamCity();
     }
@@ -65,7 +65,7 @@ final class LoggingTest extends TestCase
         $this->assertFalse($logging->hasTestDoxHtml());
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Logger "TestDox HTML" is not configured');
+        $this->expectExceptionMessageIs('Logger "TestDox HTML" is not configured');
 
         $logging->testDoxHtml();
     }
@@ -77,7 +77,7 @@ final class LoggingTest extends TestCase
         $this->assertFalse($logging->hasTestDoxText());
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Logger "TestDox Text" is not configured');
+        $this->expectExceptionMessageIs('Logger "TestDox Text" is not configured');
 
         $logging->testDoxText();
     }

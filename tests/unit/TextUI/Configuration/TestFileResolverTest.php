@@ -322,7 +322,7 @@ final class TestFileResolverTest extends TestCase
     public function testRejectsPathGivenAsArgumentThatDoesNotExist(): void
     {
         $this->expectException(TestFileNotFoundException::class);
-        $this->expectExceptionMessage('Test file "does-not-exist" not found');
+        $this->expectExceptionMessageIs('Test file "does-not-exist" not found');
 
         new TestFileResolver($this->createStub(Emitter::class))->pathsFromCommandLine(
             $this->configurationFromCommandLine('does-not-exist'),
@@ -332,7 +332,7 @@ final class TestFileResolverTest extends TestCase
     public function testRejectsPathListedInTestFilesFileThatDoesNotExist(): void
     {
         $this->expectException(TestFileNotFoundException::class);
-        $this->expectExceptionMessage('Test file "DoesNotExistTest.php" not found');
+        $this->expectExceptionMessageIs('Test file "DoesNotExistTest.php" not found');
 
         new TestFileResolver($this->createStub(Emitter::class))->pathsFromCommandLine(
             $this->configurationFromCommandLine('--test-files-file', $this->testFilesFile('test-files-with-file-that-does-not-exist.txt')),
@@ -342,7 +342,7 @@ final class TestFileResolverTest extends TestCase
     public function testRejectsTestFilesFileThatDoesNotExist(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Cannot read from does-not-exist.txt');
+        $this->expectExceptionMessageIs('Cannot read from does-not-exist.txt');
 
         new TestFileResolver($this->createStub(Emitter::class))->pathsFromCommandLine(
             $this->configurationFromCommandLine('--test-files-file', 'does-not-exist.txt'),

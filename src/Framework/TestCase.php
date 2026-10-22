@@ -966,6 +966,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final protected function expectExceptionMessage(string $message): void
     {
+        Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
+            $this->valueObjectForEvents(),
+            'expectExceptionMessage() is deprecated and will be removed in PHPUnit 15. ' .
+            'Use expectExceptionMessageIsOrContains() instead.',
+        );
+
         $this->expectExceptionMessageIsOrContains($message);
     }
 

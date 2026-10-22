@@ -147,7 +147,7 @@ final class TestSuiteBuilderTest extends TestCase
             ->seal();
 
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('BrokenByBuilderTest.php cannot be loaded');
+        $this->expectExceptionMessageIs('BrokenByBuilderTest.php cannot be loaded');
 
         new TestSuiteBuilder($this->createStub(Emitter::class), $skipper)->build($this->configurationFor($directory));
     }

@@ -115,7 +115,7 @@ final class DefaultPrinterTest extends TestCase
         fclose($server);
 
         $this->expectException(CannotOpenSocketException::class);
-        $this->expectExceptionMessage('Cannot open socket ' . $address);
+        $this->expectExceptionMessageIs('Cannot open socket ' . $address);
 
         DefaultPrinter::from('socket://' . $address);
     }

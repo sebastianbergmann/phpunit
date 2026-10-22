@@ -31,7 +31,7 @@ final class TestSuiteFilterProcessorTest extends TestCase
         $file = '/path/to/file/that/does/not/exist/' . uniqid('test_id_filter_file_');
 
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Cannot read from ' . $file);
+        $this->expectExceptionMessageIs('Cannot read from ' . $file);
 
         new TestSuiteFilterProcessor($this->createStub(Emitter::class))->process(
             $this->configuration($file),

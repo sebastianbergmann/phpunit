@@ -39,7 +39,7 @@ final class SchemaDetectionResultTest extends TestCase
         $this->assertFalse($result->detected());
 
         $this->expectException(XmlException::class);
-        $this->expectExceptionMessage('No supported schema was detected');
+        $this->expectExceptionMessageIs('No supported schema was detected');
 
         $result->version();
     }

@@ -21,6 +21,8 @@ Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\DeprecatedExpectExceptionMessageTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\DeprecatedExpectExceptionMessageTest::testExpectExceptionMessage)
 Test Prepared (PHPUnit\TestFixture\Event\DeprecatedExpectExceptionMessageTest::testExpectExceptionMessage)
+Test Triggered PHPUnit Deprecation (PHPUnit\TestFixture\Event\DeprecatedExpectExceptionMessageTest::testExpectExceptionMessage)
+expectExceptionMessage() is deprecated and will be removed in PHPUnit 15. Use expectExceptionMessageIsOrContains() instead.
 Test Passed (PHPUnit\TestFixture\Event\DeprecatedExpectExceptionMessageTest::testExpectExceptionMessage)
 Test Finished (PHPUnit\TestFixture\Event\DeprecatedExpectExceptionMessageTest::testExpectExceptionMessage)
 Test Suite Finished (PHPUnit\TestFixture\Event\DeprecatedExpectExceptionMessageTest, 1 test)

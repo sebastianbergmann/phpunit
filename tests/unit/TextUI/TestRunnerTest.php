@@ -39,7 +39,7 @@ final class TestRunnerTest extends TestCase
         );
 
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Cannot read from ' . $file);
+        $this->expectExceptionMessageIs('Cannot read from ' . $file);
 
         new TestRunner($this->createStub(Emitter::class))->run(
             $configuration,

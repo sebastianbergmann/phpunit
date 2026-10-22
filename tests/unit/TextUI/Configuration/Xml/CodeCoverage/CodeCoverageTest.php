@@ -29,7 +29,7 @@ final class CodeCoverageTest extends TestCase
         $this->assertFalse($codeCoverage->hasDriver());
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Code Coverage driver has not been configured');
+        $this->expectExceptionMessageIs('Code Coverage driver has not been configured');
 
         $codeCoverage->driver();
     }
@@ -41,7 +41,7 @@ final class CodeCoverageTest extends TestCase
         $this->assertFalse($codeCoverage->hasClover());
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Code Coverage report "Clover XML" has not been configured');
+        $this->expectExceptionMessageIs('Code Coverage report "Clover XML" has not been configured');
 
         $codeCoverage->clover();
     }
@@ -53,7 +53,7 @@ final class CodeCoverageTest extends TestCase
         $this->assertFalse($codeCoverage->hasCobertura());
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Code Coverage report "Cobertura XML" has not been configured');
+        $this->expectExceptionMessageIs('Code Coverage report "Cobertura XML" has not been configured');
 
         $codeCoverage->cobertura();
     }
@@ -65,7 +65,7 @@ final class CodeCoverageTest extends TestCase
         $this->assertFalse($codeCoverage->hasCrap4j());
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Code Coverage report "Crap4J" has not been configured');
+        $this->expectExceptionMessageIs('Code Coverage report "Crap4J" has not been configured');
 
         $codeCoverage->crap4j();
     }
@@ -77,7 +77,7 @@ final class CodeCoverageTest extends TestCase
         $this->assertFalse($codeCoverage->hasHtml());
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Code Coverage report "HTML" has not been configured');
+        $this->expectExceptionMessageIs('Code Coverage report "HTML" has not been configured');
 
         $codeCoverage->html();
     }
@@ -89,7 +89,7 @@ final class CodeCoverageTest extends TestCase
         $this->assertFalse($codeCoverage->hasJsonl());
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Code Coverage report "JSONL" has not been configured');
+        $this->expectExceptionMessageIs('Code Coverage report "JSONL" has not been configured');
 
         $codeCoverage->jsonl();
     }
@@ -101,7 +101,7 @@ final class CodeCoverageTest extends TestCase
         $this->assertFalse($codeCoverage->hasOpenClover());
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Code Coverage report "OpenClover XML" has not been configured');
+        $this->expectExceptionMessageIs('Code Coverage report "OpenClover XML" has not been configured');
 
         $codeCoverage->openClover();
     }
@@ -113,7 +113,7 @@ final class CodeCoverageTest extends TestCase
         $this->assertFalse($codeCoverage->hasPhp());
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Code Coverage report "PHP" has not been configured');
+        $this->expectExceptionMessageIs('Code Coverage report "PHP" has not been configured');
 
         $codeCoverage->php();
     }
@@ -125,7 +125,7 @@ final class CodeCoverageTest extends TestCase
         $this->assertFalse($codeCoverage->hasText());
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Code Coverage report "Text" has not been configured');
+        $this->expectExceptionMessageIs('Code Coverage report "Text" has not been configured');
 
         $codeCoverage->text();
     }
@@ -137,7 +137,7 @@ final class CodeCoverageTest extends TestCase
         $this->assertFalse($codeCoverage->hasXml());
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Code Coverage report "XML" has not been configured');
+        $this->expectExceptionMessageIs('Code Coverage report "XML" has not been configured');
 
         $codeCoverage->xml();
     }

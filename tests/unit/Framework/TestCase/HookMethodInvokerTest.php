@@ -80,7 +80,7 @@ final class HookMethodInvokerTest extends TestCase
             ->seal();
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('hook errored');
+        $this->expectExceptionMessageIs('hook errored');
 
         HookMethodInvoker::invokeBeforeTest(
             new HookFixture('testOne'),
@@ -109,7 +109,7 @@ final class HookMethodInvokerTest extends TestCase
             ->seal();
 
         $this->expectException(AssertionFailedError::class);
-        $this->expectExceptionMessage('hook failed');
+        $this->expectExceptionMessageIs('hook failed');
 
         HookMethodInvoker::invokeBeforeTest(
             new HookFixture('testOne'),
@@ -134,7 +134,7 @@ final class HookMethodInvokerTest extends TestCase
             ->seal();
 
         $this->expectException(SkippedWithMessageException::class);
-        $this->expectExceptionMessage('hook skipped');
+        $this->expectExceptionMessageIs('hook skipped');
 
         HookMethodInvoker::invokeBeforeTest(
             new HookFixture('testOne'),
@@ -219,7 +219,7 @@ final class HookMethodInvokerTest extends TestCase
             ->seal();
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('the static hook was invoked');
+        $this->expectExceptionMessageIs('the static hook was invoked');
 
         HookMethodInvoker::invokeBeforeTest(
             new StaticHookFixture('testOne'),

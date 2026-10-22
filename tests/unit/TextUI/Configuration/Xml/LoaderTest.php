@@ -116,7 +116,7 @@ final class LoaderTest extends TestCase
     public function testExceptionIsThrownForConfigurationFileThatDoesNotValidateAgainstAnySupportedSchema(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage("does not validate against any supported PHPUnit schema:\n");
+        $this->expectExceptionMessageIsOrContains("does not validate against any supported PHPUnit schema:\n");
 
         /* @noinspection UnusedFunctionResultInspection */
         $this->configuration('configuration_invalid_root_element.xml');
@@ -408,7 +408,7 @@ final class LoaderTest extends TestCase
         $this->assertFalse($codeCoverage->hasDriver());
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Code Coverage driver has not been configured');
+        $this->expectExceptionMessageIs('Code Coverage driver has not been configured');
 
         $codeCoverage->driver();
     }

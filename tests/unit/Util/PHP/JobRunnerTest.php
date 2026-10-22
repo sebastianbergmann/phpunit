@@ -393,7 +393,7 @@ EOT,
         );
 
         $this->expectException(PhpProcessException::class);
-        $this->expectExceptionMessage('PHP setting "highlight.string" contains a line-break character, which is not permitted');
+        $this->expectExceptionMessageIs('PHP setting "highlight.string" contains a line-break character, which is not permitted');
 
         $jobRunner->run($job);
     }

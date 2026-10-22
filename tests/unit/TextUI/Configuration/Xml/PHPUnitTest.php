@@ -28,7 +28,7 @@ final class PHPUnitTest extends TestCase
         $this->assertFalse($phpunit->hasCacheDirectory());
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Cache directory is not configured');
+        $this->expectExceptionMessageIs('Cache directory is not configured');
 
         $phpunit->cacheDirectory();
     }
@@ -40,7 +40,7 @@ final class PHPUnitTest extends TestCase
         $this->assertFalse($phpunit->hasBootstrap());
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Bootstrap script is not configured');
+        $this->expectExceptionMessageIs('Bootstrap script is not configured');
 
         $phpunit->bootstrap();
     }
@@ -52,7 +52,7 @@ final class PHPUnitTest extends TestCase
         $this->assertFalse($phpunit->hasExtensionsDirectory());
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Extensions directory is not configured');
+        $this->expectExceptionMessageIs('Extensions directory is not configured');
 
         $phpunit->extensionsDirectory();
     }
@@ -64,7 +64,7 @@ final class PHPUnitTest extends TestCase
         $this->assertFalse($phpunit->hasDefaultTestSuite());
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Default test suite is not configured');
+        $this->expectExceptionMessageIs('Default test suite is not configured');
 
         $phpunit->defaultTestSuite();
     }
