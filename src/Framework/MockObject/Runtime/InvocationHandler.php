@@ -148,14 +148,6 @@ final class InvocationHandler
         );
     }
 
-    public function hasParametersRule(): bool
-    {
-        return array_any(
-            $this->matchers,
-            static fn (Matcher $matcher) => $matcher->hasParametersRule(),
-        );
-    }
-
     /**
      * Looks up the match builder with identification $id and returns it.
      *

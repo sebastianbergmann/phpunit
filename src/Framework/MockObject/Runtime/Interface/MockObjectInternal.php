@@ -18,8 +18,6 @@ interface MockObjectInternal extends MockObject, StubInternal
 {
     public function __phpunit_hasInvocationCountRule(): bool;
 
-    public function __phpunit_hasParametersRule(): bool;
-
     public function __phpunit_recordsInvocations(): bool;
 
     public function __phpunit_verify(bool $unsetInvocationMocker = true): void;

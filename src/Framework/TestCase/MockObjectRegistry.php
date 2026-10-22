@@ -81,8 +81,7 @@ final class MockObjectRegistry
             }
 
             if (!$mockObject->__phpunit_hasInvocationCountRule()) {
-                if (!$mockObject->__phpunit_hasParametersRule() &&
-                    !$mockObject->__phpunit_recordsInvocations() &&
+                if (!$mockObject->__phpunit_recordsInvocations() &&
                     !$allowsMockObjectsWithoutExpectations &&
                     !$isPhpunitTestSuite) {
                     $emitter->testTriggeredPhpunitNotice(

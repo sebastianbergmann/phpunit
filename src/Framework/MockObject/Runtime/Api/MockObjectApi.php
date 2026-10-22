@@ -24,11 +24,6 @@ trait MockObjectApi
         return $this->__phpunit_getInvocationHandler()->hasInvocationCountRule();
     }
 
-    public function __phpunit_hasParametersRule(): bool
-    {
-        return $this->__phpunit_getInvocationHandler()->hasParametersRule();
-    }
-
     public function __phpunit_verify(bool $unsetInvocationMocker = true): void
     {
         $this->__phpunit_getInvocationHandler()->verify();
