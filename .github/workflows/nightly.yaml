@@ -157,6 +157,9 @@ jobs:
           extensions: ${{ env.PHP_EXTENSIONS }}
           ini-values: ${{ env.PHP_INI_VALUES }}
           tools: none
+        env:
+          # https://github.com/shivammathur/setup-php/issues/1139
+          update: ${{ matrix.os == 'windows-latest' && matrix.php-version == '8.5' }}
 
       - name: Get Composer cache directory
         id: composer-cache
