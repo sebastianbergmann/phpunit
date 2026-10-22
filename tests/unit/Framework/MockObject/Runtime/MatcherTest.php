@@ -15,7 +15,6 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount;
 use PHPUnit\Framework\MockObject\Rule\MethodName;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\AnInterface;
@@ -28,7 +27,7 @@ final class MatcherTest extends TestCase
 {
     public function testMethodNameRuleCannotBeQueriedWhenItHasNotBeenConfigured(): void
     {
-        $matcher = new Matcher(new AnyInvokedCount, AnInterface::class);
+        $matcher = new Matcher(AnInterface::class);
 
         $this->expectException(MethodNameNotConfiguredException::class);
 
@@ -37,7 +36,7 @@ final class MatcherTest extends TestCase
 
     public function testCannotBeInvokedWhenMethodNameRuleHasNotBeenConfigured(): void
     {
-        $matcher = new Matcher(new AnyInvokedCount, AnInterface::class);
+        $matcher = new Matcher(AnInterface::class);
 
         $this->expectException(MethodNameNotConfiguredException::class);
 
@@ -46,7 +45,7 @@ final class MatcherTest extends TestCase
 
     public function testCannotBeInvokedWhenMatchBuilderCannotBeFound(): void
     {
-        $matcher = new Matcher(new AnyInvokedCount, AnInterface::class);
+        $matcher = new Matcher(AnInterface::class);
 
         $matcher->setMethodNameRule(new MethodName('doSomething'));
         $matcher->setAfterMatchBuilderId('does-not-exist');
@@ -58,7 +57,7 @@ final class MatcherTest extends TestCase
 
     public function testCannotDetermineWhetherItMatchesInvocationWhenMethodNameRuleHasNotBeenConfigured(): void
     {
-        $matcher = new Matcher(new AnyInvokedCount, AnInterface::class);
+        $matcher = new Matcher(AnInterface::class);
 
         $this->expectException(MethodNameNotConfiguredException::class);
 
@@ -67,7 +66,7 @@ final class MatcherTest extends TestCase
 
     public function testDoesNotMatchInvocationWhenInvocationRuleDoesNotMatchIt(): void
     {
-        $matcher = new Matcher(new InvocationOrderThatNeverMatches, AnInterface::class);
+        $matcher = new Matcher(AnInterface::class, new InvocationOrderThatNeverMatches);
 
         $matcher->setMethodNameRule(new MethodName('doSomething'));
 
@@ -76,7 +75,7 @@ final class MatcherTest extends TestCase
 
     public function testCannotDetermineWhetherItMatchesInvocationWhenMethodNameRuleFails(): void
     {
-        $matcher = new Matcher(new AnyInvokedCount, AnInterface::class);
+        $matcher = new Matcher(AnInterface::class);
 
         $matcher->setMethodNameRule(
             new MethodName(
@@ -97,7 +96,7 @@ final class MatcherTest extends TestCase
 
     public function testCannotBeVerifiedWhenMethodNameRuleHasNotBeenConfigured(): void
     {
-        $matcher = new Matcher(new AnyInvokedCount, AnInterface::class);
+        $matcher = new Matcher(AnInterface::class);
 
         $this->expectException(MethodNameNotConfiguredException::class);
 

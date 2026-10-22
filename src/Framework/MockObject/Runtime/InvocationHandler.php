@@ -17,7 +17,6 @@ use function sprintf;
 use function strtolower;
 use Exception;
 use PHPUnit\Framework\AssertionFailedError;
-use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 use PHPUnit\Framework\MockObject\Rule\InvokedCount;
 use PHPUnit\Framework\MockObject\Rule\MethodName;
@@ -184,7 +183,7 @@ final class InvocationHandler
             throw new TestDoubleSealedException;
         }
 
-        $matcher = new Matcher($rule, $this->className);
+        $matcher = new Matcher($this->className, $rule);
         $this->addMatcher($matcher);
 
         return new InvocationMockerImplementation(
@@ -203,7 +202,7 @@ final class InvocationHandler
             throw new TestDoubleSealedException;
         }
 
-        $matcher = new Matcher(new AnyInvokedCount, $this->className);
+        $matcher = new Matcher($this->className);
         $this->addMatcher($matcher);
 
         return new InvocationStubberImplementation(
@@ -295,7 +294,7 @@ final class InvocationHandler
 
         foreach ($this->configurableMethods as $method) {
             if (!in_array($method->name(), $configuredMethods, true)) {
-                $matcher = new Matcher(new InvokedCount(0), $this->className);
+                $matcher = new Matcher($this->className, new InvokedCount(0));
 
                 $matcher->setMethodNameRule(new MethodName($method->name()));
 

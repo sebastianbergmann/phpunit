@@ -9,9 +9,9 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use function assert;
 use function sprintf;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount;
 use PHPUnit\Framework\MockObject\Rule\AnyParameters;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 use PHPUnit\Framework\MockObject\Rule\InvokedAtMostCount;
@@ -28,7 +28,7 @@ use PHPUnit\Util\ThrowableToStringMapper;
  */
 final class Matcher
 {
-    private readonly InvocationOrder $invocationRule;
+    private readonly ?InvocationOrder $invocationRule;
 
     /**
      * @var class-string
@@ -46,15 +46,18 @@ final class Matcher
     /**
      * @param class-string $className
      */
-    public function __construct(InvocationOrder $rule, string $className)
+    public function __construct(string $className, ?InvocationOrder $invocationRule = null)
     {
-        $this->invocationRule = $rule;
         $this->className      = $className;
+        $this->invocationRule = $invocationRule;
     }
 
+    /**
+     * @phpstan-assert-if-true !null $this->invocationRule
+     */
     public function hasInvocationCountRule(): bool
     {
-        return !$this->invocationRule instanceof AnyInvokedCount;
+        return $this->invocationRule !== null;
     }
 
     /**
@@ -131,7 +134,9 @@ final class Matcher
             }
         }
 
-        $this->invocationRule->invoked($invocation);
+        if ($this->invocationRule !== null) {
+            $this->invocationRule->invoked($invocation);
+        }
 
         try {
             $this->parametersRule?->apply($invocation);
@@ -170,6 +175,8 @@ final class Matcher
                 throw new MatchBuilderNotFoundException($this->afterMatchBuilderId);
             }
 
+            assert($matcher->invocationRule !== null);
+
             if (!$matcher->invocationRule->hasBeenInvoked()) {
                 return false;
             }
@@ -179,7 +186,7 @@ final class Matcher
             throw new MethodNameNotConfiguredException;
         }
 
-        if (!$this->invocationRule->matches($invocation)) {
+        if ($this->invocationRule !== null && !$this->invocationRule->matches($invocation)) {
             return false;
         }
 
@@ -209,6 +216,10 @@ final class Matcher
     {
         if ($this->methodNameRule === null) {
             throw new MethodNameNotConfiguredException;
+        }
+
+        if ($this->invocationRule === null) {
+            return;
         }
 
         try {
@@ -241,11 +252,10 @@ final class Matcher
             $this->parametersRule = new AnyParameters;
         }
 
-        $invocationIsAny    = $this->invocationRule instanceof AnyInvokedCount;
         $invocationIsNever  = $this->invocationRule instanceof InvokedCount && $this->invocationRule->isNever();
         $invocationIsAtMost = $this->invocationRule instanceof InvokedAtMostCount;
 
-        if (!$invocationIsAny && !$invocationIsNever && !$invocationIsAtMost) {
+        if (!$invocationIsNever && !$invocationIsAtMost) {
             try {
                 $this->parametersRule->verify();
             } catch (ExpectationFailedException $e) {

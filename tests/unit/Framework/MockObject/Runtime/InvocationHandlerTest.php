@@ -12,7 +12,6 @@ namespace PHPUnit\Framework\MockObject;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
-use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount;
 use PHPUnit\Framework\MockObject\Rule\MethodName;
 use PHPUnit\Framework\MockObject\Rule\Parameters;
 use PHPUnit\Framework\TestCase;
@@ -50,7 +49,7 @@ final class InvocationHandlerTest extends TestCase
     {
         $handler = new InvocationHandler([], 'stdClass', false, true);
 
-        $matcher = new Matcher(new AnyInvokedCount, 'stdClass');
+        $matcher = new Matcher('stdClass');
 
         $matchers = new ReflectionProperty(InvocationHandler::class, 'matchers');
         $matchers->setValue($handler, [$matcher]);
@@ -64,7 +63,7 @@ final class InvocationHandlerTest extends TestCase
     {
         $handler = new InvocationHandler([], 'stdClass', false, true);
 
-        $matcher = new Matcher(new AnyInvokedCount, 'stdClass');
+        $matcher = new Matcher('stdClass');
 
         $this->assertFalse($handler->hasMatcherWithParametersRuleForMethodName($matcher, 'doSomething'));
     }
@@ -73,13 +72,13 @@ final class InvocationHandlerTest extends TestCase
     {
         $handler = new InvocationHandler([], 'stdClass', false, true);
 
-        $matcherWithoutMethodName = new Matcher(new AnyInvokedCount, 'stdClass');
+        $matcherWithoutMethodName = new Matcher('stdClass');
         $matcherWithoutMethodName->setParametersRule(new Parameters([1]));
 
         $matchers = new ReflectionProperty(InvocationHandler::class, 'matchers');
         $matchers->setValue($handler, [$matcherWithoutMethodName]);
 
-        $newMatcher = new Matcher(new AnyInvokedCount, 'stdClass');
+        $newMatcher = new Matcher('stdClass');
 
         $this->assertFalse($handler->hasMatcherWithParametersRuleForMethodName($newMatcher, 'doSomething'));
     }
@@ -88,13 +87,13 @@ final class InvocationHandlerTest extends TestCase
     {
         $handler = new InvocationHandler([], 'stdClass', false, true);
 
-        $existingMatcher = new Matcher(new AnyInvokedCount, 'stdClass');
+        $existingMatcher = new Matcher('stdClass');
         $existingMatcher->setMethodNameRule(new MethodName('doSomething'));
 
         $matchers = new ReflectionProperty(InvocationHandler::class, 'matchers');
         $matchers->setValue($handler, [$existingMatcher]);
 
-        $newMatcher = new Matcher(new AnyInvokedCount, 'stdClass');
+        $newMatcher = new Matcher('stdClass');
 
         $this->assertFalse($handler->hasMatcherWithParametersRuleForMethodName($newMatcher, 'doSomething'));
     }
@@ -103,14 +102,14 @@ final class InvocationHandlerTest extends TestCase
     {
         $handler = new InvocationHandler([], 'stdClass', false, true);
 
-        $existingMatcher = new Matcher(new AnyInvokedCount, 'stdClass');
+        $existingMatcher = new Matcher('stdClass');
         $existingMatcher->setMethodNameRule(new MethodName('doSomething'));
         $existingMatcher->setParametersRule(new Parameters([1]));
 
         $matchers = new ReflectionProperty(InvocationHandler::class, 'matchers');
         $matchers->setValue($handler, [$existingMatcher]);
 
-        $newMatcher = new Matcher(new AnyInvokedCount, 'stdClass');
+        $newMatcher = new Matcher('stdClass');
 
         $this->assertTrue($handler->hasMatcherWithParametersRuleForMethodName($newMatcher, 'doSomething'));
     }
@@ -119,7 +118,7 @@ final class InvocationHandlerTest extends TestCase
     {
         $handler = new InvocationHandler([], 'stdClass', false, true);
 
-        $matcher = new Matcher(new AnyInvokedCount, 'stdClass');
+        $matcher = new Matcher('stdClass');
         $matcher->setMethodNameRule(new MethodName('doSomething'));
         $matcher->setParametersRule(new Parameters([1]));
 
@@ -133,14 +132,14 @@ final class InvocationHandlerTest extends TestCase
     {
         $handler = new InvocationHandler([], 'stdClass', false, true);
 
-        $existingMatcher = new Matcher(new AnyInvokedCount, 'stdClass');
+        $existingMatcher = new Matcher('stdClass');
         $existingMatcher->setMethodNameRule(new MethodName('doSomething'));
         $existingMatcher->setParametersRule(new Parameters([1]));
 
         $matchers = new ReflectionProperty(InvocationHandler::class, 'matchers');
         $matchers->setValue($handler, [$existingMatcher]);
 
-        $newMatcher = new Matcher(new AnyInvokedCount, 'stdClass');
+        $newMatcher = new Matcher('stdClass');
 
         $this->assertFalse($handler->hasMatcherWithParametersRuleForMethodName($newMatcher, 'doSomethingElse'));
     }
