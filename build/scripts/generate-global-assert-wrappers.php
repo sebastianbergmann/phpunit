@@ -41,6 +41,7 @@ use ArrayAccess;
 use Countable;
 use DOMDocument;
 use DOMElement;
+use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount as AnyInvokedCountMatcher;
@@ -179,6 +180,14 @@ if (!function_exists('PHPUnit\Framework\atLeast')) {
      */
     function atLeast(int $requiredInvocations): InvokedAtLeastCountMatcher
     {
+        if ($requiredInvocations < 1) {
+            EventFacade::emitter()->testTriggeredPhpunitDeprecation(
+                null,
+                "Calling atLeast() with an argument that is not positive is deprecated.\n" .
+                'This will become an error in PHPUnit 14.'
+            );
+        }
+
         return new InvokedAtLeastCountMatcher(
             $requiredInvocations
         );
