@@ -190,6 +190,22 @@ final class MockObjectTest extends TestDoubleTestCase
         );
     }
 
+    public function testExpectationThatMethodIsCalledAtLeastZeroTimesCannotBeConfigured(): void
+    {
+        $this->expectException(NonPositiveRequiredInvocationsException::class);
+        $this->expectExceptionMessageIs('The argument passed to atLeast() must be a positive integer, 0 given');
+
+        $this->atLeast(0);
+    }
+
+    public function testExpectationThatMethodIsCalledAtLeastANegativeNumberOfTimesCannotBeConfigured(): void
+    {
+        $this->expectException(NonPositiveRequiredInvocationsException::class);
+        $this->expectExceptionMessageIs('The argument passed to atLeast() must be a positive integer, -1 given');
+
+        $this->atLeast(-1);
+    }
+
     public function testExpectationThatMethodIsCalledTwiceSucceedsWhenMethodIsCalledTwice(): void
     {
         $double = $this->createMock(AnInterface::class);

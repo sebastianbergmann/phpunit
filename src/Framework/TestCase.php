@@ -32,6 +32,7 @@ use PHPUnit\Framework\MockObject\InvocationJournal;
 use PHPUnit\Framework\MockObject\InvocationJournalImplementation;
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\NonPositiveRequiredInvocationsException;
 use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount as AnyInvokedCountMatcher;
 use PHPUnit\Framework\MockObject\Rule\InvokedAtLeastCount as InvokedAtLeastCountMatcher;
 use PHPUnit\Framework\MockObject\Rule\InvokedAtLeastOnce as InvokedAtLeastOnceMatcher;
@@ -849,17 +850,13 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * Returns a matcher that matches when the method is executed
      * at least N times.
+     *
+     * @param positive-int $requiredInvocations
+     *
+     * @throws NonPositiveRequiredInvocationsException
      */
     final protected function atLeast(int $requiredInvocations): InvokedAtLeastCountMatcher
     {
-        if ($requiredInvocations < 1) {
-            Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
-                $this->valueObjectForEvents(),
-                "Calling atLeast() with an argument that is not positive is deprecated.\n" .
-                'This will become an error in PHPUnit 14.',
-            );
-        }
-
         return new InvokedAtLeastCountMatcher(
             $requiredInvocations,
         );

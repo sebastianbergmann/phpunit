@@ -22,12 +22,10 @@ Test Suite Started (PHPUnit\TestFixture\Event\AtLeastWithNonPositiveArgumentTest
 Test Preparation Started (PHPUnit\TestFixture\Event\AtLeastWithNonPositiveArgumentTest::testAtLeastWithZero)
 Test Prepared (PHPUnit\TestFixture\Event\AtLeastWithNonPositiveArgumentTest::testAtLeastWithZero)
 Mock Object Created (PHPUnit\TestFixture\Event\AtLeastWithNonPositiveArgumentInterface)
-Test Triggered PHPUnit Deprecation (PHPUnit\TestFixture\Event\AtLeastWithNonPositiveArgumentTest::testAtLeastWithZero)
-Calling atLeast() with an argument that is not positive is deprecated.
-This will become an error in PHPUnit 14.
-Test Passed (PHPUnit\TestFixture\Event\AtLeastWithNonPositiveArgumentTest::testAtLeastWithZero)
+Test Errored (PHPUnit\TestFixture\Event\AtLeastWithNonPositiveArgumentTest::testAtLeastWithZero)
+The argument passed to atLeast() must be a positive integer, 0 given
 Test Finished (PHPUnit\TestFixture\Event\AtLeastWithNonPositiveArgumentTest::testAtLeastWithZero)
 Test Suite Finished (PHPUnit\TestFixture\Event\AtLeastWithNonPositiveArgumentTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished
-PHPUnit Finished (Shell Exit Code: 0)
+PHPUnit Finished (Shell Exit Code: 2)

@@ -54,6 +54,7 @@ use PHPUnit\Framework\Constraint\StringStartsWith;
 use PHPUnit\Framework\Constraint\TraversableContainsEqual;
 use PHPUnit\Framework\Constraint\TraversableContainsIdentical;
 use PHPUnit\Framework\Constraint\TraversableContainsOnly;
+use PHPUnit\Framework\MockObject\NonPositiveRequiredInvocationsException;
 use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount as AnyInvokedCountMatcher;
 use PHPUnit\Framework\MockObject\Rule\InvokedAtLeastCount as InvokedAtLeastCountMatcher;
 use PHPUnit\Framework\MockObject\Rule\InvokedAtLeastOnce as InvokedAtLeastOnceMatcher;
@@ -3740,6 +3741,10 @@ if (!function_exists('PHPUnit\Framework\atLeast')) {
     /**
      * Returns a matcher that matches when the method is executed
      * at least N times.
+     *
+     * @param positive-int $requiredInvocations
+     *
+     * @throws NonPositiveRequiredInvocationsException
      */
     function atLeast(int $requiredInvocations): InvokedAtLeastCountMatcher
     {
