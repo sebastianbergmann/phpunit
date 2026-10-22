@@ -720,23 +720,6 @@ final readonly class Application
             );
         }
 
-        if ($configuration->hasLogEventsVerboseText()) {
-            $this->emitter->testRunnerTriggeredPhpunitDeprecation(
-                'The "--log-events-verbose-text <file>" CLI option is deprecated and will be removed in PHPUnit 14. Use "--log-events-text <file> --with-telemetry" instead.',
-            );
-
-            if (is_file($configuration->logEventsVerboseText())) {
-                unlink($configuration->logEventsVerboseText());
-            }
-
-            EventFacade::instance()->registerTracer(
-                new EventLogger(
-                    $configuration->logEventsVerboseText(),
-                    true,
-                ),
-            );
-        }
-
         if ($configuration->hasLogfileJunit()) {
             try {
                 new JunitXmlLogger(

@@ -190,7 +190,6 @@ final class Builder
         'test-id-filter-file=',
         'run-test-id=',
         'log-events-text=',
-        'log-events-verbose-text=',
         'version',
         'debug',
         'with-telemetry',
@@ -434,7 +433,6 @@ final class Builder
         $useDefaultConfiguration                  = true;
         $version                                  = false;
         $logEventsText                            = null;
-        $logEventsVerboseText                     = null;
         $printerCompact                           = null;
         $printerTeamCity                          = null;
         $printerTestDox                           = null;
@@ -1402,21 +1400,6 @@ final class Builder
 
                     break;
 
-                case '--log-events-verbose-text':
-                    $logEventsVerboseTextPath = $this->requireNonEmptyValue($option[1], '--log-events-verbose-text');
-                    $logEventsVerboseText     = Filesystem::resolveStreamOrFile($logEventsVerboseTextPath);
-
-                    if ($logEventsVerboseText === false) {
-                        throw new Exception(
-                            sprintf(
-                                'The path "%s" specified for the --log-events-verbose-text option could not be resolved',
-                                $logEventsVerboseTextPath,
-                            ),
-                        );
-                    }
-
-                    break;
-
                 case '--debug':
                     $debug = true;
 
@@ -1614,7 +1597,6 @@ final class Builder
             $version,
             $coverageFilter,
             $logEventsText,
-            $logEventsVerboseText,
             $printerCompact,
             $printerTeamCity,
             $printerTestDox,

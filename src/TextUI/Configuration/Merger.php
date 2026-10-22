@@ -954,12 +954,6 @@ final readonly class Merger
             $logEventsText = $cliConfiguration->logEventsText();
         }
 
-        $logEventsVerboseText = null;
-
-        if ($cliConfiguration->hasLogEventsVerboseText()) {
-            $logEventsVerboseText = $cliConfiguration->logEventsVerboseText();
-        }
-
         $compactOutput = false;
 
         if ($cliConfiguration->hasCompactPrinter() && $cliConfiguration->compactPrinter()) {
@@ -1290,7 +1284,6 @@ final readonly class Merger
         $defaultTimeLimit                   = $this->clampNonNegativeInt($defaultTimeLimit);
         $logfileOtr                         = $this->nullableNonEmptyString($logfileOtr);
         $logEventsText                      = $this->nullableNonEmptyString($logEventsText);
-        $logEventsVerboseText               = $this->nullableNonEmptyString($logEventsVerboseText);
         $testIdFilterFile                   = $this->nullableNonEmptyString($testIdFilterFile);
         $testIdFilter                       = $this->nullableNonEmptyString($testIdFilter);
         $randomSeed                         = $this->clampPositiveInt($randomSeed);
@@ -1485,7 +1478,6 @@ final readonly class Merger
             $logfileTestdoxHtml,
             $logfileTestdoxText,
             $logEventsText,
-            $logEventsVerboseText,
             $compactOutput,
             $teamCityOutput,
             $testDoxOutput,

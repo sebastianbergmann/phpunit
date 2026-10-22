@@ -259,8 +259,6 @@
   [32m--testdox-text [36m<file>[0m               [0m Write test results in TestDox format
                                        (plain text) to file
   [32m--log-events-text [36m<file>[0m            [0m Stream events as plain text to file
-  [32m--log-events-verbose-text [36m<file>[0m    [0m Stream events as plain text with
-                                       extended information to file
   [32m--include-git-information           [0m Include Git information in supported
                                        formats
   [32m--no-logging                        [0m Ignore logging configured in the XML

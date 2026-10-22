@@ -1139,35 +1139,6 @@ final class BuilderTest extends TestCase
         $configuration->logEventsText();
     }
 
-    #[TestDox('--log-events-verbose-text file')]
-    public function testEventsVerboseText(): void
-    {
-        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--log-events-verbose-text', 'file']);
-
-        $this->assertTrue($configuration->hasLogEventsVerboseText());
-        $this->assertStringEndsWith('file', $configuration->logEventsVerboseText());
-    }
-
-    #[TestDox('--log-events-verbose-text /invalid/path')]
-    public function testEventsVerboseTextInvalidPath(): void
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessageIs('The path "/invalid/path" specified for the --log-events-verbose-text option could not be resolved');
-
-        new Builder($this->createStub(Emitter::class))->fromParameters(['--log-events-verbose-text', '/invalid/path']);
-    }
-
-    public function testEventsVerboseTextMayNotBeConfigured(): void
-    {
-        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters([]);
-
-        $this->assertFalse($configuration->hasLogEventsVerboseText());
-
-        $this->expectException(Exception::class);
-
-        $configuration->logEventsVerboseText();
-    }
-
     #[TestDox('--log-junit file')]
     public function testLogJunit(): void
     {

@@ -291,17 +291,6 @@ final class ConfigurationTest extends TestCase
         $configuration->logEventsText();
     }
 
-    public function testLogEventsVerboseTextThrowsWhenNotConfigured(): void
-    {
-        $configuration = $this->defaultConfiguration();
-
-        $this->assertFalse($configuration->hasLogEventsVerboseText());
-
-        $this->expectException(LoggingNotConfiguredException::class);
-
-        $configuration->logEventsVerboseText();
-    }
-
     public function testTestsCoveringThrowsWhenNotConfigured(): void
     {
         $configuration = $this->defaultConfiguration();
