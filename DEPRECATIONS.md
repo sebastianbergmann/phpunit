@@ -42,7 +42,6 @@ This functionality is currently [hard-deprecated](https://phpunit.de/backward-co
 | [#6585](https://github.com/sebastianbergmann/phpunit/issues/6585) | `defects` written before the order                            | 13.4.0 | Write the order first, for example `duration-ascending,defects` |
 | [#6585](https://github.com/sebastianbergmann/phpunit/issues/6585) | More than one order for `--order-by` or `executionOrder`       | 13.4.0 | Configure exactly one order                                     |
 | [#6585](https://github.com/sebastianbergmann/phpunit/issues/6585) | Unknown value for the `executionOrder` XML attribute           | 13.4.0 | Use a value the schema allows                                   |
-| [#7049](https://github.com/sebastianbergmann/phpunit/issues/7049) | `--random-order-seed <N>` CLI option                          | 13.5.0 | Use `--random-seed <N>` instead                                 |
 |                                                                   | `--cache-result` CLI option                                   | 13.3.0 | Use `--record-test-run-history` instead                         |
 |                                                                   | `--do-not-cache-result` CLI option                            | 13.3.0 | Use `--do-not-record-test-run-history` instead                  |
 |                                                                   | `cacheResult` XML configuration attribute                     | 13.3.0 | Use `recordTestRunHistory` instead                              |
@@ -51,6 +50,5 @@ This functionality is currently [hard-deprecated](https://phpunit.de/backward-co
 
 | Issue                                                             | Description                                                   | Since  | Replacement                                                     |
 |-------------------------------------------------------------------|---------------------------------------------------------------|--------|-----------------------------------------------------------------|
-| [#7049](https://github.com/sebastianbergmann/phpunit/issues/7049) | `TextUI\Configuration\Configuration::randomOrderSeed()`       | 13.5.0 | Use `randomSeed()` instead                                      |
 |                                                                   | `TextUI\Configuration\Configuration::cacheResult()`           | 13.3.0 | Use `recordTestRunHistory()` instead                            |
 |                                                                   | `TextUI\Configuration\Configuration::testResultCacheFile()`   | 13.3.0 | Use `testRunHistoryFile()` instead                              |
