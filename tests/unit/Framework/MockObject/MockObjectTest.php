@@ -68,26 +68,6 @@ final class MockObjectTest extends TestDoubleTestCase
         );
     }
 
-    #[DoesNotPerformAssertions]
-    #[IgnorePhpunitDeprecations]
-    public function testExpectationThatMethodIsCalledZeroOrMoreTimesSucceedsWhenMethodIsNotCalled(): void
-    {
-        $double = $this->createMock(AnInterface::class);
-
-        $double->expects($this->any())->method('doSomething');
-    }
-
-    #[DoesNotPerformAssertions]
-    #[IgnorePhpunitDeprecations]
-    public function testExpectationThatMethodIsCalledZeroOrMoreTimesSucceedsWhenMethodIsCalledOnce(): void
-    {
-        $double = $this->createMock(AnInterface::class);
-
-        $double->expects($this->any())->method('doSomething');
-
-        $double->doSomething();
-    }
-
     public function testExpectationThatMethodIsCalledOnceSucceedsWhenMethodIsCalledOnce(): void
     {
         $double = $this->createMock(AnInterface::class);

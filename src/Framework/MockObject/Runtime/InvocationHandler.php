@@ -336,7 +336,7 @@ final class InvocationHandler
     /**
      * Returns the list of method names that have been configured with expectations.
      * Only considers exact string matches for method names.
-     * Methods with any() expectation are considered configured.
+     * Methods that are only stubbed using method() are considered configured.
      *
      * @return list<non-empty-string>
      */

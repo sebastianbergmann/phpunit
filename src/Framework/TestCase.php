@@ -33,7 +33,6 @@ use PHPUnit\Framework\MockObject\InvocationJournalImplementation;
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\NonPositiveRequiredInvocationsException;
-use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount as AnyInvokedCountMatcher;
 use PHPUnit\Framework\MockObject\Rule\InvokedAtLeastCount as InvokedAtLeastCountMatcher;
 use PHPUnit\Framework\MockObject\Rule\InvokedAtLeastOnce as InvokedAtLeastOnceMatcher;
 use PHPUnit\Framework\MockObject\Rule\InvokedAtMostCount as InvokedAtMostCountMatcher;
@@ -820,23 +819,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     final public function setStatus(TestStatus $status): void
     {
         $this->status = $status;
-    }
-
-    /**
-     * Returns a matcher that matches when the method is executed
-     * zero or more times.
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/6461
-     */
-    final protected function any(): AnyInvokedCountMatcher
-    {
-        Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
-            $this->valueObjectForEvents(),
-            'The any() invoked count expectation is deprecated and will be removed in PHPUnit 14. ' .
-            'Use a test stub instead or configure a real invocation count expectation.',
-        );
-
-        return new AnyInvokedCountMatcher;
     }
 
     /**

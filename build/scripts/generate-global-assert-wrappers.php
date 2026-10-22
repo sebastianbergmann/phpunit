@@ -44,7 +44,6 @@ use DOMElement;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\NonPositiveRequiredInvocationsException;
-use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount as AnyInvokedCountMatcher;
 use PHPUnit\Framework\MockObject\Rule\InvokedAtLeastCount as InvokedAtLeastCountMatcher;
 use PHPUnit\Framework\MockObject\Rule\InvokedAtLeastOnce as InvokedAtLeastOnceMatcher;
 use PHPUnit\Framework\MockObject\Rule\InvokedAtMostCount as InvokedAtMostCountMatcher;
@@ -147,19 +146,6 @@ if (!function_exists('PHPUnit\Framework\callback')) {
     function callback(callable $callback): Callback
     {
         return Assert::callback($callback);
-    }
-}
-
-if (!function_exists('PHPUnit\Framework\any')) {
-    /**
-     * Returns a matcher that matches when the method is executed
-     * zero or more times.
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/6461
-     */
-    function any(): AnyInvokedCountMatcher
-    {
-        return new AnyInvokedCountMatcher;
     }
 }
 
