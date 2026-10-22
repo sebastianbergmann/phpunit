@@ -15,7 +15,6 @@ use function basename;
 use function count;
 use function explode;
 use function getcwd;
-use function in_array;
 use function is_file;
 use function is_numeric;
 use function max;
@@ -129,7 +128,6 @@ final class Builder
         'process-isolation',
         'do-not-report-useless-tests',
         'random-order',
-        'random-order-seed=',
         'random-seed=',
         'repeat=',
         'retry=',
@@ -411,7 +409,6 @@ final class Builder
         $noResults                                = null;
         $noLogging                                = null;
         $processIsolation                         = null;
-        $randomOrderSeed                          = null;
         $randomSeed                               = null;
         $repeat                                   = null;
         $retry                                    = null;
@@ -1272,15 +1269,6 @@ final class Builder
 
                     break;
 
-                case '--random-order-seed':
-                    $randomOrderSeed = (int) $option[1];
-
-                    $this->emitter->testRunnerTriggeredPhpunitDeprecation(
-                        'The "--random-order-seed" CLI option is deprecated and will be removed in PHPUnit 14. Use "--random-seed" instead.',
-                    );
-
-                    break;
-
                 case '--random-seed':
                     if (!is_numeric($option[1]) ||
                         (string) (int) $option[1] !== $option[1] ||
@@ -1422,12 +1410,6 @@ final class Builder
 
         $this->warnAboutConflictingOptions();
 
-        if ($randomOrderSeed !== null && ($executionOrder === null || !in_array(Order::Random, $executionOrder, true))) {
-            $this->emitter->testRunnerTriggeredPhpunitWarning(
-                '--random-order-seed is only used when execution order is "random" (use --order-by random or --random-order)',
-            );
-        }
-
         $arguments = [];
 
         foreach ($options[1] as $argument) {
@@ -1553,7 +1535,6 @@ final class Builder
             $noResults,
             $noLogging,
             $processIsolation,
-            $randomOrderSeed,
             $randomSeed,
             $repeat,
             $retry,

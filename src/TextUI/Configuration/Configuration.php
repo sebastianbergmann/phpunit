@@ -2338,18 +2338,6 @@ final readonly class Configuration
     }
 
     /**
-     * @deprecated Use randomSeed() instead
-     *
-     * @codeCoverageIgnore
-     *
-     * @return positive-int
-     */
-    public function randomOrderSeed(): int
-    {
-        return $this->randomSeed();
-    }
-
-    /**
      * @return positive-int
      */
     public function repeat(): int

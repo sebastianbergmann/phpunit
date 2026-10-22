@@ -1062,8 +1062,6 @@ final readonly class Merger
         if ($cliConfiguration->hasRandomSeed()) {
             $randomSeed                 = $cliConfiguration->randomSeed();
             $seedRandomNumberGenerators = true;
-        } elseif ($cliConfiguration->hasRandomOrderSeed()) {
-            $randomSeed = $cliConfiguration->randomOrderSeed();
         } else {
             $randomSeed = time();
         }
@@ -1279,7 +1277,6 @@ final readonly class Merger
         $logEventsText                      = $this->nullableNonEmptyString($logEventsText);
         $testIdFilterFile                   = $this->nullableNonEmptyString($testIdFilterFile);
         $testIdFilter                       = $this->nullableNonEmptyString($testIdFilter);
-        $randomSeed                         = $this->clampPositiveInt($randomSeed);
 
         $normalizedGroups = [];
 
@@ -1554,18 +1551,6 @@ final readonly class Merger
     {
         if ($value < 0) {
             return 0;
-        }
-
-        return $value;
-    }
-
-    /**
-     * @return positive-int
-     */
-    private function clampPositiveInt(int $value): int
-    {
-        if ($value < 1) {
-            return 1;
         }
 
         return $value;

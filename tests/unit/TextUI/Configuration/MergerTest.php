@@ -364,61 +364,6 @@ final class MergerTest extends TestCase
         $this->assertSame(1234, $mergedConfig->randomSeed());
     }
 
-    public function testRandomNumberGeneratorsAreNotSeededWithRandomOrderSeedFromCliConfigurationWhenTestsAreNotRunInRandomOrder(): void
-    {
-        $fromFile = new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration_empty.xml');
-        $fromCli  = new Builder($this->createStub(Emitter::class))->fromParameters(['--random-order-seed=1234']);
-
-        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge($fromCli, $fromFile);
-
-        $this->assertFalse($mergedConfig->seedRandomNumberGenerators());
-    }
-
-    public function testRandomOrderSeedIsCarriedOverFromCliConfiguration(): void
-    {
-        $fromFile = new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration_empty.xml');
-        $fromCli  = new Builder($this->createStub(Emitter::class))->fromParameters(['--order-by=random', '--random-order-seed=1234']);
-
-        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge($fromCli, $fromFile);
-
-        $this->assertTrue($mergedConfig->seedRandomNumberGenerators());
-        $this->assertSame(1234, $mergedConfig->randomSeed());
-    }
-
-    public function testRandomSeedTakesPrecedenceOverRandomOrderSeed(): void
-    {
-        $fromFile = new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration_empty.xml');
-        $fromCli  = new Builder($this->createStub(Emitter::class))->fromParameters(['--order-by=random', '--random-order-seed=5678', '--random-seed=1234']);
-
-        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge($fromCli, $fromFile);
-
-        $this->assertSame(1234, $mergedConfig->randomSeed());
-    }
-
-    public function testRandomOrderSeedIsUsedWhenRandomSeedIsIgnoredBecauseItsValueIsNotAPositiveInteger(): void
-    {
-        $fromFile = new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration_empty.xml');
-        $fromCli  = new Builder($this->createStub(Emitter::class))->fromParameters(['--order-by=random', '--random-seed=foo', '--random-order-seed=5678']);
-
-        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge($fromCli, $fromFile);
-
-        $this->assertSame(5678, $mergedConfig->randomSeed());
-    }
-
-    public function testInvalidRandomOrderSeedIsReplacedWithSmallestValidSeed(): void
-    {
-        $fromFile = new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration_empty.xml');
-
-        $fromCli = new Builder($this->createStub(Emitter::class))->fromParameters([
-            '--order-by=random',
-            '--random-order-seed=0',
-        ]);
-
-        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge($fromCli, $fromFile);
-
-        $this->assertSame(1, $mergedConfig->randomSeed());
-    }
-
     public function testIncludePathsAreCarriedOverFromXmlConfiguration(): void
     {
         $fromFile = new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration_edge_case_values.xml');
