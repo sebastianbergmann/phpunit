@@ -850,16 +850,6 @@ final readonly class Configuration
     }
 
     /**
-     * @deprecated Use recordTestRunHistory() instead
-     *
-     * @codeCoverageIgnore
-     */
-    public function cacheResult(): bool
-    {
-        return $this->recordTestRunHistory();
-    }
-
-    /**
      * Whether PHPUnit maintains an index of the tests in a test file so that it
      * does not have to load a file that cannot contribute a test to the run.
      */
@@ -923,18 +913,6 @@ final readonly class Configuration
     public function testRunHistoryFile(): string
     {
         return $this->testRunHistoryFile;
-    }
-
-    /**
-     * @deprecated Use testRunHistoryFile() instead
-     *
-     * @codeCoverageIgnore
-     *
-     * @return non-empty-string
-     */
-    public function testResultCacheFile(): string
-    {
-        return $this->testRunHistoryFile();
     }
 
     public function ignoreDeprecatedCodeUnitsFromCodeCoverage(): bool

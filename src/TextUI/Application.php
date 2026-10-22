@@ -462,7 +462,7 @@ final readonly class Application
         }
 
         try {
-            return new Loader($this->emitter)->load($configurationFile);
+            return (new Loader)->load($configurationFile);
         } catch (Throwable $e) {
             $this->exitWithErrorMessage($e->getMessage());
         }

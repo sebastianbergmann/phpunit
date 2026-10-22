@@ -682,7 +682,7 @@ final class ConfigurationTest extends TestCase
     {
         return new Merger($this->createStub(Emitter::class))->merge(
             new CliBuilder($this->createStub(Emitter::class))->fromParameters([]),
-            new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . $filename),
+            (new Loader)->load(TEST_FILES_PATH . $filename),
         );
     }
 }

@@ -228,7 +228,7 @@ final class ShowEffectiveConfigurationCommandTest extends TestCase
     {
         return new Merger($this->createStub(Emitter::class))->merge(
             new CliConfigurationBuilder($this->createStub(Emitter::class))->fromParameters($parameters),
-            new Loader($this->createStub(Emitter::class))->load($this->fixturePath('phpunit.xml')),
+            (new Loader)->load($this->fixturePath('phpunit.xml')),
         );
     }
 

@@ -460,7 +460,7 @@ final class TestFileResolverTest extends TestCase
     {
         return new Merger($this->createStub(Emitter::class))->merge(
             new CliConfigurationBuilder($this->createStub(Emitter::class))->fromParameters($parameters),
-            new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'test-file-resolver' . DIRECTORY_SEPARATOR . 'phpunit.xml'),
+            (new Loader)->load(TEST_FILES_PATH . 'test-file-resolver' . DIRECTORY_SEPARATOR . 'phpunit.xml'),
         );
     }
 

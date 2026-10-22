@@ -19,7 +19,6 @@ use function realpath;
 use function sys_get_temp_dir;
 use function uniqid;
 use function unlink;
-use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversNamespace;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -173,7 +172,7 @@ final class LoaderTest extends TestCase
         $xml         = "<phpunit {$optionName}='{$optionValue}'></phpunit>" . PHP_EOL;
         file_put_contents($tmpFilename, $xml);
 
-        $configuration = new Loader($this->createStub(Emitter::class))->load($tmpFilename);
+        $configuration = (new Loader)->load($tmpFilename);
 
         $this->assertFalse($configuration->hasValidationErrors());
 
@@ -188,7 +187,7 @@ final class LoaderTest extends TestCase
         $xml         = "<phpunit executionOrder='duration-ascending,defects'></phpunit>" . PHP_EOL;
         file_put_contents($tmpFilename, $xml);
 
-        $configuration = new Loader($this->createStub(Emitter::class))->load($tmpFilename);
+        $configuration = (new Loader)->load($tmpFilename);
 
         $this->assertFalse($configuration->hasValidationErrors());
 
@@ -207,7 +206,7 @@ final class LoaderTest extends TestCase
         $xml         = "<phpunit executionOrder='defects,duration-ascending'></phpunit>" . PHP_EOL;
         file_put_contents($tmpFilename, $xml);
 
-        $configuration = new Loader($this->createStub(Emitter::class))->load($tmpFilename);
+        $configuration = (new Loader)->load($tmpFilename);
 
         $this->assertSame(
             [Order::Defects, Order::DurationAscending],
@@ -232,7 +231,7 @@ final class LoaderTest extends TestCase
             $this->expectException(Exception::class);
             $this->expectExceptionMessageIsOrContains($message);
 
-            new Loader($this->createStub(Emitter::class))->load($tmpFilename);
+            (new Loader)->load($tmpFilename);
         } finally {
             @unlink($tmpFilename);
         }
@@ -724,6 +723,6 @@ final class LoaderTest extends TestCase
 
     private function configuration(string $filename): LoadedFromFileConfiguration
     {
-        return new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . $filename);
+        return (new Loader)->load(TEST_FILES_PATH . $filename);
     }
 }

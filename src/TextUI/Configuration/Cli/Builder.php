@@ -43,8 +43,6 @@ final class Builder
         'all',
         'atleast-version=',
         'bootstrap=',
-        'cache-result',
-        'do-not-cache-result',
         'record-test-run-history',
         'do-not-record-test-run-history',
         'cache-test-index',
@@ -202,10 +200,7 @@ final class Builder
      * @var list<array{non-empty-string, non-empty-string}>
      */
     private const array CONFLICTING_OPTIONS = [
-        ['--cache-result', '--do-not-cache-result'],
         ['--record-test-run-history', '--do-not-record-test-run-history'],
-        ['--cache-result', '--do-not-record-test-run-history'],
-        ['--record-test-run-history', '--do-not-cache-result'],
         ['--cache-test-index', '--do-not-cache-test-index'],
         ['--warn-when-php-is-not-configured-for-development', '--do-not-warn-when-php-is-not-configured-for-development'],
         ['--fail-on-deprecation', '--do-not-fail-on-deprecation'],
@@ -468,26 +463,8 @@ final class Builder
 
                     break;
 
-                case '--cache-result':
-                    $recordTestRunHistory = true;
-
-                    $this->emitter->testRunnerTriggeredPhpunitDeprecation(
-                        'The "--cache-result" CLI option is deprecated and will be removed in PHPUnit 14. Use "--record-test-run-history" instead.',
-                    );
-
-                    break;
-
                 case '--record-test-run-history':
                     $recordTestRunHistory = true;
-
-                    break;
-
-                case '--do-not-cache-result':
-                    $recordTestRunHistory = false;
-
-                    $this->emitter->testRunnerTriggeredPhpunitDeprecation(
-                        'The "--do-not-cache-result" CLI option is deprecated and will be removed in PHPUnit 14. Use "--do-not-record-test-run-history" instead.',
-                    );
 
                     break;
 

@@ -31,7 +31,6 @@ use DOMElement;
 use DOMNode;
 use DOMNodeList;
 use DOMXPath;
-use PHPUnit\Event\Emitter;
 use PHPUnit\Runner\Version;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\Constant;
@@ -93,13 +92,6 @@ use Throwable;
  */
 final readonly class Loader
 {
-    private Emitter $emitter;
-
-    public function __construct(Emitter $emitter)
-    {
-        $this->emitter = $emitter;
-    }
-
     /**
      * @throws Exception
      */
@@ -835,23 +827,6 @@ final readonly class Loader
         );
     }
 
-    private function parseRecordTestRunHistoryAttribute(DOMElement $element): bool
-    {
-        if ($element->hasAttribute('recordTestRunHistory')) {
-            return $this->parseBooleanAttribute($element, 'recordTestRunHistory', true);
-        }
-
-        if ($element->hasAttribute('cacheResult')) {
-            $this->emitter->testRunnerTriggeredPhpunitDeprecation(
-                'The "cacheResult" attribute is deprecated and will be removed in PHPUnit 14. Use "recordTestRunHistory" instead.',
-            );
-
-            return $this->parseBooleanAttribute($element, 'cacheResult', true);
-        }
-
-        return true;
-    }
-
     private function parseBooleanAttribute(DOMElement $element, string $attribute, bool $default): bool
     {
         if (!$element->hasAttribute($attribute)) {
@@ -1217,7 +1192,7 @@ final readonly class Loader
 
         return new PHPUnit(
             $cacheDirectory,
-            $this->parseRecordTestRunHistoryAttribute($documentElement),
+            $this->parseBooleanAttribute($documentElement, 'recordTestRunHistory', true),
             $this->parseColumns($document),
             $this->parseColors($document),
             $this->parseBooleanAttribute($documentElement, 'stderr', false),
