@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 14.0 release series are documented in this fi
 
 ### Changed
 
+* [#6498](https://github.com/sebastianbergmann/phpunit/issues/6498): Do not depend on `expects()` for test stub implementation
 * [#6956](https://github.com/sebastianbergmann/phpunit/issues/6956): Redesign the test reordering subsystem
 
 ### Deprecated
@@ -15,7 +16,9 @@ All notable changes of the PHPUnit 14.0 release series are documented in this fi
 
 ### Removed
 
+* [#6462](https://github.com/sebastianbergmann/phpunit/issues/6462): `any()` matcher
 * [#6491](https://github.com/sebastianbergmann/phpunit/issues/6491): Support for PHP 8.4
+* [#6508](https://github.com/sebastianbergmann/phpunit/issues/6508): Support for using `with()` without `expects()`
 * [#6516](https://github.com/sebastianbergmann/phpunit/issues/6516): `--log-events-verbose-text <file>` CLI option
 * [#6951](https://github.com/sebastianbergmann/phpunit/pull/6951): `LogicalNot::negate()` and `Constraint::failureDescriptionInContext()`
 * [#7050](https://github.com/sebastianbergmann/phpunit/issues/7050): `--random-order-seed <N>` CLI option
