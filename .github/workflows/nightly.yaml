@@ -36,6 +36,7 @@ jobs:
 
         phpunit-branch:
           - "main"
+          - "13.5"
           - "13.4"
           - "12.5"
           - "11.5"
@@ -109,6 +110,18 @@ jobs:
             php-version: "8.2"
           - phpunit-branch: "13.4"
             php-version: "8.3"
+          - phpunit-branch: "13.5"
+            php-version: "7.3"
+          - phpunit-branch: "13.5"
+            php-version: "7.4"
+          - phpunit-branch: "13.5"
+            php-version: "8.0"
+          - phpunit-branch: "13.5"
+            php-version: "8.1"
+          - phpunit-branch: "13.5"
+            php-version: "8.2"
+          - phpunit-branch: "13.5"
+            php-version: "8.3"
           - phpunit-branch: "main"
             php-version: "7.2"
           - phpunit-branch: "main"
@@ -123,6 +136,8 @@ jobs:
             php-version: "8.2"
           - phpunit-branch: "main"
             php-version: "8.3"
+          - phpunit-branch: "main"
+            php-version: "8.4"
 
     steps:
       - name: Configure Git to avoid issues with line endings

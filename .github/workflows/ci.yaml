@@ -23,8 +23,8 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
-  COMPOSER_ROOT_VERSION: "13.5.x-dev"
-  PHP_VERSION: 8.4
+  COMPOSER_ROOT_VERSION: "14.0.x-dev"
+  PHP_VERSION: 8.5
 
 permissions:
   contents: read
@@ -219,7 +219,6 @@ jobs:
           - windows-latest
 
         php-version:
-          - "8.4"
           - "8.5"
           - "8.6"
           - "8.7"
@@ -300,7 +299,6 @@ jobs:
           - windows-latest
 
         php-version:
-          - "8.4"
           - "8.5"
           - "8.6"
           - "8.7"
@@ -530,7 +528,6 @@ jobs:
       fail-fast: false
       matrix:
         php-version:
-          - "8.4"
           - "8.5"
           - "8.6"
           - "8.7"

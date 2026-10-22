@@ -28,7 +28,7 @@
     },
     "prefer-stable": true,
     "require": {
-        "php": ">=8.4.1",
+        "php": ">=8.5.12",
         "ext-dom": "*",
         "ext-filter": "*",
         "ext-json": "*",
@@ -59,7 +59,7 @@
     },
     "config": {
         "platform": {
-            "php": "8.4.1"
+            "php": "8.5.12"
         },
         "policy": {
             "malware": {
@@ -133,7 +133,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-main": "13.5-dev"
+            "dev-main": "14.0-dev"
         }
     }
 }
