@@ -19,4 +19,3 @@ require_once __DIR__ . '/../../../bootstrap.php';
 ##teamcity[testFailed name='PHPUnit\TestFixture\TeamCity\FailingSetUpBeforeClassTest' message='Failed asserting that false is true.' details='%s|n' duration='%d' flowId='%d']
 ##teamcity[testFinished name='PHPUnit\TestFixture\TeamCity\FailingSetUpBeforeClassTest' duration='%d' flowId='%d']
 ##teamcity[testSuiteFinished name='PHPUnit\TestFixture\TeamCity\FailingSetUpBeforeClassTest' flowId='%d']
-##teamcity[testSuiteFinished name='PHPUnit\TestFixture\TeamCity\FailingSetUpBeforeClassTest' flowId='%d']
