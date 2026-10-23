@@ -2,6 +2,13 @@
 
 All notable changes of the PHPUnit 12.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [12.5.41] - 2026-MM-DD
+
+### Fixed
+
+* The TeamCity logger writes `testSuiteFinished` twice for a test class when one of its before-first-test methods errors or fails
+* The TestDox output shows a less important outcome of a test that has more than one outcome, for instance the failure in `tearDown()` of a test that errored
+
 ## [12.5.40] - 2026-10-16
 
 ### Fixed
@@ -358,6 +365,7 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 * [#6380](https://github.com/sebastianbergmann/phpunit/pull/6380): Allow `Throwable` in `expectExceptionObject()`
 * A PHPUnit notice is now emitted for test methods that create a mock object but do not configure an expectation for it
 
+[12.5.41]: https://github.com/sebastianbergmann/phpunit/compare/12.5.40...12.5
 [12.5.40]: https://github.com/sebastianbergmann/phpunit/compare/12.5.39...12.5.40
 [12.5.39]: https://github.com/sebastianbergmann/phpunit/compare/12.5.38...12.5.39
 [12.5.38]: https://github.com/sebastianbergmann/phpunit/compare/12.5.37...12.5.38
