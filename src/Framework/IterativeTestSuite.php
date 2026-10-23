@@ -208,10 +208,12 @@ abstract class IterativeTestSuite extends TestSuite
 
     /**
      * Determine the wall-clock time spent on an attempt from its collected
-     * events. This mirrors the way duration-aware loggers measure the time
-     * of a test, namely from its Prepared event to its Finished event, so
-     * that the durations of retried attempts can be accounted for even though
-     * the attempt's events themselves are not forwarded.
+     * events, namely from its Prepared event to its Finished event, so that
+     * the durations of retried attempts can be accounted for even though the
+     * attempt's events themselves are not forwarded. This is how the Open
+     * Test Reporting logger and the test run history measure the time of a
+     * test. The JUnit XML logger and the TeamCity logger measure the time of
+     * a test from its PreparationStarted event instead.
      */
     final protected function durationOf(EventCollection $events): Event\Telemetry\Duration
     {
