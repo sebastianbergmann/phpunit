@@ -23,9 +23,9 @@ Test Suite Sorted
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\ErrorHandler\DataProviderSuppressedTest, 1 test)
 Test Suite for Test Method with Data Provider Started (PHPUnit\TestFixture\ErrorHandler\DataProviderSuppressedTest::testSuppressedWarningFromDataProvider, 1 data set)
+Test Preparation Started (PHPUnit\TestFixture\ErrorHandler\DataProviderSuppressedTest::testSuppressedWarningFromDataProvider#0)
 Test Triggered Warning (PHPUnit\TestFixture\ErrorHandler\DataProviderSuppressedTest::testSuppressedWarningFromDataProvider#0, suppressed using operator) in %s:%d
 suppressed warning from data provider
-Test Preparation Started (PHPUnit\TestFixture\ErrorHandler\DataProviderSuppressedTest::testSuppressedWarningFromDataProvider#0)
 Test Prepared (PHPUnit\TestFixture\ErrorHandler\DataProviderSuppressedTest::testSuppressedWarningFromDataProvider#0)
 Test Passed (PHPUnit\TestFixture\ErrorHandler\DataProviderSuppressedTest::testSuppressedWarningFromDataProvider#0)
 Test Finished (PHPUnit\TestFixture\ErrorHandler\DataProviderSuppressedTest::testSuppressedWarningFromDataProvider#0)

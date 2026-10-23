@@ -21,6 +21,6 @@ final readonly class TestErroredSubscriber extends Subscriber implements Errored
 {
     public function notify(Errored $event): void
     {
-        $this->printer()->testErrored($event);
+        $this->printer()->testErrored();
     }
 }

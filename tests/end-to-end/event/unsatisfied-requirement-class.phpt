@@ -22,6 +22,7 @@ Test Suite Started (PHPUnit\TestFixture\Event\UnsatisfiedRequirementClassTest, 1
 Test Preparation Started (PHPUnit\TestFixture\Event\UnsatisfiedRequirementClassTest::testOne)
 Test Skipped (PHPUnit\TestFixture\Event\UnsatisfiedRequirementClassTest::testOne)
 PHP ^100.0 is required, but PHP %s is being used.
+Test Finished (PHPUnit\TestFixture\Event\UnsatisfiedRequirementClassTest::testOne)
 Test Suite Finished (PHPUnit\TestFixture\Event\UnsatisfiedRequirementClassTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished

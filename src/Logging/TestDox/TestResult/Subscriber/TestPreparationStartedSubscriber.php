@@ -7,24 +7,20 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Logging\TeamCity;
+namespace PHPUnit\Logging\TestDox;
 
-use PHPUnit\Event\InvalidArgumentException;
-use PHPUnit\Event\Test\PreparationErrored;
-use PHPUnit\Event\Test\PreparationErroredSubscriber;
+use PHPUnit\Event\Test\PreparationStarted;
+use PHPUnit\Event\Test\PreparationStartedSubscriber;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class TestPreparationErroredSubscriber extends Subscriber implements PreparationErroredSubscriber
+final readonly class TestPreparationStartedSubscriber extends Subscriber implements PreparationStartedSubscriber
 {
-    /**
-     * @throws InvalidArgumentException
-     */
-    public function notify(PreparationErrored $event): void
+    public function notify(PreparationStarted $event): void
     {
-        $this->logger()->testPreparationErrored();
+        $this->collector()->testPreparationStarted($event);
     }
 }

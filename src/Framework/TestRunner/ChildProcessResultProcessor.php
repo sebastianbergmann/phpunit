@@ -23,6 +23,7 @@ use PHPUnit\Event\Code\ThrowableBuilder;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Event\EventCollection;
 use PHPUnit\Event\Facade;
+use PHPUnit\Event\Test\PreparationStarted;
 use PHPUnit\Event\TestRunner\ChildProcessReason;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
@@ -74,6 +75,11 @@ final readonly class ChildProcessResultProcessor
             $this->emitter->testErrored(
                 TestMethodBuilder::fromTestCase($test),
                 ThrowableBuilder::from($exception),
+            );
+
+            $this->emitter->testFinished(
+                TestMethodBuilder::fromTestCase($test),
+                0,
             );
 
             return;
@@ -196,7 +202,7 @@ final readonly class ChildProcessResultProcessor
             return;
         }
 
-        $this->eventFacade->forward($childResult->events);
+        $this->eventFacade->forward($this->withoutPreparationStarted($childResult->events));
         $this->passedTests->import($childResult->passedTests);
 
         assert($test instanceof TestCase);
@@ -245,5 +251,31 @@ final readonly class ChildProcessResultProcessor
             TestMethodBuilder::fromTestCase($test),
             $message,
         );
+
+        $this->emitter->testFinished(
+            TestMethodBuilder::fromTestCase($test),
+            0,
+        );
+    }
+
+    /**
+     * The test was started in this process, before the child process was
+     * started, so that the events that are emitted for it in this process
+     * happen between its start and its end. The child process starts the
+     * test, too, for the subscribers that run in the child process.
+     */
+    private function withoutPreparationStarted(EventCollection $events): EventCollection
+    {
+        $result = new EventCollection;
+
+        foreach ($events as $event) {
+            if ($event instanceof PreparationStarted) {
+                continue;
+            }
+
+            $result->add($event);
+        }
+
+        return $result;
     }
 }

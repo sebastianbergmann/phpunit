@@ -35,7 +35,7 @@ use PHPUnit\Event\Test\PhpunitDeprecationTriggered;
 use PHPUnit\Event\Test\PhpunitErrorTriggered;
 use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
-use PHPUnit\Event\Test\Prepared;
+use PHPUnit\Event\Test\PreparationStarted;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\Event\TestSuite\Skipped as TestSuiteSkipped;
@@ -59,7 +59,6 @@ final class TestResultCollector
     private array $tests          = [];
     private ?TestStatus $status   = null;
     private ?Throwable $throwable = null;
-    private bool $prepared        = false;
 
     public function __construct(Facade $facade, IssueFilter $issueFilter)
     {
@@ -138,7 +137,7 @@ final class TestResultCollector
         return $result;
     }
 
-    public function testPrepared(Prepared $event): void
+    public function testPreparationStarted(PreparationStarted $event): void
     {
         if (!$event->test()->isTestMethod()) {
             return;
@@ -146,7 +145,6 @@ final class TestResultCollector
 
         $this->status    = TestStatus::unknown();
         $this->throwable = null;
-        $this->prepared  = true;
     }
 
     public function testErrored(Errored $event): void
@@ -156,12 +154,6 @@ final class TestResultCollector
         }
 
         $this->updateTestStatus(TestStatus::error($event->throwable()->message()), $event->throwable());
-
-        $test = $event->test();
-
-        assert($test instanceof TestMethod);
-
-        $this->recordTestThatNeverStarted($test);
     }
 
     public function testFailed(Failed $event): void
@@ -189,12 +181,6 @@ final class TestResultCollector
         }
 
         $this->updateTestStatus(TestStatus::skipped($event->message()));
-
-        $test = $event->test();
-
-        assert($test instanceof TestMethod);
-
-        $this->recordTestThatNeverStarted($test);
     }
 
     public function testMarkedIncomplete(MarkedIncomplete $event): void
@@ -204,12 +190,6 @@ final class TestResultCollector
         }
 
         $this->updateTestStatus(TestStatus::incomplete($event->throwable()->message()), $event->throwable());
-
-        $test = $event->test();
-
-        assert($test instanceof TestMethod);
-
-        $this->recordTestThatNeverStarted($test);
     }
 
     public function testConsideredRisky(ConsideredRisky $event): void
@@ -347,7 +327,6 @@ final class TestResultCollector
 
         $this->status    = null;
         $this->throwable = null;
-        $this->prepared  = false;
     }
 
     /**
@@ -387,7 +366,7 @@ final class TestResultCollector
             new TestFinishedSubscriber($this),
             new TestMarkedIncompleteSubscriber($this),
             new TestPassedSubscriber($this),
-            new TestPreparedSubscriber($this),
+            new TestPreparationStartedSubscriber($this),
             new TestSkippedSubscriber($this),
             new TestSuiteSkippedSubscriber($this),
             new TestTriggeredDeprecationSubscriber($this),
@@ -421,31 +400,6 @@ final class TestResultCollector
         assert($this->status !== null);
 
         $this->record($test, $this->status, $this->throwable);
-    }
-
-    /**
-     * A test that is skipped, marked incomplete, or errored before it starts
-     * - because a test it depends on did not pass, because a requirement it
-     * declares is not met, or because setUp() decided so - never emits the
-     * event that ends a test, which is what every other test is recorded on.
-     * It is recorded here instead.
-     *
-     * What it was recorded with must not be carried over to the next test
-     * that never starts: nothing resets it in between, and a status that is
-     * kept would be the more important one of two unrelated tests.
-     */
-    private function recordTestThatNeverStarted(TestMethod $test): void
-    {
-        if ($this->prepared) {
-            return;
-        }
-
-        assert($this->status !== null);
-
-        $this->record($test, $this->status, $this->throwable);
-
-        $this->status    = null;
-        $this->throwable = null;
     }
 
     private function record(TestMethod $test, TestStatus $status, ?Throwable $throwable): void

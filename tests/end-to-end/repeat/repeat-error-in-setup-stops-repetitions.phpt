@@ -39,8 +39,11 @@ Test Preparation Errored (PHPUnit\TestFixture\Repeat\ErrorInSetUpTest::testOne (
 Error in setUp() on second repetition
 Test Errored (PHPUnit\TestFixture\Repeat\ErrorInSetUpTest::testOne (repetition 2 of 3))
 Error in setUp() on second repetition
+Test Finished (PHPUnit\TestFixture\Repeat\ErrorInSetUpTest::testOne (repetition 2 of 3))
+Test Preparation Started (PHPUnit\TestFixture\Repeat\ErrorInSetUpTest::testOne (repetition 3 of 3))
 Test Skipped (PHPUnit\TestFixture\Repeat\ErrorInSetUpTest::testOne (repetition 3 of 3))
 Remaining repetition skipped after failure in repetition 2
+Test Finished (PHPUnit\TestFixture\Repeat\ErrorInSetUpTest::testOne (repetition 3 of 3))
 Test Suite for Repeated Test Method Finished (PHPUnit\TestFixture\Repeat\ErrorInSetUpTest::testOne, 3 repetitions)
 Test Suite Finished (PHPUnit\TestFixture\Repeat\ErrorInSetUpTest, 3 tests)
 Test Runner Execution Finished

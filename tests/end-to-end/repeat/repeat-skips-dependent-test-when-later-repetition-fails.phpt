@@ -32,8 +32,10 @@ Test Failed (PHPUnit\TestFixture\Repeat\DependsOnFailureInSecondRepetitionTest::
 Failure on second repetition
 Test Finished (PHPUnit\TestFixture\Repeat\DependsOnFailureInSecondRepetitionTest::testOne (repetition 2 of 2))
 Test Suite for Repeated Test Method Finished (PHPUnit\TestFixture\Repeat\DependsOnFailureInSecondRepetitionTest::testOne, 2 repetitions)
+Test Preparation Started (PHPUnit\TestFixture\Repeat\DependsOnFailureInSecondRepetitionTest::testTwo)
 Test Skipped (PHPUnit\TestFixture\Repeat\DependsOnFailureInSecondRepetitionTest::testTwo)
 This test depends on "PHPUnit\TestFixture\Repeat\DependsOnFailureInSecondRepetitionTest::testOne" to pass
+Test Finished (PHPUnit\TestFixture\Repeat\DependsOnFailureInSecondRepetitionTest::testTwo)
 Test Suite Finished (PHPUnit\TestFixture\Repeat\DependsOnFailureInSecondRepetitionTest, 3 tests)
 Test Runner Execution Finished
 Test Runner Finished

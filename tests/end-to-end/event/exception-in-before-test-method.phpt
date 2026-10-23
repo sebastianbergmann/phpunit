@@ -26,6 +26,7 @@ Before Test Method Finished:
 - PHPUnit\TestFixture\Event\ExceptionInSetUpTest::setUp
 Test Preparation Errored (PHPUnit\TestFixture\Event\ExceptionInSetUpTest::testOne)
 Test Errored (PHPUnit\TestFixture\Event\ExceptionInSetUpTest::testOne)
+Test Finished (PHPUnit\TestFixture\Event\ExceptionInSetUpTest::testOne)
 Test Suite Finished (PHPUnit\TestFixture\Event\ExceptionInSetUpTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished

@@ -22,7 +22,7 @@ use PHPUnit\Event\Telemetry\MemoryUsage;
 use PHPUnit\Event\Telemetry\Snapshot;
 use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\PhpunitWarningTriggered;
-use PHPUnit\Event\Test\Prepared;
+use PHPUnit\Event\Test\PreparationStarted;
 use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
@@ -45,7 +45,7 @@ final class TestTriggeredPhpunitWarningSubscriberTest extends TestCase
         $collector = new TestResultCollector(new Facade, new IssueFilter($this->source()));
         $test      = $this->testMethod();
 
-        $collector->testPrepared(new Prepared($this->telemetryInfo(), $test));
+        $collector->testPreparationStarted(new PreparationStarted($this->telemetryInfo(), $test));
 
         new TestTriggeredPhpunitWarningSubscriber($collector)->notify(
             new PhpunitWarningTriggered($this->telemetryInfo(), $test, 'message', false),

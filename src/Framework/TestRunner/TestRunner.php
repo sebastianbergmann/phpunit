@@ -273,12 +273,10 @@ final class TestRunner
             );
         }
 
-        if ($test->wasPrepared()) {
-            $this->emitter->testFinished(
-                $test->valueObjectForEvents(),
-                $test->numberOfAssertionsPerformed(),
-            );
-        }
+        $this->emitter->testFinished(
+            $test->valueObjectForEvents(),
+            $test->numberOfAssertionsPerformed(),
+        );
     }
 
     private function requiresCoverageMetadata(TestCase $test): bool

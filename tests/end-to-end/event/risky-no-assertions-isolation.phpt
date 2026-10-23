@@ -20,8 +20,8 @@ Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\RiskyBecauseNoAssertionsTest, 1 test)
-Child Process Started (test requiring process isolation)
 Test Preparation Started (PHPUnit\TestFixture\Event\RiskyBecauseNoAssertionsTest::testOne)
+Child Process Started (test requiring process isolation)
 Test Prepared (PHPUnit\TestFixture\Event\RiskyBecauseNoAssertionsTest::testOne)
 Test Passed (PHPUnit\TestFixture\Event\RiskyBecauseNoAssertionsTest::testOne)
 Test Considered Risky (PHPUnit\TestFixture\Event\RiskyBecauseNoAssertionsTest::testOne)

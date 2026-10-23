@@ -30,12 +30,18 @@ Test Prepared (PHPUnit\TestFixture\Repeat\FailureThresholdReachedTest::testOne (
 Test Failed (PHPUnit\TestFixture\Repeat\FailureThresholdReachedTest::testOne (repetition 2 of 5))
 Failure on repetition 2
 Test Finished (PHPUnit\TestFixture\Repeat\FailureThresholdReachedTest::testOne (repetition 2 of 5))
+Test Preparation Started (PHPUnit\TestFixture\Repeat\FailureThresholdReachedTest::testOne (repetition 3 of 5))
 Test Skipped (PHPUnit\TestFixture\Repeat\FailureThresholdReachedTest::testOne (repetition 3 of 5))
 Remaining repetition skipped after failure in repetition 2
+Test Finished (PHPUnit\TestFixture\Repeat\FailureThresholdReachedTest::testOne (repetition 3 of 5))
+Test Preparation Started (PHPUnit\TestFixture\Repeat\FailureThresholdReachedTest::testOne (repetition 4 of 5))
 Test Skipped (PHPUnit\TestFixture\Repeat\FailureThresholdReachedTest::testOne (repetition 4 of 5))
 Remaining repetition skipped after failure in repetition 2
+Test Finished (PHPUnit\TestFixture\Repeat\FailureThresholdReachedTest::testOne (repetition 4 of 5))
+Test Preparation Started (PHPUnit\TestFixture\Repeat\FailureThresholdReachedTest::testOne (repetition 5 of 5))
 Test Skipped (PHPUnit\TestFixture\Repeat\FailureThresholdReachedTest::testOne (repetition 5 of 5))
 Remaining repetition skipped after failure in repetition 2
+Test Finished (PHPUnit\TestFixture\Repeat\FailureThresholdReachedTest::testOne (repetition 5 of 5))
 Test Suite for Repeated Test Method Finished (PHPUnit\TestFixture\Repeat\FailureThresholdReachedTest::testOne, 5 repetitions)
 Test Suite Finished (PHPUnit\TestFixture\Repeat\FailureThresholdReachedTest, 5 tests)
 Test Runner Execution Finished

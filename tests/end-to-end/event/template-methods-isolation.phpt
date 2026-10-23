@@ -20,8 +20,8 @@ Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (2 tests)
 Test Suite Started (PHPUnit\TestFixture\Event\TemplateMethodsTest, 2 tests)
-Child Process Started (test requiring process isolation)
 Test Preparation Started (PHPUnit\TestFixture\Event\TemplateMethodsTest::testOne)
+Child Process Started (test requiring process isolation)
 Before Test Method Called (PHPUnit\TestFixture\Event\TemplateMethodsTest::setUp)
 Before Test Method Finished:
 - PHPUnit\TestFixture\Event\TemplateMethodsTest::setUp
@@ -38,8 +38,8 @@ After Test Method Finished:
 Test Passed (PHPUnit\TestFixture\Event\TemplateMethodsTest::testOne)
 Test Finished (PHPUnit\TestFixture\Event\TemplateMethodsTest::testOne)
 Child Process Finished (test requiring process isolation)
-Child Process Started (test requiring process isolation)
 Test Preparation Started (PHPUnit\TestFixture\Event\TemplateMethodsTest::testTwo)
+Child Process Started (test requiring process isolation)
 Before Test Method Called (PHPUnit\TestFixture\Event\TemplateMethodsTest::setUp)
 Before Test Method Finished:
 - PHPUnit\TestFixture\Event\TemplateMethodsTest::setUp

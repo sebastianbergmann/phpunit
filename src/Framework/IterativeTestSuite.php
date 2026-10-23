@@ -153,7 +153,7 @@ abstract class IterativeTestSuite extends TestSuite
     abstract protected function execute(array $tests, Event\Emitter $emitter): void;
 
     /**
-     * Emits the event for a repetition that is skipped because an earlier
+     * Emits the events for a repetition that is skipped because an earlier
      * repetition failed and returns the message the repetition is skipped with.
      *
      * @return non-empty-string
@@ -165,7 +165,9 @@ abstract class IterativeTestSuite extends TestSuite
             $failedRepetition,
         );
 
+        $emitter->testPreparationStarted($test);
         $emitter->testSkipped($test, $message);
+        $emitter->testFinished($test, 0);
 
         return $message;
     }
@@ -208,12 +210,10 @@ abstract class IterativeTestSuite extends TestSuite
 
     /**
      * Determine the wall-clock time spent on an attempt from its collected
-     * events, namely from its Prepared event to its Finished event, so that
-     * the durations of retried attempts can be accounted for even though the
-     * attempt's events themselves are not forwarded. This is how the Open
-     * Test Reporting logger and the test run history measure the time of a
-     * test. The JUnit XML logger and the TeamCity logger measure the time of
-     * a test from its PreparationStarted event instead.
+     * events. This mirrors the way duration-aware loggers measure the time
+     * of a test, namely from its PreparationStarted event to its Finished
+     * event, so that the durations of retried attempts can be accounted for
+     * even though the attempt's events themselves are not forwarded.
      */
     final protected function durationOf(EventCollection $events): Event\Telemetry\Duration
     {
@@ -221,7 +221,7 @@ abstract class IterativeTestSuite extends TestSuite
         $end   = null;
 
         foreach ($events as $event) {
-            if ($event instanceof Event\Test\Prepared) {
+            if ($event instanceof Event\Test\PreparationStarted) {
                 $start = $event->telemetryInfo()->time();
             }
 
@@ -230,9 +230,7 @@ abstract class IterativeTestSuite extends TestSuite
             }
         }
 
-        if ($start === null || $end === null) {
-            return Event\Telemetry\Duration::fromSecondsAndNanoseconds(0, 0);
-        }
+        assert($start !== null && $end !== null);
 
         return $end->duration($start);
     }

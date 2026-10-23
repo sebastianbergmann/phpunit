@@ -39,8 +39,10 @@ Failed asserting that false is true.
 Test Finished (PHPUnit\TestFixture\Retry\DependsOnRetriedDataProviderFailureTest::testWithDataProvider#failing (attempt 2 of 2))
 Test Suite for Retried Test Method Finished (PHPUnit\TestFixture\Retry\DependsOnRetriedDataProviderFailureTest::testWithDataProvider#failing, up to 2 attempts)
 Test Suite for Test Method with Data Provider Finished (PHPUnit\TestFixture\Retry\DependsOnRetriedDataProviderFailureTest::testWithDataProvider, 2 data sets)
+Test Preparation Started (PHPUnit\TestFixture\Retry\DependsOnRetriedDataProviderFailureTest::testDependent)
 Test Skipped (PHPUnit\TestFixture\Retry\DependsOnRetriedDataProviderFailureTest::testDependent)
 This test depends on "PHPUnit\TestFixture\Retry\DependsOnRetriedDataProviderFailureTest::testWithDataProvider" to pass
+Test Finished (PHPUnit\TestFixture\Retry\DependsOnRetriedDataProviderFailureTest::testDependent)
 Test Suite Finished (PHPUnit\TestFixture\Retry\DependsOnRetriedDataProviderFailureTest, 3 tests)
 Test Runner Execution Finished
 Test Runner Finished

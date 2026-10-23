@@ -15,7 +15,6 @@ use function str_repeat;
 use function strlen;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Test\DeprecationTriggered;
-use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\ErrorTriggered;
 use PHPUnit\Event\Test\NoticeTriggered;
 use PHPUnit\Event\Test\PhpDeprecationTriggered;
@@ -23,7 +22,6 @@ use PHPUnit\Event\Test\PhpNoticeTriggered;
 use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\WarningTriggered;
-use PHPUnit\Event\TestRunner\ChildProcessErrored;
 use PHPUnit\Event\TestRunner\ExecutionStarted;
 use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
 use PHPUnit\Framework\TestStatus\TestStatus;
@@ -43,14 +41,12 @@ final class ProgressPrinter
     private readonly bool $colors;
     private readonly int $numberOfColumns;
     private readonly Source $source;
-    private int $column               = 0;
-    private int $numberOfTests        = 0;
-    private int $numberOfTestsWidth   = 0;
-    private int $maxColumn            = 0;
-    private int $numberOfTestsRun     = 0;
-    private ?TestStatus $status       = null;
-    private bool $prepared            = false;
-    private bool $childProcessErrored = false;
+    private int $column             = 0;
+    private int $numberOfTests      = 0;
+    private int $numberOfTestsWidth = 0;
+    private int $maxColumn          = 0;
+    private int $numberOfTestsRun   = 0;
+    private ?TestStatus $status     = null;
 
     /**
      * When a before-first-test method errors or fails, none of the tests of
@@ -100,34 +96,21 @@ final class ProgressPrinter
         }
     }
 
-    public function testPrepared(): void
-    {
-        $this->prepared = true;
-    }
-
     public function testSkipped(): void
     {
-        if (!$this->prepared) {
-            $this->printProgressForSkipped();
-        } else {
-            $this->updateTestStatus(TestStatus::skipped());
-        }
+        $this->updateTestStatus(TestStatus::skipped());
     }
 
     public function testSuiteSkipped(int $countTests): void
     {
         for ($i = 0; $i < $countTests; $i++) {
-            $this->testSkipped();
+            $this->printProgressForSkipped();
         }
     }
 
     public function testMarkedIncomplete(): void
     {
-        if (!$this->prepared) {
-            $this->printProgressForIncomplete();
-        } else {
-            $this->updateTestStatus(TestStatus::incomplete());
-        }
+        $this->updateTestStatus(TestStatus::incomplete());
     }
 
     public function testTriggeredNotice(NoticeTriggered $event): void
@@ -290,19 +273,9 @@ final class ProgressPrinter
         $this->updateTestStatus(TestStatus::failure());
     }
 
-    public function testErrored(Errored $event): void
+    public function testErrored(): void
     {
-        if ($this->childProcessErrored) {
-            $this->updateTestStatus(TestStatus::error());
-
-            return;
-        }
-
-        if (!$this->prepared) {
-            $this->printProgressForError();
-        } else {
-            $this->updateTestStatus(TestStatus::error());
-        }
+        $this->updateTestStatus(TestStatus::error());
     }
 
     public function testFinished(): void
@@ -327,14 +300,7 @@ final class ProgressPrinter
             $this->printProgressForError();
         }
 
-        $this->status              = null;
-        $this->prepared            = false;
-        $this->childProcessErrored = false;
-    }
-
-    public function childProcessErrored(ChildProcessErrored $event): void
-    {
-        $this->childProcessErrored = true;
+        $this->status = null;
     }
 
     private function registerSubscribers(Facade $facade): void
@@ -347,7 +313,6 @@ final class ProgressPrinter
             new TestFailedSubscriber($this),
             new TestFinishedSubscriber($this),
             new TestMarkedIncompleteSubscriber($this),
-            new TestPreparedSubscriber($this),
             new TestRunnerExecutionStartedSubscriber($this),
             new TestSkippedSubscriber($this),
             new TestSuiteSkippedSubscriber($this),
@@ -361,7 +326,6 @@ final class ProgressPrinter
             new TestTriggeredPhpunitWarningSubscriber($this),
             new TestTriggeredPhpWarningSubscriber($this),
             new TestTriggeredWarningSubscriber($this),
-            new ChildProcessErroredSubscriber($this),
         );
     }
 

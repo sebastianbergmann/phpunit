@@ -28,6 +28,7 @@ Test Preparation Failed (TestFixture\Issue6391\Issue6391Test::testOne)
 Object of class TestFixture\Issue6391\Issue6391 could not be converted to string
 Test Errored (TestFixture\Issue6391\Issue6391Test::testOne)
 Object of class TestFixture\Issue6391\Issue6391 could not be converted to string
+Test Finished (TestFixture\Issue6391\Issue6391Test::testOne)
 Test Suite Finished (TestFixture\Issue6391\Issue6391Test, 1 test)
 Test Runner Execution Finished
 Test Runner Finished

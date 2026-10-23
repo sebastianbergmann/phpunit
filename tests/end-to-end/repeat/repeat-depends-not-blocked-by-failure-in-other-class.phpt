@@ -29,8 +29,10 @@ Test Prepared (PHPUnit\TestFixture\Repeat\DependsBlockedByOtherClassFailingTest:
 Test Failed (PHPUnit\TestFixture\Repeat\DependsBlockedByOtherClassFailingTest::testSomething (repetition 1 of 2))
 Failure in unrelated class
 Test Finished (PHPUnit\TestFixture\Repeat\DependsBlockedByOtherClassFailingTest::testSomething (repetition 1 of 2))
+Test Preparation Started (PHPUnit\TestFixture\Repeat\DependsBlockedByOtherClassFailingTest::testSomething (repetition 2 of 2))
 Test Skipped (PHPUnit\TestFixture\Repeat\DependsBlockedByOtherClassFailingTest::testSomething (repetition 2 of 2))
 Remaining repetition skipped after failure in repetition 1
+Test Finished (PHPUnit\TestFixture\Repeat\DependsBlockedByOtherClassFailingTest::testSomething (repetition 2 of 2))
 Test Suite for Repeated Test Method Finished (PHPUnit\TestFixture\Repeat\DependsBlockedByOtherClassFailingTest::testSomething, 2 repetitions)
 Test Suite Finished (PHPUnit\TestFixture\Repeat\DependsBlockedByOtherClassFailingTest, 2 tests)
 Test Suite Started (PHPUnit\TestFixture\Repeat\DependsBlockedByOtherClassDependingTest, 3 tests)

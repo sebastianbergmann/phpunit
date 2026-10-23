@@ -30,11 +30,14 @@ use PHPUnit\Event\Telemetry\MemoryUsage;
 use PHPUnit\Event\Telemetry\Snapshot;
 use PHPUnit\Event\Test\AttemptErrored;
 use PHPUnit\Event\Test\AttemptFailed;
+use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\ErrorTriggered;
+use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\NoticeTriggered;
 use PHPUnit\Event\Test\PhpDeprecationTriggered;
 use PHPUnit\Event\Test\PhpNoticeTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
+use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Event\TestRunner\ErrorTriggered as TestRunnerErrorTriggered;
@@ -168,6 +171,18 @@ final class CollectorTest extends TestCase
 
         $this->assertSame(0, $result->numberOfTestsRun());
         $this->assertSame([], $result->testSuiteSkippedEvents());
+    }
+
+    public function testCountsTestThatWasNotPreparedOnce(): void
+    {
+        $collector = $this->collector();
+        $test      = $this->testMethod('testOne');
+
+        $collector->testSkipped(new Skipped($this->telemetryInfo(), $test, 'message'));
+        $collector->testErrored(new Errored($this->telemetryInfo(), $test, ThrowableBuilder::from(new Exception('message'))));
+        $collector->testFinished(new Finished($this->telemetryInfo(), $test, 0));
+
+        $this->assertSame(1, $collector->result()->numberOfTestsRun());
     }
 
     public function testDoesNotRegisterTestClassThatWasSkippedAsPassed(): void

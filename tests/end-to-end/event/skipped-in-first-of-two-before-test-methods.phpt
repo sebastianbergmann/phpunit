@@ -25,6 +25,7 @@ Before Test Method Finished:
 - PHPUnit\TestFixture\Event\SkippedInFirstOfTwoBeforeTestMethodsTest::beforeTestOne
 Test Skipped (PHPUnit\TestFixture\Event\SkippedInFirstOfTwoBeforeTestMethodsTest::testOne)
 message
+Test Finished (PHPUnit\TestFixture\Event\SkippedInFirstOfTwoBeforeTestMethodsTest::testOne)
 Test Suite Finished (PHPUnit\TestFixture\Event\SkippedInFirstOfTwoBeforeTestMethodsTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished

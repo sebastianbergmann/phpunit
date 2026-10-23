@@ -34,14 +34,16 @@ Test Preparation Started (PHPUnit\TestFixture\Event\DependencyAfterDependencyOnL
 Test Prepared (PHPUnit\TestFixture\Event\DependencyAfterDependencyOnLargerTest\SmallTest::testTwo)
 Test Failed (PHPUnit\TestFixture\Event\DependencyAfterDependencyOnLargerTest\SmallTest::testTwo)
 Test Finished (PHPUnit\TestFixture\Event\DependencyAfterDependencyOnLargerTest\SmallTest::testTwo)
+Test Preparation Started (PHPUnit\TestFixture\Event\DependencyAfterDependencyOnLargerTest\SmallTest::testThree)
 Test Considered Risky (PHPUnit\TestFixture\Event\DependencyAfterDependencyOnLargerTest\SmallTest::testThree)
 This test depends on a test that is larger than itself
-Test Preparation Started (PHPUnit\TestFixture\Event\DependencyAfterDependencyOnLargerTest\SmallTest::testThree)
 Test Prepared (PHPUnit\TestFixture\Event\DependencyAfterDependencyOnLargerTest\SmallTest::testThree)
 Test Passed (PHPUnit\TestFixture\Event\DependencyAfterDependencyOnLargerTest\SmallTest::testThree)
 Test Finished (PHPUnit\TestFixture\Event\DependencyAfterDependencyOnLargerTest\SmallTest::testThree)
+Test Preparation Started (PHPUnit\TestFixture\Event\DependencyAfterDependencyOnLargerTest\SmallTest::testFour)
 Test Skipped (PHPUnit\TestFixture\Event\DependencyAfterDependencyOnLargerTest\SmallTest::testFour)
 This test depends on "PHPUnit\TestFixture\Event\DependencyAfterDependencyOnLargerTest\SmallTest::testTwo" to pass
+Test Finished (PHPUnit\TestFixture\Event\DependencyAfterDependencyOnLargerTest\SmallTest::testFour)
 Test Suite Finished (PHPUnit\TestFixture\Event\DependencyAfterDependencyOnLargerTest\SmallTest, 4 tests)
 Test Suite Finished (CLI Arguments, 5 tests)
 Test Runner Execution Finished

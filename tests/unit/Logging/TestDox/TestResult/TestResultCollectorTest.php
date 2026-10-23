@@ -39,7 +39,7 @@ use PHPUnit\Event\Test\PhpunitDeprecationTriggered;
 use PHPUnit\Event\Test\PhpunitErrorTriggered;
 use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
-use PHPUnit\Event\Test\Prepared;
+use PHPUnit\Event\Test\PreparationStarted;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\Event\TestData\TestDataCollection;
@@ -74,7 +74,7 @@ final class TestResultCollectorTest extends TestCase
         $collector = $this->collector();
         $test      = $this->testMethod('testOne');
 
-        $collector->testPrepared(new Prepared($this->telemetryInfo(), $test));
+        $collector->testPreparationStarted(new PreparationStarted($this->telemetryInfo(), $test));
         $collector->testPassed(new Passed($this->telemetryInfo(), $test));
         $collector->testFinished(new Finished($this->telemetryInfo(), $test, 1));
 
@@ -92,7 +92,7 @@ final class TestResultCollectorTest extends TestCase
         $test      = $this->testMethod('testOne');
         $throwable = $this->throwable('failure message');
 
-        $collector->testPrepared(new Prepared($this->telemetryInfo(), $test));
+        $collector->testPreparationStarted(new PreparationStarted($this->telemetryInfo(), $test));
         $collector->testFailed(new Failed($this->telemetryInfo(), $test, $throwable, null));
         $collector->testFinished(new Finished($this->telemetryInfo(), $test, 1));
 
@@ -102,13 +102,16 @@ final class TestResultCollectorTest extends TestCase
         $this->assertSame($throwable, $first->throwable());
     }
 
-    public function test_Test_method_that_errors_after_being_prepared_is_recorded_on_finish(): void
+    public function test_Test_method_that_errors_is_recorded_on_finish(): void
     {
         $collector = $this->collector();
         $test      = $this->testMethod('testOne');
 
-        $collector->testPrepared(new Prepared($this->telemetryInfo(), $test));
+        $collector->testPreparationStarted(new PreparationStarted($this->telemetryInfo(), $test));
         $collector->testErrored(new Errored($this->telemetryInfo(), $test, $this->throwable('boom')));
+
+        $this->assertSame([], $collector->testMethodsGroupedByClass());
+
         $collector->testFinished(new Finished($this->telemetryInfo(), $test, 0));
 
         $results = $collector->testMethodsGroupedByClass()[TestDoxTest::class]->asArray();
@@ -116,12 +119,15 @@ final class TestResultCollectorTest extends TestCase
         $this->assertTrue($results[0]->status()->isError());
     }
 
-    public function test_Test_method_that_errors_before_being_prepared_is_recorded_immediately(): void
+    public function test_Test_method_that_is_skipped_and_then_errors_is_recorded_once_with_the_more_important_status(): void
     {
         $collector = $this->collector();
         $test      = $this->testMethod('testOne');
 
-        $collector->testErrored(new Errored($this->telemetryInfo(), $test, $this->throwable('early boom')));
+        $collector->testPreparationStarted(new PreparationStarted($this->telemetryInfo(), $test));
+        $collector->testSkipped(new Skipped($this->telemetryInfo(), $test, 'skipped'));
+        $collector->testErrored(new Errored($this->telemetryInfo(), $test, $this->throwable('boom')));
+        $collector->testFinished(new Finished($this->telemetryInfo(), $test, 0));
 
         $results = $collector->testMethodsGroupedByClass()[TestDoxTest::class]->asArray();
         $this->assertCount(1, $results);
@@ -133,17 +139,17 @@ final class TestResultCollectorTest extends TestCase
         $collector = $this->collector();
 
         $skipped = $this->testMethod('testOne');
-        $collector->testPrepared(new Prepared($this->telemetryInfo(), $skipped));
+        $collector->testPreparationStarted(new PreparationStarted($this->telemetryInfo(), $skipped));
         $collector->testSkipped(new Skipped($this->telemetryInfo(), $skipped, 'skip reason'));
         $collector->testFinished(new Finished($this->telemetryInfo(), $skipped, 0));
 
         $incomplete = $this->testMethod('testTwo');
-        $collector->testPrepared(new Prepared($this->telemetryInfo(), $incomplete));
+        $collector->testPreparationStarted(new PreparationStarted($this->telemetryInfo(), $incomplete));
         $collector->testMarkedIncomplete(new MarkedIncomplete($this->telemetryInfo(), $incomplete, $this->throwable('incomplete')));
         $collector->testFinished(new Finished($this->telemetryInfo(), $incomplete, 0));
 
         $risky = $this->testMethod('testThree');
-        $collector->testPrepared(new Prepared($this->telemetryInfo(), $risky));
+        $collector->testPreparationStarted(new PreparationStarted($this->telemetryInfo(), $risky));
         $collector->testConsideredRisky(new ConsideredRisky($this->telemetryInfo(), $risky, 'risky reason'));
         $collector->testFinished(new Finished($this->telemetryInfo(), $risky, 0));
 
@@ -159,17 +165,17 @@ final class TestResultCollectorTest extends TestCase
         $collector = $this->collector();
 
         $deprecation = $this->testMethod('testOne');
-        $collector->testPrepared(new Prepared($this->telemetryInfo(), $deprecation));
+        $collector->testPreparationStarted(new PreparationStarted($this->telemetryInfo(), $deprecation));
         $collector->testTriggeredPhpunitDeprecation(new PhpunitDeprecationTriggered($this->telemetryInfo(), $deprecation, 'message'));
         $collector->testFinished(new Finished($this->telemetryInfo(), $deprecation, 1));
 
         $error = $this->testMethod('testTwo');
-        $collector->testPrepared(new Prepared($this->telemetryInfo(), $error));
+        $collector->testPreparationStarted(new PreparationStarted($this->telemetryInfo(), $error));
         $collector->testTriggeredPhpunitError(new PhpunitErrorTriggered($this->telemetryInfo(), $error, 'message'));
         $collector->testFinished(new Finished($this->telemetryInfo(), $error, 1));
 
         $warning = $this->testMethod('testThree');
-        $collector->testPrepared(new Prepared($this->telemetryInfo(), $warning));
+        $collector->testPreparationStarted(new PreparationStarted($this->telemetryInfo(), $warning));
         $collector->testTriggeredPhpunitWarning(new PhpunitWarningTriggered($this->telemetryInfo(), $warning, 'message', false));
         $collector->testFinished(new Finished($this->telemetryInfo(), $warning, 1));
 
@@ -184,7 +190,7 @@ final class TestResultCollectorTest extends TestCase
         $collector = $this->collector();
         $test      = $this->testMethod('testOne');
 
-        $collector->testPrepared(new Prepared($this->telemetryInfo(), $test));
+        $collector->testPreparationStarted(new PreparationStarted($this->telemetryInfo(), $test));
         $collector->testPassed(new Passed($this->telemetryInfo(), $test));
         $collector->testTriggeredPhpunitWarning(new PhpunitWarningTriggered($this->telemetryInfo(), $test, 'message', true));
         $collector->testFinished(new Finished($this->telemetryInfo(), $test, 1));
@@ -200,32 +206,32 @@ final class TestResultCollectorTest extends TestCase
         $trigger   = IssueTrigger::from(null, null);
 
         $deprecation = $this->testMethod('testOne');
-        $collector->testPrepared(new Prepared($info, $deprecation));
+        $collector->testPreparationStarted(new PreparationStarted($info, $deprecation));
         $collector->testTriggeredDeprecation(new DeprecationTriggered($info, $deprecation, 'message', 'file.php', 1, false, false, false, false, $trigger, 'trace'));
         $collector->testFinished(new Finished($info, $deprecation, 1));
 
         $notice = $this->testMethod('testTwo');
-        $collector->testPrepared(new Prepared($info, $notice));
+        $collector->testPreparationStarted(new PreparationStarted($info, $notice));
         $collector->testTriggeredNotice(new NoticeTriggered($info, $notice, 'message', 'file.php', 1, false, false));
         $collector->testFinished(new Finished($info, $notice, 1));
 
         $warning = $this->testMethod('testThree');
-        $collector->testPrepared(new Prepared($info, $warning));
+        $collector->testPreparationStarted(new PreparationStarted($info, $warning));
         $collector->testTriggeredWarning(new WarningTriggered($info, $warning, 'message', 'file.php', 1, false, false));
         $collector->testFinished(new Finished($info, $warning, 1));
 
         $phpDeprecation = $this->testMethod('testFour');
-        $collector->testPrepared(new Prepared($info, $phpDeprecation));
+        $collector->testPreparationStarted(new PreparationStarted($info, $phpDeprecation));
         $collector->testTriggeredPhpDeprecation(new PhpDeprecationTriggered($info, $phpDeprecation, 'message', 'file.php', 1, false, false, false, false, $trigger));
         $collector->testFinished(new Finished($info, $phpDeprecation, 1));
 
         $phpNotice = $this->testMethod('testFive');
-        $collector->testPrepared(new Prepared($info, $phpNotice));
+        $collector->testPreparationStarted(new PreparationStarted($info, $phpNotice));
         $collector->testTriggeredPhpNotice(new PhpNoticeTriggered($info, $phpNotice, 'message', 'file.php', 1, false, false));
         $collector->testFinished(new Finished($info, $phpNotice, 1));
 
         $phpWarning = $this->testMethod('testSix');
-        $collector->testPrepared(new Prepared($info, $phpWarning));
+        $collector->testPreparationStarted(new PreparationStarted($info, $phpWarning));
         $collector->testTriggeredPhpWarning(new PhpWarningTriggered($info, $phpWarning, 'message', 'file.php', 1, false, false));
         $collector->testFinished(new Finished($info, $phpWarning, 1));
 
@@ -243,7 +249,7 @@ final class TestResultCollectorTest extends TestCase
         $collector = $this->collector();
         $test      = $this->testMethod('testOne');
 
-        $collector->testPrepared(new Prepared($this->telemetryInfo(), $test));
+        $collector->testPreparationStarted(new PreparationStarted($this->telemetryInfo(), $test));
         $collector->testFailed(new Failed($this->telemetryInfo(), $test, $this->throwable('boom'), null));
         $collector->testTriggeredPhpunitDeprecation(new PhpunitDeprecationTriggered($this->telemetryInfo(), $test, 'message'));
         $collector->testFinished(new Finished($this->telemetryInfo(), $test, 1));
@@ -257,7 +263,7 @@ final class TestResultCollectorTest extends TestCase
         $collector = $this->collector();
         $test      = $this->testMethod('testOne');
 
-        $collector->testPrepared(new Prepared($this->telemetryInfo(), $test));
+        $collector->testPreparationStarted(new PreparationStarted($this->telemetryInfo(), $test));
         $collector->testTriggeredDeprecation(
             new DeprecationTriggered(
                 $this->telemetryInfo(),
@@ -285,7 +291,7 @@ final class TestResultCollectorTest extends TestCase
         $collector = $this->collector();
         $test      = $this->testMethod('testOne');
 
-        $collector->testPrepared(new Prepared($this->telemetryInfo(), $test));
+        $collector->testPreparationStarted(new PreparationStarted($this->telemetryInfo(), $test));
         $collector->testTriggeredDeprecation(
             new DeprecationTriggered($this->telemetryInfo(), $test, 'message', 'file.php', 1, false, true, false, false, IssueTrigger::from(null, null), 'trace'),
         );
@@ -318,11 +324,11 @@ final class TestResultCollectorTest extends TestCase
         $first  = $this->testMethod('testOne', TestDoxTest::class);
         $second = $this->testMethod('testSomething', InheritanceA::class);
 
-        $collector->testPrepared(new Prepared($this->telemetryInfo(), $first));
+        $collector->testPreparationStarted(new PreparationStarted($this->telemetryInfo(), $first));
         $collector->testPassed(new Passed($this->telemetryInfo(), $first));
         $collector->testFinished(new Finished($this->telemetryInfo(), $first, 1));
 
-        $collector->testPrepared(new Prepared($this->telemetryInfo(), $second));
+        $collector->testPreparationStarted(new PreparationStarted($this->telemetryInfo(), $second));
         $collector->testPassed(new Passed($this->telemetryInfo(), $second));
         $collector->testFinished(new Finished($this->telemetryInfo(), $second, 1));
 
@@ -340,7 +346,7 @@ final class TestResultCollectorTest extends TestCase
         $declaredInChild  = $this->testMethod('testDeclaredInChild', InheritingTestDoxTest::class);
 
         foreach ([$declaredInParent, $declaredInChild] as $test) {
-            $collector->testPrepared(new Prepared($this->telemetryInfo(), $test));
+            $collector->testPreparationStarted(new PreparationStarted($this->telemetryInfo(), $test));
             $collector->testPassed(new Passed($this->telemetryInfo(), $test));
             $collector->testFinished(new Finished($this->telemetryInfo(), $test, 1));
         }
@@ -359,7 +365,7 @@ final class TestResultCollectorTest extends TestCase
         $declaredInParent = $this->testMethod('testDeclaredInParent', InheritingTestDoxTest::class);
 
         foreach ([$declaredInChild, $declaredInParent] as $test) {
-            $collector->testPrepared(new Prepared($this->telemetryInfo(), $test));
+            $collector->testPreparationStarted(new PreparationStarted($this->telemetryInfo(), $test));
             $collector->testPassed(new Passed($this->telemetryInfo(), $test));
             $collector->testFinished(new Finished($this->telemetryInfo(), $test, 1));
         }
@@ -376,7 +382,7 @@ final class TestResultCollectorTest extends TestCase
         $phpt      = new Phpt('Foo.phpt');
         $throwable = $this->throwable('boom');
 
-        $collector->testPrepared(new Prepared($this->telemetryInfo(), $phpt));
+        $collector->testPreparationStarted(new PreparationStarted($this->telemetryInfo(), $phpt));
         $collector->testErrored(new Errored($this->telemetryInfo(), $phpt, $throwable));
         $collector->testFailed(new Failed($this->telemetryInfo(), $phpt, $throwable, null));
         $collector->testPassed(new Passed($this->telemetryInfo(), $phpt));

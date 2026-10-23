@@ -36,6 +36,7 @@ Test Preparation Errored (PHPUnit\TestFixture\ErrorHandler\PreviousErrorHandlerT
 warning from data provider
 Test Errored (PHPUnit\TestFixture\ErrorHandler\PreviousErrorHandlerThrowsDataProviderTest::testWarningFromDataProvider#0)
 warning from data provider
+Test Finished (PHPUnit\TestFixture\ErrorHandler\PreviousErrorHandlerThrowsDataProviderTest::testWarningFromDataProvider#0)
 Test Suite for Test Method with Data Provider Finished (PHPUnit\TestFixture\ErrorHandler\PreviousErrorHandlerThrowsDataProviderTest::testWarningFromDataProvider, 1 data set)
 Test Suite Finished (PHPUnit\TestFixture\ErrorHandler\PreviousErrorHandlerThrowsDataProviderTest, 1 test)
 Test Runner Execution Finished

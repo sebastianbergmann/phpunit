@@ -201,7 +201,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         try {
             $sections = $parser->parse($this->filename);
         } catch (Exception $e) {
-            $emitter->testPrepared($this->valueObjectForEvents());
+            $emitter->testPreparationErrored($this->valueObjectForEvents(), ThrowableBuilder::from($e));
             $emitter->testErrored($this->valueObjectForEvents(), ThrowableBuilder::from($e));
             $emitter->testFinished($this->valueObjectForEvents(), 0);
 

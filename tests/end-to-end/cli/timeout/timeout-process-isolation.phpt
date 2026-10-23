@@ -21,8 +21,8 @@ Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (2 tests)
 Test Suite Started (PHPUnit\TestFixture\Timeout\SlowTestInSeparateProcessTest, 2 tests)
-Child Process Started (test requiring process isolation)
 Test Preparation Started (PHPUnit\TestFixture\Timeout\SlowTestInSeparateProcessTest::testOne)
+Child Process Started (test requiring process isolation)
 Test Prepared (PHPUnit\TestFixture\Timeout\SlowTestInSeparateProcessTest::testOne)
 Test Passed (PHPUnit\TestFixture\Timeout\SlowTestInSeparateProcessTest::testOne)
 Test Finished (PHPUnit\TestFixture\Timeout\SlowTestInSeparateProcessTest::testOne)

@@ -23,8 +23,10 @@ Test Preparation Started (PHPUnit\TestFixture\Event\DependencyInputOfTestInSepar
 Test Prepared (PHPUnit\TestFixture\Event\DependencyInputOfTestInSeparateProcessCannotBeSerializedTest::testOne)
 Test Passed (PHPUnit\TestFixture\Event\DependencyInputOfTestInSeparateProcessCannotBeSerializedTest::testOne)
 Test Finished (PHPUnit\TestFixture\Event\DependencyInputOfTestInSeparateProcessCannotBeSerializedTest::testOne)
+Test Preparation Started (PHPUnit\TestFixture\Event\DependencyInputOfTestInSeparateProcessCannotBeSerializedTest::testTwo)
 Test Errored (PHPUnit\TestFixture\Event\DependencyInputOfTestInSeparateProcessCannotBeSerializedTest::testTwo)
 Test could not be run in child process because a value returned by a test it depends on could not be serialized: Serialization of 'Closure' is not allowed
+Test Finished (PHPUnit\TestFixture\Event\DependencyInputOfTestInSeparateProcessCannotBeSerializedTest::testTwo)
 Test Preparation Started (PHPUnit\TestFixture\Event\DependencyInputOfTestInSeparateProcessCannotBeSerializedTest::testThree)
 Test Prepared (PHPUnit\TestFixture\Event\DependencyInputOfTestInSeparateProcessCannotBeSerializedTest::testThree)
 Test Passed (PHPUnit\TestFixture\Event\DependencyInputOfTestInSeparateProcessCannotBeSerializedTest::testThree)

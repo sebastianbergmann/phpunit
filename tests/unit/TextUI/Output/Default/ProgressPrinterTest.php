@@ -16,7 +16,6 @@ use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
 use PHPUnit\Event\Code\TestCollection;
 use PHPUnit\Event\Code\TestDoxBuilder;
 use PHPUnit\Event\Code\TestMethod;
-use PHPUnit\Event\Code\ThrowableBuilder;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Event\Telemetry\CpuTime;
 use PHPUnit\Event\Telemetry\Duration;
@@ -26,7 +25,6 @@ use PHPUnit\Event\Telemetry\Info;
 use PHPUnit\Event\Telemetry\MemoryUsage;
 use PHPUnit\Event\Telemetry\Snapshot;
 use PHPUnit\Event\Test\DeprecationTriggered;
-use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\ErrorTriggered;
 use PHPUnit\Event\Test\NoticeTriggered;
 use PHPUnit\Event\Test\PhpDeprecationTriggered;
@@ -36,15 +34,12 @@ use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\Event\TestData\TestDataCollection;
-use PHPUnit\Event\TestRunner\ChildProcessErrored;
-use PHPUnit\Event\TestRunner\ChildProcessReason;
 use PHPUnit\Event\TestRunner\ExecutionStarted;
 use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
 use PHPUnit\Event\TestSuite\TestSuiteForTestClass;
 use PHPUnit\Event\TestSuite\TestSuiteWithName;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
-use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\TextUI\Configuration\FilterDirectoryCollection;
@@ -64,7 +59,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testFinished();
 
         $this->assertStringStartsWith('.', $buffer());
@@ -79,7 +73,6 @@ final class ProgressPrinterTest extends TestCase
         $progress->testRunnerExecutionStarted($this->executionStarted(3));
         $progress->testSuiteStarted($this->testSuiteStartedForTestClass(2));
         $progress->beforeTestClassMethodErrored();
-        $progress->testPrepared();
         $progress->testFinished();
 
         $this->assertStringStartsWith('EE.', $buffer());
@@ -93,13 +86,12 @@ final class ProgressPrinterTest extends TestCase
         $progress->testRunnerExecutionStarted($this->executionStarted(3));
         $progress->testSuiteStarted($this->testSuiteStartedForTestClass(2));
         $progress->beforeTestClassMethodFailed();
-        $progress->testPrepared();
         $progress->testFinished();
 
         $this->assertStringStartsWith('FF.', $buffer());
     }
 
-    public function testPrintsSkippedWhenSkippedBeforePrepare(): void
+    public function testPrintsSkippedForSkippedTest(): void
     {
         [$printer, $buffer] = $this->printer();
         $progress           = $this->progressPrinter($printer);
@@ -108,20 +100,7 @@ final class ProgressPrinterTest extends TestCase
         $progress->testSkipped();
         $progress->testFinished();
 
-        $this->assertStringStartsWith('S', $buffer());
-    }
-
-    public function testPrintsSkippedAfterPrepare(): void
-    {
-        [$printer, $buffer] = $this->printer();
-        $progress           = $this->progressPrinter($printer);
-
-        $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
-        $progress->testSkipped();
-        $progress->testFinished();
-
-        $this->assertStringStartsWith('S', $buffer());
+        $this->assertStringStartsWith('S ', $buffer());
     }
 
     public function testTestSuiteSkippedSkipsEachTest(): void
@@ -132,7 +111,7 @@ final class ProgressPrinterTest extends TestCase
         $progress->testRunnerExecutionStarted($this->executionStarted(2));
         $progress->testSuiteSkipped(2);
 
-        $this->assertStringStartsWith('SS', $buffer());
+        $this->assertStringStartsWith('SS ', $buffer());
     }
 
     public function testPrintsIncompleteForMarkedIncomplete(): void
@@ -141,7 +120,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testMarkedIncomplete();
         $progress->testFinished();
 
@@ -154,7 +132,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testConsideredRisky();
         $progress->testFinished();
 
@@ -167,50 +144,22 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testFailed();
         $progress->testFinished();
 
         $this->assertStringStartsWith('F', $buffer());
     }
 
-    public function testPrintsErrorWhenTestErroredAfterPrepare(): void
+    public function testPrintsErrorForErroredTest(): void
     {
         [$printer, $buffer] = $this->printer();
         $progress           = $this->progressPrinter($printer);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
-        $progress->testErrored($this->erroredEvent());
+        $progress->testErrored();
         $progress->testFinished();
 
-        $this->assertStringStartsWith('E', $buffer());
-    }
-
-    public function testPrintsErrorWhenTestErroredBeforePrepare(): void
-    {
-        [$printer, $buffer] = $this->printer();
-        $progress           = $this->progressPrinter($printer);
-
-        $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testErrored($this->erroredEvent());
-        $progress->testFinished();
-
-        $this->assertStringStartsWith('E', $buffer());
-    }
-
-    public function testPrintsErrorWhenChildProcessErrored(): void
-    {
-        [$printer, $buffer] = $this->printer();
-        $progress           = $this->progressPrinter($printer);
-
-        $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
-        $progress->childProcessErrored($this->childProcessErroredEvent());
-        $progress->testErrored($this->erroredEvent());
-        $progress->testFinished();
-
-        $this->assertStringStartsWith('E', $buffer());
+        $this->assertStringStartsWith('E ', $buffer());
     }
 
     public function testPrintsNoticeForTriggeredNotice(): void
@@ -219,7 +168,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredNotice($this->noticeEvent(false, false));
         $progress->testFinished();
 
@@ -232,7 +180,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredNotice($this->noticeEvent(false, true));
         $progress->testFinished();
 
@@ -245,7 +192,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredNotice($this->noticeEvent(true, false));
         $progress->testFinished();
 
@@ -258,7 +204,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer, restrictNotices: true);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredNotice($this->noticeEvent(false, false));
         $progress->testFinished();
 
@@ -271,7 +216,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredPhpNotice($this->phpNoticeEvent(false, false));
         $progress->testFinished();
 
@@ -284,7 +228,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredPhpNotice($this->phpNoticeEvent(false, true));
         $progress->testFinished();
 
@@ -297,7 +240,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredPhpNotice($this->phpNoticeEvent(true, false));
         $progress->testFinished();
 
@@ -310,7 +252,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer, restrictNotices: true);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredPhpNotice($this->phpNoticeEvent(false, false));
         $progress->testFinished();
 
@@ -323,7 +264,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredDeprecation($this->deprecationEvent());
         $progress->testFinished();
 
@@ -336,7 +276,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredDeprecation($this->deprecationEvent(ignoredByBaseline: true));
         $progress->testFinished();
 
@@ -349,7 +288,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredDeprecation($this->deprecationEvent(ignoredByTest: true));
         $progress->testFinished();
 
@@ -362,7 +300,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredDeprecation($this->deprecationEvent(ignoredByFilter: true));
         $progress->testFinished();
 
@@ -375,7 +312,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer, ignoreSelfDeprecations: true);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredDeprecation($this->deprecationEvent(trigger: IssueTrigger::from(IssueCode::FirstParty, IssueCode::ThirdParty)));
         $progress->testFinished();
 
@@ -388,7 +324,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer, ignoreDirectDeprecations: true);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredDeprecation($this->deprecationEvent(trigger: IssueTrigger::from(IssueCode::ThirdParty, IssueCode::FirstParty)));
         $progress->testFinished();
 
@@ -401,7 +336,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer, ignoreIndirectDeprecations: true);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredDeprecation($this->deprecationEvent(trigger: IssueTrigger::from(IssueCode::ThirdParty, IssueCode::ThirdParty)));
         $progress->testFinished();
 
@@ -414,7 +348,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredDeprecation($this->deprecationEvent(suppressed: true));
         $progress->testFinished();
 
@@ -427,7 +360,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredPhpDeprecation($this->phpDeprecationEvent());
         $progress->testFinished();
 
@@ -440,7 +372,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredPhpDeprecation($this->phpDeprecationEvent(ignoredByBaseline: true));
         $progress->testFinished();
 
@@ -453,7 +384,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredPhpDeprecation($this->phpDeprecationEvent(ignoredByTest: true));
         $progress->testFinished();
 
@@ -466,7 +396,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredPhpDeprecation($this->phpDeprecationEvent(ignoredByFilter: true));
         $progress->testFinished();
 
@@ -479,7 +408,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer, ignoreSelfDeprecations: true);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredPhpDeprecation($this->phpDeprecationEvent(trigger: IssueTrigger::from(IssueCode::FirstParty, IssueCode::ThirdParty)));
         $progress->testFinished();
 
@@ -492,7 +420,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer, ignoreDirectDeprecations: true);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredPhpDeprecation($this->phpDeprecationEvent(trigger: IssueTrigger::from(IssueCode::ThirdParty, IssueCode::FirstParty)));
         $progress->testFinished();
 
@@ -505,7 +432,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer, ignoreIndirectDeprecations: true);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredPhpDeprecation($this->phpDeprecationEvent(trigger: IssueTrigger::from(IssueCode::ThirdParty, IssueCode::ThirdParty)));
         $progress->testFinished();
 
@@ -518,7 +444,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredPhpDeprecation($this->phpDeprecationEvent(suppressed: true));
         $progress->testFinished();
 
@@ -531,7 +456,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredPhpunitDeprecation();
         $progress->testFinished();
 
@@ -544,7 +468,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredPhpunitNotice();
         $progress->testFinished();
 
@@ -557,7 +480,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
 
         new TestTriggeredErrorSubscriber($progress)->notify($this->errorTriggeredEvent(false));
 
@@ -572,7 +494,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
 
         new TestTriggeredPhpunitNoticeSubscriber($progress)->notify(
             new PhpunitNoticeTriggered(
@@ -593,7 +514,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredWarning($this->warningEvent(false, false));
         $progress->testFinished();
 
@@ -606,7 +526,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredWarning($this->warningEvent(false, true));
         $progress->testFinished();
 
@@ -619,7 +538,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredWarning($this->warningEvent(true, false));
         $progress->testFinished();
 
@@ -632,7 +550,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer, restrictWarnings: true);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredWarning($this->warningEvent(false, false));
         $progress->testFinished();
 
@@ -645,7 +562,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredPhpWarning($this->phpWarningEvent(false, false));
         $progress->testFinished();
 
@@ -658,7 +574,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredPhpWarning($this->phpWarningEvent(false, true));
         $progress->testFinished();
 
@@ -671,7 +586,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredPhpWarning($this->phpWarningEvent(true, false));
         $progress->testFinished();
 
@@ -684,7 +598,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer, restrictWarnings: true);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredPhpWarning($this->phpWarningEvent(false, false));
         $progress->testFinished();
 
@@ -697,7 +610,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredPhpunitWarning($this->phpunitWarningEvent(false));
         $progress->testFinished();
 
@@ -710,7 +622,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredPhpunitWarning($this->phpunitWarningEvent(true));
         $progress->testFinished();
 
@@ -723,7 +634,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredError($this->errorTriggeredEvent(false));
         $progress->testFinished();
 
@@ -736,7 +646,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testTriggeredError($this->errorTriggeredEvent(true));
         $progress->testFinished();
 
@@ -749,7 +658,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testFailed();
         $progress->testTriggeredNotice($this->noticeEvent(false, false));
         $progress->testFinished();
@@ -763,7 +671,6 @@ final class ProgressPrinterTest extends TestCase
         $progress           = $this->progressPrinter($printer, colors: true);
 
         $progress->testRunnerExecutionStarted($this->executionStarted(1));
-        $progress->testPrepared();
         $progress->testFailed();
         $progress->testFinished();
 
@@ -778,7 +685,6 @@ final class ProgressPrinterTest extends TestCase
         $progress->testRunnerExecutionStarted($this->executionStarted(200));
 
         for ($i = 0; $i < 70; $i++) {
-            $progress->testPrepared();
             $progress->testFinished();
         }
 
@@ -880,24 +786,6 @@ final class ProgressPrinterTest extends TestCase
         return new ExecutionStarted(
             $this->telemetryInfo(),
             new TestSuiteWithName('foo', $numberOfTests, TestCollection::fromArray([])),
-        );
-    }
-
-    private function erroredEvent(): Errored
-    {
-        return new Errored(
-            $this->telemetryInfo(),
-            $this->testMethod(),
-            ThrowableBuilder::from(new Exception('message')),
-        );
-    }
-
-    private function childProcessErroredEvent(): ChildProcessErrored
-    {
-        return new ChildProcessErrored(
-            $this->telemetryInfo(),
-            ChildProcessReason::TestRequiringProcessIsolation,
-            'message',
         );
     }
 

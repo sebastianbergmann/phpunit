@@ -29,10 +29,14 @@ Child Process Finished (FILE section of a PHPT test)
 Test Failed (%sRepeatFailingPhpt.phpt (repetition 1 of 3))
 Failed asserting that two strings are equal.
 Test Finished (%sRepeatFailingPhpt.phpt (repetition 1 of 3))
+Test Preparation Started (%sRepeatFailingPhpt.phpt (repetition 2 of 3))
 Test Skipped (%sRepeatFailingPhpt.phpt (repetition 2 of 3))
 Remaining repetition skipped after failure in repetition 1
+Test Finished (%sRepeatFailingPhpt.phpt (repetition 2 of 3))
+Test Preparation Started (%sRepeatFailingPhpt.phpt (repetition 3 of 3))
 Test Skipped (%sRepeatFailingPhpt.phpt (repetition 3 of 3))
 Remaining repetition skipped after failure in repetition 1
+Test Finished (%sRepeatFailingPhpt.phpt (repetition 3 of 3))
 Test Suite for Repeated PHPT Finished (%sRepeatFailingPhpt.phpt, 3 repetitions)
 Test Suite Finished (%sRepeatFailingPhpt.phpt, 3 tests)
 Test Runner Execution Finished

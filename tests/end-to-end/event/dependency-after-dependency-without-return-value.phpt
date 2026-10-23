@@ -35,8 +35,10 @@ Test Preparation Started (PHPUnit\TestFixture\Event\DependencyAfterDependencyWit
 Test Prepared (PHPUnit\TestFixture\Event\DependencyAfterDependencyWithoutReturnValueTest::testFour)
 Test Passed (PHPUnit\TestFixture\Event\DependencyAfterDependencyWithoutReturnValueTest::testFour)
 Test Finished (PHPUnit\TestFixture\Event\DependencyAfterDependencyWithoutReturnValueTest::testFour)
+Test Preparation Started (PHPUnit\TestFixture\Event\DependencyAfterDependencyWithoutReturnValueTest::testFive)
 Test Skipped (PHPUnit\TestFixture\Event\DependencyAfterDependencyWithoutReturnValueTest::testFive)
 This test depends on "PHPUnit\TestFixture\Event\DependencyAfterDependencyWithoutReturnValueTest::testThree" to pass
+Test Finished (PHPUnit\TestFixture\Event\DependencyAfterDependencyWithoutReturnValueTest::testFive)
 Test Suite Finished (PHPUnit\TestFixture\Event\DependencyAfterDependencyWithoutReturnValueTest, 5 tests)
 Test Runner Execution Finished
 Test Runner Finished

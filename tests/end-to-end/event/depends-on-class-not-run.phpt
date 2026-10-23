@@ -19,8 +19,10 @@ Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\DependsOnClassNotRunTest, 1 test)
+Test Preparation Started (PHPUnit\TestFixture\Event\DependsOnClassNotRunTest::testOne)
 Test Skipped (PHPUnit\TestFixture\Event\DependsOnClassNotRunTest::testOne)
 This test depends on "PHPUnit\TestFixture\Event\DependsOnClassNotRunTarget::class" to pass
+Test Finished (PHPUnit\TestFixture\Event\DependsOnClassNotRunTest::testOne)
 Test Suite Finished (PHPUnit\TestFixture\Event\DependsOnClassNotRunTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished

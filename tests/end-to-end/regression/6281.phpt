@@ -32,6 +32,7 @@ After Test Method Finished:
 - PHPUnit\TestFixture\Issue6281\Issue6281Test::tearDown
 Test Errored (PHPUnit\TestFixture\Issue6281\Issue6281Test::testOne)
 exception message
+Test Finished (PHPUnit\TestFixture\Issue6281\Issue6281Test::testOne)
 Test Suite Finished (PHPUnit\TestFixture\Issue6281\Issue6281Test, 1 test)
 Test Runner Execution Finished
 Test Runner Finished

@@ -19,10 +19,14 @@ Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (2 tests)
 Test Suite Started (PHPUnit\TestFixture\Event\InvalidDependencyTest, 2 tests)
+Test Preparation Started (PHPUnit\TestFixture\Event\InvalidDependencyTest::testOne)
 Test Errored (PHPUnit\TestFixture\Event\InvalidDependencyTest::testOne)
 This test depends on "PHPUnit\TestFixture\Event\InvalidDependencyTest::doesNotExist" which does not exist
+Test Finished (PHPUnit\TestFixture\Event\InvalidDependencyTest::testOne)
+Test Preparation Started (PHPUnit\TestFixture\Event\InvalidDependencyTest::testTwo)
 Test Errored (PHPUnit\TestFixture\Event\InvalidDependencyTest::testTwo)
 This test depends on "DoesNotExist" which does not exist
+Test Finished (PHPUnit\TestFixture\Event\InvalidDependencyTest::testTwo)
 Test Suite Finished (PHPUnit\TestFixture\Event\InvalidDependencyTest, 2 tests)
 Test Runner Execution Finished
 Test Runner Finished

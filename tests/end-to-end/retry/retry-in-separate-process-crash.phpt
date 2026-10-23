@@ -24,6 +24,7 @@ Test Attempt Errored (PHPUnit\TestFixture\Retry\RetryInSeparateProcessCrashTest:
 Test was run in child process and ended unexpectedly
 Test Attempt Errored (PHPUnit\TestFixture\Retry\RetryInSeparateProcessCrashTest::testOne (attempt 2 of 3))
 Test was run in child process and ended unexpectedly
+Test Preparation Started (PHPUnit\TestFixture\Retry\RetryInSeparateProcessCrashTest::testOne (attempt 3 of 3))
 Child Process Started (test requiring process isolation)
 Child Process Errored (test requiring process isolation)
 Test Errored (PHPUnit\TestFixture\Retry\RetryInSeparateProcessCrashTest::testOne (attempt 3 of 3))

@@ -52,7 +52,11 @@ final class JobRunnerRegistryTest extends TestCase
 
         $emitter
             ->expects($this->once())
-            ->method('testErrored')
+            ->method('testErrored');
+
+        $emitter
+            ->expects($this->once())
+            ->method('testFinished')
             ->seal();
 
         JobRunnerRegistry::set(

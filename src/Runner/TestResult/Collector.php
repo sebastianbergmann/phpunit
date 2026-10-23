@@ -40,7 +40,6 @@ use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\Skipped as TestSkipped;
 use PHPUnit\Event\Test\WarningTriggered;
-use PHPUnit\Event\TestRunner\ChildProcessErrored;
 use PHPUnit\Event\TestRunner\DeprecationTriggered as TestRunnerIssueDeprecationTriggered;
 use PHPUnit\Event\TestRunner\ErrorTriggered as TestRunnerIssueErrorTriggered;
 use PHPUnit\Event\TestRunner\ExecutionStarted;
@@ -70,11 +69,9 @@ use PHPUnit\TestRunner\TestResult\Issues\Issue;
 final class Collector
 {
     private readonly IssueFilter $issueFilter;
-    private int $numberOfTests        = 0;
-    private int $numberOfTestsRun     = 0;
-    private int $numberOfAssertions   = 0;
-    private bool $prepared            = false;
-    private bool $childProcessErrored = false;
+    private int $numberOfTests      = 0;
+    private int $numberOfTestsRun   = 0;
+    private int $numberOfAssertions = 0;
 
     /**
      * When a before-first-test method errors or fails, none of the tests of
@@ -251,7 +248,6 @@ final class Collector
             new TestSuiteSkippedSubscriber($this),
             new TestSuiteStartedSubscriber($this),
             new TestSuiteFinishedSubscriber($this),
-            new TestPreparedSubscriber($this),
             new TestFinishedSubscriber($this),
             new BeforeTestClassMethodErroredSubscriber($this),
             new BeforeTestClassMethodFailedSubscriber($this),
@@ -285,7 +281,6 @@ final class Collector
             new TestRunnerTriggeredIssuePhpNoticeSubscriber($this),
             new TestRunnerTriggeredIssuePhpWarningSubscriber($this),
             new TestRunnerTriggeredIssueWarningSubscriber($this),
-            new ChildProcessErroredSubscriber($this),
             new TestRunnerTimeLimitExceededSubscriber($this),
         );
 
@@ -418,19 +413,11 @@ final class Collector
         PassedTests::instance()->testClassPassed($testSuite->className());
     }
 
-    public function testPrepared(): void
-    {
-        $this->prepared = true;
-    }
-
     public function testFinished(Finished $event): void
     {
         $this->numberOfAssertions += $event->numberOfAssertionsPerformed();
 
         $this->numberOfTestsRun++;
-
-        $this->prepared            = false;
-        $this->childProcessErrored = false;
     }
 
     public function beforeTestClassMethodErrored(BeforeFirstTestMethodErrored $event): void
@@ -462,14 +449,6 @@ final class Collector
         $this->testErroredEvents[] = $event;
 
         $this->forgetRetriedTest($event->test());
-
-        if ($this->childProcessErrored) {
-            return;
-        }
-
-        if (!$this->prepared) {
-            $this->numberOfTestsRun++;
-        }
     }
 
     public function testFailed(Failed $event): void
@@ -492,19 +471,11 @@ final class Collector
     public function testMarkedIncomplete(MarkedIncomplete $event): void
     {
         $this->testMarkedIncompleteEvents[] = $event;
-
-        if (!$this->prepared) {
-            $this->numberOfTestsRun++;
-        }
     }
 
     public function testSkipped(TestSkipped $event): void
     {
         $this->testSkippedEvents[] = $event;
-
-        if (!$this->prepared) {
-            $this->numberOfTestsRun++;
-        }
     }
 
     public function testConsideredRisky(ConsideredRisky $event): void
@@ -821,11 +792,6 @@ final class Collector
     public function wasTimeLimitExceeded(): bool
     {
         return $this->timeLimitExceededEvent !== null;
-    }
-
-    public function childProcessErrored(ChildProcessErrored $event): void
-    {
-        $this->childProcessErrored = true;
     }
 
     public function numberOfErroredTests(): int

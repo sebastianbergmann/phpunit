@@ -33,8 +33,10 @@ Mock Object Created (PHPUnit\TestFixture\Repeat\ClassWhoseDestructorThrowsOnSeco
 Test Errored (PHPUnit\TestFixture\Repeat\ErrorInMockObjectDestructorOnSecondRepetitionTest::testOne (repetition 2 of 3))
 Error in destructor of mock object on second repetition
 Test Finished (PHPUnit\TestFixture\Repeat\ErrorInMockObjectDestructorOnSecondRepetitionTest::testOne (repetition 2 of 3))
+Test Preparation Started (PHPUnit\TestFixture\Repeat\ErrorInMockObjectDestructorOnSecondRepetitionTest::testOne (repetition 3 of 3))
 Test Skipped (PHPUnit\TestFixture\Repeat\ErrorInMockObjectDestructorOnSecondRepetitionTest::testOne (repetition 3 of 3))
 Remaining repetition skipped after failure in repetition 2
+Test Finished (PHPUnit\TestFixture\Repeat\ErrorInMockObjectDestructorOnSecondRepetitionTest::testOne (repetition 3 of 3))
 Test Suite for Repeated Test Method Finished (PHPUnit\TestFixture\Repeat\ErrorInMockObjectDestructorOnSecondRepetitionTest::testOne, 3 repetitions)
 Test Suite Finished (PHPUnit\TestFixture\Repeat\ErrorInMockObjectDestructorOnSecondRepetitionTest, 3 tests)
 Test Runner Execution Finished

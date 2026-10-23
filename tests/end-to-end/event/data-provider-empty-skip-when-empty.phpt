@@ -25,6 +25,7 @@ Test Suite Started (PHPUnit\TestFixture\Event\EmptyDataProviderSkipWhenEmptyTest
 Test Preparation Started (PHPUnit\TestFixture\Event\EmptyDataProviderSkipWhenEmptyTest::testCase)
 Test Skipped (PHPUnit\TestFixture\Event\EmptyDataProviderSkipWhenEmptyTest::testCase)
 The data provider for this test provided no data, which is explicitly permitted
+Test Finished (PHPUnit\TestFixture\Event\EmptyDataProviderSkipWhenEmptyTest::testCase)
 Test Suite Finished (PHPUnit\TestFixture\Event\EmptyDataProviderSkipWhenEmptyTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished

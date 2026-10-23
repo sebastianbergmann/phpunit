@@ -45,15 +45,25 @@ final class IterativeTestSuiteTest extends TestCase
         );
     }
 
-    public function testEmitsSkippedEventForRemainingRepetition(): void
+    public function testEmitsPreparationStartedSkippedAndFinishedEventsForRemainingRepetition(): void
     {
         $test    = new TestWithDifferentNames('testWithName')->valueObjectForEvents();
         $emitter = $this->createMock(Emitter::class);
 
         $emitter
             ->expects($this->once())
+            ->method('testPreparationStarted')
+            ->with($test);
+
+        $emitter
+            ->expects($this->once())
             ->method('testSkipped')
-            ->with($test, 'Remaining repetition skipped after failure in repetition 2')
+            ->with($test, 'Remaining repetition skipped after failure in repetition 2');
+
+        $emitter
+            ->expects($this->once())
+            ->method('testFinished')
+            ->with($test, 0)
             ->seal();
 
         $message = ConcreteIterativeTestSuite::empty('the-name', $this->createStub(Emitter::class))->skipRepetition($test, 2, $emitter);

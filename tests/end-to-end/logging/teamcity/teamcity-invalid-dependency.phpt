@@ -15,5 +15,7 @@ require_once __DIR__ . '/../../../bootstrap.php';
 --EXPECTF--
 ##teamcity[testCount count='1' flowId='%d']
 ##teamcity[testSuiteStarted name='PHPUnit\TestFixture\TeamCity\InvalidDependencyTest' locationHint='php_qn://%sInvalidDependencyTest.php::\PHPUnit\TestFixture\TeamCity\InvalidDependencyTest' flowId='%d']
+##teamcity[testStarted name='testOne' locationHint='php_qn://%sInvalidDependencyTest.php::\PHPUnit\TestFixture\TeamCity\InvalidDependencyTest::testOne' flowId='%d']
 ##teamcity[testFailed name='testOne' message='This test depends on "PHPUnit\TestFixture\TeamCity\InvalidDependencyTest::doesNotExist" which does not exist' details='' duration='%d' flowId='%d']
+##teamcity[testFinished name='testOne' duration='%d' flowId='%d']
 ##teamcity[testSuiteFinished name='PHPUnit\TestFixture\TeamCity\InvalidDependencyTest' flowId='%d']

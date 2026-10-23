@@ -19,6 +19,7 @@ Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\ResultOfTestInSeparateProcessCannotBeUnserializedTest, 1 test)
+Test Preparation Started (PHPUnit\TestFixture\Event\ResultOfTestInSeparateProcessCannotBeUnserializedTest::testOne)
 Child Process Started (test requiring process isolation)
 Child Process Errored (test requiring process isolation)
 Test Errored (PHPUnit\TestFixture\Event\ResultOfTestInSeparateProcessCannotBeUnserializedTest::testOne)

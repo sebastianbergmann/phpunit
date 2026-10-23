@@ -233,6 +233,11 @@ final class SeparateProcessTestRunner
             TestMethodBuilder::fromTestCase($test),
             ThrowableBuilder::from(new AssertionFailedError($message)),
         );
+
+        $this->emitter->testFinished(
+            TestMethodBuilder::fromTestCase($test),
+            0,
+        );
     }
 
     private function sourceMapFileForChildProcess(): string

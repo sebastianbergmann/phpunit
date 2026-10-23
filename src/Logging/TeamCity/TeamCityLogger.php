@@ -54,9 +54,6 @@ final class TeamCityLogger
     private bool $isSummaryTestCountPrinted = false;
     private ?HRTime $time                   = null;
     private ?int $flowId                    = null;
-    private bool $testStartedEmitted        = false;
-    private bool $prepared                  = false;
-    private bool $preparationFailed         = false;
 
     public function __construct(Printer $printer, Facade $facade)
     {
@@ -158,25 +155,7 @@ final class TeamCityLogger
 
         $this->writeMessage('testStarted', $parameters);
 
-        $this->time               = $event->telemetryInfo()->time();
-        $this->testStartedEmitted = true;
-        $this->prepared           = false;
-        $this->preparationFailed  = false;
-    }
-
-    public function testPreparationErrored(): void
-    {
-        $this->preparationFailed = true;
-    }
-
-    public function testPreparationFailed(): void
-    {
-        $this->preparationFailed = true;
-    }
-
-    public function testPrepared(): void
-    {
-        $this->prepared = true;
+        $this->time = $event->telemetryInfo()->time();
     }
 
     /**
@@ -184,12 +163,6 @@ final class TeamCityLogger
      */
     public function testMarkedIncomplete(MarkedIncomplete $event): void
     {
-        if ($this->time === null) {
-            // @codeCoverageIgnoreStart
-            $this->time = $event->telemetryInfo()->time();
-            // @codeCoverageIgnoreEnd
-        }
-
         $this->writeMessage(
             'testIgnored',
             [
@@ -199,8 +172,6 @@ final class TeamCityLogger
                 'duration' => $this->duration($event),
             ],
         );
-
-        $this->writeTestFinishedIfPreparationDidNotComplete($event);
     }
 
     /**
@@ -208,10 +179,6 @@ final class TeamCityLogger
      */
     public function testSkipped(Skipped $event): void
     {
-        if ($this->time === null) {
-            $this->time = $event->telemetryInfo()->time();
-        }
-
         $parameters = [
             'name'    => $event->test()->name(),
             'message' => $event->message(),
@@ -220,8 +187,6 @@ final class TeamCityLogger
         $parameters['duration'] = $this->duration($event);
 
         $this->writeMessage('testIgnored', $parameters);
-
-        $this->writeTestFinishedIfPreparationDidNotComplete($event);
     }
 
     /**
@@ -272,10 +237,6 @@ final class TeamCityLogger
      */
     public function testErrored(Errored $event): void
     {
-        if ($this->time === null) {
-            $this->time = $event->telemetryInfo()->time();
-        }
-
         $this->writeMessage(
             'testFailed',
             [
@@ -285,8 +246,6 @@ final class TeamCityLogger
                 'duration' => $this->duration($event),
             ],
         );
-
-        $this->writeTestFinishedIfPreparationDidNotComplete($event);
     }
 
     /**
@@ -294,12 +253,6 @@ final class TeamCityLogger
      */
     public function testFailed(Failed $event): void
     {
-        if ($this->time === null) {
-            // @codeCoverageIgnoreStart
-            $this->time = $event->telemetryInfo()->time();
-            // @codeCoverageIgnoreEnd
-        }
-
         $parameters = [
             'name'     => $event->test()->name(),
             'message'  => $this->message($event->throwable()),
@@ -314,8 +267,6 @@ final class TeamCityLogger
         }
 
         $this->writeMessage('testFailed', $parameters);
-
-        $this->writeTestFinishedIfPreparationDidNotComplete($event);
     }
 
     /**
@@ -323,12 +274,6 @@ final class TeamCityLogger
      */
     public function testConsideredRisky(ConsideredRisky $event): void
     {
-        if ($this->time === null) {
-            // @codeCoverageIgnoreStart
-            $this->time = $event->telemetryInfo()->time();
-            // @codeCoverageIgnoreEnd
-        }
-
         $this->writeMessage(
             'testFailed',
             [
@@ -345,10 +290,6 @@ final class TeamCityLogger
      */
     public function testFinished(Finished $event): void
     {
-        if (!$this->testStartedEmitted) {
-            return;
-        }
-
         $this->writeMessage(
             'testFinished',
             [
@@ -357,10 +298,7 @@ final class TeamCityLogger
             ],
         );
 
-        $this->time               = null;
-        $this->testStartedEmitted = false;
-        $this->prepared           = false;
-        $this->preparationFailed  = false;
+        $this->time = null;
     }
 
     public function flush(): void
@@ -374,9 +312,6 @@ final class TeamCityLogger
             new TestSuiteStartedSubscriber($this),
             new TestSuiteFinishedSubscriber($this),
             new TestPreparationStartedSubscriber($this),
-            new TestPreparationErroredSubscriber($this),
-            new TestPreparationFailedSubscriber($this),
-            new TestPreparedSubscriber($this),
             new TestFinishedSubscriber($this),
             new TestErroredSubscriber($this),
             new TestFailedSubscriber($this),
@@ -424,33 +359,6 @@ final class TeamCityLogger
         );
 
         $this->time = null;
-    }
-
-    /**
-     * @throws InvalidArgumentException
-     */
-    private function writeTestFinishedIfPreparationDidNotComplete(Errored|Failed|MarkedIncomplete|Skipped $event): void
-    {
-        if (!$this->testStartedEmitted) {
-            return;
-        }
-
-        if ($this->prepared && !$this->preparationFailed) {
-            return;
-        }
-
-        $this->writeMessage(
-            'testFinished',
-            [
-                'name'     => $event->test()->name(),
-                'duration' => $this->duration($event),
-            ],
-        );
-
-        $this->time               = null;
-        $this->testStartedEmitted = false;
-        $this->prepared           = false;
-        $this->preparationFailed  = false;
     }
 
     private function setFlowId(): void

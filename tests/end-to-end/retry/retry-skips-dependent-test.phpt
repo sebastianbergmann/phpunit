@@ -28,8 +28,10 @@ Test Failed (PHPUnit\TestFixture\Retry\DependsOnFailingRetriedTest::testOne (att
 Failure on attempt 2
 Test Finished (PHPUnit\TestFixture\Retry\DependsOnFailingRetriedTest::testOne (attempt 2 of 2))
 Test Suite for Retried Test Method Finished (PHPUnit\TestFixture\Retry\DependsOnFailingRetriedTest::testOne, up to 2 attempts)
+Test Preparation Started (PHPUnit\TestFixture\Retry\DependsOnFailingRetriedTest::testTwo)
 Test Skipped (PHPUnit\TestFixture\Retry\DependsOnFailingRetriedTest::testTwo)
 This test depends on "PHPUnit\TestFixture\Retry\DependsOnFailingRetriedTest::testOne" to pass
+Test Finished (PHPUnit\TestFixture\Retry\DependsOnFailingRetriedTest::testTwo)
 Test Suite Finished (PHPUnit\TestFixture\Retry\DependsOnFailingRetriedTest, 2 tests)
 Test Runner Execution Finished
 Test Runner Finished

@@ -19,8 +19,10 @@ Test Suite Loaded (2 tests)
 Test Runner Started
 Test Runner Execution Started (2 tests)
 Test Suite Started (PHPUnit\TestFixture\ExecutionOrder\Dependencies\FooTest, 2 tests)
+Test Preparation Started (PHPUnit\TestFixture\ExecutionOrder\Dependencies\FooTest::testOne)
 Test Skipped (PHPUnit\TestFixture\ExecutionOrder\Dependencies\FooTest::testOne)
 This test depends on "PHPUnit\TestFixture\ExecutionOrder\Dependencies\FooTest::testTwo" to pass
+Test Finished (PHPUnit\TestFixture\ExecutionOrder\Dependencies\FooTest::testOne)
 Test Preparation Started (PHPUnit\TestFixture\ExecutionOrder\Dependencies\FooTest::testTwo)
 Test Prepared (PHPUnit\TestFixture\ExecutionOrder\Dependencies\FooTest::testTwo)
 Test Passed (PHPUnit\TestFixture\ExecutionOrder\Dependencies\FooTest::testTwo)

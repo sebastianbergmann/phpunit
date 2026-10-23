@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner\TestRunHistory;
 
+use function assert;
 use function round;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Facade;
@@ -140,9 +141,10 @@ final class TestRunHistoryHandler
     public function testFinished(Finished $event): void
     {
         // The duration of a skipped test measures the time to reach the skip,
-        // not the cost of running the test; it must not replace a duration
-        // that was measured when the test actually ran
-        if (!$this->testWasSkipped) {
+        // not the cost of running the test, and a test that was not prepared
+        // has no duration at all; neither must replace a duration that was
+        // measured when the test actually ran
+        if (!$this->testWasSkipped && $this->time !== null) {
             $this->testRunHistory->setTime(TestRunHistoryId::fromTest($event->test()), $this->duration($event));
         }
 
@@ -170,9 +172,7 @@ final class TestRunHistoryHandler
      */
     private function duration(Event $event): float
     {
-        if ($this->time === null) {
-            return 0.0;
-        }
+        assert($this->time !== null);
 
         return round($event->telemetryInfo()->time()->duration($this->time)->asFloat(), 3);
     }

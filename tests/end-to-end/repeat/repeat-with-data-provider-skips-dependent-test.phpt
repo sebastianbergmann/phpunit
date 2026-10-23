@@ -41,12 +41,16 @@ Test Prepared (PHPUnit\TestFixture\Repeat\DependsOnDataProviderFailureTest::test
 Test Failed (PHPUnit\TestFixture\Repeat\DependsOnDataProviderFailureTest::testWithDataProvider#failing (repetition 1 of 2))
 Failed asserting that false is true.
 Test Finished (PHPUnit\TestFixture\Repeat\DependsOnDataProviderFailureTest::testWithDataProvider#failing (repetition 1 of 2))
+Test Preparation Started (PHPUnit\TestFixture\Repeat\DependsOnDataProviderFailureTest::testWithDataProvider#failing (repetition 2 of 2))
 Test Skipped (PHPUnit\TestFixture\Repeat\DependsOnDataProviderFailureTest::testWithDataProvider#failing (repetition 2 of 2))
 Remaining repetition skipped after failure in repetition 1
+Test Finished (PHPUnit\TestFixture\Repeat\DependsOnDataProviderFailureTest::testWithDataProvider#failing (repetition 2 of 2))
 Test Suite for Repeated Test Method Finished (PHPUnit\TestFixture\Repeat\DependsOnDataProviderFailureTest::testWithDataProvider#failing, 2 repetitions)
 Test Suite for Test Method with Data Provider Finished (PHPUnit\TestFixture\Repeat\DependsOnDataProviderFailureTest::testWithDataProvider, 4 data sets)
+Test Preparation Started (PHPUnit\TestFixture\Repeat\DependsOnDataProviderFailureTest::testDependent)
 Test Skipped (PHPUnit\TestFixture\Repeat\DependsOnDataProviderFailureTest::testDependent)
 This test depends on "PHPUnit\TestFixture\Repeat\DependsOnDataProviderFailureTest::testWithDataProvider" to pass
+Test Finished (PHPUnit\TestFixture\Repeat\DependsOnDataProviderFailureTest::testDependent)
 Test Suite Finished (PHPUnit\TestFixture\Repeat\DependsOnDataProviderFailureTest, 5 tests)
 Test Runner Execution Finished
 Test Runner Finished

@@ -23,8 +23,10 @@ Test Suite Sorted
 Test Runner Execution Started (2 tests)
 Test Suite Started (PHPUnit\TestFixture\Event\DataSetOfTestInSeparateProcessCannotBeSerializedTest, 2 tests)
 Test Suite for Test Method with Data Provider Started (PHPUnit\TestFixture\Event\DataSetOfTestInSeparateProcessCannotBeSerializedTest::testOne, 1 data set)
+Test Preparation Started (PHPUnit\TestFixture\Event\DataSetOfTestInSeparateProcessCannotBeSerializedTest::testOne#0)
 Test Errored (PHPUnit\TestFixture\Event\DataSetOfTestInSeparateProcessCannotBeSerializedTest::testOne#0)
 Test could not be run in child process because its data set could not be serialized: Serialization of 'Closure' is not allowed
+Test Finished (PHPUnit\TestFixture\Event\DataSetOfTestInSeparateProcessCannotBeSerializedTest::testOne#0)
 Test Suite for Test Method with Data Provider Finished (PHPUnit\TestFixture\Event\DataSetOfTestInSeparateProcessCannotBeSerializedTest::testOne, 1 data set)
 Test Preparation Started (PHPUnit\TestFixture\Event\DataSetOfTestInSeparateProcessCannotBeSerializedTest::testTwo)
 Test Prepared (PHPUnit\TestFixture\Event\DataSetOfTestInSeparateProcessCannotBeSerializedTest::testTwo)

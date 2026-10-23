@@ -26,8 +26,10 @@ Before First Test Method Finished:
 Test Suite Skipped (PHPUnit\TestFixture\Event\DependsOnSkippedClass\SkippedTest, message)
 Test Suite Finished (PHPUnit\TestFixture\Event\DependsOnSkippedClass\SkippedTest, 1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\DependsOnSkippedClass\DependentTest, 1 test)
+Test Preparation Started (PHPUnit\TestFixture\Event\DependsOnSkippedClass\DependentTest::testOne)
 Test Skipped (PHPUnit\TestFixture\Event\DependsOnSkippedClass\DependentTest::testOne)
 This test depends on "PHPUnit\TestFixture\Event\DependsOnSkippedClass\SkippedTest::class" to pass
+Test Finished (PHPUnit\TestFixture\Event\DependsOnSkippedClass\DependentTest::testOne)
 Test Suite Finished (PHPUnit\TestFixture\Event\DependsOnSkippedClass\DependentTest, 1 test)
 Test Suite Finished (CLI Arguments, 2 tests)
 Test Runner Execution Finished

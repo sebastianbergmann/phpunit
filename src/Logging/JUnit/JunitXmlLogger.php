@@ -29,7 +29,6 @@ use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\MarkedIncomplete;
 use PHPUnit\Event\Test\PreparationStarted;
-use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Event\Test\PrintedUnexpectedOutput;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\TestSuite\Skipped as TestSuiteSkipped;
@@ -85,8 +84,6 @@ final class JunitXmlLogger
     private int $testSuiteLevel          = 0;
     private ?DOMElement $currentTestCase = null;
     private ?HRTime $time                = null;
-    private bool $prepared               = false;
-    private bool $preparationFailed      = false;
     private ?string $unexpectedOutput    = null;
 
     /**
@@ -215,23 +212,6 @@ final class JunitXmlLogger
     public function testPreparationStarted(PreparationStarted $event): void
     {
         $this->createTestCase($event);
-
-        $this->preparationFailed = false;
-    }
-
-    public function testPreparationErrored(): void
-    {
-        $this->preparationFailed = true;
-    }
-
-    public function testPreparationFailed(): void
-    {
-        $this->preparationFailed = true;
-    }
-
-    public function testPrepared(): void
-    {
-        $this->prepared = true;
     }
 
     public function testAttemptFailed(AttemptFailed $event): void
@@ -254,10 +234,6 @@ final class JunitXmlLogger
      */
     public function testFinished(Finished $event): void
     {
-        if (!$this->prepared || $this->preparationFailed) {
-            return;
-        }
-
         $this->handleFinish($event->telemetryInfo(), $event->numberOfAssertionsPerformed());
     }
 
@@ -266,7 +242,7 @@ final class JunitXmlLogger
      */
     public function testMarkedIncomplete(MarkedIncomplete $event): void
     {
-        $this->handleIncompleteOrSkipped($event);
+        $this->handleIncompleteOrSkipped();
     }
 
     /**
@@ -274,7 +250,7 @@ final class JunitXmlLogger
      */
     public function testSkipped(Skipped $event): void
     {
-        $this->handleIncompleteOrSkipped($event);
+        $this->handleIncompleteOrSkipped();
     }
 
     /**
@@ -343,8 +319,6 @@ final class JunitXmlLogger
 
         $this->currentTestCase     = null;
         $this->time                = null;
-        $this->preparationFailed   = false;
-        $this->prepared            = false;
         $this->unexpectedOutput    = null;
         $this->retriedAttemptsTime = 0.0;
     }
@@ -356,9 +330,6 @@ final class JunitXmlLogger
             new TestSuiteSkippedSubscriber($this),
             new TestSuiteFinishedSubscriber($this),
             new TestPreparationStartedSubscriber($this),
-            new TestPreparationErroredSubscriber($this),
-            new TestPreparationFailedSubscriber($this),
-            new TestPreparedSubscriber($this),
             new TestAttemptFailedSubscriber($this),
             new TestAttemptErroredSubscriber($this),
             new TestPrintedUnexpectedOutputSubscriber($this),
@@ -385,10 +356,6 @@ final class JunitXmlLogger
      */
     private function handleFault(Errored|Failed $event, string $type): void
     {
-        if (!$this->prepared) {
-            $this->createTestCase($event);
-        }
-
         assert($this->currentTestCase !== null);
 
         $buffer = $this->testAsString($event->test());
@@ -407,21 +374,13 @@ final class JunitXmlLogger
         $fault->setAttribute('type', $throwable->className());
 
         $this->currentTestCase->appendChild($fault);
-
-        if (!$this->prepared) {
-            $this->handleFinish($event->telemetryInfo(), 0);
-        }
     }
 
     /**
      * @throws InvalidArgumentException
      */
-    private function handleIncompleteOrSkipped(MarkedIncomplete|Skipped $event): void
+    private function handleIncompleteOrSkipped(): void
     {
-        if (!$this->prepared) {
-            $this->createTestCase($event);
-        }
-
         assert($this->currentTestCase !== null);
 
         $skipped = $this->document->createElement('skipped');
@@ -430,10 +389,6 @@ final class JunitXmlLogger
 
         assert(isset($this->testSuiteSkipped[$this->testSuiteLevel]));
         $this->testSuiteSkipped[$this->testSuiteLevel]++;
-
-        if (!$this->prepared) {
-            $this->handleFinish($event->telemetryInfo(), 0);
-        }
     }
 
     /**
@@ -473,7 +428,7 @@ final class JunitXmlLogger
      *
      * @phpstan-assert !null $this->currentTestCase
      */
-    private function createTestCase(Errored|Failed|MarkedIncomplete|PreparationStarted|Prepared|Skipped $event): void
+    private function createTestCase(PreparationStarted $event): void
     {
         $testCase = $this->document->createElement('testcase');
 

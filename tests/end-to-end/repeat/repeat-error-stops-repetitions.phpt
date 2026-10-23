@@ -31,8 +31,10 @@ Test Prepared (PHPUnit\TestFixture\Repeat\ErrorOnSecondRepetitionTest::testOne (
 Test Errored (PHPUnit\TestFixture\Repeat\ErrorOnSecondRepetitionTest::testOne (repetition 2 of 3))
 Error on second repetition
 Test Finished (PHPUnit\TestFixture\Repeat\ErrorOnSecondRepetitionTest::testOne (repetition 2 of 3))
+Test Preparation Started (PHPUnit\TestFixture\Repeat\ErrorOnSecondRepetitionTest::testOne (repetition 3 of 3))
 Test Skipped (PHPUnit\TestFixture\Repeat\ErrorOnSecondRepetitionTest::testOne (repetition 3 of 3))
 Remaining repetition skipped after failure in repetition 2
+Test Finished (PHPUnit\TestFixture\Repeat\ErrorOnSecondRepetitionTest::testOne (repetition 3 of 3))
 Test Suite for Repeated Test Method Finished (PHPUnit\TestFixture\Repeat\ErrorOnSecondRepetitionTest::testOne, 3 repetitions)
 Test Suite Finished (PHPUnit\TestFixture\Repeat\ErrorOnSecondRepetitionTest, 3 tests)
 Test Runner Execution Finished

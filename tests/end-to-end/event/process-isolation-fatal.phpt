@@ -20,8 +20,8 @@ Test Runner Started
 Test Suite Sorted
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\FatalTest, 1 test)
-Child Process Started (test requiring process isolation)
 Test Preparation Started (PHPUnit\TestFixture\Event\FatalTest::testOne)
+Child Process Started (test requiring process isolation)
 Test Prepared (PHPUnit\TestFixture\Event\FatalTest::testOne)
 Test Errored (PHPUnit\TestFixture\Event\FatalTest::testOne)
 Call to undefined function PHPUnit\TestFixture\Event\doesNotExist()

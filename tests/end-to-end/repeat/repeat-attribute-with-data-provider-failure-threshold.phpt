@@ -34,8 +34,10 @@ Test Prepared (PHPUnit\TestFixture\Repeat\RepeatAttributeWithDataProviderTest::t
 Test Failed (PHPUnit\TestFixture\Repeat\RepeatAttributeWithDataProviderTest::testWithDataProvider#one (repetition 2 of 3))
 Failure on repetition 2 of data set one
 Test Finished (PHPUnit\TestFixture\Repeat\RepeatAttributeWithDataProviderTest::testWithDataProvider#one (repetition 2 of 3))
+Test Preparation Started (PHPUnit\TestFixture\Repeat\RepeatAttributeWithDataProviderTest::testWithDataProvider#one (repetition 3 of 3))
 Test Skipped (PHPUnit\TestFixture\Repeat\RepeatAttributeWithDataProviderTest::testWithDataProvider#one (repetition 3 of 3))
 Remaining repetition skipped after failure in repetition 2
+Test Finished (PHPUnit\TestFixture\Repeat\RepeatAttributeWithDataProviderTest::testWithDataProvider#one (repetition 3 of 3))
 Test Suite for Repeated Test Method Finished (PHPUnit\TestFixture\Repeat\RepeatAttributeWithDataProviderTest::testWithDataProvider#one, 3 repetitions)
 Test Suite for Repeated Test Method Started (PHPUnit\TestFixture\Repeat\RepeatAttributeWithDataProviderTest::testWithDataProvider#two, 3 repetitions)
 Test Preparation Started (PHPUnit\TestFixture\Repeat\RepeatAttributeWithDataProviderTest::testWithDataProvider#two (repetition 1 of 3))

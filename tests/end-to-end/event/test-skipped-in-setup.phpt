@@ -24,6 +24,7 @@ Before Test Method Called (PHPUnit\TestFixture\Event\SkippedInSetupTest::setUp)
 Before Test Method Finished:
 - PHPUnit\TestFixture\Event\SkippedInSetupTest::setUp
 Test Skipped (PHPUnit\TestFixture\Event\SkippedInSetupTest::testOne)
+Test Finished (PHPUnit\TestFixture\Event\SkippedInSetupTest::testOne)
 Test Suite Finished (PHPUnit\TestFixture\Event\SkippedInSetupTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished

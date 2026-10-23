@@ -18,6 +18,7 @@ use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Code\ThrowableBuilder;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Test\ConsideredRisky;
+use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\MarkedIncomplete;
@@ -353,7 +354,7 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
         $this->assertLessThan(5.0, $cache->time($id));
     }
 
-    public function testFinishedWithoutPreparedRecordsZeroDuration(): void
+    public function testFinishedWithoutPreparedDoesNotOverwriteTimeFromPreviousRun(): void
     {
         $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-test.cache');
         $handler = new TestRunHistoryHandler($cache, new Facade, false);
@@ -361,8 +362,11 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
         $test = $this->testValueObject();
         $id   = TestRunHistoryId::fromTest($test);
 
+        $cache->setTime($id, 5.0);
+
+        $handler->testErrored(new Errored($this->telemetryInfo(), $test, ThrowableBuilder::from(new Exception('message'))));
         $handler->testFinished(new Finished($this->telemetryInfo(), $test, 1));
 
-        $this->assertSame(0.0, $cache->time($id));
+        $this->assertSame(5.0, $cache->time($id));
     }
 }

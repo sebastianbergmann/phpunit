@@ -283,8 +283,17 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function run(): void
     {
+        $this->emitter->testPreparationStarted(
+            $this->valueObjectForEvents(),
+        );
+
         if (!$this->inIsolation &&
             !(new DependencyResolver)->resolve($this, $this->dependencies, $this->emitter)) {
+            $this->emitter->testFinished(
+                $this->valueObjectForEvents(),
+                0,
+            );
+
             return;
         }
 
@@ -740,14 +749,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    final public function wasPrepared(): bool
-    {
-        return $this->wasPrepared;
-    }
-
-    /**
      * @return positive-int
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
@@ -1150,10 +1151,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         error_clear_last();
         clearstatcache();
 
-        $this->emitter->testPreparationStarted(
-            $this->valueObjectForEvents(),
-        );
-
         $this->globalStateCapture->snapshotGlobals($this, $this->emitter, $this->inIsolation, $this->runTestInSeparateProcess);
         $this->globalStateCapture->snapshotErrorHandlers($this, $this->emitter);
         $this->environmentVariables->set(static::class, $this->methodName);
@@ -1292,8 +1289,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $this->mockObjectRegistry->handleExceptionFromInvokedCountRule($this, $t);
 
             if (!$this->wasPrepared) {
-                $this->wasPrepared = true;
-
                 $this->emitter->testPreparationFailed(
                     $this->valueObjectForEvents(),
                     Event\Code\ThrowableBuilder::from($t),
