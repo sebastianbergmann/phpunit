@@ -23,7 +23,6 @@ use function sys_get_temp_dir;
 use function tempnam;
 use function unlink;
 use function var_export;
-use PHPUnit\Event\Code\TestMethodBuilder;
 use PHPUnit\Event\Code\ThrowableBuilder;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Event\NoPreviousThrowableException;
@@ -229,13 +228,15 @@ final class SeparateProcessTestRunner
      */
     private function testCouldNotBeRun(TestCase $test, string $message): void
     {
+        $valueObjectForEvents = $test->valueObjectForEvents();
+
         $this->emitter->testErrored(
-            TestMethodBuilder::fromTestCase($test),
+            $valueObjectForEvents,
             ThrowableBuilder::from(new AssertionFailedError($message)),
         );
 
         $this->emitter->testFinished(
-            TestMethodBuilder::fromTestCase($test),
+            $valueObjectForEvents,
             0,
         );
     }

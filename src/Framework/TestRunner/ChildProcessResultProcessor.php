@@ -18,7 +18,6 @@ use function strlen;
 use function substr;
 use function trim;
 use function unserialize;
-use PHPUnit\Event\Code\TestMethodBuilder;
 use PHPUnit\Event\Code\ThrowableBuilder;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Event\EventCollection;
@@ -59,28 +58,10 @@ final readonly class ChildProcessResultProcessor
      */
     public function process(Test $test, string $serializedProcessResult, string $stderr, ?string $processResultNonce = null): void
     {
+        assert($test instanceof TestCase);
+
         if ($stderr !== '') {
-            if (TestResultFacade::wasInterrupted()) {
-                $this->testWasInterrupted($test);
-
-                return;
-            }
-
-            $exception = new Exception(trim($stderr));
-
-            assert($test instanceof TestCase);
-
-            $test->setStatus(TestStatus::error($exception->getMessage()));
-
-            $this->emitter->testErrored(
-                TestMethodBuilder::fromTestCase($test),
-                ThrowableBuilder::from($exception),
-            );
-
-            $this->emitter->testFinished(
-                TestMethodBuilder::fromTestCase($test),
-                0,
-            );
+            $this->testErrored($test, new Exception(trim($stderr)));
 
             return;
         }
@@ -90,30 +71,9 @@ final readonly class ChildProcessResultProcessor
 
             if (strlen($serializedProcessResult) < $nonceLength ||
                 !hash_equals($processResultNonce, substr($serializedProcessResult, 0, $nonceLength))) {
-                if (TestResultFacade::wasInterrupted()) {
-                    $this->testWasInterrupted($test);
-
-                    return;
-                }
-
-                $message = 'Test was run in child process and the result file was tampered with or written by an unexpected process';
-
-                $this->emitter->childProcessErrored(ChildProcessReason::TestRequiringProcessIsolation, $message);
-
-                $exception = new AssertionFailedError($message);
-
-                assert($test instanceof TestCase);
-
-                $test->setStatus(TestStatus::error($exception->getMessage()));
-
-                $this->emitter->testErrored(
-                    TestMethodBuilder::fromTestCase($test),
-                    ThrowableBuilder::from($exception),
-                );
-
-                $this->emitter->testFinished(
-                    TestMethodBuilder::fromTestCase($test),
-                    0,
+                $this->childProcessErrored(
+                    $test,
+                    'Test was run in child process and the result file was tampered with or written by an unexpected process',
                 );
 
                 return;
@@ -130,33 +90,12 @@ final readonly class ChildProcessResultProcessor
             // the child process, cannot be assigned to a property whose type it
             // was declared to satisfy, for instance an object that a test
             // returned and that holds a test double.
-            if (TestResultFacade::wasInterrupted()) {
-                $this->testWasInterrupted($test);
-
-                return;
-            }
-
-            $message = sprintf(
-                'Test was run in child process and its result could not be unserialized: %s',
-                $t->getMessage(),
-            );
-
-            $this->emitter->childProcessErrored(ChildProcessReason::TestRequiringProcessIsolation, $message);
-
-            $exception = new AssertionFailedError($message);
-
-            assert($test instanceof TestCase);
-
-            $test->setStatus(TestStatus::error($exception->getMessage()));
-
-            $this->emitter->testErrored(
-                TestMethodBuilder::fromTestCase($test),
-                ThrowableBuilder::from($exception),
-            );
-
-            $this->emitter->testFinished(
-                TestMethodBuilder::fromTestCase($test),
-                0,
+            $this->childProcessErrored(
+                $test,
+                sprintf(
+                    'Test was run in child process and its result could not be unserialized: %s',
+                    $t->getMessage(),
+                ),
             );
 
             return;
@@ -173,30 +112,9 @@ final readonly class ChildProcessResultProcessor
             !$childResult->status instanceof TestStatus ||
             !is_int($childResult->numAssertions) ||
             $childResult->numAssertions < 0) {
-            if (TestResultFacade::wasInterrupted()) {
-                $this->testWasInterrupted($test);
-
-                return;
-            }
-
-            $message = 'Test was run in child process and ended unexpectedly';
-
-            $this->emitter->childProcessErrored(ChildProcessReason::TestRequiringProcessIsolation, $message);
-
-            $exception = new AssertionFailedError($message);
-
-            assert($test instanceof TestCase);
-
-            $test->setStatus(TestStatus::error($exception->getMessage()));
-
-            $this->emitter->testErrored(
-                TestMethodBuilder::fromTestCase($test),
-                ThrowableBuilder::from($exception),
-            );
-
-            $this->emitter->testFinished(
-                TestMethodBuilder::fromTestCase($test),
-                0,
+            $this->childProcessErrored(
+                $test,
+                'Test was run in child process and ended unexpectedly',
             );
 
             return;
@@ -204,8 +122,6 @@ final readonly class ChildProcessResultProcessor
 
         $this->eventFacade->forward($this->withoutPreparationStarted($childResult->events));
         $this->passedTests->import($childResult->passedTests);
-
-        assert($test instanceof TestCase);
 
         $test->setResult($childResult->testResult);
         $test->setStatus($childResult->status);
@@ -219,7 +135,7 @@ final readonly class ChildProcessResultProcessor
             $this->emitter->testRunnerTriggeredPhpunitWarning(
                 sprintf(
                     'Code coverage could not be collected for %s',
-                    TestMethodBuilder::fromTestCase($test)->id(),
+                    $test->valueObjectForEvents()->id(),
                 ),
             );
 
@@ -234,26 +150,65 @@ final readonly class ChildProcessResultProcessor
     }
 
     /**
+     * @param non-empty-string $message
+     */
+    private function childProcessErrored(TestCase $test, string $message): void
+    {
+        if (TestResultFacade::wasInterrupted()) {
+            $this->testWasInterrupted($test);
+
+            return;
+        }
+
+        $this->emitter->childProcessErrored(ChildProcessReason::TestRequiringProcessIsolation, $message);
+
+        $this->testErrored($test, new AssertionFailedError($message));
+    }
+
+    private function testErrored(TestCase $test, Throwable $exception): void
+    {
+        if (TestResultFacade::wasInterrupted()) {
+            $this->testWasInterrupted($test);
+
+            return;
+        }
+
+        $test->setStatus(TestStatus::error($exception->getMessage()));
+
+        $valueObjectForEvents = $test->valueObjectForEvents();
+
+        $this->emitter->testErrored(
+            $valueObjectForEvents,
+            ThrowableBuilder::from($exception),
+        );
+
+        $this->emitter->testFinished(
+            $valueObjectForEvents,
+            0,
+        );
+    }
+
+    /**
      * When the test run was interrupted by a signal, the child process was
      * most likely terminated by the same signal before the test was finished,
      * so that it did not produce a usable result. The test is then reported
      * as skipped rather than as errored.
      */
-    private function testWasInterrupted(Test $test): void
+    private function testWasInterrupted(TestCase $test): void
     {
-        assert($test instanceof TestCase);
-
         $message = 'Test was run in child process and test execution was interrupted by a signal';
 
         $test->setStatus(TestStatus::skipped($message));
 
+        $valueObjectForEvents = $test->valueObjectForEvents();
+
         $this->emitter->testSkipped(
-            TestMethodBuilder::fromTestCase($test),
+            $valueObjectForEvents,
             $message,
         );
 
         $this->emitter->testFinished(
-            TestMethodBuilder::fromTestCase($test),
+            $valueObjectForEvents,
             0,
         );
     }
