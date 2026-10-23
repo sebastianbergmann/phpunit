@@ -22,11 +22,11 @@ Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\FatalTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\FatalTest::testOne)
 Child Process Started (test requiring process isolation)
+Child Process Finished (test requiring process isolation)
 Test Prepared (PHPUnit\TestFixture\Event\FatalTest::testOne)
 Test Errored (PHPUnit\TestFixture\Event\FatalTest::testOne)
 Call to undefined function PHPUnit\TestFixture\Event\doesNotExist()
 Test Finished (PHPUnit\TestFixture\Event\FatalTest::testOne)
-Child Process Finished (test requiring process isolation)
 Test Suite Finished (PHPUnit\TestFixture\Event\FatalTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished

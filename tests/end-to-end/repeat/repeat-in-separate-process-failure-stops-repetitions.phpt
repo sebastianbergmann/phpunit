@@ -22,11 +22,11 @@ Test Suite Started (PHPUnit\TestFixture\Repeat\RepeatInSeparateProcessFailureTes
 Test Suite for Repeated Test Method Started (PHPUnit\TestFixture\Repeat\RepeatInSeparateProcessFailureTest::testOne, 3 repetitions)
 Test Preparation Started (PHPUnit\TestFixture\Repeat\RepeatInSeparateProcessFailureTest::testOne (repetition 1 of 3))
 Child Process Started (test requiring process isolation)
+Child Process Finished (test requiring process isolation)
 Test Prepared (PHPUnit\TestFixture\Repeat\RepeatInSeparateProcessFailureTest::testOne (repetition 1 of 3))
 Test Failed (PHPUnit\TestFixture\Repeat\RepeatInSeparateProcessFailureTest::testOne (repetition 1 of 3))
 Failure in separate process
 Test Finished (PHPUnit\TestFixture\Repeat\RepeatInSeparateProcessFailureTest::testOne (repetition 1 of 3))
-Child Process Finished (test requiring process isolation)
 Test Preparation Started (PHPUnit\TestFixture\Repeat\RepeatInSeparateProcessFailureTest::testOne (repetition 2 of 3))
 Test Skipped (PHPUnit\TestFixture\Repeat\RepeatInSeparateProcessFailureTest::testOne (repetition 2 of 3))
 Remaining repetition skipped after failure in repetition 1

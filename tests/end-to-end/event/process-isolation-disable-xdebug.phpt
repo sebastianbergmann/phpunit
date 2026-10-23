@@ -30,10 +30,10 @@ Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\XdebugIsDisabled, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\XdebugIsDisabled::testOne)
 Child Process Started (test requiring process isolation)
+Child Process Finished (test requiring process isolation)
 Test Prepared (PHPUnit\TestFixture\Event\XdebugIsDisabled::testOne)
 Test Passed (PHPUnit\TestFixture\Event\XdebugIsDisabled::testOne)
 Test Finished (PHPUnit\TestFixture\Event\XdebugIsDisabled::testOne)
-Child Process Finished (test requiring process isolation)
 Test Suite Finished (PHPUnit\TestFixture\Event\XdebugIsDisabled, 1 test)
 Test Runner Execution Finished
 Test Runner Finished

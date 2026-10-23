@@ -28,10 +28,10 @@ Test Runner Execution Started (2 tests)
 Test Suite Started (PHPUnit\TestFixture\TestRunnerStopping\InterruptProcessIsolationTest, 2 tests)
 Test Preparation Started (PHPUnit\TestFixture\TestRunnerStopping\InterruptProcessIsolationTest::testOne)
 Child Process Started (test requiring process isolation)
+Child Process Finished (test requiring process isolation)
 Test Prepared (PHPUnit\TestFixture\TestRunnerStopping\InterruptProcessIsolationTest::testOne)
 Test Passed (PHPUnit\TestFixture\TestRunnerStopping\InterruptProcessIsolationTest::testOne)
 Test Finished (PHPUnit\TestFixture\TestRunnerStopping\InterruptProcessIsolationTest::testOne)
-Child Process Finished (test requiring process isolation)
 Test Runner Execution Aborted
 Test Suite Finished (PHPUnit\TestFixture\TestRunnerStopping\InterruptProcessIsolationTest, 2 tests)
 Test Runner Execution Finished

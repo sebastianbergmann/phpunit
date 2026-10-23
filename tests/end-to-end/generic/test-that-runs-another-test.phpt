@@ -26,11 +26,11 @@ A test must not run another test
 Test Finished (PHPUnit\TestFixture\NestedTestRun\TestThatRunsAnotherTest::testRunsAnotherTest)
 Test Preparation Started (PHPUnit\TestFixture\NestedTestRun\TestThatRunsAnotherTest::testRunsAnotherTestInSeparateProcess)
 Child Process Started (test requiring process isolation)
+Child Process Finished (test requiring process isolation)
 Test Prepared (PHPUnit\TestFixture\NestedTestRun\TestThatRunsAnotherTest::testRunsAnotherTestInSeparateProcess)
 Test Errored (PHPUnit\TestFixture\NestedTestRun\TestThatRunsAnotherTest::testRunsAnotherTestInSeparateProcess)
 A test must not run another test
 Test Finished (PHPUnit\TestFixture\NestedTestRun\TestThatRunsAnotherTest::testRunsAnotherTestInSeparateProcess)
-Child Process Finished (test requiring process isolation)
 Test Preparation Started (PHPUnit\TestFixture\NestedTestRun\TestThatRunsAnotherTest::testRunsPhptTest)
 Test Prepared (PHPUnit\TestFixture\NestedTestRun\TestThatRunsAnotherTest::testRunsPhptTest)
 Test Errored (PHPUnit\TestFixture\NestedTestRun\TestThatRunsAnotherTest::testRunsPhptTest)

@@ -21,11 +21,11 @@ Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\ResultOfTestInSeparateProcessCannotBeUnserializedTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\ResultOfTestInSeparateProcessCannotBeUnserializedTest::testOne)
 Child Process Started (test requiring process isolation)
+Child Process Finished (test requiring process isolation)
 Child Process Errored (test requiring process isolation)
 Test Errored (PHPUnit\TestFixture\Event\ResultOfTestInSeparateProcessCannotBeUnserializedTest::testOne)
 Test was run in child process and its result could not be unserialized: Cannot assign __PHP_Incomplete_Class to property PHPUnit\TestFixture\Event\ResultOfTestInSeparateProcessCannotBeUnserializedValue::$dependency of type PHPUnit\TestFixture\Event\ResultOfTestInSeparateProcessCannotBeUnserializedDependency
 Test Finished (PHPUnit\TestFixture\Event\ResultOfTestInSeparateProcessCannotBeUnserializedTest::testOne)
-Child Process Finished (test requiring process isolation)
 Test Suite Finished (PHPUnit\TestFixture\Event\ResultOfTestInSeparateProcessCannotBeUnserializedTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished

@@ -20,10 +20,10 @@ Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Issue5838\InheritedSeparateProcessesTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Issue5838\InheritedSeparateProcessesTest::testOne)
 Child Process Started (test requiring process isolation)
+Child Process Finished (test requiring process isolation)
 Test Prepared (PHPUnit\TestFixture\Issue5838\InheritedSeparateProcessesTest::testOne)
 Test Passed (PHPUnit\TestFixture\Issue5838\InheritedSeparateProcessesTest::testOne)
 Test Finished (PHPUnit\TestFixture\Issue5838\InheritedSeparateProcessesTest::testOne)
-Child Process Finished (test requiring process isolation)
 Test Suite Finished (PHPUnit\TestFixture\Issue5838\InheritedSeparateProcessesTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished

@@ -77,14 +77,14 @@ final readonly class JobRunner
             @unlink($processResultFile);
         }
 
+        $this->emitter->childProcessFinished($job->reason(), $result->stdout(), $result->stderr());
+
         $this->processor->process(
             $test,
             $processResult,
             $result->stderr(),
             $processResultNonce,
         );
-
-        $this->emitter->childProcessFinished($job->reason(), $result->stdout(), $result->stderr());
     }
 
     /**

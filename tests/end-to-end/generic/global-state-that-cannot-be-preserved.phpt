@@ -24,10 +24,10 @@ Test Preparation Started (PHPUnit\TestFixture\GlobalState\GlobalStateThatCannotB
 Test Triggered PHPUnit Warning (PHPUnit\TestFixture\GlobalState\GlobalStateThatCannotBePreservedTest::testOne)
 Global variable $GLOBALS['globalClosure'] was not preserved because it is a Closure
 Child Process Started (test requiring process isolation)
+Child Process Finished (test requiring process isolation)
 Test Prepared (PHPUnit\TestFixture\GlobalState\GlobalStateThatCannotBePreservedTest::testOne)
 Test Passed (PHPUnit\TestFixture\GlobalState\GlobalStateThatCannotBePreservedTest::testOne)
 Test Finished (PHPUnit\TestFixture\GlobalState\GlobalStateThatCannotBePreservedTest::testOne)
-Child Process Finished (test requiring process isolation)
 Test Suite Finished (PHPUnit\TestFixture\GlobalState\GlobalStateThatCannotBePreservedTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished
