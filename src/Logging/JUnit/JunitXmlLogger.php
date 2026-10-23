@@ -146,8 +146,6 @@ final class JunitXmlLogger
 
         $this->testSuiteSkipped[$this->testSuiteLevel] += $event->testSuite()->count();
         $this->testSuiteTests[$this->testSuiteLevel]   += $event->testSuite()->count();
-
-        $this->testSuiteFinished();
     }
 
     public function testSuiteFinished(): void

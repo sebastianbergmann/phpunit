@@ -20,7 +20,10 @@ Test Suite Sorted
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\SkippedInSetupBeforeClassTest, 1 test)
 Before First Test Method Called (PHPUnit\TestFixture\Event\SkippedInSetupBeforeClassTest::setUpBeforeClass)
+Before First Test Method Finished:
+- PHPUnit\TestFixture\Event\SkippedInSetupBeforeClassTest::setUpBeforeClass
 Test Suite Skipped (PHPUnit\TestFixture\Event\SkippedInSetupBeforeClassTest, message)
+Test Suite Finished (PHPUnit\TestFixture\Event\SkippedInSetupBeforeClassTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished
 PHPUnit Finished (Shell Exit Code: 0)

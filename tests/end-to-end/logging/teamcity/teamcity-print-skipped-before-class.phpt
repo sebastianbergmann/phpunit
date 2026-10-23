@@ -16,4 +16,4 @@ require_once __DIR__ . '/../../../bootstrap.php';
 ##teamcity[testCount count='1' flowId='%d']
 ##teamcity[testSuiteStarted name='PHPUnit\TestFixture\TestRunnerStopping\SkippedBeforeClassTest' locationHint='php_qn:%sSkippedBeforeClassTest.php::\PHPUnit\TestFixture\TestRunnerStopping\SkippedBeforeClassTest' flowId='%d']
 ##teamcity[testIgnored name='PHPUnit\TestFixture\TestRunnerStopping\SkippedBeforeClassTest' message='message' duration='%d' flowId='%d']
-##teamcity[testSuiteFinished name='PHPUnit\TestFixture\TestRunnerStopping\SkippedBeforeClassTest' message='message' duration='%d' flowId='%d']
+##teamcity[testSuiteFinished name='PHPUnit\TestFixture\TestRunnerStopping\SkippedBeforeClassTest' flowId='%d']

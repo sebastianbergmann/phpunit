@@ -241,7 +241,6 @@ final class TeamCityLogger
         $parameters['duration'] = $this->duration($event);
 
         $this->writeMessage('testIgnored', $parameters);
-        $this->writeMessage('testSuiteFinished', $parameters);
     }
 
     /**

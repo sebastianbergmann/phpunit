@@ -429,20 +429,20 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
         $hookMethodsAreCalled = !$this->isForTestClass() || $this->hasTestThatIsRunInThisProcess(new ProcessIsolation($emitter));
 
         if ($hookMethodsAreCalled) {
-            if (!$this->invokeMethodsBeforeFirstTest($emitter, $testSuiteValueObjectForEvents)) {
-                return;
-            }
-        } elseif (!$this->requirementsOfMethodsBeforeFirstTestAreSatisfied($emitter, $testSuiteValueObjectForEvents)) {
-            return;
+            $testsAreRun = $this->invokeMethodsBeforeFirstTest($emitter, $testSuiteValueObjectForEvents);
+        } else {
+            $testsAreRun = $this->requirementsOfMethodsBeforeFirstTestAreSatisfied($emitter, $testSuiteValueObjectForEvents);
         }
 
-        // runTests() receives the tests as an argument expression so that no
-        // local variable retains a reference to them; this allows each test
-        // object to be destructed as soon as it has run (see #5875)
-        $this->runTests($this->takeTests(), $emitter);
+        if ($testsAreRun) {
+            // runTests() receives the tests as an argument expression so that no
+            // local variable retains a reference to them; this allows each test
+            // object to be destructed as soon as it has run (see #5875)
+            $this->runTests($this->takeTests(), $emitter);
 
-        if ($hookMethodsAreCalled) {
-            $this->invokeMethodsAfterLastTest($emitter);
+            if ($hookMethodsAreCalled) {
+                $this->invokeMethodsAfterLastTest($emitter);
+            }
         }
 
         $emitter->testSuiteFinished($testSuiteValueObjectForEvents);
@@ -854,10 +854,11 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             return true;
         }
 
-        $methods       = new HookMethods($emitter)->hookMethods($this->name)['beforeClass']->methodNamesSortedByPriority();
-        $reflector     = new ReflectionClass($this->name);
-        $calledMethods = [];
-        $result        = true;
+        $methods        = new HookMethods($emitter)->hookMethods($this->name)['beforeClass']->methodNamesSortedByPriority();
+        $reflector      = new ReflectionClass($this->name);
+        $calledMethods  = [];
+        $skippedMessage = null;
+        $result         = true;
 
         new RandomNumberGeneratorSeeder(ConfigurationRegistry::get())->seedFor($this->name);
 
@@ -897,13 +898,9 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             if (isset($t) && $t instanceof SkippedTest) {
                 /** @var non-empty-string $skippedMessage */
                 $skippedMessage = $t->getMessage();
+                $result         = false;
 
-                $emitter->testSuiteSkipped(
-                    $testSuiteValueObjectForEvents,
-                    $skippedMessage,
-                );
-
-                return false;
+                break;
             }
 
             if (isset($t)) {
@@ -934,8 +931,11 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             );
         }
 
-        if (!$result) {
-            $emitter->testSuiteFinished($testSuiteValueObjectForEvents);
+        if ($skippedMessage !== null) {
+            $emitter->testSuiteSkipped(
+                $testSuiteValueObjectForEvents,
+                $skippedMessage,
+            );
         }
 
         return $result;

@@ -83,6 +83,12 @@ final class Collector
     private int $numberOfTestsOfTestClass = 0;
 
     /**
+     * Whether the test class that was started last was skipped by one of its
+     * before-first-test methods, in which case none of its tests were run.
+     */
+    private bool $testClassWasSkipped = false;
+
+    /**
      * @var non-negative-int
      */
     private int $numberOfIssuesIgnoredByBaseline = 0;
@@ -347,6 +353,8 @@ final class Collector
         $this->testSuiteSkippedEvents[] = $event;
 
         $this->numberOfTestsRun += $event->testSuite()->count();
+
+        $this->testClassWasSkipped = true;
     }
 
     public function testSuiteStarted(TestSuiteStarted $event): void
@@ -358,6 +366,7 @@ final class Collector
         }
 
         $this->numberOfTestsOfTestClass = $testSuite->count();
+        $this->testClassWasSkipped      = false;
     }
 
     public function testSuiteFinished(TestSuiteFinished $event): void
@@ -401,6 +410,10 @@ final class Collector
         }
 
         assert($testSuite instanceof TestSuiteForTestClass);
+
+        if ($this->testClassWasSkipped) {
+            return;
+        }
 
         PassedTests::instance()->testClassPassed($testSuite->className());
     }

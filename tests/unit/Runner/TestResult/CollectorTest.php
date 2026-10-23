@@ -39,7 +39,10 @@ use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Event\TestRunner\ErrorTriggered as TestRunnerErrorTriggered;
 use PHPUnit\Event\TestRunner\PhpDeprecationTriggered as TestRunnerPhpDeprecationTriggered;
+use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
 use PHPUnit\Event\TestSuite\Skipped as TestSuiteSkipped;
+use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
+use PHPUnit\Event\TestSuite\TestSuiteForTestClass;
 use PHPUnit\Event\TestSuite\TestSuiteWithName;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -167,6 +170,34 @@ final class CollectorTest extends TestCase
         $this->assertSame([], $result->testSuiteSkippedEvents());
     }
 
+    public function testDoesNotRegisterTestClassThatWasSkippedAsPassed(): void
+    {
+        $collector = $this->collector();
+        $testSuite = $this->testSuiteForTestClass('SkippedTestClassForCollectorTest');
+
+        $collector->testSuiteStarted(new TestSuiteStarted($this->telemetryInfo(), $testSuite));
+        $collector->testSuiteSkipped(new TestSuiteSkipped($this->telemetryInfo(), $testSuite, 'skip reason'));
+        $collector->testSuiteFinished(new TestSuiteFinished($this->telemetryInfo(), $testSuite));
+
+        $this->assertFalse(PassedTests::instance()->hasTestClassPassed('SkippedTestClassForCollectorTest'));
+    }
+
+    public function testRegistersTestClassThatWasNotSkippedAsPassedAfterTestClassThatWasSkipped(): void
+    {
+        $collector        = $this->collector();
+        $skippedTestSuite = $this->testSuiteForTestClass('SkippedTestClassBeforeNotSkippedTestClassForCollectorTest');
+        $testSuite        = $this->testSuiteForTestClass('NotSkippedTestClassForCollectorTest');
+
+        $collector->testSuiteStarted(new TestSuiteStarted($this->telemetryInfo(), $skippedTestSuite));
+        $collector->testSuiteSkipped(new TestSuiteSkipped($this->telemetryInfo(), $skippedTestSuite, 'skip reason'));
+        $collector->testSuiteFinished(new TestSuiteFinished($this->telemetryInfo(), $skippedTestSuite));
+
+        $collector->testSuiteStarted(new TestSuiteStarted($this->telemetryInfo(), $testSuite));
+        $collector->testSuiteFinished(new TestSuiteFinished($this->telemetryInfo(), $testSuite));
+
+        $this->assertTrue(PassedTests::instance()->hasTestClassPassed('NotSkippedTestClassForCollectorTest'));
+    }
+
     /**
      * @param Closure(Collector, Info, Test): void $trigger
      * @param Closure(TestResult): list<Issue>     $issues
@@ -232,6 +263,21 @@ final class CollectorTest extends TestCase
             TestDoxBuilder::fromClassNameAndMethodName('FooTest', $methodName),
             MetadataCollection::fromArray([]),
             TestDataCollection::fromArray([]),
+        );
+    }
+
+    /**
+     * @param non-empty-string $className
+     */
+    private function testSuiteForTestClass(string $className): TestSuiteForTestClass
+    {
+        return new TestSuiteForTestClass(
+            $className,
+            1,
+            TestCollection::fromArray([]),
+            $className,
+            $className . '.php',
+            1,
         );
     }
 
