@@ -27,6 +27,9 @@ Test Suite Sorted
 Test Runner Execution Started (2 tests)
 Test Suite Started (PHPUnit\TestFixture\TestRunnerStopping\InterruptProcessIsolationTest, 2 tests)
 Child Process Started (test requiring process isolation)
+Test Preparation Started (PHPUnit\TestFixture\TestRunnerStopping\InterruptProcessIsolationTest::testOne)
+Test Prepared (PHPUnit\TestFixture\TestRunnerStopping\InterruptProcessIsolationTest::testOne)
+Test Passed (PHPUnit\TestFixture\TestRunnerStopping\InterruptProcessIsolationTest::testOne)
 Test Finished (PHPUnit\TestFixture\TestRunnerStopping\InterruptProcessIsolationTest::testOne)
 Child Process Finished (test requiring process isolation)
 Test Runner Execution Aborted

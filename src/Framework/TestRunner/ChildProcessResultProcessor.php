@@ -58,18 +58,13 @@ final readonly class ChildProcessResultProcessor
      */
     public function process(Test $test, string $serializedProcessResult, string $stderr, ?string $processResultNonce = null): void
     {
-        if (TestResultFacade::wasInterrupted()) {
-            assert($test instanceof TestCase);
-
-            $this->emitter->testFinished(
-                TestMethodBuilder::fromTestCase($test),
-                0,
-            );
-
-            return;
-        }
-
         if ($stderr !== '') {
+            if (TestResultFacade::wasInterrupted()) {
+                $this->testWasInterrupted($test);
+
+                return;
+            }
+
             $exception = new Exception(trim($stderr));
 
             assert($test instanceof TestCase);
@@ -89,6 +84,12 @@ final readonly class ChildProcessResultProcessor
 
             if (strlen($serializedProcessResult) < $nonceLength ||
                 !hash_equals($processResultNonce, substr($serializedProcessResult, 0, $nonceLength))) {
+                if (TestResultFacade::wasInterrupted()) {
+                    $this->testWasInterrupted($test);
+
+                    return;
+                }
+
                 $message = 'Test was run in child process and the result file was tampered with or written by an unexpected process';
 
                 $this->emitter->childProcessErrored(ChildProcessReason::TestRequiringProcessIsolation, $message);
@@ -123,6 +124,12 @@ final readonly class ChildProcessResultProcessor
             // the child process, cannot be assigned to a property whose type it
             // was declared to satisfy, for instance an object that a test
             // returned and that holds a test double.
+            if (TestResultFacade::wasInterrupted()) {
+                $this->testWasInterrupted($test);
+
+                return;
+            }
+
             $message = sprintf(
                 'Test was run in child process and its result could not be unserialized: %s',
                 $t->getMessage(),
@@ -160,6 +167,12 @@ final readonly class ChildProcessResultProcessor
             !$childResult->status instanceof TestStatus ||
             !is_int($childResult->numAssertions) ||
             $childResult->numAssertions < 0) {
+            if (TestResultFacade::wasInterrupted()) {
+                $this->testWasInterrupted($test);
+
+                return;
+            }
+
             $message = 'Test was run in child process and ended unexpectedly';
 
             $this->emitter->childProcessErrored(ChildProcessReason::TestRequiringProcessIsolation, $message);
@@ -212,5 +225,25 @@ final readonly class ChildProcessResultProcessor
             $childResult->codeCoverage,
         );
         // @codeCoverageIgnoreEnd
+    }
+
+    /**
+     * When the test run was interrupted by a signal, the child process was
+     * most likely terminated by the same signal before the test was finished,
+     * so that it did not produce a usable result. The test is then reported
+     * as skipped rather than as errored.
+     */
+    private function testWasInterrupted(Test $test): void
+    {
+        assert($test instanceof TestCase);
+
+        $message = 'Test was run in child process and test execution was interrupted by a signal';
+
+        $test->setStatus(TestStatus::skipped($message));
+
+        $this->emitter->testSkipped(
+            TestMethodBuilder::fromTestCase($test),
+            $message,
+        );
     }
 }

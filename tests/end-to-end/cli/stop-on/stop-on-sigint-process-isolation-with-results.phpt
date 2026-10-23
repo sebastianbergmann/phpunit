@@ -27,4 +27,4 @@ Test execution was interrupted by a signal.
 
 Time: %s, Memory: %s
 
-OK (1 test, 0 assertions)
+OK (1 test, 1 assertion)
