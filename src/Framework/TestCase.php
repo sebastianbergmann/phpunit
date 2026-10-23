@@ -53,6 +53,7 @@ use PHPUnit\Framework\TestCase\MockObjectRegistry;
 use PHPUnit\Framework\TestCase\OutputBuffer;
 use PHPUnit\Framework\TestCase\OutputBufferStopResult;
 use PHPUnit\Framework\TestCase\TestDoubleFactory;
+use PHPUnit\Framework\TestRunner\NestedTestRunGuard;
 use PHPUnit\Framework\TestRunner\TestRunner;
 use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Framework\TestStatus\TestStatus;
@@ -275,6 +276,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
      * @throws \SebastianBergmann\Template\InvalidArgumentException
      * @throws Exception
+     * @throws NestedTestRunException
      * @throws NoPreviousThrowableException
      * @throws ProcessIsolationException
      * @throws UnintentionallyCoveredCodeException
@@ -283,21 +285,27 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function run(): void
     {
-        $this->emitter->testPreparationStarted(
-            $this->valueObjectForEvents(),
-        );
+        NestedTestRunGuard::testStarts();
 
-        if (!$this->inIsolation &&
-            !(new DependencyResolver)->resolve($this, $this->dependencies, $this->emitter)) {
-            $this->emitter->testFinished(
+        try {
+            $this->emitter->testPreparationStarted(
                 $this->valueObjectForEvents(),
-                0,
             );
 
-            return;
-        }
+            if (!$this->inIsolation &&
+                !(new DependencyResolver)->resolve($this, $this->dependencies, $this->emitter)) {
+                $this->emitter->testFinished(
+                    $this->valueObjectForEvents(),
+                    0,
+                );
 
-        new TestRunner($this->emitter)->run($this);
+                return;
+            }
+
+            new TestRunner($this->emitter)->run($this);
+        } finally {
+            NestedTestRunGuard::testEnded();
+        }
     }
 
     /**
