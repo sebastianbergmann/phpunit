@@ -7,11 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event\TestRunner\Issue;
+namespace PHPUnit\Event\TestRunner;
 
 use const PHP_EOL;
 use PHPUnit\Event\AbstractEventTestCase;
-use PHPUnit\Event\TestRunner\ErrorTriggered;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;

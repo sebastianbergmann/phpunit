@@ -1397,7 +1397,7 @@ final class DispatchingEmitter implements Emitter
         }
 
         $this->dispatcher->dispatch(
-            new TestRunner\DeprecationTriggered(
+            new TestRunner\PhpunitDeprecationTriggered(
                 $this->telemetryInfo(),
                 $message,
             ),
@@ -1413,7 +1413,7 @@ final class DispatchingEmitter implements Emitter
     public function testRunnerTriggeredPhpunitNotice(string $message): void
     {
         $this->dispatcher->dispatch(
-            new TestRunner\NoticeTriggered(
+            new TestRunner\PhpunitNoticeTriggered(
                 $this->telemetryInfo(),
                 $message,
             ),
@@ -1429,7 +1429,7 @@ final class DispatchingEmitter implements Emitter
     public function testRunnerTriggeredPhpunitWarning(string $message): void
     {
         $this->dispatcher->dispatch(
-            new TestRunner\WarningTriggered(
+            new TestRunner\PhpunitWarningTriggered(
                 $this->telemetryInfo(),
                 $message,
             ),
@@ -1469,7 +1469,7 @@ final class DispatchingEmitter implements Emitter
     public function testRunnerTriggeredNotice(string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline): void
     {
         $this->dispatcher->dispatch(
-            new TestRunner\Issue\NoticeTriggered(
+            new TestRunner\NoticeTriggered(
                 $this->telemetryInfo(),
                 $message,
                 $file,
@@ -1513,7 +1513,7 @@ final class DispatchingEmitter implements Emitter
     public function testRunnerTriggeredWarning(string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline): void
     {
         $this->dispatcher->dispatch(
-            new TestRunner\Issue\WarningTriggered(
+            new TestRunner\WarningTriggered(
                 $this->telemetryInfo(),
                 $message,
                 $file,
@@ -1560,7 +1560,7 @@ final class DispatchingEmitter implements Emitter
     public function testRunnerTriggeredDeprecation(string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline, bool $ignoredByFilter, IssueTrigger $trigger, string $stackTrace): void
     {
         $this->dispatcher->dispatch(
-            new TestRunner\Issue\DeprecationTriggered(
+            new TestRunner\DeprecationTriggered(
                 $this->telemetryInfo(),
                 $message,
                 $file,

@@ -9,8 +9,8 @@
  */
 namespace PHPUnit\TestRunner\TestResult;
 
-use PHPUnit\Event\TestRunner\Issue\NoticeTriggered;
-use PHPUnit\Event\TestRunner\Issue\NoticeTriggeredSubscriber;
+use PHPUnit\Event\TestRunner\NoticeTriggered;
+use PHPUnit\Event\TestRunner\NoticeTriggeredSubscriber;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit

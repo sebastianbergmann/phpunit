@@ -28,8 +28,8 @@ use PHPUnit\Event\EventCollection;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Event\Test\DataProviderMethodCalled;
 use PHPUnit\Event\Test\DataProviderMethodFinished;
-use PHPUnit\Event\TestRunner\WarningTriggered;
-use PHPUnit\Event\TestRunner\WarningTriggeredSubscriber;
+use PHPUnit\Event\TestRunner\PhpunitWarningTriggered;
+use PHPUnit\Event\TestRunner\PhpunitWarningTriggeredSubscriber;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
@@ -271,14 +271,14 @@ final class DefaultTestFileSkipperTest extends AbstractEventTestCase
     #[TestDox('Forwards what was collected for a file that could not be loaded, and stops collecting')]
     public function testForwardsCollectedEventsWhenFileCouldNotBeLoaded(): void
     {
-        $subscriber = new class implements WarningTriggeredSubscriber
+        $subscriber = new class implements PhpunitWarningTriggeredSubscriber
         {
             /**
              * @var list<string>
              */
             public array $messages = [];
 
-            public function notify(WarningTriggered $event): void
+            public function notify(PhpunitWarningTriggered $event): void
             {
                 $this->messages[] = $event->message();
             }
@@ -359,14 +359,14 @@ final class DefaultTestFileSkipperTest extends AbstractEventTestCase
     #[TestDox('Does not collect events for a file it does not index')]
     public function testDoesNotCollectEventsForFileItDoesNotIndex(): void
     {
-        $subscriber = new class implements WarningTriggeredSubscriber
+        $subscriber = new class implements PhpunitWarningTriggeredSubscriber
         {
             /**
              * @var list<string>
              */
             public array $messages = [];
 
-            public function notify(WarningTriggered $event): void
+            public function notify(PhpunitWarningTriggered $event): void
             {
                 $this->messages[] = $event->message();
             }
@@ -552,7 +552,7 @@ final class DefaultTestFileSkipperTest extends AbstractEventTestCase
     {
         $events = new EventCollection;
 
-        $events->add(new WarningTriggered($this->telemetryInfo(), $message));
+        $events->add(new PhpunitWarningTriggered($this->telemetryInfo(), $message));
 
         return $events;
     }

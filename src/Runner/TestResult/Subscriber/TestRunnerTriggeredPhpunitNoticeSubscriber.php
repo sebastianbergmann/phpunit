@@ -9,17 +9,17 @@
  */
 namespace PHPUnit\TestRunner\TestResult;
 
-use PHPUnit\Event\TestRunner\NoticeTriggered;
-use PHPUnit\Event\TestRunner\NoticeTriggeredSubscriber;
+use PHPUnit\Event\TestRunner\PhpunitNoticeTriggered;
+use PHPUnit\Event\TestRunner\PhpunitNoticeTriggeredSubscriber;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class TestRunnerTriggeredPhpunitNoticeSubscriber extends Subscriber implements NoticeTriggeredSubscriber
+final readonly class TestRunnerTriggeredPhpunitNoticeSubscriber extends Subscriber implements PhpunitNoticeTriggeredSubscriber
 {
-    public function notify(NoticeTriggered $event): void
+    public function notify(PhpunitNoticeTriggered $event): void
     {
         $this->collector()->testRunnerTriggeredPhpunitNotice($event);
     }

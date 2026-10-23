@@ -26,17 +26,17 @@ use PHPUnit\Event\Test\PhpunitErrorTriggered;
 use PHPUnit\Event\Test\PhpunitNoticeTriggered;
 use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\Skipped as TestSkipped;
-use PHPUnit\Event\TestRunner\DeprecationTriggered as TestRunnerDeprecationTriggered;
+use PHPUnit\Event\TestRunner\DeprecationTriggered as TestRunnerIssueDeprecationTriggered;
 use PHPUnit\Event\TestRunner\ErrorTriggered as TestRunnerIssueErrorTriggered;
-use PHPUnit\Event\TestRunner\Issue\DeprecationTriggered as TestRunnerIssueDeprecationTriggered;
-use PHPUnit\Event\TestRunner\Issue\NoticeTriggered as TestRunnerIssueNoticeTriggered;
-use PHPUnit\Event\TestRunner\Issue\WarningTriggered as TestRunnerIssueWarningTriggered;
-use PHPUnit\Event\TestRunner\NoticeTriggered as TestRunnerNoticeTriggered;
+use PHPUnit\Event\TestRunner\NoticeTriggered as TestRunnerIssueNoticeTriggered;
 use PHPUnit\Event\TestRunner\PhpDeprecationTriggered as TestRunnerIssuePhpDeprecationTriggered;
 use PHPUnit\Event\TestRunner\PhpNoticeTriggered as TestRunnerIssuePhpNoticeTriggered;
+use PHPUnit\Event\TestRunner\PhpunitDeprecationTriggered as TestRunnerPhpunitDeprecationTriggered;
+use PHPUnit\Event\TestRunner\PhpunitNoticeTriggered as TestRunnerPhpunitNoticeTriggered;
+use PHPUnit\Event\TestRunner\PhpunitWarningTriggered as TestRunnerPhpunitWarningTriggered;
 use PHPUnit\Event\TestRunner\PhpWarningTriggered as TestRunnerIssuePhpWarningTriggered;
 use PHPUnit\Event\TestRunner\TimeLimitExceeded;
-use PHPUnit\Event\TestRunner\WarningTriggered as TestRunnerWarningTriggered;
+use PHPUnit\Event\TestRunner\WarningTriggered as TestRunnerIssueWarningTriggered;
 use PHPUnit\Event\TestSuite\Skipped as TestSuiteSkipped;
 use PHPUnit\TestRunner\TestResult\Issues\Issue;
 
@@ -102,17 +102,17 @@ final readonly class TestResult
     private array $testTriggeredPhpunitWarningEvents;
 
     /**
-     * @var list<TestRunnerDeprecationTriggered>
+     * @var list<TestRunnerPhpunitDeprecationTriggered>
      */
     private array $testRunnerTriggeredDeprecationEvents;
 
     /**
-     * @var list<TestRunnerNoticeTriggered>
+     * @var list<TestRunnerPhpunitNoticeTriggered>
      */
     private array $testRunnerTriggeredNoticeEvents;
 
     /**
-     * @var list<TestRunnerWarningTriggered>
+     * @var list<TestRunnerPhpunitWarningTriggered>
      */
     private array $testRunnerTriggeredWarningEvents;
 
@@ -213,9 +213,9 @@ final readonly class TestResult
      * @param array<string,list<PhpunitErrorTriggered>>                                                                      $testTriggeredPhpunitErrorEvents
      * @param array<string,list<PhpunitNoticeTriggered>>                                                                     $testTriggeredPhpunitNoticeEvents
      * @param array<string,list<PhpunitWarningTriggered>>                                                                    $testTriggeredPhpunitWarningEvents
-     * @param list<TestRunnerDeprecationTriggered>                                                                           $testRunnerTriggeredDeprecationEvents
-     * @param list<TestRunnerNoticeTriggered>                                                                                $testRunnerTriggeredNoticeEvents
-     * @param list<TestRunnerWarningTriggered>                                                                               $testRunnerTriggeredWarningEvents
+     * @param list<TestRunnerPhpunitDeprecationTriggered>                                                                    $testRunnerTriggeredDeprecationEvents
+     * @param list<TestRunnerPhpunitNoticeTriggered>                                                                         $testRunnerTriggeredNoticeEvents
+     * @param list<TestRunnerPhpunitWarningTriggered>                                                                        $testRunnerTriggeredWarningEvents
      * @param list<TestRunnerIssueDeprecationTriggered>                                                                      $testRunnerTriggeredIssueDeprecationEvents
      * @param list<TestRunnerIssueErrorTriggered>                                                                            $testRunnerTriggeredIssueErrorEvents
      * @param list<TestRunnerIssueNoticeTriggered>                                                                           $testRunnerTriggeredIssueNoticeEvents
@@ -499,7 +499,7 @@ final readonly class TestResult
     }
 
     /**
-     * @return list<TestRunnerDeprecationTriggered>
+     * @return list<TestRunnerPhpunitDeprecationTriggered>
      */
     public function testRunnerTriggeredDeprecationEvents(): array
     {
@@ -517,7 +517,7 @@ final readonly class TestResult
     }
 
     /**
-     * @return list<TestRunnerNoticeTriggered>
+     * @return list<TestRunnerPhpunitNoticeTriggered>
      */
     public function testRunnerTriggeredNoticeEvents(): array
     {
@@ -535,7 +535,7 @@ final readonly class TestResult
     }
 
     /**
-     * @return list<TestRunnerWarningTriggered>
+     * @return list<TestRunnerPhpunitWarningTriggered>
      */
     public function testRunnerTriggeredWarningEvents(): array
     {

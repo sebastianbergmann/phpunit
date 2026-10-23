@@ -9,7 +9,10 @@
  */
 namespace PHPUnit\Event\TestRunner;
 
+use const PHP_EOL;
+use function implode;
 use function sprintf;
+use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
 
@@ -17,8 +20,6 @@ use PHPUnit\Event\Telemetry;
  * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
- * @todo This class will be renamed to PhpunitDeprecationTriggered in PHPUnit 14
  */
 final readonly class DeprecationTriggered implements Event
 {
@@ -30,14 +31,43 @@ final readonly class DeprecationTriggered implements Event
     private string $message;
 
     /**
+     * @var non-empty-string
+     */
+    private string $file;
+
+    /**
+     * @var positive-int
+     */
+    private int $line;
+    private bool $suppressed;
+    private bool $ignoredByBaseline;
+    private bool $ignoredByFilter;
+    private IssueTrigger $trigger;
+
+    /**
+     * @var non-empty-string
+     */
+    private string $stackTrace;
+
+    /**
      * @param non-empty-string $message
+     * @param non-empty-string $file
+     * @param positive-int     $line
+     * @param non-empty-string $stackTrace
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function __construct(Telemetry\Info $telemetryInfo, string $message)
+    public function __construct(Telemetry\Info $telemetryInfo, string $message, string $file, int $line, bool $suppressed, bool $ignoredByBaseline, bool $ignoredByFilter, IssueTrigger $trigger, string $stackTrace)
     {
-        $this->telemetryInfo = $telemetryInfo;
-        $this->message       = $message;
+        $this->telemetryInfo     = $telemetryInfo;
+        $this->message           = $message;
+        $this->file              = $file;
+        $this->line              = $line;
+        $this->suppressed        = $suppressed;
+        $this->ignoredByBaseline = $ignoredByBaseline;
+        $this->ignoredByFilter   = $ignoredByFilter;
+        $this->trigger           = $trigger;
+        $this->stackTrace        = $stackTrace;
     }
 
     public function telemetryInfo(): Telemetry\Info
@@ -56,11 +86,78 @@ final readonly class DeprecationTriggered implements Event
     /**
      * @return non-empty-string
      */
+    public function file(): string
+    {
+        return $this->file;
+    }
+
+    /**
+     * @return positive-int
+     */
+    public function line(): int
+    {
+        return $this->line;
+    }
+
+    public function wasSuppressed(): bool
+    {
+        return $this->suppressed;
+    }
+
+    public function ignoredByBaseline(): bool
+    {
+        return $this->ignoredByBaseline;
+    }
+
+    public function ignoredByFilter(): bool
+    {
+        return $this->ignoredByFilter;
+    }
+
+    public function trigger(): IssueTrigger
+    {
+        return $this->trigger;
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    public function stackTrace(): string
+    {
+        return $this->stackTrace;
+    }
+
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
+        $message = $this->message;
+
+        if ($message !== '') {
+            $message = PHP_EOL . $message;
+        }
+
+        $details = [$this->trigger->asString()];
+
+        if ($this->suppressed) {
+            $details[] = 'suppressed using operator';
+        }
+
+        if ($this->ignoredByFilter) {
+            $details[] = 'ignored by filter';
+        }
+
+        if ($this->ignoredByBaseline) {
+            $details[] = 'ignored by baseline';
+        }
+
         return sprintf(
-            'Test Runner Triggered PHPUnit Deprecation (%s)',
-            $this->message,
+            'Test Runner Triggered Deprecation (%s) in %s:%d%s',
+            implode(', ', $details),
+            $this->file,
+            $this->line,
+            $message,
         );
     }
 }

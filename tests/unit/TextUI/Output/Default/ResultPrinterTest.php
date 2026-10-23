@@ -39,16 +39,16 @@ use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\Skipped as TestSkipped;
 use PHPUnit\Event\TestData\DataFromDataProvider;
 use PHPUnit\Event\TestData\TestDataCollection;
-use PHPUnit\Event\TestRunner\DeprecationTriggered as TestRunnerDeprecationTriggered;
+use PHPUnit\Event\TestRunner\DeprecationTriggered as TestRunnerIssueDeprecationTriggered;
 use PHPUnit\Event\TestRunner\ErrorTriggered as TestRunnerIssueErrorTriggered;
-use PHPUnit\Event\TestRunner\Issue\DeprecationTriggered as TestRunnerIssueDeprecationTriggered;
-use PHPUnit\Event\TestRunner\Issue\NoticeTriggered as TestRunnerIssueNoticeTriggered;
-use PHPUnit\Event\TestRunner\Issue\WarningTriggered as TestRunnerIssueWarningTriggered;
-use PHPUnit\Event\TestRunner\NoticeTriggered as TestRunnerNoticeTriggered;
+use PHPUnit\Event\TestRunner\NoticeTriggered as TestRunnerIssueNoticeTriggered;
 use PHPUnit\Event\TestRunner\PhpDeprecationTriggered as TestRunnerIssuePhpDeprecationTriggered;
 use PHPUnit\Event\TestRunner\PhpNoticeTriggered as TestRunnerIssuePhpNoticeTriggered;
+use PHPUnit\Event\TestRunner\PhpunitDeprecationTriggered as TestRunnerPhpunitDeprecationTriggered;
+use PHPUnit\Event\TestRunner\PhpunitNoticeTriggered as TestRunnerPhpunitNoticeTriggered;
+use PHPUnit\Event\TestRunner\PhpunitWarningTriggered as TestRunnerPhpunitWarningTriggered;
 use PHPUnit\Event\TestRunner\PhpWarningTriggered as TestRunnerIssuePhpWarningTriggered;
-use PHPUnit\Event\TestRunner\WarningTriggered as TestRunnerWarningTriggered;
+use PHPUnit\Event\TestRunner\WarningTriggered as TestRunnerIssueWarningTriggered;
 use PHPUnit\Event\TestSuite\Skipped as TestSuiteSkipped;
 use PHPUnit\Event\TestSuite\TestSuiteWithName;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -261,7 +261,7 @@ final class ResultPrinterTest extends TestCase
                         ],
                     ],
                     testRunnerTriggeredDeprecationEvents: [
-                        new TestRunnerDeprecationTriggered(
+                        new TestRunnerPhpunitDeprecationTriggered(
                             self::telemetryInfo(),
                             'message',
                         ),
@@ -361,7 +361,7 @@ final class ResultPrinterTest extends TestCase
                 'successful_test_and_phpunit_test_runner_notice.txt',
                 self::createTestResult(
                     testRunnerTriggeredNoticeEvents: [
-                        new TestRunnerNoticeTriggered(
+                        new TestRunnerPhpunitNoticeTriggered(
                             self::telemetryInfo(),
                             'message',
                         ),
@@ -674,11 +674,11 @@ final class ResultPrinterTest extends TestCase
                 'duplicate_test_runner_notices.txt',
                 self::createTestResult(
                     testRunnerTriggeredNoticeEvents: [
-                        new TestRunnerNoticeTriggered(
+                        new TestRunnerPhpunitNoticeTriggered(
                             self::telemetryInfo(),
                             'message',
                         ),
-                        new TestRunnerNoticeTriggered(
+                        new TestRunnerPhpunitNoticeTriggered(
                             self::telemetryInfo(),
                             'message',
                         ),
@@ -690,7 +690,7 @@ final class ResultPrinterTest extends TestCase
                 'test_runner_warning.txt',
                 self::createTestResult(
                     testRunnerTriggeredWarningEvents: [
-                        new TestRunnerWarningTriggered(
+                        new TestRunnerPhpunitWarningTriggered(
                             self::telemetryInfo(),
                             'message',
                         ),
@@ -702,11 +702,11 @@ final class ResultPrinterTest extends TestCase
                 'duplicate_test_runner_warnings.txt',
                 self::createTestResult(
                     testRunnerTriggeredWarningEvents: [
-                        new TestRunnerWarningTriggered(
+                        new TestRunnerPhpunitWarningTriggered(
                             self::telemetryInfo(),
                             'message',
                         ),
-                        new TestRunnerWarningTriggered(
+                        new TestRunnerPhpunitWarningTriggered(
                             self::telemetryInfo(),
                             'message',
                         ),
@@ -946,9 +946,9 @@ final class ResultPrinterTest extends TestCase
      * @param array<string,list<PhpunitErrorTriggered>>       $testTriggeredPhpunitErrorEvents
      * @param array<string,list<PhpunitNoticeTriggered>>      $testTriggeredPhpunitNoticeEvents
      * @param array<string,list<PhpunitWarningTriggered>>     $testTriggeredPhpunitWarningEvents
-     * @param list<TestRunnerDeprecationTriggered>            $testRunnerTriggeredDeprecationEvents
-     * @param list<TestRunnerNoticeTriggered>                 $testRunnerTriggeredNoticeEvents
-     * @param list<TestRunnerWarningTriggered>                $testRunnerTriggeredWarningEvents
+     * @param list<TestRunnerPhpunitDeprecationTriggered>     $testRunnerTriggeredDeprecationEvents
+     * @param list<TestRunnerPhpunitNoticeTriggered>          $testRunnerTriggeredNoticeEvents
+     * @param list<TestRunnerPhpunitWarningTriggered>         $testRunnerTriggeredWarningEvents
      * @param list<TestRunnerIssueDeprecationTriggered>       $testRunnerTriggeredIssueDeprecationEvents
      * @param list<TestRunnerIssueErrorTriggered>             $testRunnerTriggeredIssueErrorEvents
      * @param list<TestRunnerIssueNoticeTriggered>            $testRunnerTriggeredIssueNoticeEvents

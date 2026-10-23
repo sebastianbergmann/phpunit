@@ -9,8 +9,8 @@
  */
 namespace PHPUnit\TestRunner\TestResult;
 
-use PHPUnit\Event\TestRunner\Issue\DeprecationTriggered;
-use PHPUnit\Event\TestRunner\Issue\DeprecationTriggeredSubscriber;
+use PHPUnit\Event\TestRunner\DeprecationTriggered;
+use PHPUnit\Event\TestRunner\DeprecationTriggeredSubscriber;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit

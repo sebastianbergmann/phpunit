@@ -42,7 +42,6 @@ use PHPUnit\Event\Test\PhpunitNoticeTriggered;
 use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\WarningTriggered;
-use PHPUnit\Event\TestRunner\Issue as TestRunnerIssue;
 use PHPUnit\TestRunner\TestResult\Issues\Issue;
 use PHPUnit\TestRunner\TestResult\TestResult;
 use PHPUnit\TextUI\Output\Printer;
@@ -301,8 +300,8 @@ final class ResultPrinter
     }
 
     /**
-     * @param list<\PHPUnit\Event\TestRunner\ErrorTriggered|\PHPUnit\Event\TestRunner\PhpDeprecationTriggered|\PHPUnit\Event\TestRunner\PhpNoticeTriggered|\PHPUnit\Event\TestRunner\PhpWarningTriggered|TestRunnerIssue\DeprecationTriggered|TestRunnerIssue\NoticeTriggered|TestRunnerIssue\WarningTriggered> $events
-     * @param non-empty-string                                                                                                                                                                                                                                                                                  $type
+     * @param list<\PHPUnit\Event\TestRunner\DeprecationTriggered|\PHPUnit\Event\TestRunner\ErrorTriggered|\PHPUnit\Event\TestRunner\NoticeTriggered|\PHPUnit\Event\TestRunner\PhpDeprecationTriggered|\PHPUnit\Event\TestRunner\PhpNoticeTriggered|\PHPUnit\Event\TestRunner\PhpWarningTriggered|\PHPUnit\Event\TestRunner\WarningTriggered> $events
+     * @param non-empty-string                                                                                                                                                                                                                                                                                                                $type
      */
     private function printIssuesTriggeredOutsideOfTests(array $events, string $type): void
     {

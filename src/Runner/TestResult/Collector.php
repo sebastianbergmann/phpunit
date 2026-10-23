@@ -41,18 +41,18 @@ use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\Skipped as TestSkipped;
 use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\Event\TestRunner\ChildProcessErrored;
-use PHPUnit\Event\TestRunner\DeprecationTriggered as TestRunnerDeprecationTriggered;
+use PHPUnit\Event\TestRunner\DeprecationTriggered as TestRunnerIssueDeprecationTriggered;
 use PHPUnit\Event\TestRunner\ErrorTriggered as TestRunnerIssueErrorTriggered;
 use PHPUnit\Event\TestRunner\ExecutionStarted;
-use PHPUnit\Event\TestRunner\Issue\DeprecationTriggered as TestRunnerIssueDeprecationTriggered;
-use PHPUnit\Event\TestRunner\Issue\NoticeTriggered as TestRunnerIssueNoticeTriggered;
-use PHPUnit\Event\TestRunner\Issue\WarningTriggered as TestRunnerIssueWarningTriggered;
-use PHPUnit\Event\TestRunner\NoticeTriggered as TestRunnerNoticeTriggered;
+use PHPUnit\Event\TestRunner\NoticeTriggered as TestRunnerIssueNoticeTriggered;
 use PHPUnit\Event\TestRunner\PhpDeprecationTriggered as TestRunnerIssuePhpDeprecationTriggered;
 use PHPUnit\Event\TestRunner\PhpNoticeTriggered as TestRunnerIssuePhpNoticeTriggered;
+use PHPUnit\Event\TestRunner\PhpunitDeprecationTriggered as TestRunnerPhpunitDeprecationTriggered;
+use PHPUnit\Event\TestRunner\PhpunitNoticeTriggered as TestRunnerPhpunitNoticeTriggered;
+use PHPUnit\Event\TestRunner\PhpunitWarningTriggered as TestRunnerPhpunitWarningTriggered;
 use PHPUnit\Event\TestRunner\PhpWarningTriggered as TestRunnerIssuePhpWarningTriggered;
 use PHPUnit\Event\TestRunner\TimeLimitExceeded;
-use PHPUnit\Event\TestRunner\WarningTriggered as TestRunnerWarningTriggered;
+use PHPUnit\Event\TestRunner\WarningTriggered as TestRunnerIssueWarningTriggered;
 use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
 use PHPUnit\Event\TestSuite\Skipped as TestSuiteSkipped;
 use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
@@ -138,17 +138,17 @@ final class Collector
     private array $testTriggeredPhpunitWarningEvents = [];
 
     /**
-     * @var list<TestRunnerDeprecationTriggered>
+     * @var list<TestRunnerPhpunitDeprecationTriggered>
      */
     private array $testRunnerTriggeredDeprecationEvents = [];
 
     /**
-     * @var list<TestRunnerNoticeTriggered>
+     * @var list<TestRunnerPhpunitNoticeTriggered>
      */
     private array $testRunnerTriggeredNoticeEvents = [];
 
     /**
-     * @var list<TestRunnerWarningTriggered>
+     * @var list<TestRunnerPhpunitWarningTriggered>
      */
     private array $testRunnerTriggeredWarningEvents = [];
 
@@ -738,17 +738,17 @@ final class Collector
         $this->testTriggeredPhpunitWarningEvents[$event->test()->id()][] = $event;
     }
 
-    public function testRunnerTriggeredPhpunitDeprecation(TestRunnerDeprecationTriggered $event): void
+    public function testRunnerTriggeredPhpunitDeprecation(TestRunnerPhpunitDeprecationTriggered $event): void
     {
         $this->testRunnerTriggeredDeprecationEvents[] = $event;
     }
 
-    public function testRunnerTriggeredPhpunitNotice(TestRunnerNoticeTriggered $event): void
+    public function testRunnerTriggeredPhpunitNotice(TestRunnerPhpunitNoticeTriggered $event): void
     {
         $this->testRunnerTriggeredNoticeEvents[] = $event;
     }
 
-    public function testRunnerTriggeredPhpunitWarning(TestRunnerWarningTriggered $event): void
+    public function testRunnerTriggeredPhpunitWarning(TestRunnerPhpunitWarningTriggered $event): void
     {
         $this->testRunnerTriggeredWarningEvents[] = $event;
     }

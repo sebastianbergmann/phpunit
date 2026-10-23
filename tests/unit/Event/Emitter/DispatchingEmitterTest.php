@@ -26,8 +26,6 @@ use PHPUnit\Event\TestRunner\ChildProcessFinishedSubscriber;
 use PHPUnit\Event\TestRunner\ChildProcessReason;
 use PHPUnit\Event\TestRunner\ChildProcessStarted;
 use PHPUnit\Event\TestRunner\ChildProcessStartedSubscriber;
-use PHPUnit\Event\TestRunner\DeprecationTriggered as TestRunnerDeprecationTriggered;
-use PHPUnit\Event\TestRunner\DeprecationTriggeredSubscriber as TestRunnerDeprecationTriggeredSubscriber;
 use PHPUnit\Event\TestRunner\ExecutionAborted;
 use PHPUnit\Event\TestRunner\ExecutionAbortedSubscriber;
 use PHPUnit\Event\TestRunner\ExecutionFinished;
@@ -40,12 +38,14 @@ use PHPUnit\Event\TestRunner\GarbageCollectionEnabled;
 use PHPUnit\Event\TestRunner\GarbageCollectionEnabledSubscriber;
 use PHPUnit\Event\TestRunner\GarbageCollectionTriggered;
 use PHPUnit\Event\TestRunner\GarbageCollectionTriggeredSubscriber;
-use PHPUnit\Event\TestRunner\NoticeTriggered as TestRunnerNoticeTriggered;
-use PHPUnit\Event\TestRunner\NoticeTriggeredSubscriber as TestRunnerNoticeTriggeredSubscriber;
+use PHPUnit\Event\TestRunner\PhpunitDeprecationTriggered as TestRunnerPhpunitDeprecationTriggered;
+use PHPUnit\Event\TestRunner\PhpunitDeprecationTriggeredSubscriber as TestRunnerPhpunitDeprecationTriggeredSubscriber;
+use PHPUnit\Event\TestRunner\PhpunitNoticeTriggered as TestRunnerPhpunitNoticeTriggered;
+use PHPUnit\Event\TestRunner\PhpunitNoticeTriggeredSubscriber as TestRunnerPhpunitNoticeTriggeredSubscriber;
+use PHPUnit\Event\TestRunner\PhpunitWarningTriggered as TestRunnerPhpunitWarningTriggered;
+use PHPUnit\Event\TestRunner\PhpunitWarningTriggeredSubscriber as TestRunnerPhpunitWarningTriggeredSubscriber;
 use PHPUnit\Event\TestRunner\TimeLimitExceeded;
 use PHPUnit\Event\TestRunner\TimeLimitExceededSubscriber;
-use PHPUnit\Event\TestRunner\WarningTriggered as TestRunnerWarningTriggered;
-use PHPUnit\Event\TestRunner\WarningTriggeredSubscriber as TestRunnerWarningTriggeredSubscriber;
 use PHPUnit\Event\TestSuite\Filtered as TestSuiteFiltered;
 use PHPUnit\Event\TestSuite\FilteredSubscriber as TestSuiteFilteredSubscriber;
 use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
@@ -3264,20 +3264,20 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame(0, $event->testSuite()->count());
     }
 
-    #[TestDox('testRunnerTriggeredPhpunitDeprecation() emits TestRunner\DeprecationTriggered event')]
-    public function testTestRunnerTriggeredPhpunitDeprecationEmitsTestRunnerDeprecationTriggeredEvent(): void
+    #[TestDox('testRunnerTriggeredPhpunitDeprecation() emits TestRunner\PhpunitDeprecationTriggered event')]
+    public function testTestRunnerTriggeredPhpunitDeprecationEmitsTestRunnerPhpunitDeprecationTriggeredEvent(): void
     {
-        $subscriber = new class extends RecordingSubscriber implements TestRunnerDeprecationTriggeredSubscriber
+        $subscriber = new class extends RecordingSubscriber implements TestRunnerPhpunitDeprecationTriggeredSubscriber
         {
-            public function notify(TestRunnerDeprecationTriggered $event): void
+            public function notify(TestRunnerPhpunitDeprecationTriggered $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
-            TestRunnerDeprecationTriggeredSubscriber::class,
-            TestRunnerDeprecationTriggered::class,
+            TestRunnerPhpunitDeprecationTriggeredSubscriber::class,
+            TestRunnerPhpunitDeprecationTriggered::class,
             $subscriber,
         );
 
@@ -3296,25 +3296,25 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $event = $subscriber->lastRecordedEvent();
 
-        $this->assertInstanceOf(TestRunnerDeprecationTriggered::class, $event);
+        $this->assertInstanceOf(TestRunnerPhpunitDeprecationTriggered::class, $event);
 
         $this->assertSame($message, $event->message());
     }
 
-    #[TestDox('testRunnerTriggeredPhpunitNotice() emits TestRunner\NoticeTriggered event')]
-    public function testTestRunnerTriggeredPhpunitNoticeEmitsTestRunnerNoticeTriggeredEvent(): void
+    #[TestDox('testRunnerTriggeredPhpunitNotice() emits TestRunner\PhpunitNoticeTriggered event')]
+    public function testTestRunnerTriggeredPhpunitNoticeEmitsTestRunnerPhpunitNoticeTriggeredEvent(): void
     {
-        $subscriber = new class extends RecordingSubscriber implements TestRunnerNoticeTriggeredSubscriber
+        $subscriber = new class extends RecordingSubscriber implements TestRunnerPhpunitNoticeTriggeredSubscriber
         {
-            public function notify(TestRunnerNoticeTriggered $event): void
+            public function notify(TestRunnerPhpunitNoticeTriggered $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
-            TestRunnerNoticeTriggeredSubscriber::class,
-            TestRunnerNoticeTriggered::class,
+            TestRunnerPhpunitNoticeTriggeredSubscriber::class,
+            TestRunnerPhpunitNoticeTriggered::class,
             $subscriber,
         );
 
@@ -3333,25 +3333,25 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $event = $subscriber->lastRecordedEvent();
 
-        $this->assertInstanceOf(TestRunnerNoticeTriggered::class, $event);
+        $this->assertInstanceOf(TestRunnerPhpunitNoticeTriggered::class, $event);
 
         $this->assertSame($message, $event->message());
     }
 
-    #[TestDox('testRunnerTriggeredPhpunitWarning() emits TestRunner\WarningTriggered event')]
-    public function testTestRunnerTriggeredPhpunitWarningEmitsTestRunnerWarningTriggeredEvent(): void
+    #[TestDox('testRunnerTriggeredPhpunitWarning() emits TestRunner\PhpunitWarningTriggered event')]
+    public function testTestRunnerTriggeredPhpunitWarningEmitsTestRunnerPhpunitWarningTriggeredEvent(): void
     {
-        $subscriber = new class extends RecordingSubscriber implements TestRunnerWarningTriggeredSubscriber
+        $subscriber = new class extends RecordingSubscriber implements TestRunnerPhpunitWarningTriggeredSubscriber
         {
-            public function notify(TestRunnerWarningTriggered $event): void
+            public function notify(TestRunnerPhpunitWarningTriggered $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
-            TestRunnerWarningTriggeredSubscriber::class,
-            TestRunnerWarningTriggered::class,
+            TestRunnerPhpunitWarningTriggeredSubscriber::class,
+            TestRunnerPhpunitWarningTriggered::class,
             $subscriber,
         );
 
@@ -3370,12 +3370,12 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $event = $subscriber->lastRecordedEvent();
 
-        $this->assertInstanceOf(TestRunnerWarningTriggered::class, $event);
+        $this->assertInstanceOf(TestRunnerPhpunitWarningTriggered::class, $event);
 
         $this->assertSame($message, $event->message());
     }
 
-    #[TestDox('testRunnerTriggeredPhpNotice() emits TestRunner\Issue\PhpNoticeTriggered event')]
+    #[TestDox('testRunnerTriggeredPhpNotice() emits TestRunner\PhpNoticeTriggered event')]
     public function testTestRunnerTriggeredPhpNoticeEmitsEvent(): void
     {
         $subscriber = new class extends RecordingSubscriber implements TestRunner\PhpNoticeTriggeredSubscriber
@@ -3413,20 +3413,20 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertFalse($event->ignoredByBaseline());
     }
 
-    #[TestDox('testRunnerTriggeredNotice() emits TestRunner\Issue\NoticeTriggered event')]
+    #[TestDox('testRunnerTriggeredNotice() emits TestRunner\NoticeTriggered event')]
     public function testTestRunnerTriggeredNoticeEmitsEvent(): void
     {
-        $subscriber = new class extends RecordingSubscriber implements TestRunner\Issue\NoticeTriggeredSubscriber
+        $subscriber = new class extends RecordingSubscriber implements TestRunner\NoticeTriggeredSubscriber
         {
-            public function notify(TestRunner\Issue\NoticeTriggered $event): void
+            public function notify(TestRunner\NoticeTriggered $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
-            TestRunner\Issue\NoticeTriggeredSubscriber::class,
-            TestRunner\Issue\NoticeTriggered::class,
+            TestRunner\NoticeTriggeredSubscriber::class,
+            TestRunner\NoticeTriggered::class,
             $subscriber,
         );
 
@@ -3443,7 +3443,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $event = $subscriber->lastRecordedEvent();
 
-        $this->assertInstanceOf(TestRunner\Issue\NoticeTriggered::class, $event);
+        $this->assertInstanceOf(TestRunner\NoticeTriggered::class, $event);
         $this->assertSame('message', $event->message());
         $this->assertSame('file', $event->file());
         $this->assertSame(1, $event->line());
@@ -3451,7 +3451,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertFalse($event->ignoredByBaseline());
     }
 
-    #[TestDox('testRunnerTriggeredPhpWarning() emits TestRunner\Issue\PhpWarningTriggered event')]
+    #[TestDox('testRunnerTriggeredPhpWarning() emits TestRunner\PhpWarningTriggered event')]
     public function testTestRunnerTriggeredPhpWarningEmitsEvent(): void
     {
         $subscriber = new class extends RecordingSubscriber implements TestRunner\PhpWarningTriggeredSubscriber
@@ -3489,20 +3489,20 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertFalse($event->ignoredByBaseline());
     }
 
-    #[TestDox('testRunnerTriggeredWarning() emits TestRunner\Issue\WarningTriggered event')]
+    #[TestDox('testRunnerTriggeredWarning() emits TestRunner\WarningTriggered event')]
     public function testTestRunnerTriggeredWarningEmitsEvent(): void
     {
-        $subscriber = new class extends RecordingSubscriber implements TestRunner\Issue\WarningTriggeredSubscriber
+        $subscriber = new class extends RecordingSubscriber implements TestRunner\WarningTriggeredSubscriber
         {
-            public function notify(TestRunner\Issue\WarningTriggered $event): void
+            public function notify(TestRunner\WarningTriggered $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
-            TestRunner\Issue\WarningTriggeredSubscriber::class,
-            TestRunner\Issue\WarningTriggered::class,
+            TestRunner\WarningTriggeredSubscriber::class,
+            TestRunner\WarningTriggered::class,
             $subscriber,
         );
 
@@ -3519,7 +3519,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $event = $subscriber->lastRecordedEvent();
 
-        $this->assertInstanceOf(TestRunner\Issue\WarningTriggered::class, $event);
+        $this->assertInstanceOf(TestRunner\WarningTriggered::class, $event);
         $this->assertSame('message', $event->message());
         $this->assertSame('file', $event->file());
         $this->assertSame(1, $event->line());
@@ -3527,7 +3527,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertFalse($event->ignoredByBaseline());
     }
 
-    #[TestDox('testRunnerTriggeredPhpDeprecation() emits TestRunner\Issue\PhpDeprecationTriggered event')]
+    #[TestDox('testRunnerTriggeredPhpDeprecation() emits TestRunner\PhpDeprecationTriggered event')]
     public function testTestRunnerTriggeredPhpDeprecationEmitsEvent(): void
     {
         $subscriber = new class extends RecordingSubscriber implements TestRunner\PhpDeprecationTriggeredSubscriber
@@ -3569,20 +3569,20 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($trigger, $event->trigger());
     }
 
-    #[TestDox('testRunnerTriggeredDeprecation() emits TestRunner\Issue\DeprecationTriggered event')]
+    #[TestDox('testRunnerTriggeredDeprecation() emits TestRunner\DeprecationTriggered event')]
     public function testTestRunnerTriggeredDeprecationEmitsEvent(): void
     {
-        $subscriber = new class extends RecordingSubscriber implements TestRunner\Issue\DeprecationTriggeredSubscriber
+        $subscriber = new class extends RecordingSubscriber implements TestRunner\DeprecationTriggeredSubscriber
         {
-            public function notify(TestRunner\Issue\DeprecationTriggered $event): void
+            public function notify(TestRunner\DeprecationTriggered $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
-            TestRunner\Issue\DeprecationTriggeredSubscriber::class,
-            TestRunner\Issue\DeprecationTriggered::class,
+            TestRunner\DeprecationTriggeredSubscriber::class,
+            TestRunner\DeprecationTriggered::class,
             $subscriber,
         );
 
@@ -3601,7 +3601,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $event = $subscriber->lastRecordedEvent();
 
-        $this->assertInstanceOf(TestRunner\Issue\DeprecationTriggered::class, $event);
+        $this->assertInstanceOf(TestRunner\DeprecationTriggered::class, $event);
         $this->assertSame('message', $event->message());
         $this->assertSame('file', $event->file());
         $this->assertSame(1, $event->line());
@@ -3612,7 +3612,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame('stack trace', $event->stackTrace());
     }
 
-    #[TestDox('testRunnerTriggeredError() emits TestRunner\Issue\ErrorTriggered event')]
+    #[TestDox('testRunnerTriggeredError() emits TestRunner\ErrorTriggered event')]
     public function testTestRunnerTriggeredErrorEmitsEvent(): void
     {
         $subscriber = new class extends RecordingSubscriber implements TestRunner\ErrorTriggeredSubscriber

@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 14.0 release series are documented in this fi
 ### Changed
 
 * [#6498](https://github.com/sebastianbergmann/phpunit/issues/6498): Do not depend on `expects()` for test stub implementation
+* [#6580](https://github.com/sebastianbergmann/phpunit/issues/6580): Move/Rename events for issues triggered outside of tests
 * [#6956](https://github.com/sebastianbergmann/phpunit/issues/6956): Redesign the test reordering subsystem
 
 ### Deprecated

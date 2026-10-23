@@ -19,11 +19,13 @@ use PHPUnit\Event\Test\PhpunitDeprecationTriggered;
 use PHPUnit\Event\Test\PhpunitErrorTriggered;
 use PHPUnit\Event\Test\PhpunitNoticeTriggered;
 use PHPUnit\Event\Test\PhpunitWarningTriggered;
+use PHPUnit\Event\TestRunner\DeprecationTriggered;
 use PHPUnit\Event\TestRunner\ErrorTriggered;
-use PHPUnit\Event\TestRunner\Issue as TestRunnerIssue;
+use PHPUnit\Event\TestRunner\NoticeTriggered;
 use PHPUnit\Event\TestRunner\PhpDeprecationTriggered;
 use PHPUnit\Event\TestRunner\PhpNoticeTriggered;
 use PHPUnit\Event\TestRunner\PhpWarningTriggered;
+use PHPUnit\Event\TestRunner\WarningTriggered;
 use PHPUnit\TestRunner\TestResult\Issues\Issue;
 use PHPUnit\TestRunner\TestResult\TestResult;
 use PHPUnit\TextUI\Output\Printer;
@@ -378,7 +380,7 @@ final readonly class ResultPrinter
     }
 
     /**
-     * @param list<ErrorTriggered|PhpDeprecationTriggered|PhpNoticeTriggered|PhpWarningTriggered|TestRunnerIssue\DeprecationTriggered|TestRunnerIssue\NoticeTriggered|TestRunnerIssue\WarningTriggered> $events
+     * @param list<DeprecationTriggered|ErrorTriggered|NoticeTriggered|PhpDeprecationTriggered|PhpNoticeTriggered|PhpWarningTriggered|WarningTriggered> $events
      */
     private function printIssuesTriggeredOutsideOfTests(array $events, string $type): void
     {

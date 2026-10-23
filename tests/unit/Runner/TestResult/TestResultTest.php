@@ -13,7 +13,7 @@ use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Test\PhpDeprecationTriggered;
-use PHPUnit\Event\TestRunner\NoticeTriggered as TestRunnerNoticeTriggered;
+use PHPUnit\Event\TestRunner\PhpunitNoticeTriggered as TestRunnerPhpunitNoticeTriggered;
 use PHPUnit\Event\TestRunner\TimeLimitExceeded;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
@@ -41,7 +41,7 @@ final class TestResultTest extends AbstractEventTestCase
     public function testProvidesTestRunnerTriggeredNoticeEvents(): void
     {
         $collector = $this->collector();
-        $event     = new TestRunnerNoticeTriggered($this->telemetryInfo(), 'message');
+        $event     = new TestRunnerPhpunitNoticeTriggered($this->telemetryInfo(), 'message');
 
         $collector->testRunnerTriggeredPhpunitNotice($event);
 

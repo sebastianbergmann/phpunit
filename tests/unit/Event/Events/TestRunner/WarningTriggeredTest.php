@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event\TestRunner;
 
+use const PHP_EOL;
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
@@ -22,25 +23,58 @@ final class WarningTriggeredTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
-        $telemetryInfo = $this->telemetryInfo();
-        $message       = 'message';
+        $telemetryInfo     = $this->telemetryInfo();
+        $message           = 'message';
+        $file              = 'file';
+        $line              = 1;
+        $suppressed        = false;
+        $ignoredByBaseline = false;
 
         $event = new WarningTriggered(
             $telemetryInfo,
             $message,
+            $file,
+            $line,
+            $suppressed,
+            $ignoredByBaseline,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
         $this->assertSame($message, $event->message());
+        $this->assertSame($file, $event->file());
+        $this->assertSame($line, $event->line());
+        $this->assertFalse($event->wasSuppressed());
+        $this->assertFalse($event->ignoredByBaseline());
+        $this->assertSame('Test Runner Triggered Warning () in file:1' . PHP_EOL . 'message', $event->asString());
     }
 
-    public function testCanBeRepresentedAsString(): void
+    public function testCanBeIgnoredByBaseline(): void
     {
         $event = new WarningTriggered(
             $this->telemetryInfo(),
             'message',
+            'file',
+            1,
+            false,
+            true,
         );
 
-        $this->assertSame('Test Runner Triggered PHPUnit Warning (message)', $event->asString());
+        $this->assertTrue($event->ignoredByBaseline());
+        $this->assertSame('Test Runner Triggered Warning (ignored by baseline) in file:1' . PHP_EOL . 'message', $event->asString());
+    }
+
+    public function testCanBeSuppressed(): void
+    {
+        $event = new WarningTriggered(
+            $this->telemetryInfo(),
+            'message',
+            'file',
+            1,
+            true,
+            false,
+        );
+
+        $this->assertTrue($event->wasSuppressed());
+        $this->assertSame('Test Runner Triggered Warning (suppressed using operator) in file:1' . PHP_EOL . 'message', $event->asString());
     }
 }

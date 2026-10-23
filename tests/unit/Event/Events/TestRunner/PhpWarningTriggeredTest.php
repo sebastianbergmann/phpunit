@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event\TestRunner\Issue;
+namespace PHPUnit\Event\TestRunner;
 
 use const PHP_EOL;
 use PHPUnit\Event\AbstractEventTestCase;
@@ -15,11 +15,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 
-#[CoversClass(WarningTriggered::class)]
+#[CoversClass(PhpWarningTriggered::class)]
 #[Small]
 #[Group('event-system')]
 #[Group('event-system/events')]
-final class WarningTriggeredTest extends AbstractEventTestCase
+final class PhpWarningTriggeredTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
@@ -30,7 +30,7 @@ final class WarningTriggeredTest extends AbstractEventTestCase
         $suppressed        = false;
         $ignoredByBaseline = false;
 
-        $event = new WarningTriggered(
+        $event = new PhpWarningTriggered(
             $telemetryInfo,
             $message,
             $file,
@@ -45,12 +45,12 @@ final class WarningTriggeredTest extends AbstractEventTestCase
         $this->assertSame($line, $event->line());
         $this->assertFalse($event->wasSuppressed());
         $this->assertFalse($event->ignoredByBaseline());
-        $this->assertSame('Test Runner Triggered Warning () in file:1' . PHP_EOL . 'message', $event->asString());
+        $this->assertSame('Test Runner Triggered PHP Warning () in file:1' . PHP_EOL . 'message', $event->asString());
     }
 
     public function testCanBeIgnoredByBaseline(): void
     {
-        $event = new WarningTriggered(
+        $event = new PhpWarningTriggered(
             $this->telemetryInfo(),
             'message',
             'file',
@@ -60,12 +60,12 @@ final class WarningTriggeredTest extends AbstractEventTestCase
         );
 
         $this->assertTrue($event->ignoredByBaseline());
-        $this->assertSame('Test Runner Triggered Warning (ignored by baseline) in file:1' . PHP_EOL . 'message', $event->asString());
+        $this->assertSame('Test Runner Triggered PHP Warning (ignored by baseline) in file:1' . PHP_EOL . 'message', $event->asString());
     }
 
     public function testCanBeSuppressed(): void
     {
-        $event = new WarningTriggered(
+        $event = new PhpWarningTriggered(
             $this->telemetryInfo(),
             'message',
             'file',
@@ -75,6 +75,6 @@ final class WarningTriggeredTest extends AbstractEventTestCase
         );
 
         $this->assertTrue($event->wasSuppressed());
-        $this->assertSame('Test Runner Triggered Warning (suppressed using operator) in file:1' . PHP_EOL . 'message', $event->asString());
+        $this->assertSame('Test Runner Triggered PHP Warning (suppressed using operator) in file:1' . PHP_EOL . 'message', $event->asString());
     }
 }

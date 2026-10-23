@@ -7,16 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event\TestRunner\Issue;
+namespace PHPUnit\Event\TestRunner;
 
 use PHPUnit\Event\Subscriber;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
- * @todo This class will be moved to the PHPUnit\Event\TestRunner namespace in PHPUnit 14
  */
-interface DeprecationTriggeredSubscriber extends Subscriber
+interface PhpunitNoticeTriggeredSubscriber extends Subscriber
 {
-    public function notify(DeprecationTriggered $event): void;
+    public function notify(PhpunitNoticeTriggered $event): void;
 }

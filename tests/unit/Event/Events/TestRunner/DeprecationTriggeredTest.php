@@ -10,6 +10,7 @@
 namespace PHPUnit\Event\TestRunner;
 
 use PHPUnit\Event\AbstractEventTestCase;
+use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
@@ -22,25 +23,92 @@ final class DeprecationTriggeredTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
-        $telemetryInfo = $this->telemetryInfo();
-        $message       = 'message';
+        $telemetryInfo     = $this->telemetryInfo();
+        $message           = 'message';
+        $file              = 'file';
+        $line              = 1;
+        $suppressed        = false;
+        $ignoredByBaseline = false;
+        $ignoredByFilter   = false;
+        $trigger           = IssueTrigger::from(null, null);
+        $stackTrace        = 'stack trace';
 
         $event = new DeprecationTriggered(
             $telemetryInfo,
             $message,
+            $file,
+            $line,
+            $suppressed,
+            $ignoredByBaseline,
+            $ignoredByFilter,
+            $trigger,
+            $stackTrace,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
         $this->assertSame($message, $event->message());
+        $this->assertSame($file, $event->file());
+        $this->assertSame($line, $event->line());
+        $this->assertFalse($event->wasSuppressed());
+        $this->assertFalse($event->ignoredByBaseline());
+        $this->assertFalse($event->ignoredByFilter());
+        $this->assertSame($trigger, $event->trigger());
+        $this->assertSame($stackTrace, $event->stackTrace());
+        $this->assertStringContainsString('Test Runner Triggered Deprecation (', $event->asString());
+        $this->assertStringContainsString('in file:1', $event->asString());
     }
 
-    public function testCanBeRepresentedAsString(): void
+    public function testCanBeIgnoredByBaseline(): void
     {
         $event = new DeprecationTriggered(
             $this->telemetryInfo(),
             'message',
+            'file',
+            1,
+            false,
+            true,
+            false,
+            IssueTrigger::from(null, null),
+            'stack trace',
         );
 
-        $this->assertSame('Test Runner Triggered PHPUnit Deprecation (message)', $event->asString());
+        $this->assertTrue($event->ignoredByBaseline());
+        $this->assertStringContainsString('ignored by baseline', $event->asString());
+    }
+
+    public function testCanBeIgnoredByFilter(): void
+    {
+        $event = new DeprecationTriggered(
+            $this->telemetryInfo(),
+            'message',
+            'file',
+            1,
+            false,
+            false,
+            true,
+            IssueTrigger::from(null, null),
+            'stack trace',
+        );
+
+        $this->assertTrue($event->ignoredByFilter());
+        $this->assertStringContainsString('ignored by filter', $event->asString());
+    }
+
+    public function testCanBeSuppressed(): void
+    {
+        $event = new DeprecationTriggered(
+            $this->telemetryInfo(),
+            'message',
+            'file',
+            1,
+            true,
+            false,
+            false,
+            IssueTrigger::from(null, null),
+            'stack trace',
+        );
+
+        $this->assertTrue($event->wasSuppressed());
+        $this->assertStringContainsString('suppressed using operator', $event->asString());
     }
 }
