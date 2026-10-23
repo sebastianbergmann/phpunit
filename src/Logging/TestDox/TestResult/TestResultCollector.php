@@ -155,8 +155,7 @@ final class TestResultCollector
             return;
         }
 
-        $this->status    = TestStatus::error($event->throwable()->message());
-        $this->throwable = $event->throwable();
+        $this->updateTestStatus(TestStatus::error($event->throwable()->message()), $event->throwable());
 
         $test = $event->test();
 
@@ -171,8 +170,7 @@ final class TestResultCollector
             return;
         }
 
-        $this->status    = TestStatus::failure($event->throwable()->message());
-        $this->throwable = $event->throwable();
+        $this->updateTestStatus(TestStatus::failure($event->throwable()->message()), $event->throwable());
     }
 
     public function testPassed(Passed $event): void
@@ -205,9 +203,7 @@ final class TestResultCollector
             return;
         }
 
-        $this->updateTestStatus(TestStatus::incomplete($event->throwable()->message()));
-
-        $this->throwable = $event->throwable();
+        $this->updateTestStatus(TestStatus::incomplete($event->throwable()->message()), $event->throwable());
 
         $test = $event->test();
 
@@ -406,7 +402,7 @@ final class TestResultCollector
         );
     }
 
-    private function updateTestStatus(TestStatus $status): void
+    private function updateTestStatus(TestStatus $status, ?Throwable $throwable = null): void
     {
         if ($this->status !== null &&
             $this->status->isMoreImportantThan($status)) {
@@ -414,6 +410,10 @@ final class TestResultCollector
         }
 
         $this->status = $status;
+
+        if ($throwable !== null) {
+            $this->throwable = $throwable;
+        }
     }
 
     private function process(TestMethod $test): void
