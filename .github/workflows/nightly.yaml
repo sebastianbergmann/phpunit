@@ -111,6 +111,8 @@ jobs:
           - phpunit-branch: "13.4"
             php-version: "8.3"
           - phpunit-branch: "13.5"
+            php-version: "7.2"
+          - phpunit-branch: "13.5"
             php-version: "7.3"
           - phpunit-branch: "13.5"
             php-version: "7.4"
