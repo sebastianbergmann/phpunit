@@ -22,7 +22,6 @@ require_once __DIR__ . '/../../bootstrap.php';
 ##teamcity[testFailed name='PHPUnit\TestFixture\Issue6599\Issue6599FailedSetUpBeforeClassTest' message='assertion failure in setUpBeforeClass|nFailed asserting that false is true.' details='%sIssue6599FailedSetUpBeforeClassTest.php:%d|n' duration='%d' flowId='%d']
 ##teamcity[testFinished name='PHPUnit\TestFixture\Issue6599\Issue6599FailedSetUpBeforeClassTest' duration='%d' flowId='%d']
 ##teamcity[testSuiteFinished name='PHPUnit\TestFixture\Issue6599\Issue6599FailedSetUpBeforeClassTest' flowId='%d']
-##teamcity[testSuiteFinished name='PHPUnit\TestFixture\Issue6599\Issue6599FailedSetUpBeforeClassTest' flowId='%d']
 ##teamcity[testSuiteStarted name='PHPUnit\TestFixture\Issue6599\Issue6599FailedSetUpTest' locationHint='php_qn://%sIssue6599FailedSetUpTest.php::\PHPUnit\TestFixture\Issue6599\Issue6599FailedSetUpTest' flowId='%d']
 ##teamcity[testStarted name='testOne' locationHint='php_qn://%sIssue6599FailedSetUpTest.php::\PHPUnit\TestFixture\Issue6599\Issue6599FailedSetUpTest::testOne' flowId='%d']
 ##teamcity[testFailed name='testOne' message='assertion failure in setUp|nFailed asserting that false is true.' details='%sIssue6599FailedSetUpTest.php:%d|n' duration='%d' flowId='%d']
