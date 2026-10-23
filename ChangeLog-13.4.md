@@ -8,6 +8,7 @@ All notable changes of the PHPUnit 13.4 release series are documented in this fi
 
 * The TeamCity logger writes `testSuiteFinished` twice for a test class when one of its before-first-test methods errors or fails
 * The TestDox output shows a less important outcome of a test that has more than one outcome, for instance the failure in `tearDown()` of a test that errored
+* When the test run is interrupted by a signal while a test is run in process isolation, the result of the test is discarded and the test is counted as passed, and the TestDox output cannot be printed
 
 ## [13.4.3] - 2026-10-16
 
