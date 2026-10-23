@@ -150,6 +150,14 @@ final readonly class HookMethodInvoker
 
             $hookMethod = $reflector->getMethod($methodName);
 
+            /** @phpstan-ignore method.dynamicName */
+            $emitter->{$calledMethod}(
+                $eventTest,
+                $methodInvoked
+            );
+
+            $methodsInvoked[] = $methodInvoked;
+
             try {
                 if ($hookMethod->isStatic()) {
                     $hookMethod->invoke(null);
@@ -158,14 +166,6 @@ final readonly class HookMethodInvoker
                 }
             } catch (Throwable $t) {
             }
-
-            /** @phpstan-ignore method.dynamicName */
-            $emitter->{$calledMethod}(
-                $eventTest,
-                $methodInvoked
-            );
-
-            $methodsInvoked[] = $methodInvoked;
 
             if (isset($t)) {
                 if (!$t instanceof SkippedTest) {

@@ -854,11 +854,10 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             return true;
         }
 
-        $methods         = new HookMethods($emitter)->hookMethods($this->name)['beforeClass']->methodNamesSortedByPriority();
-        $reflector       = new ReflectionClass($this->name);
-        $calledMethods   = [];
-        $emitCalledEvent = true;
-        $result          = true;
+        $methods       = new HookMethods($emitter)->hookMethods($this->name)['beforeClass']->methodNamesSortedByPriority();
+        $reflector     = new ReflectionClass($this->name);
+        $calledMethods = [];
+        $result        = true;
 
         new RandomNumberGeneratorSeeder(ConfigurationRegistry::get())->seedFor($this->name);
 
@@ -878,25 +877,21 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                 $missingRequirements = new Requirements($emitter)->requirementsNotSatisfiedFor($this->name, $method);
 
                 if ($missingRequirements !== []) {
-                    $emitCalledEvent = false;
-
                     $this->markTestSuiteSkipped(implode("\n", $missingRequirements));
                 }
 
-                /** @var callable $callback */
-                $callback = [$this->name, $method];
-
-                call_user_func($callback);
-            } catch (Throwable $t) {
-            }
-
-            if ($emitCalledEvent) {
                 $emitter->beforeFirstTestMethodCalled(
                     $this->name,
                     $calledMethod,
                 );
 
                 $calledMethods[] = $calledMethod;
+
+                /** @var callable $callback */
+                $callback = [$this->name, $method];
+
+                call_user_func($callback);
+            } catch (Throwable $t) {
             }
 
             if (isset($t) && $t instanceof SkippedTest) {
@@ -1022,6 +1017,13 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
 
             $t = null;
 
+            $emitter->afterLastTestMethodCalled(
+                $this->name,
+                $calledMethod,
+            );
+
+            $calledMethods[] = $calledMethod;
+
             try {
                 /** @var callable $callback */
                 $callback = [$this->name, $method];
@@ -1029,13 +1031,6 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                 call_user_func($callback);
             } catch (Throwable $t) {
             }
-
-            $emitter->afterLastTestMethodCalled(
-                $this->name,
-                $calledMethod,
-            );
-
-            $calledMethods[] = $calledMethod;
 
             if (isset($t)) {
                 if ($t instanceof AssertionFailedError) {

@@ -19,6 +19,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\HookMethod;
 use PHPUnit\Runner\HookMethodCollection;
 use PHPUnit\TestFixture\HookFixture;
+use PHPUnit\TestFixture\HookInvocationRecordingFixture;
 use PHPUnit\TestFixture\StaticHookFixture;
 
 #[CoversClass(HookMethodInvoker::class)]
@@ -60,6 +61,40 @@ final class HookMethodInvokerTest extends TestCase
             ),
             $emitter,
         );
+    }
+
+    public function testEmitsCalledBeforeHookIsInvoked(): void
+    {
+        $test                               = new HookInvocationRecordingFixture('testOne');
+        $hookWasInvokedWhenCalledWasEmitted = null;
+
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter
+            ->expects($this->once())
+            ->method('beforeTestMethodCalled')
+            ->willReturnCallback(
+                static function () use ($test, &$hookWasInvokedWhenCalledWasEmitted): void
+                {
+                    $hookWasInvokedWhenCalledWasEmitted = $test->hookWasInvoked;
+                },
+            );
+
+        $emitter
+            ->expects($this->once())
+            ->method('beforeTestMethodFinished')
+            ->seal();
+
+        HookMethodInvoker::invokeBeforeTest(
+            $test,
+            $this->hookMethods(
+                HookMethodCollection::defaultBefore()->add(new HookMethod('recordingHook', 100)),
+            ),
+            $emitter,
+        );
+
+        $this->assertFalse($hookWasInvokedWhenCalledWasEmitted);
+        $this->assertTrue($test->hookWasInvoked);
     }
 
     public function testEmitsCalledErroredAndFinishedAndRethrowsForUnexpectedException(): void
