@@ -134,6 +134,38 @@ final class TestResultCollectorTest extends TestCase
         $this->assertTrue($results[0]->status()->isError());
     }
 
+    public function test_Test_method_that_errors_and_then_fails_is_recorded_with_the_error(): void
+    {
+        $collector = $this->collector();
+        $test      = $this->testMethod('testOne');
+        $throwable = $this->throwable('error message');
+
+        $collector->testPreparationStarted(new PreparationStarted($this->telemetryInfo(), $test));
+        $collector->testErrored(new Errored($this->telemetryInfo(), $test, $throwable));
+        $collector->testFailed(new Failed($this->telemetryInfo(), $test, $this->throwable('failure message'), null));
+        $collector->testFinished(new Finished($this->telemetryInfo(), $test, 1));
+
+        $first = $collector->testMethodsGroupedByClass()[TestDoxTest::class]->asArray()[0];
+        $this->assertTrue($first->status()->isError());
+        $this->assertSame($throwable, $first->throwable());
+    }
+
+    public function test_Test_method_that_fails_and_is_then_marked_incomplete_is_recorded_with_the_failure(): void
+    {
+        $collector = $this->collector();
+        $test      = $this->testMethod('testOne');
+        $throwable = $this->throwable('failure message');
+
+        $collector->testPreparationStarted(new PreparationStarted($this->telemetryInfo(), $test));
+        $collector->testFailed(new Failed($this->telemetryInfo(), $test, $throwable, null));
+        $collector->testMarkedIncomplete(new MarkedIncomplete($this->telemetryInfo(), $test, $this->throwable('incomplete message')));
+        $collector->testFinished(new Finished($this->telemetryInfo(), $test, 1));
+
+        $first = $collector->testMethodsGroupedByClass()[TestDoxTest::class]->asArray()[0];
+        $this->assertTrue($first->status()->isFailure());
+        $this->assertSame($throwable, $first->throwable());
+    }
+
     public function test_Skipped_marked_incomplete_and_risky_test_methods_are_recorded_with_their_status(): void
     {
         $collector = $this->collector();
