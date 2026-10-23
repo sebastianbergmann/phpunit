@@ -9,6 +9,8 @@ All notable changes of the PHPUnit 14.0 release series are documented in this fi
 * [#6498](https://github.com/sebastianbergmann/phpunit/issues/6498): Do not depend on `expects()` for test stub implementation
 * [#6580](https://github.com/sebastianbergmann/phpunit/issues/6580): Move/Rename events for issues triggered outside of tests
 * [#6956](https://github.com/sebastianbergmann/phpunit/issues/6956): Redesign the test reordering subsystem
+* [#7004](https://github.com/sebastianbergmann/phpunit/issues/7004): Guarantee that tests, test suites, and hook methods are bracketed by events
+* A test that runs another test, for instance by calling `run()` on a `TestCase` object, now errors
 
 ### Deprecated
 
@@ -28,5 +30,10 @@ All notable changes of the PHPUnit 14.0 release series are documented in this fi
 * `cacheResult` XML configuration attribute, use `recordTestRunHistory` instead
 * `PHPUnit\TextUI\Configuration\Configuration::cacheResult()`, use `PHPUnit\TextUI\Configuration\Configuration::recordTestRunHistory()` instead
 * `PHPUnit\TextUI\Configuration\Configuration::testResultCacheFile()`, use `PHPUnit\TextUI\Configuration\Configuration::testRunHistoryFile()` instead
+
+### Fixed
+
+* A test that is skipped in a before-test method and errors in an after-test method is counted twice
+* Output that a test printed before it was skipped in a before-test method is missing from the JUnit XML logfile
 
 [14.0.0]: https://github.com/sebastianbergmann/phpunit/compare/13.5...main
