@@ -404,13 +404,6 @@ final class TeamCityLogger
             ],
         );
 
-        $this->writeMessage(
-            'testSuiteFinished',
-            [
-                'name' => $name,
-            ],
-        );
-
         $this->time = null;
     }
 
