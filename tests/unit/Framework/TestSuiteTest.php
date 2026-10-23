@@ -15,6 +15,7 @@ use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\TestFixture\AbstractTestCase;
+use PHPUnit\TestFixture\BeforeFirstTestMethodInvocationRecordingTest;
 use PHPUnit\TestFixture\DependencyFailureTest;
 use PHPUnit\TestFixture\DependencyOnClassTest;
 use PHPUnit\TestFixture\DependencySuccessTest;
@@ -22,6 +23,7 @@ use PHPUnit\TestFixture\MultiDependencyTest;
 use PHPUnit\TestFixture\NoTestCase;
 use PHPUnit\TestFixture\NotPublicTestCase;
 use ReflectionClass;
+use RuntimeException;
 
 #[CoversClass(TestSuite::class)]
 #[Small]
@@ -187,5 +189,35 @@ final class TestSuiteTest extends TestCase
         $this->expectException(Exception::class);
 
         $suite->addTestSuite(new ReflectionClass(NoTestCase::class));
+    }
+
+    public function testDoesNotAttributeThrowableFromEmittingCalledEventToBeforeFirstTestMethod(): void
+    {
+        $exception = new RuntimeException;
+        $emitter   = $this->createMock(Emitter::class);
+
+        $emitter
+            ->expects($this->once())
+            ->method('beforeFirstTestMethodCalled')
+            ->willThrowException($exception);
+
+        $emitter
+            ->expects($this->never())
+            ->method('beforeFirstTestMethodErrored');
+
+        $emitter
+            ->expects($this->never())
+            ->method('beforeFirstTestMethodFailed');
+
+        $suite  = TestSuite::fromClassReflector(new ReflectionClass(BeforeFirstTestMethodInvocationRecordingTest::class), $emitter);
+        $thrown = null;
+
+        try {
+            $suite->run();
+        } catch (RuntimeException $thrown) {
+        }
+
+        $this->assertSame($exception, $thrown);
+        $this->assertFalse(BeforeFirstTestMethodInvocationRecordingTest::$beforeFirstTestMethodWasInvoked);
     }
 }

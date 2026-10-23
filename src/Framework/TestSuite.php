@@ -872,22 +872,25 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                 $method,
             );
 
+            $missingRequirements = new Requirements($emitter)->requirementsNotSatisfiedFor($this->name, $method);
+
+            if ($missingRequirements !== []) {
+                $skippedMessage = implode("\n", $missingRequirements);
+                $result         = false;
+
+                break;
+            }
+
+            $emitter->beforeFirstTestMethodCalled(
+                $this->name,
+                $calledMethod,
+            );
+
+            $calledMethods[] = $calledMethod;
+
             $t = null;
 
             try {
-                $missingRequirements = new Requirements($emitter)->requirementsNotSatisfiedFor($this->name, $method);
-
-                if ($missingRequirements !== []) {
-                    $this->markTestSuiteSkipped(implode("\n", $missingRequirements));
-                }
-
-                $emitter->beforeFirstTestMethodCalled(
-                    $this->name,
-                    $calledMethod,
-                );
-
-                $calledMethods[] = $calledMethod;
-
                 /** @var callable $callback */
                 $callback = [$this->name, $method];
 
