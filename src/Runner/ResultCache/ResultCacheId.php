@@ -21,6 +21,8 @@ use PHPUnit\Framework\TestCase;
  */
 final readonly class ResultCacheId
 {
+    private string $id;
+
     public static function fromTest(Test $test): self
     {
         if ($test instanceof TestMethod) {
@@ -45,9 +47,9 @@ final readonly class ResultCacheId
         return new self($class . '::' . $methodName);
     }
 
-    private function __construct(
-        private string $id,
-    ) {
+    private function __construct(string $id)
+    {
+        $this->id = $id;
     }
 
     public function asString(): string
