@@ -22,8 +22,6 @@ $finder = PhpCsFixer\Finder::create()
     ->notName('Issue5795Test.php')
     // Hook methods that should be protected must be public in TestAttributeOnHookMethodsTest.php
     ->notName('TestAttributeOnHookMethodsTest.php')
-    // InvokableConstraintAndPipeOperatorTest.php uses PHP 8.5 syntax
-    ->notName('InvokableConstraintAndPipeOperatorTest.php')
     // TestDoubleAndPartialFunctionApplicationTest.php uses PHP 8.6 syntax
     ->notName('TestDoubleAndPartialFunctionApplicationTest.php')
     // NoReturnTypeTest.php, RepeatAttributeWithoutReturnTypeTest.php, and RetryAttributeWithoutReturnTypeTest.php must have a method without a return type declaration
