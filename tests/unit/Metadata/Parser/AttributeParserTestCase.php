@@ -15,7 +15,9 @@ use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\DependsOnClass;
 use PHPUnit\Metadata\DependsOnMethod;
+use PHPUnit\Metadata\Group;
 use PHPUnit\Metadata\InvalidAttribute;
+use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Repeat;
 use PHPUnit\Metadata\RequiresEnvironmentVariable;
 use PHPUnit\Metadata\RequiresPhp;
@@ -27,6 +29,8 @@ use PHPUnit\Metadata\Retry;
 use PHPUnit\Metadata\Version\ComparisonRequirement;
 use PHPUnit\Metadata\Version\ConstraintRequirement;
 use PHPUnit\Metadata\WithEnvironmentVariable;
+use PHPUnit\TestFixture\Metadata\Attribute\AbstractParentWithInvalidGroupAttributeTestCase;
+use PHPUnit\TestFixture\Metadata\Attribute\AbstractParentWithSmallAndMediumTestCase;
 use PHPUnit\TestFixture\Metadata\Attribute\AllowMockObjectsWithoutExpectationsOnClassTest;
 use PHPUnit\TestFixture\Metadata\Attribute\AllowMockObjectsWithoutExpectationsOnMethodTest;
 use PHPUnit\TestFixture\Metadata\Attribute\AnotherTest;
@@ -44,6 +48,8 @@ use PHPUnit\TestFixture\Metadata\Attribute\DuplicateSmallAttributeTest;
 use PHPUnit\TestFixture\Metadata\Attribute\DuplicateTestAttributeTest;
 use PHPUnit\TestFixture\Metadata\Attribute\Example;
 use PHPUnit\TestFixture\Metadata\Attribute\ExampleTrait;
+use PHPUnit\TestFixture\Metadata\Attribute\ExtendsParentWithInvalidGroupAttributeTest;
+use PHPUnit\TestFixture\Metadata\Attribute\FirstExtendsParentWithSmallAndMediumTest;
 use PHPUnit\TestFixture\Metadata\Attribute\GroupNameThatCannotBeSelectedTest;
 use PHPUnit\TestFixture\Metadata\Attribute\GroupTest;
 use PHPUnit\TestFixture\Metadata\Attribute\IgnoreDeprecationsClassTest;
@@ -51,6 +57,8 @@ use PHPUnit\TestFixture\Metadata\Attribute\IgnoreDeprecationsMethodTest;
 use PHPUnit\TestFixture\Metadata\Attribute\IgnorePhpunitDeprecationsClassTest;
 use PHPUnit\TestFixture\Metadata\Attribute\IgnorePhpunitDeprecationsMethodTest;
 use PHPUnit\TestFixture\Metadata\Attribute\IgnorePhpunitWarningsTest;
+use PHPUnit\TestFixture\Metadata\Attribute\InheritsGroupAttributesAndDeclaresSizeTest;
+use PHPUnit\TestFixture\Metadata\Attribute\InheritsGroupAttributesTest;
 use PHPUnit\TestFixture\Metadata\Attribute\InvalidRepeatTest;
 use PHPUnit\TestFixture\Metadata\Attribute\InvalidRetryTest;
 use PHPUnit\TestFixture\Metadata\Attribute\LargeTest;
@@ -72,6 +80,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\RequiresPhpunitExtensionTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresPhpunitTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresSettingTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RetryTest;
+use PHPUnit\TestFixture\Metadata\Attribute\SecondExtendsParentWithSmallAndMediumTest;
 use PHPUnit\TestFixture\Metadata\Attribute\SizeAsGroupNameTest;
 use PHPUnit\TestFixture\Metadata\Attribute\SmallAndMediumTest;
 use PHPUnit\TestFixture\Metadata\Attribute\SmallTest;
@@ -1450,6 +1459,71 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertSame('one+two', $metadata->asArray()[0]->groupName());
     }
 
+    public function testInheritsGroupsFromParentClassesOfTestClass(): void
+    {
+        $this->assertSame(
+            ['test', 'parent', '1234', 'small', 'grandparent'],
+            $this->groupNamesOf($this->parser()->forClass(InheritsGroupAttributesTest::class)),
+        );
+    }
+
+    public function testSizeDeclaredOnParentClassOverridesSizeDeclaredOnGrandparentClass(): void
+    {
+        $groups = $this->groupNamesOf($this->parser()->forClass(InheritsGroupAttributesTest::class));
+
+        $this->assertContains('small', $groups);
+        $this->assertNotContains('medium', $groups);
+    }
+
+    public function testSizeDeclaredOnTestClassOverridesSizeDeclaredOnParentClasses(): void
+    {
+        $groups = $this->groupNamesOf($this->parser()->forClass(InheritsGroupAttributesAndDeclaresSizeTest::class));
+
+        $this->assertContains('large', $groups);
+        $this->assertNotContains('small', $groups);
+        $this->assertNotContains('medium', $groups);
+    }
+
+    public function testGroupDeclaredOnTestClassAndOnParentClassIsListedOnce(): void
+    {
+        $this->assertSame(
+            ['parent', 'large', '1234', 'grandparent'],
+            $this->groupNamesOf($this->parser()->forClass(InheritsGroupAttributesAndDeclaresSizeTest::class)),
+        );
+    }
+
+    public function testWarnsOnlyOnceAboutGroupAttributesOnParentClassOfSeveralTestClasses(): void
+    {
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter
+            ->expects($this->once())
+            ->method('testRunnerTriggeredPhpunitWarning')
+            ->with('#[Medium] cannot be combined with #[Small] or #[Large] for class ' . AbstractParentWithSmallAndMediumTestCase::class)
+            ->seal();
+
+        $parser = $this->parserWithEmitter($emitter);
+
+        $this->assertSame(['small'], $this->groupNamesOf($parser->forClass(FirstExtendsParentWithSmallAndMediumTest::class)));
+        $this->assertSame(['small'], $this->groupNamesOf($parser->forClass(SecondExtendsParentWithSmallAndMediumTest::class)));
+    }
+
+    public function testRecordsInvalidAttributeMetadataWhenGroupAttributeOnParentClassCannotBeInstantiated(): void
+    {
+        $metadata = $this->parser()->forClass(ExtendsParentWithInvalidGroupAttributeTest::class)->isInvalidAttribute();
+
+        $this->assertCount(1, $metadata);
+
+        $invalidAttribute = $metadata->asArray()[0];
+
+        assert($invalidAttribute instanceof InvalidAttribute);
+
+        $this->assertStringContainsString(
+            'Invalid attribute PHPUnit\Framework\Attributes\Group for class ' . AbstractParentWithInvalidGroupAttributeTestCase::class,
+            $invalidAttribute->message(),
+        );
+    }
+
     public function testWarnsWhenNumberOfRepetitionsIsNotPositive(): void
     {
         $emitter = $this->createMock(Emitter::class);
@@ -1520,5 +1594,21 @@ abstract class AttributeParserTestCase extends TestCase
     final protected function parser(): Parser
     {
         return $this->parserWithEmitter($this->createStub(Emitter::class));
+    }
+
+    /**
+     * @return list<non-empty-string>
+     */
+    private function groupNamesOf(MetadataCollection $metadata): array
+    {
+        $groupNames = [];
+
+        foreach ($metadata->isGroup() as $group) {
+            assert($group instanceof Group);
+
+            $groupNames[] = $group->groupName();
+        }
+
+        return $groupNames;
     }
 }

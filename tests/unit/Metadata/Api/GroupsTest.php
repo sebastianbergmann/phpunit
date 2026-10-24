@@ -16,6 +16,8 @@ use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\LargeGroupAttributesTest;
 use PHPUnit\TestFixture\MediumGroupAttributesTest;
+use PHPUnit\TestFixture\Metadata\Attribute\InheritsGroupAttributesAndDeclaresSizeTest;
+use PHPUnit\TestFixture\Metadata\Attribute\InheritsGroupAttributesTest;
 use PHPUnit\TestFixture\NoGroupsMetadataTest;
 use PHPUnit\TestFixture\SmallGroupAnnotationsTest;
 use PHPUnit\TestFixture\SmallGroupAttributesTest;
@@ -131,5 +133,11 @@ final class GroupsTest extends TestCase
         $this->assertTrue((new Groups)->size(MediumGroupAttributesTest::class, 'testOne')->isMedium());
         $this->assertTrue((new Groups)->size(LargeGroupAttributesTest::class, 'testOne')->isLarge());
         $this->assertTrue((new Groups)->size(NoGroupsMetadataTest::class, 'testOne')->isUnknown());
+    }
+
+    public function testAssignsSizeDeclaredByNearestClassThatDeclaresOne(): void
+    {
+        $this->assertTrue((new Groups)->size(InheritsGroupAttributesTest::class, 'testOne')->isSmall());
+        $this->assertTrue((new Groups)->size(InheritsGroupAttributesAndDeclaresSizeTest::class, 'testOne')->isLarge());
     }
 }

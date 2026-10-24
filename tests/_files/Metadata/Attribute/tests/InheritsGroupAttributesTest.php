@@ -7,20 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TestFixture\GroupAttributesOnParentClass;
+namespace PHPUnit\TestFixture\Metadata\Attribute;
 
 use PHPUnit\Framework\Attributes\Group;
-use PHPUnit\Framework\TestCase;
 
-#[Group]
-abstract class AbstractParentWithInvalidGroupAttributeTestCase extends TestCase
-{
-}
-
-final class InvalidGroupAttributeOnParentTest extends AbstractParentWithInvalidGroupAttributeTestCase
+#[Group('test')]
+final class InheritsGroupAttributesTest extends AbstractParentWithGroupAttributesTestCase
 {
     public function testOne(): void
     {
-        $this->assertTrue(true);
     }
 }
