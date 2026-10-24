@@ -734,7 +734,6 @@ abstract class AttributeParserTestCase extends TestCase
     }
 
     #[TestDox('Parses #[DataProviderClosure] attribute on method')]
-    #[\PHPUnit\Framework\Attributes\RequiresPhp('^8.5')]
     public function test_parses_DataProviderClosure_attribute_on_method(): void
     {
         $metadata = $this->parser()->forMethod(DataProviderClosureTest::class, 'testOne')->isDataProviderClosure();

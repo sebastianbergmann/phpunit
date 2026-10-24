@@ -1,10 +1,5 @@
 --TEST--
 https://github.com/sebastianbergmann/phpunit/issues/6354
---SKIPIF--
-<?php declare(strict_types=1);
-if (version_compare('8.5.0-dev', PHP_VERSION, '>')) {
-    print 'skip: PHP 8.5 is required.';
-}
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-record-test-run-history';
