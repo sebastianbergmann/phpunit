@@ -11,8 +11,11 @@ namespace PHPUnit\TestFixture\MockObject;
 
 readonly class ReadonlyClass
 {
-    public function __construct(private mixed $value)
+    private mixed $value;
+
+    public function __construct(mixed $value)
     {
+        $this->value = $value;
     }
 
     public function value(): mixed
