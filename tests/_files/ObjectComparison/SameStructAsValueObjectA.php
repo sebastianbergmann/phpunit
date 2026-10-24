@@ -11,7 +11,10 @@ namespace PHPUnit\TestFixture\ObjectComparison;
 
 final class SameStructAsValueObjectA
 {
-    public function __construct(public mixed $value)
+    public mixed $value;
+
+    public function __construct(mixed $value)
     {
+        $this->value = $value;
     }
 }
