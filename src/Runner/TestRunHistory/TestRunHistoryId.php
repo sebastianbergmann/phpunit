@@ -20,6 +20,8 @@ use PHPUnit\Framework\TestCase;
  */
 final readonly class TestRunHistoryId
 {
+    private string $id;
+
     public static function fromTest(Test $test): self
     {
         return new self($test->sortId());
@@ -40,9 +42,9 @@ final readonly class TestRunHistoryId
         return new self($class . '::' . $methodName);
     }
 
-    private function __construct(
-        private string $id,
-    ) {
+    private function __construct(string $id)
+    {
+        $this->id = $id;
     }
 
     public function asString(): string
