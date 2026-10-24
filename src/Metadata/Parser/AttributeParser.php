@@ -10,6 +10,7 @@
 namespace PHPUnit\Metadata\Parser;
 
 use const JSON_THROW_ON_ERROR;
+use function array_merge;
 use function assert;
 use function class_exists;
 use function is_numeric;
@@ -101,6 +102,7 @@ use PHPUnit\Framework\Attributes\WithEnvironmentVariable;
 use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Group as GroupMetadata;
+use PHPUnit\Metadata\InvalidAttribute;
 use PHPUnit\Metadata\InvalidVersionRequirementException;
 use PHPUnit\Metadata\Metadata;
 use PHPUnit\Metadata\MetadataCollection;
@@ -154,10 +156,6 @@ final class AttributeParser implements Parser
         $reflector = new ReflectionClass($className);
         $result    = [];
 
-        $small  = false;
-        $medium = false;
-        $large  = false;
-
         foreach ($reflector->getAttributes() as $attribute) {
             if (!str_starts_with($attribute->getName(), 'PHPUnit\\Framework\\Attributes\\')) {
                 continue;
@@ -167,26 +165,14 @@ final class AttributeParser implements Parser
                 continue;
             }
 
+            if (isset(self::GROUP_ATTRIBUTES[$attribute->getName()])) {
+                continue;
+            }
+
             try {
                 $attributeInstance = $attribute->newInstance();
             } catch (Error $e) {
-                $file    = $reflector->getFileName();
-                $line    = $reflector->getStartLine();
-                $message = $e->getMessage();
-
-                assert($file !== false && $file !== '');
-                assert($line !== false);
-                assert($message !== '');
-
-                $result[] = Metadata::invalidAttributeOnClass(
-                    $this->invalidAttributeMessage(
-                        $attribute->getName(),
-                        'class ' . $className,
-                        $file,
-                        $line,
-                        $message,
-                    ),
-                );
+                $result[] = $this->invalidAttributeOnClass($reflector, $attribute, $e);
 
                 continue;
             }
@@ -315,65 +301,6 @@ final class AttributeParser implements Parser
                         $attributeInstance->className(),
                         $attributeInstance->propertyName(),
                     );
-
-                    break;
-
-                case Group::class:
-                    assert($attributeInstance instanceof Group);
-
-                    if (!$this->isSizeGroup($attributeInstance->name(), $className)) {
-                        $this->warnAboutGroupNameThatCannotBeSelected($attributeInstance->name(), $className);
-
-                        $result[] = Metadata::groupOnClass($attributeInstance->name());
-                    }
-
-                    break;
-
-                case Small::class:
-                    if (!$medium && !$large) {
-                        $result[] = Metadata::groupOnClass('small');
-
-                        $small = true;
-                    } else {
-                        $this->emitter->testRunnerTriggeredPhpunitWarning(
-                            sprintf(
-                                '#[Small] cannot be combined with #[Medium] or #[Large] for %s',
-                                $this->testAsString($className),
-                            ),
-                        );
-                    }
-
-                    break;
-
-                case Medium::class:
-                    if (!$small && !$large) {
-                        $result[] = Metadata::groupOnClass('medium');
-
-                        $medium = true;
-                    } else {
-                        $this->emitter->testRunnerTriggeredPhpunitWarning(
-                            sprintf(
-                                '#[Medium] cannot be combined with #[Small] or #[Large] for %s',
-                                $this->testAsString($className),
-                            ),
-                        );
-                    }
-
-                    break;
-
-                case Large::class:
-                    if (!$small && !$medium) {
-                        $result[] = Metadata::groupOnClass('large');
-
-                        $large = true;
-                    } else {
-                        $this->emitter->testRunnerTriggeredPhpunitWarning(
-                            sprintf(
-                                '#[Large] cannot be combined with #[Small] or #[Medium] for %s',
-                                $this->testAsString($className),
-                            ),
-                        );
-                    }
 
                     break;
 
@@ -538,13 +465,6 @@ final class AttributeParser implements Parser
 
                     break;
 
-                case Ticket::class:
-                    assert($attributeInstance instanceof Ticket);
-
-                    $result[] = Metadata::groupOnClass($attributeInstance->text());
-
-                    break;
-
                 case UsesNamespace::class:
                     assert($attributeInstance instanceof UsesNamespace);
 
@@ -620,7 +540,9 @@ final class AttributeParser implements Parser
             }
         }
 
-        $metadata = MetadataCollection::fromArray($result);
+        $metadata = MetadataCollection::fromArray(
+            array_merge($result, $this->groupsDeclaredOn($reflector)),
+        );
 
         $this->deprecateGroupAttributesOnParentClassesOf($reflector, $metadata);
 
@@ -1162,6 +1084,105 @@ final class AttributeParser implements Parser
     }
 
     /**
+     * @param ReflectionClass<object> $class
+     *
+     * @return list<Metadata>
+     */
+    private function groupsDeclaredOn(ReflectionClass $class): array
+    {
+        $className = $class->getName();
+        $result    = [];
+
+        $small  = false;
+        $medium = false;
+        $large  = false;
+
+        foreach ($class->getAttributes() as $attribute) {
+            if (!isset(self::GROUP_ATTRIBUTES[$attribute->getName()])) {
+                continue;
+            }
+
+            try {
+                $attributeInstance = $attribute->newInstance();
+            } catch (Error $e) {
+                $result[] = $this->invalidAttributeOnClass($class, $attribute, $e);
+
+                continue;
+            }
+
+            switch ($attribute->getName()) {
+                case Group::class:
+                    assert($attributeInstance instanceof Group);
+
+                    if (!$this->isSizeGroup($attributeInstance->name(), $className)) {
+                        $this->warnAboutGroupNameThatCannotBeSelected($attributeInstance->name(), $className);
+
+                        $result[] = Metadata::groupOnClass($attributeInstance->name());
+                    }
+
+                    break;
+
+                case Small::class:
+                    if (!$medium && !$large) {
+                        $result[] = Metadata::groupOnClass('small');
+
+                        $small = true;
+                    } else {
+                        $this->emitter->testRunnerTriggeredPhpunitWarning(
+                            sprintf(
+                                '#[Small] cannot be combined with #[Medium] or #[Large] for %s',
+                                $this->testAsString($className),
+                            ),
+                        );
+                    }
+
+                    break;
+
+                case Medium::class:
+                    if (!$small && !$large) {
+                        $result[] = Metadata::groupOnClass('medium');
+
+                        $medium = true;
+                    } else {
+                        $this->emitter->testRunnerTriggeredPhpunitWarning(
+                            sprintf(
+                                '#[Medium] cannot be combined with #[Small] or #[Large] for %s',
+                                $this->testAsString($className),
+                            ),
+                        );
+                    }
+
+                    break;
+
+                case Large::class:
+                    if (!$small && !$medium) {
+                        $result[] = Metadata::groupOnClass('large');
+
+                        $large = true;
+                    } else {
+                        $this->emitter->testRunnerTriggeredPhpunitWarning(
+                            sprintf(
+                                '#[Large] cannot be combined with #[Small] or #[Medium] for %s',
+                                $this->testAsString($className),
+                            ),
+                        );
+                    }
+
+                    break;
+
+                case Ticket::class:
+                    assert($attributeInstance instanceof Ticket);
+
+                    $result[] = Metadata::groupOnClass($attributeInstance->text());
+
+                    break;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * @param non-empty-string  $groupName
      * @param class-string      $testClassName
      * @param ?non-empty-string $testMethodName
@@ -1356,6 +1377,31 @@ final class AttributeParser implements Parser
                 ),
             );
         }
+    }
+
+    /**
+     * @param ReflectionClass<object>     $class
+     * @param ReflectionAttribute<object> $attribute
+     */
+    private function invalidAttributeOnClass(ReflectionClass $class, ReflectionAttribute $attribute, Error $e): InvalidAttribute
+    {
+        $file    = $class->getFileName();
+        $line    = $class->getStartLine();
+        $message = $e->getMessage();
+
+        assert($file !== false && $file !== '');
+        assert($line !== false);
+        assert($message !== '');
+
+        return Metadata::invalidAttributeOnClass(
+            $this->invalidAttributeMessage(
+                $attribute->getName(),
+                'class ' . $class->getName(),
+                $file,
+                $line,
+                $message,
+            ),
+        );
     }
 
     /**
