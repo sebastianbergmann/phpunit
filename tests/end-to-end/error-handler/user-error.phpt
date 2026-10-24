@@ -1,10 +1,5 @@
 --TEST--
-E_USER_ERROR emits Test Triggered Error event and aborts test with ErrorException
---SKIPIF--
-<?php declare(strict_types=1);
-if (version_compare(PHP_VERSION, '8.4.0-dev', '>=')) {
-    print 'skip: PHP < 8.4 is required.';
-}
+E_USER_ERROR emits PHP Deprecation then Error event
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-record-test-run-history';
@@ -26,6 +21,8 @@ Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\ErrorHandler\UserErrorTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\ErrorHandler\UserErrorTest::testUserError)
 Test Prepared (PHPUnit\TestFixture\ErrorHandler\UserErrorTest::testUserError)
+Test Triggered PHP Deprecation (PHPUnit\TestFixture\ErrorHandler\UserErrorTest::testUserError, unknown if issue was triggered in first-party code or third-party code) in %s:%d
+Passing E_USER_ERROR to trigger_error() is deprecated since 8.4, throw an exception or call exit with a string message instead
 Test Triggered Error (PHPUnit\TestFixture\ErrorHandler\UserErrorTest::testUserError) in %s:%d
 error message
 Test Errored (PHPUnit\TestFixture\ErrorHandler\UserErrorTest::testUserError)
