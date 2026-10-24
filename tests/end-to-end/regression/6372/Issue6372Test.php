@@ -21,8 +21,11 @@ class Foo6372
 
 class Bar6372
 {
-    public function __construct(private readonly Foo6372 $foo)
+    private readonly Foo6372 $foo;
+
+    public function __construct(Foo6372 $foo)
     {
+        $this->foo = $foo;
     }
 
     public function doBar(string $param): void

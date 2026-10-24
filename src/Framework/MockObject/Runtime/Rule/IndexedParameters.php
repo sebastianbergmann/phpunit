@@ -20,6 +20,8 @@ use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
  */
 final class IndexedParameters implements ParametersRule
 {
+    private int $index;
+    private bool $strict;
     private Parameters $parameters;
 
     /**
@@ -27,8 +29,10 @@ final class IndexedParameters implements ParametersRule
      *
      * @throws \PHPUnit\Framework\Exception
      */
-    public function __construct(array $parameters, private int $index, private bool $strict)
+    public function __construct(array $parameters, int $index, bool $strict)
     {
+        $this->index      = $index;
+        $this->strict     = $strict;
         $this->parameters = new Parameters($parameters);
     }
 
