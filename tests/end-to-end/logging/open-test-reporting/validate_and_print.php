@@ -11,6 +11,7 @@ namespace PHPUnit\TestFixture;
 
 use const PHP_EOL;
 use function array_key_last;
+use function array_last;
 use function array_search;
 use function array_splice;
 use function file_get_contents;
@@ -121,14 +122,14 @@ function violations_of_event_invariants(DOMDocument $document): array
                         $event->getAttribute('parentId'),
                     );
                 }
-            } elseif ($event->getAttribute('parentId') !== $open[array_key_last($open)]) {
+            } elseif ($event->getAttribute('parentId') !== array_last($open)) {
                 $violations[] = sprintf(
                     'Line %d: <%s id="%s"> must have parentId="%s", the id of the innermost unfinished node "%s"',
                     $event->getLineNo(),
                     $event->tagName,
                     $id,
-                    $open[array_key_last($open)],
-                    $names[$open[array_key_last($open)]],
+                    array_last($open),
+                    $names[array_last($open)],
                 );
             }
 
@@ -178,7 +179,7 @@ function violations_of_event_invariants(DOMDocument $document): array
                 $event->tagName,
                 $id,
                 $names[$id],
-                $names[$open[array_key_last($open)]],
+                $names[array_last($open)],
             );
         }
 
