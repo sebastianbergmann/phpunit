@@ -12,9 +12,7 @@ namespace PHPUnit\Runner;
 use const PHP_OS_FAMILY;
 use function assert;
 use function file_put_contents;
-use function function_exists;
 use function implode;
-use function posix_geteuid;
 use function sprintf;
 use function sys_get_temp_dir;
 use PHPUnit\Event\Facade as EventFacade;
@@ -495,11 +493,12 @@ final class CodeCoverage
             return false;
         }
 
-        if (!function_exists('posix_geteuid')) {
+        $userId = Filesystem::currentUserId();
+
+        if ($userId === false) {
             return false;
         }
 
-        $userId    = posix_geteuid();
         $directory = sys_get_temp_dir() . '/phpunit-code-coverage-cache-' . $userId;
 
         if (Filesystem::createPrivateDirectory($directory, $userId)) {

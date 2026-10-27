@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 12.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [12.5.42] - 2026-MM-DD
+
+### Fixed
+
+* The static analysis cache directory that is automatically created in the operating system's path used for temporary files when no cache directory is configured is not used when the POSIX extension is not loaded
+
 ## [12.5.41] - 2026-10-27
 
 ### Fixed
@@ -366,6 +372,7 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 * [#6380](https://github.com/sebastianbergmann/phpunit/pull/6380): Allow `Throwable` in `expectExceptionObject()`
 * A PHPUnit notice is now emitted for test methods that create a mock object but do not configure an expectation for it
 
+[12.5.42]: https://github.com/sebastianbergmann/phpunit/compare/12.5.41...12.5
 [12.5.41]: https://github.com/sebastianbergmann/phpunit/compare/12.5.40...12.5.41
 [12.5.40]: https://github.com/sebastianbergmann/phpunit/compare/12.5.39...12.5.40
 [12.5.39]: https://github.com/sebastianbergmann/phpunit/compare/12.5.38...12.5.39
