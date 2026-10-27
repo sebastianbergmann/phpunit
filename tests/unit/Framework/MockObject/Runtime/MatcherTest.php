@@ -18,7 +18,6 @@ use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Rule\MethodName;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\AnInterface;
-use PHPUnit\TestFixture\MockObject\InvocationOrderThatNeverMatches;
 
 #[CoversClass(Matcher::class)]
 #[Group('test-doubles')]
@@ -62,15 +61,6 @@ final class MatcherTest extends TestCase
         $this->expectException(MethodNameNotConfiguredException::class);
 
         $matcher->matches($this->invocation());
-    }
-
-    public function testDoesNotMatchInvocationWhenInvocationRuleDoesNotMatchIt(): void
-    {
-        $matcher = new Matcher(AnInterface::class, new InvocationOrderThatNeverMatches);
-
-        $matcher->setMethodNameRule(new MethodName('doSomething'));
-
-        $this->assertFalse($matcher->matches($this->invocation()));
     }
 
     public function testCannotDetermineWhetherItMatchesInvocationWhenMethodNameRuleFails(): void

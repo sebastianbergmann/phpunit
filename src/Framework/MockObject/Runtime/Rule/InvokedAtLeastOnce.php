@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework\MockObject\Rule;
 
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -39,10 +38,5 @@ final class InvokedAtLeastOnce extends InvocationOrder
                 'Expected invocation at least once but it never occurred.',
             );
         }
-    }
-
-    public function matches(BaseInvocation $invocation): bool
-    {
-        return true;
     }
 }

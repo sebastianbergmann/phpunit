@@ -11,7 +11,6 @@ namespace PHPUnit\Framework\MockObject\Rule;
 
 use function sprintf;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 use PHPUnit\Framework\MockObject\NonPositiveRequiredInvocationsException;
 
 /**
@@ -68,10 +67,5 @@ final class InvokedAtLeastCount extends InvocationOrder
                 ),
             );
         }
-    }
-
-    public function matches(BaseInvocation $invocation): bool
-    {
-        return true;
     }
 }

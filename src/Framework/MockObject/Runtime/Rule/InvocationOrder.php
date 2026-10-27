@@ -42,8 +42,6 @@ abstract class InvocationOrder implements SelfDescribing
         $this->invokedDo($invocation);
     }
 
-    abstract public function matches(BaseInvocation $invocation): bool;
-
     abstract public function verify(): void;
 
     protected function invokedDo(BaseInvocation $invocation): void

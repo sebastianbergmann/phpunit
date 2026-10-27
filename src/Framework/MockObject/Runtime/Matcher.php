@@ -186,14 +186,8 @@ final class Matcher
             throw new MethodNameNotConfiguredException;
         }
 
-        if ($this->invocationRule !== null && !$this->invocationRule->matches($invocation)) {
-            return false;
-        }
-
         try {
-            if (!$this->methodNameRule->matches($invocation)) {
-                return false;
-            }
+            return $this->methodNameRule->matches($invocation);
         } catch (ExpectationFailedException $e) {
             throw new ExpectationFailedException(
                 sprintf(
@@ -204,8 +198,6 @@ final class Matcher
                 $e->getComparisonFailure(),
             );
         }
-
-        return true;
     }
 
     /**

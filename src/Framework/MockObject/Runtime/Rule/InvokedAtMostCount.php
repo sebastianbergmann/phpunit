@@ -11,7 +11,6 @@ namespace PHPUnit\Framework\MockObject\Rule;
 
 use function sprintf;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -60,10 +59,5 @@ final class InvokedAtMostCount extends InvocationOrder
                 ),
             );
         }
-    }
-
-    public function matches(BaseInvocation $invocation): bool
-    {
-        return true;
     }
 }

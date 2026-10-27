@@ -44,11 +44,6 @@ final class InvokedCount extends InvocationOrder
         );
     }
 
-    public function matches(BaseInvocation $invocation): bool
-    {
-        return true;
-    }
-
     /**
      * Verifies that the current expectation is valid. If everything is OK the
      * code should just return, if not it must throw an exception.
