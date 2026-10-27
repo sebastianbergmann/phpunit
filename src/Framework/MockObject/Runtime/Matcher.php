@@ -12,7 +12,6 @@ namespace PHPUnit\Framework\MockObject;
 use function assert;
 use function sprintf;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\MockObject\Rule\AnyParameters;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 use PHPUnit\Framework\MockObject\Rule\InvokedAtMostCount;
 use PHPUnit\Framework\MockObject\Rule\InvokedCount;
@@ -241,7 +240,7 @@ final class Matcher
         }
 
         if ($this->parametersRule === null) {
-            $this->parametersRule = new AnyParameters;
+            return;
         }
 
         $invocationIsNever  = $this->invocationRule instanceof InvokedCount && $this->invocationRule->isNever();
