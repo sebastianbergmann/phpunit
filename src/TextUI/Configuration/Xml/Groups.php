@@ -29,19 +29,9 @@ final readonly class Groups
         $this->exclude = $exclude;
     }
 
-    public function hasInclude(): bool
-    {
-        return !$this->include->isEmpty();
-    }
-
     public function include(): GroupCollection
     {
         return $this->include;
-    }
-
-    public function hasExclude(): bool
-    {
-        return !$this->exclude->isEmpty();
     }
 
     public function exclude(): GroupCollection

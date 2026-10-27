@@ -526,10 +526,7 @@ final class LoaderTest extends TestCase
     {
         $groups = $this->configuration('configuration.xml')->groups();
 
-        $this->assertTrue($groups->hasInclude());
         $this->assertSame(['name'], $groups->include()->asArrayOfStrings());
-
-        $this->assertTrue($groups->hasExclude());
         $this->assertSame(['name'], $groups->exclude()->asArrayOfStrings());
     }
 
