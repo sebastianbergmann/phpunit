@@ -38,34 +38,6 @@ final class HookedPropertyTest extends TestCase
         $this->assertSame($type, $property->type());
     }
 
-    public function testMayHaveGetHook(): void
-    {
-        $property = new HookedProperty('property-name', Type::fromName('string', false), true, false, false, false, Type::fromName('string', false));
-
-        $this->assertTrue($property->hasGetHook());
-    }
-
-    public function testMayNotHaveGetHook(): void
-    {
-        $property = new HookedProperty('property-name', Type::fromName('string', false), false, false, false, false, Type::fromName('string', false));
-
-        $this->assertFalse($property->hasGetHook());
-    }
-
-    public function testMayHaveSetHook(): void
-    {
-        $property = new HookedProperty('property-name', Type::fromName('string', false), false, true, false, false, Type::fromName('string', false));
-
-        $this->assertTrue($property->hasSetHook());
-    }
-
-    public function testMayNotHaveSetHook(): void
-    {
-        $property = new HookedProperty('property-name', Type::fromName('string', false), false, false, false, false, Type::fromName('string', false));
-
-        $this->assertFalse($property->hasSetHook());
-    }
-
     public function testGetHookIsGeneratedWhenPropertyHasGetHookThatCanBeDoubled(): void
     {
         $property = new HookedProperty('property-name', Type::fromName('string', false), true, false, false, false, Type::fromName('string', false));

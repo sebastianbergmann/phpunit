@@ -53,16 +53,6 @@ final readonly class HookedProperty
         return $this->type;
     }
 
-    public function hasGetHook(): bool
-    {
-        return $this->getHook;
-    }
-
-    public function hasSetHook(): bool
-    {
-        return $this->setHook;
-    }
-
     public function shouldGenerateGetHook(): bool
     {
         return $this->getHook || $this->setHook && !$this->finalGetHook;
