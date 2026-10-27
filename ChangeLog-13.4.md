@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 13.4 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [13.4.5] - 2026-MM-DD
+
+### Fixed
+
+* The static analysis cache directory that is automatically created in the operating system's path used for temporary files when no cache directory is configured is not used when the POSIX extension is not loaded
+
 ## [13.4.4] - 2026-10-27
 
 ### Fixed
@@ -96,6 +102,7 @@ All notable changes of the PHPUnit 13.4 release series are documented in this fi
 * A test that is run in process isolation aborts the test run when its result cannot be unserialized, for instance because it returns an object that holds a test double
 * A test that uses `#[DataProviderClosure]` errors when it is run in process isolation
 
+[13.4.5]: https://github.com/sebastianbergmann/phpunit/compare/13.4.4...13.4
 [13.4.4]: https://github.com/sebastianbergmann/phpunit/compare/13.4.3...13.4.4
 [13.4.3]: https://github.com/sebastianbergmann/phpunit/compare/13.4.2...13.4.3
 [13.4.2]: https://github.com/sebastianbergmann/phpunit/compare/13.4.1...13.4.2
