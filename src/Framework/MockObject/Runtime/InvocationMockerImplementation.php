@@ -30,7 +30,6 @@ final class InvocationMockerImplementation extends AbstractInvocationImplementat
     public function with(mixed ...$arguments): InvocationMocker
     {
         $this->ensureParametersCanBeConfigured();
-        $this->ensureNoOtherMatcherHasParametersRuleForSameMethod();
 
         $this->matcher->setParametersRule(new Rule\Parameters($arguments));
 
@@ -40,7 +39,6 @@ final class InvocationMockerImplementation extends AbstractInvocationImplementat
     public function withParameterSetsInOrder(mixed ...$arguments): InvocationMocker
     {
         $this->ensureParametersCanBeConfigured();
-        $this->ensureNoOtherMatcherHasParametersRuleForSameMethod();
 
         $this->matcher->setParametersRule(new Rule\OrderedParameterSets($arguments));
 
@@ -50,7 +48,6 @@ final class InvocationMockerImplementation extends AbstractInvocationImplementat
     public function withParameterSetsInAnyOrder(mixed ...$arguments): InvocationMocker
     {
         $this->ensureParametersCanBeConfigured();
-        $this->ensureNoOtherMatcherHasParametersRuleForSameMethod();
 
         $this->matcher->setParametersRule(new Rule\UnorderedParameterSets($arguments));
 
@@ -60,7 +57,6 @@ final class InvocationMockerImplementation extends AbstractInvocationImplementat
     public function withParameterSetsInPartialOrder(mixed ...$arguments): InvocationMocker
     {
         $this->ensureParametersCanBeConfigured();
-        $this->ensureNoOtherMatcherHasParametersRuleForSameMethod();
 
         $this->matcher->setParametersRule(new Rule\PartiallyOrderedParameterSets($arguments));
 
@@ -77,7 +73,6 @@ final class InvocationMockerImplementation extends AbstractInvocationImplementat
     public function withAnyParameters(): InvocationMocker
     {
         $this->ensureParametersCanBeConfigured();
-        $this->ensureNoOtherMatcherHasParametersRuleForSameMethod();
 
         $this->matcher->setParametersRule(new Rule\AnyParameters);
 
@@ -125,10 +120,20 @@ final class InvocationMockerImplementation extends AbstractInvocationImplementat
     }
 
     /**
+     * @throws MethodNameNotConfiguredException
+     * @throws MethodParametersAlreadyConfiguredException
      * @throws MethodParametersAlreadyConfiguredForAnotherMatcherException
      */
-    private function ensureNoOtherMatcherHasParametersRuleForSameMethod(): void
+    private function ensureParametersCanBeConfigured(): void
     {
+        if (!$this->matcher->hasMethodNameRule()) {
+            throw new MethodNameNotConfiguredException;
+        }
+
+        if ($this->matcher->hasParametersRule()) {
+            throw new MethodParametersAlreadyConfiguredException;
+        }
+
         foreach ($this->configurableMethods as $method) {
             if ($this->matcher->methodNameRule()->matchesName($method->name()) &&
                 $this->invocationHandler->hasMatcherWithParametersRuleForMethodName($this->matcher, $method->name())) {

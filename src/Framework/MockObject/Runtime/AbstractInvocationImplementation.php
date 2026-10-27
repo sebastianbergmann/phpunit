@@ -190,21 +190,6 @@ abstract class AbstractInvocationImplementation implements InvocationStubber
         $this->invocationHandler->seal();
     }
 
-    /**
-     * @throws MethodNameNotConfiguredException
-     * @throws MethodParametersAlreadyConfiguredException
-     */
-    final protected function ensureParametersCanBeConfigured(): void
-    {
-        if (!$this->matcher->hasMethodNameRule()) {
-            throw new MethodNameNotConfiguredException;
-        }
-
-        if ($this->matcher->hasParametersRule()) {
-            throw new MethodParametersAlreadyConfiguredException;
-        }
-    }
-
     private function configuredMethod(): ?ConfigurableMethod
     {
         $configuredMethod = null;
