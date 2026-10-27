@@ -23,9 +23,6 @@ trait Method
 
     public function method(Constraint|PropertyHook|string $constraint): InvocationStubber
     {
-        return $this
-            ->__phpunit_getInvocationHandler()
-            ->stub()
-            ->method($constraint);
+        return $this->__phpunit_getInvocationHandler()->stub($constraint);
     }
 }
