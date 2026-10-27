@@ -71,10 +71,10 @@ final class TestResultTest extends AbstractEventTestCase
 
     public function testHasNoPhpOrUserDeprecationsByDefault(): void
     {
-        $this->assertFalse($this->collector()->result()->hasPhpOrUserDeprecations());
+        $this->assertSame(0, $this->collector()->result()->numberOfPhpOrUserDeprecations());
     }
 
-    public function testHasPhpOrUserDeprecationsWhenPhpDeprecationWasTriggered(): void
+    public function testCountsPhpDeprecationAsPhpOrUserDeprecation(): void
     {
         $collector = $this->collector();
 
@@ -93,7 +93,7 @@ final class TestResultTest extends AbstractEventTestCase
             ),
         );
 
-        $this->assertTrue($collector->result()->hasPhpOrUserDeprecations());
+        $this->assertSame(1, $collector->result()->numberOfPhpOrUserDeprecations());
     }
 
     private function collector(): Collector

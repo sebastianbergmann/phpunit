@@ -759,11 +759,6 @@ final readonly class TestResult
         return $this->numberOfDeprecations() > 0;
     }
 
-    public function hasPhpOrUserDeprecations(): bool
-    {
-        return $this->numberOfPhpOrUserDeprecations() > 0;
-    }
-
     public function numberOfPhpOrUserDeprecations(): int
     {
         return count($this->deprecations) +
