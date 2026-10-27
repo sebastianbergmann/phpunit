@@ -8,6 +8,7 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 
 * The TeamCity logger writes `testSuiteFinished` twice for a test class when one of its before-first-test methods errors or fails
 * The TestDox output shows a less important outcome of a test that has more than one outcome, for instance the failure in `tearDown()` of a test that errored
+* When no static analysis cache directory is configured, the cache directory that is automatically created in the operating system's path used for temporary files is also used when it was created by another user or can be written to by other users
 
 ## [12.5.40] - 2026-10-16
 

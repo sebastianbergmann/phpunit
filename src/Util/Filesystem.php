@@ -12,7 +12,10 @@ namespace PHPUnit\Util;
 use const DIRECTORY_SEPARATOR;
 use function basename;
 use function dirname;
+use function fileowner;
+use function fileperms;
 use function is_dir;
+use function is_link;
 use function mkdir;
 use function realpath;
 use function str_starts_with;
@@ -27,6 +30,31 @@ final readonly class Filesystem
     public static function createDirectory(string $directory): bool
     {
         return !(!is_dir($directory) && !@mkdir($directory, 0o777, true) && !is_dir($directory));
+    }
+
+    /**
+     * Creates a directory that only the user with the given ID can access.
+     *
+     * A directory that already exists is only accepted when it is not a
+     * symbolic link, is owned by the user with the given ID, and cannot be
+     * written to by other users. Otherwise, another user could have created
+     * it to control what is read from it.
+     */
+    public static function createPrivateDirectory(string $directory, int $userId): bool
+    {
+        @mkdir($directory, 0o700);
+
+        if (is_link($directory) || !is_dir($directory)) {
+            return false;
+        }
+
+        if (@fileowner($directory) !== $userId) {
+            return false;
+        }
+
+        $permissions = @fileperms($directory);
+
+        return $permissions !== false && ($permissions & 0o022) === 0;
     }
 
     /**

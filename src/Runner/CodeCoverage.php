@@ -9,9 +9,12 @@
  */
 namespace PHPUnit\Runner;
 
+use const PHP_OS_FAMILY;
 use function assert;
 use function file_put_contents;
+use function function_exists;
 use function implode;
+use function posix_geteuid;
 use function sprintf;
 use function sys_get_temp_dir;
 use PHPUnit\Event\Facade as EventFacade;
@@ -90,9 +93,9 @@ final class CodeCoverage
         if ($configuration->hasCoverageCacheDirectory()) {
             $coverageCacheDirectory = $configuration->coverageCacheDirectory();
         } else {
-            $candidate = sys_get_temp_dir() . '/phpunit-code-coverage-cache';
+            $candidate = $this->temporaryCoverageCacheDirectory();
 
-            if (Filesystem::createDirectory($candidate)) {
+            if ($candidate !== false) {
                 $coverageCacheDirectory = $candidate;
             }
         }
@@ -464,6 +467,46 @@ final class CodeCoverage
                 $e->getMessage(),
             );
         }
+    }
+
+    /**
+     * The directory below the operating system's path used for temporary
+     * files that is used for caching information from static analysis when
+     * no cache directory is configured.
+     *
+     * The path used for temporary files can be shared between users, for
+     * instance /tmp on Linux. Another user must not be able to control the
+     * cached information, so the directory is specific to the current user
+     * and is only used when no other user can write to it.
+     *
+     * @return false|non-empty-string
+     */
+    private function temporaryCoverageCacheDirectory(): false|string
+    {
+        if (PHP_OS_FAMILY === 'Windows') {
+            // By default, the path used for temporary files is specific to
+            // the current user on Windows
+            $directory = sys_get_temp_dir() . '/phpunit-code-coverage-cache';
+
+            if (Filesystem::createDirectory($directory)) {
+                return $directory;
+            }
+
+            return false;
+        }
+
+        if (!function_exists('posix_geteuid')) {
+            return false;
+        }
+
+        $userId    = posix_geteuid();
+        $directory = sys_get_temp_dir() . '/phpunit-code-coverage-cache-' . $userId;
+
+        if (Filesystem::createPrivateDirectory($directory, $userId)) {
+            return $directory;
+        }
+
+        return false;
     }
 
     private function codeCoverageGenerationStart(Printer $printer, string $format): void
