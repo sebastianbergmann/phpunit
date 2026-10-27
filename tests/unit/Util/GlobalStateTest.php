@@ -77,7 +77,6 @@ final class GlobalStateTest extends TestCase
             $result = GlobalState::exportGlobals();
 
             $this->assertStringNotContainsString('__test_closure', $result->globalsString());
-            $this->assertTrue($result->hasSkippedGlobals());
             $this->assertSkippedGlobal($result, '$GLOBALS[\'__test_closure\']', 'is a Closure');
         } finally {
             unset($GLOBALS['__test_closure']);
@@ -92,7 +91,6 @@ final class GlobalStateTest extends TestCase
             $result = GlobalState::exportGlobals();
 
             $this->assertStringNotContainsString('__test_array_with_closure', $result->globalsString());
-            $this->assertTrue($result->hasSkippedGlobals());
             $this->assertSkippedGlobal($result, '$GLOBALS[\'__test_array_with_closure\']', 'is not serializable');
         } finally {
             unset($GLOBALS['__test_array_with_closure']);
@@ -146,7 +144,6 @@ final class GlobalStateTest extends TestCase
             $result = GlobalState::exportGlobals();
 
             $this->assertStringNotContainsString('__test_closure', $result->globalsString());
-            $this->assertTrue($result->hasSkippedGlobals());
             $this->assertSkippedGlobal($result, '$GLOBALS[\'_ENV\'][\'__test_closure\']', 'is a Closure');
         } finally {
             unset($_ENV['__test_closure']);
@@ -163,7 +160,6 @@ final class GlobalStateTest extends TestCase
             $result = GlobalState::exportGlobals();
 
             $this->assertStringNotContainsString('__test_unserializable', $result->globalsString());
-            $this->assertTrue($result->hasSkippedGlobals());
             $this->assertSkippedGlobal($result, '$GLOBALS[\'_ENV\'][\'__test_unserializable\']', 'is not serializable');
         } finally {
             unset($_ENV['__test_unserializable']);

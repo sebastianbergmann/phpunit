@@ -49,9 +49,4 @@ final readonly class GlobalStateResult
     {
         return $this->skippedGlobals;
     }
-
-    public function hasSkippedGlobals(): bool
-    {
-        return $this->skippedGlobals !== [];
-    }
 }
