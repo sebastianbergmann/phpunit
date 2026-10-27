@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 13.4 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [13.4.6] - 2026-MM-DD
+
+### Fixed
+
+* When `method()` is called for a method of a test double that cannot be configured, for instance because it does not exist, every subsequent invocation of a method of that test double fails with `Method name is not configured`
+
 ## [13.4.5] - 2026-10-27
 
 ### Fixed
@@ -102,6 +108,7 @@ All notable changes of the PHPUnit 13.4 release series are documented in this fi
 * A test that is run in process isolation aborts the test run when its result cannot be unserialized, for instance because it returns an object that holds a test double
 * A test that uses `#[DataProviderClosure]` errors when it is run in process isolation
 
+[13.4.6]: https://github.com/sebastianbergmann/phpunit/compare/13.4.5...13.4
 [13.4.5]: https://github.com/sebastianbergmann/phpunit/compare/13.4.4...13.4.5
 [13.4.4]: https://github.com/sebastianbergmann/phpunit/compare/13.4.3...13.4.4
 [13.4.3]: https://github.com/sebastianbergmann/phpunit/compare/13.4.2...13.4.3
