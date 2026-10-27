@@ -33,16 +33,7 @@ final class MatcherTest extends TestCase
         $matcher->methodNameRule();
     }
 
-    public function testCannotBeInvokedWhenMethodNameRuleHasNotBeenConfigured(): void
-    {
-        $matcher = new Matcher(AnInterface::class);
-
-        $this->expectException(MethodNameNotConfiguredException::class);
-
-        $matcher->invoked($this->invocation());
-    }
-
-    public function testCannotBeInvokedWhenMatchBuilderCannotBeFound(): void
+    public function testCannotDetermineWhetherItMatchesInvocationWhenMatchBuilderCannotBeFound(): void
     {
         $matcher = new Matcher(AnInterface::class);
 
@@ -51,7 +42,7 @@ final class MatcherTest extends TestCase
 
         $this->expectException(MatchBuilderNotFoundException::class);
 
-        $matcher->invoked($this->invocation());
+        $matcher->matches($this->invocation());
     }
 
     public function testCannotDetermineWhetherItMatchesInvocationWhenMethodNameRuleHasNotBeenConfigured(): void

@@ -111,27 +111,15 @@ final class Matcher
     }
 
     /**
+     * Must only be called for an invocation that matches() returned true for.
+     *
      * @throws Exception
      * @throws ExpectationFailedException
-     * @throws MatchBuilderNotFoundException
-     * @throws MethodNameNotConfiguredException
      * @throws RuntimeException
      */
     public function invoked(Invocation $invocation): mixed
     {
-        if ($this->methodNameRule === null) {
-            throw new MethodNameNotConfiguredException;
-        }
-
-        if ($this->afterMatchBuilderId !== null) {
-            $matcher = $invocation->object()
-                ->__phpunit_getInvocationHandler()
-                ->lookupMatcher($this->afterMatchBuilderId);
-
-            if ($matcher === null) {
-                throw new MatchBuilderNotFoundException($this->afterMatchBuilderId);
-            }
-        }
+        assert($this->methodNameRule !== null);
 
         if ($this->invocationRule !== null) {
             $this->invocationRule->invoked($invocation);
