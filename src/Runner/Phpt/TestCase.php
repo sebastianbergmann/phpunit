@@ -26,6 +26,7 @@ use function is_array;
 use function is_file;
 use function is_string;
 use function ltrim;
+use function mkdir;
 use function ob_get_clean;
 use function ob_start;
 use function preg_match;
@@ -33,6 +34,7 @@ use function preg_replace;
 use function preg_replace_callback;
 use function random_bytes;
 use function realpath;
+use function rmdir;
 use function sprintf;
 use function str_contains;
 use function str_replace;
@@ -62,7 +64,6 @@ use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\Exception;
 use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
-use PHPUnit\Util\Filesystem;
 use PHPUnit\Util\PHP\Job;
 use PHPUnit\Util\PHP\JobRunnerRegistry;
 use SebastianBergmann\CodeCoverage\Data\RawCodeCoverageData;
@@ -112,35 +113,17 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
     private int $maxAttempts;
 
     /**
+     * The directory the temporary files that are used to collect code coverage
+     * for this test are created in.
+     *
+     * @var non-empty-string
+     */
+    private string $coverageFilesDirectory;
+
+    /**
      * @var CoverageFiles
      */
     private array $coverageFiles;
-
-    /**
-     * The directory the temporary files that are used to collect code coverage
-     * for a PHPT test are created in.
-     *
-     * The path of the system's temporary directory is resolved because PHP
-     * reports the resolved path of a file in stack traces and in the list of
-     * included files. Otherwise, the file with the code of a PHPT test would
-     * not be found in $GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST'] when the
-     * path of the system's temporary directory contains a symbolic link, for
-     * instance on macOS, where /var is a symbolic link to /private/var.
-     *
-     * @return non-empty-string
-     */
-    public static function coverageFilesDirectory(): string
-    {
-        $temporaryDirectory = realpath(sys_get_temp_dir());
-
-        if ($temporaryDirectory === false) {
-            // @codeCoverageIgnoreStart
-            $temporaryDirectory = sys_get_temp_dir();
-            // @codeCoverageIgnoreEnd
-        }
-
-        return $temporaryDirectory . DIRECTORY_SEPARATOR . 'phpunit-phpt';
-    }
 
     /**
      * @param non-empty-string $filename
@@ -166,11 +149,33 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         // system's temporary directory itself, so that a PHPT test that
         // restricts open_basedir can allow access to them without also
         // allowing access to the system's temporary directory.
-        $prefix = self::coverageFilesDirectory() . DIRECTORY_SEPARATOR . 'phpunit_phpt_' . bin2hex(random_bytes(16));
+        //
+        // The system's temporary directory can be shared with other users,
+        // for instance /tmp on Linux. The name of the directory therefore
+        // cannot be predicted, and the directory is only used when it is
+        // created when the test is run, with permissions that only allow the
+        // current user to access it. Otherwise, another user could create the
+        // directory beforehand and replace the code that is executed.
+        //
+        // The path of the system's temporary directory is resolved because PHP
+        // reports the resolved path of a file in stack traces and in the list of
+        // included files. Otherwise, the file with the code of a PHPT test would
+        // not be found in $GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST'] when the
+        // path of the system's temporary directory contains a symbolic link, for
+        // instance on macOS, where /var is a symbolic link to /private/var.
+        $temporaryDirectory = realpath(sys_get_temp_dir());
+
+        if ($temporaryDirectory === false) {
+            // @codeCoverageIgnoreStart
+            $temporaryDirectory = sys_get_temp_dir();
+            // @codeCoverageIgnoreEnd
+        }
+
+        $this->coverageFilesDirectory = $temporaryDirectory . DIRECTORY_SEPARATOR . 'phpunit-phpt-' . bin2hex(random_bytes(16));
 
         $this->coverageFiles = [
-            'coverage' => $prefix . '.coverage',
-            'job'      => $prefix . '.php',
+            'coverage' => $this->coverageFilesDirectory . DIRECTORY_SEPARATOR . 'job.coverage',
+            'job'      => $this->coverageFilesDirectory . DIRECTORY_SEPARATOR . 'job.php',
         ];
     }
 
@@ -316,7 +321,18 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
                 $bootstrap = ConfigurationRegistry::get()->bootstrap();
             }
 
-            Filesystem::createDirectory(self::coverageFilesDirectory());
+            if (!@mkdir($this->coverageFilesDirectory, 0o700)) {
+                $emitter->testErrored(
+                    $this->valueObjectForEvents(),
+                    ThrowableBuilder::from(
+                        new CoverageFilesDirectoryCannotBeCreatedException($this->coverageFilesDirectory),
+                    ),
+                );
+
+                $emitter->testFinished($this->valueObjectForEvents(), 0);
+
+                return;
+            }
 
             (new Renderer)->renderForCoverage(
                 $code,
@@ -798,6 +814,8 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         foreach ($files as $file) {
             @unlink($file);
         }
+
+        @rmdir($this->coverageFilesDirectory);
 
         return $coverage;
     }
