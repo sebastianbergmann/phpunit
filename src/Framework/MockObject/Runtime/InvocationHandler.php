@@ -12,7 +12,11 @@ namespace PHPUnit\Framework\MockObject;
 use function strtolower;
 use Exception;
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Constraint\Constraint;
+use PHPUnit\Framework\InvalidArgumentException;
+use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
+use PHPUnit\Framework\MockObject\Runtime\PropertyHook;
 use Throwable;
 
 /**
@@ -114,6 +118,33 @@ final class InvocationHandler
             $matcher,
             ...$this->configurableMethods,
         );
+    }
+
+    /**
+     * The matcher is only added once the method name has been configured
+     * so that a method that cannot be configured does not leave behind a
+     * matcher without a method name rule.
+     *
+     * @param Constraint|non-empty-string|PropertyHook $constraint
+     *
+     * @throws InvalidArgumentException
+     * @throws MethodCannotBeConfiguredException
+     */
+    public function method(Constraint|PropertyHook|string $constraint): InvocationStubber
+    {
+        $matcher = new Matcher(new AnyInvokedCount);
+
+        $stubber = new InvocationStubberImplementation(
+            $this,
+            $matcher,
+            ...$this->configurableMethods,
+        );
+
+        $stubber->method($constraint);
+
+        $this->addMatcher($matcher);
+
+        return $stubber;
     }
 
     /**

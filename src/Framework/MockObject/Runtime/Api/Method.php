@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework\MockObject;
 
 use PHPUnit\Framework\Constraint\Constraint;
-use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount;
 use PHPUnit\Framework\MockObject\Runtime\PropertyHook;
 
 /**
@@ -24,9 +23,6 @@ trait Method
 
     public function method(Constraint|PropertyHook|string $constraint): InvocationStubber
     {
-        return $this
-            ->__phpunit_getInvocationHandler()
-            ->expects(new AnyInvokedCount)
-            ->method($constraint);
+        return $this->__phpunit_getInvocationHandler()->method($constraint);
     }
 }

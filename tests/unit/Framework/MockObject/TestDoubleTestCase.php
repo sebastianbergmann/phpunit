@@ -284,6 +284,20 @@ abstract class TestDoubleTestCase extends TestCase
             ->willReturn(true);
     }
 
+    public function testTestDoubleCanStillBeConfiguredAndUsedAfterAttemptToConfigureMethodThatCannotBeConfigured(): void
+    {
+        $double = $this->createTestDouble(InterfaceWithReturnTypeDeclaration::class);
+
+        try {
+            $double->method('doesNotExist');
+        } catch (MethodCannotBeConfiguredException) {
+        }
+
+        $double->method('doSomething')->willReturn(true);
+
+        $this->assertTrue($double->doSomething());
+    }
+
     #[Ticket('https://github.com/sebastianbergmann/phpunit/issues/5874')]
     public function testDoubledMethodsCanBeCalledFromDestructorOnTestDoubleCreatedByTheReturnValueGenerator(): void
     {
