@@ -137,16 +137,12 @@ final class TestSuiteTest extends TestCase
         ], $suite->requires(), 'Required test names incorrect');
     }
 
-    public function testAddsTestsFromMultipleTestFiles(): void
+    public function testAddsTestsFromTestFiles(): void
     {
         $suite = TestSuite::empty('the-test-suite', $this->createStub(Emitter::class));
 
-        $suite->addTestFiles(
-            [
-                TEST_FILES_PATH . 'dependencies' . DIRECTORY_SEPARATOR . 'DependencySuccessTest.php',
-                TEST_FILES_PATH . 'dependencies' . DIRECTORY_SEPARATOR . 'DependencyFailureTest.php',
-            ],
-        );
+        $suite->addTestFile(TEST_FILES_PATH . 'dependencies' . DIRECTORY_SEPARATOR . 'DependencySuccessTest.php');
+        $suite->addTestFile(TEST_FILES_PATH . 'dependencies' . DIRECTORY_SEPARATOR . 'DependencyFailureTest.php');
 
         $tests = $suite->tests();
 

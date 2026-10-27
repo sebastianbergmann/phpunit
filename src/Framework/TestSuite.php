@@ -293,22 +293,6 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
     }
 
     /**
-     * Wrapper for addTestFile() that adds multiple test files.
-     *
-     * @param iterable<string> $fileNames
-     * @param positive-int     $numberOfRuns
-     * @param positive-int     $maxAttempts
-     *
-     * @throws Exception
-     */
-    public function addTestFiles(iterable $fileNames, int $numberOfRuns = 1, int $maxAttempts = 1): void
-    {
-        foreach ($fileNames as $filename) {
-            $this->addTestFile((string) $filename, [], $numberOfRuns, $maxAttempts);
-        }
-    }
-
-    /**
      * Counts the number of test cases that will be run by this test.
      */
     public function count(): int
