@@ -464,16 +464,6 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
     }
 
     /**
-     * Mark the test suite as skipped.
-     *
-     * @throws SkippedTestSuiteError
-     */
-    public function markTestSuiteSkipped(string $message = ''): never
-    {
-        throw new SkippedTestSuiteError($message);
-    }
-
-    /**
      * @return Iterator<non-negative-int, Test>
      */
     public function getIterator(): Iterator
