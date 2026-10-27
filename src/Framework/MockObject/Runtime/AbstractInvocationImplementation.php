@@ -187,7 +187,7 @@ abstract class AbstractInvocationImplementation implements InvocationStubber
 
     final public function seal(): void
     {
-        $this->invocationHandler->seal($this->invocationHandler->isMockObject());
+        $this->invocationHandler->seal();
     }
 
     /**

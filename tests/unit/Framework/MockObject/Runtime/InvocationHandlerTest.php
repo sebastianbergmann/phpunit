@@ -27,11 +27,11 @@ final class InvocationHandlerTest extends TestCase
     {
         $handler = new InvocationHandler([], 'stdClass', false, false);
 
-        $handler->seal(false);
+        $handler->seal();
 
         $this->assertTrue($handler->isSealed());
 
-        $handler->seal(false);
+        $handler->seal();
 
         $this->assertTrue($handler->isSealed());
     }
@@ -54,7 +54,7 @@ final class InvocationHandlerTest extends TestCase
         $matchers = new ReflectionProperty(InvocationHandler::class, 'matchers');
         $matchers->setValue($handler, [$matcher]);
 
-        $handler->seal(true);
+        $handler->seal();
 
         $this->assertTrue($handler->isSealed());
     }

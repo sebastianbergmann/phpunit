@@ -87,11 +87,6 @@ final class InvocationHandler
         $this->isMockObject          = $isMockObject;
     }
 
-    public function isMockObject(): bool
-    {
-        return $this->isMockObject;
-    }
-
     /**
      * @param ?non-empty-string                         $label
      * @param array<non-empty-string, non-empty-string> $methodLabels
@@ -278,7 +273,7 @@ final class InvocationHandler
         }
     }
 
-    public function seal(bool $isMockObject): void
+    public function seal(): void
     {
         if ($this->sealed) {
             return;
@@ -286,7 +281,7 @@ final class InvocationHandler
 
         $this->sealed = true;
 
-        if (!$isMockObject) {
+        if (!$this->isMockObject) {
             return;
         }
 
