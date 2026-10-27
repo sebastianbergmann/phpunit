@@ -31,6 +31,7 @@ All notable changes of the PHPUnit 14.0 release series are documented in this fi
 * `cacheResult` XML configuration attribute, use `recordTestRunHistory` instead
 * `PHPUnit\TextUI\Configuration\Configuration::cacheResult()`, use `PHPUnit\TextUI\Configuration\Configuration::recordTestRunHistory()` instead
 * `PHPUnit\TextUI\Configuration\Configuration::testResultCacheFile()`, use `PHPUnit\TextUI\Configuration\Configuration::testRunHistoryFile()` instead
+* `PHPUnit\TextUI\Configuration\Configuration::stopOnDefect()`, `stopOnDeprecation()`, `stopOnError()`, `stopOnFailure()`, `stopOnIncomplete()`, `stopOnNotice()`, `stopOnRisky()`, `stopOnSkipped()`, and `stopOnWarning()`, use `stopOnDefectThreshold()`, `stopOnDeprecationThreshold()`, `stopOnErrorThreshold()`, `stopOnFailureThreshold()`, `stopOnIncompleteThreshold()`, `stopOnNoticeThreshold()`, `stopOnRiskyThreshold()`, `stopOnSkippedThreshold()`, and `stopOnWarningThreshold()` instead
 
 ### Fixed
 

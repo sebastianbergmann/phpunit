@@ -1522,31 +1522,11 @@ final readonly class Configuration
     }
 
     /**
-     * @deprecated
-     *
-     * @codeCoverageIgnore
-     */
-    public function stopOnDefect(): bool
-    {
-        return $this->stopOnDefect > 0;
-    }
-
-    /**
      * @return non-negative-int
      */
     public function stopOnDefectThreshold(): int
     {
         return $this->stopOnDefect;
-    }
-
-    /**
-     * @deprecated
-     *
-     * @codeCoverageIgnore
-     */
-    public function stopOnDeprecation(): bool
-    {
-        return $this->stopOnDeprecation > 0;
     }
 
     /**
@@ -1580,31 +1560,11 @@ final readonly class Configuration
     }
 
     /**
-     * @deprecated
-     *
-     * @codeCoverageIgnore
-     */
-    public function stopOnError(): bool
-    {
-        return $this->stopOnError > 0;
-    }
-
-    /**
      * @return non-negative-int
      */
     public function stopOnErrorThreshold(): int
     {
         return $this->stopOnError;
-    }
-
-    /**
-     * @deprecated
-     *
-     * @codeCoverageIgnore
-     */
-    public function stopOnFailure(): bool
-    {
-        return $this->stopOnFailure > 0;
     }
 
     /**
@@ -1616,31 +1576,11 @@ final readonly class Configuration
     }
 
     /**
-     * @deprecated
-     *
-     * @codeCoverageIgnore
-     */
-    public function stopOnIncomplete(): bool
-    {
-        return $this->stopOnIncomplete > 0;
-    }
-
-    /**
      * @return non-negative-int
      */
     public function stopOnIncompleteThreshold(): int
     {
         return $this->stopOnIncomplete;
-    }
-
-    /**
-     * @deprecated
-     *
-     * @codeCoverageIgnore
-     */
-    public function stopOnNotice(): bool
-    {
-        return $this->stopOnNotice > 0;
     }
 
     /**
@@ -1652,16 +1592,6 @@ final readonly class Configuration
     }
 
     /**
-     * @deprecated
-     *
-     * @codeCoverageIgnore
-     */
-    public function stopOnRisky(): bool
-    {
-        return $this->stopOnRisky > 0;
-    }
-
-    /**
      * @return non-negative-int
      */
     public function stopOnRiskyThreshold(): int
@@ -1670,31 +1600,11 @@ final readonly class Configuration
     }
 
     /**
-     * @deprecated
-     *
-     * @codeCoverageIgnore
-     */
-    public function stopOnSkipped(): bool
-    {
-        return $this->stopOnSkipped > 0;
-    }
-
-    /**
      * @return non-negative-int
      */
     public function stopOnSkippedThreshold(): int
     {
         return $this->stopOnSkipped;
-    }
-
-    /**
-     * @deprecated
-     *
-     * @codeCoverageIgnore
-     */
-    public function stopOnWarning(): bool
-    {
-        return $this->stopOnWarning > 0;
     }
 
     /**
