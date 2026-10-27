@@ -9,9 +9,7 @@
  */
 namespace PHPUnit\Framework;
 
-use function array_filter;
 use function array_map;
-use function array_values;
 use function assert;
 use function class_exists;
 use function count;
@@ -64,48 +62,6 @@ final class ExecutionOrderDependency implements Stringable
             $metadata->deepClone(),
             $metadata->shallowClone(),
         );
-    }
-
-    /**
-     * @param list<ExecutionOrderDependency> $dependencies
-     *
-     * @return list<ExecutionOrderDependency>
-     */
-    public static function filterInvalid(array $dependencies): array
-    {
-        return array_values(
-            array_filter(
-                $dependencies,
-                static fn (self $d) => $d->isValid(),
-            ),
-        );
-    }
-
-    /**
-     * @param list<ExecutionOrderDependency> $existing
-     * @param list<ExecutionOrderDependency> $additional
-     *
-     * @return list<ExecutionOrderDependency>
-     */
-    public static function mergeUnique(array $existing, array $additional): array
-    {
-        $existingTargets = array_map(
-            static fn (ExecutionOrderDependency $dependency) => $dependency->getTarget(),
-            $existing,
-        );
-
-        foreach ($additional as $dependency) {
-            $additionalTarget = $dependency->getTarget();
-
-            if (in_array($additionalTarget, $existingTargets, true)) {
-                continue;
-            }
-
-            $existingTargets[] = $additionalTarget;
-            $existing[]        = $dependency;
-        }
-
-        return $existing;
     }
 
     /**
