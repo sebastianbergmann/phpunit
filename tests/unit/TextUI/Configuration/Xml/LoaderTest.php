@@ -506,19 +506,17 @@ final class LoaderTest extends TestCase
         );
     }
 
-    public function testConfigurationLoadedFromFileIsNotTheDefaultConfiguration(): void
+    public function testConfigurationLoadedFromFileWasLoadedFromFile(): void
     {
         $configuration = $this->configuration('configuration.xml');
 
-        $this->assertFalse($configuration->isDefault());
         $this->assertTrue($configuration->wasLoadedFromFile());
     }
 
-    public function testDefaultConfigurationIsTheDefaultConfiguration(): void
+    public function testDefaultConfigurationWasNotLoadedFromFile(): void
     {
         $configuration = DefaultConfiguration::create();
 
-        $this->assertTrue($configuration->isDefault());
         $this->assertFalse($configuration->wasLoadedFromFile());
     }
 

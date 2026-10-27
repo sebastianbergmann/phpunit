@@ -87,14 +87,6 @@ abstract readonly class Configuration
     }
 
     /**
-     * @phpstan-assert-if-true DefaultConfiguration $this
-     */
-    public function isDefault(): bool
-    {
-        return false;
-    }
-
-    /**
      * @phpstan-assert-if-true LoadedFromFileConfiguration $this
      */
     public function wasLoadedFromFile(): bool

@@ -191,9 +191,4 @@ final readonly class DefaultConfiguration extends Configuration
             TestSuiteCollection::fromArray([]),
         );
     }
-
-    public function isDefault(): bool
-    {
-        return true;
-    }
 }
