@@ -55,26 +55,24 @@ Want your logo here? [Learn more »](https://phpstan.org/sponsor)
 <br>
 <a href="https://www.iodigital.com/"><img src="website/src/images/sponsor/io.png" alt="iO" width="254" height="65"></a>
 &nbsp;&nbsp;&nbsp;
-<a href="https://www.fame.fi/"><img src="website/src/images/sponsor/fame.png" alt="Fame Helsinki" width="283" height="64"></a>
-<br>
 <a href="https://werkenbijbelsimpel.nl/en/about-us/"><img src="website/src/images/sponsor/belsimpel.png" alt="Belsimpel" width="284" height="64"></a>
-&nbsp;&nbsp;&nbsp;
+<br>
 <a href="https://togetter.com/"><img src="website/src/images/sponsor/togetter.png" alt="Togetter" width="283" height="64"></a>
-<br>
+&nbsp;&nbsp;&nbsp;
 <a href="https://join.rightcapital.com/?utm_source=phpstan&utm_medium=github&utm_campaign=sponsorship"><img src="website/src/images/sponsor/rightcapital.png" alt="RightCapital" width="283" height="64"></a>
-&nbsp;&nbsp;&nbsp;
+<br>
 <a href="https://www.shoptet.cz/"><img src="website/src/images/sponsor/shoptet.png" alt="Shoptet" width="283" height="64"></a>
-<br>
+&nbsp;&nbsp;&nbsp;
 <a href="https://www.testmuai.com/"><img src="website/src/images/sponsor/testmu-ai.png" alt="TestMu AI" width="283" height="64"></a>
-&nbsp;&nbsp;&nbsp;
+<br>
 <a href="https://inviqa.com/"><img src="website/src/images/sponsor/inviqa.png" alt="Inviqa" width="254" height="65"></a>
-<br>
+&nbsp;&nbsp;&nbsp;
 <a href="https://route4me.com/"><img src="website/src/images/sponsor/route4me.png" alt="Route4Me: Route Optimizer and Route Planner Software" width="283" height="64"></a>
-&nbsp;&nbsp;&nbsp;
-<a href="https://www.crisp.nl/"><img src="website/src/images/sponsor/crisp.png" alt="Crisp.nl" width="283" height="64"></a>
 <br>
-<a href="https://jobs.ticketswap.com/"><img src="website/src/images/sponsor/ticketswap.png" alt="TicketSwap" width="269" height="64"></a>
+<a href="https://www.crisp.nl/"><img src="website/src/images/sponsor/crisp.png" alt="Crisp.nl" width="283" height="64"></a>
 &nbsp;&nbsp;&nbsp;
+<a href="https://jobs.ticketswap.com/"><img src="website/src/images/sponsor/ticketswap.png" alt="TicketSwap" width="269" height="64"></a>
+<br>
 <a href="https://www.campoint.net/"><img src="website/src/images/sponsor/campoint.png" alt="campoint AG" width="283" height="64"></a>
 <br>
 
