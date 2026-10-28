@@ -363,8 +363,6 @@ final class PropertyTestSuite extends IterativeTestSuite
                 continue;
             }
 
-            $this->numberOfExplicitExamplesChecked++;
-
             $this->recordCheckedExample($events, $exampleEvents, $run);
 
             if ($this->endsCheckWithoutFalsification($example, $falsification, $exampleEvents)) {
@@ -372,6 +370,8 @@ final class PropertyTestSuite extends IterativeTestSuite
 
                 return;
             }
+
+            $this->numberOfExplicitExamplesChecked++;
 
             if ($falsification !== null) {
                 $this->reportFalsificationByExplicitExample($events, $emitter, $example, $falsification, $exampleEvents, $explicitExample, $exportedArguments);
@@ -467,12 +467,6 @@ final class PropertyTestSuite extends IterativeTestSuite
                 continue;
             }
 
-            $this->numberOfExamplesChecked++;
-
-            $this->countClassifications($example->classificationsOfPropertyExample());
-            $this->countStepsOfStateMachine($example->numberOfStepsOfStateMachineOfPropertyExample());
-            $this->observations()->record($example->observationsOfPropertyExample());
-            $search->exampleChecked($source->sequence(), $example->targetsOfPropertyExample());
             $this->recordCheckedExample($events, $exampleEvents, $run);
 
             if ($this->endsCheckWithoutFalsification($example, $falsification, $exampleEvents)) {
@@ -480,6 +474,13 @@ final class PropertyTestSuite extends IterativeTestSuite
 
                 return;
             }
+
+            $this->numberOfExamplesChecked++;
+
+            $this->countClassifications($example->classificationsOfPropertyExample());
+            $this->countStepsOfStateMachine($example->numberOfStepsOfStateMachineOfPropertyExample());
+            $this->observations()->record($example->observationsOfPropertyExample());
+            $search->exampleChecked($source->sequence(), $example->targetsOfPropertyExample());
 
             if ($falsification !== null) {
                 $throwable       = $example->throwableThatEndedTheTest();
@@ -1166,9 +1167,9 @@ final class PropertyTestSuite extends IterativeTestSuite
     }
 
     /**
-     * Whether the property is reported with the events of an example that was
-     * checked, without the example falsifying it, so that no further examples
-     * are checked:
+     * Whether the property is reported with the events of an example that ran
+     * and was not rejected, without the example falsifying it, so that no
+     * further examples are checked:
      *
      * - an example that is aborted because the deadline of the test run has
      *   passed does not falsify the property
@@ -1177,6 +1178,9 @@ final class PropertyTestSuite extends IterativeTestSuite
      *   not falsify the property because the test method was not called with
      *   its arguments, so it is reported without being shrunk
      * - when an example is skipped or marked incomplete, so is the property
+     *
+     * Such an example is not counted as one of the examples for which the
+     * property was checked, as it did not check the property.
      */
     private function endsCheckWithoutFalsification(TestCase $example, ?Falsification $falsification, EventCollection $exampleEvents): bool
     {
