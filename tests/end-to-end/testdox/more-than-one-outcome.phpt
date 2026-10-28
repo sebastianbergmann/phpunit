@@ -28,4 +28,4 @@ More Than One Outcome (PHPUnit\TestFixture\TestDox\MoreThanOneOutcome)
    │
 
 ERRORS!
-Tests: 1, Assertions: 1, Errors: 1, Failures: 1.
+Tests: 1, Assertions: 1, Errors: 1.
