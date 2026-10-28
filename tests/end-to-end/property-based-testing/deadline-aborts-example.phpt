@@ -31,7 +31,7 @@ Test Preparation Started (PHPUnit\TestFixture\PropertyBasedTesting\SlowExampleTe
 Test Prepared (PHPUnit\TestFixture\PropertyBasedTesting\SlowExampleTest::testTakesLongerThanTheTimeLimitOfTheTestRun)
 Test Errored (PHPUnit\TestFixture\PropertyBasedTesting\SlowExampleTest::testTakesLongerThanTheTimeLimitOfTheTestRun)
 This test was aborted because the time limit of 1 second for the test run was exceeded
-Test Property Checked (PHPUnit\TestFixture\PropertyBasedTesting\SlowExampleTest::testTakesLongerThanTheTimeLimitOfTheTestRun, seed: %d, examples: 1, rejected: 0)
+Test Property Checked (PHPUnit\TestFixture\PropertyBasedTesting\SlowExampleTest::testTakesLongerThanTheTimeLimitOfTheTestRun, seed: %d, examples: 0, rejected: 0)
 Test Finished (PHPUnit\TestFixture\PropertyBasedTesting\SlowExampleTest::testTakesLongerThanTheTimeLimitOfTheTestRun)
 Test Runner Time Limit Exceeded (1 second)
 Test Suite for Property Finished (PHPUnit\TestFixture\PropertyBasedTesting\SlowExampleTest::testTakesLongerThanTheTimeLimitOfTheTestRun, 10 examples)
