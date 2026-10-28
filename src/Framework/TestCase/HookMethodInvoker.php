@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\TestCase;
 
+use function sprintf;
 use AssertionError;
 use PHPUnit\Event;
 use PHPUnit\Framework\AssertionFailedError;
@@ -111,6 +112,7 @@ final readonly class HookMethodInvoker
             'afterTestMethodErrored',
             'afterTestMethodFailed',
             'afterTestMethodFinished',
+            true,
         );
     }
 
@@ -121,7 +123,7 @@ final readonly class HookMethodInvoker
      *
      * @codeCoverageIgnore
      */
-    public static function invokeAfterClass(TestCase $test, array $hookMethods): void
+    public static function invokeAfterClass(TestCase $test, array $hookMethods, Event\Emitter $emitter): void
     {
         $reflector = new ReflectionClass($test::class);
 
@@ -138,10 +140,14 @@ final readonly class HookMethodInvoker
                 } else {
                     $hookMethod->invoke($test);
                 }
-            } catch (IncompleteTest|SkippedTest) {
+            } catch (IncompleteTest|SkippedTest $e) {
                 // an after-last-test method cannot mark the test as incomplete
                 // or skip it, just as it cannot when it is called for the test
                 // class in the process that runs the test suite
+                $emitter->testTriggeredPhpunitDeprecation(
+                    $test->valueObjectForEvents(),
+                    self::deprecationMessageForMarkingTestInHookMethod($e, 'after-last-test', $test::class, $methodName),
+                );
             }
         }
     }
@@ -154,7 +160,7 @@ final readonly class HookMethodInvoker
      *
      * @throws Throwable
      */
-    private static function invokeMethodLevel(TestCase $test, HookMethodCollection $hookMethods, Event\Emitter $emitter, string $calledMethod, string $erroredMethod, string $failedMethod, string $finishedMethod): void
+    private static function invokeMethodLevel(TestCase $test, HookMethodCollection $hookMethods, Event\Emitter $emitter, string $calledMethod, string $erroredMethod, string $failedMethod, string $finishedMethod, bool $markingTestAsIncompleteOrSkippedIsDeprecated = false): void
     {
         $eventTest      = $test->valueObjectForEvents();
         $reflector      = new ReflectionClass($test::class);
@@ -190,6 +196,13 @@ final readonly class HookMethodInvoker
             }
 
             if (isset($t)) {
+                if ($markingTestAsIncompleteOrSkippedIsDeprecated && ($t instanceof IncompleteTest || $t instanceof SkippedTest)) {
+                    $emitter->testTriggeredPhpunitDeprecation(
+                        $eventTest,
+                        self::deprecationMessageForMarkingTestInHookMethod($t, 'after-test', $test::class, $methodName),
+                    );
+                }
+
                 if (!$t instanceof IncompleteTest && !$t instanceof SkippedTest) {
                     if ($t instanceof AssertionError || $t instanceof AssertionFailedError) {
                         $method = $failedMethod;
@@ -220,6 +233,30 @@ final readonly class HookMethodInvoker
         if (isset($t)) {
             throw $t;
         }
+    }
+
+    /**
+     * @param 'after-last-test'|'after-test' $typeOfHookMethod
+     * @param class-string                   $className
+     * @param non-empty-string               $methodName
+     *
+     * @return non-empty-string
+     */
+    private static function deprecationMessageForMarkingTestInHookMethod(IncompleteTest|SkippedTest $t, string $typeOfHookMethod, string $className, string $methodName): string
+    {
+        $markingMethod = 'markTestSkipped';
+
+        if ($t instanceof IncompleteTest) {
+            $markingMethod = 'markTestIncomplete';
+        }
+
+        return sprintf(
+            'Calling %s() in %s method %s::%s() is deprecated and will no longer be possible in PHPUnit 14.',
+            $markingMethod,
+            $typeOfHookMethod,
+            $className,
+            $methodName,
+        );
     }
 
     /**

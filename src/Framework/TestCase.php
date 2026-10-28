@@ -1426,7 +1426,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             if ($this->inIsolation) {
                 // @codeCoverageIgnoreStart
-                HookMethodInvoker::invokeAfterClass($this, $hookMethods);
+                HookMethodInvoker::invokeAfterClass($this, $hookMethods, $this->emitter);
                 // @codeCoverageIgnoreEnd
             }
         } catch (IncompleteTest $t) {

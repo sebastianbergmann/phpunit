@@ -1007,9 +1007,23 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                 $callback = [$this->name, $method];
 
                 call_user_func($callback);
-            } catch (IncompleteTest|SkippedTest) {
+            } catch (IncompleteTest|SkippedTest $e) {
                 // the tests of the test class have already been run, so they
                 // can no longer be marked as incomplete or skipped
+                $markingMethod = 'markTestSkipped';
+
+                if ($e instanceof IncompleteTest) {
+                    $markingMethod = 'markTestIncomplete';
+                }
+
+                $emitter->testRunnerTriggeredPhpunitDeprecation(
+                    sprintf(
+                        'Calling %s() in after-last-test method %s::%s() is deprecated and will no longer be possible in PHPUnit 14.',
+                        $markingMethod,
+                        $this->name,
+                        $method,
+                    ),
+                );
             } catch (Throwable $t) {
             }
 
