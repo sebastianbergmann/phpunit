@@ -6,7 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased
 
-For a full diff see [`2.14.2...main`][2.14.2...main].
+For a full diff see [`2.15.0...main`][2.15.0...main].
+
+## [`2.15.0`][2.15.0]
+
+For a full diff see [`2.14.2...2.15.0`][2.14.2...2.15.0].
+
+### Added
+
+- Added `ArrowFunctions\NoNullableReturnTypeDeclarationRule`, which reports an error when an arrow function has a nullable return type declaration ([#1146]), by [@localheinz]
+- Added `ArrowFunctions\NoParameterWithNullableTypeDeclarationRule`, which reports an error when an arrow function has a parameter with a nullable type declaration ([#1149]), by [@localheinz]
+- Added `ArrowFunctions\NoParameterWithNullDefaultValueRule`, which reports an error when an arrow function has a parameter with `null` as default value ([#1150]), by [@localheinz]
+- Added `ArrowFunctions\NoParameterPassedByReferenceRule`, which reports an error when an arrow function has a parameter that is passed by reference ([#1151]), by [@localheinz]
 
 ## [`2.14.2`][2.14.2]
 
@@ -696,7 +707,9 @@ For a full diff see [`362c7ea...0.1.0`][362c7ea...0.1.0].
 [2.14.1]: https://github.com/ergebnis/phpstan-rules/releases/tag/2.14.1
 [2.14.1...2.14.2]: https://github.com/ergebnis/phpstan-rules/compare/2.14.1...2.14.2
 [2.14.2]: https://github.com/ergebnis/phpstan-rules/releases/tag/2.14.2
-[2.14.2...main]: https://github.com/ergebnis/phpstan-rules/compare/2.14.2...main
+[2.14.2...2.15.0]: https://github.com/ergebnis/phpstan-rules/compare/2.14.2...2.15.0
+[2.15.0]: https://github.com/ergebnis/phpstan-rules/releases/tag/2.15.0
+[2.15.0...main]: https://github.com/ergebnis/phpstan-rules/compare/2.15.0...main
 
 [#1]: https://github.com/ergebnis/phpstan-rules/pull/1
 [#4]: https://github.com/ergebnis/phpstan-rules/pull/4
@@ -802,6 +815,10 @@ For a full diff see [`362c7ea...0.1.0`][362c7ea...0.1.0].
 [#1101]: https://github.com/ergebnis/phpstan-rules/pull/1101
 [#1139]: https://github.com/ergebnis/phpstan-rules/pull/1139
 [#1140]: https://github.com/ergebnis/phpstan-rules/pull/1140
+[#1146]: https://github.com/ergebnis/phpstan-rules/pull/1146
+[#1149]: https://github.com/ergebnis/phpstan-rules/pull/1149
+[#1150]: https://github.com/ergebnis/phpstan-rules/pull/1150
+[#1151]: https://github.com/ergebnis/phpstan-rules/pull/1151
 
 [@alfredbez]: https://github.com/alfredbez
 [@cosmastech]: https://github.com/cosmastech

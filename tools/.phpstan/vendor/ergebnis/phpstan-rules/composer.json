@@ -36,11 +36,11 @@
     "fakerphp/faker": "^1.24.1",
     "phpstan/extension-installer": "^1.4.3",
     "phpstan/phpstan-deprecation-rules": "^2.0.5",
-    "phpstan/phpstan-phpunit": "^2.0.21",
+    "phpstan/phpstan-phpunit": "^2.1.1",
     "phpstan/phpstan-strict-rules": "^2.1.0",
     "phpunit/phpunit": "^9.6.33",
     "psr/container": "^2.0.2",
-    "rector/rector": "^2.3.8",
+    "rector/rector": "^2.7.0",
     "symfony/finder": "^5.4.45",
     "symfony/process": "^5.4.51"
   },
@@ -71,7 +71,7 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-main": "2.14-dev"
+      "dev-main": "2.15-dev"
     },
     "phpstan": {
       "includes": [
