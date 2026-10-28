@@ -632,6 +632,26 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                     // @codeCoverageIgnoreEnd
                 }
             }
+        } catch (IncompleteTest $markedIncompleteDuringTearDown) {
+            if (!isset($e) && !isset($_e)) {
+                $this->status = TestStatus::incomplete($markedIncompleteDuringTearDown->getMessage());
+                $e            = $markedIncompleteDuringTearDown;
+
+                $emitter->testMarkedAsIncomplete(
+                    $this->valueObjectForEvents(),
+                    Event\Code\ThrowableBuilder::from($markedIncompleteDuringTearDown),
+                );
+            }
+        } catch (SkippedTest $skippedDuringTearDown) {
+            if (!isset($e) && !isset($_e)) {
+                $this->status = TestStatus::skipped($skippedDuringTearDown->getMessage());
+                $e            = $skippedDuringTearDown;
+
+                $emitter->testSkipped(
+                    $this->valueObjectForEvents(),
+                    $skippedDuringTearDown->getMessage(),
+                );
+            }
         } catch (AssertionError|AssertionFailedError $assertionFailedDuringTearDown) {
             if (!isset($e) || $e instanceof SkippedWithMessageException) {
                 $this->status = TestStatus::failure($assertionFailedDuringTearDown->getMessage());
