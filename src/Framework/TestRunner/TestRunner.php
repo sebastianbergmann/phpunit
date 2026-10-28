@@ -177,9 +177,15 @@ final class TestRunner
             TimeLimitHandler::disarmAlarm();
         }
 
+        // TestCase::runLifecycle() does not pass on an exception of a registered failure type
+        if ($test->status()->isFailure()) {
+            $failure = true;
+        }
+
         $test->addToAssertionCount(Assert::getCount());
 
-        if ($this->configuration->reportUselessTests() &&
+        if (!$failure &&
+            $this->configuration->reportUselessTests() &&
             !$test->doesNotPerformAssertions() &&
             $test->numberOfAssertionsPerformed() === 0) {
             $risky = true;
@@ -236,6 +242,7 @@ final class TestRunner
         ErrorHandler::instance()->disable();
 
         if (!$error &&
+            !$failure &&
             !$incomplete &&
             !$skipped &&
             $this->configuration->reportUselessTests() &&
