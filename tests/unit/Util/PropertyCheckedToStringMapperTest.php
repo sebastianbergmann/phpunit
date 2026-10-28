@@ -40,6 +40,22 @@ final class PropertyCheckedToStringMapperTest extends AbstractEventTestCase
         );
     }
 
+    public function testDescribesHowManyExplicitExamplesWereCheckedWhenThereWereAny(): void
+    {
+        $this->assertSame(
+            '100 examples and 2 explicit examples checked, 3 rejected' . PHP_EOL,
+            PropertyCheckedToStringMapper::map($this->event(100, 3, [], [], [], 2)),
+        );
+    }
+
+    public function testUsesTheSingularForOneExplicitExample(): void
+    {
+        $this->assertSame(
+            '0 examples and 1 explicit example checked, 0 rejected' . PHP_EOL,
+            PropertyCheckedToStringMapper::map($this->event(0, 0, [], [], [], 1)),
+        );
+    }
+
     public function testDescribesThePercentageOfTheExamplesThatWereClassifiedWithEachLabelFromTheLargestToTheSmallest(): void
     {
         $this->assertStringEqualsStringIgnoringLineEndings(
@@ -142,14 +158,16 @@ EOT,
      * @param list<array{label: non-empty-string, numberOfExamples: positive-int}>                                                                                                $classifications
      * @param list<array{label: non-empty-string, numberOfValues: positive-int, minimum: float|int, median: float|int, mean: float, percentile90: float|int, maximum: float|int}> $observations
      * @param list<array{label: non-empty-string, highestScore: float|int}>                                                                                                       $targets
+     * @param non-negative-int                                                                                                                                                    $numberOfExplicitExamplesChecked
      */
-    private function event(int $numberOfExamplesChecked, int $numberOfExamplesRejected, array $classifications, array $observations, array $targets): PropertyChecked
+    private function event(int $numberOfExamplesChecked, int $numberOfExamplesRejected, array $classifications, array $observations, array $targets, int $numberOfExplicitExamplesChecked = 0): PropertyChecked
     {
         return new PropertyChecked(
             $this->telemetryInfo(),
             $this->testValueObject(),
             1234,
             $numberOfExamplesChecked,
+            $numberOfExplicitExamplesChecked,
             $numberOfExamplesRejected,
             $classifications,
             $observations,

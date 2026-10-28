@@ -25,7 +25,7 @@ Test Suite for Property Started (PHPUnit\TestFixture\PropertyBasedTesting\Observ
 Test Preparation Started (PHPUnit\TestFixture\PropertyBasedTesting\ObservedValuesTest::testObservesValuesOfItsExamples)
 Test Prepared (PHPUnit\TestFixture\PropertyBasedTesting\ObservedValuesTest::testObservesValuesOfItsExamples)
 Test Passed (PHPUnit\TestFixture\PropertyBasedTesting\ObservedValuesTest::testObservesValuesOfItsExamples)
-Test Property Checked (PHPUnit\TestFixture\PropertyBasedTesting\ObservedValuesTest::testObservesValuesOfItsExamples, seed: %d, examples: 9, rejected: 1)
+Test Property Checked (PHPUnit\TestFixture\PropertyBasedTesting\ObservedValuesTest::testObservesValuesOfItsExamples, seed: %d, examples: 9, explicit examples: 1, rejected: 1)
 value: count 9, min 0, median 4, mean 4, p90 8, max 8
 third: count 9, min 0, median 1.33333, mean 1.33333, p90 2.66667, max 2.66667
 Test Finished (PHPUnit\TestFixture\PropertyBasedTesting\ObservedValuesTest::testObservesValuesOfItsExamples)

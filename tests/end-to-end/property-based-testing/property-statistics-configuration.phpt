@@ -26,7 +26,7 @@ Time: %s, Memory: %s
 Statistics of 1 property:
 
 1) PHPUnit\TestFixture\PropertyBasedTesting\ClassifiedExamplesTest::testClassifiesItsExamples
-9 examples checked, 1 rejected
+9 examples and 1 explicit example checked, 1 rejected
 
      55.6% even
      44.4% odd
