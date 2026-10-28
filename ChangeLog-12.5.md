@@ -8,6 +8,7 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 
 * When `method()` is called for a method of a test double that cannot be configured, for instance because it does not exist, every subsequent invocation of a method of that test double fails with `Method name is not configured`
 * When an assertion fails in an "after test" method, for instance `tearDown()`, of a test that already failed, errored, or was marked as incomplete, a failure is reported in addition to the outcome of the test, so the test is counted more than once and `onNotSuccessfulTest()` is called with the failure from the "after test" method instead of the test's own
+* The TestDox output does not show the failure of a before-first-test method or an after-last-test method, for instance an assertion failure in `setUpBeforeClass()`
 
 ## [12.5.42] - 2026-10-27
 
