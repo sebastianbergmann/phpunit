@@ -44,6 +44,10 @@ includes:
 
 This package provides the following rules for use with [`phpstan/phpstan`](https://github.com/phpstan/phpstan):
 
+- [`Ergebnis\PHPStan\Rules\ArrowFunctions\NoNullableReturnTypeDeclarationRule`](https://github.com/ergebnis/phpstan-rules#arrowfunctionsnonullablereturntypedeclarationrule)
+- [`Ergebnis\PHPStan\Rules\ArrowFunctions\NoParameterPassedByReferenceRule`](https://github.com/ergebnis/phpstan-rules#arrowfunctionsnoparameterpassedbyreferencerule)
+- [`Ergebnis\PHPStan\Rules\ArrowFunctions\NoParameterWithNullableTypeDeclarationRule`](https://github.com/ergebnis/phpstan-rules#arrowfunctionsnoparameterwithnullabletypedeclarationrule)
+- [`Ergebnis\PHPStan\Rules\ArrowFunctions\NoParameterWithNullDefaultValueRule`](https://github.com/ergebnis/phpstan-rules#arrowfunctionsnoparameterwithnulldefaultvaluerule)
 - [`Ergebnis\PHPStan\Rules\CallLikes\NoNamedArgumentRule`](https://github.com/ergebnis/phpstan-rules#calllikesnonamedargumentrule)
 - [`Ergebnis\PHPStan\Rules\Classes\FinalRule`](https://github.com/ergebnis/phpstan-rules#classesfinalrule)
 - [`Ergebnis\PHPStan\Rules\Classes\NoExtendsRule`](https://github.com/ergebnis/phpstan-rules#classesnoextendsrule)
@@ -76,6 +80,68 @@ This package provides the following rules for use with [`phpstan/phpstan`](https
 - [`Ergebnis\PHPStan\Rules\Methods\PrivateInFinalClassRule`](https://github.com/ergebnis/phpstan-rules#methodsprivateinfinalclassrule)
 - [`Ergebnis\PHPStan\Rules\Statements\NoSwitchRule`](https://github.com/ergebnis/phpstan-rules#statementsnoswitchrule)
 
+
+### ArrowFunctions
+
+#### `ArrowFunctions\NoNullableReturnTypeDeclarationRule`
+
+This rule reports an error when an arrow function uses a nullable return type declaration.
+
+##### Disabling the rule
+
+You can set the `enabled` parameter to `false` to disable this rule.
+
+```neon
+parameters:
+	ergebnis:
+		noNullableReturnTypeDeclaration:
+			enabled: false
+```
+
+#### `ArrowFunctions\NoParameterPassedByReferenceRule`
+
+This rule reports an error when an arrow function has a parameter that is [passed by reference](https://www.php.net/manual/en/language.references.pass.php).
+
+##### Disabling the rule
+
+You can set the `enabled` parameter to `false` to disable this rule.
+
+```neon
+parameters:
+	ergebnis:
+		noParameterPassedByReference:
+			enabled: false
+```
+
+#### `ArrowFunctions\NoParameterWithNullableTypeDeclarationRule`
+
+This rule reports an error when an arrow function has a parameter with a nullable type declaration.
+
+##### Disabling the rule
+
+You can set the `enabled` parameter to `false` to disable this rule.
+
+```neon
+parameters:
+	ergebnis:
+		noParameterWithNullableTypeDeclaration:
+			enabled: false
+```
+
+#### `ArrowFunctions\NoParameterWithNullDefaultValueRule`
+
+This rule reports an error when an arrow function has a parameter with `null` as default value.
+
+##### Disabling the rule
+
+You can set the `enabled` parameter to `false` to disable this rule.
+
+```neon
+parameters:
+	ergebnis:
+		noParameterWithNullDefaultValue:
+			enabled: false
+```
 
 ### CallLikes
 
