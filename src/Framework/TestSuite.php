@@ -669,7 +669,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                 $calledMethods[] = $calledMethod;
             }
 
-            if (isset($t) && $t instanceof SkippedTest) {
+            if (isset($t) && ($t instanceof IncompleteTest || $t instanceof SkippedTest)) {
                 $emitter->testSuiteSkipped(
                     $testSuiteValueObjectForEvents,
                     $t->getMessage(),
