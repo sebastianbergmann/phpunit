@@ -25,7 +25,7 @@ Time: %s, Memory: %s
 Statistics of 1 property:
 
 1) PHPUnit\TestFixture\PropertyBasedTesting\ObservedValuesTest::testObservesValuesOfItsExamples
-9 examples checked, 1 rejected
+9 examples and 1 explicit example checked, 1 rejected
 
     value: count 9, min 0, median 4, mean 4, p90 8, max 8
     third: count 9, min 0, median 1.33333, mean 1.33333, p90 2.66667, max 2.66667

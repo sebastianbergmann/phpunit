@@ -28,8 +28,8 @@ Test Preparation Started (PHPUnit\TestFixture\PropertyBasedTesting\SlowExplicitE
 Test Prepared (PHPUnit\TestFixture\PropertyBasedTesting\SlowExplicitExamplesTest::testTakesLongerThanTheTimeLimitOfTheTestRun)
 Test Passed (PHPUnit\TestFixture\PropertyBasedTesting\SlowExplicitExamplesTest::testTakesLongerThanTheTimeLimitOfTheTestRun)
 Test Considered Risky (PHPUnit\TestFixture\PropertyBasedTesting\SlowExplicitExamplesTest::testTakesLongerThanTheTimeLimitOfTheTestRun)
-This property was checked for only 0 of 10 examples because the test run was aborted
-Test Property Checked (PHPUnit\TestFixture\PropertyBasedTesting\SlowExplicitExamplesTest::testTakesLongerThanTheTimeLimitOfTheTestRun, seed: %d, examples: 0, rejected: 0)
+This property was checked for only 0 of 10 generated examples (and 1 explicit example) because the test run was aborted
+Test Property Checked (PHPUnit\TestFixture\PropertyBasedTesting\SlowExplicitExamplesTest::testTakesLongerThanTheTimeLimitOfTheTestRun, seed: %d, examples: 0, explicit examples: 1, rejected: 0)
 Test Finished (PHPUnit\TestFixture\PropertyBasedTesting\SlowExplicitExamplesTest::testTakesLongerThanTheTimeLimitOfTheTestRun)
 Test Runner Time Limit Exceeded (1 second)
 Test Suite for Property Finished (PHPUnit\TestFixture\PropertyBasedTesting\SlowExplicitExamplesTest::testTakesLongerThanTheTimeLimitOfTheTestRun, 10 examples)

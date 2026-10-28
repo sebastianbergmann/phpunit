@@ -1083,6 +1083,40 @@ final class PropertyTestSuite extends IterativeTestSuite
     }
 
     /**
+     * Begins a message that says for how few of the examples that were to be
+     * generated the property was checked, for instance "This property was
+     * checked for only 3 of 10 examples". When explicit examples were checked
+     * as well, it says that the examples are the generated ones and how many
+     * explicit examples there were, for instance "This property was checked
+     * for only 0 of 10 generated examples (and 1 explicit example)".
+     *
+     * @return non-empty-string
+     */
+    private function checkedForOnly(): string
+    {
+        if ($this->numberOfExplicitExamplesChecked === 0) {
+            return sprintf(
+                'This property was checked for only %d of %d examples',
+                $this->numberOfExamplesChecked,
+                $this->numberOfExamples,
+            );
+        }
+
+        if ($this->numberOfExplicitExamplesChecked === 1) {
+            $explicitExamples = '1 explicit example';
+        } else {
+            $explicitExamples = sprintf('%d explicit examples', $this->numberOfExplicitExamplesChecked);
+        }
+
+        return sprintf(
+            'This property was checked for only %d of %d generated examples (and %s)',
+            $this->numberOfExamplesChecked,
+            $this->numberOfExamples,
+            $explicitExamples,
+        );
+    }
+
+    /**
      * Describes how many of the generated examples were rejected and why, for
      * instance "12 examples were rejected (10 by assume(), 2 because no value
      * that satisfies a filter was generated)", with the most frequent reason
@@ -1251,6 +1285,7 @@ final class PropertyTestSuite extends IterativeTestSuite
                     $test,
                     $this->seed,
                     $this->numberOfExamplesChecked,
+                    $this->numberOfExplicitExamplesChecked,
                     $this->numberOfExamplesRejected,
                     $this->classifications,
                     $this->observations()->statistics(),
@@ -1309,9 +1344,8 @@ final class PropertyTestSuite extends IterativeTestSuite
         // checked because all of them were rejected
         if ($this->unhealthyBecauseOf !== null) {
             $messages[] = sprintf(
-                'This property was checked for only %d of %d examples because generating examples was stopped after %s while fewer than %d examples were checked; %s',
-                $this->numberOfExamplesChecked,
-                $this->numberOfExamples,
+                '%s because generating examples was stopped after %s while fewer than %d examples were checked; %s',
+                $this->checkedForOnly(),
                 $this->rejectedExamples(),
                 ConfigurationRegistry::get()->examplesCheckedUntilHealthIsAssumed(),
                 $this->unhealthyBecauseOf->advice(),
@@ -1320,20 +1354,15 @@ final class PropertyTestSuite extends IterativeTestSuite
             ($this->numberOfExamplesChecked + $this->numberOfExamplesRejected === $this->maximumNumberOfExamplesGenerated() ||
              ($this->exhausted && $this->numberOfExamplesChecked === 0))) {
             $messages[] = sprintf(
-                'This property was checked for only %d of %d examples, %s; %s',
-                $this->numberOfExamplesChecked,
-                $this->numberOfExamples,
+                '%s, %s; %s',
+                $this->checkedForOnly(),
                 $this->rejectedExamples(),
                 $this->mostFrequentRejectionReason()->advice(),
             );
         }
 
         if ($this->aborted) {
-            $messages[] = sprintf(
-                'This property was checked for only %d of %d examples because the test run was aborted',
-                $this->numberOfExamplesChecked,
-                $this->numberOfExamples,
-            );
+            $messages[] = $this->checkedForOnly() . ' because the test run was aborted';
         }
 
         if ($passed && $this->numberOfExamplesChecked > 0) {
