@@ -736,6 +736,9 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
 
             try {
                 call_user_func([$this->name, $method]);
+            } catch (IncompleteTest|SkippedTest) {
+                // the tests of the test class have already been run, so they
+                // can no longer be marked as incomplete or skipped
             } catch (Throwable $t) {
             }
 

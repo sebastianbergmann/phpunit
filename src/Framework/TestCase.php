@@ -2211,7 +2211,20 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     private function invokeAfterClassHookMethods(array $hookMethods): void
     {
-        $this->invokeHookMethodsWithoutEmittingEvents($hookMethods['afterClass']);
+        foreach ($hookMethods['afterClass']->methodNamesSortedByPriority() as $methodName) {
+            if ($this->methodDoesNotExistOrIsDeclaredInTestCase($methodName)) {
+                continue;
+            }
+
+            try {
+                /** @phpstan-ignore method.dynamicName */
+                $this->{$methodName}();
+            } catch (IncompleteTest|SkippedTest) {
+                // an after-last-test method cannot mark the test as incomplete
+                // or skip it, just as it cannot when it is called for the test
+                // class in the process that runs the test suite
+            }
+        }
     }
 
     /**
