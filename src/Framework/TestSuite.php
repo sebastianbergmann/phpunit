@@ -25,6 +25,7 @@ use function sprintf;
 use function str_ends_with;
 use function str_starts_with;
 use function trim;
+use AssertionError;
 use Iterator;
 use IteratorAggregate;
 use PHPUnit\Event;
@@ -884,7 +885,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                 $calledMethods[] = $calledMethod;
             }
 
-            if (isset($t) && $t instanceof SkippedTest) {
+            if (isset($t) && ($t instanceof IncompleteTest || $t instanceof SkippedTest)) {
                 /** @var non-empty-string $skippedMessage */
                 $skippedMessage = $t->getMessage();
 
@@ -897,7 +898,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             }
 
             if (isset($t)) {
-                if ($t instanceof AssertionFailedError) {
+                if ($t instanceof AssertionError || $t instanceof AssertionFailedError) {
                     $emitter->beforeFirstTestMethodFailed(
                         $this->name,
                         $calledMethod,
@@ -958,6 +959,9 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                 $callback = [$this->name, $method];
 
                 call_user_func($callback);
+            } catch (IncompleteTest|SkippedTest) {
+                // the tests of the test class have already been run, so they
+                // can no longer be marked as incomplete or skipped
             } catch (Throwable $t) {
             }
 
@@ -969,7 +973,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             $calledMethods[] = $calledMethod;
 
             if (isset($t)) {
-                if ($t instanceof AssertionFailedError) {
+                if ($t instanceof AssertionError || $t instanceof AssertionFailedError) {
                     $emitter->afterLastTestMethodFailed(
                         $this->name,
                         $calledMethod,

@@ -8,6 +8,14 @@ All notable changes of the PHPUnit 13.4 release series are documented in this fi
 
 * When `method()` is called for a method of a test double that cannot be configured, for instance because it does not exist, every subsequent invocation of a method of that test double fails with `Method name is not configured`
 * When an assertion fails in an "after test" method, for instance `tearDown()`, of a test that already failed, errored, or was marked as incomplete, a failure is reported in addition to the outcome of the test, so the test is counted more than once and `onNotSuccessfulTest()` is called with the failure from the "after test" method instead of the test's own
+* The TestDox output does not show the failure of a before-first-test method or an after-last-test method, for instance an assertion failure in `setUpBeforeClass()`
+* A failed PHP assertion, made using `assert()`, in a hook method is reported as an error of that method instead of as a failure, and it is counted as an error instead of as a failure when that method is a before-first-test method or an after-last-test method
+* When a hook method of a test, for instance `setUp()`, marks the test as incomplete, the hook method is reported as failed
+* When an "after test" method, for instance `tearDown()`, marks a successful test as incomplete or skips it, the test is reported as failed
+* When a before-first-test method, for instance `setUpBeforeClass()`, calls `markTestIncomplete()`, each test of the test class is reported as failed instead of the test class being skipped as it is when `markTestSkipped()` is called
+* When an after-last-test method, for instance `tearDownAfterClass()`, calls `markTestIncomplete()` or `markTestSkipped()` after the tests of the test class have been run, this is reported as a failure, also for each test of the test class that is run in process isolation
+* When a test fails because of an exception of a registered failure type, an error or a failure in an "after test" method, for instance `tearDown()`, is reported in addition to the test's failure, so the test is counted more than once
+* A test that fails because of an exception of a registered failure type is considered risky when it does not perform assertions or, when `requireCoverageMetadata="true"` is configured, when it does not define a code coverage target, unlike a test that fails because an assertion failed
 
 ## [13.4.5] - 2026-10-27
 

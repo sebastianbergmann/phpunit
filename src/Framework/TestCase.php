@@ -423,7 +423,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         if ($hasMetRequirements) {
-            $e = $this->tearDownTest($hookMethods, $e);
+            $e = $this->tearDownTest($hookMethods, $e, $testSucceeded);
         }
 
         // $e is null when the test failed with a throwable of a registered failure type
@@ -1399,8 +1399,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @param HookMethodsByType $hookMethods
      */
-    private function tearDownTest(array $hookMethods, ?Throwable $e): ?Throwable
+    private function tearDownTest(array $hookMethods, ?Throwable $e, bool $testSucceeded): ?Throwable
     {
+        // $e is null when the test failed with a throwable of a registered failure type
+        $testPassed = $testSucceeded && $e === null;
+
         try {
             HookMethodInvoker::invokeAfterTest($this, $hookMethods, $this->emitter);
 
@@ -1409,8 +1412,33 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 HookMethodInvoker::invokeAfterClass($this, $hookMethods);
                 // @codeCoverageIgnoreEnd
             }
+        } catch (IncompleteTest $t) {
+            if ($testPassed) {
+                $this->status = TestStatus::incomplete($t->getMessage());
+
+                $this->emitter->testMarkedAsIncomplete(
+                    $this->valueObjectForEvents(),
+                    Event\Code\ThrowableBuilder::from($t),
+                );
+
+                return $t;
+            }
+        } catch (SkippedTest $t) {
+            if ($testPassed) {
+                $this->status = TestStatus::skipped($t->getMessage());
+
+                /** @var non-empty-string $skipMessage */
+                $skipMessage = $t->getMessage();
+
+                $this->emitter->testSkipped(
+                    $this->valueObjectForEvents(),
+                    $skipMessage,
+                );
+
+                return $t;
+            }
         } catch (AssertionError|AssertionFailedError $t) {
-            if ($e === null || $e instanceof SkippedWithMessageException) {
+            if ($testPassed || $e instanceof SkippedWithMessageException) {
                 $this->status = TestStatus::failure($t->getMessage());
 
                 $this->emitter->testFailed(
@@ -1422,7 +1450,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 return $t;
             }
         } catch (Throwable $t) {
-            if ($e === null || $e instanceof SkippedWithMessageException) {
+            if ($testPassed || $e instanceof SkippedWithMessageException) {
                 $this->status = TestStatus::error($t->getMessage());
 
                 $this->emitter->testErrored(
