@@ -653,7 +653,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 );
             }
         } catch (AssertionError|AssertionFailedError $assertionFailedDuringTearDown) {
-            if (!isset($e) || $e instanceof SkippedWithMessageException) {
+            if (!isset($_e) && (!isset($e) || $e instanceof SkippedWithMessageException)) {
                 $this->status = TestStatus::failure($assertionFailedDuringTearDown->getMessage());
                 $e            = $assertionFailedDuringTearDown;
 
@@ -664,7 +664,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 );
             }
         } catch (Throwable $exceptionRaisedDuringTearDown) {
-            if (!isset($e) || $e instanceof SkippedWithMessageException) {
+            if (!isset($_e) && (!isset($e) || $e instanceof SkippedWithMessageException)) {
                 $this->status = TestStatus::error($exceptionRaisedDuringTearDown->getMessage());
                 $e            = $exceptionRaisedDuringTearDown;
 
