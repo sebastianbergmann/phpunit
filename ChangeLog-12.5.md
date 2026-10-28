@@ -10,6 +10,7 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 * When an assertion fails in an "after test" method, for instance `tearDown()`, of a test that already failed, errored, or was marked as incomplete, a failure is reported in addition to the outcome of the test, so the test is counted more than once and `onNotSuccessfulTest()` is called with the failure from the "after test" method instead of the test's own
 * The TestDox output does not show the failure of a before-first-test method or an after-last-test method, for instance an assertion failure in `setUpBeforeClass()`
 * A failed PHP assertion, made using `assert()`, in a hook method is reported as an error of that method instead of as a failure, and it is counted as an error instead of as a failure when that method is a before-first-test method or an after-last-test method
+* When a hook method of a test, for instance `setUp()`, marks the test as incomplete, the hook method is reported as failed
 
 ## [12.5.42] - 2026-10-27
 

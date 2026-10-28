@@ -2233,7 +2233,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $methodsInvoked[] = $methodInvoked;
 
             if (isset($t)) {
-                if (!$t instanceof SkippedTest) {
+                if (!$t instanceof IncompleteTest && !$t instanceof SkippedTest) {
                     if ($t instanceof AssertionError || $t instanceof AssertionFailedError) {
                         $method = $failedMethod;
                     } else {
