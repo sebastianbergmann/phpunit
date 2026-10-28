@@ -26,7 +26,7 @@ Test Preparation Started (PHPUnit\TestFixture\PropertyBasedTesting\SkippedExampl
 Test Prepared (PHPUnit\TestFixture\PropertyBasedTesting\SkippedExampleTest::testSkipsTheExample)
 Test Skipped (PHPUnit\TestFixture\PropertyBasedTesting\SkippedExampleTest::testSkipsTheExample)
 skipped
-Test Property Checked (PHPUnit\TestFixture\PropertyBasedTesting\SkippedExampleTest::testSkipsTheExample, seed: %d, examples: 1, rejected: 0)
+Test Property Checked (PHPUnit\TestFixture\PropertyBasedTesting\SkippedExampleTest::testSkipsTheExample, seed: %d, examples: 0, rejected: 0)
 Test Finished (PHPUnit\TestFixture\PropertyBasedTesting\SkippedExampleTest::testSkipsTheExample)
 Test Suite for Property Finished (PHPUnit\TestFixture\PropertyBasedTesting\SkippedExampleTest::testSkipsTheExample, 10 examples)
 Test Suite Finished (PHPUnit\TestFixture\PropertyBasedTesting\SkippedExampleTest, 1 test)

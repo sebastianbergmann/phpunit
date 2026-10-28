@@ -101,7 +101,10 @@ final readonly class PropertyChecked implements Event
 
     /**
      * The number of examples for which the property was checked, including
-     * the example that falsified it, if any.
+     * the example that falsified it, if any. An example that ended without
+     * checking the property, because it was skipped, because it was aborted
+     * when the deadline of the test run had passed, or because it ended
+     * before its test method was called, is not included.
      *
      * @return non-negative-int
      */
