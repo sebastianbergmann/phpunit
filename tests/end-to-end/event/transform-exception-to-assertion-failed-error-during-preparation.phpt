@@ -29,8 +29,6 @@ Test Preparation Failed (PHPUnit\TestFixture\Event\TransformExceptionToAssertion
 setup failed
 Test Errored (PHPUnit\TestFixture\Event\TransformExceptionToAssertionFailedErrorDuringPreparationTest::testOne)
 setup failed
-Test Considered Risky (PHPUnit\TestFixture\Event\TransformExceptionToAssertionFailedErrorDuringPreparationTest::testOne)
-This test did not perform any assertions
 Test Finished (PHPUnit\TestFixture\Event\TransformExceptionToAssertionFailedErrorDuringPreparationTest::testOne)
 Test Suite Finished (PHPUnit\TestFixture\Event\TransformExceptionToAssertionFailedErrorDuringPreparationTest, 1 test)
 Test Runner Execution Finished

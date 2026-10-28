@@ -9,8 +9,10 @@
  */
 namespace PHPUnit\Framework\TestCase;
 
+use AssertionError;
 use PHPUnit\Event;
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\IncompleteTest;
 use PHPUnit\Framework\SkippedTest;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Api\HookMethods;
@@ -121,7 +123,27 @@ final readonly class HookMethodInvoker
      */
     public static function invokeAfterClass(TestCase $test, array $hookMethods): void
     {
-        self::invokeWithoutEmittingEvents($test, $hookMethods['afterClass']);
+        $reflector = new ReflectionClass($test::class);
+
+        foreach ($hookMethods['afterClass']->methodNamesSortedByPriority() as $methodName) {
+            if (Reflection::methodDoesNotExistOrIsDeclaredInTestCase($reflector, $methodName)) {
+                continue;
+            }
+
+            $hookMethod = $reflector->getMethod($methodName);
+
+            try {
+                if ($hookMethod->isStatic()) {
+                    $hookMethod->invoke(null);
+                } else {
+                    $hookMethod->invoke($test);
+                }
+            } catch (IncompleteTest|SkippedTest) {
+                // an after-last-test method cannot mark the test as incomplete
+                // or skip it, just as it cannot when it is called for the test
+                // class in the process that runs the test suite
+            }
+        }
     }
 
     /**
@@ -168,8 +190,8 @@ final readonly class HookMethodInvoker
             }
 
             if (isset($t)) {
-                if (!$t instanceof SkippedTest) {
-                    if ($t instanceof AssertionFailedError) {
+                if (!$t instanceof IncompleteTest && !$t instanceof SkippedTest) {
+                    if ($t instanceof AssertionError || $t instanceof AssertionFailedError) {
                         $method = $failedMethod;
                     } else {
                         $method = $erroredMethod;
