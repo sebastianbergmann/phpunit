@@ -126,6 +126,7 @@ final class ResultPrinterTest extends TestCase
                             self::testMethod(),
                             1234,
                             8,
+                            0,
                             1,
                             [
                                 ['label' => 'odd', 'numberOfExamples' => 2],
@@ -139,6 +140,7 @@ final class ResultPrinterTest extends TestCase
                             self::testMethod(),
                             1234,
                             1,
+                            0,
                             0,
                             [],
                             [],

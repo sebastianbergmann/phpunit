@@ -17,11 +17,11 @@ use PHPUnit\Event\Test\PropertyChecked;
 
 /**
  * Describes the statistics of a property: how many of its examples were
- * checked and rejected, the percentage of the examples that were checked
- * that were classified with each label, from the largest to the smallest
- * percentage, the statistics of the values that were observed with each
- * label, and the highest score that was targeted with each label, for
- * instance:
+ * checked and rejected, how many of its explicit examples were checked, if
+ * any, the percentage of the examples that were checked that were
+ * classified with each label, from the largest to the smallest percentage,
+ * the statistics of the values that were observed with each label, and the
+ * highest score that was targeted with each label, for instance:
  *
  *     100 examples checked, 3 rejected
  *
@@ -43,10 +43,21 @@ final readonly class PropertyCheckedToStringMapper
 
     public static function map(PropertyChecked $event): string
     {
+        $explicitExamples = '';
+
+        if ($event->numberOfExplicitExamplesChecked() > 0) {
+            $explicitExamples = sprintf(
+                ' and %d explicit example%s',
+                $event->numberOfExplicitExamplesChecked(),
+                self::plural($event->numberOfExplicitExamplesChecked()),
+            );
+        }
+
         $buffer = sprintf(
-            '%d example%s checked, %d rejected',
+            '%d example%s%s checked, %d rejected',
             $event->numberOfExamplesChecked(),
             self::plural($event->numberOfExamplesChecked()),
+            $explicitExamples,
             $event->numberOfExamplesRejected(),
         ) . PHP_EOL;
 

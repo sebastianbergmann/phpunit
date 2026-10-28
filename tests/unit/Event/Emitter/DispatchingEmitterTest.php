@@ -1903,7 +1903,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $test = $this->testValueObject();
 
-        $emitter->testPropertyChecked($test, 1234, 100, 3, [['label' => 'negative', 'numberOfExamples' => 42]], [['label' => 'size', 'numberOfValues' => 100, 'minimum' => 0, 'median' => 4, 'mean' => 5.12, 'percentile90' => 11, 'maximum' => 32]], [['label' => 'sum', 'highestScore' => 1250]]);
+        $emitter->testPropertyChecked($test, 1234, 100, 2, 3, [['label' => 'negative', 'numberOfExamples' => 42]], [['label' => 'size', 'numberOfValues' => 100, 'minimum' => 0, 'median' => 4, 'mean' => 5.12, 'percentile90' => 11, 'maximum' => 32]], [['label' => 'sum', 'highestScore' => 1250]]);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 
@@ -1914,6 +1914,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($test, $event->test());
         $this->assertSame(1234, $event->seed());
         $this->assertSame(100, $event->numberOfExamplesChecked());
+        $this->assertSame(2, $event->numberOfExplicitExamplesChecked());
         $this->assertSame(3, $event->numberOfExamplesRejected());
         $this->assertSame([['label' => 'negative', 'numberOfExamples' => 42]], $event->classifications());
         $this->assertSame([['label' => 'size', 'numberOfValues' => 100, 'minimum' => 0, 'median' => 4, 'mean' => 5.12, 'percentile90' => 11, 'maximum' => 32]], $event->observations());

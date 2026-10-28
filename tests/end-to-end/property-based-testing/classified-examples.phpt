@@ -25,7 +25,7 @@ Test Suite for Property Started (PHPUnit\TestFixture\PropertyBasedTesting\Classi
 Test Preparation Started (PHPUnit\TestFixture\PropertyBasedTesting\ClassifiedExamplesTest::testClassifiesItsExamples)
 Test Prepared (PHPUnit\TestFixture\PropertyBasedTesting\ClassifiedExamplesTest::testClassifiesItsExamples)
 Test Passed (PHPUnit\TestFixture\PropertyBasedTesting\ClassifiedExamplesTest::testClassifiesItsExamples)
-Test Property Checked (PHPUnit\TestFixture\PropertyBasedTesting\ClassifiedExamplesTest::testClassifiesItsExamples, seed: %d, examples: 9, rejected: 1)
+Test Property Checked (PHPUnit\TestFixture\PropertyBasedTesting\ClassifiedExamplesTest::testClassifiesItsExamples, seed: %d, examples: 9, explicit examples: 1, rejected: 1)
 odd: 4 (44.4%)
 even: 5 (55.6%)
 zero: 1 (11.1%)

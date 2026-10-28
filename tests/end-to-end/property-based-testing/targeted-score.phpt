@@ -25,7 +25,7 @@ Test Suite for Property Started (PHPUnit\TestFixture\PropertyBasedTesting\Target
 Test Preparation Started (PHPUnit\TestFixture\PropertyBasedTesting\TargetedScoreTest::testTargetsTheValue)
 Test Prepared (PHPUnit\TestFixture\PropertyBasedTesting\TargetedScoreTest::testTargetsTheValue)
 Test Passed (PHPUnit\TestFixture\PropertyBasedTesting\TargetedScoreTest::testTargetsTheValue)
-Test Property Checked (PHPUnit\TestFixture\PropertyBasedTesting\TargetedScoreTest::testTargetsTheValue, seed: %d, examples: 20, rejected: 0)
+Test Property Checked (PHPUnit\TestFixture\PropertyBasedTesting\TargetedScoreTest::testTargetsTheValue, seed: %d, examples: 20, explicit examples: 1, rejected: 0)
 value: highest targeted score 1000
 Test Finished (PHPUnit\TestFixture\PropertyBasedTesting\TargetedScoreTest::testTargetsTheValue)
 Test Suite for Property Finished (PHPUnit\TestFixture\PropertyBasedTesting\TargetedScoreTest::testTargetsTheValue, 20 examples)

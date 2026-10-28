@@ -31,7 +31,7 @@ Test Property Falsified (PHPUnit\TestFixture\PropertyBasedTesting\PropertyFalsif
 $value = -1;
 Test Failed (PHPUnit\TestFixture\PropertyBasedTesting\PropertyFalsifiedByExplicitExampleTest::testAbsoluteValueIsTheValue)
 Failed asserting that 1 is identical to -1.
-Test Property Checked (PHPUnit\TestFixture\PropertyBasedTesting\PropertyFalsifiedByExplicitExampleTest::testAbsoluteValueIsTheValue, seed: %d, examples: 0, rejected: 0)
+Test Property Checked (PHPUnit\TestFixture\PropertyBasedTesting\PropertyFalsifiedByExplicitExampleTest::testAbsoluteValueIsTheValue, seed: %d, examples: 0, explicit examples: 2, rejected: 0)
 Test Finished (PHPUnit\TestFixture\PropertyBasedTesting\PropertyFalsifiedByExplicitExampleTest::testAbsoluteValueIsTheValue)
 Test Suite for Property Finished (PHPUnit\TestFixture\PropertyBasedTesting\PropertyFalsifiedByExplicitExampleTest::testAbsoluteValueIsTheValue, 100 examples)
 Test Suite Finished (PHPUnit\TestFixture\PropertyBasedTesting\PropertyFalsifiedByExplicitExampleTest, 1 test)

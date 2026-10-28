@@ -25,12 +25,13 @@ final class PropertyCheckedTest extends AbstractEventTestCase
         $telemetryInfo = $this->telemetryInfo();
         $test          = $this->testValueObject();
 
-        $event = new PropertyChecked($telemetryInfo, $test, 1234, 100, 3, [['label' => 'negative', 'numberOfExamples' => 42]], [['label' => 'size', 'numberOfValues' => 100, 'minimum' => 0, 'median' => 4, 'mean' => 5.12, 'percentile90' => 11, 'maximum' => 32]], [['label' => 'sum', 'highestScore' => 1250]]);
+        $event = new PropertyChecked($telemetryInfo, $test, 1234, 100, 2, 3, [['label' => 'negative', 'numberOfExamples' => 42]], [['label' => 'size', 'numberOfValues' => 100, 'minimum' => 0, 'median' => 4, 'mean' => 5.12, 'percentile90' => 11, 'maximum' => 32]], [['label' => 'sum', 'highestScore' => 1250]]);
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
         $this->assertSame($test, $event->test());
         $this->assertSame(1234, $event->seed());
         $this->assertSame(100, $event->numberOfExamplesChecked());
+        $this->assertSame(2, $event->numberOfExplicitExamplesChecked());
         $this->assertSame(3, $event->numberOfExamplesRejected());
         $this->assertSame([['label' => 'negative', 'numberOfExamples' => 42]], $event->classifications());
         $this->assertSame([['label' => 'size', 'numberOfValues' => 100, 'minimum' => 0, 'median' => 4, 'mean' => 5.12, 'percentile90' => 11, 'maximum' => 32]], $event->observations());
@@ -39,9 +40,16 @@ final class PropertyCheckedTest extends AbstractEventTestCase
 
     public function testCanBeRepresentedAsString(): void
     {
-        $event = new PropertyChecked($this->telemetryInfo(), $this->testValueObject(), 1234, 100, 3, [], [], []);
+        $event = new PropertyChecked($this->telemetryInfo(), $this->testValueObject(), 1234, 100, 0, 3, [], [], []);
 
         $this->assertSame('Test Property Checked (FooTest::testBar, seed: 1234, examples: 100, rejected: 3)', $event->asString());
+    }
+
+    public function testStringRepresentationHasTheNumberOfExplicitExamplesWhenThereWereAny(): void
+    {
+        $event = new PropertyChecked($this->telemetryInfo(), $this->testValueObject(), 1234, 100, 2, 3, [], [], []);
+
+        $this->assertSame('Test Property Checked (FooTest::testBar, seed: 1234, examples: 100, explicit examples: 2, rejected: 3)', $event->asString());
     }
 
     public function testStringRepresentationHasTheNumberAndThePercentageOfTheExamplesThatWereClassifiedWithEachLabel(): void
@@ -51,6 +59,7 @@ final class PropertyCheckedTest extends AbstractEventTestCase
             $this->testValueObject(),
             1234,
             8,
+            0,
             0,
             [
                 ['label' => 'negative', 'numberOfExamples' => 3],
@@ -78,6 +87,7 @@ EOT,
             1234,
             8,
             0,
+            0,
             [],
             [
                 ['label' => 'size', 'numberOfValues' => 8, 'minimum' => 0, 'median' => 4, 'mean' => 4.375, 'percentile90' => 9, 'maximum' => 9],
@@ -103,6 +113,7 @@ EOT,
             $this->testValueObject(),
             1234,
             8,
+            0,
             0,
             [],
             [],

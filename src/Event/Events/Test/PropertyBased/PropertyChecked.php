@@ -39,6 +39,11 @@ final readonly class PropertyChecked implements Event
     /**
      * @var non-negative-int
      */
+    private int $numberOfExplicitExamplesChecked;
+
+    /**
+     * @var non-negative-int
+     */
     private int $numberOfExamplesRejected;
 
     /**
@@ -59,6 +64,7 @@ final readonly class PropertyChecked implements Event
     /**
      * @param non-negative-int                                                                                                                                                    $seed
      * @param non-negative-int                                                                                                                                                    $numberOfExamplesChecked
+     * @param non-negative-int                                                                                                                                                    $numberOfExplicitExamplesChecked
      * @param non-negative-int                                                                                                                                                    $numberOfExamplesRejected
      * @param list<array{label: non-empty-string, numberOfExamples: positive-int}>                                                                                                $classifications
      * @param list<array{label: non-empty-string, numberOfValues: positive-int, minimum: float|int, median: float|int, mean: float, percentile90: float|int, maximum: float|int}> $observations
@@ -66,16 +72,17 @@ final readonly class PropertyChecked implements Event
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfExamplesRejected, array $classifications, array $observations, array $targets)
+    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfExplicitExamplesChecked, int $numberOfExamplesRejected, array $classifications, array $observations, array $targets)
     {
-        $this->telemetryInfo            = $telemetryInfo;
-        $this->test                     = $test;
-        $this->seed                     = $seed;
-        $this->numberOfExamplesChecked  = $numberOfExamplesChecked;
-        $this->numberOfExamplesRejected = $numberOfExamplesRejected;
-        $this->classifications          = $classifications;
-        $this->observations             = $observations;
-        $this->targets                  = $targets;
+        $this->telemetryInfo                   = $telemetryInfo;
+        $this->test                            = $test;
+        $this->seed                            = $seed;
+        $this->numberOfExamplesChecked         = $numberOfExamplesChecked;
+        $this->numberOfExplicitExamplesChecked = $numberOfExplicitExamplesChecked;
+        $this->numberOfExamplesRejected        = $numberOfExamplesRejected;
+        $this->classifications                 = $classifications;
+        $this->observations                    = $observations;
+        $this->targets                         = $targets;
     }
 
     public function telemetryInfo(): Telemetry\Info
@@ -104,13 +111,28 @@ final readonly class PropertyChecked implements Event
      * the example that falsified it, if any. An example that ended without
      * checking the property, because it was skipped, because it was aborted
      * when the deadline of the test run had passed, or because it ended
-     * before its test method was called, is not included.
+     * before its test method was called, is not included, and neither are
+     * the explicit examples.
      *
      * @return non-negative-int
      */
     public function numberOfExamplesChecked(): int
     {
         return $this->numberOfExamplesChecked;
+    }
+
+    /**
+     * The number of explicit examples for which the property was checked
+     * before examples were generated, including the explicit example that
+     * falsified it, if any. Like a generated example, an explicit example
+     * that ended without checking the property is not included, and neither
+     * is one that was rejected because assume() was called with false.
+     *
+     * @return non-negative-int
+     */
+    public function numberOfExplicitExamplesChecked(): int
+    {
+        return $this->numberOfExplicitExamplesChecked;
     }
 
     /**
@@ -173,11 +195,21 @@ final readonly class PropertyChecked implements Event
      */
     public function asString(): string
     {
+        $explicitExamples = '';
+
+        if ($this->numberOfExplicitExamplesChecked > 0) {
+            $explicitExamples = sprintf(
+                ', explicit examples: %d',
+                $this->numberOfExplicitExamplesChecked,
+            );
+        }
+
         $buffer = sprintf(
-            'Test Property Checked (%s, seed: %d, examples: %d, rejected: %d)',
+            'Test Property Checked (%s, seed: %d, examples: %d%s, rejected: %d)',
             $this->test->id(),
             $this->seed,
             $this->numberOfExamplesChecked,
+            $explicitExamples,
             $this->numberOfExamplesRejected,
         );
 

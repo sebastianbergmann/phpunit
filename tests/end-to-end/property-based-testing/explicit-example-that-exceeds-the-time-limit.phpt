@@ -32,7 +32,7 @@ Test Property Falsified (PHPUnit\TestFixture\PropertyBasedTesting\ExplicitExampl
 $value = 51;
 Test Errored (PHPUnit\TestFixture\PropertyBasedTesting\ExplicitExampleThatExceedsTheTimeLimitTest::testDoesNotTerminateForValuesGreaterThanFifty)
 Execution aborted after 1 second
-Test Property Checked (PHPUnit\TestFixture\PropertyBasedTesting\ExplicitExampleThatExceedsTheTimeLimitTest::testDoesNotTerminateForValuesGreaterThanFifty, seed: %d, examples: 0, rejected: 0)
+Test Property Checked (PHPUnit\TestFixture\PropertyBasedTesting\ExplicitExampleThatExceedsTheTimeLimitTest::testDoesNotTerminateForValuesGreaterThanFifty, seed: %d, examples: 0, explicit examples: 1, rejected: 0)
 Test Finished (PHPUnit\TestFixture\PropertyBasedTesting\ExplicitExampleThatExceedsTheTimeLimitTest::testDoesNotTerminateForValuesGreaterThanFifty)
 Test Suite for Property Finished (PHPUnit\TestFixture\PropertyBasedTesting\ExplicitExampleThatExceedsTheTimeLimitTest::testDoesNotTerminateForValuesGreaterThanFifty, 10 examples)
 Test Suite Finished (PHPUnit\TestFixture\PropertyBasedTesting\ExplicitExampleThatExceedsTheTimeLimitTest, 1 test)

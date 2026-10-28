@@ -43,7 +43,7 @@ Test Property Falsified (PHPUnit\TestFixture\PropertyBasedTesting\AdditionalInfo
 $value = -1;
 Test Failed (PHPUnit\TestFixture\PropertyBasedTesting\AdditionalInformationOfExamplesTest::testValueIsNotNegative)
 Failed asserting that -1 is equal to 0 or is greater than 0.
-Test Property Checked (PHPUnit\TestFixture\PropertyBasedTesting\AdditionalInformationOfExamplesTest::testValueIsNotNegative, seed: %d, examples: 0, rejected: 0)
+Test Property Checked (PHPUnit\TestFixture\PropertyBasedTesting\AdditionalInformationOfExamplesTest::testValueIsNotNegative, seed: %d, examples: 0, explicit examples: 2, rejected: 0)
 Test Finished (PHPUnit\TestFixture\PropertyBasedTesting\AdditionalInformationOfExamplesTest::testValueIsNotNegative)
 Test Suite for Property Finished (PHPUnit\TestFixture\PropertyBasedTesting\AdditionalInformationOfExamplesTest::testValueIsNotNegative, 3 examples)
 Test Suite for Property Started (PHPUnit\TestFixture\PropertyBasedTesting\AdditionalInformationOfExamplesTest::testHolds, 3 examples)
