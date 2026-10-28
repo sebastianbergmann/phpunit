@@ -20,17 +20,6 @@ final class SkippedAndMarkedIncompleteInAfterClassMethodsTest extends TestCase
         self::markTestSkipped('message');
     }
 
-    #[AfterClass]
-    public static function markIncomplete(): void
-    {
-        self::markTestIncomplete('message');
-    }
-
-    #[AfterClass]
-    public static function afterLastTest(): void
-    {
-    }
-
     public function testOne(): void
     {
         $this->assertTrue(true);

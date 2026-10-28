@@ -1,5 +1,5 @@
 --TEST--
-Calling markTestSkipped() or markTestIncomplete() in an "after last test" method is ignored and triggers a PHPUnit deprecation
+Calling markTestSkipped() or markTestIncomplete() in an "after last test" method is an error
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-record-test-run-history';
@@ -24,15 +24,11 @@ Test Prepared (PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteInAfterClassM
 Test Passed (PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteInAfterClassMethodsTest::testOne)
 Test Finished (PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteInAfterClassMethodsTest::testOne)
 After Last Test Method Called (PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteInAfterClassMethodsTest::skip)
-Test Runner Triggered PHPUnit Deprecation (Calling markTestSkipped() in after-last-test method PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteInAfterClassMethodsTest::skip() is deprecated and will no longer be possible in PHPUnit 14.)
-After Last Test Method Called (PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteInAfterClassMethodsTest::markIncomplete)
-Test Runner Triggered PHPUnit Deprecation (Calling markTestIncomplete() in after-last-test method PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteInAfterClassMethodsTest::markIncomplete() is deprecated and will no longer be possible in PHPUnit 14.)
-After Last Test Method Called (PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteInAfterClassMethodsTest::afterLastTest)
+After Last Test Method Errored (PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteInAfterClassMethodsTest::skip)
+markTestSkipped() must not be called in after-last-test method PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteInAfterClassMethodsTest::skip()
 After Last Test Method Finished:
 - PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteInAfterClassMethodsTest::skip
-- PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteInAfterClassMethodsTest::markIncomplete
-- PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteInAfterClassMethodsTest::afterLastTest
 Test Suite Finished (PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteInAfterClassMethodsTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished
-PHPUnit Finished (Shell Exit Code: 0)
+PHPUnit Finished (Shell Exit Code: 2)

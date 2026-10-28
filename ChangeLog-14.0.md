@@ -32,6 +32,7 @@ All notable changes of the PHPUnit 14.0 release series are documented in this fi
 * `PHPUnit\TextUI\Configuration\Configuration::cacheResult()`, use `PHPUnit\TextUI\Configuration\Configuration::recordTestRunHistory()` instead
 * `PHPUnit\TextUI\Configuration\Configuration::testResultCacheFile()`, use `PHPUnit\TextUI\Configuration\Configuration::testRunHistoryFile()` instead
 * `PHPUnit\TextUI\Configuration\Configuration::stopOnDefect()`, `stopOnDeprecation()`, `stopOnError()`, `stopOnFailure()`, `stopOnIncomplete()`, `stopOnNotice()`, `stopOnRisky()`, `stopOnSkipped()`, and `stopOnWarning()`, use `stopOnDefectThreshold()`, `stopOnDeprecationThreshold()`, `stopOnErrorThreshold()`, `stopOnFailureThreshold()`, `stopOnIncompleteThreshold()`, `stopOnNoticeThreshold()`, `stopOnRiskyThreshold()`, `stopOnSkippedThreshold()`, and `stopOnWarningThreshold()` instead
+* Support for calling `markTestSkipped()` or `markTestIncomplete()` in an after-test method, for instance `tearDown()`, or in an after-last-test method, for instance `tearDownAfterClass()`
 
 ### Fixed
 

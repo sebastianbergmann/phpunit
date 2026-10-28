@@ -22,12 +22,6 @@ final class SkippedAndMarkedIncompleteInAfterClassMethodsOfIsolatedTestTest exte
         self::markTestSkipped('message');
     }
 
-    #[AfterClass]
-    public static function markIncomplete(): void
-    {
-        self::markTestIncomplete('message');
-    }
-
     public function testOne(): void
     {
         $this->assertTrue(true);

@@ -10,12 +10,11 @@
 namespace PHPUnit\Framework\TestCase;
 
 use Exception;
-use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
-use PHPUnit\Framework\IncompleteTestError;
+use PHPUnit\Framework\MarkedIncompleteOrSkippedInAfterHookMethodException;
 use PHPUnit\Framework\SkippedWithMessageException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\HookMethod;
@@ -182,7 +181,7 @@ final class HookMethodInvokerTest extends TestCase
         );
     }
 
-    public function testEmitsDeprecationAndRethrowsWhenAfterTestMethodSkipsTest(): void
+    public function testEmitsCalledErroredAndFinishedAndThrowsWhenAfterTestMethodSkipsTest(): void
     {
         $emitter = $this->createMock(Emitter::class);
 
@@ -192,19 +191,15 @@ final class HookMethodInvokerTest extends TestCase
 
         $emitter
             ->expects($this->once())
-            ->method('testTriggeredPhpunitDeprecation')
-            ->with(
-                $this->isInstanceOf(TestMethod::class),
-                'Calling markTestSkipped() in after-test method PHPUnit\TestFixture\HookFixture::skippingHook() is deprecated and will no longer be possible in PHPUnit 14.',
-            );
+            ->method('afterTestMethodErrored');
 
         $emitter
             ->expects($this->once())
             ->method('afterTestMethodFinished')
             ->seal();
 
-        $this->expectException(SkippedWithMessageException::class);
-        $this->expectExceptionMessageIs('hook skipped');
+        $this->expectException(MarkedIncompleteOrSkippedInAfterHookMethodException::class);
+        $this->expectExceptionMessageIs('markTestSkipped() must not be called in after-test method PHPUnit\TestFixture\HookFixture::skippingHook()');
 
         HookMethodInvoker::invokeAfterTest(
             new HookFixture('testOne'),
@@ -216,7 +211,7 @@ final class HookMethodInvokerTest extends TestCase
         );
     }
 
-    public function testEmitsDeprecationAndRethrowsWhenAfterTestMethodMarksTestAsIncomplete(): void
+    public function testEmitsCalledErroredAndFinishedAndThrowsWhenAfterTestMethodMarksTestAsIncomplete(): void
     {
         $emitter = $this->createMock(Emitter::class);
 
@@ -226,19 +221,15 @@ final class HookMethodInvokerTest extends TestCase
 
         $emitter
             ->expects($this->once())
-            ->method('testTriggeredPhpunitDeprecation')
-            ->with(
-                $this->isInstanceOf(TestMethod::class),
-                'Calling markTestIncomplete() in after-test method PHPUnit\TestFixture\HookFixture::markingIncompleteHook() is deprecated and will no longer be possible in PHPUnit 14.',
-            );
+            ->method('afterTestMethodErrored');
 
         $emitter
             ->expects($this->once())
             ->method('afterTestMethodFinished')
             ->seal();
 
-        $this->expectException(IncompleteTestError::class);
-        $this->expectExceptionMessageIs('hook marked incomplete');
+        $this->expectException(MarkedIncompleteOrSkippedInAfterHookMethodException::class);
+        $this->expectExceptionMessageIs('markTestIncomplete() must not be called in after-test method PHPUnit\TestFixture\HookFixture::markingIncompleteHook()');
 
         HookMethodInvoker::invokeAfterTest(
             new HookFixture('testOne'),

@@ -1,5 +1,5 @@
 --TEST--
-The right events are emitted in the right order for a test marked as incomplete in tearDown()
+The right events are emitted in the right order for a test that calls markTestIncomplete() in tearDown()
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-record-test-run-history';
@@ -22,24 +22,24 @@ Test Suite Started (PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest, 2 
 Test Preparation Started (PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest::testSucceeds)
 Test Prepared (PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest::testSucceeds)
 After Test Method Called (PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest::tearDown)
-Test Triggered PHPUnit Deprecation (PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest::testSucceeds)
-Calling markTestIncomplete() in after-test method PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest::tearDown() is deprecated and will no longer be possible in PHPUnit 14.
+After Test Method Errored (PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest::tearDown)
+markTestIncomplete() must not be called in after-test method PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest::tearDown()
 After Test Method Finished:
 - PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest::tearDown
-Test Marked Incomplete (PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest::testSucceeds)
-message
+Test Errored (PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest::testSucceeds)
+markTestIncomplete() must not be called in after-test method PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest::tearDown()
 Test Finished (PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest::testSucceeds)
 Test Preparation Started (PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest::testFails)
 Test Prepared (PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest::testFails)
 Test Failed (PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest::testFails)
 Failed asserting that false is true.
 After Test Method Called (PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest::tearDown)
-Test Triggered PHPUnit Deprecation (PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest::testFails)
-Calling markTestIncomplete() in after-test method PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest::tearDown() is deprecated and will no longer be possible in PHPUnit 14.
+After Test Method Errored (PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest::tearDown)
+markTestIncomplete() must not be called in after-test method PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest::tearDown()
 After Test Method Finished:
 - PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest::tearDown
 Test Finished (PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest::testFails)
 Test Suite Finished (PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest, 2 tests)
 Test Runner Execution Finished
 Test Runner Finished
-PHPUnit Finished (Shell Exit Code: 1)
+PHPUnit Finished (Shell Exit Code: 2)
