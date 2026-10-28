@@ -10,10 +10,12 @@
 namespace PHPUnit\Framework\TestCase;
 
 use Exception;
+use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\IncompleteTestError;
 use PHPUnit\Framework\SkippedWithMessageException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\HookMethod;
@@ -145,6 +147,74 @@ final class HookMethodInvokerTest extends TestCase
         );
     }
 
+    public function testEmitsDeprecationAndRethrowsWhenAfterTestMethodSkipsTest(): void
+    {
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter
+            ->expects($this->once())
+            ->method('afterTestMethodCalled');
+
+        $emitter
+            ->expects($this->once())
+            ->method('testTriggeredPhpunitDeprecation')
+            ->with(
+                $this->isInstanceOf(TestMethod::class),
+                'Calling markTestSkipped() in after-test method PHPUnit\TestFixture\HookFixture::skippingHook() is deprecated and will no longer be possible in PHPUnit 14.',
+            );
+
+        $emitter
+            ->expects($this->once())
+            ->method('afterTestMethodFinished')
+            ->seal();
+
+        $this->expectException(SkippedWithMessageException::class);
+        $this->expectExceptionMessage('hook skipped');
+
+        HookMethodInvoker::invokeAfterTest(
+            new HookFixture('testOne'),
+            $this->hookMethods(
+                HookMethodCollection::defaultBefore(),
+                HookMethodCollection::defaultAfter()->add(new HookMethod('skippingHook', 100)),
+            ),
+            $emitter,
+        );
+    }
+
+    public function testEmitsDeprecationAndRethrowsWhenAfterTestMethodMarksTestAsIncomplete(): void
+    {
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter
+            ->expects($this->once())
+            ->method('afterTestMethodCalled');
+
+        $emitter
+            ->expects($this->once())
+            ->method('testTriggeredPhpunitDeprecation')
+            ->with(
+                $this->isInstanceOf(TestMethod::class),
+                'Calling markTestIncomplete() in after-test method PHPUnit\TestFixture\HookFixture::markingIncompleteHook() is deprecated and will no longer be possible in PHPUnit 14.',
+            );
+
+        $emitter
+            ->expects($this->once())
+            ->method('afterTestMethodFinished')
+            ->seal();
+
+        $this->expectException(IncompleteTestError::class);
+        $this->expectExceptionMessage('hook marked incomplete');
+
+        HookMethodInvoker::invokeAfterTest(
+            new HookFixture('testOne'),
+            $this->hookMethods(
+                HookMethodCollection::defaultBefore(),
+                HookMethodCollection::defaultAfter()->add(new HookMethod('markingIncompleteHook', 100)),
+            ),
+            $emitter,
+        );
+    }
+
     public function testStopsInvokingFurtherHooksAfterUnexpectedException(): void
     {
         $emitter = $this->createMock(Emitter::class);
@@ -233,14 +303,18 @@ final class HookMethodInvokerTest extends TestCase
     /**
      * @return array{beforeClass: HookMethodCollection, before: HookMethodCollection, preCondition: HookMethodCollection, postCondition: HookMethodCollection, after: HookMethodCollection, afterClass: HookMethodCollection}
      */
-    private function hookMethods(HookMethodCollection $before): array
+    private function hookMethods(HookMethodCollection $before, ?HookMethodCollection $after = null): array
     {
+        if ($after === null) {
+            $after = HookMethodCollection::defaultAfter();
+        }
+
         return [
             'beforeClass'   => HookMethodCollection::defaultBeforeClass(),
             'before'        => $before,
             'preCondition'  => HookMethodCollection::defaultPreCondition(),
             'postCondition' => HookMethodCollection::defaultPostCondition(),
-            'after'         => HookMethodCollection::defaultAfter(),
+            'after'         => $after,
             'afterClass'    => HookMethodCollection::defaultAfterClass(),
         ];
     }

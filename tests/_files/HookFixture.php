@@ -11,6 +11,7 @@ namespace PHPUnit\TestFixture;
 
 use Exception;
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\IncompleteTestError;
 use PHPUnit\Framework\SkippedWithMessageException;
 use PHPUnit\Framework\TestCase;
 
@@ -42,5 +43,10 @@ final class HookFixture extends TestCase
     public function skippingHook(): void
     {
         throw new SkippedWithMessageException('hook skipped');
+    }
+
+    public function markingIncompleteHook(): void
+    {
+        throw new IncompleteTestError('hook marked incomplete');
     }
 }

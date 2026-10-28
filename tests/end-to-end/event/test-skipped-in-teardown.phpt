@@ -22,6 +22,8 @@ Test Suite Started (PHPUnit\TestFixture\Event\SkippedInTearDownTest, 2 tests)
 Test Preparation Started (PHPUnit\TestFixture\Event\SkippedInTearDownTest::testSucceeds)
 Test Prepared (PHPUnit\TestFixture\Event\SkippedInTearDownTest::testSucceeds)
 After Test Method Called (PHPUnit\TestFixture\Event\SkippedInTearDownTest::tearDown)
+Test Triggered PHPUnit Deprecation (PHPUnit\TestFixture\Event\SkippedInTearDownTest::testSucceeds)
+Calling markTestSkipped() in after-test method PHPUnit\TestFixture\Event\SkippedInTearDownTest::tearDown() is deprecated and will no longer be possible in PHPUnit 14.
 After Test Method Finished:
 - PHPUnit\TestFixture\Event\SkippedInTearDownTest::tearDown
 Test Skipped (PHPUnit\TestFixture\Event\SkippedInTearDownTest::testSucceeds)
@@ -32,6 +34,8 @@ Test Prepared (PHPUnit\TestFixture\Event\SkippedInTearDownTest::testFails)
 Test Failed (PHPUnit\TestFixture\Event\SkippedInTearDownTest::testFails)
 Failed asserting that false is true.
 After Test Method Called (PHPUnit\TestFixture\Event\SkippedInTearDownTest::tearDown)
+Test Triggered PHPUnit Deprecation (PHPUnit\TestFixture\Event\SkippedInTearDownTest::testFails)
+Calling markTestSkipped() in after-test method PHPUnit\TestFixture\Event\SkippedInTearDownTest::tearDown() is deprecated and will no longer be possible in PHPUnit 14.
 After Test Method Finished:
 - PHPUnit\TestFixture\Event\SkippedInTearDownTest::tearDown
 Test Finished (PHPUnit\TestFixture\Event\SkippedInTearDownTest::testFails)

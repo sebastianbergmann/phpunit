@@ -1,5 +1,5 @@
 --TEST--
-Calling markTestSkipped() or markTestIncomplete() in an "after last test" method is ignored
+Calling markTestSkipped() or markTestIncomplete() in an "after last test" method is ignored and triggers a PHPUnit deprecation
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-record-test-run-history';
@@ -23,7 +23,9 @@ Test Preparation Started (PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteIn
 Test Prepared (PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteInAfterClassMethodsTest::testOne)
 Test Passed (PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteInAfterClassMethodsTest::testOne)
 Test Finished (PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteInAfterClassMethodsTest::testOne)
+Test Runner Triggered PHPUnit Deprecation (Calling markTestSkipped() in after-last-test method PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteInAfterClassMethodsTest::skip() is deprecated and will no longer be possible in PHPUnit 14.)
 After Last Test Method Called (PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteInAfterClassMethodsTest::skip)
+Test Runner Triggered PHPUnit Deprecation (Calling markTestIncomplete() in after-last-test method PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteInAfterClassMethodsTest::markIncomplete() is deprecated and will no longer be possible in PHPUnit 14.)
 After Last Test Method Called (PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteInAfterClassMethodsTest::markIncomplete)
 After Last Test Method Called (PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteInAfterClassMethodsTest::afterLastTest)
 After Last Test Method Finished:

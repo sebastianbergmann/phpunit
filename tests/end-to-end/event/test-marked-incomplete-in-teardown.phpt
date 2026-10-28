@@ -22,6 +22,8 @@ Test Suite Started (PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest, 2 
 Test Preparation Started (PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest::testSucceeds)
 Test Prepared (PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest::testSucceeds)
 After Test Method Called (PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest::tearDown)
+Test Triggered PHPUnit Deprecation (PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest::testSucceeds)
+Calling markTestIncomplete() in after-test method PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest::tearDown() is deprecated and will no longer be possible in PHPUnit 14.
 After Test Method Finished:
 - PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest::tearDown
 Test Marked Incomplete (PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest::testSucceeds)
@@ -32,6 +34,8 @@ Test Prepared (PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest::testFai
 Test Failed (PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest::testFails)
 Failed asserting that false is true.
 After Test Method Called (PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest::tearDown)
+Test Triggered PHPUnit Deprecation (PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest::testFails)
+Calling markTestIncomplete() in after-test method PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest::tearDown() is deprecated and will no longer be possible in PHPUnit 14.
 After Test Method Finished:
 - PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest::tearDown
 Test Finished (PHPUnit\TestFixture\Event\MarkedIncompleteInTearDownTest::testFails)

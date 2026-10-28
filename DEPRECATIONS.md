@@ -29,6 +29,13 @@ This functionality is currently [hard-deprecated](https://phpunit.de/backward-co
 | [#6505](https://github.com/sebastianbergmann/phpunit/issues/6505) | Calling `atLeast()` with an argument that is not positive | 13.0.2 | Use a positive argument instead                                                                                      |
 | [#6507](https://github.com/sebastianbergmann/phpunit/issues/6507) | Support for using `with*()` without `expects()`           | 13.0.2 | Either configure an expected invocation count using `expects()`or use a test stub without the `with*()` call instead |
 
+#### Miscellaneous
+
+| Issue | Description                                                                                                       | Since  | Replacement |
+|-------|-------------------------------------------------------------------------------------------------------------------|--------|-------------|
+|       | Calling `markTestSkipped()` or `markTestIncomplete()` in an after-test method such as `tearDown()`                | 13.5.0 |             |
+|       | Calling `markTestSkipped()` or `markTestIncomplete()` in an after-last-test method such as `tearDownAfterClass()` | 13.5.0 |             |
+
 ### Running Tests
 
 | Issue                                                             | Description                                                   | Since  | Replacement                                                     |

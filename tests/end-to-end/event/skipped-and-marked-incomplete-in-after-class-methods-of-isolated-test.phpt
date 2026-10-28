@@ -1,5 +1,5 @@
 --TEST--
-Calling markTestSkipped() or markTestIncomplete() in an "after last test" method is ignored when the tests of the test class are run in process isolation
+Calling markTestSkipped() or markTestIncomplete() in an "after last test" method is ignored and triggers a PHPUnit deprecation when the tests of the test class are run in process isolation
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-record-test-run-history';
@@ -22,14 +22,13 @@ Test Suite Started (PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteInAfterC
 Child Process Started (test requiring process isolation)
 Test Preparation Started (PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteInAfterClassMethodsOfIsolatedTestTest::testOne)
 Test Prepared (PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteInAfterClassMethodsOfIsolatedTestTest::testOne)
+Test Triggered PHPUnit Deprecation (PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteInAfterClassMethodsOfIsolatedTestTest::testOne)
+Calling markTestSkipped() in after-last-test method PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteInAfterClassMethodsOfIsolatedTestTest::skip() is deprecated and will no longer be possible in PHPUnit 14.
+Test Triggered PHPUnit Deprecation (PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteInAfterClassMethodsOfIsolatedTestTest::testOne)
+Calling markTestIncomplete() in after-last-test method PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteInAfterClassMethodsOfIsolatedTestTest::markIncomplete() is deprecated and will no longer be possible in PHPUnit 14.
 Test Passed (PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteInAfterClassMethodsOfIsolatedTestTest::testOne)
 Test Finished (PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteInAfterClassMethodsOfIsolatedTestTest::testOne)
 Child Process Finished (test requiring process isolation)
-After Last Test Method Called (PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteInAfterClassMethodsOfIsolatedTestTest::skip)
-After Last Test Method Called (PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteInAfterClassMethodsOfIsolatedTestTest::markIncomplete)
-After Last Test Method Finished:
-- PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteInAfterClassMethodsOfIsolatedTestTest::skip
-- PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteInAfterClassMethodsOfIsolatedTestTest::markIncomplete
 Test Suite Finished (PHPUnit\TestFixture\Event\SkippedAndMarkedIncompleteInAfterClassMethodsOfIsolatedTestTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished

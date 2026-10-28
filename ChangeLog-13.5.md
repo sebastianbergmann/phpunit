@@ -19,6 +19,7 @@ All notable changes of the PHPUnit 13.5 release series are documented in this fi
 ### Deprecated
 
 * [#7049](https://github.com/sebastianbergmann/phpunit/issues/7049): `--random-order-seed <N>` CLI option
+* Calling `markTestSkipped()` or `markTestIncomplete()` in an after-test method, for instance `tearDown()`, or in an after-last-test method, for instance `tearDownAfterClass()`
 
 
 [13.5.0]: https://github.com/sebastianbergmann/phpunit/compare/13.4...main
