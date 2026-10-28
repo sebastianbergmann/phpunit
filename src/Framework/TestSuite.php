@@ -23,6 +23,7 @@ use function sprintf;
 use function str_ends_with;
 use function str_starts_with;
 use function trim;
+use AssertionError;
 use Iterator;
 use IteratorAggregate;
 use PHPUnit\Event;
@@ -678,7 +679,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             }
 
             if (isset($t)) {
-                if ($t instanceof AssertionFailedError) {
+                if ($t instanceof AssertionError || $t instanceof AssertionFailedError) {
                     $emitter->beforeFirstTestMethodFailed(
                         $this->name,
                         $calledMethod,
@@ -746,7 +747,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             $calledMethods[] = $calledMethod;
 
             if (isset($t)) {
-                if ($t instanceof AssertionFailedError) {
+                if ($t instanceof AssertionError || $t instanceof AssertionFailedError) {
                     $emitter->afterLastTestMethodFailed(
                         $this->name,
                         $calledMethod,
