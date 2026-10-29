@@ -28,41 +28,46 @@ final class NoParameterWithNullableTypeDeclarationRule implements
     Rules\Rule
 {
     private Analyzer $analyzer;
+    private Documentation\RuleDefinition $ruleDefinition;
 
     public function __construct(Analyzer $analyzer)
     {
         $this->analyzer = $analyzer;
+
+        $this->ruleDefinition = Documentation\RuleDefinition::create(
+            Documentation\ConfigurationKey::fromString('noParameterWithNullableTypeDeclaration'),
+            Documentation\Description::fromString('This rule reports an error when a function has a parameter with a nullable type declaration.'),
+            Documentation\Rationale::fromString('A parameter with a nullable type declaration makes the function handle two cases: a value and `null`. Separate functions or a null object make each case explicit.'),
+            Documentation\Tip::fromString('Use separate functions or a null object instead.'),
+            Documentation\ParameterList::create(),
+            Documentation\CodeSampleList::create(
+                Documentation\CodeSample::reported(<<<'PHP'
+                    <?php
+
+                    declare(strict_types=1);
+
+                    function toUpperCase(?string $value): string
+                    {
+                        return \strtoupper((string) $value);
+                    }
+                    PHP),
+                Documentation\CodeSample::notReported(<<<'PHP'
+                    <?php
+
+                    declare(strict_types=1);
+
+                    function toUpperCase(string $value): string
+                    {
+                        return \strtoupper($value);
+                    }
+                    PHP),
+            ),
+        );
     }
 
     public function ruleDefinition(): Documentation\RuleDefinition
     {
-        return Documentation\RuleDefinition::create(
-            'noParameterWithNullableTypeDeclaration',
-            'This rule reports an error when a function has a parameter with a nullable type declaration.',
-            'A parameter with a nullable type declaration makes the function handle two cases: a value and `null`. Separate functions or a null object make each case explicit.',
-            'Use separate functions or a null object instead.',
-        )->withCodeSamples(
-            Documentation\CodeSample::reported(<<<'PHP'
-                <?php
-
-                declare(strict_types=1);
-
-                function toUpperCase(?string $value): string
-                {
-                    return \strtoupper((string) $value);
-                }
-                PHP),
-            Documentation\CodeSample::notReported(<<<'PHP'
-                <?php
-
-                declare(strict_types=1);
-
-                function toUpperCase(string $value): string
-                {
-                    return \strtoupper($value);
-                }
-                PHP),
-        );
+        return $this->ruleDefinition;
     }
 
     public function getNodeType(): string
