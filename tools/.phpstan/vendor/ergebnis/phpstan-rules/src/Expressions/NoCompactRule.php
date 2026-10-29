@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Ergebnis\PHPStan\Rules\Expressions;
 
+use Ergebnis\PHPStan\Rules\Documentation;
 use Ergebnis\PHPStan\Rules\ErrorIdentifier;
 use PhpParser\Node;
 use PHPStan\Analyser;
@@ -21,8 +22,50 @@ use PHPStan\Rules;
 /**
  * @implements Rules\Rule<Node\Expr\FuncCall>
  */
-final class NoCompactRule implements Rules\Rule
+final class NoCompactRule implements
+    Documentation\HasRuleDefinition,
+    Rules\Rule
 {
+    private Documentation\RuleDefinition $ruleDefinition;
+
+    public function __construct()
+    {
+        $this->ruleDefinition = Documentation\RuleDefinition::create(
+            Documentation\ConfigurationKey::fromString('noCompact'),
+            Documentation\Description::fromString('This rule reports an error when the function [`compact()`](https://www.php.net/compact) is used.'),
+            Documentation\Rationale::fromString('The function `compact()` refers to variables by their names in strings, which static analysis and automated refactoring cannot follow. Build the array explicitly instead.'),
+            Documentation\Tip::fromString('Build the array explicitly instead.'),
+            Documentation\ParameterList::create(),
+            Documentation\CodeSampleList::create(
+                Documentation\CodeSample::reported(<<<'PHP'
+                    <?php
+
+                    declare(strict_types=1);
+
+                    $name = 'Jane';
+
+                    $context = \compact('name');
+                    PHP),
+                Documentation\CodeSample::notReported(<<<'PHP'
+                    <?php
+
+                    declare(strict_types=1);
+
+                    $name = 'Jane';
+
+                    $context = [
+                        'name' => $name,
+                    ];
+                    PHP),
+            ),
+        );
+    }
+
+    public function ruleDefinition(): Documentation\RuleDefinition
+    {
+        return $this->ruleDefinition;
+    }
+
     public function getNodeType(): string
     {
         return Node\Expr\FuncCall::class;
@@ -43,6 +86,7 @@ final class NoCompactRule implements Rules\Rule
         return [
             Rules\RuleErrorBuilder::message('Function compact() should not be used.')
                 ->identifier(ErrorIdentifier::noCompact()->toString())
+                ->tip(Documentation\ErrorTip::for($this))
                 ->build(),
         ];
     }

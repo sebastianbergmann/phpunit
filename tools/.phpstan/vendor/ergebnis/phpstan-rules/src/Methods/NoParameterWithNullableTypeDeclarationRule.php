@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Ergebnis\PHPStan\Rules\Methods;
 
 use Ergebnis\PHPStan\Rules\Analyzer;
+use Ergebnis\PHPStan\Rules\Documentation;
 use Ergebnis\PHPStan\Rules\ErrorIdentifier;
 use PhpParser\Node;
 use PHPStan\Analyser;
@@ -23,13 +24,67 @@ use PHPStan\Rules;
 /**
  * @implements Rules\Rule<Node\Stmt\ClassMethod>
  */
-final class NoParameterWithNullableTypeDeclarationRule implements Rules\Rule
+final class NoParameterWithNullableTypeDeclarationRule implements
+    Documentation\HasRuleDefinition,
+    Rules\Rule
 {
     private Analyzer $analyzer;
+    private Documentation\RuleDefinition $ruleDefinition;
 
     public function __construct(Analyzer $analyzer)
     {
         $this->analyzer = $analyzer;
+
+        $this->ruleDefinition = Documentation\RuleDefinition::create(
+            Documentation\ConfigurationKey::fromString('noParameterWithNullableTypeDeclaration'),
+            Documentation\Description::fromString('This rule reports an error when a method has a parameter with a nullable type declaration.'),
+            Documentation\Rationale::fromString('A parameter with a nullable type declaration makes the method handle two cases: a value and `null`. Separate methods or a null object make each case explicit.'),
+            Documentation\Tip::fromString('Use separate methods or a null object instead.'),
+            Documentation\ParameterList::create(),
+            Documentation\CodeSampleList::create(
+                Documentation\CodeSample::reported(<<<'PHP'
+                    <?php
+
+                    declare(strict_types=1);
+
+                    namespace Example;
+
+                    final class Greeting
+                    {
+                        public function greet(?string $name): string
+                        {
+                            return \sprintf(
+                                'Hello, %s!',
+                                (string) $name,
+                            );
+                        }
+                    }
+                    PHP),
+                Documentation\CodeSample::notReported(<<<'PHP'
+                    <?php
+
+                    declare(strict_types=1);
+
+                    namespace Example;
+
+                    final class Greeting
+                    {
+                        public function greet(string $name): string
+                        {
+                            return \sprintf(
+                                'Hello, %s!',
+                                $name,
+                            );
+                        }
+                    }
+                    PHP),
+            ),
+        );
+    }
+
+    public function ruleDefinition(): Documentation\RuleDefinition
+    {
+        return $this->ruleDefinition;
     }
 
     public function getNodeType(): string
@@ -59,7 +114,7 @@ final class NoParameterWithNullableTypeDeclarationRule implements Rules\Rule
         $classReflection = $scope->getClassReflection();
 
         if ($classReflection->isAnonymous()) {
-            return \array_map(static function (Node\Param $parameterWithNullableTypeDeclaration) use ($methodName): Rules\RuleError {
+            return \array_map(function (Node\Param $parameterWithNullableTypeDeclaration) use ($methodName): Rules\RuleError {
                 /** @var Node\Expr\Variable $variable */
                 $variable = $parameterWithNullableTypeDeclaration->var;
 
@@ -74,13 +129,14 @@ final class NoParameterWithNullableTypeDeclarationRule implements Rules\Rule
 
                 return Rules\RuleErrorBuilder::message($message)
                     ->identifier(ErrorIdentifier::noParameterWithNullableTypeDeclaration()->toString())
+                    ->tip(Documentation\ErrorTip::for($this))
                     ->build();
             }, $parametersWithNullableTypeDeclaration);
         }
 
         $className = $classReflection->getName();
 
-        return \array_map(static function (Node\Param $parameterWithNullableTypeDeclaration) use ($className, $methodName): Rules\RuleError {
+        return \array_map(function (Node\Param $parameterWithNullableTypeDeclaration) use ($className, $methodName): Rules\RuleError {
             /** @var Node\Expr\Variable $variable */
             $variable = $parameterWithNullableTypeDeclaration->var;
 
@@ -96,6 +152,7 @@ final class NoParameterWithNullableTypeDeclarationRule implements Rules\Rule
 
             return Rules\RuleErrorBuilder::message($message)
                 ->identifier(ErrorIdentifier::noParameterWithNullableTypeDeclaration()->toString())
+                ->tip(Documentation\ErrorTip::for($this))
                 ->build();
         }, $parametersWithNullableTypeDeclaration);
     }
