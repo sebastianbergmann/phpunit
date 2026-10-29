@@ -57,7 +57,11 @@ final class TestRunHistoryHandler
 
     /**
      * The test run history is persisted when the test runner has finished
-     * executing the test suite.
+     * executing the test suite, and not when the outermost test suite
+     * finishes: when tests are run in parallel, the events of each unit of
+     * work are replayed as a self-contained test suite, so an outermost test
+     * suite finishes once per unit; persisting the history that often would
+     * be prohibitively expensive.
      */
     public function testRunnerExecutionFinished(): void
     {

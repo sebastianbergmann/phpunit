@@ -1,5 +1,7 @@
 --TEST--
 Order by duration-ascending,defects with --resolve-dependencies (with test run history): Test methods with dependencies and defects
+--CONFLICTS--
+all
 --FILE--
 <?php declare(strict_types=1);
 $testRunHistoryFile = sys_get_temp_dir() . '/test-run-history';

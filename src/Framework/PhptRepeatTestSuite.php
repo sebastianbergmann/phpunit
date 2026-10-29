@@ -10,11 +10,15 @@
 namespace PHPUnit\Framework;
 
 use function assert;
+use function count;
 use function range;
+use Generator;
 use PHPUnit\Event;
-use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Event\EventCollector;
+use PHPUnit\Runner\Phpt\Interruption;
 use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
-use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
+use PHPUnit\Util\PHP\Job;
+use PHPUnit\Util\PHP\Result;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -24,14 +28,23 @@ use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
 final class PhptRepeatTestSuite extends PhptIterativeTestSuite
 {
     /**
-     * @param non-empty-string $filename
-     * @param positive-int     $numberOfRuns
+     * The repetitions to run are all of them, unless only some are given: the
+     * ones that test selection picked, such as with --run-test-id, when the
+     * parallel test runner rebuilds the suite.
+     *
+     * @param non-empty-string   $filename
+     * @param positive-int       $numberOfRuns
+     * @param list<positive-int> $repetitions
      */
-    public static function for(string $filename, Event\Emitter $emitter, int $numberOfRuns): self
+    public static function for(string $filename, Event\Emitter $emitter, int $numberOfRuns, array $repetitions = []): self
     {
+        if ($repetitions === []) {
+            $repetitions = range(1, $numberOfRuns);
+        }
+
         $suite = self::empty($filename, $emitter);
 
-        foreach (range(1, $numberOfRuns) as $repetition) {
+        foreach ($repetitions as $repetition) {
             $suite->addTest(new PhptTestCase($filename, $repetition, $numberOfRuns));
         }
 
@@ -39,18 +52,32 @@ final class PhptRepeatTestSuite extends PhptIterativeTestSuite
     }
 
     /**
-     * @param list<Test> $tests
+     * @return positive-int
      */
-    protected function execute(array $tests, Event\Emitter $emitter): void
+    public function numberOfRuns(): int
     {
-        $facade = EventFacade::instance();
+        $numberOfRuns = count($this->tests());
 
+        assert($numberOfRuns > 0);
+
+        return $numberOfRuns;
+    }
+
+    /**
+     * @param list<Test> $tests
+     *
+     * @throws Event\RuntimeException
+     *
+     * @return Generator<int, Job, Result, void>
+     */
+    protected function iterate(array $tests, Event\Emitter $emitter, EventCollector $collector, ?Interruption $interruption = null): Generator
+    {
         $lastFailedRepetition = 0;
 
         foreach ($tests as $test) {
             assert($test instanceof PhptTestCase);
 
-            if (TestResultFacade::shouldStop()) {
+            if ($this->shouldStop($interruption)) {
                 $emitter->testRunnerExecutionAborted();
 
                 break;
@@ -62,9 +89,9 @@ final class PhptRepeatTestSuite extends PhptIterativeTestSuite
                 continue;
             }
 
-            $events = $this->runCollectingEvents($test);
+            $events = yield from $this->executeCollectingEvents($test, $emitter, $collector, $interruption);
 
-            $facade->forward($events);
+            $collector->forward($events);
 
             if ($this->failedOrErrored($events)) {
                 $lastFailedRepetition = $test->repetition();

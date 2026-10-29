@@ -1,0 +1,774 @@
+<?php declare(strict_types=1);
+/*
+ * This file is part of PHPUnit.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+namespace PHPUnit\Runner\Parallel;
+
+use function array_keys;
+use function file_get_contents;
+use function hrtime;
+use function is_file;
+use function ksort;
+use function sys_get_temp_dir;
+use function unlink;
+use function usleep;
+use PHPUnit\Event\Code\Phpt;
+use PHPUnit\Event\Emitter;
+use PHPUnit\Event\EventCollection;
+use PHPUnit\Event\Facade;
+use PHPUnit\Event\Test\AttemptFailed;
+use PHPUnit\Event\Test\Failed;
+use PHPUnit\Event\Test\Passed;
+use PHPUnit\Event\Test\Skipped;
+use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
+use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Large;
+use PHPUnit\Framework\Attributes\RequiresOperatingSystem;
+use PHPUnit\Framework\Attributes\UsesClass;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestRunner\ChildProcessResultProcessor;
+use PHPUnit\Runner\CodeCoverage;
+use PHPUnit\TestRunner\TestResult\PassedTests;
+use PHPUnit\Util\PHP\Job;
+use PHPUnit\Util\PHP\JobRunner;
+
+#[CoversClass(PhptRunner::class)]
+#[CoversClass(PhptWorkUnit::class)]
+#[UsesClass(JobRunner::class)]
+#[UsesClass(Job::class)]
+#[Large]
+final class PhptRunnerTest extends TestCase
+{
+    public function testRunsPhptTestsConcurrentlyAndReportsEachWithItsCollectedEvents(): void
+    {
+        $file = __DIR__ . '/../../../_files/parallel-worker/worker.phpt';
+
+        $units = [
+            new PhptWorkUnit(0, $file),
+            new PhptWorkUnit(1, $file),
+        ];
+
+        $collected = $this->execute($units, 2);
+
+        $this->assertSame([0, 1], array_keys($collected));
+
+        foreach ($collected as $events) {
+            $this->assertTrue($this->contains($events, Passed::class));
+        }
+    }
+
+    public function testStartsTheUnitTheOrderedOutputWaitsForBeforeTheLongerOnesQueuedAheadOfIt(): void
+    {
+        $file = __DIR__ . '/../../../_files/parallel-worker/worker.phpt';
+
+        // The scheduler queued the unit at index 1 first, because it is the
+        // longer one; the unit at index 0 is what the ordered output waits
+        // for, though, so it is started first. With one test running at a
+        // time, the completion order is the start order.
+        $units = [
+            new PhptWorkUnit(1, $file),
+            new PhptWorkUnit(0, $file),
+        ];
+
+        $order = [];
+
+        $this->runner(1, new ProcessBudget(1))->run(
+            $units,
+            static function (int $index, EventCollection $events) use (&$order): void
+            {
+                $order[] = $index;
+            },
+        );
+
+        $this->assertSame([0, 1], $order);
+    }
+
+    public function testLeavesOneOfTheSlotsItCanUseToTheCostOrderWhenTheBudgetHasRoomForFewerUnitsThanItsConcurrency(): void
+    {
+        $fast = __DIR__ . '/../../../_files/parallel-worker/worker.phpt';
+        $slow = __DIR__ . '/../../../_files/parallel-worker/worker-slow.phpt';
+
+        // The units are queued in cost order, which the slow units the ordered
+        // output waits for come last in. The runner could run four units at a
+        // time, but the budget, which it shares with the worker pool in a real
+        // run, only has room for two: one of them is reserved for the suite
+        // order and starts a slow unit, the other one works the cost order and
+        // starts a fast unit, which is the first unit to finish. Were both of
+        // them reserved for the suite order, the units at the head of the cost
+        // order would only be started once the slow units have finished.
+        $units = [
+            new PhptWorkUnit(5, $fast),
+            new PhptWorkUnit(0, $slow),
+            new PhptWorkUnit(6, $fast),
+            new PhptWorkUnit(1, $slow),
+        ];
+
+        $order = [];
+
+        $this->runner(4, new ProcessBudget(2))->run(
+            $units,
+            static function (int $index, EventCollection $events) use (&$order): void
+            {
+                $order[] = $index;
+            },
+        );
+
+        $this->assertCount(4, $order);
+        $this->assertSame(5, $order[0]);
+    }
+
+    public function testRunsTheRepetitionsOfARepeatedPhptTestOneAfterAnotherWithinItsUnit(): void
+    {
+        $units = [
+            new PhptWorkUnit(0, __DIR__ . '/../../../_files/parallel-worker/worker.phpt', [], 2),
+        ];
+
+        $collected = $this->execute($units, 2);
+
+        $this->assertSame([0], array_keys($collected));
+
+        // The repetitions are reported as the tests of the suite that
+        // aggregates them, exactly as a sequential run reports them.
+        $this->assertSame(1, $this->numberOf($collected[0], TestSuiteStarted::class));
+        $this->assertSame(2, $this->numberOf($collected[0], Passed::class));
+        $this->assertSame(1, $this->numberOf($collected[0], TestSuiteFinished::class));
+    }
+
+    public function testRunsOnlyTheRepetitionsOfARepeatedPhptTestThatTestSelectionPicked(): void
+    {
+        $units = [
+            new PhptWorkUnit(0, __DIR__ . '/../../../_files/parallel-worker/worker.phpt', [], 3, 1, [2]),
+        ];
+
+        $collected = $this->execute($units, 2);
+
+        $passed = [];
+
+        foreach ($collected[0] as $event) {
+            if (!$event instanceof Passed) {
+                continue;
+            }
+
+            $test = $event->test();
+
+            $this->assertInstanceOf(Phpt::class, $test);
+
+            $passed[] = $test->repetition();
+        }
+
+        $this->assertSame([2], $passed);
+    }
+
+    public function testSkipsTheRemainingRepetitionsOfARepeatedPhptTestAfterAFailedOne(): void
+    {
+        $units = [
+            new PhptWorkUnit(0, __DIR__ . '/../../../_files/parallel-worker/worker-failing.phpt', [], 3),
+        ];
+
+        $collected = $this->execute($units, 2);
+
+        $this->assertSame(1, $this->numberOf($collected[0], Failed::class));
+        $this->assertSame(2, $this->numberOf($collected[0], Skipped::class));
+    }
+
+    public function testRunsAFurtherAttemptOfARetriedPhptTestThatFailed(): void
+    {
+        @unlink(sys_get_temp_dir() . '/phpunit-parallel-phpt-retry.marker');
+
+        $units = [
+            new PhptWorkUnit(0, __DIR__ . '/../../../_files/parallel-worker/worker-flaky.phpt', [], 1, 2),
+        ];
+
+        $collected = $this->execute($units, 2);
+
+        // The failed first attempt is reported as an attempt, and only the
+        // second attempt's events become the test's result.
+        $this->assertSame(1, $this->numberOf($collected[0], AttemptFailed::class));
+        $this->assertSame(0, $this->numberOf($collected[0], Failed::class));
+        $this->assertSame(1, $this->numberOf($collected[0], Passed::class));
+    }
+
+    public function testReportsTheFailureOfARetriedPhptTestWhoseAttemptsAllFailed(): void
+    {
+        $units = [
+            new PhptWorkUnit(0, __DIR__ . '/../../../_files/parallel-worker/worker-failing.phpt', [], 1, 2),
+        ];
+
+        $collected = $this->execute($units, 2);
+
+        $this->assertSame(1, $this->numberOf($collected[0], AttemptFailed::class));
+        $this->assertSame(1, $this->numberOf($collected[0], Failed::class));
+    }
+
+    public function testRunsAPhptTestWhoseSectionsEachNeedTheirOwnChildProcess(): void
+    {
+        // The --INI-- section forces the --CLEAN-- section to run in a child
+        // process of its own, so this test's generator yields a second job
+        // after the --FILE-- job and exercises the runner's handling of a unit
+        // that is not finished by its first child process.
+        $units = [
+            new PhptWorkUnit(0, __DIR__ . '/../../../_files/parallel-worker/worker-with-clean.phpt'),
+        ];
+
+        $collected = $this->execute($units, 2);
+
+        $this->assertSame([0], array_keys($collected));
+        $this->assertTrue($this->contains($collected[0], Passed::class));
+    }
+
+    public function testRunsAPhptTestWhoseSkipifSectionWritesMoreOutputThanAPipeHolds(): void
+    {
+        // The --INI-- section makes the --SKIPIF-- section run in a child
+        // process, which writes more than a pipe holds before it ends, and the
+        // runner only polls whether it has ended. The child's output is captured in a file, so it does not
+        // block on a full pipe; the deadline turns a child that does into a
+        // failure rather than a test run that never ends.
+        $runner = $this->runner(1, new ProcessBudget(1));
+
+        $collected = [];
+
+        $runner->begin(
+            [new PhptWorkUnit(0, __DIR__ . '/../../../_files/parallel-worker/worker-with-verbose-skipif.phpt')],
+            static function (int $index, EventCollection $events) use (&$collected): void
+            {
+                $collected[$index] = $events;
+            },
+        );
+
+        $deadline = hrtime(true) + 10000000000;
+
+        while (!$runner->isFinished() && hrtime(true) < $deadline) {
+            if (!$runner->tick()) {
+                usleep(1000);
+            }
+        }
+
+        if (!$runner->isFinished()) {
+            $runner->kill();
+
+            $this->fail('The PHPT test did not finish');
+        }
+
+        $this->assertSame([0], array_keys($collected));
+        $this->assertTrue($this->contains($collected[0], Passed::class));
+    }
+
+    public function testReportsAPhptTestThatNeedsNoChildProcessAtAll(): void
+    {
+        // This test is skipped by a --SKIPIF-- section that runs in-process, so
+        // its generator produces its events without ever yielding a job; the
+        // runner must report it just the same.
+        $units = [
+            new PhptWorkUnit(0, __DIR__ . '/../../../_files/parallel-worker/worker-skipped.phpt'),
+        ];
+
+        $collected = $this->execute($units, 2);
+
+        $this->assertSame([0], array_keys($collected));
+        $this->assertTrue($this->contains($collected[0], Skipped::class));
+    }
+
+    public function testRunsPhptTestsOneAtATimeWhenConcurrencyIsOne(): void
+    {
+        $file = __DIR__ . '/../../../_files/parallel-worker/worker.phpt';
+
+        $units = [
+            new PhptWorkUnit(0, $file),
+            new PhptWorkUnit(1, $file),
+            new PhptWorkUnit(2, $file),
+        ];
+
+        $collected = $this->execute($units, 1);
+
+        $this->assertSame([0, 1, 2], array_keys($collected));
+
+        foreach ($collected as $events) {
+            $this->assertTrue($this->contains($events, Passed::class));
+        }
+    }
+
+    public function testKillDropsTheQueuedTestsAndTerminatesTheRunningChildProcesses(): void
+    {
+        $budget = new ProcessBudget(1);
+
+        $runner = $this->runner(1, $budget);
+
+        $collected = [];
+
+        $runner->begin(
+            [
+                new PhptWorkUnit(0, __DIR__ . '/../../../_files/parallel-worker/worker-sleeping.phpt'),
+                new PhptWorkUnit(1, __DIR__ . '/../../../_files/parallel-worker/worker.phpt'),
+            ],
+            static function (int $index, EventCollection $events) use (&$collected): void
+            {
+                $collected[$index] = $events;
+            },
+        );
+
+        $runner->tick();
+
+        $this->assertFalse($runner->isFinished());
+
+        $runner->kill();
+
+        // The queued test was dropped and the sleeping test's child process
+        // was terminated without being waited for: the runner is finished,
+        // nothing was reported, and the slot the terminated test held has
+        // been given back to the shared budget.
+        $this->assertTrue($runner->isFinished());
+        $this->assertSame([], $collected);
+        $this->assertTrue($budget->acquire());
+    }
+
+    public function testKillDoesNotRunTheRemainingRepetitionsOfARepeatedTest(): void
+    {
+        $budget = new ProcessBudget(1);
+
+        $runner = $this->runner(1, $budget);
+
+        $collected = [];
+
+        $runner->begin(
+            [
+                new PhptWorkUnit(0, __DIR__ . '/../../../_files/parallel-worker/worker-sleeping.phpt', [], 3),
+            ],
+            static function (int $index, EventCollection $events) use (&$collected): void
+            {
+                $collected[$index] = $events;
+            },
+        );
+
+        $runner->tick();
+
+        $runner->kill();
+
+        // The repetition that was running was terminated and the repetitions
+        // that had not started are not run: the unit is abandoned as a whole,
+        // and nothing is reported for it.
+        $this->assertTrue($runner->isFinished());
+        $this->assertSame([], $collected);
+        $this->assertTrue($budget->acquire());
+    }
+
+    public function testDoesNotStartATestWhenTheCallerDisallowsIt(): void
+    {
+        $budget = new ProcessBudget(1);
+
+        $runner = $this->runner(1, $budget);
+
+        $collected = [];
+
+        $runner->begin(
+            [
+                new PhptWorkUnit(0, __DIR__ . '/../../../_files/parallel-worker/worker.phpt'),
+            ],
+            static function (int $index, EventCollection $events) use (&$collected): void
+            {
+                $collected[$index] = $events;
+            },
+        );
+
+        // The caller makes room for a unit that must run alone: no queued
+        // test is started, so the runner drains instead of topping up.
+        $this->assertFalse($runner->tick(false));
+        $this->assertFalse($runner->hasRunningTests());
+        $this->assertFalse($runner->isFinished());
+        $this->assertSame([], $collected);
+
+        while (!$runner->isFinished()) {
+            if (!$runner->tick()) {
+                usleep(1000);
+            }
+        }
+
+        $this->assertCount(1, $collected);
+    }
+
+    public function testStartsATestThatConflictsWithAllOnlyWhenNothingElseIsExecuting(): void
+    {
+        $nothingElseIsExecuting = false;
+
+        $budget = new ProcessBudget(2);
+
+        $runner = $this->runner(
+            2,
+            $budget,
+            static function () use (&$nothingElseIsExecuting): bool
+            {
+                return $nothingElseIsExecuting;
+            },
+        );
+
+        $collected = [];
+
+        $runner->begin(
+            [
+                new PhptWorkUnit(0, __DIR__ . '/../../../_files/parallel-worker/worker.phpt'),
+                new PhptWorkUnit(1, __DIR__ . '/../../../_files/parallel-worker/worker.phpt', ['all']),
+            ],
+            static function (int $index, EventCollection $events) use (&$collected): void
+            {
+                $collected[$index] = $events;
+            },
+        );
+
+        // While another PHPT test is running, the test that must run
+        // entirely on its own is not started.
+        $runner->tick();
+
+        $this->assertTrue($runner->hasRunningTests());
+        $this->assertFalse($runner->isRunningExclusiveTest());
+
+        // The other test has finished, but a unit is still executing
+        // elsewhere — in the worker pool, in a real run — so the test that
+        // must run entirely on its own is still not started.
+        while ($collected === []) {
+            if (!$runner->tick()) {
+                usleep(1000);
+            }
+        }
+
+        $runner->tick();
+
+        $this->assertFalse($runner->hasRunningTests());
+        $this->assertFalse($runner->isFinished());
+
+        // Nothing is executing anywhere anymore: now the test starts, and it
+        // is the only one running.
+        $nothingElseIsExecuting = true;
+
+        $runner->tick();
+
+        $this->assertTrue($runner->hasRunningTests());
+        $this->assertTrue($runner->isRunningExclusiveTest());
+
+        while (!$runner->isFinished()) {
+            if (!$runner->tick()) {
+                usleep(1000);
+            }
+        }
+
+        $this->assertFalse($runner->isRunningExclusiveTest());
+        $this->assertCount(2, $collected);
+    }
+
+    public function testStartsATestOnlyWhenNoOtherRunningTestHoldsAConflictKeyOfIts(): void
+    {
+        $file = __DIR__ . '/../../../_files/parallel-worker/worker.phpt';
+
+        $budget = new ProcessBudget(2);
+
+        $runner = $this->runner(2, $budget);
+
+        $collected = [];
+
+        $runner->begin(
+            [
+                new PhptWorkUnit(0, $file, ['database']),
+                new PhptWorkUnit(1, $file, ['database']),
+            ],
+            static function (int $index, EventCollection $events) use (&$collected): void
+            {
+                $collected[$index] = $events;
+            },
+        );
+
+        $runner->tick();
+
+        // Neither the concurrency limit nor the process budget keeps the
+        // second test from starting alongside the first one: the conflict key
+        // the two share does. One slot of the budget is therefore still free.
+        $this->assertTrue($runner->hasRunningTests());
+        $this->assertTrue($budget->acquire());
+
+        $budget->release();
+
+        while (!$runner->isFinished()) {
+            if (!$runner->tick()) {
+                usleep(1000);
+            }
+        }
+
+        // The key is released once the test holding it has finished, so the
+        // second test ran after the first one rather than not at all.
+        $this->assertSame([0, 1], array_keys($collected));
+    }
+
+    public function testHaltLetsTheRunningSectionOfATestFinishAndRunsItsCleanSectionWithoutReportingTheTest(): void
+    {
+        $marker = sys_get_temp_dir() . '/phpunit-parallel-halted-phpt.marker';
+
+        @unlink($marker);
+
+        $budget = new ProcessBudget(1);
+
+        $runner = $this->runner(1, $budget);
+
+        $collected = [];
+
+        $runner->begin(
+            [
+                new PhptWorkUnit(0, __DIR__ . '/../../../_files/parallel-worker/worker-halted.phpt'),
+                new PhptWorkUnit(1, __DIR__ . '/../../../_files/parallel-worker/worker.phpt'),
+            ],
+            static function (int $index, EventCollection $events) use (&$collected): void
+            {
+                $collected[$index] = $events;
+            },
+        );
+
+        $runner->tick();
+
+        $runner->halt();
+
+        // The --FILE-- section of the first test is still running: the
+        // runner is not finished until the test has halted.
+        $this->assertTrue($runner->hasRunningTests());
+        $this->assertFalse($runner->isFinished());
+
+        while (!$runner->isFinished()) {
+            if (!$runner->tick()) {
+                usleep(1000);
+            }
+        }
+
+        // The queued test was dropped, the --FILE-- section of the halted
+        // test finished and its --CLEAN-- section ran, nothing was reported
+        // for it, and the slot it held has been given back to the budget.
+        $this->assertSame("FILE\nCLEAN\n", file_get_contents($marker));
+        $this->assertSame([], $collected);
+        $this->assertTrue($budget->acquire());
+
+        @unlink($marker);
+    }
+
+    /**
+     * On Windows, reading the output of a section's child process blocks
+     * until the process has exited, as pipes cannot be read without blocking
+     * there: the round that polls the --CLEAN-- section returns only once the
+     * section has finished and the test has been reported, so the runner
+     * cannot be asked to halt while the section is running.
+     */
+    #[RequiresOperatingSystem('Linux|Darwin')]
+    public function testHaltLetsTheRunningCleanSectionOfATestFinish(): void
+    {
+        $marker = sys_get_temp_dir() . '/phpunit-parallel-halted-during-clean.marker';
+
+        @unlink($marker);
+
+        $budget = new ProcessBudget(1);
+
+        $runner = $this->runner(1, $budget);
+
+        $collected = [];
+
+        $runner->begin(
+            [
+                new PhptWorkUnit(0, __DIR__ . '/../../../_files/parallel-worker/worker-halted-during-clean.phpt'),
+            ],
+            static function (int $index, EventCollection $events) use (&$collected): void
+            {
+                $collected[$index] = $events;
+            },
+        );
+
+        while (!is_file($marker)) {
+            $runner->tick();
+
+            usleep(1000);
+        }
+
+        $runner->halt();
+
+        while (!$runner->isFinished()) {
+            if (!$runner->tick()) {
+                usleep(1000);
+            }
+        }
+
+        $this->assertSame("started\nfinished\n", file_get_contents($marker));
+        $this->assertSame([], $collected);
+
+        @unlink($marker);
+    }
+
+    public function testHaltLetsTheRunningRepetitionOfARepeatedTestFinishAndDoesNotRunTheRemainingOnes(): void
+    {
+        $marker = sys_get_temp_dir() . '/phpunit-parallel-halted-phpt.marker';
+
+        @unlink($marker);
+
+        $budget = new ProcessBudget(1);
+
+        $runner = $this->runner(1, $budget);
+
+        $collected = [];
+
+        $runner->begin(
+            [
+                new PhptWorkUnit(0, __DIR__ . '/../../../_files/parallel-worker/worker-halted.phpt', [], 3),
+            ],
+            static function (int $index, EventCollection $events) use (&$collected): void
+            {
+                $collected[$index] = $events;
+            },
+        );
+
+        $runner->tick();
+
+        $runner->halt();
+
+        while (!$runner->isFinished()) {
+            if (!$runner->tick()) {
+                usleep(1000);
+            }
+        }
+
+        $this->assertSame("FILE\nCLEAN\n", file_get_contents($marker));
+        $this->assertSame([], $collected);
+
+        @unlink($marker);
+    }
+
+    public function testRunsTheCleanSectionOfATerminatedTestWhenKilling(): void
+    {
+        $marker = sys_get_temp_dir() . '/phpunit-parallel-halt-clean.marker';
+
+        @unlink($marker);
+
+        $budget = new ProcessBudget(1);
+
+        $runner = $this->runner(1, $budget);
+
+        $collected = [];
+
+        $runner->begin(
+            [
+                new PhptWorkUnit(0, __DIR__ . '/../../../_files/parallel-worker/worker-sleeping-with-clean.phpt'),
+            ],
+            static function (int $index, EventCollection $events) use (&$collected): void
+            {
+                $collected[$index] = $events;
+            },
+        );
+
+        $runner->tick();
+
+        $runner->kill();
+
+        // The terminated test's --CLEAN-- section ran even though the test
+        // itself was abandoned mid-sleep and nothing was reported for it.
+        $this->assertFileExists($marker);
+        $this->assertSame([], $collected);
+
+        @unlink($marker);
+    }
+
+    public function testWaitsForASlotOfTheSharedProcessBudgetBeforeStartingATest(): void
+    {
+        $budget = new ProcessBudget(1);
+
+        $runner = $this->runner(2, $budget);
+
+        $collected = [];
+
+        $runner->begin(
+            [new PhptWorkUnit(0, __DIR__ . '/../../../_files/parallel-worker/worker.phpt')],
+            static function (int $index, EventCollection $events) use (&$collected): void
+            {
+                $collected[$index] = $events;
+            },
+        );
+
+        // The budget's only slot is held by a unit executing elsewhere — a
+        // test class running in a worker, in a real run. The runner must not
+        // start the test until the slot has been given back.
+        $this->assertTrue($budget->acquire());
+
+        $this->assertFalse($runner->tick());
+        $this->assertFalse($runner->isFinished());
+        $this->assertSame([], $collected);
+
+        $budget->release();
+
+        while (!$runner->isFinished()) {
+            if (!$runner->tick()) {
+                usleep(1000);
+            }
+        }
+
+        $this->assertSame([0], array_keys($collected));
+        $this->assertTrue($this->contains($collected[0], Passed::class));
+    }
+
+    /**
+     * @param list<PhptWorkUnit> $units
+     * @param positive-int       $concurrency
+     *
+     * @return array<non-negative-int, EventCollection>
+     */
+    private function execute(array $units, int $concurrency): array
+    {
+        $collected = [];
+
+        $this->runner($concurrency, new ProcessBudget($concurrency))->run(
+            $units,
+            static function (int $index, EventCollection $events) use (&$collected): void
+            {
+                $collected[$index] = $events;
+            },
+        );
+
+        ksort($collected);
+
+        return $collected;
+    }
+
+    /**
+     * @param positive-int $concurrency
+     */
+    private function runner(int $concurrency, ProcessBudget $budget, ?callable $nothingElseIsExecuting = null): PhptRunner
+    {
+        $processor = new ChildProcessResultProcessor(
+            Facade::instance(),
+            $this->createStub(Emitter::class),
+            new PassedTests,
+            new CodeCoverage($this->createStub(Emitter::class)),
+        );
+
+        return new PhptRunner(new JobRunner($processor, $this->createStub(Emitter::class)), $concurrency, $budget, $nothingElseIsExecuting);
+    }
+
+    /**
+     * @param class-string $eventClass
+     */
+    private function contains(EventCollection $events, string $eventClass): bool
+    {
+        return $this->numberOf($events, $eventClass) > 0;
+    }
+
+    /**
+     * @param class-string $eventClass
+     *
+     * @return non-negative-int
+     */
+    private function numberOf(EventCollection $events, string $eventClass): int
+    {
+        $count = 0;
+
+        foreach ($events as $event) {
+            if ($event instanceof $eventClass) {
+                $count++;
+            }
+        }
+
+        return $count;
+    }
+}

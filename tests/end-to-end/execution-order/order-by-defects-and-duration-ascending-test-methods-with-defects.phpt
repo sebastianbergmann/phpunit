@@ -1,5 +1,7 @@
 --TEST--
 Order by defects,duration-ascending (with test run history): the duration sort discards the defect hoist that precedes it
+--CONFLICTS--
+all
 --FILE--
 <?php declare(strict_types=1);
 $testRunHistoryFile = sys_get_temp_dir() . '/test-run-history';

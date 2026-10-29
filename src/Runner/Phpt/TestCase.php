@@ -45,6 +45,7 @@ use function sys_get_temp_dir;
 use function trim;
 use function unlink;
 use function unserialize;
+use Generator;
 use PHPUnit\Event\Code\Phpt;
 use PHPUnit\Event\Code\ThrowableBuilder;
 use PHPUnit\Event\Emitter;
@@ -68,6 +69,7 @@ use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\Util\PHP\Job;
 use PHPUnit\Util\PHP\JobRunnerRegistry;
+use PHPUnit\Util\PHP\Result;
 use SebastianBergmann\CodeCoverage\Data\RawCodeCoverageData;
 use SebastianBergmann\CodeCoverage\InvalidArgumentException;
 use SebastianBergmann\CodeCoverage\ReflectionException;
@@ -202,7 +204,13 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         NestedTestRunGuard::testStarts();
 
         try {
-            $this->runTest();
+            $generator = $this->execute(EventFacade::emitter());
+
+            $generator->rewind();
+
+            while ($generator->valid()) {
+                $generator->send(JobRunnerRegistry::run($generator->current()));
+            }
         } finally {
             NestedTestRunGuard::testEnded();
         }
@@ -218,6 +226,8 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
 
     /**
      * Returns a string representation of the test case.
+     *
+     * @return non-empty-string
      */
     public function toString(): string
     {
@@ -280,6 +290,26 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
     }
 
     /**
+     * The staged execution of this PHPT test as a generator that yields a Job
+     * for each section that has to run in a child process and is resumed with
+     * that job's Result.
+     *
+     * Driving the generator synchronously, as run() does, runs the sections one
+     * after another and is equivalent to ordinary sequential execution. The
+     * parallel test runner instead drives the generators of several PHPT tests
+     * at once, each writing its events to its own emitter, so that the child
+     * processes of independent PHPT tests run concurrently without any of them
+     * being nested inside a worker process.
+     *
+     * Through the optional interruption signal, the caller can declare that it
+     * has abandoned this test: its result is no longer of interest, and the
+     * generator, when driven to completion, runs only what must still run —
+     * the --CLEAN-- section, when the --FILE-- section has already run — and
+     * skips everything else. The parallel test runner interrupts its in-flight
+     * PHPT tests this way when the test runner stops early (--stop-on-*): the
+     * section that is running finishes, and the test's cleanup still happens,
+     * even when the section had to be terminated.
+     *
      * @throws \PHPUnit\Framework\Exception
      * @throws \SebastianBergmann\Template\InvalidArgumentException
      * @throws Exception
@@ -288,11 +318,14 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
      * @throws ReflectionException
      * @throws TestIdMissingException
      * @throws UnintentionallyCoveredCodeException
+     *
+     * @return Generator<int, Job, Result, void>
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    private function runTest(): void
+    public function execute(Emitter $emitter, ?Interruption $interruption = null): Generator
     {
-        $emitter = EventFacade::emitter();
-        $parser  = new Parser;
+        $parser = new Parser;
 
         $emitter->testPreparationStarted(
             $this->valueObjectForEvents(),
@@ -378,7 +411,17 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
             );
         }
 
-        if ($this->shouldTestBeSkipped($sections, $phpSettings, $emitter)) {
+        if (yield from $this->executeSkipIf($emitter, $sections, $phpSettings)) {
+            return;
+        }
+
+        // The run was interrupted, or the caller abandoned this test, while
+        // the --SKIPIF-- section was running: the --FILE-- section is not
+        // started anymore, and there is nothing to clean up, because it
+        // never ran.
+        if (TestResultFacade::wasInterrupted() || ($interruption !== null && $interruption->interrupted())) {
+            $emitter->testFinished($this->valueObjectForEvents(), 0);
+
             return;
         }
 
@@ -440,22 +483,29 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
             // @codeCoverageIgnoreEnd
         }
 
-        $jobResult = JobRunnerRegistry::run(
-            new Job(
-                $code,
-                ChildProcessReason::PhptTest,
-                $this->stringifyIni($phpSettings),
-                $environmentVariables,
-                $arguments,
-                $input,
-                true,
-            ),
+        $jobResult = yield new Job(
+            $code,
+            ChildProcessReason::PhptTest,
+            $this->stringifyIni($phpSettings),
+            $environmentVariables,
+            $arguments,
+            $input,
+            true,
         );
 
         $emitter->childProcessFinished(ChildProcessReason::PhptTest, $jobResult->stdout(), $jobResult->stderr());
 
-        if (TestResultFacade::wasInterrupted()) {
-            $this->runClean($sections, CodeCoverage::instance()->isActive(), $emitter);
+        /** @phpstan-ignore booleanOr.leftAlwaysFalse (the run may be interrupted while the yielded job executes) */
+        if (TestResultFacade::wasInterrupted() || ($interruption !== null && $interruption->interrupted())) {
+            if (CodeCoverage::instance()->isActive()) {
+                // the test's result is not collected anymore, but the temporary
+                // files it was given must not be left behind
+                // @codeCoverageIgnoreStart
+                $this->removeCoverageFiles();
+                // @codeCoverageIgnoreEnd
+            }
+
+            yield from $this->executeClean($emitter, $sections, CodeCoverage::instance()->isActive());
 
             $emitter->testFinished($this->valueObjectForEvents(), 0);
 
@@ -570,7 +620,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
             $emitter->testPassed($this->valueObjectForEvents());
         }
 
-        $this->runClean($sections, CodeCoverage::instance()->isActive(), $emitter);
+        yield from $this->executeClean($emitter, $sections, CodeCoverage::instance()->isActive());
 
         $emitter->testFinished($this->valueObjectForEvents(), 1);
     }
@@ -619,8 +669,10 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
      *
      * @param array<non-empty-string, string>               $sections
      * @param array<non-empty-string, array<string>|string> $settings
+     *
+     * @return Generator<int, Job, Result, bool>
      */
-    private function shouldTestBeSkipped(array &$sections, array $settings, Emitter $emitter): bool
+    private function executeSkipIf(Emitter $emitter, array &$sections, array $settings): Generator
     {
         if (!isset($sections['SKIPIF']) || $sections['SKIPIF'] === '') {
             return false;
@@ -629,12 +681,10 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         $skipIfCode = (new Renderer)->render($this->filename, $sections['SKIPIF']);
 
         if ($this->shouldRunInSubprocess($sections, $skipIfCode)) {
-            $jobResult = JobRunnerRegistry::run(
-                new Job(
-                    $skipIfCode,
-                    ChildProcessReason::PhptSkipIfSection,
-                    $this->stringifyIni($settings),
-                ),
+            $jobResult = yield new Job(
+                $skipIfCode,
+                ChildProcessReason::PhptSkipIfSection,
+                $this->stringifyIni($settings),
             );
 
             $output = $jobResult->stdout();
@@ -644,7 +694,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
             $output = $this->runCodeInLocalSandbox($skipIfCode);
         }
 
-        $this->triggerRunnerWarningOnPhpErrors('SKIPIF', $output, $emitter);
+        $this->triggerRunnerWarningOnPhpErrors($emitter, 'SKIPIF', $output);
 
         if (strncasecmp('skip', ltrim($output), 4) === 0) {
             $message = '';
@@ -764,8 +814,10 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
 
     /**
      * @param array<non-empty-string, string> $sections
+     *
+     * @return Generator<int, Job, Result, void>
      */
-    private function runClean(array $sections, bool $collectCoverage, Emitter $emitter): void
+    private function executeClean(Emitter $emitter, array $sections, bool $collectCoverage): Generator
     {
         if (!isset($sections['CLEAN']) || $sections['CLEAN'] === '') {
             return;
@@ -774,12 +826,10 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         $cleanCode = (new Renderer)->render($this->filename, $sections['CLEAN']);
 
         if ($this->shouldRunInSubprocess($sections, $cleanCode)) {
-            $jobResult = JobRunnerRegistry::run(
-                new Job(
-                    $cleanCode,
-                    ChildProcessReason::PhptCleanSection,
-                    $this->settings($collectCoverage),
-                ),
+            $jobResult = yield new Job(
+                $cleanCode,
+                ChildProcessReason::PhptCleanSection,
+                $this->settings($collectCoverage),
             );
 
             $output = $jobResult->stdout();
@@ -789,7 +839,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
             $output = $this->runCodeInLocalSandbox($cleanCode);
         }
 
-        $this->triggerRunnerWarningOnPhpErrors('CLEAN', $output, $emitter);
+        $this->triggerRunnerWarningOnPhpErrors($emitter, 'CLEAN', $output);
     }
 
     /**
@@ -835,13 +885,21 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
             }
         }
 
-        foreach ($files as $file) {
-            @unlink($file);
-        }
+        $this->removeCoverageFiles();
 
         @rmdir($this->coverageFilesDirectory);
 
         return $coverage;
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    private function removeCoverageFiles(): void
+    {
+        foreach ($this->coverageFiles as $file) {
+            @unlink($file);
+        }
     }
 
     /**
@@ -1045,7 +1103,7 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
         return $settings;
     }
 
-    private function triggerRunnerWarningOnPhpErrors(string $section, string $output, Emitter $emitter): void
+    private function triggerRunnerWarningOnPhpErrors(Emitter $emitter, string $section, string $output): void
     {
         if (str_contains($output, 'Parse error:')) {
             $emitter->testRunnerTriggeredPhpunitWarning(
