@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Ergebnis\PHPStan\Rules\Methods;
 
+use Ergebnis\PHPStan\Rules\Documentation;
 use Ergebnis\PHPStan\Rules\ErrorIdentifier;
 use PhpParser\Node;
 use PHPStan\Analyser;
@@ -22,8 +23,51 @@ use PHPStan\Rules;
 /**
  * @implements Rules\Rule<Node\Stmt\ClassMethod>
  */
-final class NoParameterPassedByReferenceRule implements Rules\Rule
+final class NoParameterPassedByReferenceRule implements
+    Documentation\HasRuleDefinition,
+    Rules\Rule
 {
+    public function ruleDefinition(): Documentation\RuleDefinition
+    {
+        return Documentation\RuleDefinition::create(
+            'noParameterPassedByReference',
+            'This rule reports an error when a method has a parameter that is [passed by reference](https://www.php.net/manual/en/language.references.pass.php).',
+            'A parameter passed by reference lets a method change a variable of its caller as a side effect, which makes the code harder to follow. Return the new value instead.',
+            'Return the new value instead.',
+        )->withCodeSamples(
+            Documentation\CodeSample::reported(<<<'PHP'
+                <?php
+
+                declare(strict_types=1);
+
+                namespace Example;
+
+                final class Greeting
+                {
+                    public function increment(int &$value): void
+                    {
+                        ++$value;
+                    }
+                }
+                PHP),
+            Documentation\CodeSample::notReported(<<<'PHP'
+                <?php
+
+                declare(strict_types=1);
+
+                namespace Example;
+
+                final class Greeting
+                {
+                    public function increment(int $value): int
+                    {
+                        return $value + 1;
+                    }
+                }
+                PHP),
+        );
+    }
+
     public function getNodeType(): string
     {
         return Node\Stmt\ClassMethod::class;
@@ -51,7 +95,7 @@ final class NoParameterPassedByReferenceRule implements Rules\Rule
         $classReflection = $scope->getClassReflection();
 
         if ($classReflection->isAnonymous()) {
-            return \array_map(static function (Node\Param $parameterExplicitlyPassedByReference) use ($methodName): Rules\RuleError {
+            return \array_map(function (Node\Param $parameterExplicitlyPassedByReference) use ($methodName): Rules\RuleError {
                 /** @var Node\Expr\Variable $variable */
                 $variable = $parameterExplicitlyPassedByReference->var;
 
@@ -66,13 +110,14 @@ final class NoParameterPassedByReferenceRule implements Rules\Rule
 
                 return Rules\RuleErrorBuilder::message($message)
                     ->identifier(ErrorIdentifier::noParameterPassedByReference()->toString())
+                    ->tip(Documentation\ErrorTip::for($this))
                     ->build();
             }, $parametersExplicitlyPassedByReference);
         }
 
         $className = $classReflection->getName();
 
-        return \array_map(static function (Node\Param $parameterExplicitlyPassedByReference) use ($className, $methodName): Rules\RuleError {
+        return \array_map(function (Node\Param $parameterExplicitlyPassedByReference) use ($className, $methodName): Rules\RuleError {
             /** @var Node\Expr\Variable $variable */
             $variable = $parameterExplicitlyPassedByReference->var;
 
@@ -88,6 +133,7 @@ final class NoParameterPassedByReferenceRule implements Rules\Rule
 
             return Rules\RuleErrorBuilder::message($message)
                 ->identifier(ErrorIdentifier::noParameterPassedByReference()->toString())
+                ->tip(Documentation\ErrorTip::for($this))
                 ->build();
         }, $parametersExplicitlyPassedByReference);
     }

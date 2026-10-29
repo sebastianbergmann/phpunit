@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Ergebnis\PHPStan\Rules\Methods;
 
+use Ergebnis\PHPStan\Rules\Documentation;
 use Ergebnis\PHPStan\Rules\ErrorIdentifier;
 use PhpParser\Comment;
 use PhpParser\Node;
@@ -25,7 +26,9 @@ use PHPUnit\Framework;
 /**
  * @implements Rules\Rule<Node\Stmt\ClassMethod>
  */
-final class PrivateInFinalClassRule implements Rules\Rule
+final class PrivateInFinalClassRule implements
+    Documentation\HasRuleDefinition,
+    Rules\Rule
 {
     /**
      * @var list<string>
@@ -51,6 +54,47 @@ final class PrivateInFinalClassRule implements Rules\Rule
     public function __construct(Type\FileTypeMapper $fileTypeMapper)
     {
         $this->fileTypeMapper = $fileTypeMapper;
+    }
+
+    public function ruleDefinition(): Documentation\RuleDefinition
+    {
+        return Documentation\RuleDefinition::create(
+            'privateInFinalClass',
+            'This rule reports an error when a method in a `final` class is `protected` but could be `private`.',
+            'A `final` class cannot be extended, so a `protected` method in it can only be used like a `private` method. Declaring the method `private` makes that explicit.',
+            'Declare the method `private` instead.',
+        )->withCodeSamples(
+            Documentation\CodeSample::reported(<<<'PHP'
+                <?php
+
+                declare(strict_types=1);
+
+                namespace Example;
+
+                final class Greeting
+                {
+                    protected function salutation(): string
+                    {
+                        return 'Hello';
+                    }
+                }
+                PHP),
+            Documentation\CodeSample::notReported(<<<'PHP'
+                <?php
+
+                declare(strict_types=1);
+
+                namespace Example;
+
+                final class Greeting
+                {
+                    private function salutation(): string
+                    {
+                        return 'Hello';
+                    }
+                }
+                PHP),
+        );
     }
 
     public function getNodeType(): string
@@ -107,6 +151,7 @@ final class PrivateInFinalClassRule implements Rules\Rule
             return [
                 Rules\RuleErrorBuilder::message($message)
                     ->identifier(ErrorIdentifier::privateInFinalClass()->toString())
+                    ->tip(Documentation\ErrorTip::for($this))
                     ->build(),
             ];
         }
@@ -120,6 +165,7 @@ final class PrivateInFinalClassRule implements Rules\Rule
         return [
             Rules\RuleErrorBuilder::message($message)
                 ->identifier(ErrorIdentifier::privateInFinalClass()->toString())
+                ->tip(Documentation\ErrorTip::for($this))
                 ->build(),
         ];
     }

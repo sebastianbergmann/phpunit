@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Ergebnis\PHPStan\Rules\Classes;
 
 use Doctrine\ORM;
+use Ergebnis\PHPStan\Rules\Documentation;
 use Ergebnis\PHPStan\Rules\ErrorIdentifier;
 use PhpParser\Comment;
 use PhpParser\Node;
@@ -23,7 +24,9 @@ use PHPStan\Rules;
 /**
  * @implements Rules\Rule<Node\Stmt\Class_>
  */
-final class FinalRule implements Rules\Rule
+final class FinalRule implements
+    Documentation\HasRuleDefinition,
+    Rules\Rule
 {
     /**
      * @var list<string>
@@ -41,6 +44,7 @@ final class FinalRule implements Rules\Rule
         ORM\Mapping\Entity::class,
     ];
     private bool $allowAbstractClasses;
+    private bool $ignoreDoctrineEntities;
 
     /**
      * @var list<string>
@@ -53,9 +57,11 @@ final class FinalRule implements Rules\Rule
      */
     public function __construct(
         bool $allowAbstractClasses,
-        array $classesNotRequiredToBeAbstractOrFinal
+        array $classesNotRequiredToBeAbstractOrFinal,
+        bool $ignoreDoctrineEntities
     ) {
         $this->allowAbstractClasses = $allowAbstractClasses;
+        $this->ignoreDoctrineEntities = $ignoreDoctrineEntities;
         $this->classesNotRequiredToBeAbstractOrFinal = \array_map(static function (string $classNotRequiredToBeAbstractOrFinal): string {
             return $classNotRequiredToBeAbstractOrFinal;
         }, $classesNotRequiredToBeAbstractOrFinal);
@@ -63,6 +69,74 @@ final class FinalRule implements Rules\Rule
         if ($allowAbstractClasses) {
             $this->errorMessageTemplate = 'Class %s is neither abstract nor final.';
         }
+    }
+
+    public function ruleDefinition(): Documentation\RuleDefinition
+    {
+        return Documentation\RuleDefinition::create(
+            'final',
+            <<<'MARKDOWN'
+            This rule reports an error when a non-anonymous class is not `final`.
+
+            💡 By default, this rule ignores classes that
+
+            - use `@Entity`, `@ORM\Entity`, or `@ORM\Mapping\Entity` annotations
+            - use `Doctrine\ORM\Mapping\Entity` attributes
+
+            on the class level.
+            MARKDOWN,
+            'A class that is not `final` can be extended, so every change to it can break a subclass. Declare classes `final` and prefer composition over inheritance.',
+            'Declare the class `final` and prefer composition over inheritance.',
+            Documentation\Parameter::create(
+                'allowAbstractClasses',
+                <<<'MARKDOWN'
+                By default, this rule allows to declare `abstract` classes.
+
+                You can set the `allowAbstractClasses` parameter to `false` to disallow abstract classes.
+                MARKDOWN,
+                false,
+            ),
+            Documentation\Parameter::create(
+                'classesNotRequiredToBeAbstractOrFinal',
+                'You can set the `classesNotRequiredToBeAbstractOrFinal` parameter to a list of class names that you want to exclude from inspection.',
+                [
+                    'Foo\\Bar\\NeitherAbstractNorFinal',
+                    'Bar\\Baz\\NeitherAbstractNorFinal',
+                ],
+            ),
+            Documentation\Parameter::create(
+                'ignoreDoctrineEntities',
+                <<<'MARKDOWN'
+                By default, this rule ignores Doctrine entities, because Doctrine creates proxies for lazy loading by extending them.
+
+                When you use [native lazy objects](https://github.com/doctrine/orm/pull/11853) with `doctrine/orm:^3.4.0` on PHP 8.4 or later, Doctrine no longer extends entities, and you can set the `ignoreDoctrineEntities` parameter to `false` to require Doctrine entities to be `final` as well.
+                MARKDOWN,
+                false,
+            ),
+        )->withCodeSamples(
+            Documentation\CodeSample::reported(<<<'PHP'
+                <?php
+
+                declare(strict_types=1);
+
+                namespace Example;
+
+                class Greeting
+                {
+                }
+                PHP),
+            Documentation\CodeSample::notReported(<<<'PHP'
+                <?php
+
+                declare(strict_types=1);
+
+                namespace Example;
+
+                final class Greeting
+                {
+                }
+                PHP),
+        );
     }
 
     public function getNodeType(): string
@@ -93,11 +167,17 @@ final class FinalRule implements Rules\Rule
             return [];
         }
 
-        if (self::hasWhitelistedAnnotation($node)) {
+        if (
+            $this->ignoreDoctrineEntities
+            && self::hasWhitelistedAnnotation($node)
+        ) {
             return [];
         }
 
-        if (self::hasWhitelistedAttribute($node)) {
+        if (
+            $this->ignoreDoctrineEntities
+            && self::hasWhitelistedAttribute($node)
+        ) {
             return [];
         }
 
@@ -109,6 +189,7 @@ final class FinalRule implements Rules\Rule
         return [
             Rules\RuleErrorBuilder::message($message)
                 ->identifier(ErrorIdentifier::final()->toString())
+                ->tip(Documentation\ErrorTip::for($this))
                 ->build(),
         ];
     }

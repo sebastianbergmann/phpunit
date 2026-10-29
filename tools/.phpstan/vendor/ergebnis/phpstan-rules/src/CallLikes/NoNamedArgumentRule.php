@@ -13,17 +13,60 @@ declare(strict_types=1);
 
 namespace Ergebnis\PHPStan\Rules\CallLikes;
 
+use Ergebnis\PHPStan\Rules\Documentation;
 use Ergebnis\PHPStan\Rules\ErrorIdentifier;
 use PhpParser\Node;
 use PHPStan\Analyser;
 use PHPStan\Rules;
-use PHPStan\ShouldNotHappenException;
 
 /**
  * @implements Rules\Rule<Node\Expr\CallLike>
  */
-final class NoNamedArgumentRule implements Rules\Rule
+final class NoNamedArgumentRule implements
+    Documentation\HasRuleDefinition,
+    Rules\Rule
 {
+    public function ruleDefinition(): Documentation\RuleDefinition
+    {
+        return Documentation\RuleDefinition::create(
+            'noNamedArgument',
+            'This rule reports an error when an anonymous function, a function, or a method is invoked using a [named argument](https://www.php.net/manual/en/functions.arguments.php#functions.named-arguments).',
+            'Named arguments make the names of parameters part of the public API, so renaming a parameter breaks callers. Positional arguments keep the names of parameters an implementation detail.',
+            'Use positional arguments instead.',
+        )->withCodeSamples(
+            Documentation\CodeSample::reported(<<<'PHP'
+                <?php
+
+                declare(strict_types=1);
+
+                function greet(string $name): string
+                {
+                    return \sprintf(
+                        'Hello, %s!',
+                        $name,
+                    );
+                }
+
+                greet(name: 'Jane');
+                PHP),
+            Documentation\CodeSample::notReported(<<<'PHP'
+                <?php
+
+                declare(strict_types=1);
+
+                function greet(string $name): string
+                {
+                    return \sprintf(
+                        'Hello, %s!',
+                        $name,
+                    );
+                }
+
+                greet('Jane');
+                PHP),
+        );
+    }
+
     public function getNodeType(): string
     {
         return Node\Expr\CallLike::class;
@@ -55,7 +98,7 @@ final class NoNamedArgumentRule implements Rules\Rule
             $scope,
         );
 
-        return \array_map(static function (Node\Arg $namedArgument) use ($callLike): Rules\RuleError {
+        return \array_map(function (Node\Arg $namedArgument) use ($callLike): Rules\RuleError {
             /** @var Node\Identifier $argumentName */
             $argumentName = $namedArgument->name;
 
@@ -67,6 +110,7 @@ final class NoNamedArgumentRule implements Rules\Rule
 
             return Rules\RuleErrorBuilder::message($message)
                 ->identifier(ErrorIdentifier::noNamedArgument()->toString())
+                ->tip(Documentation\ErrorTip::for($this))
                 ->build();
         }, $namedArguments);
     }
@@ -112,7 +156,20 @@ final class NoNamedArgumentRule implements Rules\Rule
                 );
 
                 if (null === $methodReflection) {
-                    throw new ShouldNotHappenException();
+                    $objectClassNames = $objectType->getObjectClassNames();
+
+                    if (1 === \count($objectClassNames)) {
+                        return \sprintf(
+                            'Method %s::%s()',
+                            $objectClassNames[0],
+                            $methodName->toString(),
+                        );
+                    }
+
+                    return \sprintf(
+                        'Method %s()',
+                        $methodName->toString(),
+                    );
                 }
 
                 $declaringClass = $methodReflection->getDeclaringClass();
