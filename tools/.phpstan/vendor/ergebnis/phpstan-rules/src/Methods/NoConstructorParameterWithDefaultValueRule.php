@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Ergebnis\PHPStan\Rules\Methods;
 
+use Ergebnis\PHPStan\Rules\Documentation;
 use Ergebnis\PHPStan\Rules\ErrorIdentifier;
 use PhpParser\Node;
 use PHPStan\Analyser;
@@ -22,8 +23,55 @@ use PHPStan\Rules;
 /**
  * @implements Rules\Rule<Node\Stmt\ClassMethod>
  */
-final class NoConstructorParameterWithDefaultValueRule implements Rules\Rule
+final class NoConstructorParameterWithDefaultValueRule implements
+    Documentation\HasRuleDefinition,
+    Rules\Rule
 {
+    public function ruleDefinition(): Documentation\RuleDefinition
+    {
+        return Documentation\RuleDefinition::create(
+            'noConstructorParameterWithDefaultValue',
+            'This rule reports an error when a constructor has a parameter with a default value.',
+            'A constructor parameter with a default value lets callers create an object without deciding on that value. Named constructors make each way of creating the object explicit.',
+            'Remove the default value and add a named constructor for each way of creating the object.',
+        )->withCodeSamples(
+            Documentation\CodeSample::reported(<<<'PHP'
+                <?php
+
+                declare(strict_types=1);
+
+                namespace Example;
+
+                final class Greeting
+                {
+                    private string $salutation;
+
+                    public function __construct(string $salutation = 'Hello')
+                    {
+                        $this->salutation = $salutation;
+                    }
+                }
+                PHP),
+            Documentation\CodeSample::notReported(<<<'PHP'
+                <?php
+
+                declare(strict_types=1);
+
+                namespace Example;
+
+                final class Greeting
+                {
+                    private string $salutation;
+
+                    public function __construct(string $salutation)
+                    {
+                        $this->salutation = $salutation;
+                    }
+                }
+                PHP),
+        );
+    }
+
     public function getNodeType(): string
     {
         return Node\Stmt\ClassMethod::class;
@@ -53,7 +101,7 @@ final class NoConstructorParameterWithDefaultValueRule implements Rules\Rule
         $classReflection = $scope->getClassReflection();
 
         if ($classReflection->isAnonymous()) {
-            return \array_map(static function (Node\Param $parameterWithDefaultValue): Rules\RuleError {
+            return \array_map(function (Node\Param $parameterWithDefaultValue): Rules\RuleError {
                 /** @var Node\Expr\Variable $variable */
                 $variable = $parameterWithDefaultValue->var;
 
@@ -67,13 +115,14 @@ final class NoConstructorParameterWithDefaultValueRule implements Rules\Rule
 
                 return Rules\RuleErrorBuilder::message($message)
                     ->identifier(ErrorIdentifier::noConstructorParameterWithDefaultValue()->toString())
+                    ->tip(Documentation\ErrorTip::for($this))
                     ->build();
             }, $parametersWithDefaultValue);
         }
 
         $className = $classReflection->getName();
 
-        return \array_map(static function (Node\Param $parameterWithDefaultValue) use ($className): Rules\RuleError {
+        return \array_map(function (Node\Param $parameterWithDefaultValue) use ($className): Rules\RuleError {
             /** @var Node\Expr\Variable $variable */
             $variable = $parameterWithDefaultValue->var;
 
@@ -88,6 +137,7 @@ final class NoConstructorParameterWithDefaultValueRule implements Rules\Rule
 
             return Rules\RuleErrorBuilder::message($message)
                 ->identifier(ErrorIdentifier::noConstructorParameterWithDefaultValue()->toString())
+                ->tip(Documentation\ErrorTip::for($this))
                 ->build();
         }, $parametersWithDefaultValue);
     }
