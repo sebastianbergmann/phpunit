@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Ergebnis\PHPStan\Rules\Expressions;
 
+use Ergebnis\PHPStan\Rules\Documentation;
 use Ergebnis\PHPStan\Rules\ErrorIdentifier;
 use PhpParser\Node;
 use PHPStan\Analyser;
@@ -21,8 +22,41 @@ use PHPStan\Rules;
 /**
  * @implements Rules\Rule<Node\Expr\FuncCall>
  */
-final class NoCompactRule implements Rules\Rule
+final class NoCompactRule implements
+    Documentation\HasRuleDefinition,
+    Rules\Rule
 {
+    public function ruleDefinition(): Documentation\RuleDefinition
+    {
+        return Documentation\RuleDefinition::create(
+            'noCompact',
+            'This rule reports an error when the function [`compact()`](https://www.php.net/compact) is used.',
+            'The function `compact()` refers to variables by their names in strings, which static analysis and automated refactoring cannot follow. Build the array explicitly instead.',
+            'Build the array explicitly instead.',
+        )->withCodeSamples(
+            Documentation\CodeSample::reported(<<<'PHP'
+                <?php
+
+                declare(strict_types=1);
+
+                $name = 'Jane';
+
+                $context = \compact('name');
+                PHP),
+            Documentation\CodeSample::notReported(<<<'PHP'
+                <?php
+
+                declare(strict_types=1);
+
+                $name = 'Jane';
+
+                $context = [
+                    'name' => $name,
+                ];
+                PHP),
+        );
+    }
+
     public function getNodeType(): string
     {
         return Node\Expr\FuncCall::class;
@@ -43,6 +77,7 @@ final class NoCompactRule implements Rules\Rule
         return [
             Rules\RuleErrorBuilder::message('Function compact() should not be used.')
                 ->identifier(ErrorIdentifier::noCompact()->toString())
+                ->tip(Documentation\ErrorTip::for($this))
                 ->build(),
         ];
     }

@@ -1,9 +1,9 @@
 {
     "require-dev": {
-        "phpstan/phpstan": "^2.3.3",
+        "phpstan/phpstan": "^2.3.4",
         "phpstan/extension-installer": "^1.4.3",
         "phpstan/phpstan-strict-rules": "^2.1.0",
-        "ergebnis/phpstan-rules": "^2.15.0"
+        "ergebnis/phpstan-rules": "^2.16.0"
     },
     "config": {
         "allow-plugins": {

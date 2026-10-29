@@ -6,7 +6,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased
 
-For a full diff see [`2.15.0...main`][2.15.0...main].
+For a full diff see [`2.16.0...main`][2.16.0...main].
+
+## [`2.16.0`][2.16.0]
+
+For a full diff see [`2.15.0...2.16.0`][2.15.0...2.16.0].
+
+### Added
+
+- Added `PropertyHooks\NoReturnByReferenceRule`, which reports an error when a property hook returns by reference ([#915]), by [@localheinz]
+- Added `PropertyHooks\NoParameterWithNullableTypeDeclarationRule`, which reports an error when a property hook has a parameter with a nullable type declaration ([#1154]), by [@localheinz]
+- Added documentation for every rule in `doc/rules/`, generated from the definitions of the rules ([#1156]), by [@localheinz]
+- Added a rationale to the documentation of every rule and a tip with a link to the documentation to every error reported by a rule, which requires `composer-runtime-api:^2.0.0` ([#1158]), by [@localheinz]
+- Added code samples to the documentation of every rule ([#1159]), by [@localheinz]
+- Added an `ignoreDoctrineEntities` parameter to `Classes\FinalRule` and `Methods\FinalInAbstractClassRule`, which allow requiring Doctrine entities to be `final` when using native lazy objects ([#1162]), by [@localheinz]
+
+### Fixed
+
+- Adjusted `CallLikes\NoNamedArgumentRule` to report named arguments instead of causing an internal error when the invoked method cannot be resolved ([#959]), by [@localheinz]
+- Adjusted the descriptions of rules for methods to match the descriptions of the corresponding rules for arrow functions, closures, and functions ([#1160]), by [@localheinz]
+- Adjusted `Methods\FinalInAbstractClassRule` to no longer ignore Doctrine embeddables, which Doctrine does not extend ([#1163]), by [@localheinz]
 
 ## [`2.15.0`][2.15.0]
 
@@ -709,7 +728,9 @@ For a full diff see [`362c7ea...0.1.0`][362c7ea...0.1.0].
 [2.14.2]: https://github.com/ergebnis/phpstan-rules/releases/tag/2.14.2
 [2.14.2...2.15.0]: https://github.com/ergebnis/phpstan-rules/compare/2.14.2...2.15.0
 [2.15.0]: https://github.com/ergebnis/phpstan-rules/releases/tag/2.15.0
-[2.15.0...main]: https://github.com/ergebnis/phpstan-rules/compare/2.15.0...main
+[2.15.0...2.16.0]: https://github.com/ergebnis/phpstan-rules/compare/2.15.0...2.16.0
+[2.16.0]: https://github.com/ergebnis/phpstan-rules/releases/tag/2.16.0
+[2.16.0...main]: https://github.com/ergebnis/phpstan-rules/compare/2.16.0...main
 
 [#1]: https://github.com/ergebnis/phpstan-rules/pull/1
 [#4]: https://github.com/ergebnis/phpstan-rules/pull/4
@@ -795,6 +816,7 @@ For a full diff see [`362c7ea...0.1.0`][362c7ea...0.1.0].
 [#912]: https://github.com/ergebnis/phpstan-rules/pull/912
 [#913]: https://github.com/ergebnis/phpstan-rules/pull/913
 [#914]: https://github.com/ergebnis/phpstan-rules/pull/914
+[#915]: https://github.com/ergebnis/phpstan-rules/pull/915
 [#938]: https://github.com/ergebnis/phpstan-rules/pull/938
 [#939]: https://github.com/ergebnis/phpstan-rules/pull/939
 [#940]: https://github.com/ergebnis/phpstan-rules/pull/940
@@ -806,6 +828,7 @@ For a full diff see [`362c7ea...0.1.0`][362c7ea...0.1.0].
 [#951]: https://github.com/ergebnis/phpstan-rules/pull/951
 [#957]: https://github.com/ergebnis/phpstan-rules/pull/957
 [#958]: https://github.com/ergebnis/phpstan-rules/pull/958
+[#959]: https://github.com/ergebnis/phpstan-rules/pull/959
 [#972]: https://github.com/ergebnis/phpstan-rules/pull/972
 [#977]: https://github.com/ergebnis/phpstan-rules/pull/977
 [#1009]: https://github.com/ergebnis/phpstan-rules/pull/1009
@@ -819,6 +842,13 @@ For a full diff see [`362c7ea...0.1.0`][362c7ea...0.1.0].
 [#1149]: https://github.com/ergebnis/phpstan-rules/pull/1149
 [#1150]: https://github.com/ergebnis/phpstan-rules/pull/1150
 [#1151]: https://github.com/ergebnis/phpstan-rules/pull/1151
+[#1154]: https://github.com/ergebnis/phpstan-rules/pull/1154
+[#1156]: https://github.com/ergebnis/phpstan-rules/pull/1156
+[#1158]: https://github.com/ergebnis/phpstan-rules/pull/1158
+[#1159]: https://github.com/ergebnis/phpstan-rules/pull/1159
+[#1160]: https://github.com/ergebnis/phpstan-rules/pull/1160
+[#1162]: https://github.com/ergebnis/phpstan-rules/pull/1162
+[#1163]: https://github.com/ergebnis/phpstan-rules/pull/1163
 
 [@alfredbez]: https://github.com/alfredbez
 [@cosmastech]: https://github.com/cosmastech
