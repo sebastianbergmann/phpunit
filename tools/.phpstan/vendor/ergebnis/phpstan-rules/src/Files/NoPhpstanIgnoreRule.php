@@ -28,32 +28,41 @@ final class NoPhpstanIgnoreRule implements
     Documentation\HasRuleDefinition,
     Rules\Rule
 {
+    private Documentation\RuleDefinition $ruleDefinition;
+
+    public function __construct()
+    {
+        $this->ruleDefinition = Documentation\RuleDefinition::create(
+            Documentation\ConfigurationKey::fromString('noPhpstanIgnore'),
+            Documentation\Description::fromString('This rule reports an error when a `@phpstan-ignore`, `@phpstan-ignore-line`, or `@phpstan-ignore-next-line` tag is used to [ignore errors reported by `phpstan/phpstan`](https://phpstan.org/user-guide/ignoring-errors#ignoring-in-code-using-phpdocs).'),
+            Documentation\Rationale::fromString('An ignore tag hides an error where it occurs and tends to stay after the reason for it is gone. Fix the error, or ignore it in the configuration or the baseline, where it stays visible.'),
+            Documentation\Tip::fromString('Fix the error, or ignore it in the configuration or the baseline instead.'),
+            Documentation\ParameterList::create(),
+            Documentation\CodeSampleList::create(
+                Documentation\CodeSample::reported(<<<'PHP'
+                    <?php
+
+                    declare(strict_types=1);
+
+                    /** @phpstan-ignore-next-line */
+                    echo $name;
+                    PHP),
+                Documentation\CodeSample::notReported(<<<'PHP'
+                    <?php
+
+                    declare(strict_types=1);
+
+                    $name = 'Jane';
+
+                    echo $name;
+                    PHP),
+            ),
+        );
+    }
+
     public function ruleDefinition(): Documentation\RuleDefinition
     {
-        return Documentation\RuleDefinition::create(
-            'noPhpstanIgnore',
-            'This rule reports an error when a `@phpstan-ignore`, `@phpstan-ignore-line`, or `@phpstan-ignore-next-line` tag is used to [ignore errors reported by `phpstan/phpstan`](https://phpstan.org/user-guide/ignoring-errors#ignoring-in-code-using-phpdocs).',
-            'An ignore tag hides an error where it occurs and tends to stay after the reason for it is gone. Fix the error, or ignore it in the configuration or the baseline, where it stays visible.',
-            'Fix the error, or ignore it in the configuration or the baseline instead.',
-        )->withCodeSamples(
-            Documentation\CodeSample::reported(<<<'PHP'
-                <?php
-
-                declare(strict_types=1);
-
-                /** @phpstan-ignore-next-line */
-                echo $name;
-                PHP),
-            Documentation\CodeSample::notReported(<<<'PHP'
-                <?php
-
-                declare(strict_types=1);
-
-                $name = 'Jane';
-
-                echo $name;
-                PHP),
-        );
+        return $this->ruleDefinition;
     }
 
     public function getNodeType(): string

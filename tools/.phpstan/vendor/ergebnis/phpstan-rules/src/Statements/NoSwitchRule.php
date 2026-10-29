@@ -26,45 +26,54 @@ final class NoSwitchRule implements
     Documentation\HasRuleDefinition,
     Rules\Rule
 {
+    private Documentation\RuleDefinition $ruleDefinition;
+
+    public function __construct()
+    {
+        $this->ruleDefinition = Documentation\RuleDefinition::create(
+            Documentation\ConfigurationKey::fromString('noSwitch'),
+            Documentation\Description::fromString('This rule reports an error when the statement [`switch()`](https://www.php.net/manual/control-structures.switch.php) is used.'),
+            Documentation\Rationale::fromString('A `switch` statement compares loosely and falls through to the next case without `break`, which can cause subtle bugs. Use `if` statements or `match` instead.'),
+            Documentation\Tip::fromString('Use `if` statements or `match` instead.'),
+            Documentation\ParameterList::create(),
+            Documentation\CodeSampleList::create(
+                Documentation\CodeSample::reported(<<<'PHP'
+                    <?php
+
+                    declare(strict_types=1);
+
+                    $status = 'active';
+
+                    switch ($status) {
+                        case 'active':
+                            echo 'Active';
+
+                            break;
+
+                        default:
+                            echo 'Inactive';
+                    }
+                    PHP),
+                Documentation\CodeSample::notReported(<<<'PHP'
+                    <?php
+
+                    declare(strict_types=1);
+
+                    $status = 'active';
+
+                    if ('active' === $status) {
+                        echo 'Active';
+                    } else {
+                        echo 'Inactive';
+                    }
+                    PHP),
+            ),
+        );
+    }
+
     public function ruleDefinition(): Documentation\RuleDefinition
     {
-        return Documentation\RuleDefinition::create(
-            'noSwitch',
-            'This rule reports an error when the statement [`switch()`](https://www.php.net/manual/control-structures.switch.php) is used.',
-            'A `switch` statement compares loosely and falls through to the next case without `break`, which can cause subtle bugs. Use `if` statements or `match` instead.',
-            'Use `if` statements or `match` instead.',
-        )->withCodeSamples(
-            Documentation\CodeSample::reported(<<<'PHP'
-                <?php
-
-                declare(strict_types=1);
-
-                $status = 'active';
-
-                switch ($status) {
-                    case 'active':
-                        echo 'Active';
-
-                        break;
-
-                    default:
-                        echo 'Inactive';
-                }
-                PHP),
-            Documentation\CodeSample::notReported(<<<'PHP'
-                <?php
-
-                declare(strict_types=1);
-
-                $status = 'active';
-
-                if ('active' === $status) {
-                    echo 'Active';
-                } else {
-                    echo 'Inactive';
-                }
-                PHP),
-        );
+        return $this->ruleDefinition;
     }
 
     public function getNodeType(): string

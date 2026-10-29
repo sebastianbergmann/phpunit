@@ -29,57 +29,62 @@ final class NoParameterWithNullDefaultValueRule implements
     Rules\Rule
 {
     private Analyzer $analyzer;
+    private Documentation\RuleDefinition $ruleDefinition;
 
     public function __construct(Analyzer $analyzer)
     {
         $this->analyzer = $analyzer;
+
+        $this->ruleDefinition = Documentation\RuleDefinition::create(
+            Documentation\ConfigurationKey::fromString('noParameterWithNullDefaultValue'),
+            Documentation\Description::fromString('This rule reports an error when a method has a parameter with `null` as default value.'),
+            Documentation\Rationale::fromString('A parameter with `null` as its default value makes the argument optional and nullable at once, so the method has to handle a missing value. Separate methods or a null object make each case explicit.'),
+            Documentation\Tip::fromString('Use separate methods or a null object instead.'),
+            Documentation\ParameterList::create(),
+            Documentation\CodeSampleList::create(
+                Documentation\CodeSample::reported(<<<'PHP'
+                    <?php
+
+                    declare(strict_types=1);
+
+                    namespace Example;
+
+                    final class Greeting
+                    {
+                        public function greet($name = null): string
+                        {
+                            return \sprintf(
+                                'Hello, %s!',
+                                (string) $name,
+                            );
+                        }
+                    }
+                    PHP),
+                Documentation\CodeSample::notReported(<<<'PHP'
+                    <?php
+
+                    declare(strict_types=1);
+
+                    namespace Example;
+
+                    final class Greeting
+                    {
+                        public function greet(string $name): string
+                        {
+                            return \sprintf(
+                                'Hello, %s!',
+                                $name,
+                            );
+                        }
+                    }
+                    PHP),
+            ),
+        );
     }
 
     public function ruleDefinition(): Documentation\RuleDefinition
     {
-        return Documentation\RuleDefinition::create(
-            'noParameterWithNullDefaultValue',
-            'This rule reports an error when a method has a parameter with `null` as default value.',
-            'A parameter with `null` as its default value makes the argument optional and nullable at once, so the method has to handle a missing value. Separate methods or a null object make each case explicit.',
-            'Use separate methods or a null object instead.',
-        )->withCodeSamples(
-            Documentation\CodeSample::reported(<<<'PHP'
-                <?php
-
-                declare(strict_types=1);
-
-                namespace Example;
-
-                final class Greeting
-                {
-                    public function greet($name = null): string
-                    {
-                        return \sprintf(
-                            'Hello, %s!',
-                            (string) $name,
-                        );
-                    }
-                }
-                PHP),
-            Documentation\CodeSample::notReported(<<<'PHP'
-                <?php
-
-                declare(strict_types=1);
-
-                namespace Example;
-
-                final class Greeting
-                {
-                    public function greet(string $name): string
-                    {
-                        return \sprintf(
-                            'Hello, %s!',
-                            $name,
-                        );
-                    }
-                }
-                PHP),
-        );
+        return $this->ruleDefinition;
     }
 
     public function getNodeType(): string
