@@ -26,35 +26,44 @@ final class NoParameterPassedByReferenceRule implements
     Documentation\HasRuleDefinition,
     Rules\Rule
 {
+    private Documentation\RuleDefinition $ruleDefinition;
+
+    public function __construct()
+    {
+        $this->ruleDefinition = Documentation\RuleDefinition::create(
+            Documentation\ConfigurationKey::fromString('noParameterPassedByReference'),
+            Documentation\Description::fromString('This rule reports an error when a function has a parameter that is [passed by reference](https://www.php.net/manual/en/language.references.pass.php).'),
+            Documentation\Rationale::fromString('A parameter passed by reference lets a function change a variable of its caller as a side effect, which makes the code harder to follow. Return the new value instead.'),
+            Documentation\Tip::fromString('Return the new value instead.'),
+            Documentation\ParameterList::create(),
+            Documentation\CodeSampleList::create(
+                Documentation\CodeSample::reported(<<<'PHP'
+                    <?php
+
+                    declare(strict_types=1);
+
+                    function increment(int &$value): void
+                    {
+                        ++$value;
+                    }
+                    PHP),
+                Documentation\CodeSample::notReported(<<<'PHP'
+                    <?php
+
+                    declare(strict_types=1);
+
+                    function increment(int $value): int
+                    {
+                        return $value + 1;
+                    }
+                    PHP),
+            ),
+        );
+    }
+
     public function ruleDefinition(): Documentation\RuleDefinition
     {
-        return Documentation\RuleDefinition::create(
-            'noParameterPassedByReference',
-            'This rule reports an error when a function has a parameter that is [passed by reference](https://www.php.net/manual/en/language.references.pass.php).',
-            'A parameter passed by reference lets a function change a variable of its caller as a side effect, which makes the code harder to follow. Return the new value instead.',
-            'Return the new value instead.',
-        )->withCodeSamples(
-            Documentation\CodeSample::reported(<<<'PHP'
-                <?php
-
-                declare(strict_types=1);
-
-                function increment(int &$value): void
-                {
-                    ++$value;
-                }
-                PHP),
-            Documentation\CodeSample::notReported(<<<'PHP'
-                <?php
-
-                declare(strict_types=1);
-
-                function increment(int $value): int
-                {
-                    return $value + 1;
-                }
-                PHP),
-        );
+        return $this->ruleDefinition;
     }
 
     public function getNodeType(): string

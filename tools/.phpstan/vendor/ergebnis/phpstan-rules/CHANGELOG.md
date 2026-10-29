@@ -6,7 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased
 
-For a full diff see [`2.16.0...main`][2.16.0...main].
+For a full diff see [`2.17.0...main`][2.17.0...main].
+
+## [`2.17.0`][2.17.0]
+
+For a full diff see [`2.16.0...2.17.0`][2.16.0...2.17.0].
+
+### Changed
+
+- Adjusted the rules to build their rule definitions once, when they are created, instead of once for every reported error ([#1164]), by [@localheinz]
+- Extracted value objects for the configuration key, description, rationale, tip, parameters, and code samples of rule definitions ([#1165]), by [@localheinz]
+- Extracted a value object for the reference used in links to the documentation of rules, falling back to `main` when no release is installed, which requires `ergebnis/version:^1.4.0` ([#1167]), by [@localheinz]
+- Extracted a value object for the names of parameters of rule definitions ([#1168]), by [@localheinz]
+- Extracted a value object for the examples of parameters of rule definitions ([#1169]), by [@localheinz]
 
 ## [`2.16.0`][2.16.0]
 
@@ -730,7 +742,9 @@ For a full diff see [`362c7ea...0.1.0`][362c7ea...0.1.0].
 [2.15.0]: https://github.com/ergebnis/phpstan-rules/releases/tag/2.15.0
 [2.15.0...2.16.0]: https://github.com/ergebnis/phpstan-rules/compare/2.15.0...2.16.0
 [2.16.0]: https://github.com/ergebnis/phpstan-rules/releases/tag/2.16.0
-[2.16.0...main]: https://github.com/ergebnis/phpstan-rules/compare/2.16.0...main
+[2.16.0...2.17.0]: https://github.com/ergebnis/phpstan-rules/compare/2.16.0...2.17.0
+[2.17.0]: https://github.com/ergebnis/phpstan-rules/releases/tag/2.17.0
+[2.17.0...main]: https://github.com/ergebnis/phpstan-rules/compare/2.17.0...main
 
 [#1]: https://github.com/ergebnis/phpstan-rules/pull/1
 [#4]: https://github.com/ergebnis/phpstan-rules/pull/4
@@ -849,6 +863,11 @@ For a full diff see [`362c7ea...0.1.0`][362c7ea...0.1.0].
 [#1160]: https://github.com/ergebnis/phpstan-rules/pull/1160
 [#1162]: https://github.com/ergebnis/phpstan-rules/pull/1162
 [#1163]: https://github.com/ergebnis/phpstan-rules/pull/1163
+[#1164]: https://github.com/ergebnis/phpstan-rules/pull/1164
+[#1165]: https://github.com/ergebnis/phpstan-rules/pull/1165
+[#1167]: https://github.com/ergebnis/phpstan-rules/pull/1167
+[#1168]: https://github.com/ergebnis/phpstan-rules/pull/1168
+[#1169]: https://github.com/ergebnis/phpstan-rules/pull/1169
 
 [@alfredbez]: https://github.com/alfredbez
 [@cosmastech]: https://github.com/cosmastech

@@ -2,21 +2,22 @@
     "packages": [
         {
             "name": "ergebnis/phpstan-rules",
-            "version": "2.16.0",
-            "version_normalized": "2.16.0.0",
+            "version": "2.17.0",
+            "version_normalized": "2.17.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ergebnis/phpstan-rules.git",
-                "reference": "e123a05ffb337670f9f65fff3c3f25517d3d888e"
+                "reference": "5988e8fe66c09558c73824fce64123fdcd5afae2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ergebnis/phpstan-rules/zipball/e123a05ffb337670f9f65fff3c3f25517d3d888e",
-                "reference": "e123a05ffb337670f9f65fff3c3f25517d3d888e",
+                "url": "https://api.github.com/repos/ergebnis/phpstan-rules/zipball/5988e8fe66c09558c73824fce64123fdcd5afae2",
+                "reference": "5988e8fe66c09558c73824fce64123fdcd5afae2",
                 "shasum": ""
             },
             "require": {
                 "composer-runtime-api": "^2.0.0",
+                "ergebnis/version": "^1.4.0",
                 "ext-mbstring": "*",
                 "php": "~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0 || ~8.6.0",
                 "phpstan/phpstan": "^2.1.35"
@@ -40,7 +41,8 @@
                 "symfony/finder": "^5.4.45",
                 "symfony/process": "^5.4.51"
             },
-            "time": "2026-10-28T23:53:24+00:00",
+            "time": "2026-10-29T11:16:56+00:00",
+            "published-time": "2026-10-29T11:18:22+00:00",
             "type": "phpstan-extension",
             "extra": {
                 "phpstan": {
@@ -49,7 +51,7 @@
                     ]
                 },
                 "branch-alias": {
-                    "dev-main": "2.16-dev"
+                    "dev-main": "2.17-dev"
                 }
             },
             "installation-source": "dist",
@@ -81,6 +83,87 @@
                 "source": "https://github.com/ergebnis/phpstan-rules"
             },
             "install-path": "../ergebnis/phpstan-rules"
+        },
+        {
+            "name": "ergebnis/version",
+            "version": "1.4.0",
+            "version_normalized": "1.4.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ergebnis/version.git",
+                "reference": "cfdde08dac36650286acf310a8f99138201a484b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ergebnis/version/zipball/cfdde08dac36650286acf310a8f99138201a484b",
+                "reference": "cfdde08dac36650286acf310a8f99138201a484b",
+                "shasum": ""
+            },
+            "require": {
+                "php": "~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0 || ~8.6.0"
+            },
+            "require-dev": {
+                "ergebnis/composer-normalize": "^2.53.0",
+                "ergebnis/data-provider": "^3.6.0",
+                "ergebnis/license": "^2.7.0",
+                "ergebnis/php-cs-fixer-config": "^6.63.2",
+                "ergebnis/phpunit-slow-test-detector": "^2.25.0",
+                "ergebnis/rector-rules": "^1.18.3",
+                "ext-bcmath": "*",
+                "fakerphp/faker": "^1.24.1",
+                "infection/infection": "~0.26.6",
+                "phpstan/extension-installer": "^1.4.3",
+                "phpstan/phpstan": "^2.2.14",
+                "phpstan/phpstan-deprecation-rules": "^2.0.5",
+                "phpstan/phpstan-phpunit": "^2.0.18",
+                "phpstan/phpstan-strict-rules": "^2.0.12",
+                "phpunit/phpunit": "^9.6.33",
+                "rector/rector": "^2.6.7"
+            },
+            "suggest": {
+                "ext-bcmath": "If you want to bump Major, Minor, or Patch versions greater than PHP_MAX_INT."
+            },
+            "time": "2026-09-24T19:43:55+00:00",
+            "published-time": "2026-09-24T19:44:08+00:00",
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "1.4-dev"
+                },
+                "composer-normalize": {
+                    "indent-size": 2,
+                    "indent-style": "space"
+                }
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Ergebnis\\Version\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andreas Möller",
+                    "email": "am@localheinz.com",
+                    "homepage": "https://localheinz.com"
+                }
+            ],
+            "description": "Provides an abstraction of a semantic version.",
+            "homepage": "https://github.com/ergebnis/version",
+            "keywords": [
+                "semantic",
+                "version"
+            ],
+            "support": {
+                "issues": "https://github.com/ergebnis/version/issues",
+                "security": "https://github.com/ergebnis/version/blob/main/.github/SECURITY.md",
+                "source": "https://github.com/ergebnis/version"
+            },
+            "install-path": "../ergebnis/version"
         },
         {
             "name": "phpstan/extension-installer",
@@ -259,6 +342,7 @@
     "dev": true,
     "dev-package-names": [
         "ergebnis/phpstan-rules",
+        "ergebnis/version",
         "phpstan/extension-installer",
         "phpstan/phpstan",
         "phpstan/phpstan-strict-rules"

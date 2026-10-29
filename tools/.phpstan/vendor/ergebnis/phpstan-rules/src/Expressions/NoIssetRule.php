@@ -26,41 +26,50 @@ final class NoIssetRule implements
     Documentation\HasRuleDefinition,
     Rules\Rule
 {
+    private Documentation\RuleDefinition $ruleDefinition;
+
+    public function __construct()
+    {
+        $this->ruleDefinition = Documentation\RuleDefinition::create(
+            Documentation\ConfigurationKey::fromString('noIsset'),
+            Documentation\Description::fromString('This rule reports an error when the language construct [`isset()`](https://www.php.net/isset) is used.'),
+            Documentation\Rationale::fromString('The language construct `isset()` returns `false` both when a variable, array key, or property does not exist and when it holds `null`, so it hides which of the two applies. Use `array_key_exists()`, `property_exists()`, or a comparison with `null` instead.'),
+            Documentation\Tip::fromString('Use `array_key_exists()`, `property_exists()`, or a comparison with `null` instead.'),
+            Documentation\ParameterList::create(),
+            Documentation\CodeSampleList::create(
+                Documentation\CodeSample::reported(<<<'PHP'
+                    <?php
+
+                    declare(strict_types=1);
+
+                    $values = [
+                        'name' => 'Jane',
+                    ];
+
+                    if (isset($values['name'])) {
+                        echo $values['name'];
+                    }
+                    PHP),
+                Documentation\CodeSample::notReported(<<<'PHP'
+                    <?php
+
+                    declare(strict_types=1);
+
+                    $values = [
+                        'name' => 'Jane',
+                    ];
+
+                    if (\array_key_exists('name', $values)) {
+                        echo $values['name'];
+                    }
+                    PHP),
+            ),
+        );
+    }
+
     public function ruleDefinition(): Documentation\RuleDefinition
     {
-        return Documentation\RuleDefinition::create(
-            'noIsset',
-            'This rule reports an error when the language construct [`isset()`](https://www.php.net/isset) is used.',
-            'The language construct `isset()` returns `false` both when a variable, array key, or property does not exist and when it holds `null`, so it hides which of the two applies. Use `array_key_exists()`, `property_exists()`, or a comparison with `null` instead.',
-            'Use `array_key_exists()`, `property_exists()`, or a comparison with `null` instead.',
-        )->withCodeSamples(
-            Documentation\CodeSample::reported(<<<'PHP'
-                <?php
-
-                declare(strict_types=1);
-
-                $values = [
-                    'name' => 'Jane',
-                ];
-
-                if (isset($values['name'])) {
-                    echo $values['name'];
-                }
-                PHP),
-            Documentation\CodeSample::notReported(<<<'PHP'
-                <?php
-
-                declare(strict_types=1);
-
-                $values = [
-                    'name' => 'Jane',
-                ];
-
-                if (\array_key_exists('name', $values)) {
-                    echo $values['name'];
-                }
-                PHP),
-        );
+        return $this->ruleDefinition;
     }
 
     public function getNodeType(): string

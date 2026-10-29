@@ -1,0 +1,82 @@
+{
+  "name": "ergebnis/version",
+  "description": "Provides an abstraction of a semantic version.",
+  "license": "MIT",
+  "type": "library",
+  "keywords": [
+    "semantic",
+    "version"
+  ],
+  "authors": [
+    {
+      "name": "Andreas Möller",
+      "email": "am@localheinz.com",
+      "homepage": "https://localheinz.com"
+    }
+  ],
+  "homepage": "https://github.com/ergebnis/version",
+  "support": {
+    "issues": "https://github.com/ergebnis/version/issues",
+    "source": "https://github.com/ergebnis/version",
+    "security": "https://github.com/ergebnis/version/blob/main/.github/SECURITY.md"
+  },
+  "require": {
+    "php": "~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0 || ~8.6.0"
+  },
+  "require-dev": {
+    "ext-bcmath": "*",
+    "ergebnis/composer-normalize": "^2.53.0",
+    "ergebnis/data-provider": "^3.6.0",
+    "ergebnis/license": "^2.7.0",
+    "ergebnis/php-cs-fixer-config": "^6.63.2",
+    "ergebnis/phpunit-slow-test-detector": "^2.25.0",
+    "ergebnis/rector-rules": "^1.18.3",
+    "fakerphp/faker": "^1.24.1",
+    "infection/infection": "~0.26.6",
+    "phpstan/extension-installer": "^1.4.3",
+    "phpstan/phpstan": "^2.2.14",
+    "phpstan/phpstan-deprecation-rules": "^2.0.5",
+    "phpstan/phpstan-phpunit": "^2.0.18",
+    "phpstan/phpstan-strict-rules": "^2.0.12",
+    "phpunit/phpunit": "^9.6.33",
+    "rector/rector": "^2.6.7"
+  },
+  "suggest": {
+    "ext-bcmath": "If you want to bump Major, Minor, or Patch versions greater than PHP_MAX_INT."
+  },
+  "autoload": {
+    "psr-4": {
+      "Ergebnis\\Version\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Ergebnis\\Version\\Test\\": "test/"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "composer/package-versions-deprecated": true,
+      "ergebnis/composer-normalize": true,
+      "infection/extension-installer": true,
+      "phpstan/extension-installer": true
+    },
+    "audit": {
+      "abandoned": "report"
+    },
+    "platform": {
+      "php": "7.4.33"
+    },
+    "preferred-install": "dist",
+    "sort-packages": true
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-main": "1.4-dev"
+    },
+    "composer-normalize": {
+      "indent-size": 2,
+      "indent-style": "space"
+    }
+  }
+}

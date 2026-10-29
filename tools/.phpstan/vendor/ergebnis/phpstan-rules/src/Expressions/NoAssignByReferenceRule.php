@@ -26,37 +26,46 @@ final class NoAssignByReferenceRule implements
     Documentation\HasRuleDefinition,
     Rules\Rule
 {
+    private Documentation\RuleDefinition $ruleDefinition;
+
+    public function __construct()
+    {
+        $this->ruleDefinition = Documentation\RuleDefinition::create(
+            Documentation\ConfigurationKey::fromString('noAssignByReference'),
+            Documentation\Description::fromString('This rule reports an error when [a variable is assigned by reference](https://www.php.net/manual/en/language.references.whatdo.php#language.references.whatdo.assign).'),
+            Documentation\Rationale::fromString('Assigning by reference makes two variables share one value, so changing one changes the other, which makes the code harder to follow.'),
+            Documentation\Tip::fromString('Assign the value instead.'),
+            Documentation\ParameterList::create(),
+            Documentation\CodeSampleList::create(
+                Documentation\CodeSample::reported(<<<'PHP'
+                    <?php
+
+                    declare(strict_types=1);
+
+                    $values = [
+                        'foo',
+                    ];
+
+                    $alias = &$values;
+                    PHP),
+                Documentation\CodeSample::notReported(<<<'PHP'
+                    <?php
+
+                    declare(strict_types=1);
+
+                    $values = [
+                        'foo',
+                    ];
+
+                    $copy = $values;
+                    PHP),
+            ),
+        );
+    }
+
     public function ruleDefinition(): Documentation\RuleDefinition
     {
-        return Documentation\RuleDefinition::create(
-            'noAssignByReference',
-            'This rule reports an error when [a variable is assigned by reference](https://www.php.net/manual/en/language.references.whatdo.php#language.references.whatdo.assign).',
-            'Assigning by reference makes two variables share one value, so changing one changes the other, which makes the code harder to follow.',
-            'Assign the value instead.',
-        )->withCodeSamples(
-            Documentation\CodeSample::reported(<<<'PHP'
-                <?php
-
-                declare(strict_types=1);
-
-                $values = [
-                    'foo',
-                ];
-
-                $alias = &$values;
-                PHP),
-            Documentation\CodeSample::notReported(<<<'PHP'
-                <?php
-
-                declare(strict_types=1);
-
-                $values = [
-                    'foo',
-                ];
-
-                $copy = $values;
-                PHP),
-        );
+        return $this->ruleDefinition;
     }
 
     public function getNodeType(): string

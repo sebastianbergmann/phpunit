@@ -51,6 +51,7 @@ final class FinalRule implements
      */
     private array $classesNotRequiredToBeAbstractOrFinal;
     private string $errorMessageTemplate = 'Class %s is not final.';
+    private Documentation\RuleDefinition $ruleDefinition;
 
     /**
      * @param list<class-string> $classesNotRequiredToBeAbstractOrFinal
@@ -69,13 +70,10 @@ final class FinalRule implements
         if ($allowAbstractClasses) {
             $this->errorMessageTemplate = 'Class %s is neither abstract nor final.';
         }
-    }
 
-    public function ruleDefinition(): Documentation\RuleDefinition
-    {
-        return Documentation\RuleDefinition::create(
-            'final',
-            <<<'MARKDOWN'
+        $this->ruleDefinition = Documentation\RuleDefinition::create(
+            Documentation\ConfigurationKey::fromString('final'),
+            Documentation\Description::fromString(<<<'MARKDOWN'
             This rule reports an error when a non-anonymous class is not `final`.
 
             💡 By default, this rule ignores classes that
@@ -84,59 +82,67 @@ final class FinalRule implements
             - use `Doctrine\ORM\Mapping\Entity` attributes
 
             on the class level.
-            MARKDOWN,
-            'A class that is not `final` can be extended, so every change to it can break a subclass. Declare classes `final` and prefer composition over inheritance.',
-            'Declare the class `final` and prefer composition over inheritance.',
-            Documentation\Parameter::create(
-                'allowAbstractClasses',
-                <<<'MARKDOWN'
-                By default, this rule allows to declare `abstract` classes.
+            MARKDOWN),
+            Documentation\Rationale::fromString('A class that is not `final` can be extended, so every change to it can break a subclass. Declare classes `final` and prefer composition over inheritance.'),
+            Documentation\Tip::fromString('Declare the class `final` and prefer composition over inheritance.'),
+            Documentation\ParameterList::create(
+                Documentation\Parameter::create(
+                    Documentation\ParameterName::fromString('allowAbstractClasses'),
+                    Documentation\Description::fromString(<<<'MARKDOWN'
+                    By default, this rule allows to declare `abstract` classes.
 
-                You can set the `allowAbstractClasses` parameter to `false` to disallow abstract classes.
-                MARKDOWN,
-                false,
+                    You can set the `allowAbstractClasses` parameter to `false` to disallow abstract classes.
+                    MARKDOWN),
+                    Documentation\ParameterExample::fromBool(false),
+                ),
+                Documentation\Parameter::create(
+                    Documentation\ParameterName::fromString('classesNotRequiredToBeAbstractOrFinal'),
+                    Documentation\Description::fromString('You can set the `classesNotRequiredToBeAbstractOrFinal` parameter to a list of class names that you want to exclude from inspection.'),
+                    Documentation\ParameterExample::fromStrings(
+                        'Foo\\Bar\\NeitherAbstractNorFinal',
+                        'Bar\\Baz\\NeitherAbstractNorFinal',
+                    ),
+                ),
+                Documentation\Parameter::create(
+                    Documentation\ParameterName::fromString('ignoreDoctrineEntities'),
+                    Documentation\Description::fromString(<<<'MARKDOWN'
+                    By default, this rule ignores Doctrine entities, because Doctrine creates proxies for lazy loading by extending them.
+
+                    When you use [native lazy objects](https://github.com/doctrine/orm/pull/11853) with `doctrine/orm:^3.4.0` on PHP 8.4 or later, Doctrine no longer extends entities, and you can set the `ignoreDoctrineEntities` parameter to `false` to require Doctrine entities to be `final` as well.
+                    MARKDOWN),
+                    Documentation\ParameterExample::fromBool(false),
+                ),
             ),
-            Documentation\Parameter::create(
-                'classesNotRequiredToBeAbstractOrFinal',
-                'You can set the `classesNotRequiredToBeAbstractOrFinal` parameter to a list of class names that you want to exclude from inspection.',
-                [
-                    'Foo\\Bar\\NeitherAbstractNorFinal',
-                    'Bar\\Baz\\NeitherAbstractNorFinal',
-                ],
+            Documentation\CodeSampleList::create(
+                Documentation\CodeSample::reported(<<<'PHP'
+                    <?php
+
+                    declare(strict_types=1);
+
+                    namespace Example;
+
+                    class Greeting
+                    {
+                    }
+                    PHP),
+                Documentation\CodeSample::notReported(<<<'PHP'
+                    <?php
+
+                    declare(strict_types=1);
+
+                    namespace Example;
+
+                    final class Greeting
+                    {
+                    }
+                    PHP),
             ),
-            Documentation\Parameter::create(
-                'ignoreDoctrineEntities',
-                <<<'MARKDOWN'
-                By default, this rule ignores Doctrine entities, because Doctrine creates proxies for lazy loading by extending them.
-
-                When you use [native lazy objects](https://github.com/doctrine/orm/pull/11853) with `doctrine/orm:^3.4.0` on PHP 8.4 or later, Doctrine no longer extends entities, and you can set the `ignoreDoctrineEntities` parameter to `false` to require Doctrine entities to be `final` as well.
-                MARKDOWN,
-                false,
-            ),
-        )->withCodeSamples(
-            Documentation\CodeSample::reported(<<<'PHP'
-                <?php
-
-                declare(strict_types=1);
-
-                namespace Example;
-
-                class Greeting
-                {
-                }
-                PHP),
-            Documentation\CodeSample::notReported(<<<'PHP'
-                <?php
-
-                declare(strict_types=1);
-
-                namespace Example;
-
-                final class Greeting
-                {
-                }
-                PHP),
         );
+    }
+
+    public function ruleDefinition(): Documentation\RuleDefinition
+    {
+        return $this->ruleDefinition;
     }
 
     public function getNodeType(): string
