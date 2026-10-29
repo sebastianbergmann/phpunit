@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Ergebnis\PHPStan\Rules\Methods;
 
+use Ergebnis\PHPStan\Rules\Documentation;
 use Ergebnis\PHPStan\Rules\ErrorIdentifier;
 use PhpParser\Node;
 use PHPStan\Analyser;
@@ -22,8 +23,64 @@ use PHPStan\Rules;
 /**
  * @implements Rules\Rule<Node\Stmt\ClassMethod>
  */
-final class NoReturnByReferenceRule implements Rules\Rule
+final class NoReturnByReferenceRule implements
+    Documentation\HasRuleDefinition,
+    Rules\Rule
 {
+    private Documentation\RuleDefinition $ruleDefinition;
+
+    public function __construct()
+    {
+        $this->ruleDefinition = Documentation\RuleDefinition::create(
+            Documentation\ConfigurationKey::fromString('noReturnByReference'),
+            Documentation\Description::fromString('This rule reports an error when a method [returns by reference](https://www.php.net/manual/en/language.references.return.php).'),
+            Documentation\Rationale::fromString('Returning by reference lets the caller change state that the method keeps, which makes the code harder to follow. Return a value instead.'),
+            Documentation\Tip::fromString('Return a value instead.'),
+            Documentation\ParameterList::create(),
+            Documentation\CodeSampleList::create(
+                Documentation\CodeSample::reported(<<<'PHP'
+                    <?php
+
+                    declare(strict_types=1);
+
+                    namespace Example;
+
+                    final class Greetings
+                    {
+                        private array $values = [];
+
+                        public function &values(): array
+                        {
+                            return $this->values;
+                        }
+                    }
+                    PHP),
+                Documentation\CodeSample::notReported(<<<'PHP'
+                    <?php
+
+                    declare(strict_types=1);
+
+                    namespace Example;
+
+                    final class Greetings
+                    {
+                        private array $values = [];
+
+                        public function values(): array
+                        {
+                            return $this->values;
+                        }
+                    }
+                    PHP),
+            ),
+        );
+    }
+
+    public function ruleDefinition(): Documentation\RuleDefinition
+    {
+        return $this->ruleDefinition;
+    }
+
     public function getNodeType(): string
     {
         return Node\Stmt\ClassMethod::class;
@@ -51,6 +108,7 @@ final class NoReturnByReferenceRule implements Rules\Rule
             return [
                 Rules\RuleErrorBuilder::message($message)
                     ->identifier(ErrorIdentifier::noReturnByReference()->toString())
+                    ->tip(Documentation\ErrorTip::for($this))
                     ->build(),
             ];
         }
@@ -66,6 +124,7 @@ final class NoReturnByReferenceRule implements Rules\Rule
         return [
             Rules\RuleErrorBuilder::message($message)
                 ->identifier(ErrorIdentifier::noReturnByReference()->toString())
+                ->tip(Documentation\ErrorTip::for($this))
                 ->build(),
         ];
     }

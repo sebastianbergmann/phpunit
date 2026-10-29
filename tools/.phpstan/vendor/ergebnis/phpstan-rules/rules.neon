@@ -1,4 +1,12 @@
 conditionalTags:
+	Ergebnis\PHPStan\Rules\ArrowFunctions\NoNullableReturnTypeDeclarationRule:
+		phpstan.rules.rule: %ergebnis.noNullableReturnTypeDeclaration.enabled%
+	Ergebnis\PHPStan\Rules\ArrowFunctions\NoParameterPassedByReferenceRule:
+		phpstan.rules.rule: %ergebnis.noParameterPassedByReference.enabled%
+	Ergebnis\PHPStan\Rules\ArrowFunctions\NoParameterWithNullableTypeDeclarationRule:
+		phpstan.rules.rule: %ergebnis.noParameterWithNullableTypeDeclaration.enabled%
+	Ergebnis\PHPStan\Rules\ArrowFunctions\NoParameterWithNullDefaultValueRule:
+		phpstan.rules.rule: %ergebnis.noParameterWithNullDefaultValue.enabled%
 	Ergebnis\PHPStan\Rules\CallLikes\NoNamedArgumentRule:
 		phpstan.rules.rule: %ergebnis.noNamedArgument.enabled%
 	Ergebnis\PHPStan\Rules\Classes\FinalRule:
@@ -59,6 +67,10 @@ conditionalTags:
 		phpstan.rules.rule: %ergebnis.noReturnByReference.enabled%
 	Ergebnis\PHPStan\Rules\Methods\PrivateInFinalClassRule:
 		phpstan.rules.rule: %ergebnis.privateInFinalClass.enabled%
+	Ergebnis\PHPStan\Rules\PropertyHooks\NoParameterWithNullableTypeDeclarationRule:
+		phpstan.rules.rule: %ergebnis.noParameterWithNullableTypeDeclaration.enabled%
+	Ergebnis\PHPStan\Rules\PropertyHooks\NoReturnByReferenceRule:
+		phpstan.rules.rule: %ergebnis.noReturnByReference.enabled%
 	Ergebnis\PHPStan\Rules\Statements\NoSwitchRule:
 		phpstan.rules.rule: %ergebnis.noSwitch.enabled%
 
@@ -71,8 +83,10 @@ parameters:
 			allowAbstractClasses: true
 			classesNotRequiredToBeAbstractOrFinal: []
 			enabled: %ergebnis.allRules%
+			ignoreDoctrineEntities: true
 		finalInAbstractClass:
 			enabled: %ergebnis.allRules%
+			ignoreDoctrineEntities: true
 		invokeParentHookMethod:
 			enabled: %ergebnis.allRules%
 			hookMethods: []
@@ -127,9 +141,11 @@ parametersSchema:
 			allowAbstractClasses: bool()
 			classesNotRequiredToBeAbstractOrFinal: listOf(string())
 			enabled: bool(),
+			ignoreDoctrineEntities: bool(),
 		])
 		finalInAbstractClass: structure([
 			enabled: bool(),
+			ignoreDoctrineEntities: bool(),
 		])
 		invokeParentHookMethod: structure([
 			enabled: bool(),
@@ -204,6 +220,18 @@ services:
 		class: Ergebnis\PHPStan\Rules\Analyzer
 
 	-
+		class: Ergebnis\PHPStan\Rules\ArrowFunctions\NoNullableReturnTypeDeclarationRule
+
+	-
+		class: Ergebnis\PHPStan\Rules\ArrowFunctions\NoParameterPassedByReferenceRule
+
+	-
+		class: Ergebnis\PHPStan\Rules\ArrowFunctions\NoParameterWithNullableTypeDeclarationRule
+
+	-
+		class: Ergebnis\PHPStan\Rules\ArrowFunctions\NoParameterWithNullDefaultValueRule
+
+	-
 		class: Ergebnis\PHPStan\Rules\CallLikes\NoNamedArgumentRule
 
 	-
@@ -211,6 +239,7 @@ services:
 		arguments:
 			allowAbstractClasses: %ergebnis.final.allowAbstractClasses%
 			classesNotRequiredToBeAbstractOrFinal: %ergebnis.final.classesNotRequiredToBeAbstractOrFinal%
+			ignoreDoctrineEntities: %ergebnis.final.ignoreDoctrineEntities%
 
 	-
 		class: Ergebnis\PHPStan\Rules\Classes\NoExtendsRule
@@ -270,6 +299,8 @@ services:
 
 	-
 		class: Ergebnis\PHPStan\Rules\Methods\FinalInAbstractClassRule
+		arguments:
+			ignoreDoctrineEntities: %ergebnis.finalInAbstractClass.ignoreDoctrineEntities%
 
 	-
 		class: Ergebnis\PHPStan\Rules\Methods\InvokeParentHookMethodRule
@@ -302,6 +333,12 @@ services:
 
 	-
 		class: Ergebnis\PHPStan\Rules\Methods\PrivateInFinalClassRule
+
+	-
+		class: Ergebnis\PHPStan\Rules\PropertyHooks\NoParameterWithNullableTypeDeclarationRule
+
+	-
+		class: Ergebnis\PHPStan\Rules\PropertyHooks\NoReturnByReferenceRule
 
 	-
 		class: Ergebnis\PHPStan\Rules\Statements\NoSwitchRule

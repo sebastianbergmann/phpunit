@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Ergebnis\PHPStan\Rules\Methods;
 
+use Ergebnis\PHPStan\Rules\Documentation;
 use Ergebnis\PHPStan\Rules\ErrorIdentifier;
 use PhpParser\Node;
 use PHPStan\Analyser;
@@ -22,7 +23,9 @@ use PHPStan\Rules;
 /**
  * @implements Rules\Rule<Node\Stmt\ClassMethod>
  */
-final class NoParameterWithContainerTypeDeclarationRule implements Rules\Rule
+final class NoParameterWithContainerTypeDeclarationRule implements
+    Documentation\HasRuleDefinition,
+    Rules\Rule
 {
     private Reflection\ReflectionProvider $reflectionProvider;
 
@@ -35,6 +38,7 @@ final class NoParameterWithContainerTypeDeclarationRule implements Rules\Rule
      * @var list<string>
      */
     private array $methodsAllowedToUseContainerTypeDeclarations;
+    private Documentation\RuleDefinition $ruleDefinition;
 
     /**
      * @param list<string> $interfacesImplementedByContainers
@@ -55,6 +59,83 @@ final class NoParameterWithContainerTypeDeclarationRule implements Rules\Rule
             },
         ));
         $this->methodsAllowedToUseContainerTypeDeclarations = $methodsAllowedToUseContainerTypeDeclarations;
+
+        $this->ruleDefinition = Documentation\RuleDefinition::create(
+            Documentation\ConfigurationKey::fromString('noParameterWithContainerTypeDeclaration'),
+            Documentation\Description::fromString('This rule reports an error when a method has a type declaration for a known dependency injection container or service locator.'),
+            Documentation\Rationale::fromString('A method that receives a dependency injection container or service locator hides its actual dependencies. Inject the dependencies directly instead.'),
+            Documentation\Tip::fromString('Inject the dependencies directly instead.'),
+            Documentation\ParameterList::create(
+                Documentation\Parameter::create(
+                    Documentation\ParameterName::fromString('interfacesImplementedByContainers'),
+                    Documentation\Description::fromString(<<<'MARKDOWN'
+                    By default, this rule disallows the use of type declarations indicating an implementation of
+
+                    - [`Psr\Container\ContainerInterface`](https://github.com/php-fig/container/blob/1.0.0/src/ContainerInterface.php)
+
+                    is expected to be injected into a method.
+
+                    You can set the `interfacesImplementedByContainers` parameter to a list of interface names of additional containers and service locators.
+                    MARKDOWN),
+                    Documentation\ParameterExample::fromStrings(
+                        'Fancy\\DependencyInjection\\ContainerInterface',
+                        'Other\\ServiceLocatorInterface',
+                    ),
+                ),
+                Documentation\Parameter::create(
+                    Documentation\ParameterName::fromString('methodsAllowedToUseContainerTypeDeclarations'),
+                    Documentation\Description::fromString('You can set the `methodsAllowedToUseContainerTypeDeclarations` parameter to a list of method names that are allowed to use parameters with container type declarations.'),
+                    Documentation\ParameterExample::fromStrings('loadExtension'),
+                ),
+            ),
+            Documentation\CodeSampleList::create(
+                Documentation\CodeSample::reported(<<<'PHP'
+                    <?php
+
+                    declare(strict_types=1);
+
+                    namespace Example;
+
+                    use Psr\Container;
+
+                    final class Greeting
+                    {
+                        public function greet(Container\ContainerInterface $container): string
+                        {
+                            return $container->get('salutation');
+                        }
+                    }
+                    PHP),
+                Documentation\CodeSample::notReported(<<<'PHP'
+                    <?php
+
+                    declare(strict_types=1);
+
+                    namespace Example;
+
+                    final class Salutation
+                    {
+                        public function toString(): string
+                        {
+                            return 'Hello';
+                        }
+                    }
+
+                    final class Greeting
+                    {
+                        public function greet(Salutation $salutation): string
+                        {
+                            return $salutation->toString();
+                        }
+                    }
+                    PHP),
+            ),
+        );
+    }
+
+    public function ruleDefinition(): Documentation\RuleDefinition
+    {
+        return $this->ruleDefinition;
     }
 
     public function getNodeType(): string
@@ -103,7 +184,7 @@ final class NoParameterWithContainerTypeDeclarationRule implements Rules\Rule
                 if ($classUsedInTypeDeclaration->isInterface()) {
                     foreach ($this->interfacesImplementedByContainers as $interfaceImplementedByContainer) {
                         if ($classUsedInTypeDeclaration->getName() === $interfaceImplementedByContainer) {
-                            $errors[] = self::createError(
+                            $errors[] = $this->createError(
                                 $containingClass,
                                 $methodName,
                                 $parameterName,
@@ -114,7 +195,7 @@ final class NoParameterWithContainerTypeDeclarationRule implements Rules\Rule
                         }
 
                         if ($classUsedInTypeDeclaration->getNativeReflection()->isSubclassOf($interfaceImplementedByContainer)) {
-                            $errors[] = self::createError(
+                            $errors[] = $this->createError(
                                 $containingClass,
                                 $methodName,
                                 $parameterName,
@@ -128,7 +209,7 @@ final class NoParameterWithContainerTypeDeclarationRule implements Rules\Rule
 
                 foreach ($this->interfacesImplementedByContainers as $interfaceImplementedByContainer) {
                     if ($classUsedInTypeDeclaration->getNativeReflection()->implementsInterface($interfaceImplementedByContainer)) {
-                        $errors[] = self::createError(
+                        $errors[] = $this->createError(
                             $containingClass,
                             $methodName,
                             $parameterName,
@@ -145,7 +226,7 @@ final class NoParameterWithContainerTypeDeclarationRule implements Rules\Rule
         ));
     }
 
-    private static function createError(
+    private function createError(
         Reflection\ClassReflection $classReflection,
         string $methodName,
         string $parameterName,
@@ -161,6 +242,7 @@ final class NoParameterWithContainerTypeDeclarationRule implements Rules\Rule
 
             return Rules\RuleErrorBuilder::message($message)
                 ->identifier(ErrorIdentifier::noParameterWithContainerTypeDeclaration()->toString())
+                ->tip(Documentation\ErrorTip::for($this))
                 ->build();
         }
 
@@ -174,6 +256,7 @@ final class NoParameterWithContainerTypeDeclarationRule implements Rules\Rule
 
         return Rules\RuleErrorBuilder::message($message)
             ->identifier(ErrorIdentifier::noParameterWithContainerTypeDeclaration()->toString())
+            ->tip(Documentation\ErrorTip::for($this))
             ->build();
     }
 }
