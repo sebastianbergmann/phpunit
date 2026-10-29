@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Ergebnis\PHPStan\Rules\Expressions;
 
+use Ergebnis\PHPStan\Rules\Documentation;
 use Ergebnis\PHPStan\Rules\ErrorIdentifier;
 use PhpParser\Node;
 use PHPStan\Analyser;
@@ -21,8 +22,39 @@ use PHPStan\Rules;
 /**
  * @implements Rules\Rule<Node\Expr\ErrorSuppress>
  */
-final class NoErrorSuppressionRule implements Rules\Rule
+final class NoErrorSuppressionRule implements
+    Documentation\HasRuleDefinition,
+    Rules\Rule
 {
+    public function ruleDefinition(): Documentation\RuleDefinition
+    {
+        return Documentation\RuleDefinition::create(
+            'noErrorSuppression',
+            'This rule reports an error when [`@`](https://www.php.net/manual/en/language.operators.errorcontrol.php) is used to suppress errors.',
+            'The error control operator hides every error that the expression causes, including errors you did not expect. Check for the error condition explicitly instead.',
+            'Check for the error condition explicitly instead.',
+        )->withCodeSamples(
+            Documentation\CodeSample::reported(<<<'PHP'
+                <?php
+
+                declare(strict_types=1);
+
+                $contents = @\file_get_contents(__DIR__ . '/example.txt');
+                PHP),
+            Documentation\CodeSample::notReported(<<<'PHP'
+                <?php
+
+                declare(strict_types=1);
+
+                $path = __DIR__ . '/example.txt';
+
+                if (\is_readable($path)) {
+                    $contents = \file_get_contents($path);
+                }
+                PHP),
+        );
+    }
+
     public function getNodeType(): string
     {
         return Node\Expr\ErrorSuppress::class;
@@ -35,6 +67,7 @@ final class NoErrorSuppressionRule implements Rules\Rule
         return [
             Rules\RuleErrorBuilder::message('Error suppression via "@" should not be used.')
                 ->identifier(ErrorIdentifier::noErrorSuppression()->toString())
+                ->tip(Documentation\ErrorTip::for($this))
                 ->build(),
         ];
     }

@@ -4,24 +4,25 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8b722ee2bda65393e4b2eed89310adb2",
+    "content-hash": "c75d3090b60f562b95a50b8015d97365",
     "packages": [],
     "packages-dev": [
         {
             "name": "ergebnis/phpstan-rules",
-            "version": "2.15.0",
+            "version": "2.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ergebnis/phpstan-rules.git",
-                "reference": "56db4a413823912214ee1df85912e319bfe5771f"
+                "reference": "e123a05ffb337670f9f65fff3c3f25517d3d888e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ergebnis/phpstan-rules/zipball/56db4a413823912214ee1df85912e319bfe5771f",
-                "reference": "56db4a413823912214ee1df85912e319bfe5771f",
+                "url": "https://api.github.com/repos/ergebnis/phpstan-rules/zipball/e123a05ffb337670f9f65fff3c3f25517d3d888e",
+                "reference": "e123a05ffb337670f9f65fff3c3f25517d3d888e",
                 "shasum": ""
             },
             "require": {
+                "composer-runtime-api": "^2.0.0",
                 "ext-mbstring": "*",
                 "php": "~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0 || ~8.6.0",
                 "phpstan/phpstan": "^2.1.35"
@@ -53,7 +54,7 @@
                     ]
                 },
                 "branch-alias": {
-                    "dev-main": "2.15-dev"
+                    "dev-main": "2.16-dev"
                 }
             },
             "autoload": {
@@ -83,7 +84,7 @@
                 "security": "https://github.com/ergebnis/phpstan-rules/blob/main/.github/SECURITY.md",
                 "source": "https://github.com/ergebnis/phpstan-rules"
             },
-            "time": "2026-10-28T15:54:25+00:00"
+            "time": "2026-10-28T23:53:24+00:00"
         },
         {
             "name": "phpstan/extension-installer",
@@ -135,11 +136,11 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.3.3",
+            "version": "2.3.4",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/4b57dc8ca7456b635d1661845f44bc060b02c6b0",
-                "reference": "4b57dc8ca7456b635d1661845f44bc060b02c6b0",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/f20ce6f3c82556cfcfc086b152445a12d1d64fff",
+                "reference": "f20ce6f3c82556cfcfc086b152445a12d1d64fff",
                 "shasum": ""
             },
             "require": {
@@ -195,7 +196,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-10-27T14:06:26+00:00"
+            "time": "2026-10-28T22:38:53+00:00"
         },
         {
             "name": "phpstan/phpstan-strict-rules",

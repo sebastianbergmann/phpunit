@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Ergebnis\PHPStan\Rules\Functions;
 
 use Ergebnis\PHPStan\Rules\Analyzer;
+use Ergebnis\PHPStan\Rules\Documentation;
 use Ergebnis\PHPStan\Rules\ErrorIdentifier;
 use PhpParser\Node;
 use PHPStan\Analyser;
@@ -22,13 +23,46 @@ use PHPStan\Rules;
 /**
  * @implements Rules\Rule<Node\Stmt\Function_>
  */
-final class NoParameterWithNullDefaultValueRule implements Rules\Rule
+final class NoParameterWithNullDefaultValueRule implements
+    Documentation\HasRuleDefinition,
+    Rules\Rule
 {
     private Analyzer $analyzer;
 
     public function __construct(Analyzer $analyzer)
     {
         $this->analyzer = $analyzer;
+    }
+
+    public function ruleDefinition(): Documentation\RuleDefinition
+    {
+        return Documentation\RuleDefinition::create(
+            'noParameterWithNullDefaultValue',
+            'This rule reports an error when a function has a parameter with `null` as default value.',
+            'A parameter with `null` as its default value makes the argument optional and nullable at once, so the function has to handle a missing value. Separate functions or a null object make each case explicit.',
+            'Use separate functions or a null object instead.',
+        )->withCodeSamples(
+            Documentation\CodeSample::reported(<<<'PHP'
+                <?php
+
+                declare(strict_types=1);
+
+                function toUpperCase($value = null): string
+                {
+                    return \strtoupper((string) $value);
+                }
+                PHP),
+            Documentation\CodeSample::notReported(<<<'PHP'
+                <?php
+
+                declare(strict_types=1);
+
+                function toUpperCase(string $value): string
+                {
+                    return \strtoupper($value);
+                }
+                PHP),
+        );
     }
 
     public function getNodeType(): string
@@ -54,7 +88,7 @@ final class NoParameterWithNullDefaultValueRule implements Rules\Rule
 
         $functionName = $node->namespacedName;
 
-        return \array_map(static function (Node\Param $parameterWithNullDefaultValue) use ($functionName): Rules\RuleError {
+        return \array_map(function (Node\Param $parameterWithNullDefaultValue) use ($functionName): Rules\RuleError {
             /** @var Node\Expr\Variable $variable */
             $variable = $parameterWithNullDefaultValue->var;
 
@@ -69,6 +103,7 @@ final class NoParameterWithNullDefaultValueRule implements Rules\Rule
 
             return Rules\RuleErrorBuilder::message($message)
                 ->identifier(ErrorIdentifier::noParameterWithNullDefaultValue()->toString())
+                ->tip(Documentation\ErrorTip::for($this))
                 ->build();
         }, $parametersWithNullDefaultValue);
     }

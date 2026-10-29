@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Ergebnis\PHPStan\Rules\ArrowFunctions;
 
 use Ergebnis\PHPStan\Rules\Analyzer;
+use Ergebnis\PHPStan\Rules\Documentation;
 use Ergebnis\PHPStan\Rules\ErrorIdentifier;
 use PhpParser\Node;
 use PHPStan\Analyser;
@@ -22,13 +23,40 @@ use PHPStan\Rules;
 /**
  * @implements Rules\Rule<Node\Expr\ArrowFunction>
  */
-final class NoParameterWithNullableTypeDeclarationRule implements Rules\Rule
+final class NoParameterWithNullableTypeDeclarationRule implements
+    Documentation\HasRuleDefinition,
+    Rules\Rule
 {
     private Analyzer $analyzer;
 
     public function __construct(Analyzer $analyzer)
     {
         $this->analyzer = $analyzer;
+    }
+
+    public function ruleDefinition(): Documentation\RuleDefinition
+    {
+        return Documentation\RuleDefinition::create(
+            'noParameterWithNullableTypeDeclaration',
+            'This rule reports an error when an arrow function has a parameter with a nullable type declaration.',
+            'A parameter with a nullable type declaration makes the arrow function handle two cases: a value and `null`. Separate arrow functions or a null object make each case explicit.',
+            'Use separate arrow functions or a null object instead.',
+        )->withCodeSamples(
+            Documentation\CodeSample::reported(<<<'PHP'
+                <?php
+
+                declare(strict_types=1);
+
+                $toUpperCase = static fn (?string $value): string => \strtoupper((string) $value);
+                PHP),
+            Documentation\CodeSample::notReported(<<<'PHP'
+                <?php
+
+                declare(strict_types=1);
+
+                $toUpperCase = static fn (string $value): string => \strtoupper($value);
+                PHP),
+        );
     }
 
     public function getNodeType(): string
@@ -52,7 +80,7 @@ final class NoParameterWithNullableTypeDeclarationRule implements Rules\Rule
             return [];
         }
 
-        return \array_map(static function (Node\Param $parameterWithNullableTypeDeclaration): Rules\RuleError {
+        return \array_map(function (Node\Param $parameterWithNullableTypeDeclaration): Rules\RuleError {
             /** @var Node\Expr\Variable $variable */
             $variable = $parameterWithNullableTypeDeclaration->var;
 
@@ -66,6 +94,7 @@ final class NoParameterWithNullableTypeDeclarationRule implements Rules\Rule
 
             return Rules\RuleErrorBuilder::message($message)
                 ->identifier(ErrorIdentifier::noParameterWithNullableTypeDeclaration()->toString())
+                ->tip(Documentation\ErrorTip::for($this))
                 ->build();
         }, $parametersWithNullableTypeDeclaration);
     }

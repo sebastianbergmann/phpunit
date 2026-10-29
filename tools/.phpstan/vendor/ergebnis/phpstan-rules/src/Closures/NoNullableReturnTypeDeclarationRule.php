@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Ergebnis\PHPStan\Rules\Closures;
 
 use Ergebnis\PHPStan\Rules\Analyzer;
+use Ergebnis\PHPStan\Rules\Documentation;
 use Ergebnis\PHPStan\Rules\ErrorIdentifier;
 use PhpParser\Node;
 use PHPStan\Analyser;
@@ -22,13 +23,44 @@ use PHPStan\Rules;
 /**
  * @implements Rules\Rule<Node\Expr\Closure>
  */
-final class NoNullableReturnTypeDeclarationRule implements Rules\Rule
+final class NoNullableReturnTypeDeclarationRule implements
+    Documentation\HasRuleDefinition,
+    Rules\Rule
 {
     private Analyzer $analyzer;
 
     public function __construct(Analyzer $analyzer)
     {
         $this->analyzer = $analyzer;
+    }
+
+    public function ruleDefinition(): Documentation\RuleDefinition
+    {
+        return Documentation\RuleDefinition::create(
+            'noNullableReturnTypeDeclaration',
+            'This rule reports an error when a closure uses a nullable return type declaration.',
+            'A nullable return type forces every caller to handle `null`. Throwing an exception, returning a null object, or splitting the closure in two keeps the callers simpler.',
+            'Throw an exception, return a null object, or split the closure in two instead.',
+        )->withCodeSamples(
+            Documentation\CodeSample::reported(<<<'PHP'
+                <?php
+
+                declare(strict_types=1);
+
+                $toUpperCase = static function (string $value): ?string {
+                    return \strtoupper($value);
+                };
+                PHP),
+            Documentation\CodeSample::notReported(<<<'PHP'
+                <?php
+
+                declare(strict_types=1);
+
+                $toUpperCase = static function (string $value): string {
+                    return \strtoupper($value);
+                };
+                PHP),
+        );
     }
 
     public function getNodeType(): string
@@ -47,6 +79,7 @@ final class NoNullableReturnTypeDeclarationRule implements Rules\Rule
         return [
             Rules\RuleErrorBuilder::message('Closure has a nullable return type declaration.')
                 ->identifier(ErrorIdentifier::noNullableReturnTypeDeclaration()->toString())
+                ->tip(Documentation\ErrorTip::for($this))
                 ->build(),
         ];
     }
