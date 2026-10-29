@@ -18,34 +18,24 @@ namespace Ergebnis\PHPStan\Rules\Documentation;
  */
 final class Parameter
 {
-    private string $name;
-    private string $description;
+    private ParameterName $name;
+    private Description $description;
+    private ParameterExample $example;
 
-    /**
-     * @var bool|list<array<string, string>>|list<string>
-     */
-    private $example;
-
-    /**
-     * @param bool|list<array<string, string>>|list<string> $example
-     */
     private function __construct(
-        string $name,
-        string $description,
-        $example
+        ParameterName $name,
+        Description $description,
+        ParameterExample $example
     ) {
         $this->name = $name;
         $this->description = $description;
         $this->example = $example;
     }
 
-    /**
-     * @param bool|list<array<string, string>>|list<string> $example
-     */
     public static function create(
-        string $name,
-        string $description,
-        $example
+        ParameterName $name,
+        Description $description,
+        ParameterExample $example
     ): self {
         return new self(
             $name,
@@ -54,25 +44,17 @@ final class Parameter
         );
     }
 
-    public function name(): string
+    public function name(): ParameterName
     {
         return $this->name;
     }
 
-    /**
-     * Returns a description of the parameter, in Markdown.
-     */
-    public function description(): string
+    public function description(): Description
     {
         return $this->description;
     }
 
-    /**
-     * Returns an example value for the parameter.
-     *
-     * @return bool|list<array<string, string>>|list<string>
-     */
-    public function example()
+    public function example(): ParameterExample
     {
         return $this->example;
     }

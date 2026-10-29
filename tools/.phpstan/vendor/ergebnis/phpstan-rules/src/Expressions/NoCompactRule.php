@@ -26,35 +26,44 @@ final class NoCompactRule implements
     Documentation\HasRuleDefinition,
     Rules\Rule
 {
+    private Documentation\RuleDefinition $ruleDefinition;
+
+    public function __construct()
+    {
+        $this->ruleDefinition = Documentation\RuleDefinition::create(
+            Documentation\ConfigurationKey::fromString('noCompact'),
+            Documentation\Description::fromString('This rule reports an error when the function [`compact()`](https://www.php.net/compact) is used.'),
+            Documentation\Rationale::fromString('The function `compact()` refers to variables by their names in strings, which static analysis and automated refactoring cannot follow. Build the array explicitly instead.'),
+            Documentation\Tip::fromString('Build the array explicitly instead.'),
+            Documentation\ParameterList::create(),
+            Documentation\CodeSampleList::create(
+                Documentation\CodeSample::reported(<<<'PHP'
+                    <?php
+
+                    declare(strict_types=1);
+
+                    $name = 'Jane';
+
+                    $context = \compact('name');
+                    PHP),
+                Documentation\CodeSample::notReported(<<<'PHP'
+                    <?php
+
+                    declare(strict_types=1);
+
+                    $name = 'Jane';
+
+                    $context = [
+                        'name' => $name,
+                    ];
+                    PHP),
+            ),
+        );
+    }
+
     public function ruleDefinition(): Documentation\RuleDefinition
     {
-        return Documentation\RuleDefinition::create(
-            'noCompact',
-            'This rule reports an error when the function [`compact()`](https://www.php.net/compact) is used.',
-            'The function `compact()` refers to variables by their names in strings, which static analysis and automated refactoring cannot follow. Build the array explicitly instead.',
-            'Build the array explicitly instead.',
-        )->withCodeSamples(
-            Documentation\CodeSample::reported(<<<'PHP'
-                <?php
-
-                declare(strict_types=1);
-
-                $name = 'Jane';
-
-                $context = \compact('name');
-                PHP),
-            Documentation\CodeSample::notReported(<<<'PHP'
-                <?php
-
-                declare(strict_types=1);
-
-                $name = 'Jane';
-
-                $context = [
-                    'name' => $name,
-                ];
-                PHP),
-        );
+        return $this->ruleDefinition;
     }
 
     public function getNodeType(): string

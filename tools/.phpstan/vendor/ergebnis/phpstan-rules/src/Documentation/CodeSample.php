@@ -29,9 +29,6 @@ final class CodeSample
         $this->reported = $reported;
     }
 
-    /**
-     * Creates a code sample for which the rule reports an error.
-     */
     public static function reported(string $code): self
     {
         return new self(
@@ -40,9 +37,6 @@ final class CodeSample
         );
     }
 
-    /**
-     * Creates a code sample for which the rule does not report an error.
-     */
     public static function notReported(string $code): self
     {
         return new self(
