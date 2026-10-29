@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Ergebnis\PHPStan\Rules\Functions;
 
+use Ergebnis\PHPStan\Rules\Documentation;
 use Ergebnis\PHPStan\Rules\ErrorIdentifier;
 use PhpParser\Node;
 use PHPStan\Analyser;
@@ -21,8 +22,50 @@ use PHPStan\Rules;
 /**
  * @implements Rules\Rule<Node\Stmt\Function_>
  */
-final class NoParameterPassedByReferenceRule implements Rules\Rule
+final class NoParameterPassedByReferenceRule implements
+    Documentation\HasRuleDefinition,
+    Rules\Rule
 {
+    private Documentation\RuleDefinition $ruleDefinition;
+
+    public function __construct()
+    {
+        $this->ruleDefinition = Documentation\RuleDefinition::create(
+            Documentation\ConfigurationKey::fromString('noParameterPassedByReference'),
+            Documentation\Description::fromString('This rule reports an error when a function has a parameter that is [passed by reference](https://www.php.net/manual/en/language.references.pass.php).'),
+            Documentation\Rationale::fromString('A parameter passed by reference lets a function change a variable of its caller as a side effect, which makes the code harder to follow. Return the new value instead.'),
+            Documentation\Tip::fromString('Return the new value instead.'),
+            Documentation\ParameterList::create(),
+            Documentation\CodeSampleList::create(
+                Documentation\CodeSample::reported(<<<'PHP'
+                    <?php
+
+                    declare(strict_types=1);
+
+                    function increment(int &$value): void
+                    {
+                        ++$value;
+                    }
+                    PHP),
+                Documentation\CodeSample::notReported(<<<'PHP'
+                    <?php
+
+                    declare(strict_types=1);
+
+                    function increment(int $value): int
+                    {
+                        return $value + 1;
+                    }
+                    PHP),
+            ),
+        );
+    }
+
+    public function ruleDefinition(): Documentation\RuleDefinition
+    {
+        return $this->ruleDefinition;
+    }
+
     public function getNodeType(): string
     {
         return Node\Stmt\Function_::class;
@@ -46,7 +89,7 @@ final class NoParameterPassedByReferenceRule implements Rules\Rule
 
         $functionName = $node->namespacedName;
 
-        return \array_map(static function (Node\Param $parameterPassedByReference) use ($functionName): Rules\RuleError {
+        return \array_map(function (Node\Param $parameterPassedByReference) use ($functionName): Rules\RuleError {
             /** @var Node\Expr\Variable $variable */
             $variable = $parameterPassedByReference->var;
 
@@ -61,6 +104,7 @@ final class NoParameterPassedByReferenceRule implements Rules\Rule
 
             return Rules\RuleErrorBuilder::message($message)
                 ->identifier(ErrorIdentifier::noParameterPassedByReference()->toString())
+                ->tip(Documentation\ErrorTip::for($this))
                 ->build();
         }, $parametersPassedByReference);
     }

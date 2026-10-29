@@ -34,7 +34,7 @@ includes:
 	- vendor/ergebnis/phpstan-rules/rules.neon
 ```
 
-:bulb: You probably want to use these rules on top of the rules provided by:
+💡 You probably want to use these rules on top of the rules provided by:
 
 - [`phpstan/phpstan`](https://github.com/phpstan/phpstan)
 - [`phpstan/phpstan-deprecation-rules`](https://github.com/phpstan/phpstan-deprecation-rules)
@@ -42,40 +42,73 @@ includes:
 
 ## Rules
 
+<!-- BEGIN RULES -->
+
 This package provides the following rules for use with [`phpstan/phpstan`](https://github.com/phpstan/phpstan):
 
-- [`Ergebnis\PHPStan\Rules\CallLikes\NoNamedArgumentRule`](https://github.com/ergebnis/phpstan-rules#calllikesnonamedargumentrule)
-- [`Ergebnis\PHPStan\Rules\Classes\FinalRule`](https://github.com/ergebnis/phpstan-rules#classesfinalrule)
-- [`Ergebnis\PHPStan\Rules\Classes\NoExtendsRule`](https://github.com/ergebnis/phpstan-rules#classesnoextendsrule)
-- [`Ergebnis\PHPStan\Rules\Classes\PHPUnit\Framework\TestCaseWithSuffixRule`](https://github.com/ergebnis/phpstan-rules#classesphpunitframeworktestcasewithsuffixrule)
-- [`Ergebnis\PHPStan\Rules\Closures\NoNullableReturnTypeDeclarationRule`](https://github.com/ergebnis/phpstan-rules#closuresnonullablereturntypedeclarationrule)
-- [`Ergebnis\PHPStan\Rules\Closures\NoParameterPassedByReferenceRule`](https://github.com/ergebnis/phpstan-rules#closuresnoparameterpassedbyreferencerule)
-- [`Ergebnis\PHPStan\Rules\Closures\NoParameterWithNullableTypeDeclarationRule`](https://github.com/ergebnis/phpstan-rules#closuresnoparameterwithnullabletypedeclarationrule)
-- [`Ergebnis\PHPStan\Rules\Closures\NoParameterWithNullDefaultValueRule`](https://github.com/ergebnis/phpstan-rules#closuresnoparameterwithnulldefaultvaluerule)
-- [`Ergebnis\PHPStan\Rules\Expressions\NoAssignByReferenceRule`](https://github.com/ergebnis/phpstan-rules#expressionsnoassignbyreferencerule)
-- [`Ergebnis\PHPStan\Rules\Expressions\NoCompactRule`](https://github.com/ergebnis/phpstan-rules#expressionsnocompactrule)
-- [`Ergebnis\PHPStan\Rules\Expressions\NoErrorSuppressionRule`](https://github.com/ergebnis/phpstan-rules#expressionsnoerrorsuppressionrule)
-- [`Ergebnis\PHPStan\Rules\Expressions\NoEvalRule`](https://github.com/ergebnis/phpstan-rules#expressionsnoevalrule)
-- [`Ergebnis\PHPStan\Rules\Expressions\NoIssetRule`](https://github.com/ergebnis/phpstan-rules#expressionsnoissetrule)
-- [`Ergebnis\PHPStan\Rules\Files\DeclareStrictTypesRule`](https://github.com/ergebnis/phpstan-rules#filesdeclarestricttypesrule)
-- [`Ergebnis\PHPStan\Rules\Files\NoPhpstanIgnoreRule`](https://github.com/ergebnis/phpstan-rules#filesnophpstanignorerule)
-- [`Ergebnis\PHPStan\Rules\Functions\NoNullableReturnTypeDeclarationRule`](https://github.com/ergebnis/phpstan-rules#functionsnonullablereturntypedeclarationrule)
-- [`Ergebnis\PHPStan\Rules\Functions\NoParameterPassedByReferenceRule`](https://github.com/ergebnis/phpstan-rules#functionsnoparameterpassedbyreferencerule)
-- [`Ergebnis\PHPStan\Rules\Functions\NoParameterWithNullableTypeDeclarationRule`](https://github.com/ergebnis/phpstan-rules#functionsnoparameterwithnullabletypedeclarationrule)
-- [`Ergebnis\PHPStan\Rules\Functions\NoParameterWithNullDefaultValueRule`](https://github.com/ergebnis/phpstan-rules#functionsnoparameterwithnulldefaultvaluerule)
-- [`Ergebnis\PHPStan\Rules\Functions\NoReturnByReferenceRule`](https://github.com/ergebnis/phpstan-rules#functionsnoreturnbyreferencerule)
-- [`Ergebnis\PHPStan\Rules\Methods\FinalInAbstractClassRule`](https://github.com/ergebnis/phpstan-rules#methodsfinalinabstractclassrule)
-- [`Ergebnis\PHPStan\Rules\Methods\InvokeParentHookMethodRule`](https://github.com/ergebnis/phpstan-rules#methodsinvokeparenthookmethodrule)
-- [`Ergebnis\PHPStan\Rules\Methods\NoConstructorParameterWithDefaultValueRule`](https://github.com/ergebnis/phpstan-rules#methodsnoconstructorparameterwithdefaultvaluerule)
-- [`Ergebnis\PHPStan\Rules\Methods\NoNullableReturnTypeDeclarationRule`](https://github.com/ergebnis/phpstan-rules#methodsnonullablereturntypedeclarationrule)
-- [`Ergebnis\PHPStan\Rules\Methods\NoParameterPassedByReferenceRule`](https://github.com/ergebnis/phpstan-rules#methodsnoparameterpassedbyreferencerule)
-- [`Ergebnis\PHPStan\Rules\Methods\NoParameterWithContainerTypeDeclarationRule`](https://github.com/ergebnis/phpstan-rules#methodsnoparameterwithcontainertypedeclarationrule)
-- [`Ergebnis\PHPStan\Rules\Methods\NoParameterWithNullableTypeDeclarationRule`](https://github.com/ergebnis/phpstan-rules#methodsnoparameterwithnullabletypedeclarationrule)
-- [`Ergebnis\PHPStan\Rules\Methods\NoParameterWithNullDefaultValueRule`](https://github.com/ergebnis/phpstan-rules#methodsnoparameterwithnulldefaultvaluerule)
-- [`Ergebnis\PHPStan\Rules\Methods\NoReturnByReferenceRule`](https://github.com/ergebnis/phpstan-rules#methodsnoreturnbyreferencerule)
-- [`Ergebnis\PHPStan\Rules\Methods\PrivateInFinalClassRule`](https://github.com/ergebnis/phpstan-rules#methodsprivateinfinalclassrule)
-- [`Ergebnis\PHPStan\Rules\Statements\NoSwitchRule`](https://github.com/ergebnis/phpstan-rules#statementsnoswitchrule)
+- [`Ergebnis\PHPStan\Rules\ArrowFunctions\NoNullableReturnTypeDeclarationRule`](#arrowfunctionsnonullablereturntypedeclarationrule)
+- [`Ergebnis\PHPStan\Rules\ArrowFunctions\NoParameterPassedByReferenceRule`](#arrowfunctionsnoparameterpassedbyreferencerule)
+- [`Ergebnis\PHPStan\Rules\ArrowFunctions\NoParameterWithNullDefaultValueRule`](#arrowfunctionsnoparameterwithnulldefaultvaluerule)
+- [`Ergebnis\PHPStan\Rules\ArrowFunctions\NoParameterWithNullableTypeDeclarationRule`](#arrowfunctionsnoparameterwithnullabletypedeclarationrule)
+- [`Ergebnis\PHPStan\Rules\CallLikes\NoNamedArgumentRule`](#calllikesnonamedargumentrule)
+- [`Ergebnis\PHPStan\Rules\Classes\FinalRule`](#classesfinalrule)
+- [`Ergebnis\PHPStan\Rules\Classes\NoExtendsRule`](#classesnoextendsrule)
+- [`Ergebnis\PHPStan\Rules\Classes\PHPUnit\Framework\TestCaseWithSuffixRule`](#classesphpunitframeworktestcasewithsuffixrule)
+- [`Ergebnis\PHPStan\Rules\Closures\NoNullableReturnTypeDeclarationRule`](#closuresnonullablereturntypedeclarationrule)
+- [`Ergebnis\PHPStan\Rules\Closures\NoParameterPassedByReferenceRule`](#closuresnoparameterpassedbyreferencerule)
+- [`Ergebnis\PHPStan\Rules\Closures\NoParameterWithNullDefaultValueRule`](#closuresnoparameterwithnulldefaultvaluerule)
+- [`Ergebnis\PHPStan\Rules\Closures\NoParameterWithNullableTypeDeclarationRule`](#closuresnoparameterwithnullabletypedeclarationrule)
+- [`Ergebnis\PHPStan\Rules\Expressions\NoAssignByReferenceRule`](#expressionsnoassignbyreferencerule)
+- [`Ergebnis\PHPStan\Rules\Expressions\NoCompactRule`](#expressionsnocompactrule)
+- [`Ergebnis\PHPStan\Rules\Expressions\NoErrorSuppressionRule`](#expressionsnoerrorsuppressionrule)
+- [`Ergebnis\PHPStan\Rules\Expressions\NoEvalRule`](#expressionsnoevalrule)
+- [`Ergebnis\PHPStan\Rules\Expressions\NoIssetRule`](#expressionsnoissetrule)
+- [`Ergebnis\PHPStan\Rules\Files\DeclareStrictTypesRule`](#filesdeclarestricttypesrule)
+- [`Ergebnis\PHPStan\Rules\Files\NoPhpstanIgnoreRule`](#filesnophpstanignorerule)
+- [`Ergebnis\PHPStan\Rules\Functions\NoNullableReturnTypeDeclarationRule`](#functionsnonullablereturntypedeclarationrule)
+- [`Ergebnis\PHPStan\Rules\Functions\NoParameterPassedByReferenceRule`](#functionsnoparameterpassedbyreferencerule)
+- [`Ergebnis\PHPStan\Rules\Functions\NoParameterWithNullDefaultValueRule`](#functionsnoparameterwithnulldefaultvaluerule)
+- [`Ergebnis\PHPStan\Rules\Functions\NoParameterWithNullableTypeDeclarationRule`](#functionsnoparameterwithnullabletypedeclarationrule)
+- [`Ergebnis\PHPStan\Rules\Functions\NoReturnByReferenceRule`](#functionsnoreturnbyreferencerule)
+- [`Ergebnis\PHPStan\Rules\Methods\FinalInAbstractClassRule`](#methodsfinalinabstractclassrule)
+- [`Ergebnis\PHPStan\Rules\Methods\InvokeParentHookMethodRule`](#methodsinvokeparenthookmethodrule)
+- [`Ergebnis\PHPStan\Rules\Methods\NoConstructorParameterWithDefaultValueRule`](#methodsnoconstructorparameterwithdefaultvaluerule)
+- [`Ergebnis\PHPStan\Rules\Methods\NoNullableReturnTypeDeclarationRule`](#methodsnonullablereturntypedeclarationrule)
+- [`Ergebnis\PHPStan\Rules\Methods\NoParameterPassedByReferenceRule`](#methodsnoparameterpassedbyreferencerule)
+- [`Ergebnis\PHPStan\Rules\Methods\NoParameterWithContainerTypeDeclarationRule`](#methodsnoparameterwithcontainertypedeclarationrule)
+- [`Ergebnis\PHPStan\Rules\Methods\NoParameterWithNullDefaultValueRule`](#methodsnoparameterwithnulldefaultvaluerule)
+- [`Ergebnis\PHPStan\Rules\Methods\NoParameterWithNullableTypeDeclarationRule`](#methodsnoparameterwithnullabletypedeclarationrule)
+- [`Ergebnis\PHPStan\Rules\Methods\NoReturnByReferenceRule`](#methodsnoreturnbyreferencerule)
+- [`Ergebnis\PHPStan\Rules\Methods\PrivateInFinalClassRule`](#methodsprivateinfinalclassrule)
+- [`Ergebnis\PHPStan\Rules\PropertyHooks\NoParameterWithNullableTypeDeclarationRule`](#propertyhooksnoparameterwithnullabletypedeclarationrule)
+- [`Ergebnis\PHPStan\Rules\PropertyHooks\NoReturnByReferenceRule`](#propertyhooksnoreturnbyreferencerule)
+- [`Ergebnis\PHPStan\Rules\Statements\NoSwitchRule`](#statementsnoswitchrule)
 
+### ArrowFunctions
+
+#### `ArrowFunctions\NoNullableReturnTypeDeclarationRule`
+
+This rule reports an error when an arrow function uses a nullable return type declaration.
+
+💡 Find out more in the rule documentation for [`ArrowFunctions\NoNullableReturnTypeDeclarationRule`](doc/rules/ArrowFunctions/NoNullableReturnTypeDeclarationRule.md).
+
+#### `ArrowFunctions\NoParameterPassedByReferenceRule`
+
+This rule reports an error when an arrow function has a parameter that is [passed by reference](https://www.php.net/manual/en/language.references.pass.php).
+
+💡 Find out more in the rule documentation for [`ArrowFunctions\NoParameterPassedByReferenceRule`](doc/rules/ArrowFunctions/NoParameterPassedByReferenceRule.md).
+
+#### `ArrowFunctions\NoParameterWithNullDefaultValueRule`
+
+This rule reports an error when an arrow function has a parameter with `null` as default value.
+
+💡 Find out more in the rule documentation for [`ArrowFunctions\NoParameterWithNullDefaultValueRule`](doc/rules/ArrowFunctions/NoParameterWithNullDefaultValueRule.md).
+
+#### `ArrowFunctions\NoParameterWithNullableTypeDeclarationRule`
+
+This rule reports an error when an arrow function has a parameter with a nullable type declaration.
+
+💡 Find out more in the rule documentation for [`ArrowFunctions\NoParameterWithNullableTypeDeclarationRule`](doc/rules/ArrowFunctions/NoParameterWithNullableTypeDeclarationRule.md).
 
 ### CallLikes
 
@@ -83,16 +116,7 @@ This package provides the following rules for use with [`phpstan/phpstan`](https
 
 This rule reports an error when an anonymous function, a function, or a method is invoked using a [named argument](https://www.php.net/manual/en/functions.arguments.php#functions.named-arguments).
 
-##### Disabling the rule
-
-You can set the `enabled` parameter to `false` to disable this rule.
-
-```neon
-parameters:
-	ergebnis:
-		noNamedArgument:
-			enabled: false
-```
+💡 Find out more in the rule documentation for [`CallLikes\NoNamedArgumentRule`](doc/rules/CallLikes/NoNamedArgumentRule.md).
 
 ### Classes
 
@@ -100,98 +124,26 @@ parameters:
 
 This rule reports an error when a non-anonymous class is not `final`.
 
-:bulb: This rule ignores classes that
+💡 By default, this rule ignores classes that
 
 - use `@Entity`, `@ORM\Entity`, or `@ORM\Mapping\Entity` annotations
 - use `Doctrine\ORM\Mapping\Entity` attributes
 
 on the class level.
 
-##### Disabling the rule
-
-You can set the `enabled` parameter to `false` to disable this rule.
-
-```neon
-parameters:
-	ergebnis:
-		final:
-			enabled: false
-```
-
-##### Disallowing `abstract` classes
-
-By default, this rule allows to declare `abstract` classes.
-
-You can set the `allowAbstractClasses` parameter to `false` to disallow abstract classes.
-
-```neon
-parameters:
-	ergebnis:
-		final:
-			allowAbstractClasses: false
-```
-
-##### Excluding classes from inspection
-
-You can set the `classesNotRequiredToBeAbstractOrFinal` parameter to a list of class names that you want to exclude from inspection.
-
-```neon
-parameters:
-	ergebnis:
-		final:
-			classesNotRequiredToBeAbstractOrFinal:
-				- Foo\Bar\NeitherAbstractNorFinal
-				- Bar\Baz\NeitherAbstractNorFinal
-```
+💡 Find out more in the rule documentation for [`Classes\FinalRule`](doc/rules/Classes/FinalRule.md).
 
 #### `Classes\NoExtendsRule`
 
 This rule reports an error when a class extends another class.
 
-##### Defaults
-
-By default, this rule allows the following classes to be extended:
-
-- [`PHPUnit\Framework\TestCase`](https://github.com/sebastianbergmann/phpunit/blob/6.0.0/src/Framework/TestCase.php)
-
-##### Disabling the rule
-
-You can set the `enabled` parameter to `false` to disable this rule.
-
-```neon
-parameters:
-	ergebnis:
-		noExtends:
-			enabled: false
-```
-
-##### Allowing classes to be extended
-
-You can set the `classesAllowedToBeExtended` parameter to a list of class names that you want to allow to be extended.
-
-```neon
-parameters:
-	ergebnis:
-		noExtends:
-			classesAllowedToBeExtended:
-				- Ergebnis\PHPStan\Rules\Test\Integration\AbstractTestCase
-				- Ergebnis\PHPStan\Rules\Test\Integration\AbstractTestCase
-```
+💡 Find out more in the rule documentation for [`Classes\NoExtendsRule`](doc/rules/Classes/NoExtendsRule.md).
 
 #### `Classes\PHPUnit\Framework\TestCaseWithSuffixRule`
 
 This rule reports an error when a concrete class is a sub-class of `PHPUnit\Framework\TestCase` but does not have a `Test` suffix.
 
-##### Disabling the rule
-
-You can set the `enabled` parameter to `false` to disable this rule.
-
-```neon
-parameters:
-	ergebnis:
-		testCaseWithSuffix:
-			enabled: false
-```
+💡 Find out more in the rule documentation for [`Classes\PHPUnit\Framework\TestCaseWithSuffixRule`](doc/rules/Classes/PHPUnit/Framework/TestCaseWithSuffixRule.md).
 
 ### Closures
 
@@ -199,61 +151,25 @@ parameters:
 
 This rule reports an error when a closure uses a nullable return type declaration.
 
-##### Disabling the rule
-
-You can set the `enabled` parameter to `false` to disable this rule.
-
-```neon
-parameters:
-	ergebnis:
-		noNullableReturnTypeDeclaration:
-			enabled: false
-```
+💡 Find out more in the rule documentation for [`Closures\NoNullableReturnTypeDeclarationRule`](doc/rules/Closures/NoNullableReturnTypeDeclarationRule.md).
 
 #### `Closures\NoParameterPassedByReferenceRule`
 
 This rule reports an error when a closure has a parameter that is [passed by reference](https://www.php.net/manual/en/language.references.pass.php).
 
-##### Disabling the rule
-
-You can set the `enabled` parameter to `false` to disable this rule.
-
-```neon
-parameters:
-	ergebnis:
-		noParameterPassedByReference:
-			enabled: false
-```
-
-#### `Closures\NoParameterWithNullableTypeDeclarationRule`
-
-This rule reports an error when a closure has a parameter with a nullable type declaration.
-
-##### Disabling the rule
-
-You can set the `enabled` parameter to `false` to disable this rule.
-
-```neon
-parameters:
-	ergebnis:
-		noParameterWithNullableTypeDeclaration:
-			enabled: false
-```
+💡 Find out more in the rule documentation for [`Closures\NoParameterPassedByReferenceRule`](doc/rules/Closures/NoParameterPassedByReferenceRule.md).
 
 #### `Closures\NoParameterWithNullDefaultValueRule`
 
 This rule reports an error when a closure has a parameter with `null` as default value.
 
-##### Disabling the rule
+💡 Find out more in the rule documentation for [`Closures\NoParameterWithNullDefaultValueRule`](doc/rules/Closures/NoParameterWithNullDefaultValueRule.md).
 
-You can set the `enabled` parameter to `false` to disable this rule.
+#### `Closures\NoParameterWithNullableTypeDeclarationRule`
 
-```neon
-parameters:
-	ergebnis:
-		noParameterWithNullDefaultValue:
-			enabled: false
-```
+This rule reports an error when a closure has a parameter with a nullable type declaration.
+
+💡 Find out more in the rule documentation for [`Closures\NoParameterWithNullableTypeDeclarationRule`](doc/rules/Closures/NoParameterWithNullableTypeDeclarationRule.md).
 
 ### Expressions
 
@@ -261,76 +177,31 @@ parameters:
 
 This rule reports an error when [a variable is assigned by reference](https://www.php.net/manual/en/language.references.whatdo.php#language.references.whatdo.assign).
 
-##### Disabling the rule
-
-You can set the `enabled` parameter to `false` to disable this rule.
-
-```neon
-parameters:
-	ergebnis:
-		noAssignByReference:
-			enabled: false
-```
+💡 Find out more in the rule documentation for [`Expressions\NoAssignByReferenceRule`](doc/rules/Expressions/NoAssignByReferenceRule.md).
 
 #### `Expressions\NoCompactRule`
 
 This rule reports an error when the function [`compact()`](https://www.php.net/compact) is used.
 
-##### Disabling the rule
-
-You can set the `enabled` parameter to `false` to disable this rule.
-
-```neon
-parameters:
-	ergebnis:
-		noCompact:
-			enabled: false
-```
+💡 Find out more in the rule documentation for [`Expressions\NoCompactRule`](doc/rules/Expressions/NoCompactRule.md).
 
 #### `Expressions\NoErrorSuppressionRule`
 
 This rule reports an error when [`@`](https://www.php.net/manual/en/language.operators.errorcontrol.php) is used to suppress errors.
 
-##### Disabling the rule
-
-You can set the `enabled` parameter to `false` to disable this rule.
-
-```neon
-parameters:
-	ergebnis:
-		noErrorSuppression:
-			enabled: false
-```
+💡 Find out more in the rule documentation for [`Expressions\NoErrorSuppressionRule`](doc/rules/Expressions/NoErrorSuppressionRule.md).
 
 #### `Expressions\NoEvalRule`
 
 This rule reports an error when the language construct [`eval()`](https://www.php.net/eval) is used.
 
-##### Disabling the rule
-
-You can set the `enabled` parameter to `false` to disable this rule.
-
-```neon
-parameters:
-	ergebnis:
-		noEval:
-			enabled: false
-```
+💡 Find out more in the rule documentation for [`Expressions\NoEvalRule`](doc/rules/Expressions/NoEvalRule.md).
 
 #### `Expressions\NoIssetRule`
 
 This rule reports an error when the language construct [`isset()`](https://www.php.net/isset) is used.
 
-##### Disabling the rule
-
-You can set the `enabled` parameter to `false` to disable this rule.
-
-```neon
-parameters:
-	ergebnis:
-		noIsset:
-			enabled: false
-```
+💡 Find out more in the rule documentation for [`Expressions\NoIssetRule`](doc/rules/Expressions/NoIssetRule.md).
 
 ### Files
 
@@ -338,31 +209,13 @@ parameters:
 
 This rule reports an error when a non-empty file does not contain a `declare(strict_types=1)` declaration.
 
-##### Disabling the rule
-
-You can set the `enabled` parameter to `false` to disable this rule.
-
-```neon
-parameters:
-	ergebnis:
-		declareStrictTypes:
-			enabled: false
-```
+💡 Find out more in the rule documentation for [`Files\DeclareStrictTypesRule`](doc/rules/Files/DeclareStrictTypesRule.md).
 
 #### `Files\NoPhpstanIgnoreRule`
 
 This rule reports an error when a `@phpstan-ignore`, `@phpstan-ignore-line`, or `@phpstan-ignore-next-line` tag is used to [ignore errors reported by `phpstan/phpstan`](https://phpstan.org/user-guide/ignoring-errors#ignoring-in-code-using-phpdocs).
 
-##### Disabling the rule
-
-You can set the `enabled` parameter to `false` to disable this rule.
-
-```neon
-parameters:
-	ergebnis:
-		noPhpstanIgnore:
-			enabled: false
-```
+💡 Find out more in the rule documentation for [`Files\NoPhpstanIgnoreRule`](doc/rules/Files/NoPhpstanIgnoreRule.md).
 
 ### Functions
 
@@ -370,76 +223,31 @@ parameters:
 
 This rule reports an error when a function uses a nullable return type declaration.
 
-##### Disabling the rule
-
-You can set the `enabled` parameter to `false` to disable this rule.
-
-```neon
-parameters:
-	ergebnis:
-		noNullableReturnTypeDeclaration:
-			enabled: false
-```
+💡 Find out more in the rule documentation for [`Functions\NoNullableReturnTypeDeclarationRule`](doc/rules/Functions/NoNullableReturnTypeDeclarationRule.md).
 
 #### `Functions\NoParameterPassedByReferenceRule`
 
 This rule reports an error when a function has a parameter that is [passed by reference](https://www.php.net/manual/en/language.references.pass.php).
 
-##### Disabling the rule
-
-You can set the `enabled` parameter to `false` to disable this rule.
-
-```neon
-parameters:
-	ergebnis:
-		noParameterPassedByReference:
-			enabled: false
-```
-
-#### `Functions\NoParameterWithNullableTypeDeclarationRule`
-
-This rule reports an error when a function has a parameter with a nullable type declaration.
-
-##### Disabling the rule
-
-You can set the `enabled` parameter to `false` to disable this rule.
-
-```neon
-parameters:
-	ergebnis:
-		noParameterWithNullableTypeDeclaration:
-			enabled: false
-```
+💡 Find out more in the rule documentation for [`Functions\NoParameterPassedByReferenceRule`](doc/rules/Functions/NoParameterPassedByReferenceRule.md).
 
 #### `Functions\NoParameterWithNullDefaultValueRule`
 
 This rule reports an error when a function has a parameter with `null` as default value.
 
-##### Disabling the rule
+💡 Find out more in the rule documentation for [`Functions\NoParameterWithNullDefaultValueRule`](doc/rules/Functions/NoParameterWithNullDefaultValueRule.md).
 
-You can set the `enabled` parameter to `false` to disable this rule.
+#### `Functions\NoParameterWithNullableTypeDeclarationRule`
 
-```neon
-parameters:
-	ergebnis:
-		noParameterWithNullDefaultValue:
-			enabled: false
-```
+This rule reports an error when a function has a parameter with a nullable type declaration.
+
+💡 Find out more in the rule documentation for [`Functions\NoParameterWithNullableTypeDeclarationRule`](doc/rules/Functions/NoParameterWithNullableTypeDeclarationRule.md).
 
 #### `Functions\NoReturnByReferenceRule`
 
 This rule reports an error when a function [returns by reference](https://www.php.net/manual/en/language.references.return.php).
 
-##### Disabling the rule
-
-You can set the `enabled` parameter to `false` to disable this rule.
-
-```neon
-parameters:
-	ergebnis:
-		noReturnByReference:
-			enabled: false
-```
+💡 Find out more in the rule documentation for [`Functions\NoReturnByReferenceRule`](doc/rules/Functions/NoReturnByReferenceRule.md).
 
 ### Methods
 
@@ -447,254 +255,77 @@ parameters:
 
 This rule reports an error when a concrete `public` or `protected` method in an `abstract` class is not `final`.
 
-:bulb: This rule ignores
+💡 By default, this rule ignores Doctrine entities.
 
-- Doctrine embeddables
-- Doctrine entities
-
-##### Disabling the rule
-
-You can set the `enabled` parameter to `false` to disable this rule.
-
-```neon
-parameters:
-	ergebnis:
-		finalInAbstractClass:
-			enabled: false
-```
+💡 Find out more in the rule documentation for [`Methods\FinalInAbstractClassRule`](doc/rules/Methods/FinalInAbstractClassRule.md).
 
 #### `Methods\InvokeParentHookMethodRule`
 
 This rule reports an error when a hook method that overrides a hook method in a parent class does not invoke the overridden hook method in the expected order.
 
-##### Defaults
-
-By default, this rule requires the following hook methods to be invoked before doing something in the overriding method:
-
-- [`Codeception\PHPUnit\TestCase::_setUp()`](https://github.com/Codeception/phpunit-wrapper/blob/9.0.0/src/TestCase.php#L11-L13)
-- [`Codeception\PHPUnit\TestCase::_setUpBeforeClass()`](https://github.com/Codeception/phpunit-wrapper/blob/9.0.0/src/TestCase.php#L25-L27)
-- [`Codeception\Test\Unit::_before()`](https://github.com/Codeception/Codeception/blob/4.2.2/src/Codeception/Test/Unit.php#L63-L65)
-- [`Codeception\Test\Unit::_setUp()`](https://github.com/Codeception/Codeception/blob/4.2.2/src/Codeception/Test/Unit.php#L34-L58)
-- [`PHPUnit\Framework\TestCase::assertPreConditions()`](https://github.com/sebastianbergmann/phpunit/blob/6.0.0/src/Framework/TestCase.php#L2073-L2075)
-- [`PHPUnit\Framework\TestCase::setUp()`](https://github.com/sebastianbergmann/phpunit/blob/6.0.0/src/Framework/TestCase.php#L2063-L2065)
-- [`PHPUnit\Framework\TestCase::setUpBeforeClass()`](https://github.com/sebastianbergmann/phpunit/blob/6.0.0/src/Framework/TestCase.php#L2055-L2057)
-
-By default, this rule requires the following hook methods to be invoked after doing something in the overriding method:
-
-- [`Codeception\PHPUnit\TestCase::_tearDown()`](https://github.com/Codeception/phpunit-wrapper/blob/9.0.0/src/TestCase.php#L18-L20)
-- [`Codeception\PHPUnit\TestCase::_tearDownAfterClass()`](https://github.com/Codeception/phpunit-wrapper/blob/9.0.0/src/TestCase.php#L32-L34)
-- [`Codeception\Test\Unit::_after()`](https://github.com/Codeception/Codeception/blob/4.2.2/src/Codeception/Test/Unit.php#L75-L77)
-- [`Codeception\Test\Unit::_tearDown()`](https://github.com/Codeception/Codeception/blob/4.2.2/src/Codeception/Test/Unit.php#L67-L70)
-- [`PHPUnit\Framework\TestCase::assertPostConditions()`](https://github.com/sebastianbergmann/phpunit/blob/6.0.0/src/Framework/TestCase.php#L2083-L2085)
-- [`PHPUnit\Framework\TestCase::tearDown()`](https://github.com/sebastianbergmann/phpunit/blob/6.0.0/src/Framework/TestCase.php#L2091-L2093)
-- [`PHPUnit\Framework\TestCase::tearDownAfterClass()`](https://github.com/sebastianbergmann/phpunit/blob/6.0.0/src/Framework/TestCase.php#L2098-L2100)
-
-##### Disabling the rule
-
-You can set the `enabled` parameter to `false` to disable this rule.
-
-```neon
-parameters:
-	ergebnis:
-		invokeParentHookMethod:
-			enabled: false
-```
-
-##### Configuring methods to invoke the parent method in the right order:
-
-You can set the `hookMethods` parameter to a list of hook methods:
-
-```neon
-parameters:
-	ergebnis:
-		invokeParentHookMethod:
-			hookMethods:
-				- className: "Example\Test\Functional\AbstractCest"
-					methodName: "_before"
-					hasContent: "yes"
-					invocation: "first"
-```
-
-- `className`: name of the class that declares the hook method
-- `methodName`: name of the hook method
-- `hasContent`: one of `"yes"`, `"no"`, `"maybe"`
-- `invocation`: one of `"any"` (needs to be invoked), `"first"` (needs to be invoked before all other statements in the overriding hook method, `"last"` (needs to be invoked after all other statements in the overriding hook method)
+💡 Find out more in the rule documentation for [`Methods\InvokeParentHookMethodRule`](doc/rules/Methods/InvokeParentHookMethodRule.md).
 
 #### `Methods\NoConstructorParameterWithDefaultValueRule`
 
-This rule reports an error when a constructor declared in
+This rule reports an error when a constructor has a parameter with a default value.
 
-- an anonymous class
-- a class
+💡 Find out more in the rule documentation for [`Methods\NoConstructorParameterWithDefaultValueRule`](doc/rules/Methods/NoConstructorParameterWithDefaultValueRule.md).
 
-has a default value.
+#### `Methods\NoNullableReturnTypeDeclarationRule`
 
-##### Disabling the rule
+This rule reports an error when a method uses a nullable return type declaration.
 
-You can set the `enabled` parameter to `false` to disable this rule.
-
-```neon
-parameters:
-	ergebnis:
-		noConstructorParameterWithDefaultValue:
-			enabled: false
-```
+💡 Find out more in the rule documentation for [`Methods\NoNullableReturnTypeDeclarationRule`](doc/rules/Methods/NoNullableReturnTypeDeclarationRule.md).
 
 #### `Methods\NoParameterPassedByReferenceRule`
 
 This rule reports an error when a method has a parameter that is [passed by reference](https://www.php.net/manual/en/language.references.pass.php).
 
-##### Disabling the rule
-
-You can set the `enabled` parameter to `false` to disable this rule.
-
-```neon
-parameters:
-	ergebnis:
-		noParameterPassedByReference:
-			enabled: false
-```
-
-#### `Methods\NoNullableReturnTypeDeclarationRule`
-
-This rule reports an error when a method declared in
-
-- an anonymous class
-- a class
-- an interface
-
-uses a nullable return type declaration.
-
-##### Disabling the rule
-
-You can set the `enabled` parameter to `false` to disable this rule.
-
-```neon
-parameters:
-	ergebnis:
-		noNullableReturnTypeDeclaration:
-			enabled: false
-```
+💡 Find out more in the rule documentation for [`Methods\NoParameterPassedByReferenceRule`](doc/rules/Methods/NoParameterPassedByReferenceRule.md).
 
 #### `Methods\NoParameterWithContainerTypeDeclarationRule`
 
 This rule reports an error when a method has a type declaration for a known dependency injection container or service locator.
 
-##### Defaults
-
-By default, this rule disallows the use of type declarations indicating an implementation of
-
-- [`Psr\Container\ContainerInterface`](https://github.com/php-fig/container/blob/1.0.0/src/ContainerInterface.php)
-
-is expected to be injected into a method.
-
-##### Disabling the rule
-
-You can set the `enabled` parameter to `false` to disable this rule.
-
-```neon
-parameters:
-	ergebnis:
-		noParameterWithContainerTypeDeclaration:
-			enabled: false
-```
-
-##### Configuring container interfaces
-
-You can set the `interfacesImplementedByContainers` parameter to a list of interface names of additional containers and service locators.
-
-```neon
-parameters:
-	ergebnis:
-		noParameterWithContainerTypeDeclaration:
-			interfacesImplementedByContainers:
-				- Fancy\DependencyInjection\ContainerInterface
-				- Other\ServiceLocatorInterface
-```
-
-##### Configuring methods allowed to use parameters with container type declarations
-
-You can set the `methodsAllowedToUseContainerTypeDeclarations` parameter to a list of method names that are allowed to use parameters with container type declarations.
-
-```neon
-parameters:
-	ergebnis:
-		noParameterWithContainerTypeDeclaration:
-			methodsAllowedToUseContainerTypeDeclarations:
-				- loadExtension
-```
-
-#### `Methods\NoParameterWithNullableTypeDeclarationRule`
-
-This rule reports an error when a method declared in
-
-- an anonymous class
-- a class
-- an interface
-
-has a parameter with a nullable type declaration.
-
-##### Disabling the rule
-
-You can set the `enabled` parameter to `false` to disable this rule.
-
-```neon
-parameters:
-	ergebnis:
-		noParameterWithNullableTypeDeclaration:
-			enabled: false
-```
+💡 Find out more in the rule documentation for [`Methods\NoParameterWithContainerTypeDeclarationRule`](doc/rules/Methods/NoParameterWithContainerTypeDeclarationRule.md).
 
 #### `Methods\NoParameterWithNullDefaultValueRule`
 
-This rule reports an error when a method declared in
+This rule reports an error when a method has a parameter with `null` as default value.
 
-- an anonymous class
-- a class
-- an interface
+💡 Find out more in the rule documentation for [`Methods\NoParameterWithNullDefaultValueRule`](doc/rules/Methods/NoParameterWithNullDefaultValueRule.md).
 
-has a parameter with `null` as default value.
+#### `Methods\NoParameterWithNullableTypeDeclarationRule`
 
-##### Disabling the rule
+This rule reports an error when a method has a parameter with a nullable type declaration.
 
-You can set the `enabled` parameter to `false` to disable this rule.
+💡 Find out more in the rule documentation for [`Methods\NoParameterWithNullableTypeDeclarationRule`](doc/rules/Methods/NoParameterWithNullableTypeDeclarationRule.md).
 
-```neon
-parameters:
-	ergebnis:
-		noParameterWithNullDefaultValue:
-			enabled: false
-```
-
-#### `Functions\NoReturnByReferenceRule`
+#### `Methods\NoReturnByReferenceRule`
 
 This rule reports an error when a method [returns by reference](https://www.php.net/manual/en/language.references.return.php).
 
-##### Disabling the rule
-
-You can set the `enabled` parameter to `false` to disable this rule.
-
-```neon
-parameters:
-	ergebnis:
-		noReturnByReference:
-			enabled: false
-```
+💡 Find out more in the rule documentation for [`Methods\NoReturnByReferenceRule`](doc/rules/Methods/NoReturnByReferenceRule.md).
 
 #### `Methods\PrivateInFinalClassRule`
 
 This rule reports an error when a method in a `final` class is `protected` but could be `private`.
 
-##### Disabling the rule
+💡 Find out more in the rule documentation for [`Methods\PrivateInFinalClassRule`](doc/rules/Methods/PrivateInFinalClassRule.md).
 
-You can set the `enabled` parameter to `false` to disable this rule.
+### PropertyHooks
 
-```neon
-parameters:
-	ergebnis:
-		privateInFinalClass:
-			enabled: false
-```
+#### `PropertyHooks\NoParameterWithNullableTypeDeclarationRule`
+
+This rule reports an error when a [property hook](https://www.php.net/manual/en/language.oop5.property-hooks.php) has a parameter with a nullable type declaration.
+
+💡 Find out more in the rule documentation for [`PropertyHooks\NoParameterWithNullableTypeDeclarationRule`](doc/rules/PropertyHooks/NoParameterWithNullableTypeDeclarationRule.md).
+
+#### `PropertyHooks\NoReturnByReferenceRule`
+
+This rule reports an error when a [property hook](https://www.php.net/manual/en/language.oop5.property-hooks.php) returns by reference.
+
+💡 Find out more in the rule documentation for [`PropertyHooks\NoReturnByReferenceRule`](doc/rules/PropertyHooks/NoReturnByReferenceRule.md).
 
 ### Statements
 
@@ -702,16 +333,9 @@ parameters:
 
 This rule reports an error when the statement [`switch()`](https://www.php.net/manual/control-structures.switch.php) is used.
 
-##### Disabling the rule
+💡 Find out more in the rule documentation for [`Statements\NoSwitchRule`](doc/rules/Statements/NoSwitchRule.md).
 
-You can set the `enabled` parameter to `false` to disable this rule.
-
-```neon
-parameters:
-	ergebnis:
-		noSwitch:
-			enabled: false
-```
+<!-- END RULES -->
 
 ## Disabling all rules
 

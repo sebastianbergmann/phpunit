@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Ergebnis\PHPStan\Rules\Methods;
 
 use Doctrine\ORM;
+use Ergebnis\PHPStan\Rules\Documentation;
 use Ergebnis\PHPStan\Rules\ErrorIdentifier;
 use PhpParser\Node;
 use PHPStan\Analyser;
@@ -25,20 +26,82 @@ use PHPStan\Rules;
 /**
  * @implements Rules\Rule<Node\Stmt\ClassMethod>
  */
-final class FinalInAbstractClassRule implements Rules\Rule
+final class FinalInAbstractClassRule implements
+    Documentation\HasRuleDefinition,
+    Rules\Rule
 {
     private const DOCTRINE_ATTRIBUTE_NAMES = [
-        ORM\Mapping\Embeddable::class,
         ORM\Mapping\Entity::class,
     ];
     private const DOCTRINE_ANNOTATION_NAMES = [
-        '@ORM\\Mapping\\Embeddable',
-        '@ORM\\Embeddable',
-        '@Embeddable',
         '@ORM\\Mapping\\Entity',
         '@ORM\\Entity',
         '@Entity',
     ];
+    private bool $ignoreDoctrineEntities;
+    private Documentation\RuleDefinition $ruleDefinition;
+
+    public function __construct(bool $ignoreDoctrineEntities)
+    {
+        $this->ignoreDoctrineEntities = $ignoreDoctrineEntities;
+
+        $this->ruleDefinition = Documentation\RuleDefinition::create(
+            Documentation\ConfigurationKey::fromString('finalInAbstractClass'),
+            Documentation\Description::fromString(<<<'MARKDOWN'
+            This rule reports an error when a concrete `public` or `protected` method in an `abstract` class is not `final`.
+
+            💡 By default, this rule ignores Doctrine entities.
+            MARKDOWN),
+            Documentation\Rationale::fromString('A concrete method in an `abstract` class that is not `final` can be overridden by subclasses, which can break the assumptions of the abstract class. Declare the method `final`, or `abstract` when subclasses need to provide it.'),
+            Documentation\Tip::fromString('Declare the method `final`, or `abstract` when subclasses need to provide it.'),
+            Documentation\ParameterList::create(Documentation\Parameter::create(
+                Documentation\ParameterName::fromString('ignoreDoctrineEntities'),
+                Documentation\Description::fromString(<<<'MARKDOWN'
+                By default, this rule ignores Doctrine entities, because Doctrine creates proxies for lazy loading by extending them.
+
+                When you use [native lazy objects](https://github.com/doctrine/orm/pull/11853) with `doctrine/orm:^3.4.0` on PHP 8.4 or later, Doctrine no longer extends entities, and you can set the `ignoreDoctrineEntities` parameter to `false` to require concrete methods in `abstract` Doctrine entities to be `final` as well.
+                MARKDOWN),
+                Documentation\ParameterExample::fromBool(false),
+            )),
+            Documentation\CodeSampleList::create(
+                Documentation\CodeSample::reported(<<<'PHP'
+                    <?php
+
+                    declare(strict_types=1);
+
+                    namespace Example;
+
+                    abstract class AbstractGreeting
+                    {
+                        public function greet(): string
+                        {
+                            return 'Hello!';
+                        }
+                    }
+                    PHP),
+                Documentation\CodeSample::notReported(<<<'PHP'
+                    <?php
+
+                    declare(strict_types=1);
+
+                    namespace Example;
+
+                    abstract class AbstractGreeting
+                    {
+                        final public function greet(): string
+                        {
+                            return 'Hello!';
+                        }
+                    }
+                    PHP),
+            ),
+        );
+    }
+
+    public function ruleDefinition(): Documentation\RuleDefinition
+    {
+        return $this->ruleDefinition;
+    }
 
     public function getNodeType(): string
     {
@@ -52,7 +115,10 @@ final class FinalInAbstractClassRule implements Rules\Rule
         /** @var Reflection\ClassReflection $containingClass */
         $containingClass = $scope->getClassReflection();
 
-        if (self::isDoctrineEntity($containingClass)) {
+        if (
+            $this->ignoreDoctrineEntities
+            && self::isDoctrineEntity($containingClass)
+        ) {
             return [];
         }
 
@@ -89,6 +155,7 @@ final class FinalInAbstractClassRule implements Rules\Rule
         return [
             Rules\RuleErrorBuilder::message($message)
                 ->identifier(ErrorIdentifier::finalInAbstractClass()->toString())
+                ->tip(Documentation\ErrorTip::for($this))
                 ->build(),
         ];
     }
