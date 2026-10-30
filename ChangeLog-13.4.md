@@ -20,6 +20,7 @@ All notable changes of the PHPUnit 13.4 release series are documented in this fi
 * When an after-last-test method, for instance `tearDownAfterClass()`, calls `markTestIncomplete()` or `markTestSkipped()` after the tests of the test class have been run, this is reported as a failure, also for each test of the test class that is run in process isolation
 * When a test fails because of an exception of a registered failure type, an error or a failure in an "after test" method, for instance `tearDown()`, is reported in addition to the test's failure, so the test is counted more than once
 * A test that fails because of an exception of a registered failure type is considered risky when it does not perform assertions or, when `requireCoverageMetadata="true"` is configured, when it does not define a code coverage target, unlike a test that fails because an assertion failed
+* Groups configured for a test directory or test file using the `groups` attribute of `<directory>` or `<file>` in the XML configuration file are not assigned to PHPT tests, so `--group` and `--exclude-group` do not select them and `--list-groups` and `--list-tests-xml` report them as being in the `default` group or not at all
 
 ### Removed
 

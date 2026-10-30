@@ -24,15 +24,16 @@ use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
 final class PhptRepeatTestSuite extends PhptIterativeTestSuite
 {
     /**
-     * @param non-empty-string $filename
-     * @param positive-int     $numberOfRuns
+     * @param non-empty-string       $filename
+     * @param positive-int           $numberOfRuns
+     * @param list<non-empty-string> $groups
      */
-    public static function for(string $filename, Event\Emitter $emitter, int $numberOfRuns): self
+    public static function for(string $filename, Event\Emitter $emitter, int $numberOfRuns, array $groups = []): self
     {
         $suite = self::empty($filename, $emitter);
 
         foreach (range(1, $numberOfRuns) as $repetition) {
-            $suite->addTest(new PhptTestCase($filename, $repetition, $numberOfRuns));
+            $suite->addTest(new PhptTestCase($filename, $repetition, $numberOfRuns), $groups);
         }
 
         return $suite;

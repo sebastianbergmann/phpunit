@@ -5,6 +5,7 @@
     <testsuites>
         <testsuite name="default">
             <directory groups="foo">tests/foo</directory>
+            <directory groups="foo" suffix=".phpt">tests/foo</directory>
             <directory groups="bar,baz">tests/bar-baz</directory>
             <file groups="another-group">tests/AnotherTest.php</file>
         </testsuite>
