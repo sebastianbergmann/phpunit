@@ -13,7 +13,7 @@ use function assert;
 use function chr;
 use function var_export;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
-use PHPUnit\Framework\PropertyBased\Distribution\WeightedRangesDistribution;
+use SebastianBergmann\ChoiceSequence\WeightedRangesDistribution;
 
 /**
  * Generates arbitrary binary strings. Each byte is one choice, its value.

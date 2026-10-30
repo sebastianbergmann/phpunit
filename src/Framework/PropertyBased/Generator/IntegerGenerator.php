@@ -11,8 +11,8 @@ namespace PHPUnit\Framework\PropertyBased\Generator;
 
 use function assert;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
-use PHPUnit\Framework\PropertyBased\Distribution\BoundaryDistribution;
-use PHPUnit\Framework\PropertyBased\Distribution\UniformDistribution;
+use SebastianBergmann\ChoiceSequence\BoundaryDistribution;
+use SebastianBergmann\ChoiceSequence\UniformDistribution;
 
 /**
  * Generates integers in the range [$minimum, $maximum]. The choice 0 stands
