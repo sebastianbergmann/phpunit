@@ -404,16 +404,10 @@
         <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Util/PHP/Template/TestCaseClass.tpl" token="SebastianBergmann\CodeCoverage\CodeCoverage" value="PHPUnitPHAR\SebastianBergmann\CodeCoverage\CodeCoverage"/>
         <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Util/PHP/Template/TestCaseMethod.tpl" token="SebastianBergmann\CodeCoverage\CodeCoverage" value="PHPUnitPHAR\SebastianBergmann\CodeCoverage\CodeCoverage"/>
 
-        <exec executable="${basedir}/tools/phpab" taskname="phpab" failonerror="true">
-            <arg value="--all" />
-            <arg value="--phar" />
-            <arg value="--hash" />
-            <arg value="SHA-512" />
-            <arg value="--output" />
-            <arg path="${basedir}/build/artifacts/phpunit-library-${_version}.phar" />
-            <arg value="--template" />
-            <arg path="${basedir}/build/templates/library-phar-autoload.php.in" />
+        <exec executable="${basedir}/build/scripts/phar-builder/run.php" taskname="phar-builder" failonerror="true">
             <arg path="${basedir}/build/tmp/phar-scoped" />
+            <arg path="${basedir}/build/templates/library-phar-autoload.php.in" />
+            <arg path="${basedir}/build/artifacts/phpunit-library-${_version}.phar" />
         </exec>
 
         <exec executable="${basedir}/build/scripts/phar-set-timestamps/run.php" taskname="phar-set-timestamps" failonerror="true">
@@ -433,17 +427,10 @@
         <copy file="${basedir}/build/templates/binary-phar-autoload.php.in" tofile="${basedir}/build/tmp/binary-phar-autoload.php"/>
         <replace file="${basedir}/build/tmp/binary-phar-autoload.php" token="X.Y.Z" value="${_version}"/>
 
-        <exec executable="${basedir}/tools/phpab" taskname="phpab" failonerror="true">
-            <arg value="--all" />
-            <arg value="--nolower" />
-            <arg value="--phar" />
-            <arg value="--hash" />
-            <arg value="SHA-512" />
-            <arg value="--output" />
-            <arg path="${basedir}/build/artifacts/phpunit-${_version}.phar" />
-            <arg value="--template" />
-            <arg path="${basedir}/build/tmp/binary-phar-autoload.php" />
+        <exec executable="${basedir}/build/scripts/phar-builder/run.php" taskname="phar-builder" failonerror="true">
             <arg path="${basedir}/build/tmp/phar-scoped" />
+            <arg path="${basedir}/build/tmp/binary-phar-autoload.php" />
+            <arg path="${basedir}/build/artifacts/phpunit-${_version}.phar" />
         </exec>
 
         <exec executable="${basedir}/build/scripts/phar-set-timestamps/run.php" taskname="phar-set-timestamps" failonerror="true">

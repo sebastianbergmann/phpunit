@@ -16,8 +16,8 @@ spl_autoload_register(
             require_once 'phar://___PHAR___' . $classes[$class];
         }
     },
-    ___EXCEPTION___,
-    ___PREPEND___
+    true,
+    false
 );
 
 foreach ([___CLASSLIST___] as $file) {
