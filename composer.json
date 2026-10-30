@@ -36,7 +36,7 @@
         "ext-mbstring": "*",
         "ext-xmlwriter": "*",
         "myclabs/deep-copy": "^1.14.0",
-        "phpunit/php-code-coverage": "^14.4.1",
+        "phpunit/php-code-coverage": "^14.5.0",
         "phpunit/php-file-iterator": "^7.0.2",
         "phpunit/php-invoker": "^7.0.0",
         "phpunit/php-text-template": "^6.0.1",
