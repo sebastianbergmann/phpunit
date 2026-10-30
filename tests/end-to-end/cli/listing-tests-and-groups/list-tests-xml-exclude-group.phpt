@@ -35,6 +35,9 @@ PHPUnit %s by Sebastian Bergmann and contributors.
   <group name="abstract-one">
    <test id="PHPUnit\TestFixture\ListingTestsAndGroups\ExampleExtendingAbstractTest::testOne"/>
   </group>
+  <group name="default">
+   <test id="%sexample.phpt"/>
+  </group>
   <group name="two">
    <test id="PHPUnit\TestFixture\ListingTestsAndGroups\ExampleTest::testTwo"/>
   </group>

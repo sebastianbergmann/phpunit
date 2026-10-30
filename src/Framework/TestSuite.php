@@ -175,13 +175,9 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             $groups[] = 'default';
         }
 
-        if ($test instanceof TestCase) {
-            $id = $test->valueObjectForEvents()->id();
+        $id = $test->valueObjectForEvents()->id();
 
-            $test->setGroups($groups);
-        } else {
-            $id = $test->valueObjectForEvents()->id();
-        }
+        $test->setGroups($groups);
 
         foreach ($groups as $group) {
             if (!isset($this->groups[$group])) {
@@ -240,7 +236,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
     {
         try {
             if (str_ends_with($filename, '.phpt') && is_file($filename)) {
-                $this->addTest(new PhptTestCase($filename));
+                $this->addTest(new PhptTestCase($filename), $groups);
             } else {
                 $this->addTestSuite(
                     (new TestSuiteLoader)->load($filename),

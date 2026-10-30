@@ -43,13 +43,7 @@ final readonly class ListGroupsCommand implements Command
         $groups = [];
 
         foreach ($this->tests as $test) {
-            if ($test instanceof PhptTestCase) {
-                $_groups = ['default'];
-            } else {
-                $_groups = $test->groups();
-            }
-
-            foreach ($_groups as $group) {
+            foreach ($test->groups() as $group) {
                 if (!isset($groups[$group])) {
                     $groups[$group] = 1;
                 } else {
