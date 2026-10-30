@@ -233,6 +233,7 @@
                 "phpstan/phpstan-shim": "*"
             },
             "time": "2026-10-28T22:38:53+00:00",
+            "published-time": "2026-10-28T22:39:06+00:00",
             "bin": [
                 "phpstan",
                 "phpstan.phar"

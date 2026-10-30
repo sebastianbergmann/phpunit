@@ -21,8 +21,7 @@ if (!isset($argv[1]) || !\file_exists($argv[1])) {
     exit(1);
 }
 
-if (!str_contains_between(\file_get_contents($argv[1]), 'PHPUnitPHAR', '$classes = [', '];') &&
-    !str_contains_between(\file_get_contents($argv[1]), 'phpunitphar', '$classes = [', '];')) {
+if (!str_contains_between(\file_get_contents($argv[1]), 'PHPUnitPHAR', '$classes = [', '];')) {
     \fwrite(\STDERR, 'PHAR is not scoped' . \PHP_EOL);
 
     exit(1);
