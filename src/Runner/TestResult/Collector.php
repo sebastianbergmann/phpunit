@@ -526,12 +526,13 @@ final class Collector
                 $event->message(),
                 $event->test(),
                 $event->stackTrace(),
+                $event->trigger(),
             );
 
             return;
         }
 
-        $this->deprecations[$id]->triggeredBy($event->test());
+        $this->deprecations[$id]->triggeredBy($event->test(), $event->trigger());
     }
 
     public function testTriggeredPhpDeprecation(PhpDeprecationTriggered $event): void
@@ -556,12 +557,14 @@ final class Collector
                 $event->line(),
                 $event->message(),
                 $event->test(),
+                null,
+                $event->trigger(),
             );
 
             return;
         }
 
-        $this->phpDeprecations[$id]->triggeredBy($event->test());
+        $this->phpDeprecations[$id]->triggeredBy($event->test(), $event->trigger());
     }
 
     public function testTriggeredPhpunitDeprecation(PhpunitDeprecationTriggered $event): void

@@ -86,6 +86,7 @@ final class Builder
         'display-warnings',
         'default-time-limit=',
         'diff-context=',
+        'triggering-tests-limit=',
         'enforce-time-limit',
         'exclude-group=',
         'filter=',
@@ -326,6 +327,7 @@ final class Builder
         $branchCoverage                           = null;
         $defaultTimeLimit                         = null;
         $diffContext                              = null;
+        $triggeringTestsLimit                     = null;
         $disableCodeCoverageIgnore                = null;
         $disableCoverageTargeting                 = null;
         $disallowTestOutput                       = null;
@@ -1241,6 +1243,11 @@ final class Builder
 
                     break;
 
+                case '--triggering-tests-limit':
+                    $triggeringTestsLimit = $this->requireNonNegativeIntValue($option[1], '--triggering-tests-limit');
+
+                    break;
+
                 case '--enforce-time-limit':
                     $enforceTimeLimit = true;
 
@@ -1508,6 +1515,7 @@ final class Builder
             $warmCoverageCache,
             $defaultTimeLimit,
             $diffContext,
+            $triggeringTestsLimit,
             $disableCodeCoverageIgnore,
             $disableCoverageTargeting,
             $disallowTestOutput,
@@ -1705,6 +1713,30 @@ final class Builder
         }
 
         return $value;
+    }
+
+    /**
+     * @throws Exception
+     *
+     * @return non-negative-int
+     */
+    private function requireNonNegativeIntValue(?string $value, string $option): int
+    {
+        if (!is_numeric($value)) {
+            throw new Exception(
+                sprintf('Option %s requires a non-negative integer value', $option),
+            );
+        }
+
+        $intValue = (int) $value;
+
+        if ($intValue < 0) {
+            throw new Exception(
+                sprintf('Option %s requires a non-negative integer value', $option),
+            );
+        }
+
+        return $intValue;
     }
 
     /**

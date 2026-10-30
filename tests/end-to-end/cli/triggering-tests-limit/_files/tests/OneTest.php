@@ -1,0 +1,60 @@
+<?php declare(strict_types=1);
+/*
+ * This file is part of PHPUnit.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+namespace PHPUnit\TestFixture\TriggeringTestsLimit;
+
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
+
+require_once __DIR__ . '/../src/FirstParty.php';
+
+final class OneTest extends TestCase
+{
+    /**
+     * @return iterable<array{int}>
+     */
+    public static function provider(): iterable
+    {
+        yield [1];
+
+        yield [2];
+
+        yield [3];
+    }
+
+    public function testOne(): void
+    {
+        (new FirstParty)->callThirdParty();
+
+        $this->assertTrue(true);
+    }
+
+    public function testTwo(): void
+    {
+        (new FirstParty)->callThirdParty();
+
+        $this->assertTrue(true);
+    }
+
+    public function testThree(): void
+    {
+        (new FirstParty)->callThirdParty();
+        (new FirstParty)->callThirdParty();
+
+        $this->assertTrue(true);
+    }
+
+    #[DataProvider('provider')]
+    public function testFour(int $value): void
+    {
+        (new FirstParty)->triggerDeprecation();
+
+        $this->assertSame($value, $value);
+    }
+}

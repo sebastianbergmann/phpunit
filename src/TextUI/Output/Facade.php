@@ -66,6 +66,7 @@ final class Facade
                 $configuration->displayDetailsOnTestsThatTriggerWarnings() || $configuration->displayDetailsOnAllIssues(),
                 $configuration->displayDetailsOnPhpunitDeprecations() || $configuration->displayDetailsOnAllIssues(),
                 $configuration->displayDetailsOnPhpunitNotices() || $configuration->displayDetailsOnAllIssues(),
+                $configuration->triggeringTestsLimit(),
             );
 
             if (!$extensionCapabilities->replacesProgressOutput()) {
@@ -250,6 +251,7 @@ final class Facade
                 $configuration->displayDetailsOnTestsThatTriggerNotices() || $configuration->displayDetailsOnAllIssues(),
                 $configuration->displayDetailsOnTestsThatTriggerWarnings() || $configuration->displayDetailsOnAllIssues(),
                 $configuration->reverseDefectList(),
+                $configuration->triggeringTestsLimit(),
             );
         }
 
@@ -286,6 +288,7 @@ final class Facade
             $configuration->displayDetailsOnTestsThatTriggerNotices() || $configuration->displayDetailsOnAllIssues(),
             $configuration->displayDetailsOnTestsThatTriggerWarnings() || $configuration->displayDetailsOnAllIssues(),
             $configuration->reverseDefectList(),
+            $configuration->triggeringTestsLimit(),
         );
     }
 
