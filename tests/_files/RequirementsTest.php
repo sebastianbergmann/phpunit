@@ -46,7 +46,7 @@ final class RequirementsTest extends TestCase
     {
     }
 
-    #[RequiresPhp('5.4.0RC6')]
+    #[RequiresPhp('>= 5.4.0RC6')]
     public function testFive(): void
     {
     }
@@ -56,12 +56,12 @@ final class RequirementsTest extends TestCase
     {
     }
 
-    #[RequiresPhp('5.4.0beta2')]
+    #[RequiresPhp('>= 5.4.0beta2')]
     public function testSeven(): void
     {
     }
 
-    #[RequiresPhp('5.4-dev')]
+    #[RequiresPhp('5.4.0-dev')]
     public function testEight(): void
     {
     }

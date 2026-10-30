@@ -9,7 +9,8 @@
  */
 namespace PHPUnit\Util;
 
-use function in_array;
+use SebastianBergmann\VersionRequirement\InvalidVersionOperatorException as InvalidVersionOperatorExceptionImplementation;
+use SebastianBergmann\VersionRequirement\VersionComparisonOperator as VersionComparisonOperatorImplementation;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -24,15 +25,15 @@ final readonly class VersionComparisonOperator
     private string $operator;
 
     /**
-     * @param '!='|'<'|'<='|'<>'|'='|'=='|'>'|'>='|'eq'|'ge'|'gt'|'le'|'lt'|'ne' $operator
-     *
      * @throws InvalidVersionOperatorException
      */
     public function __construct(string $operator)
     {
-        $this->ensureOperatorIsValid($operator);
-
-        $this->operator = $operator;
+        try {
+            $this->operator = new VersionComparisonOperatorImplementation($operator)->asString();
+        } catch (InvalidVersionOperatorExceptionImplementation) {
+            throw new InvalidVersionOperatorException($operator);
+        }
     }
 
     /**
@@ -41,17 +42,5 @@ final readonly class VersionComparisonOperator
     public function asString(): string
     {
         return $this->operator;
-    }
-
-    /**
-     * @param '!='|'<'|'<='|'<>'|'='|'=='|'>'|'>='|'eq'|'ge'|'gt'|'le'|'lt'|'ne' $operator
-     *
-     * @throws InvalidVersionOperatorException
-     */
-    private function ensureOperatorIsValid(string $operator): void
-    {
-        if (!in_array($operator, ['<', 'lt', '<=', 'le', '>', 'gt', '>=', 'ge', '==', '=', 'eq', '!=', '<>', 'ne'], true)) {
-            throw new InvalidVersionOperatorException($operator);
-        }
     }
 }

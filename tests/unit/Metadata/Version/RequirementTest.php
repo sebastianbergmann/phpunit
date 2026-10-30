@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Metadata;
 
-use PharIo\Version\VersionConstraintParser;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -35,13 +34,10 @@ final class RequirementTest extends TestCase
     public static function constraintProvider(): array
     {
         return [
-            [
-                true,
-                '1.0.0',
-                new ConstraintRequirement(
-                    (new VersionConstraintParser)->parse('1.0.0'),
-                ),
-            ],
+            [true, '1.0.0', new ConstraintRequirement('1.0.0')],
+            [false, '1.0.1', new ConstraintRequirement('1.0.0')],
+            [true, '8.5.0-dev', new ConstraintRequirement('^8.5')],
+            [false, '9.0.0', new ConstraintRequirement('^8.5')],
         ];
     }
 
@@ -52,6 +48,9 @@ final class RequirementTest extends TestCase
     {
         return [
             [true, '1.0.0', new ComparisonRequirement('1.0.0', new VersionComparisonOperator('='))],
+            [false, '1.0.1', new ComparisonRequirement('1.0.0', new VersionComparisonOperator('='))],
+            [true, '7.4.33', new ComparisonRequirement('8.0.0', new VersionComparisonOperator('<'))],
+            [false, '8.0.0', new ComparisonRequirement('8.0.0', new VersionComparisonOperator('<'))],
         ];
     }
 
@@ -69,18 +68,48 @@ final class RequirementTest extends TestCase
         $this->assertSame($expected, $requirement->isSatisfiedBy($version));
     }
 
+    public function testVersionConstraintIsComplete(): void
+    {
+        $this->assertTrue(new ConstraintRequirement('^8.5')->isComplete());
+    }
+
+    public function testCannotBeCreatedFromInvalidVersionConstraint(): void
+    {
+        $this->expectException(InvalidVersionRequirementException::class);
+
+        new ConstraintRequirement('^8.*');
+    }
+
     public function testCanBeCreatedFromStringWithSimpleComparison(): void
     {
         $requirement = Requirement::from('>= 1.0');
 
         $this->assertInstanceOf(ComparisonRequirement::class, $requirement);
         $this->assertSame('>= 1.0', $requirement->asString());
+        $this->assertSame('1.0', $requirement->version());
+    }
+
+    public function testCannotBeCreatedFromStringWithSimpleComparisonWithoutOperator(): void
+    {
+        $this->expectException(InvalidVersionRequirementException::class);
+
+        Requirement::from('8.5.0RC1');
     }
 
     #[DataProvider('comparisonProvider')]
     public function testVersionRequirementCanBeCheckedUsingSimpleComparison(bool $expected, string $version, ComparisonRequirement $requirement): void
     {
         $this->assertSame($expected, $requirement->isSatisfiedBy($version));
+    }
+
+    public function testSimpleComparisonWithMajorMinorAndPatchLevelIsComplete(): void
+    {
+        $this->assertTrue(new ComparisonRequirement('8.5.0', new VersionComparisonOperator('<='))->isComplete());
+    }
+
+    public function testSimpleComparisonWithoutPatchLevelIsIncomplete(): void
+    {
+        $this->assertFalse(new ComparisonRequirement('8.5', new VersionComparisonOperator('<='))->isComplete());
     }
 
     public function testCannotBeCreatedFromInvalidString(): void

@@ -9,10 +9,9 @@
  */
 namespace PHPUnit\Metadata\Version;
 
-use function assert;
-use function preg_replace;
-use PharIo\Version\Version;
-use PharIo\Version\VersionConstraint;
+use PHPUnit\Metadata\InvalidVersionRequirementException;
+use SebastianBergmann\VersionRequirement\ConstraintRequirement as ConstraintRequirementImplementation;
+use SebastianBergmann\VersionRequirement\Exception as VersionRequirementException;
 
 /**
  * @immutable
@@ -21,35 +20,34 @@ use PharIo\Version\VersionConstraint;
  */
 final readonly class ConstraintRequirement extends Requirement
 {
-    private VersionConstraint $constraint;
+    /**
+     * @var non-empty-string
+     */
+    private string $constraint;
 
-    public function __construct(VersionConstraint $constraint)
+    /**
+     * @param non-empty-string $constraint
+     *
+     * @throws InvalidVersionRequirementException
+     */
+    public function __construct(string $constraint)
     {
+        try {
+            new ConstraintRequirementImplementation($constraint);
+        } catch (VersionRequirementException) {
+            throw new InvalidVersionRequirementException;
+        }
+
         $this->constraint = $constraint;
     }
 
     public function isSatisfiedBy(string $version): bool
     {
-        return $this->constraint->complies(
-            new Version($this->sanitize($version)),
-        );
+        return new ConstraintRequirementImplementation($this->constraint)->isSatisfiedBy($version);
     }
 
     public function asString(): string
     {
-        return $this->constraint->asString();
-    }
-
-    private function sanitize(string $version): string
-    {
-        $sanitized = preg_replace(
-            '/^(\d+\.\d+(?:.\d+)?).*$/',
-            '$1',
-            $version,
-        );
-
-        assert($sanitized !== null);
-
-        return $sanitized;
+        return $this->constraint;
     }
 }

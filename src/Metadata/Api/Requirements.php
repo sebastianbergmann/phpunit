@@ -25,7 +25,6 @@ use function method_exists;
 use function phpversion;
 use function preg_match;
 use function sprintf;
-use function substr_count;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Metadata\Parser\Registry;
 use PHPUnit\Metadata\RequiresClass;
@@ -39,7 +38,6 @@ use PHPUnit\Metadata\RequiresPhpExtension;
 use PHPUnit\Metadata\RequiresPhpunit;
 use PHPUnit\Metadata\RequiresPhpunitExtension;
 use PHPUnit\Metadata\RequiresSetting;
-use PHPUnit\Metadata\Version\ComparisonRequirement;
 use PHPUnit\Metadata\Version\InvalidVersionRequirement;
 use PHPUnit\Metadata\Version\Requirement;
 use PHPUnit\Runner\Version;
@@ -325,11 +323,7 @@ final readonly class Requirements
      */
     private function warnAboutIncompleteVersion(Requirement $versionRequirement, string $className, string $methodName): void
     {
-        if (!$versionRequirement instanceof ComparisonRequirement) {
-            return;
-        }
-
-        if (substr_count($versionRequirement->version(), '.') === 2) {
+        if ($versionRequirement->isComplete()) {
             return;
         }
 
