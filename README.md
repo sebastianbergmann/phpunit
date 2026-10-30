@@ -31,7 +31,7 @@ Please refer to the [documentation](https://phpunit.de/documentation.html?ref=gi
 
 Please refer to [CONTRIBUTING.md](https://github.com/sebastianbergmann/phpunit/blob/main/.github/CONTRIBUTING.md) for information on how to contribute to PHPUnit and its related projects.
 
-A big "Thank you!" to everyone who has contributed to PHPUnit!
+A big "Thank you!" to everyone who has contributed to PHPUnit, its [documentation](https://github.com/sebastianbergmann/phpunit-documentation-english), or one of its dependencies!
 You can find a detailed list of contributors on every PHPUnit related package on GitHub.
 
 Here is a list of all components that are primarily developed and maintained by [Sebastian Bergmann](https://sebastian-bergmann.de/open-source.html?ref=github):
@@ -59,8 +59,6 @@ Here is a list of all components that are primarily developed and maintained by 
 * [sebastian/version](https://github.com/sebastianbergmann/version)
 * [sebastian/version-requirement](https://github.com/sebastianbergmann/version-requirement)
 
-A very special thanks to everyone who has contributed to the [PHPUnit Manual](https://github.com/sebastianbergmann/phpunit-documentation-english).
-
 In addition to the components listed above, PHPUnit depends on the components listed below:
 
 * [myclabs/deep-copy](https://github.com/myclabs/DeepCopy)
@@ -72,7 +70,6 @@ These tools are used to develop PHPUnit:
 
 * [Composer](https://getcomposer.org/)
 * [Phive](https://phar.io/)
-* [PHP Autoload Builder](https://github.com/theseer/Autoload/)
 * [PHP-CS-Fixer](https://cs.symfony.com/)
 * [PHP-Scoper](https://github.com/humbug/php-scoper)
 * [PHPStan](https://phpstan.org/)
