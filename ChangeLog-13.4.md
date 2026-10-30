@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 13.4 release series are documented in this fi
 
 ## [13.4.6] - 2026-MM-DD
 
+### Changed
+
+* Make PHAR build reproducible across filesystems (files are now added to the PHAR sorted by their path instead of in the order in which the filesystem lists them)
+
 ### Fixed
 
 * When `method()` is called for a method of a test double that cannot be configured, for instance because it does not exist, every subsequent invocation of a method of that test double fails with `Method name is not configured`
@@ -16,6 +20,10 @@ All notable changes of the PHPUnit 13.4 release series are documented in this fi
 * When an after-last-test method, for instance `tearDownAfterClass()`, calls `markTestIncomplete()` or `markTestSkipped()` after the tests of the test class have been run, this is reported as a failure, also for each test of the test class that is run in process isolation
 * When a test fails because of an exception of a registered failure type, an error or a failure in an "after test" method, for instance `tearDown()`, is reported in addition to the test's failure, so the test is counted more than once
 * A test that fails because of an exception of a registered failure type is considered risky when it does not perform assertions or, when `requireCoverageMetadata="true"` is configured, when it does not define a code coverage target, unlike a test that fails because an assertion failed
+
+### Removed
+
+* The library PHAR (`phpunit-library-X.Y.Z.phar`) is no longer built, it could not be loaded since PHPUnit 9.5.8
 
 ## [13.4.5] - 2026-10-27
 
