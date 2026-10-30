@@ -48,6 +48,7 @@ use PHPUnit\TestFixture\PropertyBased\NameResolution\ClassWithImports;
 use PropertyBasedNameResolutionClassInGlobalNamespace;
 use ReflectionClass;
 use ReflectionMethod;
+use SebastianBergmann\ChoiceSequence\ChoiceSequence;
 
 #[CoversClass(CounterexampleExporter::class)]
 #[CoversClass(Constructions::class)]

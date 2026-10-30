@@ -23,12 +23,12 @@ use PHPUnit\Framework\PropertyBased\Distribution\UniformDistribution;
 use PHPUnit\Framework\TestCase;
 use Random\Engine\Xoshiro256StarStar;
 use Random\Randomizer;
+use SebastianBergmann\ChoiceSequence\ChoiceSequence;
+use SebastianBergmann\ChoiceSequence\Span;
 
 #[CoversClass(ChoiceSource::class)]
 #[CoversClass(ChoiceTree::class)]
 #[CoversClass(ChoiceTreeNode::class)]
-#[CoversClass(ChoiceSequence::class)]
-#[CoversClass(Span::class)]
 #[CoversClass(ExampleRejectedException::class)]
 #[Small]
 #[Group('framework')]

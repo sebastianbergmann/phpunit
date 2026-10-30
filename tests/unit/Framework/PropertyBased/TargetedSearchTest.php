@@ -16,6 +16,7 @@ use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use Random\Engine\Xoshiro256StarStar;
 use Random\Randomizer;
+use SebastianBergmann\ChoiceSequence\ChoiceSequence;
 
 #[CoversClass(TargetedSearch::class)]
 #[Small]

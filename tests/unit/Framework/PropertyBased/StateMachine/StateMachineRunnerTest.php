@@ -17,7 +17,6 @@ use function count;
 use function max;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
-use PHPUnit\Framework\PropertyBased\ChoiceSequence;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
 use PHPUnit\Framework\PropertyBased\CounterexampleExporter;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorDeriver;
@@ -34,6 +33,7 @@ use Random\Engine\Xoshiro256StarStar;
 use Random\Randomizer;
 use ReflectionMethod;
 use RuntimeException;
+use SebastianBergmann\ChoiceSequence\ChoiceSequence;
 
 #[CoversClass(StateMachineRunner::class)]
 #[Small]

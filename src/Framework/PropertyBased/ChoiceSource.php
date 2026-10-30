@@ -21,6 +21,8 @@ use PHPUnit\Framework\PropertyBased\Derivation\GeneratorRegistry;
 use PHPUnit\Framework\PropertyBased\Distribution\Distribution;
 use PHPUnit\Framework\PropertyBased\Generator\DeferredGenerator;
 use Random\Randomizer;
+use SebastianBergmann\ChoiceSequence\ChoiceSequence;
+use SebastianBergmann\ChoiceSequence\Span;
 
 /**
  * Provides the choices from which generators build the arguments of an
