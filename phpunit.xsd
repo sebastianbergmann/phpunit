@@ -218,7 +218,11 @@
         <xs:attribute name="testdoxSummary" type="xs:boolean" default="false"/>
         <xs:attribute name="stderr" type="xs:boolean" default="false"/>
         <xs:attribute name="reverseDefectList" type="xs:boolean" default="false"/>
-        <xs:attribute name="extensionsDirectory" type="xs:anyURI"/>
+        <xs:attribute name="extensionsDirectory" type="xs:anyURI">
+            <xs:annotation>
+                <xs:documentation>Deprecated, loading extensions from PHARs will be removed in PHPUnit 14</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
         <xs:attribute name="executionOrder" type="executionOrderType" default="default"/>
         <xs:attribute name="resolveDependencies" type="xs:boolean" default="true"/>
         <xs:attribute name="displayDetailsOnAllIssues" type="xs:boolean" default="false"/>
