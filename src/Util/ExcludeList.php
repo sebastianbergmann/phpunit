@@ -25,6 +25,7 @@ use DeepCopy\DeepCopy;
 use PhpParser\Parser;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use SebastianBergmann\ChoiceSequence\ChoiceSequence;
 use SebastianBergmann\CliParser\Parser as CliParser;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\Comparator\Comparator;
@@ -83,6 +84,9 @@ final class ExcludeList
 
         // phpunit/php-timer
         Timer::class => 1,
+
+        // sebastian/choice-sequence
+        ChoiceSequence::class => 1,
 
         // sebastian/cli-parser
         CliParser::class => 1,

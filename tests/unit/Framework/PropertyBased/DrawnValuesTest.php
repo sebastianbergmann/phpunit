@@ -16,6 +16,7 @@ use PHPUnit\Framework\PropertyBased\Type\NameScope;
 use PHPUnit\Framework\TestCase;
 use PropertyBasedNameResolutionClassInGlobalNamespace;
 use ReflectionMethod;
+use SebastianBergmann\ChoiceSequence\ChoiceSequence;
 use stdClass;
 
 #[CoversClass(DrawnValues::class)]

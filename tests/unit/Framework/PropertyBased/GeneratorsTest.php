@@ -114,6 +114,8 @@ use PHPUnit\TestFixture\PropertyBased\Derivation\Tree;
 use PHPUnit\TestFixture\PropertyBased\EnumerationWithoutCases;
 use Random\Engine\Xoshiro256StarStar;
 use Random\Randomizer;
+use SebastianBergmann\ChoiceSequence\ChoiceSequence;
+use SebastianBergmann\ChoiceSequence\Span;
 use stdClass;
 
 #[CoversClass(Generators::class)]

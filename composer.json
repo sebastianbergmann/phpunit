@@ -42,6 +42,7 @@
         "phpunit/php-invoker": "^7.0.0",
         "phpunit/php-text-template": "^6.0.1",
         "phpunit/php-timer": "^9.0.0",
+        "sebastian/choice-sequence": "^1.0@dev",
         "sebastian/cli-parser": "^5.0.1",
         "sebastian/comparator": "^8.4",
         "sebastian/diff": "^9.0.1",

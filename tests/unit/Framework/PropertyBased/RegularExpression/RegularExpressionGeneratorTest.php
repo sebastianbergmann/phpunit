@@ -18,7 +18,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
-use PHPUnit\Framework\PropertyBased\ChoiceSequence;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
 use PHPUnit\Framework\PropertyBased\ExampleRejectedException;
 use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
@@ -28,6 +27,7 @@ use PHPUnit\Framework\PropertyBased\InvalidGeneratorArgumentException;
 use PHPUnit\Framework\TestCase;
 use Random\Engine\Xoshiro256StarStar;
 use Random\Randomizer;
+use SebastianBergmann\ChoiceSequence\ChoiceSequence;
 
 #[CoversClass(RegularExpressionGenerator::class)]
 #[CoversClass(Parser::class)]
