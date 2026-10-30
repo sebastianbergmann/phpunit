@@ -8,6 +8,10 @@ All notable changes of the PHPUnit 8.5 release series are documented in this fil
 
 * Make PHAR build reproducible across filesystems (files are now added to the PHAR sorted by their path instead of in the order in which the filesystem lists them)
 
+### Removed
+
+* The library PHAR (`phpunit-library-X.Y.Z.phar`) is no longer built, it could not be loaded since PHPUnit 8.5.19
+
 ## [8.5.56] - 2026-10-05
 
 ### Changed
