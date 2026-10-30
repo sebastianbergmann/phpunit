@@ -52,6 +52,8 @@ final readonly class Filter
      * are not looked at.
      *
      * @throws Exception
+     *
+     * @return ?non-empty-string
      */
     public static function firstFrameFromThrowableAsString(Throwable $t, bool $unwrap = true): ?string
     {

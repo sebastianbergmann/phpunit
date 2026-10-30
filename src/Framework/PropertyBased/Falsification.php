@@ -12,6 +12,7 @@ namespace PHPUnit\Framework\PropertyBased;
 use function sprintf;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\Filter;
+use SebastianBergmann\ChoiceSequence\FailureSignature;
 use SebastianBergmann\Invoker\TimeoutException;
 use Throwable;
 
@@ -26,17 +27,17 @@ use Throwable;
  * line of the throwable alone would not do, because every failed assertion is
  * raised in PHPUnit's own code.
  *
+ * Whether two examples falsify the property in the same way is told by the
+ * failure signature of sebastian/choice-sequence, so that failures are
+ * compared in the same way wherever that library is used.
+ *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final readonly class Falsification
 {
-    /**
-     * @var non-empty-string
-     */
-    private string $signature;
-    private bool $timeout;
+    private FailureSignature $signature;
 
     /**
      * Returns null when the example did not falsify the property, that is,
@@ -51,25 +52,18 @@ final readonly class Falsification
         $throwable = $example->throwableThatEndedTheTest();
 
         if ($throwable instanceof TimeoutException) {
-            return new self('timeout', true);
+            return new self(FailureSignature::forTimeout());
         }
 
         $status = $example->status();
 
         if ($throwable === null) {
             // @codeCoverageIgnoreStart
-            return new self(sprintf('%s: %s', $status->asString(), $status->message()), false);
+            return new self(FailureSignature::forDescription(sprintf('%s: %s', $status->asString(), $status->message())));
             // @codeCoverageIgnoreEnd
         }
 
-        return new self(
-            sprintf(
-                '%s at %s',
-                $throwable::class,
-                self::locationOf($throwable),
-            ),
-            false,
-        );
+        return new self(FailureSignature::forThrowable($throwable::class, self::locationOf($throwable)));
     }
 
     /**
@@ -86,13 +80,9 @@ final readonly class Falsification
         return $example->status()->isFailure() || $example->status()->isError();
     }
 
-    /**
-     * @param non-empty-string $signature
-     */
-    private function __construct(string $signature, bool $timeout)
+    private function __construct(FailureSignature $signature)
     {
         $this->signature = $signature;
-        $this->timeout   = $timeout;
     }
 
     /**
@@ -100,12 +90,12 @@ final readonly class Falsification
      */
     public function isTimeout(): bool
     {
-        return $this->timeout;
+        return $this->signature->isTimeout();
     }
 
     public function isSameAs(self $other): bool
     {
-        return $this->signature === $other->signature;
+        return $this->signature->isSameAs($other->signature);
     }
 
     /**
@@ -117,13 +107,12 @@ final readonly class Falsification
      */
     public function description(): string
     {
-        if ($this->timeout) {
-            return 'exceeding the time limit';
-        }
-
-        return $this->signature;
+        return $this->signature->description();
     }
 
+    /**
+     * @return non-empty-string
+     */
     private static function locationOf(Throwable $throwable): string
     {
         $frame = Filter::firstFrameFromThrowableAsString($throwable, false);
