@@ -20,13 +20,15 @@ use function realpath;
 use function sprintf;
 use function str_contains;
 use function trim;
-use function version_compare;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Runner\Filter\CompiledGroupFilter;
 use PHPUnit\TextUI\RuntimeException;
 use PHPUnit\TextUI\TestDirectoryNotFoundException;
 use PHPUnit\TextUI\TestFileNotFoundException;
+use PHPUnit\Util\VersionComparisonOperator;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
+use SebastianBergmann\VersionRequirement\ComparisonRequirement as ComparisonRequirementImplementation;
+use SebastianBergmann\VersionRequirement\VersionComparisonOperator as VersionComparisonOperatorImplementation;
 
 /**
  * Resolves which test files the test suite for a configuration is built from,
@@ -219,7 +221,7 @@ final readonly class TestFileResolver
                     throw new TestDirectoryNotFoundException($directory->path());
                 }
 
-                if (!version_compare(PHP_VERSION, $directory->phpVersion(), $directory->phpVersionOperator()->asString())) {
+                if (!$this->isPhpVersionSatisfied($directory->phpVersion(), $directory->phpVersionOperator())) {
                     continue;
                 }
 
@@ -249,7 +251,7 @@ final readonly class TestFileResolver
                     throw new TestFileNotFoundException($file->path());
                 }
 
-                if (!version_compare(PHP_VERSION, $file->phpVersion(), $file->phpVersionOperator()->asString())) {
+                if (!$this->isPhpVersionSatisfied($file->phpVersion(), $file->phpVersionOperator())) {
                     continue;
                 }
 
@@ -318,5 +320,20 @@ final readonly class TestFileResolver
         );
 
         return true;
+    }
+
+    /**
+     * An empty phpVersion attribute does not restrict the PHP version.
+     */
+    private function isPhpVersionSatisfied(string $phpVersion, VersionComparisonOperator $phpVersionOperator): bool
+    {
+        if ($phpVersion === '') {
+            return true;
+        }
+
+        return new ComparisonRequirementImplementation(
+            $phpVersion,
+            new VersionComparisonOperatorImplementation($phpVersionOperator->asString()),
+        )->isSatisfiedBy(PHP_VERSION);
     }
 }

@@ -139,6 +139,28 @@ final class TestFileResolverTest extends TestCase
         $this->assertSame('second', $resolved[0]['name']);
     }
 
+    public function testResolvesTestFilesInDirectoryWithoutPhpVersion(): void
+    {
+        $this->assertSame(
+            [
+                [
+                    'name'  => 'default',
+                    'files' => [
+                        ['path' => $this->fixturePath('ExcludedTest.php'), 'groups' => []],
+                        ['path' => $this->fixturePath('SuccessTest.php'), 'groups' => []],
+                    ],
+                ],
+            ],
+            new TestFileResolver($this->createStub(Emitter::class))->filesInTestSuites(
+                TestSuiteCollection::fromArray([
+                    $this->testSuite('default', [$this->testDirectory('')]),
+                ]),
+                [],
+                [],
+            ),
+        );
+    }
+
     public function testDoesNotResolveTestFileForMoreThanOneTestSuite(): void
     {
         $emitter = $this->createMock(Emitter::class);
