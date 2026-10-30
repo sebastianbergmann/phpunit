@@ -49,6 +49,9 @@ final class Grapheme
         ['μ', 's', 'ι',        'σ', 'β',        'θ',        'φ',        'π',        'κ',        'ρ',        'ε',        "\xE1\xB9\xA1", 'ι'],
     ];
 
+    // The characters that extend a grapheme cluster and that ICU 74 ignores when it compares strings
+    private const IGNORABLE_RX = '/^[\x{034F}\x{0488}-\x{0489}\x{0591}-\x{05AF}\x{05BD}\x{05C4}-\x{05C5}\x{0610}-\x{061A}\x{06D6}-\x{06DC}\x{06DF}-\x{06E4}\x{06E7}-\x{06E8}\x{06EA}-\x{06ED}\x{0740}\x{0743}-\x{0744}\x{0747}-\x{074A}\x{0898}-\x{089D}\x{08CA}-\x{08E1}\x{08EA}-\x{08EF}\x{08F3}\x{0951}-\x{0952}\x{0F18}-\x{0F19}\x{0F35}\x{0F37}\x{0F3E}-\x{0F3F}\x{0F86}-\x{0F87}\x{0FC6}\x{17B4}-\x{17B5}\x{17D3}\x{180B}-\x{180D}\x{180F}\x{1A7F}\x{1B6B}-\x{1B73}\x{1CD0}-\x{1CD2}\x{1CD4}-\x{1CE8}\x{1CF4}\x{1CF7}-\x{1CF9}\x{200C}-\x{200D}\x{2D7F}\x{A670}-\x{A672}\x{A8E0}-\x{A8F1}\x{FE00}-\x{FE0F}\x{FE21}\x{FE23}-\x{FE26}\x{FE28}\x{FE2A}-\x{FE2D}\x{FE2F}\x{102E0}\x{10EFD}-\x{10EFF}\x{11366}-\x{1136C}\x{11370}-\x{11374}\x{13440}\x{13447}-\x{13455}\x{16FE4}\x{1CF00}-\x{1CF2D}\x{1CF30}-\x{1CF46}\x{1D165}-\x{1D169}\x{1D16D}-\x{1D172}\x{1D17B}-\x{1D182}\x{1D185}-\x{1D18B}\x{1D1AA}-\x{1D1AD}\x{1D242}-\x{1D244}\x{1DA00}-\x{1DA36}\x{1DA3B}-\x{1DA6C}\x{1DA75}\x{1DA84}\x{1DA9B}-\x{1DA9F}\x{1DAA1}-\x{1DAAF}\x{1E8D0}-\x{1E8D6}\x{E0020}-\x{E007F}\x{E0100}-\x{E01EF}]*+\z/u';
+
     // indexed by the $mode argument of grapheme_position()
     private const POSITION_FUNCTIONS = ['grapheme_strpos', 'grapheme_stripos', 'grapheme_strrpos', 'grapheme_strripos'];
 
@@ -377,13 +380,72 @@ final class Grapheme
                 $needle = str_replace(self::CASE_FOLD[0], self::CASE_FOLD[1], $needle);
             }
         }
-        if ($reverse) {
-            $needlePos = strrpos($s, $needle);
-        } else {
-            $needlePos = strpos($s, $needle);
+        $needleLen = \strlen($needle);
+        $needlePos = $reverse ? strrpos($s, $needle) : strpos($s, $needle);
+
+        while (false !== $needlePos) {
+            if (false !== $i = self::graphemeIndex($s, $needlePos, $needlePos + $needleLen)) {
+                return $i + $offset;
+            }
+
+            if (!$reverse) {
+                $needlePos = strpos($s, $needle, $needlePos + 1);
+            } elseif ($needlePos) {
+                $needlePos = strrpos(substr($s, 0, $needlePos + $needleLen - 1), $needle);
+            } else {
+                $needlePos = false;
+            }
         }
 
-        return false !== $needlePos ? self::grapheme_strlen(substr($s, 0, $needlePos)) + $offset : false;
+        return false;
+    }
+
+    /**
+     * Returns the position in grapheme units of the bytes from $start to $end,
+     * or false when they split a grapheme cluster on characters that are not ignorable.
+     */
+    private static function graphemeIndex($s, $start, $end)
+    {
+        if (self::isAsciiBoundary($s, $start) && self::isAsciiBoundary($s, $end)) {
+            return self::grapheme_strlen(substr($s, 0, $start));
+        }
+
+        $i = $pos = 0;
+
+        if ($start) {
+            // count the clusters that start before $start, then find where the last one starts
+            $prefix = substr($s, 0, $start);
+            preg_replace('/'.SYMFONY_GRAPHEME_CLUSTER_RX.'/u', '', $prefix, -1, $i);
+
+            if (!$i) {
+                return false;
+            }
+
+            $pos = 1 < $i ? $start - \strlen(preg_replace('/'.SYMFONY_GRAPHEME_CLUSTER_RX.'/u', '', $prefix, $i - 1)) : 0;
+        }
+
+        do {
+            if (!preg_match('/\G'.SYMFONY_GRAPHEME_CLUSTER_RX.'/u', $s, $cluster, 0, $pos)) {
+                return false;
+            }
+
+            $next = $pos + \strlen($cluster[0]);
+
+            if ($pos < $start && $start < $next && !preg_match(self::IGNORABLE_RX, substr($s, $start, min($next, $end) - $start))) {
+                return false;
+            }
+
+            if ($pos < $end && $end < $next && !preg_match(self::IGNORABLE_RX, substr($s, $end, $next - $end))) {
+                return false;
+            }
+        } while (($pos = $next) < $end);
+
+        return $i;
+    }
+
+    private static function isAsciiBoundary($s, $i)
+    {
+        return 0 === $i || !isset($s[$i]) || ($s[$i - 1] < "\x80" && $s[$i] < "\x80" && ("\r" !== $s[$i - 1] || "\n" !== $s[$i]));
     }
 
     public static function grapheme_strrev(string $string)
