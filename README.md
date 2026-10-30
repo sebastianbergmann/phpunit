@@ -66,7 +66,6 @@ In addition to the components listed above, PHPUnit depends on the components li
 * [phar-io/manifest](https://github.com/phar-io/manifest)
 * [phar-io/version](https://github.com/phar-io/version)
 * [staabm/side-effects-detector](https://github.com/staabm/side-effects-detector)
-* [theseer/tokenizer](https://github.com/theseer/tokenizer)
 
 These tools are used to develop PHPUnit:
 
