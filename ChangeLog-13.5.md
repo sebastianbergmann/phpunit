@@ -9,6 +9,7 @@ All notable changes of the PHPUnit 13.5 release series are documented in this fi
 * [#7038](https://github.com/sebastianbergmann/phpunit/issues/7038): `--show-effective-configuration` to show what a configuration will execute, without executing it
 * [#7039](https://github.com/sebastianbergmann/phpunit/issues/7039): `TestCase::suspendOutputBuffering()` and `TestCase::resumeOutputBuffering()` methods for capturing the output of a test method that
 * [#7049](https://github.com/sebastianbergmann/phpunit/issues/7049): `--random-seed <N>` CLI option
+* [#7086](https://github.com/sebastianbergmann/phpunit/pull/7086): `--triggering-tests-limit` CLI option and `triggeringTestsLimit` XML attribute to group and limit the tests listed for each issue
 
 ### Changed
 
