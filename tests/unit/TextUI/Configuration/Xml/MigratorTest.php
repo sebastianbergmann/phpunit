@@ -93,6 +93,10 @@ final class MigratorTest extends TestCase
                 __DIR__ . '/../../../../_files/XmlConfigurationMigration/output-cache-result.xml',
                 __DIR__ . '/../../../../_files/XmlConfigurationMigration/input-cache-result.xml',
             ],
+            'Extensions Directory' => [
+                __DIR__ . '/../../../../_files/XmlConfigurationMigration/output-extensions-directory.xml',
+                __DIR__ . '/../../../../_files/XmlConfigurationMigration/input-extensions-directory.xml',
+            ],
         ];
     }
 

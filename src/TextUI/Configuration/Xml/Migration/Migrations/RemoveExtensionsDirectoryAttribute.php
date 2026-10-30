@@ -7,15 +7,27 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TextUI\Configuration;
+namespace PHPUnit\TextUI\XmlConfiguration;
 
-use RuntimeException;
+use function assert;
+use DOMDocument;
+use DOMElement;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class NoPharExtensionDirectoryException extends RuntimeException implements Exception
+final readonly class RemoveExtensionsDirectoryAttribute implements Migration
 {
+    public function migrate(DOMDocument $document): void
+    {
+        $root = $document->documentElement;
+
+        assert($root instanceof DOMElement);
+
+        if ($root->hasAttribute('extensionsDirectory')) {
+            $root->removeAttribute('extensionsDirectory');
+        }
+    }
 }

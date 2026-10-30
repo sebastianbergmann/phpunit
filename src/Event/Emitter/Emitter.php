@@ -39,13 +39,6 @@ interface Emitter
     public function testRunnerBootstrapFinished(string $filename): void;
 
     /**
-     * @param non-empty-string $filename
-     * @param non-empty-string $name
-     * @param non-empty-string $version
-     */
-    public function testRunnerLoadedExtensionFromPhar(string $filename, string $name, string $version): void;
-
-    /**
      * @param class-string          $className
      * @param array<string, string> $parameters
      */

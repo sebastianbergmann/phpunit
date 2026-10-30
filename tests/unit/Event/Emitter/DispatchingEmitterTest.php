@@ -281,40 +281,6 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($filename, $event->filename());
     }
 
-    #[TestDox('testRunnerLoadedExtensionFromPhar() emits TestRunner\ExtensionLoadedFromPhar event')]
-    public function testTestRunnerLoadedExtensionFromPharEmitsExtensionLoadedFromPharEvent(): void
-    {
-        $subscriber = new class extends RecordingSubscriber implements TestRunner\ExtensionLoadedFromPharSubscriber
-        {
-            public function notify(TestRunner\ExtensionLoadedFromPhar $event): void
-            {
-                $this->record($event);
-            }
-        };
-
-        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
-            TestRunner\ExtensionLoadedFromPharSubscriber::class,
-            TestRunner\ExtensionLoadedFromPhar::class,
-            $subscriber,
-        );
-
-        $telemetrySystem = $this->telemetrySystem();
-
-        $emitter = new DispatchingEmitter(
-            $dispatcher,
-            $telemetrySystem,
-        );
-
-        $emitter->testRunnerLoadedExtensionFromPhar(
-            'filename',
-            'example-extension',
-            '1.2.3',
-        );
-
-        $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(TestRunner\ExtensionLoadedFromPhar::class, $subscriber->lastRecordedEvent());
-    }
-
     #[TestDox('testRunnerBootstrappedExtension() emits TestRunner\ExtensionBootstrapped event')]
     public function testTestRunnerBootstrappedExtensionEmitsExtensionBootstrappedEvent(): void
     {

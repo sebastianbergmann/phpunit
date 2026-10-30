@@ -61,7 +61,6 @@ use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\Runner\Extension\ExtensionBootstrapper;
 use PHPUnit\Runner\Extension\ExtensionCapabilities;
 use PHPUnit\Runner\Extension\ExtensionFacade;
-use PHPUnit\Runner\Extension\PharLoader;
 use PHPUnit\Runner\GarbageCollection\GarbageCollectionHandler;
 use PHPUnit\Runner\IssueTriggerResolver\Resolver;
 use PHPUnit\Runner\PhpConfiguration\PhpConfigurationChecker;
@@ -179,16 +178,9 @@ final readonly class Application
 
             $this->executeCommandsThatDoNotRequireTheTestSuite($configuration, $cliConfiguration);
 
-            $pharExtensions        = null;
             $extensionCapabilities = ExtensionCapabilities::none();
 
             if (!$configuration->noExtensions()) {
-                if ($configuration->hasPharExtensionDirectory()) {
-                    $pharExtensions = new PharLoader($this->emitter)->loadPharExtensionsInDirectory(
-                        $configuration->pharExtensionDirectory(),
-                    );
-                }
-
                 $extensionCapabilities = $this->bootstrapExtensions($configuration);
             }
 
@@ -267,7 +259,6 @@ final readonly class Application
 
             if (!$configuration->debug() && !$extensionCapabilities->replacesOutput()) {
                 $this->writeRuntimeInformation($printer, $configuration);
-                $this->writePharExtensionInformation($printer, $pharExtensions);
                 $this->writeRandomSeedInformation($printer, $configuration);
 
                 $printer->print(PHP_EOL);
@@ -660,24 +651,6 @@ final readonly class Application
                 $printer,
                 'Configuration',
                 $configuration->configurationFile(),
-            );
-        }
-    }
-
-    /**
-     * @param ?list<string> $pharExtensions
-     */
-    private function writePharExtensionInformation(Printer $printer, ?array $pharExtensions): void
-    {
-        if ($pharExtensions === null) {
-            return;
-        }
-
-        foreach ($pharExtensions as $extension) {
-            $this->writeMessage(
-                $printer,
-                'Extension',
-                $extension,
             );
         }
     }

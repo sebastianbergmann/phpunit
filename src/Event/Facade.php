@@ -280,7 +280,6 @@ final class Facade
             TestRunner\ExecutionAborted::class,
             TestRunner\ExecutionFinished::class,
             TestRunner\ExecutionStarted::class,
-            TestRunner\ExtensionLoadedFromPhar::class,
             TestRunner\ExtensionBootstrapped::class,
             TestRunner\Finished::class,
             TestRunner\Started::class,

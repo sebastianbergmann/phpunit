@@ -156,18 +156,7 @@ final class ShowEffectiveConfigurationCommandTest extends TestCase
             '  - ' . $this->fixturePath('src/Generated.php') . PHP_EOL .
             PHP_EOL .
             'Source files excluded from code coverage:' . PHP_EOL .
-            '  - ' . $this->fixturePath('src/Generated.php') . PHP_EOL .
-            PHP_EOL,
-            $this->execute($this->configuration()),
-        );
-    }
-
-    public function testShowsPharExtensions(): void
-    {
-        $this->assertStringEndsWith(
-            PHP_EOL .
-            'PHAR extensions:' . PHP_EOL .
-            '  - ' . $this->fixturePath('extensions/extension.phar') . PHP_EOL,
+            '  - ' . $this->fixturePath('src/Generated.php') . PHP_EOL,
             $this->execute($this->configuration()),
         );
     }
@@ -185,9 +174,7 @@ final class ShowEffectiveConfigurationCommandTest extends TestCase
             PHP_EOL .
             'Source files: (none)' . PHP_EOL .
             PHP_EOL .
-            'Source files excluded from code coverage: (none)' . PHP_EOL .
-            PHP_EOL .
-            'PHAR extensions: (none)' . PHP_EOL,
+            'Source files excluded from code coverage: (none)' . PHP_EOL,
             $this->execute($configuration),
         );
     }

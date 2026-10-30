@@ -5,7 +5,6 @@ use PHPUnit\Framework\TestRunner\ErrorHandlerBootstrapper;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\Extension\ChildProcessExtensionBootstrapper;
 use PHPUnit\Runner\Extension\ChildProcessExtensionFacade;
-use PHPUnit\Runner\Extension\PharLoader;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\PhpHandler;
@@ -158,15 +157,6 @@ foreach (ConfigurationRegistry::get()->bootstrapForTestSuite() as $__phpunit_tes
     }
 
     require_once $__phpunit_bootstrapForTestSuite;
-}
-
-// The extensions in PHARs are loaded before the event facade is initialized
-// for isolation, so that the events that are emitted while they are loaded,
-// which the main process has emitted already, are not reported again.
-if (!ConfigurationRegistry::get()->noExtensions() && ConfigurationRegistry::get()->hasPharExtensionDirectory()) {
-    (new PharLoader(Facade::emitter()))->loadPharExtensionsInDirectory(
-        ConfigurationRegistry::get()->pharExtensionDirectory(),
-    );
 }
 
 __phpunit_run_isolated_test();

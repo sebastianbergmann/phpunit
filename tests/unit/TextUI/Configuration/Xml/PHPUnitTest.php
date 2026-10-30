@@ -45,18 +45,6 @@ final class PHPUnitTest extends TestCase
         $phpunit->bootstrap();
     }
 
-    public function testMayNotHaveExtensionsDirectory(): void
-    {
-        $phpunit = $this->phpunit();
-
-        $this->assertFalse($phpunit->hasExtensionsDirectory());
-
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessageIs('Extensions directory is not configured');
-
-        $phpunit->extensionsDirectory();
-    }
-
     public function testMayNotHaveDefaultTestSuite(): void
     {
         $phpunit = $this->phpunit();

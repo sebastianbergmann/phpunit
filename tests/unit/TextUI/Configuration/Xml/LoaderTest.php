@@ -637,7 +637,6 @@ final class LoaderTest extends TestCase
         $this->assertSame(123, $phpunit->defaultTimeLimit());
         $this->assertSame(7, $phpunit->diffContext());
         $this->assertFalse($phpunit->enforceTimeLimit());
-        $this->assertSame('/tmp', $phpunit->extensionsDirectory());
         $this->assertSame('My Test Suite', $phpunit->defaultTestSuite());
         $this->assertSame(1, $phpunit->timeoutForSmallTests());
         $this->assertSame(10, $phpunit->timeoutForMediumTests());

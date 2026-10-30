@@ -31,7 +31,6 @@ use function strlen;
 use function substr;
 use function usort;
 use PHPUnit\Event\Emitter;
-use PHPUnit\Runner\Extension\PharLoader;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\FilterDirectoryCollection;
 use PHPUnit\TextUI\Configuration\FilterFileCollection;
@@ -104,8 +103,6 @@ final readonly class ShowEffectiveConfigurationCommand implements Command
             ...$this->section('Source files', $this->files(array_keys($sourceFiles))),
             '',
             ...$this->section('Source files excluded from code coverage', $this->files(array_keys(array_diff_key($sourceFiles, $sourceFilesForCodeCoverage)))),
-            '',
-            ...$this->section('PHAR extensions', $this->files($this->pharExtensions())),
         ];
 
         return Result::from(implode(PHP_EOL, $lines) . PHP_EOL, $shellExitCode);
@@ -178,20 +175,6 @@ final readonly class ShowEffectiveConfigurationCommand implements Command
         }
 
         return $children;
-    }
-
-    /**
-     * @return list<non-empty-string>
-     */
-    private function pharExtensions(): array
-    {
-        if (!$this->configuration->hasPharExtensionDirectory()) {
-            return [];
-        }
-
-        return new PharLoader($this->emitter)->pharFilesInDirectory(
-            $this->configuration->pharExtensionDirectory(),
-        );
     }
 
     /**

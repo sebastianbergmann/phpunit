@@ -99,6 +99,7 @@ final readonly class MigrationBuilder
 
         '13.5' => [
             RenameCacheResultAttribute::class,
+            RemoveExtensionsDirectoryAttribute::class,
         ],
     ];
 

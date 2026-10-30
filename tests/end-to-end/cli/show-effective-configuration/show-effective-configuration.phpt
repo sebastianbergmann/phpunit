@@ -59,9 +59,6 @@ Source files:
 Source files excluded from code coverage:
   - %s_files%esrc%eGenerated.php
 
-PHAR extensions:
-  - %s_files%eextensions%eextension.phar
-
 Bootstrap script was included: false
 Test file was loaded: false
 Extension was loaded: false

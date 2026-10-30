@@ -214,17 +214,6 @@ final class ConfigurationTest extends TestCase
         $configuration->coverageXml();
     }
 
-    public function testPharExtensionDirectoryThrowsWhenNotConfigured(): void
-    {
-        $configuration = $this->defaultConfiguration();
-
-        $this->assertFalse($configuration->hasPharExtensionDirectory());
-
-        $this->expectException(NoPharExtensionDirectoryException::class);
-
-        $configuration->pharExtensionDirectory();
-    }
-
     public function testLogfileTeamcityThrowsWhenNotConfigured(): void
     {
         $configuration = $this->defaultConfiguration();
@@ -555,14 +544,6 @@ final class ConfigurationTest extends TestCase
 
         $this->assertTrue($configuration->hasDefaultTestSuite());
         $this->assertSame('default', $configuration->defaultTestSuite());
-    }
-
-    public function testReturnsConfiguredPharExtensionDirectory(): void
-    {
-        $configuration = $this->configurationFromXml('configuration_full.xml');
-
-        $this->assertTrue($configuration->hasPharExtensionDirectory());
-        $this->assertStringEndsWith('extensions', $configuration->pharExtensionDirectory());
     }
 
     public function testReturnsConfiguredTimeouts(): void

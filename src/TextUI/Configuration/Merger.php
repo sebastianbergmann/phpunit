@@ -485,12 +485,6 @@ final readonly class Merger
             $noExtensions = true;
         }
 
-        $pharExtensionDirectory = null;
-
-        if ($xmlConfiguration->phpunit()->hasExtensionsDirectory()) {
-            $pharExtensionDirectory = $xmlConfiguration->phpunit()->extensionsDirectory();
-        }
-
         $extensionBootstrappers = [];
 
         if ($cliConfiguration->hasExtensions()) {
@@ -1422,7 +1416,6 @@ final readonly class Merger
             $outputToStandardErrorStream,
             $columns,
             $noExtensions,
-            $pharExtensionDirectory,
             array_values($extensionBootstrappers),
             $backupGlobals,
             $backupStaticProperties,

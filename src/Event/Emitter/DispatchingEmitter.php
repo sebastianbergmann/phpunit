@@ -113,26 +113,6 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
-     * @param non-empty-string $filename
-     * @param non-empty-string $name
-     * @param non-empty-string $version
-     *
-     * @throws InvalidArgumentException
-     * @throws UnknownEventTypeException
-     */
-    public function testRunnerLoadedExtensionFromPhar(string $filename, string $name, string $version): void
-    {
-        $this->dispatcher->dispatch(
-            new TestRunner\ExtensionLoadedFromPhar(
-                $this->telemetryInfo(),
-                $filename,
-                $name,
-                $version,
-            ),
-        );
-    }
-
-    /**
      * @param class-string          $className
      * @param array<string, string> $parameters
      *

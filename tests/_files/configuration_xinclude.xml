@@ -15,7 +15,6 @@
          stopOnWarning="false"
          failOnWarning="false"
          failOnRisky="false"
-         extensionsDirectory="/tmp"
          printerClass="PHPUnit\TextUI\DefaultResultPrinter"
          defaultTestSuite="My Test Suite"
          beStrictAboutChangesToGlobalState="false"

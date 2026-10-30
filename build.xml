@@ -103,27 +103,6 @@
         </exec>
     </target>
 
-    <target name="package-extension-for-testing"
-            description="Package PHAR of test runner extension that is used for testing">
-        <delete dir="${basedir}/build/tmp"/>
-        <mkdir dir="${basedir}/build/tmp"/>
-
-        <copy tofile="${basedir}/build/tmp/manifest.xml" file="${basedir}/build/test-extension/manifest.xml" />
-        <copy todir="${basedir}/build/tmp/phpunit-test-extension">
-            <fileset dir="${basedir}/build/test-extension/src">
-                <include name="**/*" />
-            </fileset>
-        </copy>
-
-        <exec executable="${basedir}/build/scripts/phar-builder/run.php" taskname="phar-builder" failonerror="true">
-            <arg path="${basedir}/build/tmp" />
-            <arg path="${basedir}/build/templates/test-extension-phar-autoload.php.in" />
-            <arg path="${basedir}/tests/end-to-end/_files/phar-extension/tools/phpunit.d/phpunit-test-extension-1.0.0.phar" />
-        </exec>
-
-        <delete dir="${basedir}/build/tmp"/>
-    </target>
-
     <target name="signed-phar" depends="phar" description="Create signed PHAR archive of PHPUnit and all its dependencies">
         <exec executable="gpg" failonerror="true">
             <arg value="--local-user"/>
@@ -339,13 +318,6 @@
         <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Stmt/PropertyProperty.php"/>
         <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Stmt/StaticVar.php"/>
         <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Stmt/UseUse.php"/>
-
-        <copy file="${basedir}/vendor/phar-io/manifest/LICENSE" tofile="${basedir}/build/tmp/phar/phar-io-manifest/LICENSE"/>
-        <copy todir="${basedir}/build/tmp/phar/phar-io-manifest">
-            <fileset dir="${basedir}/vendor/phar-io/manifest/src">
-                <include name="**/*.php" />
-            </fileset>
-        </copy>
 
         <copy file="${basedir}/vendor/phar-io/version/LICENSE" tofile="${basedir}/build/tmp/phar/phar-io-version/LICENSE"/>
         <copy todir="${basedir}/build/tmp/phar/phar-io-version">

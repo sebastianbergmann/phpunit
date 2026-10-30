@@ -1130,12 +1130,6 @@ final readonly class Loader
             $bootstrap = $this->toAbsolutePath($filename, $bootstrap);
         }
 
-        $extensionsDirectory = $this->parseStringAttribute($documentElement, 'extensionsDirectory');
-
-        if ($extensionsDirectory !== null) {
-            $extensionsDirectory = $this->toAbsolutePath($filename, $extensionsDirectory);
-        }
-
         $backupStaticProperties = false;
 
         if ($documentElement->hasAttribute('backupStaticProperties')) {
@@ -1250,7 +1244,6 @@ final readonly class Loader
             (int) $this->parseBooleanAttribute($documentElement, 'stopOnRisky', false),
             (int) $this->parseBooleanAttribute($documentElement, 'stopOnSkipped', false),
             (int) $this->parseBooleanAttribute($documentElement, 'stopOnWarning', false),
-            $extensionsDirectory,
             $this->parseBooleanAttribute($documentElement, 'beStrictAboutChangesToGlobalState', false),
             $this->parseBooleanAttribute($documentElement, 'beStrictAboutOutputDuringTests', false),
             $this->parseBooleanAttribute($documentElement, 'beStrictAboutTestsThatDoNotTestAnything', true),
