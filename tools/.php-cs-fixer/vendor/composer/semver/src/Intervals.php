@@ -37,6 +37,11 @@ class Intervals
     private static $intervalsCache = array();
 
     /**
+     * @phpstan-var array<string, ConstraintInterface>
+     */
+    private static $compactedCache = array();
+
+    /**
      * @phpstan-var array<string, int>
      */
     private static $opSortOrder = array(
@@ -54,6 +59,7 @@ class Intervals
     public static function clear()
     {
         self::$intervalsCache = array();
+        self::$compactedCache = array();
     }
 
     /**
@@ -142,6 +148,19 @@ class Intervals
             return $constraint;
         }
 
+        $key = (string) $constraint;
+        if (!isset(self::$compactedCache[$key])) {
+            self::$compactedCache[$key] = self::doCompactConstraint($constraint);
+        }
+
+        return self::$compactedCache[$key];
+    }
+
+    /**
+     * @return ConstraintInterface
+     */
+    private static function doCompactConstraint(MultiConstraint $constraint)
+    {
         $intervals = self::generateIntervals($constraint);
         $constraints = array();
         $hasNumericMatchAll = false;
