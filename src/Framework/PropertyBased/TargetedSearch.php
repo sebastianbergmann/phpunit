@@ -16,6 +16,7 @@ use function count;
 use function max;
 use function range;
 use Random\Randomizer;
+use SebastianBergmann\ChoiceSequence\ChoiceSequence;
 
 /**
  * Searches for examples with higher scores than the examples that were
