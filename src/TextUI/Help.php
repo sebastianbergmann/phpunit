@@ -313,6 +313,7 @@ final class Help
                 ['arg' => '--display-notices', 'desc' => 'Display details for notices triggered by tests'],
                 ['arg' => '--display-warnings', 'desc' => 'Display details for warnings triggered by tests'],
                 ['arg' => '--display-all-issues', 'desc' => 'Display details for all issues that are triggered'],
+                ['arg' => '--triggering-tests-limit <n>', 'desc' => 'Group and limit the tests listed for each issue to <n> entries'],
                 ['arg' => '--reverse-list', 'desc' => 'Print defects in reverse order'],
                 ['spacer' => ''],
 

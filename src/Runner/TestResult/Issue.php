@@ -9,8 +9,11 @@
  */
 namespace PHPUnit\TestRunner\TestResult\Issues;
 
+use function array_filter;
 use function array_values;
+use function assert;
 use function count;
+use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
 use PHPUnit\Event\Code\Test;
 
 /**
@@ -46,14 +49,19 @@ final class Issue
     private ?string $stackTrace;
 
     /**
+     * @var array{self: non-negative-int, direct: non-negative-int, indirect: non-negative-int}
+     */
+    private array $triggerTypes = ['self' => 0, 'direct' => 0, 'indirect' => 0];
+
+    /**
      * @param non-empty-string  $file
      * @param positive-int      $line
      * @param non-empty-string  $description
      * @param ?non-empty-string $stackTrace
      */
-    public static function from(string $file, int $line, string $description, Test $triggeringTest, ?string $stackTrace = null): self
+    public static function from(string $file, int $line, string $description, Test $triggeringTest, ?string $stackTrace = null, ?IssueTrigger $trigger = null): self
     {
-        return new self($file, $line, $description, $triggeringTest, $stackTrace);
+        return new self($file, $line, $description, $triggeringTest, $stackTrace, $trigger);
     }
 
     /**
@@ -62,7 +70,7 @@ final class Issue
      * @param non-empty-string  $description
      * @param ?non-empty-string $stackTrace
      */
-    private function __construct(string $file, int $line, string $description, Test $triggeringTest, ?string $stackTrace)
+    private function __construct(string $file, int $line, string $description, Test $triggeringTest, ?string $stackTrace, ?IssueTrigger $trigger)
     {
         $this->file        = $file;
         $this->line        = $line;
@@ -75,10 +83,14 @@ final class Issue
                 'count' => 1,
             ],
         ];
+
+        $this->registerTrigger($trigger);
     }
 
-    public function triggeredBy(Test $test): void
+    public function triggeredBy(Test $test, ?IssueTrigger $trigger = null): void
     {
+        $this->registerTrigger($trigger);
+
         if (isset($this->triggeringTests[$test->id()])) {
             $this->triggeringTests[$test->id()]['count']++;
 
@@ -124,6 +136,22 @@ final class Issue
     }
 
     /**
+     * @return positive-int
+     */
+    public function numberOfTimesTriggered(): int
+    {
+        $count = 0;
+
+        foreach ($this->triggeringTests as $triggeringTest) {
+            $count += $triggeringTest['count'];
+        }
+
+        assert($count > 0);
+
+        return $count;
+    }
+
+    /**
      * @phpstan-assert-if-true !null $this->stackTrace
      */
     public function hasStackTrace(): bool
@@ -143,5 +171,28 @@ final class Issue
     {
         return count($this->triggeringTests) === 1 &&
                $this->file === array_values($this->triggeringTests)[0]['test']->file();
+    }
+
+    /**
+     * @return array{self?: positive-int, direct?: positive-int, indirect?: positive-int}
+     */
+    public function triggerTypes(): array
+    {
+        return array_filter($this->triggerTypes, static fn (int $count): bool => $count > 0);
+    }
+
+    private function registerTrigger(?IssueTrigger $trigger): void
+    {
+        if ($trigger === null) {
+            return;
+        }
+
+        if ($trigger->isSelf()) {
+            $this->triggerTypes['self']++;
+        } elseif ($trigger->isDirect()) {
+            $this->triggerTypes['direct']++;
+        } elseif ($trigger->isIndirect()) {
+            $this->triggerTypes['indirect']++;
+        }
     }
 }
