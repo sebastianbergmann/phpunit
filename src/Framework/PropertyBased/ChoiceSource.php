@@ -9,11 +9,7 @@
  */
 namespace PHPUnit\Framework\PropertyBased;
 
-use function array_key_exists;
-use function array_pop;
 use function assert;
-use function count;
-use function end;
 use function spl_object_id;
 use function strtolower;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorDeriver;
@@ -21,21 +17,20 @@ use PHPUnit\Framework\PropertyBased\Derivation\GeneratorRegistry;
 use PHPUnit\Framework\PropertyBased\Generator\DeferredGenerator;
 use Random\Randomizer;
 use SebastianBergmann\ChoiceSequence\ChoiceSequence;
+use SebastianBergmann\ChoiceSequence\ChoiceSource as Choices;
+use SebastianBergmann\ChoiceSequence\ChoiceTree;
 use SebastianBergmann\ChoiceSequence\Distribution;
-use SebastianBergmann\ChoiceSequence\Span;
+use SebastianBergmann\ChoiceSequence\TooManyChoicesException;
 
 /**
  * Provides the choices from which generators build the arguments of an
  * example, and records them as the example's choice sequence.
  *
- * While examples are generated, choices are drawn from a random number
- * generator. When a choice sequence is replayed, the choices are read from
- * it instead: choices beyond its end are 0, and a choice that exceeds the
- * range it is drawn from is clamped to the range.
- *
- * With a choice tree, the choices are also recorded in the tree, and a choice
- * that is drawn at random and would lead to an example that was generated
- * before is replaced with one that does not (see ChoiceTree).
+ * Drawing the choices, at random or by replaying a choice sequence, and
+ * avoiding examples that were generated before with a choice tree is left to
+ * the choice source of sebastian/choice-sequence, so that the choices of an
+ * example are drawn and replayed in the same way wherever that library is
+ * used.
  *
  * It also provides the deriver for the generators that are derived from types
  * while the example is generated, keeps track of the objects that are being
@@ -48,65 +43,9 @@ use SebastianBergmann\ChoiceSequence\Span;
  */
 final class ChoiceSource
 {
-    public const int DEFAULT_MAXIMUM_NUMBER_OF_CHOICES = 8192;
-
-    /**
-     * How often a choice that would lead to an example that was generated
-     * before is drawn again before the next choice that does not is used.
-     */
-    private const int NUMBER_OF_ATTEMPTS_TO_DRAW_AN_UNEXHAUSTED_CHOICE = 3;
-    private readonly ?Randomizer $randomizer;
-    private readonly ?ChoiceTree $tree;
-
-    /**
-     * The node of the choice tree for the choices that have been drawn, null
-     * when there is no choice tree or it is no longer used.
-     */
-    private ?ChoiceTreeNode $node;
-
-    /**
-     * @var list<non-negative-int>
-     */
-    private readonly array $replayedChoices;
-
-    /**
-     * @var positive-int
-     */
-    private readonly int $maximumNumberOfChoices;
-
-    /**
-     * @var list<non-negative-int>
-     */
-    private array $choices = [];
-
-    /**
-     * The largest choice that each choice could have been.
-     *
-     * @var list<non-negative-int>
-     */
-    private array $maxima = [];
-
-    /**
-     * The spans that were started, in the order in which they were started.
-     * The end of a span is null until it is ended.
-     *
-     * @var list<array{start: non-negative-int, end: ?non-negative-int, label: non-empty-string}>
-     */
-    private array $spans = [];
-
-    /**
-     * The indexes of the spans that were started and not yet ended.
-     *
-     * @var list<non-negative-int>
-     */
-    private array $openSpans = [];
+    public const int DEFAULT_MAXIMUM_NUMBER_OF_CHOICES = Choices::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES;
+    private readonly Choices $choices;
     private ?GeneratorDeriver $deriver;
-
-    /**
-     * Whether a choice was drawn from another range than when the same
-     * choices were drawn before it, see drewDifferentlyThanBefore().
-     */
-    private bool $drewDifferentlyThanBefore = false;
 
     /**
      * @var array<lowercase-string, positive-int>
@@ -127,7 +66,7 @@ final class ChoiceSource
      */
     public static function random(Randomizer $randomizer, int $maximumNumberOfChoices = self::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, ?GeneratorDeriver $deriver = null, ?ChoiceTree $tree = null): self
     {
-        return new self($randomizer, [], $maximumNumberOfChoices, $deriver, $tree);
+        return new self(Choices::random($randomizer, $maximumNumberOfChoices, $tree), $deriver);
     }
 
     /**
@@ -135,28 +74,14 @@ final class ChoiceSource
      */
     public static function replay(ChoiceSequence $sequence, int $maximumNumberOfChoices = self::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, ?GeneratorDeriver $deriver = null, ?ChoiceTree $tree = null): self
     {
-        return new self(null, $sequence->choices(), $maximumNumberOfChoices, $deriver, $tree);
+        return new self(Choices::replay($sequence, $maximumNumberOfChoices, $tree), $deriver);
     }
 
-    /**
-     * @param list<non-negative-int> $replayedChoices
-     * @param positive-int           $maximumNumberOfChoices
-     */
-    private function __construct(?Randomizer $randomizer, array $replayedChoices, int $maximumNumberOfChoices, ?GeneratorDeriver $deriver, ?ChoiceTree $tree)
+    private function __construct(Choices $choices, ?GeneratorDeriver $deriver)
     {
-        $this->randomizer             = $randomizer;
-        $this->replayedChoices        = $replayedChoices;
-        $this->maximumNumberOfChoices = $maximumNumberOfChoices;
-        $this->deriver                = $deriver;
-        $this->tree                   = $tree;
-        $this->node                   = null;
-        $this->constructions          = new Constructions;
-
-        // when every example has been generated, an example that was
-        // generated before cannot be avoided
-        if ($tree !== null && !$tree->isExhausted()) {
-            $this->node = $tree->root();
-        }
+        $this->choices       = $choices;
+        $this->deriver       = $deriver;
+        $this->constructions = new Constructions;
     }
 
     /**
@@ -166,9 +91,7 @@ final class ChoiceSource
      */
     public function exampleGenerated(): void
     {
-        $this->node?->exhaust();
-
-        $this->node = null;
+        $this->choices->exampleGenerated();
     }
 
     /**
@@ -179,7 +102,7 @@ final class ChoiceSource
      */
     public function drewDifferentlyThanBefore(): bool
     {
-        return $this->drewDifferentlyThanBefore;
+        return $this->choices->drewDifferentlyThanBefore();
     }
 
     /**
@@ -259,7 +182,7 @@ final class ChoiceSource
         $id     = spl_object_id($generator);
         $before = $this->deferredGeneratorsBeingGenerated[$id] ?? null;
 
-        $this->deferredGeneratorsBeingGenerated[$id] = count($this->choices);
+        $this->deferredGeneratorsBeingGenerated[$id] = $this->choices->numberOfChoices();
 
         return $before;
     }
@@ -286,7 +209,7 @@ final class ChoiceSource
      */
     public function numberOfChoices(): int
     {
-        return count($this->choices);
+        return $this->choices->numberOfChoices();
     }
 
     /**
@@ -301,40 +224,11 @@ final class ChoiceSource
      */
     public function draw(int $maximum, Distribution $distribution): int
     {
-        $index = count($this->choices);
-
-        if ($index >= $this->maximumNumberOfChoices) {
-            throw ExampleRejectedException::tooManyChoices($this->maximumNumberOfChoices);
+        try {
+            return $this->choices->draw($maximum, $distribution);
+        } catch (TooManyChoicesException $e) {
+            throw ExampleRejectedException::tooManyChoices($e->maximumNumberOfChoices());
         }
-
-        if ($this->node !== null && !$this->node->draws($maximum)) {
-            // the generators do not draw the same choices as before
-            $this->tree?->discard();
-
-            $this->node                      = null;
-            $this->drewDifferentlyThanBefore = true;
-        }
-
-        if ($this->randomizer !== null) {
-            $choice = $this->randomChoice($maximum, $distribution);
-        } else {
-            $choice = $this->replayedChoices[$index] ?? 0;
-
-            if ($choice > $maximum) {
-                $choice = $maximum;
-            }
-        }
-
-        if ($this->node !== null) {
-            assert($this->tree !== null);
-
-            $this->node = $this->tree->child($this->node, $choice);
-        }
-
-        $this->choices[] = $choice;
-        $this->maxima[]  = $maximum;
-
-        return $choice;
     }
 
     /**
@@ -351,11 +245,11 @@ final class ChoiceSource
      */
     public function choose(array $elements, Distribution $distribution): mixed
     {
-        $index = $this->draw(count($elements) - 1, $distribution);
-
-        assert(array_key_exists($index, $elements));
-
-        return $elements[$index];
+        try {
+            return $this->choices->choose($elements, $distribution);
+        } catch (TooManyChoicesException $e) {
+            throw ExampleRejectedException::tooManyChoices($e->maximumNumberOfChoices());
+        }
     }
 
     /**
@@ -375,19 +269,7 @@ final class ChoiceSource
      */
     public function suggest(array $candidates, float $probability): mixed
     {
-        if ($this->randomizer === null) {
-            return null;
-        }
-
-        if ($this->randomizer->nextFloat() >= $probability) {
-            return null;
-        }
-
-        $index = $this->randomizer->getInt(0, count($candidates) - 1);
-
-        assert(array_key_exists($index, $candidates));
-
-        return $candidates[$index];
+        return $this->choices->suggest($candidates, $probability);
     }
 
     /**
@@ -398,22 +280,12 @@ final class ChoiceSource
      */
     public function startSpan(string $label): void
     {
-        $this->openSpans[] = count($this->spans);
-
-        $this->spans[] = [
-            'start' => count($this->choices),
-            'end'   => null,
-            'label' => $label,
-        ];
+        $this->choices->startSpan($label);
     }
 
     public function endSpan(): void
     {
-        $index = array_pop($this->openSpans);
-
-        assert($index !== null);
-
-        $this->spans[$index]['end'] = count($this->choices);
+        $this->choices->endSpan();
     }
 
     /**
@@ -424,66 +296,6 @@ final class ChoiceSource
      */
     public function sequence(): ChoiceSequence
     {
-        $spans = [];
-
-        // the ends and the indexes of the spans that the next span can be
-        // part of, the innermost one last: spans are ended in the reverse
-        // order in which they are started, so they are either part of each
-        // other or do not overlap
-        $enclosingEnds    = [];
-        $enclosingIndexes = [];
-
-        foreach ($this->spans as $span) {
-            $start = $span['start'];
-            $end   = $span['end'];
-
-            if ($end === null || $end <= $start) {
-                continue;
-            }
-
-            while ($enclosingEnds !== [] && end($enclosingEnds) <= $start) {
-                array_pop($enclosingEnds);
-                array_pop($enclosingIndexes);
-            }
-
-            $parent = null;
-
-            if ($enclosingIndexes !== []) {
-                $parent = end($enclosingIndexes);
-            }
-
-            $enclosingEnds[]    = $end;
-            $enclosingIndexes[] = count($spans);
-
-            $spans[] = new Span($start, $end, $span['label'], $parent);
-        }
-
-        return new ChoiceSequence($this->choices, $spans, $this->maxima);
-    }
-
-    /**
-     * Draws a choice at random that does not lead to an example that was
-     * generated before: it is drawn again a few times, and then the next
-     * choice that does not is used.
-     *
-     * @param non-negative-int $maximum
-     *
-     * @return non-negative-int
-     */
-    private function randomChoice(int $maximum, Distribution $distribution): int
-    {
-        assert($this->randomizer !== null);
-
-        $choice = $distribution->sample($this->randomizer, $maximum);
-
-        if ($this->node === null) {
-            return $choice;
-        }
-
-        for ($attempt = 1; $attempt < self::NUMBER_OF_ATTEMPTS_TO_DRAW_AN_UNEXHAUSTED_CHOICE && $this->node->leadsToExhaustedNode($choice); $attempt++) {
-            $choice = $distribution->sample($this->randomizer, $maximum);
-        }
-
-        return $this->node->unexhaustedChoice($choice);
+        return $this->choices->sequence();
     }
 }
