@@ -1265,6 +1265,7 @@ final readonly class Loader
             $this->parsePositiveIntegerAttribute($documentElement, 'numberOfTestsBeforeGarbageCollection', 100),
             $shortenArraysForExportThreshold,
             $this->parsePositiveIntegerAttribute($documentElement, 'diffContext', 3),
+            $this->parseNonNegativeIntegerAttribute($documentElement, 'triggeringTestsLimit', 0),
             $this->parseBooleanAttribute($documentElement, 'warnWhenPhpIsNotConfiguredForDevelopment', false),
             $this->parseBooleanAttribute($documentElement, 'cacheTestIndex', false),
         );

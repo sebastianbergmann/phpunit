@@ -24,6 +24,7 @@ use function str_starts_with;
 use function strlen;
 use function substr;
 use function trim;
+use function usort;
 use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Test\AfterLastTestMethodErrored;
@@ -45,6 +46,7 @@ use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\TestRunner\TestResult\Issues\Issue;
 use PHPUnit\TestRunner\TestResult\TestResult;
 use PHPUnit\TextUI\Output\Printer;
+use PHPUnit\TextUI\Output\TriggeringTestsSummary;
 use PHPUnit\Util\Sanitizer;
 
 /**
@@ -69,9 +71,17 @@ final class ResultPrinter
     private readonly bool $displayDetailsOnTestsThatTriggerNotices;
     private readonly bool $displayDetailsOnTestsThatTriggerWarnings;
     private readonly bool $displayDefectsInReverseOrder;
+
+    /**
+     * @var non-negative-int
+     */
+    private readonly int $triggeringTestsLimit;
     private bool $listPrinted = false;
 
-    public function __construct(Printer $printer, bool $displayPhpunitDeprecations, bool $displayPhpunitErrors, bool $displayPhpunitNotices, bool $displayPhpunitWarnings, bool $displayTestsWithErrors, bool $displayTestsWithFailedAssertions, bool $displayRiskyTests, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $displayDefectsInReverseOrder)
+    /**
+     * @param non-negative-int $triggeringTestsLimit
+     */
+    public function __construct(Printer $printer, bool $displayPhpunitDeprecations, bool $displayPhpunitErrors, bool $displayPhpunitNotices, bool $displayPhpunitWarnings, bool $displayTestsWithErrors, bool $displayTestsWithFailedAssertions, bool $displayRiskyTests, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $displayDefectsInReverseOrder, int $triggeringTestsLimit)
     {
         $this->printer                                      = $printer;
         $this->displayPhpunitDeprecations                   = $displayPhpunitDeprecations;
@@ -88,6 +98,7 @@ final class ResultPrinter
         $this->displayDetailsOnTestsThatTriggerNotices      = $displayDetailsOnTestsThatTriggerNotices;
         $this->displayDetailsOnTestsThatTriggerWarnings     = $displayDetailsOnTestsThatTriggerWarnings;
         $this->displayDefectsInReverseOrder                 = $displayDefectsInReverseOrder;
+        $this->triggeringTestsLimit                         = $triggeringTestsLimit;
     }
 
     public function print(TestResult $result, bool $stackTraceForDeprecations = false): void
@@ -529,6 +540,10 @@ final class ResultPrinter
             ),
         );
 
+        if ($this->triggeringTestsLimit > 0) {
+            usort($issues, static fn (Issue $a, Issue $b): int => $b->numberOfTimesTriggered() <=> $a->numberOfTimesTriggered());
+        }
+
         $i = 1;
 
         foreach ($issues as $issue) {
@@ -548,7 +563,15 @@ final class ResultPrinter
                 $body .= trim($issueStackTrace) . PHP_EOL . PHP_EOL;
             }
 
-            if (!$issue->triggeredInTest()) {
+            if (!$issue->triggeredInTest() && $this->triggeringTestsLimit > 0) {
+                $summary = TriggeringTestsSummary::from($issue, $this->triggeringTestsLimit);
+
+                $body .= $summary->description() . ':' . PHP_EOL;
+
+                foreach ($summary->entries() as $entry) {
+                    $body .= PHP_EOL . '* ' . $entry;
+                }
+            } elseif (!$issue->triggeredInTest()) {
                 $body .= 'Triggered by:';
 
                 $triggeringTests = $issue->triggeringTests();

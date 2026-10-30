@@ -763,6 +763,12 @@ final readonly class Merger
             $diffContext = $xmlConfiguration->phpunit()->diffContext();
         }
 
+        if ($cliConfiguration->hasTriggeringTestsLimit()) {
+            $triggeringTestsLimit = $cliConfiguration->triggeringTestsLimit();
+        } else {
+            $triggeringTestsLimit = $xmlConfiguration->phpunit()->triggeringTestsLimit();
+        }
+
         $timeoutForSmallTests  = $xmlConfiguration->phpunit()->timeoutForSmallTests();
         $timeoutForMediumTests = $xmlConfiguration->phpunit()->timeoutForMediumTests();
         $timeoutForLargeTests  = $xmlConfiguration->phpunit()->timeoutForLargeTests();
@@ -1425,6 +1431,7 @@ final readonly class Merger
             $enforceTimeLimit,
             $defaultTimeLimit,
             $diffContext,
+            $triggeringTestsLimit,
             $timeoutForSmallTests,
             $timeoutForMediumTests,
             $timeoutForLargeTests,

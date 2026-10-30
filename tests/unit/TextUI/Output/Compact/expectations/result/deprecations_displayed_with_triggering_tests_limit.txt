@@ -1,0 +1,13 @@
+OK (1 test, 1 assertion, 2 deprecations)
+
+--- DEPRECATION: Foo.php:2
+another message
+Triggered 4 times (indirect) by 4 tests
+Triggered by: FooTest::testBar (2 data sets)
+Triggered by: FooTest::testBaz
+Triggered by: ... 1 more test
+
+--- DEPRECATION: Foo.php:1
+message
+Triggered 1 time (direct) by 1 test
+Triggered by: FooTest::testBar

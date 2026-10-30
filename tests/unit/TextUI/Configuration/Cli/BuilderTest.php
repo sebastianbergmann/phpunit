@@ -2841,6 +2841,35 @@ final class BuilderTest extends TestCase
         $configuration->diffContext();
     }
 
+    #[TestDox('--triggering-tests-limit <n>')]
+    public function testTriggeringTestsLimit(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--triggering-tests-limit', '5']);
+
+        $this->assertTrue($configuration->hasTriggeringTestsLimit());
+        $this->assertSame(5, $configuration->triggeringTestsLimit());
+    }
+
+    #[TestDox('--triggering-tests-limit 0')]
+    public function testTriggeringTestsLimitCanBeDisabled(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--triggering-tests-limit', '0']);
+
+        $this->assertTrue($configuration->hasTriggeringTestsLimit());
+        $this->assertSame(0, $configuration->triggeringTestsLimit());
+    }
+
+    public function testTriggeringTestsLimitMayNotBeConfigured(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters([]);
+
+        $this->assertFalse($configuration->hasTriggeringTestsLimit());
+
+        $this->expectException(Exception::class);
+
+        $configuration->triggeringTestsLimit();
+    }
+
     #[TestDox('--enforce-time-limit')]
     public function testEnforceTimeLimit(): void
     {
@@ -3256,5 +3285,23 @@ final class BuilderTest extends TestCase
         $this->expectExceptionMessageIs('Option --diff-context requires a positive integer value');
 
         new Builder($this->createStub(Emitter::class))->fromParameters(['--diff-context', '0']);
+    }
+
+    #[TestDox('--triggering-tests-limit requires a numeric value')]
+    public function testOptionThatRequiresNonNegativeIntegerValueRejectsValueThatIsNotNumeric(): void
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessageIs('Option --triggering-tests-limit requires a non-negative integer value');
+
+        new Builder($this->createStub(Emitter::class))->fromParameters(['--triggering-tests-limit', 'not-a-number']);
+    }
+
+    #[TestDox('--triggering-tests-limit requires a non-negative value')]
+    public function testOptionThatRequiresNonNegativeIntegerValueRejectsNegativeValue(): void
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessageIs('Option --triggering-tests-limit requires a non-negative integer value');
+
+        new Builder($this->createStub(Emitter::class))->fromParameters(['--triggering-tests-limit', '-1']);
     }
 }

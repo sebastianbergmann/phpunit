@@ -1,0 +1,17 @@
+5 tests triggered 2 deprecations:
+
+1) Foo.php:2
+another message
+
+Triggered 4 times (indirect) by 4 tests:
+
+* FooTest::testBar (2 data sets)
+* FooTest::testBaz
+* ... 1 more test
+
+2) Foo.php:1
+message
+
+Triggered 1 time (direct) by 1 test:
+
+* FooTest::testBar

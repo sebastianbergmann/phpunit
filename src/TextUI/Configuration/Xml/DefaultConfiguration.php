@@ -184,6 +184,7 @@ final readonly class DefaultConfiguration extends Configuration
                 100,
                 10,
                 3,
+                0,
                 false,
                 false,
             ),

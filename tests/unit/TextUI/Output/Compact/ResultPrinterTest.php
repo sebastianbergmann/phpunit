@@ -12,6 +12,7 @@ namespace PHPUnit\TextUI\Output\Compact;
 use function hrtime;
 use Exception;
 use PHPUnit\Event\Code\ClassMethod;
+use PHPUnit\Event\Code\IssueTrigger\Code;
 use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
 use PHPUnit\Event\Code\Phpt;
 use PHPUnit\Event\Code\TestDoxBuilder;
@@ -298,6 +299,22 @@ final class ResultPrinterTest extends TestCase
                 false,
                 false,
                 false,
+            ],
+
+            'deprecations displayed (limit the number of triggering tests)' => [
+                'deprecations_displayed_with_triggering_tests_limit.txt',
+                self::createTestResult(
+                    deprecations: self::deprecationsTriggeredByManyTests(),
+                ),
+                false,
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                2,
             ],
 
             'deprecation not displayed' => [
@@ -1044,7 +1061,7 @@ final class ResultPrinterTest extends TestCase
     }
 
     #[DataProvider('provider')]
-    public function testPrintsExpectedOutputForTestResultObject(string $expectationFile, TestResult $result, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $displayDetailsOnPhpunitDeprecations, bool $displayDetailsOnPhpunitNotices): void
+    public function testPrintsExpectedOutputForTestResultObject(string $expectationFile, TestResult $result, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $displayDetailsOnPhpunitDeprecations, bool $displayDetailsOnPhpunitNotices, int $triggeringTestsLimit = 0): void
     {
         $printer = $this->printer();
 
@@ -1058,6 +1075,7 @@ final class ResultPrinterTest extends TestCase
             $displayDetailsOnTestsThatTriggerWarnings,
             $displayDetailsOnPhpunitDeprecations,
             $displayDetailsOnPhpunitNotices,
+            $triggeringTestsLimit,
         );
 
         $resultPrinter->print($result);
@@ -1248,6 +1266,46 @@ final class ResultPrinterTest extends TestCase
             CpuTime::fromSecondsAndNanoseconds(0, 0),
             CpuTime::fromSecondsAndNanoseconds(0, 0),
             CpuTime::fromSecondsAndNanoseconds(0, 0),
+        );
+    }
+
+    /**
+     * @return list<Issue>
+     */
+    private static function deprecationsTriggeredByManyTests(): array
+    {
+        $direct   = IssueTrigger::from(Code::ThirdParty, Code::FirstParty);
+        $indirect = IssueTrigger::from(Code::ThirdParty, Code::ThirdParty);
+
+        $first = Issue::from('Foo.php', 1, 'message', self::testMethodNamed('testBar'), null, $direct);
+
+        $second = Issue::from('Foo.php', 2, 'another message', self::testMethodNamed('testBar', 'one'), null, $indirect);
+        $second->triggeredBy(self::testMethodNamed('testBar', 'two'), $indirect);
+        $second->triggeredBy(self::testMethodNamed('testBaz'), $indirect);
+        $second->triggeredBy(self::testMethodNamed('testQux'), $indirect);
+
+        return [$first, $second];
+    }
+
+    /**
+     * @param non-empty-string $methodName
+     */
+    private static function testMethodNamed(string $methodName, ?string $dataSetName = null): TestMethod
+    {
+        $testData = [];
+
+        if ($dataSetName !== null) {
+            $testData[] = DataFromDataProvider::from($dataSetName, '', '');
+        }
+
+        return new TestMethod(
+            'FooTest',
+            $methodName,
+            'FooTest.php',
+            1,
+            TestDoxBuilder::fromClassNameAndMethodName('Foo', $methodName),
+            MetadataCollection::fromArray([]),
+            TestDataCollection::fromArray($testData),
         );
     }
 }

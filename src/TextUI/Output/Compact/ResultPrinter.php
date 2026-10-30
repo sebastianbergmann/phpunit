@@ -15,6 +15,7 @@ use function implode;
 use function ksort;
 use function sprintf;
 use function trim;
+use function usort;
 use PHPUnit\Event\Test\PhpunitDeprecationTriggered;
 use PHPUnit\Event\Test\PhpunitErrorTriggered;
 use PHPUnit\Event\Test\PhpunitNoticeTriggered;
@@ -29,6 +30,7 @@ use PHPUnit\Event\TestRunner\WarningTriggered;
 use PHPUnit\TestRunner\TestResult\Issues\Issue;
 use PHPUnit\TestRunner\TestResult\TestResult;
 use PHPUnit\TextUI\Output\Printer;
+use PHPUnit\TextUI\Output\TriggeringTestsSummary;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -48,7 +50,15 @@ final readonly class ResultPrinter
     private bool $displayDetailsOnPhpunitDeprecations;
     private bool $displayDetailsOnPhpunitNotices;
 
-    public function __construct(Printer $printer, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $displayDetailsOnPhpunitDeprecations, bool $displayDetailsOnPhpunitNotices)
+    /**
+     * @var non-negative-int
+     */
+    private int $triggeringTestsLimit;
+
+    /**
+     * @param non-negative-int $triggeringTestsLimit
+     */
+    public function __construct(Printer $printer, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $displayDetailsOnPhpunitDeprecations, bool $displayDetailsOnPhpunitNotices, int $triggeringTestsLimit)
     {
         $this->printer                                      = $printer;
         $this->renderer                                     = new Renderer($printer);
@@ -60,6 +70,7 @@ final readonly class ResultPrinter
         $this->displayDetailsOnTestsThatTriggerWarnings     = $displayDetailsOnTestsThatTriggerWarnings;
         $this->displayDetailsOnPhpunitDeprecations          = $displayDetailsOnPhpunitDeprecations;
         $this->displayDetailsOnPhpunitNotices               = $displayDetailsOnPhpunitNotices;
+        $this->triggeringTestsLimit                         = $triggeringTestsLimit;
     }
 
     public function print(TestResult $result): void
@@ -452,12 +463,24 @@ final readonly class ResultPrinter
      */
     private function printIssueList(string $type, array $issues): void
     {
+        if ($this->triggeringTestsLimit > 0) {
+            usort($issues, static fn (Issue $a, Issue $b): int => $b->numberOfTimesTriggered() <=> $a->numberOfTimesTriggered());
+        }
+
         foreach ($issues as $issue) {
             $this->renderer->printHeader($type, $issue->file() . ':' . $issue->line());
 
             $this->renderer->printBody(trim($issue->description()));
 
-            if (!$issue->triggeredInTest()) {
+            if (!$issue->triggeredInTest() && $this->triggeringTestsLimit > 0) {
+                $summary = TriggeringTestsSummary::from($issue, $this->triggeringTestsLimit);
+
+                $this->renderer->printBody($summary->description());
+
+                foreach ($summary->entries() as $entry) {
+                    $this->renderer->printBody('Triggered by: ' . $entry);
+                }
+            } elseif (!$issue->triggeredInTest()) {
                 $triggeringTests = $issue->triggeringTests();
 
                 ksort($triggeringTests);
