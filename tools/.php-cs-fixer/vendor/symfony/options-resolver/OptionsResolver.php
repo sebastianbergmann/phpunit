@@ -801,7 +801,7 @@ class OptionsResolver implements Options
 
         foreach ((array) $optionNames as $option) {
             unset($this->defined[$option], $this->defaults[$option], $this->required[$option], $this->resolved[$option]);
-            unset($this->lazy[$option], $this->normalizers[$option], $this->allowedTypes[$option], $this->allowedValues[$option], $this->info[$option], $this->deprecated[$option]);
+            unset($this->lazy[$option], $this->nested[$option], $this->normalizers[$option], $this->allowedTypes[$option], $this->allowedValues[$option], $this->info[$option], $this->deprecated[$option]);
         }
 
         return $this;
@@ -867,7 +867,7 @@ class OptionsResolver implements Options
         // Make sure that no unknown options are passed
         $diff = $this->ignoreUndefined ? [] : array_diff_key($options, $clone->defined);
 
-        if (\count($diff) > 0) {
+        if ($diff) {
             ksort($clone->defined);
             ksort($diff);
 
@@ -888,7 +888,7 @@ class OptionsResolver implements Options
         // Check whether any required option is missing
         $diff = array_diff_key($clone->required, $clone->defaults);
 
-        if (\count($diff) > 0) {
+        if ($diff) {
             ksort($diff);
 
             throw new MissingOptionsException(\sprintf(\count($diff) > 1 ? 'The required options "%s" are missing.' : 'The required option "%s" is missing.', $this->formatOptions(array_keys($diff))));
@@ -970,7 +970,7 @@ class OptionsResolver implements Options
             }
 
             if (!\is_array($value)) {
-                throw new InvalidOptionsException(\sprintf('The nested option "%s" with value %s is expected to be of type array, but is of type "%s".', $this->formatOptions([$option]), $this->formatValue($value), get_debug_type($value)));
+                throw new InvalidOptionsException(\sprintf('The nested option "%s" with value ', $this->formatOptions([$option])).$this->formatValue($value).\sprintf(' is expected to be of type array, but is of type "%s".', get_debug_type($value)));
             }
 
             $this->calling[$option] = true;
@@ -1023,13 +1023,13 @@ class OptionsResolver implements Options
                 $fmtActualValue = $this->formatValue($value);
                 $fmtAllowedTypes = implode('" or "', $this->allowedTypes[$option]);
                 $fmtProvidedTypes = implode('|', array_keys($invalidTypes));
-                $allowedContainsArrayType = \count(array_filter($this->allowedTypes[$option], static fn ($item) => str_ends_with($item, '[]'))) > 0;
+                $allowedContainsArrayType = array_filter($this->allowedTypes[$option], static fn ($item) => str_ends_with($item, '[]'));
 
                 if (\is_array($value) && $allowedContainsArrayType) {
-                    throw new InvalidOptionsException(\sprintf('The option "%s" with value %s is expected to be of type "%s", but one of the elements is of type "%s".', $this->formatOptions([$option]), $fmtActualValue, $fmtAllowedTypes, $fmtProvidedTypes));
+                    throw new InvalidOptionsException(\sprintf('The option "%s" with value ', $this->formatOptions([$option])).$fmtActualValue.\sprintf(' is expected to be of type "%s", but one of the elements is of type "%s".', $fmtAllowedTypes, $fmtProvidedTypes));
                 }
 
-                throw new InvalidOptionsException(\sprintf('The option "%s" with value %s is expected to be of type "%s", but is of type "%s".', $this->formatOptions([$option]), $fmtActualValue, $fmtAllowedTypes, $fmtProvidedTypes));
+                throw new InvalidOptionsException(\sprintf('The option "%s" with value ', $this->formatOptions([$option])).$fmtActualValue.\sprintf(' is expected to be of type "%s", but is of type "%s".', $fmtAllowedTypes, $fmtProvidedTypes));
             }
         }
 
@@ -1064,7 +1064,7 @@ class OptionsResolver implements Options
                     $this->formatValue($value)
                 );
 
-                if (\count($printableAllowedValues) > 0) {
+                if ($printableAllowedValues) {
                     $message .= \sprintf(
                         ' Accepted values are: %s.',
                         $this->formatValues($printableAllowedValues)

@@ -102,14 +102,10 @@
             </fileset>
         </copy>
 
-        <exec executable="${basedir}/tools/phpab" taskname="phpab">
-            <arg value="--all" />
-            <arg value="--static" />
-            <arg value="--once" />
-            <arg value="--phar" />
-            <arg value="--output" />
-            <arg path="${basedir}/tests/end-to-end/_files/phar-extension/tools/phpunit.d/phpunit-test-extension-1.0.0.phar" />
+        <exec executable="${basedir}/build/scripts/phar-builder/run.php" taskname="phar-builder" failonerror="true">
             <arg path="${basedir}/build/tmp" />
+            <arg path="${basedir}/build/templates/test-extension-phar-autoload.php.in" />
+            <arg path="${basedir}/tests/end-to-end/_files/phar-extension/tools/phpunit.d/phpunit-test-extension-1.0.0.phar" />
         </exec>
 
         <delete dir="${basedir}/build/tmp"/>
@@ -121,23 +117,7 @@
             <arg value="sb@sebastian-bergmann.de"/>
             <arg value="--armor"/>
             <arg value="--detach-sign"/>
-            <arg path="${basedir}/build/artifacts/phpunit-library-${version}.phar"/>
-        </exec>
-
-        <exec executable="gpg" failonerror="true">
-            <arg value="--local-user"/>
-            <arg value="sb@sebastian-bergmann.de"/>
-            <arg value="--armor"/>
-            <arg value="--detach-sign"/>
             <arg path="${basedir}/build/artifacts/phpunit-${version}.phar"/>
-        </exec>
-
-        <exec executable="gpg" failonerror="true">
-            <arg value="--local-user"/>
-            <arg value="sb@sebastian-bergmann.de"/>
-            <arg value="--armor"/>
-            <arg value="--detach-sign"/>
-            <arg path="${basedir}/build/artifacts/phpunit-library-${version}.phar.cdx.xml"/>
         </exec>
 
         <exec executable="gpg" failonerror="true">
@@ -405,48 +385,13 @@
         <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Runner/PHPT/templates/phpt.tpl" token="SebastianBergmann\CodeCoverage\Driver\Selector" value="PHPUnitPHAR\SebastianBergmann\CodeCoverage\Driver\Selector"/>
         <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Runner/PHPT/templates/phpt.tpl" token="SebastianBergmann\CodeCoverage\Filter" value="PHPUnitPHAR\SebastianBergmann\CodeCoverage\Filter"/>
 
-        <exec executable="${basedir}/tools/phpab" taskname="phpab" failonerror="true">
-            <arg value="--all" />
-            <arg value="--tolerant" />
-            <arg value="--phar" />
-            <arg value="--hash" />
-            <arg value="SHA-512" />
-            <arg value="--output" />
-            <arg path="${basedir}/build/artifacts/phpunit-library-${_version}.phar" />
-            <arg value="--template" />
-            <arg path="${basedir}/build/templates/library-phar-autoload.php.in" />
+        <copy file="${basedir}/build/templates/phar-autoload.php.in" tofile="${basedir}/build/tmp/phar-autoload.php"/>
+        <replace file="${basedir}/build/tmp/phar-autoload.php" token="X.Y.Z" value="${_version}"/>
+
+        <exec executable="${basedir}/build/scripts/phar-builder/run.php" taskname="phar-builder" failonerror="true">
             <arg path="${basedir}/build/tmp/phar-scoped" />
-        </exec>
-
-        <exec executable="${basedir}/build/scripts/phar-set-timestamps/run.php" taskname="phar-set-timestamps" failonerror="true">
-            <arg path="${basedir}/build/artifacts/phpunit-library-${_version}.phar" />
-            <arg value="${type}" />
-        </exec>
-
-        <exec executable="${basedir}/build/scripts/check-scoped-phar.php" taskname="check-scoped-phar" failonerror="true">
-            <arg path="${basedir}/build/artifacts/phpunit-library-${_version}.phar" />
-        </exec>
-
-        <exec executable="${basedir}/build/scripts/phar-sbom.php" taskname="phar-sbom" failonerror="true">
-            <arg path="${basedir}/build/artifacts/phpunit-library-${_version}.phar" />
-            <arg path="${basedir}/build/artifacts/phpunit-library-${_version}.phar.cdx.xml" />
-        </exec>
-
-        <copy file="${basedir}/build/templates/binary-phar-autoload.php.in" tofile="${basedir}/build/tmp/binary-phar-autoload.php"/>
-        <replace file="${basedir}/build/tmp/binary-phar-autoload.php" token="X.Y.Z" value="${_version}"/>
-
-        <exec executable="${basedir}/tools/phpab" taskname="phpab" failonerror="true">
-            <arg value="--all" />
-            <arg value="--tolerant" />
-            <arg value="--nolower" />
-            <arg value="--phar" />
-            <arg value="--hash" />
-            <arg value="SHA-512" />
-            <arg value="--output" />
+            <arg path="${basedir}/build/tmp/phar-autoload.php" />
             <arg path="${basedir}/build/artifacts/phpunit-${_version}.phar" />
-            <arg value="--template" />
-            <arg path="${basedir}/build/tmp/binary-phar-autoload.php" />
-            <arg path="${basedir}/build/tmp/phar-scoped" />
         </exec>
 
         <exec executable="${basedir}/build/scripts/phar-set-timestamps/run.php" taskname="phar-set-timestamps" failonerror="true">
