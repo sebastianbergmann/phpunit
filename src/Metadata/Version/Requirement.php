@@ -9,12 +9,11 @@
  */
 namespace PHPUnit\Metadata\Version;
 
-use function preg_match;
-use PharIo\Version\UnsupportedVersionConstraintException;
-use PharIo\Version\VersionConstraintParser;
 use PHPUnit\Metadata\InvalidVersionRequirementException;
-use PHPUnit\Util\InvalidVersionOperatorException;
 use PHPUnit\Util\VersionComparisonOperator;
+use SebastianBergmann\VersionRequirement\ComparisonRequirement as ComparisonRequirementImplementation;
+use SebastianBergmann\VersionRequirement\Exception as VersionRequirementException;
+use SebastianBergmann\VersionRequirement\Requirement as RequirementImplementation;
 
 /**
  * @immutable
@@ -23,35 +22,42 @@ use PHPUnit\Util\VersionComparisonOperator;
  */
 abstract readonly class Requirement
 {
-    private const string VERSION_COMPARISON = "/(?P<operator>!=|<|<=|<>|=|==|>|>=)?\s*(?P<version>[\d\.-]+(dev|(RC|alpha|beta)[\d\.])?)[ \t]*\r?$/m";
-
     /**
-     * @throws InvalidVersionOperatorException
+     * @param non-empty-string $versionRequirement
+     *
      * @throws InvalidVersionRequirementException
      */
     public static function from(string $versionRequirement): self
     {
         try {
-            return new ConstraintRequirement(
-                (new VersionConstraintParser)->parse(
-                    $versionRequirement,
-                ),
-            );
-        } catch (UnsupportedVersionConstraintException) {
-            if (preg_match(self::VERSION_COMPARISON, $versionRequirement, $matches) > 0) {
-                return new ComparisonRequirement(
-                    $matches['version'],
-                    new VersionComparisonOperator(
-                        $matches['operator'] !== '' ? $matches['operator'] : '>=',
-                    ),
-                );
-            }
+            $requirement = RequirementImplementation::from($versionRequirement);
+        } catch (VersionRequirementException) {
+            throw new InvalidVersionRequirementException;
         }
 
-        throw new InvalidVersionRequirementException;
+        if ($requirement instanceof ComparisonRequirementImplementation) {
+            return new ComparisonRequirement(
+                $requirement->version(),
+                new VersionComparisonOperator($requirement->operator()->asString()),
+            );
+        }
+
+        return new ConstraintRequirement($versionRequirement);
     }
 
     abstract public function isSatisfiedBy(string $version): bool;
 
     abstract public function asString(): string;
+
+    /**
+     * Returns false when this requirement is a version comparison and its version
+     * does not consist of major, minor, and patch level ("8.5" instead of "8.5.0",
+     * for example).
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function isComplete(): bool
+    {
+        return true;
+    }
 }
