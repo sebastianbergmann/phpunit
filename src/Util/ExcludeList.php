@@ -45,7 +45,6 @@ use SebastianBergmann\Timer\Timer;
 use SebastianBergmann\Type\TypeName;
 use SebastianBergmann\Version;
 use staabm\SideEffectsDetector\SideEffectsDetector;
-use TheSeer\Tokenizer\Tokenizer;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -130,9 +129,6 @@ final class ExcludeList
 
         // staabm/side-effects-detector
         SideEffectsDetector::class => 1,
-
-        // theseer/tokenizer
-        Tokenizer::class => 1,
     ];
 
     /**
