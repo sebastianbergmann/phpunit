@@ -11,8 +11,8 @@ namespace PHPUnit\Framework\PropertyBased\RegularExpression;
 
 use function count;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
-use PHPUnit\Framework\PropertyBased\Distribution\UniformDistribution;
 use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
+use SebastianBergmann\ChoiceSequence\UniformDistribution;
 
 /**
  * Alternatives of a regular expression, separated by |, of which the first

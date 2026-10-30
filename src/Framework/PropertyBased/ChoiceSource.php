@@ -18,10 +18,10 @@ use function spl_object_id;
 use function strtolower;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorDeriver;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorRegistry;
-use PHPUnit\Framework\PropertyBased\Distribution\Distribution;
 use PHPUnit\Framework\PropertyBased\Generator\DeferredGenerator;
 use Random\Randomizer;
 use SebastianBergmann\ChoiceSequence\ChoiceSequence;
+use SebastianBergmann\ChoiceSequence\Distribution;
 use SebastianBergmann\ChoiceSequence\Span;
 
 /**

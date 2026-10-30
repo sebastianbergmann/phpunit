@@ -16,8 +16,8 @@ use function implode;
 use DateTimeImmutable;
 use DateTimeZone;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
-use PHPUnit\Framework\PropertyBased\Distribution\BernoulliDistribution;
-use PHPUnit\Framework\PropertyBased\Distribution\UniformDistribution;
+use SebastianBergmann\ChoiceSequence\BernoulliDistribution;
+use SebastianBergmann\ChoiceSequence\UniformDistribution;
 
 /**
  * Generates points in time from a minimum to a maximum, in one of the time

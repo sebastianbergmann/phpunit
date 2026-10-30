@@ -12,10 +12,10 @@ namespace PHPUnit\Framework\PropertyBased\RegularExpression;
 use function assert;
 use function preg_match;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
-use PHPUnit\Framework\PropertyBased\Distribution\Distribution;
-use PHPUnit\Framework\PropertyBased\Distribution\UniformDistribution;
-use PHPUnit\Framework\PropertyBased\Distribution\WeightedRangesDistribution;
 use PHPUnit\Framework\PropertyBased\ExampleRejectedException;
+use SebastianBergmann\ChoiceSequence\Distribution;
+use SebastianBergmann\ChoiceSequence\UniformDistribution;
+use SebastianBergmann\ChoiceSequence\WeightedRangesDistribution;
 
 /**
  * One character of a set, for a character class, for an escape sequence such
