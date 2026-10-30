@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+### [3.6.0] 2026-10-29
+
+  * Improved `Intervals::compactConstraint()` performance by caching results per constraint string, which speeds up callers that compact the same constraints repeatedly like Composer's pool optimizer, `Intervals::clear()` frees the cache (#194)
+
+### [3.5.2] 2026-10-22
+
+  * Fixed `MultiConstraint::getUpperBound()` picking the wrong inclusivity when two upper bounds share a version, e.g. `< 1.0 || == 1.0` reported an exclusive upper bound that excluded `1.0` (#193)
+
 ### [3.5.1] 2026-10-05
 
   * Fixed `Intervals::isSubsetOf()` returning false for `< 0.0.0`, which now correctly matches nothing and so is a subset of any constraint (#192)
@@ -206,6 +214,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
     - Namespace: `Composer\Test\Package\LinkConstraint` -> `Composer\Test\Semver\Constraint`
   * Changed: code style using php-cs-fixer.
 
+[3.6.0]: https://github.com/composer/semver/compare/3.5.2...3.6.0
+[3.5.2]: https://github.com/composer/semver/compare/3.5.1...3.5.2
 [3.5.1]: https://github.com/composer/semver/compare/3.5.0...3.5.1
 [3.5.0]: https://github.com/composer/semver/compare/3.4.4...3.5.0
 [3.4.4]: https://github.com/composer/semver/compare/3.4.3...3.4.4
