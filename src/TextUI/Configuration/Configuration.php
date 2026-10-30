@@ -1749,6 +1749,8 @@ final readonly class Configuration
     }
 
     /**
+     * @deprecated
+     *
      * @phpstan-assert-if-true !null $this->pharExtensionDirectory
      */
     public function hasPharExtensionDirectory(): bool
@@ -1757,6 +1759,8 @@ final readonly class Configuration
     }
 
     /**
+     * @deprecated
+     *
      * @throws NoPharExtensionDirectoryException
      *
      * @return non-empty-string

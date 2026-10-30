@@ -17,6 +17,8 @@ use PHPUnit\Event\Telemetry;
  * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
+ * @deprecated
  */
 final readonly class ExtensionLoadedFromPhar implements Event
 {

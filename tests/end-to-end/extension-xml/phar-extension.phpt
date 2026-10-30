@@ -12,6 +12,7 @@ require_once __DIR__ . '/../../bootstrap.php';
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
 PHPUnit Started (PHPUnit %s using %s)
+Test Runner Triggered PHPUnit Deprecation (The "extensionsDirectory" attribute is deprecated and will be removed in PHPUnit 14. Install the extension using Composer or load it in your bootstrap script instead.)
 Test Runner Configured
 Extension Loaded from PHAR (phpunit/phpunit-test-extension 1.0.0)
 Extension Bootstrapped (PHPUnit\TestFixture\MyExtension\MyExtensionBootstrap)

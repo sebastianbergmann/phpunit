@@ -54,11 +54,16 @@ This functionality is currently [hard-deprecated](https://phpunit.de/backward-co
 |                                                                   | `--cache-result` CLI option                                   | 13.3.0 | Use `--record-test-run-history` instead                         |
 |                                                                   | `--do-not-cache-result` CLI option                            | 13.3.0 | Use `--do-not-record-test-run-history` instead                  |
 |                                                                   | `cacheResult` XML configuration attribute                     | 13.3.0 | Use `recordTestRunHistory` instead                              |
+|                                                                   | `extensionsDirectory` XML configuration attribute             | 13.5.0 | Use Composer or load the extension in the bootstrap script      |
 
 ### Extending PHPUnit
 
-| Issue                                                             | Description                                                   | Since  | Replacement                                                     |
-|-------------------------------------------------------------------|---------------------------------------------------------------|--------|-----------------------------------------------------------------|
-| [#7049](https://github.com/sebastianbergmann/phpunit/issues/7049) | `TextUI\Configuration\Configuration::randomOrderSeed()`       | 13.5.0 | Use `randomSeed()` instead                                      |
-|                                                                   | `TextUI\Configuration\Configuration::cacheResult()`           | 13.3.0 | Use `recordTestRunHistory()` instead                            |
-|                                                                   | `TextUI\Configuration\Configuration::testResultCacheFile()`   | 13.3.0 | Use `testRunHistoryFile()` instead                              |
+| Issue                                                             | Description                                                       | Since  | Replacement                                                     |
+|-------------------------------------------------------------------|-------------------------------------------------------------------|--------|-----------------------------------------------------------------|
+| [#7049](https://github.com/sebastianbergmann/phpunit/issues/7049) | `TextUI\Configuration\Configuration::randomOrderSeed()`           | 13.5.0 | Use `randomSeed()` instead                                      |
+|                                                                   | `TextUI\Configuration\Configuration::cacheResult()`               | 13.3.0 | Use `recordTestRunHistory()` instead                            |
+|                                                                   | `TextUI\Configuration\Configuration::testResultCacheFile()`       | 13.3.0 | Use `testRunHistoryFile()` instead                              |
+|                                                                   | `TextUI\Configuration\Configuration::hasPharExtensionDirectory()` | 13.5.0 |                                                                 |
+|                                                                   | `TextUI\Configuration\Configuration::pharExtensionDirectory()`    | 13.5.0 |                                                                 |
+|                                                                   | `Event\TestRunner\ExtensionLoadedFromPhar`                        | 13.5.0 |                                                                 |
+|                                                                   | `Event\TestRunner\ExtensionLoadedFromPharSubscriber`              | 13.5.0 |                                                                 |

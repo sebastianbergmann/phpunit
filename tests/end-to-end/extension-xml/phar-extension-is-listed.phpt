@@ -20,4 +20,5 @@ Extension:     phpunit/phpunit-test-extension 1.0.0
 
 Time: %s, Memory: %s
 
-OK (1 test, 1 assertion)
+OK, but there were issues!
+Tests: 1, Assertions: 1, PHPUnit Deprecations: 1.

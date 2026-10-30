@@ -1169,6 +1169,10 @@ final readonly class Loader
         $extensionsDirectory = $this->parseStringAttribute($documentElement, 'extensionsDirectory');
 
         if ($extensionsDirectory !== null) {
+            $this->emitter->testRunnerTriggeredPhpunitDeprecation(
+                'The "extensionsDirectory" attribute is deprecated and will be removed in PHPUnit 14. Install the extension using Composer or load it in your bootstrap script instead.',
+            );
+
             $extensionsDirectory = $this->toAbsolutePath($filename, $extensionsDirectory);
         }
 
