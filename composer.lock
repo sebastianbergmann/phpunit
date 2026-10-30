@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bb7729e015861309b0a261105dad6e75",
+    "content-hash": "9cf3c8a282b2f218a59650c1c2afd59d",
     "packages": [
         {
             "name": "doctrine/instantiator",
@@ -74,7 +74,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-12-30T00:15:36+00:00"
+            "time": "2022-12-30T00:15:36+00:00",
+            "published-time": "2022-12-30T14:01:07+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -134,7 +135,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-08-01T08:46:24+00:00"
+            "time": "2025-08-01T08:46:24+00:00",
+            "published-time": "2025-08-01T08:46:44+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -201,7 +203,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-03-03T12:33:53+00:00"
+            "time": "2024-03-03T12:33:53+00:00",
+            "published-time": "2024-03-03T12:39:44+00:00"
         },
         {
             "name": "phar-io/version",
@@ -252,7 +255,8 @@
                 "issues": "https://github.com/phar-io/version/issues",
                 "source": "https://github.com/phar-io/version/tree/3.2.1"
             },
-            "time": "2022-02-21T01:04:05+00:00"
+            "time": "2022-02-21T01:04:05+00:00",
+            "published-time": "2022-02-21T01:04:30+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -325,7 +329,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-03-02T06:09:37+00:00"
+            "time": "2024-03-02T06:09:37+00:00",
+            "published-time": "2024-03-02T06:10:22+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -385,7 +390,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-03-01T13:39:50+00:00"
+            "time": "2024-03-01T13:39:50+00:00",
+            "published-time": "2024-03-01T13:40:21+00:00"
         },
         {
             "name": "phpunit/php-text-template",
@@ -430,7 +436,8 @@
                 "issues": "https://github.com/sebastianbergmann/php-text-template/issues",
                 "source": "https://github.com/sebastianbergmann/php-text-template/tree/1.2.1"
             },
-            "time": "2015-06-21T13:50:34+00:00"
+            "time": "2015-06-21T13:50:34+00:00",
+            "published-time": "2015-06-21T13:52:49+00:00"
         },
         {
             "name": "phpunit/php-timer",
@@ -489,7 +496,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-03-01T13:42:41+00:00"
+            "time": "2024-03-01T13:42:41+00:00",
+            "published-time": "2024-03-01T13:43:06+00:00"
         },
         {
             "name": "phpunit/php-token-stream",
@@ -548,7 +556,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-07-26T12:15:06+00:00"
+            "time": "2021-07-26T12:15:06+00:00",
+            "published-time": "2021-07-26T12:15:47+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -603,7 +612,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-03-01T13:45:45+00:00"
+            "time": "2024-03-01T13:45:45+00:00",
+            "published-time": "2024-03-01T13:46:18+00:00"
         },
         {
             "name": "sebastian/comparator",
@@ -689,7 +699,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-01-24T09:20:25+00:00"
+            "time": "2026-01-24T09:20:25+00:00",
+            "published-time": "2026-01-24T09:20:43+00:00"
         },
         {
             "name": "sebastian/diff",
@@ -755,7 +766,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-03-02T06:16:36+00:00"
+            "time": "2024-03-02T06:16:36+00:00",
+            "published-time": "2024-03-02T06:17:02+00:00"
         },
         {
             "name": "sebastian/environment",
@@ -818,7 +830,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-03-01T13:49:59+00:00"
+            "time": "2024-03-01T13:49:59+00:00",
+            "published-time": "2024-03-01T13:50:42+00:00"
         },
         {
             "name": "sebastian/exporter",
@@ -907,7 +920,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-08-11T04:45:00+00:00"
+            "time": "2026-08-11T04:45:00+00:00",
+            "published-time": "2026-08-11T04:47:59+00:00"
         },
         {
             "name": "sebastian/global-state",
@@ -983,7 +997,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-08-10T05:40:12+00:00"
+            "time": "2025-08-10T05:40:12+00:00",
+            "published-time": "2025-08-10T05:40:37+00:00"
         },
         {
             "name": "sebastian/object-enumerator",
@@ -1040,7 +1055,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-03-01T13:54:02+00:00"
+            "time": "2024-03-01T13:54:02+00:00",
+            "published-time": "2024-03-01T13:54:23+00:00"
         },
         {
             "name": "sebastian/object-reflector",
@@ -1095,7 +1111,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-03-01T13:56:04+00:00"
+            "time": "2024-03-01T13:56:04+00:00",
+            "published-time": "2024-03-01T13:56:26+00:00"
         },
         {
             "name": "sebastian/recursion-context",
@@ -1170,7 +1187,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-08-11T05:21:46+00:00"
+            "time": "2026-08-11T05:21:46+00:00",
+            "published-time": "2026-08-11T05:22:18+00:00"
         },
         {
             "name": "sebastian/resource-operations",
@@ -1221,7 +1239,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-03-01T13:59:09+00:00"
+            "time": "2024-03-01T13:59:09+00:00",
+            "published-time": "2024-03-01T13:59:28+00:00"
         },
         {
             "name": "sebastian/type",
@@ -1277,7 +1296,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-03-01T14:04:07+00:00"
+            "time": "2024-03-01T14:04:07+00:00",
+            "published-time": "2024-03-01T14:04:44+00:00"
         },
         {
             "name": "sebastian/version",
@@ -1324,7 +1344,8 @@
                 "issues": "https://github.com/sebastianbergmann/version/issues",
                 "source": "https://github.com/sebastianbergmann/version/tree/master"
             },
-            "time": "2016-10-03T07:35:21+00:00"
+            "time": "2016-10-03T07:35:21+00:00",
+            "published-time": "2016-11-26T07:49:42+00:00"
         },
         {
             "name": "theseer/tokenizer",
@@ -1374,7 +1395,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-11-17T20:03:58+00:00"
+            "time": "2025-11-17T20:03:58+00:00",
+            "published-time": "2025-11-17T20:04:52+00:00"
         }
     ],
     "packages-dev": [],
@@ -1396,5 +1418,5 @@
     "platform-overrides": {
         "php": "7.2.0"
     },
-    "plugin-api-version": "2.9.0"
+    "plugin-api-version": "2.11.0"
 }
