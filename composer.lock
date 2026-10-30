@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d72aac673edce4db2966c474f2280d47",
+    "content-hash": "f74cbb03450f5306719527cd1dadb9fd",
     "packages": [
         {
             "name": "myclabs/deep-copy",
@@ -1635,16 +1635,16 @@
         },
         {
             "name": "sebastian/version-requirement",
-            "version": "dev-main",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/version-requirement.git",
-                "reference": "f100e968aaf42d83b4053c0caa8d5900ea0b7c9e"
+                "reference": "890c5d66baec71e3b3c0b9f7fdd162122b9216aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/version-requirement/zipball/f100e968aaf42d83b4053c0caa8d5900ea0b7c9e",
-                "reference": "f100e968aaf42d83b4053c0caa8d5900ea0b7c9e",
+                "url": "https://api.github.com/repos/sebastianbergmann/version-requirement/zipball/890c5d66baec71e3b3c0b9f7fdd162122b9216aa",
+                "reference": "890c5d66baec71e3b3c0b9f7fdd162122b9216aa",
                 "shasum": ""
             },
             "require": {
@@ -1653,7 +1653,6 @@
             "require-dev": {
                 "phpunit/phpunit": "^13.4.5"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1681,7 +1680,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/version-requirement/issues",
                 "security": "https://github.com/sebastianbergmann/version-requirement/security/policy",
-                "source": "https://github.com/sebastianbergmann/version-requirement/tree/main"
+                "source": "https://github.com/sebastianbergmann/version-requirement/tree/1.0.0"
             },
             "funding": [
                 {
@@ -1701,8 +1700,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-30T07:30:41+00:00",
-            "published-time": "2026-10-30T07:32:31+00:00"
+            "time": "2026-10-30T08:44:29+00:00",
+            "published-time": "2026-10-30T08:45:17+00:00"
         },
         {
             "name": "staabm/side-effects-detector",
@@ -1761,9 +1760,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "sebastian/version-requirement": 20
-    },
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
