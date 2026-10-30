@@ -10,8 +10,6 @@
 namespace PHPUnit\Metadata\Version;
 
 use PHPUnit\Util\VersionComparisonOperator;
-use SebastianBergmann\VersionRequirement\ComparisonRequirement as ComparisonRequirementImplementation;
-use SebastianBergmann\VersionRequirement\VersionComparisonOperator as VersionComparisonOperatorImplementation;
 
 /**
  * @immutable
@@ -35,11 +33,6 @@ final readonly class ComparisonRequirement extends Requirement
         $this->operator = $operator;
     }
 
-    public function isSatisfiedBy(string $version): bool
-    {
-        return $this->implementation()->isSatisfiedBy($version);
-    }
-
     public function asString(): string
     {
         return $this->operator->asString() . ' ' . $this->version;
@@ -53,19 +46,8 @@ final readonly class ComparisonRequirement extends Requirement
         return $this->version;
     }
 
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public function isComplete(): bool
+    public function operator(): VersionComparisonOperator
     {
-        return $this->implementation()->isComplete();
-    }
-
-    private function implementation(): ComparisonRequirementImplementation
-    {
-        return new ComparisonRequirementImplementation(
-            $this->version,
-            new VersionComparisonOperatorImplementation($this->operator->asString()),
-        );
+        return $this->operator;
     }
 }

@@ -38,10 +38,16 @@ use PHPUnit\Metadata\RequiresPhpExtension;
 use PHPUnit\Metadata\RequiresPhpunit;
 use PHPUnit\Metadata\RequiresPhpunitExtension;
 use PHPUnit\Metadata\RequiresSetting;
+use PHPUnit\Metadata\Version\ComparisonRequirement;
+use PHPUnit\Metadata\Version\ConstraintRequirement;
 use PHPUnit\Metadata\Version\InvalidVersionRequirement;
 use PHPUnit\Metadata\Version\Requirement;
 use PHPUnit\Runner\Version;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
+use SebastianBergmann\VersionRequirement\ComparisonRequirement as ComparisonRequirementImplementation;
+use SebastianBergmann\VersionRequirement\ConstraintRequirement as ConstraintRequirementImplementation;
+use SebastianBergmann\VersionRequirement\Requirement as RequirementImplementation;
+use SebastianBergmann\VersionRequirement\VersionComparisonOperator as VersionComparisonOperatorImplementation;
 use Throwable;
 
 /**
@@ -76,7 +82,7 @@ final readonly class Requirements
 
                 $this->warnAboutIncompleteVersion($metadata->versionRequirement(), $className, $methodName);
 
-                if (!$versionRequirement->isSatisfiedBy(PHP_VERSION)) {
+                if (!$this->isSatisfiedBy($versionRequirement, PHP_VERSION)) {
                     $notSatisfied[] = sprintf(
                         'PHP %s is required, but PHP %s is being used.',
                         $versionRequirement->asString(),
@@ -105,7 +111,7 @@ final readonly class Requirements
                         $metadata->hasVersionRequirement() ? (' ' . $metadata->versionRequirement()->asString()) : '',
                     );
                 } elseif ($metadata->hasVersionRequirement() &&
-                    !$metadata->versionRequirement()->isSatisfiedBy($extensionVersion)) {
+                    !$this->isSatisfiedBy($metadata->versionRequirement(), $extensionVersion)) {
                     $notSatisfied[] = sprintf(
                         'PHP extension %s %s is required, but version %s is loaded.',
                         $metadata->extension(),
@@ -122,7 +128,7 @@ final readonly class Requirements
 
                 $this->warnAboutIncompleteVersion($metadata->versionRequirement(), $className, $methodName);
 
-                if (!$versionRequirement->isSatisfiedBy(Version::id())) {
+                if (!$this->isSatisfiedBy($versionRequirement, Version::id())) {
                     $notSatisfied[] = sprintf(
                         'PHPUnit %s is required, but PHPUnit %s is being used.',
                         $versionRequirement->asString(),
@@ -323,7 +329,9 @@ final readonly class Requirements
      */
     private function warnAboutIncompleteVersion(Requirement $versionRequirement, string $className, string $methodName): void
     {
-        if ($versionRequirement->isComplete()) {
+        $implementation = $this->implementation($versionRequirement);
+
+        if ($implementation === null || $implementation->isComplete()) {
             return;
         }
 
@@ -335,5 +343,37 @@ final readonly class Requirements
                 $methodName,
             ),
         );
+    }
+
+    private function isSatisfiedBy(Requirement $versionRequirement, string $version): bool
+    {
+        $implementation = $this->implementation($versionRequirement);
+
+        if ($implementation === null) {
+            return false;
+        }
+
+        return $implementation->isSatisfiedBy($version);
+    }
+
+    /**
+     * Returns null for an invalid version requirement, which is never satisfied.
+     */
+    private function implementation(Requirement $versionRequirement): ?RequirementImplementation
+    {
+        if ($versionRequirement instanceof ComparisonRequirement) {
+            return new ComparisonRequirementImplementation(
+                $versionRequirement->version(),
+                new VersionComparisonOperatorImplementation($versionRequirement->operator()->asString()),
+            );
+        }
+
+        if ($versionRequirement instanceof ConstraintRequirement) {
+            return new ConstraintRequirementImplementation($versionRequirement->asString());
+        }
+
+        assert($versionRequirement instanceof InvalidVersionRequirement);
+
+        return null;
     }
 }

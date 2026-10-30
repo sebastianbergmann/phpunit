@@ -45,19 +45,5 @@ abstract readonly class Requirement
         return new ConstraintRequirement($versionRequirement);
     }
 
-    abstract public function isSatisfiedBy(string $version): bool;
-
     abstract public function asString(): string;
-
-    /**
-     * Returns false when this requirement is a version comparison and its version
-     * does not consist of major, minor, and patch level ("8.5" instead of "8.5.0",
-     * for example).
-     *
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public function isComplete(): bool
-    {
-        return true;
-    }
 }

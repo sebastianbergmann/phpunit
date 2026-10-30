@@ -41,11 +41,9 @@ final readonly class ConstraintRequirement extends Requirement
         $this->constraint = $constraint;
     }
 
-    public function isSatisfiedBy(string $version): bool
-    {
-        return new ConstraintRequirementImplementation($this->constraint)->isSatisfiedBy($version);
-    }
-
+    /**
+     * @return non-empty-string
+     */
     public function asString(): string
     {
         return $this->constraint;

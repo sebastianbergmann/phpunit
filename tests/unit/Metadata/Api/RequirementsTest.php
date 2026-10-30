@@ -219,6 +219,14 @@ final class RequirementsTest extends TestCase
         );
     }
 
+    public function testInvalidVersionRequirementIsNeverSatisfied(): void
+    {
+        $this->assertCount(
+            1,
+            new Requirements($this->createStub(Emitter::class))->requirementsNotSatisfiedFor(RequirementsWithInvalidVersionConstraintTest::class, 'testRequiresPhp'),
+        );
+    }
+
     public function testWarnsWhenVersionRequirementIsIncomplete(): void
     {
         $emitter = $this->createMock(Emitter::class);
