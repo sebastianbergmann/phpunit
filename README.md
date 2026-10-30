@@ -71,7 +71,6 @@ These tools are used to develop PHPUnit:
 
 * [Composer](https://getcomposer.org/)
 * [Phive](https://phar.io/)
-* [PHP Autoload Builder](https://github.com/theseer/Autoload/)
 * [PHP-CS-Fixer](https://cs.symfony.com/)
 * [PHP-Scoper](https://github.com/humbug/php-scoper)
 * [PHPStan](https://phpstan.org/)
