@@ -21,7 +21,6 @@ use function str_starts_with;
 use function sys_get_temp_dir;
 use Composer\Autoload\ClassLoader;
 use DeepCopy\DeepCopy;
-use PharIo\Version\Version as PharIoVersion;
 use PhpParser\Parser;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -64,9 +63,6 @@ final class ExcludeList
 
         // nikic/php-parser
         Parser::class => 1,
-
-        // phar-io/version
-        PharIoVersion::class => 1,
 
         // phpunit/phpunit
         TestCase::class => 2,

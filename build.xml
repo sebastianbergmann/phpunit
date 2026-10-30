@@ -326,13 +326,6 @@
         <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Stmt/StaticVar.php"/>
         <delete file="${basedir}/build/tmp/phar/nikic-php-parser/PhpParser/Node/Stmt/UseUse.php"/>
 
-        <copy file="${basedir}/vendor/phar-io/version/LICENSE" tofile="${basedir}/build/tmp/phar/phar-io-version/LICENSE"/>
-        <copy todir="${basedir}/build/tmp/phar/phar-io-version">
-            <fileset dir="${basedir}/vendor/phar-io/version/src">
-                <include name="**/*.php" />
-            </fileset>
-        </copy>
-
         <copy file="${basedir}/vendor/theseer/tokenizer/LICENSE" tofile="${basedir}/build/tmp/phar/theseer-tokenizer/LICENSE"/>
         <copy todir="${basedir}/build/tmp/phar/theseer-tokenizer">
             <fileset dir="${basedir}/vendor/theseer/tokenizer/src">
