@@ -28,7 +28,6 @@ use function trait_exists;
 use DateTime;
 use DateTimeImmutable;
 use PHPUnit\Framework\PropertyBased\CannotDeriveGeneratorException;
-use PHPUnit\Framework\PropertyBased\Distribution\BernoulliDistribution;
 use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\ArrayGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\BooleanGenerator;
@@ -63,6 +62,7 @@ use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionType;
 use ReflectionUnionType;
+use SebastianBergmann\ChoiceSequence\BernoulliDistribution;
 use WeakMap;
 
 /**

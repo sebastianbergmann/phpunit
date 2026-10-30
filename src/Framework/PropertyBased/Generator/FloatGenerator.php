@@ -27,10 +27,10 @@ use function min;
 use function pack;
 use function unpack;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
-use PHPUnit\Framework\PropertyBased\Distribution\BernoulliDistribution;
-use PHPUnit\Framework\PropertyBased\Distribution\BoundaryDistribution;
-use PHPUnit\Framework\PropertyBased\Distribution\ExactDistribution;
-use PHPUnit\Framework\PropertyBased\Distribution\UniformDistribution;
+use SebastianBergmann\ChoiceSequence\BernoulliDistribution;
+use SebastianBergmann\ChoiceSequence\BoundaryDistribution;
+use SebastianBergmann\ChoiceSequence\ExactDistribution;
+use SebastianBergmann\ChoiceSequence\UniformDistribution;
 
 /**
  * Generates floating-point numbers from three choices: the sign (0 for

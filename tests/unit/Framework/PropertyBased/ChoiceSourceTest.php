@@ -18,13 +18,13 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorDeriver;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorRegistry;
-use PHPUnit\Framework\PropertyBased\Distribution\ExactDistribution;
-use PHPUnit\Framework\PropertyBased\Distribution\UniformDistribution;
 use PHPUnit\Framework\TestCase;
 use Random\Engine\Xoshiro256StarStar;
 use Random\Randomizer;
 use SebastianBergmann\ChoiceSequence\ChoiceSequence;
+use SebastianBergmann\ChoiceSequence\ExactDistribution;
 use SebastianBergmann\ChoiceSequence\Span;
+use SebastianBergmann\ChoiceSequence\UniformDistribution;
 
 #[CoversClass(ChoiceSource::class)]
 #[CoversClass(ChoiceTree::class)]

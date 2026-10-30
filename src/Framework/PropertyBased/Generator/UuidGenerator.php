@@ -12,8 +12,8 @@ namespace PHPUnit\Framework\PropertyBased\Generator;
 use function implode;
 use function sprintf;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
-use PHPUnit\Framework\PropertyBased\Distribution\BernoulliDistribution;
-use PHPUnit\Framework\PropertyBased\Distribution\UniformDistribution;
+use SebastianBergmann\ChoiceSequence\BernoulliDistribution;
+use SebastianBergmann\ChoiceSequence\UniformDistribution;
 
 /**
  * Generates UUIDs (RFC 9562) in their canonical form.

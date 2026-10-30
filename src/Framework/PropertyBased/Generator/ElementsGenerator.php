@@ -11,7 +11,7 @@ namespace PHPUnit\Framework\PropertyBased\Generator;
 
 use function count;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
-use PHPUnit\Framework\PropertyBased\Distribution\UniformDistribution;
+use SebastianBergmann\ChoiceSequence\UniformDistribution;
 
 /**
  * Generates one of the given values. The choice is the index of the value,

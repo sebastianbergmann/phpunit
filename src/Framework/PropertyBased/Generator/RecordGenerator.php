@@ -10,7 +10,7 @@
 namespace PHPUnit\Framework\PropertyBased\Generator;
 
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
-use PHPUnit\Framework\PropertyBased\Distribution\BernoulliDistribution;
+use SebastianBergmann\ChoiceSequence\BernoulliDistribution;
 
 /**
  * Generates arrays with the given keys and a value of the respective generator

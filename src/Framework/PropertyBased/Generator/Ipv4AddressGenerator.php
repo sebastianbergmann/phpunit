@@ -15,8 +15,8 @@ use function long2ip;
 use function max;
 use function min;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
-use PHPUnit\Framework\PropertyBased\Distribution\BernoulliDistribution;
-use PHPUnit\Framework\PropertyBased\Distribution\UniformDistribution;
+use SebastianBergmann\ChoiceSequence\BernoulliDistribution;
+use SebastianBergmann\ChoiceSequence\UniformDistribution;
 
 /**
  * Generates IPv4 addresses of a network in dotted decimal notation.

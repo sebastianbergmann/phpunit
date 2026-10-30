@@ -10,7 +10,7 @@
 namespace PHPUnit\Framework\PropertyBased\Generator;
 
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
-use PHPUnit\Framework\PropertyBased\Distribution\UniformDistribution;
+use SebastianBergmann\ChoiceSequence\UniformDistribution;
 
 /**
  * Generates false (choice 0) and true (choice 1).

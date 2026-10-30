@@ -10,7 +10,7 @@
 namespace PHPUnit\Framework\PropertyBased\Generator;
 
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
-use PHPUnit\Framework\PropertyBased\Distribution\BernoulliDistribution;
+use SebastianBergmann\ChoiceSequence\BernoulliDistribution;
 
 /**
  * Generates null (choice 0) or a value of the given generator (choice 1).

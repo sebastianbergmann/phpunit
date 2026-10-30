@@ -46,7 +46,6 @@ use DateTimeInterface;
 use DateTimeZone;
 use Exception;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorDeriver;
-use PHPUnit\Framework\PropertyBased\Distribution\WeightedRangesDistribution;
 use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\ArrayGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\BooleanGenerator;
@@ -74,6 +73,7 @@ use PHPUnit\Framework\PropertyBased\Generator\UuidGenerator;
 use PHPUnit\Framework\PropertyBased\RegularExpression\Parser;
 use PHPUnit\Framework\PropertyBased\Type\NameScope;
 use PHPUnit\Framework\PropertyBased\Type\TypeParser;
+use SebastianBergmann\ChoiceSequence\WeightedRangesDistribution;
 use UnitEnum;
 
 /**

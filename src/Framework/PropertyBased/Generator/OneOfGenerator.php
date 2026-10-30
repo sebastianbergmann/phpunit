@@ -10,8 +10,8 @@
 namespace PHPUnit\Framework\PropertyBased\Generator;
 
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
-use PHPUnit\Framework\PropertyBased\Distribution\Distribution;
-use PHPUnit\Framework\PropertyBased\Distribution\UniformDistribution;
+use SebastianBergmann\ChoiceSequence\Distribution;
+use SebastianBergmann\ChoiceSequence\UniformDistribution;
 
 /**
  * Generates a value of one of the given generators. The first choice is the

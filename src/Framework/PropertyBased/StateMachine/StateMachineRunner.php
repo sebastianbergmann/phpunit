@@ -26,12 +26,12 @@ use function str_contains;
 use function str_replace;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
 use PHPUnit\Framework\PropertyBased\CounterexampleExporter;
-use PHPUnit\Framework\PropertyBased\Distribution\ExactDistribution;
-use PHPUnit\Framework\PropertyBased\Distribution\UniformDistribution;
 use PHPUnit\Framework\PropertyBased\ExampleRejectedException;
 use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
 use PHPUnit\Framework\PropertyBased\InvalidStateMachineException;
 use ReflectionMethod;
+use SebastianBergmann\ChoiceSequence\ExactDistribution;
+use SebastianBergmann\ChoiceSequence\UniformDistribution;
 use Throwable;
 
 /**

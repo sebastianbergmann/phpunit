@@ -14,9 +14,9 @@ use function count;
 use function mb_chr;
 use function var_export;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
-use PHPUnit\Framework\PropertyBased\Distribution\Distribution;
-use PHPUnit\Framework\PropertyBased\Distribution\UniformDistribution;
-use PHPUnit\Framework\PropertyBased\Distribution\WeightedRangesDistribution;
+use SebastianBergmann\ChoiceSequence\Distribution;
+use SebastianBergmann\ChoiceSequence\UniformDistribution;
+use SebastianBergmann\ChoiceSequence\WeightedRangesDistribution;
 
 /**
  * Generates valid UTF-8 strings. Their length is the number of characters

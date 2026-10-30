@@ -11,8 +11,8 @@ namespace PHPUnit\Framework\PropertyBased\Generator;
 
 use Closure;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
-use PHPUnit\Framework\PropertyBased\Distribution\BernoulliDistribution;
 use PHPUnit\Framework\PropertyBased\ExampleRejectedException;
+use SebastianBergmann\ChoiceSequence\BernoulliDistribution;
 
 /**
  * Draws the elements of a collection: first the elements that its minimum
