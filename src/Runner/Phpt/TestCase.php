@@ -87,32 +87,37 @@ use staabm\SideEffectsDetector\SideEffectsDetector;
  *
  * @phpstan-type CoverageFiles array{coverage: non-empty-string, job: non-empty-string}
  */
-final readonly class TestCase implements Reorderable, SelfDescribing, Test
+final class TestCase implements Reorderable, SelfDescribing, Test
 {
     /**
      * @var non-empty-string
      */
-    private string $filename;
+    private readonly string $filename;
+
+    /**
+     * @var list<string>
+     */
+    private array $groups = [];
 
     /**
      * @var positive-int
      */
-    private int $repetition;
+    private readonly int $repetition;
 
     /**
      * @var positive-int
      */
-    private int $totalRepetitions;
+    private readonly int $totalRepetitions;
 
     /**
      * @var positive-int
      */
-    private int $attempt;
+    private readonly int $attempt;
 
     /**
      * @var positive-int
      */
-    private int $maxAttempts;
+    private readonly int $maxAttempts;
 
     /**
      * The directory the temporary files that are used to collect code coverage
@@ -120,12 +125,12 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
      *
      * @var non-empty-string
      */
-    private string $coverageFilesDirectory;
+    private readonly string $coverageFilesDirectory;
 
     /**
      * @var CoverageFiles
      */
-    private array $coverageFiles;
+    private readonly array $coverageFiles;
 
     /**
      * @param non-empty-string $filename
@@ -237,6 +242,26 @@ final readonly class TestCase implements Reorderable, SelfDescribing, Test
     public function sortId(): string
     {
         return $this->filename;
+    }
+
+    /**
+     * @return list<string>
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function groups(): array
+    {
+        return $this->groups;
+    }
+
+    /**
+     * @param list<string> $groups
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function setGroups(array $groups): void
+    {
+        $this->groups = $groups;
     }
 
     /**

@@ -32,17 +32,18 @@ final class PhptRetryTestSuite extends PhptIterativeTestSuite
     private int $maxAttempts = 1;
 
     /**
-     * @param non-empty-string $filename
-     * @param positive-int     $maxAttempts
+     * @param non-empty-string       $filename
+     * @param positive-int           $maxAttempts
+     * @param list<non-empty-string> $groups
      */
-    public static function for(string $filename, Event\Emitter $emitter, int $maxAttempts): self
+    public static function for(string $filename, Event\Emitter $emitter, int $maxAttempts, array $groups = []): self
     {
         $suite = self::empty($filename, $emitter);
 
         $suite->filename    = $filename;
         $suite->maxAttempts = $maxAttempts;
 
-        $suite->addTest(new PhptTestCase($filename, 1, 1, 1, $maxAttempts));
+        $suite->addTest(new PhptTestCase($filename, 1, 1, 1, $maxAttempts), $groups);
 
         return $suite;
     }

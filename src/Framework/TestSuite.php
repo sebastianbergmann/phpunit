@@ -194,9 +194,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             $groups[] = 'default';
         }
 
-        if ($test instanceof TestCase) {
-            $test->setGroups($groups);
-        }
+        $test->setGroups($groups);
 
         foreach ($groups as $group) {
             if (!isset($this->groupedTests[$group])) {
@@ -263,16 +261,16 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             if (str_ends_with($filename, '.phpt') && is_file($filename)) {
                 if ($numberOfRuns > 1) {
                     $this->addTest(
-                        PhptRepeatTestSuite::for($filename, $this->emitter, $numberOfRuns),
+                        PhptRepeatTestSuite::for($filename, $this->emitter, $numberOfRuns, $groups),
                         $groups,
                     );
                 } elseif ($maxAttempts > 1) {
                     $this->addTest(
-                        PhptRetryTestSuite::for($filename, $this->emitter, $maxAttempts),
+                        PhptRetryTestSuite::for($filename, $this->emitter, $maxAttempts, $groups),
                         $groups,
                     );
                 } else {
-                    $this->addTest(new PhptTestCase($filename));
+                    $this->addTest(new PhptTestCase($filename), $groups);
                 }
             } else {
                 $this->addTestSuite(

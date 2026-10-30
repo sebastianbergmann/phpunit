@@ -70,15 +70,18 @@ final class ListGroupsCommandTest extends TestCase
         );
     }
 
-    public function testListsDefaultGroupForPhptTest(): void
+    public function testListsGroupOfPhptTest(): void
     {
         $filename = realpath(__DIR__ . '/../../../../end-to-end/_files/phpt-expect-location-hint-example.phpt');
 
-        $result = new ListGroupsCommand([new PhptTestCase($filename)])->execute();
+        $test = new PhptTestCase($filename);
+        $test->setGroups(['phpt']);
+
+        $result = new ListGroupsCommand([$test])->execute();
 
         $this->assertSame(
             'Available test group:' . PHP_EOL .
-            ' - default (1 test)' . PHP_EOL,
+            ' - phpt (1 test)' . PHP_EOL,
             $result->output(),
         );
     }
