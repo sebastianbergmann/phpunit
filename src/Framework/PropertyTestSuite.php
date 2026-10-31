@@ -33,6 +33,7 @@ use PHPUnit\Framework\PropertyBased\Derivation\GeneratorRegistry;
 use PHPUnit\Framework\PropertyBased\DrawnValues;
 use PHPUnit\Framework\PropertyBased\EventAggregator;
 use PHPUnit\Framework\PropertyBased\ExampleRejectedException;
+use PHPUnit\Framework\PropertyBased\ExampleResult;
 use PHPUnit\Framework\PropertyBased\ExplicitExample;
 use PHPUnit\Framework\PropertyBased\Falsification;
 use PHPUnit\Framework\PropertyBased\FlakyPropertyException;
@@ -236,6 +237,14 @@ final class PropertyTestSuite extends IterativeTestSuite
     private bool $warnedAboutNondeterministicGenerators = false;
 
     /**
+     * The deriver and the generators of the property, for running its
+     * examples on their own, null before the first one is run.
+     *
+     * @var ?array{0: GeneratorDeriver, 1: array<non-empty-string, AbstractGenerator<mixed>>}
+     */
+    private ?array $generatorsOfExamplesRunOnTheirOwn = null;
+
+    /**
      * @param non-empty-string       $name
      * @param ?PropertyDefinition    $definition       null when the requirements of the property were not met while the test suite was built
      * @param positive-int           $numberOfExamples
@@ -272,6 +281,49 @@ final class PropertyTestSuite extends IterativeTestSuite
     public function setTestRunHistory(TestRunHistory $testRunHistory): void
     {
         $this->testRunHistory = $testRunHistory;
+    }
+
+    /**
+     * Runs one example of the property, with its full lifecycle, on its own
+     * rather than while the property is checked, with arguments that are
+     * generated from the given choices. The example is neither shrunk nor
+     * reported, and the events that are emitted while it runs are not
+     * dispatched.
+     *
+     * @param list<non-negative-int> $choices
+     * @param positive-int           $timeLimit the time limit of the example in seconds
+     *
+     * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws InvalidPropertyException
+     * @throws UnintentionallyCoveredCodeException
+     */
+    public function replayExample(array $choices, int $timeLimit): ExampleResult
+    {
+        return $this->runExampleOnItsOwn(
+            static fn (GeneratorDeriver $deriver): ChoiceSource => ChoiceSource::replay(new ChoiceSequence($choices), ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver),
+            $timeLimit,
+        );
+    }
+
+    /**
+     * Runs one example of the property, as replayExample() does, with
+     * arguments that are generated from choices that are drawn from a random
+     * number generator that is seeded with the given seed.
+     *
+     * @param positive-int $timeLimit the time limit of the example in seconds
+     *
+     * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws InvalidPropertyException
+     * @throws UnintentionallyCoveredCodeException
+     */
+    public function generateExample(int $seed, int $timeLimit): ExampleResult
+    {
+        return $this->runExampleOnItsOwn(
+            static fn (GeneratorDeriver $deriver): ChoiceSource => ChoiceSource::random(new Randomizer(new Xoshiro256StarStar($seed)), ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver),
+            $timeLimit,
+        );
     }
 
     /**
@@ -506,6 +558,77 @@ final class PropertyTestSuite extends IterativeTestSuite
         $this->report($events, $emitter, $skeleton, null, true, null);
 
         PassedTests::instance()->testMethodPassed($valueObject, null);
+    }
+
+    /**
+     * @param Closure(GeneratorDeriver): ChoiceSource $source    creates the source of the choices of the example
+     * @param positive-int                            $timeLimit
+     *
+     * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws InvalidPropertyException
+     * @throws UnintentionallyCoveredCodeException
+     */
+    private function runExampleOnItsOwn(Closure $source, int $timeLimit): ExampleResult
+    {
+        $test    = $this->tests()[0] ?? null;
+        $emitter = Event\Facade::emitter();
+
+        assert($test instanceof TestCase);
+
+        if ($this->test === null) {
+            $this->test             = $test->valueObjectForEvents();
+            $this->usesErrorHandler = TestRunner::shouldErrorHandlerBeUsed($test);
+        }
+
+        $this->generatorsOfExamplesRunOnTheirOwn ??= $this->handlingIssues(fn (): array => $this->generators($test, $emitter), null);
+
+        [$deriver, $generators] = $this->generatorsOfExamplesRunOnTheirOwn;
+
+        $source = $source($deriver);
+
+        try {
+            $arguments = $this->handlingIssues(fn (): array => $this->generateArguments($generators, $source), null);
+        } catch (ExampleRejectedException) {
+            return ExampleResult::rejected($source->sequence());
+        } catch (Throwable $t) {
+            // a generator raised an exception, the constructor of a class
+            // whose objects are generated, for instance
+            return ExampleResult::falsified(Falsification::ofThrowable($t), false, $source->sequence());
+        }
+
+        $example = $this->example($arguments, false, DrawnValues::from($source));
+
+        $this->collectingEvents(
+            static function () use ($example, $emitter, $timeLimit): void
+            {
+                $emitter->testPreparationStarted(
+                    $example->valueObjectForEvents(),
+                );
+
+                new TestRunner($emitter)->runExampleOfProperty($example, false, $timeLimit);
+            },
+        );
+
+        $falsification = Falsification::of($example);
+
+        if ($this->wasRejected($example, $falsification)) {
+            return ExampleResult::rejected($source->sequence());
+        }
+
+        if ($falsification === null && $example->status()->isSkipped()) {
+            return ExampleResult::skipped($source->sequence());
+        }
+
+        if ($falsification === null && $example->status()->isIncomplete()) {
+            return ExampleResult::incomplete($source->sequence());
+        }
+
+        if ($falsification === null) {
+            return ExampleResult::passed($source->sequence());
+        }
+
+        return ExampleResult::falsified($falsification, $example->status()->isFailure(), $source->sequence());
     }
 
     /**
