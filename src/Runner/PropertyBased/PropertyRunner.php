@@ -19,6 +19,7 @@ use function register_shutdown_function;
 use function sprintf;
 use AssertionError;
 use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Event\TestRunner\PhpunitWarningTriggered;
 use PHPUnit\Exception;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\PropertyBased\ExampleResult;
@@ -59,7 +60,9 @@ use Throwable;
  * PHPUnit is booted once per process. The configuration file and its
  * bootstrap script are loaded as for a test run, but nothing is printed, no
  * code coverage is collected, nothing is logged, and no extensions are
- * loaded.
+ * loaded. As nothing is printed, a warning that PHPUnit triggers while it is
+ * booted, about a configuration file that did not pass validation, for
+ * instance, is raised as an exception.
  *
  * An example is run with its full lifecycle, from the hook methods that are
  * called before the property to the ones that are called after it, and with
@@ -123,8 +126,10 @@ final class PropertyRunner
      * @param ?non-empty-string $filter            the filter, null for all tests
      *
      * @throws AlreadyBootedException
-     * @throws Exception                          when the configuration file, its bootstrap script, or the test suite cannot be loaded
+     * @throws ConfigurationFileNotFoundException    when the configuration file that is passed is a directory without one
+     * @throws Exception                             when the configuration file, its bootstrap script, or the test suite cannot be loaded
      * @throws TimeLimitCannotBeEnforcedException
+     * @throws WarningTriggeredWhileBootingException when PHPUnit triggered a warning while the configuration file was loaded or the test suite was built
      */
     public static function boot(?string $configurationFile = null, ?string $filter = null): self
     {
@@ -138,55 +143,31 @@ final class PropertyRunner
 
         self::$booted = true;
 
-        $emitter   = EventFacade::emitter();
-        $arguments = ['--no-output', '--no-coverage', '--no-logging', '--no-extensions'];
+        $facade = EventFacade::instance();
 
-        if ($configurationFile !== null) {
-            $arguments[] = '--configuration';
-            $arguments[] = $configurationFile;
-        }
-
-        if ($filter !== null) {
-            $arguments[] = '--filter';
-            $arguments[] = $filter;
-        }
-
-        $cliConfiguration           = new Builder($emitter)->fromParameters($arguments);
-        $pathToXmlConfigurationFile = new XmlConfigurationFileFinder()->find($cliConfiguration);
-
-        if ($pathToXmlConfigurationFile === false) {
-            $xmlConfiguration = DefaultConfiguration::create();
-        } else {
-            $xmlConfiguration = new Loader()->load($pathToXmlConfigurationFile);
-        }
-
-        $configuration = Registry::init($cliConfiguration, $xmlConfiguration, $emitter);
-
-        DifferBuilder::configureComparatorFactory();
-
-        new PhpHandler($emitter)->handle($configuration->php());
-        new BootstrapLoader($emitter)->handle($configuration);
-
-        // the expectations of a test for deprecations are verified against
-        // the deprecations that are collected while it runs
-        DeprecationCollector::init();
-
-        // no other subscribers are registered: the events are neither printed
-        // nor logged, and the ones that are emitted while an example runs are
-        // collected for the example and then discarded
-        EventFacade::instance()->seal();
-
-        new ErrorHandlerConfigurator($emitter)->configure($configuration);
-
-        ErrorHandler::instance()->registerForNonTestCaseContext();
+        // the events that are emitted while PHPUnit is booted are collected
+        // rather than dispatched, so that the warnings among them, about a
+        // configuration file that did not pass validation, for instance, are
+        // raised instead of being lost
+        $facade->startCollectingEvents();
 
         try {
-            $testSuite = new TestSuiteBuilder($emitter, new NullTestFileSkipper)->build($configuration);
+            $testSuite = self::testSuite($configurationFile, $filter);
         } finally {
-            ErrorHandler::instance()->restoreForNonTestCaseContext();
+            $events = $facade->stopCollectingEvents();
         }
 
-        new TestSuiteFilterProcessor($emitter)->process($configuration, $testSuite);
+        $warnings = [];
+
+        foreach ($events as $event) {
+            if ($event instanceof PhpunitWarningTriggered) {
+                $warnings[] = $event->message();
+            }
+        }
+
+        if ($warnings !== []) {
+            throw new WarningTriggeredWhileBootingException($warnings);
+        }
 
         return new self(self::propertiesIn($testSuite, null));
     }
@@ -379,6 +360,74 @@ final class PropertyRunner
                 ),
             );
         }
+    }
+
+    /**
+     * @param ?non-empty-string $configurationFile
+     * @param ?non-empty-string $filter
+     *
+     * @throws ConfigurationFileNotFoundException
+     * @throws Exception
+     */
+    private static function testSuite(?string $configurationFile, ?string $filter): TestSuite
+    {
+        $emitter   = EventFacade::emitter();
+        $arguments = ['--no-output', '--no-coverage', '--no-logging', '--no-extensions'];
+
+        if ($configurationFile !== null) {
+            $arguments[] = '--configuration';
+            $arguments[] = $configurationFile;
+        }
+
+        if ($filter !== null) {
+            $arguments[] = '--filter';
+            $arguments[] = $filter;
+        }
+
+        $cliConfiguration           = new Builder($emitter)->fromParameters($arguments);
+        $pathToXmlConfigurationFile = new XmlConfigurationFileFinder()->find($cliConfiguration);
+
+        // the configuration file that is passed is a directory that does not
+        // contain one
+        if ($pathToXmlConfigurationFile === false && $configurationFile !== null) {
+            throw new ConfigurationFileNotFoundException($configurationFile);
+        }
+
+        if ($pathToXmlConfigurationFile === false) {
+            $xmlConfiguration = DefaultConfiguration::create();
+        } else {
+            $xmlConfiguration = new Loader()->load($pathToXmlConfigurationFile);
+        }
+
+        $configuration = Registry::init($cliConfiguration, $xmlConfiguration, $emitter);
+
+        DifferBuilder::configureComparatorFactory();
+
+        new PhpHandler($emitter)->handle($configuration->php());
+        new BootstrapLoader($emitter)->handle($configuration);
+
+        // the expectations of a test for deprecations are verified against
+        // the deprecations that are collected while it runs
+        DeprecationCollector::init();
+
+        // no other subscribers are registered: the events are neither printed
+        // nor logged, and the ones that are emitted while an example runs are
+        // collected for the example and then discarded
+        EventFacade::instance()->seal();
+
+        new ErrorHandlerConfigurator($emitter)->configure($configuration);
+
+        ErrorHandler::instance()->registerForNonTestCaseContext();
+
+        try {
+            $testSuite = new TestSuiteBuilder($emitter, new NullTestFileSkipper)->build($configuration);
+        } finally {
+            ErrorHandler::instance()->restoreForNonTestCaseContext();
+        }
+
+        new TestSuiteFilterProcessor($emitter)->process($configuration, $testSuite);
+
+        return $testSuite;
     }
 
     /**
