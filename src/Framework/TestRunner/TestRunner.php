@@ -420,8 +420,21 @@ final class TestRunner
         return (new CodeCoverageMetadataApi)->coversTargets($className, $methodName)->isNotEmpty();
     }
 
+    /**
+     * A time limit cannot be enforced without the pcntl extension, and it is
+     * not enforced while a debugger is active, whether it is the configured
+     * time limit or the one of an example of a property that is passed.
+     */
     private function canTimeLimitBeEnforced(): bool
     {
+        if (extension_loaded('xdebug') && xdebug_is_debugger_active()) {
+            // a debugging session cannot be active while the tests for PHPUnit
+            // itself are run
+            // @codeCoverageIgnoreStart
+            return false;
+            // @codeCoverageIgnoreEnd
+        }
+
         return (new Invoker)->canInvokeWithTimeout();
     }
 
@@ -433,14 +446,6 @@ final class TestRunner
 
         if (!(($this->configuration->defaultTimeLimit() > 0 || $test->size()->isKnown()))) {
             return false;
-        }
-
-        if (extension_loaded('xdebug') && xdebug_is_debugger_active()) {
-            // a debugging session cannot be active while the tests for PHPUnit
-            // itself are run
-            // @codeCoverageIgnoreStart
-            return false;
-            // @codeCoverageIgnoreEnd
         }
 
         return true;
