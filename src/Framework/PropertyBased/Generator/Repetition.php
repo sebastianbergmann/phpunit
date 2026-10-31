@@ -13,14 +13,17 @@ use Closure;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
 use PHPUnit\Framework\PropertyBased\ExampleRejectedException;
 use SebastianBergmann\ChoiceSequence\BernoulliDistribution;
+use SebastianBergmann\ChoiceSequence\SpanKind;
 
 /**
  * Draws the elements of a collection: first the elements that its minimum
  * size requires, then, as long as its maximum size permits, a choice whether
  * to add another element (1) or to stop (0), followed by that element.
  *
- * Each element, together with the choice that added it, is marked as a span,
- * so that deleting the span from the choice sequence deletes the element.
+ * Each element, together with the choice that added it, is marked as a span
+ * of the kind SpanKind::Element, so that deleting the span from the choice
+ * sequence deletes the element, and tools that change choice sequences know
+ * where elements start and end.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -73,7 +76,7 @@ final readonly class Repetition
         $duplicates = 0;
 
         while ($this->maximumSize === null || $size < $this->maximumSize) {
-            $source->startSpan($this->label);
+            $source->startSpan($this->label, SpanKind::Element);
 
             if ($size >= $this->minimumSize && $source->draw(1, $this->anotherElement) === 0) {
                 $source->endSpan();

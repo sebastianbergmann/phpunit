@@ -13,6 +13,7 @@ use function assert;
 use function chr;
 use function var_export;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
+use SebastianBergmann\ChoiceSequence\SpanKind;
 use SebastianBergmann\ChoiceSequence\WeightedRangesDistribution;
 
 /**
@@ -30,6 +31,11 @@ final readonly class BytesGenerator extends AbstractGenerator
     private WeightedRangesDistribution $byte;
 
     /**
+     * @var non-negative-int
+     */
+    private int $minimumLength;
+
+    /**
      * @var non-empty-string
      */
     private string $label;
@@ -40,7 +46,8 @@ final readonly class BytesGenerator extends AbstractGenerator
      */
     public function __construct(int $minimumLength, ?int $maximumLength)
     {
-        $this->label = self::labelOf('bytes', (string) $minimumLength, var_export($maximumLength, true));
+        $this->label         = self::labelOf('bytes', (string) $minimumLength, var_export($maximumLength, true));
+        $this->minimumLength = $minimumLength;
 
         $this->repetition = new Repetition(self::labelOf('element', $this->label), $minimumLength, $maximumLength);
 
@@ -57,6 +64,20 @@ final readonly class BytesGenerator extends AbstractGenerator
     public function label(): string
     {
         return $this->label;
+    }
+
+    /**
+     * Only a string whose every byte is preceded by the choice to add it is
+     * marked as SpanKind::Bytes: the bytes that its minimum length requires
+     * are not.
+     */
+    protected function spanKind(): ?SpanKind
+    {
+        if ($this->minimumLength > 0) {
+            return null;
+        }
+
+        return SpanKind::Bytes;
     }
 
     protected function generateValue(ChoiceSource $source): string

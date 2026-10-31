@@ -21,6 +21,7 @@ use Random\Randomizer;
 use SebastianBergmann\ChoiceSequence\ChoiceSequence;
 use SebastianBergmann\ChoiceSequence\ChoiceTree;
 use SebastianBergmann\ChoiceSequence\Span;
+use SebastianBergmann\ChoiceSequence\SpanKind;
 use SebastianBergmann\ChoiceSequence\UniformDistribution;
 
 #[CoversClass(ChoiceSource::class)]
@@ -78,6 +79,23 @@ final class ChoiceSourceTest extends TestCase
         $this->assertSame($choice, $replay->draw(10, new UniformDistribution));
         $this->assertSame($element, $replay->choose(['a', 'b', 'c'], new UniformDistribution));
         $this->assertSame($source->sequence()->choices(), $replay->sequence()->choices());
+    }
+
+    public function testMarksSpansWithTheirKinds(): void
+    {
+        $source = ChoiceSource::replay(new ChoiceSequence([1, 2]));
+
+        $source->startSpan('bytes', SpanKind::Bytes);
+        $source->startSpan('byte', SpanKind::Element);
+        $source->draw(1, new UniformDistribution);
+        $source->draw(255, new UniformDistribution);
+        $source->endSpan();
+        $source->endSpan();
+
+        $this->assertSame(
+            [SpanKind::Bytes, SpanKind::Element],
+            array_map(static fn (Span $span): ?SpanKind => $span->kind(), $source->sequence()->spans()),
+        );
     }
 
     public function testProvidesTheDeriverItIsCreatedWith(): void
