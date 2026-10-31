@@ -10,6 +10,8 @@
 namespace PHPUnit\TestFixture\PropertyBasedTesting\RunnerApi;
 
 use const PHP_EOL;
+use function pcntl_fork;
+use function pcntl_waitpid;
 use PHPUnit\Framework\Attributes\Property;
 use PHPUnit\Framework\TestCase;
 
@@ -21,12 +23,12 @@ final class ClassLevelHooksTest extends TestCase
     {
         self::$prepared = true;
 
-        print 'setUpBeforeClass() was called' . PHP_EOL;
+        print 'ClassLevelHooksTest::setUpBeforeClass() was called' . PHP_EOL;
     }
 
     public static function tearDownAfterClass(): void
     {
-        print 'tearDownAfterClass() was called' . PHP_EOL;
+        print 'ClassLevelHooksTest::tearDownAfterClass() was called' . PHP_EOL;
     }
 
     /**
@@ -36,5 +38,22 @@ final class ClassLevelHooksTest extends TestCase
     public function testIsPrepared(int $value): void
     {
         $this->assertTrue(self::$prepared);
+    }
+
+    /**
+     * @param int<0, 9> $value
+     */
+    #[Property]
+    public function testForksAProcessThatEnds(int $value): void
+    {
+        $pid = pcntl_fork();
+
+        if ($pid === 0) {
+            exit(0);
+        }
+
+        pcntl_waitpid($pid, $status);
+
+        $this->assertSame(0, $status);
     }
 }

@@ -10,9 +10,8 @@
 namespace PHPUnit\Runner\PropertyBased;
 
 use function array_is_list;
-use function array_key_exists;
-use function array_reverse;
 use function count;
+use function getmypid;
 use function is_int;
 use function is_string;
 use function register_shutdown_function;
@@ -70,9 +69,11 @@ use Throwable;
  * choices. It is neither shrunk nor reported. The issues that it triggers are
  * handled as in a test run, but they are not reported either.
  *
- * The hook methods of a test class that are called before its first test are
- * called before the first example of one of its properties is run, and the
- * ones that are called after its last test are called when the process ends.
+ * As in a test run, one test class is prepared at a time. The hook methods of
+ * a test class that are called before its first test are called before the
+ * first example of one of its properties is run, and the ones that are called
+ * after its last test are called before an example of a property of another
+ * test class is run, or when the process ends.
  * When one of the former raises an exception, every example of a property of
  * the test class is aborted with that exception, and when one of them skips
  * the tests of the test class, every example is skipped.
@@ -106,23 +107,14 @@ final class PropertyRunner
     private readonly array $properties;
 
     /**
-     * What calling the hook methods that are called before the first test of
-     * a test class resulted in, by the name of the test class: null when they
+     * The test class whose hook methods that are called before its first test
+     * were called last, and what calling them resulted in: null when they
      * were called, the message why its tests are skipped, or the throwable
      * that one of them raised.
      *
-     * @var array<string, null|non-empty-string|Throwable>
+     * @var ?array{testClass: TestSuite, outcome: null|non-empty-string|Throwable}
      */
-    private array $preparedTestClasses = [];
-
-    /**
-     * The test classes whose hook methods that are called after their last
-     * test are called when the process ends, in the order in which they were
-     * prepared.
-     *
-     * @var list<TestSuite>
-     */
-    private array $testClassesToBeFinished = [];
+    private ?array $preparedTestClass = null;
 
     /**
      * Loads the configuration file and its bootstrap script and builds the
@@ -185,6 +177,23 @@ final class PropertyRunner
     private function __construct(array $properties)
     {
         $this->properties = $properties;
+
+        $pid = getmypid();
+
+        register_shutdown_function(
+            function () use ($pid): void
+            {
+                // a process that is forked while an example runs does not
+                // finish the test class of the process from which it was forked
+                if ($pid !== getmypid()) {
+                    // @codeCoverageIgnoreStart
+                    return;
+                    // @codeCoverageIgnoreEnd
+                }
+
+                $this->finishPreparedTestClass();
+            },
+        );
     }
 
     /**
@@ -277,9 +286,15 @@ final class PropertyRunner
 
     /**
      * Calls the hook methods of the test class that are called before its
-     * first test unless they were called before, and returns the result of
-     * every example of a property of the test class when they did not succeed,
-     * or null when they did.
+     * first test unless it is the test class that was prepared last, and
+     * returns the result of every example of a property of the test class
+     * when they did not succeed, or null when they did.
+     *
+     * One test class is prepared at a time, as in a test run: before the
+     * first example of a property of another test class is run, the hook
+     * methods of the test class that was prepared last that are called after
+     * its last test are called. When an example of one of its properties is
+     * run again later, the test class is prepared again.
      *
      * @throws Exception
      */
@@ -291,19 +306,16 @@ final class PropertyRunner
             // @codeCoverageIgnoreEnd
         }
 
-        $name = $testClass->name();
+        if ($this->preparedTestClass === null || $this->preparedTestClass['testClass'] !== $testClass) {
+            $this->finishPreparedTestClass();
 
-        if (array_key_exists($name, $this->preparedTestClasses)) {
-            $outcome = $this->preparedTestClasses[$name];
-        } else {
-            $outcome = $testClass->invokeMethodsBeforeFirstExample();
-
-            $this->preparedTestClasses[$name] = $outcome;
-
-            if ($outcome === null) {
-                $this->finishWhenTheProcessEnds($testClass);
-            }
+            $this->preparedTestClass = [
+                'testClass' => $testClass,
+                'outcome'   => $testClass->invokeMethodsBeforeFirstExample(),
+            ];
         }
+
+        $outcome = $this->preparedTestClass['outcome'];
 
         if ($outcome === null) {
             return null;
@@ -316,20 +328,20 @@ final class PropertyRunner
         return ExampleResult::aborted(Falsification::ofThrowable($outcome), new ChoiceSequence([]));
     }
 
-    private function finishWhenTheProcessEnds(TestSuite $testClass): void
+    /**
+     * Calls the hook methods of the test class that was prepared last that
+     * are called after its last test, unless the ones that are called before
+     * its first test did not succeed, as in a test run.
+     */
+    private function finishPreparedTestClass(): void
     {
-        if ($this->testClassesToBeFinished === []) {
-            register_shutdown_function(
-                function (): void
-                {
-                    foreach (array_reverse($this->testClassesToBeFinished) as $testClass) {
-                        $testClass->invokeMethodsAfterLastExample();
-                    }
-                },
-            );
-        }
+        $preparedTestClass = $this->preparedTestClass;
 
-        $this->testClassesToBeFinished[] = $testClass;
+        $this->preparedTestClass = null;
+
+        if ($preparedTestClass !== null && $preparedTestClass['outcome'] === null) {
+            $preparedTestClass['testClass']->invokeMethodsAfterLastExample();
+        }
     }
 
     /**
