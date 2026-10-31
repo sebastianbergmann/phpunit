@@ -14,8 +14,9 @@ use SebastianBergmann\ChoiceSequence\ChoiceSequence;
 /**
  * The result of an example of a property that was run on its own rather than
  * while the property was checked: whether it passed, was rejected, skipped,
- * or marked as incomplete, or falsified the property, and the choices from
- * which its arguments and the values that it drew were generated.
+ * or marked as incomplete, falsified the property, or was aborted without
+ * checking the property, and the choices from which its arguments and the
+ * values that it drew were generated.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -24,7 +25,7 @@ use SebastianBergmann\ChoiceSequence\ChoiceSequence;
 final readonly class ExampleResult
 {
     /**
-     * @var 'errored'|'failed'|'incomplete'|'passed'|'rejected'|'skipped'|'timeout'
+     * @var 'aborted'|'errored'|'failed'|'incomplete'|'passed'|'rejected'|'skipped'|'timeout'
      */
     private string $outcome;
     private ?Falsification $falsification;
@@ -66,6 +67,16 @@ final readonly class ExampleResult
     }
 
     /**
+     * An example that ended with a failure or an error without checking the
+     * property: its arguments could not be generated, it ended before its
+     * test method was called, or its state machine cannot be run.
+     */
+    public static function aborted(Falsification $falsification, ChoiceSequence $sequence): self
+    {
+        return new self('aborted', $falsification, $sequence);
+    }
+
+    /**
      * @param bool $failed whether the example failed rather than errored
      */
     public static function falsified(Falsification $falsification, bool $failed, ChoiceSequence $sequence): self
@@ -78,10 +89,10 @@ final readonly class ExampleResult
     }
 
     /**
-     * @param 'errored'|'failed'|'incomplete'|'passed'|'rejected'|'skipped'|'timeout' $outcome
-     * @param ?array<non-empty-string, string>                                        $arguments
-     * @param ?list<array{label: ?non-empty-string, value: string}>                   $drawnValues
-     * @param ?list<non-empty-string>                                                 $steps
+     * @param 'aborted'|'errored'|'failed'|'incomplete'|'passed'|'rejected'|'skipped'|'timeout' $outcome
+     * @param ?array<non-empty-string, string>                                                  $arguments
+     * @param ?list<array{label: ?non-empty-string, value: string}>                             $drawnValues
+     * @param ?list<non-empty-string>                                                           $steps
      */
     private function __construct(string $outcome, ?Falsification $falsification, ChoiceSequence $sequence, ?array $arguments = null, ?array $drawnValues = null, ?array $steps = null)
     {
@@ -108,7 +119,7 @@ final readonly class ExampleResult
     }
 
     /**
-     * @return 'errored'|'failed'|'incomplete'|'passed'|'rejected'|'skipped'|'timeout'
+     * @return 'aborted'|'errored'|'failed'|'incomplete'|'passed'|'rejected'|'skipped'|'timeout'
      */
     public function outcome(): string
     {
@@ -116,7 +127,8 @@ final readonly class ExampleResult
     }
 
     /**
-     * How the example falsified the property, null when it did not.
+     * How the example falsified the property, or the failure or error with
+     * which it was aborted, null when it did neither.
      */
     public function falsification(): ?Falsification
     {

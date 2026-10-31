@@ -17,11 +17,9 @@ use function is_int;
 use function is_string;
 use function register_shutdown_function;
 use function sprintf;
-use AssertionError;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Event\TestRunner\PhpunitWarningTriggered;
 use PHPUnit\Exception;
-use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\PropertyBased\ExampleResult;
 use PHPUnit\Framework\PropertyBased\Falsification;
 use PHPUnit\Framework\PropertyTestSuite;
@@ -75,8 +73,8 @@ use Throwable;
  * called before the first example of one of its properties is run, and the
  * ones that are called after its last test are called when the process ends.
  * When one of the former raises an exception, every example of a property of
- * the test class falsifies the property with that exception, and when one of
- * them skips the tests of the test class, every example is skipped.
+ * the test class is aborted with that exception, and when one of them skips
+ * the tests of the test class, every example is skipped.
  *
  * The result of an example tells how it ended, how it falsified the property,
  * and which choices it consumed, with their spans and the maxima of the
@@ -85,7 +83,15 @@ use Throwable;
  * PHPUnit reports them for a counterexample. They are null otherwise, and
  * when no arguments were generated for the example.
  *
- * @phpstan-type Result array{outcome: 'errored'|'failed'|'incomplete'|'passed'|'rejected'|'skipped'|'timeout', failure: ?array{kind: 'description'|'throwable'|'timeout', signature: non-empty-string, class: ?class-string, location: ?non-empty-string, description: non-empty-string, message: string}, choices: list<non-negative-int>, spans: list<array{start: non-negative-int, end: non-negative-int, label: string, parent: ?non-negative-int, kind: null|'bytes'|'element'}>, maxima: list<?non-negative-int>, arguments: ?array<non-empty-string, string>, drawnValues: ?list<array{label: ?non-empty-string, value: string}>, steps: ?list<non-empty-string>}
+ * An example that fails or errors without checking the property is aborted
+ * rather than falsifying it: when a generator raises an exception while its
+ * arguments are generated, when it ends before its test method is called, in
+ * setUp(), for instance, or when its state machine cannot be run. When PHPUnit
+ * checks the property, such an example is the error of the property, which is
+ * reported without being shrunk. The failure of an aborted example tells how
+ * it ended.
+ *
+ * @phpstan-type Result array{outcome: 'aborted'|'errored'|'failed'|'incomplete'|'passed'|'rejected'|'skipped'|'timeout', failure: ?array{kind: 'description'|'throwable'|'timeout', signature: non-empty-string, class: ?class-string, location: ?non-empty-string, description: non-empty-string, message: string}, choices: list<non-negative-int>, spans: list<array{start: non-negative-int, end: non-negative-int, label: string, parent: ?non-negative-int, kind: null|'bytes'|'element'}>, maxima: list<?non-negative-int>, arguments: ?array<non-empty-string, string>, drawnValues: ?list<array{label: ?non-empty-string, value: string}>, steps: ?list<non-empty-string>}
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
@@ -306,11 +312,7 @@ final class PropertyRunner
             return ExampleResult::skipped(new ChoiceSequence([]));
         }
 
-        return ExampleResult::falsified(
-            Falsification::ofThrowable($outcome),
-            $outcome instanceof AssertionFailedError || $outcome instanceof AssertionError,
-            new ChoiceSequence([]),
-        );
+        return ExampleResult::aborted(Falsification::ofThrowable($outcome), new ChoiceSequence([]));
     }
 
     private function finishWhenTheProcessEnds(TestSuite $testClass): void

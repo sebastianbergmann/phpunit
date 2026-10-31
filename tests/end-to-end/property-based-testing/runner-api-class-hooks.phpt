@@ -31,7 +31,7 @@ foreach (['ClassLevelHooksTest::testIsPrepared', 'ClassLevelHooksTest::testIsPre
 setUpBeforeClass() was called
 ClassLevelHooksTest::testIsPrepared: passed
 ClassLevelHooksTest::testIsPrepared: passed
-FailingSetUpBeforeClassTest::testIsNeverRun: errored (RuntimeException at tests/FailingSetUpBeforeClassTest.php:20: cannot prepare the test class)
-FailingSetUpBeforeClassTest::testIsNeverRun: errored (RuntimeException at tests/FailingSetUpBeforeClassTest.php:20: cannot prepare the test class)
+FailingSetUpBeforeClassTest::testIsNeverRun: aborted (RuntimeException at tests/FailingSetUpBeforeClassTest.php:20: cannot prepare the test class)
+FailingSetUpBeforeClassTest::testIsNeverRun: aborted (RuntimeException at tests/FailingSetUpBeforeClassTest.php:20: cannot prepare the test class)
 SkippedInSetUpBeforeClassTest::testIsNeverRun: skipped
 tearDownAfterClass() was called
