@@ -1,5 +1,10 @@
 --TEST--
 The API for running examples of properties one at a time lists the properties of a test suite and runs their examples from choices or from a seed
+--SKIPIF--
+<?php declare(strict_types=1);
+if (!extension_loaded('pcntl')) {
+    print 'skip: Extension pcntl is required';
+}
 --FILE--
 <?php declare(strict_types=1);
 use PHPUnit\Runner\PropertyBased\PropertyRunner;
