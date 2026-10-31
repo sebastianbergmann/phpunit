@@ -26,6 +26,7 @@ use PHPUnit\Framework\PropertyBased\Falsification;
 use PHPUnit\Framework\PropertyTestSuite;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\Runner\DeprecationCollector\Facade as DeprecationCollector;
 use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\Runner\TestIndex\NullTestFileSkipper;
 use PHPUnit\TextUI\CliArguments\Builder;
@@ -166,8 +167,12 @@ final class PropertyRunner
         new PhpHandler($emitter)->handle($configuration->php());
         new BootstrapLoader($emitter)->handle($configuration);
 
-        // no subscribers are registered: the events are neither printed nor
-        // logged, and the ones that are emitted while an example runs are
+        // the expectations of a test for deprecations are verified against
+        // the deprecations that are collected while it runs
+        DeprecationCollector::init();
+
+        // no other subscribers are registered: the events are neither printed
+        // nor logged, and the ones that are emitted while an example runs are
         // collected for the example and then discarded
         EventFacade::instance()->seal();
 
