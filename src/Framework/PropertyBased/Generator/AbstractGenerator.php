@@ -15,6 +15,7 @@ use PHPUnit\Framework\PropertyBased\ExampleRejectedException;
 use PHPUnit\Framework\PropertyBased\ValueGenerator;
 use PHPUnit\Framework\PropertyBased\ValueGeneratorNotSupportedException;
 use SebastianBergmann\ChoiceSequence\Label;
+use SebastianBergmann\ChoiceSequence\SpanKind;
 
 /**
  * A generator builds a value from the choices it draws from a choice source.
@@ -102,13 +103,23 @@ abstract readonly class AbstractGenerator implements ValueGenerator
      */
     final public function generate(ChoiceSource $source): mixed
     {
-        $source->startSpan($this->label());
+        $source->startSpan($this->label(), $this->spanKind());
 
         $value = $this->generateValue($source);
 
         $source->endSpan();
 
         return $value;
+    }
+
+    /**
+     * Tells tools that change choice sequences without knowing the generators,
+     * such as fuzzers, what the choices of the span of a value stand for, or
+     * returns null when this does not matter to them.
+     */
+    protected function spanKind(): ?SpanKind
+    {
+        return null;
     }
 
     /**

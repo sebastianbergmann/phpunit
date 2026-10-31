@@ -20,6 +20,7 @@ use SebastianBergmann\ChoiceSequence\ChoiceSequence;
 use SebastianBergmann\ChoiceSequence\ChoiceSource as Choices;
 use SebastianBergmann\ChoiceSequence\ChoiceTree;
 use SebastianBergmann\ChoiceSequence\Distribution;
+use SebastianBergmann\ChoiceSequence\SpanKind;
 use SebastianBergmann\ChoiceSequence\TooManyChoicesException;
 
 /**
@@ -277,10 +278,11 @@ final class ChoiceSource
      * ended form one part of the value, for instance an element of a list.
      *
      * @param non-empty-string $label identifies how the choices of the span are drawn (see AbstractGenerator::label())
+     * @param ?SpanKind        $kind  tells tools that change choice sequences, such as fuzzers, what the choices of the span stand for
      */
-    public function startSpan(string $label): void
+    public function startSpan(string $label, ?SpanKind $kind = null): void
     {
-        $this->choices->startSpan($label);
+        $this->choices->startSpan($label, $kind);
     }
 
     public function endSpan(): void

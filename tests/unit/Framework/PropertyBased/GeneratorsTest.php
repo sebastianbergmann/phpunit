@@ -117,6 +117,7 @@ use Random\Randomizer;
 use SebastianBergmann\ChoiceSequence\ChoiceSequence;
 use SebastianBergmann\ChoiceSequence\Label;
 use SebastianBergmann\ChoiceSequence\Span;
+use SebastianBergmann\ChoiceSequence\SpanKind;
 use stdClass;
 
 #[CoversClass(Generators::class)]
@@ -1461,6 +1462,42 @@ final class GeneratorsTest extends TestCase
 
         $this->assertContains([0, 2], $spans);
         $this->assertContains([2, 4], $spans);
+    }
+
+    public function testTheSpansOfTheElementsOfAListAreElements(): void
+    {
+        $source = ChoiceSource::replay(new ChoiceSequence([1, 5, 1, 7, 0]));
+
+        AbstractGenerator::from(Generators::lists(Generators::integers(0, 9)))->generate($source);
+
+        $this->assertSame(
+            [[0, 5, null], [0, 2, SpanKind::Element], [1, 2, null], [2, 4, SpanKind::Element], [3, 4, null], [4, 5, SpanKind::Element]],
+            array_map(static fn (Span $span): array => [$span->start(), $span->end(), $span->kind()], $source->sequence()->spans()),
+        );
+    }
+
+    public function testTheSpanOfABinaryStringIsBytesAndTheSpansOfItsBytesAreElements(): void
+    {
+        $source = ChoiceSource::replay(new ChoiceSequence([1, 0x61, 1, 0x62, 0]));
+
+        $this->assertSame('ab', AbstractGenerator::from(Generators::bytes())->generate($source));
+
+        $this->assertSame(
+            [[0, 5, SpanKind::Bytes], [0, 2, SpanKind::Element], [2, 4, SpanKind::Element], [4, 5, SpanKind::Element]],
+            array_map(static fn (Span $span): array => [$span->start(), $span->end(), $span->kind()], $source->sequence()->spans()),
+        );
+    }
+
+    public function testTheSpanOfABinaryStringWithAMinimumLengthIsNotBytes(): void
+    {
+        $source = ChoiceSource::replay(new ChoiceSequence([0x61, 1, 0x62, 0]));
+
+        $this->assertSame('ab', AbstractGenerator::from(Generators::bytes(1))->generate($source));
+
+        $this->assertSame(
+            [[0, 4, null], [0, 1, SpanKind::Element], [1, 3, SpanKind::Element], [3, 4, SpanKind::Element]],
+            array_map(static fn (Span $span): array => [$span->start(), $span->end(), $span->kind()], $source->sequence()->spans()),
+        );
     }
 
     public function testTheSpansOfGeneratorsThatAreComposedAndConfiguredTheSameWayHaveTheSameLabel(): void
