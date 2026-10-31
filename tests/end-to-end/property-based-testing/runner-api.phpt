@@ -51,6 +51,12 @@ var_dump($generated === $phpunit->replay($prefix . 'testDrawsAList', $generated[
 
 print PHP_EOL;
 
+$exported = $phpunit->replay($prefix . 'testDrawsAValue', [1, 5, 0, 3], 1, true);
+
+var_export(['arguments' => $exported['arguments'], 'drawnValues' => $exported['drawnValues'], 'steps' => $exported['steps']]);
+
+print PHP_EOL . PHP_EOL;
+
 foreach (
     [
         static fn () => $phpunit->replay($prefix . 'testIsNotAProperty', [], 1),
@@ -72,6 +78,7 @@ PHPUnit\TestFixture\PropertyBasedTesting\RunnerApi\RunnerApiTest::testErrors
 PHPUnit\TestFixture\PropertyBasedTesting\RunnerApi\RunnerApiTest::testIsRejected
 PHPUnit\TestFixture\PropertyBasedTesting\RunnerApi\RunnerApiTest::testExceedsItsTimeLimit
 PHPUnit\TestFixture\PropertyBasedTesting\RunnerApi\RunnerApiTest::testDrawsAList
+PHPUnit\TestFixture\PropertyBasedTesting\RunnerApi\RunnerApiTest::testDrawsAValue
 PHPUnit\TestFixture\PropertyBasedTesting\RunnerApi\RunnerApiTest::testIsSkipped
 PHPUnit\TestFixture\PropertyBasedTesting\RunnerApi\RunnerApiTest::testIsIncomplete
 
@@ -105,6 +112,9 @@ array (
   array (
     0 => 1000,
   ),
+  'arguments' => NULL,
+  'drawnValues' => NULL,
+  'steps' => NULL,
 )
 
 testPasses: passed
@@ -166,6 +176,24 @@ array (
 
 bool(true)
 bool(true)
+
+array (
+  'arguments' => 
+  array (
+    'values' => '[5]',
+  ),
+  'drawnValues' => 
+  array (
+    0 => 
+    array (
+      'label' => 'digit',
+      'value' => '3',
+    ),
+  ),
+  'steps' => 
+  array (
+  ),
+)
 
 PHPUnit\Runner\PropertyBased\PropertyDoesNotExistException: Property "PHPUnit\TestFixture\PropertyBasedTesting\RunnerApi\RunnerApiTest::testIsNotAProperty" does not exist
 PHPUnit\Runner\PropertyBased\InvalidArgumentException: A choice is not a non-negative integer

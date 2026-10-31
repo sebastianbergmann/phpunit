@@ -290,6 +290,11 @@ final class PropertyTestSuite extends IterativeTestSuite
      * reported, and the events that are emitted while it runs are not
      * dispatched.
      *
+     * With $exportValues, the result has the arguments of the example, the
+     * values that it drew with draw(), and the steps of its state machine,
+     * exported as they are reported for a counterexample. They are not
+     * exported otherwise, which saves the time that exporting them takes.
+     *
      * @param list<non-negative-int> $choices
      * @param positive-int           $timeLimit the time limit of the example in seconds
      *
@@ -298,11 +303,12 @@ final class PropertyTestSuite extends IterativeTestSuite
      * @throws InvalidPropertyException
      * @throws UnintentionallyCoveredCodeException
      */
-    public function replayExample(array $choices, int $timeLimit): ExampleResult
+    public function replayExample(array $choices, int $timeLimit, bool $exportValues = false): ExampleResult
     {
         return $this->runExampleOnItsOwn(
             static fn (GeneratorDeriver $deriver): ChoiceSource => ChoiceSource::replay(new ChoiceSequence($choices), ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver),
             $timeLimit,
+            $exportValues,
         );
     }
 
@@ -318,11 +324,12 @@ final class PropertyTestSuite extends IterativeTestSuite
      * @throws InvalidPropertyException
      * @throws UnintentionallyCoveredCodeException
      */
-    public function generateExample(int $seed, int $timeLimit): ExampleResult
+    public function generateExample(int $seed, int $timeLimit, bool $exportValues = false): ExampleResult
     {
         return $this->runExampleOnItsOwn(
             static fn (GeneratorDeriver $deriver): ChoiceSource => ChoiceSource::random(new Randomizer(new Xoshiro256StarStar($seed)), ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver),
             $timeLimit,
+            $exportValues,
         );
     }
 
@@ -561,15 +568,16 @@ final class PropertyTestSuite extends IterativeTestSuite
     }
 
     /**
-     * @param Closure(GeneratorDeriver): ChoiceSource $source    creates the source of the choices of the example
+     * @param Closure(GeneratorDeriver): ChoiceSource $source       creates the source of the choices of the example
      * @param positive-int                            $timeLimit
+     * @param bool                                    $exportValues whether the arguments, the drawn values, and the steps of the example are exported
      *
      * @throws Exception
      * @throws InvalidArgumentException
      * @throws InvalidPropertyException
      * @throws UnintentionallyCoveredCodeException
      */
-    private function runExampleOnItsOwn(Closure $source, int $timeLimit): ExampleResult
+    private function runExampleOnItsOwn(Closure $source, int $timeLimit, bool $exportValues): ExampleResult
     {
         $test    = $this->tests()[0] ?? null;
         $emitter = Event\Facade::emitter();
@@ -597,7 +605,19 @@ final class PropertyTestSuite extends IterativeTestSuite
             return ExampleResult::falsified(Falsification::ofThrowable($t), false, $source->sequence());
         }
 
-        $example = $this->example($arguments, false, DrawnValues::from($source));
+        $exportedArguments = null;
+        $drawnValues       = DrawnValues::from($source);
+
+        // the arguments are exported before the example is run, which can
+        // change the state of an object that is passed to it; the arguments
+        // of a property whose requirements are not met are not exported,
+        // because its example is skipped
+        if ($exportValues && $this->definition !== null) {
+            $exportedArguments = $this->export($arguments, $source->constructions());
+            $drawnValues       = DrawnValues::reportedFrom($source, $this->exporter($source->constructions()));
+        }
+
+        $example = $this->example($arguments, false, $drawnValues);
 
         $this->collectingEvents(
             static function () use ($example, $emitter, $timeLimit): void
@@ -610,6 +630,20 @@ final class PropertyTestSuite extends IterativeTestSuite
             },
         );
 
+        $result = $this->resultOf($example, $source);
+
+        if ($exportedArguments === null) {
+            return $result;
+        }
+
+        return $result->withExportedValues($exportedArguments, $drawnValues->exported(), $drawnValues->steps());
+    }
+
+    /**
+     * The result of an example that was run on its own.
+     */
+    private function resultOf(TestCase $example, ChoiceSource $source): ExampleResult
+    {
         $falsification = Falsification::of($example);
 
         if ($this->wasRejected($example, $falsification)) {

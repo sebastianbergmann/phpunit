@@ -30,6 +30,21 @@ final readonly class ExampleResult
     private ?Falsification $falsification;
     private ChoiceSequence $sequence;
 
+    /**
+     * @var ?array<non-empty-string, string>
+     */
+    private ?array $arguments;
+
+    /**
+     * @var ?list<array{label: ?non-empty-string, value: string}>
+     */
+    private ?array $drawnValues;
+
+    /**
+     * @var ?list<non-empty-string>
+     */
+    private ?array $steps;
+
     public static function passed(ChoiceSequence $sequence): self
     {
         return new self('passed', null, $sequence);
@@ -64,12 +79,32 @@ final readonly class ExampleResult
 
     /**
      * @param 'errored'|'failed'|'incomplete'|'passed'|'rejected'|'skipped'|'timeout' $outcome
+     * @param ?array<non-empty-string, string>                                        $arguments
+     * @param ?list<array{label: ?non-empty-string, value: string}>                   $drawnValues
+     * @param ?list<non-empty-string>                                                 $steps
      */
-    private function __construct(string $outcome, ?Falsification $falsification, ChoiceSequence $sequence)
+    private function __construct(string $outcome, ?Falsification $falsification, ChoiceSequence $sequence, ?array $arguments = null, ?array $drawnValues = null, ?array $steps = null)
     {
         $this->outcome       = $outcome;
         $this->falsification = $falsification;
         $this->sequence      = $sequence;
+        $this->arguments     = $arguments;
+        $this->drawnValues   = $drawnValues;
+        $this->steps         = $steps;
+    }
+
+    /**
+     * The same result with the arguments of the example, the values that it
+     * drew with draw(), and the steps of its state machine, exported as they
+     * are reported for a counterexample.
+     *
+     * @param array<non-empty-string, string>                      $arguments
+     * @param list<array{label: ?non-empty-string, value: string}> $drawnValues
+     * @param list<non-empty-string>                               $steps
+     */
+    public function withExportedValues(array $arguments, array $drawnValues, array $steps): self
+    {
+        return new self($this->outcome, $this->falsification, $this->sequence, $arguments, $drawnValues, $steps);
     }
 
     /**
@@ -94,5 +129,38 @@ final readonly class ExampleResult
     public function sequence(): ChoiceSequence
     {
         return $this->sequence;
+    }
+
+    /**
+     * The exported arguments by the names of their parameters, null when
+     * they were not exported.
+     *
+     * @return ?array<non-empty-string, string>
+     */
+    public function arguments(): ?array
+    {
+        return $this->arguments;
+    }
+
+    /**
+     * The exported values that the example drew with draw(), null when they
+     * were not exported.
+     *
+     * @return ?list<array{label: ?non-empty-string, value: string}>
+     */
+    public function drawnValues(): ?array
+    {
+        return $this->drawnValues;
+    }
+
+    /**
+     * The steps of the state machine of the example, null when they were not
+     * exported.
+     *
+     * @return ?list<non-empty-string>
+     */
+    public function steps(): ?array
+    {
+        return $this->steps;
     }
 }

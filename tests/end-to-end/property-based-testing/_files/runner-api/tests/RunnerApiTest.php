@@ -12,6 +12,7 @@ namespace PHPUnit\TestFixture\PropertyBasedTesting\RunnerApi;
 use function count;
 use function sleep;
 use PHPUnit\Framework\Attributes\Property;
+use PHPUnit\Framework\PropertyBased\Generators;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
@@ -69,6 +70,15 @@ final class RunnerApiTest extends TestCase
     public function testDrawsAList(array $values): void
     {
         $this->assertLessThanOrEqual(10, count($values));
+    }
+
+    /**
+     * @param list<int<0, 9>> $values
+     */
+    #[Property]
+    public function testDrawsAValue(array $values): void
+    {
+        $this->assertIsInt($this->draw(Generators::integers(0, 9), 'digit'));
     }
 
     /**
