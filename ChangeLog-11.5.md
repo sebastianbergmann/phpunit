@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 11.5 release series are documented in this fi
 
 ### Changed
 
+* Issues whose message refers to an anonymous class could not be ignored using a baseline on PHP 8.6 (as of PHP 8.6, such messages contain the full name of the anonymous class: a NUL byte followed by the file, line, and a counter)
 * Make PHAR build reproducible across filesystems (files are now added to the PHAR sorted by their path instead of in the order in which the filesystem lists them)
 
 ### Removed
