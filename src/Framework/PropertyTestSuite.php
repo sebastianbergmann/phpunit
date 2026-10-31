@@ -589,9 +589,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             $this->usesErrorHandler = TestRunner::shouldErrorHandlerBeUsed($test);
         }
 
-        $this->generatorsOfExamplesRunOnTheirOwn ??= $this->handlingIssues(fn (): array => $this->generators($test, $emitter), null);
-
-        [$deriver, $generators] = $this->generatorsOfExamplesRunOnTheirOwn;
+        [$deriver, $generators] = $this->generatorsOfExamplesRunOnTheirOwn();
 
         $source = $source($deriver);
 
@@ -668,6 +666,49 @@ final class PropertyTestSuite extends IterativeTestSuite
         }
 
         return ExampleResult::falsified($falsification, $example->status()->isFailure(), $source->sequence());
+    }
+
+    /**
+     * The generators are created once for the examples that are run on their
+     * own. As these examples are run outside of a test run, there is no test
+     * result for the property to which an exception that is raised while the
+     * generators are created could be reported as its error, so it is passed
+     * on as an exception of PHPUnit's own.
+     *
+     * @throws \PHPUnit\Exception
+     *
+     * @return array{0: GeneratorDeriver, 1: array<non-empty-string, AbstractGenerator<mixed>>}
+     */
+    private function generatorsOfExamplesRunOnTheirOwn(): array
+    {
+        if ($this->generatorsOfExamplesRunOnTheirOwn !== null) {
+            return $this->generatorsOfExamplesRunOnTheirOwn;
+        }
+
+        $test = $this->tests()[0] ?? null;
+
+        assert($test instanceof TestCase);
+        assert($this->test !== null);
+
+        try {
+            $this->generatorsOfExamplesRunOnTheirOwn = $this->handlingIssues(fn (): array => $this->generators($test, Event\Facade::emitter()), null);
+        } catch (\PHPUnit\Exception $e) {
+            throw $e;
+        } catch (Throwable $t) {
+            // a generator method, or a closure that is specified with
+            // #[ForAll], raised an exception
+            throw InvalidPropertyException::because(
+                $this->test->className(),
+                $this->test->methodName(),
+                sprintf(
+                    'creating its generators raised %s: %s',
+                    Falsification::ofThrowable($t)->description(),
+                    $t->getMessage(),
+                ),
+            );
+        }
+
+        return $this->generatorsOfExamplesRunOnTheirOwn;
     }
 
     /**

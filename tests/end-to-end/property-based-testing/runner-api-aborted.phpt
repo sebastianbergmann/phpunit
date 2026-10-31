@@ -21,7 +21,14 @@ foreach (['testArgumentsCannotBeGenerated' => [3], 'testCannotBeSetUp' => [3], '
 
     print $method . ': ' . $result['outcome'] . ' (' . $result['failure']['description'] . ': ' . $result['failure']['message'] . ')' . PHP_EOL;
 }
+
+try {
+    $phpunit->replay($prefix . 'testHasAGeneratorMethodThatRaisesAnException', [3], 1);
+} catch (PHPUnit\Exception $e) {
+    print $e::class . ': ' . $e->getMessage() . PHP_EOL;
+}
 --EXPECT--
 testArgumentsCannotBeGenerated: aborted (RuntimeException at tests/AbortedTest.php:31: cannot be generated)
-testCannotBeSetUp: aborted (RuntimeException at tests/AbortedTest.php:39: cannot be set up)
-testRunsAnInvalidStateMachine: aborted (PHPUnit\Framework\PropertyBased\InvalidStateMachineException at tests/AbortedTest.php:59: State machine PHPUnit\TestFixture\PropertyBasedTesting\RunnerApi\MachineWithoutRules cannot be run: it has no method with #[Rule])
+testCannotBeSetUp: aborted (RuntimeException at tests/AbortedTest.php:47: cannot be set up)
+testRunsAnInvalidStateMachine: aborted (PHPUnit\Framework\PropertyBased\InvalidStateMachineException at tests/AbortedTest.php:67: State machine PHPUnit\TestFixture\PropertyBasedTesting\RunnerApi\MachineWithoutRules cannot be run: it has no method with #[Rule])
+PHPUnit\Framework\PropertyBased\InvalidPropertyException: Property PHPUnit\TestFixture\PropertyBasedTesting\RunnerApi\AbortedTest::testHasAGeneratorMethodThatRaisesAnException cannot be checked: creating its generators raised RuntimeException at tests/AbortedTest.php:41: no generator

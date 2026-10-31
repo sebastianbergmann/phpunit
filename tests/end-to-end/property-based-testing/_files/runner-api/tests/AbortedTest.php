@@ -33,6 +33,14 @@ final class AbortedTest extends TestCase
         );
     }
 
+    /**
+     * @return ValueGenerator<int>
+     */
+    public static function generatorMethodThatRaisesAnException(): ValueGenerator
+    {
+        throw new RuntimeException('no generator');
+    }
+
     protected function setUp(): void
     {
         if ($this->name() === 'testCannotBeSetUp') {
@@ -57,5 +65,10 @@ final class AbortedTest extends TestCase
     public function testRunsAnInvalidStateMachine(): void
     {
         $this->runStateMachine(new MachineWithoutRules);
+    }
+
+    #[Property]
+    public function testHasAGeneratorMethodThatRaisesAnException(#[ForAll('generatorMethodThatRaisesAnException')] int $value): void
+    {
     }
 }

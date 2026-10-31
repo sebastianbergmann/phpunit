@@ -219,7 +219,7 @@ final class PropertyRunner
      * @param positive-int           $timeLimit    the time limit of the example in seconds
      * @param bool                   $exportValues whether the result has the exported arguments, drawn values, and steps of the example
      *
-     * @throws Exception                     when the property is invalid
+     * @throws Exception                     when the property is invalid, or its generators cannot be created
      * @throws InvalidArgumentException
      * @throws PropertyDoesNotExistException
      *
@@ -256,7 +256,7 @@ final class PropertyRunner
      * @param positive-int     $timeLimit    the time limit of the example in seconds
      * @param bool             $exportValues whether the result has the exported arguments, drawn values, and steps of the example
      *
-     * @throws Exception                     when the property is invalid
+     * @throws Exception                     when the property is invalid, or its generators cannot be created
      * @throws InvalidArgumentException
      * @throws PropertyDoesNotExistException
      *
