@@ -9,10 +9,12 @@
  */
 namespace PHPUnit\Framework\PropertyBased;
 
+use const DIRECTORY_SEPARATOR;
 use function chdir;
 use function dirname;
 use function getcwd;
 use function realpath;
+use function str_replace;
 use function sys_get_temp_dir;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -150,7 +152,7 @@ final class FalsificationTest extends TestCase
         $falsification = Falsification::of($this->example('testErrors', 1));
 
         $this->assertNotNull($falsification);
-        $this->assertStringMatchesFormat('RuntimeException at tests/_files/PropertyBased/Falsification/ExampleTest.php:%d', $falsification->description());
+        $this->assertStringMatchesFormat('RuntimeException at ' . str_replace('/', DIRECTORY_SEPARATOR, 'tests/_files/PropertyBased/Falsification/ExampleTest.php') . ':%d', $falsification->description());
     }
 
     public function testThePathOfTheFileWhereTheThrowableWasRaisedIsAbsoluteWhenTheFileIsNotBelowTheWorkingDirectory(): void
@@ -160,7 +162,7 @@ final class FalsificationTest extends TestCase
         $falsification = Falsification::of($this->example('testErrors', 1));
 
         $this->assertNotNull($falsification);
-        $this->assertStringMatchesFormat('RuntimeException at ' . realpath(dirname(__DIR__, 4)) . '/tests/_files/PropertyBased/Falsification/ExampleTest.php:%d', $falsification->description());
+        $this->assertStringMatchesFormat('RuntimeException at ' . realpath(dirname(__DIR__, 4)) . str_replace('/', DIRECTORY_SEPARATOR, '/tests/_files/PropertyBased/Falsification/ExampleTest.php') . ':%d', $falsification->description());
     }
 
     public function testTheLocationOfTheErrorForTheCallStackLimitIsTheFirstOfTheFramesThatAreRepeatedInItsStackTrace(): void
