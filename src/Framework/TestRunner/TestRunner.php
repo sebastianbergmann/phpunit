@@ -56,11 +56,26 @@ final class TestRunner
 {
     private readonly Configuration $configuration;
     private readonly Emitter $emitter;
+    private readonly RiskyTestChecks $riskyTestChecks;
+
+    /**
+     * Whether PHPUnit's error handler handles the issues that are triggered
+     * by the test, which it does unless #[WithoutErrorHandler] is used.
+     */
+    public static function shouldErrorHandlerBeUsed(TestCase $test): bool
+    {
+        if (MetadataRegistry::parser()->forMethod($test::class, $test->name())->isWithoutErrorHandler()->isNotEmpty()) {
+            return false;
+        }
+
+        return true;
+    }
 
     public function __construct(Emitter $emitter)
     {
-        $this->configuration = ConfigurationRegistry::get();
-        $this->emitter       = $emitter;
+        $this->configuration   = ConfigurationRegistry::get();
+        $this->emitter         = $emitter;
+        $this->riskyTestChecks = new RiskyTestChecks($this->configuration->reportUselessTests());
     }
 
     /**
@@ -84,50 +99,95 @@ final class TestRunner
         try {
             ShutdownHandler::setMessage(sprintf('Fatal error: Premature end of PHP process when running %s.', $test->toString()));
 
-            $this->runInProcess($test);
+            $this->runInProcess($test, false, true);
         } finally {
             ShutdownHandler::resetMessage();
         }
     }
 
     /**
+     * Runs an example of a property, in the process that runs the property.
+     * Whether the property is risky for the assertions that its examples
+     * performed, for their contribution to code coverage, or because one of
+     * them exceeded its time limit, is decided on all of its examples rather
+     * than on this one.
+     *
+     * @param bool          $collectCodeCoverage whether code coverage is collected for the example, if it is collected at all: it is not for the shrinking attempts and the final replay of the minimal counterexample
+     * @param ?positive-int $timeLimit           the time limit of the example in seconds, which is enforced instead of the configured one whenever a time limit can be enforced, or null for the configured one
+     *
      * @throws Exception
      * @throws InvalidArgumentException
      * @throws UnintentionallyCoveredCodeException
      */
-    private function runInProcess(TestCase $test): void
+    public function runExampleOfProperty(TestCase $example, bool $collectCodeCoverage, ?int $timeLimit = null): ExampleRun
+    {
+        try {
+            ShutdownHandler::setMessage(sprintf('Fatal error: Premature end of PHP process when running %s.', $example->toString()));
+
+            $contributedToCodeCoverage = $this->runInProcess($example, true, $collectCodeCoverage, $timeLimit);
+        } finally {
+            ShutdownHandler::resetMessage();
+        }
+
+        return new ExampleRun(
+            $example->numberOfAssertionsPerformed(),
+            $example->doesNotPerformAssertions(),
+            $contributedToCodeCoverage,
+        );
+    }
+
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws UnintentionallyCoveredCodeException
+     *
+     * @return ?bool whether the test contributed to code coverage, null when this was not checked
+     */
+    /**
+     * @param ?positive-int $timeLimit
+     */
+    private function runInProcess(TestCase $test, bool $exampleOfProperty, bool $collectCodeCoverageForTest, ?int $timeLimit = null): ?bool
     {
         Assert::resetCount();
 
-        $codeCoverageMetadataApi    = new CodeCoverageMetadataApi;
-        $coversTargets              = TargetCollection::fromArray([]);
-        $usesTargets                = TargetCollection::fromArray([]);
-        $coversNothingContradiction = false;
+        $codeCoverageMetadataApi       = new CodeCoverageMetadataApi;
+        $coversTargets                 = TargetCollection::fromArray([]);
+        $usesTargets                   = TargetCollection::fromArray([]);
+        $shouldCodeCoverageBeCollected = false;
 
-        if ($this->configuration->disableCoverageTargeting()) {
-            $shouldCodeCoverageBeCollected = true;
-        } else {
-            $coversTargets = $codeCoverageMetadataApi->coversTargets(
-                $test::class,
-                $test->name(),
-            );
+        // the code coverage metadata of a test for which no code coverage data
+        // is collected is not looked at: this is an example of a property
+        // that is run while the property is shrunk, or for the final replay of
+        // its minimal counterexample, and the examples of the property that
+        // were checked before report the issues with this metadata
+        if ($collectCodeCoverageForTest) {
+            $coversNothingContradiction = false;
 
-            $usesTargets = $codeCoverageMetadataApi->usesTargets(
-                $test::class,
-                $test->name(),
-            );
+            if ($this->configuration->disableCoverageTargeting()) {
+                $shouldCodeCoverageBeCollected = true;
+            } else {
+                $coversTargets = $codeCoverageMetadataApi->coversTargets(
+                    $test::class,
+                    $test->name(),
+                );
 
-            $coversTargets = $this->removeFilesystemTargetsThatAreNotFirstPartyCode($test, $coversTargets);
-            $usesTargets   = $this->removeFilesystemTargetsThatAreNotFirstPartyCode($test, $usesTargets);
+                $usesTargets = $codeCoverageMetadataApi->usesTargets(
+                    $test::class,
+                    $test->name(),
+                );
 
-            $shouldCodeCoverageBeCollected = $codeCoverageMetadataApi->shouldCodeCoverageBeCollectedFor($test);
+                $coversTargets = $this->removeFilesystemTargetsThatAreNotFirstPartyCode($test, $coversTargets);
+                $usesTargets   = $this->removeFilesystemTargetsThatAreNotFirstPartyCode($test, $usesTargets);
 
-            $coversNothingContradiction = $codeCoverageMetadataApi->coversNothingContradictsCoversOrUses(
-                $test::class,
-            );
+                $shouldCodeCoverageBeCollected = $codeCoverageMetadataApi->shouldCodeCoverageBeCollectedFor($test);
+
+                $coversNothingContradiction = $codeCoverageMetadataApi->coversNothingContradictsCoversOrUses(
+                    $test::class,
+                );
+            }
+
+            $this->performSanityChecks($test, $coversTargets, $usesTargets, $coversNothingContradiction);
         }
-
-        $this->performSanityChecks($test, $coversTargets, $usesTargets, $coversNothingContradiction);
 
         $error      = false;
         $failure    = false;
@@ -135,16 +195,25 @@ final class TestRunner
         $risky      = false;
         $skipped    = false;
 
-        if ($this->shouldErrorHandlerBeUsed($test)) {
-            $throwableFromDeferredIssue = ErrorHandler::instance()->enable($test);
+        if (self::shouldErrorHandlerBeUsed($test)) {
+            if ($exampleOfProperty) {
+                // the issues that were triggered in the test case context of
+                // a property are reported once for the property rather than
+                // for each of its examples, see PropertyTestSuite
+                ErrorHandler::instance()->enableForTestNotOnCallStack($test->valueObjectForEvents());
+            } else {
+                $throwableFromDeferredIssue = ErrorHandler::instance()->enable($test);
 
-            if ($throwableFromDeferredIssue !== null) {
-                $test->setThrowableFromDeferredIssue($throwableFromDeferredIssue);
+                if ($throwableFromDeferredIssue !== null) {
+                    $test->setThrowableFromDeferredIssue($throwableFromDeferredIssue);
+                }
             }
         }
 
-        $collectCodeCoverage = CodeCoverage::instance()->isActive() &&
-                               $shouldCodeCoverageBeCollected;
+        $contributedToCodeCoverage = null;
+        $collectCodeCoverage       = CodeCoverage::instance()->isActive() &&
+                               $shouldCodeCoverageBeCollected &&
+                               $collectCodeCoverageForTest;
 
         if ($collectCodeCoverage) {
             CodeCoverage::instance()->start($test);
@@ -154,8 +223,8 @@ final class TestRunner
             TimeLimitHandler::armAlarm();
 
             if ($this->canTimeLimitBeEnforced() &&
-                $this->shouldTimeLimitBeEnforced($test)) {
-                $risky = $this->runTestWithTimeout($test);
+                ($timeLimit !== null || $this->shouldTimeLimitBeEnforced($test))) {
+                $risky = $this->runTestWithTimeout($test, $exampleOfProperty, $timeLimit);
             } else {
                 $test->runLifecycle();
             }
@@ -184,16 +253,33 @@ final class TestRunner
 
         $test->addToAssertionCount(Assert::getCount());
 
-        if (!$failure &&
-            $this->configuration->reportUselessTests() &&
-            !$test->doesNotPerformAssertions() &&
-            $test->numberOfAssertionsPerformed() === 0) {
+        $riskyBecauseOfNoAssertions = null;
+
+        if (!$failure) {
+            $riskyBecauseOfNoAssertions = $this->riskyTestChecks->performedNoAssertions(
+                $test->numberOfAssertionsPerformed(),
+                $test->doesNotPerformAssertions(),
+            );
+        }
+
+        // the code coverage data of an example of a property that passed
+        // without performing assertions is held back, because whether the
+        // property performed assertions, and therefore whether the data is
+        // appended, is decided on all of its examples; it is not held back
+        // when the example would be considered risky for lacking code
+        // coverage metadata had it performed assertions
+        $holdBackCodeCoverage = $collectCodeCoverage &&
+                                $riskyBecauseOfNoAssertions !== null &&
+                                $exampleOfProperty &&
+                                $test->status()->isSuccess() &&
+                                !$this->lacksRequiredCoverageMetadata($test);
+
+        if ($riskyBecauseOfNoAssertions !== null) {
             $risky = true;
         }
 
         if (!$error && !$failure && !$incomplete && !$skipped && !$risky &&
-            $this->requiresCoverageMetadata($test) &&
-            !$this->hasCoverageMetadata($test::class, $test->name())) {
+            $this->lacksRequiredCoverageMetadata($test)) {
             $this->emitter->testConsideredRisky(
                 $test->valueObjectForEvents(),
                 'This test does not define a code coverage target but is expected to do so',
@@ -202,8 +288,10 @@ final class TestRunner
             $risky = true;
         }
 
-        if ($collectCodeCoverage) {
-            $append                 = !$risky && !$incomplete && !$skipped;
+        if ($holdBackCodeCoverage) {
+            CodeCoverage::instance()->stopAndHoldBack($coversTargets, $usesTargets);
+        } elseif ($collectCodeCoverage) {
+            $append                 = !$risky && !$incomplete && !$skipped && !$test->wasRejectedByAssumption();
             $coveredUnintentionally = false;
 
             if (!$append) {
@@ -222,47 +310,54 @@ final class TestRunner
 
                 $this->emitter->testConsideredRisky(
                     $test->valueObjectForEvents(),
-                    "This test executed code that is not listed as code to be covered or used:\n" .
-                    $cce->getMessage(),
+                    CodeCoverage::unintentionallyCoveredCodeMessage($cce),
                 );
             } catch (CodeCoverageException) {
                 $error = true;
             }
 
             if ($append && !$error && !$failure && !$coveredUnintentionally &&
-                $this->configuration->requireCoverageContribution() &&
-                !CodeCoverage::instance()->lastTestContributedToCoverage()) {
-                $this->emitter->testConsideredRisky(
-                    $test->valueObjectForEvents(),
-                    'This test does not contribute to code coverage',
-                );
+                $this->configuration->requireCoverageContribution()) {
+                $contributedToCodeCoverage = CodeCoverage::instance()->lastTestContributedToCoverage();
+
+                $riskyBecauseOfNoContribution = $this->riskyTestChecks->didNotContributeToCodeCoverage($contributedToCodeCoverage);
+
+                // whether a property contributes to code coverage is decided
+                // on all of its examples
+                if ($riskyBecauseOfNoContribution !== null && !$exampleOfProperty) {
+                    $this->emitter->testConsideredRisky(
+                        $test->valueObjectForEvents(),
+                        $riskyBecauseOfNoContribution,
+                    );
+                }
             }
         }
 
         ErrorHandler::instance()->disable();
 
+        // whether a property performs assertions is decided on all of its
+        // examples
         if (!$error &&
             !$failure &&
             !$incomplete &&
             !$skipped &&
-            $this->configuration->reportUselessTests() &&
-            !$test->doesNotPerformAssertions() &&
-            $test->numberOfAssertionsPerformed() === 0) {
+            !$exampleOfProperty &&
+            $riskyBecauseOfNoAssertions !== null) {
             $this->emitter->testConsideredRisky(
                 $test->valueObjectForEvents(),
-                'This test did not perform any assertions',
+                $riskyBecauseOfNoAssertions,
             );
         }
 
-        if ($test->doesNotPerformAssertions() &&
-            $test->numberOfAssertionsPerformed() > 0) {
+        $riskyBecauseOfUnexpectedAssertions = $this->riskyTestChecks->performedUnexpectedAssertions(
+            $test->numberOfAssertionsPerformed(),
+            $test->doesNotPerformAssertions(),
+        );
+
+        if (!$exampleOfProperty && $riskyBecauseOfUnexpectedAssertions !== null) {
             $this->emitter->testConsideredRisky(
                 $test->valueObjectForEvents(),
-                sprintf(
-                    'This test is not expected to perform assertions but performed %d assertion%s',
-                    $test->numberOfAssertionsPerformed(),
-                    $test->numberOfAssertionsPerformed() > 1 ? 's' : '',
-                ),
+                $riskyBecauseOfUnexpectedAssertions,
             );
         }
 
@@ -284,6 +379,14 @@ final class TestRunner
             $test->valueObjectForEvents(),
             $test->numberOfAssertionsPerformed(),
         );
+
+        return $contributedToCodeCoverage;
+    }
+
+    private function lacksRequiredCoverageMetadata(TestCase $test): bool
+    {
+        return $this->requiresCoverageMetadata($test) &&
+               !$this->hasCoverageMetadata($test::class, $test->name());
     }
 
     private function requiresCoverageMetadata(TestCase $test): bool
@@ -345,14 +448,18 @@ final class TestRunner
     }
 
     /**
+     * @param ?positive-int $timeLimit the time limit in seconds, null for the configured one
+     *
      * @throws Throwable
      */
-    private function runTestWithTimeout(TestCase $test): bool
+    private function runTestWithTimeout(TestCase $test, bool $exampleOfProperty, ?int $timeLimit): bool
     {
         $_timeout = $this->configuration->defaultTimeLimit();
         $testSize = $test->size();
 
-        if ($testSize->isSmall()) {
+        if ($timeLimit !== null) {
+            $_timeout = $timeLimit;
+        } elseif ($testSize->isSmall()) {
             $_timeout = $this->configuration->timeoutForSmallTests();
         } elseif ($testSize->isMedium()) {
             $_timeout = $this->configuration->timeoutForMediumTests();
@@ -363,28 +470,23 @@ final class TestRunner
         try {
             (new Invoker)->invoke($test->runLifecycle(...), [], $_timeout);
         } catch (TimeoutException) {
-            $this->emitter->testConsideredRisky(
-                $test->valueObjectForEvents(),
-                sprintf(
-                    'This test was aborted after %d second%s',
-                    $_timeout,
-                    $_timeout !== 1 ? 's' : '',
-                ),
-            );
+            // an example of a property that exceeds its time limit falsifies
+            // the property, which is reported as an error
+            if (!$exampleOfProperty) {
+                $this->emitter->testConsideredRisky(
+                    $test->valueObjectForEvents(),
+                    sprintf(
+                        'This test was aborted after %d second%s',
+                        $_timeout,
+                        $_timeout !== 1 ? 's' : '',
+                    ),
+                );
+            }
 
             return true;
         }
 
         return false;
-    }
-
-    private function shouldErrorHandlerBeUsed(TestCase $test): bool
-    {
-        if (MetadataRegistry::parser()->forMethod($test::class, $test->name())->isWithoutErrorHandler()->isNotEmpty()) {
-            return false;
-        }
-
-        return true;
     }
 
     private function performSanityChecks(TestCase $test, TargetCollection $coversTargets, TargetCollection $usesTargets, bool $coversNothingContradiction): void

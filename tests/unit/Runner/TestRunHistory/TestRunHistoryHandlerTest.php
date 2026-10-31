@@ -24,6 +24,7 @@ use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\MarkedIncomplete;
 use PHPUnit\Event\Test\Passed;
 use PHPUnit\Event\Test\Prepared;
+use PHPUnit\Event\Test\PropertyFalsified;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
@@ -110,6 +111,98 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
         $handler->testPassed(new Passed($this->telemetryInfo(), $test));
 
         $this->assertTrue($cache->status($id)->isUnknown());
+    }
+
+    public function testPropertyFalsifiedRemembersTheChoiceSequenceOfTheMinimalCounterexample(): void
+    {
+        $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-test.cache');
+        $handler = new TestRunHistoryHandler($cache, new Facade, false);
+
+        $test = $this->testValueObject();
+
+        $handler->testPropertyFalsified(
+            new PropertyFalsified($this->telemetryInfo(), $test, 1234, 2, 3, 1, false, false, [0, 11], ['a' => '0', 'b' => '11'], null, [], [], [], 0, 0),
+        );
+
+        $this->assertSame([[0, 11]], $cache->counterexamples(TestRunHistoryId::fromTest($test)));
+    }
+
+    public function testPropertyFalsifiedRemembersTheChoiceSequencesOfTheCounterexamplesOfTheOtherWaysInWhichThePropertyWasFalsifiedAfterTheOneOfTheMinimalCounterexample(): void
+    {
+        $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-test.cache');
+        $handler = new TestRunHistoryHandler($cache, new Facade, false);
+
+        $test = $this->testValueObject();
+
+        $handler->testPropertyFalsified(
+            new PropertyFalsified(
+                $this->telemetryInfo(),
+                $test,
+                1234,
+                2,
+                3,
+                1,
+                false,
+                false,
+                [0, 11],
+                ['a' => '0', 'b' => '11'],
+                null,
+                [],
+                [],
+                [
+                    ['description' => 'RuntimeException at FooTest.php:12', 'choiceSequence' => [3, 4], 'counterexample' => ['a' => '3', 'b' => '4'], 'drawnValues' => [], 'steps' => []],
+                    ['description' => 'LogicException at FooTest.php:15', 'choiceSequence' => [5], 'counterexample' => ['a' => '5', 'b' => '0'], 'drawnValues' => [], 'steps' => []],
+                ],
+                0,
+                0,
+            ),
+        );
+
+        $this->assertSame([[0, 11], [3, 4], [5]], $cache->counterexamples(TestRunHistoryId::fromTest($test)));
+    }
+
+    public function testPropertyFalsifiedByAnExplicitExampleKeepsTheCounterexampleThatWasRememberedForTheProperty(): void
+    {
+        $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-test.cache');
+        $handler = new TestRunHistoryHandler($cache, new Facade, false);
+
+        $test = $this->testValueObject();
+        $id   = TestRunHistoryId::fromTest($test);
+
+        $cache->setCounterexamples($id, [[0, 11]]);
+
+        $handler->testPropertyFalsified(
+            new PropertyFalsified($this->telemetryInfo(), $test, 1234, 0, 0, 0, false, false, [], ['a' => '1', 'b' => '2'], 'one and two', [], [], [], 0, 0),
+        );
+
+        $this->assertSame([[0, 11]], $cache->counterexamples($id));
+    }
+
+    public function testPassedForgetsTheCounterexampleThatWasRememberedForAProperty(): void
+    {
+        $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-test.cache');
+        $handler = new TestRunHistoryHandler($cache, new Facade, false);
+
+        $test = $this->testValueObject();
+        $id   = TestRunHistoryId::fromTest($test);
+
+        $cache->setCounterexamples($id, [[0, 11]]);
+
+        $handler->testPassed(new Passed($this->telemetryInfo(), $test));
+
+        $this->assertSame([], $cache->counterexamples($id));
+    }
+
+    public function testPassedDoesNotForgetCounterexamplesForATestForWhichNoneWereRemembered(): void
+    {
+        $testRunHistory = $this->createMock(TestRunHistory::class);
+
+        $testRunHistory->method('counterexamples')->willReturn([]);
+        $testRunHistory->expects($this->never())->method('removeCounterexamples');
+
+        $handler = new TestRunHistoryHandler($testRunHistory, new Facade, false);
+
+        $handler->testPassed(new Passed($this->telemetryInfo(), $this->testValueObject()));
     }
 
     public function testPassedDoesNotRemoveStatusRecordedInCurrentRun(): void

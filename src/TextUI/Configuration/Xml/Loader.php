@@ -147,6 +147,7 @@ final readonly class Loader
                 $this->php($configurationFileRealpath, $xpath),
                 $this->phpunit($configurationFileRealpath, $document, $xpath),
                 $this->testSuite($configurationFileRealpath, $xpath),
+                $this->propertyBasedTesting($xpath),
             );
         } catch (InvalidExecutionOrderException $e) {
             throw new Exception(
@@ -784,6 +785,31 @@ final readonly class Loader
         return FilterFileCollection::fromArray($files);
     }
 
+    private function propertyBasedTesting(DOMXPath $xpath): PropertyBasedTesting
+    {
+        $element = $this->element($xpath, 'propertyBasedTesting');
+
+        if ($element === null) {
+            return new PropertyBasedTesting(
+                PropertyBasedTesting::DEFAULT_NUMBER_OF_EXAMPLES,
+                PropertyBasedTesting::DEFAULT_EXAMPLES_MULTIPLIER,
+                PropertyBasedTesting::DEFAULT_MAXIMUM_NUMBER_OF_SHRINKING_ATTEMPTS,
+                PropertyBasedTesting::DEFAULT_EXAMPLES_CHECKED_UNTIL_HEALTH_IS_ASSUMED,
+                PropertyBasedTesting::DEFAULT_MAXIMUM_REJECTED_EXAMPLES_UNTIL_HEALTH_IS_ASSUMED,
+                PropertyBasedTesting::DEFAULT_MAXIMUM_TOO_LARGE_EXAMPLES_UNTIL_HEALTH_IS_ASSUMED,
+            );
+        }
+
+        return new PropertyBasedTesting(
+            $this->parsePositiveIntegerAttribute($element, 'examples', PropertyBasedTesting::DEFAULT_NUMBER_OF_EXAMPLES),
+            $this->parsePositiveIntegerAttribute($element, 'examplesMultiplier', PropertyBasedTesting::DEFAULT_EXAMPLES_MULTIPLIER),
+            $this->parseNonNegativeIntegerAttribute($element, 'maximumShrinkingAttempts', PropertyBasedTesting::DEFAULT_MAXIMUM_NUMBER_OF_SHRINKING_ATTEMPTS),
+            $this->parseNonNegativeIntegerAttribute($element, 'examplesCheckedUntilHealthIsAssumed', PropertyBasedTesting::DEFAULT_EXAMPLES_CHECKED_UNTIL_HEALTH_IS_ASSUMED),
+            $this->parsePositiveIntegerAttribute($element, 'maximumRejectedExamplesUntilHealthIsAssumed', PropertyBasedTesting::DEFAULT_MAXIMUM_REJECTED_EXAMPLES_UNTIL_HEALTH_IS_ASSUMED),
+            $this->parsePositiveIntegerAttribute($element, 'maximumTooLargeExamplesUntilHealthIsAssumed', PropertyBasedTesting::DEFAULT_MAXIMUM_TOO_LARGE_EXAMPLES_UNTIL_HEALTH_IS_ASSUMED),
+        );
+    }
+
     private function groups(DOMXPath $xpath): Groups
     {
         $include = [];
@@ -1199,6 +1225,7 @@ final readonly class Loader
             $this->parseBooleanAttribute($documentElement, 'displayDetailsOnTestsThatTriggerErrors', false),
             $this->parseBooleanAttribute($documentElement, 'displayDetailsOnTestsThatTriggerNotices', false),
             $this->parseBooleanAttribute($documentElement, 'displayDetailsOnTestsThatTriggerWarnings', false),
+            $this->parseBooleanAttribute($documentElement, 'displayPropertyStatistics', false),
             $this->parseBooleanAttribute($documentElement, 'reverseDefectList', false),
             $requireCoverageMetadata,
             $requireCoverageMetadataOnSmallTests,

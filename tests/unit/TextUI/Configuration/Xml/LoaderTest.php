@@ -68,6 +68,7 @@ final class LoaderTest extends TestCase
             'failOnRisky'                        => ['failOnRisky', 'true', true],
             'processIsolation'                   => ['processIsolation', 'true', true],
             'reverseDefectList'                  => ['reverseDefectList', 'true', true],
+            'displayPropertyStatistics'          => ['displayPropertyStatistics', 'true', true],
             'diffContext'                        => ['diffContext', '5', 5],
             'triggeringTestsLimit'               => ['triggeringTestsLimit', '5', 5],
         ];
@@ -527,6 +528,30 @@ final class LoaderTest extends TestCase
 
         $this->assertSame(['name'], $groups->include()->asArrayOfStrings());
         $this->assertSame(['name'], $groups->exclude()->asArrayOfStrings());
+    }
+
+    public function testPropertyBasedTestingConfigurationIsReadCorrectly(): void
+    {
+        $propertyBasedTesting = $this->configuration('configuration.xml')->propertyBasedTesting();
+
+        $this->assertSame(500, $propertyBasedTesting->examples());
+        $this->assertSame(10, $propertyBasedTesting->examplesMultiplier());
+        $this->assertSame(50, $propertyBasedTesting->maximumShrinkingAttempts());
+        $this->assertSame(5, $propertyBasedTesting->examplesCheckedUntilHealthIsAssumed());
+        $this->assertSame(25, $propertyBasedTesting->maximumRejectedExamplesUntilHealthIsAssumed());
+        $this->assertSame(15, $propertyBasedTesting->maximumTooLargeExamplesUntilHealthIsAssumed());
+    }
+
+    public function testPropertyBasedTestingConfigurationHasDefaults(): void
+    {
+        $propertyBasedTesting = $this->configuration('configuration_empty.xml')->propertyBasedTesting();
+
+        $this->assertSame(100, $propertyBasedTesting->examples());
+        $this->assertSame(1, $propertyBasedTesting->examplesMultiplier());
+        $this->assertSame(1000, $propertyBasedTesting->maximumShrinkingAttempts());
+        $this->assertSame(10, $propertyBasedTesting->examplesCheckedUntilHealthIsAssumed());
+        $this->assertSame(50, $propertyBasedTesting->maximumRejectedExamplesUntilHealthIsAssumed());
+        $this->assertSame(20, $propertyBasedTesting->maximumTooLargeExamplesUntilHealthIsAssumed());
     }
 
     public function testExtensionConfigurationIsReadCorrectly(): void

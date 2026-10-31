@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f74cbb03450f5306719527cd1dadb9fd",
+    "content-hash": "b2a165451bda3a1f528ce08f473c1df4",
     "packages": [
         {
             "name": "myclabs/deep-copy",
@@ -511,6 +511,77 @@
             ],
             "time": "2026-02-06T04:37:53+00:00",
             "published-time": "2026-02-06T04:38:39+00:00"
+        },
+        {
+            "name": "sebastian/choice-sequence",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/choice-sequence.git",
+                "reference": "80c001357b998177fc45b0c141f6151fbb07981a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/choice-sequence/zipball/80c001357b998177fc45b0c141f6151fbb07981a",
+                "reference": "80c001357b998177fc45b0c141f6151fbb07981a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.5"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^13.4.5"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
+                }
+            ],
+            "description": "Library for drawing, replaying, shrinking, and storing choice sequences",
+            "homepage": "https://github.com/sebastianbergmann/choice-sequence",
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/choice-sequence/issues",
+                "security": "https://github.com/sebastianbergmann/choice-sequence/security/policy",
+                "source": "https://github.com/sebastianbergmann/choice-sequence/tree/main"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sebastianbergmann",
+                    "type": "github"
+                },
+                {
+                    "url": "https://liberapay.com/sebastianbergmann",
+                    "type": "liberapay"
+                },
+                {
+                    "url": "https://thanks.dev/u/gh/sebastianbergmann",
+                    "type": "thanks_dev"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/sebastian/choice-sequence",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2026-10-31T09:22:15+00:00",
+            "published-time": "2026-10-31T09:25:40+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -1760,7 +1831,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": {
+        "sebastian/choice-sequence": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

@@ -83,6 +83,13 @@ final class RandomNumberGeneratorSeederTest extends TestCase
         $this->assertNotSame($one, mt_rand());
     }
 
+    public function testDerivesTheSameSeedOnEveryPlatformAndWithEveryVersion(): void
+    {
+        // a seed that is printed by one test run reproduces it on another
+        // machine only as long as the derivation does not change
+        $this->assertSame(7643959643694676917, RandomNumberGeneratorSeeder::derive(1234, 'ExampleTest::testOne'));
+    }
+
     #[RequiresPhpExtension('gmp')]
     public function testSeedsRandomNumberGeneratorOfGmpExtension(): void
     {

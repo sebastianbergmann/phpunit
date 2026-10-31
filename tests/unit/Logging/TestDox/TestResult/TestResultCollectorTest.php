@@ -40,6 +40,7 @@ use PHPUnit\Event\Test\PhpunitErrorTriggered;
 use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\PreparationStarted;
+use PHPUnit\Event\Test\PropertyFalsified;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\Event\TestData\TestDataCollection;
@@ -100,6 +101,72 @@ final class TestResultCollectorTest extends TestCase
         $this->assertTrue($first->status()->isFailure());
         $this->assertTrue($first->hasThrowable());
         $this->assertSame($throwable, $first->throwable());
+    }
+
+    public function test_Property_that_is_falsified_is_recorded_with_how_it_was_falsified(): void
+    {
+        $collector         = $this->collector();
+        $test              = $this->testMethod('testOne');
+        $propertyFalsified = $this->propertyFalsified($test);
+
+        $collector->testPreparationStarted(new PreparationStarted($this->telemetryInfo(), $test));
+        $collector->testPropertyFalsified($propertyFalsified);
+        $collector->testFailed(new Failed($this->telemetryInfo(), $test, $this->throwable('failure message'), null));
+        $collector->testFinished(new Finished($this->telemetryInfo(), $test, 1));
+
+        $this->assertSame(
+            $propertyFalsified,
+            $collector->testMethodsGroupedByClass()[TestDoxTest::class]->asArray()[0]->propertyFalsified(),
+        );
+    }
+
+    public function test_Property_that_errors_is_recorded_with_how_it_was_falsified(): void
+    {
+        $collector         = $this->collector();
+        $test              = $this->testMethod('testOne');
+        $propertyFalsified = $this->propertyFalsified($test);
+
+        $collector->testPreparationStarted(new PreparationStarted($this->telemetryInfo(), $test));
+        $collector->testPropertyFalsified($propertyFalsified);
+        $collector->testErrored(new Errored($this->telemetryInfo(), $test, $this->throwable('boom')));
+        $collector->testFinished(new Finished($this->telemetryInfo(), $test, 0));
+
+        $this->assertSame(
+            $propertyFalsified,
+            $collector->testMethodsGroupedByClass()[TestDoxTest::class]->asArray()[0]->propertyFalsified(),
+        );
+    }
+
+    public function test_How_a_property_was_falsified_is_not_carried_over_to_the_next_test(): void
+    {
+        $collector = $this->collector();
+        $property  = $this->testMethod('testOne');
+        $test      = $this->testMethod('testTwo');
+
+        $collector->testPreparationStarted(new PreparationStarted($this->telemetryInfo(), $property));
+        $collector->testPropertyFalsified($this->propertyFalsified($property));
+        $collector->testFailed(new Failed($this->telemetryInfo(), $property, $this->throwable('failure message'), null));
+        $collector->testFinished(new Finished($this->telemetryInfo(), $property, 1));
+
+        $collector->testPreparationStarted(new PreparationStarted($this->telemetryInfo(), $test));
+        $collector->testPassed(new Passed($this->telemetryInfo(), $test));
+        $collector->testFinished(new Finished($this->telemetryInfo(), $test, 1));
+
+        $this->assertNull($collector->testMethodsGroupedByClass()[TestDoxTest::class]->asArray()[1]->propertyFalsified());
+    }
+
+    public function test_How_another_property_was_falsified_is_not_recorded_for_a_test(): void
+    {
+        $collector = $this->collector();
+        $property  = $this->testMethod('testOne');
+        $test      = $this->testMethod('testTwo');
+
+        $collector->testPropertyFalsified($this->propertyFalsified($property));
+        $collector->testPreparationStarted(new PreparationStarted($this->telemetryInfo(), $test));
+        $collector->testFailed(new Failed($this->telemetryInfo(), $test, $this->throwable('failure message'), null));
+        $collector->testFinished(new Finished($this->telemetryInfo(), $test, 1));
+
+        $this->assertNull($collector->testMethodsGroupedByClass()[TestDoxTest::class]->asArray()[0]->propertyFalsified());
     }
 
     public function test_Test_method_that_errors_is_recorded_on_finish(): void
@@ -415,6 +482,7 @@ final class TestResultCollectorTest extends TestCase
         $throwable = $this->throwable('boom');
 
         $collector->testPreparationStarted(new PreparationStarted($this->telemetryInfo(), $phpt));
+        $collector->testPropertyFalsified(new PropertyFalsified($this->telemetryInfo(), $phpt, 1234, 1, 0, 0, false, false, [], [], null, [], [], [], 0, 0));
         $collector->testErrored(new Errored($this->telemetryInfo(), $phpt, $throwable));
         $collector->testFailed(new Failed($this->telemetryInfo(), $phpt, $throwable, null));
         $collector->testPassed(new Passed($this->telemetryInfo(), $phpt));
@@ -531,6 +599,11 @@ final class TestResultCollectorTest extends TestCase
             MetadataCollection::fromArray([]),
             TestDataCollection::fromArray([]),
         );
+    }
+
+    private function propertyFalsified(TestMethod $test): PropertyFalsified
+    {
+        return new PropertyFalsified($this->telemetryInfo(), $test, 1234, 2, 3, 1, false, false, [0], ['value' => '0'], null, [], [], [], 0, 0);
     }
 
     private function throwable(string $message): Throwable

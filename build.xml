@@ -181,6 +181,13 @@
             </fileset>
         </copy>
 
+        <copy file="${basedir}/vendor/sebastian/choice-sequence/LICENSE" tofile="${basedir}/build/tmp/phar/sebastian-choice-sequence/LICENSE"/>
+        <copy todir="${basedir}/build/tmp/phar/sebastian-choice-sequence">
+            <fileset dir="${basedir}/vendor/sebastian/choice-sequence/src">
+                <include name="**/*.php" />
+            </fileset>
+        </copy>
+
         <copy file="${basedir}/vendor/sebastian/cli-parser/LICENSE" tofile="${basedir}/build/tmp/phar/sebastian-cli-parser/LICENSE"/>
         <copy todir="${basedir}/build/tmp/phar/sebastian-cli-parser">
             <fileset dir="${basedir}/vendor/sebastian/cli-parser/src">

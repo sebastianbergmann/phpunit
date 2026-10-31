@@ -107,4 +107,47 @@ final class StartedTest extends AbstractEventTestCase
             $event->asString(),
         );
     }
+
+    public function testCanBeRepresentedAsStringForTestSuiteForPropertyTestMethod(): void
+    {
+        $event = new Started(
+            $this->telemetryInfo(),
+            $this->testSuiteForPropertyTestMethod(100),
+        );
+
+        $this->assertSame(
+            'Test Suite for Property Started (PHPUnit\TestFixture\ExampleTest::testSomething, 100 examples)',
+            $event->asString(),
+        );
+    }
+
+    public function testCanBeRepresentedAsStringForTestSuiteForPropertyTestMethodWithOneExample(): void
+    {
+        $event = new Started(
+            $this->telemetryInfo(),
+            $this->testSuiteForPropertyTestMethod(1),
+        );
+
+        $this->assertSame(
+            'Test Suite for Property Started (PHPUnit\TestFixture\ExampleTest::testSomething, 1 example)',
+            $event->asString(),
+        );
+    }
+
+    /**
+     * @param positive-int $numberOfExamples
+     */
+    private function testSuiteForPropertyTestMethod(int $numberOfExamples): TestSuiteForPropertyTestMethod
+    {
+        return new TestSuiteForPropertyTestMethod(
+            'PHPUnit\TestFixture\ExampleTest::testSomething',
+            1,
+            TestCollection::fromArray([]),
+            'PHPUnit\TestFixture\ExampleTest',
+            'testSomething',
+            'ExampleTest.php',
+            10,
+            $numberOfExamples,
+        );
+    }
 }
