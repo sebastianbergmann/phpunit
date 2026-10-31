@@ -67,6 +67,17 @@ final readonly class Falsification
     private FailureSignature $signature;
 
     /**
+     * @var ?class-string
+     */
+    private ?string $className;
+
+    /**
+     * @var ?non-empty-string
+     */
+    private ?string $location;
+    private string $message;
+
+    /**
      * Returns null when the example did not falsify the property, that is,
      * when it neither failed nor errored nor exceeded its time limit.
      */
@@ -79,18 +90,34 @@ final readonly class Falsification
         $throwable = $example->throwableThatEndedTheTest();
 
         if ($throwable instanceof TimeoutException) {
-            return new self(FailureSignature::forTimeout());
+            return new self(FailureSignature::forTimeout(), null, null, $throwable->getMessage());
         }
 
         $status = $example->status();
 
         if ($throwable === null) {
             // @codeCoverageIgnoreStart
-            return new self(FailureSignature::forDescription(sprintf('%s: %s', $status->asString(), $status->message())));
+            return new self(FailureSignature::forDescription(sprintf('%s: %s', $status->asString(), $status->message())), null, null, $status->message());
             // @codeCoverageIgnoreEnd
         }
 
-        return new self(FailureSignature::forThrowable($throwable::class, self::locationOf($throwable)));
+        return self::ofThrowable($throwable);
+    }
+
+    /**
+     * How a throwable falsified the property: the throwable that ended an
+     * example, or the one that was raised while its arguments were generated.
+     */
+    public static function ofThrowable(Throwable $throwable): self
+    {
+        $location = self::locationOf($throwable);
+
+        return new self(
+            FailureSignature::forThrowable($throwable::class, $location),
+            $throwable::class,
+            $location,
+            $throwable->getMessage(),
+        );
     }
 
     /**
@@ -107,9 +134,52 @@ final readonly class Falsification
         return $example->status()->isFailure() || $example->status()->isError();
     }
 
-    private function __construct(FailureSignature $signature)
+    /**
+     * @param ?class-string     $className
+     * @param ?non-empty-string $location
+     */
+    private function __construct(FailureSignature $signature, ?string $className, ?string $location, string $message)
     {
         $this->signature = $signature;
+        $this->className = $className;
+        $this->location  = $location;
+        $this->message   = $message;
+    }
+
+    public function signature(): FailureSignature
+    {
+        return $this->signature;
+    }
+
+    /**
+     * The class of the throwable that falsified the property, null when no
+     * throwable did, as for an example that exceeded its time limit.
+     *
+     * @return ?class-string
+     */
+    public function className(): ?string
+    {
+        return $this->className;
+    }
+
+    /**
+     * Where the throwable that falsified the property was raised, null when
+     * no throwable did.
+     *
+     * @return ?non-empty-string
+     */
+    public function location(): ?string
+    {
+        return $this->location;
+    }
+
+    /**
+     * The message of the throwable that falsified the property, or of the
+     * status of the example when no throwable did.
+     */
+    public function message(): string
+    {
+        return $this->message;
     }
 
     /**
