@@ -9,6 +9,11 @@
  */
 namespace PHPUnit\Framework\PropertyBased;
 
+use function chdir;
+use function dirname;
+use function getcwd;
+use function realpath;
+use function sys_get_temp_dir;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -24,6 +29,8 @@ use Throwable;
 #[Group('framework/property-based-testing')]
 final class FalsificationTest extends TestCase
 {
+    private ?string $previousWorkingDirectory = null;
+
     /**
      * @return array<string, array{non-empty-string}>
      */
@@ -45,6 +52,15 @@ final class FalsificationTest extends TestCase
             'passed'  => ['testPasses'],
             'skipped' => ['testIsSkipped'],
         ];
+    }
+
+    protected function tearDown(): void
+    {
+        if ($this->previousWorkingDirectory !== null) {
+            chdir($this->previousWorkingDirectory);
+
+            $this->previousWorkingDirectory = null;
+        }
     }
 
     #[DataProvider('nonFalsifyingExampleProvider')]
@@ -127,12 +143,45 @@ final class FalsificationTest extends TestCase
         $this->assertStringMatchesFormat('RuntimeException at %sExampleTest.php:%d', $falsification->description());
     }
 
+    public function testThePathOfTheFileWhereTheThrowableWasRaisedIsRelativeToTheWorkingDirectoryWhenTheFileIsBelowIt(): void
+    {
+        $this->changeWorkingDirectory(dirname(__DIR__, 4));
+
+        $falsification = Falsification::of($this->example('testErrors', 1));
+
+        $this->assertNotNull($falsification);
+        $this->assertStringMatchesFormat('RuntimeException at tests/_files/PropertyBased/Falsification/ExampleTest.php:%d', $falsification->description());
+    }
+
+    public function testThePathOfTheFileWhereTheThrowableWasRaisedIsAbsoluteWhenTheFileIsNotBelowTheWorkingDirectory(): void
+    {
+        $this->changeWorkingDirectory(sys_get_temp_dir());
+
+        $falsification = Falsification::of($this->example('testErrors', 1));
+
+        $this->assertNotNull($falsification);
+        $this->assertStringMatchesFormat('RuntimeException at ' . realpath(dirname(__DIR__, 4)) . '/tests/_files/PropertyBased/Falsification/ExampleTest.php:%d', $falsification->description());
+    }
+
     public function testDescribesThatTheExampleFalsifiedThePropertyByExceedingTheTimeLimit(): void
     {
         $falsification = Falsification::of($this->example('testExceedsItsTimeLimit', 1));
 
         $this->assertNotNull($falsification);
         $this->assertSame('exceeding the time limit', $falsification->description());
+    }
+
+    private function changeWorkingDirectory(string $directory): void
+    {
+        $workingDirectory = getcwd();
+
+        if ($workingDirectory === false) {
+            $this->fail('Failed to capture current working directory.');
+        }
+
+        $this->previousWorkingDirectory = $workingDirectory;
+
+        chdir($directory);
     }
 
     /**
