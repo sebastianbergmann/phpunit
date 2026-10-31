@@ -115,31 +115,6 @@ final readonly class Filter
             // @codeCoverageIgnoreEnd
         }
 
-        foreach ($frames as $frame) {
-            if (isset($frame['file']) && self::shouldPrintFrame($frame, $prefix, $excludeList)) {
-                yield sprintf(
-                    '%s:%s',
-                    $frame['file'],
-                    $frame['line'] ?? '?',
-                );
-            }
-        }
-    }
-
-    /**
-     * @param array{file?: string, ...<mixed>} $frame
-     */
-    private static function shouldPrintFrame(array $frame, false|string $prefix, ExcludeList $excludeList): bool
-    {
-        if (!isset($frame['file'])) {
-            // @codeCoverageIgnoreStart
-            return false;
-            // @codeCoverageIgnoreEnd
-        }
-
-        $file              = $frame['file'];
-        $fileIsNotPrefixed = $prefix === false || !str_starts_with($file, $prefix);
-
         // @see https://github.com/sebastianbergmann/phpunit/issues/4033
         if (isset($GLOBALS['_SERVER']) && is_array($GLOBALS['_SERVER']) && isset($GLOBALS['_SERVER']['SCRIPT_NAME']) && is_string($GLOBALS['_SERVER']['SCRIPT_NAME'])) {
             $script = realpath($GLOBALS['_SERVER']['SCRIPT_NAME']);
@@ -148,6 +123,33 @@ final readonly class Filter
             $script = '';
             // @codeCoverageIgnoreEnd
         }
+
+        // whether the frames of a file are printed is decided once per file,
+        // as a stack trace can have thousands of frames in the same files
+        $printable = [];
+
+        foreach ($frames as $frame) {
+            if (!isset($frame['file'])) {
+                continue;
+            }
+
+            $file = $frame['file'];
+
+            $printable[$file] ??= self::shouldPrintFramesOf($file, $prefix, $script, $excludeList);
+
+            if ($printable[$file]) {
+                yield sprintf(
+                    '%s:%s',
+                    $file,
+                    $frame['line'] ?? '?',
+                );
+            }
+        }
+    }
+
+    private static function shouldPrintFramesOf(string $file, false|string $prefix, false|string $script, ExcludeList $excludeList): bool
+    {
+        $fileIsNotPrefixed = $prefix === false || !str_starts_with($file, $prefix);
 
         return $fileIsNotPrefixed &&
                $file !== $script &&
