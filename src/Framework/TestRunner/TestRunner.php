@@ -112,18 +112,19 @@ final class TestRunner
      * them exceeded its time limit, is decided on all of its examples rather
      * than on this one.
      *
-     * @param bool $collectCodeCoverage whether code coverage is collected for the example, if it is collected at all: it is not for the shrinking attempts and the final replay of the minimal counterexample
+     * @param bool          $collectCodeCoverage whether code coverage is collected for the example, if it is collected at all: it is not for the shrinking attempts and the final replay of the minimal counterexample
+     * @param ?positive-int $timeLimit           the time limit of the example in seconds, which is enforced instead of the configured one whenever a time limit can be enforced, or null for the configured one
      *
      * @throws Exception
      * @throws InvalidArgumentException
      * @throws UnintentionallyCoveredCodeException
      */
-    public function runExampleOfProperty(TestCase $example, bool $collectCodeCoverage): ExampleRun
+    public function runExampleOfProperty(TestCase $example, bool $collectCodeCoverage, ?int $timeLimit = null): ExampleRun
     {
         try {
             ShutdownHandler::setMessage(sprintf('Fatal error: Premature end of PHP process when running %s.', $example->toString()));
 
-            $contributedToCodeCoverage = $this->runInProcess($example, true, $collectCodeCoverage);
+            $contributedToCodeCoverage = $this->runInProcess($example, true, $collectCodeCoverage, $timeLimit);
         } finally {
             ShutdownHandler::resetMessage();
         }
@@ -142,7 +143,10 @@ final class TestRunner
      *
      * @return ?bool whether the test contributed to code coverage, null when this was not checked
      */
-    private function runInProcess(TestCase $test, bool $exampleOfProperty, bool $collectCodeCoverageForTest): ?bool
+    /**
+     * @param ?positive-int $timeLimit
+     */
+    private function runInProcess(TestCase $test, bool $exampleOfProperty, bool $collectCodeCoverageForTest, ?int $timeLimit = null): ?bool
     {
         Assert::resetCount();
 
@@ -219,8 +223,8 @@ final class TestRunner
             TimeLimitHandler::armAlarm();
 
             if ($this->canTimeLimitBeEnforced() &&
-                $this->shouldTimeLimitBeEnforced($test)) {
-                $risky = $this->runTestWithTimeout($test, $exampleOfProperty);
+                ($timeLimit !== null || $this->shouldTimeLimitBeEnforced($test))) {
+                $risky = $this->runTestWithTimeout($test, $exampleOfProperty, $timeLimit);
             } else {
                 $test->runLifecycle();
             }
@@ -444,14 +448,18 @@ final class TestRunner
     }
 
     /**
+     * @param ?positive-int $timeLimit the time limit in seconds, null for the configured one
+     *
      * @throws Throwable
      */
-    private function runTestWithTimeout(TestCase $test, bool $exampleOfProperty): bool
+    private function runTestWithTimeout(TestCase $test, bool $exampleOfProperty, ?int $timeLimit): bool
     {
         $_timeout = $this->configuration->defaultTimeLimit();
         $testSize = $test->size();
 
-        if ($testSize->isSmall()) {
+        if ($timeLimit !== null) {
+            $_timeout = $timeLimit;
+        } elseif ($testSize->isSmall()) {
             $_timeout = $this->configuration->timeoutForSmallTests();
         } elseif ($testSize->isMedium()) {
             $_timeout = $this->configuration->timeoutForMediumTests();
