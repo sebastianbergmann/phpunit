@@ -34,7 +34,7 @@ Source (PHPUnit\TestFixture\Baseline\Source)
 1 test triggered 1 PHP warning:
 
 1) %sSource.php:81
-Undefined property: class@anonymous::$a
+Undefined property: class@anonymous%S::$a
 
 Triggered by:
 
@@ -58,7 +58,7 @@ Triggered by:
 1 test triggered 1 PHP notice:
 
 1) %sSource.php:81
-Accessing static property class@anonymous::$a as non static
+Accessing static property class@anonymous%S::$a as non static
 
 Triggered by:
 
@@ -82,7 +82,7 @@ Triggered by:
 1 test triggered 1 PHP deprecation:
 
 1) %sSource.php:62
-Serializable@anonymous implements the Serializable interface, which is deprecated. Implement __serialize() and __unserialize() instead (or in addition, if support for old PHP versions is necessary)
+Serializable@anonymous%S implements the Serializable interface, which is deprecated. Implement __serialize() and __unserialize() instead (or in addition, if support for old PHP versions is necessary)
 
 Triggered by:
 
