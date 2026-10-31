@@ -251,14 +251,14 @@
             </fileset>
         </copy>
 
-        <copy file="${basedir}/vendor/sebastian/object-enumerator/LICENSE" tofile="${basedir}/build/tmp/phar/object-enumerator/LICENSE"/>
+        <copy file="${basedir}/vendor/sebastian/object-enumerator/LICENSE" tofile="${basedir}/build/tmp/phar/sebastian-object-enumerator/LICENSE"/>
         <copy todir="${basedir}/build/tmp/phar/sebastian-object-enumerator">
             <fileset dir="${basedir}/vendor/sebastian/object-enumerator/src">
                 <include name="**/*.php" />
             </fileset>
         </copy>
 
-        <copy file="${basedir}/vendor/sebastian/object-reflector/LICENSE" tofile="${basedir}/build/tmp/phar/object-reflector/LICENSE"/>
+        <copy file="${basedir}/vendor/sebastian/object-reflector/LICENSE" tofile="${basedir}/build/tmp/phar/sebastian-object-reflector/LICENSE"/>
         <copy todir="${basedir}/build/tmp/phar/sebastian-object-reflector">
             <fileset dir="${basedir}/vendor/sebastian/object-reflector/src">
                 <include name="**/*.php" />
