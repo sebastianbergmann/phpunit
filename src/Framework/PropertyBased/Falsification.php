@@ -210,9 +210,6 @@ final readonly class Falsification
     /**
      * @return non-empty-string
      */
-    /**
-     * @return non-empty-string
-     */
     private static function locationOf(Throwable $throwable): string
     {
         if ($throwable::class === Error::class && str_starts_with($throwable->getMessage(), self::CALL_STACK_LIMIT)) {

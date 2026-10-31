@@ -137,14 +137,13 @@ final class TestRunner
     }
 
     /**
+     * @param ?positive-int $timeLimit the time limit in seconds, null for the configured one
+     *
      * @throws Exception
      * @throws InvalidArgumentException
      * @throws UnintentionallyCoveredCodeException
      *
      * @return ?bool whether the test contributed to code coverage, null when this was not checked
-     */
-    /**
-     * @param ?positive-int $timeLimit
      */
     private function runInProcess(TestCase $test, bool $exampleOfProperty, bool $collectCodeCoverageForTest, ?int $timeLimit = null): ?bool
     {
