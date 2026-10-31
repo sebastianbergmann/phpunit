@@ -10,13 +10,17 @@
 namespace PHPUnit\Framework\PropertyBased;
 
 use const DIRECTORY_SEPARATOR;
+use function explode;
 use function getcwd;
 use function realpath;
 use function rtrim;
 use function sprintf;
 use function str_starts_with;
+use function strcmp;
 use function strlen;
+use function strrpos;
 use function substr;
+use Error;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\Filter;
 use SebastianBergmann\ChoiceSequence\FailureSignature;
@@ -34,6 +38,14 @@ use Throwable;
  * line of the throwable alone would not do, because every failed assertion is
  * raised in PHPUnit's own code.
  *
+ * When unbounded recursion reaches the limit of PHP's call stack, the error is
+ * raised by whichever call of the recursion exceeds the limit, which depends
+ * on how deep the call stack was when the recursion started, and on how much
+ * of it the calls use, which differs between versions of PHP. So that the same
+ * recursion has the same location, the location of this error is the frame of
+ * the recursion that comes first, by file and then by line, among the frames
+ * that occur more than once in its stack trace.
+ *
  * The path of a file below the working directory is relative to it, so that
  * the location does not depend on where a project is checked out.
  *
@@ -47,6 +59,11 @@ use Throwable;
  */
 final readonly class Falsification
 {
+    /**
+     * The message of the error that PHP raises when the call stack limit is
+     * reached starts with this.
+     */
+    private const string CALL_STACK_LIMIT = 'Maximum call stack size of ';
     private FailureSignature $signature;
 
     /**
@@ -128,6 +145,14 @@ final readonly class Falsification
      */
     private static function locationOf(Throwable $throwable): string
     {
+        if ($throwable::class === Error::class && str_starts_with($throwable->getMessage(), self::CALL_STACK_LIMIT)) {
+            $frame = self::firstRepeatedFrame($throwable);
+
+            if ($frame !== null) {
+                return $frame;
+            }
+        }
+
         $frame = Filter::firstFrameFromThrowableAsString($throwable, false);
 
         if ($frame === null) {
@@ -140,6 +165,70 @@ final readonly class Falsification
         }
 
         return self::relativeToWorkingDirectory($frame);
+    }
+
+    /**
+     * Returns the frame that comes first, by file and then by line, among the
+     * frames of the stack trace of the throwable that occur more than once, or
+     * null when no frame does.
+     *
+     * @return ?non-empty-string
+     */
+    private static function firstRepeatedFrame(Throwable $throwable): ?string
+    {
+        $occurrences = [];
+
+        foreach (explode("\n", Filter::stackTraceFromThrowableAsString($throwable, false)) as $frame) {
+            if ($frame !== '') {
+                $occurrences[$frame] = ($occurrences[$frame] ?? 0) + 1;
+            }
+        }
+
+        $first = null;
+
+        foreach ($occurrences as $frame => $count) {
+            if ($count < 2) {
+                continue;
+            }
+
+            $frame = self::relativeToWorkingDirectory($frame);
+
+            if ($first === null || self::comesBefore($frame, $first)) {
+                $first = $frame;
+            }
+        }
+
+        return $first;
+    }
+
+    /**
+     * Whether a frame, rendered as file:line, comes before the other one, by
+     * file and then by line.
+     */
+    private static function comesBefore(string $frame, string $other): bool
+    {
+        [$file, $line]           = self::fileAndLine($frame);
+        [$otherFile, $otherLine] = self::fileAndLine($other);
+
+        $order = strcmp($file, $otherFile);
+
+        return $order < 0 || ($order === 0 && $line < $otherLine);
+    }
+
+    /**
+     * @return array{0: string, 1: int}
+     */
+    private static function fileAndLine(string $frame): array
+    {
+        $separator = strrpos($frame, ':');
+
+        if ($separator === false) {
+            // @codeCoverageIgnoreStart
+            return [$frame, 0];
+            // @codeCoverageIgnoreEnd
+        }
+
+        return [substr($frame, 0, $separator), (int) substr($frame, $separator + 1)];
     }
 
     /**

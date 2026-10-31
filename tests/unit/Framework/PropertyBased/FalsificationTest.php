@@ -163,6 +163,32 @@ final class FalsificationTest extends TestCase
         $this->assertStringMatchesFormat('RuntimeException at ' . realpath(dirname(__DIR__, 4)) . '/tests/_files/PropertyBased/Falsification/ExampleTest.php:%d', $falsification->description());
     }
 
+    public function testTheLocationOfTheErrorForTheCallStackLimitIsTheFirstOfTheFramesThatAreRepeatedInItsStackTrace(): void
+    {
+        // the limit is reached by the call in line 100 or by the call in line
+        // 102, depending on how deep the call stack was when the recursion
+        // started
+        $first  = Falsification::of($this->example('testReachesTheCallStackLimit', 100));
+        $second = Falsification::of($this->example('testReachesTheCallStackLimit', 102));
+
+        $this->assertNotNull($first);
+        $this->assertNotNull($second);
+        $this->assertTrue($first->isSameAs($second));
+        $this->assertStringEndsWith('ExampleTest.php:100', $first->description());
+    }
+
+    public function testTheLocationOfOtherErrorsInARecursionIsTheFirstFrameOfTheirStackTrace(): void
+    {
+        $first  = Falsification::of($this->example('testErrorsInARecursion', 100));
+        $second = Falsification::of($this->example('testErrorsInARecursion', 102));
+
+        $this->assertNotNull($first);
+        $this->assertNotNull($second);
+        $this->assertFalse($first->isSameAs($second));
+        $this->assertStringEndsWith('ExampleTest.php:102', $first->description());
+        $this->assertStringEndsWith('ExampleTest.php:100', $second->description());
+    }
+
     public function testDescribesThatTheExampleFalsifiedThePropertyByExceedingTheTimeLimit(): void
     {
         $falsification = Falsification::of($this->example('testExceedsItsTimeLimit', 1));
