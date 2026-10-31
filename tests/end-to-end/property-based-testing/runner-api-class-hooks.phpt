@@ -1,5 +1,10 @@
 --TEST--
 The API for running examples of properties one at a time calls the hook methods of a test class that are called before its first test before the first example, and the ones that are called after its last test when the process ends
+--SKIPIF--
+<?php declare(strict_types=1);
+if (!extension_loaded('pcntl')) {
+    print 'skip: Extension pcntl is required';
+}
 --FILE--
 <?php declare(strict_types=1);
 use PHPUnit\Runner\PropertyBased\PropertyRunner;
