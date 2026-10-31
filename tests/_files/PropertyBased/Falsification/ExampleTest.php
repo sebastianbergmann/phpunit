@@ -10,7 +10,9 @@
 namespace PHPUnit\TestFixture\PropertyBased\Falsification;
 
 use Countable;
+use Error;
 use PHPUnit\Framework\TestCase;
+use ReflectionProperty;
 use RuntimeException;
 use SebastianBergmann\Invoker\TimeoutException;
 
@@ -53,5 +55,39 @@ final class ExampleTest extends TestCase
     public function testIsSkipped(int $number): void
     {
         $this->markTestSkipped('skipped');
+    }
+
+    public function testReachesTheCallStackLimit(int $line): void
+    {
+        throw $this->errorInARecursion('Maximum call stack size of 8339456 bytes (zend.max_allowed_stack_size - zend.reserved_stack_size) reached. Infinite recursion?', $line);
+    }
+
+    public function testErrorsInARecursion(int $line): void
+    {
+        throw $this->errorInARecursion('error', $line);
+    }
+
+    /**
+     * Returns an error that is raised by the call in the given line of a
+     * recursion in which the calls in lines 100 and 102 call each other ten
+     * times. As in the stack trace of a real recursion, the first frame is the
+     * call in the other line, which led to the given one.
+     */
+    private function errorInARecursion(string $message, int $line): Error
+    {
+        $other = $line === 100 ? 102 : 100;
+        $trace = [];
+
+        for ($i = 0; $i < 10; $i++) {
+            $trace[] = ['file' => __FILE__, 'line' => $other, 'function' => 'call'];
+            $trace[] = ['file' => __FILE__, 'line' => $line, 'function' => 'call'];
+        }
+
+        $error = new Error($message);
+
+        new ReflectionProperty(Error::class, 'line')->setValue($error, $line);
+        new ReflectionProperty(Error::class, 'trace')->setValue($error, $trace);
+
+        return $error;
     }
 }
