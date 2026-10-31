@@ -74,6 +74,15 @@ use Throwable;
  * the test class falsifies the property with that exception, and when one of
  * them skips the tests of the test class, every example is skipped.
  *
+ * The result of an example tells how it ended, how it falsified the property,
+ * and which choices it consumed, with their spans and the maxima of the
+ * choices. On request, it also has the arguments of the example, the values
+ * that it drew with draw(), and the steps of its state machine, exported as
+ * PHPUnit reports them for a counterexample. They are null otherwise, and
+ * when no arguments were generated for the example.
+ *
+ * @phpstan-type Result array{outcome: 'errored'|'failed'|'incomplete'|'passed'|'rejected'|'skipped'|'timeout', failure: ?array{kind: 'description'|'throwable'|'timeout', signature: non-empty-string, class: ?class-string, location: ?non-empty-string, description: non-empty-string, message: string}, choices: list<non-negative-int>, spans: list<array{start: non-negative-int, end: non-negative-int, label: string, parent: ?non-negative-int, kind: null|'bytes'|'element'}>, maxima: list<?non-negative-int>, arguments: ?array<non-empty-string, string>, drawnValues: ?list<array{label: ?non-empty-string, value: string}>, steps: ?list<non-empty-string>}
+ *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final class PropertyRunner
@@ -213,17 +222,18 @@ final class PropertyRunner
      * Runs an example of the property with arguments that are generated from
      * the given choices.
      *
-     * @param non-empty-string       $id        the ID of the property, as properties() returns it
+     * @param non-empty-string       $id           the ID of the property, as properties() returns it
      * @param list<non-negative-int> $choices
-     * @param positive-int           $timeLimit the time limit of the example in seconds
+     * @param positive-int           $timeLimit    the time limit of the example in seconds
+     * @param bool                   $exportValues whether the result has the exported arguments, drawn values, and steps of the example
      *
      * @throws Exception                     when the property is invalid
      * @throws InvalidArgumentException
      * @throws PropertyDoesNotExistException
      *
-     * @return array{outcome: 'errored'|'failed'|'incomplete'|'passed'|'rejected'|'skipped'|'timeout', failure: ?array{kind: 'description'|'throwable'|'timeout', signature: non-empty-string, class: ?class-string, location: ?non-empty-string, description: non-empty-string, message: string}, choices: list<non-negative-int>, spans: list<array{start: non-negative-int, end: non-negative-int, label: string, parent: ?non-negative-int, kind: null|'bytes'|'element'}>, maxima: list<?non-negative-int>}
+     * @return Result
      */
-    public function replay(string $id, array $choices, int $timeLimit): array
+    public function replay(string $id, array $choices, int $timeLimit, bool $exportValues = false): array
     {
         if (!array_is_list($choices)) {
             throw new InvalidArgumentException('The choices are not a list');
@@ -241,7 +251,7 @@ final class PropertyRunner
 
         return self::asArray(
             $this->resultOfTestClass($property['testClass']) ??
-            $property['property']->replayExample($choices, $timeLimit),
+            $property['property']->replayExample($choices, $timeLimit, $exportValues),
         );
     }
 
@@ -250,16 +260,17 @@ final class PropertyRunner
      * choices that are drawn from a random number generator that is seeded
      * with the given seed. The same seed generates the same example.
      *
-     * @param non-empty-string $id        the ID of the property, as properties() returns it
-     * @param positive-int     $timeLimit the time limit of the example in seconds
+     * @param non-empty-string $id           the ID of the property, as properties() returns it
+     * @param positive-int     $timeLimit    the time limit of the example in seconds
+     * @param bool             $exportValues whether the result has the exported arguments, drawn values, and steps of the example
      *
      * @throws Exception                     when the property is invalid
      * @throws InvalidArgumentException
      * @throws PropertyDoesNotExistException
      *
-     * @return array{outcome: 'errored'|'failed'|'incomplete'|'passed'|'rejected'|'skipped'|'timeout', failure: ?array{kind: 'description'|'throwable'|'timeout', signature: non-empty-string, class: ?class-string, location: ?non-empty-string, description: non-empty-string, message: string}, choices: list<non-negative-int>, spans: list<array{start: non-negative-int, end: non-negative-int, label: string, parent: ?non-negative-int, kind: null|'bytes'|'element'}>, maxima: list<?non-negative-int>}
+     * @return Result
      */
-    public function generate(string $id, int $seed, int $timeLimit): array
+    public function generate(string $id, int $seed, int $timeLimit, bool $exportValues = false): array
     {
         $this->ensureIsPositive($timeLimit);
 
@@ -267,7 +278,7 @@ final class PropertyRunner
 
         return self::asArray(
             $this->resultOfTestClass($property['testClass']) ??
-            $property['property']->generateExample($seed, $timeLimit),
+            $property['property']->generateExample($seed, $timeLimit, $exportValues),
         );
     }
 
@@ -408,7 +419,7 @@ final class PropertyRunner
     }
 
     /**
-     * @return array{outcome: 'errored'|'failed'|'incomplete'|'passed'|'rejected'|'skipped'|'timeout', failure: ?array{kind: 'description'|'throwable'|'timeout', signature: non-empty-string, class: ?class-string, location: ?non-empty-string, description: non-empty-string, message: string}, choices: list<non-negative-int>, spans: list<array{start: non-negative-int, end: non-negative-int, label: string, parent: ?non-negative-int, kind: null|'bytes'|'element'}>, maxima: list<?non-negative-int>}
+     * @return Result
      */
     private static function asArray(ExampleResult $result): array
     {
@@ -452,11 +463,14 @@ final class PropertyRunner
         }
 
         return [
-            'outcome' => $result->outcome(),
-            'failure' => $failure,
-            'choices' => $choices,
-            'spans'   => $spans,
-            'maxima'  => $maxima,
+            'outcome'     => $result->outcome(),
+            'failure'     => $failure,
+            'choices'     => $choices,
+            'spans'       => $spans,
+            'maxima'      => $maxima,
+            'arguments'   => $result->arguments(),
+            'drawnValues' => $result->drawnValues(),
+            'steps'       => $result->steps(),
         ];
     }
 }
