@@ -13,6 +13,7 @@ use const FILE_IGNORE_NEW_LINES;
 use function assert;
 use function file;
 use function is_file;
+use function preg_replace;
 use function sha1;
 use PHPUnit\Runner\FileDoesNotExistException;
 
@@ -58,7 +59,7 @@ final class Issue
             $hash = self::calculateHash($file, $line);
         }
 
-        return new self($file, $line, $hash, $description);
+        return new self($file, $line, $hash, self::normalizeDescription($description));
     }
 
     /**
@@ -143,5 +144,24 @@ final class Issue
         assert($hash !== '');
 
         return $hash;
+    }
+
+    /**
+     * As of PHP 8.6, messages that refer to an anonymous class contain its full name,
+     * including the NUL byte as well as the file, line, and counter that follow it.
+     * These are removed so that the description does not depend on where the code is
+     * located and can be stored in the XML document of the baseline.
+     *
+     * @psalm-param non-empty-string $description
+     *
+     * @psalm-return non-empty-string
+     */
+    private static function normalizeDescription(string $description): string
+    {
+        $normalizedDescription = preg_replace('/@anonymous\x00.*?:\d+\$[0-9a-f]+/', '@anonymous', $description);
+
+        assert($normalizedDescription !== null && $normalizedDescription !== '');
+
+        return $normalizedDescription;
     }
 }
