@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 
 ### Changed
 
+* Issues whose message refers to an anonymous class could not be ignored using a baseline on PHP 8.6 (as of PHP 8.6, such messages contain the full name of the anonymous class: a NUL byte followed by the file, line, and a counter)
 * Make PHAR build reproducible across filesystems (files are now added to the PHAR sorted by their path instead of in the order in which the filesystem lists them)
 
 ### Removed
@@ -16,7 +17,6 @@ All notable changes of the PHPUnit 10.5 release series are documented in this fi
 
 ### Changed
 
-* Issues whose message refers to an anonymous class could not be ignored using a baseline on PHP 8.6 (as of PHP 8.6, such messages contain the full name of the anonymous class: a NUL byte followed by the file, line, and a counter)
 * The Software Bill of Materials (SBOM) embedded in the PHAR now uses CycloneDX 1.7 and provides the NTIA minimum elements as well as the data fields that BSI TR-03183-2 (version 2.1.0) requires for logical and identified components, including component creators, original, distribution and effective licences, source code URIs, and the PHP runtime and its extensions as external components
 
 ## [10.5.65] - 2026-09-23
