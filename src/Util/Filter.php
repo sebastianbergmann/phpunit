@@ -72,9 +72,9 @@ final readonly class Filter
         $prefix      = false;
         $excludeList = new ExcludeList;
 
-        if (defined('__PHPUNIT_PHAR_ROOT__') && is_string(__PHPUNIT_PHAR_ROOT__)) {
+        if (defined('__PHPUNIT_PHAR__') && is_string(__PHPUNIT_PHAR__)) {
             // @codeCoverageIgnoreStart
-            $prefix = __PHPUNIT_PHAR_ROOT__;
+            $prefix = 'phar://' . __PHPUNIT_PHAR__ . '/';
             // @codeCoverageIgnoreEnd
         }
 
