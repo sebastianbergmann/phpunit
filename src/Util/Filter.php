@@ -65,6 +65,22 @@ final readonly class Filter
     }
 
     /**
+     * Returns the lines of the stack trace that is returned for a throwable
+     * by stackTraceFromThrowableAsString(), one at a time and without their
+     * line breaks, for code that looks at every frame of a stack trace that
+     * can be deep, as for an error of the call stack limit, without building
+     * the stack trace as a string.
+     *
+     * @throws Exception
+     *
+     * @return Generator<int, non-empty-string>
+     */
+    public static function framesFromThrowableAsStrings(Throwable $t, bool $unwrap = true): Generator
+    {
+        return self::printableFrames(self::framesOf($t, $unwrap));
+    }
+
+    /**
      * @throws Exception
      *
      * @return list<array{file?: string, line?: int, ...}>

@@ -64,6 +64,19 @@ final class FilterTest extends TestCase
         $this->assertIsString($result);
     }
 
+    public function testFramesFromThrowableAreTheLinesOfItsStackTrace(): void
+    {
+        $e      = new Exception('message');
+        $frames = '';
+
+        foreach (Filter::framesFromThrowableAsStrings($e) as $frame) {
+            $frames .= $frame . "\n";
+        }
+
+        $this->assertStringStartsWith(__FILE__ . ':' . (__LINE__ - 7) . "\n", $frames);
+        $this->assertSame(Filter::stackTraceFromThrowableAsString($e), $frames);
+    }
+
     public function testFirstFrameFromThrowableIsTheFirstLineOfItsStackTrace(): void
     {
         $e = new Exception('message');

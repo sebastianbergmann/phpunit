@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework\PropertyBased;
 
 use const DIRECTORY_SEPARATOR;
-use function explode;
 use function getcwd;
 use function realpath;
 use function rtrim;
@@ -245,10 +244,8 @@ final readonly class Falsification
     {
         $occurrences = [];
 
-        foreach (explode("\n", Filter::stackTraceFromThrowableAsString($throwable, false)) as $frame) {
-            if ($frame !== '') {
-                $occurrences[$frame] = ($occurrences[$frame] ?? 0) + 1;
-            }
+        foreach (Filter::framesFromThrowableAsStrings($throwable, false) as $frame) {
+            $occurrences[$frame] = ($occurrences[$frame] ?? 0) + 1;
         }
 
         $first = null;
