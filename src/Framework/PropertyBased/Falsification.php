@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\PropertyBased;
 
 use const DIRECTORY_SEPARATOR;
+use const PHP_OS_FAMILY;
 use function getcwd;
 use function realpath;
 use function rtrim;
@@ -17,6 +18,7 @@ use function sprintf;
 use function str_starts_with;
 use function strcmp;
 use function strlen;
+use function strncasecmp;
 use function strrpos;
 use function substr;
 use Error;
@@ -322,7 +324,7 @@ final readonly class Falsification
 
         $prefix = rtrim($workingDirectory, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
-        if (!str_starts_with($location, $prefix)) {
+        if (!self::startsWith($location, $prefix)) {
             return $location;
         }
 
@@ -335,5 +337,21 @@ final readonly class Falsification
         }
 
         return $relative;
+    }
+
+    /**
+     * Paths are compared without regard to case on Windows, where the case
+     * of the working directory, of its drive letter, for instance, can differ
+     * from the one of the path of a file below it.
+     */
+    private static function startsWith(string $location, string $prefix): bool
+    {
+        if (PHP_OS_FAMILY === 'Windows') {
+            // @codeCoverageIgnoreStart
+            return strncasecmp($location, $prefix, strlen($prefix)) === 0;
+            // @codeCoverageIgnoreEnd
+        }
+
+        return str_starts_with($location, $prefix);
     }
 }
