@@ -601,8 +601,9 @@ final class PropertyTestSuite extends IterativeTestSuite
             return ExampleResult::rejected($source->sequence());
         } catch (Throwable $t) {
             // a generator raised an exception, the constructor of a class
-            // whose objects are generated, for instance
-            return ExampleResult::falsified(Falsification::ofThrowable($t), false, $source->sequence());
+            // whose objects are generated, for instance, so that the example
+            // did not check the property
+            return ExampleResult::aborted(Falsification::ofThrowable($t), $source->sequence());
         }
 
         $exportedArguments = null;
@@ -619,7 +620,7 @@ final class PropertyTestSuite extends IterativeTestSuite
 
         $example = $this->example($arguments, false, $drawnValues);
 
-        $this->collectingEvents(
+        $exampleEvents = $this->collectingEvents(
             static function () use ($example, $emitter, $timeLimit): void
             {
                 $emitter->testPreparationStarted(
@@ -630,7 +631,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             },
         );
 
-        $result = $this->resultOf($example, $source);
+        $result = $this->resultOf($example, $source, $exampleEvents);
 
         if ($exportedArguments === null) {
             return $result;
@@ -642,12 +643,16 @@ final class PropertyTestSuite extends IterativeTestSuite
     /**
      * The result of an example that was run on its own.
      */
-    private function resultOf(TestCase $example, ChoiceSource $source): ExampleResult
+    private function resultOf(TestCase $example, ChoiceSource $source, EventCollection $exampleEvents): ExampleResult
     {
         $falsification = Falsification::of($example);
 
         if ($this->wasRejected($example, $falsification)) {
             return ExampleResult::rejected($source->sequence());
+        }
+
+        if ($falsification !== null && $this->wasAborted($example, $exampleEvents)) {
+            return ExampleResult::aborted($falsification, $source->sequence());
         }
 
         if ($falsification === null && $example->status()->isSkipped()) {
@@ -1364,10 +1369,8 @@ final class PropertyTestSuite extends IterativeTestSuite
      *
      * - an example that is aborted because the deadline of the test run has
      *   passed does not falsify the property
-     * - an example that fails or errors before it is prepared, in setUp() or
-     *   in another hook method that is called before the test method, does
-     *   not falsify the property because the test method was not called with
-     *   its arguments, so it is reported without being shrunk
+     * - an example that failed or errored without checking the property is
+     *   reported without being shrunk, see wasAborted()
      * - when an example is skipped or marked incomplete, so is the property
      *
      * Such an example is not counted as one of the examples for which the
@@ -1379,18 +1382,27 @@ final class PropertyTestSuite extends IterativeTestSuite
             return true;
         }
 
-        // a state machine that cannot be run is a mistake in the test, not a
-        // counterexample, so the error of the example is the error of the
-        // property, and its counterexample is not shrunk
-        if ($example->throwableThatEndedTheTest() instanceof InvalidStateMachineException) {
-            return true;
-        }
-
         if ($falsification !== null) {
-            return $this->endedBeforeItWasPrepared($exampleEvents);
+            return $this->wasAborted($example, $exampleEvents);
         }
 
         return $example->status()->isSkipped() || $example->status()->isIncomplete();
+    }
+
+    /**
+     * Whether an example that failed or errored did so without checking the
+     * property, so that it is not a counterexample:
+     *
+     * - a state machine that cannot be run is a mistake in the test, so the
+     *   error of the example is the error of the property
+     * - an example that fails or errors before it is prepared, in setUp() or
+     *   in another hook method that is called before the test method, did
+     *   not call the test method with its arguments
+     */
+    private function wasAborted(TestCase $example, EventCollection $exampleEvents): bool
+    {
+        return $example->throwableThatEndedTheTest() instanceof InvalidStateMachineException ||
+               $this->endedBeforeItWasPrepared($exampleEvents);
     }
 
     /**
