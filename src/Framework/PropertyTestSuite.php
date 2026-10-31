@@ -15,8 +15,10 @@ use function array_values;
 use function assert;
 use function count;
 use function hash;
+use function hrtime;
 use function implode;
 use function intdiv;
+use function max;
 use function min;
 use function sprintf;
 use function usort;
@@ -70,6 +72,8 @@ use SebastianBergmann\ChoiceSequence\Shrinker;
 use SebastianBergmann\ChoiceSequence\TargetedSearch;
 use SebastianBergmann\CodeCoverage\InvalidArgumentException;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
+use SebastianBergmann\Invoker\Invoker;
+use SebastianBergmann\Invoker\TimeoutException;
 use Throwable;
 
 /**
@@ -296,7 +300,7 @@ final class PropertyTestSuite extends IterativeTestSuite
      * exported otherwise, which saves the time that exporting them takes.
      *
      * @param list<non-negative-int> $choices
-     * @param positive-int           $timeLimit the time limit of the example in seconds
+     * @param positive-int           $timeLimit the time limit of the example in seconds, which covers generating its arguments and running it
      *
      * @throws Exception
      * @throws InvalidArgumentException
@@ -317,7 +321,7 @@ final class PropertyTestSuite extends IterativeTestSuite
      * arguments that are generated from choices that are drawn from a random
      * number generator that is seeded with the given seed.
      *
-     * @param positive-int $timeLimit the time limit of the example in seconds
+     * @param positive-int $timeLimit the time limit of the example in seconds, which covers generating its arguments and running it
      *
      * @throws Exception
      * @throws InvalidArgumentException
@@ -591,18 +595,26 @@ final class PropertyTestSuite extends IterativeTestSuite
 
         [$deriver, $generators] = $this->generatorsOfExamplesRunOnTheirOwn();
 
-        $source = $source($deriver);
+        $source  = $source($deriver);
+        $started = hrtime(true);
 
         try {
-            $arguments = $this->handlingIssues(fn (): array => $this->generateArguments($generators, $source), null);
+            $arguments = $this->handlingIssues(fn (): array => $this->generateArgumentsWithinTimeLimit($generators, $source, $timeLimit), null);
         } catch (ExampleRejectedException) {
             return ExampleResult::rejected($source->sequence());
+        } catch (TimeoutException $e) {
+            return ExampleResult::falsified(Falsification::ofThrowable($e), false, $source->sequence());
         } catch (Throwable $t) {
             // a generator raised an exception, the constructor of a class
             // whose objects are generated, for instance, so that the example
             // did not check the property
             return ExampleResult::aborted(Falsification::ofThrowable($t), $source->sequence());
         }
+
+        // the time limit covers generating the arguments and running the
+        // example, which is left with the rest of the time limit, rounded up
+        // to whole seconds as time limits are enforced in whole seconds
+        $timeLimit = max(1, $timeLimit - intdiv(hrtime(true) - $started, 1_000_000_000));
 
         $exportedArguments = null;
         $drawnValues       = DrawnValues::from($source);
@@ -1866,6 +1878,41 @@ final class PropertyTestSuite extends IterativeTestSuite
         foreach ($generators as $parameterName => $generator) {
             $arguments[$parameterName] = $generator->generate($source);
         }
+
+        return $arguments;
+    }
+
+    /**
+     * Generates the arguments of an example that is run on its own, which
+     * is aborted when it exceeds the time limit of the example, unless the
+     * time limit cannot be enforced.
+     *
+     * @param array<non-empty-string, AbstractGenerator<mixed>> $generators
+     * @param positive-int                                      $timeLimit
+     *
+     * @throws ExampleRejectedException
+     * @throws TimeoutException
+     *
+     * @return array<non-empty-string, mixed>
+     */
+    private function generateArgumentsWithinTimeLimit(array $generators, ChoiceSource $source, int $timeLimit): array
+    {
+        if (!TestRunner::canTimeLimitBeEnforced()) {
+            // @codeCoverageIgnoreStart
+            return $this->generateArguments($generators, $source);
+            // @codeCoverageIgnoreEnd
+        }
+
+        $arguments = [];
+
+        new Invoker()->invoke(
+            function () use ($generators, $source, &$arguments): void
+            {
+                $arguments = $this->generateArguments($generators, $source);
+            },
+            [],
+            $timeLimit,
+        );
 
         return $arguments;
     }
