@@ -11,6 +11,7 @@ namespace PHPUnit\Runner\Baseline;
 
 use function realpath;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
@@ -24,6 +25,35 @@ use PHPUnit\Runner\FileDoesNotExistException;
 #[Group('test-runner/issue-baseline')]
 final class IssueTest extends TestCase
 {
+    /**
+     * @return array<string, array{0: non-empty-string, 1: non-empty-string}>
+     */
+    public static function providerDescriptionWithNameOfAnonymousClass(): array
+    {
+        return [
+            'anonymous class declared in file with Unix path' => [
+                'Undefined property: class@anonymous::$a',
+                "Undefined property: class@anonymous\0/path/to/Source.php:76\$309::\$a",
+            ],
+            'anonymous class declared in file with Windows path' => [
+                'Accessing static property class@anonymous::$a as non static',
+                "Accessing static property class@anonymous\0D:\\path\\to\\Source.php:76\$1f::\$a as non static",
+            ],
+            'anonymous class that implements an interface' => [
+                'Serializable@anonymous implements the Serializable interface, which is deprecated',
+                "Serializable@anonymous\0/path/to/Source.php:62\$308 implements the Serializable interface, which is deprecated",
+            ],
+            'anonymous class declared in eval()\'d code' => [
+                'Undefined property: class@anonymous::$a',
+                "Undefined property: class@anonymous\0/path/to/Source.php(12) : eval()'d code:1\$0::\$a",
+            ],
+            'multiple anonymous classes' => [
+                'class@anonymous and class@anonymous',
+                "class@anonymous\0/path/to/Source.php:1\$0 and class@anonymous\0/path/to/Source.php:2\$1",
+            ],
+        ];
+    }
+
     public function testHasFile(): void
     {
         $this->assertSame(
@@ -45,6 +75,23 @@ final class IssueTest extends TestCase
     public function testHasDescription(): void
     {
         $this->assertSame('Undefined variable $b', $this->issue()->description());
+    }
+
+    /**
+     * @param non-empty-string $expected
+     * @param non-empty-string $description
+     */
+    #[DataProvider('providerDescriptionWithNameOfAnonymousClass')]
+    public function testRemovesFileLineAndCounterFromNameOfAnonymousClassInDescription(string $expected, string $description): void
+    {
+        $issue = Issue::from(
+            realpath(__DIR__ . '/../../../_files/baseline/FileWithIssues.php'),
+            10,
+            null,
+            $description,
+        );
+
+        $this->assertSame($expected, $issue->description());
     }
 
     public function testIsComparable(): void
