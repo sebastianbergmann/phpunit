@@ -88,12 +88,7 @@ final readonly class Falsification
         }
 
         $throwable = $example->throwableThatEndedTheTest();
-
-        if ($throwable instanceof TimeoutException) {
-            return new self(FailureSignature::forTimeout(), null, null, $throwable->getMessage());
-        }
-
-        $status = $example->status();
+        $status    = $example->status();
 
         if ($throwable === null) {
             // @codeCoverageIgnoreStart
@@ -106,10 +101,15 @@ final readonly class Falsification
 
     /**
      * How a throwable falsified the property: the throwable that ended an
-     * example, or the one that was raised while its arguments were generated.
+     * example, or the one that was raised while its arguments were generated,
+     * which is a TimeoutException when the example exceeded its time limit.
      */
     public static function ofThrowable(Throwable $throwable): self
     {
+        if ($throwable instanceof TimeoutException) {
+            return new self(FailureSignature::forTimeout(), null, null, $throwable->getMessage());
+        }
+
         $location = self::locationOf($throwable);
 
         return new self(

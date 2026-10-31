@@ -64,10 +64,11 @@ use Throwable;
  *
  * An example is run with its full lifecycle, from the hook methods that are
  * called before the property to the ones that are called after it, and with
- * the time limit that is passed. Its arguments are generated from choices as
- * when PHPUnit checks the property, and it draws values with draw() from the
- * same choices. It is neither shrunk nor reported. The issues that it
- * triggers are handled as in a test run, but they are not reported either.
+ * the time limit that is passed, which covers generating its arguments as
+ * well as running it. Its arguments are generated from choices as when
+ * PHPUnit checks the property, and it draws values with draw() from the same
+ * choices. It is neither shrunk nor reported. The issues that it triggers are
+ * handled as in a test run, but they are not reported either.
  *
  * The hook methods of a test class that are called before its first test are
  * called before the first example of one of its properties is run, and the
@@ -216,7 +217,7 @@ final class PropertyRunner
      *
      * @param non-empty-string       $id           the ID of the property, as properties() returns it
      * @param list<non-negative-int> $choices
-     * @param positive-int           $timeLimit    the time limit of the example in seconds
+     * @param positive-int           $timeLimit    the time limit of the example in seconds, which covers generating its arguments and running it
      * @param bool                   $exportValues whether the result has the exported arguments, drawn values, and steps of the example
      *
      * @throws Exception                     when the property is invalid, or its generators cannot be created
@@ -253,7 +254,7 @@ final class PropertyRunner
      * with the given seed. The same seed generates the same example.
      *
      * @param non-empty-string $id           the ID of the property, as properties() returns it
-     * @param positive-int     $timeLimit    the time limit of the example in seconds
+     * @param positive-int     $timeLimit    the time limit of the example in seconds, which covers generating its arguments and running it
      * @param bool             $exportValues whether the result has the exported arguments, drawn values, and steps of the example
      *
      * @throws Exception                     when the property is invalid, or its generators cannot be created

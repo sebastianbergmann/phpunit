@@ -71,6 +71,24 @@ final class TestRunner
         return true;
     }
 
+    /**
+     * A time limit cannot be enforced without the pcntl extension, and it is
+     * not enforced while a debugger is active, whether it is the configured
+     * time limit or the one of an example of a property that is passed.
+     */
+    public static function canTimeLimitBeEnforced(): bool
+    {
+        if (extension_loaded('xdebug') && xdebug_is_debugger_active()) {
+            // a debugging session cannot be active while the tests for PHPUnit
+            // itself are run
+            // @codeCoverageIgnoreStart
+            return false;
+            // @codeCoverageIgnoreEnd
+        }
+
+        return (new Invoker)->canInvokeWithTimeout();
+    }
+
     public function __construct(Emitter $emitter)
     {
         $this->configuration   = ConfigurationRegistry::get();
@@ -221,7 +239,7 @@ final class TestRunner
         try {
             TimeLimitHandler::armAlarm();
 
-            if ($this->canTimeLimitBeEnforced() &&
+            if (self::canTimeLimitBeEnforced() &&
                 ($timeLimit !== null || $this->shouldTimeLimitBeEnforced($test))) {
                 $risky = $this->runTestWithTimeout($test, $exampleOfProperty, $timeLimit);
             } else {
@@ -418,24 +436,6 @@ final class TestRunner
         }
 
         return (new CodeCoverageMetadataApi)->coversTargets($className, $methodName)->isNotEmpty();
-    }
-
-    /**
-     * A time limit cannot be enforced without the pcntl extension, and it is
-     * not enforced while a debugger is active, whether it is the configured
-     * time limit or the one of an example of a property that is passed.
-     */
-    private function canTimeLimitBeEnforced(): bool
-    {
-        if (extension_loaded('xdebug') && xdebug_is_debugger_active()) {
-            // a debugging session cannot be active while the tests for PHPUnit
-            // itself are run
-            // @codeCoverageIgnoreStart
-            return false;
-            // @codeCoverageIgnoreEnd
-        }
-
-        return (new Invoker)->canInvokeWithTimeout();
     }
 
     private function shouldTimeLimitBeEnforced(TestCase $test): bool
