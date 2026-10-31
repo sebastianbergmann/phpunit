@@ -9,7 +9,14 @@
  */
 namespace PHPUnit\Framework\PropertyBased;
 
+use const DIRECTORY_SEPARATOR;
+use function getcwd;
+use function realpath;
+use function rtrim;
 use function sprintf;
+use function str_starts_with;
+use function strlen;
+use function substr;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\Filter;
 use SebastianBergmann\ChoiceSequence\FailureSignature;
@@ -26,6 +33,9 @@ use Throwable;
  * own code, or else the file and line of the throwable itself. The file and
  * line of the throwable alone would not do, because every failed assertion is
  * raised in PHPUnit's own code.
+ *
+ * The path of a file below the working directory is relative to it, so that
+ * the location does not depend on where a project is checked out.
  *
  * Whether two examples falsify the property in the same way is told by the
  * failure signature of sebastian/choice-sequence, so that failures are
@@ -113,19 +123,64 @@ final readonly class Falsification
     /**
      * @return non-empty-string
      */
+    /**
+     * @return non-empty-string
+     */
     private static function locationOf(Throwable $throwable): string
     {
         $frame = Filter::firstFrameFromThrowableAsString($throwable, false);
 
-        if ($frame !== null) {
-            return $frame;
+        if ($frame === null) {
+            // every frame is in PHPUnit's own code, for instance for an unmet
+            // expectation for a test double, which cannot happen in PHPUnit's
+            // own test suite because it does not exclude PHPUnit's own code
+            // @codeCoverageIgnoreStart
+            $frame = $throwable->getFile() . ':' . $throwable->getLine();
+            // @codeCoverageIgnoreEnd
         }
 
-        // every frame is in PHPUnit's own code, for instance for an unmet
-        // expectation for a test double, which cannot happen in PHPUnit's
-        // own test suite because it does not exclude PHPUnit's own code
-        // @codeCoverageIgnoreStart
-        return $throwable->getFile() . ':' . $throwable->getLine();
-        // @codeCoverageIgnoreEnd
+        return self::relativeToWorkingDirectory($frame);
+    }
+
+    /**
+     * The working directory is the one in which the example was started,
+     * because PHPUnit restores it after the example, should the example
+     * change it.
+     *
+     * @param non-empty-string $location
+     *
+     * @return non-empty-string
+     */
+    private static function relativeToWorkingDirectory(string $location): string
+    {
+        $workingDirectory = getcwd();
+
+        if ($workingDirectory === false) {
+            // @codeCoverageIgnoreStart
+            return $location;
+            // @codeCoverageIgnoreEnd
+        }
+
+        $realpath = realpath($workingDirectory);
+
+        if ($realpath !== false) {
+            $workingDirectory = $realpath;
+        }
+
+        $prefix = rtrim($workingDirectory, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+
+        if (!str_starts_with($location, $prefix)) {
+            return $location;
+        }
+
+        $relative = substr($location, strlen($prefix));
+
+        if ($relative === '') {
+            // @codeCoverageIgnoreStart
+            return $location;
+            // @codeCoverageIgnoreEnd
+        }
+
+        return $relative;
     }
 }
