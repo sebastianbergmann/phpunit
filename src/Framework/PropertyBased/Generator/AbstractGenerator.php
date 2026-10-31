@@ -9,13 +9,12 @@
  */
 namespace PHPUnit\Framework\PropertyBased\Generator;
 
-use function hash;
-use function implode;
 use Closure;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
 use PHPUnit\Framework\PropertyBased\ExampleRejectedException;
 use PHPUnit\Framework\PropertyBased\ValueGenerator;
 use PHPUnit\Framework\PropertyBased\ValueGeneratorNotSupportedException;
+use SebastianBergmann\ChoiceSequence\Label;
 
 /**
  * A generator builds a value from the choices it draws from a choice source.
@@ -55,13 +54,17 @@ abstract readonly class AbstractGenerator implements ValueGenerator
      * the components of the label, for instance the name of the generator and
      * the labels of the generators it is composed of.
      *
+     * The label is computed by sebastian/choice-sequence, so that other tools
+     * that use this library label spans whose choices are drawn in the same
+     * way with the same label.
+     *
      * @param non-empty-string $name
      *
      * @return non-empty-string
      */
     final public static function labelOf(string $name, string ...$components): string
     {
-        return hash('xxh3', $name . '(' . implode(',', $components) . ')');
+        return Label::of($name, ...$components);
     }
 
     final public function map(Closure $mapper): ValueGenerator

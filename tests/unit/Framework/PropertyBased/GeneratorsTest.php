@@ -115,6 +115,7 @@ use PHPUnit\TestFixture\PropertyBased\EnumerationWithoutCases;
 use Random\Engine\Xoshiro256StarStar;
 use Random\Randomizer;
 use SebastianBergmann\ChoiceSequence\ChoiceSequence;
+use SebastianBergmann\ChoiceSequence\Label;
 use SebastianBergmann\ChoiceSequence\Span;
 use stdClass;
 
@@ -1478,6 +1479,13 @@ final class GeneratorsTest extends TestCase
             AbstractGenerator::from(Generators::lists(Generators::integers(0, 9)))->label(),
             AbstractGenerator::from(Generators::lists(Generators::strings()))->label(),
         );
+    }
+
+    public function testLabelsAreComputedAsByTheChoiceSequenceLibrary(): void
+    {
+        $this->assertSame(Label::of('integers', '0', '9'), AbstractGenerator::labelOf('integers', '0', '9'));
+        $this->assertSame(Label::of('booleans'), AbstractGenerator::from(Generators::booleans())->label());
+        $this->assertSame(Label::of('bytes', '0', '4096'), AbstractGenerator::from(Generators::bytes(0, 4096))->label());
     }
 
     public function testTheSpansOfTheLevelsOfARecursiveValueHaveTheSameLabel(): void
