@@ -16,7 +16,7 @@ use function max;
 use function mb_chr;
 use function min;
 use function usort;
-use PHPUnit\Framework\PropertyBased\Generator\CodePoints;
+use SebastianBergmann\ChoiceSequence\CodePoints;
 
 /**
  * A set of characters: of Unicode scalar values, which are encoded as UTF-8,

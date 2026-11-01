@@ -14,6 +14,7 @@ use function count;
 use function mb_chr;
 use function var_export;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
+use SebastianBergmann\ChoiceSequence\CodePoints;
 use SebastianBergmann\ChoiceSequence\Distribution;
 use SebastianBergmann\ChoiceSequence\UniformDistribution;
 use SebastianBergmann\ChoiceSequence\WeightedRangesDistribution;
