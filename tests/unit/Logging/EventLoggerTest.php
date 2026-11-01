@@ -86,8 +86,7 @@ final class EventLoggerTest extends TestCase
 
         $this->assertSame(
             '[00:02:03.000000456 / 00:03:54.000000567] [2000 bytes] first line' . PHP_EOL .
-            '                                                       second line' . PHP_EOL .
-            '                                                       third line' . PHP_EOL,
+            '                                                       second line\u{000D}third line' . PHP_EOL,
             file_get_contents($this->file),
         );
     }
