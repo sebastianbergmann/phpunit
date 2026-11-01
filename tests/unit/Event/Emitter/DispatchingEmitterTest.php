@@ -3900,6 +3900,54 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($shellExitCode, $event->shellExitCode());
     }
 
+    public function testEventsCarryTheTelemetryOfTheLastEventWhoseTelemetryWasMeasuredWhileMeasuringTelemetryIsPaused(): void
+    {
+        $subscriber = new class implements Test\PreparationStartedSubscriber
+        {
+            /**
+             * @var list<Telemetry\Info>
+             */
+            public array $telemetry = [];
+
+            public function notify(Test\PreparationStarted $event): void
+            {
+                $this->telemetry[] = $event->telemetryInfo();
+            }
+        };
+
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
+            Test\PreparationStartedSubscriber::class,
+            Test\PreparationStarted::class,
+            $subscriber,
+        );
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $this->telemetrySystem(),
+        );
+
+        $test = $this->testValueObject();
+
+        $emitter->pauseMeasuringTelemetry();
+        $emitter->testPreparationStarted($test);
+        $emitter->testPreparationStarted($test);
+        $emitter->resumeMeasuringTelemetry();
+        $emitter->testPreparationStarted($test);
+        $emitter->pauseMeasuringTelemetry();
+        $emitter->testPreparationStarted($test);
+        $emitter->resumeMeasuringTelemetry();
+        $emitter->testPreparationStarted($test);
+
+        [$first, $second, $third, $fourth, $fifth] = $subscriber->telemetry;
+
+        // the telemetry of the first event is measured, as there is no event
+        // whose telemetry was measured before
+        $this->assertSame($first, $second);
+        $this->assertNotSame($second, $third);
+        $this->assertSame($third, $fourth);
+        $this->assertNotSame($fourth, $fifth);
+    }
+
     private function testSuiteValueObject(): TestSuiteWithName
     {
         return new TestSuiteWithName(

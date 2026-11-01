@@ -23,7 +23,7 @@ use PHPUnit\Runner\DeprecationCollector\Facade as DeprecationCollector;
 final class Facade
 {
     private static ?self $instance = null;
-    private Emitter $emitter;
+    private DispatchingEmitter $emitter;
     private ?TypeMap $typeMap                         = null;
     private ?DeferringDispatcher $deferringDispatcher = null;
     private bool $sealed                              = false;
@@ -148,11 +148,32 @@ final class Facade
     }
 
     /**
+     * Collects events as startCollectingEvents() does, without measuring their
+     * telemetry: they carry the telemetry of the last event whose telemetry
+     * was measured. This is for events that are inspected and then discarded,
+     * the events of an example of a property that is run on its own, for
+     * instance, as measuring the telemetry of an event takes most of the time
+     * that emitting it takes.
+     *
+     * @throws EventsAreAlreadyBeingCollectedException
+     */
+    public function startCollectingEventsWithoutTelemetry(): void
+    {
+        $this->deferredDispatcher()->startCollectingEvents();
+
+        $this->emitter->pauseMeasuringTelemetry();
+    }
+
+    /**
      * @throws EventsAreNotBeingCollectedException
      */
     public function stopCollectingEvents(): EventCollection
     {
-        return $this->deferredDispatcher()->stopCollectingEvents();
+        $events = $this->deferredDispatcher()->stopCollectingEvents();
+
+        $this->emitter->resumeMeasuringTelemetry();
+
+        return $events;
     }
 
     public function seal(): void
