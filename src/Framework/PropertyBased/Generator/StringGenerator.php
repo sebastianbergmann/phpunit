@@ -45,11 +45,6 @@ final readonly class StringGenerator extends AbstractGenerator
     private Distribution $character;
 
     /**
-     * @var non-negative-int
-     */
-    private int $minimumLength;
-
-    /**
      * @var non-empty-string
      */
     private string $label;
@@ -78,7 +73,6 @@ final readonly class StringGenerator extends AbstractGenerator
 
         $this->alphabet        = $alphabet;
         $this->codePointRanges = $codePointRanges;
-        $this->minimumLength   = $minimumLength;
         $this->repetition      = new Repetition(self::labelOf('element', $this->label), $minimumLength, $maximumLength);
 
         if ($alphabet !== null) {
@@ -127,16 +121,16 @@ final readonly class StringGenerator extends AbstractGenerator
     }
 
     /**
-     * Only a string of any Unicode characters whose every character is
-     * preceded by the choice to add it is marked as SpanKind::Characters: the
-     * choices of the characters of a string with an alphabet or with code
-     * point ranges are not indices in the order of CodePoints, and the
-     * characters that its minimum length requires are not preceded by that
-     * choice.
+     * Only a string of any Unicode characters is marked as
+     * SpanKind::Characters: the choices of the characters of a string with an
+     * alphabet or with code point ranges are not indices in the order of
+     * CodePoints. The characters that the minimum length of the string
+     * requires consist of these indices only, as SpanKind::Characters
+     * permits.
      */
     protected function spanKind(): ?SpanKind
     {
-        if ($this->alphabet !== null || $this->codePointRanges !== null || $this->minimumLength > 0) {
+        if ($this->alphabet !== null || $this->codePointRanges !== null) {
             return null;
         }
 

@@ -373,7 +373,6 @@ final class GeneratorsTest extends TestCase
         return [
             'alphabet'          => [Generators::strings('ab')],
             'code point ranges' => [Generators::strings(codePointRanges: [[0x61, 0x7A]])],
-            'minimum length'    => [Generators::strings(minimumLength: 1)],
         ];
     }
 
@@ -1500,14 +1499,27 @@ final class GeneratorsTest extends TestCase
         );
     }
 
-    public function testTheSpanOfABinaryStringWithAMinimumLengthIsNotBytes(): void
+    public function testTheBytesThatTheMinimumLengthOfABinaryStringRequiresConsistOfTheirValues(): void
     {
         $source = ChoiceSource::replay(new ChoiceSequence([0x61, 1, 0x62, 0]));
 
         $this->assertSame('ab', AbstractGenerator::from(Generators::bytes(1))->generate($source));
 
         $this->assertSame(
-            [[0, 4, null], [0, 1, SpanKind::Element], [1, 3, SpanKind::Element], [3, 4, SpanKind::Element]],
+            [[0, 4, SpanKind::Bytes], [0, 1, SpanKind::Element], [1, 3, SpanKind::Element], [3, 4, SpanKind::Element]],
+            array_map(static fn (Span $span): array => [$span->start(), $span->end(), $span->kind()], $source->sequence()->spans()),
+        );
+        $this->assertSame([0xFF, 1, 0xFF, 1], array_map($source->sequence()->maximumAt(...), [0, 1, 2, 3]));
+    }
+
+    public function testTheCharactersThatTheMinimumLengthOfAStringRequiresConsistOfTheIndicesOfTheirCodePoints(): void
+    {
+        $source = ChoiceSource::replay(new ChoiceSequence([CodePoints::index(0x61), 0]));
+
+        $this->assertSame('a', AbstractGenerator::from(Generators::strings(minimumLength: 1))->generate($source));
+
+        $this->assertSame(
+            [[0, 2, SpanKind::Characters], [0, 1, SpanKind::Element], [1, 2, SpanKind::Element]],
             array_map(static fn (Span $span): array => [$span->start(), $span->end(), $span->kind()], $source->sequence()->spans()),
         );
     }
@@ -1528,7 +1540,7 @@ final class GeneratorsTest extends TestCase
      * @param ValueGenerator<string> $generator
      */
     #[DataProvider('stringsThatAreNotCharactersProvider')]
-    public function testTheSpanOfAStringWhoseCharactersAreNotIndicesOfCodePointsPrecededByAChoiceIsNotCharacters(ValueGenerator $generator): void
+    public function testTheSpanOfAStringWhoseCharactersAreNotIndicesOfCodePointsIsNotCharacters(ValueGenerator $generator): void
     {
         $source = ChoiceSource::replay(new ChoiceSequence([1, 0, 1, 0, 0]));
 
