@@ -22,6 +22,7 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 * When a test fails because of an exception of a registered failure type, an error or a failure in an "after test" method, for instance `tearDown()`, is reported in addition to the test's failure, so the test is counted more than once
 * A test that fails because of an exception of a registered failure type is considered risky when it does not perform assertions or, when `requireCoverageMetadata="true"` is configured, when it does not define a code coverage target, unlike a test that fails because an assertion failed
 * Groups configured for a test directory or test file using the `groups` attribute of `<directory>` or `<file>` in the XML configuration file are not assigned to PHPT tests, so `--group` and `--exclude-group` do not select them and `--list-groups` and `--list-tests-xml` report them as being in the `default` group or not at all
+* Control characters and ANSI escape sequences in user-supplied strings are not made visible in the output of `--debug` and in the logfiles written by `--log-events-text` and `--log-events-verbose-text`
 
 ### Removed
 
