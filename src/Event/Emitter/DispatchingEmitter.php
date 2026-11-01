@@ -45,6 +45,8 @@ final class DispatchingEmitter implements Emitter
     private readonly Telemetry\System $system;
     private readonly Telemetry\Snapshot $startSnapshot;
     private Telemetry\Snapshot $previousSnapshot;
+    private ?Telemetry\Info $previousInfo = null;
+    private bool $measuresTelemetry       = true;
 
     public function __construct(Dispatcher $dispatcher, Telemetry\System $system)
     {
@@ -53,6 +55,23 @@ final class DispatchingEmitter implements Emitter
 
         $this->startSnapshot    = $system->snapshot();
         $this->previousSnapshot = $this->startSnapshot;
+    }
+
+    /**
+     * The events that are emitted from now on carry the telemetry of the last
+     * event whose telemetry was measured, until resumeMeasuringTelemetry() is
+     * called. Measuring the telemetry of an event takes most of the time that
+     * emitting it takes, and events that are inspected and then discarded do
+     * not need it.
+     */
+    public function pauseMeasuringTelemetry(): void
+    {
+        $this->measuresTelemetry = false;
+    }
+
+    public function resumeMeasuringTelemetry(): void
+    {
+        $this->measuresTelemetry = true;
     }
 
     /**
@@ -1721,6 +1740,10 @@ final class DispatchingEmitter implements Emitter
      */
     private function telemetryInfo(): Telemetry\Info
     {
+        if (!$this->measuresTelemetry && $this->previousInfo !== null) {
+            return $this->previousInfo;
+        }
+
         $current = $this->system->snapshot();
 
         $info = new Telemetry\Info(
@@ -1738,6 +1761,7 @@ final class DispatchingEmitter implements Emitter
         );
 
         $this->previousSnapshot = $current;
+        $this->previousInfo     = $info;
 
         return $info;
     }

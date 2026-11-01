@@ -134,15 +134,23 @@ abstract class IterativeTestSuite extends TestSuite
      * emitted afterwards. The events collected before the throwable was raised
      * are forwarded rather than discarded.
      *
+     * Without telemetry, the events carry the telemetry of the last event
+     * whose telemetry was measured, which is enough for events that are
+     * inspected and then discarded.
+     *
      * @param Closure(): void $run
      *
      * @throws Throwable
      */
-    final protected function collectingEvents(Closure $run): EventCollection
+    final protected function collectingEvents(Closure $run, bool $measureTelemetry = true): EventCollection
     {
         $facade = Event\Facade::instance();
 
-        $facade->startCollectingEvents();
+        if ($measureTelemetry) {
+            $facade->startCollectingEvents();
+        } else {
+            $facade->startCollectingEventsWithoutTelemetry();
+        }
 
         try {
             $run();
