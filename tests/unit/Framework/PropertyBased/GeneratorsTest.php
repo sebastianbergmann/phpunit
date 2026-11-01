@@ -365,6 +365,18 @@ final class GeneratorsTest extends TestCase
         ];
     }
 
+    /**
+     * @return array<string, array{0: ValueGenerator<string>}>
+     */
+    public static function stringsThatAreNotCharactersProvider(): array
+    {
+        return [
+            'alphabet'          => [Generators::strings('ab')],
+            'code point ranges' => [Generators::strings(codePointRanges: [[0x61, 0x7A]])],
+            'minimum length'    => [Generators::strings(minimumLength: 1)],
+        ];
+    }
+
     #[DataProvider('valueThatIsNotAllowedProvider')]
     public function testFloatsThatAreNotAllowedAreMappedIntoTheRange(string $expected, float $value): void
     {
@@ -1498,6 +1510,31 @@ final class GeneratorsTest extends TestCase
             [[0, 4, null], [0, 1, SpanKind::Element], [1, 3, SpanKind::Element], [3, 4, SpanKind::Element]],
             array_map(static fn (Span $span): array => [$span->start(), $span->end(), $span->kind()], $source->sequence()->spans()),
         );
+    }
+
+    public function testTheSpanOfAStringIsCharactersAndTheSpansOfItsCharactersAreElements(): void
+    {
+        $source = ChoiceSource::replay(new ChoiceSequence([1, CodePoints::index(0x61), 1, CodePoints::index(0x20AC), 0]));
+
+        $this->assertSame('a€', AbstractGenerator::from(Generators::strings())->generate($source));
+
+        $this->assertSame(
+            [[0, 5, SpanKind::Characters], [0, 2, SpanKind::Element], [2, 4, SpanKind::Element], [4, 5, SpanKind::Element]],
+            array_map(static fn (Span $span): array => [$span->start(), $span->end(), $span->kind()], $source->sequence()->spans()),
+        );
+    }
+
+    /**
+     * @param ValueGenerator<string> $generator
+     */
+    #[DataProvider('stringsThatAreNotCharactersProvider')]
+    public function testTheSpanOfAStringWhoseCharactersAreNotIndicesOfCodePointsPrecededByAChoiceIsNotCharacters(ValueGenerator $generator): void
+    {
+        $source = ChoiceSource::replay(new ChoiceSequence([1, 0, 1, 0, 0]));
+
+        AbstractGenerator::from($generator)->generate($source);
+
+        $this->assertNull($source->sequence()->spans()[0]?->kind());
     }
 
     public function testTheSpansOfGeneratorsThatAreComposedAndConfiguredTheSameWayHaveTheSameLabel(): void
