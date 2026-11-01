@@ -16,6 +16,7 @@ use function var_export;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
 use SebastianBergmann\ChoiceSequence\CodePoints;
 use SebastianBergmann\ChoiceSequence\Distribution;
+use SebastianBergmann\ChoiceSequence\SpanKind;
 use SebastianBergmann\ChoiceSequence\UniformDistribution;
 use SebastianBergmann\ChoiceSequence\WeightedRangesDistribution;
 
@@ -42,6 +43,11 @@ final readonly class StringGenerator extends AbstractGenerator
     private ?CodePointRanges $codePointRanges;
     private Repetition $repetition;
     private Distribution $character;
+
+    /**
+     * @var non-negative-int
+     */
+    private int $minimumLength;
 
     /**
      * @var non-empty-string
@@ -72,6 +78,7 @@ final readonly class StringGenerator extends AbstractGenerator
 
         $this->alphabet        = $alphabet;
         $this->codePointRanges = $codePointRanges;
+        $this->minimumLength   = $minimumLength;
         $this->repetition      = new Repetition(self::labelOf('element', $this->label), $minimumLength, $maximumLength);
 
         if ($alphabet !== null) {
@@ -117,6 +124,23 @@ final readonly class StringGenerator extends AbstractGenerator
     public function label(): string
     {
         return $this->label;
+    }
+
+    /**
+     * Only a string of any Unicode characters whose every character is
+     * preceded by the choice to add it is marked as SpanKind::Characters: the
+     * choices of the characters of a string with an alphabet or with code
+     * point ranges are not indices in the order of CodePoints, and the
+     * characters that its minimum length requires are not preceded by that
+     * choice.
+     */
+    protected function spanKind(): ?SpanKind
+    {
+        if ($this->alphabet !== null || $this->codePointRanges !== null || $this->minimumLength > 0) {
+            return null;
+        }
+
+        return SpanKind::Characters;
     }
 
     protected function generateValue(ChoiceSource $source): string
