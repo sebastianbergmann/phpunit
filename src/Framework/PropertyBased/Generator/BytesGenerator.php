@@ -31,11 +31,6 @@ final readonly class BytesGenerator extends AbstractGenerator
     private WeightedRangesDistribution $byte;
 
     /**
-     * @var non-negative-int
-     */
-    private int $minimumLength;
-
-    /**
      * @var non-empty-string
      */
     private string $label;
@@ -46,8 +41,7 @@ final readonly class BytesGenerator extends AbstractGenerator
      */
     public function __construct(int $minimumLength, ?int $maximumLength)
     {
-        $this->label         = self::labelOf('bytes', (string) $minimumLength, var_export($maximumLength, true));
-        $this->minimumLength = $minimumLength;
+        $this->label = self::labelOf('bytes', (string) $minimumLength, var_export($maximumLength, true));
 
         $this->repetition = new Repetition(self::labelOf('element', $this->label), $minimumLength, $maximumLength);
 
@@ -67,16 +61,11 @@ final readonly class BytesGenerator extends AbstractGenerator
     }
 
     /**
-     * Only a string whose every byte is preceded by the choice to add it is
-     * marked as SpanKind::Bytes: the bytes that its minimum length requires
-     * are not.
+     * The bytes that the minimum length of the string requires consist of
+     * their value only, as SpanKind::Bytes permits.
      */
-    protected function spanKind(): ?SpanKind
+    protected function spanKind(): SpanKind
     {
-        if ($this->minimumLength > 0) {
-            return null;
-        }
-
         return SpanKind::Bytes;
     }
 
