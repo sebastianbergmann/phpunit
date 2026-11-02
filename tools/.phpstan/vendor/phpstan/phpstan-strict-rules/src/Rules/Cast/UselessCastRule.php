@@ -55,28 +55,39 @@ class UselessCastRule implements Rule
 			$expressionType = $scope->getNativeType($node->expr);
 		}
 		if ($castType->isSuperTypeOf($expressionType)->yes()) {
-			$addTip = function (RuleErrorBuilder $ruleErrorBuilder) use ($scope, $node, $castType): RuleErrorBuilder {
-				if (!$this->treatPhpDocTypesAsCertain) {
-					return $ruleErrorBuilder;
-				}
+			$ruleErrorBuilder = RuleErrorBuilder::message(sprintf(
+				'Casting to %s something that\'s already %s.',
+				$castType->describe(VerbosityLevel::typeOnly()),
+				$expressionType->describe(VerbosityLevel::typeOnly()),
+			))->identifier('cast.useless');
 
-				if (!$this->treatPhpDocTypesAsCertainTip) {
-					return $ruleErrorBuilder;
-				}
+			$nativeType = $scope->getNativeType($node->expr);
+			if ($castType->isSuperTypeOf($nativeType)->yes()) {
+				$ruleErrorBuilder->fixNode($node, static function (Cast $node) use ($nativeType): Node {
+					if ($node instanceof Cast\Bool_) {
+						if (!$nativeType->isBoolean()->yes()) {
+							return $node;
+						}
+					} elseif ($node instanceof Cast\Int_) {
+						if (
+							$node->expr instanceof Node\Expr\UnaryMinus
+							|| !$nativeType->isInteger()->yes()
+						) {
+							return $node;
+						}
+					} else {
+						// skip all other casts
+						return $node;
+					}
 
-				$expressionTypeWithoutPhpDoc = $scope->getNativeType($node->expr);
-				if ($castType->isSuperTypeOf($expressionTypeWithoutPhpDoc)->yes()) {
-					return $ruleErrorBuilder;
-				}
+					return $node->expr;
+				});
+			} elseif ($this->treatPhpDocTypesAsCertain && $this->treatPhpDocTypesAsCertainTip) {
+				$ruleErrorBuilder->treatPhpDocTypesAsCertainTip();
+			}
 
-				return $ruleErrorBuilder->treatPhpDocTypesAsCertainTip();
-			};
 			return [
-				$addTip(RuleErrorBuilder::message(sprintf(
-					'Casting to %s something that\'s already %s.',
-					$castType->describe(VerbosityLevel::typeOnly()),
-					$expressionType->describe(VerbosityLevel::typeOnly()),
-				)))->identifier('cast.useless')->build(),
+				$ruleErrorBuilder->build(),
 			];
 		}
 
