@@ -2,7 +2,7 @@
 
 All notable changes of the PHPUnit 12.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
-## [12.5.43] - 2026-MM-DD
+## [12.5.43] - 2026-11-02
 
 ### Changed
 
@@ -12,17 +12,17 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 ### Fixed
 
 * When `method()` is called for a method of a test double that cannot be configured, for instance because it does not exist, every subsequent invocation of a method of that test double fails with `Method name is not configured`
-* When an assertion fails in an "after test" method, for instance `tearDown()`, of a test that already failed, errored, or was marked as incomplete, a failure is reported in addition to the outcome of the test, so the test is counted more than once and `onNotSuccessfulTest()` is called with the failure from the "after test" method instead of the test's own
-* The TestDox output does not show the failure of a before-first-test method or an after-last-test method, for instance an assertion failure in `setUpBeforeClass()`
-* A failed PHP assertion, made using `assert()`, in a hook method is reported as an error of that method instead of as a failure, and it is counted as an error instead of as a failure when that method is a before-first-test method or an after-last-test method
 * When a hook method of a test, for instance `setUp()`, marks the test as incomplete, the hook method is reported as failed
 * When an "after test" method, for instance `tearDown()`, marks a successful test as incomplete or skips it, the test is reported as failed
 * When a before-first-test method, for instance `setUpBeforeClass()`, calls `markTestIncomplete()`, each test of the test class is reported as failed instead of the test class being skipped as it is when `markTestSkipped()` is called
 * When an after-last-test method, for instance `tearDownAfterClass()`, calls `markTestIncomplete()` or `markTestSkipped()` after the tests of the test class have been run, this is reported as a failure, also for each test of the test class that is run in process isolation
+* A failed PHP assertion, made using `assert()`, in a hook method is reported as an error of that method instead of as a failure, and it is counted as an error instead of as a failure when that method is a before-first-test method or an after-last-test method
+* When an assertion fails in an "after test" method, for instance `tearDown()`, of a test that already failed, errored, or was marked as incomplete, a failure is reported in addition to the outcome of the test, so the test is counted more than once and `onNotSuccessfulTest()` is called with the failure from the "after test" method instead of the test's own
 * When a test fails because of an exception of a registered failure type, an error or a failure in an "after test" method, for instance `tearDown()`, is reported in addition to the test's failure, so the test is counted more than once
 * A test that fails because of an exception of a registered failure type is considered risky when it does not perform assertions or, when `requireCoverageMetadata="true"` is configured, when it does not define a code coverage target, unlike a test that fails because an assertion failed
-* Groups configured for a test directory or test file using the `groups` attribute of `<directory>` or `<file>` in the XML configuration file are not assigned to PHPT tests, so `--group` and `--exclude-group` do not select them and `--list-groups` and `--list-tests-xml` report them as being in the `default` group or not at all
+* The TestDox output does not show the failure of a before-first-test method or an after-last-test method, for instance an assertion failure in `setUpBeforeClass()`
 * Control characters and ANSI escape sequences in user-supplied strings are not made visible in the output of `--debug` and in the logfiles written by `--log-events-text` and `--log-events-verbose-text`
+* Groups configured for a test directory or test file using the `groups` attribute of `<directory>` or `<file>` in the XML configuration file are not assigned to PHPT tests, so `--group` and `--exclude-group` do not select them and `--list-groups` and `--list-tests-xml` report them as being in the `default` group or not at all
 
 ### Removed
 
@@ -398,7 +398,7 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 * [#6380](https://github.com/sebastianbergmann/phpunit/pull/6380): Allow `Throwable` in `expectExceptionObject()`
 * A PHPUnit notice is now emitted for test methods that create a mock object but do not configure an expectation for it
 
-[12.5.43]: https://github.com/sebastianbergmann/phpunit/compare/12.5.42...12.5
+[12.5.43]: https://github.com/sebastianbergmann/phpunit/compare/12.5.42...12.5.43
 [12.5.42]: https://github.com/sebastianbergmann/phpunit/compare/12.5.41...12.5.42
 [12.5.41]: https://github.com/sebastianbergmann/phpunit/compare/12.5.40...12.5.41
 [12.5.40]: https://github.com/sebastianbergmann/phpunit/compare/12.5.39...12.5.40
