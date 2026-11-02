@@ -22,8 +22,11 @@ class BooleanRuleHelper
 	public function passesAsBoolean(Scope $scope, Expr $expr): bool
 	{
 		$type = $scope->getType($expr);
-		if ($type instanceof MixedType) {
-			return !$type->isExplicitMixed();
+		if ($type instanceof ErrorType) {
+			return true;
+		}
+		if ($type instanceof MixedType && $type->isExplicitMixed()) {
+			return false;
 		}
 		$typeToCheck = $this->ruleLevelHelper->findTypeToCheck(
 			$scope,
