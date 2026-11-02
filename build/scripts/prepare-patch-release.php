@@ -38,10 +38,6 @@ $versionFileContents = str_replace(
     $versionFileContents,
 );
 
-file_put_contents($versionFile, $versionFileContents);
-
-print 'Updated version number from ' . $oldVersion . ' to ' . $newVersion . ' in ' . $versionFile . PHP_EOL;
-
 $changeLogFile = $rootDirectory . '/ChangeLog-' . $versionSeries . '.md';
 
 if (!is_file($changeLogFile) || !is_readable($changeLogFile) || !is_writable($changeLogFile)) {
@@ -67,8 +63,6 @@ $changeLogContents = preg_replace(
     $changeLogContents,
 );
 
-print 'Set release date of version ' . $newVersion . ' to ' . $today . ' in ' . $changeLogFile . PHP_EOL;
-
 $diffPattern = '/^(\[' . preg_quote($newVersion, '/') . '\]: .*\.\.\.)' . preg_quote($versionSeries, '/') . '$/m';
 
 if (preg_match($diffPattern, $changeLogContents) !== 1) {
@@ -83,6 +77,13 @@ $changeLogContents = preg_replace(
     $changeLogContents,
 );
 
+// Files are only written after all checks have passed so that a failed check
+// does not leave behind a version number that does not match the ChangeLog
+file_put_contents($versionFile, $versionFileContents);
+
+print 'Updated version number from ' . $oldVersion . ' to ' . $newVersion . ' in ' . $versionFile . PHP_EOL;
+
 file_put_contents($changeLogFile, $changeLogContents);
 
+print 'Set release date of version ' . $newVersion . ' to ' . $today . ' in ' . $changeLogFile . PHP_EOL;
 print 'Updated comparison URL of version ' . $newVersion . ' from branch ' . $versionSeries . ' to ' . $newVersion . ' in ' . $changeLogFile . PHP_EOL;
