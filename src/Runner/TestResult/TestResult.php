@@ -880,9 +880,13 @@ final readonly class TestResult
         return $this->testConsideredRiskyEvents !== [];
     }
 
+    /**
+     * The tests of a test suite that is skipped, for instance because a
+     * before-first-test method calls markTestSkipped(), are skipped tests, too.
+     */
     public function hasSkippedTests(): bool
     {
-        return $this->testSkippedEvents !== [];
+        return $this->hasTestSuiteSkippedEvents() || $this->hasTestSkippedEvents();
     }
 
     public function hasIssuesIgnoredByBaseline(): bool

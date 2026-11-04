@@ -830,9 +830,19 @@ final class Collector
         return count($this->testConsideredRiskyEvents);
     }
 
+    /**
+     * The tests of a test suite that is skipped, for instance because a
+     * before-first-test method calls markTestSkipped(), are skipped tests, too.
+     */
     public function numberOfSkippedTests(): int
     {
-        return count($this->testSkippedEvents);
+        $numberOfSkippedTests = count($this->testSkippedEvents);
+
+        foreach ($this->testSuiteSkippedEvents as $event) {
+            $numberOfSkippedTests += $event->testSuite()->count();
+        }
+
+        return $numberOfSkippedTests;
     }
 
     public function numberOfIncompleteTests(): int
