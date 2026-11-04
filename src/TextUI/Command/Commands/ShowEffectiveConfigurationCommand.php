@@ -31,6 +31,7 @@ use function strlen;
 use function substr;
 use function usort;
 use PHPUnit\Event\Emitter;
+use PHPUnit\Runner\ExecutionOrder\Order;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\FilterDirectoryCollection;
 use PHPUnit\TextUI\Configuration\FilterFileCollection;
@@ -51,6 +52,8 @@ use Traversable;
  * a setting that is added to, changed in, or removed from it is shown without
  * changes to this command. Lists of files are shown after their include and
  * exclude rules have been applied by the code that a test run uses for this.
+ * Settings that are stored as an internal enumeration case are shown as the
+ * value that is used to configure them.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -299,9 +302,17 @@ final readonly class ShowEffectiveConfigurationCommand implements Command
      * An object that has exactly one property, such as an object that wraps a
      * path or an enumeration case that is not backed, is shown as the value of
      * that property.
+     *
+     * A reordering strategy is shown as the value that is used to configure it
+     * using the --order-by CLI option or the executionOrder XML configuration
+     * attribute instead of the name of its enumeration case.
      */
     private function unwrap(mixed $value): mixed
     {
+        if ($value instanceof Order) {
+            return $value->token();
+        }
+
         while (is_object($value) && !$value instanceof Traversable) {
             $properties = $this->properties($value);
 

@@ -10,9 +10,11 @@
 namespace PHPUnit\TextUI\Command;
 
 use const PHP_EOL;
+use function preg_quote;
 use function realpath;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
@@ -30,6 +32,27 @@ use ReflectionClass;
 #[Group('textui/commands')]
 final class ShowEffectiveConfigurationCommandTest extends TestCase
 {
+    /**
+     * @return non-empty-array<non-empty-string, array{0: non-empty-string, 1: non-empty-string}>
+     */
+    public static function executionOrderProvider(): array
+    {
+        return [
+            'default'                    => ['default', '  executionOrder: (none)' . PHP_EOL],
+            'random'                     => ['random', '  executionOrder:' . PHP_EOL . '    - random' . PHP_EOL],
+            'reverse'                    => ['reverse', '  executionOrder:' . PHP_EOL . '    - reverse' . PHP_EOL],
+            'defects'                    => ['defects', '  executionOrder:' . PHP_EOL . '    - defects' . PHP_EOL],
+            'duration-ascending'         => ['duration-ascending', '  executionOrder:' . PHP_EOL . '    - duration-ascending' . PHP_EOL],
+            'duration-descending'        => ['duration-descending', '  executionOrder:' . PHP_EOL . '    - duration-descending' . PHP_EOL],
+            'size-ascending'             => ['size-ascending', '  executionOrder:' . PHP_EOL . '    - size-ascending' . PHP_EOL],
+            'size-descending'            => ['size-descending', '  executionOrder:' . PHP_EOL . '    - size-descending' . PHP_EOL],
+            'modified-ascending'         => ['modified-ascending', '  executionOrder:' . PHP_EOL . '    - modified-ascending' . PHP_EOL],
+            'modified-descending'        => ['modified-descending', '  executionOrder:' . PHP_EOL . '    - modified-descending' . PHP_EOL],
+            'duration-ascending,defects' => ['duration-ascending,defects', '  executionOrder:' . PHP_EOL . '    - duration-ascending' . PHP_EOL . '    - defects' . PHP_EOL],
+            'defects,duration-ascending' => ['defects,duration-ascending', '  executionOrder:' . PHP_EOL . '    - defects' . PHP_EOL . '    - duration-ascending' . PHP_EOL],
+        ];
+    }
+
     public function testShowsEverySettingOfTheConfiguration(): void
     {
         $output = $this->execute($this->configuration());
@@ -100,6 +123,16 @@ final class ShowEffectiveConfigurationCommandTest extends TestCase
             '    - Test.php' . PHP_EOL .
             '    - .phpt' . PHP_EOL,
             $output,
+        );
+    }
+
+    #[DataProvider('executionOrderProvider')]
+    public function testShowsExecutionOrderAsTheValuesThatAreUsedToConfigureIt(string $orderBy, string $executionOrder): void
+    {
+        // the setting is followed by the next setting, not by further list items
+        $this->assertMatchesRegularExpression(
+            '/^' . preg_quote($executionOrder, '/') . '  \w/m',
+            $this->execute($this->configuration('--order-by', $orderBy)),
         );
     }
 
