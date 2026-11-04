@@ -1235,7 +1235,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             // @codeCoverageIgnoreStart
             $randomNumberGeneratorSeeder->seedFor(static::class);
 
-            HookMethodInvoker::invokeBeforeClass($this, $hookMethods);
+            try {
+                HookMethodInvoker::invokeBeforeClass($this, $hookMethods);
+            } catch (IncompleteTest $e) {
+                // a before-first-test method that marks the test as incomplete
+                // skips the test class when it is called in the process of the
+                // test runner, so it must skip the test in a child process, too
+                $this->markTestSkipped($e->getMessage());
+            }
             // @codeCoverageIgnoreEnd
         }
 
