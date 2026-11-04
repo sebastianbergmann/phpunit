@@ -18,6 +18,7 @@ use function count;
 use function implode;
 use function is_array;
 use function is_bool;
+use function is_int;
 use function is_object;
 use function is_scalar;
 use function iterator_to_array;
@@ -31,7 +32,10 @@ use function strlen;
 use function substr;
 use function usort;
 use PHPUnit\Event\Emitter;
+use PHPUnit\Runner\ExecutionOrder\ReorderPipeline;
 use PHPUnit\Runner\Extension\PharLoader;
+use PHPUnit\Runner\InvalidOrderException;
+use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\FilterDirectoryCollection;
 use PHPUnit\TextUI\Configuration\FilterFileCollection;
@@ -52,6 +56,8 @@ use Traversable;
  * a setting that is added to, changed in, or removed from it is shown without
  * changes to this command. Lists of files are shown after their include and
  * exclude rules have been applied by the code that a test run uses for this.
+ * Settings that are stored as an internal constant are shown as the value
+ * that is used to configure them.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -306,10 +312,50 @@ final readonly class ShowEffectiveConfigurationCommand implements Command
                 continue;
             }
 
+            if ($value instanceof Configuration && is_int($propertyValue)) {
+                $propertyValue = $this->order($property->getName(), $propertyValue) ?? $propertyValue;
+            }
+
             $children[] = [$property->getName(), $propertyValue];
         }
 
         return $children;
+    }
+
+    /**
+     * The order in which tests are run is stored as TestSuiteSorter::ORDER_*
+     * constants. It is shown as the value that is used to configure it using
+     * the --order-by CLI option or the executionOrder XML configuration
+     * attribute, which is what ReorderPipeline::describe() returns for the
+     * stage that such a constant configures.
+     *
+     * @return ?non-empty-string null when the setting is not an order
+     */
+    private function order(string $setting, int $value): ?string
+    {
+        try {
+            $pipeline = match ($setting) {
+                'executionOrder'        => ReorderPipeline::fromConfiguration($value, TestSuiteSorter::ORDER_DEFAULT, false),
+                'executionOrderDefects' => ReorderPipeline::fromConfiguration(TestSuiteSorter::ORDER_DEFAULT, $value, false),
+                default                 => null,
+            };
+            // @codeCoverageIgnoreStart
+        } catch (InvalidOrderException) {
+            return null;
+        }
+        // @codeCoverageIgnoreEnd
+
+        if ($pipeline === null) {
+            return null;
+        }
+
+        $stages = $pipeline->describe();
+
+        if ($stages === []) {
+            return 'default';
+        }
+
+        return implode(',', $stages);
     }
 
     /**

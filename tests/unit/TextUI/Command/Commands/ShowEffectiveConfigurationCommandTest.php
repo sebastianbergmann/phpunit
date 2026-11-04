@@ -13,6 +13,7 @@ use const PHP_EOL;
 use function realpath;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
@@ -30,6 +31,26 @@ use ReflectionClass;
 #[Group('textui/commands')]
 final class ShowEffectiveConfigurationCommandTest extends TestCase
 {
+    /**
+     * @return non-empty-array<non-empty-string, array{0: non-empty-string, 1: non-empty-string, 2: non-empty-string}>
+     */
+    public static function executionOrderProvider(): array
+    {
+        return [
+            'default'                    => ['default', 'default', 'default'],
+            'random'                     => ['random', 'random', 'default'],
+            'reverse'                    => ['reverse', 'reverse', 'default'],
+            'defects'                    => ['defects', 'default', 'defects'],
+            'duration-ascending'         => ['duration-ascending', 'duration-ascending', 'default'],
+            'duration-descending'        => ['duration-descending', 'duration-descending', 'default'],
+            'size-ascending'             => ['size-ascending', 'size-ascending', 'default'],
+            'size-descending'            => ['size-descending', 'size-descending', 'default'],
+            'modified-ascending'         => ['modified-ascending', 'modified-ascending', 'default'],
+            'modified-descending'        => ['modified-descending', 'modified-descending', 'default'],
+            'duration-ascending,defects' => ['duration-ascending,defects', 'duration-ascending', 'defects'],
+        ];
+    }
+
     public function testShowsEverySettingOfTheConfiguration(): void
     {
         $output = $this->execute($this->configuration());
@@ -100,6 +121,16 @@ final class ShowEffectiveConfigurationCommandTest extends TestCase
             '    - Test.php' . PHP_EOL .
             '    - .phpt' . PHP_EOL,
             $output,
+        );
+    }
+
+    #[DataProvider('executionOrderProvider')]
+    public function testShowsExecutionOrderAsTheValuesThatAreUsedToConfigureIt(string $orderBy, string $executionOrder, string $executionOrderDefects): void
+    {
+        $this->assertStringContainsString(
+            '  executionOrder: ' . $executionOrder . PHP_EOL .
+            '  executionOrderDefects: ' . $executionOrderDefects . PHP_EOL,
+            $this->execute($this->configuration('--order-by', $orderBy)),
         );
     }
 
