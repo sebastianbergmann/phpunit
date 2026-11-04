@@ -12,6 +12,7 @@ All notable changes of the PHPUnit 14.0 release series are documented in this fi
 * [#6998](https://github.com/sebastianbergmann/phpunit/issues/6998): Inherit class-level `#[Group]`, `#[Ticket]`, `#[Small]`, `#[Medium]`, and `#[Large]` from parent classes of test classes
 * [#7004](https://github.com/sebastianbergmann/phpunit/issues/7004): Guarantee that tests, test suites, and hook methods are bracketed by events
 * A test that runs another test, for instance by calling `run()` on a `TestCase` object, now errors
+* `default` in the value of the `--order-by` CLI option or the `executionOrder` XML configuration attribute no longer turns the resolution of dependencies between tests back on: `--ignore-dependencies` and `resolveDependencies="false"` now take effect regardless of `default`
 
 ### Deprecated
 
