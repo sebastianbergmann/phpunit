@@ -103,6 +103,24 @@ final class ExecutionOrderParserTest extends TestCase
         );
     }
 
+    #[TestDox('Does not deprecate "default" together with an order, as "default" resets the order instead of selecting one')]
+    public function testDoesNotDeprecateDefaultTogetherWithAnOrder(): void
+    {
+        $this->assertSame([], $this->deprecationsTriggeredBy('default,random'));
+        $this->assertSame([], $this->deprecationsTriggeredBy('random,default'));
+        $this->assertSame([], $this->deprecationsTriggeredBy('random,default,reverse'));
+        $this->assertSame([], $this->deprecationsTriggeredBy('defects,default,random'));
+    }
+
+    #[TestDox('Deprecates more than one order after "default"')]
+    public function testDeprecatesMoreThanOneOrderAfterDefault(): void
+    {
+        $this->assertSame(
+            ['Using more than one order for --order-by is deprecated and will be an error in PHPUnit 14. "reverse" overrides "random".'],
+            $this->deprecationsTriggeredBy('default,random,reverse'),
+        );
+    }
+
     #[TestDox('Deprecates the "depends" token in favor of the dedicated option')]
     public function testDeprecatesTheDependsTokenInFavorOfTheDedicatedOption(): void
     {
