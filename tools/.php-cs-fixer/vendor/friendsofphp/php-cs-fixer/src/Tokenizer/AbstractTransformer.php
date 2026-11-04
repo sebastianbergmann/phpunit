@@ -38,19 +38,7 @@ abstract class AbstractTransformer implements TransformerInterface
         return 0;
     }
 
-    public function process(Tokens $tokens): void
-    {
-        if (!method_exists($this, 'processToken')) {
-            throw new \LogicException(\sprintf('Transformer "%s" must provide own "process(Tokens $tokens)" method (preferred) or "processToken(Tokens $tokens, Token $token, int $index)" method (deprecated).', static::class));
-        }
-
-        foreach ($tokens as $index => $token) {
-            $this->processToken($tokens, $token, $index);
-        }
-    }
+    abstract public function process(Tokens $tokens): void;
 
     abstract public function getCustomTokens(): array;
-
-    // @deprecated override `process(Tokens $tokens)` instead
-    // abstract public function processToken(Tokens $tokens, Token $token, int $index): void;
 }
