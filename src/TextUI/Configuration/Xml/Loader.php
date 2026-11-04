@@ -32,6 +32,7 @@ use DOMNode;
 use DOMNodeList;
 use DOMXPath;
 use PHPUnit\Runner\Version;
+use PHPUnit\TextUI\Configuration\AddedFilesAreReachedThroughChanges;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\Constant;
 use PHPUnit\TextUI\Configuration\ConstantCollection;
@@ -58,6 +59,7 @@ use PHPUnit\TextUI\Configuration\TestDirectory;
 use PHPUnit\TextUI\Configuration\TestDirectoryCollection;
 use PHPUnit\TextUI\Configuration\TestFile;
 use PHPUnit\TextUI\Configuration\TestFileCollection;
+use PHPUnit\TextUI\Configuration\TestImpactAnalysis;
 use PHPUnit\TextUI\Configuration\TestSuite as TestSuiteConfiguration;
 use PHPUnit\TextUI\Configuration\TestSuiteCollection;
 use PHPUnit\TextUI\Configuration\Variable;
@@ -147,6 +149,7 @@ final readonly class Loader
                 $this->php($configurationFileRealpath, $xpath),
                 $this->phpunit($configurationFileRealpath, $document, $xpath),
                 $this->testSuite($configurationFileRealpath, $xpath),
+                $this->testImpactAnalysis($configurationFileRealpath, $xpath),
             );
         } catch (InvalidExecutionOrderException $e) {
             throw new Exception(
@@ -460,6 +463,20 @@ final readonly class Loader
             $identifyIssueTrigger,
             $issueTriggerResolvers,
             $deprecationFilters,
+        );
+    }
+
+    private function testImpactAnalysis(string $filename, DOMXPath $xpath): TestImpactAnalysis
+    {
+        return new TestImpactAnalysis(
+            $this->readFilterDirectories($filename, $xpath, 'testImpactAnalysis/watch/directory'),
+            $this->readFilterFiles($filename, $xpath, 'testImpactAnalysis/watch/file'),
+            new AddedFilesAreReachedThroughChanges(
+                $this->readFilterDirectories($filename, $xpath, 'testImpactAnalysis/addedFilesAreReachedThroughChanges/include/directory'),
+                $this->readFilterFiles($filename, $xpath, 'testImpactAnalysis/addedFilesAreReachedThroughChanges/include/file'),
+                $this->readFilterDirectories($filename, $xpath, 'testImpactAnalysis/addedFilesAreReachedThroughChanges/exclude/directory'),
+                $this->readFilterFiles($filename, $xpath, 'testImpactAnalysis/addedFilesAreReachedThroughChanges/exclude/file'),
+            ),
         );
     }
 
@@ -1268,6 +1285,8 @@ final readonly class Loader
             $this->parseNonNegativeIntegerAttribute($documentElement, 'triggeringTestsLimit', 0),
             $this->parseBooleanAttribute($documentElement, 'warnWhenPhpIsNotConfiguredForDevelopment', false),
             $this->parseBooleanAttribute($documentElement, 'cacheTestIndex', false),
+            $this->parseBooleanAttribute($documentElement, 'recordTestImpactData', false),
+            $this->parseBooleanAttribute($documentElement, 'deriveTestImpactDataFromCoverageTargets', false),
         );
     }
 
