@@ -31,12 +31,12 @@ final readonly class ExecutionOrderParser
 {
     /**
      * Tokens that select the order in which tests are sorted. At most one of
-     * them is meaningful.
+     * them is meaningful. "default" is not one of them because it resets what
+     * the tokens written before it configured instead of selecting an order.
      *
      * @var non-empty-list<non-empty-string>
      */
     private const array MAIN_ORDER_TOKENS = [
-        'default',
         'duration',
         'duration-ascending',
         'duration-descending',
@@ -68,12 +68,19 @@ final readonly class ExecutionOrderParser
         $defectsSeen            = false;
 
         foreach (explode(',', $value) as $token) {
+            // an order that is written before "default" is reset by it, just
+            // like in PHPUnit 14, and is therefore not overridden by an order
+            // that is written after it
+            if ($token === 'default') {
+                $previousMainOrderToken = null;
+            }
+
             if (in_array($token, self::MAIN_ORDER_TOKENS, true)) {
                 if ($previousMainOrderToken !== null) {
                     $this->deprecateMultipleOrders($source, $previousMainOrderToken, $token);
                 }
 
-                if ($defectsSeen && $token !== 'default') {
+                if ($defectsSeen) {
                     $this->deprecateDefectsBeforeOrder($source, $token);
 
                     $defectsSeen = false;
