@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 ### Fixed
 
 * When an order is configured on the command line, for instance using `--order-by random`, `defects` configured using the `executionOrder` attribute in the XML configuration file is still applied, and vice versa
+* `--fail-on-skipped` does not make the test runner exit with a shell exit code that indicates failure when a test class is skipped, for instance because its before-first-test method calls `markTestSkipped()`, although its tests are counted as skipped
 
 ## [12.5.43] - 2026-11-02
 
