@@ -16,9 +16,11 @@ use function realpath;
 use function uniqid;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\CliArguments\Builder;
 use PHPUnit\TextUI\Configuration\Configuration as MergedConfiguration;
 use PHPUnit\TextUI\Configuration\Merger;
@@ -30,6 +32,57 @@ use PHPUnit\TextUI\Configuration\TimeoutNotConfiguredException;
 #[Group('textui/configuration')]
 final class MergerTest extends TestCase
 {
+    /**
+     * @return non-empty-array<non-empty-string, array{0: non-empty-string, 1: list<string>, 2: int, 3: int}>
+     */
+    public static function executionOrderProvider(): array
+    {
+        return [
+            'defects from XML configuration file' => [
+                'configuration_execution_order_defects.xml',
+                [],
+                TestSuiteSorter::ORDER_DEFAULT,
+                TestSuiteSorter::ORDER_DEFECTS_FIRST,
+            ],
+            'option that does not configure the order' => [
+                'configuration_execution_order_defects.xml',
+                ['--ignore-dependencies'],
+                TestSuiteSorter::ORDER_DEFAULT,
+                TestSuiteSorter::ORDER_DEFECTS_FIRST,
+            ],
+            'order without defects from command line' => [
+                'configuration_execution_order_defects.xml',
+                ['--order-by=random'],
+                TestSuiteSorter::ORDER_RANDOMIZED,
+                TestSuiteSorter::ORDER_DEFAULT,
+            ],
+            'order from --random-order' => [
+                'configuration_execution_order_defects.xml',
+                ['--random-order'],
+                TestSuiteSorter::ORDER_RANDOMIZED,
+                TestSuiteSorter::ORDER_DEFAULT,
+            ],
+            'order from --reverse-order' => [
+                'configuration_execution_order_defects.xml',
+                ['--reverse-order'],
+                TestSuiteSorter::ORDER_REVERSED,
+                TestSuiteSorter::ORDER_DEFAULT,
+            ],
+            'defects without order from command line' => [
+                'configuration_execution_order_reverse.xml',
+                ['--order-by=defects'],
+                TestSuiteSorter::ORDER_DEFAULT,
+                TestSuiteSorter::ORDER_DEFECTS_FIRST,
+            ],
+            'order and defects from command line' => [
+                'configuration_execution_order_reverse.xml',
+                ['--order-by=random,defects'],
+                TestSuiteSorter::ORDER_RANDOMIZED,
+                TestSuiteSorter::ORDER_DEFECTS_FIRST,
+            ],
+        ];
+    }
+
     public function testNoLoggingShouldOnlyAffectXmlConfiguration(): void
     {
         $junitLog = uniqid('junit_log_');
@@ -618,6 +671,32 @@ final class MergerTest extends TestCase
         $this->assertTrue($mergedConfig->failOnIndirectDeprecation());
 
         $this->assertTrue($mergedConfig->displayDetailsOnTestsThatTriggerDeprecations());
+    }
+
+    /**
+     * @param non-empty-string $configurationFile
+     * @param list<string>     $parameters
+     */
+    #[DataProvider('executionOrderProvider')]
+    public function testOrderConfiguredOnCommandLineReplacesOrderConfiguredInXmlConfigurationFileAsAWhole(string $configurationFile, array $parameters, int $executionOrder, int $executionOrderDefects): void
+    {
+        $fromFile = new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . $configurationFile);
+        $fromCli  = new Builder($this->createStub(Emitter::class))->fromParameters($parameters);
+
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge($fromCli, $fromFile);
+
+        $this->assertSame($executionOrder, $mergedConfig->executionOrder());
+        $this->assertSame($executionOrderDefects, $mergedConfig->executionOrderDefects());
+    }
+
+    public function testResolutionOfDependenciesConfiguredInXmlConfigurationFileIsKeptWhenOrderIsConfiguredOnCommandLine(): void
+    {
+        $fromFile = new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration_execution_order_defects.xml');
+        $fromCli  = new Builder($this->createStub(Emitter::class))->fromParameters(['--order-by=random']);
+
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge($fromCli, $fromFile);
+
+        $this->assertFalse($mergedConfig->resolveDependencies());
     }
 
     private function mergeWithPhpSelf(?string $phpSelf): MergedConfiguration
