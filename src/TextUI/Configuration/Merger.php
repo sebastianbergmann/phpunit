@@ -862,18 +862,26 @@ final readonly class Merger
         $requireCoverageMetadataOnLargeTests  = $xmlConfiguration->phpunit()->requireCoverageMetadataOnLargeTests();
         $requireSealedMockObjects             = $xmlConfiguration->phpunit()->requireSealedMockObjects();
 
-        if ($cliConfiguration->hasExecutionOrder()) {
-            $executionOrder = $cliConfiguration->executionOrder();
-        } else {
-            $executionOrder = $xmlConfiguration->phpunit()->executionOrder();
-        }
-
+        // An order that is configured on the command line replaces the order
+        // that is configured in the XML configuration file as a whole, so that
+        // "defects" from one is not combined with the order from the other
+        $executionOrder        = TestSuiteSorter::ORDER_DEFAULT;
         $executionOrderDefects = TestSuiteSorter::ORDER_DEFAULT;
 
-        if ($cliConfiguration->hasExecutionOrderDefects()) {
-            $executionOrderDefects = $cliConfiguration->executionOrderDefects();
-        } elseif ($xmlConfiguration->phpunit()->defectsFirst()) {
-            $executionOrderDefects = TestSuiteSorter::ORDER_DEFECTS_FIRST;
+        if ($cliConfiguration->hasExecutionOrder() || $cliConfiguration->hasExecutionOrderDefects()) {
+            if ($cliConfiguration->hasExecutionOrder()) {
+                $executionOrder = $cliConfiguration->executionOrder();
+            }
+
+            if ($cliConfiguration->hasExecutionOrderDefects()) {
+                $executionOrderDefects = $cliConfiguration->executionOrderDefects();
+            }
+        } else {
+            $executionOrder = $xmlConfiguration->phpunit()->executionOrder();
+
+            if ($xmlConfiguration->phpunit()->defectsFirst()) {
+                $executionOrderDefects = TestSuiteSorter::ORDER_DEFECTS_FIRST;
+            }
         }
 
         if ($cliConfiguration->hasResolveDependencies()) {

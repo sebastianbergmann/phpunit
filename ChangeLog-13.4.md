@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 13.4 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [13.4.7] - 2026-MM-DD
+
+### Fixed
+
+* When an order is configured on the command line, for instance using `--order-by random`, `defects` configured using the `executionOrder` attribute in the XML configuration file is still applied, and vice versa
+
 ## [13.4.6] - 2026-11-02
 
 ### Changed
@@ -128,6 +134,7 @@ All notable changes of the PHPUnit 13.4 release series are documented in this fi
 * A test that is run in process isolation aborts the test run when its result cannot be unserialized, for instance because it returns an object that holds a test double
 * A test that uses `#[DataProviderClosure]` errors when it is run in process isolation
 
+[13.4.7]: https://github.com/sebastianbergmann/phpunit/compare/13.4.6...13.4
 [13.4.6]: https://github.com/sebastianbergmann/phpunit/compare/13.4.5...13.4.6
 [13.4.5]: https://github.com/sebastianbergmann/phpunit/compare/13.4.4...13.4.5
 [13.4.4]: https://github.com/sebastianbergmann/phpunit/compare/13.4.3...13.4.4
