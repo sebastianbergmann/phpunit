@@ -32,6 +32,7 @@
          executionOrder="default"
          controlGarbageCollector="true"
          numberOfTestsBeforeGarbageCollection="1000"
+         numberOfTestClassesBeforeWorkerRecycling="50"
          shortenArraysForExportThreshold="10"
          warnWhenPhpIsNotConfiguredForDevelopment="true"
 >

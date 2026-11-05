@@ -9,16 +9,22 @@
  */
 namespace PHPUnit\Util\PHP;
 
+use const PHP_OS_FAMILY;
 use function assert;
 use function fclose;
 use function feof;
+use function fstat;
 use function fwrite;
 use function is_resource;
+use function max;
 use function proc_close;
+use function proc_get_status;
+use function proc_terminate;
 use function rewind;
 use function stream_get_contents;
 use function stream_set_blocking;
 use function unlink;
+use function usleep;
 
 /**
  * Handle for a worker process that has been spawned by the JobRunner.
@@ -36,6 +42,29 @@ use function unlink;
  */
 final class RunningJob
 {
+    /**
+     * How long a terminated process is given to shut down on its own before
+     * its termination is forced, and the interval at which its liveness is
+     * polled while waiting.
+     */
+    private const int TERMINATION_GRACE_PERIOD_MICROSECONDS = 500000;
+
+    private const int TERMINATION_POLL_INTERVAL_MICROSECONDS = 1000;
+
+    /**
+     * The interval at which the liveness of the process is polled while
+     * waitInvoking() waits for it.
+     */
+    private const int WAIT_POLL_INTERVAL_MICROSECONDS = 1000;
+
+    /**
+     * The signal used to force termination when the process has not shut down
+     * within the grace period. Unlike the default SIGTERM, SIGKILL cannot be
+     * caught or ignored by the process. On Windows, where proc_terminate()
+     * always terminates the process forcefully, the signal is ignored.
+     */
+    private const int SIGKILL = 9;
+
     /**
      * @var resource
      */
@@ -60,6 +89,20 @@ final class RunningJob
      * @var ?resource
      */
     private $mergedOutputStream;
+
+    /**
+     * The files that capture the standard output and the standard error of
+     * a process that writes them to files instead of pipes, which are read
+     * once the process has ended (see JobRunner::capturingOutputInFiles()).
+     *
+     * @var ?resource
+     */
+    private $outputFile;
+
+    /**
+     * @var ?resource
+     */
+    private $errorFile;
     private ?string $temporaryFile;
     private string $stdoutBuffer = '';
     private string $stderrBuffer = '';
@@ -69,12 +112,16 @@ final class RunningJob
      * @param resource             $process
      * @param array<int, resource> $pipes
      * @param ?resource            $mergedOutputStream
+     * @param ?resource            $outputFile
+     * @param ?resource            $errorFile
      */
-    public function __construct(mixed $process, array $pipes, mixed $mergedOutputStream, ?string $temporaryFile)
+    public function __construct(mixed $process, array $pipes, mixed $mergedOutputStream, ?string $temporaryFile, mixed $outputFile = null, mixed $errorFile = null)
     {
         $this->process            = $process;
         $this->mergedOutputStream = $mergedOutputStream;
         $this->temporaryFile      = $temporaryFile;
+        $this->outputFile         = $outputFile;
+        $this->errorFile          = $errorFile;
 
         if (isset($pipes[0])) {
             $this->stdin = $pipes[0];
@@ -141,6 +188,47 @@ final class RunningJob
     }
 
     /**
+     * The number of bytes the worker process has written to its standard
+     * output and standard error so far, for a job whose output is redirected
+     * to a file rather than a pipe. For any other job, it is 0. Once the
+     * process has been reaped, its output is available from wait() instead.
+     *
+     * @return non-negative-int
+     */
+    public function outputLength(): int
+    {
+        if (!is_resource($this->mergedOutputStream)) {
+            return 0;
+        }
+
+        $statistics = fstat($this->mergedOutputStream);
+
+        if ($statistics === false) {
+            // @codeCoverageIgnoreStart
+            return 0;
+            // @codeCoverageIgnoreEnd
+        }
+
+        return max(0, $statistics['size']);
+    }
+
+    /**
+     * Whether the worker process is still executing. Once it has terminated,
+     * wait() can be called to reap it without blocking. Intended for callers
+     * that cannot wait on the process' output streams — for instance because
+     * its output is redirected to a file rather than a pipe — and therefore
+     * poll its liveness instead.
+     */
+    public function isRunning(): bool
+    {
+        if ($this->result !== null) {
+            return false;
+        }
+
+        return proc_get_status($this->process)['running'];
+    }
+
+    /**
      * Read whatever output is currently available without blocking. Intended
      * to be called after stream_select() has reported one of the streams
      * returned by readableStreams() as ready.
@@ -149,6 +237,60 @@ final class RunningJob
     {
         $this->stdoutBuffer .= $this->readAvailable($this->stdout);
         $this->stderrBuffer .= $this->readAvailable($this->stderr);
+    }
+
+    /**
+     * Terminate the worker process instead of waiting for it to finish, then
+     * reap it. Used when the test runner stops early and abandons the work
+     * the process is doing.
+     *
+     * The process is given a grace period to shut down in response to the
+     * termination signal; if it is still running afterwards — because it,
+     * or code it runs, installed a signal handler — its termination is
+     * forced. This bounds how long stopping early can take.
+     */
+    public function terminate(): void
+    {
+        if ($this->result !== null) {
+            return;
+        }
+
+        $this->closeStdin();
+
+        proc_terminate($this->process);
+
+        $waited = 0;
+
+        while (proc_get_status($this->process)['running']) {
+            if ($waited >= self::TERMINATION_GRACE_PERIOD_MICROSECONDS) {
+                proc_terminate($this->process, self::SIGKILL);
+
+                break;
+            }
+
+            usleep(self::TERMINATION_POLL_INTERVAL_MICROSECONDS);
+
+            $waited += self::TERMINATION_POLL_INTERVAL_MICROSECONDS;
+        }
+
+        // The output pipes are closed without draining them: the process'
+        // work is being abandoned, so its output is of no interest, and the
+        // blocking read of a drain could wait forever on a pipe whose write
+        // end was inherited by a child of the terminated process that
+        // outlives it.
+        if (is_resource($this->stdout)) {
+            fclose($this->stdout);
+
+            $this->stdout = null;
+        }
+
+        if (is_resource($this->stderr)) {
+            fclose($this->stderr);
+
+            $this->stderr = null;
+        }
+
+        $this->wait();
     }
 
     /**
@@ -182,6 +324,9 @@ final class RunningJob
             $this->stderrBuffer = '';
         }
 
+        $this->stdoutBuffer .= $this->readCapturedOutput($this->outputFile);
+        $this->stderrBuffer .= $this->readCapturedOutput($this->errorFile);
+
         if ($this->temporaryFile !== null) {
             unlink($this->temporaryFile);
         }
@@ -189,6 +334,65 @@ final class RunningJob
         $this->result = new Result($this->stdoutBuffer, $this->stderrBuffer);
 
         return $this->result;
+    }
+
+    /**
+     * Wait until the process has terminated, invoking the given callback each
+     * time its liveness is polled, then reap it and return its accumulated
+     * output as wait() does. This lets the caller carry on with other work
+     * while it waits for the process: the parallel test runner, for instance,
+     * advances its worker processes while a test that runs in a separate
+     * process waits for its child process.
+     *
+     * The output that the process writes is read as it becomes available, so
+     * that the process does not block on an output pipe whose buffer is full.
+     * On Windows, where a pipe cannot be read without blocking, the process is
+     * waited for as wait() waits for it, and the callback is not invoked.
+     *
+     * @param callable(): void $whileRunning
+     */
+    public function waitInvoking(callable $whileRunning): Result
+    {
+        // @codeCoverageIgnoreStart
+        if (PHP_OS_FAMILY === 'Windows') {
+            return $this->wait();
+        }
+        // @codeCoverageIgnoreEnd
+
+        while ($this->isRunning()) {
+            $this->consume();
+
+            $whileRunning();
+
+            usleep(self::WAIT_POLL_INTERVAL_MICROSECONDS);
+        }
+
+        return $this->wait();
+    }
+
+    /**
+     * Read what a process wrote to a file that captured its output, once the
+     * process has ended, and close the file, which removes it.
+     *
+     * @param ?resource $file
+     */
+    private function readCapturedOutput(mixed &$file): string
+    {
+        if (!is_resource($file)) {
+            return '';
+        }
+
+        rewind($file);
+
+        $output = stream_get_contents($file);
+
+        fclose($file);
+
+        $file = null;
+
+        assert($output !== false);
+
+        return $output;
     }
 
     /**

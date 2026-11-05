@@ -20,11 +20,10 @@ use function explode;
 use function file_get_contents;
 use function file_put_contents;
 use function function_exists;
+use function getenv;
 use function ini_get_all;
-use function is_array;
 use function is_file;
 use function is_resource;
-use function is_string;
 use function preg_match;
 use function proc_open;
 use function sprintf;
@@ -37,6 +36,7 @@ use function tmpfile;
 use function trim;
 use function unlink;
 use function xdebug_is_debugger_active;
+use Closure;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestRunner\ChildProcessResultProcessor;
@@ -53,10 +53,59 @@ final readonly class JobRunner
     private ChildProcessResultProcessor $processor;
     private Emitter $emitter;
 
-    public function __construct(ChildProcessResultProcessor $processor, Emitter $emitter)
+    /**
+     * @var ?Closure(): void
+     */
+    private ?Closure $whileWaiting;
+
+    /**
+     * Whether the standard output and the standard error of a process that
+     * startAsync() starts are captured in files instead of pipes (see
+     * capturingOutputInFiles()).
+     */
+    private bool $captureOutputInFiles;
+
+    /**
+     * @param ?Closure(): void $whileWaiting
+     */
+    public function __construct(ChildProcessResultProcessor $processor, Emitter $emitter, ?Closure $whileWaiting = null, bool $captureOutputInFiles = false)
     {
-        $this->processor = $processor;
-        $this->emitter   = $emitter;
+        $this->processor            = $processor;
+        $this->emitter              = $emitter;
+        $this->whileWaiting         = $whileWaiting;
+        $this->captureOutputInFiles = $captureOutputInFiles;
+    }
+
+    /**
+     * A copy of this job runner whose run() invokes the given callback while
+     * it waits for the process of a job (see RunningJob::waitInvoking()).
+     *
+     * @param Closure(): void $whileWaiting
+     */
+    public function invokingWhileWaiting(Closure $whileWaiting): self
+    {
+        return new self($this->processor, $this->emitter, $whileWaiting, $this->captureOutputInFiles);
+    }
+
+    /**
+     * A copy of this job runner that captures the standard output and the
+     * standard error of a process that startAsync() starts in temporary files
+     * instead of pipes, for a caller that polls many such processes in one
+     * loop (see PhptRunner).
+     *
+     * Reading what a process has written to a pipe so far, so that it does
+     * not block on a full pipe buffer, cannot be done without blocking on
+     * Windows: the read waits until the process has ended, and so does the
+     * caller's loop. A process that writes to a file neither blocks on a full
+     * buffer nor needs to be read from before it has ended.
+     *
+     * The output is read once the process has ended, so a process that leaves
+     * a process of its own running, which inherited its output, is not waited
+     * for, and what that process writes afterwards is not part of the output.
+     */
+    public function capturingOutputInFiles(): self
+    {
+        return new self($this->processor, $this->emitter, $this->whileWaiting, true);
     }
 
     /**
@@ -92,38 +141,11 @@ final readonly class JobRunner
      */
     public function run(Job $job): Result
     {
-        $temporaryFile = null;
+        $running = $this->startAsync($job);
 
-        if ($job->hasInput()) {
-            $temporaryFile = tempnam(sys_get_temp_dir(), 'phpunit_');
-
-            if ($temporaryFile === false ||
-                file_put_contents($temporaryFile, $job->code()) === false) {
-                // @codeCoverageIgnoreStart
-                throw new PhpProcessException(
-                    'Unable to write temporary file',
-                );
-                // @codeCoverageIgnoreEnd
-            }
-
-            $job = new Job(
-                $job->input(),
-                $job->reason(),
-                $job->phpSettings(),
-                $job->environmentVariables(),
-                $job->arguments(),
-                null,
-                $job->redirectErrors(),
-                $job->requiresXdebug(),
-            );
+        if ($this->whileWaiting !== null) {
+            return $running->waitInvoking($this->whileWaiting);
         }
-
-        assert($temporaryFile !== '');
-
-        $running = $this->startProcess($job, $temporaryFile);
-
-        $running->write($job->code());
-        $running->closeStdin();
 
         return $running->wait();
     }
@@ -152,7 +174,68 @@ final readonly class JobRunner
             // @codeCoverageIgnoreEnd
         }
 
-        return $this->startProcess($job, $temporaryFile);
+        return $this->startProcess($job, $temporaryFile, false);
+    }
+
+    /**
+     * Start the given job as an asynchronous one-shot process.
+     *
+     * The job's code is piped through the process' standard input — exactly as
+     * the synchronous run() does, of which this is the non-blocking half — and
+     * its input, if the job carries a --STDIN-- section, is run from a temporary
+     * file instead so that standard input remains free to deliver that section.
+     * Standard input is closed once written; the returned RunningJob can be
+     * polled for completion and reaped with wait().
+     *
+     * Feeding the code through standard input rather than from a temporary file
+     * (as start() does for the persistent worker, whose standard input is its
+     * control channel) keeps the child's __FILE__ out of the filesystem, which
+     * matters to tests that, for instance, restrict open_basedir.
+     *
+     * Unlike start(), the process' standard input is not left open as a control
+     * channel; unlike run(), the caller is not made to block until the process
+     * has terminated. This lets a caller keep several such processes running at
+     * the same time — for instance the PHPT test runner, which runs the child
+     * processes of independent PHPT tests concurrently.
+     *
+     * @throws PhpProcessException
+     */
+    public function startAsync(Job $job): RunningJob
+    {
+        $temporaryFile = null;
+
+        if ($job->hasInput()) {
+            $temporaryFile = tempnam(sys_get_temp_dir(), 'phpunit_');
+
+            if ($temporaryFile === false ||
+                file_put_contents($temporaryFile, $job->code()) === false) {
+                // @codeCoverageIgnoreStart
+                throw new PhpProcessException(
+                    'Unable to write temporary file',
+                );
+                // @codeCoverageIgnoreEnd
+            }
+
+            $job = new Job(
+                $job->input(),
+                $job->reason(),
+                $job->phpSettings(),
+                $job->environmentVariables(),
+                $job->arguments(),
+                null,
+                $job->redirectErrors(),
+                $job->requiresXdebug(),
+            );
+        }
+
+        assert($temporaryFile !== '');
+
+        $running = $this->startProcess($job, $temporaryFile, $this->captureOutputInFiles);
+
+        $running->write($job->code());
+        $running->closeStdin();
+
+        return $running;
     }
 
     /**
@@ -160,34 +243,23 @@ final readonly class JobRunner
      *
      * @throws PhpProcessException
      */
-    private function startProcess(Job $job, ?string $temporaryFile): RunningJob
+    private function startProcess(Job $job, ?string $temporaryFile, bool $captureOutputInFiles): RunningJob
     {
         $environmentVariables = null;
 
         if ($job->hasEnvironmentVariables()) {
-            /** @phpstan-ignore nullCoalesce.variable */
-            $serverVariables = $_SERVER ?? [];
-
-            unset($serverVariables['argv'], $serverVariables['argc']);
-
-            $environmentVariables = [];
-
-            foreach ($serverVariables as $key => $value) {
-                if (!is_string($key)) {
-                    continue;
-                }
-
-                if (is_array($value)) {
-                    continue;
-                }
-
-                $environmentVariables[$key] = $value;
-            }
-
-            $environmentVariables = array_merge($environmentVariables, $job->environmentVariables());
+            // The child process inherits the environment of this process, not
+            // the contents of $_SERVER: application bootstrap code such as a
+            // .env loader writes computed values into $_SERVER without
+            // exporting them, and forwarding those would let the child see
+            // them through getenv() while its own bootstrap computes different
+            // values into its $_SERVER.
+            $environmentVariables = array_merge(getenv(), $job->environmentVariables());
         }
 
         $mergedOutputStream = null;
+        $outputFile         = null;
+        $errorFile          = null;
 
         if ($job->redirectErrors()) {
             $mergedOutputStream = tmpfile();
@@ -202,6 +274,21 @@ final readonly class JobRunner
                 0 => ['pipe', 'r'],
                 1 => $mergedOutputStream,
                 2 => $mergedOutputStream,
+            ];
+        } elseif ($captureOutputInFiles) {
+            $outputFile = tmpfile();
+            $errorFile  = tmpfile();
+
+            if ($outputFile === false || $errorFile === false) {
+                // @codeCoverageIgnoreStart
+                throw new PhpProcessException('Unable to create temporary file for captured output');
+                // @codeCoverageIgnoreEnd
+            }
+
+            $pipeSpec = [
+                0 => ['pipe', 'r'],
+                1 => $outputFile,
+                2 => $errorFile,
             ];
         } else {
             $pipeSpec = [
@@ -229,7 +316,7 @@ final readonly class JobRunner
 
         $this->emitter->childProcessStarted($job->reason());
 
-        return new RunningJob($process, $pipes, $mergedOutputStream, $temporaryFile);
+        return new RunningJob($process, $pipes, $mergedOutputStream, $temporaryFile, $outputFile, $errorFile);
     }
 
     /**

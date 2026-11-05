@@ -1,5 +1,7 @@
 --TEST--
 The --retry CLI option attempts a PHPT test up to N times, stopping at the first success
+--CONFLICTS--
+all
 --FILE--
 <?php declare(strict_types=1);
 @unlink(sys_get_temp_dir() . '/phpunit-e2e-phpt-retry.marker');

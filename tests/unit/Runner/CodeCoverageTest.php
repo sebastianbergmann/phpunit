@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner;
 
+use function sys_get_temp_dir;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
@@ -19,6 +20,7 @@ use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\Merger;
 use PHPUnit\TextUI\XmlConfiguration\DefaultConfiguration;
+use PHPUnit\TextUI\XmlConfiguration\Loader;
 
 #[CoversClass(CodeCoverage::class)]
 #[Small]
@@ -83,6 +85,33 @@ final class CodeCoverageTest extends TestCase
         $codeCoverage->warnAboutFilesThatCouldNotBeParsed();
 
         $this->assertFalse($codeCoverage->isActive());
+    }
+
+    public function testProvidesTheCollectedCodeCoverageDataAndTheTestsItWasCollectedForWithoutTheFilter(): void
+    {
+        require_once __DIR__ . '/../../end-to-end/code-coverage/_files/code-coverage-driver/src/CustomDriverWithFakeData.php';
+
+        $configuration = new Merger($this->createStub(Emitter::class))->merge(
+            new Builder($this->createStub(Emitter::class))->fromParameters(
+                ['--cache-directory', sys_get_temp_dir() . '/phpunit-collected-code-coverage-test'],
+            ),
+            new Loader($this->createStub(Emitter::class))->load(
+                __DIR__ . '/../../end-to-end/code-coverage/_files/code-coverage-driver/phpunit-with-fake-data.xml',
+            ),
+        );
+
+        $codeCoverage = new CodeCoverage($this->createStub(Emitter::class));
+
+        $codeCoverage->init($configuration, new CodeCoverageFilterRegistry, false);
+
+        $codeCoverage->codeCoverage()->setTests(['test' => ['size' => 'small', 'status' => 'success', 'time' => 0.0]]);
+
+        $collected = $codeCoverage->collectedCodeCoverage();
+
+        $this->assertSame($codeCoverage->codeCoverage()->getData(true), $collected->getData(true));
+        $this->assertSame($codeCoverage->codeCoverage()->getTests(), $collected->getTests());
+        $this->assertNotSame([], $codeCoverage->codeCoverage()->filter()->files());
+        $this->assertSame([], $collected->filter()->files());
     }
 
     /**

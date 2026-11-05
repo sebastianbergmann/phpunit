@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Runner\Extension;
 
+use PHPUnit\Event\EventFacadeIsSealedException;
+use PHPUnit\Event\Subscriber;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
@@ -19,6 +21,16 @@ use PHPUnit\Framework\TestCase;
 #[Group('test-runner')]
 final class ExtensionFacadeTest extends TestCase
 {
+    public function testRegistrationOfSubscribersForEventsOfThisProcessDoesNotWorkWhenEventFacadeIsSealed(): void
+    {
+        $this->expectException(EventFacadeIsSealedException::class);
+
+        new ExtensionFacade()->registerSubscribersForEventsOfThisProcess(
+            new class implements Subscriber
+            {},
+        );
+    }
+
     public function testDoesNotReplaceOutputByDefault(): void
     {
         $facade = new ExtensionFacade;

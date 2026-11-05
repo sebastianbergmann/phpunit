@@ -31,9 +31,16 @@ final readonly class Info
     private CpuTime $totalCpuTimeSincePrevious;
 
     /**
+     * @var non-negative-int
+     */
+    private int $processId;
+
+    /**
+     * @param non-negative-int $processId
+     *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function __construct(Snapshot $current, Duration $durationSinceStart, MemoryUsage $memorySinceStart, Duration $durationSincePrevious, MemoryUsage $memorySincePrevious, CpuTime $userCpuTimeSinceStart, CpuTime $systemCpuTimeSinceStart, CpuTime $totalCpuTimeSinceStart, CpuTime $userCpuTimeSincePrevious, CpuTime $systemCpuTimeSincePrevious, CpuTime $totalCpuTimeSincePrevious)
+    public function __construct(Snapshot $current, Duration $durationSinceStart, MemoryUsage $memorySinceStart, Duration $durationSincePrevious, MemoryUsage $memorySincePrevious, CpuTime $userCpuTimeSinceStart, CpuTime $systemCpuTimeSinceStart, CpuTime $totalCpuTimeSinceStart, CpuTime $userCpuTimeSincePrevious, CpuTime $systemCpuTimeSincePrevious, CpuTime $totalCpuTimeSincePrevious, int $processId)
     {
         $this->current                    = $current;
         $this->durationSinceStart         = $durationSinceStart;
@@ -46,6 +53,7 @@ final readonly class Info
         $this->userCpuTimeSincePrevious   = $userCpuTimeSincePrevious;
         $this->systemCpuTimeSincePrevious = $systemCpuTimeSincePrevious;
         $this->totalCpuTimeSincePrevious  = $totalCpuTimeSincePrevious;
+        $this->processId                  = $processId;
     }
 
     public function time(): HRTime
@@ -131,6 +139,25 @@ final readonly class Info
     public function totalCpuTimeSincePrevious(): CpuTime
     {
         return $this->totalCpuTimeSincePrevious;
+    }
+
+    /**
+     * The ID of the process in which the event was emitted, or 0 when it
+     * could not be determined.
+     *
+     * An event is not always processed in the process that emitted it: the
+     * events of a test that runs in process isolation, or in a worker process
+     * of a parallel test run, are emitted in that process and replayed in the
+     * main process afterwards. A subscriber that has to act in the process
+     * that runs the test — and that is registered in both processes, or in
+     * the main process only — compares this ID with getmypid() to tell the
+     * events of its own process from the replayed ones.
+     *
+     * @return non-negative-int
+     */
+    public function processId(): int
+    {
+        return $this->processId;
     }
 
     public function asString(): string

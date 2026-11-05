@@ -38,6 +38,11 @@ final class JobRunnerRegistry
         self::runner()->runTestJob($job, $processResultFile, $test, $processResultNonce);
     }
 
+    public static function get(): JobRunner
+    {
+        return self::runner();
+    }
+
     public static function set(JobRunner $runner): void
     {
         self::$runner = $runner;

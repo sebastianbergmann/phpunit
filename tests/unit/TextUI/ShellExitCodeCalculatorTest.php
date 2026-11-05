@@ -212,6 +212,7 @@ final class ShellExitCodeCalculatorTest extends TestCase
             CpuTime::fromSecondsAndNanoseconds(0, 0),
             CpuTime::fromSecondsAndNanoseconds(0, 0),
             CpuTime::fromSecondsAndNanoseconds(0, 0),
+            12345,
         );
     }
 }
