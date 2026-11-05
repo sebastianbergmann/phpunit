@@ -91,7 +91,7 @@ final class StringMatchesFormatDescription extends Constraint
                 '%s' => '[^\r\n]+', // One or more of anything except the end of line character
                 '%S' => '[^\r\n]*', // Zero or more of anything except the end of line character
                 '%a' => '.+?', // One or more of anything including the end of line character
-                '%A' => '.*?', // Zero or more of anything including the end of line character.
+                '%A' => '.*?', // Zero or more of anything including the end of line character
                 '%w' => '\s*', // Zero or more white space characters
                 '%i' => '[+-]?\d+', // A signed integer value
                 '%d' => '\d+', // An unsigned integer value
