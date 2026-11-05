@@ -24,12 +24,14 @@ use PHPUnit\Event\Test\AfterLastTestMethodErrored;
 use PHPUnit\Event\Test\AfterLastTestMethodFailed;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
 use PHPUnit\Event\Test\BeforeFirstTestMethodFailed;
+use PHPUnit\Event\Test\PropertyFalsified;
 use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Logging\TestDox\TestResult as TestDoxTestResult;
 use PHPUnit\Logging\TestDox\TestResultCollection;
 use PHPUnit\TestRunner\TestResult\TestResult;
 use PHPUnit\TextUI\Output\Printer;
 use PHPUnit\Util\Color;
+use PHPUnit\Util\PropertyFalsifiedToStringMapper;
 use PHPUnit\Util\Sanitizer;
 
 /**
@@ -216,7 +218,7 @@ final readonly class ResultPrinter
         assert($throwable !== null);
 
         $this->printTestResultBodyStart($test);
-        $this->printThrowable($test->status(), $throwable);
+        $this->printThrowable($test->status(), $throwable, $test->propertyFalsified());
         $this->printTestResultBodyEnd($test);
     }
 
@@ -246,7 +248,12 @@ final readonly class ResultPrinter
         $this->printer->print(PHP_EOL);
     }
 
-    private function printThrowable(TestStatus $status, Throwable $throwable): void
+    /**
+     * How a property was falsified, with its minimal counterexample, is
+     * printed below the message and the diff of the throwable that falsified
+     * it, because everything after the start of the diff is taken as diff.
+     */
+    private function printThrowable(TestStatus $status, Throwable $throwable, ?PropertyFalsified $propertyFalsified = null): void
     {
         $message    = Sanitizer::sanitizeControlCharacters(trim($throwable->description()));
         $stackTrace = $this->formatStackTrace(Sanitizer::sanitizeControlCharacters($throwable->stackTrace()));
@@ -281,7 +288,22 @@ final readonly class ResultPrinter
             $this->printer->print(PHP_EOL);
         }
 
+        if ($propertyFalsified !== null) {
+            $this->printer->print(
+                $this->prefixLines(
+                    $this->prefixFor('default', $status),
+                    PHP_EOL . rtrim(Sanitizer::sanitizeControlCharacters(PropertyFalsifiedToStringMapper::map($propertyFalsified))),
+                ),
+            );
+        }
+
         if ($stackTrace !== '') {
+            // like the stack trace, the description of how a property was
+            // falsified does not end its last line
+            if ($propertyFalsified !== null) {
+                $this->printer->print(PHP_EOL);
+            }
+
             if ($message !== '' || $diff !== '') {
                 $tracePrefix = $this->prefixFor('default', $status);
             } else {

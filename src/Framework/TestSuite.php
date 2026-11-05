@@ -19,6 +19,7 @@ use function count;
 use function implode;
 use function is_callable;
 use function is_file;
+use function is_string;
 use function is_subclass_of;
 use function sprintf;
 use function str_ends_with;
@@ -30,6 +31,7 @@ use IteratorAggregate;
 use PHPUnit\Event;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\NoPreviousThrowableException;
+use PHPUnit\Framework\PropertyBased\InvalidPropertyException;
 use PHPUnit\Framework\TestRunner\ProcessIsolation;
 use PHPUnit\Metadata\Api\Dependencies;
 use PHPUnit\Metadata\Api\Groups;
@@ -611,6 +613,31 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
     }
 
     /**
+     * Calls the hook methods of the test class that are called before its
+     * first test, when the examples of its properties are run one at a time
+     * outside of a test run rather than when its tests are run.
+     *
+     * @throws Exception
+     * @throws NoPreviousThrowableException
+     *
+     * @return null|non-empty-string|Throwable null when the methods were called, the message why the tests of the test class are skipped, or the throwable that one of the methods raised
+     */
+    public function invokeMethodsBeforeFirstExample(): null|string|Throwable
+    {
+        return $this->callMethodsBeforeFirstTest($this->emitter);
+    }
+
+    /**
+     * Calls the hook methods of the test class that are called after its last
+     * test, when the examples of its properties are run one at a time outside
+     * of a test run, after the last of these examples.
+     */
+    public function invokeMethodsAfterLastExample(): void
+    {
+        $this->invokeMethodsAfterLastTest($this->emitter);
+    }
+
+    /**
      * Runs the tests aggregated by this test suite.
      *
      * @param list<Test> $tests
@@ -728,6 +755,32 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             );
 
             return;
+        } catch (InvalidPropertyException $e) {
+            $file    = $method->getFileName();
+            $line    = $method->getStartLine();
+            $message = $e->getMessage();
+
+            assert($file !== false && $file !== '');
+            assert($line !== false);
+            assert($message !== '');
+
+            $this->emitter->testTriggeredPhpunitError(
+                new TestMethod(
+                    $className,
+                    $methodName,
+                    $file,
+                    $line,
+                    Event\Code\TestDoxBuilder::fromClassNameAndMethodName(
+                        $className,
+                        $methodName,
+                    ),
+                    MetadataCollection::fromArray([]),
+                    Event\TestData\TestDataCollection::fromArray([]),
+                ),
+                $message,
+            );
+
+            return;
         }
 
         if ($test instanceof TestCase || $test instanceof DataProviderTestSuite || $test instanceof IterativeTestSuite) {
@@ -823,15 +876,35 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
      */
     private function invokeMethodsBeforeFirstTest(Event\Emitter $emitter, Event\TestSuite\TestSuite $testSuiteValueObjectForEvents): bool
     {
+        $outcome = $this->callMethodsBeforeFirstTest($emitter);
+
+        if (is_string($outcome)) {
+            $emitter->testSuiteSkipped(
+                $testSuiteValueObjectForEvents,
+                $outcome,
+            );
+        }
+
+        return $outcome === null;
+    }
+
+    /**
+     * @throws Exception
+     * @throws NoPreviousThrowableException
+     *
+     * @return null|non-empty-string|Throwable null when the methods were called, the message why the tests of the test class are skipped, or the throwable that one of the methods raised
+     */
+    private function callMethodsBeforeFirstTest(Event\Emitter $emitter): null|string|Throwable
+    {
         if (!$this->isForTestClass()) {
-            return true;
+            return null;
         }
 
         $methods        = new HookMethods($emitter)->hookMethods($this->name)['beforeClass']->methodNamesSortedByPriority();
         $reflector      = new ReflectionClass($this->name);
         $calledMethods  = [];
         $skippedMessage = null;
-        $result         = true;
+        $raised         = null;
 
         new RandomNumberGeneratorSeeder(ConfigurationRegistry::get())->seedFor($this->name);
 
@@ -849,7 +922,6 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
 
             if ($missingRequirements !== []) {
                 $skippedMessage = implode("\n", $missingRequirements);
-                $result         = false;
 
                 break;
             }
@@ -874,7 +946,6 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             if (isset($t) && ($t instanceof IncompleteTest || $t instanceof SkippedTest)) {
                 /** @var non-empty-string $skippedMessage */
                 $skippedMessage = $t->getMessage();
-                $result         = false;
 
                 break;
             }
@@ -894,7 +965,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                     );
                 }
 
-                $result = false;
+                $raised = $t;
 
                 break;
             }
@@ -907,14 +978,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             );
         }
 
-        if ($skippedMessage !== null) {
-            $emitter->testSuiteSkipped(
-                $testSuiteValueObjectForEvents,
-                $skippedMessage,
-            );
-        }
-
-        return $result;
+        return $skippedMessage ?? $raised;
     }
 
     /**

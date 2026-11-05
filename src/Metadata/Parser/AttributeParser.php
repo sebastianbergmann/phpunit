@@ -56,16 +56,24 @@ use PHPUnit\Framework\Attributes\DisableReturnValueGenerationForTestDoubles;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\ExcludeGlobalVariableFromBackup;
 use PHPUnit\Framework\Attributes\ExcludeStaticPropertyFromBackup;
+use PHPUnit\Framework\Attributes\ForAll;
+use PHPUnit\Framework\Attributes\ForAllExternal;
+use PHPUnit\Framework\Attributes\FromPool;
+use PHPUnit\Framework\Attributes\GeneratorFor;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\IgnorePhpunitWarnings;
+use PHPUnit\Framework\Attributes\Initialize;
+use PHPUnit\Framework\Attributes\Invariant;
 use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\PostCondition;
 use PHPUnit\Framework\Attributes\PreCondition;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\Property;
 use PHPUnit\Framework\Attributes\Repeat;
+use PHPUnit\Framework\Attributes\RequireClassification;
 use PHPUnit\Framework\Attributes\RequiresClass;
 use PHPUnit\Framework\Attributes\RequiresEnvironmentVariable;
 use PHPUnit\Framework\Attributes\RequiresFunction;
@@ -78,6 +86,7 @@ use PHPUnit\Framework\Attributes\RequiresPhpunit;
 use PHPUnit\Framework\Attributes\RequiresPhpunitExtension;
 use PHPUnit\Framework\Attributes\RequiresSetting;
 use PHPUnit\Framework\Attributes\Retry;
+use PHPUnit\Framework\Attributes\Rule;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\Attributes\Small;
@@ -88,6 +97,7 @@ use PHPUnit\Framework\Attributes\TestDoxFormatterExternal;
 use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\Attributes\TestWithJson;
 use PHPUnit\Framework\Attributes\Ticket;
+use PHPUnit\Framework\Attributes\UseGenerators;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\Attributes\UsesClassesThatExtendClass;
 use PHPUnit\Framework\Attributes\UsesClassesThatImplementInterface;
@@ -430,6 +440,13 @@ final class AttributeParser implements Parser
                         $attributeInstance->environmentVariableName(),
                         $attributeInstance->value(),
                     );
+
+                    break;
+
+                case UseGenerators::class:
+                    assert($attributeInstance instanceof UseGenerators);
+
+                    $result[] = Metadata::useGeneratorsOnClass($attributeInstance->className());
 
                     break;
 
@@ -970,6 +987,70 @@ final class AttributeParser implements Parser
 
                     break;
 
+                case Property::class:
+                    assert($attributeInstance instanceof Property);
+
+                    $examples = $attributeInstance->examples();
+
+                    if ($examples !== null && $examples < 1) {
+                        $this->emitter->testRunnerTriggeredPhpunitWarning(
+                            sprintf(
+                                'Method %s::%s is annotated with #[Property] but %d is not a positive integer for the number of examples, the configured number of examples is used',
+                                $className,
+                                $methodName,
+                                $examples,
+                            ),
+                        );
+
+                        $examples = null;
+                    }
+
+                    $result[] = Metadata::property($examples);
+
+                    break;
+
+                case GeneratorFor::class:
+                    assert($attributeInstance instanceof GeneratorFor);
+
+                    $result[] = Metadata::generatorFor($attributeInstance->type());
+
+                    break;
+
+                case UseGenerators::class:
+                    assert($attributeInstance instanceof UseGenerators);
+
+                    $result[] = Metadata::useGeneratorsOnMethod($attributeInstance->className());
+
+                    break;
+
+                case RequireClassification::class:
+                    assert($attributeInstance instanceof RequireClassification);
+
+                    $result[] = Metadata::requireClassification($attributeInstance->label(), $attributeInstance->minimumPercentage());
+
+                    break;
+
+                case Rule::class:
+                    assert($attributeInstance instanceof Rule);
+
+                    $result[] = Metadata::rule($attributeInstance->precondition(), $attributeInstance->produces());
+
+                    break;
+
+                case Initialize::class:
+                    assert($attributeInstance instanceof Initialize);
+
+                    $result[] = Metadata::initialize($attributeInstance->produces());
+
+                    break;
+
+                case Invariant::class:
+                    assert($attributeInstance instanceof Invariant);
+
+                    $result[] = Metadata::invariant($attributeInstance->atEnd());
+
+                    break;
+
                 case Retry::class:
                     assert($attributeInstance instanceof Retry);
 
@@ -1062,6 +1143,60 @@ final class AttributeParser implements Parser
                     $result[] = Metadata::ignorePhpunitWarnings($attributeInstance->messagePattern());
 
                     break;
+            }
+        }
+
+        foreach ($reflector->getParameters() as $parameter) {
+            foreach ($parameter->getAttributes() as $attribute) {
+                if ($attribute->getName() !== ForAll::class &&
+                    $attribute->getName() !== ForAllExternal::class &&
+                    $attribute->getName() !== FromPool::class) {
+                    continue;
+                }
+
+                try {
+                    $attributeInstance = $attribute->newInstance();
+                } catch (Error $e) {
+                    $file    = $reflector->getFileName();
+                    $line    = $reflector->getStartLine();
+                    $message = $e->getMessage();
+
+                    assert($file !== false && $file !== '');
+                    assert($line !== false);
+                    assert($message !== '');
+
+                    $result[] = Metadata::invalidAttributeOnMethod(
+                        $this->invalidAttributeMessage(
+                            $attribute->getName(),
+                            'parameter $' . $parameter->getName() . ' of method ' . $className . '::' . $methodName . '()',
+                            $file,
+                            $line,
+                            $message,
+                        ),
+                    );
+
+                    continue;
+                }
+
+                $parameterName = $parameter->getName();
+
+                assert($parameterName !== '');
+
+                if ($attributeInstance instanceof ForAllExternal) {
+                    $result[] = Metadata::forAll($parameterName, $attributeInstance->className(), $attributeInstance->methodName());
+
+                    continue;
+                }
+
+                if ($attributeInstance instanceof FromPool) {
+                    $result[] = Metadata::fromPool($parameterName, $attributeInstance->pool(), $attributeInstance->consume());
+
+                    continue;
+                }
+
+                assert($attributeInstance instanceof ForAll);
+
+                $result[] = Metadata::forAll($parameterName, $className, $attributeInstance->generator());
             }
         }
 

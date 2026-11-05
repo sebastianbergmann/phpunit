@@ -13,6 +13,7 @@ use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Test\PhpDeprecationTriggered;
+use PHPUnit\Event\Test\PropertyFalsified;
 use PHPUnit\Event\TestRunner\PhpunitNoticeTriggered as TestRunnerPhpunitNoticeTriggered;
 use PHPUnit\Event\TestRunner\TimeLimitExceeded;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -67,6 +68,21 @@ final class TestResultTest extends AbstractEventTestCase
 
         $this->assertTrue($result->wasTimeLimitExceeded());
         $this->assertSame($event, $result->timeLimitExceededEvent());
+    }
+
+    public function testDoesNotProvideHowATestWasFalsifiedByDefault(): void
+    {
+        $this->assertNull($this->collector()->result()->propertyFalsifiedEventFor($this->testValueObject()));
+    }
+
+    public function testProvidesHowAPropertyWasFalsified(): void
+    {
+        $collector = $this->collector();
+        $event     = new PropertyFalsified($this->telemetryInfo(), $this->testValueObject(), 1234, 2, 3, 1, false, false, [0], ['value' => '0'], null, [], [], [], 0, 0);
+
+        $collector->testPropertyFalsified($event);
+
+        $this->assertSame($event, $collector->result()->propertyFalsifiedEventFor($this->testValueObject()));
     }
 
     public function testHasNoPhpOrUserDeprecationsByDefault(): void

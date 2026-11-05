@@ -164,6 +164,35 @@ final class TestSuiteTest extends TestCase
         $this->assertTrue($testSuite->isForDataSet());
     }
 
+    public function testCanBeTestSuiteForPropertyTestMethod(): void
+    {
+        $name       = 'ExampleTest::testOne';
+        $className  = 'ExampleTest';
+        $methodName = 'testOne';
+        $size       = 1;
+        $tests      = TestCollection::fromArray([]);
+        $file       = 'ExampleTest.php';
+        $line       = 1;
+
+        $testSuite = new TestSuiteForPropertyTestMethod($name, $size, $tests, $className, $methodName, $file, $line, 100);
+
+        $this->assertFalse($testSuite->isForTestClass());
+        $this->assertFalse($testSuite->isForTestMethodWithDataProvider());
+        $this->assertFalse($testSuite->isForRepeatedTestMethod());
+        $this->assertFalse($testSuite->isForRetriedTestMethod());
+        $this->assertTrue($testSuite->isForPropertyTestMethod());
+        $this->assertFalse($testSuite->isWithName());
+
+        $this->assertSame($name, $testSuite->name());
+        $this->assertSame($className, $testSuite->className());
+        $this->assertSame($methodName, $testSuite->methodName());
+        $this->assertSame($size, $testSuite->count());
+        $this->assertSame($tests, $testSuite->tests());
+        $this->assertSame($file, $testSuite->file());
+        $this->assertSame($line, $testSuite->line());
+        $this->assertSame(100, $testSuite->numberOfExamples());
+    }
+
     public function testCanBeTestSuiteWithName(): void
     {
         $name  = 'the-name';

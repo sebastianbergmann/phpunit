@@ -37,6 +37,7 @@ use PHPUnit\Event\Test\NoticeTriggered;
 use PHPUnit\Event\Test\PhpDeprecationTriggered;
 use PHPUnit\Event\Test\PhpNoticeTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
+use PHPUnit\Event\Test\PropertyFalsified;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\Event\TestData\TestDataCollection;
@@ -45,6 +46,7 @@ use PHPUnit\Event\TestRunner\PhpDeprecationTriggered as TestRunnerPhpDeprecation
 use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
 use PHPUnit\Event\TestSuite\Skipped as TestSuiteSkipped;
 use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
+use PHPUnit\Event\TestSuite\TestSuiteForPropertyTestMethod;
 use PHPUnit\Event\TestSuite\TestSuiteForTestClass;
 use PHPUnit\Event\TestSuite\TestSuiteWithName;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -118,6 +120,40 @@ final class CollectorTest extends TestCase
                 static fn (TestResult $result): array => $result->phpDeprecations(),
             ],
         ];
+    }
+
+    public function testRemembersHowAPropertyWasFalsified(): void
+    {
+        $collector = $this->collector();
+        $property  = $this->testMethod('testProperty');
+        $event     = new PropertyFalsified($this->telemetryInfo(), $property, 1234, 2, 3, 1, false, false, [0], ['value' => '0'], null, [], [], [], 0, 0);
+
+        $collector->testPropertyFalsified($event);
+
+        $this->assertSame($event, $collector->result()->propertyFalsifiedEventFor($property));
+        $this->assertNull($collector->result()->propertyFalsifiedEventFor($this->testMethod('testOther')));
+    }
+
+    public function testDoesNotRegisterAPropertyAsPassedWhenItsTestSuiteFinishes(): void
+    {
+        $this->collector()->testSuiteFinished(
+            new TestSuiteFinished(
+                $this->telemetryInfo(),
+                new TestSuiteForPropertyTestMethod(
+                    'CollectorPropertyTest::testOne',
+                    1,
+                    TestCollection::fromArray([]),
+                    'CollectorPropertyTest',
+                    'testOne',
+                    'CollectorPropertyTest.php',
+                    1,
+                    100,
+                ),
+            ),
+        );
+
+        $this->assertFalse(PassedTests::instance()->hasTestClassPassed('CollectorPropertyTest'));
+        $this->assertFalse(PassedTests::instance()->hasTestMethodPassed('CollectorPropertyTest::testOne'));
     }
 
     public function testRemembersRetriedTestForFailedAttemptOfPhpt(): void

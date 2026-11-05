@@ -14,6 +14,7 @@ use function gc_disable;
 use function gc_enable;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Event\Facade;
+use PHPUnit\Event\Test\Finished;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -25,6 +26,18 @@ final class GarbageCollectionHandler
     private readonly Emitter $emitter;
     private readonly int $threshold;
     private int $tests = 0;
+
+    /**
+     * The tests, by their ID, that were counted when their Test\Finished
+     * event was collected rather than dispatched: the attempts of a retried
+     * test or the examples of a property, for instance. The Test\Finished
+     * event that is dispatched for such a test afterwards, the forwarded one
+     * of the last attempt or the one that is reported for the property, is
+     * not counted again.
+     *
+     * @var array<non-empty-string, true>
+     */
+    private array $countedWhileEventsWereCollected = [];
 
     public function __construct(Facade $facade, int $threshold)
     {
@@ -56,7 +69,38 @@ final class GarbageCollectionHandler
         $this->emitter->testRunnerEnabledGarbageCollection();
     }
 
-    public function testFinished(): void
+    public function testFinished(Finished $event): void
+    {
+        $id = $event->test()->id();
+
+        if (isset($this->countedWhileEventsWereCollected[$id])) {
+            unset($this->countedWhileEventsWereCollected[$id]);
+
+            return;
+        }
+
+        // the collected events of a test are forwarded, if at all, before the
+        // next test runs, so the tests that are still remembered when a test
+        // whose events were not collected has finished, an attempt that was
+        // retried, for instance, will not have a Test\Finished event dispatched
+        $this->countedWhileEventsWereCollected = [];
+
+        $this->count();
+    }
+
+    /**
+     * Garbage that the tests whose events are collected rather than
+     * dispatched leave behind is collected as well. The event that reports
+     * this is collected with the events of the test.
+     */
+    public function testFinishedWhileEventsAreCollected(Finished $event): void
+    {
+        $this->countedWhileEventsWereCollected[$event->test()->id()] = true;
+
+        $this->count();
+    }
+
+    private function count(): void
     {
         $this->tests++;
 
@@ -75,6 +119,10 @@ final class GarbageCollectionHandler
             new ExecutionStartedSubscriber($this),
             new ExecutionFinishedSubscriber($this),
             new TestFinishedSubscriber($this),
+        );
+
+        $facade->registerSubscribersForCollectedEvents(
+            new TestFinishedWhileEventsAreCollectedSubscriber($this),
         );
     }
 }

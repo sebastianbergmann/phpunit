@@ -42,6 +42,7 @@ Here is a list of all components that are primarily developed and maintained by 
 * [phpunit/php-invoker](https://github.com/sebastianbergmann/php-invoker)
 * [phpunit/php-text-template](https://github.com/sebastianbergmann/php-text-template)
 * [phpunit/php-timer](https://github.com/sebastianbergmann/php-timer)
+* [sebastian/choice-sequence](https://github.com/sebastianbergmann/choice-sequence)
 * [sebastian/cli-parser](https://github.com/sebastianbergmann/cli-parser)
 * [sebastian/comparator](https://github.com/sebastianbergmann/comparator)
 * [sebastian/complexity](https://github.com/sebastianbergmann/complexity)

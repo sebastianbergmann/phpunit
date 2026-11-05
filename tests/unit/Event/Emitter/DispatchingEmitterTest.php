@@ -1877,6 +1877,101 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($test, $event->test());
     }
 
+    #[TestDox('testPropertyChecked() emits Test\PropertyChecked event')]
+    public function testTestPropertyCheckedEmitsTestPropertyCheckedEvent(): void
+    {
+        $subscriber = new class extends RecordingSubscriber implements Test\PropertyCheckedSubscriber
+        {
+            public function notify(Test\PropertyChecked $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
+            Test\PropertyCheckedSubscriber::class,
+            Test\PropertyChecked::class,
+            $subscriber,
+        );
+
+        $telemetrySystem = $this->telemetrySystem();
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $telemetrySystem,
+        );
+
+        $test = $this->testValueObject();
+
+        $emitter->testPropertyChecked($test, 1234, 100, 2, 3, [['label' => 'negative', 'numberOfExamples' => 42]], [['label' => 'size', 'numberOfValues' => 100, 'minimum' => 0, 'median' => 4, 'mean' => 5.12, 'percentile90' => 11, 'maximum' => 32]], [['label' => 'sum', 'highestScore' => 1250]]);
+
+        $this->assertSame(1, $subscriber->recordedEventCount());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(Test\PropertyChecked::class, $event);
+
+        $this->assertSame($test, $event->test());
+        $this->assertSame(1234, $event->seed());
+        $this->assertSame(100, $event->numberOfExamplesChecked());
+        $this->assertSame(2, $event->numberOfExplicitExamplesChecked());
+        $this->assertSame(3, $event->numberOfExamplesRejected());
+        $this->assertSame([['label' => 'negative', 'numberOfExamples' => 42]], $event->classifications());
+        $this->assertSame([['label' => 'size', 'numberOfValues' => 100, 'minimum' => 0, 'median' => 4, 'mean' => 5.12, 'percentile90' => 11, 'maximum' => 32]], $event->observations());
+        $this->assertSame([['label' => 'sum', 'highestScore' => 1250]], $event->targets());
+    }
+
+    #[TestDox('testPropertyFalsified() emits Test\PropertyFalsified event')]
+    public function testTestPropertyFalsifiedEmitsTestPropertyFalsifiedEvent(): void
+    {
+        $subscriber = new class extends RecordingSubscriber implements Test\PropertyFalsifiedSubscriber
+        {
+            public function notify(Test\PropertyFalsified $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
+            Test\PropertyFalsifiedSubscriber::class,
+            Test\PropertyFalsified::class,
+            $subscriber,
+        );
+
+        $telemetrySystem = $this->telemetrySystem();
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $telemetrySystem,
+        );
+
+        $test = $this->testValueObject();
+
+        $emitter->testPropertyFalsified($test, 1234, 2, 40, 17, true, true, [0, 2, 1], ['value' => '2'], 'two', [['label' => 'index', 'value' => '0']], ['$machine->open();'], [['description' => 'RuntimeException at /path/to/FooTest.php:12', 'choiceSequence' => [3, 0], 'counterexample' => ['size' => '3'], 'drawnValues' => [['label' => null, 'value' => '0']], 'steps' => []]], 4, 3);
+
+        $this->assertSame(1, $subscriber->recordedEventCount());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(Test\PropertyFalsified::class, $event);
+
+        $this->assertSame($test, $event->test());
+        $this->assertSame(1234, $event->seed());
+        $this->assertSame(2, $event->numberOfExamplesChecked());
+        $this->assertSame(40, $event->numberOfShrinkingAttempts());
+        $this->assertSame(17, $event->numberOfShrinkingSteps());
+        $this->assertTrue($event->shrinkingBudgetExhausted());
+        $this->assertTrue($event->shrinkingInterrupted());
+        $this->assertSame([0, 2, 1], $event->choiceSequence());
+        $this->assertSame(['value' => '2'], $event->counterexample());
+        $this->assertSame('two', $event->explicitExample());
+        $this->assertSame(4, $event->numberOfReplays());
+        $this->assertSame(3, $event->numberOfReproductions());
+        $this->assertSame([['label' => 'index', 'value' => '0']], $event->drawnValues());
+        $this->assertSame(['$machine->open();'], $event->steps());
+        $this->assertSame([['description' => 'RuntimeException at /path/to/FooTest.php:12', 'choiceSequence' => [3, 0], 'counterexample' => ['size' => '3'], 'drawnValues' => [['label' => null, 'value' => '0']], 'steps' => []]], $event->otherFalsifications());
+    }
+
     #[TestDox('testConsideredRisky() emits Test\ConsideredRisky event')]
     public function testTestConsideredRiskyEmitsTestConsideredRiskyEvent(): void
     {
@@ -3803,6 +3898,54 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertInstanceOf(Application\Finished::class, $event);
         $this->assertSame($shellExitCode, $event->shellExitCode());
+    }
+
+    public function testEventsCarryTheTelemetryOfTheLastEventWhoseTelemetryWasMeasuredWhileMeasuringTelemetryIsPaused(): void
+    {
+        $subscriber = new class implements Test\PreparationStartedSubscriber
+        {
+            /**
+             * @var list<Telemetry\Info>
+             */
+            public array $telemetry = [];
+
+            public function notify(Test\PreparationStarted $event): void
+            {
+                $this->telemetry[] = $event->telemetryInfo();
+            }
+        };
+
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
+            Test\PreparationStartedSubscriber::class,
+            Test\PreparationStarted::class,
+            $subscriber,
+        );
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $this->telemetrySystem(),
+        );
+
+        $test = $this->testValueObject();
+
+        $emitter->pauseMeasuringTelemetry();
+        $emitter->testPreparationStarted($test);
+        $emitter->testPreparationStarted($test);
+        $emitter->resumeMeasuringTelemetry();
+        $emitter->testPreparationStarted($test);
+        $emitter->pauseMeasuringTelemetry();
+        $emitter->testPreparationStarted($test);
+        $emitter->resumeMeasuringTelemetry();
+        $emitter->testPreparationStarted($test);
+
+        [$first, $second, $third, $fourth, $fifth] = $subscriber->telemetry;
+
+        // the telemetry of the first event is measured, as there is no event
+        // whose telemetry was measured before
+        $this->assertSame($first, $second);
+        $this->assertNotSame($second, $third);
+        $this->assertSame($third, $fourth);
+        $this->assertNotSame($fourth, $fifth);
     }
 
     private function testSuiteValueObject(): TestSuiteWithName

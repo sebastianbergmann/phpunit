@@ -96,6 +96,14 @@ abstract readonly class TestSuite
     }
 
     /**
+     * @phpstan-assert-if-true TestSuiteForPropertyTestMethod $this
+     */
+    public function isForPropertyTestMethod(): bool
+    {
+        return false;
+    }
+
+    /**
      * @phpstan-assert-if-true TestSuiteForRepeatedPhpt $this
      */
     public function isForRepeatedPhpt(): bool

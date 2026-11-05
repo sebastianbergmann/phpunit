@@ -1,0 +1,10 @@
+There was 1 failure:
+
+1) FooTest::testBar
+Failed asserting that false is true.
+
+Property falsified after 2 examples, counterexample shrunk in 1 step:
+
+    $value = 0;
+
+%A

@@ -851,6 +851,12 @@ final readonly class Merger
             $displayDetailsOnTestsThatTriggerWarnings = $xmlConfiguration->phpunit()->displayDetailsOnTestsThatTriggerWarnings();
         }
 
+        if ($cliConfiguration->hasDisplayPropertyStatistics()) {
+            $displayPropertyStatistics = $cliConfiguration->displayPropertyStatistics();
+        } else {
+            $displayPropertyStatistics = $xmlConfiguration->phpunit()->displayPropertyStatistics();
+        }
+
         if ($cliConfiguration->hasReverseList()) {
             $reverseDefectList = $cliConfiguration->reverseList();
         } else {
@@ -1059,12 +1065,40 @@ final readonly class Merger
 
         $seedRandomNumberGenerators = in_array(Order::Random, $executionOrder, true);
 
+        $randomSeed = null;
+
         if ($cliConfiguration->hasRandomSeed()) {
             $randomSeed                 = $cliConfiguration->randomSeed();
             $seedRandomNumberGenerators = true;
-        } else {
+        } elseif ($cliConfiguration->randomSeedFromGitCommit()) {
+            $randomSeed = RandomSeedFromGitCommit::seed();
+
+            if ($randomSeed === null) {
+                $this->emitter->testRunnerTriggeredPhpunitWarning(
+                    'Option "--random-seed-from-git-commit" ignored because no Git commit is checked out in the working directory',
+                );
+            } else {
+                $seedRandomNumberGenerators = true;
+            }
+        }
+
+        if ($randomSeed === null) {
             $randomSeed = time();
         }
+
+        if ($cliConfiguration->hasPropertyExamples()) {
+            $propertyExamples = $cliConfiguration->propertyExamples();
+        } else {
+            $propertyExamples = $xmlConfiguration->propertyBasedTesting()->examples();
+        }
+
+        if ($cliConfiguration->hasPropertyExamplesMultiplier()) {
+            $propertyExamplesMultiplier = $cliConfiguration->propertyExamplesMultiplier();
+        } else {
+            $propertyExamplesMultiplier = $xmlConfiguration->propertyBasedTesting()->examplesMultiplier();
+        }
+
+        $maximumShrinkingAttempts = $xmlConfiguration->propertyBasedTesting()->maximumShrinkingAttempts();
 
         $repeat = 1;
 
@@ -1448,6 +1482,7 @@ final readonly class Merger
             $displayDetailsOnTestsThatTriggerErrors,
             $displayDetailsOnTestsThatTriggerNotices,
             $displayDetailsOnTestsThatTriggerWarnings,
+            $displayPropertyStatistics,
             $reverseDefectList,
             $requireCoverageMetadata,
             $requireCoverageMetadataOnSmallTests,
@@ -1485,6 +1520,12 @@ final readonly class Merger
             $repeat,
             $retry,
             $timeout,
+            $propertyExamples,
+            $propertyExamplesMultiplier,
+            $maximumShrinkingAttempts,
+            $xmlConfiguration->propertyBasedTesting()->examplesCheckedUntilHealthIsAssumed(),
+            $xmlConfiguration->propertyBasedTesting()->maximumRejectedExamplesUntilHealthIsAssumed(),
+            $xmlConfiguration->propertyBasedTesting()->maximumTooLargeExamplesUntilHealthIsAssumed(),
             $includeUncoveredFiles,
             $xmlConfiguration->testSuite(),
             $includeTestSuite,

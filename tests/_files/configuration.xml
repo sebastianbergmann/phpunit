@@ -51,6 +51,8 @@
         </exclude>
     </groups>
 
+    <propertyBasedTesting examples="500" examplesMultiplier="10" maximumShrinkingAttempts="50" examplesCheckedUntilHealthIsAssumed="5" maximumRejectedExamplesUntilHealthIsAssumed="25" maximumTooLargeExamplesUntilHealthIsAssumed="15"/>
+
     <testdoxGroups>
         <include>
             <group>name</group>

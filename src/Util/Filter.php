@@ -19,6 +19,7 @@ use function is_string;
 use function realpath;
 use function sprintf;
 use function str_starts_with;
+use Generator;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\PhptAssertionFailedError;
 use Throwable;
@@ -34,6 +35,57 @@ final readonly class Filter
      * @throws Exception
      */
     public static function stackTraceFromThrowableAsString(Throwable $t, bool $unwrap = true): string
+    {
+        $buffer = '';
+
+        foreach (self::printableFrames(self::framesOf($t, $unwrap)) as $frame) {
+            $buffer .= $frame . "\n";
+        }
+
+        return $buffer;
+    }
+
+    /**
+     * Returns the first line of the stack trace that is returned for a
+     * throwable by stackTraceFromThrowableAsString(), without its line break,
+     * or null when that stack trace is empty. The frames after the first one
+     * are not looked at.
+     *
+     * @throws Exception
+     *
+     * @return ?non-empty-string
+     */
+    public static function firstFrameFromThrowableAsString(Throwable $t, bool $unwrap = true): ?string
+    {
+        foreach (self::printableFrames(self::framesOf($t, $unwrap)) as $frame) {
+            return $frame;
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns the lines of the stack trace that is returned for a throwable
+     * by stackTraceFromThrowableAsString(), one at a time and without their
+     * line breaks, for code that looks at every frame of a stack trace that
+     * can be deep, as for an error of the call stack limit, without building
+     * the stack trace as a string.
+     *
+     * @throws Exception
+     *
+     * @return Generator<int, non-empty-string>
+     */
+    public static function framesFromThrowableAsStrings(Throwable $t, bool $unwrap = true): Generator
+    {
+        return self::printableFrames(self::framesOf($t, $unwrap));
+    }
+
+    /**
+     * @throws Exception
+     *
+     * @return list<array{file?: string, line?: int, ...}>
+     */
+    private static function framesOf(Throwable $t, bool $unwrap): array
     {
         if ($t instanceof PhptAssertionFailedError) {
             $stackTrace = $t->syntheticTrace();
@@ -60,15 +112,16 @@ final readonly class Filter
             );
         }
 
-        return self::stackTraceAsString($stackTrace);
+        return $stackTrace;
     }
 
     /**
      * @param list<array{file?: string, line?: int, ...}> $frames
+     *
+     * @return Generator<int, non-empty-string>
      */
-    private static function stackTraceAsString(array $frames): string
+    private static function printableFrames(array $frames): Generator
     {
-        $buffer      = '';
         $prefix      = false;
         $excludeList = new ExcludeList;
 
@@ -78,33 +131,6 @@ final readonly class Filter
             // @codeCoverageIgnoreEnd
         }
 
-        foreach ($frames as $frame) {
-            if (isset($frame['file']) && self::shouldPrintFrame($frame, $prefix, $excludeList)) {
-                $buffer .= sprintf(
-                    "%s:%s\n",
-                    $frame['file'],
-                    $frame['line'] ?? '?',
-                );
-            }
-        }
-
-        return $buffer;
-    }
-
-    /**
-     * @param array{file?: string, ...<mixed>} $frame
-     */
-    private static function shouldPrintFrame(array $frame, false|string $prefix, ExcludeList $excludeList): bool
-    {
-        if (!isset($frame['file'])) {
-            // @codeCoverageIgnoreStart
-            return false;
-            // @codeCoverageIgnoreEnd
-        }
-
-        $file              = $frame['file'];
-        $fileIsNotPrefixed = $prefix === false || !str_starts_with($file, $prefix);
-
         // @see https://github.com/sebastianbergmann/phpunit/issues/4033
         if (isset($GLOBALS['_SERVER']) && is_array($GLOBALS['_SERVER']) && isset($GLOBALS['_SERVER']['SCRIPT_NAME']) && is_string($GLOBALS['_SERVER']['SCRIPT_NAME'])) {
             $script = realpath($GLOBALS['_SERVER']['SCRIPT_NAME']);
@@ -113,6 +139,33 @@ final readonly class Filter
             $script = '';
             // @codeCoverageIgnoreEnd
         }
+
+        // whether the frames of a file are printed is decided once per file,
+        // as a stack trace can have thousands of frames in the same files
+        $printable = [];
+
+        foreach ($frames as $frame) {
+            if (!isset($frame['file'])) {
+                continue;
+            }
+
+            $file = $frame['file'];
+
+            $printable[$file] ??= self::shouldPrintFramesOf($file, $prefix, $script, $excludeList);
+
+            if ($printable[$file]) {
+                yield sprintf(
+                    '%s:%s',
+                    $file,
+                    $frame['line'] ?? '?',
+                );
+            }
+        }
+    }
+
+    private static function shouldPrintFramesOf(string $file, false|string $prefix, false|string $script, ExcludeList $excludeList): bool
+    {
+        $fileIsNotPrefixed = $prefix === false || !str_starts_with($file, $prefix);
 
         return $fileIsNotPrefixed &&
                $file !== $script &&

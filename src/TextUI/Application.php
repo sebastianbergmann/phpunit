@@ -12,18 +12,14 @@ namespace PHPUnit\TextUI;
 use const PHP_EOL;
 use const PHP_VERSION;
 use const SIGINT;
-use function array_reverse;
-use function class_exists;
 use function count;
 use function defined;
 use function dirname;
-use function explode;
 use function function_exists;
 use function getmypid;
 use function is_array;
 use function is_file;
 use function is_string;
-use function method_exists;
 use function pcntl_async_signals;
 use function pcntl_signal;
 use function printf;
@@ -37,8 +33,10 @@ use PHPUnit\Event\Emitter;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Event\UnknownSubscriberTypeException;
+use PHPUnit\Framework\PropertyTestSuite;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\Framework\TestSuiteIterator;
 use PHPUnit\Logging\EventLogger;
 use PHPUnit\Logging\JUnit\JunitXmlLogger;
 use PHPUnit\Logging\OpenTestReporting\CannotOpenUriForWritingException;
@@ -55,14 +53,13 @@ use PHPUnit\Runner\Baseline\Writer;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\CodeCoverageInitializationStatus;
 use PHPUnit\Runner\DeprecationCollector\Facade as DeprecationCollector;
-use PHPUnit\Runner\DeprecationFilter;
 use PHPUnit\Runner\DirectoryDoesNotExistException;
 use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\Runner\Extension\ExtensionBootstrapper;
 use PHPUnit\Runner\Extension\ExtensionCapabilities;
 use PHPUnit\Runner\Extension\ExtensionFacade;
+use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\GarbageCollection\GarbageCollectionHandler;
-use PHPUnit\Runner\IssueTriggerResolver\Resolver;
 use PHPUnit\Runner\PhpConfiguration\PhpConfigurationChecker;
 use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
 use PHPUnit\Runner\TestIndex\DefaultTestFileSkipper;
@@ -220,9 +217,7 @@ final readonly class Application
 
             EventFacade::instance()->seal();
 
-            $this->configureDeprecationTriggers($configuration);
-            $this->configureIssueTriggerResolvers($configuration);
-            $this->configureDeprecationFilters($configuration);
+            new ErrorHandlerConfigurator($this->emitter)->configure($configuration);
 
             ErrorHandler::instance()->registerForNonTestCaseContext();
 
@@ -259,7 +254,7 @@ final readonly class Application
 
             if (!$configuration->debug() && !$extensionCapabilities->replacesOutput()) {
                 $this->writeRuntimeInformation($printer, $configuration);
-                $this->writeRandomSeedInformation($printer, $configuration);
+                $this->writeRandomSeedInformation($printer, $configuration, $testSuite);
 
                 $printer->print(PHP_EOL);
             }
@@ -666,15 +661,56 @@ final readonly class Application
         );
     }
 
-    private function writeRandomSeedInformation(Printer $printer, Configuration $configuration): void
+    private function writeRandomSeedInformation(Printer $printer, Configuration $configuration, TestSuite $testSuite): void
     {
-        if ($configuration->seedRandomNumberGenerators()) {
-            $this->writeMessage(
-                $printer,
-                'Random Seed',
-                (string) $configuration->randomSeed(),
-            );
+        if (!$configuration->seedRandomNumberGenerators()) {
+            // the test selection is only built for a test suite that contains a
+            // property, which it may not select
+            if (!$this->containsProperty($testSuite, null) ||
+                !$this->containsProperty($testSuite, new TestSuiteFilterProcessor($this->emitter)->filter($configuration))) {
+                return;
+            }
         }
+
+        $this->writeMessage(
+            $printer,
+            'Random Seed',
+            (string) $configuration->randomSeed(),
+        );
+    }
+
+    /**
+     * Whether the test suite contains a property that the test selection
+     * selects. The test selection is only applied to the test suite when it is
+     * run, so it is applied here as it is then: to the test that a property
+     * aggregates. Without a test selection, whether the test suite contains
+     * any property.
+     */
+    private function containsProperty(TestSuite $testSuite, ?Factory $filter): bool
+    {
+        foreach ($testSuite->tests() as $test) {
+            if ($test instanceof PropertyTestSuite) {
+                if ($filter === null) {
+                    return true;
+                }
+
+                $selected = $filter->factory(new TestSuiteIterator($test), $test);
+
+                $selected->rewind();
+
+                if ($selected->valid()) {
+                    return true;
+                }
+
+                continue;
+            }
+
+            if ($test instanceof TestSuite && $this->containsProperty($test, $filter)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function registerLogfileWriters(Configuration $configuration): void
@@ -1096,139 +1132,6 @@ final readonly class Application
         new TestSuiteFilterProcessor($this->emitter)->process($configuration, $suite);
 
         return $suite->collect();
-    }
-
-    private function configureDeprecationTriggers(Configuration $configuration): void
-    {
-        $deprecationTriggers = [
-            'functions' => [],
-            'methods'   => [],
-        ];
-
-        $ignoreUndefinedTriggers = $configuration->source()->deprecationTriggers()['ignoreUndefinedTriggers'] ?? false;
-
-        foreach ($configuration->source()->deprecationTriggers()['functions'] as $function) {
-            if (!function_exists($function)) {
-                if (!$ignoreUndefinedTriggers) {
-                    $this->emitter->testRunnerTriggeredPhpunitWarning(
-                        sprintf(
-                            'Function %s cannot be configured as a deprecation trigger because it is not declared',
-                            $function,
-                        ),
-                    );
-                }
-
-                continue;
-            }
-
-            $deprecationTriggers['functions'][] = $function;
-        }
-
-        foreach ($configuration->source()->deprecationTriggers()['methods'] as $method) {
-            $parts = explode('::', $method, 2);
-
-            if (count($parts) !== 2) {
-                $this->emitter->testRunnerTriggeredPhpunitWarning(
-                    sprintf(
-                        '%s cannot be configured as a deprecation trigger because it is not in ClassName::methodName format',
-                        $method,
-                    ),
-                );
-
-                continue;
-            }
-
-            [$className, $methodName] = $parts;
-
-            if ($methodName === '' || !class_exists($className) || !method_exists($className, $methodName)) {
-                if (!$ignoreUndefinedTriggers) {
-                    $this->emitter->testRunnerTriggeredPhpunitWarning(
-                        sprintf(
-                            'Method %s::%s cannot be configured as a deprecation trigger because it is not declared',
-                            $className,
-                            $methodName,
-                        ),
-                    );
-                }
-
-                continue;
-            }
-
-            $deprecationTriggers['methods'][] = [
-                'className'  => $className,
-                'methodName' => $methodName,
-            ];
-        }
-
-        if ($deprecationTriggers !== ['functions' => [], 'methods' => []]) {
-            ErrorHandler::instance()->useDeprecationTriggers($deprecationTriggers);
-        }
-    }
-
-    private function configureIssueTriggerResolvers(Configuration $configuration): void
-    {
-        $classNames = $configuration->source()->issueTriggerResolvers();
-
-        foreach (array_reverse($classNames) as $className) {
-            if (!class_exists($className)) {
-                $this->emitter->testRunnerTriggeredPhpunitWarning(
-                    sprintf(
-                        'Class %s cannot be used as an issue trigger resolver because it does not exist',
-                        $className,
-                    ),
-                );
-
-                continue;
-            }
-
-            $resolver = new $className;
-
-            if (!$resolver instanceof Resolver) {
-                $this->emitter->testRunnerTriggeredPhpunitWarning(
-                    sprintf(
-                        'Class %s cannot be used as an issue trigger resolver because it does not implement %s',
-                        $className,
-                        Resolver::class,
-                    ),
-                );
-
-                continue;
-            }
-
-            ErrorHandler::instance()->addIssueTriggerResolver($resolver);
-        }
-    }
-
-    private function configureDeprecationFilters(Configuration $configuration): void
-    {
-        foreach ($configuration->source()->deprecationFilters() as $className) {
-            if (!class_exists($className)) {
-                $this->emitter->testRunnerTriggeredPhpunitWarning(
-                    sprintf(
-                        'Class %s cannot be used as a deprecation filter because it does not exist',
-                        $className,
-                    ),
-                );
-
-                continue;
-            }
-
-            $filter = new $className;
-
-            if (!$filter instanceof DeprecationFilter) {
-                $this->emitter->testRunnerTriggeredPhpunitWarning(
-                    sprintf(
-                        'Class %s cannot be used as a deprecation filter because it does not implement %s',
-                        $className,
-                        DeprecationFilter::class,
-                    ),
-                );
-
-                continue;
-            }
-
-            ErrorHandler::instance()->addDeprecationFilter($filter);
-        }
     }
 
     private function preload(): void

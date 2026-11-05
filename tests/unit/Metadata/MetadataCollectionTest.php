@@ -644,6 +644,78 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isRetry());
     }
 
+    public function test_Can_be_filtered_for_ForAll(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isForAll();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isForAll());
+    }
+
+    public function test_Can_be_filtered_for_GeneratorFor(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isGeneratorFor();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isGeneratorFor());
+    }
+
+    public function test_Can_be_filtered_for_RequireClassification(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isRequireClassification();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isRequireClassification());
+    }
+
+    public function test_Can_be_filtered_for_Rule(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isRule();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isRule());
+    }
+
+    public function test_Can_be_filtered_for_Initialize(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isInitialize();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isInitialize());
+    }
+
+    public function test_Can_be_filtered_for_Invariant(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isInvariant();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isInvariant());
+    }
+
+    public function test_Can_be_filtered_for_FromPool(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isFromPool();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isFromPool());
+    }
+
+    public function test_Can_be_filtered_for_UseGenerators(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isUseGenerators();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isUseGenerators());
+    }
+
+    public function test_Can_be_filtered_for_Property(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isProperty();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isProperty());
+    }
+
     public function test_Can_be_filtered_for_WithoutErrorHandler(): void
     {
         $collection = $this->collectionWithOneOfEach()->isWithoutErrorHandler();
@@ -732,6 +804,15 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::usesDirectoryRecursively(''),
                 Metadata::repeat(3, 1),
                 Metadata::retry(3),
+                Metadata::forAll('value', self::class, 'provider'),
+                Metadata::generatorFor(self::class),
+                Metadata::requireClassification('label', 10.0),
+                Metadata::rule(null, null),
+                Metadata::initialize(null),
+                Metadata::invariant(false),
+                Metadata::fromPool('value', 'pool', false),
+                Metadata::useGeneratorsOnMethod(self::class),
+                Metadata::property(null),
                 Metadata::withEnvironmentVariableOnClass('foo', 'bar'),
                 Metadata::withoutErrorHandler(),
             ],

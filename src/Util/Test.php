@@ -54,6 +54,6 @@ final readonly class Test
             $method->getName(),
         );
 
-        return $metadata->isTest()->isNotEmpty();
+        return $metadata->isTest()->isNotEmpty() || $metadata->isProperty()->isNotEmpty();
     }
 }

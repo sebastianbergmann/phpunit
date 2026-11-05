@@ -27,8 +27,10 @@ use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\PreparationStarted;
 use PHPUnit\Event\Test\PrintedUnexpectedOutput;
+use PHPUnit\Event\Test\PropertyFalsified;
 use PHPUnit\TextUI\Output\Compact\Renderer;
 use PHPUnit\TextUI\Output\Printer;
+use PHPUnit\Util\PendingPropertyFalsified;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -43,11 +45,18 @@ final class ProgressPrinter
     private ?Test $currentTest      = null;
     private bool $hasPrintedRecords = false;
 
+    /**
+     * The event that describes how a property was falsified, which is
+     * dispatched before the event for its failure or error.
+     */
+    private readonly PendingPropertyFalsified $propertyFalsified;
+
     public function __construct(Printer $printer, Facade $facade, bool $displayUnexpectedOutput)
     {
         $this->printer                 = $printer;
         $this->renderer                = new Renderer($printer);
         $this->displayUnexpectedOutput = $displayUnexpectedOutput;
+        $this->propertyFalsified       = new PendingPropertyFalsified;
 
         $this->registerSubscribers($facade);
     }
@@ -57,14 +66,27 @@ final class ProgressPrinter
         $this->currentTest = $event->test();
     }
 
+    public function testPropertyFalsified(PropertyFalsified $event): void
+    {
+        $this->propertyFalsified->remember($event);
+    }
+
     public function testErrored(Errored $event): void
     {
-        $this->printError($this->renderer->nameOfTest($event->test()), $event->throwable());
+        $this->printError(
+            $this->renderer->nameOfTest($event->test()),
+            $event->throwable(),
+            $this->propertyFalsified->takeFor($event->test()),
+        );
     }
 
     public function testFailed(Failed $event): void
     {
-        $this->printFailure($this->renderer->nameOfTest($event->test()), $event->throwable());
+        $this->printFailure(
+            $this->renderer->nameOfTest($event->test()),
+            $event->throwable(),
+            $this->propertyFalsified->takeFor($event->test()),
+        );
     }
 
     public function testPrintedUnexpectedOutput(PrintedUnexpectedOutput $event): void
@@ -116,15 +138,15 @@ final class ProgressPrinter
         }
     }
 
-    private function printError(string $title, Throwable $throwable): void
+    private function printError(string $title, Throwable $throwable, ?PropertyFalsified $propertyFalsified = null): void
     {
         $this->renderer->printHeader('ERROR', $title);
-        $this->renderer->printThrowable($throwable);
+        $this->renderer->printThrowable($throwable, $propertyFalsified);
 
         $this->hasPrintedRecords = true;
     }
 
-    private function printFailure(string $title, Throwable $throwable): void
+    private function printFailure(string $title, Throwable $throwable, ?PropertyFalsified $propertyFalsified = null): void
     {
         $this->renderer->printHeader('FAILURE', $title);
 
@@ -135,6 +157,11 @@ final class ProgressPrinter
         }
 
         $this->renderer->printBody(trim($body));
+
+        if ($propertyFalsified !== null) {
+            $this->renderer->printPropertyFalsified($propertyFalsified);
+        }
+
         $this->renderer->printStackTrace($throwable->stackTrace());
 
         $this->hasPrintedRecords = true;
@@ -146,6 +173,7 @@ final class ProgressPrinter
             new TestPreparationStartedSubscriber($this),
             new TestErroredSubscriber($this),
             new TestFailedSubscriber($this),
+            new TestPropertyFalsifiedSubscriber($this),
             new TestPrintedUnexpectedOutputSubscriber($this),
             new BeforeFirstTestMethodErroredSubscriber($this),
             new BeforeFirstTestMethodFailedSubscriber($this),
