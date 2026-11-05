@@ -218,19 +218,19 @@ final class StringMatchesFormatDescription extends Constraint
         $string = strtr(
             $quoted,
             [
-                '%%' => '%',
-                '%e' => preg_quote(DIRECTORY_SEPARATOR, '/'),
-                '%s' => '[^\r\n]+',
-                '%S' => '[^\r\n]*',
-                '%a' => '.+?',
-                '%A' => '.*?',
-                '%w' => '\s*',
-                '%i' => '[+-]?\d+',
-                '%d' => '\d+',
-                '%x' => '[0-9a-fA-F]+',
-                '%f' => '[+-]?(?:\d+|(?=\.\d))(?:\.\d+)?(?:[Ee][+-]?\d+)?',
-                '%c' => '.',
-                '%0' => '\x00',
+                '%%' => '%', // A literal percent character
+                '%e' => preg_quote(DIRECTORY_SEPARATOR, '/'), // a directory separator
+                '%s' => '[^\r\n]+', // One or more of anything except the end of line character
+                '%S' => '[^\r\n]*', // Zero or more of anything except the end of line character
+                '%a' => '.+?', // One or more of anything including the end of line character
+                '%A' => '.*?', // Zero or more of anything including the end of line character
+                '%w' => '\s*', // Zero or more white space characters
+                '%i' => '[+-]?\d+', // A signed integer value
+                '%d' => '\d+', // An unsigned integer value
+                '%x' => '[0-9a-fA-F]+', // One or more hexadecimal character
+                '%f' => '[+-]?(?:\d+|(?=\.\d))(?:\.\d+)?(?:[Ee][+-]?\d+)?', // A floating point number
+                '%c' => '.', // A single character of any sort
+                '%0' => '\x00', // A null byte
             ],
         );
 
