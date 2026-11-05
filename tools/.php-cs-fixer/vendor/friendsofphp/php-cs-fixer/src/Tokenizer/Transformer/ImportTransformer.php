@@ -50,26 +50,28 @@ final class ImportTransformer extends AbstractTransformer
         return $tokens->isAnyTokenKindsFound([\T_CONST, \T_FUNCTION]);
     }
 
-    public function processToken(Tokens $tokens, Token $token, int $index): void
+    public function process(Tokens $tokens): void
     {
-        if (!$token->isGivenKind([\T_CONST, \T_FUNCTION])) {
-            return;
-        }
-
-        $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
-
-        if (!$prevToken->isGivenKind(\T_USE)) {
-            $nextToken = $tokens[$tokens->getNextTokenOfKind($index, ['=', '(', [CT::T_RETURN_REF], [CT::T_GROUP_IMPORT_BRACE_CLOSE]])];
-
-            if (!$nextToken->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
-                return;
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind([\T_CONST, \T_FUNCTION])) {
+                continue;
             }
-        }
 
-        $tokens[$index] = new Token([
-            $token->isGivenKind(\T_FUNCTION) ? CT::T_FUNCTION_IMPORT : CT::T_CONST_IMPORT,
-            $token->getContent(),
-        ]);
+            $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
+
+            if (!$prevToken->isGivenKind(\T_USE)) {
+                $nextToken = $tokens[$tokens->getNextTokenOfKind($index, ['=', '(', [CT::T_RETURN_REF], [CT::T_GROUP_IMPORT_BRACE_CLOSE]])];
+
+                if (!$nextToken->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
+                    continue;
+                }
+            }
+
+            $tokens[$index] = new Token([
+                $token->isGivenKind(\T_FUNCTION) ? CT::T_FUNCTION_IMPORT : CT::T_CONST_IMPORT,
+                $token->getContent(),
+            ]);
+        }
     }
 
     public function getCustomTokens(): array

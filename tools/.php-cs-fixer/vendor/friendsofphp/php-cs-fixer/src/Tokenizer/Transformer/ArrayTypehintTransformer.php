@@ -40,17 +40,19 @@ final class ArrayTypehintTransformer extends AbstractTransformer
         return $tokens->isTokenKindFound(\T_ARRAY);
     }
 
-    public function processToken(Tokens $tokens, Token $token, int $index): void
+    public function process(Tokens $tokens): void
     {
-        if (!$token->isGivenKind(\T_ARRAY)) {
-            return;
-        }
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(\T_ARRAY)) {
+                continue;
+            }
 
-        $nextIndex = $tokens->getNextMeaningfulToken($index);
-        $nextToken = $tokens[$nextIndex];
+            $nextIndex = $tokens->getNextMeaningfulToken($index);
+            $nextToken = $tokens[$nextIndex];
 
-        if (!$nextToken->equals('(')) {
-            $tokens[$index] = new Token([CT::T_ARRAY_TYPEHINT, $token->getContent()]);
+            if (!$nextToken->equals('(')) {
+                $tokens[$index] = new Token([CT::T_ARRAY_TYPEHINT, $token->getContent()]);
+            }
         }
     }
 
