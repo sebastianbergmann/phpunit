@@ -343,6 +343,8 @@ class Tokens extends \SplFixedArray
      * Set new size of collection.
      *
      * @param int $size
+     *
+     * @throws \RuntimeException
      */
     #[\ReturnTypeWillChange]
     public function setSize($size): bool
@@ -1183,7 +1185,7 @@ class Tokens extends \SplFixedArray
         $this->applyTransformers();
 
         if (\PHP_VERSION_ID < 8_00_00) {
-            $this->rewind();
+            $this->rewind(); // @phpstan-ignore method.notFound
         }
 
         $this->changed = true;
@@ -1206,7 +1208,7 @@ class Tokens extends \SplFixedArray
         }
 
         if (\PHP_VERSION_ID < 8_00_00) {
-            $this->rewind();
+            $this->rewind(); // @phpstan-ignore method.notFound
         }
 
         return json_encode($output, \JSON_THROW_ON_ERROR | \JSON_PRETTY_PRINT | \JSON_NUMERIC_CHECK);
