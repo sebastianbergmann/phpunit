@@ -69,26 +69,28 @@ final class NullableTypeTransformer extends AbstractTransformer
         return $tokens->isTokenKindFound('?');
     }
 
-    public function processToken(Tokens $tokens, Token $token, int $index): void
+    public function process(Tokens $tokens): void
     {
-        if (!$token->equals('?')) {
-            return;
+        foreach ($tokens as $index => $token) {
+            if (!$token->equals('?')) {
+                continue;
+            }
+
+            $prevIndex = $tokens->getPrevMeaningfulToken($index);
+
+            if (!$tokens[$prevIndex]->equalsAny(self::TYPES)) {
+                continue;
+            }
+
+            if (
+                $tokens[$prevIndex]->isGivenKind(\T_STATIC)
+                && $tokens[$tokens->getPrevMeaningfulToken($prevIndex)]->isGivenKind(\T_INSTANCEOF)
+            ) {
+                continue;
+            }
+
+            $tokens[$index] = new Token([CT::T_NULLABLE_TYPE, '?']);
         }
-
-        $prevIndex = $tokens->getPrevMeaningfulToken($index);
-
-        if (!$tokens[$prevIndex]->equalsAny(self::TYPES)) {
-            return;
-        }
-
-        if (
-            $tokens[$prevIndex]->isGivenKind(\T_STATIC)
-            && $tokens[$tokens->getPrevMeaningfulToken($prevIndex)]->isGivenKind(\T_INSTANCEOF)
-        ) {
-            return;
-        }
-
-        $tokens[$index] = new Token([CT::T_NULLABLE_TYPE, '?']);
     }
 
     public function getCustomTokens(): array
