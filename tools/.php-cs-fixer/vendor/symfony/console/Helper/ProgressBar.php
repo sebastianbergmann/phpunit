@@ -58,6 +58,9 @@ final class ProgressBar
     private bool $overwrite = true;
     private Terminal $terminal;
     private ?string $previousMessage = null;
+    private int $lastDrawnStep = 0;
+    private ?int $lastDrawnMax = null;
+    private bool $maxInferred = false;
     private Cursor $cursor;
     private array $placeholders = [];
     private ?int $oscProgressState = null;
@@ -323,17 +326,20 @@ final class ProgressBar
             $max = null;
         }
 
+        $maxInferred = null === $max && is_countable($iterable);
         $max ??= is_countable($iterable) ? \count($iterable) : null;
 
         if (0 === $max) {
             $this->max = 0;
             $this->stepWidth = 2;
+            $this->maxInferred = true;
             $this->finish();
 
             return;
         }
 
         $this->start($max);
+        $this->maxInferred = $maxInferred;
 
         foreach ($iterable as $key => $value) {
             yield $key => $value;
@@ -352,15 +358,27 @@ final class ProgressBar
      */
     public function start(?int $max = null, int $startAt = 0): void
     {
+        $startAt = max(0, $startAt);
         $this->startTime = time();
         $this->step = $startAt;
         $this->startingStep = $startAt;
 
-        $startAt > 0 ? $this->setProgress($startAt) : $this->percent = 0.0;
-
         if (null !== $max) {
             $this->setMaxSteps($max);
+        } elseif ($this->maxInferred) {
+            // drop the max that a previous iterate() or finish() inferred
+            $this->setMaxSteps(null);
         }
+
+        if ($this->max && $startAt > $this->max) {
+            $this->max = $startAt;
+        }
+
+        $this->percent = 0 === $startAt ? 0.0 : match ($this->max) {
+            null => 0,
+            0 => 1,
+            default => (float) $startAt / $this->max,
+        };
 
         if ($this->output->isDecorated()) {
             self::$activeInstances ??= new \WeakMap();
@@ -432,6 +450,7 @@ final class ProgressBar
         }
 
         $this->format = null;
+        $this->maxInferred = false;
         if (null === $max) {
             $this->max = null;
             $this->stepWidth = 4;
@@ -439,6 +458,12 @@ final class ProgressBar
             $this->max = max(0, $max);
             $this->stepWidth = Helper::width((string) $this->max);
         }
+
+        $this->percent = match ($this->max) {
+            null => 0,
+            0 => 1,
+            default => min(1, (float) $this->step / $this->max),
+        };
     }
 
     /**
@@ -446,11 +471,24 @@ final class ProgressBar
      */
     public function finish(): void
     {
-        if (null === $this->max) {
+        if ($this->max && $this->step > $this->max) {
+            // the max was lowered below the step with setMaxSteps(), raise it like setProgress() does
             $this->max = $this->step;
         }
 
-        if (!(($this->step === $this->max || null === $this->max) && !$this->overwrite)) {
+        $max = $this->max;
+
+        if (null === $this->max) {
+            $this->max = $this->step;
+            $this->percent = 1.0;
+            $this->maxInferred = true;
+        }
+
+        if ($this->step === $this->max && !$this->overwrite && $this->lastDrawnStep === $this->step && \in_array($this->lastDrawnMax, [$max, $this->max], true)) {
+            // prevent double output when the last frame already shows this step, against the max it had before finishing or this one
+            // remember this max as drawn, so that calling finish() again does not draw the frame either
+            $this->lastDrawnMax = $this->max;
+        } else {
             $this->setProgress($this->max ?? $this->step);
         }
 
@@ -472,6 +510,8 @@ final class ProgressBar
         }
 
         $this->overwrite($this->buildLine());
+        $this->lastDrawnStep = $this->step;
+        $this->lastDrawnMax = $this->max;
         $this->writeOscProgress();
     }
 
@@ -546,7 +586,7 @@ final class ProgressBar
                     $this->cursor->clearLine();
                 }
             }
-        } elseif ($this->step > 0) {
+        } elseif (null !== $this->previousMessage) {
             $message = \PHP_EOL.$message;
         }
 
