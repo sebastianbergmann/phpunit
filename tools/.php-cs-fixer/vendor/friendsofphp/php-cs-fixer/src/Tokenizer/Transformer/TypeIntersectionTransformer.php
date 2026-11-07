@@ -16,7 +16,7 @@ namespace PhpCsFixer\Tokenizer\Transformer;
 
 use PhpCsFixer\Tokenizer\AbstractTypeTransformer;
 use PhpCsFixer\Tokenizer\CT;
-use PhpCsFixer\Tokenizer\Token;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -29,6 +29,11 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class TypeIntersectionTransformer extends AbstractTypeTransformer
 {
+    public function __construct()
+    {
+        parent::__construct([FCT::T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG, '&'], [CT::T_TYPE_INTERSECTION, '&']);
+    }
+
     public function getPriority(): int
     {
         // needs to run after ArrayTypehintTransformer, TypeColonTransformer and AttributeTransformer
@@ -42,21 +47,11 @@ final class TypeIntersectionTransformer extends AbstractTypeTransformer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(\T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG);
-    }
-
-    public function processToken(Tokens $tokens, Token $token, int $index): void
-    {
-        $this->doProcess($tokens, $index, [\T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG, '&']);
+        return $tokens->isTokenKindFound(FCT::T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG);
     }
 
     public function getCustomTokens(): array
     {
         return [CT::T_TYPE_INTERSECTION];
-    }
-
-    protected function replaceToken(Tokens $tokens, int $index): void
-    {
-        $tokens[$index] = new Token([CT::T_TYPE_INTERSECTION, '&']);
     }
 }

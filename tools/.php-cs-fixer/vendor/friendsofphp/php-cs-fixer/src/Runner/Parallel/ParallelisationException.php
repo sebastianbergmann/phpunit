@@ -29,4 +29,19 @@ final class ParallelisationException extends \RuntimeException
     {
         return new self('Unknown process identifier: '.$identifier->toString());
     }
+
+    public static function forUnexpectedWorkerExit(?int $exitCode, ?int $termSignal, string $output): self
+    {
+        $output = trim($output);
+        if (\strlen($output) > 1_000) {
+            $output = substr($output, 0, 1_000).'...';
+        }
+
+        return new self(\sprintf(
+            'Worker process exited unexpectedly (exit code: %s, signal: %s), its files were not analysed.%s',
+            $exitCode ?? 'n/a',
+            $termSignal ?? 'n/a',
+            '' !== $output ? "\nWorker output:\n".$output : '',
+        ));
+    }
 }

@@ -492,13 +492,10 @@ final class Runner
                 },
 
                 // [REACT] Handle worker's shutdown
-                static function ($exitCode, string $output) use ($processPool, $identifier): void {
-                    // @codeCoverageIgnoreStart
+                static function (?int $exitCode, string $output, ?int $termSignal) use ($processPool, $identifier): void {
+                    // Workers that finished (or were ended on purpose) are already removed from the pool
+                    $wasExpected = !$processPool->isKnown($identifier);
                     $processPool->endProcessIfKnown($identifier);
-
-                    if (0 === $exitCode || null === $exitCode) {
-                        return;
-                    }
 
                     $errorsReported = Preg::matchAll(
                         \sprintf('/^(?:%s)([^\n]+)+/m', WorkerCommand::ERROR_PREFIX),
@@ -506,11 +503,21 @@ final class Runner
                         $matches,
                     );
 
-                    if ($errorsReported > 0) {
+                    if ($errorsReported > 0 && 0 !== $exitCode && null !== $exitCode) {
                         throw WorkerException::fromRaw(
                             json_decode($matches[1][0], true, 512, \JSON_THROW_ON_ERROR),
                         );
                     }
+
+                    if ($wasExpected || (0 === $exitCode && null === $termSignal)) {
+                        return;
+                    }
+
+                    // @codeCoverageIgnoreStart
+                    // Non-exception fatal (e.g. memory limit) or killed process: no structured error, but chunk was lost
+                    $processPool->endAll();
+
+                    throw ParallelisationException::forUnexpectedWorkerExit($exitCode, $termSignal, $output);
                     // @codeCoverageIgnoreEnd
                 },
             );
