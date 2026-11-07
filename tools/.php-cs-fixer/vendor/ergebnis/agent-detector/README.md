@@ -34,12 +34,16 @@ use Ergebnis\AgentDetector;
 
 $detector = new AgentDetector\Detector();
 
-$isAgentPresent = $detector->isAgentPresent(\getenv());
+$isAgentPresent = $detector->isAgentPresent();
 ```
+
+### Disabling the detection
+
+To disable the detection, set the `AGENT_DETECTOR_DISABLE` environment variable to a non-empty value, for example, `AGENT_DETECTOR_DISABLE=1`. `Detector::isAgentPresent()` then returns `false`, even when an agent is present.
 
 ### Supported agents
 
-This package detects the presence of the following agents via environment variables:
+This package detects the presence of the following agents via environment variables. An environment variable counts only when it is set to a non-empty value, or to the value given in the table.
 
 | Agent | Environment Variable |
 |---|---|
@@ -49,9 +53,9 @@ This package detects the presence of the following agents via environment variab
 | [Claude Code](https://github.com/anthropics/claude-code) | `CLAUDECODE`, `CLAUDE_CODE`, `CLAUDE_CODE_IS_COWORK` |
 | [Cline](https://cline.bot) | `CLINE_ACTIVE` |
 | [Codex](https://github.com/openai/codex) | `CODEX_CI`, `CODEX_SANDBOX`, `CODEX_THREAD_ID` |
-| [Cursor](https://cursor.com) | `CURSOR_AGENT`, `CURSOR_EXTENSION_HOST_ROLE`, `CURSOR_TRACE_ID` |
+| [Cursor](https://cursor.com) | `CURSOR_AGENT`, `CURSOR_EXTENSION_HOST_ROLE` (when set to `agent-exec`) |
 | [Gemini CLI](https://github.com/google-gemini/gemini-cli) | `GEMINI_CLI` |
-| [GitHub Copilot](https://github.com/features/copilot) | `COPILOT_ALLOW_ALL`, `COPILOT_CLI`, `COPILOT_GITHUB_TOKEN`, `COPILOT_MODEL |
+| [GitHub Copilot](https://github.com/features/copilot) | `COPILOT_CLI` |
 | [Goose](https://github.com/block/goose) | `GOOSE_TERMINAL` |
 | [Grok](https://x.ai/grok) | `GROK_AGENT` |
 | [Junie](https://www.jetbrains.com/junie) | `JUNIE_DATA`, `JUNIE_SHIM_PATH` |
@@ -59,7 +63,6 @@ This package detects the presence of the following agents via environment variab
 | [OpenClaw](https://openclaw.ai) | `OPENCLAW_SHELL` |
 | [OpenCode](https://github.com/sst/opencode) | `OPENCODE`, `OPENCODE_CLIENT` |
 | [Pi](https://pi.dev) | `PI_CODING_AGENT` |
-| [Replit](https://replit.com) | `REPL_ID` |
 
 ### Indicating the presence of an agent
 

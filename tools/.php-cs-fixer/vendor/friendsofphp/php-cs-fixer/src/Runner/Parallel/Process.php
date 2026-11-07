@@ -65,9 +65,9 @@ final class Process
     }
 
     /**
-     * @param callable(array<array-key, mixed> $json): void  $onData  callback to be called when data is received from the parallelisation operator
-     * @param callable(\Throwable $exception): void          $onError callback to be called when an exception occurs
-     * @param callable(?int $exitCode, string $output): void $onExit  callback to be called when the process exits
+     * @param callable(array<array-key, mixed> $json): void                    $onData  callback to be called when data is received from the parallelisation operator
+     * @param callable(\Throwable $exception): void                            $onError callback to be called when an exception occurs
+     * @param callable(?int $exitCode, string $output, ?int $termSignal): void $onExit  callback to be called when the process exits
      */
     public function start(callable $onData, callable $onError, callable $onExit): void
     {
@@ -99,7 +99,7 @@ final class Process
             2 => $this->stdErr,
         ]);
         $this->process->start($this->loop);
-        $this->process->on('exit', function ($exitCode) use ($onExit): void {
+        $this->process->on('exit', function ($exitCode, $termSignal = null) use ($onExit): void {
             $this->cancelTimer();
 
             $output = '';
@@ -115,7 +115,7 @@ final class Process
                 $output .= $stdErr;
             }
 
-            $onExit($exitCode, $output);
+            $onExit($exitCode, $output, $termSignal);
 
             fclose($this->stdOut);
             fclose($this->stdErr);
