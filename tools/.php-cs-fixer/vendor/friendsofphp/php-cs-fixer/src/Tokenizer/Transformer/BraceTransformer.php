@@ -50,16 +50,24 @@ final class BraceTransformer extends AbstractTransformer
         return $tokens->isAnyTokenKindsFound([\T_CURLY_OPEN, \T_DOLLAR_OPEN_CURLY_BRACES, '{']);
     }
 
-    public function processToken(Tokens $tokens, Token $token, int $index): void
+    public function process(Tokens $tokens): void
     {
-        $this->transformIntoCurlyCloseBrace($tokens, $index);
-        $this->transformIntoDollarCloseBrace($tokens, $index);
-        $this->transformIntoDynamicPropBraces($tokens, $index);
-        $this->transformIntoDynamicVarBraces($tokens, $index);
-        $this->transformIntoPropertyHookBraces($tokens, $index);
-        $this->transformIntoCurlyIndexBraces($tokens, $index);
-        $this->transformIntoGroupUseBraces($tokens, $index);
-        $this->transformIntoDynamicClassConstantFetchBraces($tokens, $index);
+        foreach ($tokens as $index => $token) {
+            if ($token->isGivenKind(\T_CURLY_OPEN)) {
+                $this->transformIntoCurlyCloseBrace($tokens, $index);
+            } elseif ($token->isGivenKind(\T_DOLLAR_OPEN_CURLY_BRACES)) {
+                $this->transformIntoDollarCloseBrace($tokens, $index);
+            } elseif ($token->isObjectOperator()) {
+                $this->transformIntoDynamicPropBraces($tokens, $index);
+            } elseif ($token->equals('$')) {
+                $this->transformIntoDynamicVarBraces($tokens, $index);
+            } elseif ($token->equals('{')) {
+                $this->transformIntoPropertyHookBraces($tokens, $index);
+                $this->transformIntoCurlyIndexBraces($tokens, $index);
+                $this->transformIntoGroupUseBraces($tokens, $index);
+                $this->transformIntoDynamicClassConstantFetchBraces($tokens, $index);
+            }
+        }
     }
 
     public function getCustomTokens(): array
@@ -89,12 +97,6 @@ final class BraceTransformer extends AbstractTransformer
      */
     private function transformIntoCurlyCloseBrace(Tokens $tokens, int $index): void
     {
-        $token = $tokens[$index];
-
-        if (!$token->isGivenKind(\T_CURLY_OPEN)) {
-            return;
-        }
-
         $level = 1;
 
         do {
@@ -112,22 +114,12 @@ final class BraceTransformer extends AbstractTransformer
 
     private function transformIntoDollarCloseBrace(Tokens $tokens, int $index): void
     {
-        $token = $tokens[$index];
-
-        if ($token->isGivenKind(\T_DOLLAR_OPEN_CURLY_BRACES)) {
-            $nextIndex = $tokens->getNextTokenOfKind($index, ['}']);
-            $tokens[$nextIndex] = new Token([CT::T_DOLLAR_CLOSE_CURLY_BRACES, '}']);
-        }
+        $nextIndex = $tokens->getNextTokenOfKind($index, ['}']);
+        $tokens[$nextIndex] = new Token([CT::T_DOLLAR_CLOSE_CURLY_BRACES, '}']);
     }
 
     private function transformIntoDynamicPropBraces(Tokens $tokens, int $index): void
     {
-        $token = $tokens[$index];
-
-        if (!$token->isObjectOperator()) {
-            return;
-        }
-
         if (!$tokens[$index + 1]->equals('{')) {
             return;
         }
@@ -141,12 +133,6 @@ final class BraceTransformer extends AbstractTransformer
 
     private function transformIntoDynamicVarBraces(Tokens $tokens, int $index): void
     {
-        $token = $tokens[$index];
-
-        if (!$token->equals('$')) {
-            return;
-        }
-
         $openIndex = $tokens->getNextMeaningfulToken($index);
 
         if (null === $openIndex) {
@@ -169,12 +155,6 @@ final class BraceTransformer extends AbstractTransformer
     {
         if (\PHP_VERSION_ID < 8_04_00) {
             return; // @TODO: drop condition when PHP 8.4+ is required or majority of the users are using 8.4+
-        }
-
-        $token = $tokens[$index];
-
-        if (!$token->equals('{')) {
-            return;
         }
 
         $nextIndex = $tokens->getNextMeaningfulToken($index);
@@ -265,12 +245,6 @@ final class BraceTransformer extends AbstractTransformer
 
     private function transformIntoGroupUseBraces(Tokens $tokens, int $index): void
     {
-        $token = $tokens[$index];
-
-        if (!$token->equals('{')) {
-            return;
-        }
-
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
         if (!$tokens[$prevIndex]->isGivenKind(\T_NS_SEPARATOR)) {
@@ -287,12 +261,6 @@ final class BraceTransformer extends AbstractTransformer
     {
         if (\PHP_VERSION_ID < 8_03_00) {
             return; // @TODO: drop condition when PHP 8.3+ is required or majority of the users are using 8.3+
-        }
-
-        $token = $tokens[$index];
-
-        if (!$token->equals('{')) {
-            return;
         }
 
         $prevMeaningfulTokenIndex = $tokens->getPrevMeaningfulToken($index);
