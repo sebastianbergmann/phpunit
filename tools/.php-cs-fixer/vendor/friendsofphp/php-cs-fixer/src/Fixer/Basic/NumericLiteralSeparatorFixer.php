@@ -175,33 +175,33 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer implements Config
             // Octal
             return $this->insertEveryRight($value, 3, 2);
         }
-        if (str_starts_with($lowerValue, '0') && !str_contains($lowerValue, '.')) {
+        if (str_starts_with($lowerValue, '0') && !str_contains($lowerValue, '.') && !str_contains($lowerValue, 'e')) {
             // Octal notation prior PHP 8.1 but still valid
             return $this->insertEveryRight($value, 3, 1);
         }
 
         // All other types
 
-        /** If its a negative value we need an offset */
-        $negativeOffset = static fn (string $v): int => str_contains($v, '-') ? 1 : 0;
+        /** If its a signed value we need an offset */
+        $signOffset = static fn (string $v): int => str_contains($v, '-') || str_contains($v, '+') ? 1 : 0;
 
-        Preg::matchAll('/([0-9-_]+)?((\.)([0-9_]*))?((e)([0-9-_]+))?/i', $value, $result);
+        Preg::matchAll('/([0-9-_]+)?((\.)([0-9_]*))?((e)([+-]?[0-9_]+))?/i', $value, $result);
         \assert(isset($result[1][0], $result[3][0], $result[4][0], $result[6][0], $result[7][0]));
 
         $integer = $result[1][0];
-        $joinedValue = $this->insertEveryRight($integer, 3, $negativeOffset($integer));
+        $joinedValue = $this->insertEveryRight($integer, 3, $signOffset($integer));
 
         $dot = $result[3][0];
         if ('' !== $dot) {
             $integer = $result[4][0];
-            $decimal = $this->insertEveryLeft($integer, 3, $negativeOffset($integer));
+            $decimal = $this->insertEveryLeft($integer, 3, $signOffset($integer));
             $joinedValue = $joinedValue.$dot.$decimal;
         }
 
         $tim = $result[6][0];
         if ('' !== $tim) {
             $integer = $result[7][0];
-            $times = $this->insertEveryRight($integer, 3, $negativeOffset($integer));
+            $times = $this->insertEveryRight($integer, 3, $signOffset($integer));
             $joinedValue = $joinedValue.$tim.$times;
         }
 

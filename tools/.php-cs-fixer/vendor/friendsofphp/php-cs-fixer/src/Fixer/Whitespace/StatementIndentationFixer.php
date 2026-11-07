@@ -459,7 +459,7 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                     if ($scopes[$currentScope]['is_indented_block']) {
                         $firstNonWhitespaceTokenIndex = null;
                         $nextNewlineIndex = null;
-                        for ($searchIndex = $index + 1, $max = \count($tokens); $searchIndex < $max; ++$searchIndex) {
+                        for ($searchIndex = $token->isWhitespace() ? $index + 1 : $index, $max = \count($tokens); $searchIndex < $max; ++$searchIndex) {
                             $searchToken = $tokens[$searchIndex];
 
                             if (!$searchToken->isWhitespace()) {
