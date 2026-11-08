@@ -429,7 +429,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             $this->recordCheckedExample($events, $exampleEvents, $run);
 
             if ($this->endsCheckWithoutFalsification($example, $falsification, $exampleEvents)) {
-                $this->report($events, $emitter, $exampleEvents, null, false, null);
+                $this->report($events, $emitter, $exampleEvents, $this->errorOfExampleThatEndsCheck($example, $falsification), false, null);
 
                 return;
             }
@@ -533,7 +533,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             $this->recordCheckedExample($events, $exampleEvents, $run);
 
             if ($this->endsCheckWithoutFalsification($example, $falsification, $exampleEvents)) {
-                $this->report($events, $emitter, $exampleEvents, null, false, null);
+                $this->report($events, $emitter, $exampleEvents, $this->errorOfExampleThatEndsCheck($example, $falsification), false, null);
 
                 return;
             }
@@ -1460,8 +1460,9 @@ final class PropertyTestSuite extends IterativeTestSuite
      *
      * - an example that is aborted because the deadline of the test run has
      *   passed does not falsify the property
-     * - an example that failed or errored without checking the property is
-     *   reported without being shrunk, see wasAborted()
+     * - an example that failed, errored, or exceeded its time limit without
+     *   checking the property is reported without being shrunk, see
+     *   wasAborted() and errorOfExampleThatEndsCheck()
      * - when an example is skipped or marked incomplete, so is the property
      *
      * Such an example is not counted as one of the examples for which the
@@ -1478,6 +1479,30 @@ final class PropertyTestSuite extends IterativeTestSuite
         }
 
         return $example->status()->isSkipped() || $example->status()->isIncomplete();
+    }
+
+    /**
+     * The error of the property when an example ends the check without
+     * falsifying it, or null when the events of the example have its outcome.
+     *
+     * An example that exceeds its time limit has no outcome among its events,
+     * as the test runner reports neither an error nor a risky test for it:
+     * when it is aborted before it was prepared, in setUp(), for instance, it
+     * did not check the property, and exceeding the time limit is the error
+     * of the property, like an error in setUp() is. Without this error, the
+     * property would be reported as if it had passed.
+     */
+    private function errorOfExampleThatEndsCheck(TestCase $example, ?Falsification $falsification): ?Event\Code\Throwable
+    {
+        if ($falsification === null || !$falsification->isTimeout()) {
+            return null;
+        }
+
+        $timeout = $example->throwableThatEndedTheTest();
+
+        assert($timeout !== null);
+
+        return Event\Code\ThrowableBuilder::from($timeout);
     }
 
     /**
