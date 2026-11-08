@@ -26,6 +26,7 @@ use function register_shutdown_function;
 use function sprintf;
 use Closure;
 use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Event\Test\PhpunitErrorTriggered;
 use PHPUnit\Event\TestRunner\PhpunitWarningTriggered;
 use PHPUnit\Exception;
 use PHPUnit\Framework\PropertyBased\ExampleResult;
@@ -68,9 +69,13 @@ use Throwable;
  * configuration file cannot be found or read changes nothing and can be
  * retried. The configuration file and its bootstrap script are loaded as for
  * a test run, but nothing is printed, no code coverage is collected, nothing
- * is logged, and no extensions are loaded. As nothing is printed, a warning
- * that PHPUnit triggers while it is booted, about a configuration file that
- * did not pass validation, for instance, is raised as an exception.
+ * is logged, and no extensions are loaded. As nothing is printed, an error
+ * or a warning that PHPUnit triggers while it is booted, about a property
+ * that cannot be checked or a configuration file that did not pass
+ * validation, for instance, is raised as an exception, as the test runner
+ * would report it and fail. This is so for every test in the test suite that
+ * the configuration file configures, also for one that the filter leaves
+ * out, as the test suite is built before it is filtered.
  *
  * As in a test run, the random number generators whose state is global to
  * the process, the one that mt_rand() uses, for instance, are seeded before
@@ -192,6 +197,7 @@ final class PropertyRunner
      *
      * @throws AlreadyBootedException
      * @throws ConfigurationFileNotFoundException    when the configuration file that is passed is a directory without one
+     * @throws ErrorTriggeredWhileBootingException   when PHPUnit triggered an error while the test suite was built, for a property that cannot be checked, for instance
      * @throws Exception                             when the configuration file, its bootstrap script, or the test suite cannot be loaded
      * @throws InvalidArgumentException
      * @throws TimeLimitCannotBeEnforcedException
@@ -219,9 +225,10 @@ final class PropertyRunner
         $facade = EventFacade::instance();
 
         // the events that are emitted while PHPUnit is booted are collected
-        // rather than dispatched, so that the warnings among them, about a
-        // configuration file that did not pass validation, for instance, are
-        // raised instead of being lost
+        // rather than dispatched, so that the errors and warnings among them,
+        // about a property that cannot be checked or a configuration file that
+        // did not pass validation, for instance, are raised instead of being
+        // lost
         $facade->startCollectingEvents();
 
         try {
@@ -230,12 +237,27 @@ final class PropertyRunner
             $events = $facade->stopCollectingEvents();
         }
 
+        $errors   = [];
         $warnings = [];
 
         foreach ($events as $event) {
+            if ($event instanceof PhpunitErrorTriggered) {
+                $errors[] = [
+                    'test'    => $event->test()->id(),
+                    'message' => $event->message(),
+                ];
+            }
+
             if ($event instanceof PhpunitWarningTriggered) {
                 $warnings[] = $event->message();
             }
+        }
+
+        // the errors are raised first, as a warning can follow from one, that
+        // no tests were found in a test class whose properties cannot be
+        // checked, for instance
+        if ($errors !== []) {
+            throw new ErrorTriggeredWhileBootingException($errors);
         }
 
         if ($warnings !== []) {
