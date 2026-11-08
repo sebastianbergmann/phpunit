@@ -31,7 +31,6 @@ use PHPUnit\Framework\PropertyBased\ChoiceSource;
 use PHPUnit\Framework\PropertyBased\Constructions;
 use PHPUnit\Framework\PropertyBased\CounterexampleExporter;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorDeriver;
-use PHPUnit\Framework\PropertyBased\Derivation\GeneratorRegistry;
 use PHPUnit\Framework\PropertyBased\DrawnValues;
 use PHPUnit\Framework\PropertyBased\EventAggregator;
 use PHPUnit\Framework\PropertyBased\ExampleRejectedException;
@@ -41,16 +40,14 @@ use PHPUnit\Framework\PropertyBased\Falsification;
 use PHPUnit\Framework\PropertyBased\FalsificationReport;
 use PHPUnit\Framework\PropertyBased\FlakyPropertyException;
 use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
-use PHPUnit\Framework\PropertyBased\GeneratorMethod;
+use PHPUnit\Framework\PropertyBased\GeneratorResolver;
 use PHPUnit\Framework\PropertyBased\InvalidPropertyException;
 use PHPUnit\Framework\PropertyBased\InvalidStateMachineException;
 use PHPUnit\Framework\PropertyBased\Observations;
 use PHPUnit\Framework\PropertyBased\PropertyDefinition;
-use PHPUnit\Framework\PropertyBased\PropertyDefinitionBuilder;
 use PHPUnit\Framework\PropertyBased\PropertyExample;
 use PHPUnit\Framework\PropertyBased\RejectionReason;
 use PHPUnit\Framework\PropertyBased\Type\NameScope;
-use PHPUnit\Framework\PropertyBased\ValueGenerator;
 use PHPUnit\Framework\TestRunner\ExampleRun;
 use PHPUnit\Framework\TestRunner\RiskyTestChecks;
 use PHPUnit\Framework\TestRunner\TestRunner;
@@ -112,7 +109,7 @@ final class PropertyTestSuite extends IterativeTestSuite
      * property again.
      */
     private const int NUMBER_OF_REPLAYS_OF_FALSIFYING_EXAMPLE = 4;
-    private ?PropertyDefinition $definition                   = null;
+    private ?GeneratorResolver $generatorResolver             = null;
 
     /**
      * @var positive-int
@@ -261,9 +258,9 @@ final class PropertyTestSuite extends IterativeTestSuite
     {
         $suite = self::empty($name, $emitter);
 
-        $suite->definition       = $definition;
-        $suite->numberOfExamples = $numberOfExamples;
-        $suite->exampleFactory   = $exampleFactory;
+        $suite->generatorResolver = new GeneratorResolver($definition);
+        $suite->numberOfExamples  = $numberOfExamples;
+        $suite->exampleFactory    = $exampleFactory;
 
         $suite->addTest($test, $groups);
 
@@ -393,7 +390,7 @@ final class PropertyTestSuite extends IterativeTestSuite
                 {
                     $this->triggerTestCaseContextIssues();
 
-                    return $this->generators($test, $emitter);
+                    return $this->generatorResolver()->generators($test, $emitter);
                 },
                 $events,
             );
@@ -634,7 +631,7 @@ final class PropertyTestSuite extends IterativeTestSuite
         // change the state of an object that is passed to it; the arguments
         // of a property whose requirements are not met are not exported,
         // because its example is skipped
-        if ($exportValues && $this->definition !== null) {
+        if ($exportValues && $this->generatorResolver()->definition() !== null) {
             $exportedArguments = $this->export($arguments, $source->constructions());
             $drawnValues       = DrawnValues::reportedFrom($source, $this->exporter($source->constructions()));
         }
@@ -722,7 +719,7 @@ final class PropertyTestSuite extends IterativeTestSuite
                 {
                     $this->triggerTestCaseContextIssuesOfExamplesRunOnTheirOwn();
 
-                    return $this->generators($test, $this->emitter());
+                    return $this->generatorResolver()->generators($test, $this->emitter());
                 },
                 null,
             );
@@ -1686,7 +1683,9 @@ final class PropertyTestSuite extends IterativeTestSuite
     {
         // the examples of a property without a definition are skipped, so the
         // property does not pass and this is not asked for
-        if ($this->definition === null) {
+        $definition = $this->generatorResolver()->definition();
+
+        if ($definition === null) {
             // @codeCoverageIgnoreStart
             return [];
             // @codeCoverageIgnoreEnd
@@ -1694,7 +1693,7 @@ final class PropertyTestSuite extends IterativeTestSuite
 
         $messages = [];
 
-        foreach ($this->definition->requiredClassifications() as $requirement) {
+        foreach ($definition->requiredClassifications() as $requirement) {
             $numberOfExamples = 0;
 
             foreach ($this->classifications as $classification) {
@@ -1733,64 +1732,6 @@ final class PropertyTestSuite extends IterativeTestSuite
     }
 
     /**
-     * @throws InvalidPropertyException
-     *
-     * @return array{0: GeneratorDeriver, 1: array<non-empty-string, AbstractGenerator<mixed>>}
-     */
-    private function generators(TestCase $test, Event\Emitter $emitter): array
-    {
-        // the definition of a property whose requirements were not met while
-        // the test suite was built is built when the property runs and its
-        // requirements are met then, because the function that it requires
-        // is declared by setUpBeforeClass(), for instance
-        if ($this->definition === null &&
-            new Requirements($emitter)->requirementsNotSatisfiedFor($test::class, $test->name()) === []) {
-            $this->definition = new PropertyDefinitionBuilder()->build($test::class, $test->name());
-        }
-
-        // the examples of a property whose requirements are not met are
-        // skipped before arguments are passed to them
-        if ($this->definition === null) {
-            return [new GeneratorDeriver(GeneratorRegistry::empty()), []];
-        }
-
-        $registered = [];
-
-        foreach ($this->definition->registeredGenerators() as $registeredClassName => $generatorMethod) {
-            $registered[$registeredClassName] = $this->callGeneratorMethod($generatorMethod);
-        }
-
-        // the generators that were derived from the types of the parameters
-        // when the definition was built use the registered generators through
-        // the deriver of the choice source
-        $deriver    = new GeneratorDeriver(GeneratorRegistry::from($registered));
-        $generators = [];
-
-        foreach ($this->definition->parameters() as $parameterName => $generator) {
-            if ($generator instanceof AbstractGenerator) {
-                $generators[$parameterName] = $generator;
-
-                continue;
-            }
-
-            if ($generator instanceof Closure) {
-                $generators[$parameterName] = AbstractGenerator::from(
-                    $this->ensureIsValueGenerator(
-                        $generator(),
-                        sprintf('the closure that is specified with #[ForAll] for parameter $%s', $parameterName),
-                    ),
-                );
-
-                continue;
-            }
-
-            $generators[$parameterName] = AbstractGenerator::from($this->callGeneratorMethod($generator));
-        }
-
-        return [$deriver, $generators];
-    }
-
-    /**
      * The explicit examples of a property whose requirements are not met are
      * not checked, because its first example is skipped.
      *
@@ -1798,50 +1739,13 @@ final class PropertyTestSuite extends IterativeTestSuite
      */
     private function explicitExamples(): array
     {
-        if ($this->definition === null) {
+        $definition = $this->generatorResolver()->definition();
+
+        if ($definition === null) {
             return [];
         }
 
-        return $this->definition->explicitExamples();
-    }
-
-    /**
-     * @throws InvalidPropertyException
-     *
-     * @return ValueGenerator<mixed>
-     */
-    private function callGeneratorMethod(GeneratorMethod $generatorMethod): ValueGenerator
-    {
-        return $this->ensureIsValueGenerator(
-            new ReflectionMethod($generatorMethod->className(), $generatorMethod->methodName())->invoke(null),
-            $generatorMethod->asString(),
-        );
-    }
-
-    /**
-     * @param non-empty-string $source what returned $generator, for the message of the exception
-     *
-     * @throws InvalidPropertyException
-     *
-     * @return ValueGenerator<mixed>
-     */
-    private function ensureIsValueGenerator(mixed $generator, string $source): ValueGenerator
-    {
-        assert($this->definition !== null);
-
-        if (!$generator instanceof ValueGenerator) {
-            throw InvalidPropertyException::because(
-                $this->definition->className(),
-                $this->definition->methodName(),
-                sprintf(
-                    '%s does not return a %s',
-                    $source,
-                    ValueGenerator::class,
-                ),
-            );
-        }
-
-        return $generator;
+        return $definition->explicitExamples();
     }
 
     /**
@@ -1988,10 +1892,12 @@ final class PropertyTestSuite extends IterativeTestSuite
      */
     private function exporter(Constructions $constructions): CounterexampleExporter
     {
-        assert($this->definition !== null);
+        $definition = $this->generatorResolver()->definition();
+
+        assert($definition !== null);
 
         return new CounterexampleExporter(
-            NameScope::forMethod(new ReflectionMethod($this->definition->className(), $this->definition->methodName())),
+            NameScope::forMethod(new ReflectionMethod($definition->className(), $definition->methodName())),
             $constructions,
         );
     }
@@ -2065,6 +1971,13 @@ final class PropertyTestSuite extends IterativeTestSuite
     private function shouldStop(): bool
     {
         return TimeLimitHandler::deadlineReached() || TestResultFacade::shouldStop();
+    }
+
+    private function generatorResolver(): GeneratorResolver
+    {
+        assert($this->generatorResolver !== null);
+
+        return $this->generatorResolver;
     }
 
     /**
