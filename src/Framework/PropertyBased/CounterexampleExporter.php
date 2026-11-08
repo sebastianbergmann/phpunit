@@ -38,6 +38,7 @@ use DateTimeZone;
 use PHPUnit\Framework\PropertyBased\Type\NameScope;
 use PHPUnit\Util\Exporter;
 use ReflectionClass;
+use Throwable;
 use UnitEnum;
 
 /**
@@ -70,7 +71,27 @@ final readonly class CounterexampleExporter
         $this->constructions = $constructions;
     }
 
+    /**
+     * A value that cannot be exported as a PHP expression, because exporting
+     * it raises an exception, is exported with sebastian/exporter, like other
+     * objects, rather than aborting the test run. This holds for every value
+     * that is part of another one, such as an element of an array or an
+     * argument of a constructor, on its own.
+     */
     public function export(mixed $value): string
+    {
+        try {
+            return $this->expression($value);
+        } catch (Throwable) {
+            // no value is known for which this happens, but a value that
+            // cannot be exported must not abort the test run
+            // @codeCoverageIgnoreStart
+            return Exporter::export($value);
+            // @codeCoverageIgnoreEnd
+        }
+    }
+
+    private function expression(mixed $value): string
     {
         if ($value === null) {
             return 'null';
@@ -333,6 +354,9 @@ final readonly class CounterexampleExporter
      * derived ones, is exported with the offset. For any other time zone,
      * the name of the time zone is exported, too.
      *
+     * A year after 9999 is exported with a plus sign, as in +10000-01-01,
+     * which is how PHP parses it.
+     *
      * When daylight saving time ends, the local time of the hour before
      * occurs twice, and a point in time that is created from it is the later
      * of the two. The earlier one is exported with its offset, and its time
@@ -340,7 +364,8 @@ final readonly class CounterexampleExporter
      */
     private function pointInTime(DateTimeInterface $value): string
     {
-        $format = 'Y-m-d\TH:i:s';
+        // years after 9999 have a sign, as they cannot be parsed otherwise
+        $format = 'x-m-d\TH:i:s';
 
         if ($value->format('u') !== '000000') {
             $format .= '.u';
