@@ -62,6 +62,15 @@ use Throwable;
  * that PHPUnit triggers while it is booted, about a configuration file that
  * did not pass validation, for instance, is raised as an exception.
  *
+ * As in a test run, the random number generators whose state is global to
+ * the process, the one that mt_rand() uses, for instance, are seeded before
+ * each example when a random seed is passed while PHPUnit is booted, or when
+ * the configuration file configures a random execution order, for which
+ * PHPUnit chooses a random seed itself. The seed for an example is derived
+ * from the random seed and the property, so that the example gets the same
+ * random numbers in every process that is booted with the same random seed.
+ * randomSeed() tells which random seed is used.
+ *
  * An example is run with its full lifecycle, from the hook methods that are
  * called before the property to the ones that are called after it, and with
  * the time limit that is passed, which covers generating its arguments as
@@ -110,6 +119,11 @@ final class PropertyRunner
     private readonly array $properties;
 
     /**
+     * @var ?positive-int
+     */
+    private readonly ?int $randomSeed;
+
+    /**
      * The test class whose hook methods that are called before its first test
      * were called last, and what calling them resulted in: null when they
      * were called, the message why its tests are skipped, or the throwable
@@ -126,17 +140,28 @@ final class PropertyRunner
      *
      * @param ?non-empty-string $configurationFile the configuration file, null to look for one in the working directory as the test runner does
      * @param ?non-empty-string $filter            the filter, null for all tests
+     * @param ?positive-int     $randomSeed        the random seed with which the random number generators are seeded before each example, as with the --random-seed option of the test runner, null to seed them only when the configuration file configures a random execution order
      *
      * @throws AlreadyBootedException
      * @throws ConfigurationFileNotFoundException    when the configuration file that is passed is a directory without one
      * @throws Exception                             when the configuration file, its bootstrap script, or the test suite cannot be loaded
+     * @throws InvalidArgumentException
      * @throws TimeLimitCannotBeEnforcedException
      * @throws WarningTriggeredWhileBootingException when PHPUnit triggered a warning while the configuration file was loaded or the test suite was built
      */
-    public static function boot(?string $configurationFile = null, ?string $filter = null): self
+    public static function boot(?string $configurationFile = null, ?string $filter = null, ?int $randomSeed = null): self
     {
         if (self::$booted) {
             throw new AlreadyBootedException;
+        }
+
+        if ($randomSeed !== null && $randomSeed < 1) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'The random seed must be a positive integer, %d given',
+                    $randomSeed,
+                ),
+            );
         }
 
         if (!new Invoker()->canInvokeWithTimeout()) {
@@ -152,7 +177,7 @@ final class PropertyRunner
         $facade->startCollectingEvents();
 
         try {
-            $testSuite = self::testSuite($configurationFile, $filter);
+            $testSuite = self::testSuite($configurationFile, $filter, $randomSeed);
         } finally {
             $events = $facade->stopCollectingEvents();
         }
@@ -169,15 +194,28 @@ final class PropertyRunner
             throw new WarningTriggeredWhileBootingException($warnings);
         }
 
-        return new self(self::propertiesIn($testSuite, null));
+        $configuration = Registry::get();
+
+        // the random seed is null when the random number generators are not
+        // seeded, as the one that PHPUnit chose then has no effect on the
+        // examples
+        $randomSeed = null;
+
+        if ($configuration->seedRandomNumberGenerators()) {
+            $randomSeed = $configuration->randomSeed();
+        }
+
+        return new self(self::propertiesIn($testSuite, null), $randomSeed);
     }
 
     /**
      * @param array<non-empty-string, array{property: PropertyTestSuite, testClass: ?TestSuite}> $properties
+     * @param ?positive-int                                                                      $randomSeed
      */
-    private function __construct(array $properties)
+    private function __construct(array $properties, ?int $randomSeed)
     {
         $this->properties = $properties;
+        $this->randomSeed = $randomSeed;
 
         $pid = getmypid();
 
@@ -219,6 +257,20 @@ final class PropertyRunner
         }
 
         return $properties;
+    }
+
+    /**
+     * The random seed with which the random number generators are seeded
+     * before each example: the one that was passed while PHPUnit was booted,
+     * or the one that PHPUnit chose because the configuration file configures
+     * a random execution order. Booting PHPUnit in another process with it
+     * seeds them in the same way there. Null when they are not seeded.
+     *
+     * @return ?positive-int
+     */
+    public function randomSeed(): ?int
+    {
+        return $this->randomSeed;
     }
 
     /**
@@ -381,11 +433,12 @@ final class PropertyRunner
     /**
      * @param ?non-empty-string $configurationFile
      * @param ?non-empty-string $filter
+     * @param ?positive-int     $randomSeed
      *
      * @throws ConfigurationFileNotFoundException
      * @throws Exception
      */
-    private static function testSuite(?string $configurationFile, ?string $filter): TestSuite
+    private static function testSuite(?string $configurationFile, ?string $filter, ?int $randomSeed): TestSuite
     {
         $emitter   = EventFacade::emitter();
         $arguments = ['--no-output', '--no-coverage', '--no-logging', '--no-extensions'];
@@ -398,6 +451,11 @@ final class PropertyRunner
         if ($filter !== null) {
             $arguments[] = '--filter';
             $arguments[] = $filter;
+        }
+
+        if ($randomSeed !== null) {
+            $arguments[] = '--random-seed';
+            $arguments[] = (string) $randomSeed;
         }
 
         $cliConfiguration           = new Builder($emitter)->fromParameters($arguments);
