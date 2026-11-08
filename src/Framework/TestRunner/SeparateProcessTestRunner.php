@@ -195,7 +195,7 @@ final class SeparateProcessTestRunner
 
         assert($code !== '');
 
-        JobRunnerRegistry::runTestJob(new Job($code, requiresXdebug: $requiresXdebug), $processResultFile, $test, $processResultNonce);
+        JobRunnerRegistry::runTestJob(new Job($code, [], [], [], null, false, $requiresXdebug), $processResultFile, $test, $processResultNonce);
 
         @unlink($serializedConfiguration);
     }

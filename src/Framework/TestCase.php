@@ -1212,9 +1212,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $mock = (new MockGenerator)->testDouble(
             $type,
             true,
-            callOriginalConstructor: false,
-            callOriginalClone: false,
-            returnValueGeneration: self::generateReturnValuesForTestDoubles(),
+            [],
+            [],
+            '',
+            false,
+            false,
+            self::generateReturnValuesForTestDoubles(),
         );
 
         assert($mock instanceof $type);
@@ -1237,7 +1240,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $mock = (new MockGenerator)->testDoubleForInterfaceIntersection(
             $interfaces,
             true,
-            returnValueGeneration: self::generateReturnValuesForTestDoubles(),
+            self::generateReturnValuesForTestDoubles(),
         );
 
         assert($mock instanceof MockObject);
@@ -2613,9 +2616,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $stub = (new MockGenerator)->testDouble(
             $type,
             false,
-            callOriginalConstructor: false,
-            callOriginalClone: false,
-            returnValueGeneration: self::generateReturnValuesForTestDoubles(),
+            [],
+            [],
+            '',
+            false,
+            false,
+            self::generateReturnValuesForTestDoubles(),
         );
 
         Event\Facade::emitter()->testCreatedStub($type);
@@ -2636,7 +2642,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $stub = (new MockGenerator)->testDoubleForInterfaceIntersection(
             $interfaces,
             false,
-            returnValueGeneration: self::generateReturnValuesForTestDoubles(),
+            self::generateReturnValuesForTestDoubles(),
         );
 
         Event\Facade::emitter()->testCreatedStubForIntersectionOfInterfaces($interfaces);
