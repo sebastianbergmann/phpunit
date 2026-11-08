@@ -699,21 +699,30 @@ final class PropertyTestSuite extends IterativeTestSuite
             return $this->generatorsOfExamplesRunOnTheirOwn;
         }
 
-        $test = $this->tests()[0] ?? null;
+        $test        = $this->tests()[0] ?? null;
+        $valueObject = $this->test;
 
         assert($test instanceof TestCase);
-        assert($this->test !== null);
+        assert($valueObject !== null);
 
         try {
-            $this->generatorsOfExamplesRunOnTheirOwn = $this->handlingIssues(fn (): array => $this->generators($test, Event\Facade::emitter()), null);
+            $this->generatorsOfExamplesRunOnTheirOwn = $this->handlingIssues(
+                function () use ($test): array
+                {
+                    $this->triggerTestCaseContextIssuesOfExamplesRunOnTheirOwn();
+
+                    return $this->generators($test, Event\Facade::emitter());
+                },
+                null,
+            );
         } catch (\PHPUnit\Exception $e) {
             throw $e;
         } catch (Throwable $t) {
             // a generator method, or a closure that is specified with
             // #[ForAll], raised an exception
             throw InvalidPropertyException::because(
-                $this->test->className(),
-                $this->test->methodName(),
+                $valueObject->className(),
+                $valueObject->methodName(),
                 sprintf(
                     'creating its generators raised %s: %s',
                     Falsification::ofThrowable($t)->description(),
@@ -723,6 +732,33 @@ final class PropertyTestSuite extends IterativeTestSuite
         }
 
         return $this->generatorsOfExamplesRunOnTheirOwn;
+    }
+
+    /**
+     * Triggers the issues that were triggered in the test case context of the
+     * property, while the test suite was built, for instance, as when PHPUnit
+     * checks the property, before the generators of the examples that are run
+     * on their own are created.
+     *
+     * @throws InvalidPropertyException when an error handler that was registered before PHPUnit's own turned one of these issues into an exception
+     */
+    private function triggerTestCaseContextIssuesOfExamplesRunOnTheirOwn(): void
+    {
+        assert($this->test !== null);
+
+        try {
+            $this->triggerTestCaseContextIssues();
+        } catch (Throwable $t) {
+            throw InvalidPropertyException::because(
+                $this->test->className(),
+                $this->test->methodName(),
+                sprintf(
+                    'an error handler turned an issue that was triggered while the test suite was built into %s: %s',
+                    Falsification::ofThrowable($t)->description(),
+                    $t->getMessage(),
+                ),
+            );
+        }
     }
 
     /**
