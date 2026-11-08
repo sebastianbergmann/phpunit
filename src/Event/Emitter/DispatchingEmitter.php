@@ -59,19 +59,13 @@ final class DispatchingEmitter implements Emitter
 
     /**
      * The events that are emitted from now on carry the telemetry of the last
-     * event whose telemetry was measured, until resumeMeasuringTelemetry() is
-     * called. Measuring the telemetry of an event takes most of the time that
-     * emitting it takes, and events that are inspected and then discarded do
-     * not need it.
+     * event whose telemetry was measured. Measuring the telemetry of an event
+     * takes most of the time that emitting it takes, and a process in which
+     * nothing reads the telemetry of events does not need it.
      */
-    public function pauseMeasuringTelemetry(): void
+    public function stopMeasuringTelemetry(): void
     {
         $this->measuresTelemetry = false;
-    }
-
-    public function resumeMeasuringTelemetry(): void
-    {
-        $this->measuresTelemetry = true;
     }
 
     /**

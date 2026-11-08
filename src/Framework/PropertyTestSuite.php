@@ -639,8 +639,6 @@ final class PropertyTestSuite extends IterativeTestSuite
 
         $example = $this->example($arguments, false, $drawnValues);
 
-        // the events of the example are only inspected to tell how it ended,
-        // so their telemetry is not measured
         $exampleEvents = $this->collectingEvents(
             static function () use ($example, $emitter, $timeLimit): void
             {
@@ -650,7 +648,6 @@ final class PropertyTestSuite extends IterativeTestSuite
 
                 new TestRunner($emitter)->runExampleOfProperty($example, false, $timeLimit);
             },
-            false,
         );
 
         $result = $this->resultOf($example, $source, $exampleEvents);

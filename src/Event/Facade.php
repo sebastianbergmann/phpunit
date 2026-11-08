@@ -148,20 +148,16 @@ final class Facade
     }
 
     /**
-     * Collects events as startCollectingEvents() does, without measuring their
-     * telemetry: they carry the telemetry of the last event whose telemetry
-     * was measured. This is for events that are inspected and then discarded,
-     * the events of an example of a property that is run on its own, for
+     * Stops measuring the telemetry of the events that are emitted from now
+     * on: they carry the telemetry of the last event whose telemetry was
+     * measured. This is for a process in which nothing reads the telemetry of
+     * events, one in which examples of properties are run on their own, for
      * instance, as measuring the telemetry of an event takes most of the time
      * that emitting it takes.
-     *
-     * @throws EventsAreAlreadyBeingCollectedException
      */
-    public function startCollectingEventsWithoutTelemetry(): void
+    public function stopMeasuringTelemetry(): void
     {
-        $this->deferredDispatcher()->startCollectingEvents();
-
-        $this->emitter->pauseMeasuringTelemetry();
+        $this->emitter->stopMeasuringTelemetry();
     }
 
     /**
@@ -169,11 +165,7 @@ final class Facade
      */
     public function stopCollectingEvents(): EventCollection
     {
-        $events = $this->deferredDispatcher()->stopCollectingEvents();
-
-        $this->emitter->resumeMeasuringTelemetry();
-
-        return $events;
+        return $this->deferredDispatcher()->stopCollectingEvents();
     }
 
     public function seal(): void

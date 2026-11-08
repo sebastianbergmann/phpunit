@@ -3900,7 +3900,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($shellExitCode, $event->shellExitCode());
     }
 
-    public function testEventsCarryTheTelemetryOfTheLastEventWhoseTelemetryWasMeasuredWhileMeasuringTelemetryIsPaused(): void
+    public function testEventsCarryTheTelemetryOfTheLastEventWhoseTelemetryWasMeasuredOnceMeasuringTelemetryIsStopped(): void
     {
         $subscriber = new class implements Test\PreparationStartedSubscriber
         {
@@ -3928,24 +3928,17 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $test = $this->testValueObject();
 
-        $emitter->pauseMeasuringTelemetry();
+        $emitter->stopMeasuringTelemetry();
         $emitter->testPreparationStarted($test);
         $emitter->testPreparationStarted($test);
-        $emitter->resumeMeasuringTelemetry();
-        $emitter->testPreparationStarted($test);
-        $emitter->pauseMeasuringTelemetry();
-        $emitter->testPreparationStarted($test);
-        $emitter->resumeMeasuringTelemetry();
         $emitter->testPreparationStarted($test);
 
-        [$first, $second, $third, $fourth, $fifth] = $subscriber->telemetry;
+        [$first, $second, $third] = $subscriber->telemetry;
 
         // the telemetry of the first event is measured, as there is no event
         // whose telemetry was measured before
         $this->assertSame($first, $second);
-        $this->assertNotSame($second, $third);
-        $this->assertSame($third, $fourth);
-        $this->assertNotSame($fourth, $fifth);
+        $this->assertSame($second, $third);
     }
 
     private function testSuiteValueObject(): TestSuiteWithName

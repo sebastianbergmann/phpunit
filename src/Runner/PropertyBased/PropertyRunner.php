@@ -653,6 +653,11 @@ final class PropertyRunner
         // collected for the example and then discarded
         EventFacade::instance()->seal();
 
+        // nothing reads the telemetry of the events, which are neither printed
+        // nor logged, and measuring it takes most of the time that emitting an
+        // event takes
+        EventFacade::instance()->stopMeasuringTelemetry();
+
         new ErrorHandlerConfigurator($emitter)->configure($configuration);
 
         ErrorHandler::instance()->registerForNonTestCaseContext();

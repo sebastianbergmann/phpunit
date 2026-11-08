@@ -14,6 +14,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
+use ReflectionProperty;
 
 #[CoversClass(Facade::class)]
 #[Small]
@@ -40,33 +41,53 @@ final class FacadeTest extends TestCase
         );
     }
 
-    public function testCollectsEventsWithoutMeasuringTheirTelemetry(): void
+    public function testStopsMeasuringTheTelemetryOfEvents(): void
     {
-        $facade  = Facade::instance();
-        $emitter = Facade::emitter();
-        $test    = $this->valueObjectForEvents();
+        $tracer = new class implements Tracer
+        {
+            /**
+             * @var list<Telemetry\Info>
+             */
+            public array $telemetry = [];
 
-        $facade->startCollectingEventsWithoutTelemetry();
+            public function trace(Event $event): void
+            {
+                if ($event instanceof Test\PreparationStarted) {
+                    $this->telemetry[] = $event->telemetryInfo();
+                }
+            }
+        };
+
+        $facade = new Facade;
+
+        $facade->registerTracer($tracer);
+        $facade->seal();
+
+        // the event facade of the test run is swapped for this one, as the
+        // emitter is taken from the instance of the event facade, and the
+        // telemetry of the events of the test run must still be measured
+        $property = new ReflectionProperty(Facade::class, 'instance');
+        $instance = $property->getValue();
+
+        $property->setValue(null, $facade);
 
         try {
-            $emitter->testPreparationStarted($test);
-            $emitter->testPreparationStarted($test);
+            $test = $this->valueObjectForEvents();
+
+            Facade::emitter()->testPreparationStarted($test);
+
+            $facade->stopMeasuringTelemetry();
+
+            Facade::emitter()->testPreparationStarted($test);
+            Facade::emitter()->testPreparationStarted($test);
         } finally {
-            $withoutTelemetry = $facade->stopCollectingEvents()->asArray();
+            $property->setValue(null, $instance);
         }
 
-        $facade->startCollectingEvents();
+        [$measured, $first, $second] = $tracer->telemetry;
 
-        try {
-            $emitter->testPreparationStarted($test);
-        } finally {
-            $withTelemetry = $facade->stopCollectingEvents()->asArray();
-        }
-
-        $this->assertCount(2, $withoutTelemetry);
-        $this->assertCount(1, $withTelemetry);
-        $this->assertSame($withoutTelemetry[0]->telemetryInfo(), $withoutTelemetry[1]->telemetryInfo());
-        $this->assertNotSame($withoutTelemetry[1]->telemetryInfo(), $withTelemetry[0]->telemetryInfo());
+        $this->assertSame($measured, $first);
+        $this->assertSame($first, $second);
     }
 
     public function testTracerRegistrationDoesNotWorkWhenEventFacadeIsSealed(): void
