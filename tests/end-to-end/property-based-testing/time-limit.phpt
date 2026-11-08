@@ -32,6 +32,12 @@ Test Property Falsified (PHPUnit\TestFixture\PropertyBasedTesting\TimeLimitTest:
 $value = 51;
 Test Errored (PHPUnit\TestFixture\PropertyBasedTesting\TimeLimitTest::testDoesNotTerminateForValuesGreaterThanFifty)
 Execution aborted after 1 second
+
+Property falsified after 5 examples, counterexample shrunk in 1 step:
+
+    $value = 51;
+
+Shrinking was stopped after 10 attempts, a simpler counterexample may exist.
 Test Property Checked (PHPUnit\TestFixture\PropertyBasedTesting\TimeLimitTest::testDoesNotTerminateForValuesGreaterThanFifty, seed: %d, examples: %d, rejected: 0)
 Test Finished (PHPUnit\TestFixture\PropertyBasedTesting\TimeLimitTest::testDoesNotTerminateForValuesGreaterThanFifty)
 Test Suite for Property Finished (PHPUnit\TestFixture\PropertyBasedTesting\TimeLimitTest::testDoesNotTerminateForValuesGreaterThanFifty, 50 examples)

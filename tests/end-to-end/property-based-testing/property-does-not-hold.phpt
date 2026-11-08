@@ -29,6 +29,11 @@ $a = 0;
 $b = 11;
 Test Failed (PHPUnit\TestFixture\PropertyBasedTesting\FalsifiedPropertyTest::testSumIsAtMostTen)
 Failed asserting that 11 is equal to 10 or is less than 10.
+
+Property falsified after 1 example, counterexample shrunk in 2 steps:
+
+    $a = 0;
+    $b = 11;
 Test Property Checked (PHPUnit\TestFixture\PropertyBasedTesting\FalsifiedPropertyTest::testSumIsAtMostTen, seed: %d, examples: 1, rejected: 0)
 Test Finished (PHPUnit\TestFixture\PropertyBasedTesting\FalsifiedPropertyTest::testSumIsAtMostTen)
 Test Suite for Property Finished (PHPUnit\TestFixture\PropertyBasedTesting\FalsifiedPropertyTest::testSumIsAtMostTen, 100 examples)

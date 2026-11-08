@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\PropertyBased;
 
 use function assert;
+use function rtrim;
 use Closure;
 use PHPUnit\Event;
 use PHPUnit\Event\Code;
@@ -38,6 +39,7 @@ use PHPUnit\Event\Test\PrintedUnexpectedOutput;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\Event\TestRunner\GarbageCollectionTriggered;
+use PHPUnit\Util\PropertyFalsifiedToStringMapper;
 
 /**
  * Aggregates the events of the examples of a property, which are collected
@@ -167,19 +169,19 @@ final class EventAggregator
     /**
      * Dispatches the events that are reported for the property.
      *
-     * @param ?EventCollection $skeleton           the events of the example whose sequence of events is reported, null when no example ran to its end
-     * @param ?Code\Throwable  $error              when not null, replaces the outcome of the skeleton with a Test\Errored event
-     * @param bool             $passed             whether the property passed: a Test\Passed event is dispatched when the skeleton has no outcome, and the additional information of the skeleton is not reported
-     * @param ?Closure(): void $beforeOutcome      dispatches events that precede the outcome
-     * @param Closure(): void  $beforeFinished     dispatches events that precede the Test\Finished event
-     * @param non-negative-int $numberOfAssertions
+     * @param ?EventCollection     $skeleton           the events of the example whose sequence of events is reported, null when no example ran to its end
+     * @param ?Code\Throwable      $error              when not null, replaces the outcome of the skeleton with a Test\Errored event
+     * @param bool                 $passed             whether the property passed: a Test\Passed event is dispatched when the skeleton has no outcome, and the additional information of the skeleton is not reported
+     * @param ?FalsificationReport $falsification      how the property was falsified, which is reported with a Test\PropertyFalsified event before the outcome and as part of its failure or error, null when it was not falsified
+     * @param Closure(): void      $beforeFinished     dispatches events that precede the Test\Finished event
+     * @param non-negative-int     $numberOfAssertions
      */
-    public function dispatch(?EventCollection $skeleton, ?Code\Throwable $error, bool $passed, ?Closure $beforeOutcome, Closure $beforeFinished, int $numberOfAssertions): void
+    public function dispatch(?EventCollection $skeleton, ?Code\Throwable $error, bool $passed, ?FalsificationReport $falsification, Closure $beforeFinished, int $numberOfAssertions): void
     {
         if ($skeleton === null) {
             $this->dispatchPreparation();
             $this->dispatchEventsOfExamples();
-            $this->dispatchOutcome(null, $error, $passed, $beforeOutcome);
+            $this->dispatchOutcome(null, $error, $passed, $falsification);
             $this->dispatchOutput();
 
             $beforeFinished();
@@ -222,7 +224,7 @@ final class EventAggregator
 
             if ($this->isOutcome($event)) {
                 $this->dispatchEventsOfExamples();
-                $this->dispatchOutcome($event, $error, $passed, $beforeOutcome);
+                $this->dispatchOutcome($event, $error, $passed, $falsification);
 
                 continue;
             }
@@ -241,7 +243,7 @@ final class EventAggregator
         assert($finished);
 
         $this->dispatchEventsOfExamples();
-        $this->dispatchOutcome(null, $error, $passed, $beforeOutcome);
+        $this->dispatchOutcome(null, $error, $passed, $falsification);
         $this->dispatchOutput();
 
         $beforeFinished();
@@ -285,10 +287,7 @@ final class EventAggregator
         $this->emitter->testPrintedUnexpectedOutput($this->output);
     }
 
-    /**
-     * @param ?Closure(): void $beforeOutcome
-     */
-    private function dispatchOutcome(?AnyEvent $outcome, ?Code\Throwable $error, bool $passed, ?Closure $beforeOutcome): void
+    private function dispatchOutcome(?AnyEvent $outcome, ?Code\Throwable $error, bool $passed, ?FalsificationReport $falsification): void
     {
         if ($this->outcomeDispatched) {
             // a later outcome of the skeleton, for instance a failure in
@@ -307,18 +306,34 @@ final class EventAggregator
 
         $this->outcomeDispatched = true;
 
-        if ($beforeOutcome !== null) {
-            $beforeOutcome();
+        $falsified = null;
+
+        if ($falsification !== null) {
+            $this->emitter->testPropertyFalsified(
+                $this->test,
+                $falsification->seed(),
+                $falsification->numberOfExamplesChecked(),
+                $falsification->numberOfShrinkingAttempts(),
+                $falsification->numberOfShrinkingSteps(),
+                $falsification->shrinkingBudgetExhausted(),
+                $falsification->shrinkingInterrupted(),
+                $falsification->counterexample(),
+                $falsification->otherFalsifications(),
+                $falsification->numberOfReplays(),
+                $falsification->numberOfReproductions(),
+            );
+
+            $falsified = PropertyFalsifiedToStringMapper::map($falsification);
         }
 
         if ($error !== null) {
-            $this->emitter->testErrored($this->test, $error);
+            $this->emitter->testErrored($this->test, self::withFalsified($error, $falsified));
 
             return;
         }
 
         if ($outcome !== null) {
-            $this->forward($outcome);
+            $this->forward(self::outcomeWithFalsified($outcome, $falsified));
 
             return;
         }
@@ -381,5 +396,64 @@ final class EventAggregator
                $event instanceof Errored ||
                $event instanceof Skipped ||
                $event instanceof MarkedIncomplete;
+    }
+
+    /**
+     * How the property was falsified, with its counterexample, is part of the
+     * failure or error of the property, so that every printer and logger that
+     * reports the failure or error reports it, too, below the message and
+     * above the stack trace.
+     */
+    private static function outcomeWithFalsified(AnyEvent $outcome, ?string $falsified): AnyEvent
+    {
+        if ($falsified === null) {
+            return $outcome;
+        }
+
+        if ($outcome instanceof Failed) {
+            $comparisonFailure = null;
+
+            if ($outcome->hasComparisonFailure()) {
+                $comparisonFailure = $outcome->comparisonFailure();
+            }
+
+            return new Failed(
+                $outcome->telemetryInfo(),
+                $outcome->test(),
+                self::withFalsified($outcome->throwable(), $falsified),
+                $comparisonFailure,
+            );
+        }
+
+        if ($outcome instanceof Errored) {
+            return new Errored(
+                $outcome->telemetryInfo(),
+                $outcome->test(),
+                self::withFalsified($outcome->throwable(), $falsified),
+            );
+        }
+
+        return $outcome;
+    }
+
+    private static function withFalsified(Code\Throwable $throwable, ?string $falsified): Code\Throwable
+    {
+        if ($falsified === null) {
+            return $throwable;
+        }
+
+        $previous = null;
+
+        if ($throwable->hasPrevious()) {
+            $previous = $throwable->previous();
+        }
+
+        return new Code\Throwable(
+            $throwable->className(),
+            $throwable->message() . "\n\n" . rtrim($falsified),
+            $throwable->description() . "\n" . $falsified,
+            $throwable->stackTrace(),
+            $previous,
+        );
     }
 }

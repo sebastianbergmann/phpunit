@@ -31,7 +31,6 @@ use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\MarkedIncomplete;
 use PHPUnit\Event\Test\PreparationStarted;
-use PHPUnit\Event\Test\PropertyFalsified;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
 use PHPUnit\Event\TestSuite\Skipped as TestSuiteSkipped;
@@ -43,8 +42,6 @@ use PHPUnit\Event\TestSuite\TestSuiteForTestClass;
 use PHPUnit\Event\TestSuite\TestSuiteForTestMethodWithDataProvider;
 use PHPUnit\Framework\Exception as FrameworkException;
 use PHPUnit\TextUI\Output\Printer;
-use PHPUnit\Util\PendingPropertyFalsified;
-use PHPUnit\Util\PropertyFalsifiedToStringMapper;
 use PHPUnit\Util\Sanitizer;
 
 /**
@@ -59,16 +56,9 @@ final class TeamCityLogger
     private ?HRTime $time                   = null;
     private ?int $flowId                    = null;
 
-    /**
-     * The event that describes how a property was falsified, which is
-     * dispatched before the event for its failure or error.
-     */
-    private readonly PendingPropertyFalsified $propertyFalsified;
-
     public function __construct(Printer $printer, Facade $facade)
     {
-        $this->printer           = $printer;
-        $this->propertyFalsified = new PendingPropertyFalsified;
+        $this->printer = $printer;
 
         $this->registerSubscribers($facade);
         $this->setFlowId();
@@ -262,15 +252,10 @@ final class TeamCityLogger
             [
                 'name'     => $event->test()->name(),
                 'message'  => $this->message($event->throwable()),
-                'details'  => $this->details($event->throwable(), $this->propertyFalsified->takeFor($event->test())),
+                'details'  => $this->details($event->throwable()),
                 'duration' => $this->duration($event),
             ],
         );
-    }
-
-    public function testPropertyFalsified(PropertyFalsified $event): void
-    {
-        $this->propertyFalsified->remember($event);
     }
 
     /**
@@ -281,7 +266,7 @@ final class TeamCityLogger
         $parameters = [
             'name'     => $event->test()->name(),
             'message'  => $this->message($event->throwable()),
-            'details'  => $this->details($event->throwable(), $this->propertyFalsified->takeFor($event->test())),
+            'details'  => $this->details($event->throwable()),
             'duration' => $this->duration($event),
         ];
 
@@ -340,7 +325,6 @@ final class TeamCityLogger
             new TestFinishedSubscriber($this),
             new TestErroredSubscriber($this),
             new TestFailedSubscriber($this),
-            new TestPropertyFalsifiedSubscriber($this),
             new TestMarkedIncompleteSubscriber($this),
             new TestSkippedSubscriber($this),
             new TestSuiteSkippedSubscriber($this),
@@ -467,17 +451,9 @@ final class TeamCityLogger
         return $buffer;
     }
 
-    /**
-     * How a property was falsified, with its minimal counterexample, is
-     * reported above the stack trace of the throwable that falsified it.
-     */
-    private function details(Throwable $throwable, ?PropertyFalsified $propertyFalsified = null): string
+    private function details(Throwable $throwable): string
     {
         $buffer = $throwable->stackTrace();
-
-        if ($propertyFalsified !== null) {
-            $buffer = PropertyFalsifiedToStringMapper::map($propertyFalsified) . "\n" . $buffer;
-        }
 
         while ($throwable->hasPrevious()) {
             $throwable = $throwable->previous();

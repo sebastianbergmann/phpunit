@@ -19,7 +19,7 @@ require __DIR__ . '/../../../bootstrap.php';
 ##teamcity[testSuiteStarted name='PHPUnit\TestFixture\PropertyBasedTesting\FalsifiedPropertyTest' locationHint='php_qn:%sFalsifiedPropertyTest.php::\PHPUnit\TestFixture\PropertyBasedTesting\FalsifiedPropertyTest' flowId='%d']
 ##teamcity[testSuiteStarted name='PHPUnit\TestFixture\PropertyBasedTesting\FalsifiedPropertyTest::testSumIsAtMostTen' locationHint='php_qn:%sFalsifiedPropertyTest.php::\PHPUnit\TestFixture\PropertyBasedTesting\FalsifiedPropertyTest::testSumIsAtMostTen' flowId='%d']
 ##teamcity[testStarted name='testSumIsAtMostTen' locationHint='php_qn:%sFalsifiedPropertyTest.php::\PHPUnit\TestFixture\PropertyBasedTesting\FalsifiedPropertyTest::testSumIsAtMostTen' flowId='%d']
-##teamcity[testFailed name='testSumIsAtMostTen' message='Failed asserting that 11 is equal to 10 or is less than 10.' details='Property falsified after 1 example, counterexample shrunk in 2 steps:|n|n    $a = 0;|n    $b = 11;|n|n%sFalsifiedPropertyTest.php:%d|n' duration='%d' flowId='%d']
+##teamcity[testFailed name='testSumIsAtMostTen' message='Failed asserting that 11 is equal to 10 or is less than 10.|n|nProperty falsified after 1 example, counterexample shrunk in 2 steps:|n|n    $a = 0;|n    $b = 11;' details='%sFalsifiedPropertyTest.php:%d|n' duration='%d' flowId='%d']
 ##teamcity[testFinished name='testSumIsAtMostTen' duration='%d' flowId='%d']
 ##teamcity[testSuiteFinished name='PHPUnit\TestFixture\PropertyBasedTesting\FalsifiedPropertyTest::testSumIsAtMostTen' flowId='%d']
 ##teamcity[testSuiteFinished name='PHPUnit\TestFixture\PropertyBasedTesting\FalsifiedPropertyTest' flowId='%d']

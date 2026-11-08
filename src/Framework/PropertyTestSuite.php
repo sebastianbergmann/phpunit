@@ -38,6 +38,7 @@ use PHPUnit\Framework\PropertyBased\ExampleRejectedException;
 use PHPUnit\Framework\PropertyBased\ExampleResult;
 use PHPUnit\Framework\PropertyBased\ExplicitExample;
 use PHPUnit\Framework\PropertyBased\Falsification;
+use PHPUnit\Framework\PropertyBased\FalsificationReport;
 use PHPUnit\Framework\PropertyBased\FlakyPropertyException;
 use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
 use PHPUnit\Framework\PropertyBased\GeneratorMethod;
@@ -921,24 +922,18 @@ final class PropertyTestSuite extends IterativeTestSuite
             $replayEvents,
             $error,
             false,
-            static function () use ($emitter, $test, $seed, $numberOfExamplesChecked, $result, $counterexample, $exportedDrawnValues, $steps, $otherFalsifications, $numberOfReplays, $numberOfReproductions): void
-            {
-                assert($numberOfExamplesChecked > 0);
-
-                $emitter->testPropertyFalsified(
-                    $test,
-                    $seed,
-                    $numberOfExamplesChecked,
-                    $result->numberOfAttempts(),
-                    $result->numberOfSteps(),
-                    $result->budgetExhausted(),
-                    $result->interrupted(),
-                    self::counterexample($result->sequence()->choices(), $counterexample, null, $exportedDrawnValues, $steps),
-                    $otherFalsifications,
-                    $numberOfReplays,
-                    $numberOfReproductions,
-                );
-            },
+            new FalsificationReport(
+                $seed,
+                $numberOfExamplesChecked,
+                $result->numberOfAttempts(),
+                $result->numberOfSteps(),
+                $result->budgetExhausted(),
+                $result->interrupted(),
+                self::counterexample($result->sequence()->choices(), $counterexample, null, $exportedDrawnValues, $steps),
+                $otherFalsifications,
+                $numberOfReplays,
+                $numberOfReproductions,
+            ),
         );
     }
 
@@ -1058,24 +1053,18 @@ final class PropertyTestSuite extends IterativeTestSuite
             $replays['events'],
             $error,
             false,
-            static function () use ($emitter, $test, $seed, $numberOfExamplesChecked, $sequence, $counterexample, $drawnValues, $steps, $numberOfReplays): void
-            {
-                assert($numberOfExamplesChecked > 0);
-
-                $emitter->testPropertyFalsified(
-                    $test,
-                    $seed,
-                    $numberOfExamplesChecked,
-                    0,
-                    0,
-                    false,
-                    false,
-                    self::counterexample($sequence->choices(), $counterexample, null, $drawnValues, $steps),
-                    [],
-                    $numberOfReplays,
-                    0,
-                );
-            },
+            new FalsificationReport(
+                $seed,
+                $numberOfExamplesChecked,
+                0,
+                0,
+                false,
+                false,
+                self::counterexample($sequence->choices(), $counterexample, null, $drawnValues, $steps),
+                [],
+                $numberOfReplays,
+                0,
+            ),
         );
     }
 
@@ -1216,10 +1205,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             $exampleEvents,
             $error,
             false,
-            static function () use ($emitter, $test, $seed, $exportedArguments, $name): void
-            {
-                $emitter->testPropertyFalsified($test, $seed, 0, 0, 0, false, false, self::counterexample([], $exportedArguments, $name, [], []), [], 0, 0);
-            },
+            new FalsificationReport($seed, 0, 0, 0, false, false, self::counterexample([], $exportedArguments, $name, [], []), [], 0, 0),
         );
     }
 
@@ -1542,10 +1528,10 @@ final class PropertyTestSuite extends IterativeTestSuite
     }
 
     /**
-     * @param bool             $passed        whether the property passed, that is, whether all examples that were checked passed
-     * @param ?Closure(): void $beforeOutcome
+     * @param bool                 $passed        whether the property passed, that is, whether all examples that were checked passed
+     * @param ?FalsificationReport $falsification how the property was falsified, null when it was not falsified
      */
-    private function report(EventAggregator $events, Event\Emitter $emitter, ?EventCollection $skeleton, ?Event\Code\Throwable $error, bool $passed, ?Closure $beforeOutcome): void
+    private function report(EventAggregator $events, Event\Emitter $emitter, ?EventCollection $skeleton, ?Event\Code\Throwable $error, bool $passed, ?FalsificationReport $falsification): void
     {
         $test = $this->test;
 
@@ -1557,7 +1543,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             $skeleton,
             $error,
             $passed,
-            $beforeOutcome,
+            $falsification,
             function () use ($emitter, $test, $passed): void
             {
                 foreach ($this->riskyMessages($passed) as $message) {

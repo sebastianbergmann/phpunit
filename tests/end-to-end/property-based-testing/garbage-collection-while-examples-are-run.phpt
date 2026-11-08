@@ -43,6 +43,10 @@ Test Property Falsified (PHPUnit\TestFixture\PropertyBasedTesting\GarbageCollect
 $value = true;
 Test Failed (PHPUnit\TestFixture\PropertyBasedTesting\GarbageCollectionWhileExamplesAreRun\GarbageCollectionWhileExamplesAreRunTest::testPropertyThatIsFalsified)
 Failed asserting that true is false.
+
+Property falsified after 1 example with this counterexample:
+
+    $value = true;
 Test Property Checked (PHPUnit\TestFixture\PropertyBasedTesting\GarbageCollectionWhileExamplesAreRun\GarbageCollectionWhileExamplesAreRunTest::testPropertyThatIsFalsified, seed: %d, examples: 1, rejected: 0)
 Test Finished (PHPUnit\TestFixture\PropertyBasedTesting\GarbageCollectionWhileExamplesAreRun\GarbageCollectionWhileExamplesAreRunTest::testPropertyThatIsFalsified)
 Test Suite for Property Finished (PHPUnit\TestFixture\PropertyBasedTesting\GarbageCollectionWhileExamplesAreRun\GarbageCollectionWhileExamplesAreRunTest::testPropertyThatIsFalsified, 4 examples)

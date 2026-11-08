@@ -9,22 +9,22 @@
  */
 namespace PHPUnit\Util;
 
-use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Code\Counterexample;
 use PHPUnit\Event\Code\DrawnValue;
 use PHPUnit\Event\Code\OtherFalsification;
-use PHPUnit\Event\Test\PropertyFalsified;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\PropertyBased\FalsificationReport;
+use PHPUnit\Framework\TestCase;
 
 #[CoversClass(PropertyFalsifiedToStringMapper::class)]
 #[Small]
 #[Group('framework')]
 #[Group('framework/property-based-testing')]
 #[TestDox('PropertyFalsifiedToStringMapper')]
-final class PropertyFalsifiedToStringMapperTest extends AbstractEventTestCase
+final class PropertyFalsifiedToStringMapperTest extends TestCase
 {
     public function testDescribesHowAPropertyWasFalsifiedWithItsMinimalCounterexample(): void
     {
@@ -313,7 +313,7 @@ EOT,
      * @param non-negative-int                                                                                                                                                                                                                      $numberOfReproductions
      * @param list<non-empty-string>                                                                                                                                                                                                                $steps
      */
-    private function event(int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, array $counterexample, null|int|string $explicitExample = null, array $drawnValues = [], array $otherFalsifications = [], int $numberOfReplays = 0, int $numberOfReproductions = 0, array $steps = []): PropertyFalsified
+    private function event(int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, array $counterexample, null|int|string $explicitExample = null, array $drawnValues = [], array $otherFalsifications = [], int $numberOfReplays = 0, int $numberOfReproductions = 0, array $steps = []): FalsificationReport
     {
         $others = [];
 
@@ -330,9 +330,7 @@ EOT,
             );
         }
 
-        return new PropertyFalsified(
-            $this->telemetryInfo(),
-            $this->testValueObject(),
+        return new FalsificationReport(
             1234,
             $numberOfExamplesChecked,
             $numberOfShrinkingAttempts,

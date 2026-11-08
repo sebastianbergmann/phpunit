@@ -14,7 +14,7 @@ use function implode;
 use function is_int;
 use function sprintf;
 use PHPUnit\Event\Code\Counterexample;
-use PHPUnit\Event\Test\PropertyFalsified;
+use PHPUnit\Framework\PropertyBased\FalsificationReport;
 
 /**
  * Describes how a property was falsified, with its minimal counterexample
@@ -68,52 +68,52 @@ final readonly class PropertyFalsifiedToStringMapper
 {
     private const string INDENTATION = '    ';
 
-    public static function map(PropertyFalsified $event): string
+    public static function map(FalsificationReport $report): string
     {
-        $counterexample  = $event->counterexample();
+        $counterexample  = $report->counterexample();
         $explicitExample = $counterexample->explicitExample();
 
         if ($explicitExample !== null) {
             return self::mapExplicitExample($counterexample, $explicitExample);
         }
 
-        $examples = self::count($event->numberOfExamplesChecked(), 'example');
+        $examples = self::count($report->numberOfExamplesChecked(), 'example');
 
         if ($counterexample->arguments() === [] && $counterexample->drawnValues() === [] && $counterexample->steps() === []) {
             return sprintf('Property falsified after %s.', $examples) . "\n";
         }
 
-        if ($event->numberOfShrinkingSteps() === 0) {
+        if ($report->numberOfShrinkingSteps() === 0) {
             $buffer = sprintf('Property falsified after %s with this counterexample:', $examples);
         } else {
             $buffer = sprintf(
                 'Property falsified after %s, counterexample shrunk in %s:',
                 $examples,
-                self::count($event->numberOfShrinkingSteps(), 'step'),
+                self::count($report->numberOfShrinkingSteps(), 'step'),
             );
         }
 
         $buffer .= "\n\n" . self::arguments($counterexample);
 
-        if ($event->shrinkingBudgetExhausted()) {
+        if ($report->shrinkingBudgetExhausted()) {
             $buffer .= "\n" . sprintf(
                 'Shrinking was stopped after %s, a simpler counterexample may exist.',
-                self::count($event->numberOfShrinkingAttempts(), 'attempt'),
+                self::count($report->numberOfShrinkingAttempts(), 'attempt'),
             ) . "\n";
         }
 
-        if ($event->shrinkingInterrupted()) {
+        if ($report->shrinkingInterrupted()) {
             $buffer .= "\n" . sprintf(
                 'Shrinking was stopped after %s because the test run was aborted, a simpler counterexample may exist.',
-                self::count($event->numberOfShrinkingAttempts(), 'attempt'),
+                self::count($report->numberOfShrinkingAttempts(), 'attempt'),
             ) . "\n";
         }
 
-        if ($event->numberOfReproductions() < $event->numberOfReplays()) {
-            $buffer .= "\n" . self::reproductions($event->numberOfReproductions(), $event->numberOfReplays()) . "\n";
+        if ($report->numberOfReproductions() < $report->numberOfReplays()) {
+            $buffer .= "\n" . self::reproductions($report->numberOfReproductions(), $report->numberOfReplays()) . "\n";
         }
 
-        foreach ($event->otherFalsifications() as $otherFalsification) {
+        foreach ($report->otherFalsifications() as $otherFalsification) {
             $buffer .= "\n" . sprintf('Property also falsified by %s with this counterexample:', $otherFalsification->description()) . "\n\n";
             $buffer .= self::arguments($otherFalsification->counterexample());
         }

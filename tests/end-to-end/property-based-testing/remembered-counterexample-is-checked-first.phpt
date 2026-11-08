@@ -55,6 +55,10 @@ Test Property Falsified (PHPUnit\TestFixture\PropertyBasedTesting\RememberedCoun
 $value = 12345;
 Test Failed (PHPUnit\TestFixture\PropertyBasedTesting\RememberedCounterexampleTest::testValueIsNotMagic)
 Failed asserting that 12345 is not identical to 12345.
+
+Property falsified after 1 example with this counterexample:
+
+    $value = 12345;
 Test Property Checked (PHPUnit\TestFixture\PropertyBasedTesting\RememberedCounterexampleTest::testValueIsNotMagic, seed: %d, examples: 1, rejected: 0)
 Test Finished (PHPUnit\TestFixture\PropertyBasedTesting\RememberedCounterexampleTest::testValueIsNotMagic)
 Test Suite for Property Finished (PHPUnit\TestFixture\PropertyBasedTesting\RememberedCounterexampleTest::testValueIsNotMagic, 10 examples)

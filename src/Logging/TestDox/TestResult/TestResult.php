@@ -11,7 +11,6 @@ namespace PHPUnit\Logging\TestDox;
 
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
-use PHPUnit\Event\Test\PropertyFalsified;
 use PHPUnit\Framework\TestStatus\TestStatus;
 
 /**
@@ -26,14 +25,12 @@ final readonly class TestResult
     private TestMethod $test;
     private TestStatus $status;
     private ?Throwable $throwable;
-    private ?PropertyFalsified $propertyFalsified;
 
-    public function __construct(TestMethod $test, TestStatus $status, ?Throwable $throwable, ?PropertyFalsified $propertyFalsified = null)
+    public function __construct(TestMethod $test, TestStatus $status, ?Throwable $throwable)
     {
-        $this->test              = $test;
-        $this->status            = $status;
-        $this->throwable         = $throwable;
-        $this->propertyFalsified = $propertyFalsified;
+        $this->test      = $test;
+        $this->status    = $status;
+        $this->throwable = $throwable;
     }
 
     public function test(): TestMethod
@@ -57,14 +54,5 @@ final readonly class TestResult
     public function throwable(): ?Throwable
     {
         return $this->throwable;
-    }
-
-    /**
-     * Returns the event that describes how the test, a property, was
-     * falsified, and null when the test is not a property that was falsified.
-     */
-    public function propertyFalsified(): ?PropertyFalsified
-    {
-        return $this->propertyFalsified;
     }
 }

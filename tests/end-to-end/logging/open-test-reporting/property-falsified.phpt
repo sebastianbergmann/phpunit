@@ -71,6 +71,11 @@ Property falsified after 1 example, counterexample shrunk in 2 steps:
     $b = 11;</reason>
    <phpunit:throwable type="PHPUnit\Framework\ExpectationFailedException" assertionError="true"><![CDATA[Failed asserting that 11 is equal to 10 or is less than 10.
 
+Property falsified after 1 example, counterexample shrunk in 2 steps:
+
+    $a = 0;
+    $b = 11;
+
 %sFalsifiedPropertyTest.php:%d
 ]]></phpunit:throwable>
   </result>

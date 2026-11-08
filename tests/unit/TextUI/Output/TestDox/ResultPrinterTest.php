@@ -11,10 +11,8 @@ namespace PHPUnit\TextUI\Output\TestDox;
 
 use const PHP_EOL;
 use function hrtime;
-use function implode;
 use function substr_count;
 use PHPUnit\Event\Code\ClassMethod;
-use PHPUnit\Event\Code\Counterexample;
 use PHPUnit\Event\Code\TestDoxBuilder;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
@@ -26,7 +24,6 @@ use PHPUnit\Event\Telemetry\Info;
 use PHPUnit\Event\Telemetry\MemoryUsage;
 use PHPUnit\Event\Telemetry\Snapshot;
 use PHPUnit\Event\Test\AfterLastTestMethodErrored;
-use PHPUnit\Event\Test\PropertyFalsified;
 use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -169,88 +166,6 @@ final class ResultPrinterTest extends TestCase
         $this->assertStringContainsString('message', $printer->buffer());
     }
 
-    public function testPrintsHowAPropertyWasFalsifiedBetweenMessageAndStackTrace(): void
-    {
-        $printer = $this->printer();
-
-        $this->resultPrinter($printer)->print(
-            $this->testResult(),
-            [
-                'FooTest' => TestResultCollection::fromArray([
-                    new TestDoxTestResult(
-                        $this->testMethod(),
-                        TestStatus::error('message'),
-                        $this->throwable(),
-                        $this->propertyFalsified(),
-                    ),
-                ]),
-            ],
-        );
-
-        /* @noinspection PhpPossiblePolymorphicInvocationInspection */
-        $this->assertStringContainsStringIgnoringLineEndings(
-            <<<'EOT'
-   │ RuntimeException: message
-   │
-   │ Property falsified after 2 examples, counterexample shrunk in 1 step:
-   │
-   │     $value = 0;
-   │
-   │ /path/to/FooTest.php:1
-   │
-
-EOT,
-            $printer->buffer(),
-        );
-    }
-
-    public function testPrintsHowAPropertyWasFalsifiedBeforeThePreviousThrowableWhenThereIsNoStackTrace(): void
-    {
-        $printer = $this->printer();
-
-        $this->resultPrinter($printer)->print(
-            $this->testResult(),
-            [
-                'FooTest' => TestResultCollection::fromArray([
-                    new TestDoxTestResult(
-                        $this->testMethod(),
-                        TestStatus::error('message'),
-                        new Throwable(
-                            'RuntimeException',
-                            'message',
-                            'RuntimeException: message',
-                            '',
-                            $this->throwable(),
-                        ),
-                        $this->propertyFalsified(),
-                    ),
-                ]),
-            ],
-        );
-
-        /* @noinspection PhpPossiblePolymorphicInvocationInspection */
-        $this->assertStringContainsString(
-            implode(
-                PHP_EOL,
-                [
-                    '   │ RuntimeException: message',
-                    '   │',
-                    '   │ Property falsified after 2 examples, counterexample shrunk in 1 step:',
-                    '   │',
-                    '   │     $value = 0;',
-                    '   │  ',
-                    '   │ Caused by:',
-                    '   │ RuntimeException: message',
-                    '   │',
-                    '   │ /path/to/FooTest.php:1',
-                    '   │',
-                    '',
-                ],
-            ),
-            $printer->buffer(),
-        );
-    }
-
     public function testPrintsErrorsTriggeredAfterLastTestMethod(): void
     {
         $printer = $this->printer();
@@ -300,11 +215,6 @@ EOT,
             '/path/to/FooTest.php:1',
             null,
         );
-    }
-
-    private function propertyFalsified(): PropertyFalsified
-    {
-        return new PropertyFalsified($this->telemetryInfo(), $this->testMethod(), 1234, 2, 3, 1, false, false, new Counterexample([0], ['value' => '0'], null, [], []), [], 0, 0);
     }
 
     private function testMethod(): TestMethod

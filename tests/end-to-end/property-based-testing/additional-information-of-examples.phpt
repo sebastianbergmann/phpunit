@@ -31,6 +31,11 @@ $a = 0;
 $b = 11;
 Test Failed (PHPUnit\TestFixture\PropertyBasedTesting\AdditionalInformationOfExamplesTest::testSumIsAtMostTen)
 Failed asserting that 11 is equal to 10 or is less than 10.
+
+Property falsified after 1 example, counterexample shrunk in 3 steps:
+
+    $a = 0;
+    $b = 11;
 Test Property Checked (PHPUnit\TestFixture\PropertyBasedTesting\AdditionalInformationOfExamplesTest::testSumIsAtMostTen, seed: %d, examples: %d, rejected: 0)
 Test Finished (PHPUnit\TestFixture\PropertyBasedTesting\AdditionalInformationOfExamplesTest::testSumIsAtMostTen)
 Test Suite for Property Finished (PHPUnit\TestFixture\PropertyBasedTesting\AdditionalInformationOfExamplesTest::testSumIsAtMostTen, 100 examples)
@@ -43,6 +48,10 @@ Test Property Falsified (PHPUnit\TestFixture\PropertyBasedTesting\AdditionalInfo
 $value = -1;
 Test Failed (PHPUnit\TestFixture\PropertyBasedTesting\AdditionalInformationOfExamplesTest::testValueIsNotNegative)
 Failed asserting that -1 is equal to 0 or is greater than 0.
+
+Property falsified by explicit example #1:
+
+    $value = -1;
 Test Property Checked (PHPUnit\TestFixture\PropertyBasedTesting\AdditionalInformationOfExamplesTest::testValueIsNotNegative, seed: %d, examples: 0, explicit examples: 2, rejected: 0)
 Test Finished (PHPUnit\TestFixture\PropertyBasedTesting\AdditionalInformationOfExamplesTest::testValueIsNotNegative)
 Test Suite for Property Finished (PHPUnit\TestFixture\PropertyBasedTesting\AdditionalInformationOfExamplesTest::testValueIsNotNegative, 3 examples)

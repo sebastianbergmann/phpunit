@@ -1,2 +1,0 @@
-ERRORS!
-Tests: 1, Assertions: 1, Errors: 1.

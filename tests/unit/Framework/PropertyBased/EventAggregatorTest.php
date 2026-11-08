@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework\PropertyBased;
 
 use function array_map;
-use Closure;
 use Exception;
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Code\Counterexample;
@@ -156,7 +155,7 @@ final class EventAggregatorTest extends AbstractEventTestCase
             $this->finished(1),
         );
 
-        $events = $this->dispatch([[$checked, true], [$rejected, false], [$replay, true]], $replay, null, false, $this->emitPropertyFalsified(...), 2);
+        $events = $this->dispatch([[$checked, true], [$rejected, false], [$replay, true]], $replay, null, false, $this->falsification(), 2);
 
         $this->assertSame(
             [
@@ -227,12 +226,34 @@ final class EventAggregatorTest extends AbstractEventTestCase
             $this->finished(1),
         );
 
-        $events = $this->dispatch([[$example, true]], $example, null, false, $this->emitPropertyFalsified(...), 1);
+        $events = $this->dispatch([[$example, true]], $example, null, false, $this->falsification(), 1);
 
         $this->assertSame(
             ['PreparationStarted', 'Prepared', 'PropertyFalsified', 'Failed', 'PropertyChecked', 'Finished: 1'],
             $this->describe($events),
         );
+    }
+
+    public function testHowThePropertyWasFalsifiedIsPartOfTheMessageAndTheDescriptionOfItsFailure(): void
+    {
+        $example = $this->example(
+            $this->preparationStarted(),
+            $this->prepared(),
+            new Failed($this->telemetryInfo(), $this->testValueObject(), ThrowableBuilder::from(new Exception('failure')), null),
+            $this->finished(1),
+        );
+
+        $failed = null;
+
+        foreach ($this->dispatch([[$example, true]], $example, null, false, $this->falsification(), 1) as $event) {
+            if ($event instanceof Failed) {
+                $failed = $event;
+            }
+        }
+
+        $this->assertInstanceOf(Failed::class, $failed);
+        $this->assertSame("failure\n\nProperty falsified after 1 example.", $failed->throwable()->message());
+        $this->assertSame("Exception: failure\n\nProperty falsified after 1 example.\n", $failed->throwable()->description());
     }
 
     public function testDispatchesEveryOutcomeOfTheSkeleton(): void
@@ -245,7 +266,7 @@ final class EventAggregatorTest extends AbstractEventTestCase
             $this->finished(1),
         );
 
-        $events = $this->dispatch([[$example, true]], $example, null, false, $this->emitPropertyFalsified(...), 1);
+        $events = $this->dispatch([[$example, true]], $example, null, false, $this->falsification(), 1);
 
         $this->assertSame(
             ['PreparationStarted', 'Prepared', 'PropertyFalsified', 'Failed', 'Errored: error in destructor of test double', 'PropertyChecked', 'Finished: 1'],
@@ -257,10 +278,10 @@ final class EventAggregatorTest extends AbstractEventTestCase
     {
         $example = $this->passedExample();
 
-        $events = $this->dispatch([[$example, true]], $example, $this->error(), false, $this->emitPropertyFalsified(...), 1);
+        $events = $this->dispatch([[$example, true]], $example, $this->error(), false, $this->falsification(), 1);
 
         $this->assertSame(
-            ['PreparationStarted', 'Prepared', 'PropertyFalsified', 'Errored: error', 'PropertyChecked', 'Finished: 1'],
+            ['PreparationStarted', 'Prepared', 'PropertyFalsified', "Errored: error\n\nProperty falsified after 1 example.", 'PropertyChecked', 'Finished: 1'],
             $this->describe($events),
         );
     }
@@ -273,10 +294,10 @@ final class EventAggregatorTest extends AbstractEventTestCase
             $this->finished(0),
         );
 
-        $events = $this->dispatch([[$example, true]], $example, $this->error(), false, $this->emitPropertyFalsified(...), 0);
+        $events = $this->dispatch([[$example, true]], $example, $this->error(), false, $this->falsification(), 0);
 
         $this->assertSame(
-            ['PreparationStarted', 'Prepared', 'PropertyFalsified', 'Errored: error', 'PropertyChecked', 'Finished: 0'],
+            ['PreparationStarted', 'Prepared', 'PropertyFalsified', "Errored: error\n\nProperty falsified after 1 example.", 'PropertyChecked', 'Finished: 0'],
             $this->describe($events),
         );
     }
@@ -361,16 +382,15 @@ final class EventAggregatorTest extends AbstractEventTestCase
 
     /**
      * @param list<array{EventCollection, bool}> $examples
-     * @param ?Closure(): void                   $beforeOutcome
      * @param non-negative-int                   $numberOfAssertions
      * @param list<EventCollection>              $shrinkingAttempts
      *
      * @return list<Event>
      */
-    private function dispatch(array $examples, ?EventCollection $skeleton, ?Throwable $error, bool $passed, ?Closure $beforeOutcome, int $numberOfAssertions, array $shrinkingAttempts = []): array
+    private function dispatch(array $examples, ?EventCollection $skeleton, ?Throwable $error, bool $passed, ?FalsificationReport $falsification, int $numberOfAssertions, array $shrinkingAttempts = []): array
     {
         return EventCollector::collect(
-            function () use ($examples, $skeleton, $error, $passed, $beforeOutcome, $numberOfAssertions, $shrinkingAttempts): void
+            function () use ($examples, $skeleton, $error, $passed, $falsification, $numberOfAssertions, $shrinkingAttempts): void
             {
                 $aggregator = new EventAggregator(EventFacade::emitter(), EventFacade::instance(), $this->testValueObject());
 
@@ -386,7 +406,7 @@ final class EventAggregatorTest extends AbstractEventTestCase
                     $skeleton,
                     $error,
                     $passed,
-                    $beforeOutcome,
+                    $falsification,
                     function (): void
                     {
                         EventFacade::emitter()->testPropertyChecked($this->testValueObject(), 1, 1, 0, 0, [], [], []);
@@ -428,9 +448,9 @@ final class EventAggregatorTest extends AbstractEventTestCase
         );
     }
 
-    private function emitPropertyFalsified(): void
+    private function falsification(): FalsificationReport
     {
-        EventFacade::emitter()->testPropertyFalsified($this->testValueObject(), 1, 1, 0, 0, false, false, new Counterexample([], [], null, [], []), [], 0, 0);
+        return new FalsificationReport(1, 1, 0, 0, false, false, new Counterexample([], [], null, [], []), [], 0, 0);
     }
 
     private function passedExample(Event ...$events): EventCollection

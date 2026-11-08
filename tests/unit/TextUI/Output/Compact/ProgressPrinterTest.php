@@ -17,7 +17,6 @@ use Closure;
 use Exception;
 use LogicException;
 use PHPUnit\Event\Code\ClassMethod;
-use PHPUnit\Event\Code\Counterexample;
 use PHPUnit\Event\Code\TestDoxBuilder;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\ThrowableBuilder;
@@ -38,7 +37,6 @@ use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\PreparationStarted;
 use PHPUnit\Event\Test\PrintedUnexpectedOutput;
-use PHPUnit\Event\Test\PropertyFalsified;
 use PHPUnit\Event\TestData\DataFromDataProvider;
 use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Event\TestRunner\ExecutionFinished;
@@ -103,56 +101,6 @@ final class ProgressPrinterTest extends TestCase
                 'failed_test.txt',
                 static function (ProgressPrinter $printer): void
                 {
-                    $printer->testFailed(
-                        new Failed(
-                            self::telemetryInfo(),
-                            self::testMethod(),
-                            ThrowableBuilder::from(new ExpectationFailedException('Failed asserting that false is true.')),
-                            null,
-                        ),
-                    );
-                },
-            ],
-
-            'failed property' => [
-                'failed_property.txt',
-                static function (ProgressPrinter $printer): void
-                {
-                    $printer->testPropertyFalsified(self::propertyFalsified(self::testMethod()));
-
-                    $printer->testFailed(
-                        new Failed(
-                            self::telemetryInfo(),
-                            self::testMethod(),
-                            ThrowableBuilder::from(new ExpectationFailedException('Failed asserting that false is true.')),
-                            null,
-                        ),
-                    );
-                },
-            ],
-
-            'errored property' => [
-                'errored_property.txt',
-                static function (ProgressPrinter $printer): void
-                {
-                    $printer->testPropertyFalsified(self::propertyFalsified(self::testMethod()));
-
-                    $printer->testErrored(
-                        new Errored(
-                            self::telemetryInfo(),
-                            self::testMethod(),
-                            ThrowableBuilder::from(new RuntimeException('outer', 0, new LogicException('inner'))),
-                        ),
-                    );
-                },
-            ],
-
-            'failed test after another test was falsified as a property' => [
-                'failed_test.txt',
-                static function (ProgressPrinter $printer): void
-                {
-                    $printer->testPropertyFalsified(self::propertyFalsified(self::testMethodWithDataProvider()));
-
                     $printer->testFailed(
                         new Failed(
                             self::telemetryInfo(),
@@ -461,24 +409,6 @@ final class ProgressPrinterTest extends TestCase
                 return $this->buffer;
             }
         };
-    }
-
-    private static function propertyFalsified(TestMethod $test): PropertyFalsified
-    {
-        return new PropertyFalsified(
-            self::telemetryInfo(),
-            $test,
-            1234,
-            2,
-            3,
-            1,
-            false,
-            false,
-            new Counterexample([0], ['value' => '0'], null, [], []),
-            [],
-            0,
-            0,
-        );
     }
 
     private static function testMethod(): TestMethod
