@@ -16,7 +16,6 @@ use function hash;
 use function hrtime;
 use function intdiv;
 use function max;
-use function min;
 use function sprintf;
 use Closure;
 use PHPUnit\Event;
@@ -34,13 +33,12 @@ use PHPUnit\Framework\PropertyBased\ExampleRunner;
 use PHPUnit\Framework\PropertyBased\ExplicitExample;
 use PHPUnit\Framework\PropertyBased\Falsification;
 use PHPUnit\Framework\PropertyBased\FalsificationReport;
-use PHPUnit\Framework\PropertyBased\FlakyPropertyException;
+use PHPUnit\Framework\PropertyBased\FalsificationReporter;
 use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
 use PHPUnit\Framework\PropertyBased\GeneratorResolver;
 use PHPUnit\Framework\PropertyBased\InvalidPropertyException;
 use PHPUnit\Framework\PropertyBased\InvalidStateMachineException;
 use PHPUnit\Framework\PropertyBased\PropertyDefinition;
-use PHPUnit\Framework\PropertyBased\PropertyExample;
 use PHPUnit\Framework\PropertyBased\PropertyStatistics;
 use PHPUnit\Framework\TestRunner\ExampleRun;
 use PHPUnit\Framework\TestRunner\TestRunner;
@@ -58,7 +56,6 @@ use Random\Engine\Xoshiro256StarStar;
 use Random\Randomizer;
 use SebastianBergmann\ChoiceSequence\ChoiceSequence;
 use SebastianBergmann\ChoiceSequence\ChoiceTree;
-use SebastianBergmann\ChoiceSequence\Shrinker;
 use SebastianBergmann\ChoiceSequence\TargetedSearch;
 use SebastianBergmann\CodeCoverage\InvalidArgumentException;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
@@ -79,20 +76,7 @@ use Throwable;
  */
 final class PropertyTestSuite extends IterativeTestSuite
 {
-    /**
-     * Every shrinking attempt after an example exceeded its time limit can
-     * take as long as the time limit, so that shrinking has to get by with
-     * few attempts.
-     */
-    private const int MAXIMUM_NUMBER_OF_SHRINKING_ATTEMPTS_AFTER_TIMEOUT = 10;
-
-    /**
-     * How often the example that first falsified a property is replayed
-     * before its counterexample is shrunk, to tell whether it falsifies the
-     * property again.
-     */
-    private const int NUMBER_OF_REPLAYS_OF_FALSIFYING_EXAMPLE = 4;
-    private ?GeneratorResolver $generatorResolver             = null;
+    private ?GeneratorResolver $generatorResolver = null;
 
     /**
      * @var positive-int
@@ -118,16 +102,6 @@ final class PropertyTestSuite extends IterativeTestSuite
      * generated.
      */
     private ?TargetedSearch $targetedSearch = null;
-
-    /**
-     * The other ways in which the property was falsified while its
-     * counterexample was shrunk, by their description, in the order in which
-     * they were first seen, each with the simplest choice sequence that
-     * falsified the property that way.
-     *
-     * @var array<non-empty-string, array{falsification: Falsification, sequence: ChoiceSequence}>
-     */
-    private array $otherFalsifications = [];
 
     /**
      * What the examples that were checked while the property was checked
@@ -304,6 +278,19 @@ final class PropertyTestSuite extends IterativeTestSuite
             return;
         }
 
+        $reporter = new FalsificationReporter(
+            $this->exampleRunner(),
+            $events,
+            $emitter,
+            $this->seed,
+            $configuration->maximumShrinkingAttempts(),
+            $this->shouldStop(...),
+            function (?EventCollection $skeleton, ?Event\Code\Throwable $error, ?FalsificationReport $falsification) use ($events, $emitter): void
+            {
+                $this->report($events, $emitter, $skeleton, $error, false, $falsification);
+            },
+        );
+
         $skeleton = null;
 
         // the test run is aborted before an example is checked, but not before
@@ -350,7 +337,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             $this->statistics()->recordCheckedExplicitExample();
 
             if ($falsification !== null) {
-                $this->reportFalsificationByExplicitExample($events, $emitter, $example, $falsification, $exampleEvents, $explicitExample, $exportedArguments);
+                $reporter->reportFalsificationByExplicitExample($example, $falsification, $exampleEvents, $explicitExample, $exportedArguments);
 
                 return;
             }
@@ -433,7 +420,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             $this->exampleGenerated($source, $events);
 
             if ($this->wasRejected($example, $falsification)) {
-                $this->statistics()->recordRejectedExample(self::propertyExampleOf($example)->rejectionReason());
+                $this->statistics()->recordRejectedExample(ExampleRunner::propertyExampleOf($example)->rejectionReason());
                 $search->exampleRejected();
 
                 $events->record($exampleEvents, false);
@@ -449,12 +436,12 @@ final class PropertyTestSuite extends IterativeTestSuite
                 return;
             }
 
-            $this->statistics()->recordCheckedGeneratedExample(self::propertyExampleOf($example));
+            $this->statistics()->recordCheckedGeneratedExample(ExampleRunner::propertyExampleOf($example));
 
-            $search->exampleChecked($source->sequence(), self::propertyExampleOf($example)->targets());
+            $search->exampleChecked($source->sequence(), ExampleRunner::propertyExampleOf($example)->targets());
 
             if ($falsification !== null) {
-                $throwable       = self::propertyExampleOf($example)->throwableThatEndedIt();
+                $throwable       = ExampleRunner::propertyExampleOf($example)->throwableThatEndedIt();
                 $originalFailure = null;
 
                 if ($throwable !== null) {
@@ -466,7 +453,7 @@ final class PropertyTestSuite extends IterativeTestSuite
                 // hold the example as an argument
                 unset($example, $throwable);
 
-                $this->shrinkAndReport($events, $emitter, $deriver, $generators, $originalFailure, $falsification, $source->sequence());
+                $reporter->shrinkAndReport($deriver, $generators, $originalFailure, $falsification, $source->sequence(), $this->statistics()->numberOfExamplesChecked());
 
                 return;
             }
@@ -685,284 +672,6 @@ final class PropertyTestSuite extends IterativeTestSuite
     }
 
     /**
-     * @param array<non-empty-string, AbstractGenerator<mixed>> $generators
-     *
-     * @throws Event\RuntimeException
-     * @throws Exception
-     * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws UnintentionallyCoveredCodeException
-     */
-    private function shrinkAndReport(EventAggregator $events, Event\Emitter $emitter, GeneratorDeriver $deriver, array $generators, ?Event\Code\Throwable $originalFailure, Falsification $falsification, ChoiceSequence $sequence): void
-    {
-        $numberOfExamplesChecked = $this->statistics()->numberOfExamplesChecked();
-        $replays                 = $this->replayFalsifyingExample($events, $emitter, $deriver, $generators, $falsification, $sequence);
-
-        if ($replays === null) {
-            return;
-        }
-
-        if ($replays['numberOfReplays'] > 0 && $replays['numberOfReproductions'] === 0) {
-            $this->reportExampleThatDidNotFalsifyAgain($events, $emitter, $originalFailure, $sequence, $replays);
-
-            return;
-        }
-
-        $numberOfReplays         = $replays['numberOfReplays'];
-        $numberOfReproductions   = $replays['numberOfReproductions'];
-        $maximumNumberOfAttempts = ConfigurationRegistry::get()->maximumShrinkingAttempts();
-
-        if ($falsification->isTimeout()) {
-            $maximumNumberOfAttempts = min($maximumNumberOfAttempts, self::MAXIMUM_NUMBER_OF_SHRINKING_ATTEMPTS_AFTER_TIMEOUT);
-        }
-
-        $shrinker = new Shrinker(
-            function (ChoiceSequence $candidate) use ($events, $emitter, $deriver, $generators, $falsification): ?ChoiceSequence
-            {
-                $source = ChoiceSource::replay($candidate, ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver);
-
-                try {
-                    $arguments = $this->exampleRunner()->handlingIssues(fn (): array => $this->exampleRunner()->generateArguments($generators, $source), null);
-                } catch (Throwable) {
-                    return null;
-                }
-
-                $example = $this->exampleRunner()->example($arguments, false, DrawnValues::from($source));
-
-                [$attemptEvents] = $this->exampleRunner()->run($example, $emitter, false);
-
-                $events->recordShrinkingAttempt($attemptEvents);
-
-                $candidateFalsification = Falsification::of($example);
-
-                if ($candidateFalsification === null) {
-                    return null;
-                }
-
-                if (!$candidateFalsification->isSameAs($falsification)) {
-                    $this->rememberOtherFalsification($example, $candidateFalsification, $attemptEvents, $source->sequence());
-
-                    return null;
-                }
-
-                return $source->sequence();
-            },
-            $maximumNumberOfAttempts,
-            $this->shouldStop(...),
-        );
-
-        $result = $shrinker->shrink($sequence);
-        $source = ChoiceSource::replay($result->sequence(), ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver);
-
-        try {
-            $arguments = $this->exampleRunner()->handlingIssues(fn (): array => $this->exampleRunner()->generateArguments($generators, $source), $events);
-        } catch (Throwable $t) {
-            $this->report($events, $emitter, null, Event\Code\ThrowableBuilder::from($t), false, null);
-
-            return;
-        }
-
-        $counterexample = $this->exampleRunner()->export($arguments, $source->constructions());
-        $drawnValues    = DrawnValues::reportedFrom($source, $this->exampleRunner()->exporter($source->constructions()));
-        $replay         = $this->exampleRunner()->example($arguments, true, $drawnValues);
-        [$replayEvents] = $this->exampleRunner()->run($replay, $emitter, false);
-
-        // the issues of the final replay are reported like those of the
-        // examples that were checked, the replay being the skeleton does not
-        // report them
-        $events->record($replayEvents, true);
-
-        $error = null;
-
-        // a final replay that is aborted because the deadline of the test run
-        // has passed is reported with that error, like any other example that
-        // is aborted by it, and with the counterexample, which falsified the
-        // property while it was shrunk
-        if (!self::propertyExampleOf($replay)->throwableThatEndedIt() instanceof TimeLimitExceededException) {
-            $replayFalsification = Falsification::of($replay);
-
-            if ($replayFalsification === null) {
-                $flaky = Event\Code\ThrowableBuilder::from(FlakyPropertyException::minimalCounterexampleNotFalsifyingAgain());
-
-                // the failure that was originally observed is reported as the
-                // cause of the error
-                $error = new Event\Code\Throwable(
-                    $flaky->className(),
-                    $flaky->message(),
-                    $flaky->description(),
-                    $flaky->stackTrace(),
-                    $originalFailure,
-                );
-            } elseif ($replayFalsification->isTimeout()) {
-                $timeout = self::propertyExampleOf($replay)->throwableThatEndedIt();
-
-                assert($timeout !== null);
-
-                $error = Event\Code\ThrowableBuilder::from($timeout);
-            }
-        }
-
-        $test                = $this->test;
-        $seed                = $this->seed;
-        $exportedDrawnValues = $drawnValues->exported();
-        $steps               = $drawnValues->steps();
-        $otherFalsifications = $this->replayOtherFalsifications($events, $emitter, $deriver, $generators);
-
-        assert($test !== null);
-
-        $this->report(
-            $events,
-            $emitter,
-            $replayEvents,
-            $error,
-            false,
-            new FalsificationReport(
-                $seed,
-                $numberOfExamplesChecked,
-                $result->numberOfAttempts(),
-                $result->numberOfSteps(),
-                $result->budgetExhausted(),
-                $result->interrupted(),
-                self::counterexample($result->sequence()->choices(), $counterexample, null, $exportedDrawnValues, $steps),
-                $otherFalsifications,
-                $numberOfReplays,
-                $numberOfReproductions,
-            ),
-        );
-    }
-
-    /**
-     * Replays the example that first falsified the property before its
-     * counterexample is shrunk, and counts how often it falsifies the
-     * property in the same way again. A failure that depends on something
-     * other than the arguments, timing or shared state, for instance, is told
-     * this way before the budget for shrinking is spent on it.
-     *
-     * An example that exceeded its time limit is not replayed, because every
-     * replay would take as long as the time limit. A replay that is aborted
-     * because the deadline of the test run has passed ends the replays and is
-     * not counted, and neither is a replay whose generators did not generate
-     * the same arguments and values from the same choices.
-     *
-     * @param array<non-empty-string, AbstractGenerator<mixed>> $generators
-     *
-     * @return ?array{numberOfReplays: non-negative-int, numberOfReproductions: non-negative-int, counterexample: array<non-empty-string, string>, drawnValues: list<array{label: ?non-empty-string, value: string}>, steps: list<non-empty-string>, events: ?EventCollection} the replays, with the arguments and values of the last replay that was counted, exported, and its events, or null when the arguments could not be generated again, which was reported
-     */
-    private function replayFalsifyingExample(EventAggregator $events, Event\Emitter $emitter, GeneratorDeriver $deriver, array $generators, Falsification $falsification, ChoiceSequence $sequence): ?array
-    {
-        $replays = [
-            'numberOfReplays'       => 0,
-            'numberOfReproductions' => 0,
-            'counterexample'        => [],
-            'drawnValues'           => [],
-            'steps'                 => [],
-            'events'                => null,
-        ];
-
-        if ($falsification->isTimeout()) {
-            return $replays;
-        }
-
-        for ($replay = 1; $replay <= self::NUMBER_OF_REPLAYS_OF_FALSIFYING_EXAMPLE && !$this->shouldStop(); $replay++) {
-            $source = ChoiceSource::replay($sequence, ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver);
-
-            try {
-                $arguments = $this->exampleRunner()->handlingIssues(fn (): array => $this->exampleRunner()->generateArguments($generators, $source), null);
-            } catch (Throwable $t) {
-                $this->report($events, $emitter, null, Event\Code\ThrowableBuilder::from($t), false, null);
-
-                return null;
-            }
-
-            $counterexample = $this->exampleRunner()->export($arguments, $source->constructions());
-            $drawnValues    = DrawnValues::reportedFrom($source, $this->exampleRunner()->exporter($source->constructions()));
-            $example        = $this->exampleRunner()->example($arguments, false, $drawnValues);
-
-            [$replayEvents] = $this->exampleRunner()->run($example, $emitter, false);
-
-            $events->recordShrinkingAttempt($replayEvents);
-
-            if (self::propertyExampleOf($example)->throwableThatEndedIt() instanceof TimeLimitExceededException) {
-                break;
-            }
-
-            if ($source->sequence()->choices() !== $sequence->choices()) {
-                $events->recordThatGeneratorsAreNondeterministic();
-
-                continue;
-            }
-
-            $replays['numberOfReplays']++;
-            $replays['counterexample'] = $counterexample;
-            $replays['drawnValues']    = $drawnValues->exported();
-            $replays['steps']          = $drawnValues->steps();
-            $replays['events']         = $replayEvents;
-
-            $replayFalsification = Falsification::of($example);
-
-            if ($replayFalsification !== null && $replayFalsification->isSameAs($falsification)) {
-                $replays['numberOfReproductions']++;
-            }
-        }
-
-        return $replays;
-    }
-
-    /**
-     * Reports a property as flaky whose example that falsified it did not
-     * falsify it again when it was replayed, without shrinking its
-     * counterexample, with the events of its last replay and with the failure
-     * that was originally observed as the cause of the error.
-     *
-     * @param array{numberOfReplays: non-negative-int, numberOfReproductions: non-negative-int, counterexample: array<non-empty-string, string>, drawnValues: list<array{label: ?non-empty-string, value: string}>, steps: list<non-empty-string>, events: ?EventCollection} $replays
-     */
-    private function reportExampleThatDidNotFalsifyAgain(EventAggregator $events, Event\Emitter $emitter, ?Event\Code\Throwable $originalFailure, ChoiceSequence $sequence, array $replays): void
-    {
-        $numberOfReplays = $replays['numberOfReplays'];
-
-        assert($numberOfReplays > 0);
-
-        $flaky = Event\Code\ThrowableBuilder::from(FlakyPropertyException::exampleNotFalsifyingAgain($numberOfReplays));
-
-        $error = new Event\Code\Throwable(
-            $flaky->className(),
-            $flaky->message(),
-            $flaky->description(),
-            $flaky->stackTrace(),
-            $originalFailure,
-        );
-
-        $test                    = $this->test;
-        $seed                    = $this->seed;
-        $numberOfExamplesChecked = $this->statistics()->numberOfExamplesChecked();
-        $counterexample          = $replays['counterexample'];
-        $drawnValues             = $replays['drawnValues'];
-        $steps                   = $replays['steps'];
-
-        assert($test !== null);
-
-        $this->report(
-            $events,
-            $emitter,
-            $replays['events'],
-            $error,
-            false,
-            new FalsificationReport(
-                $seed,
-                $numberOfExamplesChecked,
-                0,
-                0,
-                false,
-                false,
-                self::counterexample($sequence->choices(), $counterexample, null, $drawnValues, $steps),
-                [],
-                $numberOfReplays,
-                0,
-            ),
-        );
-    }
-
-    /**
      * Records in the choice tree that the example was generated and records a
      * PHPUnit warning when its generators did not draw the same choices as
      * before from the same choices.
@@ -974,112 +683,6 @@ final class PropertyTestSuite extends IterativeTestSuite
         if ($source->drewDifferentlyThanBefore()) {
             $events->recordThatGeneratorsAreNondeterministic();
         }
-    }
-
-    /**
-     * Remembers the choice sequence of a shrinking attempt that falsified the
-     * property in another way than the counterexample that is shrunk, unless
-     * a simpler one is remembered for that way. An attempt that was aborted
-     * because the deadline of the test run has passed, or that ended before
-     * it was prepared, did not falsify the property.
-     */
-    private function rememberOtherFalsification(TestCase $example, Falsification $falsification, EventCollection $attemptEvents, ChoiceSequence $sequence): void
-    {
-        if (self::propertyExampleOf($example)->throwableThatEndedIt() instanceof TimeLimitExceededException || ExampleRunner::endedBeforeItWasPrepared($attemptEvents)) {
-            return;
-        }
-
-        $description = $falsification->description();
-
-        if (isset($this->otherFalsifications[$description]) && !$sequence->isSimplerThan($this->otherFalsifications[$description]['sequence'])) {
-            return;
-        }
-
-        $this->otherFalsifications[$description] = ['falsification' => $falsification, 'sequence' => $sequence];
-    }
-
-    /**
-     * Replays the simplest choice sequence of each of the other ways in which
-     * the property was falsified while its counterexample was shrunk, so that
-     * the arguments that it generates and the values that it draws are
-     * exported. A choice sequence that does not falsify the property in the
-     * same way again is not reported.
-     *
-     * @param array<non-empty-string, AbstractGenerator<mixed>> $generators
-     *
-     * @return list<Event\Code\OtherFalsification>
-     */
-    private function replayOtherFalsifications(EventAggregator $events, Event\Emitter $emitter, GeneratorDeriver $deriver, array $generators): array
-    {
-        $replayed = [];
-
-        foreach ($this->otherFalsifications as $description => $other) {
-            $source = ChoiceSource::replay($other['sequence'], ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver);
-
-            try {
-                $arguments = $this->exampleRunner()->handlingIssues(fn (): array => $this->exampleRunner()->generateArguments($generators, $source), null);
-            } catch (Throwable) {
-                continue;
-            }
-
-            $counterexample = $this->exampleRunner()->export($arguments, $source->constructions());
-            $drawnValues    = DrawnValues::reportedFrom($source, $this->exampleRunner()->exporter($source->constructions()));
-            $example        = $this->exampleRunner()->example($arguments, false, $drawnValues);
-
-            [$replayEvents] = $this->exampleRunner()->run($example, $emitter, false);
-
-            $events->recordShrinkingAttempt($replayEvents);
-
-            $falsification = Falsification::of($example);
-
-            if ($falsification === null || !$falsification->isSameAs($other['falsification'])) {
-                continue;
-            }
-
-            $replayed[] = new Event\Code\OtherFalsification(
-                $description,
-                self::counterexample($source->sequence()->choices(), $counterexample, null, $drawnValues->exported(), $drawnValues->steps()),
-            );
-        }
-
-        return $replayed;
-    }
-
-    /**
-     * Reports a property that was falsified by an explicit example with the
-     * failure or error of that example, which is not shrunk, and with its
-     * arguments.
-     *
-     * @param array<non-empty-string, string> $exportedArguments the arguments of the example, exported as PHP code
-     */
-    private function reportFalsificationByExplicitExample(EventAggregator $events, Event\Emitter $emitter, TestCase $example, Falsification $falsification, EventCollection $exampleEvents, ExplicitExample $explicitExample, array $exportedArguments): void
-    {
-        $error = null;
-
-        // an example that exceeded its time limit is reported with that error
-        // rather than as risky, because it falsified the property
-        if ($falsification->isTimeout()) {
-            $timeout = self::propertyExampleOf($example)->throwableThatEndedIt();
-
-            assert($timeout !== null);
-
-            $error = Event\Code\ThrowableBuilder::from($timeout);
-        }
-
-        $test = $this->test;
-        $seed = $this->seed;
-        $name = $explicitExample->name();
-
-        assert($test !== null);
-
-        $this->report(
-            $events,
-            $emitter,
-            $exampleEvents,
-            $error,
-            false,
-            new FalsificationReport($seed, 0, 0, 0, false, false, self::counterexample([], $exportedArguments, $name, [], []), [], 0, 0),
-        );
     }
 
     /**
@@ -1102,8 +705,8 @@ final class PropertyTestSuite extends IterativeTestSuite
     private function wasRejected(TestCase $example, ?Falsification $falsification): bool
     {
         return $falsification === null &&
-               !self::propertyExampleOf($example)->throwableThatEndedIt() instanceof TimeLimitExceededException &&
-               self::propertyExampleOf($example)->wasRejected();
+               !ExampleRunner::propertyExampleOf($example)->throwableThatEndedIt() instanceof TimeLimitExceededException &&
+               ExampleRunner::propertyExampleOf($example)->wasRejected();
     }
 
     private function recordCheckedExample(EventAggregator $events, EventCollection $exampleEvents, ExampleRun $run): void
@@ -1130,7 +733,7 @@ final class PropertyTestSuite extends IterativeTestSuite
      */
     private function endsCheckWithoutFalsification(TestCase $example, ?Falsification $falsification, EventCollection $exampleEvents): bool
     {
-        if (self::propertyExampleOf($example)->throwableThatEndedIt() instanceof TimeLimitExceededException) {
+        if (ExampleRunner::propertyExampleOf($example)->throwableThatEndedIt() instanceof TimeLimitExceededException) {
             return true;
         }
 
@@ -1158,7 +761,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             return null;
         }
 
-        $timeout = self::propertyExampleOf($example)->throwableThatEndedIt();
+        $timeout = ExampleRunner::propertyExampleOf($example)->throwableThatEndedIt();
 
         assert($timeout !== null);
 
@@ -1177,7 +780,7 @@ final class PropertyTestSuite extends IterativeTestSuite
      */
     private function wasAborted(TestCase $example, EventCollection $exampleEvents): bool
     {
-        return self::propertyExampleOf($example)->throwableThatEndedIt() instanceof InvalidStateMachineException ||
+        return ExampleRunner::propertyExampleOf($example)->throwableThatEndedIt() instanceof InvalidStateMachineException ||
                ExampleRunner::endedBeforeItWasPrepared($exampleEvents);
     }
 
@@ -1331,36 +934,5 @@ final class PropertyTestSuite extends IterativeTestSuite
         }
 
         return $definition->requiredClassifications();
-    }
-
-    /**
-     * The example of the property that a test that this test suite created
-     * for an example is.
-     */
-    private static function propertyExampleOf(TestCase $example): PropertyExample
-    {
-        $propertyExample = $example->propertyExample();
-
-        assert($propertyExample !== null);
-
-        return $propertyExample;
-    }
-
-    /**
-     * @param list<non-negative-int>                               $choiceSequence
-     * @param array<non-empty-string, string>                      $arguments
-     * @param null|int|non-empty-string                            $explicitExample
-     * @param list<array{label: ?non-empty-string, value: string}> $drawnValues
-     * @param list<non-empty-string>                               $steps
-     */
-    private static function counterexample(array $choiceSequence, array $arguments, null|int|string $explicitExample, array $drawnValues, array $steps): Event\Code\Counterexample
-    {
-        $values = [];
-
-        foreach ($drawnValues as $drawnValue) {
-            $values[] = new Event\Code\DrawnValue($drawnValue['label'], $drawnValue['value']);
-        }
-
-        return new Event\Code\Counterexample($choiceSequence, $arguments, $explicitExample, $values, $steps);
     }
 }

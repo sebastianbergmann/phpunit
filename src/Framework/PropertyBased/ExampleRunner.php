@@ -49,6 +49,18 @@ final readonly class ExampleRunner
     private Event\Facade $facade;
 
     /**
+     * The example of a property that a test case that example() created is.
+     */
+    public static function propertyExampleOf(TestCase $example): PropertyExample
+    {
+        $propertyExample = $example->propertyExample();
+
+        assert($propertyExample !== null);
+
+        return $propertyExample;
+    }
+
+    /**
      * Whether an example ended before it was prepared, which its events tell
      * because the Test\Prepared event is emitted once the hook methods that
      * are called before the test method have been called.
