@@ -180,10 +180,11 @@ final class PropertyRunner
      * While an example runs, what is restored for the caller after it, or
      * when it ends the process: the handler of the SIGALRM signal, whether
      * signals are handled asynchronously, the seconds that were left until an
-     * alarm of the caller, when the example started, and the level of output
-     * buffering before the example started.
+     * alarm of the caller, when the example started, the level of output
+     * buffering before the example started, and the process in which it
+     * started.
      *
-     * @var ?array{handler: callable|int, asynchronous: bool, remaining: int, started: int, outputBufferingLevel: int}
+     * @var ?array{handler: callable|int, asynchronous: bool, remaining: int, started: int, outputBufferingLevel: int, process: false|int}
      */
     private ?array $stateOfCaller = null;
 
@@ -452,6 +453,7 @@ final class PropertyRunner
             'remaining'            => pcntl_alarm(0),
             'started'              => hrtime(true),
             'outputBufferingLevel' => ob_get_level(),
+            'process'              => getmypid(),
         ];
 
         try {
@@ -465,6 +467,11 @@ final class PropertyRunner
      * Restores the handler of the SIGALRM signal, the alarm, and whether
      * signals are handled asynchronously of the caller after an example, or
      * when the example ended the process.
+     *
+     * They are only restored in the process in which the example started: a
+     * process that the example forked has no alarm of the caller, as alarms
+     * are not inherited by forked processes, and setting it again there would
+     * call the handler of the caller in that process.
      */
     private function restoreSignalStateOfCaller(): void
     {
@@ -475,6 +482,10 @@ final class PropertyRunner
         }
 
         $this->stateOfCaller = null;
+
+        if ($state['process'] !== getmypid()) {
+            return;
+        }
 
         pcntl_alarm(0);
         pcntl_signal(SIGALRM, $state['handler']);
