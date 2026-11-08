@@ -35,6 +35,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\DeprecationCollector\Facade as DeprecationCollector;
 use PHPUnit\Runner\ErrorHandler;
+use PHPUnit\Runner\ShutdownHandler;
 use PHPUnit\Runner\TestIndex\NullTestFileSkipper;
 use PHPUnit\TextUI\CliArguments\Builder;
 use PHPUnit\TextUI\CliArguments\XmlConfigurationFileFinder;
@@ -97,6 +98,16 @@ use Throwable;
  * exception with which it is aborted when it exceeds its time limit, as code
  * that catches every throwable does, keeps running.
  *
+ * When an example ends the process, with exit() or with a fatal error, for
+ * instance, the handler of the SIGALRM signal, the alarm, and whether signals
+ * are handled asynchronously of the caller are restored, and PHPUnit's error
+ * handler is disabled, in a shutdown function that is registered when PHPUnit
+ * is booted, before the hook methods of the prepared test class that are
+ * called after its last test are called. Nothing is printed, and the process
+ * ends with the exit status of the example. The shutdown functions that the
+ * caller registers after booting PHPUnit are called after it, and the ones
+ * that it registers before are called before it.
+ *
  * As in a test run, one test class is prepared at a time. The hook methods of
  * a test class that are called before its first test are called before the
  * first example of one of its properties is run, and the ones that are called
@@ -150,6 +161,15 @@ final class PropertyRunner
      * @var ?positive-int
      */
     private readonly ?int $randomSeed;
+
+    /**
+     * The handler of the SIGALRM signal, whether signals are handled
+     * asynchronously, the seconds that were left until an alarm of the caller,
+     * and when the example started, while an example runs.
+     *
+     * @var ?array{handler: callable|int, asynchronous: bool, remaining: int, started: int}
+     */
+    private ?array $signalStateOfCaller = null;
 
     /**
      * The test class whose hook methods that are called before its first test
@@ -257,6 +277,19 @@ final class PropertyRunner
                     return;
                     // @codeCoverageIgnoreEnd
                 }
+
+                // an example that ended the process, with exit() or with a
+                // fatal error, for instance, did not restore what was changed
+                // for it: PHPUnit's error handler is still enabled, and its
+                // time limit is still enforced
+                ErrorHandler::instance()->disable();
+
+                $this->restoreSignalStateOfCaller();
+
+                // nothing is printed, and the process ends with the exit
+                // status of the example, rather than with the message and the
+                // exit status of a test run that ended prematurely
+                ShutdownHandler::resetMessage();
 
                 $this->finishPreparedTestClass();
             },
@@ -387,21 +420,41 @@ final class PropertyRunner
      */
     private function suspendingAlarmOfCaller(Closure $example): ExampleResult
     {
-        $handler      = pcntl_signal_get_handler(SIGALRM);
-        $asynchronous = pcntl_async_signals();
-        $remaining    = pcntl_alarm(0);
-        $started      = hrtime(true);
+        $this->signalStateOfCaller = [
+            'handler'      => pcntl_signal_get_handler(SIGALRM),
+            'asynchronous' => pcntl_async_signals(),
+            'remaining'    => pcntl_alarm(0),
+            'started'      => hrtime(true),
+        ];
 
         try {
             return $example();
         } finally {
-            pcntl_alarm(0);
-            pcntl_signal(SIGALRM, $handler);
-            pcntl_async_signals($asynchronous);
+            $this->restoreSignalStateOfCaller();
+        }
+    }
 
-            if ($remaining > 0) {
-                pcntl_alarm(max(1, $remaining - intdiv(hrtime(true) - $started, 1_000_000_000)));
-            }
+    /**
+     * Restores the handler of the SIGALRM signal, the alarm, and whether
+     * signals are handled asynchronously of the caller after an example, or
+     * when the example ended the process.
+     */
+    private function restoreSignalStateOfCaller(): void
+    {
+        $state = $this->signalStateOfCaller;
+
+        if ($state === null) {
+            return;
+        }
+
+        $this->signalStateOfCaller = null;
+
+        pcntl_alarm(0);
+        pcntl_signal(SIGALRM, $state['handler']);
+        pcntl_async_signals($state['asynchronous']);
+
+        if ($state['remaining'] > 0) {
+            pcntl_alarm(max(1, $state['remaining'] - intdiv(hrtime(true) - $state['started'], 1_000_000_000)));
         }
     }
 
