@@ -151,7 +151,9 @@ final readonly class Filter
 
             $file = $frame['file'];
 
-            $printable[$file] ??= self::shouldPrintFramesOf($file, $prefix, $script, $excludeList);
+            if (!isset($printable[$file])) {
+                $printable[$file] = self::shouldPrintFramesOf($file, $prefix, $script, $excludeList);
+            }
 
             if ($printable[$file]) {
                 yield sprintf(

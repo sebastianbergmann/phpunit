@@ -85,7 +85,11 @@ final readonly class ExampleResult
             return new self('timeout', $falsification, $sequence);
         }
 
-        return new self($failed ? 'failed' : 'errored', $falsification, $sequence);
+        if ($failed) {
+            return new self('failed', $falsification, $sequence);
+        }
+
+        return new self('errored', $falsification, $sequence);
     }
 
     /**

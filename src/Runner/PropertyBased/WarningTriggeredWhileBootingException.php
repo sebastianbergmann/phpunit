@@ -31,10 +31,16 @@ final class WarningTriggeredWhileBootingException extends RuntimeException imple
             $warnings[] = sprintf('%d) %s', $number + 1, $message);
         }
 
+        if (count($messages) === 1) {
+            $numberOfWarnings = 'a warning';
+        } else {
+            $numberOfWarnings = count($messages) . ' warnings';
+        }
+
         parent::__construct(
             sprintf(
                 "Booting PHPUnit triggered %s:\n\n%s",
-                count($messages) === 1 ? 'a warning' : count($messages) . ' warnings',
+                $numberOfWarnings,
                 implode("\n\n", $warnings),
             ),
         );

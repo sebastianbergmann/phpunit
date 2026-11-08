@@ -978,7 +978,11 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
             );
         }
 
-        return $skippedMessage ?? $raised;
+        if ($skippedMessage !== null) {
+            return $skippedMessage;
+        }
+
+        return $raised;
     }
 
     /**

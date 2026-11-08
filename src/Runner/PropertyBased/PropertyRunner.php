@@ -690,7 +690,13 @@ final class PropertyRunner
             }
 
             if ($test instanceof TestSuite) {
-                $properties = [...$properties, ...self::propertiesIn($test, $test->isForTestClass() ? $test : $testClass)];
+                $testClassOfTest = $testClass;
+
+                if ($test->isForTestClass()) {
+                    $testClassOfTest = $test;
+                }
+
+                $properties = [...$properties, ...self::propertiesIn($test, $testClassOfTest)];
             }
         }
 
@@ -699,15 +705,15 @@ final class PropertyRunner
 
     private static function testOf(PropertyTestSuite $property): TestCase
     {
-        $test = $property->tests()[0] ?? null;
+        $tests = $property->tests();
 
-        if (!$test instanceof TestCase) {
+        if (!isset($tests[0]) || !$tests[0] instanceof TestCase) {
             // @codeCoverageIgnoreStart
             throw new PropertyDoesNotExistException($property->name());
             // @codeCoverageIgnoreEnd
         }
 
-        return $test;
+        return $tests[0];
     }
 
     /**

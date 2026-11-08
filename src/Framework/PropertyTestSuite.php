@@ -595,10 +595,8 @@ final class PropertyTestSuite extends IterativeTestSuite
      */
     private function runExampleOnItsOwn(Closure $source, int $timeLimit, bool $exportValues): ExampleResult
     {
-        $test    = $this->tests()[0] ?? null;
+        $test    = $this->testOfProperty();
         $emitter = Event\Facade::emitter();
-
-        assert($test instanceof TestCase);
 
         if ($this->test === null) {
             $this->test             = $test->valueObjectForEvents();
@@ -695,6 +693,18 @@ final class PropertyTestSuite extends IterativeTestSuite
     }
 
     /**
+     * The test of the property, which this test suite aggregates.
+     */
+    private function testOfProperty(): TestCase
+    {
+        $tests = $this->tests();
+
+        assert(isset($tests[0]) && $tests[0] instanceof TestCase);
+
+        return $tests[0];
+    }
+
+    /**
      * The generators are created once for the examples that are run on their
      * own. As these examples are run outside of a test run, there is no test
      * result for the property to which an exception that is raised while the
@@ -711,10 +721,9 @@ final class PropertyTestSuite extends IterativeTestSuite
             return $this->generatorsOfExamplesRunOnTheirOwn;
         }
 
-        $test        = $this->tests()[0] ?? null;
+        $test        = $this->testOfProperty();
         $valueObject = $this->test;
 
-        assert($test instanceof TestCase);
         assert($valueObject !== null);
 
         try {
