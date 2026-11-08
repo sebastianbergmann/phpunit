@@ -596,7 +596,7 @@ final class PropertyTestSuite extends IterativeTestSuite
     private function runExampleOnItsOwn(Closure $source, int $timeLimit, bool $exportValues): ExampleResult
     {
         $test    = $this->testOfProperty();
-        $emitter = Event\Facade::emitter();
+        $emitter = $this->emitter();
 
         if ($this->test === null) {
             $this->test             = $test->valueObjectForEvents();
@@ -732,7 +732,7 @@ final class PropertyTestSuite extends IterativeTestSuite
                 {
                     $this->triggerTestCaseContextIssuesOfExamplesRunOnTheirOwn();
 
-                    return $this->generators($test, Event\Facade::emitter());
+                    return $this->generators($test, $this->emitter());
                 },
                 null,
             );

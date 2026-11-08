@@ -638,6 +638,14 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
     }
 
     /**
+     * The emitter with which the test suite was created.
+     */
+    final protected function emitter(): Event\Emitter
+    {
+        return $this->emitter;
+    }
+
+    /**
      * Runs the tests aggregated by this test suite.
      *
      * @param list<Test> $tests
