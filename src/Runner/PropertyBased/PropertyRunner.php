@@ -120,7 +120,11 @@ use Throwable;
  * test class is run, or when the process ends.
  * When one of the former raises an exception, every example of a property of
  * the test class is aborted with that exception, and when one of them skips
- * the tests of the test class, every example is skipped.
+ * the tests of the test class, every example is skipped. The latter are only
+ * called in the process that prepared the test class: a process that is
+ * forked from it, while an example runs or between examples, does not call
+ * them for this test class, but does for a test class that it prepares
+ * itself.
  *
  * The result of an example tells how it ended, how it falsified the
  * property, and which choices it consumed, with their spans and the maxima
@@ -180,9 +184,9 @@ final class PropertyRunner
      * The test class whose hook methods that are called before its first test
      * were called last, and what calling them resulted in: null when they
      * were called, the message why its tests are skipped, or the throwable
-     * that one of them raised.
+     * that one of them raised, and the process in which they were called.
      *
-     * @var ?array{testClass: TestSuite, outcome: null|non-empty-string|Throwable}
+     * @var ?array{testClass: TestSuite, outcome: null|non-empty-string|Throwable, process: false|int}
      */
     private ?array $preparedTestClass = null;
 
@@ -287,19 +291,9 @@ final class PropertyRunner
         $this->properties = $properties;
         $this->randomSeed = $randomSeed;
 
-        $pid = getmypid();
-
         register_shutdown_function(
-            function () use ($pid): void
+            function (): void
             {
-                // a process that is forked while an example runs does not
-                // finish the test class of the process from which it was forked
-                if ($pid !== getmypid()) {
-                    // @codeCoverageIgnoreStart
-                    return;
-                    // @codeCoverageIgnoreEnd
-                }
-
                 // an example that ended the process, with exit() or with a
                 // fatal error, for instance, did not restore what was changed
                 // for it: PHPUnit's error handler is still enabled, and its
@@ -508,6 +502,7 @@ final class PropertyRunner
             $this->preparedTestClass = [
                 'testClass' => $testClass,
                 'outcome'   => $testClass->invokeMethodsBeforeFirstExample(),
+                'process'   => getmypid(),
             ];
         }
 
@@ -547,6 +542,13 @@ final class PropertyRunner
             if ($property['testClass'] === $preparedTestClass['testClass']) {
                 $property['property']->discardGeneratorsOfExamplesRunOnTheirOwn();
             }
+        }
+
+        // a process that is forked from the one that prepared the test class,
+        // while an example runs or between examples, does not finish it, as
+        // the process from which it was forked does
+        if ($preparedTestClass['process'] !== getmypid()) {
+            return;
         }
 
         if ($preparedTestClass['outcome'] === null) {
