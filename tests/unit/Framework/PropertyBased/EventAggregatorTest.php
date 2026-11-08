@@ -9,7 +9,9 @@
  */
 namespace PHPUnit\Framework\PropertyBased;
 
+use function array_filter;
 use function array_map;
+use function array_values;
 use Exception;
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Code\Counterexample;
@@ -32,12 +34,15 @@ use PHPUnit\Event\Test\PrintedUnexpectedOutput;
 use PHPUnit\Event\Test\PropertyChecked;
 use PHPUnit\Event\Test\PropertyFalsified;
 use PHPUnit\Event\Test\WarningTriggered;
+use PHPUnit\Event\TestRunner\EventFacadeSealed;
 use PHPUnit\Event\TestRunner\GarbageCollectionTriggered;
+use PHPUnit\Event\Tracer\Tracer;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\TestFixture\PropertyBased\EventCollector;
 use ReflectionClass;
+use ReflectionProperty;
 use stdClass;
 
 #[CoversClass(EventAggregator::class)]
@@ -378,6 +383,62 @@ final class EventAggregatorTest extends AbstractEventTestCase
 
         $this->assertSame($rejected->asArray()[0], $events[0]);
         $this->assertSame($rejected->asArray()[1], $events[1]);
+    }
+
+    public function testReportsEachPhpunitWarningThatIsRecordedForThePropertyOnce(): void
+    {
+        $tracer = new class implements Tracer
+        {
+            /**
+             * @var list<Event>
+             */
+            public array $events = [];
+
+            public function trace(Event $event): void
+            {
+                $this->events[] = $event;
+            }
+        };
+
+        $facade = new EventFacade;
+
+        $facade->registerTracer($tracer);
+        $facade->seal();
+
+        // the event facade of the test run is swapped for this one, as the
+        // emitter is taken from the instance of the event facade, so that the
+        // warnings are not reported for this test
+        $property = new ReflectionProperty(EventFacade::class, 'instance');
+        $instance = $property->getValue();
+
+        $property->setValue(null, $facade);
+
+        try {
+            $aggregator = new EventAggregator(EventFacade::emitter(), $facade, $this->valueObjectForEvents());
+            $example    = $this->passedExample();
+
+            $aggregator->record($example, true);
+            $aggregator->recordPhpunitWarning('warning');
+            $aggregator->recordThatGeneratorsAreNondeterministic();
+            $aggregator->recordPhpunitWarning('warning');
+            $aggregator->recordThatGeneratorsAreNondeterministic();
+
+            $aggregator->dispatch($example, null, true, null, static fn () => null, 1);
+        } finally {
+            $property->setValue(null, $instance);
+        }
+
+        $this->assertSame(
+            [
+                'PreparationStarted',
+                'Prepared',
+                'PhpunitWarningTriggered: warning',
+                'PhpunitWarningTriggered: The generators of this property did not generate the same values from the same choices, so its examples may be generated more than once and its counterexamples may not be reproducible; values must not depend on anything but the choices they are generated from',
+                'Passed',
+                'Finished: 1',
+            ],
+            $this->describe(array_values(array_filter($tracer->events, static fn (Event $event): bool => !$event instanceof EventFacadeSealed))),
+        );
     }
 
     /**

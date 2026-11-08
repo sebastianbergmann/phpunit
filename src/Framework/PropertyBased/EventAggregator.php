@@ -154,6 +154,37 @@ final class EventAggregator
     }
 
     /**
+     * Records a PHPUnit warning for the property, which is reported with the
+     * issues of its examples: like these, a message is reported once per
+     * property, however often it is recorded.
+     *
+     * @param non-empty-string $message
+     */
+    public function recordPhpunitWarning(string $message): void
+    {
+        $this->facade->startCollectingEvents();
+
+        try {
+            $this->emitter->testTriggeredPhpunitWarning($this->test, $message);
+        } finally {
+            $this->record($this->facade->stopCollectingEvents(), true);
+        }
+    }
+
+    /**
+     * Records a PHPUnit warning because the generators of the property did
+     * not generate the same arguments and values from the same choices: its
+     * examples can then be generated more than once, and its counterexamples
+     * cannot be replayed and shrunk reliably.
+     */
+    public function recordThatGeneratorsAreNondeterministic(): void
+    {
+        $this->recordPhpunitWarning(
+            'The generators of this property did not generate the same values from the same choices, so its examples may be generated more than once and its counterexamples may not be reproducible; values must not depend on anything but the choices they are generated from',
+        );
+    }
+
+    /**
      * Records the events of a shrinking attempt, of which only the
      * TestRunner\GarbageCollectionTriggered events are kept.
      */

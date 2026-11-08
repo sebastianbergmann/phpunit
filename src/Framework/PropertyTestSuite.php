@@ -136,12 +136,6 @@ final class PropertyTestSuite extends IterativeTestSuite
     private ?PropertyStatistics $statistics = null;
 
     /**
-     * Whether a PHPUnit warning was recorded because the generators of the
-     * property do not generate the same values from the same choices.
-     */
-    private bool $warnedAboutNondeterministicGenerators = false;
-
-    /**
      * The deriver and the generators of the property, for running its
      * examples on their own, null before the first one is run.
      *
@@ -338,9 +332,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             if ($this->wasRejected($example, $falsification)) {
                 $events->record($exampleEvents, false);
 
-                $this->recordPhpunitWarning(
-                    $events,
-                    $emitter,
+                $events->recordPhpunitWarning(
                     sprintf('Explicit example %s was rejected by assume()', $explicitExample->label()),
                 );
 
@@ -419,7 +411,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             } catch (ExampleRejectedException $e) {
                 // the same choices are rejected again, so they are not drawn
                 // again
-                $this->exampleGenerated($source, $events, $emitter);
+                $this->exampleGenerated($source, $events);
 
                 $this->statistics()->recordRejectedExample($e->reason());
                 $search->exampleRejected();
@@ -438,7 +430,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             // the same choices generate the same arguments and draw the same
             // values, or are rejected again, so they are not drawn again; the
             // example draws choices with draw() until it ends
-            $this->exampleGenerated($source, $events, $emitter);
+            $this->exampleGenerated($source, $events);
 
             if ($this->wasRejected($example, $falsification)) {
                 $this->statistics()->recordRejectedExample(self::propertyExampleOf($example)->rejectionReason());
@@ -895,7 +887,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             }
 
             if ($source->sequence()->choices() !== $sequence->choices()) {
-                $this->warnAboutNondeterministicGenerators($events, $emitter);
+                $events->recordThatGeneratorsAreNondeterministic();
 
                 continue;
             }
@@ -975,34 +967,13 @@ final class PropertyTestSuite extends IterativeTestSuite
      * PHPUnit warning when its generators did not draw the same choices as
      * before from the same choices.
      */
-    private function exampleGenerated(ChoiceSource $source, EventAggregator $events, Event\Emitter $emitter): void
+    private function exampleGenerated(ChoiceSource $source, EventAggregator $events): void
     {
         $source->exampleGenerated();
 
         if ($source->drewDifferentlyThanBefore()) {
-            $this->warnAboutNondeterministicGenerators($events, $emitter);
+            $events->recordThatGeneratorsAreNondeterministic();
         }
-    }
-
-    /**
-     * Records a PHPUnit warning, once per property, because its generators
-     * did not generate the same arguments and values from the same choices:
-     * its examples can then be generated more than once, and its
-     * counterexamples cannot be replayed and shrunk reliably.
-     */
-    private function warnAboutNondeterministicGenerators(EventAggregator $events, Event\Emitter $emitter): void
-    {
-        if ($this->warnedAboutNondeterministicGenerators) {
-            return;
-        }
-
-        $this->warnedAboutNondeterministicGenerators = true;
-
-        $this->recordPhpunitWarning(
-            $events,
-            $emitter,
-            'The generators of this property did not generate the same values from the same choices, so its examples may be generated more than once and its counterexamples may not be reproducible; values must not depend on anything but the choices they are generated from',
-        );
     }
 
     /**
@@ -1208,28 +1179,6 @@ final class PropertyTestSuite extends IterativeTestSuite
     {
         return self::propertyExampleOf($example)->throwableThatEndedIt() instanceof InvalidStateMachineException ||
                ExampleRunner::endedBeforeItWasPrepared($exampleEvents);
-    }
-
-    /**
-     * Records a PHPUnit warning for the property, which is reported with the
-     * issues of its examples.
-     *
-     * @param non-empty-string $message
-     */
-    private function recordPhpunitWarning(EventAggregator $events, Event\Emitter $emitter, string $message): void
-    {
-        $test   = $this->test;
-        $facade = Event\Facade::instance();
-
-        assert($test !== null);
-
-        $facade->startCollectingEvents();
-
-        try {
-            $emitter->testTriggeredPhpunitWarning($test, $message);
-        } finally {
-            $events->record($facade->stopCollectingEvents(), true);
-        }
     }
 
     /**
