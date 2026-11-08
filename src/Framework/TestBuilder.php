@@ -766,6 +766,10 @@ final readonly class TestBuilder
             $this->warnAboutIneligibleProperty($className, $methodName, 'RunInSeparateProcess', 'run in a separate process');
         }
 
+        if ($metadata->isTestDoxFormatter()->isNotEmpty()) {
+            $this->warnAboutIneligibleProperty($className, $methodName, 'TestDoxFormatter', 'described by its TestDox formatter');
+        }
+
         $class = $this->classThatRunsTestsInSeparateProcesses($className);
 
         if ($class !== null) {
@@ -781,10 +785,10 @@ final readonly class TestBuilder
     }
 
     /**
-     * @param class-string<TestCase>                           $className
-     * @param non-empty-string                                 $methodName
-     * @param 'Repeat'|'Retry'|'RunInSeparateProcess'          $attribute
-     * @param 'repeated'|'retried'|'run in a separate process' $consequence
+     * @param class-string<TestCase>                                                                $className
+     * @param non-empty-string                                                                      $methodName
+     * @param 'Repeat'|'Retry'|'RunInSeparateProcess'|'TestDoxFormatter'                            $attribute
+     * @param 'described by its TestDox formatter'|'repeated'|'retried'|'run in a separate process' $consequence
      */
     private function warnAboutIneligibleProperty(string $className, string $methodName, string $attribute, string $consequence): void
     {
