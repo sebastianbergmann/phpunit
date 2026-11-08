@@ -602,12 +602,11 @@ final class PropertyTestSuite extends IterativeTestSuite
             $arguments = $this->handlingIssues(fn (): array => $this->generateArgumentsWithinTimeLimit($generators, $source, $timeLimit), null);
         } catch (ExampleRejectedException) {
             return ExampleResult::rejected($source->sequence());
-        } catch (TimeoutException $e) {
-            return ExampleResult::falsified(Falsification::ofThrowable($e), false, $source->sequence());
         } catch (Throwable $t) {
             // a generator raised an exception, the constructor of a class
-            // whose objects are generated, for instance, so that the example
-            // did not check the property
+            // whose objects are generated, for instance, or the arguments took
+            // longer to generate than the time limit allows, so that the
+            // example did not check the property
             return ExampleResult::aborted(Falsification::ofThrowable($t), $source->sequence());
         }
 

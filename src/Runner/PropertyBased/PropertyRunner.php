@@ -102,8 +102,9 @@ use Throwable;
  * arguments are generated, when it ends before its test method is called, in
  * setUp(), for instance, or when its state machine cannot be run. When PHPUnit
  * checks the property, such an example is the error of the property, which is
- * reported without being shrunk. The failure of an aborted example tells how
- * it ended.
+ * reported without being shrunk. An example whose arguments take longer to
+ * generate than its time limit allows is aborted, too. The failure of an
+ * aborted example tells how it ended.
  *
  * @phpstan-type Result array{outcome: 'aborted'|'errored'|'failed'|'incomplete'|'passed'|'rejected'|'skipped'|'timeout', failure: ?array{kind: 'description'|'throwable'|'timeout', signature: non-empty-string, class: ?class-string, location: ?non-empty-string, description: non-empty-string, message: string}, choices: list<non-negative-int>, spans: list<array{start: non-negative-int, end: non-negative-int, label: string, parent: ?non-negative-int, kind: null|'bytes'|'characters'|'element'}>, maxima: list<?non-negative-int>, arguments: ?array<non-empty-string, string>, drawnValues: ?list<array{label: ?non-empty-string, value: string}>, steps: ?list<non-empty-string>}
  *

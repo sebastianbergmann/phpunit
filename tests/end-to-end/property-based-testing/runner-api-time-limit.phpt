@@ -1,5 +1,5 @@
 --TEST--
-The API for running examples of properties one at a time enforces the time limit of an example, which covers generating its arguments and running it
+The API for running examples of properties one at a time enforces the time limit of an example, which covers generating its arguments and running it, and aborts an example whose arguments take longer to generate than its time limit allows
 --SKIPIF--
 <?php declare(strict_types=1);
 if (!extension_loaded('pcntl')) {
@@ -23,7 +23,7 @@ print PHP_EOL . PHP_EOL;
 foreach (['SlowGenerationTest::testArgumentsTakeTooLongToBeGenerated' => 1, 'SlowGenerationTest::testArgumentsAndExampleTakeTooLongTogether' => 2] as $property => $timeLimit) {
     $result = $phpunit->replay($prefix . $property, [3], $timeLimit);
 
-    print $property . ': ' . $result['outcome'] . ' (' . $result['failure']['message'] . ')' . PHP_EOL;
+    print $property . ': ' . $result['outcome'] . ' (' . $result['failure']['kind'] . ': ' . $result['failure']['message'] . ')' . PHP_EOL;
 }
 --EXPECT--
 array (
@@ -35,5 +35,5 @@ array (
   'message' => 'Execution aborted after 1 second',
 )
 
-SlowGenerationTest::testArgumentsTakeTooLongToBeGenerated: timeout (Execution aborted after 1 second)
-SlowGenerationTest::testArgumentsAndExampleTakeTooLongTogether: timeout (Execution aborted after 1 second)
+SlowGenerationTest::testArgumentsTakeTooLongToBeGenerated: aborted (timeout: Execution aborted after 1 second)
+SlowGenerationTest::testArgumentsAndExampleTakeTooLongTogether: timeout (timeout: Execution aborted after 1 second)
