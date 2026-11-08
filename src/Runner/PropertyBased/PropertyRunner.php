@@ -9,13 +9,22 @@
  */
 namespace PHPUnit\Runner\PropertyBased;
 
+use const SIGALRM;
 use function array_is_list;
 use function count;
 use function getmypid;
+use function hrtime;
+use function intdiv;
 use function is_int;
 use function is_string;
+use function max;
+use function pcntl_alarm;
+use function pcntl_async_signals;
+use function pcntl_signal;
+use function pcntl_signal_get_handler;
 use function register_shutdown_function;
 use function sprintf;
+use Closure;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Event\TestRunner\PhpunitWarningTriggered;
 use PHPUnit\Exception;
@@ -78,6 +87,15 @@ use Throwable;
  * PHPUnit checks the property, and it draws values with draw() from the same
  * choices. It is neither shrunk nor reported. The issues that it triggers are
  * handled as in a test run, but they are not reported either.
+ *
+ * The time limit of an example is enforced with the SIGALRM signal. While an
+ * example runs, the handler of this signal, a pending alarm, and whether
+ * signals are handled asynchronously are PHPUnit's. Afterwards, the ones of
+ * the caller are restored, and an alarm of the caller is set again for the
+ * rest of its time: an alarm that would have gone off while the example ran
+ * goes off one second after it. As in a test run, an example that catches the
+ * exception with which it is aborted when it exceeds its time limit, as code
+ * that catches every throwable does, keeps running.
  *
  * As in a test run, one test class is prepared at a time. The hook methods of
  * a test class that are called before its first test are called before the
@@ -314,10 +332,15 @@ final class PropertyRunner
 
         $property = $this->property($id);
 
-        return self::asArray(
-            $this->resultOfTestClass($property['testClass']) ??
-            $property['property']->replayExample($choices, $timeLimit, $exportValues),
-        );
+        $result = $this->resultOfTestClass($property['testClass']);
+
+        if ($result === null) {
+            $result = $this->suspendingAlarmOfCaller(
+                static fn (): ExampleResult => $property['property']->replayExample($choices, $timeLimit, $exportValues),
+            );
+        }
+
+        return self::asArray($result);
     }
 
     /**
@@ -341,10 +364,45 @@ final class PropertyRunner
 
         $property = $this->property($id);
 
-        return self::asArray(
-            $this->resultOfTestClass($property['testClass']) ??
-            $property['property']->generateExample($seed, $timeLimit, $exportValues),
-        );
+        $result = $this->resultOfTestClass($property['testClass']);
+
+        if ($result === null) {
+            $result = $this->suspendingAlarmOfCaller(
+                static fn (): ExampleResult => $property['property']->generateExample($seed, $timeLimit, $exportValues),
+            );
+        }
+
+        return self::asArray($result);
+    }
+
+    /**
+     * Runs an example, whose time limit php-invoker enforces with the SIGALRM
+     * signal: it replaces the handler of this signal, cancels a pending alarm,
+     * and lets signals be handled asynchronously, without restoring any of
+     * this. As these belong to the caller, they are restored after the
+     * example, and an alarm of the caller is set again for the rest of its
+     * time, for at least one second.
+     *
+     * @param Closure(): ExampleResult $example
+     */
+    private function suspendingAlarmOfCaller(Closure $example): ExampleResult
+    {
+        $handler      = pcntl_signal_get_handler(SIGALRM);
+        $asynchronous = pcntl_async_signals();
+        $remaining    = pcntl_alarm(0);
+        $started      = hrtime(true);
+
+        try {
+            return $example();
+        } finally {
+            pcntl_alarm(0);
+            pcntl_signal(SIGALRM, $handler);
+            pcntl_async_signals($asynchronous);
+
+            if ($remaining > 0) {
+                pcntl_alarm(max(1, $remaining - intdiv(hrtime(true) - $started, 1_000_000_000)));
+            }
+        }
     }
 
     /**
