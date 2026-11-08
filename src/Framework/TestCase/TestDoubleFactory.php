@@ -64,9 +64,12 @@ final readonly class TestDoubleFactory
         $mock = (new MockGenerator)->testDouble(
             $type,
             true,
-            callOriginalConstructor: false,
-            callOriginalClone: false,
-            returnValueGeneration: $this->generateReturnValues(),
+            [],
+            [],
+            '',
+            false,
+            false,
+            $this->generateReturnValues(),
         );
 
         assert($mock instanceof $type);
@@ -89,7 +92,7 @@ final readonly class TestDoubleFactory
         $mock = (new MockGenerator)->testDoubleForInterfaceIntersection(
             $interfaces,
             true,
-            returnValueGeneration: $this->generateReturnValues(),
+            $this->generateReturnValues(),
         );
 
         assert($mock instanceof MockObject);
@@ -176,9 +179,12 @@ final readonly class TestDoubleFactory
         $stub = (new MockGenerator)->testDouble(
             $type,
             false,
-            callOriginalConstructor: false,
-            callOriginalClone: false,
-            returnValueGeneration: $this->generateReturnValues(),
+            [],
+            [],
+            '',
+            false,
+            false,
+            $this->generateReturnValues(),
         );
 
         $this->emitter->testCreatedStub($type);
@@ -199,7 +205,7 @@ final readonly class TestDoubleFactory
         $stub = (new MockGenerator)->testDoubleForInterfaceIntersection(
             $interfaces,
             false,
-            returnValueGeneration: $this->generateReturnValues(),
+            $this->generateReturnValues(),
         );
 
         $this->emitter->testCreatedStubForIntersectionOfInterfaces($interfaces);
