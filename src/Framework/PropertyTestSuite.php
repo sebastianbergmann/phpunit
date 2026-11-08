@@ -639,16 +639,7 @@ final class PropertyTestSuite extends IterativeTestSuite
 
         $example = $this->example($arguments, false, $drawnValues);
 
-        $exampleEvents = $this->collectingEvents(
-            static function () use ($example, $emitter, $timeLimit): void
-            {
-                $emitter->testPreparationStarted(
-                    $example->valueObjectForEvents(),
-                );
-
-                new TestRunner($emitter)->runExampleOfProperty($example, false, $timeLimit);
-            },
-        );
+        [$exampleEvents] = $this->runExample($example, $emitter, false, $timeLimit);
 
         $result = $this->resultOf($example, $source, $exampleEvents);
 
@@ -2053,22 +2044,24 @@ final class PropertyTestSuite extends IterativeTestSuite
      * like every test, every example has exactly one sequence of events from
      * Test\PreparationStarted to Test\Finished.
      *
+     * @param ?positive-int $timeLimit the time limit of the example in seconds, null for the configured one
+     *
      * @throws Throwable
      *
      * @return array{0: EventCollection, 1: ExampleRun}
      */
-    private function runExample(TestCase $example, Event\Emitter $emitter, bool $collectCodeCoverage): array
+    private function runExample(TestCase $example, Event\Emitter $emitter, bool $collectCodeCoverage, ?int $timeLimit = null): array
     {
         $run = null;
 
         $events = $this->collectingEvents(
-            static function () use ($example, $emitter, $collectCodeCoverage, &$run): void
+            static function () use ($example, $emitter, $collectCodeCoverage, $timeLimit, &$run): void
             {
                 $emitter->testPreparationStarted(
                     $example->valueObjectForEvents(),
                 );
 
-                $run = new TestRunner($emitter)->runExampleOfProperty($example, $collectCodeCoverage);
+                $run = new TestRunner($emitter)->runExampleOfProperty($example, $collectCodeCoverage, $timeLimit);
             },
         );
 
