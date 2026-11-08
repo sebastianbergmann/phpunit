@@ -97,6 +97,15 @@ use Throwable;
  * state machine, exported as PHPUnit reports them for a counterexample. They
  * are null otherwise, and when no arguments were generated for the example.
  *
+ * The signature of how an example falsified the property is the same for
+ * the same failure in every process, whatever its working directory, so that
+ * failures that are found in different processes can be compared by it. The
+ * path of a file below the directory of the configuration file is relative
+ * to it, and the signature does not name the class of an anonymous throwable
+ * or of a test double, whose names differ between processes, but the first
+ * class that it extends which is neither. The class of the throwable itself
+ * is kept as it is.
+ *
  * An example that fails or errors without checking the property is aborted
  * rather than falsifying it: when a generator raises an exception while its
  * arguments are generated, when it ends before its test method is called, in

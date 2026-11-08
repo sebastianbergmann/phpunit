@@ -11,6 +11,8 @@ namespace PHPUnit\Framework\PropertyBased;
 
 use const DIRECTORY_SEPARATOR;
 use const PHP_OS_FAMILY;
+use function assert;
+use function dirname;
 use function getcwd;
 use function realpath;
 use function rtrim;
@@ -22,8 +24,11 @@ use function strncasecmp;
 use function strrpos;
 use function substr;
 use Error;
+use PHPUnit\Framework\MockObject\StubInternal;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\Util\Filter;
+use ReflectionClass;
 use SebastianBergmann\ChoiceSequence\FailureSignature;
 use SebastianBergmann\Invoker\TimeoutException;
 use Throwable;
@@ -47,8 +52,18 @@ use Throwable;
  * the recursion that comes first, by file and then by line, among the frames
  * that occur more than once in its stack trace.
  *
- * The path of a file below the working directory is relative to it, so that
- * the location does not depend on where a project is checked out.
+ * The path of a file below the directory of the configuration file, or below
+ * the working directory when there is no configuration file, is relative to
+ * it, so that the location depends neither on where a project is checked out
+ * nor on the working directory of the process.
+ *
+ * The name of an anonymous class contains the path of the file in which it is
+ * declared and a counter that depends on the order in which anonymous classes
+ * are compiled, and the name of the class of a test double ends in random
+ * characters. So that the same failure has the same signature in every
+ * process, the signature names the class that the class of such a throwable
+ * extends, the first one that is neither anonymous nor a test double. Like
+ * the location, the class of the throwable itself is kept as it is.
  *
  * Whether two examples falsify the property in the same way is told by the
  * failure signature of sebastian/choice-sequence, so that failures are
@@ -114,7 +129,7 @@ final readonly class Falsification
         $location = self::locationOf($throwable);
 
         return new self(
-            FailureSignature::forThrowable($throwable::class, $location),
+            FailureSignature::forThrowable(self::classForSignature($throwable), $location),
             $throwable::class,
             $location,
             $throwable->getMessage(),
@@ -209,6 +224,29 @@ final readonly class Falsification
     }
 
     /**
+     * The class of the throwable, or, when it is anonymous or a test double,
+     * the first class that it extends which is neither.
+     *
+     * @return class-string
+     */
+    private static function classForSignature(Throwable $throwable): string
+    {
+        $class = new ReflectionClass($throwable);
+
+        while ($class->isAnonymous() || $class->implementsInterface(StubInternal::class)) {
+            $parent = $class->getParentClass();
+
+            // a throwable extends Exception or Error, which are neither
+            // anonymous nor test doubles
+            assert($parent !== false);
+
+            $class = $parent;
+        }
+
+        return $class->getName();
+    }
+
+    /**
      * @return non-empty-string
      */
     private static function locationOf(Throwable $throwable): string
@@ -232,7 +270,7 @@ final readonly class Falsification
             // @codeCoverageIgnoreEnd
         }
 
-        return self::relativeToWorkingDirectory($frame);
+        return self::relativeToBaseDirectory($frame);
     }
 
     /**
@@ -257,7 +295,7 @@ final readonly class Falsification
                 continue;
             }
 
-            $frame = self::relativeToWorkingDirectory($frame);
+            $frame = self::relativeToBaseDirectory($frame);
 
             if ($first === null || self::comesBefore($frame, $first)) {
                 $first = $frame;
@@ -298,31 +336,27 @@ final readonly class Falsification
     }
 
     /**
-     * The working directory is the one in which the example was started,
-     * because PHPUnit restores it after the example, should the example
-     * change it.
-     *
      * @param non-empty-string $location
      *
      * @return non-empty-string
      */
-    private static function relativeToWorkingDirectory(string $location): string
+    private static function relativeToBaseDirectory(string $location): string
     {
-        $workingDirectory = getcwd();
+        $baseDirectory = self::baseDirectory();
 
-        if ($workingDirectory === false) {
+        if ($baseDirectory === false) {
             // @codeCoverageIgnoreStart
             return $location;
             // @codeCoverageIgnoreEnd
         }
 
-        $realpath = realpath($workingDirectory);
+        $realpath = realpath($baseDirectory);
 
         if ($realpath !== false) {
-            $workingDirectory = $realpath;
+            $baseDirectory = $realpath;
         }
 
-        $prefix = rtrim($workingDirectory, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+        $prefix = rtrim($baseDirectory, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
         if (!self::startsWith($location, $prefix)) {
             return $location;
@@ -337,6 +371,23 @@ final readonly class Falsification
         }
 
         return $relative;
+    }
+
+    /**
+     * The directory of the configuration file, or the working directory when
+     * there is no configuration file. The working directory is the one in
+     * which the example was started, because PHPUnit restores it after the
+     * example, should the example change it.
+     */
+    private static function baseDirectory(): false|string
+    {
+        $configuration = ConfigurationRegistry::get();
+
+        if ($configuration->hasConfigurationFile()) {
+            return dirname($configuration->configurationFile());
+        }
+
+        return getcwd();
     }
 
     /**

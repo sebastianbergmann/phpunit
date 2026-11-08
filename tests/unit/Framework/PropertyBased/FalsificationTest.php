@@ -10,12 +10,16 @@
 namespace PHPUnit\Framework\PropertyBased;
 
 use const DIRECTORY_SEPARATOR;
+use const E_WARNING;
 use function chdir;
-use function dirname;
 use function getcwd;
-use function realpath;
 use function str_replace;
 use function sys_get_temp_dir;
+use function tempnam;
+use function unlink;
+use ErrorException;
+use Exception;
+use PHPUnit\Exception as PHPUnitException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -23,6 +27,7 @@ use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\PropertyBased\EventCollector;
 use PHPUnit\TestFixture\PropertyBased\Falsification\ExampleTest;
+use RuntimeException;
 use Throwable;
 
 #[CoversClass(Falsification::class)]
@@ -32,6 +37,7 @@ use Throwable;
 final class FalsificationTest extends TestCase
 {
     private ?string $previousWorkingDirectory = null;
+    private ?string $temporaryFile            = null;
 
     /**
      * @return array<string, array{non-empty-string}>
@@ -62,6 +68,12 @@ final class FalsificationTest extends TestCase
             chdir($this->previousWorkingDirectory);
 
             $this->previousWorkingDirectory = null;
+        }
+
+        if ($this->temporaryFile !== null) {
+            unlink($this->temporaryFile);
+
+            $this->temporaryFile = null;
         }
     }
 
@@ -145,9 +157,10 @@ final class FalsificationTest extends TestCase
         $this->assertStringMatchesFormat('RuntimeException at %sExampleTest.php:%d', $falsification->description());
     }
 
-    public function testThePathOfTheFileWhereTheThrowableWasRaisedIsRelativeToTheWorkingDirectoryWhenTheFileIsBelowIt(): void
+    public function testThePathOfTheFileWhereTheThrowableWasRaisedIsRelativeToTheDirectoryOfTheConfigurationFileWhenTheFileIsBelowIt(): void
     {
-        $this->changeWorkingDirectory(dirname(__DIR__, 4));
+        // the path does not depend on the working directory
+        $this->changeWorkingDirectory(__DIR__);
 
         $falsification = Falsification::of($this->example('testErrors', 1));
 
@@ -155,14 +168,47 @@ final class FalsificationTest extends TestCase
         $this->assertStringMatchesFormat('RuntimeException at ' . str_replace('/', DIRECTORY_SEPARATOR, 'tests/_files/PropertyBased/Falsification/ExampleTest.php') . ':%d', $falsification->description());
     }
 
-    public function testThePathOfTheFileWhereTheThrowableWasRaisedIsAbsoluteWhenTheFileIsNotBelowTheWorkingDirectory(): void
+    public function testThePathOfTheFileWhereTheThrowableWasRaisedIsAbsoluteWhenTheFileIsNotBelowTheDirectoryOfTheConfigurationFile(): void
     {
-        $this->changeWorkingDirectory(sys_get_temp_dir());
+        $file = tempnam(sys_get_temp_dir(), 'phpunit-falsification-');
 
-        $falsification = Falsification::of($this->example('testErrors', 1));
+        if ($file === false) {
+            $this->fail('Failed to create a temporary file.');
+        }
 
-        $this->assertNotNull($falsification);
-        $this->assertStringMatchesFormat('RuntimeException at ' . realpath(dirname(__DIR__, 4)) . str_replace('/', DIRECTORY_SEPARATOR, '/tests/_files/PropertyBased/Falsification/ExampleTest.php') . ':%d', $falsification->description());
+        $this->temporaryFile = $file;
+
+        $falsification = Falsification::ofThrowable(new ErrorException('message', 0, E_WARNING, $file, 1));
+
+        $this->assertSame('ErrorException at ' . $file . ':1', $falsification->description());
+    }
+
+    public function testTheSignatureNamesTheClassThatTheClassOfAnAnonymousThrowableExtends(): void
+    {
+        $throwable = new class extends RuntimeException
+        {};
+        $falsification = Falsification::ofThrowable($throwable);
+
+        $this->assertSame($throwable::class, $falsification->className());
+        $this->assertStringStartsWith('RuntimeException at ', $falsification->signature()->text());
+    }
+
+    public function testTheSignatureNamesTheClassThatATestDoubleOfAThrowableExtends(): void
+    {
+        $throwable     = $this->createStub(RuntimeException::class);
+        $falsification = Falsification::ofThrowable($throwable);
+
+        $this->assertSame($throwable::class, $falsification->className());
+        $this->assertStringStartsWith('RuntimeException at ', $falsification->signature()->text());
+    }
+
+    public function testTheSignatureNamesExceptionForATestDoubleOfAnInterfaceThatExtendsThrowable(): void
+    {
+        $throwable     = $this->createStub(PHPUnitException::class);
+        $falsification = Falsification::ofThrowable($throwable);
+
+        $this->assertSame($throwable::class, $falsification->className());
+        $this->assertStringStartsWith(Exception::class . ' at ', $falsification->signature()->text());
     }
 
     public function testTheLocationOfTheErrorForTheCallStackLimitIsTheFirstOfTheFramesThatAreRepeatedInItsStackTrace(): void
