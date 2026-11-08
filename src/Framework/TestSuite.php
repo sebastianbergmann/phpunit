@@ -1031,6 +1031,12 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
     private function hasTestThatIsRunInThisProcess(ProcessIsolation $processIsolation): bool
     {
         foreach ($this as $test) {
+            // a property is always run in this process, as process isolation
+            // does not apply to it, even when it is requested for all tests
+            if ($test instanceof PropertyTestSuite) {
+                return true;
+            }
+
             if ($test instanceof self) {
                 if ($test->hasTestThatIsRunInThisProcess($processIsolation)) {
                     return true;
