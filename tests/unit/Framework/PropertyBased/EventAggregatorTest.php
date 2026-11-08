@@ -13,6 +13,7 @@ use function array_map;
 use Closure;
 use Exception;
 use PHPUnit\Event\AbstractEventTestCase;
+use PHPUnit\Event\Code\Counterexample;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Code\ThrowableBuilder;
 use PHPUnit\Event\Event;
@@ -429,7 +430,7 @@ final class EventAggregatorTest extends AbstractEventTestCase
 
     private function emitPropertyFalsified(): void
     {
-        EventFacade::emitter()->testPropertyFalsified($this->testValueObject(), 1, 1, 0, 0, false, false, [], [], null, [], [], [], 0, 0);
+        EventFacade::emitter()->testPropertyFalsified($this->testValueObject(), 1, 1, 0, 0, false, false, new Counterexample([], [], null, [], []), [], 0, 0);
     }
 
     private function passedExample(Event ...$events): EventCollection

@@ -47,34 +47,10 @@ final readonly class PropertyFalsified implements Event
     private int $numberOfShrinkingSteps;
     private bool $shrinkingBudgetExhausted;
     private bool $shrinkingInterrupted;
+    private Code\Counterexample $counterexample;
 
     /**
-     * @var list<non-negative-int>
-     */
-    private array $choiceSequence;
-
-    /**
-     * @var array<non-empty-string, string>
-     */
-    private array $counterexample;
-
-    /**
-     * @var null|int|non-empty-string
-     */
-    private null|int|string $explicitExample;
-
-    /**
-     * @var list<array{label: ?non-empty-string, value: string}>
-     */
-    private array $drawnValues;
-
-    /**
-     * @var list<non-empty-string>
-     */
-    private array $steps;
-
-    /**
-     * @var list<array{description: non-empty-string, choiceSequence: list<non-negative-int>, counterexample: array<non-empty-string, string>, drawnValues: list<array{label: ?non-empty-string, value: string}>, steps: list<non-empty-string>}>
+     * @var list<Code\OtherFalsification>
      */
     private array $otherFalsifications;
 
@@ -89,22 +65,17 @@ final readonly class PropertyFalsified implements Event
     private int $numberOfReproductions;
 
     /**
-     * @param non-negative-int                                                                                                                                                                                                                      $seed
-     * @param non-negative-int                                                                                                                                                                                                                      $numberOfExamplesChecked
-     * @param non-negative-int                                                                                                                                                                                                                      $numberOfShrinkingAttempts
-     * @param non-negative-int                                                                                                                                                                                                                      $numberOfShrinkingSteps
-     * @param list<non-negative-int>                                                                                                                                                                                                                $choiceSequence
-     * @param array<non-empty-string, string>                                                                                                                                                                                                       $counterexample
-     * @param null|int|non-empty-string                                                                                                                                                                                                             $explicitExample
-     * @param list<array{label: ?non-empty-string, value: string}>                                                                                                                                                                                  $drawnValues
-     * @param list<non-empty-string>                                                                                                                                                                                                                $steps
-     * @param list<array{description: non-empty-string, choiceSequence: list<non-negative-int>, counterexample: array<non-empty-string, string>, drawnValues: list<array{label: ?non-empty-string, value: string}>, steps: list<non-empty-string>}> $otherFalsifications
-     * @param non-negative-int                                                                                                                                                                                                                      $numberOfReplays
-     * @param non-negative-int                                                                                                                                                                                                                      $numberOfReproductions
+     * @param non-negative-int              $seed
+     * @param non-negative-int              $numberOfExamplesChecked
+     * @param non-negative-int              $numberOfShrinkingAttempts
+     * @param non-negative-int              $numberOfShrinkingSteps
+     * @param list<Code\OtherFalsification> $otherFalsifications
+     * @param non-negative-int              $numberOfReplays
+     * @param non-negative-int              $numberOfReproductions
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, array $choiceSequence, array $counterexample, null|int|string $explicitExample, array $drawnValues, array $steps, array $otherFalsifications, int $numberOfReplays, int $numberOfReproductions)
+    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, Code\Counterexample $counterexample, array $otherFalsifications, int $numberOfReplays, int $numberOfReproductions)
     {
         $this->telemetryInfo             = $telemetryInfo;
         $this->test                      = $test;
@@ -114,11 +85,7 @@ final readonly class PropertyFalsified implements Event
         $this->numberOfShrinkingSteps    = $numberOfShrinkingSteps;
         $this->shrinkingBudgetExhausted  = $shrinkingBudgetExhausted;
         $this->shrinkingInterrupted      = $shrinkingInterrupted;
-        $this->choiceSequence            = $choiceSequence;
         $this->counterexample            = $counterexample;
-        $this->explicitExample           = $explicitExample;
-        $this->drawnValues               = $drawnValues;
-        $this->steps                     = $steps;
         $this->otherFalsifications       = $otherFalsifications;
         $this->numberOfReplays           = $numberOfReplays;
         $this->numberOfReproductions     = $numberOfReproductions;
@@ -200,70 +167,13 @@ final readonly class PropertyFalsified implements Event
     }
 
     /**
-     * The choices from which the arguments of the minimal counterexample
-     * were generated.
-     *
-     * @return list<non-negative-int>
+     * The minimal counterexample, or the explicit example that falsified the
+     * property. An explicit example is not shrunk, so there are no shrinking
+     * attempts for it.
      */
-    public function choiceSequence(): array
-    {
-        return $this->choiceSequence;
-    }
-
-    /**
-     * The arguments of the minimal counterexample, or of the explicit example
-     * that falsified the property, exported as PHP code, by the name of the
-     * parameter they were passed to.
-     *
-     * @return array<non-empty-string, string>
-     */
-    public function counterexample(): array
+    public function counterexample(): Code\Counterexample
     {
         return $this->counterexample;
-    }
-
-    /**
-     * The name of the explicit example, specified with #[TestWith] or
-     * #[TestWithJson], that falsified the property, or its number among the
-     * explicit examples for which no name is specified. Null when the property
-     * was falsified by a generated example.
-     *
-     * An explicit example is not shrunk, so there are no shrinking attempts,
-     * and its arguments are not generated from a choice sequence, so the
-     * choice sequence is empty.
-     *
-     * @return null|int|non-empty-string
-     */
-    public function explicitExample(): null|int|string
-    {
-        return $this->explicitExample;
-    }
-
-    /**
-     * The values that the minimal counterexample drew with draw(), exported
-     * as PHP code, in the order in which they were drawn, with the labels
-     * that were passed to draw(). It is empty when the property was falsified
-     * by an explicit example, for which values cannot be drawn.
-     *
-     * @return list<array{label: ?non-empty-string, value: string}>
-     */
-    public function drawnValues(): array
-    {
-        return $this->drawnValues;
-    }
-
-    /**
-     * The steps of the state machine that the minimal counterexample ran with
-     * runStateMachine(), written as PHP code that calls the methods of the
-     * state machine, which is referred to as $machine, in the order in which
-     * they were taken, followed by the invariant that failed, if one did. It is
-     * empty when the minimal counterexample did not run a state machine.
-     *
-     * @return list<non-empty-string>
-     */
-    public function steps(): array
-    {
-        return $this->steps;
     }
 
     /**
@@ -273,7 +183,7 @@ final readonly class PropertyFalsified implements Event
      * is empty when the property was falsified by an explicit example, which
      * is not shrunk.
      *
-     * @return list<array{description: non-empty-string, choiceSequence: list<non-negative-int>, counterexample: array<non-empty-string, string>, drawnValues: list<array{label: ?non-empty-string, value: string}>, steps: list<non-empty-string>}>
+     * @return list<Code\OtherFalsification>
      */
     public function otherFalsifications(): array
     {
@@ -313,12 +223,14 @@ final readonly class PropertyFalsified implements Event
      */
     public function asString(): string
     {
-        if ($this->explicitExample !== null) {
+        $explicitExample = $this->counterexample->explicitExample();
+
+        if ($explicitExample !== null) {
             return $this->withCounterexample(
                 sprintf(
                     'Test Property Falsified (%s, explicit example %s)',
                     $this->test->id(),
-                    $this->labelOfExplicitExample($this->explicitExample),
+                    $this->labelOfExplicitExample($explicitExample),
                 ),
             );
         }
@@ -360,14 +272,12 @@ final readonly class PropertyFalsified implements Event
      */
     private function withCounterexample(string $buffer): string
     {
-        $buffer = self::withArguments($buffer, $this->counterexample, $this->drawnValues, $this->steps);
+        $buffer = self::withArguments($buffer, $this->counterexample);
 
         foreach ($this->otherFalsifications as $otherFalsification) {
             $buffer = self::withArguments(
-                $buffer . PHP_EOL . 'Also falsified by ' . $otherFalsification['description'] . ':',
-                $otherFalsification['counterexample'],
-                $otherFalsification['drawnValues'],
-                $otherFalsification['steps'],
+                $buffer . PHP_EOL . 'Also falsified by ' . $otherFalsification->description() . ':',
+                $otherFalsification->counterexample(),
             );
         }
 
@@ -389,16 +299,13 @@ final readonly class PropertyFalsified implements Event
     }
 
     /**
-     * @param non-empty-string                                     $buffer
-     * @param array<non-empty-string, string>                      $counterexample
-     * @param list<array{label: ?non-empty-string, value: string}> $drawnValues
-     * @param list<non-empty-string>                               $steps
+     * @param non-empty-string $buffer
      *
      * @return non-empty-string
      */
-    private static function withArguments(string $buffer, array $counterexample, array $drawnValues, array $steps): string
+    private static function withArguments(string $buffer, Code\Counterexample $counterexample): string
     {
-        foreach ($counterexample as $parameter => $value) {
+        foreach ($counterexample->arguments() as $parameter => $value) {
             $buffer .= sprintf(
                 PHP_EOL . '$%s = %s;',
                 $parameter,
@@ -406,11 +313,11 @@ final readonly class PropertyFalsified implements Event
             );
         }
 
-        foreach ($drawnValues as $number => $drawnValue) {
-            $buffer .= PHP_EOL . self::describeDrawnValue($number + 1, $drawnValue['label']) . ': ' . $drawnValue['value'];
+        foreach ($counterexample->drawnValues() as $number => $drawnValue) {
+            $buffer .= PHP_EOL . self::describeDrawnValue($number + 1, $drawnValue->label()) . ': ' . $drawnValue->value();
         }
 
-        foreach ($steps as $step) {
+        foreach ($counterexample->steps() as $step) {
             $buffer .= PHP_EOL . $step;
         }
 

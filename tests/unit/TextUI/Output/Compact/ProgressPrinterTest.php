@@ -17,6 +17,7 @@ use Closure;
 use Exception;
 use LogicException;
 use PHPUnit\Event\Code\ClassMethod;
+use PHPUnit\Event\Code\Counterexample;
 use PHPUnit\Event\Code\TestDoxBuilder;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\ThrowableBuilder;
@@ -473,11 +474,7 @@ final class ProgressPrinterTest extends TestCase
             1,
             false,
             false,
-            [0],
-            ['value' => '0'],
-            null,
-            [],
-            [],
+            new Counterexample([0], ['value' => '0'], null, [], []),
             [],
             0,
             0,

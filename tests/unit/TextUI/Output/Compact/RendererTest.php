@@ -11,6 +11,7 @@ namespace PHPUnit\TextUI\Output\Compact;
 
 use const PHP_EOL;
 use PHPUnit\Event\AbstractEventTestCase;
+use PHPUnit\Event\Code\Counterexample;
 use PHPUnit\Event\Code\Phpt;
 use PHPUnit\Event\Code\TestDoxBuilder;
 use PHPUnit\Event\Code\TestMethod;
@@ -86,7 +87,7 @@ final class RendererTest extends AbstractEventTestCase
                 'FooTest.php:1',
                 null,
             ),
-            new PropertyFalsified($this->telemetryInfo(), $this->testValueObject(), 1234, 2, 3, 1, false, false, [0], ['value' => '0'], null, [], [], [], 0, 0),
+            new PropertyFalsified($this->telemetryInfo(), $this->testValueObject(), 1234, 2, 3, 1, false, false, new Counterexample([0], ['value' => '0'], null, [], []), [], 0, 0),
         );
 
         /* @noinspection PhpPossiblePolymorphicInvocationInspection */

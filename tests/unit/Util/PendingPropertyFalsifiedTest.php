@@ -10,6 +10,7 @@
 namespace PHPUnit\Util;
 
 use PHPUnit\Event\AbstractEventTestCase;
+use PHPUnit\Event\Code\Counterexample;
 use PHPUnit\Event\Code\TestDoxBuilder;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Test\PropertyFalsified;
@@ -61,7 +62,7 @@ final class PendingPropertyFalsifiedTest extends AbstractEventTestCase
 
     private function event(): PropertyFalsified
     {
-        return new PropertyFalsified($this->telemetryInfo(), $this->testValueObject(), 1234, 2, 3, 1, false, false, [0], ['value' => '0'], null, [], [], [], 0, 0);
+        return new PropertyFalsified($this->telemetryInfo(), $this->testValueObject(), 1234, 2, 3, 1, false, false, new Counterexample([0], ['value' => '0'], null, [], []), [], 0, 0);
     }
 
     private function otherTest(): TestMethod

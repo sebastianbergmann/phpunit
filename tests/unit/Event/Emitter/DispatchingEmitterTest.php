@@ -11,7 +11,10 @@ namespace PHPUnit\Event;
 
 use Exception;
 use PHPUnit\Event\Code\ClassMethod;
+use PHPUnit\Event\Code\Counterexample;
+use PHPUnit\Event\Code\DrawnValue;
 use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
+use PHPUnit\Event\Code\OtherFalsification;
 use PHPUnit\Event\Code\TestCollection;
 use PHPUnit\Event\Code\TestDoxBuilder;
 use PHPUnit\Event\Code\TestMethod;
@@ -1947,7 +1950,10 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $test = $this->testValueObject();
 
-        $emitter->testPropertyFalsified($test, 1234, 2, 40, 17, true, true, [0, 2, 1], ['value' => '2'], 'two', [['label' => 'index', 'value' => '0']], ['$machine->open();'], [['description' => 'RuntimeException at /path/to/FooTest.php:12', 'choiceSequence' => [3, 0], 'counterexample' => ['size' => '3'], 'drawnValues' => [['label' => null, 'value' => '0']], 'steps' => []]], 4, 3);
+        $counterexample     = new Counterexample([0, 2, 1], ['value' => '2'], 'two', [new DrawnValue('index', '0')], ['$machine->open();']);
+        $otherFalsification = new OtherFalsification('RuntimeException at /path/to/FooTest.php:12', new Counterexample([3, 0], ['size' => '3'], null, [new DrawnValue(null, '0')], []));
+
+        $emitter->testPropertyFalsified($test, 1234, 2, 40, 17, true, true, $counterexample, [$otherFalsification], 4, 3);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 
@@ -1962,14 +1968,10 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame(17, $event->numberOfShrinkingSteps());
         $this->assertTrue($event->shrinkingBudgetExhausted());
         $this->assertTrue($event->shrinkingInterrupted());
-        $this->assertSame([0, 2, 1], $event->choiceSequence());
-        $this->assertSame(['value' => '2'], $event->counterexample());
-        $this->assertSame('two', $event->explicitExample());
+        $this->assertSame($counterexample, $event->counterexample());
+        $this->assertSame([$otherFalsification], $event->otherFalsifications());
         $this->assertSame(4, $event->numberOfReplays());
         $this->assertSame(3, $event->numberOfReproductions());
-        $this->assertSame([['label' => 'index', 'value' => '0']], $event->drawnValues());
-        $this->assertSame(['$machine->open();'], $event->steps());
-        $this->assertSame([['description' => 'RuntimeException at /path/to/FooTest.php:12', 'choiceSequence' => [3, 0], 'counterexample' => ['size' => '3'], 'drawnValues' => [['label' => null, 'value' => '0']], 'steps' => []]], $event->otherFalsifications());
     }
 
     #[TestDox('testConsideredRisky() emits Test\ConsideredRisky event')]

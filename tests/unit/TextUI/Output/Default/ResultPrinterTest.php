@@ -12,6 +12,7 @@ namespace PHPUnit\TextUI\Output\Default;
 use function hrtime;
 use Exception;
 use PHPUnit\Event\Code\ClassMethod;
+use PHPUnit\Event\Code\Counterexample;
 use PHPUnit\Event\Code\IssueTrigger\Code;
 use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
 use PHPUnit\Event\Code\Phpt;
@@ -1103,11 +1104,7 @@ final class ResultPrinterTest extends TestCase
             1,
             false,
             false,
-            [0],
-            ['value' => '0'],
-            null,
-            [],
-            [],
+            new Counterexample([0], ['value' => '0'], null, [], []),
             [],
             0,
             0,

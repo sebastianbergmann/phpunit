@@ -933,11 +933,7 @@ final class PropertyTestSuite extends IterativeTestSuite
                     $result->numberOfSteps(),
                     $result->budgetExhausted(),
                     $result->interrupted(),
-                    $result->sequence()->choices(),
-                    $counterexample,
-                    null,
-                    $exportedDrawnValues,
-                    $steps,
+                    self::counterexample($result->sequence()->choices(), $counterexample, null, $exportedDrawnValues, $steps),
                     $otherFalsifications,
                     $numberOfReplays,
                     $numberOfReproductions,
@@ -1074,11 +1070,7 @@ final class PropertyTestSuite extends IterativeTestSuite
                     0,
                     false,
                     false,
-                    $sequence->choices(),
-                    $counterexample,
-                    null,
-                    $drawnValues,
-                    $steps,
+                    self::counterexample($sequence->choices(), $counterexample, null, $drawnValues, $steps),
                     [],
                     $numberOfReplays,
                     0,
@@ -1153,7 +1145,7 @@ final class PropertyTestSuite extends IterativeTestSuite
      *
      * @param array<non-empty-string, AbstractGenerator<mixed>> $generators
      *
-     * @return list<array{description: non-empty-string, choiceSequence: list<non-negative-int>, counterexample: array<non-empty-string, string>, drawnValues: list<array{label: ?non-empty-string, value: string}>, steps: list<non-empty-string>}>
+     * @return list<Event\Code\OtherFalsification>
      */
     private function replayOtherFalsifications(EventAggregator $events, Event\Emitter $emitter, GeneratorDeriver $deriver, array $generators): array
     {
@@ -1182,13 +1174,10 @@ final class PropertyTestSuite extends IterativeTestSuite
                 continue;
             }
 
-            $replayed[] = [
-                'description'    => $description,
-                'choiceSequence' => $source->sequence()->choices(),
-                'counterexample' => $counterexample,
-                'drawnValues'    => $drawnValues->exported(),
-                'steps'          => $drawnValues->steps(),
-            ];
+            $replayed[] = new Event\Code\OtherFalsification(
+                $description,
+                self::counterexample($source->sequence()->choices(), $counterexample, null, $drawnValues->exported(), $drawnValues->steps()),
+            );
         }
 
         return $replayed;
@@ -1229,7 +1218,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             false,
             static function () use ($emitter, $test, $seed, $exportedArguments, $name): void
             {
-                $emitter->testPropertyFalsified($test, $seed, 0, 0, 0, false, false, [], $exportedArguments, $name, [], [], [], 0, 0);
+                $emitter->testPropertyFalsified($test, $seed, 0, 0, 0, false, false, self::counterexample([], $exportedArguments, $name, [], []), [], 0, 0);
             },
         );
     }
@@ -2089,5 +2078,23 @@ final class PropertyTestSuite extends IterativeTestSuite
     private function shouldStop(): bool
     {
         return TimeLimitHandler::deadlineReached() || TestResultFacade::shouldStop();
+    }
+
+    /**
+     * @param list<non-negative-int>                               $choiceSequence
+     * @param array<non-empty-string, string>                      $arguments
+     * @param null|int|non-empty-string                            $explicitExample
+     * @param list<array{label: ?non-empty-string, value: string}> $drawnValues
+     * @param list<non-empty-string>                               $steps
+     */
+    private static function counterexample(array $choiceSequence, array $arguments, null|int|string $explicitExample, array $drawnValues, array $steps): Event\Code\Counterexample
+    {
+        $values = [];
+
+        foreach ($drawnValues as $drawnValue) {
+            $values[] = new Event\Code\DrawnValue($drawnValue['label'], $drawnValue['value']);
+        }
+
+        return new Event\Code\Counterexample($choiceSequence, $arguments, $explicitExample, $values, $steps);
     }
 }

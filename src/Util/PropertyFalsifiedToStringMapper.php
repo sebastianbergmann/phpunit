@@ -13,6 +13,7 @@ use function explode;
 use function implode;
 use function is_int;
 use function sprintf;
+use PHPUnit\Event\Code\Counterexample;
 use PHPUnit\Event\Test\PropertyFalsified;
 
 /**
@@ -69,15 +70,16 @@ final readonly class PropertyFalsifiedToStringMapper
 
     public static function map(PropertyFalsified $event): string
     {
-        $explicitExample = $event->explicitExample();
+        $counterexample  = $event->counterexample();
+        $explicitExample = $counterexample->explicitExample();
 
         if ($explicitExample !== null) {
-            return self::mapExplicitExample($event, $explicitExample);
+            return self::mapExplicitExample($counterexample, $explicitExample);
         }
 
         $examples = self::count($event->numberOfExamplesChecked(), 'example');
 
-        if ($event->counterexample() === [] && $event->drawnValues() === [] && $event->steps() === []) {
+        if ($counterexample->arguments() === [] && $counterexample->drawnValues() === [] && $counterexample->steps() === []) {
             return sprintf('Property falsified after %s.', $examples) . "\n";
         }
 
@@ -91,7 +93,7 @@ final readonly class PropertyFalsifiedToStringMapper
             );
         }
 
-        $buffer .= "\n\n" . self::arguments($event->counterexample(), $event->drawnValues(), $event->steps());
+        $buffer .= "\n\n" . self::arguments($counterexample);
 
         if ($event->shrinkingBudgetExhausted()) {
             $buffer .= "\n" . sprintf(
@@ -112,8 +114,8 @@ final readonly class PropertyFalsifiedToStringMapper
         }
 
         foreach ($event->otherFalsifications() as $otherFalsification) {
-            $buffer .= "\n" . sprintf('Property also falsified by %s with this counterexample:', $otherFalsification['description']) . "\n\n";
-            $buffer .= self::arguments($otherFalsification['counterexample'], $otherFalsification['drawnValues'], $otherFalsification['steps']);
+            $buffer .= "\n" . sprintf('Property also falsified by %s with this counterexample:', $otherFalsification->description()) . "\n\n";
+            $buffer .= self::arguments($otherFalsification->counterexample());
         }
 
         return $buffer;
@@ -122,7 +124,7 @@ final readonly class PropertyFalsifiedToStringMapper
     /**
      * @param int|non-empty-string $explicitExample
      */
-    private static function mapExplicitExample(PropertyFalsified $event, int|string $explicitExample): string
+    private static function mapExplicitExample(Counterexample $counterexample, int|string $explicitExample): string
     {
         if (is_int($explicitExample)) {
             $label = '#' . $explicitExample;
@@ -130,23 +132,20 @@ final readonly class PropertyFalsifiedToStringMapper
             $label = sprintf('"%s"', $explicitExample);
         }
 
-        if ($event->counterexample() === []) {
+        if ($counterexample->arguments() === []) {
             return sprintf('Property falsified by explicit example %s.', $label) . "\n";
         }
 
-        return sprintf('Property falsified by explicit example %s:', $label) . "\n\n" . self::arguments($event->counterexample(), [], []);
+        return sprintf('Property falsified by explicit example %s:', $label) . "\n\n" . self::arguments($counterexample);
     }
 
-    /**
-     * @param array<non-empty-string, string>                      $counterexample
-     * @param list<array{label: ?non-empty-string, value: string}> $drawnValues
-     * @param list<non-empty-string>                               $steps
-     */
-    private static function arguments(array $counterexample, array $drawnValues, array $steps): string
+    private static function arguments(Counterexample $counterexample): string
     {
-        $buffer = '';
+        $buffer      = '';
+        $drawnValues = $counterexample->drawnValues();
+        $steps       = $counterexample->steps();
 
-        foreach ($counterexample as $parameter => $value) {
+        foreach ($counterexample->arguments() as $parameter => $value) {
             $buffer .= self::indented(sprintf('$%s = %s;', $parameter, $value));
         }
 
@@ -155,13 +154,13 @@ final readonly class PropertyFalsifiedToStringMapper
         }
 
         foreach ($drawnValues as $index => $drawnValue) {
-            if ($drawnValue['label'] === null) {
+            if ($drawnValue->label() === null) {
                 $description = sprintf('Draw %d', $index + 1);
             } else {
-                $description = sprintf('Draw %d (%s)', $index + 1, $drawnValue['label']);
+                $description = sprintf('Draw %d (%s)', $index + 1, $drawnValue->label());
             }
 
-            $buffer .= self::indented($description . ': ' . $drawnValue['value']);
+            $buffer .= self::indented($description . ': ' . $drawnValue->value());
         }
 
         if ($buffer !== '' && $steps !== []) {

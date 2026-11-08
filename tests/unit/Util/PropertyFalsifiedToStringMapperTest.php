@@ -10,6 +10,9 @@
 namespace PHPUnit\Util;
 
 use PHPUnit\Event\AbstractEventTestCase;
+use PHPUnit\Event\Code\Counterexample;
+use PHPUnit\Event\Code\DrawnValue;
+use PHPUnit\Event\Code\OtherFalsification;
 use PHPUnit\Event\Test\PropertyFalsified;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
@@ -299,18 +302,34 @@ EOT,
     }
 
     /**
-     * @param non-negative-int                                                                                                                                                                                       $numberOfExamplesChecked
-     * @param non-negative-int                                                                                                                                                                                       $numberOfShrinkingAttempts
-     * @param non-negative-int                                                                                                                                                                                       $numberOfShrinkingSteps
-     * @param array<non-empty-string, string>                                                                                                                                                                        $counterexample
-     * @param null|int|non-empty-string                                                                                                                                                                              $explicitExample
-     * @param list<array{label: ?non-empty-string, value: string}>                                                                                                                                                   $drawnValues
-     * @param list<array{description: non-empty-string, choiceSequence: list<non-negative-int>, counterexample: array<non-empty-string, string>, drawnValues: list<array{label: ?non-empty-string, value: string}>}> $otherFalsifications
-     * @param non-negative-int                                                                                                                                                                                       $numberOfReplays
-     * @param non-negative-int                                                                                                                                                                                       $numberOfReproductions
+     * @param non-negative-int                                                                                                                                                                                                                      $numberOfExamplesChecked
+     * @param non-negative-int                                                                                                                                                                                                                      $numberOfShrinkingAttempts
+     * @param non-negative-int                                                                                                                                                                                                                      $numberOfShrinkingSteps
+     * @param array<non-empty-string, string>                                                                                                                                                                                                       $counterexample
+     * @param null|int|non-empty-string                                                                                                                                                                                                             $explicitExample
+     * @param list<array{label: ?non-empty-string, value: string}>                                                                                                                                                                                  $drawnValues
+     * @param list<array{description: non-empty-string, choiceSequence: list<non-negative-int>, counterexample: array<non-empty-string, string>, drawnValues: list<array{label: ?non-empty-string, value: string}>, steps: list<non-empty-string>}> $otherFalsifications
+     * @param non-negative-int                                                                                                                                                                                                                      $numberOfReplays
+     * @param non-negative-int                                                                                                                                                                                                                      $numberOfReproductions
+     * @param list<non-empty-string>                                                                                                                                                                                                                $steps
      */
     private function event(int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, array $counterexample, null|int|string $explicitExample = null, array $drawnValues = [], array $otherFalsifications = [], int $numberOfReplays = 0, int $numberOfReproductions = 0, array $steps = []): PropertyFalsified
     {
+        $others = [];
+
+        foreach ($otherFalsifications as $otherFalsification) {
+            $others[] = new OtherFalsification(
+                $otherFalsification['description'],
+                new Counterexample(
+                    $otherFalsification['choiceSequence'],
+                    $otherFalsification['counterexample'],
+                    null,
+                    $this->drawnValues($otherFalsification['drawnValues']),
+                    $otherFalsification['steps'],
+                ),
+            );
+        }
+
         return new PropertyFalsified(
             $this->telemetryInfo(),
             $this->testValueObject(),
@@ -320,14 +339,26 @@ EOT,
             $numberOfShrinkingSteps,
             $shrinkingBudgetExhausted,
             $shrinkingInterrupted,
-            [],
-            $counterexample,
-            $explicitExample,
-            $drawnValues,
-            $steps,
-            $otherFalsifications,
+            new Counterexample([], $counterexample, $explicitExample, $this->drawnValues($drawnValues), $steps),
+            $others,
             $numberOfReplays,
             $numberOfReproductions,
         );
+    }
+
+    /**
+     * @param list<array{label: ?non-empty-string, value: string}> $drawnValues
+     *
+     * @return list<DrawnValue>
+     */
+    private function drawnValues(array $drawnValues): array
+    {
+        $values = [];
+
+        foreach ($drawnValues as $drawnValue) {
+            $values[] = new DrawnValue($drawnValue['label'], $drawnValue['value']);
+        }
+
+        return $values;
     }
 }

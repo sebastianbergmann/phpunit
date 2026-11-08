@@ -136,17 +136,17 @@ final class TestRunHistoryHandler
         // the explicit examples of a property are checked for every time it
         // is checked, before the counterexamples that are remembered for it,
         // which are kept because they have not been checked for
-        if ($event->explicitExample() !== null) {
+        if ($event->counterexample()->explicitExample() !== null) {
             return;
         }
 
         // the minimal counterexample is remembered first, followed by the
         // counterexamples of the other ways in which the property was
         // falsified
-        $choiceSequences = [$event->choiceSequence()];
+        $choiceSequences = [$event->counterexample()->choiceSequence()];
 
         foreach ($event->otherFalsifications() as $otherFalsification) {
-            $choiceSequences[] = $otherFalsification['choiceSequence'];
+            $choiceSequences[] = $otherFalsification->counterexample()->choiceSequence();
         }
 
         $this->testRunHistory->setCounterexamples(

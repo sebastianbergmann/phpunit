@@ -14,6 +14,7 @@ use function hrtime;
 use function implode;
 use function substr_count;
 use PHPUnit\Event\Code\ClassMethod;
+use PHPUnit\Event\Code\Counterexample;
 use PHPUnit\Event\Code\TestDoxBuilder;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
@@ -303,7 +304,7 @@ EOT,
 
     private function propertyFalsified(): PropertyFalsified
     {
-        return new PropertyFalsified($this->telemetryInfo(), $this->testMethod(), 1234, 2, 3, 1, false, false, [0], ['value' => '0'], null, [], [], [], 0, 0);
+        return new PropertyFalsified($this->telemetryInfo(), $this->testMethod(), 1234, 2, 3, 1, false, false, new Counterexample([0], ['value' => '0'], null, [], []), [], 0, 0);
     }
 
     private function testMethod(): TestMethod

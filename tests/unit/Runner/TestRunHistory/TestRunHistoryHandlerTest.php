@@ -15,6 +15,8 @@ use function uniqid;
 use function unlink;
 use Exception;
 use PHPUnit\Event\AbstractEventTestCase;
+use PHPUnit\Event\Code\Counterexample;
+use PHPUnit\Event\Code\OtherFalsification;
 use PHPUnit\Event\Code\ThrowableBuilder;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Test\ConsideredRisky;
@@ -121,7 +123,7 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
         $test = $this->testValueObject();
 
         $handler->testPropertyFalsified(
-            new PropertyFalsified($this->telemetryInfo(), $test, 1234, 2, 3, 1, false, false, [0, 11], ['a' => '0', 'b' => '11'], null, [], [], [], 0, 0),
+            new PropertyFalsified($this->telemetryInfo(), $test, 1234, 2, 3, 1, false, false, new Counterexample([0, 11], ['a' => '0', 'b' => '11'], null, [], []), [], 0, 0),
         );
 
         $this->assertSame([[0, 11]], $cache->counterexamples(TestRunHistoryId::fromTest($test)));
@@ -144,15 +146,8 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
                 1,
                 false,
                 false,
-                [0, 11],
-                ['a' => '0', 'b' => '11'],
-                null,
-                [],
-                [],
-                [
-                    ['description' => 'RuntimeException at FooTest.php:12', 'choiceSequence' => [3, 4], 'counterexample' => ['a' => '3', 'b' => '4'], 'drawnValues' => [], 'steps' => []],
-                    ['description' => 'LogicException at FooTest.php:15', 'choiceSequence' => [5], 'counterexample' => ['a' => '5', 'b' => '0'], 'drawnValues' => [], 'steps' => []],
-                ],
+                new Counterexample([0, 11], ['a' => '0', 'b' => '11'], null, [], []),
+                [new OtherFalsification('RuntimeException at FooTest.php:12', new Counterexample([3, 4], ['a' => '3', 'b' => '4'], null, [], [])), new OtherFalsification('LogicException at FooTest.php:15', new Counterexample([5], ['a' => '5', 'b' => '0'], null, [], []))],
                 0,
                 0,
             ),
@@ -172,7 +167,7 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
         $cache->setCounterexamples($id, [[0, 11]]);
 
         $handler->testPropertyFalsified(
-            new PropertyFalsified($this->telemetryInfo(), $test, 1234, 0, 0, 0, false, false, [], ['a' => '1', 'b' => '2'], 'one and two', [], [], [], 0, 0),
+            new PropertyFalsified($this->telemetryInfo(), $test, 1234, 0, 0, 0, false, false, new Counterexample([], ['a' => '1', 'b' => '2'], 'one and two', [], []), [], 0, 0),
         );
 
         $this->assertSame([[0, 11]], $cache->counterexamples($id));
