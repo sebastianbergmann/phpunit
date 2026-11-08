@@ -54,12 +54,13 @@ use Throwable;
  * PHPUnit is installed with Composer or used from its PHAR, in which the
  * names of these classes are prefixed.
  *
- * PHPUnit is booted once per process. The configuration file and its
- * bootstrap script are loaded as for a test run, but nothing is printed, no
- * code coverage is collected, nothing is logged, and no extensions are
- * loaded. As nothing is printed, a warning that PHPUnit triggers while it is
- * booted, about a configuration file that did not pass validation, for
- * instance, is raised as an exception.
+ * PHPUnit is booted once per process. A boot that fails because the
+ * configuration file cannot be found or read changes nothing and can be
+ * retried. The configuration file and its bootstrap script are loaded as for
+ * a test run, but nothing is printed, no code coverage is collected, nothing
+ * is logged, and no extensions are loaded. As nothing is printed, a warning
+ * that PHPUnit triggers while it is booted, about a configuration file that
+ * did not pass validation, for instance, is raised as an exception.
  *
  * An example is run with its full lifecycle, from the hook methods that are
  * called before the property to the ones that are called after it, and with
@@ -141,8 +142,6 @@ final class PropertyRunner
         if (!new Invoker()->canInvokeWithTimeout()) {
             throw new TimeLimitCannotBeEnforcedException;
         }
-
-        self::$booted = true;
 
         $facade = EventFacade::instance();
 
@@ -415,6 +414,11 @@ final class PropertyRunner
         } else {
             $xmlConfiguration = new Loader()->load($pathToXmlConfigurationFile);
         }
+
+        // PHPUnit's global state is changed from here on: a boot that failed
+        // before, because the configuration file cannot be found or read,
+        // changed nothing and can be retried
+        self::$booted = true;
 
         $configuration = Registry::init($cliConfiguration, $xmlConfiguration, $emitter);
 
