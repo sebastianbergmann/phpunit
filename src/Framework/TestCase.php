@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework;
 
 use function array_any;
-use function array_key_exists;
 use function array_keys;
 use function array_merge;
 use function array_values;
@@ -20,9 +19,7 @@ use function clearstatcache;
 use function error_clear_last;
 use function getcwd;
 use function implode;
-use function in_array;
 use function is_callable;
-use function is_finite;
 use function libxml_clear_errors;
 use function method_exists;
 use function sprintf;
@@ -43,12 +40,10 @@ use PHPUnit\Framework\MockObject\Rule\InvokedCount as InvokedCountMatcher;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\MockObject\Stub\Exception as ExceptionStub;
 use PHPUnit\Framework\MockObject\TestStubBuilder;
-use PHPUnit\Framework\PropertyBased\DrawnValues;
 use PHPUnit\Framework\PropertyBased\ExampleRejectedByAssumptionException;
-use PHPUnit\Framework\PropertyBased\ExampleRejectedException;
 use PHPUnit\Framework\PropertyBased\Falsification;
 use PHPUnit\Framework\PropertyBased\InvalidStateMachineException;
-use PHPUnit\Framework\PropertyBased\RejectionReason;
+use PHPUnit\Framework\PropertyBased\PropertyExample;
 use PHPUnit\Framework\PropertyBased\ValueGenerator;
 use PHPUnit\Framework\TestCase\CustomRegistrations;
 use PHPUnit\Framework\TestCase\DataSet;
@@ -119,42 +114,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private bool $inIsolation                      = false;
     private ?string $emptyDataProviderSkipMessage  = null;
     private ?Throwable $throwableFromDeferredIssue = null;
-    private ?Throwable $throwableThatEndedTheTest  = null;
-
-    /**
-     * @var ?list<mixed>
-     */
-    private ?array $propertyArguments  = null;
-    private bool $failureIsReported    = false;
-    private ?DrawnValues $drawnValues  = null;
-    private bool $rejectedByAssumption = false;
-    private bool $stateMachineWasRun   = false;
-
-    /**
-     * @var ?non-negative-int
-     */
-    private ?int $numberOfStepsOfStateMachine = null;
-
-    /**
-     * Why the example of a property was rejected, if it was: by assume(), or
-     * because draw() could not generate a value.
-     */
-    private RejectionReason $rejectionReason = RejectionReason::Assumption;
-
-    /**
-     * @var list<non-empty-string>
-     */
-    private array $classifications = [];
-
-    /**
-     * @var list<array{label: non-empty-string, value: float|int}>
-     */
-    private array $observations = [];
-
-    /**
-     * @var array<non-empty-string, float|int>
-     */
-    private array $targets = [];
+    private ?PropertyExample $propertyExample      = null;
 
     /**
      * @var positive-int
@@ -876,125 +836,32 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * Makes this test an example of a property: the test method is called with
-     * the given arguments instead of the data of a data provider and the return
-     * values of dependencies. The identity of the test does not change, and an
-     * example is neither registered as passed nor run in a separate process.
+     * Makes this test an example of a property: the test method is called
+     * with the arguments of the example instead of the data of a data provider
+     * and the return values of dependencies. The identity of the test does not
+     * change, and an example is neither registered as passed nor run in a
+     * separate process.
      *
      * onNotSuccessfulTest() is not called for an example that falsifies the
      * property, unless the failure or error of the example is the one that is
      * reported for the property, which it is for the final replay of the
      * minimal counterexample and for an explicit example.
      *
-     * The values that the test method draws with draw() are drawn from
-     * $drawnValues, which is null for an explicit example, for which values
-     * cannot be drawn.
-     *
-     * @param list<mixed> $arguments
-     *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    final public function setPropertyExample(array $arguments, bool $failureIsReported = false, ?DrawnValues $drawnValues = null): void
+    final public function setPropertyExample(PropertyExample $example): void
     {
-        $this->propertyArguments = $arguments;
-        $this->failureIsReported = $failureIsReported;
-        $this->drawnValues       = $drawnValues;
+        $this->propertyExample = $example;
     }
 
     /**
-     * Why the example of a property was rejected, when it was.
+     * The example of a property that this test is, null when it is not one.
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    final public function rejectionReasonOfPropertyExample(): RejectionReason
+    final public function propertyExample(): ?PropertyExample
     {
-        return $this->rejectionReason;
-    }
-
-    /**
-     * The labels with which the example of a property was classified by
-     * classify().
-     *
-     * @return list<non-empty-string>
-     *
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    final public function classificationsOfPropertyExample(): array
-    {
-        return $this->classifications;
-    }
-
-    /**
-     * The numeric values that the example of a property observed with
-     * observe(), with their labels, in the order in which they were observed.
-     *
-     * @return list<array{label: non-empty-string, value: float|int}>
-     *
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    final public function observationsOfPropertyExample(): array
-    {
-        return $this->observations;
-    }
-
-    /**
-     * The scores that the example of a property targeted with target(), by
-     * their label.
-     *
-     * @return array<non-empty-string, float|int>
-     *
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    final public function targetsOfPropertyExample(): array
-    {
-        return $this->targets;
-    }
-
-    /**
-     * The number of steps that the state machine that the example of a
-     * property ran with runStateMachine() took, null when it did not run one
-     * or the state machine did not finish.
-     *
-     * @return ?non-negative-int
-     *
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    final public function numberOfStepsOfStateMachineOfPropertyExample(): ?int
-    {
-        return $this->numberOfStepsOfStateMachine;
-    }
-
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    final public function isPropertyExample(): bool
-    {
-        return $this->propertyArguments !== null;
-    }
-
-    /**
-     * Whether the example of a property was discarded because assume() was
-     * called with false. An example that failed or errored afterwards, in
-     * tearDown() or in the destructor of a test double, for instance, was not
-     * discarded.
-     *
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    final public function wasRejectedByAssumption(): bool
-    {
-        return $this->rejectedByAssumption;
-    }
-
-    /**
-     * The throwable that ended an example of a property: the one that caused
-     * its failure or error, as it was raised, or the TimeoutException when
-     * the example exceeded its time limit. It is not kept for other tests.
-     *
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    final public function throwableThatEndedTheTest(): ?Throwable
-    {
-        return $this->throwableThatEndedTheTest;
+        return $this->propertyExample;
     }
 
     /**
@@ -1121,15 +988,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final protected function assume(bool $condition): void
     {
-        if (!$this->isPropertyExample()) {
-            throw new Exception('assume() can only be used in a property');
-        }
-
-        if ($condition) {
-            return;
-        }
-
-        throw new ExampleRejectedByAssumptionException;
+        $this->propertyExampleFor('assume')->assume($condition);
     }
 
     /**
@@ -1154,25 +1013,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final protected function draw(ValueGenerator $generator, ?string $label = null): mixed
     {
-        if (!$this->isPropertyExample()) {
-            throw new Exception('draw() can only be used in a property');
-        }
-
-        if ($this->drawnValues === null) {
-            throw new Exception('draw() cannot be used while an explicit example is checked');
-        }
-
-        if ($label === '') {
-            throw new Exception('The label passed to draw() must not be empty');
-        }
-
-        try {
-            return $this->drawnValues->draw($generator, $label);
-        } catch (ExampleRejectedException $e) {
-            $this->rejectionReason = $e->reason();
-
-            throw new ExampleRejectedByAssumptionException;
-        }
+        return $this->propertyExampleFor('draw')->draw($generator, $label);
     }
 
     /**
@@ -1200,39 +1041,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final protected function runStateMachine(object $machine, int $maximumNumberOfSteps = 50): void
     {
-        if (!$this->isPropertyExample()) {
-            throw new Exception('runStateMachine() can only be used in a property');
-        }
-
-        if ($this->drawnValues === null) {
-            throw new Exception('runStateMachine() cannot be used while an explicit example is checked');
-        }
-
-        if ($maximumNumberOfSteps < 1) {
-            throw new Exception('The maximum number of steps passed to runStateMachine() must be positive');
-        }
-
-        if ($this->stateMachineWasRun) {
-            throw new Exception('runStateMachine() can only be used once per example');
-        }
-
-        $this->stateMachineWasRun = true;
-
-        try {
-            $stateMachine = $this->drawnValues->runStateMachine($machine, $maximumNumberOfSteps);
-        } catch (ExampleRejectedException $e) {
-            $this->rejectionReason = $e->reason();
-
-            throw new ExampleRejectedByAssumptionException;
-        }
-
-        $this->numberOfStepsOfStateMachine = $stateMachine->numberOfSteps();
-
-        $this->observe('steps', $stateMachine->numberOfSteps());
-
-        foreach ($stateMachine->numberOfStepsByRule() as $rule => $numberOfSteps) {
-            $this->observe(sprintf('steps with %s()', $rule), $numberOfSteps);
-        }
+        $this->propertyExampleFor('runStateMachine')->runStateMachine($machine, $maximumNumberOfSteps);
     }
 
     /**
@@ -1247,17 +1056,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final protected function classify(string $label): void
     {
-        if (!$this->isPropertyExample()) {
-            throw new Exception('classify() can only be used in a property');
-        }
-
-        if ($label === '') {
-            throw new Exception('The label passed to classify() must not be empty');
-        }
-
-        if (!in_array($label, $this->classifications, true)) {
-            $this->classifications[] = $label;
-        }
+        $this->propertyExampleFor('classify')->classify($label);
     }
 
     /**
@@ -1273,19 +1072,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final protected function observe(string $label, float|int $value): void
     {
-        if (!$this->isPropertyExample()) {
-            throw new Exception('observe() can only be used in a property');
-        }
-
-        if ($label === '') {
-            throw new Exception('The label passed to observe() must not be empty');
-        }
-
-        if (!is_finite($value)) {
-            throw new Exception('The value passed to observe() must be finite');
-        }
-
-        $this->observations[] = ['label' => $label, 'value' => $value];
+        $this->propertyExampleFor('observe')->observe($label, $value);
     }
 
     /**
@@ -1303,28 +1090,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final protected function target(string $label, float|int $score): void
     {
-        if (!$this->isPropertyExample()) {
-            throw new Exception('target() can only be used in a property');
-        }
-
-        if ($label === '') {
-            throw new Exception('The label passed to target() must not be empty');
-        }
-
-        if (!is_finite($score)) {
-            throw new Exception('The score passed to target() must be finite');
-        }
-
-        if (array_key_exists($label, $this->targets)) {
-            throw new Exception(
-                sprintf(
-                    'target() can only be used once per example with the label "%s"',
-                    $label,
-                ),
-            );
-        }
-
-        $this->targets[$label] = $score;
+        $this->propertyExampleFor('target')->target($label, $score);
     }
 
     /**
@@ -1667,7 +1433,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private function handleThrowableFromTest(Throwable $t): ?Throwable
     {
         if ($t instanceof ExampleRejectedByAssumptionException) {
-            $this->rejectedByAssumption = true;
+            $this->setRejectedByAssumption(true);
 
             return $t;
         }
@@ -1809,7 +1575,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         } catch (Throwable $t) {
             $this->status = TestStatus::error($t->getMessage());
             $this->rememberThrowableThatEndedTheTest($t);
-            $this->rejectedByAssumption = false;
+            $this->setRejectedByAssumption(false);
 
             $this->emitter->testErrored(
                 $this->valueObjectForEvents(),
@@ -1845,7 +1611,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             if ($testPassed || $e instanceof SkippedWithMessageException || $e instanceof ExampleRejectedByAssumptionException) {
                 $this->status = TestStatus::failure($t->getMessage());
                 $this->rememberThrowableThatEndedTheTest($t);
-                $this->rejectedByAssumption = false;
+                $this->setRejectedByAssumption(false);
 
                 $this->emitter->testFailed(
                     $this->valueObjectForEvents(),
@@ -1861,8 +1627,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             // example did not pass
             if ($t instanceof ExampleRejectedByAssumptionException) {
                 if ($testPassed || $e instanceof ExampleRejectedByAssumptionException) {
-                    $this->status               = TestStatus::unknown();
-                    $this->rejectedByAssumption = true;
+                    $this->status = TestStatus::unknown();
+
+                    $this->setRejectedByAssumption(true);
 
                     return $t;
                 }
@@ -1873,7 +1640,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             if ($testPassed || $e instanceof SkippedWithMessageException || $e instanceof ExampleRejectedByAssumptionException) {
                 $this->status = TestStatus::error($t->getMessage());
                 $this->rememberThrowableThatEndedTheTest($t);
-                $this->rejectedByAssumption = false;
+                $this->setRejectedByAssumption(false);
 
                 $this->emitter->testErrored(
                     $this->valueObjectForEvents(),
@@ -1896,10 +1663,39 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     private function falsifiesPropertyWithoutBeingReported(): bool
     {
-        return $this->isPropertyExample() &&
-               !$this->failureIsReported &&
-               !$this->throwableThatEndedTheTest instanceof TimeLimitExceededException &&
+        return $this->propertyExample !== null &&
+               !$this->propertyExample->failureIsReported() &&
+               !$this->propertyExample->throwableThatEndedIt() instanceof TimeLimitExceededException &&
                Falsification::exampleFalsifies($this);
+    }
+
+    /**
+     * @param non-empty-string $method
+     *
+     * @throws Exception when the test is not an example of a property
+     */
+    private function propertyExampleFor(string $method): PropertyExample
+    {
+        if ($this->propertyExample === null) {
+            throw new Exception(
+                sprintf(
+                    '%s() can only be used in a property',
+                    $method,
+                ),
+            );
+        }
+
+        return $this->propertyExample;
+    }
+
+    /**
+     * Only an example of a property can be rejected.
+     */
+    private function setRejectedByAssumption(bool $rejected): void
+    {
+        if ($this->propertyExample !== null) {
+            $this->propertyExample->setRejected($rejected);
+        }
     }
 
     /**
@@ -1910,8 +1706,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     private function rememberThrowableThatEndedTheTest(Throwable $throwable): void
     {
-        if ($this->isPropertyExample()) {
-            $this->throwableThatEndedTheTest = $throwable;
+        if ($this->propertyExample !== null) {
+            $this->propertyExample->rememberThrowableThatEndedIt($throwable);
         }
     }
 
@@ -1924,7 +1720,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         // a repeated test method is registered as passed once all of its
         // repetitions have finished without failure or error, and a property
         // once all of its examples have
-        if (!$this->usesDataProvider() && $this->totalRepetitions === 1 && !$this->isPropertyExample()) {
+        if (!$this->usesDataProvider() && $this->totalRepetitions === 1 && $this->propertyExample === null) {
             PassedTests::instance()->testMethodPassed(
                 $this->valueObjectForEvents(),
                 $this->testResult,
@@ -1940,8 +1736,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     private function runTest(): mixed
     {
-        if ($this->propertyArguments !== null) {
-            $testArguments = $this->propertyArguments;
+        if ($this->propertyExample !== null) {
+            $testArguments = $this->propertyExample->arguments();
         } else {
             $testArguments = array_merge($this->dataSet->data(), array_values($this->dependencyInput));
         }

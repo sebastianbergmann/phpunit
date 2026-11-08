@@ -308,7 +308,7 @@ final class TestRunner
         if ($holdBackCodeCoverage) {
             CodeCoverage::instance()->stopAndHoldBack($coversTargets, $usesTargets);
         } elseif ($collectCodeCoverage) {
-            $append                 = !$risky && !$incomplete && !$skipped && !$test->wasRejectedByAssumption();
+            $append                 = !$risky && !$incomplete && !$skipped && !self::wasRejected($test);
             $coveredUnintentionally = false;
 
             if (!$append) {
@@ -619,5 +619,19 @@ final class TestRunner
         }
 
         return false;
+    }
+
+    /**
+     * Whether the test is an example of a property that was rejected.
+     */
+    private static function wasRejected(TestCase $test): bool
+    {
+        $propertyExample = $test->propertyExample();
+
+        if ($propertyExample === null) {
+            return false;
+        }
+
+        return $propertyExample->wasRejected();
     }
 }

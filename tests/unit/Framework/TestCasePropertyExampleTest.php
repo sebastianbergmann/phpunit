@@ -15,6 +15,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\PropertyBased\ExampleRejectedByAssumptionException;
+use PHPUnit\Framework\PropertyBased\PropertyExample;
 use PHPUnit\TestFixture\PropertyBased\EventCollector;
 use PHPUnit\TestFixture\PropertyBased\Examples\ExampleTest;
 use PHPUnit\TestFixture\PropertyBased\Examples\ExampleWithAssumptionInTearDownTest;
@@ -33,6 +34,7 @@ use Throwable;
  * the test run that runs these tests.
  */
 #[CoversClass(TestCase::class)]
+#[CoversClass(PropertyExample::class)]
 #[CoversClass(ExampleRejectedByAssumptionException::class)]
 #[Small]
 #[Group('framework')]
@@ -83,9 +85,7 @@ final class TestCasePropertyExampleTest extends TestCase
     {
         $test = new ExampleTest('testRecordsItsArguments');
 
-        $this->assertFalse($test->isPropertyExample());
-        $this->assertFalse($test->wasRejectedByAssumption());
-        $this->assertNull($test->throwableThatEndedTheTest());
+        $this->assertNull($test->propertyExample());
     }
 
     public function testAnExampleIsRunWithTheGivenArguments(): void
@@ -96,14 +96,14 @@ final class TestCasePropertyExampleTest extends TestCase
 
         $this->assertSame([42, 'a'], ExampleTest::$arguments);
         $this->assertTrue($test->status()->isSuccess());
-        $this->assertNull($test->throwableThatEndedTheTest());
+        $this->assertNull($this->propertyExampleOf($test)->throwableThatEndedIt());
     }
 
     public function testAnExampleHasTheIdentityOfItsTestMethod(): void
     {
         $test = $this->example('testRecordsItsArguments', [42, 'a']);
 
-        $this->assertTrue($test->isPropertyExample());
+        $this->assertNotNull($test->propertyExample());
         $this->assertFalse($test->usesDataProvider());
         $this->assertSame(ExampleTest::class . '::testRecordsItsArguments', $test->valueObjectForEvents()->id());
         $this->assertSame('testRecordsItsArguments', $test->nameWithDataSet());
@@ -125,9 +125,9 @@ final class TestCasePropertyExampleTest extends TestCase
 
         $this->runExample($test);
 
-        $this->assertTrue($test->wasRejectedByAssumption());
+        $this->assertTrue($this->propertyExampleOf($test)->wasRejected());
         $this->assertTrue($test->status()->isUnknown());
-        $this->assertNull($test->throwableThatEndedTheTest());
+        $this->assertNull($this->propertyExampleOf($test)->throwableThatEndedIt());
     }
 
     public function testAnExampleIsRejectedWhenAssumeIsCalledWithFalseWhileAnExceptionIsExpected(): void
@@ -136,7 +136,7 @@ final class TestCasePropertyExampleTest extends TestCase
 
         $this->runExample($test);
 
-        $this->assertTrue($test->wasRejectedByAssumption());
+        $this->assertTrue($this->propertyExampleOf($test)->wasRejected());
     }
 
     public function testAnExampleIsRejectedWhenAssumeIsCalledWithFalseWhileAnExceptionOfPHPUnitIsExpected(): void
@@ -145,7 +145,7 @@ final class TestCasePropertyExampleTest extends TestCase
 
         $this->runExample($test);
 
-        $this->assertTrue($test->wasRejectedByAssumption());
+        $this->assertTrue($this->propertyExampleOf($test)->wasRejected());
         $this->assertTrue($test->status()->isUnknown());
     }
 
@@ -153,28 +153,28 @@ final class TestCasePropertyExampleTest extends TestCase
     {
         $test = new ExampleWithFailingTearDownTest('testRejectsTheExample');
 
-        $test->setPropertyExample([1]);
+        $test->setPropertyExample(new PropertyExample([1], false, null));
 
         $this->runExample($test);
 
-        $this->assertFalse($test->wasRejectedByAssumption());
+        $this->assertFalse($this->propertyExampleOf($test)->wasRejected());
         $this->assertTrue($test->status()->isError());
-        $this->assertInstanceOf(RuntimeException::class, $test->throwableThatEndedTheTest());
-        $this->assertSame('tearDown', $test->throwableThatEndedTheTest()->getMessage());
+        $this->assertInstanceOf(RuntimeException::class, $this->propertyExampleOf($test)->throwableThatEndedIt());
+        $this->assertSame('tearDown', $this->propertyExampleOf($test)->throwableThatEndedIt()->getMessage());
     }
 
     public function testAnExampleThatCalledAssumeWithFalseIsNotRejectedWhenAnAssertionInTearDownFails(): void
     {
         $test = new ExampleWithFailedAssertionInTearDownTest('testRejectsTheExample');
 
-        $test->setPropertyExample([1]);
+        $test->setPropertyExample(new PropertyExample([1], false, null));
 
         $this->runExample($test);
 
-        $this->assertFalse($test->wasRejectedByAssumption());
+        $this->assertFalse($this->propertyExampleOf($test)->wasRejected());
         $this->assertTrue($test->status()->isFailure());
-        $this->assertInstanceOf(AssertionFailedError::class, $test->throwableThatEndedTheTest());
-        $this->assertSame('tearDown', $test->throwableThatEndedTheTest()->getMessage());
+        $this->assertInstanceOf(AssertionFailedError::class, $this->propertyExampleOf($test)->throwableThatEndedIt());
+        $this->assertSame('tearDown', $this->propertyExampleOf($test)->throwableThatEndedIt()->getMessage());
     }
 
     public function testAnExampleThatCalledAssumeWithFalseIsNotRejectedWhenTheDestructorOfATestDoubleErrors(): void
@@ -183,75 +183,75 @@ final class TestCasePropertyExampleTest extends TestCase
 
         $this->runExample($test);
 
-        $this->assertFalse($test->wasRejectedByAssumption());
+        $this->assertFalse($this->propertyExampleOf($test)->wasRejected());
         $this->assertTrue($test->status()->isError());
-        $this->assertInstanceOf(RuntimeException::class, $test->throwableThatEndedTheTest());
-        $this->assertSame('destructor', $test->throwableThatEndedTheTest()->getMessage());
+        $this->assertInstanceOf(RuntimeException::class, $this->propertyExampleOf($test)->throwableThatEndedIt());
+        $this->assertSame('destructor', $this->propertyExampleOf($test)->throwableThatEndedIt()->getMessage());
     }
 
     public function testAnExampleIsRejectedWhenAssumeIsCalledWithFalseInTearDown(): void
     {
         $test = new ExampleWithAssumptionInTearDownTest('testPasses');
 
-        $test->setPropertyExample([1]);
+        $test->setPropertyExample(new PropertyExample([1], false, null));
 
         $this->runExample($test);
 
-        $this->assertTrue($test->wasRejectedByAssumption());
+        $this->assertTrue($this->propertyExampleOf($test)->wasRejected());
         $this->assertTrue($test->status()->isUnknown());
-        $this->assertNull($test->throwableThatEndedTheTest());
+        $this->assertNull($this->propertyExampleOf($test)->throwableThatEndedIt());
     }
 
     public function testAnExampleThatIsRejectedIsNotAnErrorWhenAssumeIsCalledWithFalseInTearDown(): void
     {
         $test = new ExampleWithAssumptionInTearDownTest('testRejectsTheExample');
 
-        $test->setPropertyExample([1]);
+        $test->setPropertyExample(new PropertyExample([1], false, null));
 
         $this->runExample($test);
 
-        $this->assertTrue($test->wasRejectedByAssumption());
+        $this->assertTrue($this->propertyExampleOf($test)->wasRejected());
         $this->assertTrue($test->status()->isUnknown());
-        $this->assertNull($test->throwableThatEndedTheTest());
+        $this->assertNull($this->propertyExampleOf($test)->throwableThatEndedIt());
     }
 
     public function testAnExampleThatFailsIsNotRejectedWhenAssumeIsCalledWithFalseInTearDown(): void
     {
         $test = new ExampleWithAssumptionInTearDownTest('testFails');
 
-        $test->setPropertyExample([1]);
+        $test->setPropertyExample(new PropertyExample([1], false, null));
 
         $this->runExample($test);
 
-        $this->assertFalse($test->wasRejectedByAssumption());
+        $this->assertFalse($this->propertyExampleOf($test)->wasRejected());
         $this->assertTrue($test->status()->isFailure());
-        $this->assertInstanceOf(AssertionFailedError::class, $test->throwableThatEndedTheTest());
+        $this->assertInstanceOf(AssertionFailedError::class, $this->propertyExampleOf($test)->throwableThatEndedIt());
     }
 
     public function testAnExampleThatFailsWithAThrowableOfARegisteredFailureTypeIsNotRejectedWhenAssumeIsCalledWithFalseInTearDown(): void
     {
         $test = new ExampleWithAssumptionInTearDownTest('testFailsWithAThrowableOfARegisteredFailureType');
 
-        $test->setPropertyExample([1]);
+        $test->setPropertyExample(new PropertyExample([1], false, null));
 
         $this->runExample($test);
 
-        $this->assertFalse($test->wasRejectedByAssumption());
+        $this->assertFalse($this->propertyExampleOf($test)->wasRejected());
         $this->assertTrue($test->status()->isFailure());
-        $this->assertInstanceOf(DomainException::class, $test->throwableThatEndedTheTest());
+        $this->assertInstanceOf(DomainException::class, $this->propertyExampleOf($test)->throwableThatEndedIt());
     }
 
     public function testKeepsTheThrowableOfAFailedAssertionInTearDown(): void
     {
         $test = new ExampleWithFailedAssertionInTearDownTest('testPasses');
 
-        $test->setPropertyExample([1]);
+        $test->setPropertyExample(new PropertyExample([1], false, null));
 
         $this->runExample($test);
 
         $this->assertTrue($test->status()->isFailure());
-        $this->assertInstanceOf(AssertionFailedError::class, $test->throwableThatEndedTheTest());
-        $this->assertSame('tearDown', $test->throwableThatEndedTheTest()->getMessage());
+        $this->assertInstanceOf(AssertionFailedError::class, $this->propertyExampleOf($test)->throwableThatEndedIt());
+        $this->assertSame('tearDown', $this->propertyExampleOf($test)->throwableThatEndedIt()->getMessage());
     }
 
     public function testAnExampleIsNotRejectedWhenAssumeIsCalledWithTrue(): void
@@ -260,7 +260,7 @@ final class TestCasePropertyExampleTest extends TestCase
 
         $this->runExample($test);
 
-        $this->assertFalse($test->wasRejectedByAssumption());
+        $this->assertFalse($this->propertyExampleOf($test)->wasRejected());
         $this->assertTrue($test->status()->isSuccess());
     }
 
@@ -270,7 +270,7 @@ final class TestCasePropertyExampleTest extends TestCase
 
         $this->runExample($test);
 
-        $this->assertSame(['first', 'second'], $test->classificationsOfPropertyExample());
+        $this->assertSame(['first', 'second'], $this->propertyExampleOf($test)->classifications());
     }
 
     public function testAnExampleCannotBeClassifiedWithAnEmptyLabel(): void
@@ -306,7 +306,7 @@ final class TestCasePropertyExampleTest extends TestCase
                 ['label' => 'ratio', 'value' => 0.5],
                 ['label' => 'size', 'value' => 6],
             ],
-            $test->observationsOfPropertyExample(),
+            $this->propertyExampleOf($test)->observations(),
         );
     }
 
@@ -323,7 +323,7 @@ final class TestCasePropertyExampleTest extends TestCase
 
         $this->assertTrue($test->status()->isError());
         $this->assertSame($message, $test->status()->message());
-        $this->assertSame([], $test->observationsOfPropertyExample());
+        $this->assertSame([], $this->propertyExampleOf($test)->observations());
     }
 
     public function testObserveCanOnlyBeUsedInAProperty(): void
@@ -343,7 +343,7 @@ final class TestCasePropertyExampleTest extends TestCase
         $this->runExample($test);
 
         $this->assertTrue($test->status()->isSuccess());
-        $this->assertSame(['size' => 3, 'ratio' => 0.5], $test->targetsOfPropertyExample());
+        $this->assertSame(['size' => 3, 'ratio' => 0.5], $this->propertyExampleOf($test)->targets());
     }
 
     /**
@@ -399,8 +399,8 @@ final class TestCasePropertyExampleTest extends TestCase
             $this->assertTrue($test->status()->isError());
         }
 
-        $this->assertInstanceOf($throwableClassName, $test->throwableThatEndedTheTest());
-        $this->assertSame($message, $test->throwableThatEndedTheTest()->getMessage());
+        $this->assertInstanceOf($throwableClassName, $this->propertyExampleOf($test)->throwableThatEndedIt());
+        $this->assertSame($message, $this->propertyExampleOf($test)->throwableThatEndedIt()->getMessage());
     }
 
     public function testOnNotSuccessfulTestIsNotCalledForAnExampleThatIsRejected(): void
@@ -409,11 +409,11 @@ final class TestCasePropertyExampleTest extends TestCase
 
         $test = new ExampleWithOnNotSuccessfulTestTest('testRejectsTheExample');
 
-        $test->setPropertyExample([1]);
+        $test->setPropertyExample(new PropertyExample([1], false, null));
 
         $this->runExample($test);
 
-        $this->assertTrue($test->wasRejectedByAssumption());
+        $this->assertTrue($this->propertyExampleOf($test)->wasRejected());
         $this->assertFalse(ExampleWithOnNotSuccessfulTestTest::$onNotSuccessfulTestCalled);
     }
 
@@ -423,12 +423,12 @@ final class TestCasePropertyExampleTest extends TestCase
 
         $test = new ExampleWithOnNotSuccessfulTestTest('testFails');
 
-        $test->setPropertyExample([1]);
+        $test->setPropertyExample(new PropertyExample([1], false, null));
 
         $this->runExample($test);
 
         $this->assertTrue($test->status()->isFailure());
-        $this->assertInstanceOf(AssertionFailedError::class, $test->throwableThatEndedTheTest());
+        $this->assertInstanceOf(AssertionFailedError::class, $this->propertyExampleOf($test)->throwableThatEndedIt());
         $this->assertFalse(ExampleWithOnNotSuccessfulTestTest::$onNotSuccessfulTestCalled);
     }
 
@@ -438,7 +438,7 @@ final class TestCasePropertyExampleTest extends TestCase
 
         $test = new ExampleWithOnNotSuccessfulTestTest('testFails');
 
-        $test->setPropertyExample([1], true);
+        $test->setPropertyExample(new PropertyExample([1], true, null));
 
         $this->runExample($test);
 
@@ -452,7 +452,7 @@ final class TestCasePropertyExampleTest extends TestCase
 
         $test = new ExampleWithOnNotSuccessfulTestTest('testIsSkipped');
 
-        $test->setPropertyExample([1]);
+        $test->setPropertyExample(new PropertyExample([1], false, null));
 
         $this->runExample($test);
 
@@ -468,7 +468,7 @@ final class TestCasePropertyExampleTest extends TestCase
     {
         $test = new ExampleTest($methodName);
 
-        $test->setPropertyExample($arguments);
+        $test->setPropertyExample(new PropertyExample($arguments, false, null));
 
         return $test;
     }
@@ -480,7 +480,7 @@ final class TestCasePropertyExampleTest extends TestCase
     {
         $test = new ObservingExampleTest($methodName);
 
-        $test->setPropertyExample([3]);
+        $test->setPropertyExample(new PropertyExample([3], false, null));
 
         return $test;
     }
@@ -492,9 +492,18 @@ final class TestCasePropertyExampleTest extends TestCase
     {
         $test = new TargetingExampleTest($methodName);
 
-        $test->setPropertyExample([3]);
+        $test->setPropertyExample(new PropertyExample([3], false, null));
 
         return $test;
+    }
+
+    private function propertyExampleOf(TestCase $test): PropertyExample
+    {
+        $propertyExample = $test->propertyExample();
+
+        $this->assertNotNull($propertyExample);
+
+        return $propertyExample;
     }
 
     private function runExample(TestCase $test): void

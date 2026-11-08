@@ -47,6 +47,7 @@ use PHPUnit\Framework\PropertyBased\InvalidStateMachineException;
 use PHPUnit\Framework\PropertyBased\Observations;
 use PHPUnit\Framework\PropertyBased\PropertyDefinition;
 use PHPUnit\Framework\PropertyBased\PropertyDefinitionBuilder;
+use PHPUnit\Framework\PropertyBased\PropertyExample;
 use PHPUnit\Framework\PropertyBased\RejectionReason;
 use PHPUnit\Framework\PropertyBased\Type\NameScope;
 use PHPUnit\Framework\PropertyBased\ValueGenerator;
@@ -535,7 +536,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             $this->exampleGenerated($source, $events, $emitter);
 
             if ($this->wasRejected($example, $falsification)) {
-                $this->countRejection($example->rejectionReasonOfPropertyExample());
+                $this->countRejection(self::propertyExampleOf($example)->rejectionReason());
                 $search->exampleRejected();
 
                 $events->record($exampleEvents, false);
@@ -553,13 +554,13 @@ final class PropertyTestSuite extends IterativeTestSuite
 
             $this->numberOfExamplesChecked++;
 
-            $this->countClassifications($example->classificationsOfPropertyExample());
-            $this->countStepsOfStateMachine($example->numberOfStepsOfStateMachineOfPropertyExample());
-            $this->observations()->record($example->observationsOfPropertyExample());
-            $search->exampleChecked($source->sequence(), $example->targetsOfPropertyExample());
+            $this->countClassifications(self::propertyExampleOf($example)->classifications());
+            $this->countStepsOfStateMachine(self::propertyExampleOf($example)->numberOfStepsOfStateMachine());
+            $this->observations()->record(self::propertyExampleOf($example)->observations());
+            $search->exampleChecked($source->sequence(), self::propertyExampleOf($example)->targets());
 
             if ($falsification !== null) {
-                $throwable       = $example->throwableThatEndedTheTest();
+                $throwable       = self::propertyExampleOf($example)->throwableThatEndedIt();
                 $originalFailure = null;
 
                 if ($throwable !== null) {
@@ -884,7 +885,7 @@ final class PropertyTestSuite extends IterativeTestSuite
         // has passed is reported with that error, like any other example that
         // is aborted by it, and with the counterexample, which falsified the
         // property while it was shrunk
-        if (!$replay->throwableThatEndedTheTest() instanceof TimeLimitExceededException) {
+        if (!self::propertyExampleOf($replay)->throwableThatEndedIt() instanceof TimeLimitExceededException) {
             $replayFalsification = Falsification::of($replay);
 
             if ($replayFalsification === null) {
@@ -900,7 +901,7 @@ final class PropertyTestSuite extends IterativeTestSuite
                     $originalFailure,
                 );
             } elseif ($replayFalsification->isTimeout()) {
-                $timeout = $replay->throwableThatEndedTheTest();
+                $timeout = self::propertyExampleOf($replay)->throwableThatEndedIt();
 
                 assert($timeout !== null);
 
@@ -988,7 +989,7 @@ final class PropertyTestSuite extends IterativeTestSuite
 
             $events->recordShrinkingAttempt($replayEvents);
 
-            if ($example->throwableThatEndedTheTest() instanceof TimeLimitExceededException) {
+            if (self::propertyExampleOf($example)->throwableThatEndedIt() instanceof TimeLimitExceededException) {
                 break;
             }
 
@@ -1112,7 +1113,7 @@ final class PropertyTestSuite extends IterativeTestSuite
      */
     private function rememberOtherFalsification(TestCase $example, Falsification $falsification, EventCollection $attemptEvents, ChoiceSequence $sequence): void
     {
-        if ($example->throwableThatEndedTheTest() instanceof TimeLimitExceededException || $this->endedBeforeItWasPrepared($attemptEvents)) {
+        if (self::propertyExampleOf($example)->throwableThatEndedIt() instanceof TimeLimitExceededException || $this->endedBeforeItWasPrepared($attemptEvents)) {
             return;
         }
 
@@ -1186,7 +1187,7 @@ final class PropertyTestSuite extends IterativeTestSuite
         // an example that exceeded its time limit is reported with that error
         // rather than as risky, because it falsified the property
         if ($falsification->isTimeout()) {
-            $timeout = $example->throwableThatEndedTheTest();
+            $timeout = self::propertyExampleOf($example)->throwableThatEndedIt();
 
             assert($timeout !== null);
 
@@ -1418,8 +1419,8 @@ final class PropertyTestSuite extends IterativeTestSuite
     private function wasRejected(TestCase $example, ?Falsification $falsification): bool
     {
         return $falsification === null &&
-               !$example->throwableThatEndedTheTest() instanceof TimeLimitExceededException &&
-               $example->wasRejectedByAssumption();
+               !self::propertyExampleOf($example)->throwableThatEndedIt() instanceof TimeLimitExceededException &&
+               self::propertyExampleOf($example)->wasRejected();
     }
 
     private function recordCheckedExample(EventAggregator $events, EventCollection $exampleEvents, ExampleRun $run): void
@@ -1454,7 +1455,7 @@ final class PropertyTestSuite extends IterativeTestSuite
      */
     private function endsCheckWithoutFalsification(TestCase $example, ?Falsification $falsification, EventCollection $exampleEvents): bool
     {
-        if ($example->throwableThatEndedTheTest() instanceof TimeLimitExceededException) {
+        if (self::propertyExampleOf($example)->throwableThatEndedIt() instanceof TimeLimitExceededException) {
             return true;
         }
 
@@ -1482,7 +1483,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             return null;
         }
 
-        $timeout = $example->throwableThatEndedTheTest();
+        $timeout = self::propertyExampleOf($example)->throwableThatEndedIt();
 
         assert($timeout !== null);
 
@@ -1501,7 +1502,7 @@ final class PropertyTestSuite extends IterativeTestSuite
      */
     private function wasAborted(TestCase $example, EventCollection $exampleEvents): bool
     {
-        return $example->throwableThatEndedTheTest() instanceof InvalidStateMachineException ||
+        return self::propertyExampleOf($example)->throwableThatEndedIt() instanceof InvalidStateMachineException ||
                $this->endedBeforeItWasPrepared($exampleEvents);
     }
 
@@ -2006,7 +2007,7 @@ final class PropertyTestSuite extends IterativeTestSuite
 
         $example = ($this->exampleFactory)();
 
-        $example->setPropertyExample(array_values($arguments), $failureIsReported, $drawnValues);
+        $example->setPropertyExample(new PropertyExample(array_values($arguments), $failureIsReported, $drawnValues));
 
         return $example;
     }
@@ -2064,6 +2065,19 @@ final class PropertyTestSuite extends IterativeTestSuite
     private function shouldStop(): bool
     {
         return TimeLimitHandler::deadlineReached() || TestResultFacade::shouldStop();
+    }
+
+    /**
+     * The example of the property that a test that this test suite created
+     * for an example is.
+     */
+    private static function propertyExampleOf(TestCase $example): PropertyExample
+    {
+        $propertyExample = $example->propertyExample();
+
+        assert($propertyExample !== null);
+
+        return $propertyExample;
     }
 
     /**

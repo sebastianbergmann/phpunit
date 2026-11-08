@@ -129,7 +129,7 @@ final readonly class Falsification
             return null;
         }
 
-        $throwable = $example->throwableThatEndedTheTest();
+        $throwable = self::throwableThatEnded($example);
         $status    = $example->status();
 
         if ($throwable === null) {
@@ -169,7 +169,7 @@ final readonly class Falsification
      */
     public static function exampleFalsifies(TestCase $example): bool
     {
-        if ($example->throwableThatEndedTheTest() instanceof TimeoutException) {
+        if (self::throwableThatEnded($example) instanceof TimeoutException) {
             return true;
         }
 
@@ -247,6 +247,21 @@ final readonly class Falsification
     public function description(): string
     {
         return $this->signature->description();
+    }
+
+    /**
+     * The throwable that ended an example, which is only kept for an example
+     * of a property.
+     */
+    private static function throwableThatEnded(TestCase $example): ?Throwable
+    {
+        $propertyExample = $example->propertyExample();
+
+        if ($propertyExample === null) {
+            return null;
+        }
+
+        return $propertyExample->throwableThatEndedIt();
     }
 
     /**

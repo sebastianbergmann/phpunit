@@ -319,7 +319,7 @@ final class FalsificationTest extends TestCase
     {
         $test = new ExampleTest($methodName);
 
-        $test->setPropertyExample([$argument]);
+        $test->setPropertyExample(new PropertyExample([$argument], false, null));
 
         EventCollector::collect(
             static function () use ($test): void
