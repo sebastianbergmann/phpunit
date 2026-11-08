@@ -466,8 +466,12 @@ final readonly class TestBuilder
      */
     private function numberOfExamples(PropertyMetadata $metadata): int
     {
-        $numberOfExamples = $metadata->examples() ?? ConfigurationRegistry::get()->propertyExamples();
+        $numberOfExamples = $metadata->examples();
         $multiplier       = ConfigurationRegistry::get()->propertyExamplesMultiplier();
+
+        if ($numberOfExamples === null) {
+            $numberOfExamples = ConfigurationRegistry::get()->propertyExamples();
+        }
 
         // the number of examples is not limited, so the product could exceed
         // the largest integer

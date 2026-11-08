@@ -860,7 +860,13 @@ final class Parser
 
     private function peek(int $offset = 0): ?string
     {
-        return $this->characters[$this->position + $offset] ?? null;
+        $index = $this->position + $offset;
+
+        if (!isset($this->characters[$index])) {
+            return null;
+        }
+
+        return $this->characters[$index];
     }
 
     private function next(): string

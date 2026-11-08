@@ -323,8 +323,12 @@ final class CodeCoverage
     {
         assert($this->codeCoverage !== null);
 
-        $heldBack    = $this->heldBack[$id] ?? [];
+        $heldBack    = [];
         $contributed = null;
+
+        if (isset($this->heldBack[$id])) {
+            $heldBack = $this->heldBack[$id];
+        }
 
         unset($this->heldBack[$id]);
 
@@ -337,13 +341,13 @@ final class CodeCoverage
 
             $status = TestStatus::Success;
             $time   = $example['time'];
-            $record = $this->codeCoverage->getTests()[$id] ?? null;
+            $tests  = $this->codeCoverage->getTests();
 
             // the status and the time that the examples that were appended
             // before recorded for the property are kept
-            if ($record !== null) {
-                $status = TestStatus::from($record['status']);
-                $time   = $record['time'];
+            if (isset($tests[$id])) {
+                $status = TestStatus::from($tests[$id]['status']);
+                $time   = $tests[$id]['time'];
             }
 
             try {

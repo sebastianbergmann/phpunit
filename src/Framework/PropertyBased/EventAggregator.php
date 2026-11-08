@@ -226,13 +226,22 @@ final class EventAggregator
 
         foreach ($skeleton as $event) {
             if ($event instanceof PreparationStarted) {
-                $this->forward($this->preparationStarted ?? $event);
+                if ($this->preparationStarted !== null) {
+                    $this->forward($this->preparationStarted);
+                } else {
+                    $this->forward($event);
+                }
 
                 continue;
             }
 
             if ($event instanceof Prepared) {
-                $this->forward($this->prepared ?? $event);
+                if ($this->prepared !== null) {
+                    $this->forward($this->prepared);
+                } else {
+                    $this->forward($event);
+                }
+
                 $this->dispatchEventsOfExamples();
 
                 continue;

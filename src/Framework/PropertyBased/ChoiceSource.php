@@ -139,7 +139,11 @@ final class ChoiceSource
     public function startObject(string $className): int
     {
         $key   = strtolower($className);
-        $count = ($this->objectsBeingGenerated[$key] ?? 0) + 1;
+        $count = 1;
+
+        if (isset($this->objectsBeingGenerated[$key])) {
+            $count = $this->objectsBeingGenerated[$key] + 1;
+        }
 
         $this->objectsBeingGenerated[$key] = $count;
 
@@ -181,7 +185,11 @@ final class ChoiceSource
     public function startDeferred(DeferredGenerator $generator): ?int
     {
         $id     = spl_object_id($generator);
-        $before = $this->deferredGeneratorsBeingGenerated[$id] ?? null;
+        $before = null;
+
+        if (isset($this->deferredGeneratorsBeingGenerated[$id])) {
+            $before = $this->deferredGeneratorsBeingGenerated[$id];
+        }
 
         $this->deferredGeneratorsBeingGenerated[$id] = $this->choices->numberOfChoices();
 

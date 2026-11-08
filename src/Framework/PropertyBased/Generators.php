@@ -781,7 +781,18 @@ final class Generators
             $className = $trace[1]['class'];
         }
 
-        $scope = NameScope::forCallSite($trace[0]['file'] ?? false, $trace[0]['line'] ?? false, $className);
+        $file = false;
+        $line = false;
+
+        if (isset($trace[0]['file'])) {
+            $file = $trace[0]['file'];
+        }
+
+        if (isset($trace[0]['line'])) {
+            $line = $trace[0]['line'];
+        }
+
+        $scope = NameScope::forCallSite($file, $line, $className);
 
         return new DeferredGenerator(
             static fn (GeneratorDeriver $deriver): AbstractGenerator => $deriver->forType($parsed, $scope),
