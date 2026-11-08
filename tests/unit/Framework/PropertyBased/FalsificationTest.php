@@ -27,6 +27,7 @@ use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\PropertyBased\EventCollector;
 use PHPUnit\TestFixture\PropertyBased\Falsification\ExampleTest;
+use PHPUnit\TestFixture\PropertyBased\Falsification\RecursionLimit;
 use RuntimeException;
 use Throwable;
 
@@ -59,6 +60,17 @@ final class FalsificationTest extends TestCase
         return [
             'passed'  => ['testPasses'],
             'skipped' => ['testIsSkipped'],
+        ];
+    }
+
+    /**
+     * @return array<string, array{non-empty-string, ?positive-int}>
+     */
+    public static function recursionLimitProvider(): array
+    {
+        return [
+            'call stack limit of PHP' => [RecursionLimit::CALL_STACK_LIMIT, null],
+            'nesting limit of Xdebug' => [RecursionLimit::XDEBUG_NESTING_LIMIT, 3],
         ];
     }
 
@@ -223,6 +235,48 @@ final class FalsificationTest extends TestCase
         $this->assertNotNull($second);
         $this->assertTrue($first->isSameAs($second));
         $this->assertStringEndsWith('ExampleTest.php:100', $first->description());
+    }
+
+    /**
+     * @param non-empty-string $message
+     * @param ?positive-int    $line
+     */
+    #[DataProvider('recursionLimitProvider')]
+    public function testTheLocationOfTheErrorForARecursionLimitIsTheFirstFrameOfTheCycleAtTheTopOfItsStackTrace(string $message, ?int $line): void
+    {
+        // the finite recursion in line 10 that led to the unbounded one, whose
+        // depth can depend on the example, comes first, but is not considered;
+        // where the limit is reached in the cycle does not matter either
+        foreach ([[20, 15, 20], [15, 20, 20], [20, 20, 15]] as $cycle) {
+            foreach ([0, 1, 2, 5] as $depthOfFiniteRecursion) {
+                $falsification = Falsification::ofThrowable(RecursionLimit::inRecursion($message, $cycle, $depthOfFiniteRecursion, $line));
+
+                $this->assertStringEndsWith('RecursionLimit.php:15', $falsification->description());
+            }
+        }
+    }
+
+    public function testTheErrorsForTheLimitsOfDifferentRecursionsThatAreReachedThroughTheSameFiniteRecursionHaveDifferentLocations(): void
+    {
+        $first  = Falsification::ofThrowable(RecursionLimit::inRecursion(RecursionLimit::CALL_STACK_LIMIT, [20, 15, 20], 2));
+        $second = Falsification::ofThrowable(RecursionLimit::inRecursion(RecursionLimit::CALL_STACK_LIMIT, [25], 2));
+
+        $this->assertFalse($first->isSameAs($second));
+        $this->assertStringEndsWith('RecursionLimit.php:15', $first->description());
+        $this->assertStringEndsWith('RecursionLimit.php:25', $second->description());
+    }
+
+    public function testTheLocationOfTheErrorForARecursionLimitIsTheFirstRepeatedFrameWhenNoCycleRepeatsAtTheTopOfItsStackTrace(): void
+    {
+        $falsification = Falsification::ofThrowable(
+            RecursionLimit::withStackTrace(
+                RecursionLimit::CALL_STACK_LIMIT,
+                [40, 41, 40, 42, 40, 43, 44, 45, 5],
+                40,
+            ),
+        );
+
+        $this->assertStringEndsWith('RecursionLimit.php:40', $falsification->description());
     }
 
     public function testTheLocationOfOtherErrorsInARecursionIsTheFirstFrameOfTheirStackTrace(): void

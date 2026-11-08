@@ -11,7 +11,10 @@ namespace PHPUnit\Framework\PropertyBased;
 
 use const DIRECTORY_SEPARATOR;
 use const PHP_OS_FAMILY;
+use function array_slice;
+use function array_values;
 use function assert;
+use function count;
 use function dirname;
 use function getcwd;
 use function realpath;
@@ -44,13 +47,18 @@ use Throwable;
  * line of the throwable alone would not do, because every failed assertion is
  * raised in PHPUnit's own code.
  *
- * When unbounded recursion reaches the limit of PHP's call stack, the error is
- * raised by whichever call of the recursion exceeds the limit, which depends
- * on how deep the call stack was when the recursion started, and on how much
- * of it the calls use, which differs between versions of PHP. So that the same
+ * When unbounded recursion reaches the limit of PHP's call stack, or the
+ * limit of the nesting level of function calls of Xdebug, the error is raised
+ * by whichever call of the recursion exceeds the limit, which depends on how
+ * deep the call stack was when the recursion started, and on how much of it
+ * the calls use, which differs between versions of PHP. So that the same
  * recursion has the same location, the location of this error is the frame of
  * the recursion that comes first, by file and then by line, among the frames
- * that occur more than once in its stack trace.
+ * of the cycle that repeats at the top of its stack trace. The frames further
+ * down, of a finite recursion that led to the unbounded one, for instance,
+ * whose depth can depend on the example, are not considered. When no cycle
+ * repeats at the top of the stack trace, the frames that occur more than once
+ * in it are considered instead.
  *
  * The path of a file below the directory of the configuration file, or below
  * the working directory when there is no configuration file, is relative to
@@ -80,6 +88,24 @@ final readonly class Falsification
      * reached starts with this.
      */
     private const string CALL_STACK_LIMIT = 'Maximum call stack size of ';
+
+    /**
+     * The message of the error that Xdebug raises when the nesting level of
+     * function calls exceeds its limit starts with this.
+     */
+    private const string XDEBUG_NESTING_LIMIT = 'Xdebug has detected a possible infinite loop';
+
+    /**
+     * How often a cycle of frames must repeat at the top of a stack trace to
+     * be the cycle of the recursion that reached a limit.
+     */
+    private const int REPETITIONS_OF_CYCLE = 3;
+
+    /**
+     * The longest cycle of frames that is looked for at the top of a stack
+     * trace, which bounds the time spent on looking for one.
+     */
+    private const int MAXIMUM_LENGTH_OF_CYCLE = 1000;
     private FailureSignature $signature;
 
     /**
@@ -251,8 +277,8 @@ final readonly class Falsification
      */
     private static function locationOf(Throwable $throwable): string
     {
-        if ($throwable::class === Error::class && str_starts_with($throwable->getMessage(), self::CALL_STACK_LIMIT)) {
-            $frame = self::firstRepeatedFrame($throwable);
+        if (self::reachedRecursionLimit($throwable)) {
+            $frame = self::firstFrameOfRecursion($throwable);
 
             if ($frame !== null) {
                 return $frame;
@@ -274,27 +300,45 @@ final readonly class Falsification
     }
 
     /**
+     * Whether the throwable is the error that PHP raises when the limit of the
+     * call stack is reached, or the one that Xdebug raises when the nesting
+     * level of function calls exceeds its limit.
+     */
+    private static function reachedRecursionLimit(Throwable $throwable): bool
+    {
+        if ($throwable::class !== Error::class) {
+            return false;
+        }
+
+        return str_starts_with($throwable->getMessage(), self::CALL_STACK_LIMIT) ||
+               str_starts_with($throwable->getMessage(), self::XDEBUG_NESTING_LIMIT);
+    }
+
+    /**
      * Returns the frame that comes first, by file and then by line, among the
-     * frames of the stack trace of the throwable that occur more than once, or
-     * null when no frame does.
+     * frames of the cycle that repeats at the top of the stack trace of the
+     * throwable, or, when there is no such cycle, among the frames of its
+     * stack trace that occur more than once. Returns null when no frame does.
      *
      * @return ?non-empty-string
      */
-    private static function firstRepeatedFrame(Throwable $throwable): ?string
+    private static function firstFrameOfRecursion(Throwable $throwable): ?string
     {
-        $occurrences = [];
+        $frames = [];
 
         foreach (Filter::framesFromThrowableAsStrings($throwable, false) as $frame) {
-            $occurrences[$frame] = ($occurrences[$frame] ?? 0) + 1;
+            $frames[] = $frame;
+        }
+
+        $candidates = self::cycleAtTopOf($frames);
+
+        if ($candidates === null) {
+            $candidates = self::framesThatOccurMoreThanOnce($frames);
         }
 
         $first = null;
 
-        foreach ($occurrences as $frame => $count) {
-            if ($count < 2) {
-                continue;
-            }
-
+        foreach ($candidates as $frame) {
             $frame = self::relativeToBaseDirectory($frame);
 
             if ($first === null || self::comesBefore($frame, $first)) {
@@ -303,6 +347,85 @@ final readonly class Falsification
         }
 
         return $first;
+    }
+
+    /**
+     * Returns the frames of the shortest cycle that repeats at least three
+     * times at the top of the stack trace, its innermost frames, or null when
+     * there is no such cycle.
+     *
+     * The cycle can start with the second frame, as the innermost frame can
+     * be where the error was raised rather than a call of the recursion: the
+     * declaration of the function whose call exceeds the limit of Xdebug, for
+     * instance.
+     *
+     * @param list<non-empty-string> $frames the frames of the stack trace, from the innermost one outward
+     *
+     * @return ?non-empty-list<non-empty-string>
+     */
+    private static function cycleAtTopOf(array $frames): ?array
+    {
+        foreach ([0, 1] as $start) {
+            for ($length = 1; $length <= self::MAXIMUM_LENGTH_OF_CYCLE; $length++) {
+                if ($start + self::REPETITIONS_OF_CYCLE * $length > count($frames)) {
+                    break;
+                }
+
+                if (self::repeats($frames, $start, $length)) {
+                    $cycle = array_slice($frames, $start, $length);
+
+                    assert($cycle !== []);
+
+                    return $cycle;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Whether the frames from the start on repeat with the given length as
+     * often as a cycle of the recursion must.
+     *
+     * @param list<non-empty-string> $frames
+     * @param non-negative-int       $start
+     * @param positive-int           $length
+     */
+    private static function repeats(array $frames, int $start, int $length): bool
+    {
+        $end = $start + (self::REPETITIONS_OF_CYCLE - 1) * $length;
+
+        for ($i = $start; $i < $end; $i++) {
+            if (!isset($frames[$i], $frames[$i + $length]) || $frames[$i] !== $frames[$i + $length]) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param list<non-empty-string> $frames
+     *
+     * @return list<non-empty-string>
+     */
+    private static function framesThatOccurMoreThanOnce(array $frames): array
+    {
+        $seen     = [];
+        $repeated = [];
+
+        foreach ($frames as $frame) {
+            if (isset($seen[$frame])) {
+                $repeated[$frame] = $frame;
+
+                continue;
+            }
+
+            $seen[$frame] = true;
+        }
+
+        return array_values($repeated);
     }
 
     /**
