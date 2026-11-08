@@ -11,7 +11,6 @@ namespace PHPUnit\Framework;
 
 use function assert;
 use function sprintf;
-use Closure;
 use PHPUnit\Event;
 use PHPUnit\Event\EventCollection;
 use PHPUnit\Event\NoPreviousThrowableException;
@@ -122,37 +121,7 @@ abstract class IterativeTestSuite extends TestSuite
      */
     final protected function runCollectingEvents(Test $test): EventCollection
     {
-        return $this->collectingEvents($test->run(...));
-    }
-
-    /**
-     * Calls $run, which runs a test, with the events that are emitted
-     * meanwhile collected instead of dispatched, and returns them.
-     *
-     * The collection is stopped even when running the test throws, because a
-     * dispatcher that is left collecting events swallows every event that is
-     * emitted afterwards. The events collected before the throwable was raised
-     * are forwarded rather than discarded.
-     *
-     * @param Closure(): void $run
-     *
-     * @throws Throwable
-     */
-    final protected function collectingEvents(Closure $run): EventCollection
-    {
-        $facade = Event\Facade::instance();
-
-        $facade->startCollectingEvents();
-
-        try {
-            $run();
-        } catch (Throwable $t) {
-            $facade->forward($facade->stopCollectingEvents());
-
-            throw $t;
-        }
-
-        return $facade->stopCollectingEvents();
+        return Event\Facade::instance()->collectingEvents($test->run(...));
     }
 
     /**

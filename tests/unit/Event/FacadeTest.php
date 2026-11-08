@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event;
 
+use LogicException;
 use PHPUnit\Event\Tracer\Tracer;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
@@ -90,6 +91,57 @@ final class FacadeTest extends TestCase
         $this->assertSame($first, $second);
     }
 
+    public function testCollectsTheEventsThatAreEmittedWhileItsClosureRuns(): void
+    {
+        [$facade, $tracer] = $this->sealedFacadeWithTracer();
+
+        [$event] = $tracer->events;
+
+        $events = new EventCollection;
+
+        $events->add($event);
+
+        $collected = $facade->collectingEvents(
+            static function () use ($facade, $events): void
+            {
+                $facade->forward($events);
+            },
+        );
+
+        $this->assertSame([$event], $collected->asArray());
+        $this->assertSame([$event], $tracer->events);
+    }
+
+    public function testForwardsTheEventsThatWereCollectedBeforeItsClosureRaisedAThrowableAndRaisesIt(): void
+    {
+        [$facade, $tracer] = $this->sealedFacadeWithTracer();
+
+        [$event] = $tracer->events;
+
+        $events = new EventCollection;
+
+        $events->add($event);
+
+        $exception = new LogicException;
+
+        try {
+            $facade->collectingEvents(
+                static function () use ($facade, $events, $exception): void
+                {
+                    $facade->forward($events);
+
+                    throw $exception;
+                },
+            );
+
+            $this->fail('The exception was not raised');
+        } catch (LogicException $e) {
+            $this->assertSame($exception, $e);
+        }
+
+        $this->assertSame([$event, $event], $tracer->events);
+    }
+
     public function testTracerRegistrationDoesNotWorkWhenEventFacadeIsSealed(): void
     {
         $this->expectException(EventFacadeIsSealedException::class);
@@ -102,5 +154,31 @@ final class FacadeTest extends TestCase
                 }
             },
         );
+    }
+
+    /**
+     * @return array{0: Facade, 1: object{events: list<Event>}&Tracer}
+     */
+    private function sealedFacadeWithTracer(): array
+    {
+        $tracer = new class implements Tracer
+        {
+            /**
+             * @var list<Event>
+             */
+            public array $events = [];
+
+            public function trace(Event $event): void
+            {
+                $this->events[] = $event;
+            }
+        };
+
+        $facade = new Facade;
+
+        $facade->registerTracer($tracer);
+        $facade->seal();
+
+        return [$facade, $tracer];
     }
 }

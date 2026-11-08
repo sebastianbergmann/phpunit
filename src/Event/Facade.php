@@ -11,9 +11,11 @@ namespace PHPUnit\Event;
 
 use function assert;
 use function interface_exists;
+use Closure;
 use PHPUnit\Event\Telemetry\HRTime;
 use PHPUnit\Event\Telemetry\SystemGarbageCollectorStatusProvider;
 use PHPUnit\Runner\DeprecationCollector\Facade as DeprecationCollector;
+use Throwable;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -137,6 +139,35 @@ final class Facade
         foreach ($events as $event) {
             $dispatcher->dispatch($event);
         }
+    }
+
+    /**
+     * Calls $run with the events that are emitted meanwhile collected instead
+     * of dispatched, and returns them.
+     *
+     * The collection is stopped even when $run throws, because a dispatcher
+     * that is left collecting events swallows every event that is emitted
+     * afterwards. The events collected before the throwable was raised are
+     * forwarded rather than discarded.
+     *
+     * @param Closure(): void $run
+     *
+     * @throws EventsAreAlreadyBeingCollectedException
+     * @throws Throwable
+     */
+    public function collectingEvents(Closure $run): EventCollection
+    {
+        $this->startCollectingEvents();
+
+        try {
+            $run();
+        } catch (Throwable $t) {
+            $this->forward($this->stopCollectingEvents());
+
+            throw $t;
+        }
+
+        return $this->stopCollectingEvents();
     }
 
     /**

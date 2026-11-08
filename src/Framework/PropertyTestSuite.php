@@ -11,7 +11,6 @@ namespace PHPUnit\Framework;
 
 use const PHP_INT_MAX;
 use function array_shift;
-use function array_values;
 use function assert;
 use function count;
 use function hash;
@@ -29,12 +28,12 @@ use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
 use PHPUnit\Framework\PropertyBased\Constructions;
-use PHPUnit\Framework\PropertyBased\CounterexampleExporter;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorDeriver;
 use PHPUnit\Framework\PropertyBased\DrawnValues;
 use PHPUnit\Framework\PropertyBased\EventAggregator;
 use PHPUnit\Framework\PropertyBased\ExampleRejectedException;
 use PHPUnit\Framework\PropertyBased\ExampleResult;
+use PHPUnit\Framework\PropertyBased\ExampleRunner;
 use PHPUnit\Framework\PropertyBased\ExplicitExample;
 use PHPUnit\Framework\PropertyBased\Falsification;
 use PHPUnit\Framework\PropertyBased\FalsificationReport;
@@ -47,13 +46,11 @@ use PHPUnit\Framework\PropertyBased\Observations;
 use PHPUnit\Framework\PropertyBased\PropertyDefinition;
 use PHPUnit\Framework\PropertyBased\PropertyExample;
 use PHPUnit\Framework\PropertyBased\RejectionReason;
-use PHPUnit\Framework\PropertyBased\Type\NameScope;
 use PHPUnit\Framework\TestRunner\ExampleRun;
 use PHPUnit\Framework\TestRunner\RiskyTestChecks;
 use PHPUnit\Framework\TestRunner\TestRunner;
 use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Runner\CodeCoverage;
-use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\Runner\RandomNumberGeneratorSeeder;
 use PHPUnit\Runner\TestRunHistory\TestRunHistory;
 use PHPUnit\Runner\TestRunHistory\TestRunHistoryId;
@@ -64,15 +61,12 @@ use PHPUnit\TestRunner\TestResult\PassedTests;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use Random\Engine\Xoshiro256StarStar;
 use Random\Randomizer;
-use ReflectionMethod;
 use SebastianBergmann\ChoiceSequence\ChoiceSequence;
 use SebastianBergmann\ChoiceSequence\ChoiceTree;
 use SebastianBergmann\ChoiceSequence\Shrinker;
 use SebastianBergmann\ChoiceSequence\TargetedSearch;
 use SebastianBergmann\CodeCoverage\InvalidArgumentException;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
-use SebastianBergmann\Invoker\Invoker;
-use SebastianBergmann\Invoker\TimeoutException;
 use Throwable;
 
 /**
@@ -121,6 +115,7 @@ final class PropertyTestSuite extends IterativeTestSuite
      */
     private ?Closure $exampleFactory        = null;
     private ?Event\Code\TestMethod $test    = null;
+    private ?ExampleRunner $exampleRunner   = null;
     private ?TestRunHistory $testRunHistory = null;
 
     /**
@@ -226,12 +221,6 @@ final class PropertyTestSuite extends IterativeTestSuite
      * coverage, null when this was not checked for any of them.
      */
     private ?bool $contributedToCodeCoverage = null;
-
-    /**
-     * Whether PHPUnit's error handler handles the issues that are triggered
-     * by the property, which it does unless #[WithoutErrorHandler] is used.
-     */
-    private bool $usesErrorHandler = true;
 
     /**
      * Whether a PHPUnit warning was recorded because the generators of the
@@ -377,18 +366,17 @@ final class PropertyTestSuite extends IterativeTestSuite
     {
         $valueObject = $test->valueObjectForEvents();
 
-        $this->test = $valueObject;
-        $this->seed = RandomNumberGeneratorSeeder::derive(ConfigurationRegistry::get()->randomSeed(), $valueObject->id());
+        $this->startRunning($test, $valueObject);
 
-        $this->usesErrorHandler = TestRunner::shouldErrorHandlerBeUsed($test);
+        $this->seed = RandomNumberGeneratorSeeder::derive(ConfigurationRegistry::get()->randomSeed(), $valueObject->id());
 
         $events = new EventAggregator($emitter, Event\Facade::instance(), $valueObject);
 
         try {
-            [$deriver, $generators] = $this->handlingIssues(
+            [$deriver, $generators] = $this->exampleRunner()->handlingIssues(
                 function () use ($test, $emitter): array
                 {
-                    $this->triggerTestCaseContextIssues();
+                    $this->exampleRunner()->triggerTestCaseContextIssues();
 
                     return $this->generatorResolver()->generators($test, $emitter);
                 },
@@ -420,9 +408,9 @@ final class PropertyTestSuite extends IterativeTestSuite
 
             // the arguments are exported before the example is run, which can
             // change the state of an object that is passed to it
-            $exportedArguments     = $this->export($explicitExample->arguments(), new Constructions);
-            $example               = $this->example($explicitExample->arguments(), true);
-            [$exampleEvents, $run] = $this->runExample($example, $emitter, true);
+            $exportedArguments     = $this->exampleRunner()->export($explicitExample->arguments(), new Constructions);
+            $example               = $this->exampleRunner()->example($explicitExample->arguments(), true);
+            [$exampleEvents, $run] = $this->exampleRunner()->run($example, $emitter, true);
             $falsification         = Falsification::of($example);
 
             if ($this->wasRejected($example, $falsification)) {
@@ -507,7 +495,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             }
 
             try {
-                $arguments = $this->handlingIssues(fn (): array => $this->generateArguments($generators, $source), $events);
+                $arguments = $this->exampleRunner()->handlingIssues(fn (): array => $this->exampleRunner()->generateArguments($generators, $source), $events);
             } catch (ExampleRejectedException $e) {
                 // the same choices are rejected again, so they are not drawn
                 // again
@@ -523,8 +511,8 @@ final class PropertyTestSuite extends IterativeTestSuite
                 return;
             }
 
-            $example               = $this->example($arguments, false, DrawnValues::from($source));
-            [$exampleEvents, $run] = $this->runExample($example, $emitter, true);
+            $example               = $this->exampleRunner()->example($arguments, false, DrawnValues::from($source));
+            [$exampleEvents, $run] = $this->exampleRunner()->run($example, $emitter, true);
             $falsification         = Falsification::of($example);
 
             // the same choices generate the same arguments and draw the same
@@ -598,8 +586,7 @@ final class PropertyTestSuite extends IterativeTestSuite
         $emitter = $this->emitter();
 
         if ($this->test === null) {
-            $this->test             = $test->valueObjectForEvents();
-            $this->usesErrorHandler = TestRunner::shouldErrorHandlerBeUsed($test);
+            $this->startRunning($test, $test->valueObjectForEvents());
         }
 
         [$deriver, $generators] = $this->generatorsOfExamplesRunOnTheirOwn();
@@ -608,7 +595,7 @@ final class PropertyTestSuite extends IterativeTestSuite
         $started = hrtime(true);
 
         try {
-            $arguments = $this->handlingIssues(fn (): array => $this->generateArgumentsWithinTimeLimit($generators, $source, $timeLimit), null);
+            $arguments = $this->exampleRunner()->handlingIssues(fn (): array => $this->exampleRunner()->generateArgumentsWithinTimeLimit($generators, $source, $timeLimit), null);
         } catch (ExampleRejectedException) {
             return ExampleResult::rejected($source->sequence());
         } catch (Throwable $t) {
@@ -632,13 +619,13 @@ final class PropertyTestSuite extends IterativeTestSuite
         // of a property whose requirements are not met are not exported,
         // because its example is skipped
         if ($exportValues && $this->generatorResolver()->definition() !== null) {
-            $exportedArguments = $this->export($arguments, $source->constructions());
-            $drawnValues       = DrawnValues::reportedFrom($source, $this->exporter($source->constructions()));
+            $exportedArguments = $this->exampleRunner()->export($arguments, $source->constructions());
+            $drawnValues       = DrawnValues::reportedFrom($source, $this->exampleRunner()->exporter($source->constructions()));
         }
 
-        $example = $this->example($arguments, false, $drawnValues);
+        $example = $this->exampleRunner()->example($arguments, false, $drawnValues);
 
-        [$exampleEvents] = $this->runExample($example, $emitter, false, $timeLimit);
+        [$exampleEvents] = $this->exampleRunner()->run($example, $emitter, false, $timeLimit);
 
         $result = $this->resultOf($example, $source, $exampleEvents);
 
@@ -714,7 +701,7 @@ final class PropertyTestSuite extends IterativeTestSuite
         assert($valueObject !== null);
 
         try {
-            $this->generatorsOfExamplesRunOnTheirOwn = $this->handlingIssues(
+            $this->generatorsOfExamplesRunOnTheirOwn = $this->exampleRunner()->handlingIssues(
                 function () use ($test): array
                 {
                     $this->triggerTestCaseContextIssuesOfExamplesRunOnTheirOwn();
@@ -755,7 +742,7 @@ final class PropertyTestSuite extends IterativeTestSuite
         assert($this->test !== null);
 
         try {
-            $this->triggerTestCaseContextIssues();
+            $this->exampleRunner()->triggerTestCaseContextIssues();
         } catch (Throwable $t) {
             throw InvalidPropertyException::because(
                 $this->test->className(),
@@ -826,14 +813,14 @@ final class PropertyTestSuite extends IterativeTestSuite
                 $source = ChoiceSource::replay($candidate, ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver);
 
                 try {
-                    $arguments = $this->handlingIssues(fn (): array => $this->generateArguments($generators, $source), null);
+                    $arguments = $this->exampleRunner()->handlingIssues(fn (): array => $this->exampleRunner()->generateArguments($generators, $source), null);
                 } catch (Throwable) {
                     return null;
                 }
 
-                $example = $this->example($arguments, false, DrawnValues::from($source));
+                $example = $this->exampleRunner()->example($arguments, false, DrawnValues::from($source));
 
-                [$attemptEvents] = $this->runExample($example, $emitter, false);
+                [$attemptEvents] = $this->exampleRunner()->run($example, $emitter, false);
 
                 $events->recordShrinkingAttempt($attemptEvents);
 
@@ -859,17 +846,17 @@ final class PropertyTestSuite extends IterativeTestSuite
         $source = ChoiceSource::replay($result->sequence(), ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver);
 
         try {
-            $arguments = $this->handlingIssues(fn (): array => $this->generateArguments($generators, $source), $events);
+            $arguments = $this->exampleRunner()->handlingIssues(fn (): array => $this->exampleRunner()->generateArguments($generators, $source), $events);
         } catch (Throwable $t) {
             $this->report($events, $emitter, null, Event\Code\ThrowableBuilder::from($t), false, null);
 
             return;
         }
 
-        $counterexample = $this->export($arguments, $source->constructions());
-        $drawnValues    = DrawnValues::reportedFrom($source, $this->exporter($source->constructions()));
-        $replay         = $this->example($arguments, true, $drawnValues);
-        [$replayEvents] = $this->runExample($replay, $emitter, false);
+        $counterexample = $this->exampleRunner()->export($arguments, $source->constructions());
+        $drawnValues    = DrawnValues::reportedFrom($source, $this->exampleRunner()->exporter($source->constructions()));
+        $replay         = $this->exampleRunner()->example($arguments, true, $drawnValues);
+        [$replayEvents] = $this->exampleRunner()->run($replay, $emitter, false);
 
         // the issues of the final replay are reported like those of the
         // examples that were checked, the replay being the skeleton does not
@@ -971,18 +958,18 @@ final class PropertyTestSuite extends IterativeTestSuite
             $source = ChoiceSource::replay($sequence, ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver);
 
             try {
-                $arguments = $this->handlingIssues(fn (): array => $this->generateArguments($generators, $source), null);
+                $arguments = $this->exampleRunner()->handlingIssues(fn (): array => $this->exampleRunner()->generateArguments($generators, $source), null);
             } catch (Throwable $t) {
                 $this->report($events, $emitter, null, Event\Code\ThrowableBuilder::from($t), false, null);
 
                 return null;
             }
 
-            $counterexample = $this->export($arguments, $source->constructions());
-            $drawnValues    = DrawnValues::reportedFrom($source, $this->exporter($source->constructions()));
-            $example        = $this->example($arguments, false, $drawnValues);
+            $counterexample = $this->exampleRunner()->export($arguments, $source->constructions());
+            $drawnValues    = DrawnValues::reportedFrom($source, $this->exampleRunner()->exporter($source->constructions()));
+            $example        = $this->exampleRunner()->example($arguments, false, $drawnValues);
 
-            [$replayEvents] = $this->runExample($example, $emitter, false);
+            [$replayEvents] = $this->exampleRunner()->run($example, $emitter, false);
 
             $events->recordShrinkingAttempt($replayEvents);
 
@@ -1110,7 +1097,7 @@ final class PropertyTestSuite extends IterativeTestSuite
      */
     private function rememberOtherFalsification(TestCase $example, Falsification $falsification, EventCollection $attemptEvents, ChoiceSequence $sequence): void
     {
-        if (self::propertyExampleOf($example)->throwableThatEndedIt() instanceof TimeLimitExceededException || $this->endedBeforeItWasPrepared($attemptEvents)) {
+        if (self::propertyExampleOf($example)->throwableThatEndedIt() instanceof TimeLimitExceededException || ExampleRunner::endedBeforeItWasPrepared($attemptEvents)) {
             return;
         }
 
@@ -1142,16 +1129,16 @@ final class PropertyTestSuite extends IterativeTestSuite
             $source = ChoiceSource::replay($other['sequence'], ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver);
 
             try {
-                $arguments = $this->handlingIssues(fn (): array => $this->generateArguments($generators, $source), null);
+                $arguments = $this->exampleRunner()->handlingIssues(fn (): array => $this->exampleRunner()->generateArguments($generators, $source), null);
             } catch (Throwable) {
                 continue;
             }
 
-            $counterexample = $this->export($arguments, $source->constructions());
-            $drawnValues    = DrawnValues::reportedFrom($source, $this->exporter($source->constructions()));
-            $example        = $this->example($arguments, false, $drawnValues);
+            $counterexample = $this->exampleRunner()->export($arguments, $source->constructions());
+            $drawnValues    = DrawnValues::reportedFrom($source, $this->exampleRunner()->exporter($source->constructions()));
+            $example        = $this->exampleRunner()->example($arguments, false, $drawnValues);
 
-            [$replayEvents] = $this->runExample($example, $emitter, false);
+            [$replayEvents] = $this->exampleRunner()->run($example, $emitter, false);
 
             $events->recordShrinkingAttempt($replayEvents);
 
@@ -1500,7 +1487,7 @@ final class PropertyTestSuite extends IterativeTestSuite
     private function wasAborted(TestCase $example, EventCollection $exampleEvents): bool
     {
         return self::propertyExampleOf($example)->throwableThatEndedIt() instanceof InvalidStateMachineException ||
-               $this->endedBeforeItWasPrepared($exampleEvents);
+               ExampleRunner::endedBeforeItWasPrepared($exampleEvents);
     }
 
     /**
@@ -1748,226 +1735,6 @@ final class PropertyTestSuite extends IterativeTestSuite
         return $definition->explicitExamples();
     }
 
-    /**
-     * Calls $callable, which generates values, with the issues that are
-     * triggered meanwhile handled as issues of the property, and returns what
-     * it returns: the issues that are triggered by the constructor of a class
-     * whose objects are generated or by a closure that is passed to map() or
-     * filter(), for instance.
-     *
-     * The events for these issues are recorded with $events, also when
-     * $callable raises an exception, because the example is rejected, for
-     * instance. They are not recorded when $events is null, as for a shrinking
-     * attempt.
-     *
-     * @template T
-     *
-     * @param Closure(): T $callable
-     *
-     * @throws Throwable
-     *
-     * @return T
-     */
-    private function handlingIssues(Closure $callable, ?EventAggregator $events): mixed
-    {
-        $test   = $this->test;
-        $facade = Event\Facade::instance();
-
-        assert($test !== null);
-
-        $facade->startCollectingEvents();
-
-        if ($this->usesErrorHandler) {
-            ErrorHandler::instance()->enableForTestNotOnCallStack($test);
-        }
-
-        try {
-            return $callable();
-        } finally {
-            ErrorHandler::instance()->disable();
-
-            $issues = $facade->stopCollectingEvents();
-
-            $events?->record($issues, true);
-        }
-    }
-
-    /**
-     * Reports the issues that were triggered in the test case context of the
-     * property, while the test suite was built, for instance, once for the
-     * property rather than for each of its examples.
-     *
-     * @throws Throwable when an error handler that was registered before PHPUnit's own turned one of these issues into an exception
-     */
-    private function triggerTestCaseContextIssues(): void
-    {
-        if (!$this->usesErrorHandler) {
-            return;
-        }
-
-        $test = $this->test;
-
-        assert($test !== null);
-
-        $throwable = ErrorHandler::instance()->triggerTestCaseContextIssuesOfProperty($test);
-
-        if ($throwable !== null) {
-            throw $throwable;
-        }
-    }
-
-    /**
-     * @param array<non-empty-string, AbstractGenerator<mixed>> $generators
-     *
-     * @throws ExampleRejectedException
-     *
-     * @return array<non-empty-string, mixed>
-     */
-    private function generateArguments(array $generators, ChoiceSource $source): array
-    {
-        $arguments = [];
-
-        foreach ($generators as $parameterName => $generator) {
-            $arguments[$parameterName] = $generator->generate($source);
-        }
-
-        return $arguments;
-    }
-
-    /**
-     * Generates the arguments of an example that is run on its own, which
-     * is aborted when it exceeds the time limit of the example, unless the
-     * time limit cannot be enforced.
-     *
-     * @param array<non-empty-string, AbstractGenerator<mixed>> $generators
-     * @param positive-int                                      $timeLimit
-     *
-     * @throws ExampleRejectedException
-     * @throws TimeoutException
-     *
-     * @return array<non-empty-string, mixed>
-     */
-    private function generateArgumentsWithinTimeLimit(array $generators, ChoiceSource $source, int $timeLimit): array
-    {
-        if (!TestRunner::canTimeLimitBeEnforced()) {
-            // @codeCoverageIgnoreStart
-            return $this->generateArguments($generators, $source);
-            // @codeCoverageIgnoreEnd
-        }
-
-        $arguments = [];
-
-        new Invoker()->invoke(
-            function () use ($generators, $source, &$arguments): void
-            {
-                $arguments = $this->generateArguments($generators, $source);
-            },
-            [],
-            $timeLimit,
-        );
-
-        return $arguments;
-    }
-
-    /**
-     * @param array<non-empty-string, mixed> $arguments
-     * @param Constructions                  $constructions the objects that generators created with new while the arguments were generated
-     *
-     * @return array<non-empty-string, string>
-     */
-    private function export(array $arguments, Constructions $constructions): array
-    {
-        $exporter = $this->exporter($constructions);
-        $exported = [];
-
-        foreach ($arguments as $parameterName => $argument) {
-            $exported[$parameterName] = $exporter->export($argument);
-        }
-
-        return $exported;
-    }
-
-    /**
-     * @param Constructions $constructions the objects that generators created with new while the values to be exported were generated
-     */
-    private function exporter(Constructions $constructions): CounterexampleExporter
-    {
-        $definition = $this->generatorResolver()->definition();
-
-        assert($definition !== null);
-
-        return new CounterexampleExporter(
-            NameScope::forMethod(new ReflectionMethod($definition->className(), $definition->methodName())),
-            $constructions,
-        );
-    }
-
-    /**
-     * @param array<non-empty-string, mixed> $arguments
-     * @param bool                           $failureIsReported whether the failure or error of the example is the one that is reported for the property, which it is for the final replay of the minimal counterexample and for an explicit example
-     * @param ?DrawnValues                   $drawnValues       from which the example draws values with draw(), null for an explicit example
-     */
-    private function example(array $arguments, bool $failureIsReported = false, ?DrawnValues $drawnValues = null): TestCase
-    {
-        assert($this->exampleFactory !== null);
-
-        $example = ($this->exampleFactory)();
-
-        $example->setPropertyExample(new PropertyExample(array_values($arguments), $failureIsReported, $drawnValues));
-
-        return $example;
-    }
-
-    /**
-     * Runs an example with its events collected instead of dispatched, with
-     * the test runner rather than TestCase::run(), which would resolve
-     * dependencies that a property cannot have. TestCase::run() also emits
-     * the Test\PreparationStarted event of a test, so it is emitted here:
-     * like every test, every example has exactly one sequence of events from
-     * Test\PreparationStarted to Test\Finished.
-     *
-     * @param ?positive-int $timeLimit the time limit of the example in seconds, null for the configured one
-     *
-     * @throws Throwable
-     *
-     * @return array{0: EventCollection, 1: ExampleRun}
-     */
-    private function runExample(TestCase $example, Event\Emitter $emitter, bool $collectCodeCoverage, ?int $timeLimit = null): array
-    {
-        $run = null;
-
-        $events = $this->collectingEvents(
-            static function () use ($example, $emitter, $collectCodeCoverage, $timeLimit, &$run): void
-            {
-                $emitter->testPreparationStarted(
-                    $example->valueObjectForEvents(),
-                );
-
-                $run = new TestRunner($emitter)->runExampleOfProperty($example, $collectCodeCoverage, $timeLimit);
-            },
-        );
-
-        assert($run instanceof ExampleRun);
-
-        return [$events, $run];
-    }
-
-    /**
-     * Whether an example ended before it was prepared, which its events tell
-     * because the Test\Prepared event is emitted once the hook methods that
-     * are called before the test method have been called.
-     */
-    private function endedBeforeItWasPrepared(EventCollection $exampleEvents): bool
-    {
-        foreach ($exampleEvents as $event) {
-            if ($event instanceof Prepared) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     private function shouldStop(): bool
     {
         return TimeLimitHandler::deadlineReached() || TestResultFacade::shouldStop();
@@ -1978,6 +1745,32 @@ final class PropertyTestSuite extends IterativeTestSuite
         assert($this->generatorResolver !== null);
 
         return $this->generatorResolver;
+    }
+
+    /**
+     * Creates the runner of the examples of the property when the property
+     * starts running: when it is checked, or when the first example is run on
+     * its own.
+     */
+    private function startRunning(TestCase $test, Event\Code\TestMethod $valueObject): void
+    {
+        assert($this->exampleFactory !== null);
+
+        $this->test          = $valueObject;
+        $this->exampleRunner = new ExampleRunner(
+            $valueObject,
+            TestRunner::shouldErrorHandlerBeUsed($test),
+            $this->exampleFactory,
+            $this->generatorResolver(),
+            Event\Facade::instance(),
+        );
+    }
+
+    private function exampleRunner(): ExampleRunner
+    {
+        assert($this->exampleRunner !== null);
+
+        return $this->exampleRunner;
     }
 
     /**
