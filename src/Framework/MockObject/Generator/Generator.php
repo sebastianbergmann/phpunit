@@ -168,8 +168,14 @@ final class Generator
         return $this->testDouble(
             $this->declareIntersectionInterface($interfaces),
             $mockObject,
-            returnValueGeneration: $returnValueGeneration,
-            displayName: implode('&', $interfaces),
+            [],
+            [],
+            '',
+            true,
+            true,
+            $returnValueGeneration,
+            [],
+            implode('&', $interfaces),
         );
     }
 
