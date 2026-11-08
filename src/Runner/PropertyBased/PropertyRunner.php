@@ -528,6 +528,10 @@ final class PropertyRunner
      * Calls the hook methods of the test class that was prepared last that
      * are called after its last test, unless the ones that are called before
      * its first test did not succeed, as in a test run.
+     *
+     * The generators of its properties are discarded, as they can depend on
+     * what the hook methods that are called before its first test set up,
+     * which are called again when the test class is prepared again.
      */
     private function finishPreparedTestClass(): void
     {
@@ -535,7 +539,17 @@ final class PropertyRunner
 
         $this->preparedTestClass = null;
 
-        if ($preparedTestClass !== null && $preparedTestClass['outcome'] === null) {
+        if ($preparedTestClass === null) {
+            return;
+        }
+
+        foreach ($this->properties as $property) {
+            if ($property['testClass'] === $preparedTestClass['testClass']) {
+                $property['property']->discardGeneratorsOfExamplesRunOnTheirOwn();
+            }
+        }
+
+        if ($preparedTestClass['outcome'] === null) {
             $preparedTestClass['testClass']->invokeMethodsAfterLastExample();
         }
     }

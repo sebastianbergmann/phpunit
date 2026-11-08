@@ -338,6 +338,18 @@ final class PropertyTestSuite extends IterativeTestSuite
     }
 
     /**
+     * Discards the generators of the examples that are run on their own, so
+     * that they are created again for the next one. They are discarded when
+     * the test class is finished, as they can depend on what the hook methods
+     * that are called before its first test set up, setUpBeforeClass(), for
+     * instance, which are called again when the test class is prepared again.
+     */
+    public function discardGeneratorsOfExamplesRunOnTheirOwn(): void
+    {
+        $this->generatorsOfExamplesRunOnTheirOwn = null;
+    }
+
+    /**
      * @param list<Test> $tests
      *
      * @throws Event\RuntimeException
