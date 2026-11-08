@@ -26,6 +26,8 @@ use function pcntl_async_signals;
 use function pcntl_signal;
 use function pcntl_signal_get_handler;
 use function register_shutdown_function;
+use function restore_error_handler;
+use function set_error_handler;
 use function sprintf;
 use Closure;
 use PHPUnit\Event\Code\TestMethod;
@@ -181,10 +183,10 @@ final class PropertyRunner
      * when it ends the process: the handler of the SIGALRM signal, whether
      * signals are handled asynchronously, the seconds that were left until an
      * alarm of the caller, when the example started, the level of output
-     * buffering before the example started, and the process in which it
-     * started.
+     * buffering and the active error handler before the example started, and
+     * the process in which it started.
      *
-     * @var ?array{handler: callable|int, asynchronous: bool, remaining: int, started: int, outputBufferingLevel: int, process: false|int}
+     * @var ?array{handler: callable|int, asynchronous: bool, remaining: int, started: int, outputBufferingLevel: int, errorHandler: ?callable, process: false|int}
      */
     private ?array $stateOfCaller = null;
 
@@ -309,7 +311,7 @@ final class PropertyRunner
                 // enforced
                 $this->discardOutputOfExample();
 
-                ErrorHandler::instance()->disable();
+                $this->restoreErrorHandlerOfCaller();
 
                 $this->restoreSignalStateOfCaller();
 
@@ -453,6 +455,7 @@ final class PropertyRunner
             'remaining'            => pcntl_alarm(0),
             'started'              => hrtime(true),
             'outputBufferingLevel' => ob_get_level(),
+            'errorHandler'         => self::activeErrorHandler(),
             'process'              => getmypid(),
         ];
 
@@ -515,6 +518,31 @@ final class PropertyRunner
                 break;
             }
         }
+    }
+
+    /**
+     * Disables PHPUnit's error handler after an example that ended the
+     * process, and removes the error handlers that the example registered
+     * without removing them, which are on top of PHPUnit's, so that the error
+     * handler of the caller is active again, as after any other example.
+     */
+    private function restoreErrorHandlerOfCaller(): void
+    {
+        $state = $this->stateOfCaller;
+
+        if ($state !== null) {
+            while (true) {
+                $handler = self::activeErrorHandler();
+
+                if ($handler === null || $handler === $state['errorHandler'] || $handler === ErrorHandler::instance()) {
+                    break;
+                }
+
+                restore_error_handler();
+            }
+        }
+
+        ErrorHandler::instance()->disable();
     }
 
     /**
@@ -624,6 +652,19 @@ final class PropertyRunner
                 ),
             );
         }
+    }
+
+    /**
+     * The error handler that is active, which PHP only tells when another one
+     * is set.
+     */
+    private static function activeErrorHandler(): ?callable
+    {
+        $handler = set_error_handler(static fn (): bool => false);
+
+        restore_error_handler();
+
+        return $handler;
     }
 
     /**
