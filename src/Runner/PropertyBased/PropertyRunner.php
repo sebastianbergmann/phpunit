@@ -28,6 +28,7 @@ use function pcntl_signal_get_handler;
 use function register_shutdown_function;
 use function restore_error_handler;
 use function set_error_handler;
+use function spl_object_id;
 use function sprintf;
 use Closure;
 use PHPUnit\Event\Code\TestMethod;
@@ -174,6 +175,16 @@ final class PropertyRunner
     private readonly array $properties;
 
     /**
+     * The suites of the properties of each test class, by the ID of the
+     * object of the suite of the test class, so that finishing a test class
+     * does not take time that grows with the number of properties of the
+     * test suite.
+     *
+     * @var array<int, non-empty-list<PropertyTestSuite>>
+     */
+    private readonly array $propertiesOfTestClass;
+
+    /**
      * @var ?positive-int
      */
     private readonly ?int $randomSeed;
@@ -299,7 +310,15 @@ final class PropertyRunner
     private function __construct(array $properties, ?int $randomSeed)
     {
         $this->properties = $properties;
-        $this->randomSeed = $randomSeed;
+
+        $propertiesOfTestClass = [];
+
+        foreach ($properties as $property) {
+            $propertiesOfTestClass[spl_object_id($property['testClass'])][] = $property['property'];
+        }
+
+        $this->propertiesOfTestClass = $propertiesOfTestClass;
+        $this->randomSeed            = $randomSeed;
 
         register_shutdown_function(
             function (): void
@@ -603,9 +622,11 @@ final class PropertyRunner
             return;
         }
 
-        foreach ($this->properties as $property) {
-            if ($property['testClass'] === $preparedTestClass['testClass']) {
-                $property['property']->discardGeneratorsOfExamplesRunOnTheirOwn();
+        $testClass = spl_object_id($preparedTestClass['testClass']);
+
+        if (isset($this->propertiesOfTestClass[$testClass])) {
+            foreach ($this->propertiesOfTestClass[$testClass] as $property) {
+                $property->discardGeneratorsOfExamplesRunOnTheirOwn();
             }
         }
 
