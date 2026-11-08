@@ -11,6 +11,7 @@ namespace PHPUnit\Runner\PropertyBased;
 
 use const SIGALRM;
 use function array_is_list;
+use function assert;
 use function count;
 use function getmypid;
 use function hrtime;
@@ -25,6 +26,7 @@ use function pcntl_signal_get_handler;
 use function register_shutdown_function;
 use function sprintf;
 use Closure;
+use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Event\Test\PhpunitErrorTriggered;
 use PHPUnit\Event\TestRunner\PhpunitWarningTriggered;
@@ -162,7 +164,7 @@ final class PropertyRunner
     private static bool $booted = false;
 
     /**
-     * @var array<non-empty-string, array{property: PropertyTestSuite, testClass: ?TestSuite}>
+     * @var array<non-empty-string, array{property: PropertyTestSuite, test: TestMethod, testClass: TestSuite}>
      */
     private readonly array $properties;
 
@@ -279,12 +281,12 @@ final class PropertyRunner
             $randomSeed = $configuration->randomSeed();
         }
 
-        return new self(self::propertiesIn($testSuite, null), $randomSeed);
+        return new self(self::propertiesIn($testSuite), $randomSeed);
     }
 
     /**
-     * @param array<non-empty-string, array{property: PropertyTestSuite, testClass: ?TestSuite}> $properties
-     * @param ?positive-int                                                                      $randomSeed
+     * @param array<non-empty-string, array{property: PropertyTestSuite, test: TestMethod, testClass: TestSuite}> $properties
+     * @param ?positive-int                                                                                       $randomSeed
      */
     private function __construct(array $properties, ?int $randomSeed)
     {
@@ -323,7 +325,7 @@ final class PropertyRunner
         $properties = [];
 
         foreach ($this->properties as $id => $property) {
-            $test = self::testOf($property['property'])->valueObjectForEvents();
+            $test = $property['test'];
 
             $properties[] = [
                 'id'     => $id,
@@ -488,14 +490,8 @@ final class PropertyRunner
      *
      * @throws Exception
      */
-    private function resultOfTestClass(?TestSuite $testClass): ?ExampleResult
+    private function resultOfTestClass(TestSuite $testClass): ?ExampleResult
     {
-        if ($testClass === null) {
-            // @codeCoverageIgnoreStart
-            return null;
-            // @codeCoverageIgnoreEnd
-        }
-
         if ($this->preparedTestClass === null || $this->preparedTestClass['testClass'] !== $testClass) {
             $this->finishPreparedTestClass();
 
@@ -561,7 +557,7 @@ final class PropertyRunner
      *
      * @throws PropertyDoesNotExistException
      *
-     * @return array{property: PropertyTestSuite, testClass: ?TestSuite}
+     * @return array{property: PropertyTestSuite, test: TestMethod, testClass: TestSuite}
      */
     private function property(string $id): array
     {
@@ -674,20 +670,33 @@ final class PropertyRunner
     }
 
     /**
-     * @return array<non-empty-string, array{property: PropertyTestSuite, testClass: ?TestSuite}>
+     * The suite of a property is in the suite of its test class, as the tests
+     * of the test methods of a test class are only built for the suite of the
+     * test class, and the suite of a property is never in another suite of
+     * its test method, for repeating it or retrying it, for instance.
+     *
+     * @return array<non-empty-string, array{property: PropertyTestSuite, test: TestMethod, testClass: TestSuite}>
      */
-    private static function propertiesIn(TestSuite $testSuite, ?TestSuite $testClass): array
+    private static function propertiesIn(TestSuite $testSuite): array
     {
         $properties = [];
 
         foreach ($testSuite as $test) {
             if ($test instanceof PropertyTestSuite) {
+                assert($testSuite->isForTestClass());
+
                 // a filter leaves the suite of a property in the test suite,
                 // and leaves out the test of the property when it does not
                 // match
                 foreach ($test as $property) {
                     if ($property instanceof TestCase) {
-                        $properties[$property->valueObjectForEvents()->id()] = ['property' => $test, 'testClass' => $testClass];
+                        $valueObject = $property->valueObjectForEvents();
+
+                        $properties[$valueObject->id()] = [
+                            'property'  => $test,
+                            'test'      => $valueObject,
+                            'testClass' => $testSuite,
+                        ];
                     }
                 }
 
@@ -695,30 +704,16 @@ final class PropertyRunner
             }
 
             if ($test instanceof TestSuite) {
-                $testClassOfTest = $testClass;
-
-                if ($test->isForTestClass()) {
-                    $testClassOfTest = $test;
+                // the properties of a nested test suite are added one at a
+                // time, as merging the arrays takes time that grows
+                // quadratically with the number of test classes
+                foreach (self::propertiesIn($test) as $id => $property) {
+                    $properties[$id] = $property;
                 }
-
-                $properties = [...$properties, ...self::propertiesIn($test, $testClassOfTest)];
             }
         }
 
         return $properties;
-    }
-
-    private static function testOf(PropertyTestSuite $property): TestCase
-    {
-        $tests = $property->tests();
-
-        if (!isset($tests[0]) || !$tests[0] instanceof TestCase) {
-            // @codeCoverageIgnoreStart
-            throw new PropertyDoesNotExistException($property->name());
-            // @codeCoverageIgnoreEnd
-        }
-
-        return $tests[0];
     }
 
     /**
