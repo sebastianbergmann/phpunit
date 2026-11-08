@@ -11,13 +11,13 @@ namespace PHPUnit\Metadata;
 
 /**
  * A method of a state machine that is called once before its steps are
- * taken, which is specified with the #[Initialize] attribute.
+ * taken, which is specified with the #[InitializeStateMachine] attribute.
  *
  * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class Initialize extends Metadata
+final readonly class InitializeStateMachine extends Metadata
 {
     private ?string $produces;
 
@@ -28,7 +28,7 @@ final readonly class Initialize extends Metadata
         $this->produces = $produces;
     }
 
-    public function isInitialize(): true
+    public function isInitializeStateMachine(): true
     {
         return true;
     }

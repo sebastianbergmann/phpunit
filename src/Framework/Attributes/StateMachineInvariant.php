@@ -13,16 +13,16 @@ use Attribute;
 
 /**
  * A public method of a state machine with this attribute is an invariant:
- * TestCase::runStateMachine() calls it after the methods with #[Initialize]
- * and after every step, or, with $atEnd, only after the methods with
- * #[Initialize] and after the last step, which is meant for invariants that
- * are expensive to check. An invariant does not hold when it fails an
- * assertion or raises an exception.
+ * TestCase::runStateMachine() calls it after the methods with
+ * #[InitializeStateMachine] and after every step, or, with $atEnd, only after
+ * the methods with #[InitializeStateMachine] and after the last step, which is
+ * meant for invariants that are expensive to check. An invariant does not hold
+ * when it fails an assertion or raises an exception.
  *
  * @immutable
  */
 #[Attribute(Attribute::TARGET_METHOD)]
-final readonly class Invariant
+final readonly class StateMachineInvariant
 {
     private bool $atEnd;
 

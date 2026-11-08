@@ -64,8 +64,7 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\IgnorePhpunitDeprecations;
 use PHPUnit\Framework\Attributes\IgnorePhpunitWarnings;
-use PHPUnit\Framework\Attributes\Initialize;
-use PHPUnit\Framework\Attributes\Invariant;
+use PHPUnit\Framework\Attributes\InitializeStateMachine;
 use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\PostCondition;
@@ -86,10 +85,11 @@ use PHPUnit\Framework\Attributes\RequiresPhpunit;
 use PHPUnit\Framework\Attributes\RequiresPhpunitExtension;
 use PHPUnit\Framework\Attributes\RequiresSetting;
 use PHPUnit\Framework\Attributes\Retry;
-use PHPUnit\Framework\Attributes\Rule;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\StateMachineInvariant;
+use PHPUnit\Framework\Attributes\StateMachineRule;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\TestDoxFormatter;
@@ -1030,24 +1030,24 @@ final class AttributeParser implements Parser
 
                     break;
 
-                case Rule::class:
-                    assert($attributeInstance instanceof Rule);
+                case StateMachineRule::class:
+                    assert($attributeInstance instanceof StateMachineRule);
 
-                    $result[] = Metadata::rule($attributeInstance->precondition(), $attributeInstance->produces());
-
-                    break;
-
-                case Initialize::class:
-                    assert($attributeInstance instanceof Initialize);
-
-                    $result[] = Metadata::initialize($attributeInstance->produces());
+                    $result[] = Metadata::stateMachineRule($attributeInstance->precondition(), $attributeInstance->produces());
 
                     break;
 
-                case Invariant::class:
-                    assert($attributeInstance instanceof Invariant);
+                case InitializeStateMachine::class:
+                    assert($attributeInstance instanceof InitializeStateMachine);
 
-                    $result[] = Metadata::invariant($attributeInstance->atEnd());
+                    $result[] = Metadata::initializeStateMachine($attributeInstance->produces());
+
+                    break;
+
+                case StateMachineInvariant::class:
+                    assert($attributeInstance instanceof StateMachineInvariant);
+
+                    $result[] = Metadata::stateMachineInvariant($attributeInstance->atEnd());
 
                     break;
 

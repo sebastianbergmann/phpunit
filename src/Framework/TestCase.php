@@ -1177,14 +1177,15 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     /**
      * Runs a state machine in the body of a property: an object whose methods
-     * with #[Rule] are the steps that can be taken, whose methods with
-     * #[Initialize] are called before the first step, and whose methods with
-     * #[Invariant] are called after each step, or only after the last one with
-     * #[Invariant(atEnd: true)]. The steps are drawn like the
-     * values that are drawn with draw(), so they are replayed and shrunk
-     * together with the arguments of the property, and the steps that the
-     * minimal counterexample takes are reported as PHP code that calls the
-     * methods of the state machine, which is referred to as $machine.
+     * with #[StateMachineRule] are the steps that can be taken, whose methods
+     * with #[InitializeStateMachine] are called before the first step, and
+     * whose methods with #[StateMachineInvariant] are called after each step,
+     * or only after the last one with #[StateMachineInvariant(atEnd: true)].
+     * The steps are drawn like the values that are drawn with draw(), so they
+     * are replayed and shrunk together with the arguments of the property, and
+     * the steps that the minimal counterexample takes are reported as PHP code
+     * that calls the methods of the state machine, which is referred to as
+     * $machine.
      *
      * The number of steps that each example takes, and the number of steps
      * that it takes with each rule, are observed as by observe(). The current

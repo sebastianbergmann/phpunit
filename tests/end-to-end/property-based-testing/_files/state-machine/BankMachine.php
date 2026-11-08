@@ -12,8 +12,8 @@ namespace PHPUnit\TestFixture\PropertyBasedTesting\StateMachine;
 use function sprintf;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Attributes\FromPool;
-use PHPUnit\Framework\Attributes\Invariant;
-use PHPUnit\Framework\Attributes\Rule;
+use PHPUnit\Framework\Attributes\StateMachineInvariant;
+use PHPUnit\Framework\Attributes\StateMachineRule;
 
 /**
  * Compares the bank and its projection with a model of the balances of the
@@ -45,7 +45,7 @@ final class BankMachine
         $this->projection = $projection;
     }
 
-    #[Rule(produces: 'accounts')]
+    #[StateMachineRule(produces: 'accounts')]
     public function open(): AccountId
     {
         $account = $this->bank->openAccount();
@@ -60,7 +60,7 @@ final class BankMachine
      *
      * @return list<object>
      */
-    #[Rule]
+    #[StateMachineRule]
     public function deposit(#[FromPool('accounts')] AccountId $account, int $amount): array
     {
         $events = $this->bank->deposit($account, $amount);
@@ -75,7 +75,7 @@ final class BankMachine
      *
      * @return list<object>
      */
-    #[Rule]
+    #[StateMachineRule]
     public function withdraw(#[FromPool('accounts')] AccountId $account, int $amount): array
     {
         if ($amount > $this->balances[$account->value]) {
@@ -96,7 +96,7 @@ final class BankMachine
         return $events;
     }
 
-    #[Rule]
+    #[StateMachineRule]
     public function catchUpProjection(): void
     {
         $this->projection->catchUp($this->store);
@@ -104,13 +104,13 @@ final class BankMachine
         $this->projectedBalances = $this->balances;
     }
 
-    #[Invariant]
+    #[StateMachineInvariant]
     public function projectionMatchesTheModel(): void
     {
         Assert::assertSame($this->projectedBalances, $this->projection->balances());
     }
 
-    #[Invariant(atEnd: true)]
+    #[StateMachineInvariant(atEnd: true)]
     public function accountsRebuiltFromTheirEventsMatchTheModel(): void
     {
         foreach ($this->balances as $account => $balance) {

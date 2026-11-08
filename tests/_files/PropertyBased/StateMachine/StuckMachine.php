@@ -9,11 +9,11 @@
  */
 namespace PHPUnit\TestFixture\PropertyBased\StateMachine;
 
-use PHPUnit\Framework\Attributes\Rule;
+use PHPUnit\Framework\Attributes\StateMachineRule;
 
 final class StuckMachine
 {
-    #[Rule(precondition: 'canStep')]
+    #[StateMachineRule(precondition: 'canStep')]
     public function step(): void
     {
     }

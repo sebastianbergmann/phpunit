@@ -670,26 +670,26 @@ final class MetadataCollectionTest extends TestCase
 
     public function test_Can_be_filtered_for_Rule(): void
     {
-        $collection = $this->collectionWithOneOfEach()->isRule();
+        $collection = $this->collectionWithOneOfEach()->isStateMachineRule();
 
         $this->assertCount(1, $collection);
-        $this->assertTrue($collection->asArray()[0]->isRule());
+        $this->assertTrue($collection->asArray()[0]->isStateMachineRule());
     }
 
     public function test_Can_be_filtered_for_Initialize(): void
     {
-        $collection = $this->collectionWithOneOfEach()->isInitialize();
+        $collection = $this->collectionWithOneOfEach()->isInitializeStateMachine();
 
         $this->assertCount(1, $collection);
-        $this->assertTrue($collection->asArray()[0]->isInitialize());
+        $this->assertTrue($collection->asArray()[0]->isInitializeStateMachine());
     }
 
     public function test_Can_be_filtered_for_Invariant(): void
     {
-        $collection = $this->collectionWithOneOfEach()->isInvariant();
+        $collection = $this->collectionWithOneOfEach()->isStateMachineInvariant();
 
         $this->assertCount(1, $collection);
-        $this->assertTrue($collection->asArray()[0]->isInvariant());
+        $this->assertTrue($collection->asArray()[0]->isStateMachineInvariant());
     }
 
     public function test_Can_be_filtered_for_FromPool(): void
@@ -807,9 +807,9 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::forAll('value', self::class, 'provider'),
                 Metadata::generatorFor(self::class),
                 Metadata::requireClassification('label', 10.0),
-                Metadata::rule(null, null),
-                Metadata::initialize(null),
-                Metadata::invariant(false),
+                Metadata::stateMachineRule(null, null),
+                Metadata::initializeStateMachine(null),
+                Metadata::stateMachineInvariant(false),
                 Metadata::fromPool('value', 'pool', false),
                 Metadata::useGeneratorsOnMethod(self::class),
                 Metadata::property(null),

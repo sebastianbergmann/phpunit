@@ -10,7 +10,7 @@
 namespace PHPUnit\TestFixture\PropertyBased\StateMachine;
 
 use PHPUnit\Framework\Attributes\ForAll;
-use PHPUnit\Framework\Attributes\Rule;
+use PHPUnit\Framework\Attributes\StateMachineRule;
 use PHPUnit\Framework\PropertyBased\Generators;
 use PHPUnit\Framework\PropertyBased\ValueGenerator;
 
@@ -19,7 +19,7 @@ use PHPUnit\Framework\PropertyBased\ValueGenerator;
  */
 final class StateMachineWithGeneratorSpecifiedWithClosure
 {
-    #[Rule]
+    #[StateMachineRule]
     public function step(
         #[ForAll(static function (): ValueGenerator
         {

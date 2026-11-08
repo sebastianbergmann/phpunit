@@ -12,10 +12,10 @@ namespace PHPUnit\Framework\Attributes;
 use Attribute;
 
 /**
- * A parameter of a rule or of a method with #[Initialize] of a state machine
- * with this attribute receives one of the values that earlier steps added to
- * the pool, rather than a generated value. With $consume, the value is
- * removed from the pool.
+ * A parameter of a rule or of a method with #[InitializeStateMachine] of a
+ * state machine with this attribute receives one of the values that earlier
+ * steps added to the pool, rather than a generated value. With $consume, the
+ * value is removed from the pool.
  *
  * @immutable
  */

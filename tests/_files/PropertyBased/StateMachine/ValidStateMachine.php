@@ -11,9 +11,9 @@ namespace PHPUnit\TestFixture\PropertyBased\StateMachine;
 
 use PHPUnit\Framework\Attributes\ForAll;
 use PHPUnit\Framework\Attributes\FromPool;
-use PHPUnit\Framework\Attributes\Initialize;
-use PHPUnit\Framework\Attributes\Invariant;
-use PHPUnit\Framework\Attributes\Rule;
+use PHPUnit\Framework\Attributes\InitializeStateMachine;
+use PHPUnit\Framework\Attributes\StateMachineInvariant;
+use PHPUnit\Framework\Attributes\StateMachineRule;
 use PHPUnit\Framework\PropertyBased\Generators;
 use PHPUnit\Framework\PropertyBased\ValueGenerator;
 
@@ -40,7 +40,7 @@ final class ValidStateMachine
         return Generators::elements(['a', 'b']);
     }
 
-    #[Initialize(produces: 'accounts')]
+    #[InitializeStateMachine(produces: 'accounts')]
     public function openInitialAccount(): string
     {
         $this->balances['initial'] = 0;
@@ -48,12 +48,12 @@ final class ValidStateMachine
         return 'initial';
     }
 
-    #[Initialize]
+    #[InitializeStateMachine]
     public function seed(int $value): void
     {
     }
 
-    #[Rule(produces: 'accounts')]
+    #[StateMachineRule(produces: 'accounts')]
     public function open(#[ForAll('names')] string $name): string
     {
         $this->balances[$name] = 0;
@@ -61,13 +61,13 @@ final class ValidStateMachine
         return $name;
     }
 
-    #[Rule]
+    #[StateMachineRule]
     public function deposit(#[FromPool('accounts')] string $account, #[ForAll('amounts')] int $amount): void
     {
         $this->balances[$account] += $amount;
     }
 
-    #[Rule(precondition: 'hasAccounts')]
+    #[StateMachineRule(precondition: 'hasAccounts')]
     public function close(#[FromPool('accounts', consume: true)] string $account): void
     {
         unset($this->balances[$account]);
@@ -78,12 +78,12 @@ final class ValidStateMachine
         return $this->balances !== [];
     }
 
-    #[Invariant]
+    #[StateMachineInvariant]
     public function balancesAreNotNegative(): void
     {
     }
 
-    #[Invariant(atEnd: true)]
+    #[StateMachineInvariant(atEnd: true)]
     public function balancesAddUp(): void
     {
     }

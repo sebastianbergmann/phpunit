@@ -408,32 +408,32 @@ final readonly class MetadataCollection implements Countable, IteratorAggregate
         );
     }
 
-    public function isRule(): self
+    public function isStateMachineRule(): self
     {
         return new self(
             ...array_filter(
                 $this->metadata,
-                static fn (Metadata $metadata): bool => $metadata->isRule(),
+                static fn (Metadata $metadata): bool => $metadata->isStateMachineRule(),
             ),
         );
     }
 
-    public function isInitialize(): self
+    public function isInitializeStateMachine(): self
     {
         return new self(
             ...array_filter(
                 $this->metadata,
-                static fn (Metadata $metadata): bool => $metadata->isInitialize(),
+                static fn (Metadata $metadata): bool => $metadata->isInitializeStateMachine(),
             ),
         );
     }
 
-    public function isInvariant(): self
+    public function isStateMachineInvariant(): self
     {
         return new self(
             ...array_filter(
                 $this->metadata,
-                static fn (Metadata $metadata): bool => $metadata->isInvariant(),
+                static fn (Metadata $metadata): bool => $metadata->isStateMachineInvariant(),
             ),
         );
     }

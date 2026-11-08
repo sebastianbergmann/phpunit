@@ -13,9 +13,9 @@ use function sprintf;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Attributes\ForAll;
 use PHPUnit\Framework\Attributes\FromPool;
-use PHPUnit\Framework\Attributes\Initialize;
-use PHPUnit\Framework\Attributes\Invariant;
-use PHPUnit\Framework\Attributes\Rule;
+use PHPUnit\Framework\Attributes\InitializeStateMachine;
+use PHPUnit\Framework\Attributes\StateMachineInvariant;
+use PHPUnit\Framework\Attributes\StateMachineRule;
 use PHPUnit\Framework\PropertyBased\Generators;
 use PHPUnit\Framework\PropertyBased\ValueGenerator;
 
@@ -35,7 +35,7 @@ final class CounterMachine
         return Generators::integers(0, 3);
     }
 
-    #[Initialize]
+    #[InitializeStateMachine]
     public function start(#[ForAll('startValues')] int $value): void
     {
         $this->calls[] = sprintf('start(%d)', $value);
@@ -43,7 +43,7 @@ final class CounterMachine
         $this->counter = $value;
     }
 
-    #[Rule(produces: 'snapshots')]
+    #[StateMachineRule(produces: 'snapshots')]
     public function snapshot(): int
     {
         $this->calls[] = 'snapshot()';
@@ -54,7 +54,7 @@ final class CounterMachine
     /**
      * @param int<1, 3> $amount
      */
-    #[Rule]
+    #[StateMachineRule]
     public function increment(int $amount): int
     {
         $this->calls[] = sprintf('increment(%d)', $amount);
@@ -64,7 +64,7 @@ final class CounterMachine
         return $this->counter;
     }
 
-    #[Rule(precondition: 'isPositive')]
+    #[StateMachineRule(precondition: 'isPositive')]
     public function decrement(): void
     {
         $this->calls[] = 'decrement()';
@@ -72,7 +72,7 @@ final class CounterMachine
         $this->counter--;
     }
 
-    #[Rule]
+    #[StateMachineRule]
     public function restore(#[FromPool('snapshots', consume: true)] int $snapshot): void
     {
         $this->calls[] = sprintf('restore(%d)', $snapshot);
@@ -85,7 +85,7 @@ final class CounterMachine
         return $this->counter > 0;
     }
 
-    #[Invariant]
+    #[StateMachineInvariant]
     public function isNotNegative(): void
     {
         $this->calls[] = 'isNotNegative()';
@@ -93,7 +93,7 @@ final class CounterMachine
         Assert::assertGreaterThanOrEqual(0, $this->counter);
     }
 
-    #[Invariant(atEnd: true)]
+    #[StateMachineInvariant(atEnd: true)]
     public function checkedAtEnd(): void
     {
         $this->calls[] = 'checkedAtEnd()';

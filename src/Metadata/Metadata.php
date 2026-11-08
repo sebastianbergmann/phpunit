@@ -286,19 +286,19 @@ abstract readonly class Metadata
         return new RequireClassification(Level::METHOD_LEVEL, $label, $minimumPercentage);
     }
 
-    public static function rule(?string $precondition, ?string $produces): Rule
+    public static function stateMachineRule(?string $precondition, ?string $produces): StateMachineRule
     {
-        return new Rule(Level::METHOD_LEVEL, $precondition, $produces);
+        return new StateMachineRule(Level::METHOD_LEVEL, $precondition, $produces);
     }
 
-    public static function initialize(?string $produces): Initialize
+    public static function initializeStateMachine(?string $produces): InitializeStateMachine
     {
-        return new Initialize(Level::METHOD_LEVEL, $produces);
+        return new InitializeStateMachine(Level::METHOD_LEVEL, $produces);
     }
 
-    public static function invariant(bool $atEnd): Invariant
+    public static function stateMachineInvariant(bool $atEnd): StateMachineInvariant
     {
-        return new Invariant(Level::METHOD_LEVEL, $atEnd);
+        return new StateMachineInvariant(Level::METHOD_LEVEL, $atEnd);
     }
 
     /**
@@ -1098,25 +1098,25 @@ abstract readonly class Metadata
     }
 
     /**
-     * @phpstan-assert-if-true Rule $this
+     * @phpstan-assert-if-true StateMachineRule $this
      */
-    public function isRule(): bool
+    public function isStateMachineRule(): bool
     {
         return false;
     }
 
     /**
-     * @phpstan-assert-if-true Initialize $this
+     * @phpstan-assert-if-true InitializeStateMachine $this
      */
-    public function isInitialize(): bool
+    public function isInitializeStateMachine(): bool
     {
         return false;
     }
 
     /**
-     * @phpstan-assert-if-true Invariant $this
+     * @phpstan-assert-if-true StateMachineInvariant $this
      */
-    public function isInvariant(): bool
+    public function isStateMachineInvariant(): bool
     {
         return false;
     }

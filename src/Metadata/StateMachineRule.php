@@ -10,13 +10,14 @@
 namespace PHPUnit\Metadata;
 
 /**
- * A rule of a state machine, which is specified with the #[Rule] attribute.
+ * A rule of a state machine, which is specified with the #[StateMachineRule]
+ * attribute.
  *
  * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class Rule extends Metadata
+final readonly class StateMachineRule extends Metadata
 {
     private ?string $precondition;
     private ?string $produces;
@@ -29,7 +30,7 @@ final readonly class Rule extends Metadata
         $this->produces     = $produces;
     }
 
-    public function isRule(): true
+    public function isStateMachineRule(): true
     {
         return true;
     }

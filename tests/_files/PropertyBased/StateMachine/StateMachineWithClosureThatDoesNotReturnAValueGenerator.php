@@ -10,14 +10,14 @@
 namespace PHPUnit\TestFixture\PropertyBased\StateMachine;
 
 use PHPUnit\Framework\Attributes\ForAll;
-use PHPUnit\Framework\Attributes\Rule;
+use PHPUnit\Framework\Attributes\StateMachineRule;
 
 /**
  * Closures in attributes require PHP 8.5.
  */
 final class StateMachineWithClosureThatDoesNotReturnAValueGenerator
 {
-    #[Rule]
+    #[StateMachineRule]
     public function step(
         #[ForAll(static function (): int
         {

@@ -20,9 +20,8 @@ use PHPUnit\Metadata\ForAll;
 use PHPUnit\Metadata\FromPool;
 use PHPUnit\Metadata\GeneratorFor;
 use PHPUnit\Metadata\Group;
-use PHPUnit\Metadata\Initialize;
+use PHPUnit\Metadata\InitializeStateMachine;
 use PHPUnit\Metadata\InvalidAttribute;
-use PHPUnit\Metadata\Invariant;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Property;
 use PHPUnit\Metadata\Repeat;
@@ -34,7 +33,8 @@ use PHPUnit\Metadata\RequiresPhpunit;
 use PHPUnit\Metadata\RequiresPhpunitExtension;
 use PHPUnit\Metadata\RequiresSetting;
 use PHPUnit\Metadata\Retry;
-use PHPUnit\Metadata\Rule;
+use PHPUnit\Metadata\StateMachineInvariant;
+use PHPUnit\Metadata\StateMachineRule;
 use PHPUnit\Metadata\UseGenerators;
 use PHPUnit\Metadata\Version\ComparisonRequirement;
 use PHPUnit\Metadata\Version\ConstraintRequirement;
@@ -1480,71 +1480,71 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertSame(0.5, $second->minimumPercentage());
     }
 
-    #[TestDox('Parses #[Rule] attribute on method')]
+    #[TestDox('Parses #[StateMachineRule] attribute on method')]
     public function test_parses_Rule_attribute_on_method(): void
     {
-        $metadata = $this->parser()->forMethod(StateMachine::class, 'withdraw')->isRule();
+        $metadata = $this->parser()->forMethod(StateMachine::class, 'withdraw')->isStateMachineRule();
 
         $this->assertCount(1, $metadata);
 
         $rule = $metadata->asArray()[0];
 
-        assert($rule instanceof Rule);
+        assert($rule instanceof StateMachineRule);
 
-        $this->assertTrue($rule->isRule());
+        $this->assertTrue($rule->isStateMachineRule());
         $this->assertSame('canWithdraw', $rule->preconditionMethod());
         $this->assertSame('receipts', $rule->produces());
     }
 
-    #[TestDox('Parses #[Rule] attribute without precondition and pool on method')]
+    #[TestDox('Parses #[StateMachineRule] attribute without precondition and pool on method')]
     public function test_parses_Rule_attribute_without_precondition_and_pool_on_method(): void
     {
-        $metadata = $this->parser()->forMethod(StateMachine::class, 'rule')->isRule();
+        $metadata = $this->parser()->forMethod(StateMachine::class, 'rule')->isStateMachineRule();
 
         $this->assertCount(1, $metadata);
 
         $rule = $metadata->asArray()[0];
 
-        assert($rule instanceof Rule);
+        assert($rule instanceof StateMachineRule);
 
         $this->assertNull($rule->preconditionMethod());
         $this->assertNull($rule->produces());
     }
 
-    #[TestDox('Parses #[Initialize] attribute on method')]
+    #[TestDox('Parses #[InitializeStateMachine] attribute on method')]
     public function test_parses_Initialize_attribute_on_method(): void
     {
-        $metadata = $this->parser()->forMethod(StateMachine::class, 'initialize')->isInitialize();
+        $metadata = $this->parser()->forMethod(StateMachine::class, 'initialize')->isInitializeStateMachine();
 
         $this->assertCount(1, $metadata);
 
         $initialize = $metadata->asArray()[0];
 
-        assert($initialize instanceof Initialize);
+        assert($initialize instanceof InitializeStateMachine);
 
-        $this->assertTrue($initialize->isInitialize());
+        $this->assertTrue($initialize->isInitializeStateMachine());
         $this->assertSame('accounts', $initialize->produces());
     }
 
-    #[TestDox('Parses #[Invariant] attribute on method')]
+    #[TestDox('Parses #[StateMachineInvariant] attribute on method')]
     public function test_parses_Invariant_attribute_on_method(): void
     {
-        $everyStep = $this->parser()->forMethod(StateMachine::class, 'invariant')->isInvariant();
-        $atEnd     = $this->parser()->forMethod(StateMachine::class, 'invariantAtEnd')->isInvariant();
+        $everyStep = $this->parser()->forMethod(StateMachine::class, 'invariant')->isStateMachineInvariant();
+        $atEnd     = $this->parser()->forMethod(StateMachine::class, 'invariantAtEnd')->isStateMachineInvariant();
 
         $this->assertCount(1, $everyStep);
         $this->assertCount(1, $atEnd);
 
         $invariant = $everyStep->asArray()[0];
 
-        assert($invariant instanceof Invariant);
+        assert($invariant instanceof StateMachineInvariant);
 
-        $this->assertTrue($invariant->isInvariant());
+        $this->assertTrue($invariant->isStateMachineInvariant());
         $this->assertFalse($invariant->atEnd());
 
         $invariant = $atEnd->asArray()[0];
 
-        assert($invariant instanceof Invariant);
+        assert($invariant instanceof StateMachineInvariant);
 
         $this->assertTrue($invariant->atEnd());
     }

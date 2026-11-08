@@ -28,11 +28,11 @@ use PHPUnit\Framework\PropertyBased\ValueGenerator;
 use PHPUnit\Framework\PropertyBased\ValueGeneratorNotSupportedException;
 use PHPUnit\Metadata\ForAll;
 use PHPUnit\Metadata\FromPool;
-use PHPUnit\Metadata\Initialize;
-use PHPUnit\Metadata\Invariant;
+use PHPUnit\Metadata\InitializeStateMachine;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
-use PHPUnit\Metadata\Rule;
+use PHPUnit\Metadata\StateMachineInvariant;
+use PHPUnit\Metadata\StateMachineRule;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionNamedType;
@@ -76,9 +76,9 @@ final readonly class StateMachineDefinitionBuilder
             assert($methodName !== '');
 
             $metadata   = MetadataRegistry::parser()->forMethod($method->getDeclaringClass()->getName(), $methodName);
-            $rule       = $metadata->isRule();
-            $initialize = $metadata->isInitialize();
-            $invariant  = $metadata->isInvariant();
+            $rule       = $metadata->isStateMachineRule();
+            $initialize = $metadata->isInitializeStateMachine();
+            $invariant  = $metadata->isStateMachineInvariant();
 
             if (count($rule) + count($initialize) + count($invariant) === 0) {
                 continue;
@@ -87,14 +87,14 @@ final readonly class StateMachineDefinitionBuilder
             if (count($rule) + count($initialize) + count($invariant) > 1) {
                 throw InvalidStateMachineException::because(
                     $className,
-                    sprintf('method %s() has more than one of #[Rule], #[Initialize], and #[Invariant]', $methodName),
+                    sprintf('method %s() has more than one of #[StateMachineRule], #[InitializeStateMachine], and #[StateMachineInvariant]', $methodName),
                 );
             }
 
             if ($invariant->isNotEmpty()) {
                 $item = $invariant->asArray()[0];
 
-                assert($item instanceof Invariant);
+                assert($item instanceof StateMachineInvariant);
 
                 $this->ensureCanBeCalled($className, $method, sprintf('invariant %s()', $methodName));
 
@@ -117,7 +117,7 @@ final readonly class StateMachineDefinitionBuilder
             if ($rule->isNotEmpty()) {
                 $item = $rule->asArray()[0];
 
-                assert($item instanceof Rule);
+                assert($item instanceof StateMachineRule);
 
                 $description  = sprintf('rule %s()', $methodName);
                 $precondition = $item->preconditionMethod();
@@ -140,7 +140,7 @@ final readonly class StateMachineDefinitionBuilder
             if ($initialize->isNotEmpty()) {
                 $item = $initialize->asArray()[0];
 
-                assert($item instanceof Initialize);
+                assert($item instanceof InitializeStateMachine);
 
                 $description = sprintf('initialization %s()', $methodName);
 
@@ -154,7 +154,7 @@ final readonly class StateMachineDefinitionBuilder
         }
 
         if ($rules === []) {
-            throw InvalidStateMachineException::because($className, 'it has no method with #[Rule]');
+            throw InvalidStateMachineException::because($className, 'it has no method with #[StateMachineRule]');
         }
 
         $this->ensurePoolsAreProduced($className, $initializations, $rules);

@@ -9,11 +9,11 @@
  */
 namespace PHPUnit\TestFixture\PropertyBasedTesting\StateMachine;
 
-use PHPUnit\Framework\Attributes\Invariant;
+use PHPUnit\Framework\Attributes\StateMachineInvariant;
 
 final class MachineWithoutRules
 {
-    #[Invariant]
+    #[StateMachineInvariant]
     public function invariant(): void
     {
     }

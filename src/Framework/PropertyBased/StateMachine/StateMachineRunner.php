@@ -55,8 +55,8 @@ use Throwable;
  * No more steps are taken when no rule can be applied.
  *
  * The invariants are checked after the initializations and after every step,
- * except for those with #[Invariant(atEnd: true)], which are checked after the
- * initializations and after the last step.
+ * except for those with #[StateMachineInvariant(atEnd: true)], which are
+ * checked after the initializations and after the last step.
  *
  * With an exporter, the steps are recorded as PHP code that calls the methods
  * of the state machine, for the report of the minimal counterexample: a value

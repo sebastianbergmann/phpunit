@@ -52,7 +52,7 @@ Property falsified after 1 example.
 %sInvalidUseOfStateMachinesTest.php:%d
 
 5) PHPUnit\TestFixture\PropertyBasedTesting\StateMachine\InvalidUseOfStateMachinesTest::testStateMachineIsInvalid
-PHPUnit\Framework\PropertyBased\InvalidStateMachineException: State machine PHPUnit\TestFixture\PropertyBasedTesting\StateMachine\MachineWithoutRules cannot be run: it has no method with #[Rule]
+PHPUnit\Framework\PropertyBased\InvalidStateMachineException: State machine PHPUnit\TestFixture\PropertyBasedTesting\StateMachine\MachineWithoutRules cannot be run: it has no method with #[StateMachineRule]
 
 %sInvalidUseOfStateMachinesTest.php:%d
 

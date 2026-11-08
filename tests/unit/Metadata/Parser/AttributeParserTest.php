@@ -45,8 +45,7 @@ use PHPUnit\Framework\Attributes\ExcludeStaticPropertyFromBackup;
 use PHPUnit\Framework\Attributes\FromPool;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\IgnorePhpunitWarnings;
-use PHPUnit\Framework\Attributes\Initialize;
-use PHPUnit\Framework\Attributes\Invariant;
+use PHPUnit\Framework\Attributes\InitializeStateMachine;
 use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\PostCondition;
@@ -63,10 +62,11 @@ use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use PHPUnit\Framework\Attributes\RequiresPhpunit;
 use PHPUnit\Framework\Attributes\RequiresPhpunitExtension;
 use PHPUnit\Framework\Attributes\RequiresSetting;
-use PHPUnit\Framework\Attributes\Rule;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\StateMachineInvariant;
+use PHPUnit\Framework\Attributes\StateMachineRule;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\TestDoxFormatter;
@@ -164,9 +164,9 @@ use PHPUnit\Metadata\InvalidAttribute;
 #[CoversClass(WithEnvironmentVariable::class)]
 #[CoversClass(WithoutErrorHandler::class)]
 #[CoversClass(IgnorePhpunitWarnings::class)]
-#[CoversClass(Rule::class)]
-#[CoversClass(Initialize::class)]
-#[CoversClass(Invariant::class)]
+#[CoversClass(StateMachineRule::class)]
+#[CoversClass(InitializeStateMachine::class)]
+#[CoversClass(StateMachineInvariant::class)]
 #[CoversClass(FromPool::class)]
 #[Small]
 #[Group('metadata')]

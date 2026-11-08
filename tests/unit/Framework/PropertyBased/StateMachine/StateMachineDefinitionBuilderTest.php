@@ -14,11 +14,11 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\ForAll;
 use PHPUnit\Framework\Attributes\ForAllExternal;
 use PHPUnit\Framework\Attributes\FromPool;
-use PHPUnit\Framework\Attributes\Initialize;
-use PHPUnit\Framework\Attributes\Invariant;
+use PHPUnit\Framework\Attributes\InitializeStateMachine;
 use PHPUnit\Framework\Attributes\RequiresPhp;
-use PHPUnit\Framework\Attributes\Rule;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\StateMachineInvariant;
+use PHPUnit\Framework\Attributes\StateMachineRule;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorDeriver;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorRegistry;
 use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
@@ -48,21 +48,21 @@ final class StateMachineDefinitionBuilderTest extends TestCase
     {
         return [
             'no rule' => [
-                'it has no method with #[Rule]',
+                'it has no method with #[StateMachineRule]',
                 new class
                 {
-                    #[Invariant]
+                    #[StateMachineInvariant]
                     public function invariant(): void
                     {
                     }
                 },
             ],
             'rule that is also an invariant' => [
-                'method step() has more than one of #[Rule], #[Initialize], and #[Invariant]',
+                'method step() has more than one of #[StateMachineRule], #[InitializeStateMachine], and #[StateMachineInvariant]',
                 new class
                 {
-                    #[Rule]
-                    #[Invariant]
+                    #[StateMachineRule]
+                    #[StateMachineInvariant]
                     public function step(): void
                     {
                     }
@@ -72,7 +72,7 @@ final class StateMachineDefinitionBuilderTest extends TestCase
                 'rule step() is not public',
                 new class
                 {
-                    #[Rule]
+                    #[StateMachineRule]
                     private function step(): void
                     {
                     }
@@ -82,7 +82,7 @@ final class StateMachineDefinitionBuilderTest extends TestCase
                 'rule step() is static',
                 new class
                 {
-                    #[Rule]
+                    #[StateMachineRule]
                     public static function step(): void
                     {
                     }
@@ -92,12 +92,12 @@ final class StateMachineDefinitionBuilderTest extends TestCase
                 'initialization initialize() is not public',
                 new class
                 {
-                    #[Rule]
+                    #[StateMachineRule]
                     public function step(): void
                     {
                     }
 
-                    #[Initialize]
+                    #[InitializeStateMachine]
                     protected function initialize(): void
                     {
                     }
@@ -107,12 +107,12 @@ final class StateMachineDefinitionBuilderTest extends TestCase
                 'invariant invariant() is static',
                 new class
                 {
-                    #[Rule]
+                    #[StateMachineRule]
                     public function step(): void
                     {
                     }
 
-                    #[Invariant]
+                    #[StateMachineInvariant]
                     public static function invariant(): void
                     {
                     }
@@ -122,12 +122,12 @@ final class StateMachineDefinitionBuilderTest extends TestCase
                 'invariant invariant() has required parameters',
                 new class
                 {
-                    #[Rule]
+                    #[StateMachineRule]
                     public function step(): void
                     {
                     }
 
-                    #[Invariant]
+                    #[StateMachineInvariant]
                     public function invariant(int $value): void
                     {
                     }
@@ -137,7 +137,7 @@ final class StateMachineDefinitionBuilderTest extends TestCase
                 'the precondition of rule step() is specified as a method whose name is empty',
                 new class
                 {
-                    #[Rule(precondition: '')]
+                    #[StateMachineRule(precondition: '')]
                     public function step(): void
                     {
                     }
@@ -147,7 +147,7 @@ final class StateMachineDefinitionBuilderTest extends TestCase
                 'the precondition of rule step() is specified as doesNotExist(), which does not exist',
                 new class
                 {
-                    #[Rule(precondition: 'doesNotExist')]
+                    #[StateMachineRule(precondition: 'doesNotExist')]
                     public function step(): void
                     {
                     }
@@ -157,7 +157,7 @@ final class StateMachineDefinitionBuilderTest extends TestCase
                 'the precondition canStep() of rule step() is not public',
                 new class
                 {
-                    #[Rule(precondition: 'canStep')]
+                    #[StateMachineRule(precondition: 'canStep')]
                     public function step(): void
                     {
                     }
@@ -172,7 +172,7 @@ final class StateMachineDefinitionBuilderTest extends TestCase
                 'the precondition canStep() of rule step() has required parameters',
                 new class
                 {
-                    #[Rule(precondition: 'canStep')]
+                    #[StateMachineRule(precondition: 'canStep')]
                     public function step(): void
                     {
                     }
@@ -187,7 +187,7 @@ final class StateMachineDefinitionBuilderTest extends TestCase
                 'rule step() produces values for a pool whose name is empty',
                 new class
                 {
-                    #[Rule(produces: '')]
+                    #[StateMachineRule(produces: '')]
                     public function step(): int
                     {
                         return 1;
@@ -198,7 +198,7 @@ final class StateMachineDefinitionBuilderTest extends TestCase
                 'rule step() produces values for pool "a-b", whose name is not a valid variable name',
                 new class
                 {
-                    #[Rule(produces: 'a-b')]
+                    #[StateMachineRule(produces: 'a-b')]
                     public function step(): int
                     {
                         return 1;
@@ -209,12 +209,12 @@ final class StateMachineDefinitionBuilderTest extends TestCase
                 'initialization initialize() produces values for pool "values", but its return type is void',
                 new class
                 {
-                    #[Rule]
+                    #[StateMachineRule]
                     public function step(): void
                     {
                     }
 
-                    #[Initialize(produces: 'values')]
+                    #[InitializeStateMachine(produces: 'values')]
                     public function initialize(): void
                     {
                     }
@@ -224,7 +224,7 @@ final class StateMachineDefinitionBuilderTest extends TestCase
                 'variadic parameter $values of rule step() is not supported',
                 new class
                 {
-                    #[Rule]
+                    #[StateMachineRule]
                     public function step(int ...$values): void
                     {
                     }
@@ -234,13 +234,13 @@ final class StateMachineDefinitionBuilderTest extends TestCase
                 'parameter $value of initialization initialize() cannot take values from a pool, only the parameters of rules can',
                 new class
                 {
-                    #[Rule(produces: 'values')]
+                    #[StateMachineRule(produces: 'values')]
                     public function step(): int
                     {
                         return 1;
                     }
 
-                    #[Initialize]
+                    #[InitializeStateMachine]
                     public function initialize(#[FromPool('values')] int $value): void
                     {
                     }
@@ -250,7 +250,7 @@ final class StateMachineDefinitionBuilderTest extends TestCase
                 'parameter $value of rule step() takes values from a pool, so its generator cannot be specified',
                 new class
                 {
-                    #[Rule(produces: 'values')]
+                    #[StateMachineRule(produces: 'values')]
                     public function step(#[FromPool('values')] #[ForAll('values')] int $value): int
                     {
                         return 1;
@@ -261,7 +261,7 @@ final class StateMachineDefinitionBuilderTest extends TestCase
                 'parameter $value of rule step() takes values from a pool whose name is empty',
                 new class
                 {
-                    #[Rule]
+                    #[StateMachineRule]
                     public function step(#[FromPool('')] int $value): void
                     {
                     }
@@ -271,7 +271,7 @@ final class StateMachineDefinitionBuilderTest extends TestCase
                 'parameter $value of rule step() takes values from pool "values", for which no rule or initialization produces values',
                 new class
                 {
-                    #[Rule]
+                    #[StateMachineRule]
                     public function step(#[FromPool('values')] int $value): void
                     {
                     }
@@ -281,7 +281,7 @@ final class StateMachineDefinitionBuilderTest extends TestCase
                 'the generator for parameter $value of rule step() is specified more than once',
                 new class
                 {
-                    #[Rule]
+                    #[StateMachineRule]
                     public function step(#[ForAll('values')] #[ForAllExternal(ValidStateMachine::class, 'amounts')] int $value): void
                     {
                     }
@@ -291,7 +291,7 @@ final class StateMachineDefinitionBuilderTest extends TestCase
                 'rule step(): the generator for parameter $value is specified as ' . ValidStateMachine::class . '::doesNotExist(), which does not exist',
                 new class
                 {
-                    #[Rule]
+                    #[StateMachineRule]
                     public function step(#[ForAllExternal(ValidStateMachine::class, 'doesNotExist')] int $value): void
                     {
                     }
@@ -306,7 +306,7 @@ final class StateMachineDefinitionBuilderTest extends TestCase
                         return 1;
                     }
 
-                    #[Rule]
+                    #[StateMachineRule]
                     public function step(#[ForAll('values')] int $value): void
                     {
                     }
@@ -316,7 +316,7 @@ final class StateMachineDefinitionBuilderTest extends TestCase
                 'rule step(): cannot derive a generator for parameter $value of type callable',
                 new class
                 {
-                    #[Rule]
+                    #[StateMachineRule]
                     public function step(callable $value): void
                     {
                     }
@@ -326,7 +326,7 @@ final class StateMachineDefinitionBuilderTest extends TestCase
                 'rule step(): cannot derive a generator for parameter $value, Error was raised: Class "PHPUnit\TestFixture\PropertyBased\StateMachine\ParentClassThatDoesNotExist" not found',
                 new class
                 {
-                    #[Rule]
+                    #[StateMachineRule]
                     public function step(ClassWithParentClassThatDoesNotExist $value): void
                     {
                     }

@@ -21,7 +21,7 @@ use Attribute;
  * @immutable
  */
 #[Attribute(Attribute::TARGET_METHOD)]
-final readonly class Initialize
+final readonly class InitializeStateMachine
 {
     /**
      * @var ?non-empty-string

@@ -10,8 +10,8 @@
 namespace PHPUnit\TestFixture\PropertyBasedTesting\StateMachine;
 
 use PHPUnit\Framework\Attributes\FromPool;
-use PHPUnit\Framework\Attributes\Initialize;
-use PHPUnit\Framework\Attributes\Rule;
+use PHPUnit\Framework\Attributes\InitializeStateMachine;
+use PHPUnit\Framework\Attributes\StateMachineRule;
 
 /**
  * Its rules can only be applied when it is initialized with one particular
@@ -24,19 +24,19 @@ final class MachineWithRarelyApplicableRules
     /**
      * @param int<0, 999> $level
      */
-    #[Initialize]
+    #[InitializeStateMachine]
     public function initialize(int $level): void
     {
         $this->level = $level;
     }
 
-    #[Rule(precondition: 'isOpen', produces: 'tokens')]
+    #[StateMachineRule(precondition: 'isOpen', produces: 'tokens')]
     public function token(): int
     {
         return 1;
     }
 
-    #[Rule]
+    #[StateMachineRule]
     public function useToken(#[FromPool('tokens')] int $token): void
     {
     }

@@ -10,14 +10,14 @@
 namespace PHPUnit\Metadata;
 
 /**
- * An invariant of a state machine, which is specified with the #[Invariant]
- * attribute.
+ * An invariant of a state machine, which is specified with the
+ * #[StateMachineInvariant] attribute.
  *
  * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class Invariant extends Metadata
+final readonly class StateMachineInvariant extends Metadata
 {
     private bool $atEnd;
 
@@ -28,7 +28,7 @@ final readonly class Invariant extends Metadata
         $this->atEnd = $atEnd;
     }
 
-    public function isInvariant(): true
+    public function isStateMachineInvariant(): true
     {
         return true;
     }

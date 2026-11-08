@@ -10,7 +10,7 @@
 namespace PHPUnit\TestFixture\PropertyBasedTesting\StateMachine;
 
 use PHPUnit\Framework\Attributes\ForAll;
-use PHPUnit\Framework\Attributes\Rule;
+use PHPUnit\Framework\Attributes\StateMachineRule;
 use PHPUnit\Framework\PropertyBased\Generators;
 use PHPUnit\Framework\PropertyBased\ValueGenerator;
 
@@ -24,7 +24,7 @@ final class MachineWithUnsatisfiableFilter
         return Generators::integers(0, 9)->filter(static fn (int $value): bool => $value > 9);
     }
 
-    #[Rule]
+    #[StateMachineRule]
     public function step(#[ForAll('values')] int $value): void
     {
     }

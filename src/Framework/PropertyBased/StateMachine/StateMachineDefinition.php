@@ -11,9 +11,9 @@ namespace PHPUnit\Framework\PropertyBased\StateMachine;
 
 /**
  * A state machine after its metadata has been validated: the methods that are
- * called once before its steps are taken (#[Initialize]), its rules
- * (#[Rule]), and its invariants (#[Invariant]), each in the order in which it
- * is declared.
+ * called once before its steps are taken (#[InitializeStateMachine]), its rules
+ * (#[StateMachineRule]), and its invariants (#[StateMachineInvariant]), each in
+ * the order in which it is declared.
  *
  * @immutable
  *

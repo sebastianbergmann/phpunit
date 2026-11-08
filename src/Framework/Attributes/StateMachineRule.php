@@ -22,7 +22,7 @@ use Attribute;
  * @immutable
  */
 #[Attribute(Attribute::TARGET_METHOD)]
-final readonly class Rule
+final readonly class StateMachineRule
 {
     /**
      * @var ?non-empty-string

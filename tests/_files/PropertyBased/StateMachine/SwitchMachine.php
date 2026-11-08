@@ -11,8 +11,8 @@ namespace PHPUnit\TestFixture\PropertyBased\StateMachine;
 
 use function strtoupper;
 use PHPUnit\Framework\Attributes\FromPool;
-use PHPUnit\Framework\Attributes\Invariant;
-use PHPUnit\Framework\Attributes\Rule;
+use PHPUnit\Framework\Attributes\StateMachineInvariant;
+use PHPUnit\Framework\Attributes\StateMachineRule;
 use RuntimeException;
 use stdClass;
 
@@ -27,7 +27,7 @@ final class SwitchMachine
     private bool $on                  = false;
     private int $numberOfTokens       = 0;
 
-    #[Rule(precondition: 'isOff')]
+    #[StateMachineRule(precondition: 'isOff')]
     public function switchOn(): void
     {
         $this->calls[] = 'switchOn()';
@@ -35,7 +35,7 @@ final class SwitchMachine
         $this->on = true;
     }
 
-    #[Rule(precondition: 'isOn')]
+    #[StateMachineRule(precondition: 'isOn')]
     public function switchOff(): void
     {
         $this->calls[] = 'switchOff()';
@@ -43,7 +43,7 @@ final class SwitchMachine
         $this->on = false;
     }
 
-    #[Rule(produces: 'tokens')]
+    #[StateMachineRule(produces: 'tokens')]
     public function token(): string
     {
         $this->numberOfTokens++;
@@ -53,7 +53,7 @@ final class SwitchMachine
         return 'token' . $this->numberOfTokens;
     }
 
-    #[Rule]
+    #[StateMachineRule]
     public function useToken(#[FromPool('tokens')] string $token): string
     {
         $this->calls[] = 'useToken(' . $token . ')';
@@ -65,7 +65,7 @@ final class SwitchMachine
         return strtoupper($token);
     }
 
-    #[Rule]
+    #[StateMachineRule]
     public function describe(): stdClass
     {
         $this->calls[] = 'describe()';
@@ -86,7 +86,7 @@ final class SwitchMachine
         return !$this->on;
     }
 
-    #[Invariant]
+    #[StateMachineInvariant]
     public function invariant(): void
     {
         $this->calls[] = 'invariant()';

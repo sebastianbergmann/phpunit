@@ -10,9 +10,9 @@
 namespace PHPUnit\Framework\PropertyBased\StateMachine;
 
 /**
- * A step of a state machine: a method with #[Rule], which can be taken any
- * number of times while its precondition holds, or a method with
- * #[Initialize], which is called once before the rules are taken.
+ * A step of a state machine: a method with #[StateMachineRule], which can be
+ * taken any number of times while its precondition holds, or a method with
+ * #[InitializeStateMachine], which is called once before the rules are taken.
  *
  * @immutable
  *

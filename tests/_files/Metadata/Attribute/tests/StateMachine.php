@@ -10,24 +10,24 @@
 namespace PHPUnit\TestFixture\Metadata\Attribute;
 
 use PHPUnit\Framework\Attributes\FromPool;
-use PHPUnit\Framework\Attributes\Initialize;
-use PHPUnit\Framework\Attributes\Invariant;
-use PHPUnit\Framework\Attributes\Rule;
+use PHPUnit\Framework\Attributes\InitializeStateMachine;
+use PHPUnit\Framework\Attributes\StateMachineInvariant;
+use PHPUnit\Framework\Attributes\StateMachineRule;
 
 final class StateMachine
 {
-    #[Initialize(produces: 'accounts')]
+    #[InitializeStateMachine(produces: 'accounts')]
     public function initialize(): string
     {
         return 'account';
     }
 
-    #[Rule]
+    #[StateMachineRule]
     public function rule(): void
     {
     }
 
-    #[Rule(precondition: 'canWithdraw', produces: 'receipts')]
+    #[StateMachineRule(precondition: 'canWithdraw', produces: 'receipts')]
     public function withdraw(#[FromPool('accounts')] string $account, int $amount, #[FromPool('receipts', consume: true)] string $receipt): string
     {
         return 'receipt';
@@ -38,12 +38,12 @@ final class StateMachine
         return true;
     }
 
-    #[Invariant]
+    #[StateMachineInvariant]
     public function invariant(): void
     {
     }
 
-    #[Invariant(atEnd: true)]
+    #[StateMachineInvariant(atEnd: true)]
     public function invariantAtEnd(): void
     {
     }
