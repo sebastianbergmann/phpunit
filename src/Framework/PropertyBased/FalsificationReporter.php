@@ -209,23 +209,21 @@ final class FalsificationReporter
             $replayFalsification = Falsification::of($replay);
 
             if ($replayFalsification === null) {
-                $flaky = Event\Code\ThrowableBuilder::from(FlakyPropertyException::minimalCounterexampleNotFalsifyingAgain());
-
-                // the failure that was originally observed is reported as the
-                // cause of the error
-                $error = new Event\Code\Throwable(
-                    $flaky->className(),
-                    $flaky->message(),
-                    $flaky->description(),
-                    $flaky->stackTrace(),
-                    $originalFailure,
-                );
+                $error = $this->flaky(FlakyPropertyException::minimalCounterexampleNotFalsifyingAgain(), $originalFailure);
             } elseif ($replayFalsification->isTimeout()) {
                 $timeout = ExampleRunner::propertyExampleOf($replay)->throwableThatEndedIt();
 
                 assert($timeout !== null);
 
                 $error = Event\Code\ThrowableBuilder::from($timeout);
+            } elseif (!$replayFalsification->isSameAs($falsification)) {
+                // the counterexample was shrunk for the way in which the
+                // property was first falsified, so reporting the failure of
+                // the replay with it would misrepresent both
+                $error = $this->flaky(
+                    FlakyPropertyException::minimalCounterexampleFalsifyingDifferently($falsification->description(), $replayFalsification->description()),
+                    $originalFailure,
+                );
             }
         }
 
@@ -373,15 +371,7 @@ final class FalsificationReporter
 
         assert($numberOfReplays > 0);
 
-        $flaky = Event\Code\ThrowableBuilder::from(FlakyPropertyException::exampleNotFalsifyingAgain($numberOfReplays));
-
-        $error = new Event\Code\Throwable(
-            $flaky->className(),
-            $flaky->message(),
-            $flaky->description(),
-            $flaky->stackTrace(),
-            $originalFailure,
-        );
+        $error = $this->flaky(FlakyPropertyException::exampleNotFalsifyingAgain($numberOfReplays), $originalFailure);
 
         $counterexample = $replays['counterexample'];
         $drawnValues    = $replays['drawnValues'];
@@ -402,6 +392,23 @@ final class FalsificationReporter
                 $numberOfReplays,
                 0,
             ),
+        );
+    }
+
+    /**
+     * The error of a property that is flaky, with the failure that was
+     * originally observed as its cause.
+     */
+    private function flaky(FlakyPropertyException $exception, ?Event\Code\Throwable $originalFailure): Event\Code\Throwable
+    {
+        $flaky = Event\Code\ThrowableBuilder::from($exception);
+
+        return new Event\Code\Throwable(
+            $flaky->className(),
+            $flaky->message(),
+            $flaky->description(),
+            $flaky->stackTrace(),
+            $originalFailure,
         );
     }
 

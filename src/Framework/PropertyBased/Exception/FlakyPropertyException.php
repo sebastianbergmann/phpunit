@@ -40,6 +40,21 @@ final class FlakyPropertyException extends RuntimeException implements Exception
         return new self('The property is flaky: it was not falsified when its minimal counterexample was replayed, so its outcome does not depend on its arguments alone');
     }
 
+    /**
+     * @param non-empty-string $whileShrinking how the minimal counterexample falsified the property while it was shrunk
+     * @param non-empty-string $whenReplayed   how the minimal counterexample falsified the property when it was replayed
+     */
+    public static function minimalCounterexampleFalsifyingDifferently(string $whileShrinking, string $whenReplayed): self
+    {
+        return new self(
+            sprintf(
+                'The property is flaky: its minimal counterexample falsified it with %s when it was replayed, but with %s while it was shrunk, so its outcome does not depend on its arguments alone',
+                $whenReplayed,
+                $whileShrinking,
+            ),
+        );
+    }
+
     private function __construct(string $message)
     {
         parent::__construct($message);
