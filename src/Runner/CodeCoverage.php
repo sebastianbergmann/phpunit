@@ -36,7 +36,6 @@ use SebastianBergmann\CodeCoverage\Report\Html\CustomCssFile;
 use SebastianBergmann\CodeCoverage\Report\Html\Views;
 use SebastianBergmann\CodeCoverage\Report\Thresholds;
 use SebastianBergmann\CodeCoverage\Serialization\Serializer;
-use SebastianBergmann\CodeCoverage\StaticAnalysis\CacheWarmer;
 use SebastianBergmann\CodeCoverage\Test\Target\TargetCollection;
 use SebastianBergmann\CodeCoverage\Test\Target\ValidationFailure;
 use SebastianBergmann\CodeCoverage\Test\TestSize;
@@ -153,16 +152,11 @@ final class CodeCoverage
 
         $this->warnIfFilterIsNotConfigured($codeCoverageFilterRegistry, $configuration);
 
-        if (isset($coverageCacheDirectory) && $configuration->includeUncoveredFiles()) {
+        if ($this->isActive() && isset($coverageCacheDirectory) && $configuration->includeUncoveredFiles()) {
             $this->emitter->testRunnerStartedStaticAnalysisForCodeCoverage();
 
-            /** @phpstan-ignore new.internalClass,method.internalClass */
-            $statistics = (new CacheWarmer)->warmCache(
-                $coverageCacheDirectory,
-                !$configuration->disableCodeCoverageIgnore(),
-                $configuration->ignoreDeprecatedCodeUnitsFromCodeCoverage(),
-                $codeCoverageFilterRegistry->get(),
-            );
+            /** @phpstan-ignore method.internal */
+            $statistics = $this->codeCoverage()->warmCache();
 
             $this->emitter->testRunnerFinishedStaticAnalysisForCodeCoverage(
                 $statistics['cacheHits'],

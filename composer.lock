@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "536831db010059bc10c954799251adaa",
+    "content-hash": "20ad212864fc820e0a1763b147afb50c",
     "packages": [
         {
             "name": "myclabs/deep-copy",
@@ -127,16 +127,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "14.5.2",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "2f122b9b48af71ad9b4448368febc26af86534c9"
+                "reference": "97a36f0825e482a2057736ae57b3b73732b0587d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/2f122b9b48af71ad9b4448368febc26af86534c9",
-                "reference": "2f122b9b48af71ad9b4448368febc26af86534c9",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/97a36f0825e482a2057736ae57b3b73732b0587d",
+                "reference": "97a36f0825e482a2057736ae57b3b73732b0587d",
                 "shasum": ""
             },
             "require": {
@@ -151,7 +151,7 @@
                 "sebastian/environment": "^9.3.3",
                 "sebastian/git-state": "^1.1.0",
                 "sebastian/lines-of-code": "^5.0.2",
-                "sebastian/version": "^7.0.1"
+                "sebastian/version": "^7.1.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "^13.4.6"
@@ -160,10 +160,11 @@
                 "ext-pcov": "PHP extension that provides line coverage",
                 "ext-xdebug": "PHP extension that provides line coverage as well as branch and path coverage"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "14.5.x-dev"
+                    "dev-main": "14.6.x-dev"
                 }
             },
             "autoload": {
@@ -192,7 +193,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
                 "security": "https://github.com/sebastianbergmann/php-code-coverage/security/policy",
-                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/14.5.2"
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/main"
             },
             "funding": [
                 {
@@ -212,8 +213,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-11-09T05:24:08+00:00",
-            "published-time": "2026-11-09T05:25:09+00:00"
+            "time": "2026-11-09T10:35:35+00:00",
+            "published-time": "2026-11-09T10:40:40+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -1760,7 +1761,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": {
+        "phpunit/php-code-coverage": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
