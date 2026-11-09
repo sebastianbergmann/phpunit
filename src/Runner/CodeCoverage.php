@@ -292,7 +292,7 @@ final class CodeCoverage
             foreach ($rawData->lineCoverage() as $lines) {
                 foreach ($lines as $lineStatus) {
                     /** @phpstan-ignore classConstant.internalClass */
-                    if ($lineStatus === Driver::LINE_EXECUTED) {
+                    if ($lineStatus >= Driver::LINE_EXECUTED) {
                         $this->lastTestContributedToCoverage = true;
 
                         break 2;

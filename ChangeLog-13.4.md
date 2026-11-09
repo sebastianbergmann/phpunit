@@ -10,6 +10,7 @@ All notable changes of the PHPUnit 13.4 release series are documented in this fi
 * Using `default` together with an order for `--order-by` or the `executionOrder` XML configuration attribute, for instance `default,random`, triggers a deprecation for using more than one order, although `default` resets the order instead of selecting one
 * `--fail-on-skipped` does not make the test runner exit with a shell exit code that indicates failure when a test class is skipped, for instance because its before-first-test method calls `markTestSkipped()`, although its tests are counted as skipped
 * `--stop-on-skipped` does not stop the test run when a test class is skipped, for instance because its before-first-test method calls `markTestSkipped()`
+* When coverage contribution is required, a test is considered risky because it does not contribute to code coverage although it executed covered code, when the code coverage driver collects hit counts and each covered line that the test executed was executed more than once
 
 ## [13.4.6] - 2026-11-02
 
