@@ -12,7 +12,7 @@ final class GeneratedConfig
 	public const EXTENSIONS = array (
   'ergebnis/phpstan-rules' => 
   array (
-    'install_path' => '/usr/local/src/phpunit/tools/.phpstan/vendor/ergebnis/phpstan-rules',
+    'install_path' => '/Users/sb/Work/OpenSource/phpunit/tools/.phpstan/vendor/ergebnis/phpstan-rules',
     'relative_install_path' => '../../../ergebnis/phpstan-rules',
     'extra' => 
     array (
@@ -21,12 +21,26 @@ final class GeneratedConfig
         0 => 'rules.neon',
       ),
     ),
-    'version' => '2.14.0',
+    'version' => '2.17.0',
     'phpstanVersionConstraint' => '>=2.1.35.0-dev, <3.0.0.0-dev',
+  ),
+  'phpstan/phpstan-deprecation-rules' => 
+  array (
+    'install_path' => '/Users/sb/Work/OpenSource/phpunit/tools/.phpstan/vendor/phpstan/phpstan-deprecation-rules',
+    'relative_install_path' => '../../phpstan-deprecation-rules',
+    'extra' => 
+    array (
+      'includes' => 
+      array (
+        0 => 'rules.neon',
+      ),
+    ),
+    'version' => '2.0.5',
+    'phpstanVersionConstraint' => '>=2.1.39.0-dev, <3.0.0.0-dev',
   ),
   'phpstan/phpstan-strict-rules' => 
   array (
-    'install_path' => '/usr/local/src/phpunit/tools/.phpstan/vendor/phpstan/phpstan-strict-rules',
+    'install_path' => '/Users/sb/Work/OpenSource/phpunit/tools/.phpstan/vendor/phpstan/phpstan-strict-rules',
     'relative_install_path' => '../../phpstan-strict-rules',
     'extra' => 
     array (
@@ -35,7 +49,7 @@ final class GeneratedConfig
         0 => 'rules.neon',
       ),
     ),
-    'version' => '2.1.0',
+    'version' => '2.1.1',
     'phpstanVersionConstraint' => '>=2.3.0.0-dev, <3.0.0.0-dev',
   ),
 );

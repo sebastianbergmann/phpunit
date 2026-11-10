@@ -25,21 +25,21 @@
   },
   "require-dev": {
     "ext-bcmath": "*",
-    "ergebnis/composer-normalize": "^2.53.0",
-    "ergebnis/data-provider": "^3.6.0",
-    "ergebnis/license": "^2.7.0",
-    "ergebnis/php-cs-fixer-config": "^6.63.2",
-    "ergebnis/phpunit-slow-test-detector": "^2.25.0",
-    "ergebnis/rector-rules": "^1.18.3",
+    "ergebnis/composer-normalize": "^2.54.0",
+    "ergebnis/data-provider": "^3.7.0",
+    "ergebnis/license": "^2.8.0",
+    "ergebnis/php-cs-fixer-config": "^6.64.1",
+    "ergebnis/phpunit-slow-test-detector": "^2.27.0",
+    "ergebnis/rector-rules": "^1.18.5",
     "fakerphp/faker": "^1.24.1",
     "infection/infection": "~0.26.6",
     "phpstan/extension-installer": "^1.4.3",
     "phpstan/phpstan": "^2.2.14",
     "phpstan/phpstan-deprecation-rules": "^2.0.5",
-    "phpstan/phpstan-phpunit": "^2.0.18",
-    "phpstan/phpstan-strict-rules": "^2.0.12",
+    "phpstan/phpstan-phpunit": "^2.1.1",
+    "phpstan/phpstan-strict-rules": "^2.1.0",
     "phpunit/phpunit": "^9.6.33",
-    "rector/rector": "^2.6.7"
+    "rector/rector": "^2.7.0"
   },
   "suggest": {
     "ext-bcmath": "If you want to bump Major, Minor, or Patch versions greater than PHP_MAX_INT."
@@ -72,7 +72,7 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-main": "1.4-dev"
+      "dev-main": "1.5-dev"
     },
     "composer-normalize": {
       "indent-size": 2,
