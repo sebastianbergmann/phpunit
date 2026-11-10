@@ -6,7 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased
 
-For a full diff see [`2.17.0...main`][2.17.0...main].
+For a full diff see [`2.17.1...main`][2.17.1...main].
+
+## [`2.17.1`][2.17.1]
+
+For a full diff see [`2.17.0...2.17.1`][2.17.0...2.17.1].
+
+### Fixed
+
+- Adjusted `Classes\PHPUnit\Framework\TestCaseWithSuffixRule` to skip the lookup of `PHPUnit\Framework\TestCase` when `phpunit/phpunit` is not installed ([#1182]), by [@konradmichalik]
 
 ## [`2.17.0`][2.17.0]
 
@@ -744,7 +752,9 @@ For a full diff see [`362c7ea...0.1.0`][362c7ea...0.1.0].
 [2.16.0]: https://github.com/ergebnis/phpstan-rules/releases/tag/2.16.0
 [2.16.0...2.17.0]: https://github.com/ergebnis/phpstan-rules/compare/2.16.0...2.17.0
 [2.17.0]: https://github.com/ergebnis/phpstan-rules/releases/tag/2.17.0
-[2.17.0...main]: https://github.com/ergebnis/phpstan-rules/compare/2.17.0...main
+[2.17.0...2.17.1]: https://github.com/ergebnis/phpstan-rules/compare/2.17.0...2.17.1
+[2.17.1]: https://github.com/ergebnis/phpstan-rules/releases/tag/2.17.1
+[2.17.1...main]: https://github.com/ergebnis/phpstan-rules/compare/2.17.1...main
 
 [#1]: https://github.com/ergebnis/phpstan-rules/pull/1
 [#4]: https://github.com/ergebnis/phpstan-rules/pull/4
@@ -868,6 +878,7 @@ For a full diff see [`362c7ea...0.1.0`][362c7ea...0.1.0].
 [#1167]: https://github.com/ergebnis/phpstan-rules/pull/1167
 [#1168]: https://github.com/ergebnis/phpstan-rules/pull/1168
 [#1169]: https://github.com/ergebnis/phpstan-rules/pull/1169
+[#1182]: https://github.com/ergebnis/phpstan-rules/pull/1182
 
 [@alfredbez]: https://github.com/alfredbez
 [@cosmastech]: https://github.com/cosmastech
@@ -875,6 +886,7 @@ For a full diff see [`362c7ea...0.1.0`][362c7ea...0.1.0].
 [@enumag]: https://github.com/enumag
 [@ergebnis]: https://github.com/ergebnis
 [@Great-Antique]: https://github.com/Great-Antique
+[@konradmichalik]: https://github.com/konradmichalik
 [@Legend999]: https://github.com/Legend999
 [@localheinz]: https://github.com/localheinz
 [@manuelkiessling]: https://github.com/manuelkiessling
