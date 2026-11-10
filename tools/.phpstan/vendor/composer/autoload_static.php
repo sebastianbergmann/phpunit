@@ -18,6 +18,7 @@ class ComposerStaticInitf9e7218f71d5874b5632927df4f72bd7
         ),
         'E' =>
         array (
+            'Ergebnis\\Version\\' => 17,
             'Ergebnis\\PHPStan\\Rules\\' => 23,
         ),
     );
@@ -30,6 +31,11 @@ class ComposerStaticInitf9e7218f71d5874b5632927df4f72bd7
         'PHPStan\\' =>
         array (
             0 => __DIR__ . '/..' . '/phpstan/phpstan-strict-rules/src',
+            1 => __DIR__ . '/..' . '/phpstan/phpstan-deprecation-rules/src',
+        ),
+        'Ergebnis\\Version\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/ergebnis/version/src',
         ),
         'Ergebnis\\PHPStan\\Rules\\' =>
         array (

@@ -57,5 +57,12 @@ parameters:
         - '#Call to an undefined method ReflectionProperty::.*#'
         - '#Access to constant .* on an unknown class PropertyHookType.#'
 
+        # ignore usage of deprecated PHPUnit functionality in PHPUnit itself
+        -
+            messages:
+                - '#deprecated (?:[a-z]+ )+(?:\S+ of [a-z]+ )?PHPUnit\\#'
+                - '#^Casting class PHPUnit\\\S+ to string is deprecated\.#'
+            reportUnmatched: false
+
 includes:
     - phar://phpstan.phar/conf/bleedingEdge.neon
