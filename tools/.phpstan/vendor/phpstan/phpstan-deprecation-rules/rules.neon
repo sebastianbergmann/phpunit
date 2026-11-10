@@ -1,0 +1,51 @@
+parameters:
+	deprecationRulesInstalled: true
+
+services:
+	-
+		class: PHPStan\DependencyInjection\LazyDeprecatedScopeResolverProvider
+	-
+		class: PHPStan\Rules\Deprecations\DeprecatedScopeHelper
+		factory: @PHPStan\DependencyInjection\LazyDeprecatedScopeResolverProvider::get
+
+	-
+		class: PHPStan\Rules\Deprecations\DefaultDeprecatedScopeResolver
+		tags:
+			- phpstan.deprecations.deprecatedScopeResolver
+
+	-
+		class: PHPStan\Rules\Deprecations\CallWithDeprecatedIniOptionRule
+
+	-
+		class: PHPStan\Rules\Deprecations\RestrictedDeprecatedClassConstantUsageExtension
+		tags:
+			- phpstan.restrictedClassConstantUsageExtension
+
+	-
+		class: PHPStan\Rules\Deprecations\RestrictedDeprecatedFunctionUsageExtension
+		tags:
+			- phpstan.restrictedFunctionUsageExtension
+
+	-
+		class: PHPStan\Rules\Deprecations\RestrictedDeprecatedMethodUsageExtension
+		tags:
+			- phpstan.restrictedMethodUsageExtension
+
+	-
+		class: PHPStan\Rules\Deprecations\RestrictedDeprecatedPropertyUsageExtension
+		tags:
+			- phpstan.restrictedPropertyUsageExtension
+
+	-
+		class: PHPStan\Rules\Deprecations\RestrictedDeprecatedClassNameUsageExtension
+		arguments:
+			bleedingEdge: %featureToggles.bleedingEdge%
+		tags:
+			- phpstan.restrictedClassNameUsageExtension
+
+rules:
+	- PHPStan\Rules\Deprecations\FetchingDeprecatedConstRule
+
+conditionalTags:
+	PHPStan\Rules\Deprecations\CallWithDeprecatedIniOptionRule:
+		phpstan.rules.rule: %featureToggles.bleedingEdge%
