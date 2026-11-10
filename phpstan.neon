@@ -63,5 +63,12 @@ parameters:
         - '#Strict comparison using !== between .*non-falsy-string.* and .* will always evaluate to true.#'
         - identifier: argument.named
 
+        # ignore usage of deprecated PHPUnit functionality in PHPUnit itself
+        -
+            messages:
+                - '#deprecated (?:[a-z]+ )+(?:\S+ of [a-z]+ )?PHPUnit\\#'
+                - '#^Casting class PHPUnit\\\S+ to string is deprecated\.#'
+            reportUnmatched: false
+
 includes:
     - phar://phpstan.phar/conf/bleedingEdge.neon
