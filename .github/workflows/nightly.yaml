@@ -24,8 +24,6 @@ jobs:
     env:
       PHP_EXTENSIONS: none, ctype, curl, dom, json, libxml, mbstring, openssl, pdo, phar, tokenizer, xmlwriter
       PHP_INI_VALUES: memory_limit=-1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On, display_startup_errors=On
-      PHPUNIT_OUTPUT_OPTIONS: ${{ (matrix.phpunit-branch == '12.5' || matrix.phpunit-branch == '11.5' || matrix.phpunit-branch == '10.5') && '--no-progress' || (matrix.phpunit-branch != '9.6' && matrix.phpunit-branch != '8.5') && '--compact' || '' }}
-      PHPUNIT_ISSUE_OPTIONS: ${{ (matrix.phpunit-branch != '9.6' && matrix.phpunit-branch != '8.5') && '--display-all-issues' || '' }}
 
     strategy:
       fail-fast: false
@@ -56,6 +54,24 @@ jobs:
           - "8.5"
           - "8.6"
           - "8.7"
+
+        include:
+          - phpunit-branch: "main"
+            phpunit-options: "--compact --display-all-issues"
+          - phpunit-branch: "13.5"
+            phpunit-options: "--compact --display-all-issues"
+          - phpunit-branch: "13.4"
+            phpunit-options: "--compact --display-all-issues"
+          - phpunit-branch: "12.5"
+            phpunit-options: "--no-progress --display-all-issues"
+          - phpunit-branch: "11.5"
+            phpunit-options: "--no-progress --display-all-issues"
+          - phpunit-branch: "10.5"
+            phpunit-options: "--no-progress --display-all-issues"
+          - phpunit-branch: "9.6"
+            phpunit-options: ""
+          - phpunit-branch: "8.5"
+            phpunit-options: ""
 
         exclude:
           - phpunit-branch: "8.5"
@@ -180,7 +196,7 @@ jobs:
         run: php ./tools/composer install --no-ansi --no-interaction --no-progress
 
       - name: Run unit tests with PHPUnit
-        run: php ./phpunit --testsuite unit --order-by random ${{ env.PHPUNIT_OUTPUT_OPTIONS }} ${{ env.PHPUNIT_ISSUE_OPTIONS }}
+        run: php ./phpunit --testsuite unit --order-by random ${{ matrix.phpunit-options }}
 
       - name: Run end-to-end tests with PHPUnit
-        run: php ./phpunit --testsuite end-to-end --order-by random ${{ env.PHPUNIT_OUTPUT_OPTIONS }} ${{ env.PHPUNIT_ISSUE_OPTIONS }}
+        run: php ./phpunit --testsuite end-to-end --order-by random ${{ matrix.phpunit-options }}
