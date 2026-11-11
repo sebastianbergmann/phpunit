@@ -196,7 +196,9 @@ jobs:
         run: php ./tools/composer install --no-ansi --no-interaction --no-progress
 
       - name: Run unit tests with PHPUnit
+        # zizmor: ignore[template-injection] matrix.phpunit-options only holds literal values defined in this workflow
         run: php ./phpunit --testsuite unit --order-by random ${{ matrix.phpunit-options }}
 
       - name: Run end-to-end tests with PHPUnit
+        # zizmor: ignore[template-injection] matrix.phpunit-options only holds literal values defined in this workflow
         run: php ./phpunit --testsuite end-to-end --order-by random ${{ matrix.phpunit-options }}
