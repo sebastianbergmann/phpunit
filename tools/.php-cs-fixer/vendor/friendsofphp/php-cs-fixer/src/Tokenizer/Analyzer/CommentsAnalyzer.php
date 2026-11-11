@@ -341,7 +341,7 @@ final class CommentsAnalyzer
     {
         $lineCount = 0;
         for ($i = $whiteStart; $i < $whiteEnd; ++$i) {
-            $lineCount += Preg::matchAll('/\R/', $tokens[$i]->getContent());
+            $lineCount += Preg::matchAll('/\R/u', $tokens[$i]->getContent());
         }
 
         return $lineCount;
