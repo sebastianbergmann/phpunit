@@ -17,6 +17,10 @@ jobs:
   release:
     name: Release
 
+    environment:
+      name: release
+      deployment: false
+
     runs-on: ubuntu-latest
 
     permissions:

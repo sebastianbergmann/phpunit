@@ -384,6 +384,10 @@ jobs:
     needs:
       - end-to-end-tests
 
+    environment:
+      name: codecov
+      deployment: false
+
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
