@@ -239,8 +239,8 @@ final class PhpUnitNoExpectationAnnotationFixer extends AbstractPhpUnitFixer imp
         \assert(isset($matches[1]));
         $content = Preg::replace('/\*+\/$/', '', $matches[1]);
 
-        if (Preg::match('/\R/', $content)) {
-            $content = Preg::replace('/\s*\R+\s*\*\s*/', ' ', $content);
+        if (Preg::match('/\R/u', $content)) {
+            $content = Preg::replace('/\s*\R+\s*\*\s*/u', ' ', $content);
         }
 
         return rtrim($content);
