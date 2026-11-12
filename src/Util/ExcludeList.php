@@ -15,6 +15,7 @@ use function assert;
 use function class_exists;
 use function defined;
 use function dirname;
+use function interface_exists;
 use function is_dir;
 use function realpath;
 use function str_starts_with;
@@ -68,7 +69,7 @@ final class ExcludeList
         Parser::class => 1,
 
         // phar-io/manifest
-        Manifest::class => 1,
+        Manifest::class => 2,
 
         // phar-io/version
         PharIoVersion::class => 1,
@@ -208,7 +209,7 @@ final class ExcludeList
         }
 
         foreach (self::EXCLUDED_CLASS_NAMES as $className => $parent) {
-            if (!class_exists($className)) {
+            if (!class_exists($className) && !interface_exists($className)) {
                 continue;
             }
 
