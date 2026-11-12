@@ -30,7 +30,7 @@ final class ExcludeListTest extends TestCase
     public static function codeOfDependencyProvider(): array
     {
         return [
-            'nikic/php-parser (referenced by an interface)'            => [ParserFactory::class],
+            'nikic/php-parser (referenced by an interface)' => [ParserFactory::class],
         ];
     }
 
