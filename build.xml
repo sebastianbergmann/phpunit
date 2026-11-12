@@ -454,7 +454,7 @@
         </exec>
 
         <exec executable="ssh" failonerror="true">
-            <arg line="phar ./publish-phars.sh" />
+            <arg line="-T phar ./publish-phars.sh" />
         </exec>
     </target>
 </project>
