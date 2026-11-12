@@ -1,0 +1,18 @@
+#!/usr/bin/env php
+<?php
+
+/*
+ * This file is part of PHP CS Fixer.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+declare(strict_types=1);
+
+Phar::loadPhar(__DIR__ . '/php-cs-fixer.phar', 'php-cs-fixer.phar');
+
+require 'phar://php-cs-fixer.phar/php-cs-fixer';
