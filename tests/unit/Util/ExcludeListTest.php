@@ -10,10 +10,14 @@
 namespace PHPUnit\Util;
 
 use function realpath;
+use PharIo\Manifest\ManifestLoader;
+use PhpParser\ParserFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 
 #[CoversClass(ExcludeList::class)]
 #[CoversClass(InvalidDirectoryException::class)]
@@ -21,6 +25,17 @@ use PHPUnit\Framework\TestCase;
 #[RunTestsInSeparateProcesses]
 final class ExcludeListTest extends TestCase
 {
+    /**
+     * @return array<non-empty-string, array{class-string}>
+     */
+    public static function codeOfDependencyProvider(): array
+    {
+        return [
+            'nikic/php-parser (referenced by an interface)'            => [ParserFactory::class],
+            'phar-io/manifest (outside the reference class directory)' => [ManifestLoader::class],
+        ];
+    }
+
     public function testIsInitialized(): void
     {
         $excludeList = new ExcludeList(true);
@@ -37,6 +52,17 @@ final class ExcludeListTest extends TestCase
 
         $this->assertTrue($excludeList->isExcluded(realpath(__DIR__ . '/../../../src/Framework/TestCase.php')));
         $this->assertFalse($excludeList->isExcluded(__FILE__));
+    }
+
+    /**
+     * @param class-string $className
+     */
+    #[DataProvider('codeOfDependencyProvider')]
+    public function testCodeOfDependencyIsExcluded(string $className): void
+    {
+        $excludeList = new ExcludeList(true);
+
+        $this->assertTrue($excludeList->isExcluded((new ReflectionClass($className))->getFileName()));
     }
 
     public function testCanBeDisabled(): void
