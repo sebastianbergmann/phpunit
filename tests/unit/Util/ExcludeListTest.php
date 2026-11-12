@@ -60,7 +60,7 @@ final class ExcludeListTest extends TestCase
     {
         $excludeList = new ExcludeList(true);
 
-        $this->assertTrue($excludeList->isExcluded((new ReflectionClass($className))->getFileName()));
+        $this->assertTrue($excludeList->isExcluded(new ReflectionClass($className)->getFileName()));
     }
 
     public function testCanBeDisabled(): void
