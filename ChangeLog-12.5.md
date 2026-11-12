@@ -10,6 +10,7 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 * `--fail-on-skipped` does not make the test runner exit with a shell exit code that indicates failure when a test class is skipped, for instance because its before-first-test method calls `markTestSkipped()`, although its tests are counted as skipped
 * `--stop-on-skipped` does not stop the test run when a test class is skipped, for instance because its before-first-test method calls `markTestSkipped()`
 * When PHPUnit is installed using Composer, code units in the `PHPUnit\` or `SebastianBergmann\` namespace that do not belong to PHPUnit or one of its dependencies are preloaded on startup, which leads to a fatal error when such a code unit depends on code that is not available
+* Code from `nikic/php-parser` and parts of the code from `phar-io/manifest` are not treated like code from PHPUnit's other dependencies, for instance stack frames from it are not filtered from stack traces
 
 ## [12.5.43] - 2026-11-02
 
