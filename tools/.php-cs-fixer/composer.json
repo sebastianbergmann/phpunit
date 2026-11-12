@@ -1,5 +1,5 @@
 {
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.95.30"
+        "php-cs-fixer/shim": "^3.95.30"
     }
 }
