@@ -29,7 +29,6 @@ use function pcntl_signal;
 use function printf;
 use function realpath;
 use function sprintf;
-use function str_contains;
 use function str_starts_with;
 use function trim;
 use function unlink;
@@ -115,6 +114,7 @@ use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\DefaultConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\Util\DifferBuilder;
+use PHPUnit\Util\ExcludeList;
 use PHPUnit\Util\Http\PhpDownloader;
 use SebastianBergmann\Timer\Timer;
 use Throwable;
@@ -1261,6 +1261,8 @@ final readonly class Application
         }
         // @codeCoverageIgnoreEnd
 
+        $excludeList = new ExcludeList(true);
+
         foreach ($classMap as $codeUnitName => $sourceCodeFile) {
             // @codeCoverageIgnoreStart
             if (!is_string($codeUnitName) || !is_string($sourceCodeFile)) {
@@ -1273,7 +1275,14 @@ final readonly class Application
                 continue;
             }
 
-            if (str_contains($sourceCodeFile, '/tests/')) {
+            $sourceCodeFile = realpath($sourceCodeFile);
+
+            if ($sourceCodeFile === false) {
+                continue;
+            }
+
+            // only preload code that belongs to PHPUnit or one of its dependencies
+            if (!$excludeList->isExcluded($sourceCodeFile)) {
                 continue;
             }
 

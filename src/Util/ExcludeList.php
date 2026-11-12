@@ -31,7 +31,9 @@ use SebastianBergmann\Complexity\Calculator;
 use SebastianBergmann\Diff\Diff;
 use SebastianBergmann\Environment\Runtime;
 use SebastianBergmann\Exporter\Exporter;
+use SebastianBergmann\FileFilter\Filter as FileFilter;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
+use SebastianBergmann\GitState\State as GitState;
 use SebastianBergmann\GlobalState\Snapshot;
 use SebastianBergmann\Invoker\Invoker;
 use SebastianBergmann\LinesOfCode\Counter;
@@ -98,6 +100,12 @@ final class ExcludeList
 
         // sebastian/exporter
         Exporter::class => 1,
+
+        // sebastian/file-filter
+        FileFilter::class => 1,
+
+        // sebastian/git-state
+        GitState::class => 1,
 
         // sebastian/global-state
         Snapshot::class => 1,
