@@ -45,7 +45,7 @@ final class Version
                 // @codeCoverageIgnoreEnd
             }
 
-            self::$version = new VersionId('13.4.6', $path)->asString();
+            self::$version = new VersionId('13.4.7', $path)->asString();
         }
 
         return self::$version;
