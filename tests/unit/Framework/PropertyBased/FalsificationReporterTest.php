@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\PropertyBased\Falsification\FalsifiedPropertiesTest;
+use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use SebastianBergmann\ChoiceSequence\ChoiceSequence;
 
 #[CoversClass(FalsificationReporter::class)]
@@ -226,6 +227,7 @@ final class FalsificationReporterTest extends TestCase
             static fn (): TestCase => new FalsifiedPropertiesTest($methodName),
             new GeneratorResolver(new PropertyDefinitionBuilder()->build(FalsifiedPropertiesTest::class, $methodName)),
             Facade::instance(),
+            FalsifyingIssues::fromConfiguration(ConfigurationRegistry::get()),
         );
     }
 

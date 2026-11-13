@@ -11,6 +11,7 @@ namespace PHPUnit\Framework\PropertyBased;
 
 use PHPUnit\Event\Code\Counterexample;
 use PHPUnit\Event\Code\OtherFalsification;
+use PHPUnit\Event\Code\Throwable;
 
 /**
  * How a property was falsified, as it is reported: with the
@@ -60,6 +61,7 @@ final readonly class FalsificationReport
      * @var non-negative-int
      */
     private int $numberOfReproductions;
+    private ?Throwable $failure;
 
     /**
      * @param non-negative-int         $seed
@@ -69,8 +71,9 @@ final readonly class FalsificationReport
      * @param list<OtherFalsification> $otherFalsifications
      * @param non-negative-int         $numberOfReplays
      * @param non-negative-int         $numberOfReproductions
+     * @param ?Throwable               $failure                   the failure that is reported when the property was falsified by an issue
      */
-    public function __construct(int $seed, int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, Counterexample $counterexample, array $otherFalsifications, int $numberOfReplays, int $numberOfReproductions)
+    public function __construct(int $seed, int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, Counterexample $counterexample, array $otherFalsifications, int $numberOfReplays, int $numberOfReproductions, ?Throwable $failure = null)
     {
         $this->seed                      = $seed;
         $this->numberOfExamplesChecked   = $numberOfExamplesChecked;
@@ -82,6 +85,7 @@ final readonly class FalsificationReport
         $this->otherFalsifications       = $otherFalsifications;
         $this->numberOfReplays           = $numberOfReplays;
         $this->numberOfReproductions     = $numberOfReproductions;
+        $this->failure                   = $failure;
     }
 
     /**
@@ -153,5 +157,15 @@ final readonly class FalsificationReport
     public function numberOfReproductions(): int
     {
         return $this->numberOfReproductions;
+    }
+
+    /**
+     * The failure that is reported for the property when the example whose
+     * events are reported has no failure or error of its own, because it
+     * falsified the property by triggering an issue, null otherwise.
+     */
+    public function failure(): ?Throwable
+    {
+        return $this->failure;
     }
 }

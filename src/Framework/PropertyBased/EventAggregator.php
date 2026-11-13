@@ -372,6 +372,14 @@ final class EventAggregator
             return;
         }
 
+        // an example that falsified the property by triggering an issue
+        // passed, so the failure of the property replaces its outcome
+        if ($falsification !== null && $falsification->failure() !== null) {
+            $this->emitter->testFailed($this->test, self::withFalsified($falsification->failure(), $falsified), null);
+
+            return;
+        }
+
         if ($outcome !== null) {
             $this->forward(self::outcomeWithFalsified($outcome, $falsified));
 

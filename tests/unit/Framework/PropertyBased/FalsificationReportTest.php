@@ -11,6 +11,8 @@ namespace PHPUnit\Framework\PropertyBased;
 
 use PHPUnit\Event\Code\Counterexample;
 use PHPUnit\Event\Code\OtherFalsification;
+use PHPUnit\Event\Code\ThrowableBuilder;
+use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
@@ -38,5 +40,14 @@ final class FalsificationReportTest extends TestCase
         $this->assertSame([$otherFalsification], $report->otherFalsifications());
         $this->assertSame(4, $report->numberOfReplays());
         $this->assertSame(3, $report->numberOfReproductions());
+        $this->assertNull($report->failure());
+    }
+
+    public function testCanHaveTheFailureThatIsReportedWhenThePropertyWasFalsifiedByAnIssue(): void
+    {
+        $failure = ThrowableBuilder::from(new AssertionFailedError('E_WARNING was triggered at tests/FooTest.php:12: message'));
+        $report  = new FalsificationReport(1234, 2, 40, 17, true, false, new Counterexample([0, 2], ['value' => '2'], null, [], []), [], 4, 3, $failure);
+
+        $this->assertSame($failure, $report->failure());
     }
 }

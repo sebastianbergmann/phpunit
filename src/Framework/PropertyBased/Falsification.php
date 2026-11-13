@@ -118,10 +118,13 @@ final readonly class Falsification
      */
     private ?string $location;
     private string $message;
+    private bool $issue;
 
     /**
      * Returns null when the example did not falsify the property, that is,
-     * when it neither failed nor errored nor exceeded its time limit.
+     * when it neither failed nor errored nor exceeded its time limit. An
+     * example can also falsify the property by triggering an issue, which its
+     * events tell, see FalsifyingIssues.
      */
     public static function of(TestCase $example): ?self
     {
@@ -163,6 +166,29 @@ final readonly class Falsification
     }
 
     /**
+     * How an issue that an example triggered falsified the property. Two
+     * examples falsify a property in the same way when they trigger an issue
+     * of the same kind in the same line of code.
+     *
+     * @param non-empty-string $kind    the kind of the issue, for instance "E_WARNING"
+     * @param non-empty-string $file    the file in which the issue was triggered
+     * @param positive-int     $line    the line in which the issue was triggered
+     * @param string           $message the message of the issue
+     */
+    public static function ofIssue(string $kind, string $file, int $line, string $message): self
+    {
+        $location = self::relativeToBaseDirectory($file . ':' . $line);
+
+        return new self(
+            FailureSignature::forDescription(sprintf('%s at %s', $kind, $location)),
+            null,
+            $location,
+            sprintf('%s was triggered at %s: %s', $kind, $location, $message),
+            true,
+        );
+    }
+
+    /**
      * Whether the example falsified the property, without describing how,
      * which requires filtering the stack trace of the throwable that ended
      * the example.
@@ -180,12 +206,13 @@ final readonly class Falsification
      * @param ?class-string     $className
      * @param ?non-empty-string $location
      */
-    private function __construct(FailureSignature $signature, ?string $className, ?string $location, string $message)
+    private function __construct(FailureSignature $signature, ?string $className, ?string $location, string $message, bool $issue = false)
     {
         $this->signature = $signature;
         $this->className = $className;
         $this->location  = $location;
         $this->message   = $message;
+        $this->issue     = $issue;
     }
 
     public function signature(): FailureSignature
@@ -222,6 +249,17 @@ final readonly class Falsification
     public function message(): string
     {
         return $this->message;
+    }
+
+    /**
+     * Whether the example falsified the property by triggering an issue
+     * rather than by failing, erroring, or exceeding its time limit: such an
+     * example has no failure or error of its own that could be reported for
+     * the property.
+     */
+    public function isIssue(): bool
+    {
+        return $this->issue;
     }
 
     /**

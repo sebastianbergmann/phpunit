@@ -15,6 +15,7 @@ use Closure;
 use PHPUnit\Event;
 use PHPUnit\Event\EventCollection;
 use PHPUnit\Event\NoPreviousThrowableException;
+use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorDeriver;
 use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
@@ -160,7 +161,7 @@ final class FalsificationReporter
 
                 $this->events->recordShrinkingAttempt($attemptEvents);
 
-                $candidateFalsification = Falsification::of($example);
+                $candidateFalsification = $this->runner->falsificationOf($example, $attemptEvents);
 
                 if ($candidateFalsification === null) {
                     return null;
@@ -199,14 +200,15 @@ final class FalsificationReporter
         // report them
         $this->events->record($replayEvents, true);
 
-        $error = null;
+        $error   = null;
+        $failure = null;
 
         // a final replay that is aborted because the deadline of the test run
         // has passed is reported with that error, like any other example that
         // is aborted by it, and with the counterexample, which falsified the
         // property while it was shrunk
         if (!ExampleRunner::propertyExampleOf($replay)->throwableThatEndedIt() instanceof TimeLimitExceededException) {
-            $replayFalsification = Falsification::of($replay);
+            $replayFalsification = $this->runner->falsificationOf($replay, $replayEvents);
 
             if ($replayFalsification === null) {
                 $error = $this->flaky(FlakyPropertyException::minimalCounterexampleNotFalsifyingAgain(), $originalFailure);
@@ -224,6 +226,8 @@ final class FalsificationReporter
                     FlakyPropertyException::minimalCounterexampleFalsifyingDifferently($falsification->description(), $replayFalsification->description()),
                     $originalFailure,
                 );
+            } elseif ($replayFalsification->isIssue()) {
+                $failure = self::failureFor($replayFalsification);
             }
         }
 
@@ -245,6 +249,7 @@ final class FalsificationReporter
                 $otherFalsifications,
                 $numberOfReplays,
                 $numberOfReproductions,
+                $failure,
             ),
         );
     }
@@ -258,7 +263,12 @@ final class FalsificationReporter
      */
     public function reportFalsificationByExplicitExample(TestCase $example, Falsification $falsification, EventCollection $exampleEvents, ExplicitExample $explicitExample, array $exportedArguments): void
     {
-        $error = null;
+        $error   = null;
+        $failure = null;
+
+        if ($falsification->isIssue()) {
+            $failure = self::failureFor($falsification);
+        }
 
         // an example that exceeded its time limit is reported with that error
         // rather than as risky, because it falsified the property
@@ -275,7 +285,7 @@ final class FalsificationReporter
         ($this->report)(
             $exampleEvents,
             $error,
-            new FalsificationReport($this->seed, 0, 0, 0, false, false, self::counterexample([], $exportedArguments, $name, [], []), [], 0, 0),
+            new FalsificationReport($this->seed, 0, 0, 0, false, false, self::counterexample([], $exportedArguments, $name, [], []), [], 0, 0, $failure),
         );
     }
 
@@ -346,7 +356,7 @@ final class FalsificationReporter
             $replays['steps']          = $drawnValues->steps();
             $replays['events']         = $replayEvents;
 
-            $replayFalsification = Falsification::of($example);
+            $replayFalsification = $this->runner->falsificationOf($example, $replayEvents);
 
             if ($replayFalsification !== null && $replayFalsification->isSameAs($falsification)) {
                 $replays['numberOfReproductions']++;
@@ -466,7 +476,7 @@ final class FalsificationReporter
 
             $this->events->recordShrinkingAttempt($replayEvents);
 
-            $falsification = Falsification::of($example);
+            $falsification = $this->runner->falsificationOf($example, $replayEvents);
 
             if ($falsification === null || !$falsification->isSameAs($other['falsification'])) {
                 continue;
@@ -479,6 +489,17 @@ final class FalsificationReporter
         }
 
         return $replayed;
+    }
+
+    /**
+     * The failure that is reported for a property that was falsified by an
+     * issue: the example that triggered the issue has no failure or error of
+     * its own, and the issue alone would be reported without the
+     * counterexample.
+     */
+    private static function failureFor(Falsification $falsification): Event\Code\Throwable
+    {
+        return Event\Code\ThrowableBuilder::from(new AssertionFailedError($falsification->message()));
     }
 
     /**

@@ -25,6 +25,7 @@ use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\PropertyBased\Properties\ValidPropertiesTest;
+use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use SebastianBergmann\ChoiceSequence\ChoiceSequence;
 
 #[CoversClass(ExampleRunner::class)]
@@ -161,6 +162,7 @@ final class ExampleRunnerTest extends TestCase
             static fn (): TestCase => new ValidPropertiesTest($methodName),
             new GeneratorResolver(new PropertyDefinitionBuilder()->build(ValidPropertiesTest::class, $methodName)),
             $facade,
+            FalsifyingIssues::fromConfiguration(ConfigurationRegistry::get()),
         );
     }
 

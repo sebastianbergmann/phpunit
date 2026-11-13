@@ -169,6 +169,35 @@ final class FalsificationTest extends TestCase
         $this->assertStringMatchesFormat('RuntimeException at %sExampleTest.php:%d', $falsification->description());
     }
 
+    public function testDescribesHowAnIssueFalsifiedThePropertyByItsKindAndWhereItWasTriggered(): void
+    {
+        $falsification = Falsification::ofIssue('E_WARNING', __FILE__, 12, 'message');
+
+        $this->assertTrue($falsification->isIssue());
+        $this->assertFalse($falsification->isTimeout());
+        $this->assertNull($falsification->className());
+        $this->assertStringMatchesFormat('%sFalsificationTest.php:12', (string) $falsification->location());
+        $this->assertStringMatchesFormat('E_WARNING at %sFalsificationTest.php:12', $falsification->description());
+        $this->assertStringMatchesFormat('E_WARNING was triggered at %sFalsificationTest.php:12: message', $falsification->message());
+    }
+
+    public function testIssuesOfTheSameKindThatAreTriggeredInTheSameLineFalsifyThePropertyInTheSameWay(): void
+    {
+        $falsification = Falsification::ofIssue('E_WARNING', __FILE__, 12, 'message');
+
+        $this->assertTrue($falsification->isSameAs(Falsification::ofIssue('E_WARNING', __FILE__, 12, 'another message')));
+        $this->assertFalse($falsification->isSameAs(Falsification::ofIssue('E_NOTICE', __FILE__, 12, 'message')));
+        $this->assertFalse($falsification->isSameAs(Falsification::ofIssue('E_WARNING', __FILE__, 13, 'message')));
+    }
+
+    public function testAnExampleThatFailsOrErrorsDoesNotFalsifyThePropertyByAnIssue(): void
+    {
+        $falsification = Falsification::of($this->example('testErrors', 1));
+
+        $this->assertNotNull($falsification);
+        $this->assertFalse($falsification->isIssue());
+    }
+
     public function testThePathOfTheFileWhereTheThrowableWasRaisedIsRelativeToTheDirectoryOfTheConfigurationFileWhenTheFileIsBelowIt(): void
     {
         // the path does not depend on the working directory

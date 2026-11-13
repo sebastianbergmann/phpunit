@@ -291,6 +291,42 @@ final class EventAggregatorTest extends AbstractEventTestCase
         );
     }
 
+    public function testReplacesTheOutcomeOfTheSkeletonWithTheFailureOfAPropertyThatWasFalsifiedByAnIssue(): void
+    {
+        $example = $this->passedExample();
+
+        $falsification = new FalsificationReport(1, 1, 0, 0, false, false, new Counterexample([], [], null, [], []), [], 0, 0, ThrowableBuilder::from(new Exception('issue')));
+
+        $failed = null;
+        $events = $this->dispatch([[$example, true]], $example, null, false, $falsification, 1);
+
+        foreach ($events as $event) {
+            if ($event instanceof Failed) {
+                $failed = $event;
+            }
+        }
+
+        $this->assertSame(
+            ['PreparationStarted', 'Prepared', 'PropertyFalsified', 'Failed', 'PropertyChecked', 'Finished: 1'],
+            $this->describe($events),
+        );
+
+        $this->assertInstanceOf(Failed::class, $failed);
+        $this->assertSame("issue\n\nProperty falsified after 1 example.", $failed->throwable()->message());
+    }
+
+    public function testReportsAnErrorRatherThanTheFailureOfAPropertyThatWasFalsifiedByAnIssue(): void
+    {
+        $example = $this->passedExample();
+
+        $falsification = new FalsificationReport(1, 1, 0, 0, false, false, new Counterexample([], [], null, [], []), [], 0, 0, ThrowableBuilder::from(new Exception('issue')));
+
+        $this->assertSame(
+            ['PreparationStarted', 'Prepared', 'PropertyFalsified', "Errored: error\n\nProperty falsified after 1 example.", 'PropertyChecked', 'Finished: 1'],
+            $this->describe($this->dispatch([[$example, true]], $example, $this->error(), false, $falsification, 1)),
+        );
+    }
+
     public function testDispatchesAnErrorForASkeletonWithoutAnOutcomeBeforeItFinishes(): void
     {
         $example = $this->example(

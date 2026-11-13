@@ -21,6 +21,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestRunner\ExampleRun;
 use PHPUnit\Framework\TestRunner\TestRunner;
 use PHPUnit\Runner\ErrorHandler;
+use PHPUnit\Runner\TimeLimit\TimeLimitExceededException;
 use ReflectionMethod;
 use SebastianBergmann\Invoker\Invoker;
 use SebastianBergmann\Invoker\TimeoutException;
@@ -47,6 +48,7 @@ final readonly class ExampleRunner
     private Closure $exampleFactory;
     private GeneratorResolver $generatorResolver;
     private Event\Facade $facade;
+    private FalsifyingIssues $falsifyingIssues;
 
     /**
      * The example of a property that a test case that example() created is.
@@ -80,8 +82,9 @@ final readonly class ExampleRunner
      * @param bool                $usesErrorHandler whether PHPUnit's error handler is used for the property
      * @param Closure(): TestCase $exampleFactory   creates the test case of an example
      */
-    public function __construct(Event\Code\TestMethod $test, bool $usesErrorHandler, Closure $exampleFactory, GeneratorResolver $generatorResolver, Event\Facade $facade)
+    public function __construct(Event\Code\TestMethod $test, bool $usesErrorHandler, Closure $exampleFactory, GeneratorResolver $generatorResolver, Event\Facade $facade, FalsifyingIssues $falsifyingIssues)
     {
+        $this->falsifyingIssues  = $falsifyingIssues;
         $this->test              = $test;
         $this->usesErrorHandler  = $usesErrorHandler;
         $this->exampleFactory    = $exampleFactory;
@@ -135,6 +138,37 @@ final readonly class ExampleRunner
         assert($run instanceof ExampleRun);
 
         return [$events, $run];
+    }
+
+    /**
+     * How an example that was run falsified the property, null when it did
+     * not: by failing, erroring, or exceeding its time limit, or else by
+     * triggering an issue for which the test run fails.
+     *
+     * An example that was rejected, skipped, marked incomplete, or aborted
+     * because the deadline of the test run has passed did not check the
+     * property, so the issues that it triggered do not falsify the property.
+     *
+     * @param EventCollection $exampleEvents the events of the example, which run() returned
+     */
+    public function falsificationOf(TestCase $example, EventCollection $exampleEvents): ?Falsification
+    {
+        $falsification = Falsification::of($example);
+
+        if ($falsification !== null) {
+            return $falsification;
+        }
+
+        $propertyExample = self::propertyExampleOf($example);
+
+        if ($propertyExample->wasRejected() ||
+            $propertyExample->throwableThatEndedIt() instanceof TimeLimitExceededException ||
+            $example->status()->isSkipped() ||
+            $example->status()->isIncomplete()) {
+            return null;
+        }
+
+        return $this->falsifyingIssues->falsificationBy($exampleEvents);
     }
 
     /**

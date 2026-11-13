@@ -34,6 +34,7 @@ use PHPUnit\Framework\PropertyBased\ExplicitExample;
 use PHPUnit\Framework\PropertyBased\Falsification;
 use PHPUnit\Framework\PropertyBased\FalsificationReport;
 use PHPUnit\Framework\PropertyBased\FalsificationReporter;
+use PHPUnit\Framework\PropertyBased\FalsifyingIssues;
 use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
 use PHPUnit\Framework\PropertyBased\GeneratorResolver;
 use PHPUnit\Framework\PropertyBased\InvalidPropertyException;
@@ -314,7 +315,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             $exportedArguments     = $this->exampleRunner()->export($explicitExample->arguments(), new Constructions);
             $example               = $this->exampleRunner()->example($explicitExample->arguments(), true);
             [$exampleEvents, $run] = $this->exampleRunner()->run($example, $emitter, true);
-            $falsification         = Falsification::of($example);
+            $falsification         = $this->exampleRunner()->falsificationOf($example, $exampleEvents);
 
             if ($this->wasRejected($example, $falsification)) {
                 $events->record($exampleEvents, false);
@@ -412,7 +413,7 @@ final class PropertyTestSuite extends IterativeTestSuite
 
             $example               = $this->exampleRunner()->example($arguments, false, DrawnValues::from($source));
             [$exampleEvents, $run] = $this->exampleRunner()->run($example, $emitter, true);
-            $falsification         = Falsification::of($example);
+            $falsification         = $this->exampleRunner()->falsificationOf($example, $exampleEvents);
 
             // the same choices generate the same arguments and draw the same
             // values, or are rejected again, so they are not drawn again; the
@@ -537,7 +538,7 @@ final class PropertyTestSuite extends IterativeTestSuite
      */
     private function resultOf(TestCase $example, ChoiceSource $source, EventCollection $exampleEvents): ExampleResult
     {
-        $falsification = Falsification::of($example);
+        $falsification = $this->exampleRunner()->falsificationOf($example, $exampleEvents);
 
         if ($this->wasRejected($example, $falsification)) {
             return ExampleResult::rejected($source->sequence());
@@ -559,7 +560,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             return ExampleResult::passed($source->sequence());
         }
 
-        return ExampleResult::falsified($falsification, $example->status()->isFailure(), $source->sequence());
+        return ExampleResult::falsified($falsification, $example->status()->isFailure() || $falsification->isIssue(), $source->sequence());
     }
 
     /**
@@ -902,6 +903,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             $this->exampleFactory,
             $this->generatorResolver(),
             Event\Facade::instance(),
+            FalsifyingIssues::fromConfiguration(ConfigurationRegistry::get()),
         );
     }
 

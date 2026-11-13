@@ -152,6 +152,12 @@ use Throwable;
  * class that it extends which is neither. The class of the throwable itself
  * is kept as it is.
  *
+ * An example that triggers an issue for which the test run fails, a warning
+ * when the test runner is configured to fail on warnings, for instance,
+ * falsifies the property like an example that fails. Its failure has no
+ * class, and its signature names the kind of the issue and where it was
+ * triggered.
+ *
  * An example that fails or errors without checking the property is aborted
  * rather than falsifying it: when a generator raises an exception while its
  * arguments are generated, when it ends before its test method is called, in
