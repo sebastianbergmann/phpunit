@@ -14,7 +14,9 @@ use const FILTER_FLAG_NO_PRIV_RANGE;
 use const FILTER_VALIDATE_IP;
 use const PHP_URL_HOST;
 use function array_count_values;
+use function array_fill;
 use function array_filter;
+use function array_replace;
 use function array_search;
 use function array_sum;
 use function array_unique;
@@ -28,6 +30,7 @@ use function mb_strlen;
 use function parse_url;
 use function preg_match;
 use function str_contains;
+use function strcmp;
 use function strlen;
 use function strrpos;
 use function substr;
@@ -310,6 +313,12 @@ final class ShrinkerTest extends TestCase
                 static fn (array $value): bool => $value[0] + $value[2] > 10,
             ],
 
+            'element of a list that has its smallest size' => [
+                array_replace(array_fill(0, 256, 0), [200 => 1]),
+                Generators::lists(Generators::integers(-128, 127), 256, 300),
+                static fn (array $value): bool => $value[200] !== 0,
+            ],
+
             'value that is falsified by every example' => [
                 [],
                 Generators::lists(Generators::strings()),
@@ -329,6 +338,18 @@ final class ShrinkerTest extends TestCase
 
         $this->assertSame($expected, $this->replay($generator, $result->sequence()));
         $this->assertFalse($result->budgetExhausted());
+    }
+
+    public function testMinimizesTheDigitsOfANumberFromLeftToRightBeforeTheMaximumNumberOfAttemptsHasBeenMade(): void
+    {
+        $generator = Generators::fromRegularExpression('/\A[1-9][0-9]{18}\z/');
+        $falsifies = static fn (string $value): bool => strcmp($value, '9223372036854775807') > 0;
+
+        $result = $this->shrinker($generator, $falsifies)->shrink($this->falsifyingSequence($generator, $falsifies));
+
+        // the passes that are run once more after the minimal counterexample
+        // was found, and that do not make it simpler, can exhaust the attempts
+        $this->assertSame('9223372036854775808', $this->replay($generator, $result->sequence()));
     }
 
     public function testShortensTheLabelsOfTheDomainOfAnEmailAddressThatTheCounterexampleDoesNotDependOn(): void
