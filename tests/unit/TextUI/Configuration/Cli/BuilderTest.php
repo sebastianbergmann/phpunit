@@ -3213,6 +3213,41 @@ final class BuilderTest extends TestCase
         $this->assertFalse($configuration->hasPropertyExamplesMultiplier());
     }
 
+    #[TestDox('--property-maximum-shrinking-attempts')]
+    public function testPropertyMaximumShrinkingAttempts(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--property-maximum-shrinking-attempts', '0']);
+
+        $this->assertTrue($configuration->hasPropertyMaximumShrinkingAttempts());
+        $this->assertSame(0, $configuration->propertyMaximumShrinkingAttempts());
+    }
+
+    public function testPropertyMaximumShrinkingAttemptsMayNotBeConfigured(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters([]);
+
+        $this->assertFalse($configuration->hasPropertyMaximumShrinkingAttempts());
+
+        $this->expectException(Exception::class);
+
+        $configuration->propertyMaximumShrinkingAttempts();
+    }
+
+    #[TestDox('--property-maximum-shrinking-attempts with a value that is not a non-negative integer is ignored')]
+    public function testPropertyMaximumShrinkingAttemptsIsIgnoredWhenValueIsNotANonNegativeInteger(): void
+    {
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter
+            ->expects($this->once())
+            ->method('testRunnerTriggeredPhpunitWarning')
+            ->with('Option "--property-maximum-shrinking-attempts -1" ignored because "-1" is not a non-negative integer');
+
+        $configuration = new Builder($emitter)->fromParameters(['--property-maximum-shrinking-attempts', '-1']);
+
+        $this->assertFalse($configuration->hasPropertyMaximumShrinkingAttempts());
+    }
+
     #[TestDox('--timeout')]
     public function testTimeout(): void
     {

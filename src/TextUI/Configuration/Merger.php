@@ -1098,7 +1098,11 @@ final readonly class Merger
             $propertyExamplesMultiplier = $xmlConfiguration->propertyBasedTesting()->examplesMultiplier();
         }
 
-        $maximumShrinkingAttempts = $xmlConfiguration->propertyBasedTesting()->maximumShrinkingAttempts();
+        if ($cliConfiguration->hasPropertyMaximumShrinkingAttempts()) {
+            $maximumShrinkingAttempts = $cliConfiguration->propertyMaximumShrinkingAttempts();
+        } else {
+            $maximumShrinkingAttempts = $xmlConfiguration->propertyBasedTesting()->maximumShrinkingAttempts();
+        }
 
         $repeat = 1;
 

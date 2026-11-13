@@ -119,6 +119,8 @@ Execution:
   --retry <N>                          Attempt each test up to N times, stopping at the first success
   --property-examples <N>              Check N examples for each property that does not specify the number of its examples
   --property-examples-multiplier <N>   Multiply the number of examples of every property by N, including properties that specify the number of their examples
+  --property-maximum-shrinking-attempts <N>
+                                       Make at most N attempts to shrink the counterexample of a falsified property (0 disables shrinking)
   --reverse-order                      Alias for "--order-by reverse"
 
 Reporting:

@@ -503,6 +503,17 @@ final class MergerTest extends TestCase
         $this->assertSame(1, $mergedConfig->propertyExamplesMultiplier());
     }
 
+    public function testMaximumNumberOfShrinkingAttemptsFromCliTakesPrecedenceOverXmlConfiguration(): void
+    {
+        $fromFile = new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration.xml');
+
+        $fromCli = new Builder($this->createStub(Emitter::class))->fromParameters(['--property-maximum-shrinking-attempts', '0']);
+
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge($fromCli, $fromFile);
+
+        $this->assertSame(0, $mergedConfig->maximumShrinkingAttempts());
+    }
+
     public function testIncludePathsAreCarriedOverFromXmlConfiguration(): void
     {
         $fromFile = (new Loader)->load(TEST_FILES_PATH . 'configuration_edge_case_values.xml');

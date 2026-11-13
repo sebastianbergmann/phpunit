@@ -208,6 +208,10 @@
   [32m--property-examples-multiplier [36m<N>[0m  [0m Multiply the number of examples of every
                                        property by N, including properties that
                                        specify the number of their examples
+  [32m--property-maximum-shrinking-attempts <N>[0m
+                                       Make at most N attempts to shrink the
+                                       counterexample of a falsified property
+                                       (0 disables shrinking)
   [32m--reverse-order                     [0m Alias for "--order-by reverse"
 
 [33mReporting:[0m

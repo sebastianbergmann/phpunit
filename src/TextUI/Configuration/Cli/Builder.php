@@ -128,6 +128,7 @@ final class Builder
         'process-isolation',
         'property-examples=',
         'property-examples-multiplier=',
+        'property-maximum-shrinking-attempts=',
         'do-not-report-useless-tests',
         'random-order',
         'random-seed=',
@@ -415,6 +416,7 @@ final class Builder
         $randomSeedFromGitCommit                  = false;
         $propertyExamples                         = null;
         $propertyExamplesMultiplier               = null;
+        $propertyMaximumShrinkingAttempts         = null;
         $repeat                                   = null;
         $retry                                    = null;
         $timeout                                  = null;
@@ -1366,6 +1368,25 @@ final class Builder
 
                     break;
 
+                case '--property-maximum-shrinking-attempts':
+                    if (!is_numeric($option[1]) ||
+                        (string) (int) $option[1] !== $option[1] ||
+                        (int) $option[1] < 0) {
+                        $this->emitter->testRunnerTriggeredPhpunitWarning(
+                            sprintf(
+                                'Option "--property-maximum-shrinking-attempts %s" ignored because "%s" is not a non-negative integer',
+                                $option[1],
+                                $option[1],
+                            ),
+                        );
+
+                        break;
+                    }
+
+                    $propertyMaximumShrinkingAttempts = (int) $option[1];
+
+                    break;
+
                 case '--timeout':
                     if (!is_numeric($option[1]) ||
                         (string) (int) $option[1] !== $option[1] ||
@@ -1580,6 +1601,7 @@ final class Builder
             $randomSeedFromGitCommit,
             $propertyExamples,
             $propertyExamplesMultiplier,
+            $propertyMaximumShrinkingAttempts,
             $repeat,
             $retry,
             $timeout,
