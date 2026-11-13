@@ -34,6 +34,7 @@ use function array_filter;
 use function array_keys;
 use function array_map;
 use function array_merge;
+use function array_sum;
 use function array_unique;
 use function array_values;
 use function bin2hex;
@@ -183,6 +184,7 @@ final class GeneratorsTest extends TestCase
             'lists (unique)'     => [Generators::lists(Generators::integers(0, 9), unique: true)],
             'arrays'             => [Generators::arrays(Generators::strings('abc', 1, 2), Generators::booleans())],
             'tuples'             => [Generators::tuples(Generators::integers(), Generators::strings())],
+            'combine'            => [Generators::combine(static fn (int $integer, string $string): string => $integer . $string, Generators::integers(), Generators::strings())],
             'records'            => [Generators::records(['name' => Generators::strings(), 'age' => Generators::integers(0, 150)])],
             'records (optional)' => [Generators::records(['name' => Generators::strings(), 'age' => Generators::integers(0, 150)], ['age'])],
             'nullable'           => [Generators::nullable(Generators::integers())],
@@ -1759,6 +1761,62 @@ final class GeneratorsTest extends TestCase
     {
         $this->assertSame([0, false, 'a'], $this->replay(Generators::tuples(Generators::integers(), Generators::booleans(), Generators::constant('a')), []));
         $this->assertSame([], $this->replay(Generators::tuples(), []));
+    }
+
+    public function testGeneratesTheValuesThatAClosureReturnsForOneValueOfEachGenerator(): void
+    {
+        $generator = Generators::combine(
+            static fn (int $integer, bool $boolean, string $string): array => ['integer' => $integer, 'boolean' => $boolean, 'string' => $string],
+            Generators::integers(0, 9),
+            Generators::booleans(),
+            Generators::constant('a'),
+        );
+
+        $this->assertSame(['integer' => 0, 'boolean' => false, 'string' => 'a'], $this->replay($generator, []));
+        $this->assertSame(['integer' => 7, 'boolean' => true, 'string' => 'a'], $this->replay($generator, [7, 1]));
+    }
+
+    public function testCombinesTheValuesOfMoreThanEightGenerators(): void
+    {
+        $generator = Generators::combine(
+            static fn (int ...$integers): int => array_sum($integers),
+            Generators::constant(1),
+            Generators::constant(2),
+            Generators::constant(3),
+            Generators::constant(4),
+            Generators::constant(5),
+            Generators::constant(6),
+            Generators::constant(7),
+            Generators::constant(8),
+            Generators::constant(9),
+            Generators::constant(10),
+        );
+
+        $this->assertSame(55, $this->replay($generator, []));
+    }
+
+    public function testAGeneratorWhoseValuesAreCombinedMustNotFollowAGeneratorThatIsNull(): void
+    {
+        $this->expectException(InvalidGeneratorArgumentException::class);
+        $this->expectExceptionMessageIs('A generator must not follow a generator that is null');
+
+        Generators::combine(static fn (int $first): int => $first, Generators::integers(), null, Generators::integers());
+    }
+
+    public function testTheClosureThatCombinesValuesMustNotRequireMoreArgumentsThanGeneratorsAreGiven(): void
+    {
+        $this->expectException(InvalidGeneratorArgumentException::class);
+        $this->expectExceptionMessageIs('The closure requires 3 arguments, but only 2 generators are given');
+
+        Generators::combine(static fn (int $first, int $second, int $third): int => $first, Generators::integers(), Generators::integers());
+    }
+
+    public function testTheClosureThatCombinesValuesMustNotRequireMoreArgumentsThanTheOneGeneratorThatIsGiven(): void
+    {
+        $this->expectException(InvalidGeneratorArgumentException::class);
+        $this->expectExceptionMessageIs('The closure requires 2 arguments, but only 1 generator is given');
+
+        Generators::combine(static fn (int $first, int $second): int => $first, Generators::integers());
     }
 
     public function testGeneratesRecordsWithAValueOfTheRespectiveGeneratorForEachKey(): void

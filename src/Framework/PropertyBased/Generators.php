@@ -73,6 +73,7 @@ use PHPUnit\Framework\PropertyBased\Generator\UuidGenerator;
 use PHPUnit\Framework\PropertyBased\RegularExpression\Parser;
 use PHPUnit\Framework\PropertyBased\Type\NameScope;
 use PHPUnit\Framework\PropertyBased\Type\TypeParser;
+use ReflectionFunction;
 use SebastianBergmann\ChoiceSequence\WeightedRangesDistribution;
 use UnitEnum;
 
@@ -468,6 +469,85 @@ final class Generators
         }
 
         return new TupleGenerator($tuple);
+    }
+
+    /**
+     * Generates the values that $combiner returns when it is called with one
+     * value of each of the given generators, in their order: an object that
+     * is built from generated values, for instance.
+     *
+     * Unlike with flatMap(), the choices of the values do not depend on each
+     * other, so a counterexample shrinks as well as the values of each of the
+     * generators do. Use flatMap() only when a generator depends on a value
+     * that was generated before.
+     *
+     * The types of the parameters of $combiner are checked against the types
+     * of the values of the first eight generators by static analysis. The
+     * values of further generators are passed to $combiner as well.
+     *
+     * @template T1
+     * @template T2
+     * @template T3
+     * @template T4
+     * @template T5
+     * @template T6
+     * @template T7
+     * @template T8
+     * @template R
+     *
+     * @param Closure(T1, T2, T3, T4, T5, T6, T7, T8): R $combiner
+     * @param ValueGenerator<T1>                         $first
+     * @param ?ValueGenerator<T2>                        $second
+     * @param ?ValueGenerator<T3>                        $third
+     * @param ?ValueGenerator<T4>                        $fourth
+     * @param ?ValueGenerator<T5>                        $fifth
+     * @param ?ValueGenerator<T6>                        $sixth
+     * @param ?ValueGenerator<T7>                        $seventh
+     * @param ?ValueGenerator<T8>                        $eighth
+     * @param ValueGenerator<mixed>                      ...$further
+     *
+     * @throws InvalidGeneratorArgumentException
+     * @throws ValueGeneratorNotSupportedException
+     *
+     * @return ValueGenerator<R>
+     */
+    public static function combine(Closure $combiner, ValueGenerator $first, ?ValueGenerator $second = null, ?ValueGenerator $third = null, ?ValueGenerator $fourth = null, ?ValueGenerator $fifth = null, ?ValueGenerator $sixth = null, ?ValueGenerator $seventh = null, ?ValueGenerator $eighth = null, ValueGenerator ...$further): ValueGenerator
+    {
+        $generators = [AbstractGenerator::from($first)];
+        $omitted    = false;
+
+        foreach ([$second, $third, $fourth, $fifth, $sixth, $seventh, $eighth, ...array_values($further)] as $generator) {
+            if ($generator === null) {
+                $omitted = true;
+
+                continue;
+            }
+
+            if ($omitted) {
+                throw new InvalidGeneratorArgumentException(
+                    'A generator must not follow a generator that is null',
+                );
+            }
+
+            $generators[] = AbstractGenerator::from($generator);
+        }
+
+        $numberOfRequiredParameters = new ReflectionFunction($combiner)->getNumberOfRequiredParameters();
+
+        if ($numberOfRequiredParameters > count($generators)) {
+            throw new InvalidGeneratorArgumentException(
+                sprintf(
+                    'The closure requires %d arguments, but only %d %s given',
+                    $numberOfRequiredParameters,
+                    count($generators),
+                    self::generatorsAre(count($generators)),
+                ),
+            );
+        }
+
+        return new TupleGenerator($generators)->map(
+            static fn (array $values): mixed => $combiner(...$values),
+        );
     }
 
     /**
@@ -1251,5 +1331,17 @@ final class Generators
                 ),
             );
         }
+    }
+
+    /**
+     * @param positive-int $number
+     */
+    private static function generatorsAre(int $number): string
+    {
+        if ($number === 1) {
+            return 'generator is';
+        }
+
+        return 'generators are';
     }
 }

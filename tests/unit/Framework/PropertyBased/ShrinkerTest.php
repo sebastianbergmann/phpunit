@@ -319,6 +319,12 @@ final class ShrinkerTest extends TestCase
                 static fn (array $value): bool => $value[200] !== 0,
             ],
 
+            'values that are combined' => [
+                '10:b',
+                Generators::combine(static fn (int $integer, string $string): string => $integer . ':' . $string, Generators::integers(0, 1000), Generators::strings('ab', 1, 5)),
+                static fn (string $value): bool => (int) $value >= 10 && str_contains($value, 'b'),
+            ],
+
             'value that is falsified by every example' => [
                 [],
                 Generators::lists(Generators::strings()),
