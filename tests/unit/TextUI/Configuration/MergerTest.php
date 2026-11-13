@@ -386,6 +386,26 @@ final class MergerTest extends TestCase
         $this->assertSame(60, $mergedConfig->timeout());
     }
 
+    public function testDedicatedExitCodeForFailedTestsIsNotRequestedByDefault(): void
+    {
+        $fromFile = new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration_empty.xml');
+        $fromCli  = new Builder($this->createStub(Emitter::class))->fromParameters([]);
+
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge($fromCli, $fromFile);
+
+        $this->assertFalse($mergedConfig->dedicatedExitCodeForFailedTests());
+    }
+
+    public function testDedicatedExitCodeForFailedTestsCanBeRequestedFromCli(): void
+    {
+        $fromFile = new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration_empty.xml');
+        $fromCli  = new Builder($this->createStub(Emitter::class))->fromParameters(['--dedicated-exit-code-for-failed-tests']);
+
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge($fromCli, $fromFile);
+
+        $this->assertTrue($mergedConfig->dedicatedExitCodeForFailedTests());
+    }
+
     public function testRandomNumberGeneratorsAreNotSeededByDefault(): void
     {
         $fromFile = new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration_empty.xml');

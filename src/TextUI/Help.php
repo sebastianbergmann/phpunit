@@ -271,6 +271,9 @@ final class Help
                 ['arg' => '--do-not-fail-on-incomplete', 'desc' => 'Do not signal failure using shell exit code when a test was marked incomplete'],
                 ['spacer' => ''],
 
+                ['arg' => '--dedicated-exit-code-for-failed-tests', 'desc' => 'Use shell exit code 3 when, and only when, a test failed or errored'],
+                ['spacer' => ''],
+
                 ['arg' => '--record-test-run-history', 'desc' => 'Record test run history'],
                 ['arg' => '--do-not-record-test-run-history', 'desc' => 'Do not record test run history'],
                 ['arg' => '--cache-test-index', 'desc' => 'Write test index to cache file'],

@@ -169,6 +169,10 @@
   [32m--do-not-fail-on-incomplete         [0m Do not signal failure using shell exit
                                        code when a test was marked incomplete
 
+  [32m--dedicated-exit-code-for-failed-tests[0m
+                                       Use shell exit code 3 when, and only
+                                       when, a test failed or errored
+
   [32m--record-test-run-history           [0m Record test run history
   [32m--do-not-record-test-run-history    [0m Do not record test run history
   [32m--cache-test-index                  [0m Write test index to cache file

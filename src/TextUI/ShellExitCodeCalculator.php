@@ -19,10 +19,11 @@ use PHPUnit\TextUI\Configuration\Configuration;
  */
 final readonly class ShellExitCodeCalculator
 {
-    private const int SUCCESS_EXIT   = 0;
-    private const int FAILURE_EXIT   = 1;
-    private const int EXCEPTION_EXIT = 2;
-    private const int TIMEOUT_EXIT   = 124;
+    private const int SUCCESS_EXIT     = 0;
+    private const int FAILURE_EXIT     = 1;
+    private const int EXCEPTION_EXIT   = 2;
+    private const int FAILED_TEST_EXIT = 3;
+    private const int TIMEOUT_EXIT     = 124;
 
     public function calculate(Configuration $configuration, TestResult $result): int
     {
@@ -218,6 +219,12 @@ final readonly class ShellExitCodeCalculator
 
         if ($result->hasErrors()) {
             $returnCode = self::EXCEPTION_EXIT;
+        }
+
+        if ($configuration->dedicatedExitCodeForFailedTests()) {
+            if ($result->hasTestFailedEvents() || $result->hasTestErroredEvents()) {
+                $returnCode = self::FAILED_TEST_EXIT;
+            }
         }
 
         if ($result->wasTimeLimitExceeded()) {

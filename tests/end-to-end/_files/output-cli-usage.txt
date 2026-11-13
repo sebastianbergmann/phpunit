@@ -99,6 +99,9 @@ Execution:
   --do-not-fail-on-skipped             Do not signal failure using shell exit code when a test was skipped
   --do-not-fail-on-incomplete          Do not signal failure using shell exit code when a test was marked incomplete
 
+  --dedicated-exit-code-for-failed-tests
+                                       Use shell exit code 3 when, and only when, a test failed or errored
+
   --record-test-run-history            Record test run history
   --do-not-record-test-run-history     Do not record test run history
   --cache-test-index                   Write test index to cache file

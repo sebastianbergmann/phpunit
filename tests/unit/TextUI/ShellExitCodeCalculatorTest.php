@@ -12,6 +12,7 @@ namespace PHPUnit\TextUI;
 use function hrtime;
 use PHPUnit\Event\Code\TestDoxBuilder;
 use PHPUnit\Event\Code\TestMethod;
+use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Event\Telemetry\CpuTime;
 use PHPUnit\Event\Telemetry\Duration;
@@ -20,9 +21,12 @@ use PHPUnit\Event\Telemetry\HRTime;
 use PHPUnit\Event\Telemetry\Info;
 use PHPUnit\Event\Telemetry\MemoryUsage;
 use PHPUnit\Event\Telemetry\Snapshot;
+use PHPUnit\Event\Test\Errored;
+use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\PhpunitNoticeTriggered;
 use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Event\TestRunner\TimeLimitExceeded;
+use PHPUnit\Event\TestRunner\WarningTriggered;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
@@ -71,6 +75,91 @@ final class ShellExitCodeCalculatorTest extends TestCase
             (new ShellExitCodeCalculator)->calculate(
                 $this->configuration([]),
                 $this->testResultWithExceededTimeLimit(),
+            ),
+        );
+    }
+
+    public function testUsesDedicatedExitCodeForFailedTestWhenRequested(): void
+    {
+        $this->assertSame(
+            3,
+            (new ShellExitCodeCalculator)->calculate(
+                $this->configuration(['--dedicated-exit-code-for-failed-tests']),
+                $this->testResult([], [$this->failed()], [], null),
+            ),
+        );
+    }
+
+    public function testUsesDedicatedExitCodeForErroredTestWhenRequested(): void
+    {
+        $this->assertSame(
+            3,
+            (new ShellExitCodeCalculator)->calculate(
+                $this->configuration(['--dedicated-exit-code-for-failed-tests']),
+                $this->testResult([$this->errored()], [], [], null),
+            ),
+        );
+    }
+
+    public function testDoesNotUseDedicatedExitCodeForFailedTestWhenNotRequested(): void
+    {
+        $this->assertSame(
+            1,
+            (new ShellExitCodeCalculator)->calculate(
+                $this->configuration([]),
+                $this->testResult([], [$this->failed()], [], null),
+            ),
+        );
+    }
+
+    public function testDoesNotUseDedicatedExitCodeForErroredTestWhenNotRequested(): void
+    {
+        $this->assertSame(
+            2,
+            (new ShellExitCodeCalculator)->calculate(
+                $this->configuration([]),
+                $this->testResult([$this->errored()], [], [], null),
+            ),
+        );
+    }
+
+    public function testDoesNotUseDedicatedExitCodeWhenNoTestFailedOrErrored(): void
+    {
+        $this->assertSame(
+            1,
+            (new ShellExitCodeCalculator)->calculate(
+                $this->configuration([
+                    '--dedicated-exit-code-for-failed-tests',
+                    '--fail-on-phpunit-warning',
+                ]),
+                $this->testResult([], [], [new WarningTriggered($this->telemetryInfo(), 'message')], null),
+            ),
+        );
+    }
+
+    public function testSignalsSuccessWhenDedicatedExitCodeIsRequestedAndNoTestFailedOrErrored(): void
+    {
+        $this->assertSame(
+            0,
+            (new ShellExitCodeCalculator)->calculate(
+                $this->configuration(['--dedicated-exit-code-for-failed-tests']),
+                $this->testResult([], [], [], null),
+            ),
+        );
+    }
+
+    public function testExceededTimeLimitTakesPrecedenceOverDedicatedExitCode(): void
+    {
+        $this->assertSame(
+            124,
+            (new ShellExitCodeCalculator)->calculate(
+                $this->configuration(['--dedicated-exit-code-for-failed-tests']),
+                $this->testResult(
+                    [],
+                    [$this->failed()],
+                    [],
+                    new TimeLimitExceeded($this->telemetryInfo(), 60),
+                ),
             ),
         );
     }
@@ -142,6 +231,99 @@ final class ShellExitCodeCalculatorTest extends TestCase
                 'indirect' => 0,
                 'unknown'  => 0,
             ],
+        );
+    }
+
+    /**
+     * @param list<Errored>          $testErroredEvents
+     * @param list<Failed>           $testFailedEvents
+     * @param list<WarningTriggered> $testRunnerTriggeredWarningEvents
+     */
+    private function testResult(array $testErroredEvents, array $testFailedEvents, array $testRunnerTriggeredWarningEvents, ?TimeLimitExceeded $timeLimitExceededEvent): TestResult
+    {
+        return new TestResult(
+            1,
+            1,
+            1,
+            $testErroredEvents,
+            $testFailedEvents,
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            $testRunnerTriggeredWarningEvents,
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            0,
+            [
+                'self'     => 0,
+                'direct'   => 0,
+                'indirect' => 0,
+                'unknown'  => 0,
+            ],
+            [],
+            $timeLimitExceededEvent,
+        );
+    }
+
+    private function failed(): Failed
+    {
+        return new Failed(
+            $this->telemetryInfo(),
+            $this->testMethod(),
+            $this->throwable(),
+            null,
+        );
+    }
+
+    private function errored(): Errored
+    {
+        return new Errored(
+            $this->telemetryInfo(),
+            $this->testMethod(),
+            $this->throwable(),
+        );
+    }
+
+    private function testMethod(): TestMethod
+    {
+        return new TestMethod(
+            'FooTest',
+            'testBar',
+            'FooTest.php',
+            1,
+            TestDoxBuilder::fromClassNameAndMethodName('Foo', 'bar'),
+            MetadataCollection::fromArray([]),
+            TestDataCollection::fromArray([]),
+        );
+    }
+
+    private function throwable(): Throwable
+    {
+        return new Throwable(
+            'Exception',
+            'message',
+            'description',
+            'stack trace',
+            null,
         );
     }
 

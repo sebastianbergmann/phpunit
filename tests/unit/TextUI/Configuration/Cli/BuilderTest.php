@@ -3282,6 +3282,21 @@ final class BuilderTest extends TestCase
         $this->assertTrue($configuration->withTelemetry());
     }
 
+    #[TestDox('--dedicated-exit-code-for-failed-tests')]
+    public function testDedicatedExitCodeForFailedTests(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters(['--dedicated-exit-code-for-failed-tests']);
+
+        $this->assertTrue($configuration->dedicatedExitCodeForFailedTests());
+    }
+
+    public function testDedicatedExitCodeForFailedTestsIsNotRequestedByDefault(): void
+    {
+        $configuration = new Builder($this->createStub(Emitter::class))->fromParameters([]);
+
+        $this->assertFalse($configuration->dedicatedExitCodeForFailedTests());
+    }
+
     #[TestDox('--extension')]
     public function testExtension(): void
     {
