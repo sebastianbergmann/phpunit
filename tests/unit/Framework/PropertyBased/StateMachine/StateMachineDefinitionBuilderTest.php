@@ -383,7 +383,7 @@ final class StateMachineDefinitionBuilderTest extends TestCase
         $this->assertSame('open', $open->methodName());
         $this->assertNull($open->precondition());
         $this->assertSame('accounts', $open->produces());
-        $this->assertSame(AbstractGenerator::from(Generators::elements(['a', 'b']))->label(), $open->parameters()[0]->generator()?->label());
+        $this->assertSame(AbstractGenerator::from(Generators::elements('a', 'b'))->label(), $open->parameters()[0]->generator()?->label());
 
         $this->assertSame('deposit', $deposit->methodName());
         $this->assertNull($deposit->produces());
@@ -406,7 +406,7 @@ final class StateMachineDefinitionBuilderTest extends TestCase
     {
         $definition = new StateMachineDefinitionBuilder()->build(StateMachineWithGeneratorSpecifiedWithClosure::class, new GeneratorDeriver(GeneratorRegistry::empty()));
 
-        $this->assertSame(AbstractGenerator::from(Generators::elements(['a', 'b']))->label(), $definition->rules()[0]->parameters()[0]->generator()?->label());
+        $this->assertSame(AbstractGenerator::from(Generators::elements('a', 'b'))->label(), $definition->rules()[0]->parameters()[0]->generator()?->label());
     }
 
     /**

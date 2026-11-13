@@ -37,7 +37,7 @@ final class ValidStateMachine
      */
     public static function names(): ValueGenerator
     {
-        return Generators::elements(['a', 'b']);
+        return Generators::elements('a', 'b');
     }
 
     #[InitializeStateMachine(produces: 'accounts')]

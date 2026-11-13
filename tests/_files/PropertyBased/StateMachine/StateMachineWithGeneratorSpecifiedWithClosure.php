@@ -23,7 +23,7 @@ final class StateMachineWithGeneratorSpecifiedWithClosure
     public function step(
         #[ForAll(static function (): ValueGenerator
         {
-            return Generators::elements(['a', 'b']);
+            return Generators::elements('a', 'b');
         })]
         string $name,
     ): void {
