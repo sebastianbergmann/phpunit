@@ -164,6 +164,7 @@ final class Builder
         'do-not-fail-on-risky',
         'do-not-fail-on-skipped',
         'do-not-fail-on-warning',
+        'dedicated-exit-code-for-failed-tests',
         'stop-on-defect==',
         'stop-on-deprecation==',
         'stop-on-error==',
@@ -443,6 +444,7 @@ final class Builder
         $printerTestDoxSummary                    = null;
         $debug                                    = false;
         $withTelemetry                            = false;
+        $dedicatedExitCodeForFailedTests          = false;
         $extensions                               = [];
         $warnWhenPhpIsNotConfiguredForDevelopment = null;
 
@@ -1016,6 +1018,11 @@ final class Builder
 
                 case '--do-not-fail-on-warning':
                     $doNotFailOnWarning = true;
+
+                    break;
+
+                case '--dedicated-exit-code-for-failed-tests':
+                    $dedicatedExitCodeForFailedTests = true;
 
                     break;
 
@@ -1631,6 +1638,7 @@ final class Builder
             $withTelemetry,
             $extensions,
             $cacheTestIndex,
+            $dedicatedExitCodeForFailedTests,
         );
     }
 

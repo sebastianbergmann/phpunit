@@ -1547,6 +1547,7 @@ final readonly class Merger
             $xmlConfiguration->phpunit()->shortenArraysForExportThreshold(),
             $warnWhenPhpIsNotConfiguredForDevelopment,
             $cacheTestIndex,
+            $cliConfiguration->dedicatedExitCodeForFailedTests(),
         );
     }
 
