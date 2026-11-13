@@ -47,16 +47,23 @@ final readonly class Counterexample
     private array $steps;
 
     /**
+     * @var ?non-empty-string
+     */
+    private ?string $formatted;
+
+    /**
      * @param list<non-negative-int>          $choiceSequence
      * @param array<non-empty-string, string> $arguments
      * @param null|int|non-empty-string       $explicitExample
      * @param list<DrawnValue>                $drawnValues
      * @param list<non-empty-string>          $steps
+     * @param ?non-empty-string               $formatted
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function __construct(array $choiceSequence, array $arguments, null|int|string $explicitExample, array $drawnValues, array $steps)
+    public function __construct(array $choiceSequence, array $arguments, null|int|string $explicitExample, array $drawnValues, array $steps, ?string $formatted = null)
     {
+        $this->formatted       = $formatted;
         $this->choiceSequence  = $choiceSequence;
         $this->arguments       = $arguments;
         $this->explicitExample = $explicitExample;
@@ -124,5 +131,18 @@ final readonly class Counterexample
     public function steps(): array
     {
         return $this->steps;
+    }
+
+    /**
+     * What the method that is specified with #[CounterexampleFormatter] or
+     * #[CounterexampleFormatterExternal] returned for the arguments of the
+     * counterexample, null when no such method is specified or when it
+     * returned an empty string.
+     *
+     * @return ?non-empty-string
+     */
+    public function formatted(): ?string
+    {
+        return $this->formatted;
     }
 }

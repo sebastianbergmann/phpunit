@@ -637,6 +637,15 @@ abstract readonly class Metadata
      * @param class-string     $className
      * @param non-empty-string $methodName
      */
+    public static function counterexampleFormatter(string $className, string $methodName): CounterexampleFormatter
+    {
+        return new CounterexampleFormatter(Level::METHOD_LEVEL, $className, $methodName);
+    }
+
+    /**
+     * @param class-string     $className
+     * @param non-empty-string $methodName
+     */
     public static function testDoxFormatter(string $className, string $methodName): TestDoxFormatter
     {
         return new TestDoxFormatter(Level::METHOD_LEVEL, $className, $methodName);
@@ -1237,6 +1246,14 @@ abstract readonly class Metadata
      * @phpstan-assert-if-true TestDox $this
      */
     public function isTestDox(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @phpstan-assert-if-true CounterexampleFormatter $this
+     */
+    public function isCounterexampleFormatter(): bool
     {
         return false;
     }

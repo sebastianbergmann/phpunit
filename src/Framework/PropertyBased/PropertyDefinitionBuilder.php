@@ -19,6 +19,7 @@ use function interface_exists;
 use function is_array;
 use function is_int;
 use function lcfirst;
+use function method_exists;
 use function sprintf;
 use function strtolower;
 use Closure;
@@ -27,6 +28,7 @@ use PHPUnit\Framework\PropertyBased\Derivation\GeneratorRegistry;
 use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\DeferredGenerator;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Metadata\CounterexampleFormatter;
 use PHPUnit\Metadata\ForAll;
 use PHPUnit\Metadata\GeneratorFor;
 use PHPUnit\Metadata\MetadataCollection;
@@ -167,7 +169,65 @@ final readonly class PropertyDefinitionBuilder
             $this->explicitExamples($className, $methodName, $metadata->isTestWith(), array_keys($parameters)),
             $this->requiredClassifications($className, $methodName, $metadata->isRequireClassification()),
             $registeredGenerators,
+            $this->counterexampleFormatter($className, $methodName, $metadata->isCounterexampleFormatter()),
         );
+    }
+
+    /**
+     * @param class-string<TestCase> $className
+     * @param non-empty-string       $methodName
+     *
+     * @throws InvalidPropertyException
+     *
+     * @return ?array{className: class-string, methodName: non-empty-string}
+     */
+    private function counterexampleFormatter(string $className, string $methodName, MetadataCollection $counterexampleFormatter): ?array
+    {
+        if ($counterexampleFormatter->isEmpty()) {
+            return null;
+        }
+
+        if ($counterexampleFormatter->count() > 1) {
+            throw InvalidPropertyException::because(
+                $className,
+                $methodName,
+                'more than one counterexample formatter is specified',
+            );
+        }
+
+        $metadata = $counterexampleFormatter->asArray()[0];
+
+        assert($metadata instanceof CounterexampleFormatter);
+
+        $formatter = $metadata->className() . '::' . $metadata->methodName() . '()';
+
+        if (!method_exists($metadata->className(), $metadata->methodName())) {
+            throw InvalidPropertyException::because(
+                $className,
+                $methodName,
+                sprintf('method %s cannot be used as a counterexample formatter because it does not exist', $formatter),
+            );
+        }
+
+        $method = new ReflectionMethod($metadata->className(), $metadata->methodName());
+
+        if (!$method->isPublic()) {
+            throw InvalidPropertyException::because(
+                $className,
+                $methodName,
+                sprintf('method %s cannot be used as a counterexample formatter because it is not public', $formatter),
+            );
+        }
+
+        if (!$method->isStatic()) {
+            throw InvalidPropertyException::because(
+                $className,
+                $methodName,
+                sprintf('method %s cannot be used as a counterexample formatter because it is not static', $formatter),
+            );
+        }
+
+        return ['className' => $metadata->className(), 'methodName' => $metadata->methodName()];
     }
 
     /**

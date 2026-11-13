@@ -83,6 +83,41 @@ EOT,
         );
     }
 
+    public function testDescribesWhatTheCounterexampleFormatterReturnedBelowTheArgumentsOfTheCounterexample(): void
+    {
+        $this->assertStringEqualsStringIgnoringLineEndings(
+            <<<'EOT'
+The PHP process ended while this example of the property was run:
+
+    $size = 1;
+
+    one element
+    in the list
+
+    Draw 1 (list): [5]
+
+EOT,
+            PropertyFalsifiedToStringMapper::mapExampleThatEndedTheProcess(
+                new Counterexample([1, 5], ['size' => '1'], null, [new DrawnValue('list', '[5]')], [], "one element\nin the list"),
+            ),
+        );
+    }
+
+    public function testDescribesWhatTheCounterexampleFormatterReturnedForACounterexampleWithoutArguments(): void
+    {
+        $this->assertStringEqualsStringIgnoringLineEndings(
+            <<<'EOT'
+The PHP process ended while this example of the property was run:
+
+    no arguments
+
+EOT,
+            PropertyFalsifiedToStringMapper::mapExampleThatEndedTheProcess(
+                new Counterexample([], [], null, [], [], 'no arguments'),
+            ),
+        );
+    }
+
     public function testDescribesTheExampleThatWasRunWhenThePhpProcessEnded(): void
     {
         $this->assertStringEqualsStringIgnoringLineEndings(

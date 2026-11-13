@@ -314,6 +314,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             // the arguments are exported before the example is run, which can
             // change the state of an object that is passed to it
             $exportedArguments     = $this->exampleRunner()->export($explicitExample->arguments(), new Constructions);
+            $formatted             = $this->exampleRunner()->format($explicitExample->arguments());
             $example               = $this->exampleRunner()->example($explicitExample->arguments(), true);
             [$exampleEvents, $run] = $this->exampleRunner()->run(
                 $example,
@@ -321,7 +322,7 @@ final class PropertyTestSuite extends IterativeTestSuite
                 true,
                 null,
                 static fn (): string => PropertyFalsifiedToStringMapper::mapExampleThatEndedTheProcess(
-                    new Event\Code\Counterexample([], $exportedArguments, null, [], []),
+                    new Event\Code\Counterexample([], $exportedArguments, null, [], [], $formatted),
                 ),
             );
             $falsification = $this->exampleRunner()->falsificationOf($example, $exampleEvents);
@@ -347,7 +348,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             $this->statistics()->recordCheckedExplicitExample();
 
             if ($falsification !== null) {
-                $reporter->reportFalsificationByExplicitExample($example, $falsification, $exampleEvents, $explicitExample, $exportedArguments);
+                $reporter->reportFalsificationByExplicitExample($example, $falsification, $exampleEvents, $explicitExample, $exportedArguments, $formatted);
 
                 return;
             }
@@ -507,6 +508,7 @@ final class PropertyTestSuite extends IterativeTestSuite
                 null,
                 $values,
                 [],
+                $this->exampleRunner()->format($arguments),
             ),
         );
     }

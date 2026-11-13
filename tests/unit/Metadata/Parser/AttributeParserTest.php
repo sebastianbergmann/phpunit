@@ -17,6 +17,8 @@ use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\BackupStaticProperties;
 use PHPUnit\Framework\Attributes\Before;
 use PHPUnit\Framework\Attributes\BeforeClass;
+use PHPUnit\Framework\Attributes\CounterexampleFormatter;
+use PHPUnit\Framework\Attributes\CounterexampleFormatterExternal;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversClassesThatExtendClass;
 use PHPUnit\Framework\Attributes\CoversClassesThatImplementInterface;
@@ -145,6 +147,8 @@ use PHPUnit\Metadata\InvalidAttribute;
 #[CoversClass(RunTestsInSeparateProcesses::class)]
 #[CoversClass(Small::class)]
 #[CoversClass(TestDox::class)]
+#[CoversClass(CounterexampleFormatter::class)]
+#[CoversClass(CounterexampleFormatterExternal::class)]
 #[CoversClass(TestDoxFormatter::class)]
 #[CoversClass(TestDoxFormatterExternal::class)]
 #[CoversClass(Test::class)]

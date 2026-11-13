@@ -79,7 +79,7 @@ final readonly class PropertyFalsifiedToStringMapper
 
         $examples = self::count($report->numberOfExamplesChecked(), 'example');
 
-        if ($counterexample->arguments() === [] && $counterexample->drawnValues() === [] && $counterexample->steps() === []) {
+        if ($counterexample->arguments() === [] && $counterexample->drawnValues() === [] && $counterexample->steps() === [] && $counterexample->formatted() === null) {
             return sprintf('Property falsified after %s.', $examples) . "\n";
         }
 
@@ -148,7 +148,7 @@ final readonly class PropertyFalsifiedToStringMapper
             $label = sprintf('"%s"', $explicitExample);
         }
 
-        if ($counterexample->arguments() === []) {
+        if ($counterexample->arguments() === [] && $counterexample->formatted() === null) {
             return sprintf('Property falsified by explicit example %s.', $label) . "\n";
         }
 
@@ -163,6 +163,14 @@ final readonly class PropertyFalsifiedToStringMapper
 
         foreach ($counterexample->arguments() as $parameter => $value) {
             $buffer .= self::indented(sprintf('$%s = %s;', $parameter, $value));
+        }
+
+        if ($counterexample->formatted() !== null) {
+            if ($buffer !== '') {
+                $buffer .= "\n";
+            }
+
+            $buffer .= self::indented($counterexample->formatted());
         }
 
         if ($buffer !== '' && $drawnValues !== []) {

@@ -32,6 +32,14 @@ final class CounterexampleTest extends TestCase
         $this->assertNull($counterexample->explicitExample());
         $this->assertSame([$drawnValue], $counterexample->drawnValues());
         $this->assertSame(['$machine->open();'], $counterexample->steps());
+        $this->assertNull($counterexample->formatted());
+    }
+
+    public function testCanHaveWhatTheCounterexampleFormatterReturnedForItsArguments(): void
+    {
+        $counterexample = new Counterexample([1], ['size' => '1'], null, [], [], 'one element');
+
+        $this->assertSame('one element', $counterexample->formatted());
     }
 
     public function testCanBeAnExplicitExample(): void

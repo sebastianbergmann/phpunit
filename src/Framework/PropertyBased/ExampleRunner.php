@@ -11,6 +11,9 @@ namespace PHPUnit\Framework\PropertyBased;
 
 use function array_values;
 use function assert;
+use function get_debug_type;
+use function is_string;
+use function sprintf;
 use Closure;
 use PHPUnit\Event;
 use PHPUnit\Event\EventCollection;
@@ -285,6 +288,53 @@ final readonly class ExampleRunner
         );
 
         return $arguments;
+    }
+
+    /**
+     * What the method that is specified with #[CounterexampleFormatter] or
+     * #[CounterexampleFormatterExternal] returns for the arguments of an
+     * example, null when no such method is specified or when it returns an
+     * empty string. Like the arguments are exported, they are formatted
+     * before the example is run, which can change the state of an object that
+     * is passed to it.
+     *
+     * A formatter that raises an exception or does not return a string does
+     * not keep the counterexample from being reported: what went wrong is
+     * reported in place of what the formatter should have returned.
+     *
+     * @param array<non-empty-string, mixed> $arguments
+     *
+     * @return ?non-empty-string
+     */
+    public function format(array $arguments): ?string
+    {
+        $definition = $this->generatorResolver->definition();
+
+        assert($definition !== null);
+
+        $formatter = $definition->counterexampleFormatter();
+
+        if ($formatter === null) {
+            return null;
+        }
+
+        $name = $formatter['className'] . '::' . $formatter['methodName'] . '()';
+
+        try {
+            $formatted = new ReflectionMethod($formatter['className'], $formatter['methodName'])->invoke(null, ...array_values($arguments));
+        } catch (Throwable $t) {
+            return sprintf('Counterexample formatter %s raised %s: %s', $name, $t::class, $t->getMessage());
+        }
+
+        if (!is_string($formatted)) {
+            return sprintf('Counterexample formatter %s returned %s instead of a string', $name, get_debug_type($formatted));
+        }
+
+        if ($formatted === '') {
+            return null;
+        }
+
+        return $formatted;
     }
 
     /**

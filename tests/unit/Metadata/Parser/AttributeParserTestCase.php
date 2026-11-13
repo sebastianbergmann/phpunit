@@ -46,6 +46,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\AllowMockObjectsWithoutExpectationsOn
 use PHPUnit\TestFixture\Metadata\Attribute\AnotherTest;
 use PHPUnit\TestFixture\Metadata\Attribute\BackupGlobalsTest;
 use PHPUnit\TestFixture\Metadata\Attribute\BackupStaticPropertiesTest;
+use PHPUnit\TestFixture\Metadata\Attribute\CounterexampleFormatterTest;
 use PHPUnit\TestFixture\Metadata\Attribute\CoversFilesystemTest;
 use PHPUnit\TestFixture\Metadata\Attribute\CoversNothingTest;
 use PHPUnit\TestFixture\Metadata\Attribute\CoversTest;
@@ -1355,6 +1356,28 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isTestDox());
         $this->assertSame('text', $metadata->asArray()[0]->text());
+    }
+
+    #[TestDox('Parses #[CounterexampleFormatter] attribute on method')]
+    public function test_parses_CounterexampleFormatter_attribute_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(CounterexampleFormatterTest::class, 'testOne')->isCounterexampleFormatter();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isCounterexampleFormatter());
+        $this->assertSame(CounterexampleFormatterTest::class, $metadata->asArray()[0]->className());
+        $this->assertSame('methodName', $metadata->asArray()[0]->methodName());
+    }
+
+    #[TestDox('Parses #[CounterexampleFormatterExternal] attribute on method')]
+    public function test_parses_CounterexampleFormatterExternal_attribute_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(CounterexampleFormatterTest::class, 'testTwo')->isCounterexampleFormatter();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isCounterexampleFormatter());
+        $this->assertSame('ClassName', $metadata->asArray()[0]->className());
+        $this->assertSame('methodName', $metadata->asArray()[0]->methodName());
     }
 
     #[TestDox('Parses #[TestDoxFormatter] attribute on method')]

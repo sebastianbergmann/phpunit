@@ -54,6 +54,11 @@ final readonly class PropertyDefinition
     private array $requiredClassifications;
 
     /**
+     * @var ?array{className: class-string, methodName: non-empty-string}
+     */
+    private ?array $counterexampleFormatter;
+
+    /**
      * @var array<class-string, GeneratorMethod>
      */
     private array $registeredGenerators;
@@ -65,9 +70,11 @@ final readonly class PropertyDefinition
      * @param list<ExplicitExample>                                                                              $explicitExamples        the examples that are specified with #[TestWith] and #[TestWithJson], in the order in which they are specified
      * @param list<array{label: non-empty-string, minimumPercentage: float}>                                     $requiredClassifications the minimum percentages of the examples that are required with #[RequireClassification] to be classified with labels
      * @param array<class-string, GeneratorMethod>                                                               $registeredGenerators    the methods that are registered with #[GeneratorFor], by the class they are registered for
+     * @param ?array{className: class-string, methodName: non-empty-string}                                      $counterexampleFormatter the public static method that is specified with #[CounterexampleFormatter] or #[CounterexampleFormatterExternal]
      */
-    public function __construct(string $className, string $methodName, array $parameters, array $explicitExamples, array $requiredClassifications, array $registeredGenerators)
+    public function __construct(string $className, string $methodName, array $parameters, array $explicitExamples, array $requiredClassifications, array $registeredGenerators, ?array $counterexampleFormatter)
     {
+        $this->counterexampleFormatter = $counterexampleFormatter;
         $this->className               = $className;
         $this->methodName              = $methodName;
         $this->parameters              = $parameters;
@@ -122,5 +129,16 @@ final readonly class PropertyDefinition
     public function registeredGenerators(): array
     {
         return $this->registeredGenerators;
+    }
+
+    /**
+     * The public static method that describes a counterexample of the
+     * property, null when none is specified.
+     *
+     * @return ?array{className: class-string, methodName: non-empty-string}
+     */
+    public function counterexampleFormatter(): ?array
+    {
+        return $this->counterexampleFormatter;
     }
 }

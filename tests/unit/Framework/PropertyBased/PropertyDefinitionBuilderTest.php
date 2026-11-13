@@ -26,6 +26,7 @@ use PHPUnit\TestFixture\PropertyBased\Derivation\EmailAddress;
 use PHPUnit\TestFixture\PropertyBased\Derivation\ExampleEmailAddress;
 use PHPUnit\TestFixture\PropertyBased\Properties\ClassWithAbstractGeneratorFor;
 use PHPUnit\TestFixture\PropertyBased\Properties\ClassWithoutGeneratorFor;
+use PHPUnit\TestFixture\PropertyBased\Properties\CounterexampleFormatterPropertiesTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\DuplicateGeneratorForTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\DuplicateGeneratorForWithLeadingBackslashTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\EmailAddressGenerators;
@@ -301,6 +302,30 @@ final class PropertyDefinitionBuilderTest extends TestCase
                 'the class ' . ClassWithoutGeneratorFor::class . ' that is used with #[UseGenerators] does not register a generator with #[GeneratorFor]',
             ],
 
+            'counterexample formatter that does not exist' => [
+                CounterexampleFormatterPropertiesTest::class,
+                'testWithFormatterThatDoesNotExist',
+                'method ' . CounterexampleFormatterPropertiesTest::class . '::doesNotExist() cannot be used as a counterexample formatter because it does not exist',
+            ],
+
+            'counterexample formatter that is not public' => [
+                CounterexampleFormatterPropertiesTest::class,
+                'testWithFormatterThatIsNotPublic',
+                'method ' . CounterexampleFormatterPropertiesTest::class . '::notPublic() cannot be used as a counterexample formatter because it is not public',
+            ],
+
+            'counterexample formatter that is not static' => [
+                CounterexampleFormatterPropertiesTest::class,
+                'testWithFormatterThatIsNotStatic',
+                'method ' . CounterexampleFormatterPropertiesTest::class . '::notStatic() cannot be used as a counterexample formatter because it is not static',
+            ],
+
+            'more than one counterexample formatter' => [
+                CounterexampleFormatterPropertiesTest::class,
+                'testWithMoreThanOneFormatter',
+                'more than one counterexample formatter is specified',
+            ],
+
             'generator registered for unknown class' => [
                 GeneratorForUnknownClassTest::class,
                 'testOne',
@@ -334,6 +359,15 @@ final class PropertyDefinitionBuilderTest extends TestCase
             ],
             (new PropertyDefinitionBuilder)->build(ValidPropertiesTest::class, 'testWithRequiredClassifications')->requiredClassifications(),
         );
+    }
+
+    public function testBuildsTheCounterexampleFormatterOfAProperty(): void
+    {
+        $formatter = ['className' => CounterexampleFormatterPropertiesTest::class, 'methodName' => 'format'];
+
+        $this->assertSame($formatter, (new PropertyDefinitionBuilder)->build(CounterexampleFormatterPropertiesTest::class, 'testWithFormatter')->counterexampleFormatter());
+        $this->assertSame($formatter, (new PropertyDefinitionBuilder)->build(CounterexampleFormatterPropertiesTest::class, 'testWithFormatterOfAnotherClass')->counterexampleFormatter());
+        $this->assertNull((new PropertyDefinitionBuilder)->build(CounterexampleFormatterPropertiesTest::class, 'testWithoutFormatter')->counterexampleFormatter());
     }
 
     public function testBuildsTheExplicitExamplesOfAPropertyWithTheirArgumentsByParameterName(): void

@@ -191,6 +191,7 @@ final class FalsificationReporter
         }
 
         $counterexample = $this->runner->export($arguments, $source->constructions());
+        $formatted      = $this->runner->format($arguments);
         $drawnValues    = DrawnValues::reportedFrom($source, $this->runner->exporter($source->constructions()));
         $replay         = $this->runner->example($arguments, true, $drawnValues);
         [$replayEvents] = $this->runner->run($replay, $this->emitter, false);
@@ -245,7 +246,7 @@ final class FalsificationReporter
                 $result->numberOfSteps(),
                 $result->budgetExhausted(),
                 $result->interrupted(),
-                self::counterexample($result->sequence()->choices(), $counterexample, null, $exportedDrawnValues, $steps),
+                self::counterexample($result->sequence()->choices(), $counterexample, null, $exportedDrawnValues, $steps, $formatted),
                 $otherFalsifications,
                 $numberOfReplays,
                 $numberOfReproductions,
@@ -260,8 +261,9 @@ final class FalsificationReporter
      * arguments.
      *
      * @param array<non-empty-string, string> $exportedArguments the arguments of the example, exported as PHP code
+     * @param ?non-empty-string               $formatted         what the counterexample formatter returned for the arguments of the example
      */
-    public function reportFalsificationByExplicitExample(TestCase $example, Falsification $falsification, EventCollection $exampleEvents, ExplicitExample $explicitExample, array $exportedArguments): void
+    public function reportFalsificationByExplicitExample(TestCase $example, Falsification $falsification, EventCollection $exampleEvents, ExplicitExample $explicitExample, array $exportedArguments, ?string $formatted = null): void
     {
         $error   = null;
         $failure = null;
@@ -285,7 +287,7 @@ final class FalsificationReporter
         ($this->report)(
             $exampleEvents,
             $error,
-            new FalsificationReport($this->seed, 0, 0, 0, false, false, self::counterexample([], $exportedArguments, $name, [], []), [], 0, 0, $failure),
+            new FalsificationReport($this->seed, 0, 0, 0, false, false, self::counterexample([], $exportedArguments, $name, [], [], $formatted), [], 0, 0, $failure),
         );
     }
 
@@ -304,7 +306,7 @@ final class FalsificationReporter
      *
      * @param array<non-empty-string, AbstractGenerator<mixed>> $generators
      *
-     * @return ?array{numberOfReplays: non-negative-int, numberOfReproductions: non-negative-int, counterexample: array<non-empty-string, string>, drawnValues: list<array{label: ?non-empty-string, value: string}>, steps: list<non-empty-string>, events: ?EventCollection} the replays, with the arguments and values of the last replay that was counted, exported, and its events, or null when the arguments could not be generated again, which was reported
+     * @return ?array{numberOfReplays: non-negative-int, numberOfReproductions: non-negative-int, counterexample: array<non-empty-string, string>, formatted: ?non-empty-string, drawnValues: list<array{label: ?non-empty-string, value: string}>, steps: list<non-empty-string>, events: ?EventCollection} the replays, with the arguments and values of the last replay that was counted, exported, and its events, or null when the arguments could not be generated again, which was reported
      */
     private function replayFalsifyingExample(GeneratorDeriver $deriver, array $generators, Falsification $falsification, ChoiceSequence $sequence): ?array
     {
@@ -312,6 +314,7 @@ final class FalsificationReporter
             'numberOfReplays'       => 0,
             'numberOfReproductions' => 0,
             'counterexample'        => [],
+            'formatted'             => null,
             'drawnValues'           => [],
             'steps'                 => [],
             'events'                => null,
@@ -333,6 +336,7 @@ final class FalsificationReporter
             }
 
             $counterexample = $this->runner->export($arguments, $source->constructions());
+            $formatted      = $this->runner->format($arguments);
             $drawnValues    = DrawnValues::reportedFrom($source, $this->runner->exporter($source->constructions()));
             $example        = $this->runner->example($arguments, false, $drawnValues);
 
@@ -352,6 +356,7 @@ final class FalsificationReporter
 
             $replays['numberOfReplays']++;
             $replays['counterexample'] = $counterexample;
+            $replays['formatted']      = $formatted;
             $replays['drawnValues']    = $drawnValues->exported();
             $replays['steps']          = $drawnValues->steps();
             $replays['events']         = $replayEvents;
@@ -372,8 +377,8 @@ final class FalsificationReporter
      * counterexample, with the events of its last replay and with the failure
      * that was originally observed as the cause of the error.
      *
-     * @param array{numberOfReplays: non-negative-int, numberOfReproductions: non-negative-int, counterexample: array<non-empty-string, string>, drawnValues: list<array{label: ?non-empty-string, value: string}>, steps: list<non-empty-string>, events: ?EventCollection} $replays
-     * @param non-negative-int                                                                                                                                                                                                                                               $numberOfExamplesChecked
+     * @param array{numberOfReplays: non-negative-int, numberOfReproductions: non-negative-int, counterexample: array<non-empty-string, string>, formatted: ?non-empty-string, drawnValues: list<array{label: ?non-empty-string, value: string}>, steps: list<non-empty-string>, events: ?EventCollection} $replays
+     * @param non-negative-int                                                                                                                                                                                                                                                                             $numberOfExamplesChecked
      */
     private function reportExampleThatDidNotFalsifyAgain(?Event\Code\Throwable $originalFailure, ChoiceSequence $sequence, array $replays, int $numberOfExamplesChecked): void
     {
@@ -397,7 +402,7 @@ final class FalsificationReporter
                 0,
                 false,
                 false,
-                self::counterexample($sequence->choices(), $counterexample, null, $drawnValues, $steps),
+                self::counterexample($sequence->choices(), $counterexample, null, $drawnValues, $steps, $replays['formatted']),
                 [],
                 $numberOfReplays,
                 0,
@@ -469,6 +474,7 @@ final class FalsificationReporter
             }
 
             $counterexample = $this->runner->export($arguments, $source->constructions());
+            $formatted      = $this->runner->format($arguments);
             $drawnValues    = DrawnValues::reportedFrom($source, $this->runner->exporter($source->constructions()));
             $example        = $this->runner->example($arguments, false, $drawnValues);
 
@@ -484,7 +490,7 @@ final class FalsificationReporter
 
             $replayed[] = new Event\Code\OtherFalsification(
                 $description,
-                self::counterexample($source->sequence()->choices(), $counterexample, null, $drawnValues->exported(), $drawnValues->steps()),
+                self::counterexample($source->sequence()->choices(), $counterexample, null, $drawnValues->exported(), $drawnValues->steps(), $formatted),
             );
         }
 
@@ -508,8 +514,9 @@ final class FalsificationReporter
      * @param null|int|non-empty-string                            $explicitExample
      * @param list<array{label: ?non-empty-string, value: string}> $drawnValues
      * @param list<non-empty-string>                               $steps
+     * @param ?non-empty-string                                    $formatted       what the counterexample formatter returned for the arguments
      */
-    private static function counterexample(array $choiceSequence, array $arguments, null|int|string $explicitExample, array $drawnValues, array $steps): Event\Code\Counterexample
+    private static function counterexample(array $choiceSequence, array $arguments, null|int|string $explicitExample, array $drawnValues, array $steps, ?string $formatted = null): Event\Code\Counterexample
     {
         $values = [];
 
@@ -517,6 +524,6 @@ final class FalsificationReporter
             $values[] = new Event\Code\DrawnValue($drawnValue['label'], $drawnValue['value']);
         }
 
-        return new Event\Code\Counterexample($choiceSequence, $arguments, $explicitExample, $values, $steps);
+        return new Event\Code\Counterexample($choiceSequence, $arguments, $explicitExample, $values, $steps, $formatted);
     }
 }

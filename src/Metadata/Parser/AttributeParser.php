@@ -29,6 +29,8 @@ use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\BackupStaticProperties;
 use PHPUnit\Framework\Attributes\Before;
 use PHPUnit\Framework\Attributes\BeforeClass;
+use PHPUnit\Framework\Attributes\CounterexampleFormatter;
+use PHPUnit\Framework\Attributes\CounterexampleFormatterExternal;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversClassesThatExtendClass;
 use PHPUnit\Framework\Attributes\CoversClassesThatImplementInterface;
@@ -1089,6 +1091,20 @@ final class AttributeParser implements Parser
                     assert($attributeInstance instanceof TestDox);
 
                     $result[] = Metadata::testDoxOnMethod($attributeInstance->text());
+
+                    break;
+
+                case CounterexampleFormatter::class:
+                    assert($attributeInstance instanceof CounterexampleFormatter);
+
+                    $result[] = Metadata::counterexampleFormatter($className, $attributeInstance->methodName());
+
+                    break;
+
+                case CounterexampleFormatterExternal::class:
+                    assert($attributeInstance instanceof CounterexampleFormatterExternal);
+
+                    $result[] = Metadata::counterexampleFormatter($attributeInstance->className(), $attributeInstance->methodName());
 
                     break;
 
