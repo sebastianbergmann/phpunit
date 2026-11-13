@@ -42,7 +42,15 @@ final class DrawnValues
     /**
      * @var list<array{label: ?non-empty-string, value: string}>
      */
-    private array $exported                   = [];
+    private array $exported = [];
+
+    /**
+     * The values that were drawn and are not reported, which are only
+     * exported when the PHP process ends while the example is run.
+     *
+     * @var list<array{label: ?non-empty-string, value: mixed}>
+     */
+    private array $drawn                      = [];
     private ?StateMachineRunner $stateMachine = null;
 
     /**
@@ -86,9 +94,31 @@ final class DrawnValues
 
         if ($this->exporter !== null) {
             $this->exported[] = ['label' => $label, 'value' => $this->exporter->export($value)];
+        } else {
+            $this->drawn[] = ['label' => $label, 'value' => $value];
         }
 
         return $value;
+    }
+
+    /**
+     * The values that were drawn, with their labels, exported as PHP code
+     * with the given exporter when they were not exported when they were
+     * drawn, because they are not reported. Unlike a value that is exported
+     * when it is drawn, a value that is exported afterwards is exported in
+     * the state in which the example left it.
+     *
+     * @return list<array{label: ?non-empty-string, value: string}>
+     */
+    public function exportedWith(CounterexampleExporter $exporter): array
+    {
+        $exported = $this->exported;
+
+        foreach ($this->drawn as $drawn) {
+            $exported[] = ['label' => $drawn['label'], 'value' => $exporter->export($drawn['value'])];
+        }
+
+        return $exported;
     }
 
     /**

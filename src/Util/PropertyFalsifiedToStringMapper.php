@@ -122,6 +122,22 @@ final readonly class PropertyFalsifiedToStringMapper
     }
 
     /**
+     * Describes the example of a property that was run when the PHP process
+     * ended, because of a fatal error, for instance, with its arguments and
+     * the values that it drew until then.
+     */
+    public static function mapExampleThatEndedTheProcess(Counterexample $example): string
+    {
+        $arguments = self::arguments($example);
+
+        if ($arguments === '') {
+            return '';
+        }
+
+        return "The PHP process ended while this example of the property was run:\n\n" . $arguments;
+    }
+
+    /**
      * @param int|non-empty-string $explicitExample
      */
     private static function mapExplicitExample(Counterexample $counterexample, int|string $explicitExample): string

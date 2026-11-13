@@ -114,24 +114,25 @@ final readonly class ExampleRunner
      * like every test, every example has exactly one sequence of events from
      * Test\PreparationStarted to Test\Finished.
      *
-     * @param ?positive-int $timeLimit the time limit of the example in seconds, null for the configured one
+     * @param ?positive-int      $timeLimit the time limit of the example in seconds, null for the configured one
+     * @param ?Closure(): string $describe  describes the example, which is printed when the PHP process ends while the example is run, because of a fatal error, for instance
      *
      * @throws Throwable
      *
      * @return array{0: EventCollection, 1: ExampleRun}
      */
-    public function run(TestCase $example, Event\Emitter $emitter, bool $collectCodeCoverage, ?int $timeLimit = null): array
+    public function run(TestCase $example, Event\Emitter $emitter, bool $collectCodeCoverage, ?int $timeLimit = null, ?Closure $describe = null): array
     {
         $run = null;
 
         $events = $this->facade->collectingEvents(
-            static function () use ($example, $emitter, $collectCodeCoverage, $timeLimit, &$run): void
+            static function () use ($example, $emitter, $collectCodeCoverage, $timeLimit, $describe, &$run): void
             {
                 $emitter->testPreparationStarted(
                     $example->valueObjectForEvents(),
                 );
 
-                $run = new TestRunner($emitter)->runExampleOfProperty($example, $collectCodeCoverage, $timeLimit);
+                $run = new TestRunner($emitter)->runExampleOfProperty($example, $collectCodeCoverage, $timeLimit, $describe);
             },
         );
 

@@ -72,6 +72,33 @@ final class DrawnValuesTest extends TestCase
         $this->assertStringNotContainsString("'value' => 7", $drawnValues->exported()[0]['value']);
     }
 
+    public function testExportsValuesThatAreNotReportedOnRequest(): void
+    {
+        $drawnValues = DrawnValues::from(ChoiceSource::replay(new ChoiceSequence([3, 5])));
+
+        $drawnValues->draw(Generators::integers(0, 9), 'first');
+        $drawnValues->draw(Generators::integers(0, 9), null);
+
+        $this->assertSame(
+            [
+                ['label' => 'first', 'value' => '3'],
+                ['label' => null, 'value' => '5'],
+            ],
+            $drawnValues->exportedWith($this->exporter()),
+        );
+
+        $this->assertSame([], $drawnValues->exported());
+    }
+
+    public function testDoesNotExportValuesThatAreReportedAgainOnRequest(): void
+    {
+        $drawnValues = DrawnValues::reportedFrom(ChoiceSource::replay(new ChoiceSequence([3])), $this->exporter());
+
+        $drawnValues->draw(Generators::integers(0, 9), 'value');
+
+        $this->assertSame([['label' => 'value', 'value' => '3']], $drawnValues->exportedWith($this->exporter()));
+    }
+
     private function exporter(): CounterexampleExporter
     {
         return new CounterexampleExporter(

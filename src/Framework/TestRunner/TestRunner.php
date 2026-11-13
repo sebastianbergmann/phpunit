@@ -20,6 +20,7 @@ use function sprintf;
 use function str_starts_with;
 use function xdebug_is_debugger_active;
 use AssertionError;
+use Closure;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\Assert;
@@ -130,17 +131,18 @@ final class TestRunner
      * them exceeded its time limit, is decided on all of its examples rather
      * than on this one.
      *
-     * @param bool          $collectCodeCoverage whether code coverage is collected for the example, if it is collected at all: it is not for the shrinking attempts and the final replay of the minimal counterexample
-     * @param ?positive-int $timeLimit           the time limit of the example in seconds, which is enforced instead of the configured one whenever a time limit can be enforced, or null for the configured one
+     * @param bool               $collectCodeCoverage whether code coverage is collected for the example, if it is collected at all: it is not for the shrinking attempts and the final replay of the minimal counterexample
+     * @param ?positive-int      $timeLimit           the time limit of the example in seconds, which is enforced instead of the configured one whenever a time limit can be enforced, or null for the configured one
+     * @param ?Closure(): string $describe            describes the example, which is printed when the PHP process ends while the example is run
      *
      * @throws Exception
      * @throws InvalidArgumentException
      * @throws UnintentionallyCoveredCodeException
      */
-    public function runExampleOfProperty(TestCase $example, bool $collectCodeCoverage, ?int $timeLimit = null): ExampleRun
+    public function runExampleOfProperty(TestCase $example, bool $collectCodeCoverage, ?int $timeLimit = null, ?Closure $describe = null): ExampleRun
     {
         try {
-            ShutdownHandler::setMessage(sprintf('Fatal error: Premature end of PHP process when running %s.', $example->toString()));
+            ShutdownHandler::setMessage(sprintf('Fatal error: Premature end of PHP process when running %s.', $example->toString()), $describe);
 
             $contributedToCodeCoverage = $this->runInProcess($example, true, $collectCodeCoverage, $timeLimit);
         } finally {

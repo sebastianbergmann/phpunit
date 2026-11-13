@@ -53,6 +53,7 @@ use PHPUnit\Runner\TimeLimit\TimeLimitHandler;
 use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
+use PHPUnit\Util\PropertyFalsifiedToStringMapper;
 use Random\Engine\Xoshiro256StarStar;
 use Random\Randomizer;
 use SebastianBergmann\ChoiceSequence\ChoiceSequence;
@@ -314,8 +315,16 @@ final class PropertyTestSuite extends IterativeTestSuite
             // change the state of an object that is passed to it
             $exportedArguments     = $this->exampleRunner()->export($explicitExample->arguments(), new Constructions);
             $example               = $this->exampleRunner()->example($explicitExample->arguments(), true);
-            [$exampleEvents, $run] = $this->exampleRunner()->run($example, $emitter, true);
-            $falsification         = $this->exampleRunner()->falsificationOf($example, $exampleEvents);
+            [$exampleEvents, $run] = $this->exampleRunner()->run(
+                $example,
+                $emitter,
+                true,
+                null,
+                static fn (): string => PropertyFalsifiedToStringMapper::mapExampleThatEndedTheProcess(
+                    new Event\Code\Counterexample([], $exportedArguments, null, [], []),
+                ),
+            );
+            $falsification = $this->exampleRunner()->falsificationOf($example, $exampleEvents);
 
             if ($this->wasRejected($example, $falsification)) {
                 $events->record($exampleEvents, false);
@@ -411,9 +420,16 @@ final class PropertyTestSuite extends IterativeTestSuite
                 return;
             }
 
-            $example               = $this->exampleRunner()->example($arguments, false, DrawnValues::from($source));
-            [$exampleEvents, $run] = $this->exampleRunner()->run($example, $emitter, true);
-            $falsification         = $this->exampleRunner()->falsificationOf($example, $exampleEvents);
+            $drawnValues           = DrawnValues::from($source);
+            $example               = $this->exampleRunner()->example($arguments, false, $drawnValues);
+            [$exampleEvents, $run] = $this->exampleRunner()->run(
+                $example,
+                $emitter,
+                true,
+                null,
+                fn (): string => $this->describeExampleThatEndedTheProcess($arguments, $source, $drawnValues),
+            );
+            $falsification = $this->exampleRunner()->falsificationOf($example, $exampleEvents);
 
             // the same choices generate the same arguments and draw the same
             // values, or are rejected again, so they are not drawn again; the
@@ -465,6 +481,34 @@ final class PropertyTestSuite extends IterativeTestSuite
         $this->report($events, $emitter, $skeleton, null, true, null);
 
         PassedTests::instance()->testMethodPassed($valueObject, null);
+    }
+
+    /**
+     * Describes the example that was run when the PHP process ended, because
+     * of a fatal error, for instance: an example that ends the process is
+     * neither reported for the property nor shrunk, so this is the only
+     * report of its arguments and of the values that it drew. They are only
+     * exported then, in the state in which the example left them.
+     *
+     * @param array<non-empty-string, mixed> $arguments
+     */
+    private function describeExampleThatEndedTheProcess(array $arguments, ChoiceSource $source, DrawnValues $drawnValues): string
+    {
+        $values = [];
+
+        foreach ($drawnValues->exportedWith($this->exampleRunner()->exporter($source->constructions())) as $drawnValue) {
+            $values[] = new Event\Code\DrawnValue($drawnValue['label'], $drawnValue['value']);
+        }
+
+        return PropertyFalsifiedToStringMapper::mapExampleThatEndedTheProcess(
+            new Event\Code\Counterexample(
+                $source->sequence()->choices(),
+                $this->exampleRunner()->export($arguments, $source->constructions()),
+                null,
+                $values,
+                [],
+            ),
+        );
     }
 
     /**

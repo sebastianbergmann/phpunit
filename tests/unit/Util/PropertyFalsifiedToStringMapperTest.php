@@ -83,6 +83,28 @@ EOT,
         );
     }
 
+    public function testDescribesTheExampleThatWasRunWhenThePhpProcessEnded(): void
+    {
+        $this->assertStringEqualsStringIgnoringLineEndings(
+            <<<'EOT'
+The PHP process ended while this example of the property was run:
+
+    $size = 1;
+
+    Draw 1 (list): [5]
+
+EOT,
+            PropertyFalsifiedToStringMapper::mapExampleThatEndedTheProcess(
+                new Counterexample([1, 5], ['size' => '1'], null, [new DrawnValue('list', '[5]')], []),
+            ),
+        );
+    }
+
+    public function testDoesNotDescribeAnExampleWithoutArgumentsAndDrawnValuesThatWasRunWhenThePhpProcessEnded(): void
+    {
+        $this->assertSame('', PropertyFalsifiedToStringMapper::mapExampleThatEndedTheProcess(new Counterexample([], [], null, [], [])));
+    }
+
     public function testDescribesTheValuesThatTheMinimalCounterexampleDrewAfterItsArguments(): void
     {
         $this->assertStringEqualsStringIgnoringLineEndings(
