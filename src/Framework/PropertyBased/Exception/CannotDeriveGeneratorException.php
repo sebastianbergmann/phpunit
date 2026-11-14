@@ -110,7 +110,10 @@ final class CannotDeriveGeneratorException extends RuntimeException implements E
         );
     }
 
-    public static function unparsableConstructorParameterType(ReflectionParameter $parameter, InvalidTypeException $reason): self
+    /**
+     * @param 'param'|'var' $tag the tag that declares the type: var for the @var tag of a promoted constructor parameter
+     */
+    public static function unparsableConstructorParameterType(ReflectionParameter $parameter, string $tag, InvalidTypeException $reason): self
     {
         $constructor = $parameter->getDeclaringFunction();
 
@@ -118,10 +121,11 @@ final class CannotDeriveGeneratorException extends RuntimeException implements E
 
         return new self(
             sprintf(
-                'cannot derive a generator for parameter $%s of %s::%s(), the type in its @param tag cannot be parsed: %s',
+                'cannot derive a generator for parameter $%s of %s::%s(), the type in its @%s tag cannot be parsed: %s',
                 $parameter->getName(),
                 $constructor->getDeclaringClass()->getName(),
                 $constructor->getName(),
+                $tag,
                 lcfirst($reason->getMessage()),
             ),
             0,

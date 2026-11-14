@@ -20,7 +20,9 @@ use PHPUnit\Framework\Attributes\RequiresSetting;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\PropertyBased\DocComments\ClassThatUsesTraitWithDocComment;
+use PHPUnit\TestFixture\PropertyBased\DocComments\ClassThatUsesTraitWithPromotedConstructorParameter;
 use PHPUnit\TestFixture\PropertyBased\DocComments\ClassWithDocComments;
+use PHPUnit\TestFixture\PropertyBased\DocComments\ClassWithPromotedConstructorParameters;
 use ReflectionMethod;
 
 #[CoversClass(DocComments::class)]
@@ -90,6 +92,43 @@ final class DocCommentsTest extends TestCase
         } finally {
             unlink($file);
         }
+    }
+
+    public function testReturnsTheDocCommentsOfThePromotedParametersOfAConstructor(): void
+    {
+        $this->assertSame(
+            [
+                'beforeParameter' => '/** @var positive-int */',
+                'beforeAttribute' => "/**\n         * @var non-empty-string\n         */",
+                'documentedTwice' => '/** @var negative-int */',
+            ],
+            DocComments::ofPromotedParameters(new ReflectionMethod(ClassWithPromotedConstructorParameters::class, '__construct')),
+        );
+    }
+
+    public function testAConstructorWithoutPromotedParametersHasNoDocCommentsOfPromotedParameters(): void
+    {
+        $this->assertSame([], DocComments::ofPromotedParameters(new ReflectionMethod(ArrayObject::class, '__construct')));
+    }
+
+    public function testReadsTheDocCommentsOfThePromotedParametersOfAConstructorFromTheSourceFileThatDeclaresIt(): void
+    {
+        $constructor = new ReflectionMethod(ClassWithPromotedConstructorParameters::class, '__construct');
+
+        $this->assertSame(DocComments::ofPromotedParameters($constructor), DocComments::ofPromotedParametersInSourceFile($constructor));
+    }
+
+    public function testReadsTheDocCommentsOfThePromotedParametersOfAConstructorOfATraitFromTheSourceFileOfTheTrait(): void
+    {
+        $constructor = new ReflectionMethod(ClassThatUsesTraitWithPromotedConstructorParameter::class, '__construct');
+
+        $this->assertSame(['value' => '/** @var positive-int */'], DocComments::ofPromotedParameters($constructor));
+        $this->assertSame(['value' => '/** @var positive-int */'], DocComments::ofPromotedParametersInSourceFile($constructor));
+    }
+
+    public function testAConstructorThatIsNotDeclaredInAFileHasNoDocCommentsOfPromotedParametersInASourceFile(): void
+    {
+        $this->assertSame([], DocComments::ofPromotedParametersInSourceFile(new ReflectionMethod(ArrayObject::class, '__construct')));
     }
 
     #[RequiresSetting('opcache.save_comments', '1')]

@@ -38,17 +38,23 @@ use PHPUnit\Framework\PropertyBased\InvalidTypeException;
  */
 final readonly class ParameterTypes
 {
-    private const array TAGS_IN_ORDER_OF_PRECEDENCE = ['phpstan-param', 'psalm-param', 'param'];
+    private const array TAGS_IN_ORDER_OF_PRECEDENCE     = ['phpstan-param', 'psalm-param', 'param'];
+    private const array VAR_TAGS_IN_ORDER_OF_PRECEDENCE = ['phpstan-var', 'psalm-var', 'var'];
 
     /**
      * @var array<non-empty-string, string|Type> the type, or why it cannot be parsed, by parameter name
      */
     private array $types;
 
+    /**
+     * @var array<non-empty-string, true> the parameters whose type is declared with a @var tag rather than with a @param tag
+     */
+    private array $declaredWithVarTag;
+
     public static function fromDocComment(false|string $docComment): self
     {
         if ($docComment === false) {
-            return new self([]);
+            return new self([], []);
         }
 
         $tags = [];
@@ -62,14 +68,7 @@ final readonly class ParameterTypes
         preg_match_all('/@(phpstan-param|psalm-param|param)(?=\s)/', $text, $matches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE);
 
         foreach ($matches as $match) {
-            $start = $match[0][1] + strlen($match[0][0]);
-            $body  = substr($text, $start);
-
-            if (preg_match('/\R\h*@/', $body, $next, PREG_OFFSET_CAPTURE) === 1) {
-                $body = substr($body, 0, $next[0][1]);
-            }
-
-            $parsed = self::parseTag($body);
+            $parsed = self::parseTag(self::bodyOfTag($text, $match[0][1] + strlen($match[0][0])));
 
             if ($parsed === null) {
                 continue;
@@ -92,20 +91,71 @@ final readonly class ParameterTypes
             }
         }
 
-        return new self($types);
+        return new self($types, []);
     }
 
     /**
      * @param array<non-empty-string, string|Type> $types
+     * @param array<non-empty-string, true>        $declaredWithVarTag
      */
-    private function __construct(array $types)
+    private function __construct(array $types, array $declaredWithVarTag)
     {
-        $this->types = $types;
+        $this->types              = $types;
+        $this->declaredWithVarTag = $declaredWithVarTag;
+    }
+
+    /**
+     * Returns these types together with the types that the doc comments of
+     * promoted constructor parameters declare with a @var tag, a @phpstan-var
+     * tag, or a @psalm-var tag.
+     *
+     * The type in a @param tag of the constructor takes precedence over the
+     * type in the @var tag of the parameter, as it does in PHPStan.
+     *
+     * @param array<non-empty-string, string> $docComments the doc comments of promoted constructor parameters by the names of the parameters
+     */
+    public function withTypesOfPromotedParameters(array $docComments): self
+    {
+        $types              = $this->types;
+        $declaredWithVarTag = $this->declaredWithVarTag;
+
+        foreach ($docComments as $name => $docComment) {
+            if (isset($types[$name])) {
+                continue;
+            }
+
+            $type = self::typeInVarTag($docComment);
+
+            if ($type === null) {
+                continue;
+            }
+
+            $types[$name]              = $type;
+            $declaredWithVarTag[$name] = true;
+        }
+
+        return new self($types, $declaredWithVarTag);
     }
 
     public function has(string $parameterName): bool
     {
         return isset($this->types[$parameterName]);
+    }
+
+    /**
+     * The tag that declares the type of the parameter: var for the @var tag,
+     * the @phpstan-var tag, or the @psalm-var tag of a promoted constructor
+     * parameter, param otherwise.
+     *
+     * @return 'param'|'var'
+     */
+    public function tagOf(string $parameterName): string
+    {
+        if (isset($this->declaredWithVarTag[$parameterName])) {
+            return 'var';
+        }
+
+        return 'param';
     }
 
     /**
@@ -137,6 +187,59 @@ final readonly class ParameterTypes
         assert(is_string($text));
 
         return $text;
+    }
+
+    /**
+     * The text of a tag from the given offset, which follows the name of the
+     * tag, to the next tag or the end of the doc comment.
+     */
+    private static function bodyOfTag(string $text, int $offset): string
+    {
+        $body = substr($text, $offset);
+
+        if (preg_match('/\R\h*@/', $body, $next, PREG_OFFSET_CAPTURE) === 1) {
+            $body = substr($body, 0, $next[0][1]);
+        }
+
+        return $body;
+    }
+
+    /**
+     * @return null|string|Type the type in the @var tag of the doc comment, or why it cannot be parsed, null when the doc comment has no @var tag with a type
+     */
+    private static function typeInVarTag(string $docComment): null|string|Type
+    {
+        $types = [];
+        $text  = self::withoutDecoration($docComment);
+
+        preg_match_all('/@(phpstan-var|psalm-var|var)(?=\s)/', $text, $matches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE);
+
+        foreach ($matches as $match) {
+            if (isset($types[$match[1][0]])) {
+                continue;
+            }
+
+            $lexer = new Lexer(self::bodyOfTag($text, $match[0][1] + strlen($match[0][0])));
+
+            try {
+                // a tag without a type, such as @var $x, does not declare one
+                if ($lexer->peek()->kind() === TokenKind::Variable || $lexer->peek()->kind() === TokenKind::End) {
+                    continue;
+                }
+
+                $types[$match[1][0]] = (new TypeParser)->parseFrom($lexer);
+            } catch (InvalidTypeException $e) {
+                $types[$match[1][0]] = $e->getMessage();
+            }
+        }
+
+        foreach (self::VAR_TAGS_IN_ORDER_OF_PRECEDENCE as $tag) {
+            if (isset($types[$tag])) {
+                return $types[$tag];
+            }
+        }
+
+        return null;
     }
 
     /**

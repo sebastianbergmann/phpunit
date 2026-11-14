@@ -52,6 +52,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\PropertyBased\Currency;
 use PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithConstructorThatThrows;
 use PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithoutConstructor;
+use PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithPromotedConstructorParameters;
 use PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithVariadicConstructor;
 use PHPUnit\TestFixture\PropertyBased\Derivation\Company;
 use PHPUnit\TestFixture\PropertyBased\Derivation\Customer;
@@ -154,29 +155,30 @@ final class GeneratorDeriverTest extends TestCase
     public static function unsupportedTypeProvider(): array
     {
         return [
-            'mixed'                              => ['mixed', 'mixed is not supported'],
-            'object'                             => ['object', 'object is not supported'],
-            'callable'                           => ['callable', 'callable is not supported'],
-            'iterable'                           => ['iterable', 'iterable is not supported'],
-            'class-string'                       => ['class-string', 'class-string is not supported'],
-            'unknown class'                      => ['Unknown', 'PHPUnit\TestFixture\PropertyBased\Derivation\Unknown is neither a supported type nor the name of an existing class'],
-            'interface'                          => ['EmailAddress', 'PHPUnit\TestFixture\PropertyBased\Derivation\EmailAddress is an interface'],
-            'trait'                              => ['TraitForDerivation', 'PHPUnit\TestFixture\PropertyBased\Derivation\TraitForDerivation is a trait'],
-            'abstract class'                     => ['AbstractClass', 'class PHPUnit\TestFixture\PropertyBased\Derivation\AbstractClass is abstract'],
-            'class without public constructor'   => ['ClassWithPrivateConstructor', 'class PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithPrivateConstructor does not have a public constructor'],
-            'Closure'                            => ['\Closure', 'class Closure does not have a public constructor'],
-            'enumeration without cases'          => ['\PHPUnit\TestFixture\PropertyBased\EnumerationWithoutCases', 'enumeration PHPUnit\TestFixture\PropertyBased\EnumerationWithoutCases has no cases'],
-            'empty integer range'                => ['int<5, 1>', 'the minimum of int<5, 1> is greater than its maximum'],
-            'integer range with invalid bounds'  => ['int<max, min>', 'int<max, min> is not supported, the bounds of an integer range must be integers, min, or max'],
-            'integer range with string bound'    => ["int<0, 'a'>", "int<0, 'a'> is not supported, the bounds of an integer range must be integers, min, or max"],
-            'int with one type argument'         => ['int<1>', 'int<1> is not supported, int takes either no type arguments or a minimum and a maximum'],
-            'list with two type arguments'       => ['list<int, string>', 'list<int, string> is not supported, list takes at most a type for its elements'],
-            'array with three type arguments'    => ['array<int, string, bool>', 'array<int, string, bool> is not supported, array takes at most a type for its keys and a type for its values'],
-            'keyword with type argument'         => ['string<int>', 'string<int> is not supported, string does not take type arguments'],
-            'object shape'                       => ['object{a: int}', 'object{a: int} is not supported'],
-            'unsupported constructor parameter'  => ['ClassWithUnsupportedConstructorParameter', 'cannot derive a generator for parameter $value of PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithUnsupportedConstructorParameter::__construct() of type mixed: mixed is not supported'],
-            'unparsable constructor parameter'   => ['ClassWithUnparsableConstructorParameterType', 'cannot derive a generator for parameter $callback of PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithUnparsableConstructorParameterType::__construct(), the type in its @param tag cannot be parsed: unexpected "(" at offset 9, expected the name of the parameter'],
-            'intersection constructor parameter' => ['ClassWithIntersectionConstructorParameter', 'cannot derive a generator for parameter $value of PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithIntersectionConstructorParameter::__construct() of type Countable&Iterator: intersection type Countable&Iterator is not supported'],
+            'mixed'                                     => ['mixed', 'mixed is not supported'],
+            'object'                                    => ['object', 'object is not supported'],
+            'callable'                                  => ['callable', 'callable is not supported'],
+            'iterable'                                  => ['iterable', 'iterable is not supported'],
+            'class-string'                              => ['class-string', 'class-string is not supported'],
+            'unknown class'                             => ['Unknown', 'PHPUnit\TestFixture\PropertyBased\Derivation\Unknown is neither a supported type nor the name of an existing class'],
+            'interface'                                 => ['EmailAddress', 'PHPUnit\TestFixture\PropertyBased\Derivation\EmailAddress is an interface'],
+            'trait'                                     => ['TraitForDerivation', 'PHPUnit\TestFixture\PropertyBased\Derivation\TraitForDerivation is a trait'],
+            'abstract class'                            => ['AbstractClass', 'class PHPUnit\TestFixture\PropertyBased\Derivation\AbstractClass is abstract'],
+            'class without public constructor'          => ['ClassWithPrivateConstructor', 'class PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithPrivateConstructor does not have a public constructor'],
+            'Closure'                                   => ['\Closure', 'class Closure does not have a public constructor'],
+            'enumeration without cases'                 => ['\PHPUnit\TestFixture\PropertyBased\EnumerationWithoutCases', 'enumeration PHPUnit\TestFixture\PropertyBased\EnumerationWithoutCases has no cases'],
+            'empty integer range'                       => ['int<5, 1>', 'the minimum of int<5, 1> is greater than its maximum'],
+            'integer range with invalid bounds'         => ['int<max, min>', 'int<max, min> is not supported, the bounds of an integer range must be integers, min, or max'],
+            'integer range with string bound'           => ["int<0, 'a'>", "int<0, 'a'> is not supported, the bounds of an integer range must be integers, min, or max"],
+            'int with one type argument'                => ['int<1>', 'int<1> is not supported, int takes either no type arguments or a minimum and a maximum'],
+            'list with two type arguments'              => ['list<int, string>', 'list<int, string> is not supported, list takes at most a type for its elements'],
+            'array with three type arguments'           => ['array<int, string, bool>', 'array<int, string, bool> is not supported, array takes at most a type for its keys and a type for its values'],
+            'keyword with type argument'                => ['string<int>', 'string<int> is not supported, string does not take type arguments'],
+            'object shape'                              => ['object{a: int}', 'object{a: int} is not supported'],
+            'unsupported constructor parameter'         => ['ClassWithUnsupportedConstructorParameter', 'cannot derive a generator for parameter $value of PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithUnsupportedConstructorParameter::__construct() of type mixed: mixed is not supported'],
+            'unparsable promoted constructor parameter' => ['ClassWithUnparsablePromotedConstructorParameterType', 'cannot derive a generator for parameter $values of PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithUnparsablePromotedConstructorParameterType::__construct(), the type in its @var tag cannot be parsed: unexpected end of the type, expected ">"'],
+            'unparsable constructor parameter'          => ['ClassWithUnparsableConstructorParameterType', 'cannot derive a generator for parameter $callback of PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithUnparsableConstructorParameterType::__construct(), the type in its @param tag cannot be parsed: unexpected "(" at offset 9, expected the name of the parameter'],
+            'intersection constructor parameter'        => ['ClassWithIntersectionConstructorParameter', 'cannot derive a generator for parameter $value of PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithIntersectionConstructorParameter::__construct() of type Countable&Iterator: intersection type Countable&Iterator is not supported'],
         ];
     }
 
@@ -329,6 +331,29 @@ final class GeneratorDeriverTest extends TestCase
         $this->expectExceptionMessageIs($message);
 
         $this->deriver()->forParameter(new ReflectionParameter([Parameters::class, $method], $parameter));
+    }
+
+    public function testDerivesTheGeneratorForAPromotedParameterOfAConstructorFromTheVarTagOfItsDocComment(): void
+    {
+        $generator = $this->derive('ClassWithPromotedConstructorParameters');
+
+        foreach ($this->values($generator, 200) as $value) {
+            $this->assertInstanceOf(ClassWithPromotedConstructorParameters::class, $value);
+            $this->assertGreaterThan(0, $value->positive);
+            $this->assertTrue(array_is_list($value->amounts));
+            $this->assertContainsOnlyInstancesOf(Money::class, $value->amounts);
+        }
+
+        $this->assertEquals(new ClassWithPromotedConstructorParameters(1, [], 1, false), $this->replay($generator, []));
+    }
+
+    public function testTheParamTagOfAConstructorTakesPrecedenceOverTheVarTagOfAPromotedParameter(): void
+    {
+        foreach ($this->values($this->derive('ClassWithPromotedConstructorParameters'), 200) as $value) {
+            $this->assertInstanceOf(ClassWithPromotedConstructorParameters::class, $value);
+            $this->assertGreaterThanOrEqual(1, $value->documentedTwice);
+            $this->assertLessThanOrEqual(10, $value->documentedTwice);
+        }
     }
 
     public function testVariadicParametersOfAConstructorReceiveNoArguments(): void

@@ -155,6 +155,84 @@ EOT,
         $this->assertFalse(ParameterTypes::fromDocComment('/** @param list<int */')->has('a'));
     }
 
+    public function testReadsTheTypeOfAPromotedParameterFromTheVarTagOfItsDocComment(): void
+    {
+        $types = ParameterTypes::fromDocComment(false)->withTypesOfPromotedParameters(
+            [
+                'a' => '/** @var positive-int */',
+                'b' => "/**\n     * The description.\n     *\n     * @var array{\n     *     name: non-empty-string,\n     * } \$b the person\n     *\n     * @deprecated\n     */",
+                'c' => '/** @var list<int> the values */',
+            ],
+        );
+
+        $this->assertTrue($types->has('a'));
+        $this->assertSame('positive-int', $types->typeOf('a')?->asString());
+        $this->assertSame('var', $types->tagOf('a'));
+        $this->assertSame('array{name: non-empty-string}', $types->typeOf('b')?->asString());
+        $this->assertSame('list<int>', $types->typeOf('c')?->asString());
+    }
+
+    public function testTheParamTagOfAConstructorTakesPrecedenceOverTheVarTagOfAPromotedParameter(): void
+    {
+        $types = ParameterTypes::fromDocComment('/** @param int<1, 10> $a */')->withTypesOfPromotedParameters(
+            [
+                'a' => '/** @var negative-int */',
+                'b' => '/** @var positive-int */',
+            ],
+        );
+
+        $this->assertSame('int<1, 10>', $types->typeOf('a')?->asString());
+        $this->assertSame('param', $types->tagOf('a'));
+        $this->assertSame('positive-int', $types->typeOf('b')?->asString());
+        $this->assertSame('var', $types->tagOf('b'));
+        $this->assertSame('param', $types->tagOf('unknown'));
+    }
+
+    public function testThePhpstanVarTagTakesPrecedenceOverThePsalmVarTagWhichTakesPrecedenceOverTheVarTag(): void
+    {
+        $types = ParameterTypes::fromDocComment(false)->withTypesOfPromotedParameters(
+            [
+                'a' => "/**\n * @var string\n * @psalm-var non-empty-string\n * @phpstan-var non-falsy-string\n */",
+                'b' => "/**\n * @var string\n * @psalm-var non-empty-string\n */",
+                'c' => "/**\n * @var string\n * @var int\n */",
+            ],
+        );
+
+        $this->assertSame('non-falsy-string', $types->typeOf('a')?->asString());
+        $this->assertSame('non-empty-string', $types->typeOf('b')?->asString());
+        $this->assertSame('string', $types->typeOf('c')?->asString());
+    }
+
+    public function testADocCommentOfAPromotedParameterWithoutATypeInAVarTagDoesNotDeclareTheTypeOfTheParameter(): void
+    {
+        $types = ParameterTypes::fromDocComment(false)->withTypesOfPromotedParameters(
+            [
+                'a' => '/** The description. */',
+                'b' => '/** @var $b the description */',
+                'c' => '/** @var */',
+                'd' => '/** @var-dump int */',
+            ],
+        );
+
+        $this->assertFalse($types->has('a'));
+        $this->assertFalse($types->has('b'));
+        $this->assertFalse($types->has('c'));
+        $this->assertFalse($types->has('d'));
+    }
+
+    public function testATypeInAVarTagThatCannotBeParsedIsReportedWhenTheTypeOfItsParameterIsRequested(): void
+    {
+        $types = ParameterTypes::fromDocComment(false)->withTypesOfPromotedParameters(['a' => '/** @var list<int */']);
+
+        $this->assertTrue($types->has('a'));
+        $this->assertSame('var', $types->tagOf('a'));
+
+        $this->expectException(InvalidTypeException::class);
+        $this->expectExceptionMessageIs('Unexpected end of the type, expected ">"');
+
+        $types->typeOf('a');
+    }
+
     public function testAMethodWithoutADocCommentDoesNotDeclareTheTypesOfItsParameters(): void
     {
         $this->assertFalse(ParameterTypes::fromDocComment(false)->has('a'));

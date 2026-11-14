@@ -10,7 +10,9 @@
 namespace PHPUnit\Framework\PropertyBased\Type;
 
 use function ini_get;
+use function is_string;
 use function strtolower;
+use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\NodeFinder;
 use ReflectionMethod;
@@ -29,7 +31,7 @@ use SebastianBergmann\Environment\Runtime;
 final class DocComments
 {
     /**
-     * @var array<string, list<array{name: lowercase-string, startLine: int, endLine: int, docComment: ?string}>>
+     * @var array<string, list<array{name: lowercase-string, startLine: int, endLine: int, docComment: ?string, promotedParameters: array<non-empty-string, string>}>>
      */
     private static array $methods = [];
 
@@ -55,6 +57,41 @@ final class DocComments
         return $docComment;
     }
 
+    /**
+     * Returns the doc comments of the promoted parameters of the constructor
+     * that have one, by the names of the parameters. They are read from the
+     * source file that declares the constructor when PHP has discarded them,
+     * where only a doc comment that precedes the parameter, its attributes
+     * and modifiers included, is found.
+     *
+     * @return array<non-empty-string, string>
+     */
+    public static function ofPromotedParameters(ReflectionMethod $constructor): array
+    {
+        $class       = $constructor->getDeclaringClass();
+        $docComments = [];
+        $promoted    = false;
+
+        foreach ($constructor->getParameters() as $parameter) {
+            if (!$parameter->isPromoted()) {
+                continue;
+            }
+
+            $promoted   = true;
+            $docComment = $class->getProperty($parameter->getName())->getDocComment();
+
+            if ($docComment !== false) {
+                $docComments[$parameter->getName()] = $docComment;
+            }
+        }
+
+        if ($docComments !== [] || !$promoted || !self::areDiscarded()) {
+            return $docComments;
+        }
+
+        return self::ofPromotedParametersInSourceFile($constructor);
+    }
+
     public static function areDiscarded(): bool
     {
         if (!(new Runtime)->isOpcacheActive()) {
@@ -73,6 +110,38 @@ final class DocComments
      * file cannot be read or parsed.
      */
     public static function inSourceFile(ReflectionMethod $method): ?string
+    {
+        $declaration = self::declarationInSourceFile($method);
+
+        if ($declaration === null) {
+            return null;
+        }
+
+        return $declaration['docComment'];
+    }
+
+    /**
+     * Returns the doc comments of the promoted parameters of the constructor
+     * as they are written in the source file that declares it, by the names
+     * of the parameters.
+     *
+     * @return array<non-empty-string, string>
+     */
+    public static function ofPromotedParametersInSourceFile(ReflectionMethod $constructor): array
+    {
+        $declaration = self::declarationInSourceFile($constructor);
+
+        if ($declaration === null) {
+            return [];
+        }
+
+        return $declaration['promotedParameters'];
+    }
+
+    /**
+     * @return ?array{name: lowercase-string, startLine: int, endLine: int, docComment: ?string, promotedParameters: array<non-empty-string, string>}
+     */
+    private static function declarationInSourceFile(ReflectionMethod $method): ?array
     {
         $file = $method->getFileName();
         $line = $method->getStartLine();
@@ -100,15 +169,11 @@ final class DocComments
             }
         }
 
-        if ($innermost === null) {
-            return null;
-        }
-
-        return $innermost['docComment'];
+        return $innermost;
     }
 
     /**
-     * @return list<array{name: lowercase-string, startLine: int, endLine: int, docComment: ?string}>
+     * @return list<array{name: lowercase-string, startLine: int, endLine: int, docComment: ?string, promotedParameters: array<non-empty-string, string>}>
      */
     private static function parse(string $file): array
     {
@@ -129,13 +194,36 @@ final class DocComments
             }
 
             $methods[] = [
-                'name'       => $method->name->toLowerString(),
-                'startLine'  => $method->getStartLine(),
-                'endLine'    => $method->getEndLine(),
-                'docComment' => $text,
+                'name'               => $method->name->toLowerString(),
+                'startLine'          => $method->getStartLine(),
+                'endLine'            => $method->getEndLine(),
+                'docComment'         => $text,
+                'promotedParameters' => self::promotedParameters($method),
             ];
         }
 
         return $methods;
+    }
+
+    /**
+     * @return array<non-empty-string, string>
+     */
+    private static function promotedParameters(ClassMethod $method): array
+    {
+        $docComments = [];
+
+        foreach ($method->params as $parameter) {
+            if (!$parameter->isPromoted() || !$parameter->var instanceof Variable || !is_string($parameter->var->name) || $parameter->var->name === '') {
+                continue;
+            }
+
+            $docComment = $parameter->getDocComment();
+
+            if ($docComment !== null) {
+                $docComments[$parameter->var->name] = $docComment->getText();
+            }
+        }
+
+        return $docComments;
     }
 }

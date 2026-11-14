@@ -71,8 +71,10 @@ use WeakMap;
 /**
  * Derives generators from the types of parameters: from the type in the
  * parameter's @param tag (including @phpstan-param and @psalm-param) if there
- * is one, and from its native type declaration otherwise. The @param tag is
- * read from the source file when OPcache has discarded the doc comment.
+ * is one, from the type in the @var tag (including @phpstan-var and @psalm-var)
+ * of the doc comment of a promoted constructor parameter that has no @param
+ * tag, and from its native type declaration otherwise. The tags are read from
+ * the source file when OPcache has discarded the doc comments.
  *
  * A generator that the test case class registers for a class with
  * #[GeneratorFor] is used for every value of exactly that class, including
@@ -424,7 +426,7 @@ final class GeneratorDeriver
             try {
                 [$type, $declaration] = $this->typeOf($parameter, $docTypes);
             } catch (InvalidTypeException $e) {
-                throw CannotDeriveGeneratorException::unparsableConstructorParameterType($parameter, $e);
+                throw CannotDeriveGeneratorException::unparsableConstructorParameterType($parameter, $docTypes->tagOf($parameter->getName()), $e);
             } catch (CannotDeriveGeneratorException $e) {
                 throw CannotDeriveGeneratorException::forConstructorParameter($parameter, (string) $parameter->getType(), $e);
             }
@@ -753,7 +755,13 @@ final class GeneratorDeriver
         $key = $method->getDeclaringClass()->getName() . '::' . $method->getName();
 
         if (!isset($this->parameterTypes[$key])) {
-            $this->parameterTypes[$key] = ParameterTypes::fromDocComment(DocComments::of($method));
+            $parameterTypes = ParameterTypes::fromDocComment(DocComments::of($method));
+
+            if ($method->isConstructor()) {
+                $parameterTypes = $parameterTypes->withTypesOfPromotedParameters(DocComments::ofPromotedParameters($method));
+            }
+
+            $this->parameterTypes[$key] = $parameterTypes;
         }
 
         return $this->parameterTypes[$key];
@@ -856,8 +864,9 @@ final class GeneratorDeriver
     }
 
     /**
-     * Returns the type of the parameter, from its @param tag or from its
-     * native type declaration, together with the type as it is declared.
+     * Returns the type of the parameter, from its @param tag, from the @var
+     * tag of a promoted constructor parameter, or from its native type
+     * declaration, together with the type as it is declared.
      *
      * @throws CannotDeriveGeneratorException
      * @throws InvalidTypeException
