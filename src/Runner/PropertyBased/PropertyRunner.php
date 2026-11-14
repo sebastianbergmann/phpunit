@@ -124,6 +124,12 @@ use Throwable;
  * handlers of the caller: the one that was active is then registered again,
  * for all error levels.
  *
+ * The output that an example prints is not printed, as in a test run. Output
+ * buffering that code of the project started without ending it, in a
+ * generator, for instance, is ended afterwards, and what was buffered is
+ * discarded, so that the level of output buffering of the caller is the one
+ * from before.
+ *
  * The time limit of an example is enforced with the SIGALRM signal. While an
  * example runs, the handler of this signal, a pending alarm, and whether
  * signals are handled asynchronously are PHPUnit's. Afterwards, the ones of
@@ -242,10 +248,10 @@ final class PropertyRunner
     /**
      * While code of the project is run, what is restored for the caller
      * afterwards, or when the code of the project ends the process: the error
-     * handler that was active, and the marker below which the error handlers
-     * of the caller are hidden.
+     * handler that was active, the marker below which the error handlers of
+     * the caller are hidden, and the level of output buffering before.
      *
-     * @var ?array{errorHandler: null|array<mixed>|callable|string, marker: Closure(): bool}
+     * @var ?array{errorHandler: null|array<mixed>|callable|string, marker: Closure(): bool, outputBufferingLevel: int}
      */
     private ?array $stateOfCallerWhileCodeOfProjectRuns = null;
 
@@ -253,11 +259,10 @@ final class PropertyRunner
      * While an example runs, what is restored for the caller after it, or
      * when it ends the process: the handler of the SIGALRM signal, whether
      * signals are handled asynchronously, the seconds that were left until an
-     * alarm of the caller, when the example started, the level of output
-     * buffering before the example started, and the process in which it
-     * started.
+     * alarm of the caller, when the example started, and the process in which
+     * it started.
      *
-     * @var ?array{handler: callable|int, asynchronous: bool, remaining: int, started: int, outputBufferingLevel: int, process: false|int}
+     * @var ?array{handler: callable|int, asynchronous: bool, remaining: int, started: int, process: false|int}
      */
     private ?array $stateOfCaller = null;
 
@@ -431,8 +436,6 @@ final class PropertyRunner
                 // for it: its output is still buffered, PHPUnit's error
                 // handler is still enabled, the error handlers of the caller
                 // are still hidden, and its time limit is still enforced
-                $this->discardOutputOfExample();
-
                 ErrorHandler::instance()->disable();
 
                 $this->restoreCallerAfterCodeOfProject();
@@ -600,12 +603,11 @@ final class PropertyRunner
     private function suspendingAlarmOfCaller(Closure $example): ExampleResult
     {
         $this->stateOfCaller = [
-            'handler'              => pcntl_signal_get_handler(SIGALRM),
-            'asynchronous'         => pcntl_async_signals(),
-            'remaining'            => pcntl_alarm(0),
-            'started'              => hrtime(true),
-            'outputBufferingLevel' => ob_get_level(),
-            'process'              => getmypid(),
+            'handler'      => pcntl_signal_get_handler(SIGALRM),
+            'asynchronous' => pcntl_async_signals(),
+            'remaining'    => pcntl_alarm(0),
+            'started'      => hrtime(true),
+            'process'      => getmypid(),
         ];
 
         try {
@@ -649,40 +651,34 @@ final class PropertyRunner
     }
 
     /**
-     * Discards the output of an example that ended the process, which is
-     * still buffered, rather than letting PHP print it when the process ends,
-     * as nothing is printed. The hook methods of the prepared test class that
-     * are called after its last test print, as they do otherwise.
-     */
-    private function discardOutputOfExample(): void
-    {
-        $state = $this->stateOfCaller;
-
-        if ($state === null) {
-            return;
-        }
-
-        while (ob_get_level() > $state['outputBufferingLevel']) {
-            if (!ob_end_clean()) {
-                break;
-            }
-        }
-    }
-
-    /**
      * Hides the error handlers of the caller before code of the project is
      * run, and registers the error handlers of the project.
      */
     private function prepareForCodeOfProject(): void
     {
-        $this->stateOfCallerWhileCodeOfProjectRuns = self::hideErrorHandlersOfCaller($this->errorHandlersOfProject);
+        $errorHandlersOfCaller = self::hideErrorHandlersOfCaller($this->errorHandlersOfProject);
+
+        $this->stateOfCallerWhileCodeOfProjectRuns = [
+            'errorHandler'         => $errorHandlersOfCaller['errorHandler'],
+            'marker'               => $errorHandlersOfCaller['marker'],
+            'outputBufferingLevel' => ob_get_level(),
+        ];
     }
 
     /**
-     * Removes the error handlers that are registered since the error handlers
-     * of the caller were hidden, so that the ones of the caller are
-     * registered as before, after code of the project was run, or when it
-     * ended the process.
+     * Restores what code of the project left changed for the caller, after
+     * it was run, or when it ended the process.
+     *
+     * The error handlers that are registered since the error handlers of the
+     * caller were hidden are removed, so that the ones of the caller are
+     * registered as before.
+     *
+     * The output buffering that was started since without being ended is
+     * ended, and what was buffered is discarded rather than printed: the
+     * output of an example that ended the process, and the output that is
+     * buffered because a generator started output buffering, for instance.
+     * The hook methods of a test class that are called before its first test
+     * and after its last test print, as in a test run.
      */
     private function restoreCallerAfterCodeOfProject(): void
     {
@@ -695,6 +691,13 @@ final class PropertyRunner
         $this->stateOfCallerWhileCodeOfProjectRuns = null;
 
         self::removeErrorHandlersOfProject($state['marker']);
+
+        while (ob_get_level() > $state['outputBufferingLevel']) {
+            if (!ob_end_clean()) {
+                break;
+            }
+        }
+
         self::revealErrorHandlersOfCaller($state);
     }
 
