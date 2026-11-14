@@ -471,6 +471,17 @@ final class PropertyRunner
     }
 
     /**
+     * PHPUnit is booted once per process, and its state is the one of the
+     * process: a copy would prepare a test class that is already prepared
+     * again, and would not finish it when the process ends.
+     *
+     * @codeCoverageIgnore
+     */
+    private function __clone()
+    {
+    }
+
+    /**
      * The properties of the test suite, in the order in which the test runner
      * runs them by default.
      *
