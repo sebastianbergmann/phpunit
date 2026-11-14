@@ -14,6 +14,7 @@ use function array_is_list;
 use function array_reverse;
 use function assert;
 use function count;
+use function function_exists;
 use function getmypid;
 use function hrtime;
 use function intdiv;
@@ -340,7 +341,10 @@ final class PropertyRunner
             );
         }
 
-        if (!new Invoker()->canInvokeWithTimeout()) {
+        // the handler of the SIGALRM signal of the caller, which is restored
+        // after an example, is asked for with a function that php-invoker
+        // does not need to enforce a time limit
+        if (!new Invoker()->canInvokeWithTimeout() || !function_exists('pcntl_signal_get_handler')) {
             throw new TimeLimitCannotBeEnforcedException;
         }
 
