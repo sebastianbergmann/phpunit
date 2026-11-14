@@ -28,6 +28,7 @@ use PHPUnit\Framework\PropertyBased\Type\NameScope;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\PropertyBased\StateMachine\ChildStateMachine;
 use PHPUnit\TestFixture\PropertyBased\StateMachine\CounterMachine;
+use PHPUnit\TestFixture\PropertyBased\StateMachine\LockedMachine;
 use PHPUnit\TestFixture\PropertyBased\StateMachine\ObservedMachine;
 use PHPUnit\TestFixture\PropertyBased\StateMachine\PreconditionThatDoesNotReturnABool;
 use PHPUnit\TestFixture\PropertyBased\StateMachine\StateMachineWithPoolsWhoseNamesEndInDigits;
@@ -118,6 +119,23 @@ final class StateMachineRunnerTest extends TestCase
 
         $this->assertSame(2, $runner->numberOfSteps());
         $this->assertSame([1, 2, 1, 2], $source->sequence()->choices());
+    }
+
+    public function testTheChoicesForTheArgumentsOfARuleThatIsSkippedAreDrawnSoThatTheStepsAfterItAreTakenAsTheyWereDrawn(): void
+    {
+        $machine = new LockedMachine;
+
+        // add(5) (skipped, the machine is locked), take() (skipped, the pool
+        // is empty), item(), inspect() of the item (skipped, the machine is
+        // locked), unlock(), add(7), and stop
+        $source = ChoiceSource::replay(new ChoiceSequence([1, 0, 5, 1, 1, 0, 1, 2, 1, 3, 0, 1, 4, 1, 0, 7]));
+        $runner = $this->runner($source, $machine);
+
+        $runner->run(50);
+
+        $this->assertSame(['item()', 'unlock()', 'add(7)'], $machine->calls);
+        $this->assertSame(3, $runner->numberOfSteps());
+        $this->assertSame([1, 0, 5, 1, 1, 0, 1, 2, 1, 3, 0, 1, 4, 1, 0, 7, 0], $source->sequence()->choices());
     }
 
     public function testNoMoreStepsAreTakenWhenNoRuleCanBeApplied(): void

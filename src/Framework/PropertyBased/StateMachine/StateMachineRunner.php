@@ -20,6 +20,7 @@ use function count;
 use function get_debug_type;
 use function implode;
 use function is_bool;
+use function max;
 use function min;
 use function range;
 use function sprintf;
@@ -62,11 +63,12 @@ use Throwable;
  * whose pools have values are drawn, and each example enables a random subset
  * of the rules (swarm testing), without drawing choices for this. When a
  * choice sequence is replayed, a rule that cannot be applied is skipped and
- * does not count as a step. The choices for its arguments are not drawn: the
- * steps after a skipped rule without parameters are not reinterpreted, but
- * the choices that were drawn for the arguments of a skipped rule with
- * parameters are read as the choices of the next step. No more steps are
- * taken when no rule can be applied.
+ * does not count as a step. The choices for its arguments are drawn
+ * nevertheless, so that the choices after them are read as the steps that
+ * they were drawn for: when the step that produced the only value of a pool
+ * is deleted, the steps that took the value are skipped, and the steps after
+ * them are taken as before. No more steps are taken when no rule can be
+ * applied.
  *
  * The invariants are checked after the initializations and after every step,
  * except for those with #[StateMachineInvariant(atEnd: true)], which are
@@ -322,6 +324,10 @@ final class StateMachineRunner
                 );
 
                 if (!array_key_exists($index, $applicableRules)) {
+                    assert(array_key_exists($index, $rules));
+
+                    $this->skip($rules[$index]);
+
                     continue;
                 }
 
@@ -560,6 +566,37 @@ final class StateMachineRunner
         assert(array_key_exists($pool, $this->pools) && $this->pools[$pool] !== []);
 
         return $this->pools[$pool];
+    }
+
+    /**
+     * Draws the choices that the rule draws for its arguments when it is
+     * applied, without applying it.
+     *
+     * @throws ExampleRejectedException
+     */
+    private function skip(StepDefinition $rule): void
+    {
+        foreach ($rule->parameters() as $parameter) {
+            $pool = $parameter->pool();
+
+            if ($pool === null) {
+                $generator = $parameter->generator();
+
+                assert($generator !== null);
+
+                $generator->generate($this->source);
+
+                continue;
+            }
+
+            $numberOfValues = 0;
+
+            if (array_key_exists($pool, $this->pools)) {
+                $numberOfValues = count($this->pools[$pool]);
+            }
+
+            $this->source->draw(max(0, $numberOfValues - 1), new UniformDistribution);
+        }
     }
 
     /**
