@@ -244,6 +244,18 @@ final readonly class PropertyDefinitionBuilder
             );
         }
 
+        // the formatter is called with arguments of its own, which cannot be
+        // passed by reference
+        foreach ($method->getParameters() as $parameter) {
+            if ($parameter->isPassedByReference()) {
+                throw InvalidPropertyException::because(
+                    $className,
+                    $methodName,
+                    sprintf('method %s cannot be used as a counterexample formatter because its parameter $%s is passed by reference', $formatter, $parameter->getName()),
+                );
+            }
+        }
+
         return ['className' => $metadata->className(), 'methodName' => $metadata->methodName()];
     }
 

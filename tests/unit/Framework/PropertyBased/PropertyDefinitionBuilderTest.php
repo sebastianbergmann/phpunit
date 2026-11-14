@@ -27,6 +27,7 @@ use PHPUnit\TestFixture\PropertyBased\Derivation\ExampleEmailAddress;
 use PHPUnit\TestFixture\PropertyBased\Properties\ClassWithAbstractGeneratorFor;
 use PHPUnit\TestFixture\PropertyBased\Properties\ClassWithoutGeneratorFor;
 use PHPUnit\TestFixture\PropertyBased\Properties\CounterexampleFormatterPropertiesTest;
+use PHPUnit\TestFixture\PropertyBased\Properties\CounterexampleFormatterWithParameterPassedByReferenceTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\DuplicateGeneratorForTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\DuplicateGeneratorForWithLeadingBackslashTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\EmailAddressGenerators;
@@ -325,6 +326,12 @@ final class PropertyDefinitionBuilderTest extends TestCase
                 CounterexampleFormatterPropertiesTest::class,
                 'testWithFormatterThatIsNotStatic',
                 'method ' . CounterexampleFormatterPropertiesTest::class . '::notStatic() cannot be used as a counterexample formatter because it is not static',
+            ],
+
+            'counterexample formatter with a parameter that is passed by reference' => [
+                CounterexampleFormatterWithParameterPassedByReferenceTest::class,
+                'testWithFormatterWithParameterThatIsPassedByReference',
+                'method ' . CounterexampleFormatterWithParameterPassedByReferenceTest::class . '::format() cannot be used as a counterexample formatter because its parameter $b is passed by reference',
             ],
 
             'more than one counterexample formatter' => [
