@@ -43,16 +43,29 @@ use Throwable;
  * declared, those of a parent class before those of the class that extends
  * it. Then each step is drawn like an element of a list: a choice whether
  * another step is taken (0 = stop), the index of its rule in the same order
- * of the rules, and the arguments of the rule, all in one span. A value from
- * a pool is drawn as its position counted from the value that was produced
- * last, so that it refers to the same value when earlier steps are deleted.
+ * of the rules, and the arguments of the rule, all in one span.
+ *
+ * A value from a pool is drawn as its position among the values of the pool
+ * that were not consumed, counted from the value that was produced last. It
+ * refers to the same value when a step is deleted that was taken before the
+ * value was produced. It refers to another value when a step is deleted that
+ * was taken between the step that produced the value and the step that uses
+ * it, and that produced a value for the same pool or consumed a value that
+ * was produced later: the position would have to be changed together with the
+ * deletion, which the shrinker does not do. Such a step is only deleted when
+ * the counterexample keeps failing with the other value, so the steps of the
+ * minimal counterexample that is reported are not always the fewest steps
+ * that falsify the property.
  *
  * While choices are drawn at random, only rules whose preconditions hold and
  * whose pools have values are drawn, and each example enables a random subset
  * of the rules (swarm testing), without drawing choices for this. When a
  * choice sequence is replayed, a rule that cannot be applied is skipped and
- * does not count as a step, so that the steps after it are not reinterpreted.
- * No more steps are taken when no rule can be applied.
+ * does not count as a step. The choices for its arguments are not drawn: the
+ * steps after a skipped rule without parameters are not reinterpreted, but
+ * the choices that were drawn for the arguments of a skipped rule with
+ * parameters are read as the choices of the next step. No more steps are
+ * taken when no rule can be applied.
  *
  * The invariants are checked after the initializations and after every step,
  * except for those with #[StateMachineInvariant(atEnd: true)], which are
