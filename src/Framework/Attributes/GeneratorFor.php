@@ -25,21 +25,21 @@ final readonly class GeneratorFor
     /**
      * @var class-string
      */
-    private string $type;
+    private string $className;
 
     /**
-     * @param class-string $type
+     * @param class-string $className
      */
-    public function __construct(string $type)
+    public function __construct(string $className)
     {
-        $this->type = $type;
+        $this->className = $className;
     }
 
     /**
      * @return class-string
      */
-    public function type(): string
+    public function className(): string
     {
-        return $this->type;
+        return $this->className;
     }
 }

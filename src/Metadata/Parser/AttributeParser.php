@@ -1014,7 +1014,7 @@ final class AttributeParser implements Parser
                 case GeneratorFor::class:
                     assert($attributeInstance instanceof GeneratorFor);
 
-                    $result[] = Metadata::generatorFor($attributeInstance->type());
+                    $result[] = Metadata::generatorFor($attributeInstance->className());
 
                     break;
 
