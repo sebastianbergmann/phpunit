@@ -126,6 +126,25 @@ final class GeneratorDeriver
         'key-of',
         'value-of',
     ];
+
+    /**
+     * The keywords of PHPDoc types that PHP does not reserve, so that a class
+     * can have one of them as its name. Like in PHPStan, such a name refers
+     * to the class when a class of that name exists in the namespace, or is
+     * imported in the file, of the doc comment. The names that PHP reserves,
+     * such as int and iterable, and the ones that contain a hyphen, such as
+     * positive-int, cannot be the names of classes.
+     *
+     * @var list<lowercase-string>
+     */
+    private const array KEYWORDS_THAT_CAN_BE_CLASS_NAMES = [
+        'integer',
+        'double',
+        'boolean',
+        'resource',
+        'scalar',
+        'numeric',
+    ];
     private readonly GeneratorRegistry $registry;
 
     /**
@@ -450,6 +469,14 @@ final class GeneratorDeriver
     {
         $keyword   = strtolower($type->name());
         $arguments = $type->arguments();
+
+        if (in_array($keyword, self::KEYWORDS_THAT_CAN_BE_CLASS_NAMES, true)) {
+            $className = $scope->resolve($type->name());
+
+            if (class_exists($className) || interface_exists($className) || trait_exists($className)) {
+                return $this->forClass($className);
+            }
+        }
 
         switch ($keyword) {
             case 'int':

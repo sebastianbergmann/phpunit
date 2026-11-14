@@ -1,0 +1,24 @@
+<?php declare(strict_types=1);
+/*
+ * This file is part of PHPUnit.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+namespace PHPUnit\TestFixture\PropertyBased\NameResolution;
+
+use PHPUnit\TestFixture\PropertyBased\NameResolution\Keywords\Integer;
+use PHPUnit\TestFixture\PropertyBased\NameResolution\Keywords\Integer as Double;
+use PHPUnit\TestFixture\PropertyBased\NameResolution\Keywords\Resource;
+use PHPUnit\TestFixture\PropertyBased\NameResolution\Keywords\Resource as Numeric;
+use PHPUnit\TestFixture\PropertyBased\NameResolution\Keywords\Scalar;
+use PHPUnit\TestFixture\PropertyBased\NameResolution\Keywords\Scalar as Boolean;
+
+final class ClassThatImportsClassesNamedLikeKeywords
+{
+    public function method(): void
+    {
+    }
+}

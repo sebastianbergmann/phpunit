@@ -66,6 +66,11 @@ use PHPUnit\TestFixture\PropertyBased\Derivation\Node;
 use PHPUnit\TestFixture\PropertyBased\Derivation\Parameters;
 use PHPUnit\TestFixture\PropertyBased\Derivation\Person;
 use PHPUnit\TestFixture\PropertyBased\Derivation\Tree;
+use PHPUnit\TestFixture\PropertyBased\NameResolution\ClassThatImportsClassesNamedLikeKeywords;
+use PHPUnit\TestFixture\PropertyBased\NameResolution\Keywords\ClassInNamespaceOfClassesNamedLikeKeywords;
+use PHPUnit\TestFixture\PropertyBased\NameResolution\Keywords\Integer;
+use PHPUnit\TestFixture\PropertyBased\NameResolution\Keywords\Resource;
+use PHPUnit\TestFixture\PropertyBased\NameResolution\Keywords\Scalar;
 use Random\Engine\Xoshiro256StarStar;
 use Random\Randomizer;
 use ReflectionMethod;
@@ -271,6 +276,44 @@ final class GeneratorDeriverTest extends TestCase
     }
 
     /**
+     * @return array<string, array{class-string, non-empty-string, class-string}>
+     */
+    public static function classNamedLikeKeywordProvider(): array
+    {
+        return [
+            'imported class named Integer'                  => [ClassThatImportsClassesNamedLikeKeywords::class, 'Integer', Integer::class],
+            'imported class named Integer in lowercase'     => [ClassThatImportsClassesNamedLikeKeywords::class, 'integer', Integer::class],
+            'imported class named Resource'                 => [ClassThatImportsClassesNamedLikeKeywords::class, 'Resource', Resource::class],
+            'imported class named Scalar'                   => [ClassThatImportsClassesNamedLikeKeywords::class, 'Scalar', Scalar::class],
+            'class imported as Double'                      => [ClassThatImportsClassesNamedLikeKeywords::class, 'Double', Integer::class],
+            'class imported as Numeric'                     => [ClassThatImportsClassesNamedLikeKeywords::class, 'Numeric', Resource::class],
+            'class imported as Boolean'                     => [ClassThatImportsClassesNamedLikeKeywords::class, 'Boolean', Scalar::class],
+            'class named Integer in the same namespace'     => [ClassInNamespaceOfClassesNamedLikeKeywords::class, 'Integer', Integer::class],
+            'class named Resource in the same namespace'    => [ClassInNamespaceOfClassesNamedLikeKeywords::class, 'resource', Resource::class],
+            'class named Scalar in the same namespace'      => [ClassInNamespaceOfClassesNamedLikeKeywords::class, 'Scalar', Scalar::class],
+            'class named Integer relative to the namespace' => [ClassThatImportsClassesNamedLikeKeywords::class, 'Keywords\Integer', Integer::class],
+            'fully qualified class named Integer'           => [Parameters::class, '\\' . Integer::class, Integer::class],
+        ];
+    }
+
+    /**
+     * @return array<string, array{class-string, non-empty-string, Closure(mixed): bool}>
+     */
+    public static function keywordThatIsNotTheNameOfAClassProvider(): array
+    {
+        return [
+            'Integer without a class of that name'                 => [Parameters::class, 'Integer', is_int(...)],
+            'Double without a class of that name'                  => [ClassInNamespaceOfClassesNamedLikeKeywords::class, 'Double', is_float(...)],
+            'Boolean without a class of that name'                 => [ClassInNamespaceOfClassesNamedLikeKeywords::class, 'Boolean', is_bool(...)],
+            'int where a class named Integer is imported'          => [ClassThatImportsClassesNamedLikeKeywords::class, 'int', is_int(...)],
+            'float where a class is imported as Double'            => [ClassThatImportsClassesNamedLikeKeywords::class, 'float', is_float(...)],
+            'bool where a class is imported as Boolean'            => [ClassThatImportsClassesNamedLikeKeywords::class, 'bool', is_bool(...)],
+            'positive-int where a class named Integer is imported' => [ClassThatImportsClassesNamedLikeKeywords::class, 'positive-int', is_int(...)],
+            'numeric-string where a class is imported as Numeric'  => [ClassThatImportsClassesNamedLikeKeywords::class, 'numeric-string', is_numeric(...)],
+        ];
+    }
+
+    /**
      * @param Closure(mixed): bool $isValid
      */
     #[DataProvider('typeProvider')]
@@ -291,6 +334,50 @@ final class GeneratorDeriverTest extends TestCase
 
         $this->assertEquals(new DateTimeImmutable('2199-12-31 23:59:59 UTC'), $this->replay($generator, [0, GeneratorDeriver::LARGEST_TIMESTAMP]));
         $this->assertEquals(new DateTimeImmutable('1900-01-01 00:00:00 UTC'), $this->replay($generator, [1, -GeneratorDeriver::SMALLEST_TIMESTAMP - 1]));
+    }
+
+    /**
+     * @param class-string     $scope
+     * @param non-empty-string $type
+     * @param class-string     $className
+     */
+    #[DataProvider('classNamedLikeKeywordProvider')]
+    public function testANameThatIsAKeywordThatPhpDoesNotReserveRefersToTheClassOfThatNameWhenItExists(string $scope, string $type, string $className): void
+    {
+        $deriver = $this->deriver();
+        $scope   = NameScope::forMethod(new ReflectionMethod($scope, 'method'));
+
+        $this->assertInstanceOf($className, $this->replay($deriver->forType((new TypeParser)->parse($type), $scope), []));
+
+        $list = $this->replay($deriver->forType((new TypeParser)->parse('non-empty-list<' . $type . '>'), $scope), []);
+
+        $this->assertIsArray($list);
+        $this->assertContainsOnlyInstancesOf($className, $list);
+    }
+
+    /**
+     * @param class-string         $scope
+     * @param non-empty-string     $type
+     * @param Closure(mixed): bool $isValid
+     */
+    #[DataProvider('keywordThatIsNotTheNameOfAClassProvider')]
+    public function testANameThatIsAKeywordRefersToTheKeywordWhenNoClassOfThatNameExistsOrPhpReservesIt(string $scope, string $type, Closure $isValid): void
+    {
+        $scope = NameScope::forMethod(new ReflectionMethod($scope, 'method'));
+
+        $this->assertTrue($isValid($this->replay($this->deriver()->forType((new TypeParser)->parse($type), $scope), [])));
+    }
+
+    public function testAKeywordThatIsNotSupportedIsReportedWhenNoClassOfThatNameExists(): void
+    {
+        $scope = NameScope::forMethod(new ReflectionMethod(ClassThatImportsClassesNamedLikeKeywords::class, 'method'));
+
+        $this->assertInstanceOf(Resource::class, $this->replay($this->deriver()->forType((new TypeParser)->parse('Numeric'), $scope), []));
+
+        $this->expectException(CannotDeriveGeneratorException::class);
+        $this->expectExceptionMessageIs('Numeric is not supported');
+
+        $this->derive('Numeric');
     }
 
     #[DataProvider('unsupportedTypeProvider')]
