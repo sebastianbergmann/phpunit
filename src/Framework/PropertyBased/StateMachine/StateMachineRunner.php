@@ -20,6 +20,7 @@ use function count;
 use function get_debug_type;
 use function implode;
 use function is_bool;
+use function min;
 use function range;
 use function sprintf;
 use function str_contains;
@@ -88,6 +89,14 @@ final class StateMachineRunner
      * are drawn at random.
      */
     private const float PROBABILITY_OF_ENABLED_RULE = 0.5;
+
+    /**
+     * The largest number of steps that is planned for an example whose steps
+     * are drawn at random: a step draws at least two choices, whether it is
+     * taken and its rule, so no more steps can be taken before the maximum
+     * number of choices of an example has been drawn.
+     */
+    private const int LARGEST_PLANNED_NUMBER_OF_STEPS = ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES / 2;
     private readonly ChoiceSource $source;
     private readonly ?CounterexampleExporter $exporter;
     private readonly StateMachineDefinition $definition;
@@ -213,9 +222,14 @@ final class StateMachineRunner
 
         // while choices are drawn at random, the number of steps is chosen
         // uniformly, so that short and long sequences of steps are equally
-        // likely
-        $plannedNumberOfSteps = $this->source->suggest(range(1, $maximumNumberOfSteps), 1.0);
-        $enabledRules         = $this->enabledRules();
+        // likely; it is chosen from the numbers of steps for which choices
+        // can be drawn, as a step draws at least two of them, so that the
+        // numbers to choose from are not more than can be held in memory
+        $plannedNumberOfSteps = $this->source->suggest(
+            range(1, min($maximumNumberOfSteps, self::LARGEST_PLANNED_NUMBER_OF_STEPS)),
+            1.0,
+        );
+        $enabledRules = $this->enabledRules();
 
         while (count($this->rulesOfSteps) < $maximumNumberOfSteps) {
             $applicableRules = $this->applicableRules();

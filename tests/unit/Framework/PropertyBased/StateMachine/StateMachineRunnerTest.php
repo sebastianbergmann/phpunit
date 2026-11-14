@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\PropertyBased\StateMachine;
 
+use const PHP_INT_MAX;
 use function array_count_values;
 use function array_filter;
 use function array_sum;
@@ -25,6 +26,7 @@ use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
 use PHPUnit\Framework\PropertyBased\InvalidStateMachineException;
 use PHPUnit\Framework\PropertyBased\Type\NameScope;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\PropertyBased\StateMachine\ChildStateMachine;
 use PHPUnit\TestFixture\PropertyBased\StateMachine\CounterMachine;
 use PHPUnit\TestFixture\PropertyBased\StateMachine\PreconditionThatDoesNotReturnABool;
 use PHPUnit\TestFixture\PropertyBased\StateMachine\StuckMachine;
@@ -300,6 +302,18 @@ EOT,
         $this->assertGreaterThan(10, max($numberOfSteps));
         $this->assertGreaterThan(10, count(array_count_values($numberOfSteps)));
         $this->assertCount(4, $numberOfStepsByRule);
+    }
+
+    public function testStepsAreDrawnAtRandomWhenTheMaximumNumberOfStepsIsTheLargestInteger(): void
+    {
+        $source = ChoiceSource::random(new Randomizer(new Xoshiro256StarStar(1)));
+        $runner = $this->runner($source, new ChildStateMachine);
+
+        $runner->run(PHP_INT_MAX);
+
+        // each step of this state machine draws two choices
+        $this->assertGreaterThan(0, $runner->numberOfSteps());
+        $this->assertLessThanOrEqual(ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES / 2, $runner->numberOfSteps());
     }
 
     private function runner(ChoiceSource $source, object $machine, bool $reported = false): StateMachineRunner
