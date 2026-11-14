@@ -1786,6 +1786,20 @@ final class GeneratorsTest extends TestCase
         }
     }
 
+    public function testGeneratesListsOfUniqueElementsWithAtMostOneNan(): void
+    {
+        $list = $this->replay(Generators::lists(Generators::elements(NAN, 1.0), unique: true), [1, 0, 1, 0, 1, 1, 1, 0, 0]);
+
+        $this->assertIsArray($list);
+        $this->assertCount(2, $list);
+        $this->assertNan($list[0]);
+        $this->assertSame(1.0, $list[1]);
+
+        foreach ($this->values(Generators::lists(Generators::elements(NAN, 1.0, 2.0), unique: true), 500) as $value) {
+            $this->assertLessThanOrEqual(1, count(array_filter($value, is_nan(...))));
+        }
+    }
+
     public function testAnElementThatEqualsAnEarlierElementOfAListOfUniqueElementsIsGeneratedAgain(): void
     {
         $this->assertSame([3, 4], $this->replay(Generators::lists(Generators::integers(0, 9), unique: true), [1, 3, 1, 3, 1, 4, 0]));

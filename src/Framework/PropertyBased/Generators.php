@@ -404,8 +404,9 @@ final class Generators
      *
      * When $unique is true, no element of a list equals another one. Objects
      * are equal when they are of the same class and assertEquals() considers
-     * them equal, other values when they are identical. The example is rejected when
-     * $elements does not generate enough different values for $minimumSize.
+     * them equal, other values when they are identical, and NAN equals NAN.
+     * The example is rejected when $elements does not generate enough
+     * different values for $minimumSize.
      *
      * @template T
      *

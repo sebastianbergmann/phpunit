@@ -10,6 +10,8 @@
 namespace PHPUnit\Framework\PropertyBased\Generator;
 
 use function in_array;
+use function is_float;
+use function is_nan;
 use function is_object;
 use function var_export;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
@@ -20,7 +22,8 @@ use SebastianBergmann\Comparator\Factory as ComparatorFactory;
  * Generates lists of the values of a generator. In a list of unique elements,
  * no element equals another one: an element that does is generated again.
  * Objects are equal when they are of the same class and assertEquals()
- * considers them equal, other values when they are identical.
+ * considers them equal, other values when they are identical, and NAN equals
+ * NAN.
  *
  * @template T
  *
@@ -92,6 +95,17 @@ final readonly class ListGenerator extends AbstractGenerator
      */
     private function contains(array $list, mixed $element): bool
     {
+        // NAN is not identical to NAN
+        if (is_float($element) && is_nan($element)) {
+            foreach ($list as $other) {
+                if (is_float($other) && is_nan($other)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         if (!is_object($element)) {
             return in_array($element, $list, true);
         }
