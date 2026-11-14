@@ -155,4 +155,24 @@ final class CannotDeriveGeneratorException extends RuntimeException implements E
             ),
         );
     }
+
+    /**
+     * Whether no generator can be derived because the type in a doc comment
+     * cannot be parsed, for the parameter itself or for a parameter of the
+     * constructor of a class that its type refers to.
+     */
+    public function isCausedByTypeThatCannotBeParsed(): bool
+    {
+        $reason = $this->getPrevious();
+
+        while ($reason !== null) {
+            if ($reason instanceof InvalidTypeException) {
+                return true;
+            }
+
+            $reason = $reason->getPrevious();
+        }
+
+        return false;
+    }
 }

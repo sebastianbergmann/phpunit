@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\PropertyBased\Generator;
 
-use function array_values;
 use PHPUnit\Framework\PropertyBased\CannotCreateObjectException;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
 use PHPUnit\Framework\PropertyBased\ExampleRejectedException;
@@ -18,7 +17,10 @@ use Throwable;
 
 /**
  * Generates objects of a class with new, using an argument of the respective
- * generator for each parameter of the class's constructor.
+ * generator for each parameter of the class's constructor for which there is
+ * a generator. The arguments are passed by the names of the parameters, so
+ * that the constructor uses the default value of a parameter for which there
+ * is no generator, also when there is one for a parameter after it.
  *
  * When more objects of the class are nested in each other than allowed, for
  * instance for a node of a tree that takes child nodes, the example is
@@ -58,7 +60,7 @@ final readonly class ObjectGenerator extends AbstractGenerator
 
     /**
      * @param class-string<T>                                   $className
-     * @param array<non-empty-string, AbstractGenerator<mixed>> $arguments the generators for the arguments of the constructor by the names of its parameters, in the order of the parameters
+     * @param array<non-empty-string, AbstractGenerator<mixed>> $arguments the generators for the arguments of the constructor by the names of its parameters, in the order of the parameters, without the parameters whose default value is used
      */
     public function __construct(string $className, array $arguments)
     {
@@ -92,8 +94,13 @@ final readonly class ObjectGenerator extends AbstractGenerator
             $source->endObject($this->className);
         }
 
+        // a parameter that is passed by reference refers to the argument in
+        // the array that is unpacked when the arguments are passed by name,
+        // which must not change the arguments that are reported
+        $namedArguments = $arguments;
+
         try {
-            $object = new $this->className(...array_values($arguments));
+            $object = new $this->className(...$namedArguments);
         } catch (ExampleRejectedException|TimeoutException $e) {
             // the example is rejected or exceeded its time limit while the
             // constructor ran, which is not an error of the constructor

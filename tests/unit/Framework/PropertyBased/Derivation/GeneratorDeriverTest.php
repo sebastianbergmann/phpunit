@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework\PropertyBased\Derivation;
 
+use const PHP_INT_MAX;
+use const PHP_INT_MIN;
 use function array_diff;
 use function array_filter;
 use function array_is_list;
@@ -37,6 +39,7 @@ use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\PropertyBased\CannotCreateObjectException;
 use PHPUnit\Framework\PropertyBased\CannotDeriveGeneratorException;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
+use PHPUnit\Framework\PropertyBased\CounterexampleExporter;
 use PHPUnit\Framework\PropertyBased\ExampleRejectedException;
 use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\ArrayGenerator;
@@ -53,12 +56,17 @@ use PHPUnit\Framework\PropertyBased\Type\NameScope;
 use PHPUnit\Framework\PropertyBased\Type\TypeParser;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\PropertyBased\Currency;
+use PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithConstructorParametersPassedByReference;
 use PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithConstructorThatThrows;
+use PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithOptionalConstructorParameterBetweenOtherParameters;
+use PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithOptionalIntersectionConstructorParameter;
 use PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithoutConstructor;
 use PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithPromotedConstructorParameters;
 use PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithVariadicConstructor;
 use PHPUnit\TestFixture\PropertyBased\Derivation\Company;
 use PHPUnit\TestFixture\PropertyBased\Derivation\Customer;
+use PHPUnit\TestFixture\PropertyBased\Derivation\Document;
+use PHPUnit\TestFixture\PropertyBased\Derivation\DomainEvent;
 use PHPUnit\TestFixture\PropertyBased\Derivation\EmailAddress;
 use PHPUnit\TestFixture\PropertyBased\Derivation\ExampleEmailAddress;
 use PHPUnit\TestFixture\PropertyBased\Derivation\Expression;
@@ -68,12 +76,14 @@ use PHPUnit\TestFixture\PropertyBased\Derivation\Money;
 use PHPUnit\TestFixture\PropertyBased\Derivation\Node;
 use PHPUnit\TestFixture\PropertyBased\Derivation\Parameters;
 use PHPUnit\TestFixture\PropertyBased\Derivation\Person;
+use PHPUnit\TestFixture\PropertyBased\Derivation\Section;
 use PHPUnit\TestFixture\PropertyBased\Derivation\Tree;
 use PHPUnit\TestFixture\PropertyBased\NameResolution\ClassThatImportsClassesNamedLikeKeywords;
 use PHPUnit\TestFixture\PropertyBased\NameResolution\Keywords\ClassInNamespaceOfClassesNamedLikeKeywords;
 use PHPUnit\TestFixture\PropertyBased\NameResolution\Keywords\Integer;
 use PHPUnit\TestFixture\PropertyBased\NameResolution\Keywords\Resource;
 use PHPUnit\TestFixture\PropertyBased\NameResolution\Keywords\Scalar;
+use PropertyBasedNameResolutionClassInGlobalNamespace;
 use Random\Engine\Xoshiro256StarStar;
 use Random\Randomizer;
 use ReflectionMethod;
@@ -213,6 +223,10 @@ final class GeneratorDeriverTest extends TestCase
             'unsupported constructor parameter'         => ['ClassWithUnsupportedConstructorParameter', 'cannot derive a generator for parameter $value of PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithUnsupportedConstructorParameter::__construct() of type mixed: mixed is not supported'],
             'unparsable promoted constructor parameter' => ['ClassWithUnparsablePromotedConstructorParameterType', 'cannot derive a generator for parameter $values of PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithUnparsablePromotedConstructorParameterType::__construct(), the type in its @var tag cannot be parsed: unexpected end of the type, expected ">"'],
             'unparsable constructor parameter'          => ['ClassWithUnparsableConstructorParameterType', 'cannot derive a generator for parameter $callback of PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithUnparsableConstructorParameterType::__construct(), the type in its @param tag cannot be parsed: unexpected "(" at offset 9, expected the name of the parameter'],
+            'nullable parameter without default value'  => ['ClassWithNullableConstructorParameterWithoutDefaultValue', 'cannot derive a generator for parameter $callback of PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithNullableConstructorParameterWithoutDefaultValue::__construct() of type ?Closure: class Closure does not have a public constructor'],
+            'unparsable optional constructor parameter' => ['ClassWithUnparsableOptionalConstructorParameterType', 'cannot derive a generator for parameter $values of PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithUnparsableOptionalConstructorParameterType::__construct(), the type in its @param tag cannot be parsed: unexpected "$values" at offset 10, expected ">"'],
+            'unparsable optional promoted parameter'    => ['ClassWithUnparsableOptionalPromotedConstructorParameterType', 'cannot derive a generator for parameter $values of PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithUnparsableOptionalPromotedConstructorParameterType::__construct(), the type in its @var tag cannot be parsed: unexpected end of the type, expected ">"'],
+            'optional parameter of unparsable class'    => ['ClassThatOptionallyTakesClassWithUnparsableConstructorParameterType', 'cannot derive a generator for parameter $nested of PHPUnit\TestFixture\PropertyBased\Derivation\ClassThatOptionallyTakesClassWithUnparsableConstructorParameterType::__construct() of type ?PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithUnparsableConstructorParameterType: cannot derive a generator for parameter $callback of PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithUnparsableConstructorParameterType::__construct(), the type in its @param tag cannot be parsed: unexpected "(" at offset 9, expected the name of the parameter'],
             'intersection constructor parameter'        => ['ClassWithIntersectionConstructorParameter', 'cannot derive a generator for parameter $value of PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithIntersectionConstructorParameter::__construct() of type Countable&Iterator: intersection type Countable&Iterator is not supported'],
         ];
     }
@@ -490,6 +504,102 @@ final class GeneratorDeriverTest extends TestCase
         $this->assertInstanceOf(ClassWithVariadicConstructor::class, $value);
         $this->assertSame(5, $value->first());
         $this->assertSame([], $value->rest());
+    }
+
+    public function testAParameterOfAConstructorThatHasADefaultValueDoesNotReceiveAnArgumentWhenNoGeneratorCanBeDerivedForIt(): void
+    {
+        $generator = $this->derive('DomainEvent');
+        $names     = [];
+
+        foreach ($this->values($generator, 200) as $value) {
+            $this->assertInstanceOf(DomainEvent::class, $value);
+            $this->assertNull($value->previous);
+            $this->assertNull($value->callback);
+
+            $names[$value->name] = true;
+        }
+
+        $this->assertGreaterThan(1, count($names));
+        $this->assertEquals(new DomainEvent(''), $this->replay($generator, []));
+    }
+
+    public function testAParameterOfAConstructorThatHasADefaultValueReceivesAnArgumentWhenAGeneratorCanBeDerivedForIt(): void
+    {
+        $generator = $this->derive('ClassWithOptionalConstructorParameterBetweenOtherParameters');
+        $last      = [];
+
+        foreach ($this->values($generator, 200) as $value) {
+            $this->assertInstanceOf(ClassWithOptionalConstructorParameterBetweenOtherParameters::class, $value);
+
+            $last[$value->last] = true;
+        }
+
+        $this->assertGreaterThan(1, count($last));
+    }
+
+    public function testAParameterOfAConstructorAfterOneThatDoesNotReceiveAnArgumentReceivesItsArgument(): void
+    {
+        $generator = $this->derive('ClassWithOptionalConstructorParameterBetweenOtherParameters');
+
+        foreach ($this->values($generator, 200) as $value) {
+            $this->assertInstanceOf(ClassWithOptionalConstructorParameterBetweenOtherParameters::class, $value);
+            $this->assertNull($value->callback);
+        }
+
+        $this->assertEquals(new ClassWithOptionalConstructorParameterBetweenOtherParameters(3, null, 5), $this->replay($generator, [0, 3, 0, 5]));
+    }
+
+    public function testAnObjectThatWasCreatedWithoutAnArgumentForAParameterIsExportedAsTheExpressionThatCreatesIt(): void
+    {
+        $source = ChoiceSource::replay(new ChoiceSequence([0, 3, 0, 5]));
+        $value  = $this->derive('ClassWithOptionalConstructorParameterBetweenOtherParameters')->generate($source);
+
+        $this->assertSame(
+            'new ClassWithOptionalConstructorParameterBetweenOtherParameters(first: 3, last: 5)',
+            new CounterexampleExporter($this->scope(), $source->constructions())->export($value),
+        );
+
+        $scope = NameScope::forMethod(new ReflectionMethod(PropertyBasedNameResolutionClassInGlobalNamespace::class, 'method'));
+
+        $this->assertEquals($value, eval('return ' . new CounterexampleExporter($scope, $source->constructions())->export($value) . ';'));
+    }
+
+    public function testAnObjectThatWasCreatedWithoutArgumentsForTheLastParametersIsExportedAsTheExpressionThatCreatesIt(): void
+    {
+        $source = ChoiceSource::replay(new ChoiceSequence([]));
+        $value  = $this->derive('DomainEvent')->generate($source);
+
+        $this->assertSame("new DomainEvent(name: '')", new CounterexampleExporter($this->scope(), $source->constructions())->export($value));
+    }
+
+    public function testAParameterOfAConstructorWithAnIntersectionTypeThatHasADefaultValueDoesNotReceiveAnArgument(): void
+    {
+        $value = $this->replay($this->derive('ClassWithOptionalIntersectionConstructorParameter'), [0, 5]);
+
+        $this->assertEquals(new ClassWithOptionalIntersectionConstructorParameter(5), $value);
+    }
+
+    public function testAParameterOfAConstructorThatIsPassedByReferenceReceivesAnArgumentThatIsReportedAsItWasGenerated(): void
+    {
+        $source = ChoiceSource::replay(new ChoiceSequence([]));
+        $value  = $this->derive('ClassWithConstructorParametersPassedByReference')->generate($source);
+
+        $this->assertInstanceOf(ClassWithConstructorParametersPassedByReference::class, $value);
+        $this->assertSame([0], $value->values);
+        $this->assertNull($value->callback);
+        $this->assertSame(['values' => [0]], $source->constructions()->of($value)['arguments']);
+    }
+
+    public function testAParameterThatDoesNotReceiveAnArgumentDoesNotReferToAClassThatIsBeingDerived(): void
+    {
+        $section = new ObjectGenerator(Section::class, ['number' => new IntegerGenerator(PHP_INT_MIN, PHP_INT_MAX)]);
+
+        // the class of the parameter of Section for which no generator can
+        // be derived refers to Document, which is being derived
+        $this->assertEquals(
+            new ObjectGenerator(Document::class, ['section' => new NullableGenerator($section)]),
+            $this->deriver()->forClass(Document::class),
+        );
     }
 
     public function testGeneratesObjectsOfRecursiveClasses(): void

@@ -82,7 +82,9 @@ use WeakMap;
  * the arguments for the constructors of other classes.
  *
  * Objects of other concrete classes are created with new, using arguments
- * that are generated for the parameters of the constructor, recursively.
+ * that are generated for the parameters of the constructor, recursively. A
+ * parameter that has a default value does not receive an argument when no
+ * generator can be derived for its type.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -454,6 +456,18 @@ final class GeneratorDeriver
     /**
      * Variadic parameters of the constructor receive no arguments.
      *
+     * Neither does a parameter that has a default value when no generator can
+     * be derived for its type, so that the constructor uses the default value
+     * rather than no object of the class being generated at all. Values are
+     * generated for a parameter that has a default value when a generator can
+     * be derived for its type.
+     *
+     * A type in a doc comment that cannot be parsed is reported for a
+     * parameter that has a default value, too, also when it is the type of a
+     * parameter of the constructor of a class that the type of the parameter
+     * refers to, as the default value would otherwise hide a type that is not
+     * written correctly.
+     *
      * @throws CannotDeriveGeneratorException
      *
      * @return array<non-empty-string, AbstractGenerator<mixed>>
@@ -474,12 +488,28 @@ final class GeneratorDeriver
             } catch (InvalidTypeException $e) {
                 throw CannotDeriveGeneratorException::unparsableConstructorParameterType($parameter, $docTypes->tagOf($parameter->getName()), $e);
             } catch (CannotDeriveGeneratorException $e) {
+                if ($parameter->isDefaultValueAvailable()) {
+                    continue;
+                }
+
                 throw CannotDeriveGeneratorException::forConstructorParameter($parameter, (string) $parameter->getType(), $e);
             }
+
+            $classesBeingDerived = $this->classesBeingDerived;
 
             try {
                 $arguments[$parameter->getName()] = $this->forType($type, $scope);
             } catch (CannotDeriveGeneratorException $e) {
+                if ($parameter->isDefaultValueAvailable() && !$e->isCausedByTypeThatCannotBeParsed()) {
+                    // the generators that referred to a class that is being
+                    // derived before it turned out that no generator can be
+                    // derived for the type are not used, so that these
+                    // references are not counted
+                    $this->classesBeingDerived = $classesBeingDerived;
+
+                    continue;
+                }
+
                 throw CannotDeriveGeneratorException::forConstructorParameter($parameter, $declaration, $e);
             }
         }
