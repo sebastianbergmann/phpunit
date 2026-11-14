@@ -11,9 +11,11 @@ namespace PHPUnit\Event;
 
 use function assert;
 use function interface_exists;
+use Closure;
 use PHPUnit\Event\Telemetry\HRTime;
 use PHPUnit\Event\Telemetry\SystemGarbageCollectorStatusProvider;
 use PHPUnit\Runner\DeprecationCollector\Facade as DeprecationCollector;
+use Throwable;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -23,7 +25,7 @@ use PHPUnit\Runner\DeprecationCollector\Facade as DeprecationCollector;
 final class Facade
 {
     private static ?self $instance = null;
-    private Emitter $emitter;
+    private DispatchingEmitter $emitter;
     private ?TypeMap $typeMap                         = null;
     private ?DeferringDispatcher $deferringDispatcher = null;
     private bool $sealed                              = false;
@@ -140,11 +142,53 @@ final class Facade
     }
 
     /**
+     * Calls $run with the events that are emitted meanwhile collected instead
+     * of dispatched, and returns them.
+     *
+     * The collection is stopped even when $run throws, because a dispatcher
+     * that is left collecting events swallows every event that is emitted
+     * afterwards. The events collected before the throwable was raised are
+     * forwarded rather than discarded.
+     *
+     * @param Closure(): void $run
+     *
+     * @throws EventsAreAlreadyBeingCollectedException
+     * @throws Throwable
+     */
+    public function collectingEvents(Closure $run): EventCollection
+    {
+        $this->startCollectingEvents();
+
+        try {
+            $run();
+        } catch (Throwable $t) {
+            $this->forward($this->stopCollectingEvents());
+
+            throw $t;
+        }
+
+        return $this->stopCollectingEvents();
+    }
+
+    /**
      * @throws EventsAreAlreadyBeingCollectedException
      */
     public function startCollectingEvents(): void
     {
         $this->deferredDispatcher()->startCollectingEvents();
+    }
+
+    /**
+     * Stops measuring the telemetry of the events that are emitted from now
+     * on: they carry the telemetry of the last event whose telemetry was
+     * measured. This is for a process in which nothing reads the telemetry of
+     * events, one in which examples of properties are run on their own, for
+     * instance, as measuring the telemetry of an event takes most of the time
+     * that emitting it takes.
+     */
+    public function stopMeasuringTelemetry(): void
+    {
+        $this->emitter->stopMeasuringTelemetry();
     }
 
     /**
@@ -265,6 +309,8 @@ final class Facade
             Test\PreparationErrored::class,
             Test\PreparationFailed::class,
             Test\PrintedUnexpectedOutput::class,
+            Test\PropertyChecked::class,
+            Test\PropertyFalsified::class,
             Test\Skipped::class,
             Test\WarningTriggered::class,
 

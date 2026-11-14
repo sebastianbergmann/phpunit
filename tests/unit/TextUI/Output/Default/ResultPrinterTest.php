@@ -11,6 +11,7 @@ namespace PHPUnit\TextUI\Output\Default;
 
 use function hrtime;
 use Exception;
+use PHPUnit\Event\Code\Classification;
 use PHPUnit\Event\Code\ClassMethod;
 use PHPUnit\Event\Code\IssueTrigger\Code;
 use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
@@ -37,6 +38,7 @@ use PHPUnit\Event\Test\PhpunitDeprecationTriggered;
 use PHPUnit\Event\Test\PhpunitErrorTriggered;
 use PHPUnit\Event\Test\PhpunitNoticeTriggered;
 use PHPUnit\Event\Test\PhpunitWarningTriggered;
+use PHPUnit\Event\Test\PropertyChecked;
 use PHPUnit\Event\Test\Skipped as TestSkipped;
 use PHPUnit\Event\TestData\DataFromDataProvider;
 use PHPUnit\Event\TestData\TestDataCollection;
@@ -99,6 +101,39 @@ final class ResultPrinterTest extends TestCase
                 self::createTestResult(
                     testFailedEvents: [
                         self::failedTest(),
+                    ],
+                ),
+            ],
+
+            'statistics of properties' => [
+                'statistics_of_properties.txt',
+                self::createTestResult(
+                    propertyCheckedEvents: [
+                        'FooTest::testBar' => new PropertyChecked(
+                            self::telemetryInfo(),
+                            self::testMethod(),
+                            1234,
+                            8,
+                            0,
+                            1,
+                            [
+                                new Classification('odd', 2),
+                                new Classification('even', 6),
+                            ],
+                            [],
+                            [],
+                        ),
+                        'FooTest::testBaz' => new PropertyChecked(
+                            self::telemetryInfo(),
+                            self::testMethod(),
+                            1234,
+                            1,
+                            0,
+                            0,
+                            [],
+                            [],
+                            [],
+                        ),
                     ],
                 ),
             ],
@@ -850,6 +885,7 @@ final class ResultPrinterTest extends TestCase
             true,
             false,
             $triggeringTestsLimit,
+            true,
         );
 
         $resultPrinter->print($result, $stackTraceForDeprecations);
@@ -882,6 +918,7 @@ final class ResultPrinterTest extends TestCase
             true,
             true,
             0,
+            false,
         );
 
         $resultPrinter->print(
@@ -968,8 +1005,9 @@ final class ResultPrinterTest extends TestCase
      * @param list<TestRunnerIssuePhpNoticeTriggered>         $testRunnerTriggeredIssuePhpNoticeEvents
      * @param list<TestRunnerIssuePhpWarningTriggered>        $testRunnerTriggeredIssuePhpWarningEvents
      * @param list<TestRunnerIssueWarningTriggered>           $testRunnerTriggeredIssueWarningEvents
+     * @param array<non-empty-string, PropertyChecked>        $propertyCheckedEvents
      */
-    private static function createTestResult(int $numberOfTests = 1, int $numberOfTestsRun = 1, int $numberOfAssertions = 1, array $testErroredEvents = [], array $testFailedEvents = [], array $testConsideredRiskyEvents = [], array $testSuiteSkippedEvents = [], array $testSkippedEvents = [], array $testMarkedIncompleteEvents = [], array $deprecations = [], array $phpDeprecations = [], array $testTriggeredPhpunitDeprecationEvents = [], array $errors = [], array $notices = [], array $phpNotices = [], array $warnings = [], array $phpWarnings = [], array $testTriggeredPhpunitErrorEvents = [], array $testTriggeredPhpunitNoticeEvents = [], array $testTriggeredPhpunitWarningEvents = [], array $testRunnerTriggeredDeprecationEvents = [], array $testRunnerTriggeredNoticeEvents = [], array $testRunnerTriggeredWarningEvents = [], array $testRunnerTriggeredIssueDeprecationEvents = [], array $testRunnerTriggeredIssueErrorEvents = [], array $testRunnerTriggeredIssueNoticeEvents = [], array $testRunnerTriggeredIssuePhpDeprecationEvents = [], array $testRunnerTriggeredIssuePhpNoticeEvents = [], array $testRunnerTriggeredIssuePhpWarningEvents = [], array $testRunnerTriggeredIssueWarningEvents = [], int $numberOfIssuesIgnoredByBaseline = 0): TestResult
+    private static function createTestResult(int $numberOfTests = 1, int $numberOfTestsRun = 1, int $numberOfAssertions = 1, array $testErroredEvents = [], array $testFailedEvents = [], array $testConsideredRiskyEvents = [], array $testSuiteSkippedEvents = [], array $testSkippedEvents = [], array $testMarkedIncompleteEvents = [], array $deprecations = [], array $phpDeprecations = [], array $testTriggeredPhpunitDeprecationEvents = [], array $errors = [], array $notices = [], array $phpNotices = [], array $warnings = [], array $phpWarnings = [], array $testTriggeredPhpunitErrorEvents = [], array $testTriggeredPhpunitNoticeEvents = [], array $testTriggeredPhpunitWarningEvents = [], array $testRunnerTriggeredDeprecationEvents = [], array $testRunnerTriggeredNoticeEvents = [], array $testRunnerTriggeredWarningEvents = [], array $testRunnerTriggeredIssueDeprecationEvents = [], array $testRunnerTriggeredIssueErrorEvents = [], array $testRunnerTriggeredIssueNoticeEvents = [], array $testRunnerTriggeredIssuePhpDeprecationEvents = [], array $testRunnerTriggeredIssuePhpNoticeEvents = [], array $testRunnerTriggeredIssuePhpWarningEvents = [], array $testRunnerTriggeredIssueWarningEvents = [], int $numberOfIssuesIgnoredByBaseline = 0, array $propertyCheckedEvents = []): TestResult
     {
         return new TestResult(
             $numberOfTests,
@@ -1009,6 +1047,9 @@ final class ResultPrinterTest extends TestCase
                 'indirect' => 0,
                 'unknown'  => 0,
             ],
+            [],
+            null,
+            $propertyCheckedEvents,
         );
     }
 

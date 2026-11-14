@@ -83,6 +83,7 @@ final class Builder
         'display-errors',
         'display-notices',
         'display-warnings',
+        'display-property-statistics',
         'default-time-limit=',
         'diff-context=',
         'triggering-tests-limit=',
@@ -125,9 +126,13 @@ final class Builder
         'no-results',
         'order-by=',
         'process-isolation',
+        'property-examples=',
+        'property-examples-multiplier=',
+        'property-maximum-shrinking-attempts=',
         'do-not-report-useless-tests',
         'random-order',
         'random-seed=',
+        'random-seed-from-git-commit',
         'repeat=',
         'retry=',
         'timeout=',
@@ -334,6 +339,7 @@ final class Builder
         $displayErrors                            = null;
         $displayNotices                           = null;
         $displayWarnings                          = null;
+        $displayPropertyStatistics                = null;
         $enforceTimeLimit                         = null;
         $excludeGroups                            = null;
         $executionOrder                           = null;
@@ -407,6 +413,10 @@ final class Builder
         $noLogging                                = null;
         $processIsolation                         = null;
         $randomSeed                               = null;
+        $randomSeedFromGitCommit                  = false;
+        $propertyExamples                         = null;
+        $propertyExamplesMultiplier               = null;
+        $propertyMaximumShrinkingAttempts         = null;
         $repeat                                   = null;
         $retry                                    = null;
         $timeout                                  = null;
@@ -1192,6 +1202,11 @@ final class Builder
 
                     break;
 
+                case '--display-property-statistics':
+                    $displayPropertyStatistics = true;
+
+                    break;
+
                 case '--default-time-limit':
                     $defaultTimeLimit = (int) $option[1];
 
@@ -1272,6 +1287,11 @@ final class Builder
 
                     break;
 
+                case '--random-seed-from-git-commit':
+                    $randomSeedFromGitCommit = true;
+
+                    break;
+
                 case '--repeat':
                     if (!is_numeric($option[1]) ||
                         (string) (int) $option[1] !== $option[1] ||
@@ -1307,6 +1327,63 @@ final class Builder
                     }
 
                     $retry = (int) $option[1];
+
+                    break;
+
+                case '--property-examples':
+                    if (!is_numeric($option[1]) ||
+                        (string) (int) $option[1] !== $option[1] ||
+                        (int) $option[1] < 1) {
+                        $this->emitter->testRunnerTriggeredPhpunitWarning(
+                            sprintf(
+                                'Option "--property-examples %s" ignored because "%s" is not a positive integer',
+                                $option[1],
+                                $option[1],
+                            ),
+                        );
+
+                        break;
+                    }
+
+                    $propertyExamples = (int) $option[1];
+
+                    break;
+
+                case '--property-examples-multiplier':
+                    if (!is_numeric($option[1]) ||
+                        (string) (int) $option[1] !== $option[1] ||
+                        (int) $option[1] < 1) {
+                        $this->emitter->testRunnerTriggeredPhpunitWarning(
+                            sprintf(
+                                'Option "--property-examples-multiplier %s" ignored because "%s" is not a positive integer',
+                                $option[1],
+                                $option[1],
+                            ),
+                        );
+
+                        break;
+                    }
+
+                    $propertyExamplesMultiplier = (int) $option[1];
+
+                    break;
+
+                case '--property-maximum-shrinking-attempts':
+                    if (!is_numeric($option[1]) ||
+                        (string) (int) $option[1] !== $option[1] ||
+                        (int) $option[1] < 0) {
+                        $this->emitter->testRunnerTriggeredPhpunitWarning(
+                            sprintf(
+                                'Option "--property-maximum-shrinking-attempts %s" ignored because "%s" is not a non-negative integer',
+                                $option[1],
+                                $option[1],
+                            ),
+                        );
+
+                        break;
+                    }
+
+                    $propertyMaximumShrinkingAttempts = (int) $option[1];
 
                     break;
 
@@ -1521,6 +1598,10 @@ final class Builder
             $noLogging,
             $processIsolation,
             $randomSeed,
+            $randomSeedFromGitCommit,
+            $propertyExamples,
+            $propertyExamplesMultiplier,
+            $propertyMaximumShrinkingAttempts,
             $repeat,
             $retry,
             $timeout,
@@ -1546,6 +1627,7 @@ final class Builder
             $displayErrors,
             $displayNotices,
             $displayWarnings,
+            $displayPropertyStatistics,
             $version,
             $coverageFilter,
             $logEventsText,

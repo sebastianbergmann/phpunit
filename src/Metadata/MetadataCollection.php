@@ -378,6 +378,86 @@ final readonly class MetadataCollection implements Countable, IteratorAggregate
         );
     }
 
+    public function isForAll(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isForAll(),
+            ),
+        );
+    }
+
+    public function isGeneratorFor(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isGeneratorFor(),
+            ),
+        );
+    }
+
+    public function isRequireClassification(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isRequireClassification(),
+            ),
+        );
+    }
+
+    public function isStateMachineRule(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isStateMachineRule(),
+            ),
+        );
+    }
+
+    public function isInitializeStateMachine(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isInitializeStateMachine(),
+            ),
+        );
+    }
+
+    public function isStateMachineInvariant(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isStateMachineInvariant(),
+            ),
+        );
+    }
+
+    public function isFromPool(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isFromPool(),
+            ),
+        );
+    }
+
+    public function isUseGenerators(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isUseGenerators(),
+            ),
+        );
+    }
+
     public function isGroup(): self
     {
         return new self(
@@ -511,6 +591,16 @@ final readonly class MetadataCollection implements Countable, IteratorAggregate
         );
     }
 
+    public function isProperty(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isProperty(),
+            ),
+        );
+    }
+
     public function isRequiresMethod(): self
     {
         return new self(
@@ -637,6 +727,16 @@ final readonly class MetadataCollection implements Countable, IteratorAggregate
             ...array_filter(
                 $this->metadata,
                 static fn (Metadata $metadata): bool => $metadata->isTestDox(),
+            ),
+        );
+    }
+
+    public function isCounterexampleFormatter(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static fn (Metadata $metadata): bool => $metadata->isCounterexampleFormatter(),
             ),
         );
     }

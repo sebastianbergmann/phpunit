@@ -117,28 +117,11 @@ abstract class IterativeTestSuite extends TestSuite
      * Run a single repetition or attempt with its events collected instead of
      * dispatched.
      *
-     * The collection is stopped even when running the test throws, because a
-     * dispatcher that is left collecting events swallows every event that is
-     * emitted afterwards. The events collected before the throwable was raised
-     * are forwarded rather than discarded.
-     *
      * @throws Throwable
      */
     final protected function runCollectingEvents(Test $test): EventCollection
     {
-        $facade = Event\Facade::instance();
-
-        $facade->startCollectingEvents();
-
-        try {
-            $test->run();
-        } catch (Throwable $t) {
-            $facade->forward($facade->stopCollectingEvents());
-
-            throw $t;
-        }
-
-        return $facade->stopCollectingEvents();
+        return Event\Facade::instance()->collectingEvents($test->run(...));
     }
 
     /**

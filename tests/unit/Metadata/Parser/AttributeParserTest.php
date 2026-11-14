@@ -17,6 +17,8 @@ use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\BackupStaticProperties;
 use PHPUnit\Framework\Attributes\Before;
 use PHPUnit\Framework\Attributes\BeforeClass;
+use PHPUnit\Framework\Attributes\CounterexampleFormatter;
+use PHPUnit\Framework\Attributes\CounterexampleFormatterExternal;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversClassesThatExtendClass;
 use PHPUnit\Framework\Attributes\CoversClassesThatImplementInterface;
@@ -42,8 +44,10 @@ use PHPUnit\Framework\Attributes\DependsUsingShallowClone;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\ExcludeGlobalVariableFromBackup;
 use PHPUnit\Framework\Attributes\ExcludeStaticPropertyFromBackup;
+use PHPUnit\Framework\Attributes\FromPool;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\IgnorePhpunitWarnings;
+use PHPUnit\Framework\Attributes\InitializeStateMachine;
 use PHPUnit\Framework\Attributes\Large;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\PostCondition;
@@ -63,6 +67,8 @@ use PHPUnit\Framework\Attributes\RequiresSetting;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\StateMachineInvariant;
+use PHPUnit\Framework\Attributes\StateMachineRule;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\TestDoxFormatter;
@@ -141,6 +147,8 @@ use PHPUnit\Metadata\InvalidAttribute;
 #[CoversClass(RunTestsInSeparateProcesses::class)]
 #[CoversClass(Small::class)]
 #[CoversClass(TestDox::class)]
+#[CoversClass(CounterexampleFormatter::class)]
+#[CoversClass(CounterexampleFormatterExternal::class)]
 #[CoversClass(TestDoxFormatter::class)]
 #[CoversClass(TestDoxFormatterExternal::class)]
 #[CoversClass(Test::class)]
@@ -160,6 +168,10 @@ use PHPUnit\Metadata\InvalidAttribute;
 #[CoversClass(WithEnvironmentVariable::class)]
 #[CoversClass(WithoutErrorHandler::class)]
 #[CoversClass(IgnorePhpunitWarnings::class)]
+#[CoversClass(StateMachineRule::class)]
+#[CoversClass(InitializeStateMachine::class)]
+#[CoversClass(StateMachineInvariant::class)]
+#[CoversClass(FromPool::class)]
 #[Small]
 #[Group('metadata')]
 #[Group('metadata/attributes')]

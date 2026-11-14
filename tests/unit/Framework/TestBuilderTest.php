@@ -13,7 +13,13 @@ use function iterator_to_array;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\PropertyBased\InvalidPropertyException;
 use PHPUnit\Framework\TestCase\GlobalStateCapture;
+use PHPUnit\TestFixture\PropertyBased\Properties\InvalidPropertiesTest;
+use PHPUnit\TestFixture\PropertyBased\Properties\PropertyInClassThatRunsTestsInSeparateProcessesTest;
+use PHPUnit\TestFixture\PropertyBased\Properties\PropertyWithIneligibleAttributesTest;
+use PHPUnit\TestFixture\PropertyBased\Properties\PropertyWithUnmetRequirementsTest;
+use PHPUnit\TestFixture\PropertyBased\Properties\ValidPropertiesTest;
 use PHPUnit\TestFixture\TestBuilder\TestWithBackupExcludeListAttributes;
 use PHPUnit\TestFixture\TestBuilder\TestWithClassLevelIsolationAttributes;
 use PHPUnit\TestFixture\TestBuilder\TestWithDataProvider;
@@ -21,6 +27,7 @@ use PHPUnit\TestFixture\TestBuilder\TestWithInheritedClassLevelIsolationAttribut
 use PHPUnit\TestFixture\TestBuilder\TestWithMethodLevelIsolationAttributes;
 use PHPUnit\TestFixture\TestBuilder\TestWithoutIsolationAttributes;
 use PHPUnit\TestFixture\TestBuilder\TestWithPreserveGlobalStateAttribute;
+use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use ReflectionClass;
 use ReflectionProperty;
 
@@ -144,5 +151,133 @@ final class TestBuilderTest extends TestCase
         $this->assertSame(TestWithDataProvider::class, $test->className());
         $this->assertSame('testOne', $test->methodName());
         $this->assertTrue($test->testData()->hasDataFromDataProvider());
+    }
+
+    public function testBuildsPropertyTestSuiteForProperty(): void
+    {
+        $suite = new TestBuilder($this->createStub(Emitter::class))->build(
+            new ReflectionClass(ValidPropertiesTest::class),
+            'testWithParameters',
+        );
+
+        $this->assertInstanceOf(PropertyTestSuite::class, $suite);
+        $this->assertSame(ValidPropertiesTest::class . '::testWithParameters', $suite->name());
+        $this->assertSame(50 * ConfigurationRegistry::get()->propertyExamplesMultiplier(), $suite->numberOfExamples());
+        $this->assertCount(1, $suite);
+        $this->assertInstanceOf(ValidPropertiesTest::class, $suite->tests()[0]);
+    }
+
+    public function testPropertyIsCheckedForConfiguredNumberOfExamplesByDefault(): void
+    {
+        $suite = new TestBuilder($this->createStub(Emitter::class))->build(
+            new ReflectionClass(ValidPropertiesTest::class),
+            'testWithoutParameters',
+        );
+
+        $this->assertInstanceOf(PropertyTestSuite::class, $suite);
+        $this->assertSame(ConfigurationRegistry::get()->propertyExamples() * ConfigurationRegistry::get()->propertyExamplesMultiplier(), $suite->numberOfExamples());
+    }
+
+    public function testPropertyIsNeitherRepeatedNorRetried(): void
+    {
+        $suite = new TestBuilder($this->createStub(Emitter::class))->build(
+            new ReflectionClass(ValidPropertiesTest::class),
+            'testWithoutParameters',
+            [],
+            3,
+            1,
+            3,
+        );
+
+        $this->assertInstanceOf(PropertyTestSuite::class, $suite);
+        $this->assertCount(1, $suite);
+    }
+
+    public function testExamplesOfPropertyAreNotRunInSeparateProcess(): void
+    {
+        $suite = new TestBuilder($this->createStub(Emitter::class))->build(
+            new ReflectionClass(PropertyInClassThatRunsTestsInSeparateProcessesTest::class),
+            'testOne',
+        );
+
+        $this->assertInstanceOf(PropertyTestSuite::class, $suite);
+        $this->assertNull(new ReflectionProperty(TestCase::class, 'runTestInSeparateProcess')->getValue($suite->tests()[0]));
+    }
+
+    public function testWarnsWhenPropertyIsAnnotatedWithRepeatRetryOrRunInSeparateProcess(): void
+    {
+        $messages = [];
+        $emitter  = $this->createMock(Emitter::class);
+
+        $emitter
+            ->expects($this->exactly(3))
+            ->method('testRunnerTriggeredPhpunitWarning')
+            ->willReturnCallback(static function (string $message) use (&$messages): void
+            {
+                $messages[] = $message;
+            });
+
+        new TestBuilder($emitter)->build(
+            new ReflectionClass(PropertyWithIneligibleAttributesTest::class),
+            'testOne',
+        );
+
+        $this->assertSame(
+            [
+                'Method ' . PropertyWithIneligibleAttributesTest::class . '::testOne is annotated with #[Repeat] but is a property and will not be repeated',
+                'Method ' . PropertyWithIneligibleAttributesTest::class . '::testOne is annotated with #[Retry] but is a property and will not be retried',
+                'Method ' . PropertyWithIneligibleAttributesTest::class . '::testOne is annotated with #[RunInSeparateProcess] but is a property and will not be run in a separate process',
+            ],
+            $messages,
+        );
+    }
+
+    public function testDoesNotWarnWhenRepeatOrRetryOnPropertyDoNotAskForMoreThanOneRun(): void
+    {
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter->expects($this->never())->method('testRunnerTriggeredPhpunitWarning');
+
+        new TestBuilder($emitter)->build(
+            new ReflectionClass(PropertyWithIneligibleAttributesTest::class),
+            'testTwo',
+        );
+    }
+
+    public function testWarnsWhenPropertyIsDeclaredInClassThatRunsTestsInSeparateProcesses(): void
+    {
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter
+            ->expects($this->once())
+            ->method('testRunnerTriggeredPhpunitWarning')
+            ->with(
+                'Class ' . PropertyInClassThatRunsTestsInSeparateProcessesTest::class . ' is annotated with #[RunTestsInSeparateProcesses] but ' . PropertyInClassThatRunsTestsInSeparateProcessesTest::class . '::testOne is a property and will not be run in a separate process',
+            );
+
+        new TestBuilder($emitter)->build(
+            new ReflectionClass(PropertyInClassThatRunsTestsInSeparateProcessesTest::class),
+            'testOne',
+        );
+    }
+
+    public function testReportsPropertyThatCannotBeChecked(): void
+    {
+        $this->expectException(InvalidPropertyException::class);
+
+        new TestBuilder($this->createStub(Emitter::class))->build(
+            new ReflectionClass(InvalidPropertiesTest::class),
+            'testWithUnsupportedType',
+        );
+    }
+
+    public function testDoesNotValidatePropertyWhoseRequirementsAreNotMet(): void
+    {
+        $suite = new TestBuilder($this->createStub(Emitter::class))->build(
+            new ReflectionClass(PropertyWithUnmetRequirementsTest::class),
+            'testOne',
+        );
+
+        $this->assertInstanceOf(PropertyTestSuite::class, $suite);
     }
 }

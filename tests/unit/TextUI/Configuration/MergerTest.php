@@ -410,6 +410,110 @@ final class MergerTest extends TestCase
         $this->assertSame(1234, $mergedConfig->randomSeed());
     }
 
+    public function testRandomSeedFromCliConfigurationTakesPrecedenceOverRandomSeedFromGitCommit(): void
+    {
+        $fromFile = (new Loader)->load(TEST_FILES_PATH . 'configuration_empty.xml');
+        $fromCli  = new Builder($this->createStub(Emitter::class))->fromParameters(['--random-seed-from-git-commit', '--random-seed=1234']);
+
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge($fromCli, $fromFile);
+
+        $this->assertTrue($mergedConfig->seedRandomNumberGenerators());
+        $this->assertSame(1234, $mergedConfig->randomSeed());
+    }
+
+    public function testNumberOfExamplesAndMaximumNumberOfShrinkingAttemptsForPropertiesAreCarriedOverFromXmlConfiguration(): void
+    {
+        $fromFile = (new Loader)->load(TEST_FILES_PATH . 'configuration.xml');
+
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge(new Builder($this->createStub(Emitter::class))->fromParameters([]), $fromFile);
+
+        $this->assertSame(500, $mergedConfig->propertyExamples());
+        $this->assertSame(50, $mergedConfig->propertyMaximumShrinkingAttempts());
+    }
+
+    public function testHealthChecksForPropertiesAreCarriedOverFromXmlConfiguration(): void
+    {
+        $fromFile = new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration.xml');
+
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge(new Builder($this->createStub(Emitter::class))->fromParameters([]), $fromFile);
+
+        $this->assertSame(5, $mergedConfig->propertyExamplesCheckedUntilHealthIsAssumed());
+        $this->assertSame(25, $mergedConfig->propertyMaximumRejectedExamplesUntilHealthIsAssumed());
+        $this->assertSame(15, $mergedConfig->propertyMaximumTooLargeExamplesUntilHealthIsAssumed());
+    }
+
+    public function testHealthChecksForPropertiesHaveDefaults(): void
+    {
+        $fromFile = new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration_empty.xml');
+
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge(new Builder($this->createStub(Emitter::class))->fromParameters([]), $fromFile);
+
+        $this->assertSame(10, $mergedConfig->propertyExamplesCheckedUntilHealthIsAssumed());
+        $this->assertSame(50, $mergedConfig->propertyMaximumRejectedExamplesUntilHealthIsAssumed());
+        $this->assertSame(20, $mergedConfig->propertyMaximumTooLargeExamplesUntilHealthIsAssumed());
+    }
+
+    public function testNumberOfExamplesForPropertiesFromCliTakesPrecedenceOverXmlConfiguration(): void
+    {
+        $fromFile = (new Loader)->load(TEST_FILES_PATH . 'configuration.xml');
+
+        $fromCli = new Builder($this->createStub(Emitter::class))->fromParameters(['--property-examples', '7']);
+
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge($fromCli, $fromFile);
+
+        $this->assertSame(7, $mergedConfig->propertyExamples());
+    }
+
+    public function testNumberOfExamplesAndMaximumNumberOfShrinkingAttemptsForPropertiesHaveDefaults(): void
+    {
+        $fromFile = (new Loader)->load(TEST_FILES_PATH . 'configuration_empty.xml');
+
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge(new Builder($this->createStub(Emitter::class))->fromParameters([]), $fromFile);
+
+        $this->assertSame(100, $mergedConfig->propertyExamples());
+        $this->assertSame(1000, $mergedConfig->propertyMaximumShrinkingAttempts());
+    }
+
+    public function testMultiplierForNumberOfExamplesOfPropertiesIsCarriedOverFromXmlConfiguration(): void
+    {
+        $fromFile = new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration.xml');
+
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge(new Builder($this->createStub(Emitter::class))->fromParameters([]), $fromFile);
+
+        $this->assertSame(10, $mergedConfig->propertyExamplesMultiplier());
+    }
+
+    public function testMultiplierForNumberOfExamplesOfPropertiesFromCliTakesPrecedenceOverXmlConfiguration(): void
+    {
+        $fromFile = new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration.xml');
+
+        $fromCli = new Builder($this->createStub(Emitter::class))->fromParameters(['--property-examples-multiplier', '3']);
+
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge($fromCli, $fromFile);
+
+        $this->assertSame(3, $mergedConfig->propertyExamplesMultiplier());
+    }
+
+    public function testMultiplierForNumberOfExamplesOfPropertiesHasDefault(): void
+    {
+        $fromFile = new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration_empty.xml');
+
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge(new Builder($this->createStub(Emitter::class))->fromParameters([]), $fromFile);
+
+        $this->assertSame(1, $mergedConfig->propertyExamplesMultiplier());
+    }
+
+    public function testMaximumNumberOfShrinkingAttemptsFromCliTakesPrecedenceOverXmlConfiguration(): void
+    {
+        $fromFile = new Loader($this->createStub(Emitter::class))->load(TEST_FILES_PATH . 'configuration.xml');
+
+        $fromCli = new Builder($this->createStub(Emitter::class))->fromParameters(['--property-maximum-shrinking-attempts', '0']);
+
+        $mergedConfig = new Merger($this->createStub(Emitter::class))->merge($fromCli, $fromFile);
+
+        $this->assertSame(0, $mergedConfig->propertyMaximumShrinkingAttempts());
+    }
+
     public function testIncludePathsAreCarriedOverFromXmlConfiguration(): void
     {
         $fromFile = (new Loader)->load(TEST_FILES_PATH . 'configuration_edge_case_values.xml');

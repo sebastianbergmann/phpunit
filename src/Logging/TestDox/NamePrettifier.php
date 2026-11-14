@@ -198,6 +198,7 @@ final class NamePrettifier
         $metadataCollection = MetadataRegistry::parser()->forMethod($test::class, $test->name());
         $testDox            = $metadataCollection->isTestDox()->isMethodLevel();
         $callback           = $metadataCollection->isTestDoxFormatter();
+        $isProperty         = $metadataCollection->isProperty()->isNotEmpty();
         $isCustomized       = false;
 
         if ($testDox->isNotEmpty()) {
@@ -205,8 +206,15 @@ final class NamePrettifier
 
             assert($testDox instanceof TestDox);
 
-            [$result, $isCustomized] = $this->processTestDox($test, $testDox, $colorize);
-        } elseif ($callback->isNotEmpty()) {
+            if ($isProperty) {
+                // a property is checked for many examples rather than for the
+                // values of one data set, so its placeholders are not replaced
+                $result       = Sanitizer::sanitizeControlCharacters($testDox->text());
+                $isCustomized = true;
+            } else {
+                [$result, $isCustomized] = $this->processTestDox($test, $testDox, $colorize);
+            }
+        } elseif ($callback->isNotEmpty() && !$isProperty) {
             $callback = $callback->asArray()[0];
 
             assert($callback instanceof TestDoxFormatter);

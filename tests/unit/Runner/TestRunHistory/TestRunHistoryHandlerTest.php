@@ -15,6 +15,8 @@ use function uniqid;
 use function unlink;
 use Exception;
 use PHPUnit\Event\AbstractEventTestCase;
+use PHPUnit\Event\Code\Counterexample;
+use PHPUnit\Event\Code\OtherFalsification;
 use PHPUnit\Event\Code\ThrowableBuilder;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Test\ConsideredRisky;
@@ -24,6 +26,7 @@ use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\MarkedIncomplete;
 use PHPUnit\Event\Test\Passed;
 use PHPUnit\Event\Test\Prepared;
+use PHPUnit\Event\Test\PropertyFalsified;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
@@ -110,6 +113,91 @@ final class TestRunHistoryHandlerTest extends AbstractEventTestCase
         $handler->testPassed(new Passed($this->telemetryInfo(), $test));
 
         $this->assertTrue($cache->status($id)->isUnknown());
+    }
+
+    public function testPropertyFalsifiedRemembersTheChoiceSequenceOfTheMinimalCounterexample(): void
+    {
+        $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-test.cache');
+        $handler = new TestRunHistoryHandler($cache, new Facade, false);
+
+        $test = $this->testValueObject();
+
+        $handler->testPropertyFalsified(
+            new PropertyFalsified($this->telemetryInfo(), $test, 1234, 2, 3, 1, false, false, new Counterexample([0, 11], ['a' => '0', 'b' => '11'], null, [], []), [], 0, 0),
+        );
+
+        $this->assertSame([[0, 11]], $cache->counterexamples(TestRunHistoryId::fromTest($test)));
+    }
+
+    public function testPropertyFalsifiedRemembersTheChoiceSequencesOfTheCounterexamplesOfTheOtherWaysInWhichThePropertyWasFalsifiedAfterTheOneOfTheMinimalCounterexample(): void
+    {
+        $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-test.cache');
+        $handler = new TestRunHistoryHandler($cache, new Facade, false);
+
+        $test = $this->testValueObject();
+
+        $handler->testPropertyFalsified(
+            new PropertyFalsified(
+                $this->telemetryInfo(),
+                $test,
+                1234,
+                2,
+                3,
+                1,
+                false,
+                false,
+                new Counterexample([0, 11], ['a' => '0', 'b' => '11'], null, [], []),
+                [new OtherFalsification('RuntimeException at FooTest.php:12', new Counterexample([3, 4], ['a' => '3', 'b' => '4'], null, [], [])), new OtherFalsification('LogicException at FooTest.php:15', new Counterexample([5], ['a' => '5', 'b' => '0'], null, [], []))],
+                0,
+                0,
+            ),
+        );
+
+        $this->assertSame([[0, 11], [3, 4], [5]], $cache->counterexamples(TestRunHistoryId::fromTest($test)));
+    }
+
+    public function testPropertyFalsifiedByAnExplicitExampleKeepsTheCounterexampleThatWasRememberedForTheProperty(): void
+    {
+        $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-test.cache');
+        $handler = new TestRunHistoryHandler($cache, new Facade, false);
+
+        $test = $this->testValueObject();
+        $id   = TestRunHistoryId::fromTest($test);
+
+        $cache->setCounterexamples($id, [[0, 11]]);
+
+        $handler->testPropertyFalsified(
+            new PropertyFalsified($this->telemetryInfo(), $test, 1234, 0, 0, 0, false, false, new Counterexample([], ['a' => '1', 'b' => '2'], 'one and two', [], []), [], 0, 0),
+        );
+
+        $this->assertSame([[0, 11]], $cache->counterexamples($id));
+    }
+
+    public function testPassedForgetsTheCounterexampleThatWasRememberedForAProperty(): void
+    {
+        $cache   = new DefaultTestRunHistory(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit-handler-test.cache');
+        $handler = new TestRunHistoryHandler($cache, new Facade, false);
+
+        $test = $this->testValueObject();
+        $id   = TestRunHistoryId::fromTest($test);
+
+        $cache->setCounterexamples($id, [[0, 11]]);
+
+        $handler->testPassed(new Passed($this->telemetryInfo(), $test));
+
+        $this->assertSame([], $cache->counterexamples($id));
+    }
+
+    public function testPassedDoesNotForgetCounterexamplesForATestForWhichNoneWereRemembered(): void
+    {
+        $testRunHistory = $this->createMock(TestRunHistory::class);
+
+        $testRunHistory->method('counterexamples')->willReturn([]);
+        $testRunHistory->expects($this->never())->method('removeCounterexamples');
+
+        $handler = new TestRunHistoryHandler($testRunHistory, new Facade, false);
+
+        $handler->testPassed(new Passed($this->telemetryInfo(), $this->testValueObject()));
     }
 
     public function testPassedDoesNotRemoveStatusRecordedInCurrentRun(): void

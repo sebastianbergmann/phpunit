@@ -524,6 +524,14 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isTestDox());
     }
 
+    public function test_Can_be_filtered_for_CounterexampleFormatter(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isCounterexampleFormatter();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isCounterexampleFormatter());
+    }
+
     public function test_Can_be_filtered_for_TestDoxFormatter(): void
     {
         $collection = $this->collectionWithOneOfEach()->isTestDoxFormatter();
@@ -644,6 +652,78 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isRetry());
     }
 
+    public function test_Can_be_filtered_for_ForAll(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isForAll();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isForAll());
+    }
+
+    public function test_Can_be_filtered_for_GeneratorFor(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isGeneratorFor();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isGeneratorFor());
+    }
+
+    public function test_Can_be_filtered_for_RequireClassification(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isRequireClassification();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isRequireClassification());
+    }
+
+    public function test_Can_be_filtered_for_Rule(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isStateMachineRule();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isStateMachineRule());
+    }
+
+    public function test_Can_be_filtered_for_Initialize(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isInitializeStateMachine();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isInitializeStateMachine());
+    }
+
+    public function test_Can_be_filtered_for_Invariant(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isStateMachineInvariant();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isStateMachineInvariant());
+    }
+
+    public function test_Can_be_filtered_for_FromPool(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isFromPool();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isFromPool());
+    }
+
+    public function test_Can_be_filtered_for_UseGenerators(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isUseGenerators();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isUseGenerators());
+    }
+
+    public function test_Can_be_filtered_for_Property(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isProperty();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isProperty());
+    }
+
     public function test_Can_be_filtered_for_WithoutErrorHandler(): void
     {
         $collection = $this->collectionWithOneOfEach()->isWithoutErrorHandler();
@@ -718,6 +798,7 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::runTestsInSeparateProcesses(),
                 Metadata::testDoxOnClass(''),
                 Metadata::testDoxFormatter('', ''),
+                Metadata::counterexampleFormatter(self::class, 'method'),
                 Metadata::test(),
                 Metadata::testWith([]),
                 Metadata::usesNamespace(''),
@@ -732,6 +813,15 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::usesDirectoryRecursively(''),
                 Metadata::repeat(3, 1),
                 Metadata::retry(3),
+                Metadata::forAll('value', self::class, 'provider'),
+                Metadata::generatorFor(self::class),
+                Metadata::requireClassification('label', 10.0),
+                Metadata::stateMachineRule(null, null),
+                Metadata::initializeStateMachine(null),
+                Metadata::stateMachineInvariant(false),
+                Metadata::fromPool('value', 'pool', false),
+                Metadata::useGeneratorsOnMethod(self::class),
+                Metadata::property(null),
                 Metadata::withEnvironmentVariableOnClass('foo', 'bar'),
                 Metadata::withoutErrorHandler(),
             ],

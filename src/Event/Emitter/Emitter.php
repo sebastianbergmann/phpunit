@@ -159,6 +159,28 @@ interface Emitter
     public function testPassed(Code\Test $test): void;
 
     /**
+     * @param non-negative-int          $seed
+     * @param non-negative-int          $numberOfExamplesChecked
+     * @param non-negative-int          $numberOfExplicitExamplesChecked
+     * @param non-negative-int          $numberOfExamplesRejected
+     * @param list<Code\Classification> $classifications
+     * @param list<Code\ObservedValues> $observations
+     * @param list<Code\TargetedScore>  $targets
+     */
+    public function testPropertyChecked(Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfExplicitExamplesChecked, int $numberOfExamplesRejected, array $classifications, array $observations, array $targets): void;
+
+    /**
+     * @param non-negative-int              $seed
+     * @param non-negative-int              $numberOfExamplesChecked
+     * @param non-negative-int              $numberOfShrinkingAttempts
+     * @param non-negative-int              $numberOfShrinkingSteps
+     * @param list<Code\OtherFalsification> $otherFalsifications
+     * @param non-negative-int              $numberOfReplays
+     * @param non-negative-int              $numberOfReproductions
+     */
+    public function testPropertyFalsified(Code\Test $test, int $seed, int $numberOfExamplesChecked, int $numberOfShrinkingAttempts, int $numberOfShrinkingSteps, bool $shrinkingBudgetExhausted, bool $shrinkingInterrupted, Code\Counterexample $counterexample, array $otherFalsifications, int $numberOfReplays, int $numberOfReproductions): void;
+
+    /**
      * @param non-empty-string $message
      */
     public function testConsideredRisky(Code\Test $test, string $message): void;

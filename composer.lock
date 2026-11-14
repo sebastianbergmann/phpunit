@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "20ad212864fc820e0a1763b147afb50c",
+    "content-hash": "5210e916bca88cea4004f58eb465e486",
     "packages": [
         {
             "name": "myclabs/deep-copy",
@@ -131,12 +131,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "97a36f0825e482a2057736ae57b3b73732b0587d"
+                "reference": "aad33e5214cdc2fe85e225dd9948165f970eabb2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/97a36f0825e482a2057736ae57b3b73732b0587d",
-                "reference": "97a36f0825e482a2057736ae57b3b73732b0587d",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/aad33e5214cdc2fe85e225dd9948165f970eabb2",
+                "reference": "aad33e5214cdc2fe85e225dd9948165f970eabb2",
                 "shasum": ""
             },
             "require": {
@@ -154,7 +154,7 @@
                 "sebastian/version": "^7.1.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^13.4.6"
+                "phpunit/phpunit": "^13.4.7"
             },
             "suggest": {
                 "ext-pcov": "PHP extension that provides line coverage",
@@ -213,8 +213,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-11-09T10:35:35+00:00",
-            "published-time": "2026-11-09T10:40:40+00:00"
+            "time": "2026-11-13T22:07:32+00:00",
+            "published-time": "2026-11-13T22:07:37+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -512,6 +512,77 @@
             ],
             "time": "2026-02-06T04:37:53+00:00",
             "published-time": "2026-02-06T04:38:39+00:00"
+        },
+        {
+            "name": "sebastian/choice-sequence",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/choice-sequence.git",
+                "reference": "4be13d9aa3c67ef09398061feca474ca13836545"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/choice-sequence/zipball/4be13d9aa3c67ef09398061feca474ca13836545",
+                "reference": "4be13d9aa3c67ef09398061feca474ca13836545",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.5"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^13.4.7"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
+                }
+            ],
+            "description": "Library for drawing, replaying, shrinking, and storing choice sequences",
+            "homepage": "https://github.com/sebastianbergmann/choice-sequence",
+            "support": {
+                "issues": "https://github.com/sebastianbergmann/choice-sequence/issues",
+                "security": "https://github.com/sebastianbergmann/choice-sequence/security/policy",
+                "source": "https://github.com/sebastianbergmann/choice-sequence/tree/main"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sebastianbergmann",
+                    "type": "github"
+                },
+                {
+                    "url": "https://liberapay.com/sebastianbergmann",
+                    "type": "liberapay"
+                },
+                {
+                    "url": "https://thanks.dev/u/gh/sebastianbergmann",
+                    "type": "thanks_dev"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/sebastian/choice-sequence",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2026-11-14T13:42:04+00:00",
+            "published-time": "2026-11-14T13:59:07+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -1762,7 +1833,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "phpunit/php-code-coverage": 20
+        "phpunit/php-code-coverage": 20,
+        "sebastian/choice-sequence": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

@@ -1,0 +1,197 @@
+<?php declare(strict_types=1);
+/*
+ * This file is part of PHPUnit.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+namespace PHPUnit\Framework\PropertyBased\RegularExpression;
+
+use function chr;
+use function count;
+use function mb_chr;
+use function range;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\TestCase;
+
+#[CoversClass(CharacterSet::class)]
+#[Small]
+#[Group('framework')]
+#[Group('framework/property-based-testing')]
+final class CharacterSetTest extends TestCase
+{
+    public function testOrdersTheAsciiMembersLikeCodePointsAndTheOtherMembersInAscendingOrder(): void
+    {
+        $set = CharacterSet::fromRanges([[0xE9, 0xE9], [0x30, 0x31], [0x61, 0x62]], true);
+
+        $this->assertSame(5, $set->size());
+        $this->assertSame(4, $set->numberOfAsciiMembers());
+        $this->assertSame('a', $set->member(0));
+        $this->assertSame('b', $set->member(1));
+        $this->assertSame('0', $set->member(2));
+        $this->assertSame('1', $set->member(3));
+        $this->assertSame('é', $set->member(4));
+    }
+
+    public function testTheMembersOfASetOfManyRangesThatAreNotAsciiCharactersAreInAscendingOrder(): void
+    {
+        // digits, a range that starts with ASCII characters, and ranges of
+        // two characters each
+        $ranges   = [[0x30, 0x39], [0x70, 0x90]];
+        $expected = range(0x80, 0x90);
+
+        for ($character = 0x100; $character < 0x500; $character += 3) {
+            $ranges[]   = [$character, $character + 1];
+            $expected[] = $character;
+            $expected[] = $character + 1;
+        }
+
+        $set = CharacterSet::fromRanges($ranges, true);
+
+        $this->assertSame(26, $set->numberOfAsciiMembers());
+        $this->assertSame(26 + count($expected), $set->size());
+        $this->assertSame('p', $set->member(0));
+
+        foreach ($expected as $index => $character) {
+            $this->assertSame(mb_chr($character, 'UTF-8'), $set->member(26 + $index));
+        }
+    }
+
+    public function testTheBytesOfASetThatAreNotAsciiCharactersAreInAscendingOrder(): void
+    {
+        $set = CharacterSet::fromRanges([[0x61, 0x62], [0x7F, 0x81], [0xA0, 0xA1], [0xFE, 0xFF]], false);
+
+        $this->assertSame(3, $set->numberOfAsciiMembers());
+        $this->assertSame(9, $set->size());
+        $this->assertSame(chr(0x80), $set->member(3));
+        $this->assertSame(chr(0x81), $set->member(4));
+        $this->assertSame(chr(0xA0), $set->member(5));
+        $this->assertSame(chr(0xA1), $set->member(6));
+        $this->assertSame(chr(0xFE), $set->member(7));
+        $this->assertSame(chr(0xFF), $set->member(8));
+    }
+
+    public function testDoesNotContainACharacterThatIsBeforeBetweenOrAfterItsRanges(): void
+    {
+        $set = CharacterSet::fromRanges([[0x62, 0x63], [0x66, 0x67]], false);
+
+        $this->assertFalse($set->contains(0x61));
+        $this->assertTrue($set->contains(0x62));
+        $this->assertTrue($set->contains(0x63));
+        $this->assertFalse($set->contains(0x64));
+        $this->assertFalse($set->contains(0x65));
+        $this->assertTrue($set->contains(0x66));
+        $this->assertTrue($set->contains(0x67));
+        $this->assertFalse($set->contains(0x68));
+    }
+
+    public function testMergesRangesThatOverlapOrTouch(): void
+    {
+        $set = CharacterSet::fromRanges([[0x61, 0x63], [0x62, 0x65], [0x66, 0x66]], false);
+
+        $this->assertSame(6, $set->size());
+        $this->assertTrue($set->contains(0x66));
+        $this->assertFalse($set->contains(0x67));
+    }
+
+    public function testCanBeCreatedFromCharacters(): void
+    {
+        $set = CharacterSet::fromCharacters([0x7A, 0x61], false);
+
+        $this->assertSame(2, $set->size());
+        $this->assertSame('a', $set->member(0));
+        $this->assertSame('z', $set->member(1));
+    }
+
+    public function testUnionContainsTheCharactersOfBothSets(): void
+    {
+        $set = CharacterSet::fromCharacters([0x61], false)->union(CharacterSet::fromCharacters([0x62], false));
+
+        $this->assertSame(2, $set->size());
+        $this->assertTrue($set->contains(0x61));
+        $this->assertTrue($set->contains(0x62));
+    }
+
+    public function testComplementContainsTheCharactersThatAreNotInTheSet(): void
+    {
+        $set = CharacterSet::fromRanges([[0x00, 0x60], [0x7B, 0x7F]], false)->complementWithin(CharacterSet::ascii(false));
+
+        $this->assertSame(26, $set->size());
+        $this->assertSame('a', $set->member(0));
+        $this->assertSame('z', $set->member(25));
+    }
+
+    public function testComplementWithinASetOfSeveralRangesContainsTheCharactersOfEachRangeThatAreNotInTheSet(): void
+    {
+        $set = CharacterSet::fromCharacters([0x35, 0x62], false)->complementWithin(CharacterSet::fromRanges([[0x30, 0x39], [0x61, 0x63]], false));
+
+        $this->assertSame(11, $set->size());
+        $this->assertFalse($set->contains(0x35));
+        $this->assertFalse($set->contains(0x62));
+        $this->assertSame('a', $set->member(0));
+        $this->assertSame('c', $set->member(1));
+        $this->assertSame('0', $set->member(2));
+        $this->assertSame('9', $set->member(10));
+    }
+
+    public function testComplementOfTheEmptySetIsTheSetItIsTakenWithin(): void
+    {
+        $this->assertSame(256, CharacterSet::fromRanges([], false)->complementWithin(CharacterSet::all(false))->size());
+    }
+
+    public function testAllUnicodeScalarValuesAreAllCodePointsExceptTheSurrogates(): void
+    {
+        $set = CharacterSet::all(true);
+
+        $this->assertSame(0x110000 - 0x800, $set->size());
+        $this->assertFalse($set->contains(0xD800));
+        $this->assertFalse($set->contains(0xDFFF));
+        $this->assertTrue($set->contains(0xE000));
+        $this->assertSame("\u{E000}", $set->member(0xD800));
+    }
+
+    public function testARangeOfUnicodeScalarValuesThatSpansTheSurrogatesDoesNotContainThem(): void
+    {
+        $set = CharacterSet::fromRanges([[0xD7FE, 0xE001]], true);
+
+        $this->assertSame(4, $set->size());
+        $this->assertFalse($set->contains(0xD800));
+        $this->assertFalse($set->contains(0xDFFF));
+        $this->assertSame("\u{D7FE}", $set->member(0));
+        $this->assertSame("\u{D7FF}", $set->member(1));
+        $this->assertSame("\u{E000}", $set->member(2));
+        $this->assertSame("\u{E001}", $set->member(3));
+    }
+
+    public function testARangeOfUnicodeScalarValuesThatStartsOrEndsWithinTheSurrogatesDoesNotContainThem(): void
+    {
+        $set = CharacterSet::fromRanges([[0xD7FF, 0xD900], [0xDA00, 0xDB00], [0xDF00, 0xE000]], true);
+
+        $this->assertSame(2, $set->size());
+        $this->assertSame("\u{D7FF}", $set->member(0));
+        $this->assertSame("\u{E000}", $set->member(1));
+    }
+
+    public function testARangeOfBytesIsNotChanged(): void
+    {
+        $this->assertSame(0x100, CharacterSet::fromRanges([[0x00, 0xFF]], false)->size());
+    }
+
+    public function testAllBytes(): void
+    {
+        $set = CharacterSet::all(false);
+
+        $this->assertSame(256, $set->size());
+        $this->assertSame(chr(0xFF), $set->member(255));
+    }
+
+    public function testIsEmptyWhenItHasNoCharacters(): void
+    {
+        $this->assertTrue(CharacterSet::fromRanges([], true)->isEmpty());
+        $this->assertFalse(CharacterSet::ascii(true)->isEmpty());
+    }
+}
