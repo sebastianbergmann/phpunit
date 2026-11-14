@@ -21,6 +21,7 @@ use Random\Randomizer;
 use SebastianBergmann\ChoiceSequence\Bytes;
 use SebastianBergmann\ChoiceSequence\ChoiceSequence;
 use SebastianBergmann\ChoiceSequence\ChoiceTree;
+use SebastianBergmann\ChoiceSequence\Pool;
 use SebastianBergmann\ChoiceSequence\Repetition;
 use SebastianBergmann\ChoiceSequence\Span;
 use SebastianBergmann\ChoiceSequence\SpanKind;
@@ -112,6 +113,67 @@ final class ChoiceSourceTest extends TestCase
         $this->expectExceptionMessageIs('Generating the example required more than 1 choices');
 
         $source->bytes(new Bytes(2, null));
+    }
+
+    public function testAddsValuesToAPoolAndTakesThemFromItWithTheChoiceSequenceLibrary(): void
+    {
+        /** @var Pool<string> $pool */
+        $pool   = new Pool('pool');
+        $source = ChoiceSource::replay(new ChoiceSequence([0, 0, 1, 0]));
+
+        $source->add($pool, 'a');
+        $source->add($pool, 'b');
+
+        $this->assertSame('a', $source->refer($pool));
+        $this->assertSame('b', $source->consume($pool));
+        $this->assertSame(1, $pool->count());
+
+        $this->assertSame(
+            [SpanKind::Referable, SpanKind::Referable, SpanKind::Reference, SpanKind::ConsumingReference],
+            array_map(static fn (Span $span): ?SpanKind => $span->kind(), $source->sequence()->spans()),
+        );
+    }
+
+    public function testRejectsTheExampleWhenAddingAValueToAPoolRequiresMoreThanTheMaximumNumberOfChoices(): void
+    {
+        /** @var Pool<string> $pool */
+        $pool   = new Pool('pool');
+        $source = ChoiceSource::replay(new ChoiceSequence([]), 1);
+
+        $source->add($pool, 'a');
+
+        $this->expectException(ExampleRejectedException::class);
+        $this->expectExceptionMessageIs('Generating the example required more than 1 choices');
+
+        $source->add($pool, 'b');
+    }
+
+    public function testRejectsTheExampleWhenReferringToAValueOfAPoolRequiresMoreThanTheMaximumNumberOfChoices(): void
+    {
+        /** @var Pool<string> $pool */
+        $pool   = new Pool('pool');
+        $source = ChoiceSource::replay(new ChoiceSequence([]), 1);
+
+        $source->add($pool, 'a');
+
+        $this->expectException(ExampleRejectedException::class);
+        $this->expectExceptionMessageIs('Generating the example required more than 1 choices');
+
+        $source->refer($pool);
+    }
+
+    public function testRejectsTheExampleWhenConsumingAValueOfAPoolRequiresMoreThanTheMaximumNumberOfChoices(): void
+    {
+        /** @var Pool<string> $pool */
+        $pool   = new Pool('pool');
+        $source = ChoiceSource::replay(new ChoiceSequence([]), 1);
+
+        $source->add($pool, 'a');
+
+        $this->expectException(ExampleRejectedException::class);
+        $this->expectExceptionMessageIs('Generating the example required more than 1 choices');
+
+        $source->consume($pool);
     }
 
     public function testDrawsAndReplaysChoicesWithTheChoiceSourceOfTheChoiceSequenceLibrary(): void

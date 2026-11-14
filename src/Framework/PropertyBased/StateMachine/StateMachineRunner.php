@@ -9,11 +9,9 @@
  */
 namespace PHPUnit\Framework\PropertyBased\StateMachine;
 
-use function array_filter;
 use function array_intersect;
 use function array_key_exists;
 use function array_keys;
-use function array_reverse;
 use function array_values;
 use function assert;
 use function count;
@@ -33,7 +31,7 @@ use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
 use PHPUnit\Framework\PropertyBased\InvalidStateMachineException;
 use ReflectionMethod;
 use SebastianBergmann\ChoiceSequence\ExactDistribution;
-use SebastianBergmann\ChoiceSequence\SpanKind;
+use SebastianBergmann\ChoiceSequence\Pool;
 use SebastianBergmann\ChoiceSequence\UniformDistribution;
 use Throwable;
 
@@ -53,10 +51,11 @@ use Throwable;
  * a span of the kind Reference, or ConsumingReference when the value is
  * consumed. A step that produces a value for a pool ends with a choice that is
  * always 0, in a span of the kind Referable. Both spans are labelled with the
- * pool. They tell the shrinker which value a position refers to: when it
- * deletes a step that produced a value for the pool, or that consumed one, it
- * changes the positions that the steps after it draw, so that they take the
- * values that they took before.
+ * pool, and both are drawn by Pool of sebastian/choice-sequence. They tell
+ * the shrinker which value a position refers to: when it deletes a step that
+ * produced a value for the pool, or that consumed one, it changes the
+ * positions that the steps after it draw, so that they take the values that
+ * they took before.
  *
  * While choices are drawn at random, only rules whose preconditions hold and
  * whose pools have values are drawn, and each example enables a random subset
@@ -108,7 +107,7 @@ final class StateMachineRunner
      * in the order in which they were produced, with the names of the
      * variables that they are assigned to in the report.
      *
-     * @var array<non-empty-string, list<array{value: mixed, variable: non-empty-string}>>
+     * @var array<non-empty-string, Pool<array{value: mixed, variable: non-empty-string}>>
      */
     private array $pools = [];
 
@@ -428,7 +427,7 @@ final class StateMachineRunner
                 $numberOfValues[$pool] = 0;
 
                 if (array_key_exists($pool, $this->pools)) {
-                    $numberOfValues[$pool] = count($this->pools[$pool]);
+                    $numberOfValues[$pool] = $this->pools[$pool]->count();
                 }
             }
 
@@ -504,32 +503,16 @@ final class StateMachineRunner
                 continue;
             }
 
-            $kind = SpanKind::Reference;
-
+            // the rule can only be applied when its pools have values, of
+            // which the one that was produced last is the simplest one
             if ($parameter->consume()) {
-                $kind = SpanKind::ConsumingReference;
-            }
-
-            $this->source->startSpan($this->labelOfPool($pool), $kind);
-
-            try {
-                // the value that was produced last is the simplest one
-                $produced = $this->source->choose(array_reverse($this->valuesOf($pool)), new UniformDistribution);
-            } finally {
-                $this->source->endSpan();
+                $produced = $this->source->consume($this->pool($pool));
+            } else {
+                $produced = $this->source->refer($this->pool($pool));
             }
 
             $arguments[] = $produced['value'];
             $exported[]  = $parameter->name() . ': $' . $produced['variable'];
-
-            if ($parameter->consume()) {
-                $this->pools[$pool] = array_values(
-                    array_filter(
-                        $this->valuesOf($pool),
-                        static fn (array $value): bool => $value['variable'] !== $produced['variable'],
-                    ),
-                );
-            }
         }
 
         $call     = sprintf('$machine->%s(%s);', $step->methodName(), implode(', ', $exported));
@@ -558,15 +541,7 @@ final class StateMachineRunner
         if ($produces !== null) {
             assert($variable !== null);
 
-            $this->pools[$produces][] = ['value' => $result, 'variable' => $variable];
-
-            $this->source->startSpan($this->labelOfPool($produces), SpanKind::Referable);
-
-            try {
-                $this->source->draw(0, new ExactDistribution(0));
-            } finally {
-                $this->source->endSpan();
-            }
+            $this->source->add($this->pool($produces), ['value' => $result, 'variable' => $variable]);
         } elseif ($result !== null && $this->exporter !== null) {
             $call = $this->withComment($call, $this->exporter->export($result));
         }
@@ -577,12 +552,16 @@ final class StateMachineRunner
     /**
      * @param non-empty-string $pool
      *
-     * @return non-empty-list<array{value: mixed, variable: non-empty-string}>
+     * @return Pool<array{value: mixed, variable: non-empty-string}>
      */
-    private function valuesOf(string $pool): array
+    private function pool(string $pool): Pool
     {
-        // the rule can only be applied when its pools have values
-        assert(array_key_exists($pool, $this->pools) && $this->pools[$pool] !== []);
+        if (!array_key_exists($pool, $this->pools)) {
+            /** @var Pool<array{value: mixed, variable: non-empty-string}> $values */
+            $values = new Pool(AbstractGenerator::labelOf('pool', $this->definition->className(), $pool));
+
+            $this->pools[$pool] = $values;
+        }
 
         return $this->pools[$pool];
     }
@@ -611,7 +590,7 @@ final class StateMachineRunner
             $numberOfValues = 0;
 
             if (array_key_exists($pool, $this->pools)) {
-                $numberOfValues = count($this->pools[$pool]);
+                $numberOfValues = $this->pools[$pool]->count();
             }
 
             $this->source->draw(max(0, $numberOfValues - 1), new UniformDistribution);
@@ -620,16 +599,6 @@ final class StateMachineRunner
         if ($rule->produces() !== null) {
             $this->source->draw(0, new ExactDistribution(0));
         }
-    }
-
-    /**
-     * @param non-empty-string $pool
-     *
-     * @return non-empty-string
-     */
-    private function labelOfPool(string $pool): string
-    {
-        return AbstractGenerator::labelOf('pool', $this->definition->className(), $pool);
     }
 
     /**

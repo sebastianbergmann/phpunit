@@ -22,6 +22,7 @@ use SebastianBergmann\ChoiceSequence\ChoiceSequence;
 use SebastianBergmann\ChoiceSequence\ChoiceSource as Choices;
 use SebastianBergmann\ChoiceSequence\ChoiceTree;
 use SebastianBergmann\ChoiceSequence\Distribution;
+use SebastianBergmann\ChoiceSequence\Pool;
 use SebastianBergmann\ChoiceSequence\Repetition;
 use SebastianBergmann\ChoiceSequence\SpanKind;
 use SebastianBergmann\ChoiceSequence\TooManyChoicesException;
@@ -297,6 +298,69 @@ final class ChoiceSource
     {
         try {
             return $bytes->draw($this->choices);
+        } catch (TooManyChoicesException $e) {
+            throw ExampleRejectedException::tooManyChoices($e->maximumNumberOfChoices());
+        }
+    }
+
+    /**
+     * Adds a value to a pool, and draws the choice that marks it as a value
+     * that later choices can refer to.
+     *
+     * @template T
+     *
+     * @param Pool<T> $pool
+     * @param T       $value
+     *
+     * @throws ExampleRejectedException
+     */
+    public function add(Pool $pool, mixed $value): void
+    {
+        try {
+            $pool->add($this->choices, $value);
+        } catch (TooManyChoicesException $e) {
+            throw ExampleRejectedException::tooManyChoices($e->maximumNumberOfChoices());
+        }
+    }
+
+    /**
+     * Draws a reference to one of the values of a pool, which must not be
+     * empty, and returns the value. The value that was added last is the
+     * simplest one.
+     *
+     * @template T
+     *
+     * @param Pool<T> $pool
+     *
+     * @throws ExampleRejectedException
+     *
+     * @return T
+     */
+    public function refer(Pool $pool): mixed
+    {
+        try {
+            return $pool->refer($this->choices);
+        } catch (TooManyChoicesException $e) {
+            throw ExampleRejectedException::tooManyChoices($e->maximumNumberOfChoices());
+        }
+    }
+
+    /**
+     * Draws a reference to one of the values of a pool, which must not be
+     * empty, removes the value from the pool, and returns it.
+     *
+     * @template T
+     *
+     * @param Pool<T> $pool
+     *
+     * @throws ExampleRejectedException
+     *
+     * @return T
+     */
+    public function consume(Pool $pool): mixed
+    {
+        try {
+            return $pool->consume($this->choices);
         } catch (TooManyChoicesException $e) {
             throw ExampleRejectedException::tooManyChoices($e->maximumNumberOfChoices());
         }
