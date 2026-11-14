@@ -481,6 +481,10 @@ final class Generators
      * generators do. Use flatMap() only when a generator depends on a value
      * that was generated before.
      *
+     * $combiner must take the value of each of the generators: it must have
+     * as many parameters as generators are given, or be variadic, and must
+     * not require more arguments than generators are given.
+     *
      * The types of the parameters of $combiner are checked against the types
      * of the values of the first eight generators by static analysis. The
      * values of further generators are passed to $combiner as well.
@@ -532,13 +536,26 @@ final class Generators
             $generators[] = AbstractGenerator::from($generator);
         }
 
-        $numberOfRequiredParameters = new ReflectionFunction($combiner)->getNumberOfRequiredParameters();
+        $function                   = new ReflectionFunction($combiner);
+        $numberOfRequiredParameters = $function->getNumberOfRequiredParameters();
 
         if ($numberOfRequiredParameters > count($generators)) {
             throw new InvalidGeneratorArgumentException(
                 sprintf(
                     'The closure requires %d arguments, but only %d %s given',
                     $numberOfRequiredParameters,
+                    count($generators),
+                    self::generatorsAre(count($generators)),
+                ),
+            );
+        }
+
+        if (!$function->isVariadic() && $function->getNumberOfParameters() < count($generators)) {
+            throw new InvalidGeneratorArgumentException(
+                sprintf(
+                    'The closure takes only %d %s, but %d %s given',
+                    $function->getNumberOfParameters(),
+                    self::arguments($function->getNumberOfParameters()),
                     count($generators),
                     self::generatorsAre(count($generators)),
                 ),
@@ -1331,6 +1348,15 @@ final class Generators
                 ),
             );
         }
+    }
+
+    private static function arguments(int $number): string
+    {
+        if ($number === 1) {
+            return 'argument';
+        }
+
+        return 'arguments';
     }
 
     /**

@@ -1819,6 +1819,52 @@ final class GeneratorsTest extends TestCase
         Generators::combine(static fn (int $first, int $second): int => $first, Generators::integers());
     }
 
+    public function testTheClosureThatCombinesValuesMustNotTakeFewerArgumentsThanGeneratorsAreGiven(): void
+    {
+        $this->expectException(InvalidGeneratorArgumentException::class);
+        $this->expectExceptionMessageIs('The closure takes only 1 argument, but 3 generators are given');
+
+        Generators::combine(static fn (int $first): int => $first, Generators::integers(), Generators::integers(), Generators::integers());
+    }
+
+    public function testTheClosureThatCombinesValuesMustNotTakeNoArgumentsWhenOneGeneratorIsGiven(): void
+    {
+        $this->expectException(InvalidGeneratorArgumentException::class);
+        $this->expectExceptionMessageIs('The closure takes only 0 arguments, but 1 generator is given');
+
+        Generators::combine(static fn (): int => 1, Generators::integers());
+    }
+
+    public function testTheFunctionThatCombinesValuesMustNotTakeFewerArgumentsThanGeneratorsAreGiven(): void
+    {
+        $this->expectException(InvalidGeneratorArgumentException::class);
+        $this->expectExceptionMessageIs('The closure takes only 1 argument, but 2 generators are given');
+
+        Generators::combine(strlen(...), Generators::elements('a', 'bb'), Generators::integers(0, 100));
+    }
+
+    public function testTheClosureThatCombinesValuesMayHaveOptionalParametersForWhichNoGeneratorIsGiven(): void
+    {
+        $generator = Generators::combine(
+            static fn (int $first, int $second = 5): int => $first + $second,
+            Generators::constant(1),
+        );
+
+        $this->assertSame(6, $this->replay($generator, []));
+    }
+
+    public function testTheClosureThatCombinesValuesMayTakeTheValuesOfFurtherGeneratorsWithAVariadicParameter(): void
+    {
+        $generator = Generators::combine(
+            static fn (int $first, int ...$further): int => $first - array_sum($further),
+            Generators::constant(10),
+            Generators::constant(1),
+            Generators::constant(2),
+        );
+
+        $this->assertSame(7, $this->replay($generator, []));
+    }
+
     public function testGeneratesRecordsWithAValueOfTheRespectiveGeneratorForEachKey(): void
     {
         $this->assertSame(
