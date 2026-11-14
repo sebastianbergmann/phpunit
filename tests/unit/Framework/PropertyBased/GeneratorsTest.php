@@ -317,9 +317,10 @@ final class GeneratorsTest extends TestCase
     public static function invalidFloatRangeProvider(): array
     {
         return [
-            'minimum greater than maximum' => [2.0, 1.0, 'The minimum (2.000000) must not be greater than the maximum (1.000000)'],
-            'infinite minimum'             => [-INF, 1.0, 'The minimum and the maximum must be finite, use $allowInfinity to generate infinite values'],
-            'NaN maximum'                  => [0.0, NAN, 'The minimum and the maximum must be finite, use $allowInfinity to generate infinite values'],
+            'minimum greater than maximum'                           => [2.0, 1.0, 'The minimum (2.0) must not be greater than the maximum (1.0)'],
+            'minimum greater than maximum, both smaller than 1.0E-6' => [1.0E-10, 1.0E-12, 'The minimum (1.0E-10) must not be greater than the maximum (1.0E-12)'],
+            'infinite minimum'                                       => [-INF, 1.0, 'The minimum and the maximum must be finite, use $allowInfinity to generate infinite values'],
+            'NaN maximum'                                            => [0.0, NAN, 'The minimum and the maximum must be finite, use $allowInfinity to generate infinite values'],
         ];
     }
 

@@ -169,9 +169,9 @@ final class Generators
         if ($minimum > $maximum) {
             throw new InvalidGeneratorArgumentException(
                 sprintf(
-                    'The minimum (%F) must not be greater than the maximum (%F)',
-                    $minimum,
-                    $maximum,
+                    'The minimum (%s) must not be greater than the maximum (%s)',
+                    var_export($minimum, true),
+                    var_export($maximum, true),
                 ),
             );
         }
