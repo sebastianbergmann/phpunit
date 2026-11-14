@@ -13,6 +13,7 @@ use const SIGALRM;
 use function array_is_list;
 use function array_reverse;
 use function assert;
+use function class_exists;
 use function count;
 use function function_exists;
 use function getmypid;
@@ -155,7 +156,7 @@ use Throwable;
  * a test class that are called before its first test are called before the
  * first example of one of its properties is run, and the ones that are called
  * after its last test are called before an example of a property of another
- * test class is run, or when the process ends.
+ * test class is run, when finish() is called, or when the process ends.
  * When one of the former raises an exception, every example of a property of
  * the test class is aborted with that exception, and when one of them skips
  * the tests of the test class, every example is skipped. The latter are only
@@ -163,6 +164,16 @@ use Throwable;
  * forked from it, while an example runs or between examples, does not call
  * them for this test class, but does for a test class that it prepares
  * itself.
+ *
+ * When one of the hook methods that are called after the last test of a test
+ * class raises an exception, or marks the test as incomplete or skipped, no
+ * example is left to which this could be attributed: an
+ * AfterLastTestMethodFailedException is raised instead, by finish(), or by
+ * replay() or generate() for a property of another test class, before the
+ * test class of this property is prepared and the example is run. The test
+ * class that was prepared is finished then, and its hook methods are not
+ * called again, so that the call can be repeated, which prepares the other
+ * test class and runs the example.
  *
  * The result of an example tells how it ended, how it falsified the
  * property, and which choices it consumed, with their spans and the maxima
@@ -464,6 +475,8 @@ final class PropertyRunner
 
                 try {
                     $this->finishPreparedTestClass();
+                } catch (AfterLastTestMethodFailedException) {
+                    // nothing can be raised while the process ends
                 } finally {
                     $this->restoreCallerAfterCodeOfProject();
                 }
@@ -536,7 +549,8 @@ final class PropertyRunner
      * @param positive-int           $timeLimit    the time limit of the example in seconds, which covers generating its arguments and running it
      * @param bool                   $exportValues whether the result has the exported arguments, drawn values, and steps of the example
      *
-     * @throws Exception                     when the property is invalid, or its generators cannot be created
+     * @throws AfterLastTestMethodFailedException when a hook method that is called after the last test of the test class that was prepared last, which is not the one of the property, raised an exception: the example was not run, and is run when the call is repeated
+     * @throws Exception                          when the property is invalid, or its generators cannot be created
      * @throws InvalidArgumentException
      * @throws PropertyDoesNotExistException
      *
@@ -575,7 +589,8 @@ final class PropertyRunner
      * @param positive-int     $timeLimit    the time limit of the example in seconds, which covers generating its arguments and running it
      * @param bool             $exportValues whether the result has the exported arguments, drawn values, and steps of the example
      *
-     * @throws Exception                     when the property is invalid, or its generators cannot be created
+     * @throws AfterLastTestMethodFailedException when a hook method that is called after the last test of the test class that was prepared last, which is not the one of the property, raised an exception: the example was not run, and is run when the call is repeated
+     * @throws Exception                          when the property is invalid, or its generators cannot be created
      * @throws InvalidArgumentException
      * @throws PropertyDoesNotExistException
      *
@@ -596,12 +611,49 @@ final class PropertyRunner
     }
 
     /**
+     * Calls the hook methods of the test class that was prepared last that
+     * are called after its last test, as they are called before an example of
+     * a property of another test class is run, rather than only when the
+     * process ends. When an example of one of its properties is run
+     * afterwards, the test class is prepared again.
+     *
+     * Nothing is done when no test class is prepared: before the first
+     * example, and when the test class that was prepared last is already
+     * finished. As before an example of a property of another test class is
+     * run, the hook methods are not called when the ones that are called
+     * before the first test of the test class did not succeed, and not in a
+     * process that is forked from the one that prepared the test class.
+     *
+     * @throws AfterLastTestMethodFailedException when one of the hook methods raised an exception: the test class is finished, and its hook methods are not called again
+     */
+    public function finish(): void
+    {
+        if ($this->preparedTestClass === null) {
+            return;
+        }
+
+        $this->prepareForCodeOfProject();
+
+        try {
+            $this->finishPreparedTestClass();
+        } finally {
+            // the test class of the next example is prepared by another
+            // call, for which the error handlers of the project are the ones
+            // that the hook methods left registered
+            $this->rememberErrorHandlersOfProject();
+
+            $this->restoreCallerAfterCodeOfProject();
+        }
+    }
+
+    /**
      * Prepares the test class of a property unless it is the test class that
      * was prepared last, and runs an example of the property, with the error
      * handlers of the project instead of the ones of the caller.
      *
      * @param Closure(): ExampleResult $example
      *
+     * @throws AfterLastTestMethodFailedException
      * @throws Exception
      */
     private function run(TestSuite $testClass, Closure $example): ExampleResult
@@ -744,12 +796,26 @@ final class PropertyRunner
      * its last test are called. When an example of one of its properties is
      * run again later, the test class is prepared again.
      *
+     * When one of these hook methods raises an exception, the test class is
+     * not prepared: the test class that was prepared last is finished then,
+     * so that it is prepared when the example is run again.
+     *
+     * @throws AfterLastTestMethodFailedException
      * @throws Exception
      */
     private function resultOfTestClass(TestSuite $testClass): ?ExampleResult
     {
         if ($this->preparedTestClass === null || $this->preparedTestClass['testClass'] !== $testClass) {
-            $this->finishPreparedTestClass();
+            try {
+                $this->finishPreparedTestClass();
+            } catch (AfterLastTestMethodFailedException $e) {
+                // the test class is prepared by another call, for which the
+                // error handlers of the project are the ones that the hook
+                // methods left registered
+                $this->rememberErrorHandlersOfProject();
+
+                throw $e;
+            }
 
             $outcome = $testClass->invokeMethodsBeforeFirstExample();
 
@@ -783,6 +849,8 @@ final class PropertyRunner
      * The generators of its properties are discarded, as they can depend on
      * what the hook methods that are called before its first test set up,
      * which are called again when the test class is prepared again.
+     *
+     * @throws AfterLastTestMethodFailedException when one of the hook methods raised an exception
      */
     private function finishPreparedTestClass(): void
     {
@@ -809,9 +877,21 @@ final class PropertyRunner
             return;
         }
 
-        if ($preparedTestClass['outcome'] === null) {
-            $preparedTestClass['testClass']->invokeMethodsAfterLastExample();
+        if ($preparedTestClass['outcome'] !== null) {
+            return;
         }
+
+        $raised = $preparedTestClass['testClass']->invokeMethodsAfterLastExample();
+
+        if ($raised === null) {
+            return;
+        }
+
+        $className = $preparedTestClass['testClass']->name();
+
+        assert(class_exists($className));
+
+        throw new AfterLastTestMethodFailedException($className, $raised);
     }
 
     /**
