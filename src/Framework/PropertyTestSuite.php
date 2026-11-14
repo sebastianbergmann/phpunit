@@ -53,7 +53,6 @@ use PHPUnit\Runner\TimeLimit\TimeLimitHandler;
 use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
-use PHPUnit\Util\PropertyFalsifiedToStringMapper;
 use Random\Engine\Xoshiro256StarStar;
 use Random\Randomizer;
 use SebastianBergmann\ChoiceSequence\ChoiceSequence;
@@ -320,16 +319,7 @@ final class PropertyTestSuite extends IterativeTestSuite
                 $emitter,
                 true,
                 null,
-                fn (): string => PropertyFalsifiedToStringMapper::mapExampleThatEndedTheProcess(
-                    new Event\Code\Counterexample(
-                        [],
-                        $exportedArguments,
-                        null,
-                        [],
-                        [],
-                        $this->exampleRunner()->formatIgnoringIssues(static fn (): array => $explicitExample->arguments()),
-                    ),
-                ),
+                $this->exampleRunner()->describerOfExplicitExample($exportedArguments, $explicitExample->arguments()),
             );
             $falsification = $this->exampleRunner()->falsificationOf($example, $exampleEvents);
 
@@ -434,7 +424,7 @@ final class PropertyTestSuite extends IterativeTestSuite
                 $emitter,
                 true,
                 null,
-                fn (): string => $this->describeExampleThatEndedTheProcess($arguments, $source, $drawnValues, $generators, $deriver),
+                $this->exampleRunner()->describerOfGeneratedExample($arguments, $source, $drawnValues, $generators),
             );
             $falsification = $this->exampleRunner()->falsificationOf($example, $exampleEvents);
 
@@ -491,36 +481,6 @@ final class PropertyTestSuite extends IterativeTestSuite
         $this->report($events, $emitter, $skeleton, null, true, null);
 
         PassedTests::instance()->testMethodPassed($valueObject, null);
-    }
-
-    /**
-     * Describes the example that was run when the PHP process ended, because
-     * of a fatal error, for instance: an example that ends the process is
-     * neither reported for the property nor shrunk, so this is the only
-     * report of its arguments and of the values that it drew. They are only
-     * exported then, in the state in which the example left them.
-     *
-     * @param array<non-empty-string, mixed>                    $arguments
-     * @param array<non-empty-string, AbstractGenerator<mixed>> $generators
-     */
-    private function describeExampleThatEndedTheProcess(array $arguments, ChoiceSource $source, DrawnValues $drawnValues, array $generators, GeneratorDeriver $deriver): string
-    {
-        $values = [];
-
-        foreach ($drawnValues->exportedWith($this->exampleRunner()->exporter($source->constructions())) as $drawnValue) {
-            $values[] = new Event\Code\DrawnValue($drawnValue['label'], $drawnValue['value']);
-        }
-
-        return PropertyFalsifiedToStringMapper::mapExampleThatEndedTheProcess(
-            new Event\Code\Counterexample(
-                $source->sequence()->choices(),
-                $this->exampleRunner()->export($arguments, $source->constructions()),
-                null,
-                $values,
-                [],
-                $this->exampleRunner()->formatIgnoringIssues($this->exampleRunner()->argumentsGeneratedFrom($generators, $source->sequence(), $deriver)),
-            ),
-        );
     }
 
     /**

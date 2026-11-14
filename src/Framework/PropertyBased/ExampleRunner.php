@@ -31,6 +31,7 @@ use PHPUnit\Framework\TestRunner\ExampleRun;
 use PHPUnit\Framework\TestRunner\TestRunner;
 use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\Runner\TimeLimit\TimeLimitExceededException;
+use PHPUnit\Util\PropertyFalsifiedToStringMapper;
 use ReflectionMethod;
 use SebastianBergmann\ChoiceSequence\ChoiceSequence;
 use SebastianBergmann\Invoker\Invoker;
@@ -364,6 +365,67 @@ final readonly class ExampleRunner
         return $this->callFormatter(
             static fn (): array => self::ignoringIssues($arguments),
             static fn (Closure $formatter): mixed => self::ignoringIssues($formatter),
+        );
+    }
+
+    /**
+     * Describes a generated example for the case that the PHP process ends
+     * while it is run, because of a fatal error, for instance: an example
+     * that ends the process is neither reported for the property nor shrunk,
+     * so this is the only report of its arguments, of the values that it
+     * drew, and of the steps of its state machine. The ones that are not
+     * reported otherwise are only exported then, in the state in which the
+     * example left them.
+     *
+     * @param array<non-empty-string, mixed>                    $arguments
+     * @param array<non-empty-string, AbstractGenerator<mixed>> $generators
+     *
+     * @return Closure(): string
+     */
+    public function describerOfGeneratedExample(array $arguments, ChoiceSource $source, DrawnValues $drawnValues, array $generators): Closure
+    {
+        return function () use ($arguments, $source, $drawnValues, $generators): string
+        {
+            $exporter = $this->exporter($source->constructions());
+            $values   = [];
+
+            foreach ($drawnValues->exportedWith($exporter) as $drawnValue) {
+                $values[] = new Event\Code\DrawnValue($drawnValue['label'], $drawnValue['value']);
+            }
+
+            return PropertyFalsifiedToStringMapper::mapExampleThatEndedTheProcess(
+                new Event\Code\Counterexample(
+                    $source->sequence()->choices(),
+                    $this->export($arguments, $source->constructions()),
+                    null,
+                    $values,
+                    $drawnValues->stepsExportedWith($exporter),
+                    $this->formatIgnoringIssues($this->argumentsGeneratedFrom($generators, $source->sequence(), $source->deriver())),
+                ),
+            );
+        };
+    }
+
+    /**
+     * Describes an explicit example for the case that the PHP process ends
+     * while it is run, see describerOfGeneratedExample().
+     *
+     * @param array<non-empty-string, string> $exportedArguments the arguments of the example, exported as PHP code
+     * @param array<non-empty-string, mixed>  $arguments
+     *
+     * @return Closure(): string
+     */
+    public function describerOfExplicitExample(array $exportedArguments, array $arguments): Closure
+    {
+        return fn (): string => PropertyFalsifiedToStringMapper::mapExampleThatEndedTheProcess(
+            new Event\Code\Counterexample(
+                [],
+                $exportedArguments,
+                null,
+                [],
+                [],
+                $this->formatIgnoringIssues(static fn (): array => $arguments),
+            ),
         );
     }
 

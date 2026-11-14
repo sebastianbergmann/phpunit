@@ -129,6 +129,23 @@ final class StateMachineRunner
     private array $steps = [];
 
     /**
+     * The steps that were taken, and the one that is being taken, without an
+     * exporter: they are only written as PHP code when the PHP process ends
+     * while the example is run, see stepsExportedWith().
+     *
+     * @var list<array{methodName: non-empty-string, variable: ?non-empty-string, arguments: list<string>, values: array<non-negative-int, mixed>}>
+     */
+    private array $stepsThatAreNotExported = [];
+
+    /**
+     * The step that is being taken with an exporter, or the invariant that is
+     * being checked, written as PHP code.
+     *
+     * @var ?non-empty-string
+     */
+    private ?string $stepBeingTaken = null;
+
+    /**
      * The rules of the steps that were taken, in the order in which they were
      * taken.
      *
@@ -185,6 +202,47 @@ final class StateMachineRunner
     public function steps(): array
     {
         return $this->steps;
+    }
+
+    /**
+     * The steps that were taken, as steps() returns them, followed by the step
+     * that is being taken or the invariant that is being checked, for the
+     * report of the example that was run when the PHP process ended. The
+     * steps that were taken without an exporter are written as PHP code with
+     * the given one: their arguments are exported in the state in which the
+     * steps left them, and the values that they returned are not written.
+     *
+     * @return list<non-empty-string>
+     */
+    public function stepsExportedWith(CounterexampleExporter $exporter): array
+    {
+        $steps = $this->steps;
+
+        foreach ($this->stepsThatAreNotExported as $step) {
+            $arguments = [];
+
+            foreach ($step['arguments'] as $position => $argument) {
+                if (array_key_exists($position, $step['values'])) {
+                    $argument .= $exporter->export($step['values'][$position]);
+                }
+
+                $arguments[] = $argument;
+            }
+
+            $call = sprintf('$machine->%s(%s);', $step['methodName'], implode(', ', $arguments));
+
+            if ($step['variable'] !== null) {
+                $call = '$' . $step['variable'] . ' = ' . $call;
+            }
+
+            $steps[] = $call;
+        }
+
+        if ($this->stepBeingTaken !== null) {
+            $steps[] = $this->stepBeingTaken;
+        }
+
+        return $steps;
     }
 
     /**
@@ -417,6 +475,7 @@ final class StateMachineRunner
     {
         $arguments = [];
         $exported  = [];
+        $values    = [];
 
         foreach ($step->parameters() as $parameter) {
             $pool = $parameter->pool();
@@ -432,6 +491,9 @@ final class StateMachineRunner
                 // the value is exported before the step can change its state
                 if ($this->exporter !== null) {
                     $exported[] = $parameter->name() . ': ' . $this->exporter->export($value);
+                } else {
+                    $values[count($exported)] = $value;
+                    $exported[]               = $parameter->name() . ': ';
                 }
 
                 continue;
@@ -460,6 +522,12 @@ final class StateMachineRunner
         if ($produces !== null) {
             $variable = $this->nextVariableFor($produces);
             $call     = '$' . $variable . ' = ' . $call;
+        }
+
+        if ($this->exporter !== null) {
+            $this->stepBeingTaken = $call;
+        } else {
+            $this->stepsThatAreNotExported[] = ['methodName' => $step->methodName(), 'variable' => $variable, 'arguments' => $exported, 'values' => $values];
         }
 
         try {
@@ -513,6 +581,8 @@ final class StateMachineRunner
     private function checkInvariants(array $invariants): void
     {
         foreach ($invariants as $invariant) {
+            $this->stepBeingTaken = sprintf('$machine->%s();', $invariant);
+
             try {
                 $this->call($invariant, []);
             } catch (Throwable $t) {
@@ -520,6 +590,8 @@ final class StateMachineRunner
 
                 throw $t;
             }
+
+            $this->stepBeingTaken = null;
         }
     }
 
@@ -576,6 +648,8 @@ final class StateMachineRunner
      */
     private function record(string $step): void
     {
+        $this->stepBeingTaken = null;
+
         if ($this->exporter !== null) {
             $this->steps[] = $step;
         }

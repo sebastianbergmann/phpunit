@@ -31,6 +31,7 @@ use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\PropertyBased\Falsification\FormattedCounterexamplesTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\ValidPropertiesTest;
+use PHPUnit\TestFixture\PropertyBased\StateMachine\CounterMachine;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use RuntimeException;
 use SebastianBergmann\ChoiceSequence\ChoiceSequence;
@@ -278,6 +279,82 @@ final class ExampleRunnerTest extends TestCase
 
         $this->assertSame('value 7', $formatted);
         $this->assertSame(['after the formatter was called'], $issues);
+    }
+
+    public function testDescribesAGeneratedExampleWithItsArgumentsWhatTheCounterexampleFormatterReturnsForThemAndTheValuesThatItDrew(): void
+    {
+        FormattedCounterexamplesTest::$numberOfCalls = 0;
+
+        [, $generators] = $this->generatorsOfPropertyWithFormatter('testIsFalsifiedFromFive');
+
+        $runner      = $this->runnerOfPropertyWithFormatter('testIsFalsifiedFromFive');
+        $source      = ChoiceSource::replay(new ChoiceSequence([7, 3]));
+        $arguments   = $runner->generateArguments($generators, $source);
+        $drawnValues = DrawnValues::from($source);
+
+        $drawnValues->draw(Generators::integers(0, 9), 'label');
+
+        $describe = $runner->describerOfGeneratedExample($arguments, $source, $drawnValues, $generators);
+
+        $this->assertSame(
+            <<<'EOT'
+The PHP process ended while this example of the property was run:
+
+    $value = 7;
+
+    value 7, call 1
+
+    Draw 1 (label): 3
+
+EOT,
+            $describe(),
+        );
+    }
+
+    public function testDescribesAGeneratedExampleWithTheStepsOfItsStateMachine(): void
+    {
+        [, $generators] = $this->generatorsOfPropertyWithFormatter('testWithoutFormatter');
+
+        $runner      = $this->runnerOfPropertyWithFormatter('testWithoutFormatter');
+        $source      = ChoiceSource::replay(new ChoiceSequence([7, 0, 1, 1, 0, 0]));
+        $arguments   = $runner->generateArguments($generators, $source);
+        $drawnValues = DrawnValues::from($source);
+
+        $drawnValues->runStateMachine(new CounterMachine, 50);
+
+        $describe = $runner->describerOfGeneratedExample($arguments, $source, $drawnValues, $generators);
+
+        $this->assertSame(
+            <<<'EOT'
+The PHP process ended while this example of the property was run:
+
+    $value = 7;
+
+    $machine->start(value: 0);
+    $machine->increment(amount: 1);
+
+EOT,
+            $describe(),
+        );
+    }
+
+    public function testDescribesAnExplicitExampleWithItsArgumentsAndWhatTheCounterexampleFormatterReturnsForThem(): void
+    {
+        FormattedCounterexamplesTest::$numberOfCalls = 0;
+
+        $describe = $this->runnerOfPropertyWithFormatter('testIsFalsifiedFromFive')->describerOfExplicitExample(['value' => '7'], ['value' => 7]);
+
+        $this->assertSame(
+            <<<'EOT'
+The PHP process ended while this example of the property was run:
+
+    $value = 7;
+
+    value 7, call 1
+
+EOT,
+            $describe(),
+        );
     }
 
     /**

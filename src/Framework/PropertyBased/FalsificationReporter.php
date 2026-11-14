@@ -180,9 +180,10 @@ final class FalsificationReporter
                     return null;
                 }
 
-                $example = $this->runner->example($arguments, false, DrawnValues::from($source));
+                $drawnValues = DrawnValues::from($source);
+                $example     = $this->runner->example($arguments, false, $drawnValues);
 
-                [$attemptEvents] = $this->runner->run($example, $this->emitter, false);
+                [$attemptEvents] = $this->runner->run($example, $this->emitter, false, null, $this->runner->describerOfGeneratedExample($arguments, $source, $drawnValues, $generators));
 
                 $this->events->recordShrinkingAttempt($attemptEvents);
 
@@ -218,7 +219,7 @@ final class FalsificationReporter
         $counterexample = $this->runner->export($arguments, $source->constructions());
         $drawnValues    = DrawnValues::reportedFrom($source, $this->runner->exporter($source->constructions()));
         $replay         = $this->runner->example($arguments, true, $drawnValues);
-        [$replayEvents] = $this->runner->run($replay, $this->emitter, false);
+        [$replayEvents] = $this->runner->run($replay, $this->emitter, false, null, $this->runner->describerOfGeneratedExample($arguments, $source, $drawnValues, $generators));
 
         $replayFalsification = null;
         $aborted             = ExampleRunner::propertyExampleOf($replay)->throwableThatEndedIt() instanceof TimeLimitExceededException;
@@ -386,7 +387,7 @@ final class FalsificationReporter
             $drawnValues    = DrawnValues::reportedFrom($source, $this->runner->exporter($source->constructions()));
             $example        = $this->runner->example($arguments, false, $drawnValues);
 
-            [$replayEvents] = $this->runner->run($example, $this->emitter, false);
+            [$replayEvents] = $this->runner->run($example, $this->emitter, false, null, $this->runner->describerOfGeneratedExample($arguments, $source, $drawnValues, $generators));
 
             $this->events->recordShrinkingAttempt($replayEvents);
 
@@ -538,7 +539,7 @@ final class FalsificationReporter
             $drawnValues    = DrawnValues::reportedFrom($source, $this->runner->exporter($source->constructions()));
             $example        = $this->runner->example($arguments, false, $drawnValues);
 
-            [$replayEvents] = $this->runner->run($example, $this->emitter, false);
+            [$replayEvents] = $this->runner->run($example, $this->emitter, false, null, $this->runner->describerOfGeneratedExample($arguments, $source, $drawnValues, $generators));
 
             $this->events->recordShrinkingAttempt($replayEvents);
 

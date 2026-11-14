@@ -28,6 +28,7 @@ use PHPUnit\Framework\PropertyBased\Type\NameScope;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\PropertyBased\StateMachine\ChildStateMachine;
 use PHPUnit\TestFixture\PropertyBased\StateMachine\CounterMachine;
+use PHPUnit\TestFixture\PropertyBased\StateMachine\ObservedMachine;
 use PHPUnit\TestFixture\PropertyBased\StateMachine\PreconditionThatDoesNotReturnABool;
 use PHPUnit\TestFixture\PropertyBased\StateMachine\StateMachineWithPoolsWhoseNamesEndInDigits;
 use PHPUnit\TestFixture\PropertyBased\StateMachine\StuckMachine;
@@ -286,6 +287,106 @@ EOT,
         $this->fail('The invariant did not fail');
     }
 
+    public function testStepsThatWereTakenWithoutAnExporterCanBeExportedAfterwards(): void
+    {
+        $source = ChoiceSource::replay(new ChoiceSequence([0, 1, 1, 0, 1, 0, 1, 3, 0, 0]));
+        $runner = $this->runner($source, new CounterMachine);
+
+        $runner->run(50);
+
+        $this->assertSame([], $runner->steps());
+        $this->assertSame(
+            [
+                '$machine->start(value: 0);',
+                '$machine->increment(amount: 1);',
+                '$snapshots1 = $machine->snapshot();',
+                '$machine->restore(snapshot: $snapshots1);',
+            ],
+            $runner->stepsExportedWith($this->exporter($source)),
+        );
+    }
+
+    public function testStepsThatWereTakenWithAnExporterAreNotExportedAgain(): void
+    {
+        $source = ChoiceSource::replay(new ChoiceSequence([0, 1, 1, 0, 1, 0, 1, 3, 0, 0]));
+        $runner = $this->runner($source, new CounterMachine, true);
+
+        $runner->run(50);
+
+        $this->assertSame($runner->steps(), $runner->stepsExportedWith($this->exporter($source)));
+    }
+
+    public function testStepThatIsBeingTakenWithoutAnExporterIsExportedAsTheLastStep(): void
+    {
+        $machine = new ObservedMachine;
+        $source  = ChoiceSource::replay(new ChoiceSequence([1, 0, 1, 1, 0, 2, 0]));
+        $runner  = $this->runner($source, $machine);
+        $steps   = [];
+
+        $machine->whileStepIsTaken = function () use ($runner, $source, &$steps): void
+        {
+            $steps[] = $runner->stepsExportedWith($this->exporter($source));
+        };
+
+        $runner->run(50);
+
+        $this->assertSame(
+            [
+                ['$machine->step(amount: 2);'],
+                ['$machine->step(amount: 2);', '$machine->step(amount: 3);'],
+            ],
+            $steps,
+        );
+    }
+
+    public function testStepThatIsBeingTakenWithAnExporterIsExportedAsTheLastStep(): void
+    {
+        $machine = new ObservedMachine;
+        $source  = ChoiceSource::replay(new ChoiceSequence([1, 0, 1, 1, 0, 2, 0]));
+        $runner  = $this->runner($source, $machine, true);
+        $steps   = [];
+
+        $machine->whileStepIsTaken = function () use ($runner, $source, &$steps): void
+        {
+            $steps[] = $runner->stepsExportedWith($this->exporter($source));
+        };
+
+        $runner->run(50);
+
+        $this->assertSame(
+            [
+                ['$machine->step(amount: 2);'],
+                ['$machine->step(amount: 2);', '$machine->step(amount: 3);'],
+            ],
+            $steps,
+        );
+        $this->assertSame($runner->steps(), $runner->stepsExportedWith($this->exporter($source)));
+    }
+
+    public function testInvariantThatIsBeingCheckedIsExportedAsTheLastStep(): void
+    {
+        $machine = new ObservedMachine;
+        $source  = ChoiceSource::replay(new ChoiceSequence([1, 0, 1, 0]));
+        $runner  = $this->runner($source, $machine);
+        $steps   = [];
+
+        $machine->whileInvariantIsChecked = function () use ($runner, $source, &$steps): void
+        {
+            $steps[] = $runner->stepsExportedWith($this->exporter($source));
+        };
+
+        $runner->run(50);
+
+        $this->assertSame(
+            [
+                ['$machine->invariant();'],
+                ['$machine->step(amount: 2);', '$machine->invariant();'],
+            ],
+            $steps,
+        );
+        $this->assertSame(['$machine->step(amount: 2);'], $runner->stepsExportedWith($this->exporter($source)));
+    }
+
     public function testPreconditionThatDoesNotReturnABoolIsRejected(): void
     {
         $runner = $this->runner(ChoiceSource::replay(new ChoiceSequence([])), new PreconditionThatDoesNotReturnABool);
@@ -352,10 +453,7 @@ EOT,
         $exporter = null;
 
         if ($reported) {
-            $exporter = new CounterexampleExporter(
-                NameScope::forMethod(new ReflectionMethod($this, __FUNCTION__)),
-                $source->constructions(),
-            );
+            $exporter = $this->exporter($source);
         }
 
         return new StateMachineRunner(
@@ -363,6 +461,14 @@ EOT,
             $exporter,
             new StateMachineDefinitionBuilder()->build($machine::class, new GeneratorDeriver(GeneratorRegistry::empty())),
             $machine,
+        );
+    }
+
+    private function exporter(ChoiceSource $source): CounterexampleExporter
+    {
+        return new CounterexampleExporter(
+            NameScope::forMethod(new ReflectionMethod($this, __FUNCTION__)),
+            $source->constructions(),
         );
     }
 

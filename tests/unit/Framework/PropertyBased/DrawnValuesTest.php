@@ -14,6 +14,7 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\PropertyBased\Type\NameScope;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\PropertyBased\StateMachine\CounterMachine;
 use PropertyBasedNameResolutionClassInGlobalNamespace;
 use ReflectionMethod;
 use SebastianBergmann\ChoiceSequence\ChoiceSequence;
@@ -97,6 +98,31 @@ final class DrawnValuesTest extends TestCase
         $drawnValues->draw(Generators::integers(0, 9), 'value');
 
         $this->assertSame([['label' => 'value', 'value' => '3']], $drawnValues->exportedWith($this->exporter()));
+    }
+
+    public function testHasNoStepsToExportWithoutAStateMachine(): void
+    {
+        $drawnValues = DrawnValues::from(ChoiceSource::replay(new ChoiceSequence([])));
+
+        $this->assertSame([], $drawnValues->stepsExportedWith($this->exporter()));
+    }
+
+    public function testExportsTheStepsOfItsStateMachineThatAreNotReportedOnRequest(): void
+    {
+        $drawnValues = DrawnValues::from(ChoiceSource::replay(new ChoiceSequence([0, 1, 1, 0, 1, 0, 1, 3, 0, 0])));
+
+        $drawnValues->runStateMachine(new CounterMachine, 50);
+
+        $this->assertSame([], $drawnValues->steps());
+        $this->assertSame(
+            [
+                '$machine->start(value: 0);',
+                '$machine->increment(amount: 1);',
+                '$snapshots1 = $machine->snapshot();',
+                '$machine->restore(snapshot: $snapshots1);',
+            ],
+            $drawnValues->stepsExportedWith($this->exporter()),
+        );
     }
 
     private function exporter(): CounterexampleExporter

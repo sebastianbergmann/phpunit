@@ -143,6 +143,23 @@ final class DrawnValues
     }
 
     /**
+     * The steps of the state machine that was run, or is being run, written
+     * as PHP code with the given exporter when they were not written when
+     * they were taken, because they are not reported, with the step that is
+     * being taken as the last one.
+     *
+     * @return list<non-empty-string>
+     */
+    public function stepsExportedWith(CounterexampleExporter $exporter): array
+    {
+        if ($this->stateMachine === null) {
+            return [];
+        }
+
+        return $this->stateMachine->stepsExportedWith($exporter);
+    }
+
+    /**
      * The values that were drawn, with their labels, exported as PHP code,
      * in the order in which they were drawn. Values that are not reported are
      * not exported.
