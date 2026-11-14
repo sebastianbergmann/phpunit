@@ -122,9 +122,10 @@ final readonly class Counterexample
     /**
      * The steps of the state machine that the counterexample ran with
      * runStateMachine(), written as PHP code that calls the methods of the
-     * state machine, which is referred to as $machine, in the order in which
-     * they were taken, followed by the invariant that failed, if one did. It
-     * is empty when the counterexample did not run a state machine.
+     * state machine, which is referred to as $machine, or as $stateMachine
+     * when a parameter of the property is named machine, in the order in
+     * which they were taken, followed by the invariant that failed, if one
+     * did. It is empty when the counterexample did not run a state machine.
      *
      * @return list<non-empty-string>
      */

@@ -1026,7 +1026,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * are replayed and shrunk together with the arguments of the property, and
      * the steps that the minimal counterexample takes are reported as PHP code
      * that calls the methods of the state machine, which is referred to as
-     * $machine.
+     * $machine, or as $stateMachine when a parameter of the property is named
+     * machine.
      *
      * The number of steps that each example takes, and the number of steps
      * that it takes with each rule, are observed as by observe(). The current
