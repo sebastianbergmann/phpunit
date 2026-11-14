@@ -15,6 +15,7 @@ use function is_nan;
 use function is_object;
 use function var_export;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
+use SebastianBergmann\ChoiceSequence\Repetition;
 use SebastianBergmann\Comparator\ComparisonFailure;
 use SebastianBergmann\Comparator\Factory as ComparatorFactory;
 
@@ -70,8 +71,8 @@ final readonly class ListGenerator extends AbstractGenerator
     {
         $list = [];
 
-        $this->repetition->repeat(
-            $source,
+        $source->repeat(
+            $this->repetition,
             function () use ($source, &$list): bool
             {
                 $element = $this->elements->generate($source);

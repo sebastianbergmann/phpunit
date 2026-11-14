@@ -18,6 +18,7 @@ use function sprintf;
 use function var_export;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
 use PHPUnit\Framework\PropertyBased\InvalidGeneratorArgumentException;
+use SebastianBergmann\ChoiceSequence\Repetition;
 
 /**
  * Generates arrays with keys and values of the given generators. A key that
@@ -74,8 +75,8 @@ final readonly class ArrayGenerator extends AbstractGenerator
     {
         $array = [];
 
-        $this->repetition->repeat(
-            $source,
+        $source->repeat(
+            $this->repetition,
             function () use ($source, &$array): bool
             {
                 $key = $this->keys->generate($source);

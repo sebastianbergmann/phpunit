@@ -16,6 +16,7 @@ use function var_export;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
 use SebastianBergmann\ChoiceSequence\CodePoints;
 use SebastianBergmann\ChoiceSequence\Distribution;
+use SebastianBergmann\ChoiceSequence\Repetition;
 use SebastianBergmann\ChoiceSequence\SpanKind;
 use SebastianBergmann\ChoiceSequence\UniformDistribution;
 use SebastianBergmann\ChoiceSequence\WeightedRangesDistribution;
@@ -141,8 +142,8 @@ final readonly class StringGenerator extends AbstractGenerator
     {
         $string = '';
 
-        $this->repetition->repeat(
-            $source,
+        $source->repeat(
+            $this->repetition,
             function () use ($source, &$string): bool
             {
                 $string .= $this->character($source);

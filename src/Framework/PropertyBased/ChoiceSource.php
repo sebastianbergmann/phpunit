@@ -12,6 +12,7 @@ namespace PHPUnit\Framework\PropertyBased;
 use function assert;
 use function spl_object_id;
 use function strtolower;
+use Closure;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorDeriver;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorRegistry;
 use PHPUnit\Framework\PropertyBased\Generator\DeferredGenerator;
@@ -20,8 +21,10 @@ use SebastianBergmann\ChoiceSequence\ChoiceSequence;
 use SebastianBergmann\ChoiceSequence\ChoiceSource as Choices;
 use SebastianBergmann\ChoiceSequence\ChoiceTree;
 use SebastianBergmann\ChoiceSequence\Distribution;
+use SebastianBergmann\ChoiceSequence\Repetition;
 use SebastianBergmann\ChoiceSequence\SpanKind;
 use SebastianBergmann\ChoiceSequence\TooManyChoicesException;
+use SebastianBergmann\ChoiceSequence\TooManyDuplicateElementsException;
 
 /**
  * Provides the choices from which generators build the arguments of an
@@ -258,6 +261,29 @@ final class ChoiceSource
             return $this->choices->choose($elements, $distribution);
         } catch (TooManyChoicesException $e) {
             throw ExampleRejectedException::tooManyChoices($e->maximumNumberOfChoices());
+        }
+    }
+
+    /**
+     * Draws the elements of a collection: the elements that its minimum size
+     * requires, and then, as long as its maximum size permits, a choice
+     * whether to add another element, followed by that element, each in a
+     * span of the kind SpanKind::Element.
+     *
+     * @param Closure(): bool $element draws an element and returns whether it
+     *                                 was added to the collection, which it is
+     *                                 not when it duplicates an earlier element
+     *
+     * @throws ExampleRejectedException
+     */
+    public function repeat(Repetition $repetition, Closure $element): void
+    {
+        try {
+            $repetition->repeat($this->choices, $element);
+        } catch (TooManyChoicesException $e) {
+            throw ExampleRejectedException::tooManyChoices($e->maximumNumberOfChoices());
+        } catch (TooManyDuplicateElementsException $e) {
+            throw ExampleRejectedException::tooManyDuplicateElements($e->numberOfAttempts());
         }
     }
 

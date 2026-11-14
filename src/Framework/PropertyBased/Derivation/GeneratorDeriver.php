@@ -46,7 +46,6 @@ use PHPUnit\Framework\PropertyBased\Generator\NullableGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\ObjectGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\OneOfGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\RecordGenerator;
-use PHPUnit\Framework\PropertyBased\Generator\Repetition;
 use PHPUnit\Framework\PropertyBased\Generator\StringGenerator;
 use PHPUnit\Framework\PropertyBased\Generators;
 use PHPUnit\Framework\PropertyBased\InvalidTypeException;
@@ -67,6 +66,7 @@ use ReflectionParameter;
 use ReflectionType;
 use ReflectionUnionType;
 use SebastianBergmann\ChoiceSequence\BernoulliDistribution;
+use SebastianBergmann\ChoiceSequence\Repetition;
 use WeakMap;
 
 /**

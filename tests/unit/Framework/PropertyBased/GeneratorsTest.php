@@ -102,7 +102,6 @@ use PHPUnit\Framework\PropertyBased\Generator\MappedGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\NullableGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\OneOfGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\RecordGenerator;
-use PHPUnit\Framework\PropertyBased\Generator\Repetition;
 use PHPUnit\Framework\PropertyBased\Generator\StringGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\TupleGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\UrlGenerator;
@@ -142,7 +141,6 @@ use stdClass;
 #[CoversClass(NullableGenerator::class)]
 #[CoversClass(OneOfGenerator::class)]
 #[CoversClass(RecordGenerator::class)]
-#[CoversClass(Repetition::class)]
 #[CoversClass(StringGenerator::class)]
 #[CoversClass(TupleGenerator::class)]
 #[CoversClass(UrlGenerator::class)]

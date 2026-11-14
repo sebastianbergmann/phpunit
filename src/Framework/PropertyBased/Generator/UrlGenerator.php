@@ -14,6 +14,7 @@ use function implode;
 use function str_split;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
 use SebastianBergmann\ChoiceSequence\BernoulliDistribution;
+use SebastianBergmann\ChoiceSequence\Repetition;
 use SebastianBergmann\ChoiceSequence\UniformDistribution;
 
 /**
@@ -237,14 +238,14 @@ final readonly class UrlGenerator extends AbstractGenerator
     {
         $path = '';
 
-        $this->segments->repeat(
-            $source,
+        $source->repeat(
+            $this->segments,
             function () use ($source, &$path): bool
             {
                 $segment = '';
 
-                $this->characters->repeat(
-                    $source,
+                $source->repeat(
+                    $this->characters,
                     function () use ($source, &$segment): bool
                     {
                         $characters = $this->charactersOfSegments;
@@ -276,8 +277,8 @@ final readonly class UrlGenerator extends AbstractGenerator
 
         $pairs = [];
 
-        $this->pairs->repeat(
-            $source,
+        $source->repeat(
+            $this->pairs,
             function () use ($source, &$pairs): bool
             {
                 $pairs[] = $this->string($source, $this->atLeastOneCharacter, $this->charactersOfQueries) . '=' . $this->string($source, $this->characters, $this->charactersOfQueries);
@@ -305,8 +306,8 @@ final readonly class UrlGenerator extends AbstractGenerator
     {
         $string = '';
 
-        $repetition->repeat(
-            $source,
+        $source->repeat(
+            $repetition,
             function () use ($source, $characters, &$string): bool
             {
                 $string .= $source->choose($characters, $this->uniform);

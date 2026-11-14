@@ -12,7 +12,7 @@ namespace PHPUnit\Framework\PropertyBased\RegularExpression;
 use function var_export;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
 use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
-use PHPUnit\Framework\PropertyBased\Generator\Repetition;
+use SebastianBergmann\ChoiceSequence\Repetition;
 
 /**
  * A part of a regular expression with a quantifier, which is repeated from
@@ -43,8 +43,8 @@ final readonly class QuantifiedNode implements Node
     {
         $string = '';
 
-        $this->repetition->repeat(
-            $source,
+        $source->repeat(
+            $this->repetition,
             function () use ($source, &$string): bool
             {
                 $string .= $this->node->generate($source);

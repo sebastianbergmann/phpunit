@@ -20,6 +20,7 @@ use Random\Engine\Xoshiro256StarStar;
 use Random\Randomizer;
 use SebastianBergmann\ChoiceSequence\ChoiceSequence;
 use SebastianBergmann\ChoiceSequence\ChoiceTree;
+use SebastianBergmann\ChoiceSequence\Repetition;
 use SebastianBergmann\ChoiceSequence\Span;
 use SebastianBergmann\ChoiceSequence\SpanKind;
 use SebastianBergmann\ChoiceSequence\UniformDistribution;
@@ -54,6 +55,45 @@ final class ChoiceSourceTest extends TestCase
         $this->expectExceptionMessageIs('Generating the example required more than 1 choices');
 
         $source->choose(['a', 'b'], new UniformDistribution);
+    }
+
+    public function testDrawsTheElementsOfACollectionWithTheRepetitionOfTheChoiceSequenceLibrary(): void
+    {
+        $source   = ChoiceSource::replay(new ChoiceSequence([5, 1, 6, 0]));
+        $elements = [];
+
+        $source->repeat(
+            new Repetition('element', 1, null),
+            static function () use ($source, &$elements): bool
+            {
+                $elements[] = $source->draw(9, new UniformDistribution);
+
+                return true;
+            },
+        );
+
+        $this->assertSame([5, 6], $elements);
+        $this->assertSame([5, 1, 6, 0], $source->sequence()->choices());
+    }
+
+    public function testRejectsTheExampleWhenTheElementsOfACollectionRequireMoreThanTheMaximumNumberOfChoices(): void
+    {
+        $source = ChoiceSource::replay(new ChoiceSequence([1, 1]), 1);
+
+        $this->expectException(ExampleRejectedException::class);
+        $this->expectExceptionMessageIs('Generating the example required more than 1 choices');
+
+        $source->repeat(new Repetition('element', 0, null), static fn (): bool => true);
+    }
+
+    public function testRejectsTheExampleWhenNoNewElementForACollectionIsDrawnInSeveralAttempts(): void
+    {
+        $source = ChoiceSource::replay(new ChoiceSequence([]));
+
+        $this->expectException(ExampleRejectedException::class);
+        $this->expectExceptionMessageIs('No new element for the collection was generated in 10 attempts');
+
+        $source->repeat(new Repetition('element', 1, null), static fn (): bool => false);
     }
 
     public function testDrawsAndReplaysChoicesWithTheChoiceSourceOfTheChoiceSequenceLibrary(): void

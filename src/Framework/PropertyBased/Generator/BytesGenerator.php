@@ -15,6 +15,7 @@ use function var_export;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
 use SebastianBergmann\ChoiceSequence\SpanKind;
 use SebastianBergmann\ChoiceSequence\WeightedRangesDistribution;
+use SebastianBergmann\ChoiceSequence\Repetition;
 
 /**
  * Generates arbitrary binary strings. Each byte is one choice, its value.
@@ -73,8 +74,8 @@ final readonly class BytesGenerator extends AbstractGenerator
     {
         $bytes = '';
 
-        $this->repetition->repeat(
-            $source,
+        $source->repeat(
+            $this->repetition,
             function () use ($source, &$bytes): bool
             {
                 $byte = $source->draw(0xFF, $this->byte);
