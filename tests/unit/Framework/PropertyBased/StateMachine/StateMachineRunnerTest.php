@@ -29,6 +29,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\PropertyBased\StateMachine\ChildStateMachine;
 use PHPUnit\TestFixture\PropertyBased\StateMachine\CounterMachine;
 use PHPUnit\TestFixture\PropertyBased\StateMachine\PreconditionThatDoesNotReturnABool;
+use PHPUnit\TestFixture\PropertyBased\StateMachine\StateMachineWithPoolsWhoseNamesEndInDigits;
 use PHPUnit\TestFixture\PropertyBased\StateMachine\StuckMachine;
 use PHPUnit\TestFixture\PropertyBased\StateMachine\SwitchMachine;
 use Random\Engine\Xoshiro256StarStar;
@@ -202,6 +203,36 @@ EOT,
             ],
             $runner->steps(),
         );
+    }
+
+    public function testValuesOfPoolsWhoseNamesOnlyDifferInDigitsAtTheirEndAreAssignedToDifferentVariables(): void
+    {
+        // produceX1(), produceX_1(), eleven times produceX(), and consume()
+        // with the values that were produced last
+        $choices = [1, 1, 1, 2];
+
+        for ($i = 1; $i <= 11; $i++) {
+            $choices[] = 1;
+            $choices[] = 0;
+        }
+
+        $runner = $this->runner(
+            ChoiceSource::replay(new ChoiceSequence([...$choices, 1, 3, 0, 0, 0, 0])),
+            new StateMachineWithPoolsWhoseNamesEndInDigits,
+            true,
+        );
+
+        $runner->run(50);
+
+        $steps = $runner->steps();
+
+        $this->assertCount(14, $steps);
+        $this->assertSame('$x11 = $machine->produceX1();', $steps[0]);
+        $this->assertSame('$x_11 = $machine->produceX_1();', $steps[1]);
+        $this->assertSame('$x1 = $machine->produceX();', $steps[2]);
+        $this->assertSame('$x10 = $machine->produceX();', $steps[11]);
+        $this->assertSame('$x__11 = $machine->produceX();', $steps[12]);
+        $this->assertSame('$machine->consume(x: $x__11, x1: $x11, x_1: $x_11);', $steps[13]);
     }
 
     public function testStepThatFailsIsReported(): void

@@ -117,6 +117,13 @@ final class StateMachineRunner
     private array $numberOfValuesProduced = [];
 
     /**
+     * The names of the variables that values were assigned to in the report.
+     *
+     * @var array<non-empty-string, true>
+     */
+    private array $variables = [];
+
+    /**
      * @var list<non-empty-string>
      */
     private array $steps = [];
@@ -451,7 +458,7 @@ final class StateMachineRunner
         $variable = null;
 
         if ($produces !== null) {
-            $variable = $produces . $this->nextNumberOfValueProducedFor($produces);
+            $variable = $this->nextVariableFor($produces);
             $call     = '$' . $variable . ' = ' . $call;
         }
 
@@ -514,6 +521,36 @@ final class StateMachineRunner
                 throw $t;
             }
         }
+    }
+
+    /**
+     * The name of the variable that the next value of a pool is assigned to in
+     * the report: the name of the pool, followed by the number of the value.
+     *
+     * The names of two pools can differ only in digits at the end of one of
+     * them: the eleventh value of the pool "x" and the first value of the pool
+     * "x1" would both be assigned to $x11. The name of the pool and the number
+     * of the value are separated by an underscore when the name of the
+     * variable is already used.
+     *
+     * @param non-empty-string $pool
+     *
+     * @return non-empty-string
+     */
+    private function nextVariableFor(string $pool): string
+    {
+        $number    = $this->nextNumberOfValueProducedFor($pool);
+        $separator = '';
+
+        while (array_key_exists($pool . $separator . $number, $this->variables)) {
+            $separator .= '_';
+        }
+
+        $variable = $pool . $separator . $number;
+
+        $this->variables[$variable] = true;
+
+        return $variable;
     }
 
     /**
