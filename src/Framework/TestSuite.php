@@ -631,10 +631,12 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
      * Calls the hook methods of the test class that are called after its last
      * test, when the examples of its properties are run one at a time outside
      * of a test run, after the last of these examples.
+     *
+     * @return ?Throwable the throwable that one of the methods raised, or null when the methods were called without one of them raising one
      */
-    public function invokeMethodsAfterLastExample(): void
+    public function invokeMethodsAfterLastExample(): ?Throwable
     {
-        $this->invokeMethodsAfterLastTest($this->emitter);
+        return $this->invokeMethodsAfterLastTest($this->emitter);
     }
 
     /**
@@ -1053,15 +1055,19 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
         return false;
     }
 
-    private function invokeMethodsAfterLastTest(Event\Emitter $emitter): void
+    /**
+     * @return ?Throwable the throwable that one of the methods raised, or null when the methods were called without one of them raising one
+     */
+    private function invokeMethodsAfterLastTest(Event\Emitter $emitter): ?Throwable
     {
         if (!$this->isForTestClass()) {
-            return;
+            return null;
         }
 
         $methods       = new HookMethods($emitter)->hookMethods($this->name)['afterClass']->methodNamesSortedByPriority();
         $reflector     = new ReflectionClass($this->name);
         $calledMethods = [];
+        $raised        = null;
 
         foreach ($methods as $method) {
             if (Reflection::methodDoesNotExistOrIsDeclaredInTestCase($reflector, $method)) {
@@ -1109,6 +1115,8 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                     );
                 }
 
+                $raised = $t;
+
                 break;
             }
         }
@@ -1119,5 +1127,7 @@ class TestSuite implements IteratorAggregate, Reorderable, Test
                 ...$calledMethods,
             );
         }
+
+        return $raised;
     }
 }

@@ -15,6 +15,8 @@ use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\TestFixture\AbstractTestCase;
+use PHPUnit\TestFixture\AfterLastTestMethodThatMarksTheTestAsSkippedTest;
+use PHPUnit\TestFixture\AfterLastTestMethodThatRaisesAnExceptionTest;
 use PHPUnit\TestFixture\BeforeFirstTestMethodInvocationRecordingTest;
 use PHPUnit\TestFixture\DependencyFailureTest;
 use PHPUnit\TestFixture\DependencyOnClassTest;
@@ -215,5 +217,60 @@ final class TestSuiteTest extends TestCase
 
         $this->assertSame($exception, $thrown);
         $this->assertFalse(BeforeFirstTestMethodInvocationRecordingTest::$beforeFirstTestMethodWasInvoked);
+    }
+
+    public function testReturnsNullWhenNoMethodThatIsCalledAfterTheLastExampleRaisesAThrowable(): void
+    {
+        $suite = TestSuite::fromClassReflector(new ReflectionClass(BeforeFirstTestMethodInvocationRecordingTest::class), $this->createStub(Emitter::class));
+
+        $this->assertNull($suite->invokeMethodsAfterLastExample());
+    }
+
+    public function testReturnsNullForMethodsThatAreCalledAfterTheLastExampleWhenItIsNotForATestClass(): void
+    {
+        $suite = TestSuite::empty('the-test-suite', $this->createStub(Emitter::class));
+
+        $this->assertNull($suite->invokeMethodsAfterLastExample());
+    }
+
+    public function testReturnsThrowableThatMethodThatIsCalledAfterTheLastExampleRaised(): void
+    {
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter
+            ->expects($this->once())
+            ->method('afterLastTestMethodErrored');
+
+        $emitter
+            ->expects($this->once())
+            ->method('afterLastTestMethodFinished');
+
+        $suite = TestSuite::fromClassReflector(new ReflectionClass(AfterLastTestMethodThatRaisesAnExceptionTest::class), $emitter);
+
+        $raised = $suite->invokeMethodsAfterLastExample();
+
+        $this->assertInstanceOf(RuntimeException::class, $raised);
+        $this->assertSame('the message', $raised->getMessage());
+    }
+
+    public function testReturnsExceptionForMethodThatIsCalledAfterTheLastExampleAndMarksTheTestAsSkipped(): void
+    {
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter
+            ->expects($this->once())
+            ->method('afterLastTestMethodErrored');
+
+        $emitter
+            ->expects($this->once())
+            ->method('afterLastTestMethodFinished');
+
+        $suite = TestSuite::fromClassReflector(new ReflectionClass(AfterLastTestMethodThatMarksTheTestAsSkippedTest::class), $emitter);
+
+        $raised = $suite->invokeMethodsAfterLastExample();
+
+        $this->assertInstanceOf(MarkedIncompleteOrSkippedInAfterHookMethodException::class, $raised);
+        $this->assertSame('markTestSkipped() must not be called in after-last-test method ' . AfterLastTestMethodThatMarksTheTestAsSkippedTest::class . '::tearDownAfterClass()', $raised->getMessage());
+        $this->assertInstanceOf(SkippedTest::class, $raised->getPrevious());
     }
 }
