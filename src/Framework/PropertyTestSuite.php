@@ -94,6 +94,11 @@ final class PropertyTestSuite extends IterativeTestSuite
     private ?TestRunHistory $testRunHistory = null;
 
     /**
+     * @var ?list<list<non-negative-int>>
+     */
+    private ?array $rememberedCounterexamples = null;
+
+    /**
      * @var non-negative-int
      */
     private int $seed = 0;
@@ -156,6 +161,31 @@ final class PropertyTestSuite extends IterativeTestSuite
     public function setTestRunHistory(TestRunHistory $testRunHistory): void
     {
         $this->testRunHistory = $testRunHistory;
+    }
+
+    /**
+     * The choice sequences of the counterexamples that were remembered when
+     * the property was last falsified, for a process that has no test run
+     * history to take them from: a worker process of a parallel test run, to
+     * which they travel with the description of the property.
+     *
+     * @param list<list<non-negative-int>> $choiceSequences
+     */
+    public function setRememberedCounterexamples(array $choiceSequences): void
+    {
+        $this->rememberedCounterexamples = $choiceSequences;
+    }
+
+    /**
+     * The choice sequences of the counterexamples that were remembered when
+     * the property was last falsified, one for each way in which it was
+     * falsified, and an empty list when none are remembered.
+     *
+     * @return list<list<non-negative-int>>
+     */
+    public function rememberedCounterexamples(): array
+    {
+        return $this->rememberedCounterexamplesOf($this->testOfProperty());
     }
 
     /**
@@ -364,17 +394,13 @@ final class PropertyTestSuite extends IterativeTestSuite
 
         $randomizer = new Randomizer(new Xoshiro256StarStar($this->seed));
         $tree       = new ChoiceTree;
-        $remembered = [];
+        $remembered = $this->rememberedCounterexamplesOf($test);
 
         // the search draws from a random number generator of its own, so the
         // examples that are generated are the same with and without it
         $search = new TargetedSearch(new Randomizer(new Xoshiro256StarStar(hash('sha256', 'targeted search ' . $this->seed, true))));
 
         $this->targetedSearch = $search;
-
-        if ($this->testRunHistory !== null) {
-            $remembered = $this->testRunHistory->counterexamples(TestRunHistoryId::fromReorderable($test));
-        }
 
         for ($i = 1; $i <= $this->statistics()->maximumNumberOfExamplesGenerated(); $i++) {
             if ($this->statistics()->allExamplesWereChecked()) {
@@ -591,6 +617,25 @@ final class PropertyTestSuite extends IterativeTestSuite
         }
 
         return ExampleResult::falsified($falsification, $example->status()->isFailure() || $falsification->isIssue(), $source->sequence());
+    }
+
+    /**
+     * The test of the property is passed in, as this test suite no longer
+     * aggregates it while the property is checked.
+     *
+     * @return list<list<non-negative-int>>
+     */
+    private function rememberedCounterexamplesOf(TestCase $test): array
+    {
+        if ($this->rememberedCounterexamples !== null) {
+            return $this->rememberedCounterexamples;
+        }
+
+        if ($this->testRunHistory === null) {
+            return [];
+        }
+
+        return $this->testRunHistory->counterexamples(TestRunHistoryId::fromReorderable($test));
     }
 
     /**

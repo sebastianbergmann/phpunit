@@ -151,22 +151,30 @@ function __phpunit_worker_run_unit(array $command, array $extensionSubscribers):
     // class have finished. An interrupted worker runs no further test, which
     // is of no concern: the main process does not dispatch another unit once
     // the run is stopping.
-    $dispatcher->registerSubscriber(
-        new class($command['haltFile']) implements PHPUnit\Event\Test\FinishedSubscriber
-        {
-            public function __construct(
-                private readonly string $haltFile,
-            ) {
-            }
+    //
+    // The examples of a property are tests that finish as well, but their
+    // events are diverted into a collection window and not dispatched to
+    // subscribers. The request is therefore also checked for when such a
+    // test has finished, so that a property is not checked for all of its
+    // examples after the run was stopped: it stops between two examples, as
+    // it does in a sequential run.
+    $__phpunit_halt_subscriber = new class($command['haltFile']) implements PHPUnit\Event\Test\FinishedSubscriber
+    {
+        public function __construct(
+            private readonly string $haltFile,
+        ) {
+        }
 
-            public function notify(PHPUnit\Event\Test\Finished $event): void
-            {
-                if (__phpunit_worker_halt_was_requested($this->haltFile)) {
-                    TestResultFacade::interrupt();
-                }
+        public function notify(PHPUnit\Event\Test\Finished $event): void
+        {
+            if (__phpunit_worker_halt_was_requested($this->haltFile)) {
+                TestResultFacade::interrupt();
             }
-        },
-    );
+        }
+    };
+
+    $dispatcher->registerSubscriber($__phpunit_halt_subscriber);
+    $dispatcher->registerSubscriberForCollectedEvents($__phpunit_halt_subscriber);
 
     $dispatcher->registerSubscriber(
         new class($command['haltFile']) implements PHPUnit\Event\Test\BeforeFirstTestMethodFinishedSubscriber

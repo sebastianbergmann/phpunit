@@ -12,6 +12,7 @@ namespace PHPUnit\Runner\Parallel;
 use function assert;
 use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\IterativeTestSuite;
+use PHPUnit\Framework\PropertyTestSuite;
 use PHPUnit\Framework\RepeatTestSuite;
 use PHPUnit\Framework\RetryTestSuite;
 use PHPUnit\Framework\Test;
@@ -29,7 +30,8 @@ use PHPUnit\Metadata\Api\Dependencies;
  * event envelope that nests its tests in the logger output, the RetryTestSuite
  * of a retried test method builds and runs the additional attempts, and the
  * RepeatTestSuite of a repeated test method applies its failure threshold and
- * skips the remaining repetitions once it is exceeded.
+ * skips the remaining repetitions once it is exceeded, and the
+ * PropertyTestSuite of a property generates, runs, and shrinks its examples.
  *
  * A descriptor holds only what the worker needs in order to rebuild the member:
  * the parent process describes a member with from(), and the worker turns the
@@ -62,6 +64,10 @@ abstract readonly class TestDescriptor
 
         if ($test instanceof RepeatTestSuite) {
             return RepeatSuiteDescriptor::fromTestSuite($test, $className);
+        }
+
+        if ($test instanceof PropertyTestSuite) {
+            return PropertySuiteDescriptor::fromTestSuite($test);
         }
 
         assert($test instanceof TestCase);

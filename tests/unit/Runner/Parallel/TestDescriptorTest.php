@@ -14,6 +14,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\DataProviderTestSuite;
+use PHPUnit\Framework\PropertyTestSuite;
 use PHPUnit\Framework\Reorderable;
 use PHPUnit\Framework\RepeatTestSuite;
 use PHPUnit\Framework\RetryTestSuite;
@@ -24,6 +25,7 @@ use PHPUnit\TestFixture\ParallelWorker\WorkerFirstTest;
 
 #[CoversClass(TestDescriptor::class)]
 #[UsesClass(DataProviderSuiteDescriptor::class)]
+#[UsesClass(PropertySuiteDescriptor::class)]
 #[UsesClass(RepeatSuiteDescriptor::class)]
 #[UsesClass(RetrySuiteDescriptor::class)]
 #[UsesClass(TestCaseDescriptor::class)]
@@ -81,6 +83,22 @@ final class TestDescriptorTest extends TestCase
         $descriptor = TestDescriptor::from($suite, WorkerFirstTest::class);
 
         $this->assertInstanceOf(RepeatSuiteDescriptor::class, $descriptor);
+    }
+
+    public function testDescribesTheSuiteOfAPropertyAsASuite(): void
+    {
+        $suite = PropertyTestSuite::fromTestCase(
+            WorkerFirstTest::class . '::testStartsTheProcessLocalCounter',
+            $this->createStub(Emitter::class),
+            $this->testCase(),
+            null,
+            100,
+            fn (): TestCase => $this->testCase(),
+        );
+
+        $descriptor = TestDescriptor::from($suite, WorkerFirstTest::class);
+
+        $this->assertInstanceOf(PropertySuiteDescriptor::class, $descriptor);
     }
 
     public function testDescribesTheMembersOfASuiteRecursively(): void

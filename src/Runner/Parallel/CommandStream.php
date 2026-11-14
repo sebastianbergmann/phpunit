@@ -84,6 +84,7 @@ final class CommandStream
             [
                 'allowed_classes' => [
                     DataProviderSuiteDescriptor::class,
+                    PropertySuiteDescriptor::class,
                     RepeatSuiteDescriptor::class,
                     RetrySuiteDescriptor::class,
                     TestCaseDescriptor::class,

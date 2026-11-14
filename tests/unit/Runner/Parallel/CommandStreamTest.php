@@ -11,14 +11,17 @@ namespace PHPUnit\Runner\Parallel;
 
 use function base64_encode;
 use function serialize;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\UsesClass;
+use PHPUnit\Framework\PropertyTestSuite;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\ParallelWorker\WorkerFirstTest;
 use stdClass;
 
 #[CoversClass(CommandStream::class)]
+#[UsesClass(PropertySuiteDescriptor::class)]
 #[UsesClass(TestDescriptor::class)]
 #[UsesClass(TestCaseDescriptor::class)]
 #[Small]
@@ -39,6 +42,33 @@ final class CommandStreamTest extends TestCase
         $this->assertIsArray($command);
         $this->assertSame('runUnit', $command['command']);
         $this->assertContainsOnlyInstancesOf(TestCaseDescriptor::class, $command['tests']);
+    }
+
+    public function testReadsBackTheDescriptionOfAProperty(): void
+    {
+        $suite = PropertyTestSuite::fromTestCase(
+            WorkerFirstTest::class . '::testStartsTheProcessLocalCounter',
+            $this->createStub(Emitter::class),
+            new WorkerFirstTest('testStartsTheProcessLocalCounter'),
+            null,
+            100,
+            static fn (): TestCase => new WorkerFirstTest('testStartsTheProcessLocalCounter'),
+        );
+
+        $suite->setRememberedCounterexamples([[0, 5]]);
+
+        $command = CommandStream::decode(
+            CommandStream::encode(
+                [
+                    'command'   => 'runUnit',
+                    'className' => WorkerFirstTest::class,
+                    'tests'     => [TestDescriptor::from($suite, WorkerFirstTest::class)],
+                ],
+            ),
+        );
+
+        $this->assertIsArray($command);
+        $this->assertEquals([PropertySuiteDescriptor::fromTestSuite($suite)], $command['tests']);
     }
 
     public function testEncodesACommandThatCarriesArbitraryBytesWithoutTheNewlineThatDelimitsIt(): void
