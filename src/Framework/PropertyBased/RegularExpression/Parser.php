@@ -54,7 +54,9 @@ use PHPUnit\Framework\PropertyBased\InvalidGeneratorArgumentException;
  * they match with and without the u modifier, and \D, \W, and \S, as well as
  * negated POSIX classes, only generate ASCII characters with the u modifier,
  * because it makes them not match other characters, such as letters, that
- * they do not match without it.
+ * they do not match without it. For the same reason, a negated character
+ * class that contains one of them, such as [^\W_], only generates ASCII
+ * characters with the u modifier.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -383,7 +385,7 @@ final class Parser
             }
 
             $first  = false;
-            $member = $this->memberOfCharacterClass($character);
+            $member = $this->memberOfCharacterClass($character, $negated);
 
             if ($member === null) {
                 continue;
@@ -406,7 +408,7 @@ final class Parser
             $this->position++;
 
             // a range cannot end with a class of characters such as \d
-            $last = $this->memberOfCharacterClass($this->next());
+            $last = $this->memberOfCharacterClass($this->next(), $negated);
 
             assert(is_int($last));
 
@@ -432,20 +434,20 @@ final class Parser
      *
      * @return null|CharacterSet|non-negative-int null for \E, which is ignored
      */
-    private function memberOfCharacterClass(string $character): null|CharacterSet|int
+    private function memberOfCharacterClass(string $character, bool $inNegatedCharacterClass): null|CharacterSet|int
     {
         if ($character === '[' && $this->peek() === ':') {
-            return $this->posixClass();
+            return $this->posixClass($inNegatedCharacterClass);
         }
 
         if ($character === '\\') {
-            return $this->escape(true);
+            return $this->escape(true, $inNegatedCharacterClass);
         }
 
         return $this->codePoint($character);
     }
 
-    private function posixClass(): CharacterSet
+    private function posixClass(bool $inNegatedCharacterClass): CharacterSet
     {
         // the colon
         $this->position++;
@@ -488,7 +490,7 @@ final class Parser
         );
 
         if ($negated) {
-            return $this->negatedShorthand($set);
+            return $this->negatedShorthand($set, $inNegatedCharacterClass);
         }
 
         return $set;
@@ -505,7 +507,7 @@ final class Parser
             return $this->quoted();
         }
 
-        $escape = $this->escape(false);
+        $escape = $this->escape(false, false);
 
         if ($escape === null) {
             return new LiteralNode('');
@@ -546,7 +548,7 @@ final class Parser
      *
      * @return null|CharacterSet|non-negative-int a set for an escape sequence such as \d, the code point of an escaped character, or null for an assertion such as \b
      */
-    private function escape(bool $inCharacterClass): null|CharacterSet|int
+    private function escape(bool $inCharacterClass, bool $inNegatedCharacterClass): null|CharacterSet|int
     {
         $character = $this->next();
 
@@ -555,31 +557,31 @@ final class Parser
                 return $this->digitCharacters();
 
             case 'D':
-                return $this->negatedShorthand($this->digitCharacters());
+                return $this->negatedShorthand($this->digitCharacters(), $inNegatedCharacterClass);
 
             case 'w':
                 return $this->wordCharacters();
 
             case 'W':
-                return $this->negatedShorthand($this->wordCharacters());
+                return $this->negatedShorthand($this->wordCharacters(), $inNegatedCharacterClass);
 
             case 's':
                 return $this->whitespaceCharacters();
 
             case 'S':
-                return $this->negatedShorthand($this->whitespaceCharacters());
+                return $this->negatedShorthand($this->whitespaceCharacters(), $inNegatedCharacterClass);
 
             case 'h':
                 return $this->horizontalWhitespaceCharacters();
 
             case 'H':
-                return $this->negatedShorthand($this->horizontalWhitespaceCharacters());
+                return $this->negatedShorthand($this->horizontalWhitespaceCharacters(), $inNegatedCharacterClass);
 
             case 'v':
                 return $this->verticalWhitespaceCharacters();
 
             case 'V':
-                return $this->negatedShorthand($this->verticalWhitespaceCharacters());
+                return $this->negatedShorthand($this->verticalWhitespaceCharacters(), $inNegatedCharacterClass);
 
             case 't':
                 return 0x09;
@@ -762,14 +764,21 @@ final class Parser
      * class matches: with the u modifier, only the ASCII ones, because other
      * characters, such as letters, may be matched by the escape sequence that
      * is negated.
+     *
+     * In a negated character class, such as [^\W_], the characters that the
+     * escape sequence matches are characters that the character class does
+     * not match. There, with the u modifier, they are all characters that are
+     * not in $set, so that the character class is only left with characters
+     * of $set, which it matches, rather than with all characters that are not
+     * ASCII characters, most of which it does not match.
      */
-    private function negatedShorthand(CharacterSet $set): CharacterSet
+    private function negatedShorthand(CharacterSet $set, bool $inNegatedCharacterClass): CharacterSet
     {
-        if ($this->utf8) {
+        if ($this->utf8 && !$inNegatedCharacterClass) {
             return $set->complementWithin(CharacterSet::ascii(true));
         }
 
-        return $set->complementWithin(CharacterSet::all(false));
+        return $set->complementWithin(CharacterSet::all($this->utf8));
     }
 
     /**

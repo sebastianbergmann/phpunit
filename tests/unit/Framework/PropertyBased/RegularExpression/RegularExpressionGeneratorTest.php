@@ -49,57 +49,64 @@ final class RegularExpressionGeneratorTest extends TestCase
     public static function regularExpressionProvider(): array
     {
         return [
-            'character classes and quantifiers'  => ['/\A[a-z]+-\d{2,4}\z/'],
-            'alternation in a repeated group'    => ['/^(foo|bar|baz)+$/'],
-            'escape sequences for classes'       => ['/^\w+@\w+\.(com|org)$/'],
-            'negated character class'            => ['/[^a-z]/'],
-            'dot with the u modifier'            => ['/^.{3}$/u'],
-            'dot with the s modifier'            => ['/^.{3}$/s'],
-            'negated escape sequences'           => ['/^\W\D\S$/u'],
-            'negated escape sequences in bytes'  => ['/^\W\D\S$/'],
-            'POSIX classes'                      => ['/^[[:alpha:]][[:^digit:]][[:xdigit:][:punct:]]$/'],
-            'POSIX classes with the u modifier'  => ['/^[[:^space:]][[:word:][:blank:][:cntrl:]]$/u'],
-            'more POSIX classes'                 => ['/^[[:alnum:][:upper:][:lower:][:graph:][:print:][:ascii:]]$/'],
-            'lazy quantifier'                    => ['/^(?:ab|c){2,}?$/'],
-            'named groups'                       => ['/^(?<year>\d{4})-(?P<month>\d\d)-(?\'day\'\d\d)$/'],
-            'other delimiters'                   => ['#^/path/[^/]+$#'],
-            'bracket delimiters'                 => ['{^a{2}$}'],
-            'parentheses as delimiters'          => ['(^a(b)$)i'],
-            'square brackets as delimiters'      => ['[^a$]'],
-            'angle brackets as delimiters'       => ['<^a$>'],
-            'whitespace'                         => ['/^\s\S$/'],
-            'extended modifier'                  => ["/^a b # comment\n c\\ d$/x"],
-            'case-insensitive class'             => ['/^[A-Z]$/i'],
-            'case-insensitive negated class'     => ['/^[^a]$/i'],
-            'word boundaries'                    => ['/\bword\b/'],
-            'quoted characters'                  => ['/^\QA.B*\E$/'],
-            'quoted characters at the end'       => ['/^x\Q.*/'],
-            'escaped hyphen in a class'          => ['/^[\d\-x]$/'],
-            'closing bracket first in a class'   => ['/^[]a]$/'],
-            'escaped closing bracket in a class' => ['/^[\]]$/'],
-            'hyphen at the end of a class'       => ['/^[a-]$/'],
-            'optional character'                 => ['/^colou?r$/'],
-            'possessive quantifiers'             => ['/^a++b*+c?+$/'],
-            'empty alternative'                  => ['/^(a|)$/'],
-            'empty regular expression'           => ['/^$/'],
-            'atomic and branch reset groups'     => ['/^(?>a|b)(?|(c)|(d))$/'],
-            'comment group'                      => ['/^(?#comment)x$/'],
-            'multibyte range'                    => ['/^[é\x{e0}-\x{ef}]$/u'],
-            'emoji range'                        => ['/^[\x{1F600}-\x{1F64F}]$/u'],
-            'range that spans the surrogates'    => ['/^[a-z\x{80}-\x{FFFF}]+$/u'],
-            'range of all code points'           => ['/^[\x00-\x{10FFFF}]{5}$/u'],
-            'horizontal and vertical whitespace' => ['/^\h\v\H\V$/u'],
-            'whitespace in bytes'                => ['/^\h\v\H\V$/'],
-            'escaped characters'                 => ['/^\x41\x{42}\x4\0\012\o{103}\cA\t\n\r\f\e\a$/u'],
-            '\E without \Q'                      => ['/^a\Eb[c\E]$/'],
-            'backspace in a class'               => ['/^[\b]$/'],
-            'escape sequences in a range'        => ['/^[\x41-\x{5A}]$/u'],
-            'brace that is not a quantifier'     => ['/x{a}/'],
-            'quantifier with an upper bound'     => ['/^x{1,3}$/'],
-            'escaped delimiter'                  => ['/^\/$/'],
-            'anchors'                            => ['/\Aa\z|\Ab\Z/'],
-            'dollar end only'                    => ['/^[a-c]\\n$/D'],
-            'multiline'                          => ['/^a$/m'],
+            'character classes and quantifiers'                    => ['/\A[a-z]+-\d{2,4}\z/'],
+            'alternation in a repeated group'                      => ['/^(foo|bar|baz)+$/'],
+            'escape sequences for classes'                         => ['/^\w+@\w+\.(com|org)$/'],
+            'negated character class'                              => ['/[^a-z]/'],
+            'dot with the u modifier'                              => ['/^.{3}$/u'],
+            'dot with the s modifier'                              => ['/^.{3}$/s'],
+            'negated escape sequences'                             => ['/^\W\D\S$/u'],
+            'negated escape sequences in bytes'                    => ['/^\W\D\S$/'],
+            'negated \W in a negated class'                        => ['/^[^\W_]{8,}$/u'],
+            'negated \W and \d in a negated class'                 => ['/^[^\W\d_]{5}$/u'],
+            'negated \S in a negated class'                        => ['/^\w+[^\S\n]+\w+$/u'],
+            'negated \D in a negated class'                        => ['/^[^\D]{8}$/u'],
+            'negated \H and \V in negated classes'                 => ['/^[^\H]{8}[^\V]{8}$/u'],
+            'negated POSIX class in a negated class'               => ['/^[^[:^alpha:]]{8}[^[:^punct:]]{8}$/u'],
+            'negated escape sequences in negated classes in bytes' => ['/^[^\W_]{8}[^\D]{8}[^\S\n]{8}[^\H]{8}[^[:^alpha:]]{8}$/'],
+            'POSIX classes'                                        => ['/^[[:alpha:]][[:^digit:]][[:xdigit:][:punct:]]$/'],
+            'POSIX classes with the u modifier'                    => ['/^[[:^space:]][[:word:][:blank:][:cntrl:]]$/u'],
+            'more POSIX classes'                                   => ['/^[[:alnum:][:upper:][:lower:][:graph:][:print:][:ascii:]]$/'],
+            'lazy quantifier'                                      => ['/^(?:ab|c){2,}?$/'],
+            'named groups'                                         => ['/^(?<year>\d{4})-(?P<month>\d\d)-(?\'day\'\d\d)$/'],
+            'other delimiters'                                     => ['#^/path/[^/]+$#'],
+            'bracket delimiters'                                   => ['{^a{2}$}'],
+            'parentheses as delimiters'                            => ['(^a(b)$)i'],
+            'square brackets as delimiters'                        => ['[^a$]'],
+            'angle brackets as delimiters'                         => ['<^a$>'],
+            'whitespace'                                           => ['/^\s\S$/'],
+            'extended modifier'                                    => ["/^a b # comment\n c\\ d$/x"],
+            'case-insensitive class'                               => ['/^[A-Z]$/i'],
+            'case-insensitive negated class'                       => ['/^[^a]$/i'],
+            'word boundaries'                                      => ['/\bword\b/'],
+            'quoted characters'                                    => ['/^\QA.B*\E$/'],
+            'quoted characters at the end'                         => ['/^x\Q.*/'],
+            'escaped hyphen in a class'                            => ['/^[\d\-x]$/'],
+            'closing bracket first in a class'                     => ['/^[]a]$/'],
+            'escaped closing bracket in a class'                   => ['/^[\]]$/'],
+            'hyphen at the end of a class'                         => ['/^[a-]$/'],
+            'optional character'                                   => ['/^colou?r$/'],
+            'possessive quantifiers'                               => ['/^a++b*+c?+$/'],
+            'empty alternative'                                    => ['/^(a|)$/'],
+            'empty regular expression'                             => ['/^$/'],
+            'atomic and branch reset groups'                       => ['/^(?>a|b)(?|(c)|(d))$/'],
+            'comment group'                                        => ['/^(?#comment)x$/'],
+            'multibyte range'                                      => ['/^[é\x{e0}-\x{ef}]$/u'],
+            'emoji range'                                          => ['/^[\x{1F600}-\x{1F64F}]$/u'],
+            'range that spans the surrogates'                      => ['/^[a-z\x{80}-\x{FFFF}]+$/u'],
+            'range of all code points'                             => ['/^[\x00-\x{10FFFF}]{5}$/u'],
+            'horizontal and vertical whitespace'                   => ['/^\h\v\H\V$/u'],
+            'whitespace in bytes'                                  => ['/^\h\v\H\V$/'],
+            'escaped characters'                                   => ['/^\x41\x{42}\x4\0\012\o{103}\cA\t\n\r\f\e\a$/u'],
+            '\E without \Q'                                        => ['/^a\Eb[c\E]$/'],
+            'backspace in a class'                                 => ['/^[\b]$/'],
+            'escape sequences in a range'                          => ['/^[\x41-\x{5A}]$/u'],
+            'brace that is not a quantifier'                       => ['/x{a}/'],
+            'quantifier with an upper bound'                       => ['/^x{1,3}$/'],
+            'escaped delimiter'                                    => ['/^\/$/'],
+            'anchors'                                              => ['/\Aa\z|\Ab\Z/'],
+            'dollar end only'                                      => ['/^[a-c]\\n$/D'],
+            'multiline'                                            => ['/^a$/m'],
         ];
     }
 
@@ -109,24 +116,25 @@ final class RegularExpressionGeneratorTest extends TestCase
     public static function simplestStringProvider(): array
     {
         return [
-            'character classes and quantifiers' => ['/\A[a-z]+-\d{2,4}\z/', 'a-00'],
-            'alternation'                       => ['/^(foo|bar)+$/', 'foo'],
-            'escape sequences for classes'      => ['/^\w+@\w+\.(com|org)$/', 'a@a.com'],
-            'optional character'                => ['/^colou?r$/', 'color'],
-            'negated class'                     => ['/^[^a-z]$/', 'A'],
-            'dot'                               => ['/^.$/u', 'a'],
-            'negated escape sequence'           => ['/^\W$/u', ' '],
-            'digits'                            => ['/^\d{3}$/', '000'],
-            'emoji'                             => ['/^[\x{1F600}-\x{1F64F}]$/u', "\u{1F600}"],
-            'escaped characters'                => ['/^\x41\x{42}\0\012$/', "AB\0\n"],
-            'quoted characters'                 => ['/^\QA.B*\E$/', 'A.B*'],
-            'extended modifier'                 => ["/^a b # comment\n c$/x", 'abc'],
-            'comment group'                     => ['/^(?#comment)x$/', 'x'],
-            'closing bracket first in a class'  => ['/^[]a]$/', 'a'],
-            'other delimiters'                  => ['#^/path/[^/]+$#', '/path/a'],
-            'bracket delimiters'                => ['{^a{2}$}', 'aa'],
-            'brace that is not a quantifier'    => ['/x{a}/', 'x{a}'],
-            'whitespace'                        => ['/^\h\v$/u', " \n"],
+            'character classes and quantifiers'          => ['/\A[a-z]+-\d{2,4}\z/', 'a-00'],
+            'alternation'                                => ['/^(foo|bar)+$/', 'foo'],
+            'escape sequences for classes'               => ['/^\w+@\w+\.(com|org)$/', 'a@a.com'],
+            'optional character'                         => ['/^colou?r$/', 'color'],
+            'negated class'                              => ['/^[^a-z]$/', 'A'],
+            'dot'                                        => ['/^.$/u', 'a'],
+            'negated escape sequence'                    => ['/^\W$/u', ' '],
+            'negated escape sequence in a negated class' => ['/^[^\W_][^\D][^\S\n]$/u', 'a0 '],
+            'digits'                                     => ['/^\d{3}$/', '000'],
+            'emoji'                                      => ['/^[\x{1F600}-\x{1F64F}]$/u', "\u{1F600}"],
+            'escaped characters'                         => ['/^\x41\x{42}\0\012$/', "AB\0\n"],
+            'quoted characters'                          => ['/^\QA.B*\E$/', 'A.B*'],
+            'extended modifier'                          => ["/^a b # comment\n c$/x", 'abc'],
+            'comment group'                              => ['/^(?#comment)x$/', 'x'],
+            'closing bracket first in a class'           => ['/^[]a]$/', 'a'],
+            'other delimiters'                           => ['#^/path/[^/]+$#', '/path/a'],
+            'bracket delimiters'                         => ['{^a{2}$}', 'aa'],
+            'brace that is not a quantifier'             => ['/x{a}/', 'x{a}'],
+            'whitespace'                                 => ['/^\h\v$/u', " \n"],
         ];
     }
 
@@ -218,6 +226,25 @@ final class RegularExpressionGeneratorTest extends TestCase
         // character that follows U+D7FF is U+E000
         $this->assertSame("\u{D7FF}", $this->replay('/^[\x{D7FF}-\x{E000}]$/u', [0]));
         $this->assertSame("\u{E000}", $this->replay('/^[\x{D7FF}-\x{E000}]$/u', [1]));
+    }
+
+    public function testANegatedCharacterClassWithANegatedEscapeSequenceOnlyGeneratesAsciiCharactersWithTheUModifier(): void
+    {
+        // with the u modifier, \W does not match letters such as é, which
+        // [^\W_] therefore matches, but only the ASCII characters that \W
+        // does not match are known
+        foreach ($this->values('/^[^\W_]{4}[^\D]{4}[^[:^upper:]]{4}$/u', 200) as $value) {
+            $this->assertMatchesRegularExpression('/^[A-Za-z0-9]{4}[0-9]{4}[A-Z]{4}$/D', $value);
+        }
+
+        $this->assertSame('9', $this->replay('/^[^\W_]$/u', [61]));
+        $this->assertSame('9', $this->replay('/^[^\D]$/u', [9]));
+    }
+
+    public function testANegatedCharacterClassWithANegatedEscapeSequenceForWhitespaceGeneratesThatWhitespaceWithTheUModifier(): void
+    {
+        $this->assertSame("\u{3000}", $this->replay('/^[^\H]$/u', [18]));
+        $this->assertSame("\u{2029}", $this->replay('/^[^\V]$/u', [6]));
     }
 
     public function testDotDoesNotGenerateANewlineWithoutTheSModifier(): void
