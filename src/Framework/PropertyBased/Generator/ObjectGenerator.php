@@ -10,8 +10,11 @@
 namespace PHPUnit\Framework\PropertyBased\Generator;
 
 use function array_values;
+use PHPUnit\Framework\PropertyBased\CannotCreateObjectException;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
 use PHPUnit\Framework\PropertyBased\ExampleRejectedException;
+use SebastianBergmann\Invoker\TimeoutException;
+use Throwable;
 
 /**
  * Generates objects of a class with new, using an argument of the respective
@@ -20,6 +23,11 @@ use PHPUnit\Framework\PropertyBased\ExampleRejectedException;
  * When more objects of the class are nested in each other than allowed, for
  * instance for a node of a tree that takes child nodes, the example is
  * rejected.
+ *
+ * When the constructor raises an exception for the generated arguments, as
+ * the constructor of a value object that validates its arguments does for
+ * most of them, the example is not rejected: the exception is reported with
+ * the arguments, so that a generator for valid objects can be registered.
  *
  * @template T of object
  *
@@ -65,6 +73,9 @@ final readonly class ObjectGenerator extends AbstractGenerator
         return $this->label;
     }
 
+    /**
+     * @throws CannotCreateObjectException
+     */
     protected function generateValue(ChoiceSource $source): object
     {
         try {
@@ -81,7 +92,15 @@ final readonly class ObjectGenerator extends AbstractGenerator
             $source->endObject($this->className);
         }
 
-        $object = new $this->className(...array_values($arguments));
+        try {
+            $object = new $this->className(...array_values($arguments));
+        } catch (ExampleRejectedException|TimeoutException $e) {
+            // the example is rejected or exceeded its time limit while the
+            // constructor ran, which is not an error of the constructor
+            throw $e;
+        } catch (Throwable $t) {
+            throw CannotCreateObjectException::constructorRaisedException($this->className, $arguments, $source->constructions(), $t);
+        }
 
         $source->constructions()->record($object, $this->className, $arguments);
 

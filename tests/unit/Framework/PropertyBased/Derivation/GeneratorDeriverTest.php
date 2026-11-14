@@ -25,10 +25,12 @@ use function strtolower;
 use Closure;
 use DateTime;
 use DateTimeImmutable;
+use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\PropertyBased\CannotCreateObjectException;
 use PHPUnit\Framework\PropertyBased\CannotDeriveGeneratorException;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
 use PHPUnit\Framework\PropertyBased\ExampleRejectedException;
@@ -47,6 +49,7 @@ use PHPUnit\Framework\PropertyBased\Type\NameScope;
 use PHPUnit\Framework\PropertyBased\Type\TypeParser;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\PropertyBased\Currency;
+use PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithConstructorThatThrows;
 use PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithoutConstructor;
 use PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithVariadicConstructor;
 use PHPUnit\TestFixture\PropertyBased\Derivation\Company;
@@ -66,10 +69,13 @@ use Random\Randomizer;
 use ReflectionMethod;
 use ReflectionParameter;
 use SebastianBergmann\ChoiceSequence\ChoiceSequence;
+use SebastianBergmann\Invoker\TimeoutException;
+use TypeError;
 
 #[CoversClass(GeneratorDeriver::class)]
 #[CoversClass(ObjectGenerator::class)]
 #[CoversClass(DeferredGenerator::class)]
+#[CoversClass(CannotCreateObjectException::class)]
 #[CoversClass(CannotDeriveGeneratorException::class)]
 #[CoversClass(ExampleRejectedException::class)]
 #[CoversClass(GeneratorRefersToItselfException::class)]
@@ -509,6 +515,80 @@ final class GeneratorDeriverTest extends TestCase
 
         // choosing a left node, rather than null, for every node
         $this->replay($this->derive('Node'), [1, 1, 1, 1, 1, 1, 1, 1]);
+    }
+
+    public function testReportsTheGeneratedArgumentsForWhichTheConstructorOfAClassRaisesAnException(): void
+    {
+        $generator = $this->derive('ClassWithConstructorThatValidatesItsArguments');
+
+        try {
+            $this->replay($generator, []);
+        } catch (CannotCreateObjectException $e) {
+            $this->assertSame(
+                'The constructor of class PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithConstructorThatValidatesItsArguments raised InvalidArgumentException for generated arguments: Not an e-mail address' . "\n" .
+                "\n" .
+                '    new PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithConstructorThatValidatesItsArguments(emailAddress: \'\', balance: new PHPUnit\TestFixture\PropertyBased\Derivation\Money(amount: 0, currency: PHPUnit\TestFixture\PropertyBased\Currency::EUR))' . "\n" .
+                "\n" .
+                'A generator that creates objects of this class with arguments that its constructor accepts can be registered with #[GeneratorFor]',
+                $e->getMessage(),
+            );
+
+            $this->assertInstanceOf(InvalidArgumentException::class, $e->getPrevious());
+            $this->assertSame('Not an e-mail address', $e->getPrevious()->getMessage());
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testReportsAnErrorThatIsRaisedWhenTheConstructorOfAClassIsCalledWithTheGeneratedArguments(): void
+    {
+        $generator = new ObjectGenerator(Money::class, ['amount' => new ConstantGenerator('one'), 'currency' => new ConstantGenerator(Currency::EUR)]);
+
+        try {
+            $this->replay($generator, []);
+        } catch (CannotCreateObjectException $e) {
+            $this->assertStringStartsWith('The constructor of class ' . Money::class . ' raised TypeError for generated arguments: ', $e->getMessage());
+            $this->assertStringContainsString("\n\n    new " . Money::class . "(amount: 'one', currency: " . Currency::class . "::EUR)\n\n", $e->getMessage());
+            $this->assertInstanceOf(TypeError::class, $e->getPrevious());
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testAnExampleThatIsRejectedWhileTheConstructorOfAClassRunsIsRejected(): void
+    {
+        $rejection = ExampleRejectedException::tooManyChoices(1);
+        $generator = new ObjectGenerator(ClassWithConstructorThatThrows::class, ['throwable' => new ConstantGenerator($rejection)]);
+
+        try {
+            $this->replay($generator, []);
+        } catch (ExampleRejectedException $e) {
+            $this->assertSame($rejection, $e);
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testATimeLimitThatIsExceededWhileTheConstructorOfAClassRunsIsNotReportedAsAnErrorOfTheConstructor(): void
+    {
+        $timeout   = new TimeoutException('Execution aborted after 1 second');
+        $generator = new ObjectGenerator(ClassWithConstructorThatThrows::class, ['throwable' => new ConstantGenerator($timeout)]);
+
+        try {
+            $this->replay($generator, []);
+        } catch (TimeoutException $e) {
+            $this->assertSame($timeout, $e);
+
+            return;
+        }
+
+        $this->fail();
     }
 
     public function testTheKeysOfAnArrayWithStringKeysAreStrings(): void
