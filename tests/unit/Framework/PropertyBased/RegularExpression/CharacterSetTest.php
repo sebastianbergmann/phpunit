@@ -10,6 +10,9 @@
 namespace PHPUnit\Framework\PropertyBased\RegularExpression;
 
 use function chr;
+use function count;
+use function mb_chr;
+use function range;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
@@ -32,6 +35,58 @@ final class CharacterSetTest extends TestCase
         $this->assertSame('0', $set->member(2));
         $this->assertSame('1', $set->member(3));
         $this->assertSame('é', $set->member(4));
+    }
+
+    public function testTheMembersOfASetOfManyRangesThatAreNotAsciiCharactersAreInAscendingOrder(): void
+    {
+        // digits, a range that starts with ASCII characters, and ranges of
+        // two characters each
+        $ranges   = [[0x30, 0x39], [0x70, 0x90]];
+        $expected = range(0x80, 0x90);
+
+        for ($character = 0x100; $character < 0x500; $character += 3) {
+            $ranges[]   = [$character, $character + 1];
+            $expected[] = $character;
+            $expected[] = $character + 1;
+        }
+
+        $set = CharacterSet::fromRanges($ranges, true);
+
+        $this->assertSame(26, $set->numberOfAsciiMembers());
+        $this->assertSame(26 + count($expected), $set->size());
+        $this->assertSame('p', $set->member(0));
+
+        foreach ($expected as $index => $character) {
+            $this->assertSame(mb_chr($character, 'UTF-8'), $set->member(26 + $index));
+        }
+    }
+
+    public function testTheBytesOfASetThatAreNotAsciiCharactersAreInAscendingOrder(): void
+    {
+        $set = CharacterSet::fromRanges([[0x61, 0x62], [0x7F, 0x81], [0xA0, 0xA1], [0xFE, 0xFF]], false);
+
+        $this->assertSame(3, $set->numberOfAsciiMembers());
+        $this->assertSame(9, $set->size());
+        $this->assertSame(chr(0x80), $set->member(3));
+        $this->assertSame(chr(0x81), $set->member(4));
+        $this->assertSame(chr(0xA0), $set->member(5));
+        $this->assertSame(chr(0xA1), $set->member(6));
+        $this->assertSame(chr(0xFE), $set->member(7));
+        $this->assertSame(chr(0xFF), $set->member(8));
+    }
+
+    public function testDoesNotContainACharacterThatIsBeforeBetweenOrAfterItsRanges(): void
+    {
+        $set = CharacterSet::fromRanges([[0x62, 0x63], [0x66, 0x67]], false);
+
+        $this->assertFalse($set->contains(0x61));
+        $this->assertTrue($set->contains(0x62));
+        $this->assertTrue($set->contains(0x63));
+        $this->assertFalse($set->contains(0x64));
+        $this->assertFalse($set->contains(0x65));
+        $this->assertTrue($set->contains(0x66));
+        $this->assertTrue($set->contains(0x67));
+        $this->assertFalse($set->contains(0x68));
     }
 
     public function testMergesRangesThatOverlapOrTouch(): void

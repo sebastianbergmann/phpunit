@@ -12,6 +12,7 @@ namespace PHPUnit\Framework\PropertyBased\RegularExpression;
 use function assert;
 use function chr;
 use function count;
+use function intdiv;
 use function max;
 use function mb_chr;
 use function min;
@@ -55,6 +56,14 @@ final readonly class CharacterSet
      * @var list<non-negative-int>
      */
     private array $asciiMembers;
+
+    /**
+     * For each range, the number of characters in the ranges before it that
+     * are not ASCII characters.
+     *
+     * @var list<non-negative-int>
+     */
+    private array $otherMembersBefore;
 
     /**
      * @var non-negative-int
@@ -159,15 +168,21 @@ final readonly class CharacterSet
 
         $this->asciiMembers = $asciiMembers;
 
-        $size = 0;
+        $otherMembersBefore = [];
+        $otherMembers       = 0;
+        $size               = 0;
 
         foreach ($ranges as [$first, $last]) {
-            $size += $last - $first + 1;
+            $otherMembersBefore[] = $otherMembers;
+
+            $size         += $last - $first + 1;
+            $otherMembers += max($last - max($first, self::NUMBER_OF_ASCII_CODES) + 1, 0);
         }
 
         assert($size >= 0);
 
-        $this->size = $size;
+        $this->otherMembersBefore = $otherMembersBefore;
+        $this->size               = $size;
     }
 
     public function union(self $other): self
@@ -209,8 +224,13 @@ final readonly class CharacterSet
 
     public function contains(int $character): bool
     {
+        // the ranges are sorted
         foreach ($this->ranges as [$first, $last]) {
-            if ($character >= $first && $character <= $last) {
+            if ($character < $first) {
+                return false;
+            }
+
+            if ($character <= $last) {
                 return true;
             }
         }
@@ -256,23 +276,28 @@ final readonly class CharacterSet
         }
 
         $index -= count($this->asciiMembers);
-        $character = 0;
 
-        foreach ($this->ranges as [$first, $last]) {
-            $first = max($first, self::NUMBER_OF_ASCII_CODES);
+        // the member is in the last range before which there are at most as
+        // many characters that are not ASCII characters as before the member:
+        // a set can have hundreds of ranges
+        $low  = 0;
+        $high = count($this->ranges) - 1;
 
-            if ($first > $last) {
-                continue;
+        while ($low < $high) {
+            $middle = intdiv($low + $high + 1, 2);
+
+            assert(isset($this->otherMembersBefore[$middle]));
+
+            if ($this->otherMembersBefore[$middle] > $index) {
+                $high = $middle - 1;
+            } else {
+                $low = $middle;
             }
-
-            $character = $first + $index;
-
-            if ($character <= $last) {
-                break;
-            }
-
-            $index -= $last - $first + 1;
         }
+
+        assert(isset($this->ranges[$low], $this->otherMembersBefore[$low]));
+
+        $character = max($this->ranges[$low][0], self::NUMBER_OF_ASCII_CODES) + $index - $this->otherMembersBefore[$low];
 
         assert($character >= 0);
 
