@@ -471,9 +471,12 @@ final class PropertyTestSuite extends IterativeTestSuite
                 // hold the example as an argument
                 unset($example, $throwable);
 
-                $reporter->shrinkAndReport($deriver, $generators, $originalFailure, $falsification, $source->sequence(), $this->statistics()->numberOfExamplesChecked());
+                if ($reporter->shrinkAndReport($deriver, $generators, $originalFailure, $falsification, $source->sequence(), $this->statistics()->numberOfExamplesChecked())) {
+                    return;
+                }
 
-                return;
+                // the example triggered an issue that it does not trigger
+                // when it is replayed, so it did not falsify the property
             }
 
             $skeleton = $exampleEvents;

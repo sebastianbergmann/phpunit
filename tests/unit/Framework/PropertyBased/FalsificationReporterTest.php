@@ -107,6 +107,72 @@ final class FalsificationReporterTest extends TestCase
     }
 
     #[WithoutErrorHandler]
+    public function testDoesNotReportAPropertyWhenTheExampleThatFalsifiedItByTriggeringAnIssueDoesNotFalsifyItWhenItIsReplayed(): void
+    {
+        [$deriver, $generators] = $this->generators('testIsFalsifiedFromFive');
+
+        $reported = $this->reporter($this->runner('testIsFalsifiedFromFive'))->shrinkAndReport(
+            $deriver,
+            $generators,
+            null,
+            Falsification::ofIssue('E_USER_WARNING', __FILE__, 1, 'message'),
+            new ChoiceSequence([3]),
+            3,
+        );
+
+        $this->assertFalse($reported);
+        $this->assertSame([], $this->reports);
+    }
+
+    #[WithoutErrorHandler]
+    public function testDoesNotReportAPropertyWhenTheExampleThatFalsifiedItByTriggeringAnIssueIsOnlyReplayedAfterShrinkingAndDoesNotFalsifyItThen(): void
+    {
+        [$deriver, $generators] = $this->generators('testIsFalsifiedFromFive');
+
+        $reported = $this->reporter($this->runner('testIsFalsifiedFromFive'), true)->shrinkAndReport(
+            $deriver,
+            $generators,
+            null,
+            Falsification::ofIssue('E_USER_WARNING', __FILE__, 1, 'message'),
+            new ChoiceSequence([3]),
+            3,
+        );
+
+        $this->assertFalse($reported);
+        $this->assertSame([], $this->reports);
+    }
+
+    #[WithoutErrorHandler]
+    public function testShrinksAndReportsTheWayInWhichTheReplaysFalsifyThePropertyWhenTheyDoNotTriggerTheIssueThatFalsifiedIt(): void
+    {
+        [$deriver, $generators] = $this->generators('testIsFalsifiedFromFive');
+
+        $reported = $this->reporter($this->runner('testIsFalsifiedFromFive'))->shrinkAndReport(
+            $deriver,
+            $generators,
+            null,
+            Falsification::ofIssue('E_USER_WARNING', __FILE__, 1, 'message'),
+            new ChoiceSequence([9]),
+            3,
+        );
+
+        $this->assertTrue($reported);
+
+        $report = $this->onlyReport();
+
+        $this->assertNotNull($report['skeleton']);
+        $this->assertNull($report['error']);
+
+        $falsification = $report['falsification'];
+
+        $this->assertNotNull($falsification);
+        $this->assertNull($falsification->failure());
+        $this->assertSame(['value' => '5'], $falsification->counterexample()->arguments());
+        $this->assertSame(4, $falsification->numberOfReplays());
+        $this->assertSame(4, $falsification->numberOfReproductions());
+    }
+
+    #[WithoutErrorHandler]
     public function testReportsTheCounterexampleAsItIsWhenTheTestRunIsAborted(): void
     {
         [$runner, $falsification, $originalFailure] = $this->falsify('testIsFalsifiedFromFive', 9);

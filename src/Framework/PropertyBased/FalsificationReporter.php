@@ -35,6 +35,15 @@ use Throwable;
  * are the simplest counterexamples of the other ways in which the property
  * was falsified while it was shrunk.
  *
+ * A generated example that falsified the property by triggering an issue,
+ * and that does not trigger this issue when it is replayed, was not falsified
+ * by the issue, which was triggered for another reason than the arguments of
+ * the example, because a deprecated class was loaded when the example used it
+ * first, for instance: the issue is reported for the property like every
+ * other issue of its examples. When the replays do not falsify the property,
+ * neither did the example. When they do, in another way, that way is the one
+ * for which the counterexample is shrunk and that is reported.
+ *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -121,23 +130,39 @@ final class FalsificationReporter
      * @throws InvalidArgumentException
      * @throws NoPreviousThrowableException
      * @throws UnintentionallyCoveredCodeException
+     *
+     * @return bool whether the property was reported, which it is not when the example falsified it by triggering an issue and does not falsify it when it is replayed, so that further examples are to be checked
      */
-    public function shrinkAndReport(GeneratorDeriver $deriver, array $generators, ?Event\Code\Throwable $originalFailure, Falsification $falsification, ChoiceSequence $sequence, int $numberOfExamplesChecked): void
+    public function shrinkAndReport(GeneratorDeriver $deriver, array $generators, ?Event\Code\Throwable $originalFailure, Falsification $falsification, ChoiceSequence $sequence, int $numberOfExamplesChecked): bool
     {
         $replays = $this->replayFalsifyingExample($deriver, $generators, $falsification, $sequence);
 
         if ($replays === null) {
-            return;
+            return true;
         }
 
-        if ($replays['numberOfReplays'] > 0 && $replays['numberOfReproductions'] === 0) {
-            $this->reportExampleThatDidNotFalsifyAgain($originalFailure, $sequence, $replays, $numberOfExamplesChecked);
+        $numberOfReplays       = $replays['numberOfReplays'];
+        $numberOfReproductions = $replays['numberOfReproductions'];
 
-            return;
+        if ($numberOfReplays > 0 && $numberOfReproductions === 0) {
+            if (!$falsification->isIssue()) {
+                $this->reportExampleThatDidNotFalsifyAgain($originalFailure, $sequence, $replays, $numberOfExamplesChecked);
+
+                return true;
+            }
+
+            if ($replays['otherFalsification'] === null) {
+                return false;
+            }
+
+            // the issue was triggered for another reason than the arguments
+            // of the example, which falsifies the property in another way
+            // when it is replayed: that way is the one that is shrunk and
+            // reported
+            $falsification         = $replays['otherFalsification'];
+            $numberOfReproductions = $replays['numberOfReproductionsOfOtherFalsification'];
         }
 
-        $numberOfReplays         = $replays['numberOfReplays'];
-        $numberOfReproductions   = $replays['numberOfReproductions'];
         $maximumNumberOfAttempts = $this->maximumNumberOfShrinkingAttempts;
 
         if ($falsification->isTimeout()) {
@@ -187,7 +212,7 @@ final class FalsificationReporter
         } catch (Throwable $t) {
             ($this->report)(null, Event\Code\ThrowableBuilder::from($t), null);
 
-            return;
+            return true;
         }
 
         $counterexample = $this->runner->export($arguments, $source->constructions());
@@ -195,6 +220,24 @@ final class FalsificationReporter
         $drawnValues    = DrawnValues::reportedFrom($source, $this->runner->exporter($source->constructions()));
         $replay         = $this->runner->example($arguments, true, $drawnValues);
         [$replayEvents] = $this->runner->run($replay, $this->emitter, false);
+
+        $replayFalsification = null;
+        $aborted             = ExampleRunner::propertyExampleOf($replay)->throwableThatEndedIt() instanceof TimeLimitExceededException;
+
+        if (!$aborted) {
+            $replayFalsification = $this->runner->falsificationOf($replay, $replayEvents);
+        }
+
+        // the example that falsified the property by triggering an issue was
+        // not replayed before its counterexample was shrunk, because the test
+        // run is aborted, for instance, no shrinking attempt triggered the
+        // issue, and the example does not falsify the property now that it is
+        // replayed
+        if (!$aborted && $replayFalsification === null && $falsification->isIssue() && $numberOfReproductions === 0 && $result->numberOfSteps() === 0) {
+            $this->events->recordShrinkingAttempt($replayEvents);
+
+            return false;
+        }
 
         // the issues of the final replay are reported like those of the
         // examples that were checked, the replay being the skeleton does not
@@ -208,9 +251,7 @@ final class FalsificationReporter
         // has passed is reported with that error, like any other example that
         // is aborted by it, and with the counterexample, which falsified the
         // property while it was shrunk
-        if (!ExampleRunner::propertyExampleOf($replay)->throwableThatEndedIt() instanceof TimeLimitExceededException) {
-            $replayFalsification = $this->runner->falsificationOf($replay, $replayEvents);
-
+        if (!$aborted) {
             if ($replayFalsification === null) {
                 $error = $this->flaky(FlakyPropertyException::minimalCounterexampleNotFalsifyingAgain(), $originalFailure);
             } elseif ($replayFalsification->isTimeout()) {
@@ -253,6 +294,8 @@ final class FalsificationReporter
                 $failure,
             ),
         );
+
+        return true;
     }
 
     /**
@@ -306,18 +349,20 @@ final class FalsificationReporter
      *
      * @param array<non-empty-string, AbstractGenerator<mixed>> $generators
      *
-     * @return ?array{numberOfReplays: non-negative-int, numberOfReproductions: non-negative-int, counterexample: array<non-empty-string, string>, formatted: ?non-empty-string, drawnValues: list<array{label: ?non-empty-string, value: string}>, steps: list<non-empty-string>, events: ?EventCollection} the replays, with the arguments and values of the last replay that was counted, exported, and its events, or null when the arguments could not be generated again, which was reported
+     * @return ?array{numberOfReplays: non-negative-int, numberOfReproductions: non-negative-int, otherFalsification: ?Falsification, numberOfReproductionsOfOtherFalsification: non-negative-int, counterexample: array<non-empty-string, string>, formatted: ?non-empty-string, drawnValues: list<array{label: ?non-empty-string, value: string}>, steps: list<non-empty-string>, events: ?EventCollection} the replays, with the arguments and values of the last replay that was counted, exported, and its events, or null when the arguments could not be generated again, which was reported
      */
     private function replayFalsifyingExample(GeneratorDeriver $deriver, array $generators, Falsification $falsification, ChoiceSequence $sequence): ?array
     {
         $replays = [
-            'numberOfReplays'       => 0,
-            'numberOfReproductions' => 0,
-            'counterexample'        => [],
-            'formatted'             => null,
-            'drawnValues'           => [],
-            'steps'                 => [],
-            'events'                => null,
+            'numberOfReplays'                           => 0,
+            'numberOfReproductions'                     => 0,
+            'otherFalsification'                        => null,
+            'numberOfReproductionsOfOtherFalsification' => 0,
+            'counterexample'                            => [],
+            'formatted'                                 => null,
+            'drawnValues'                               => [],
+            'steps'                                     => [],
+            'events'                                    => null,
         ];
 
         if ($falsification->isTimeout()) {
@@ -363,8 +408,22 @@ final class FalsificationReporter
 
             $replayFalsification = $this->runner->falsificationOf($example, $replayEvents);
 
-            if ($replayFalsification !== null && $replayFalsification->isSameAs($falsification)) {
+            if ($replayFalsification === null) {
+                continue;
+            }
+
+            if ($replayFalsification->isSameAs($falsification)) {
                 $replays['numberOfReproductions']++;
+
+                continue;
+            }
+
+            if ($replays['otherFalsification'] === null) {
+                $replays['otherFalsification'] = $replayFalsification;
+            }
+
+            if ($replayFalsification->isSameAs($replays['otherFalsification'])) {
+                $replays['numberOfReproductionsOfOtherFalsification']++;
             }
         }
 
@@ -377,8 +436,8 @@ final class FalsificationReporter
      * counterexample, with the events of its last replay and with the failure
      * that was originally observed as the cause of the error.
      *
-     * @param array{numberOfReplays: non-negative-int, numberOfReproductions: non-negative-int, counterexample: array<non-empty-string, string>, formatted: ?non-empty-string, drawnValues: list<array{label: ?non-empty-string, value: string}>, steps: list<non-empty-string>, events: ?EventCollection} $replays
-     * @param non-negative-int                                                                                                                                                                                                                                                                             $numberOfExamplesChecked
+     * @param array{numberOfReplays: non-negative-int, numberOfReproductions: non-negative-int, otherFalsification: ?Falsification, numberOfReproductionsOfOtherFalsification: non-negative-int, counterexample: array<non-empty-string, string>, formatted: ?non-empty-string, drawnValues: list<array{label: ?non-empty-string, value: string}>, steps: list<non-empty-string>, events: ?EventCollection} $replays
+     * @param non-negative-int                                                                                                                                                                                                                                                                                                                                                                              $numberOfExamplesChecked
      */
     private function reportExampleThatDidNotFalsifyAgain(?Event\Code\Throwable $originalFailure, ChoiceSequence $sequence, array $replays, int $numberOfExamplesChecked): void
     {
