@@ -100,6 +100,16 @@ final class Registry
         self::$instance = $configuration;
     }
 
+    /**
+     * Whether the configuration has been initialized, which it is from early
+     * on in a process in which the test runner runs, also in a child process
+     * in which a test is run in isolation.
+     */
+    public static function isInitialized(): bool
+    {
+        return self::$instance !== null;
+    }
+
     public static function get(): Configuration
     {
         assert(self::$instance instanceof Configuration);

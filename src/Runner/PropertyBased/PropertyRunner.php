@@ -72,17 +72,19 @@ use Throwable;
  * PHPUnit is installed with Composer or used from its PHAR, in which the
  * names of these classes are prefixed.
  *
- * PHPUnit is booted once per process. A boot that fails because the
- * configuration file cannot be found or read changes nothing and can be
- * retried. The configuration file and its bootstrap script are loaded as for
- * a test run, but nothing is printed, no code coverage is collected, nothing
- * is logged, and no extensions are loaded. As nothing is printed, an error
- * or a warning that PHPUnit triggers while it is booted, about a property
- * that cannot be checked or a configuration file that did not pass
- * validation, for instance, is raised as an exception, as the test runner
- * would report it and fail. This is so for every test in the test suite that
- * the configuration file configures, also for one that the filter leaves
- * out, as the test suite is built before it is filtered.
+ * PHPUnit is booted once per process, and it cannot be booted in a process
+ * in which it is already running, by a test that the test runner runs, for
+ * instance. A boot that fails because the configuration file cannot be found
+ * or read changes nothing and can be retried. The configuration file and its
+ * bootstrap script are loaded as for a test run, but nothing is printed, no
+ * code coverage is collected, nothing is logged, and no extensions are
+ * loaded. As nothing is printed, an error or a warning that PHPUnit triggers
+ * while it is booted, about a property that cannot be checked or a
+ * configuration file that did not pass validation, for instance, is raised
+ * as an exception, as the test runner would report it and fail. This is so
+ * for every test in the test suite that the configuration file configures,
+ * also for one that the filter leaves out, as the test suite is built before
+ * it is filtered.
  *
  * As in a test run, the random number generators whose state is global to
  * the process, the one that mt_rand() uses, for instance, are seeded before
@@ -226,7 +228,7 @@ final class PropertyRunner
      * @param ?non-empty-string $filter            the filter, null for all tests
      * @param ?positive-int     $randomSeed        the random seed with which the random number generators are seeded before each example, as with the --random-seed option of the test runner, null to seed them only when the configuration file configures a random execution order
      *
-     * @throws AlreadyBootedException
+     * @throws AlreadyBootedException                when PHPUnit was booted before, or is already running in this process
      * @throws ConfigurationFileNotFoundException    when the configuration file that is passed is a directory without one
      * @throws ErrorTriggeredWhileBootingException   when PHPUnit triggered an error while the test suite was built, for a property that cannot be checked, for instance
      * @throws Exception                             when the configuration file, its bootstrap script, or the test suite cannot be loaded
@@ -238,6 +240,14 @@ final class PropertyRunner
     {
         if (self::$booted) {
             throw new AlreadyBootedException;
+        }
+
+        // the configuration is initialized before the test runner runs any
+        // code that is not PHPUnit's own, the bootstrap script, an extension,
+        // or a test, for instance: booting PHPUnit again would replace the
+        // global state of the test run
+        if (Registry::isInitialized()) {
+            throw new AlreadyBootedException('PHPUnit cannot be booted because it is already running in this process');
         }
 
         if ($randomSeed !== null && $randomSeed < 1) {

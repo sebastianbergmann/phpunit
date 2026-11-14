@@ -17,8 +17,8 @@ use RuntimeException;
  */
 final class AlreadyBootedException extends RuntimeException implements Exception
 {
-    public function __construct()
+    public function __construct(string $message = 'PHPUnit can only be booted once per process')
     {
-        parent::__construct('PHPUnit can only be booted once per process');
+        parent::__construct($message);
     }
 }
