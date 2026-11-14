@@ -10,6 +10,8 @@
 namespace PHPUnit\Framework\PropertyBased;
 
 use const PHP_INT_MAX;
+use PHPUnit\Event\Code\Classification;
+use PHPUnit\Event\Code\ObservedValues;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
@@ -74,11 +76,11 @@ final class PropertyStatisticsTest extends TestCase
         $statistics->recordCheckedGeneratedExample($this->example('large', 'even'));
         $statistics->recordCheckedGeneratedExample($this->example('small', 'even'));
 
-        $this->assertSame(
+        $this->assertEquals(
             [
-                ['label' => 'small', 'numberOfExamples' => 2],
-                ['label' => 'large', 'numberOfExamples' => 1],
-                ['label' => 'even', 'numberOfExamples' => 2],
+                new Classification('small', 2),
+                new Classification('large', 1),
+                new Classification('even', 2),
             ],
             $statistics->classifications(),
         );
@@ -97,17 +99,9 @@ final class PropertyStatisticsTest extends TestCase
         $statistics->recordCheckedGeneratedExample($first);
         $statistics->recordCheckedGeneratedExample($second);
 
-        $this->assertSame(
+        $this->assertEquals(
             [
-                [
-                    'label'          => 'size',
-                    'numberOfValues' => 2,
-                    'minimum'        => 1,
-                    'median'         => 1,
-                    'mean'           => 2.0,
-                    'percentile90'   => 3,
-                    'maximum'        => 3,
-                ],
+                new ObservedValues('size', 2, 1, 1, 2.0, 3, 3),
             ],
             $statistics->observations(),
         );

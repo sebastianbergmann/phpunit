@@ -13,6 +13,7 @@ use const PHP_EOL;
 use function is_int;
 use function sprintf;
 use function usort;
+use PHPUnit\Event\Code\Classification;
 use PHPUnit\Event\Test\PropertyChecked;
 
 /**
@@ -74,7 +75,7 @@ final readonly class PropertyCheckedToStringMapper
 
         usort(
             $classifications,
-            static fn (array $a, array $b): int => $b['numberOfExamples'] <=> $a['numberOfExamples'],
+            static fn (Classification $a, Classification $b): int => $b->numberOfExamples() <=> $a->numberOfExamples(),
         );
 
         $buffer = PHP_EOL;
@@ -82,8 +83,8 @@ final readonly class PropertyCheckedToStringMapper
         foreach ($classifications as $classification) {
             $buffer .= self::INDENTATION . sprintf(
                 '%5.1f%% %s',
-                100 * $classification['numberOfExamples'] / $event->numberOfExamplesChecked(),
-                $classification['label'],
+                100 * $classification->numberOfExamples() / $event->numberOfExamplesChecked(),
+                $classification->label(),
             ) . PHP_EOL;
         }
 
@@ -101,13 +102,13 @@ final readonly class PropertyCheckedToStringMapper
         foreach ($event->observations() as $observation) {
             $buffer .= self::INDENTATION . sprintf(
                 '%s: count %d, min %s, median %s, mean %s, p90 %s, max %s',
-                $observation['label'],
-                $observation['numberOfValues'],
-                self::number($observation['minimum']),
-                self::number($observation['median']),
-                self::number($observation['mean']),
-                self::number($observation['percentile90']),
-                self::number($observation['maximum']),
+                $observation->label(),
+                $observation->numberOfValues(),
+                self::number($observation->minimum()),
+                self::number($observation->median()),
+                self::number($observation->mean()),
+                self::number($observation->percentile90()),
+                self::number($observation->maximum()),
             ) . PHP_EOL;
         }
 
@@ -125,8 +126,8 @@ final readonly class PropertyCheckedToStringMapper
         foreach ($event->targets() as $target) {
             $buffer .= self::INDENTATION . sprintf(
                 '%s: highest targeted score %s',
-                $target['label'],
-                self::number($target['highestScore']),
+                $target->label(),
+                self::number($target->highestScore()),
             ) . PHP_EOL;
         }
 

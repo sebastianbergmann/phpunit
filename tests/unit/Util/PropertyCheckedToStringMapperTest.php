@@ -11,6 +11,9 @@ namespace PHPUnit\Util;
 
 use const PHP_EOL;
 use PHPUnit\Event\AbstractEventTestCase;
+use PHPUnit\Event\Code\Classification;
+use PHPUnit\Event\Code\ObservedValues;
+use PHPUnit\Event\Code\TargetedScore;
 use PHPUnit\Event\Test\PropertyChecked;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
@@ -72,9 +75,9 @@ EOT,
                     100,
                     3,
                     [
-                        ['label' => 'zero', 'numberOfExamples' => 1],
-                        ['label' => 'odd', 'numberOfExamples' => 48],
-                        ['label' => 'even', 'numberOfExamples' => 52],
+                        new Classification('zero', 1),
+                        new Classification('odd', 48),
+                        new Classification('even', 52),
                     ],
                     [],
                     [],
@@ -99,10 +102,10 @@ EOT,
                 $this->event(
                     100,
                     3,
-                    [['label' => 'any', 'numberOfExamples' => 100]],
+                    [new Classification('any', 100)],
                     [
-                        ['label' => 'size', 'numberOfValues' => 100, 'minimum' => 0, 'median' => 4, 'mean' => 5.12, 'percentile90' => 11, 'maximum' => 32],
-                        ['label' => 'ratio', 'numberOfValues' => 7, 'minimum' => -1.5, 'median' => 0.25, 'mean' => 0.33333333, 'percentile90' => 2.0, 'maximum' => 2.0],
+                        new ObservedValues('size', 100, 0, 4, 5.12, 11, 32),
+                        new ObservedValues('ratio', 7, -1.5, 0.25, 0.33333333, 2.0, 2.0),
                     ],
                     [],
                 ),
@@ -127,10 +130,10 @@ EOT,
                     100,
                     3,
                     [],
-                    [['label' => 'size', 'numberOfValues' => 100, 'minimum' => 0, 'median' => 4, 'mean' => 5.12, 'percentile90' => 11, 'maximum' => 32]],
+                    [new ObservedValues('size', 100, 0, 4, 5.12, 11, 32)],
                     [
-                        ['label' => 'sum', 'highestScore' => 1250],
-                        ['label' => 'closeness', 'highestScore' => -0.125],
+                        new TargetedScore('sum', 1250),
+                        new TargetedScore('closeness', -0.125),
                     ],
                 ),
             ),
@@ -147,7 +150,7 @@ EOT,
 
 EOT,
             PropertyCheckedToStringMapper::map(
-                $this->event(1, 0, [], [['label' => 'size', 'numberOfValues' => 1, 'minimum' => 3, 'median' => 3, 'mean' => 3.0, 'percentile90' => 3, 'maximum' => 3]], []),
+                $this->event(1, 0, [], [new ObservedValues('size', 1, 3, 3, 3.0, 3, 3)], []),
             ),
         );
     }

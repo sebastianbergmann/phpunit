@@ -47,28 +47,28 @@ final readonly class PropertyChecked implements Event
     private int $numberOfExamplesRejected;
 
     /**
-     * @var list<array{label: non-empty-string, numberOfExamples: positive-int}>
+     * @var list<Code\Classification>
      */
     private array $classifications;
 
     /**
-     * @var list<array{label: non-empty-string, numberOfValues: positive-int, minimum: float|int, median: float|int, mean: float, percentile90: float|int, maximum: float|int}>
+     * @var list<Code\ObservedValues>
      */
     private array $observations;
 
     /**
-     * @var list<array{label: non-empty-string, highestScore: float|int}>
+     * @var list<Code\TargetedScore>
      */
     private array $targets;
 
     /**
-     * @param non-negative-int                                                                                                                                                    $seed
-     * @param non-negative-int                                                                                                                                                    $numberOfExamplesChecked
-     * @param non-negative-int                                                                                                                                                    $numberOfExplicitExamplesChecked
-     * @param non-negative-int                                                                                                                                                    $numberOfExamplesRejected
-     * @param list<array{label: non-empty-string, numberOfExamples: positive-int}>                                                                                                $classifications
-     * @param list<array{label: non-empty-string, numberOfValues: positive-int, minimum: float|int, median: float|int, mean: float, percentile90: float|int, maximum: float|int}> $observations
-     * @param list<array{label: non-empty-string, highestScore: float|int}>                                                                                                       $targets
+     * @param non-negative-int          $seed
+     * @param non-negative-int          $numberOfExamplesChecked
+     * @param non-negative-int          $numberOfExplicitExamplesChecked
+     * @param non-negative-int          $numberOfExamplesRejected
+     * @param list<Code\Classification> $classifications
+     * @param list<Code\ObservedValues> $observations
+     * @param list<Code\TargetedScore>  $targets
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
@@ -154,7 +154,7 @@ final readonly class PropertyChecked implements Event
      * An example can be classified with several labels, and explicit
      * examples are not classified.
      *
-     * @return list<array{label: non-empty-string, numberOfExamples: positive-int}>
+     * @return list<Code\Classification>
      */
     public function classifications(): array
     {
@@ -170,7 +170,7 @@ final readonly class PropertyChecked implements Event
      * observed: the smallest ones that at least 50 and 90 percent of the
      * values are not greater than. Explicit examples do not observe values.
      *
-     * @return list<array{label: non-empty-string, numberOfValues: positive-int, minimum: float|int, median: float|int, mean: float, percentile90: float|int, maximum: float|int}>
+     * @return list<Code\ObservedValues>
      */
     public function observations(): array
     {
@@ -183,7 +183,7 @@ final readonly class PropertyChecked implements Event
      * they were first used, each with the highest score that an example
      * reached. Explicit examples do not target scores.
      *
-     * @return list<array{label: non-empty-string, highestScore: float|int}>
+     * @return list<Code\TargetedScore>
      */
     public function targets(): array
     {
@@ -216,30 +216,30 @@ final readonly class PropertyChecked implements Event
         foreach ($this->classifications as $classification) {
             $buffer .= sprintf(
                 PHP_EOL . '%s: %d (%.1f%%)',
-                $classification['label'],
-                $classification['numberOfExamples'],
-                100 * $classification['numberOfExamples'] / $this->numberOfExamplesChecked,
+                $classification->label(),
+                $classification->numberOfExamples(),
+                100 * $classification->numberOfExamples() / $this->numberOfExamplesChecked,
             );
         }
 
         foreach ($this->observations as $observation) {
             $buffer .= sprintf(
                 PHP_EOL . '%s: count %d, min %s, median %s, mean %s, p90 %s, max %s',
-                $observation['label'],
-                $observation['numberOfValues'],
-                self::number($observation['minimum']),
-                self::number($observation['median']),
-                self::number($observation['mean']),
-                self::number($observation['percentile90']),
-                self::number($observation['maximum']),
+                $observation->label(),
+                $observation->numberOfValues(),
+                self::number($observation->minimum()),
+                self::number($observation->median()),
+                self::number($observation->mean()),
+                self::number($observation->percentile90()),
+                self::number($observation->maximum()),
             );
         }
 
         foreach ($this->targets as $target) {
             $buffer .= sprintf(
                 PHP_EOL . '%s: highest targeted score %s',
-                $target['label'],
-                self::number($target['highestScore']),
+                $target->label(),
+                self::number($target->highestScore()),
             );
         }
 

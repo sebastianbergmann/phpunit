@@ -10,6 +10,9 @@
 namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\AbstractEventTestCase;
+use PHPUnit\Event\Code\Classification;
+use PHPUnit\Event\Code\ObservedValues;
+use PHPUnit\Event\Code\TargetedScore;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
@@ -25,7 +28,7 @@ final class PropertyCheckedTest extends AbstractEventTestCase
         $telemetryInfo = $this->telemetryInfo();
         $test          = $this->testValueObject();
 
-        $event = new PropertyChecked($telemetryInfo, $test, 1234, 100, 2, 3, [['label' => 'negative', 'numberOfExamples' => 42]], [['label' => 'size', 'numberOfValues' => 100, 'minimum' => 0, 'median' => 4, 'mean' => 5.12, 'percentile90' => 11, 'maximum' => 32]], [['label' => 'sum', 'highestScore' => 1250]]);
+        $event = new PropertyChecked($telemetryInfo, $test, 1234, 100, 2, 3, [new Classification('negative', 42)], [new ObservedValues('size', 100, 0, 4, 5.12, 11, 32)], [new TargetedScore('sum', 1250)]);
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
         $this->assertSame($test, $event->test());
@@ -33,9 +36,9 @@ final class PropertyCheckedTest extends AbstractEventTestCase
         $this->assertSame(100, $event->numberOfExamplesChecked());
         $this->assertSame(2, $event->numberOfExplicitExamplesChecked());
         $this->assertSame(3, $event->numberOfExamplesRejected());
-        $this->assertSame([['label' => 'negative', 'numberOfExamples' => 42]], $event->classifications());
-        $this->assertSame([['label' => 'size', 'numberOfValues' => 100, 'minimum' => 0, 'median' => 4, 'mean' => 5.12, 'percentile90' => 11, 'maximum' => 32]], $event->observations());
-        $this->assertSame([['label' => 'sum', 'highestScore' => 1250]], $event->targets());
+        $this->assertEquals([new Classification('negative', 42)], $event->classifications());
+        $this->assertEquals([new ObservedValues('size', 100, 0, 4, 5.12, 11, 32)], $event->observations());
+        $this->assertEquals([new TargetedScore('sum', 1250)], $event->targets());
     }
 
     public function testCanBeRepresentedAsString(): void
@@ -62,8 +65,8 @@ final class PropertyCheckedTest extends AbstractEventTestCase
             0,
             0,
             [
-                ['label' => 'negative', 'numberOfExamples' => 3],
-                ['label' => '0', 'numberOfExamples' => 1],
+                new Classification('negative', 3),
+                new Classification('0', 1),
             ],
             [],
             [],
@@ -90,8 +93,8 @@ EOT,
             0,
             [],
             [
-                ['label' => 'size', 'numberOfValues' => 8, 'minimum' => 0, 'median' => 4, 'mean' => 4.375, 'percentile90' => 9, 'maximum' => 9],
-                ['label' => 'ratio', 'numberOfValues' => 3, 'minimum' => -0.5, 'median' => 0.1, 'mean' => 0.2333333333, 'percentile90' => 1.1, 'maximum' => 1.1],
+                new ObservedValues('size', 8, 0, 4, 4.375, 9, 9),
+                new ObservedValues('ratio', 3, -0.5, 0.1, 0.2333333333, 1.1, 1.1),
             ],
             [],
         );
@@ -118,8 +121,8 @@ EOT,
             [],
             [],
             [
-                ['label' => 'sum', 'highestScore' => 1250],
-                ['label' => 'closeness', 'highestScore' => -0.125],
+                new TargetedScore('sum', 1250),
+                new TargetedScore('closeness', -0.125),
             ],
         );
 

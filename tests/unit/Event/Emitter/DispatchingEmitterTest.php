@@ -10,11 +10,14 @@
 namespace PHPUnit\Event;
 
 use Exception;
+use PHPUnit\Event\Code\Classification;
 use PHPUnit\Event\Code\ClassMethod;
 use PHPUnit\Event\Code\Counterexample;
 use PHPUnit\Event\Code\DrawnValue;
 use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
+use PHPUnit\Event\Code\ObservedValues;
 use PHPUnit\Event\Code\OtherFalsification;
+use PHPUnit\Event\Code\TargetedScore;
 use PHPUnit\Event\Code\TestCollection;
 use PHPUnit\Event\Code\TestDoxBuilder;
 use PHPUnit\Event\Code\TestMethod;
@@ -1906,7 +1909,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $test = $this->testValueObject();
 
-        $emitter->testPropertyChecked($test, 1234, 100, 2, 3, [['label' => 'negative', 'numberOfExamples' => 42]], [['label' => 'size', 'numberOfValues' => 100, 'minimum' => 0, 'median' => 4, 'mean' => 5.12, 'percentile90' => 11, 'maximum' => 32]], [['label' => 'sum', 'highestScore' => 1250]]);
+        $emitter->testPropertyChecked($test, 1234, 100, 2, 3, [new Classification('negative', 42)], [new ObservedValues('size', 100, 0, 4, 5.12, 11, 32)], [new TargetedScore('sum', 1250)]);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 
@@ -1919,9 +1922,9 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame(100, $event->numberOfExamplesChecked());
         $this->assertSame(2, $event->numberOfExplicitExamplesChecked());
         $this->assertSame(3, $event->numberOfExamplesRejected());
-        $this->assertSame([['label' => 'negative', 'numberOfExamples' => 42]], $event->classifications());
-        $this->assertSame([['label' => 'size', 'numberOfValues' => 100, 'minimum' => 0, 'median' => 4, 'mean' => 5.12, 'percentile90' => 11, 'maximum' => 32]], $event->observations());
-        $this->assertSame([['label' => 'sum', 'highestScore' => 1250]], $event->targets());
+        $this->assertEquals([new Classification('negative', 42)], $event->classifications());
+        $this->assertEquals([new ObservedValues('size', 100, 0, 4, 5.12, 11, 32)], $event->observations());
+        $this->assertEquals([new TargetedScore('sum', 1250)], $event->targets());
     }
 
     #[TestDox('testPropertyFalsified() emits Test\PropertyFalsified event')]

@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\PropertyBased;
 
+use PHPUnit\Event\Code\ObservedValues;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
@@ -37,10 +38,10 @@ final class ObservationsTest extends TestCase
         $observations->record([['label' => 'size', 'value' => 1]]);
         $observations->record([['label' => 'size', 'value' => 4], ['label' => 'ratio', 'value' => -1.5]]);
 
-        $this->assertSame(
+        $this->assertEquals(
             [
-                ['label' => 'size', 'numberOfValues' => 3, 'minimum' => 1, 'median' => 4, 'mean' => 4.0, 'percentile90' => 7, 'maximum' => 7],
-                ['label' => 'ratio', 'numberOfValues' => 2, 'minimum' => -1.5, 'median' => -1.5, 'mean' => -0.5, 'percentile90' => 0.5, 'maximum' => 0.5],
+                new ObservedValues('size', 3, 1, 4, 4.0, 7, 7),
+                new ObservedValues('ratio', 2, -1.5, -1.5, -0.5, 0.5, 0.5),
             ],
             $observations->statistics(),
         );
@@ -59,11 +60,11 @@ final class ObservationsTest extends TestCase
         $statistics = $observations->statistics();
 
         $this->assertCount(1, $statistics);
-        $this->assertSame(11, $statistics[0]['numberOfValues']);
-        $this->assertSame(6, $statistics[0]['median']);
-        $this->assertSame(10, $statistics[0]['percentile90']);
-        $this->assertSame(100, $statistics[0]['maximum']);
-        $this->assertSame(155 / 11, $statistics[0]['mean']);
+        $this->assertSame(11, $statistics[0]->numberOfValues());
+        $this->assertSame(6, $statistics[0]->median());
+        $this->assertSame(10, $statistics[0]->percentile90());
+        $this->assertSame(100, $statistics[0]->maximum());
+        $this->assertSame(155 / 11, $statistics[0]->mean());
     }
 
     public function testAllStatisticsOfASingleValueAreThatValue(): void
@@ -72,8 +73,8 @@ final class ObservationsTest extends TestCase
 
         $observations->record([['label' => 'value', 'value' => 3]]);
 
-        $this->assertSame(
-            [['label' => 'value', 'numberOfValues' => 1, 'minimum' => 3, 'median' => 3, 'mean' => 3.0, 'percentile90' => 3, 'maximum' => 3]],
+        $this->assertEquals(
+            [new ObservedValues('value', 1, 3, 3, 3.0, 3, 3)],
             $observations->statistics(),
         );
     }

@@ -11,6 +11,7 @@ namespace PHPUnit\TextUI\Output\Default;
 
 use function hrtime;
 use Exception;
+use PHPUnit\Event\Code\Classification;
 use PHPUnit\Event\Code\ClassMethod;
 use PHPUnit\Event\Code\IssueTrigger\Code;
 use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
@@ -116,8 +117,8 @@ final class ResultPrinterTest extends TestCase
                             0,
                             1,
                             [
-                                ['label' => 'odd', 'numberOfExamples' => 2],
-                                ['label' => 'even', 'numberOfExamples' => 6],
+                                new Classification('odd', 2),
+                                new Classification('even', 6),
                             ],
                             [],
                             [],

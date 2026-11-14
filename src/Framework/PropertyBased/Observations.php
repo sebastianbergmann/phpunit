@@ -17,6 +17,7 @@ use function count;
 use function end;
 use function max;
 use function sort;
+use PHPUnit\Event\Code\ObservedValues;
 
 /**
  * The numeric values that the examples of a property observed with
@@ -52,7 +53,7 @@ final class Observations
     }
 
     /**
-     * @return list<array{label: non-empty-string, numberOfValues: positive-int, minimum: float|int, median: float|int, mean: float, percentile90: float|int, maximum: float|int}>
+     * @return list<ObservedValues>
      */
     public function statistics(): array
     {
@@ -64,15 +65,15 @@ final class Observations
             $numberOfValues = count($values);
             $maximum        = end($values);
 
-            $statistics[] = [
-                'label'          => $label,
-                'numberOfValues' => $numberOfValues,
-                'minimum'        => $values[0],
-                'median'         => self::percentile($values, 50),
-                'mean'           => (float) array_sum($values) / $numberOfValues,
-                'percentile90'   => self::percentile($values, 90),
-                'maximum'        => $maximum,
-            ];
+            $statistics[] = new ObservedValues(
+                $label,
+                $numberOfValues,
+                $values[0],
+                self::percentile($values, 50),
+                (float) array_sum($values) / $numberOfValues,
+                self::percentile($values, 90),
+                $maximum,
+            );
         }
 
         return $statistics;

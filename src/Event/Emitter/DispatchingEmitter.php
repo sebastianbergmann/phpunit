@@ -772,13 +772,13 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
-     * @param non-negative-int                                                                                                                                                    $seed
-     * @param non-negative-int                                                                                                                                                    $numberOfExamplesChecked
-     * @param non-negative-int                                                                                                                                                    $numberOfExplicitExamplesChecked
-     * @param non-negative-int                                                                                                                                                    $numberOfExamplesRejected
-     * @param list<array{label: non-empty-string, numberOfExamples: positive-int}>                                                                                                $classifications
-     * @param list<array{label: non-empty-string, numberOfValues: positive-int, minimum: float|int, median: float|int, mean: float, percentile90: float|int, maximum: float|int}> $observations
-     * @param list<array{label: non-empty-string, highestScore: float|int}>                                                                                                       $targets
+     * @param non-negative-int          $seed
+     * @param non-negative-int          $numberOfExamplesChecked
+     * @param non-negative-int          $numberOfExplicitExamplesChecked
+     * @param non-negative-int          $numberOfExamplesRejected
+     * @param list<Code\Classification> $classifications
+     * @param list<Code\ObservedValues> $observations
+     * @param list<Code\TargetedScore>  $targets
      *
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException

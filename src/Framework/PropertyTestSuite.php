@@ -733,7 +733,7 @@ final class PropertyTestSuite extends IterativeTestSuite
     }
 
     /**
-     * @return list<array{label: non-empty-string, highestScore: float|int}>
+     * @return list<Event\Code\TargetedScore>
      */
     private function highestTargetedScores(): array
     {
@@ -741,7 +741,13 @@ final class PropertyTestSuite extends IterativeTestSuite
             return [];
         }
 
-        return $this->targetedSearch->highestScores();
+        $highestScores = [];
+
+        foreach ($this->targetedSearch->highestScores() as $highestScore) {
+            $highestScores[] = new Event\Code\TargetedScore($highestScore['label'], $highestScore['highestScore']);
+        }
+
+        return $highestScores;
     }
 
     /**

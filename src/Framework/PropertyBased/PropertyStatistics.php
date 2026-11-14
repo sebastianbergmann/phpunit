@@ -16,6 +16,8 @@ use function implode;
 use function intdiv;
 use function sprintf;
 use function usort;
+use PHPUnit\Event\Code\Classification;
+use PHPUnit\Event\Code\ObservedValues;
 use PHPUnit\Framework\TestRunner\ExampleRun;
 use PHPUnit\Framework\TestRunner\RiskyTestChecks;
 
@@ -292,15 +294,21 @@ final class PropertyStatistics
     }
 
     /**
-     * @return list<array{label: non-empty-string, numberOfExamples: positive-int}>
+     * @return list<Classification>
      */
     public function classifications(): array
     {
-        return $this->classifications;
+        $classifications = [];
+
+        foreach ($this->classifications as $classification) {
+            $classifications[] = new Classification($classification['label'], $classification['numberOfExamples']);
+        }
+
+        return $classifications;
     }
 
     /**
-     * @return list<array{label: non-empty-string, numberOfValues: positive-int, minimum: float|int, median: float|int, mean: float, percentile90: float|int, maximum: float|int}>
+     * @return list<ObservedValues>
      */
     public function observations(): array
     {
