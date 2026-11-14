@@ -16,7 +16,9 @@ use Attribute;
  * before TestCase::runStateMachine() takes the steps of the state machine,
  * with generated values or values that earlier methods with this attribute
  * produced (#[FromPool]) as its arguments. The value that it returns is added
- * to the pool that is named with $produces.
+ * to the pool that is named with $produces. The methods with this attribute
+ * that a parent class declares are called before those of the class that
+ * extends it.
  *
  * @immutable
  */

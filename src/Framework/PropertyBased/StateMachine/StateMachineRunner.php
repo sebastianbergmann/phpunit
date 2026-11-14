@@ -40,12 +40,12 @@ use Throwable;
  * the property.
  *
  * The initializations are taken first, in the order in which they are
- * declared. Then each step is drawn like an element of a list: a choice
- * whether another step is taken (0 = stop), the index of its rule in the order
- * in which the rules are declared, and the arguments of the rule, all in one
- * span. A value from a pool is drawn as its position counted from the value
- * that was produced last, so that it refers to the same value when earlier
- * steps are deleted.
+ * declared, those of a parent class before those of the class that extends
+ * it. Then each step is drawn like an element of a list: a choice whether
+ * another step is taken (0 = stop), the index of its rule in the same order
+ * of the rules, and the arguments of the rule, all in one span. A value from
+ * a pool is drawn as its position counted from the value that was produced
+ * last, so that it refers to the same value when earlier steps are deleted.
  *
  * While choices are drawn at random, only rules whose preconditions hold and
  * whose pools have values are drawn, and each example enables a random subset

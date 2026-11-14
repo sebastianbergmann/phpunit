@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\PropertyBased\StateMachine;
 
+use function array_map;
 use function sprintf;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -27,6 +28,7 @@ use PHPUnit\Framework\PropertyBased\Generators;
 use PHPUnit\Framework\PropertyBased\InvalidStateMachineException;
 use PHPUnit\Framework\PropertyBased\ValueGenerator;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\PropertyBased\StateMachine\ChildStateMachine;
 use PHPUnit\TestFixture\PropertyBased\StateMachine\ClassWithParentClassThatDoesNotExist;
 use PHPUnit\TestFixture\PropertyBased\StateMachine\StateMachineWithClosureThatDoesNotReturnAValueGenerator;
 use PHPUnit\TestFixture\PropertyBased\StateMachine\StateMachineWithClosureThatReturnsAnUnsupportedValueGenerator;
@@ -544,6 +546,24 @@ final class StateMachineDefinitionBuilderTest extends TestCase
         $this->assertSame('hasAccounts', $close->precondition());
         $this->assertSame('accounts', $close->parameters()[0]->pool());
         $this->assertTrue($close->parameters()[0]->consume());
+    }
+
+    public function testMethodsOfAParentClassComeBeforeMethodsOfTheClassThatExtendsIt(): void
+    {
+        $definition = new StateMachineDefinitionBuilder()->build(ChildStateMachine::class, new GeneratorDeriver(GeneratorRegistry::empty()));
+
+        $this->assertSame(
+            ['initializeParent', 'initializeParentFurther', 'initializeChild'],
+            array_map(static fn (StepDefinition $step): string => $step->methodName(), $definition->initializations()),
+        );
+
+        $this->assertSame(
+            ['ruleOfParent', 'ruleOfChild', 'ruleThatIsOverridden'],
+            array_map(static fn (StepDefinition $step): string => $step->methodName(), $definition->rules()),
+        );
+
+        $this->assertSame(['invariantOfParent', 'invariantOfChild'], $definition->invariants());
+        $this->assertSame(['invariantAtEndOfParent', 'invariantAtEndOfChild'], $definition->invariantsAtEnd());
     }
 
     #[RequiresPhp('^8.5')]

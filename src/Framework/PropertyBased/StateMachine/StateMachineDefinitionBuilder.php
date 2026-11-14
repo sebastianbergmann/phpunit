@@ -71,7 +71,7 @@ final readonly class StateMachineDefinitionBuilder
         $invariants      = [];
         $invariantsAtEnd = [];
 
-        foreach (new ReflectionClass($className)->getMethods() as $method) {
+        foreach ($this->methods($className) as $method) {
             $methodName = $method->getName();
 
             assert($methodName !== '');
@@ -164,6 +164,50 @@ final readonly class StateMachineDefinitionBuilder
         $this->ensurePoolsAreProduced($className, $initializations, $rules);
 
         return new StateMachineDefinition($className, $initializations, $rules, $invariants, $invariantsAtEnd);
+    }
+
+    /**
+     * The methods of a state machine: those that a parent class declares
+     * before those that the class that extends it declares, as the hook
+     * methods of a test case class are ordered, and those that a class
+     * declares in the order in which it declares them.
+     *
+     * This is the order in which the initializations are taken and in which
+     * the invariants are checked, so that a class can rely on what its parent
+     * class has set up. It is also the order of the rules, whose position in
+     * it is a choice of a step: the rules of a parent class are the simpler
+     * ones that a counterexample is shrunk towards.
+     *
+     * @param class-string $className
+     *
+     * @return list<ReflectionMethod>
+     */
+    private function methods(string $className): array
+    {
+        $methodsByClass = [];
+
+        foreach (new ReflectionClass($className)->getMethods() as $method) {
+            $declaringClassName = $method->getDeclaringClass()->getName();
+
+            if (!isset($methodsByClass[$declaringClassName])) {
+                $methodsByClass[$declaringClassName] = [];
+            }
+
+            $methodsByClass[$declaringClassName][] = $method;
+        }
+
+        $methods = [];
+        $class   = new ReflectionClass($className);
+
+        while ($class !== false) {
+            if (isset($methodsByClass[$class->getName()])) {
+                $methods = [...$methodsByClass[$class->getName()], ...$methods];
+            }
+
+            $class = $class->getParentClass();
+        }
+
+        return $methods;
     }
 
     /**
