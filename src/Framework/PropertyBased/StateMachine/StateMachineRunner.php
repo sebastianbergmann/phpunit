@@ -76,7 +76,8 @@ use Throwable;
  * of the state machine, for the report of the minimal counterexample: a value
  * that a step produced is assigned to a variable that is named after its pool,
  * the value that another step returned is written as a comment unless it is
- * null, and an invariant is written only when it failed.
+ * null, with ?> written as ?\> as it would end the comment, and an invariant
+ * is written only when it failed.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
@@ -698,12 +699,20 @@ final class StateMachineRunner
      * A value that is exported as more than one line is written as a comment
      * of its own after the step.
      *
+     * A closing tag ends a comment that begins with two slashes, and the PHP
+     * code with it, wherever it occurs in the comment, in a string, for
+     * instance. It is written as ?\> so that the steps remain PHP code. This
+     * cannot be mistaken for a backslash in a string that is exported as PHP
+     * code, as that is exported as two backslashes.
+     *
      * @param non-empty-string $step
      *
      * @return non-empty-string
      */
     private function withComment(string $step, string $value): string
     {
+        $value = str_replace('?>', '?\>', $value);
+
         if (!str_contains($value, "\n")) {
             return $step . ' // ' . $value;
         }

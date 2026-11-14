@@ -10,13 +10,22 @@
 namespace PHPUnit\Framework\PropertyBased\StateMachine;
 
 use const PHP_INT_MAX;
+use const T_COMMENT;
+use const T_OPEN_TAG;
+use const T_WHITESPACE;
 use function array_count_values;
 use function array_filter;
 use function array_sum;
 use function array_values;
 use function count;
+use function implode;
+use function in_array;
+use function is_array;
 use function max;
+use function token_get_all;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
 use PHPUnit\Framework\PropertyBased\CounterexampleExporter;
@@ -32,6 +41,7 @@ use PHPUnit\TestFixture\PropertyBased\StateMachine\LockedMachine;
 use PHPUnit\TestFixture\PropertyBased\StateMachine\ObservedMachine;
 use PHPUnit\TestFixture\PropertyBased\StateMachine\PreconditionThatDoesNotReturnABool;
 use PHPUnit\TestFixture\PropertyBased\StateMachine\StateMachineWithPoolsWhoseNamesEndInDigits;
+use PHPUnit\TestFixture\PropertyBased\StateMachine\StateMachineWithRuleThatReturnsAGivenValue;
 use PHPUnit\TestFixture\PropertyBased\StateMachine\StuckMachine;
 use PHPUnit\TestFixture\PropertyBased\StateMachine\SwitchMachine;
 use Random\Engine\Xoshiro256StarStar;
@@ -40,11 +50,41 @@ use ReflectionMethod;
 use RuntimeException;
 use SebastianBergmann\ChoiceSequence\ChoiceSequence;
 use SebastianBergmann\ChoiceSequence\SpanKind;
+use stdClass;
 
 #[CoversClass(StateMachineRunner::class)]
 #[Small]
 final class StateMachineRunnerTest extends TestCase
 {
+    /**
+     * @return non-empty-array<non-empty-string, array{non-empty-string, mixed}>
+     */
+    public static function valueWhoseExportContainsAClosingTagProvider(): array
+    {
+        return [
+            'string' => [
+                '$machine->value(); // \'?\> <?php echo "pwned";\'',
+                '?> <?php echo "pwned";',
+            ],
+            'string that ends with a closing tag' => [
+                '$machine->value(); // \'??\>\'',
+                '??>',
+            ],
+            'string with line breaks' => [
+                '$machine->value(); // "?\>\r\n?\>\r?\>"',
+                "?>\r\n?>\r?>",
+            ],
+            'string with a backslash before the greater-than sign' => [
+                '$machine->value(); // \'?\\\\>\'',
+                '?\\>',
+            ],
+            'array' => [
+                '$machine->value(); // [\'?\>\' => [\'?\>\', \'*/\']]',
+                ['?>' => ['?>', '*/']],
+            ],
+        ];
+    }
+
     public function testTakesTheStepsThatAreDrawn(): void
     {
         $machine = new SwitchMachine;
@@ -252,6 +292,48 @@ $machine->describe();
 EOT,
             $steps[3],
         );
+    }
+
+    #[DataProvider('valueWhoseExportContainsAClosingTagProvider')]
+    #[RequiresPhpExtension('tokenizer')]
+    public function testClosingTagInTheValueThatAStepReturnedDoesNotEndTheCommentThatTheValueIsWrittenAs(string $expected, mixed $value): void
+    {
+        $machine        = new StateMachineWithRuleThatReturnsAGivenValue;
+        $machine->value = $value;
+
+        $runner = $this->runner(ChoiceSource::replay(new ChoiceSequence([1, 0, 0])), $machine, true);
+
+        $runner->run(50);
+
+        $this->assertSame([$expected], $runner->steps());
+        $this->assertSame('$machine->value();', $this->codeWithoutComments($runner->steps()));
+    }
+
+    #[RequiresPhpExtension('tokenizer')]
+    public function testClosingTagInALineOfTheValueThatAStepReturnedDoesNotEndTheCommentThatTheLineIsWrittenAs(): void
+    {
+        $machine                     = new StateMachineWithRuleThatReturnsAGivenValue;
+        $machine->value              = new stdClass;
+        $machine->value->closingTags = "?>\n?> <?php echo 'pwned';";
+
+        $runner = $this->runner(ChoiceSource::replay(new ChoiceSequence([1, 0, 0])), $machine, true);
+
+        $runner->run(50);
+
+        $steps = $runner->steps();
+
+        $this->assertCount(1, $steps);
+        $this->assertStringMatchesFormat(
+            <<<'EOT'
+$machine->value();
+// stdClass Object #%d (
+//     'closingTags' => '?\>\n
+// ?\> <?php echo 'pwned';',
+// )
+EOT,
+            $steps[0],
+        );
+        $this->assertSame('$machine->value();', $this->codeWithoutComments($steps));
     }
 
     public function testGeneratedArgumentsAreReported(): void
@@ -536,6 +618,33 @@ EOT,
             NameScope::forMethod(new ReflectionMethod($this, __FUNCTION__)),
             $source->constructions(),
         );
+    }
+
+    /**
+     * The steps as PHP parses them, without their comments and without
+     * whitespace: a comment that ends the PHP code leaves a closing tag and
+     * what follows it, and a comment that ends before its line does leaves
+     * the rest of the line.
+     *
+     * @param list<non-empty-string> $steps
+     */
+    private function codeWithoutComments(array $steps): string
+    {
+        $code = '';
+
+        foreach (token_get_all('<?php ' . implode("\n", $steps)) as $token) {
+            if (!is_array($token)) {
+                $code .= $token;
+
+                continue;
+            }
+
+            if (!in_array($token[0], [T_OPEN_TAG, T_COMMENT, T_WHITESPACE], true)) {
+                $code .= $token[1];
+            }
+        }
+
+        return $code;
     }
 
     /**
