@@ -24,6 +24,7 @@ use function is_int;
 use function is_string;
 use function ltrim;
 use function sprintf;
+use function str_contains;
 use function strtolower;
 use function trait_exists;
 use DateTime;
@@ -557,7 +558,8 @@ final class GeneratorDeriver
      */
     private function classOrUnsupportedKeyword(NamedType $type, NameScope $scope): AbstractGenerator
     {
-        if (in_array(strtolower($type->name()), self::UNSUPPORTED_KEYWORDS, true)) {
+        // a name with a hyphen, such as int-mask, cannot be the name of a class
+        if (in_array(strtolower($type->name()), self::UNSUPPORTED_KEYWORDS, true) || str_contains($type->name(), '-')) {
             throw CannotDeriveGeneratorException::unsupportedType($type->name());
         }
 

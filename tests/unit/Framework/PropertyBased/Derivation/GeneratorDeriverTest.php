@@ -165,6 +165,8 @@ final class GeneratorDeriverTest extends TestCase
             'callable'                                  => ['callable', 'callable is not supported'],
             'iterable'                                  => ['iterable', 'iterable is not supported'],
             'class-string'                              => ['class-string', 'class-string is not supported'],
+            'keyword that is not known'                 => ['int-mask<1, 2, 4>', 'int-mask is not supported'],
+            'keyword that is not known in a list'       => ['list<non-empty-lowercase-string>', 'non-empty-lowercase-string is not supported'],
             'unknown class'                             => ['Unknown', 'PHPUnit\TestFixture\PropertyBased\Derivation\Unknown is neither a supported type nor the name of an existing class'],
             'interface'                                 => ['EmailAddress', 'PHPUnit\TestFixture\PropertyBased\Derivation\EmailAddress is an interface'],
             'trait'                                     => ['TraitForDerivation', 'PHPUnit\TestFixture\PropertyBased\Derivation\TraitForDerivation is a trait'],
