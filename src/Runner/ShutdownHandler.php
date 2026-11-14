@@ -79,7 +79,7 @@ final class ShutdownHandler
                     }
 
                     if ($details !== '') {
-                        print PHP_EOL . $details . PHP_EOL;
+                        print "\n" . $details . "\n";
                     }
                 }
 
