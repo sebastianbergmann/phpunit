@@ -131,12 +131,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "97a36f0825e482a2057736ae57b3b73732b0587d"
+                "reference": "aad33e5214cdc2fe85e225dd9948165f970eabb2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/97a36f0825e482a2057736ae57b3b73732b0587d",
-                "reference": "97a36f0825e482a2057736ae57b3b73732b0587d",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/aad33e5214cdc2fe85e225dd9948165f970eabb2",
+                "reference": "aad33e5214cdc2fe85e225dd9948165f970eabb2",
                 "shasum": ""
             },
             "require": {
@@ -154,7 +154,7 @@
                 "sebastian/version": "^7.1.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^13.4.6"
+                "phpunit/phpunit": "^13.4.7"
             },
             "suggest": {
                 "ext-pcov": "PHP extension that provides line coverage",
@@ -213,8 +213,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-11-09T10:35:35+00:00",
-            "published-time": "2026-11-09T10:40:40+00:00"
+            "time": "2026-11-13T22:07:32+00:00",
+            "published-time": "2026-11-13T22:07:37+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -519,19 +519,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/choice-sequence.git",
-                "reference": "061e8c811c876c7bb875ab8c2d129a173d2cbaf4"
+                "reference": "2aab87d9cf0478e54905b4bafc468ee5bc7b685b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/choice-sequence/zipball/061e8c811c876c7bb875ab8c2d129a173d2cbaf4",
-                "reference": "061e8c811c876c7bb875ab8c2d129a173d2cbaf4",
+                "url": "https://api.github.com/repos/sebastianbergmann/choice-sequence/zipball/2aab87d9cf0478e54905b4bafc468ee5bc7b685b",
+                "reference": "2aab87d9cf0478e54905b4bafc468ee5bc7b685b",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.5"
             },
             "require-dev": {
-                "phpunit/phpunit": "^13.4.6"
+                "phpunit/phpunit": "^13.4.7"
             },
             "default-branch": true,
             "type": "library",
@@ -581,8 +581,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-11-13T08:54:28+00:00",
-            "published-time": "2026-11-13T09:01:39+00:00"
+            "time": "2026-11-14T07:48:07+00:00",
+            "published-time": "2026-11-14T08:10:55+00:00"
         },
         {
             "name": "sebastian/cli-parser",
