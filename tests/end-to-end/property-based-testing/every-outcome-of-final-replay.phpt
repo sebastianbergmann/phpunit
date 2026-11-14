@@ -26,11 +26,11 @@ There was 1 failure:
 1) PHPUnit\TestFixture\PropertyBasedTesting\FailureInTearDownOfFalsifyingExampleTest::testFailsWhenTheValueIsTooLarge
 Failed asserting that 10 is less than 10.
 
-Property falsified after 1 example, counterexample shrunk in 1 step:
+Property falsified after 4 examples, counterexample shrunk in %d steps:
 
     $value = 10;
 
 %sFailureInTearDownOfFalsifyingExampleTest.php:%d
 
 FAILURES!
-Tests: 1, Assertions: 2, Failures: 1.
+Tests: 1, Assertions: 5, Failures: 1.

@@ -28,7 +28,7 @@ There were 2 failures:
 1) PHPUnit\TestFixture\PropertyBasedTesting\FalsifyingExampleIsReleasedWhileItsCounterexampleIsShrunkTest::testFalsifiedByValuesGreaterThanTen
 falsified
 
-Property falsified after 5 examples, counterexample shrunk in %d steps:
+Property falsified after 3 examples, counterexample shrunk in %d steps:
 
     $value = 11;
 
@@ -44,4 +44,4 @@ Property falsified after 1 example, counterexample shrunk in 1 step:
 %sFalsifyingExampleIsReleasedWhileItsCounterexampleIsShrunkTest.php:%d
 
 FAILURES!
-Tests: 2, Assertions: 8, Failures: 2.
+Tests: 2, Assertions: 6, Failures: 2.

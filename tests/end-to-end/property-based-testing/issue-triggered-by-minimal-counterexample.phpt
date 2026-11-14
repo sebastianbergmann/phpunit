@@ -27,7 +27,7 @@ There was 1 failure:
 1) PHPUnit\TestFixture\PropertyBasedTesting\IssueTriggeredByMinimalCounterexampleTest::testIsLessThanOneThousand
 Failed asserting that 1000 is less than 1000.
 
-Property falsified after 2 examples, counterexample shrunk in %d steps:
+Property falsified after 6 examples, counterexample shrunk in %d steps:
 
     $value = 1000;
 
@@ -41,4 +41,4 @@ Property falsified after 2 examples, counterexample shrunk in %d steps:
 deprecation triggered by the minimal counterexample
 
 FAILURES!
-Tests: 1, Assertions: 2, Failures: 1, Deprecations: 1.
+Tests: 1, Assertions: 6, Failures: 1, Deprecations: 1.

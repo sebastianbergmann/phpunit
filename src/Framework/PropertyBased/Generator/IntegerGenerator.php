@@ -10,9 +10,12 @@
 namespace PHPUnit\Framework\PropertyBased\Generator;
 
 use function assert;
+use function log;
+use function max;
+use function min;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
+use SebastianBergmann\ChoiceSequence\BernoulliDistribution;
 use SebastianBergmann\ChoiceSequence\BoundaryDistribution;
-use SebastianBergmann\ChoiceSequence\UniformDistribution;
 
 /**
  * Generates integers in the range [$minimum, $maximum]. The choice 0 stands
@@ -24,6 +27,13 @@ use SebastianBergmann\ChoiceSequence\UniformDistribution;
  * the negative half, the choice c in [0, ~$minimum] stands for the value ~c.
  * This way, neither half can overflow.
  *
+ * The more values a half has, the more often it is selected: the halves are
+ * weighted by the binary logarithm of the number of their values, as the
+ * values within a half are drawn so that each magnitude occurs. A half is
+ * selected for at least a tenth of the values, however few values it has, as
+ * these are close to a boundary of the range: for the range [-1, PHP_INT_MAX],
+ * -1 is a tenth of the values rather than half of them.
+ *
  * @template-extends AbstractGenerator<int>
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -32,10 +42,11 @@ use SebastianBergmann\ChoiceSequence\UniformDistribution;
  */
 final readonly class IntegerGenerator extends AbstractGenerator
 {
+    private const float MINIMUM_PROBABILITY_OF_A_HALF = 0.1;
     private int $minimum;
     private int $maximum;
     private BoundaryDistribution $magnitude;
-    private UniformDistribution $half;
+    private BernoulliDistribution $half;
 
     /**
      * @var non-empty-string
@@ -51,7 +62,7 @@ final readonly class IntegerGenerator extends AbstractGenerator
         $this->minimum   = $minimum;
         $this->maximum   = $maximum;
         $this->magnitude = new BoundaryDistribution;
-        $this->half      = new UniformDistribution;
+        $this->half      = new BernoulliDistribution(self::probabilityOfNegativeHalf($minimum, $maximum));
     }
 
     public function label(): string
@@ -82,5 +93,25 @@ final readonly class IntegerGenerator extends AbstractGenerator
         }
 
         return ~$source->draw(~$this->minimum, $this->magnitude);
+    }
+
+    /**
+     * The probability with which the negative half of a range that contains
+     * negative and non-negative values is selected. The numbers of values are
+     * calculated as floats, as a half can have more than PHP_INT_MAX values.
+     */
+    private static function probabilityOfNegativeHalf(int $minimum, int $maximum): float
+    {
+        if ($minimum >= 0 || $maximum < 0) {
+            return 0.0;
+        }
+
+        $negative    = log((float) ~$minimum + 2.0, 2);
+        $nonNegative = log((float) $maximum + 2.0, 2);
+
+        return max(
+            self::MINIMUM_PROBABILITY_OF_A_HALF,
+            min(1.0 - self::MINIMUM_PROBABILITY_OF_A_HALF, $negative / ($negative + $nonNegative)),
+        );
     }
 }

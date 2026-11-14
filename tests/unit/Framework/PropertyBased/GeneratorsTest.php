@@ -225,6 +225,23 @@ final class GeneratorsTest extends TestCase
     }
 
     /**
+     * @return array<string, array{float, int, int}>
+     */
+    public static function shareOfNegativeIntegersProvider(): array
+    {
+        return [
+            'as many negative as non-negative values'       => [0.5, PHP_INT_MIN, PHP_INT_MAX],
+            'about as many negative as non-negative values' => [0.5, -100, 100],
+            'one negative and one non-negative value'       => [0.5, -1, 0],
+            'one negative value'                            => [0.1, -1, PHP_INT_MAX],
+            'one negative value and a million others'       => [0.1, -1, 1000000],
+            'two non-negative values'                       => [0.9, PHP_INT_MIN, 1],
+            'few negative values'                           => [0.15, -10, 1000000],
+            'fewer negative than non-negative values'       => [0.39, -1, 1],
+        ];
+    }
+
+    /**
      * @return array<string, array{int, int, int}>
      */
     public static function simplestIntegerProvider(): array
@@ -449,6 +466,15 @@ final class GeneratorsTest extends TestCase
         $this->assertNotEmpty(array_filter($values, static fn (int $value): bool => $value >= 0));
         $this->assertNotEmpty(array_filter($values, static fn (int $value): bool => $value % 2 === 0));
         $this->assertNotEmpty(array_filter($values, static fn (int $value): bool => $value % 2 !== 0));
+    }
+
+    #[DataProvider('shareOfNegativeIntegersProvider')]
+    public function testTheShareOfNegativeIntegersReflectsHowManyValuesOfTheRangeAreNegative(float $expectedShare, int $minimum, int $maximum): void
+    {
+        $values   = $this->values(Generators::integers($minimum, $maximum), 5000);
+        $negative = array_filter($values, static fn (int $value): bool => $value < 0);
+
+        $this->assertEqualsWithDelta($expectedShare, count($negative) / count($values), 0.02);
     }
 
     public function testGeneratesTheBoundariesAndTheIntegersAroundZero(): void
