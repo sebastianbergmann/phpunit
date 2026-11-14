@@ -523,6 +523,13 @@ final class PropertyRunner
      * Runs an example of the property with arguments that are generated from
      * the given choices.
      *
+     * The given choices need not be the ones that an example consumes: a
+     * choice that is greater than the maximum of the choice that is consumed
+     * in its place is replaced with this maximum, a choice that is consumed
+     * after the last of the given choices is 0, and the given choices that
+     * are left when the example has consumed its choices are ignored. The
+     * choices of the result are the ones that the example consumed.
+     *
      * @param non-empty-string       $id           the ID of the property, as properties() returns it
      * @param list<non-negative-int> $choices
      * @param positive-int           $timeLimit    the time limit of the example in seconds, which covers generating its arguments and running it
