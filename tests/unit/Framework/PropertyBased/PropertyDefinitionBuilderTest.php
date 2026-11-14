@@ -38,6 +38,7 @@ use PHPUnit\TestFixture\PropertyBased\Properties\InvalidPropertiesTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\NonStaticGeneratorForTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\OtherEmailAddressGenerators;
 use PHPUnit\TestFixture\PropertyBased\Properties\PropertyInSubclassTest;
+use PHPUnit\TestFixture\PropertyBased\Properties\PropertyWithParameterThatTakesValuesFromAPoolTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\UseGeneratorsTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\UseGeneratorsWithOwnGeneratorForTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\ValidPropertiesTest;
@@ -150,6 +151,12 @@ final class PropertyDefinitionBuilderTest extends TestCase
                 InvalidPropertiesTest::class,
                 'testWithVariadicParameter',
                 'variadic parameter $values is not supported',
+            ],
+
+            'parameter that takes values from a pool' => [
+                PropertyWithParameterThatTakesValuesFromAPoolTest::class,
+                'testWithParameterThatTakesValuesFromAPool',
+                'parameter $b cannot take values from a pool, only the parameters of the rules of a state machine can',
             ],
 
             'unknown generator method' => [

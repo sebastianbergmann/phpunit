@@ -30,6 +30,7 @@ use PHPUnit\Framework\PropertyBased\Generator\DeferredGenerator;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\CounterexampleFormatter;
 use PHPUnit\Metadata\ForAll;
+use PHPUnit\Metadata\FromPool;
 use PHPUnit\Metadata\GeneratorFor;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
@@ -115,6 +116,22 @@ final readonly class PropertyDefinitionBuilder
             }
 
             $forAll[$parameterName] = $item;
+        }
+
+        // values are produced for the pools of a state machine by its steps,
+        // so that only the parameters of its rules can take values from them
+        $fromPool = $metadata->isFromPool();
+
+        if ($fromPool->isNotEmpty()) {
+            $item = $fromPool->asArray()[0];
+
+            assert($item instanceof FromPool);
+
+            throw InvalidPropertyException::because(
+                $className,
+                $methodName,
+                sprintf('parameter $%s cannot take values from a pool, only the parameters of the rules of a state machine can', $item->parameterName()),
+            );
         }
 
         $registeredGenerators = $this->registeredGenerators($className, $methodName);
