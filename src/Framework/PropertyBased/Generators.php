@@ -233,7 +233,7 @@ final class Generators
      *
      * @return ValueGenerator<string>
      */
-    public static function strings(?string $alphabet = null, int $minimumLength = 0, ?int $maximumLength = null, ?array $codePointRanges = null): ValueGenerator
+    public static function strings(int $minimumLength = 0, ?int $maximumLength = null, ?string $alphabet = null, ?array $codePointRanges = null): ValueGenerator
     {
         self::ensureValidSize('length', $minimumLength, $maximumLength);
 

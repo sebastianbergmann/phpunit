@@ -173,7 +173,7 @@ final class GeneratorsTest extends TestCase
             'floats (options)'   => [Generators::floats(-1.5, 2.5, excludeMinimum: true, excludeMaximum: true, allowSubnormals: false)],
             'booleans'           => [Generators::booleans()],
             'strings'            => [Generators::strings()],
-            'strings (alphabet)' => [Generators::strings('01', 1, 8)],
+            'strings (alphabet)' => [Generators::strings(1, 8, '01')],
             'strings (ranges)'   => [Generators::strings(codePointRanges: [[0x41, 0x5A], [0x1F600, 0x1F64F]])],
             'bytes'              => [Generators::bytes()],
             'regular expression' => [Generators::fromRegularExpression('/^[a-z]{1,3}(-\d+|\.[^a-z])?$/u')],
@@ -182,7 +182,7 @@ final class GeneratorsTest extends TestCase
             'constant'           => [Generators::constant('constant')],
             'lists'              => [Generators::lists(Generators::integers(0, 100))],
             'lists (unique)'     => [Generators::lists(Generators::integers(0, 9), unique: true)],
-            'arrays'             => [Generators::arrays(Generators::strings('abc', 1, 2), Generators::booleans())],
+            'arrays'             => [Generators::arrays(Generators::strings(1, 2, 'abc'), Generators::booleans())],
             'tuples'             => [Generators::tuples(Generators::integers(), Generators::strings())],
             'combine'            => [Generators::combine(static fn (int $integer, string $string): string => $integer . $string, Generators::integers(), Generators::strings())],
             'records'            => [Generators::records(['name' => Generators::strings(), 'age' => Generators::integers(0, 150)])],
@@ -231,8 +231,8 @@ final class GeneratorsTest extends TestCase
     {
         return [
             'strings'                            => [Generators::strings(maximumLength: 255), 255, mb_strlen(...)],
-            'strings of an alphabet'             => [Generators::strings('ab', 0, 128), 128, strlen(...)],
-            'strings with a minimum length'      => [Generators::strings(null, 100, 300), 300, mb_strlen(...)],
+            'strings of an alphabet'             => [Generators::strings(0, 128, 'ab'), 128, strlen(...)],
+            'strings with a minimum length'      => [Generators::strings(100, 300), 300, mb_strlen(...)],
             'binary strings'                     => [Generators::bytes(0, 64), 64, strlen(...)],
             'lists'                              => [Generators::lists(Generators::integers(), 0, 100), 100, count(...)],
             'arrays'                             => [Generators::arrays(Generators::integers(), Generators::booleans(), 0, 100), 100, count(...)],
@@ -409,7 +409,7 @@ final class GeneratorsTest extends TestCase
     public static function stringsThatAreNotCharactersProvider(): array
     {
         return [
-            'alphabet'          => [Generators::strings('ab')],
+            'alphabet'          => [Generators::strings(alphabet: 'ab')],
             'code point ranges' => [Generators::strings(codePointRanges: [[0x61, 0x7A]])],
         ];
     }
@@ -694,7 +694,7 @@ final class GeneratorsTest extends TestCase
         $this->expectException(InvalidGeneratorArgumentException::class);
         $this->expectExceptionMessageIs('Either an alphabet or code point ranges can be specified, not both');
 
-        Generators::strings('ab', codePointRanges: [[0x41, 0x5A]]);
+        Generators::strings(alphabet: 'ab', codePointRanges: [[0x41, 0x5A]]);
     }
 
     public function testGeneratesUuidsOfEveryVersionInTheirCanonicalFormWithTheirVersionAndTheVariant(): void
@@ -1382,7 +1382,7 @@ final class GeneratorsTest extends TestCase
 
     public function testGeneratesStringsFromTheCharactersOfTheAlphabet(): void
     {
-        foreach ($this->values(Generators::strings('äb€'), 200) as $value) {
+        foreach ($this->values(Generators::strings(alphabet: 'äb€'), 200) as $value) {
             $this->assertIsString($value);
 
             foreach (mb_str_split($value, 1, 'UTF-8') as $character) {
@@ -1395,7 +1395,7 @@ final class GeneratorsTest extends TestCase
     {
         $this->assertSame('', $this->replay(Generators::strings(), []));
         $this->assertSame('aa', $this->replay(Generators::strings(minimumLength: 2), []));
-        $this->assertSame('11', $this->replay(Generators::strings('10', 2), []));
+        $this->assertSame('11', $this->replay(Generators::strings(2, alphabet: '10'), []));
     }
 
     public function testTheCharacterOfAStringIsReplayedFromItsIndexInTheOrderOfCodePoints(): void
@@ -1409,7 +1409,7 @@ final class GeneratorsTest extends TestCase
         $this->expectException(InvalidGeneratorArgumentException::class);
         $this->expectExceptionMessageIs($message);
 
-        Generators::strings($alphabet, $minimumLength, $maximumLength);
+        Generators::strings($minimumLength, $maximumLength, $alphabet);
     }
 
     public function testGeneratesBinaryStringsWithinTheLengthInBytes(): void

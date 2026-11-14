@@ -142,8 +142,8 @@ final class ShrinkerTest extends TestCase
                 ['aa', 'cc', [0, 0], 1],
                 Generators::integers(1, 10)->flatMap(
                     static fn (int $size): ValueGenerator => Generators::tuples(
-                        Generators::strings('ab', 2, 5),
-                        Generators::strings('cd', 2, 5),
+                        Generators::strings(2, 5, 'ab'),
+                        Generators::strings(2, 5, 'cd'),
                         Generators::lists(Generators::integers(0, 9), $size, $size),
                         Generators::integers(0, $size - 1),
                     ),
@@ -309,7 +309,7 @@ final class ShrinkerTest extends TestCase
 
             'sum of two values that are generated alike and far apart' => [
                 [1, 'aaaaa', 10],
-                Generators::tuples(Generators::integers(0, 10), Generators::strings('ab', 5, 5), Generators::integers(0, 10)),
+                Generators::tuples(Generators::integers(0, 10), Generators::strings(5, 5, 'ab'), Generators::integers(0, 10)),
                 static fn (array $value): bool => $value[0] + $value[2] > 10,
             ],
 
@@ -321,7 +321,7 @@ final class ShrinkerTest extends TestCase
 
             'values that are combined' => [
                 '10:b',
-                Generators::combine(static fn (int $integer, string $string): string => $integer . ':' . $string, Generators::integers(0, 1000), Generators::strings('ab', 1, 5)),
+                Generators::combine(static fn (int $integer, string $string): string => $integer . ':' . $string, Generators::integers(0, 1000), Generators::strings(1, 5, 'ab')),
                 static fn (string $value): bool => (int) $value >= 10 && str_contains($value, 'b'),
             ],
 
