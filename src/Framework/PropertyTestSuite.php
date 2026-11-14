@@ -265,9 +265,9 @@ final class PropertyTestSuite extends IterativeTestSuite
         $this->seed       = RandomNumberGeneratorSeeder::derive($configuration->randomSeed(), $valueObject->id());
         $this->statistics = new PropertyStatistics(
             $this->numberOfExamples,
-            $configuration->examplesCheckedUntilHealthIsAssumed(),
-            $configuration->maximumRejectedExamplesUntilHealthIsAssumed(),
-            $configuration->maximumTooLargeExamplesUntilHealthIsAssumed(),
+            $configuration->propertyExamplesCheckedUntilHealthIsAssumed(),
+            $configuration->propertyMaximumRejectedExamplesUntilHealthIsAssumed(),
+            $configuration->propertyMaximumTooLargeExamplesUntilHealthIsAssumed(),
             $configuration->reportUselessTests(),
         );
 
@@ -294,7 +294,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             $events,
             $emitter,
             $this->seed,
-            $configuration->maximumShrinkingAttempts(),
+            $configuration->propertyMaximumShrinkingAttempts(),
             $this->shouldStop(...),
             function (?EventCollection $skeleton, ?Event\Code\Throwable $error, ?FalsificationReport $falsification) use ($events, $emitter): void
             {

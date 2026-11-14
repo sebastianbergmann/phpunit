@@ -428,7 +428,7 @@ final class MergerTest extends TestCase
         $mergedConfig = new Merger($this->createStub(Emitter::class))->merge(new Builder($this->createStub(Emitter::class))->fromParameters([]), $fromFile);
 
         $this->assertSame(500, $mergedConfig->propertyExamples());
-        $this->assertSame(50, $mergedConfig->maximumShrinkingAttempts());
+        $this->assertSame(50, $mergedConfig->propertyMaximumShrinkingAttempts());
     }
 
     public function testHealthChecksForPropertiesAreCarriedOverFromXmlConfiguration(): void
@@ -437,9 +437,9 @@ final class MergerTest extends TestCase
 
         $mergedConfig = new Merger($this->createStub(Emitter::class))->merge(new Builder($this->createStub(Emitter::class))->fromParameters([]), $fromFile);
 
-        $this->assertSame(5, $mergedConfig->examplesCheckedUntilHealthIsAssumed());
-        $this->assertSame(25, $mergedConfig->maximumRejectedExamplesUntilHealthIsAssumed());
-        $this->assertSame(15, $mergedConfig->maximumTooLargeExamplesUntilHealthIsAssumed());
+        $this->assertSame(5, $mergedConfig->propertyExamplesCheckedUntilHealthIsAssumed());
+        $this->assertSame(25, $mergedConfig->propertyMaximumRejectedExamplesUntilHealthIsAssumed());
+        $this->assertSame(15, $mergedConfig->propertyMaximumTooLargeExamplesUntilHealthIsAssumed());
     }
 
     public function testHealthChecksForPropertiesHaveDefaults(): void
@@ -448,9 +448,9 @@ final class MergerTest extends TestCase
 
         $mergedConfig = new Merger($this->createStub(Emitter::class))->merge(new Builder($this->createStub(Emitter::class))->fromParameters([]), $fromFile);
 
-        $this->assertSame(10, $mergedConfig->examplesCheckedUntilHealthIsAssumed());
-        $this->assertSame(50, $mergedConfig->maximumRejectedExamplesUntilHealthIsAssumed());
-        $this->assertSame(20, $mergedConfig->maximumTooLargeExamplesUntilHealthIsAssumed());
+        $this->assertSame(10, $mergedConfig->propertyExamplesCheckedUntilHealthIsAssumed());
+        $this->assertSame(50, $mergedConfig->propertyMaximumRejectedExamplesUntilHealthIsAssumed());
+        $this->assertSame(20, $mergedConfig->propertyMaximumTooLargeExamplesUntilHealthIsAssumed());
     }
 
     public function testNumberOfExamplesForPropertiesFromCliTakesPrecedenceOverXmlConfiguration(): void
@@ -471,7 +471,7 @@ final class MergerTest extends TestCase
         $mergedConfig = new Merger($this->createStub(Emitter::class))->merge(new Builder($this->createStub(Emitter::class))->fromParameters([]), $fromFile);
 
         $this->assertSame(100, $mergedConfig->propertyExamples());
-        $this->assertSame(1000, $mergedConfig->maximumShrinkingAttempts());
+        $this->assertSame(1000, $mergedConfig->propertyMaximumShrinkingAttempts());
     }
 
     public function testMultiplierForNumberOfExamplesOfPropertiesIsCarriedOverFromXmlConfiguration(): void
@@ -511,7 +511,7 @@ final class MergerTest extends TestCase
 
         $mergedConfig = new Merger($this->createStub(Emitter::class))->merge($fromCli, $fromFile);
 
-        $this->assertSame(0, $mergedConfig->maximumShrinkingAttempts());
+        $this->assertSame(0, $mergedConfig->propertyMaximumShrinkingAttempts());
     }
 
     public function testIncludePathsAreCarriedOverFromXmlConfiguration(): void
