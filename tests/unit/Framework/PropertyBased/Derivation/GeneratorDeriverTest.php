@@ -25,6 +25,7 @@ use function strtolower;
 use Closure;
 use DateTime;
 use DateTimeImmutable;
+use DateTimeZone;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -143,6 +144,7 @@ final class GeneratorDeriverTest extends TestCase
             'DateTimeImmutable'             => ['\\DateTimeImmutable', static fn (mixed $value): bool => $value instanceof DateTimeImmutable && $value->getTimestamp() >= GeneratorDeriver::SMALLEST_TIMESTAMP && $value->getTimestamp() <= GeneratorDeriver::LARGEST_TIMESTAMP, new DateTimeImmutable('@0')],
             'DateTimeInterface'             => ['\\DateTimeInterface', static fn (mixed $value): bool => $value instanceof DateTimeImmutable, new DateTimeImmutable('@0')],
             'DateTime'                      => ['\\DateTime', static fn (mixed $value): bool => $value instanceof DateTime, new DateTime('@0')],
+            'DateTimeZone'                  => ['\\DateTimeZone', static fn (mixed $value): bool => $value instanceof DateTimeZone && in_array($value->getName(), DateTimeZone::listIdentifiers(), true), new DateTimeZone('UTC')],
         ];
     }
 

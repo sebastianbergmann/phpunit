@@ -28,6 +28,7 @@ use function strtolower;
 use function trait_exists;
 use DateTime;
 use DateTimeImmutable;
+use DateTimeZone;
 use PHPUnit\Framework\PropertyBased\CannotDeriveGeneratorException;
 use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\ArrayGenerator;
@@ -46,6 +47,7 @@ use PHPUnit\Framework\PropertyBased\Generator\OneOfGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\RecordGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\Repetition;
 use PHPUnit\Framework\PropertyBased\Generator\StringGenerator;
+use PHPUnit\Framework\PropertyBased\Generators;
 use PHPUnit\Framework\PropertyBased\InvalidTypeException;
 use PHPUnit\Framework\PropertyBased\Type\ArrayShapeType;
 use PHPUnit\Framework\PropertyBased\Type\DocComments;
@@ -252,8 +254,8 @@ final class GeneratorDeriver
 
     /**
      * Derives the generator for a class: the one registered for it, the one
-     * for points in time or the cases of an enumeration, or one that creates
-     * objects of the class with new.
+     * for points in time, time zones, or the cases of an enumeration, or one
+     * that creates objects of the class with new.
      *
      * @param non-empty-string $className
      *
@@ -277,6 +279,10 @@ final class GeneratorDeriver
 
         if ($key === 'datetime') {
             return $this->pointsInTime(true);
+        }
+
+        if ($key === 'datetimezone') {
+            return $this->timeZones();
         }
 
         if (enum_exists($className)) {
@@ -835,6 +841,18 @@ final class GeneratorDeriver
         }
 
         return new MappedGenerator($timestamps, static fn (int $timestamp): DateTimeImmutable => new DateTimeImmutable('@' . $timestamp));
+    }
+
+    /**
+     * Generates the time zones whose identifiers Generators::timezones()
+     * generates, the simplest of which is UTC, as the constructor of
+     * DateTimeZone does not accept other strings.
+     *
+     * @return AbstractGenerator<DateTimeZone>
+     */
+    private function timeZones(): AbstractGenerator
+    {
+        return new ObjectGenerator(DateTimeZone::class, ['timezone' => AbstractGenerator::from(Generators::timezones())]);
     }
 
     /**
