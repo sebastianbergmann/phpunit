@@ -116,6 +116,21 @@ EOT,
         );
     }
 
+    public function testStringRepresentationHasWhatTheCounterexampleFormatterReturnedForTheArgumentsOfTheMinimalCounterexample(): void
+    {
+        $event = new PropertyFalsified($this->telemetryInfo(), $this->testValueObject(), 1234, 2, 3, 1, false, false, new Counterexample([1, 5, 0], ['size' => '1'], null, [new DrawnValue('list', '[5]')], [], 'a list with one element'), [], 0, 0);
+
+        $this->assertStringEqualsStringIgnoringLineEndings(
+            <<<'EOT'
+Test Property Falsified (FooTest::testBar, seed: 1234, examples: 2, shrinking steps: 1, shrinking attempts: 3)
+$size = 1;
+a list with one element
+Draw 1 (list): [5]
+EOT,
+            $event->asString(),
+        );
+    }
+
     public function testStringRepresentationHasTheStepsOfTheStateMachineThatTheMinimalCounterexamplesRan(): void
     {
         $event = new PropertyFalsified($this->telemetryInfo(), $this->testValueObject(), 1234, 2, 3, 1, false, false, new Counterexample([1, 0, 0], [], null, [], ['$accounts1 = $machine->open();', '$machine->close(account: $accounts1);']), [new OtherFalsification('RuntimeException at /path/to/FooTest.php:12', new Counterexample([1, 1, 0], [], null, [], ['$machine->audit();']))], 0, 0);

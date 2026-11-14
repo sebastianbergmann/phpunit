@@ -313,6 +313,10 @@ final readonly class PropertyFalsified implements Event
             );
         }
 
+        if ($counterexample->formatted() !== null) {
+            $buffer .= PHP_EOL . $counterexample->formatted();
+        }
+
         foreach ($counterexample->drawnValues() as $number => $drawnValue) {
             $buffer .= PHP_EOL . self::describeDrawnValue($number + 1, $drawnValue->label()) . ': ' . $drawnValue->value();
         }
