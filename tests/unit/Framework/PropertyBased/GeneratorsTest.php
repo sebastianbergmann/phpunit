@@ -225,6 +225,22 @@ final class GeneratorsTest extends TestCase
     }
 
     /**
+     * @return array<string, array{ValueGenerator<mixed>, positive-int, Closure(mixed): int}>
+     */
+    public static function collectionWithMaximumSizeProvider(): array
+    {
+        return [
+            'strings'                            => [Generators::strings(maximumLength: 255), 255, mb_strlen(...)],
+            'strings of an alphabet'             => [Generators::strings('ab', 0, 128), 128, strlen(...)],
+            'strings with a minimum length'      => [Generators::strings(null, 100, 300), 300, mb_strlen(...)],
+            'binary strings'                     => [Generators::bytes(0, 64), 64, strlen(...)],
+            'lists'                              => [Generators::lists(Generators::integers(), 0, 100), 100, count(...)],
+            'arrays'                             => [Generators::arrays(Generators::integers(), Generators::booleans(), 0, 100), 100, count(...)],
+            'quantifier of a regular expression' => [Generators::fromRegularExpression('/\A[a-z]{0,64}\z/'), 64, strlen(...)],
+        ];
+    }
+
+    /**
      * @return array<string, array{float, int, int}>
      */
     public static function shareOfNegativeIntegersProvider(): array
@@ -1485,6 +1501,87 @@ final class GeneratorsTest extends TestCase
     {
         $this->assertSame([], $this->replay(Generators::lists(Generators::integers()), []));
         $this->assertSame([0, 0], $this->replay(Generators::lists(Generators::integers(), 2), []));
+    }
+
+    /**
+     * @param ValueGenerator<mixed> $generator
+     * @param positive-int          $maximumSize
+     * @param Closure(mixed): int   $size
+     */
+    #[DataProvider('collectionWithMaximumSizeProvider')]
+    public function testSomeCollectionsWithAMaximumSizeHaveThatSizeAndSomeTheSizeNextToIt(ValueGenerator $generator, int $maximumSize, Closure $size): void
+    {
+        $sizes = array_map($size, $this->values($generator, 10000));
+
+        $this->assertSame($maximumSize, max($sizes));
+        $this->assertContains($maximumSize - 1, $sizes);
+    }
+
+    #[TestWith([50])]
+    #[TestWith([255])]
+    public function testTheMeanSizeOfCollectionsGrowsByAboutAThirdBecauseSomeOfThemAimForTheirMaximumSize(int $maximumSize): void
+    {
+        $sizes = array_map(count(...), $this->values(Generators::lists(Generators::booleans(), 0, $maximumSize), 20000));
+
+        sort($sizes);
+
+        // without a maximum size, the mean size is 4 and the median is 3
+        $this->assertEqualsWithDelta(4 + 4 / 3, array_sum($sizes) / count($sizes), 0.5);
+        $this->assertSame(3, $sizes[10000]);
+    }
+
+    public function testTheMeanSizeOfCollectionsWhoseElementsCanContainThemGrowsByAboutAThirdBecauseSomeOfThemAimForTheirMaximumSize(): void
+    {
+        $sizes = array_map(count(...), $this->values(Generators::lists(Generators::booleans(), 0, 100, true), 20000));
+
+        // without a maximum size, the mean size is 1 / 3
+        $this->assertEqualsWithDelta(1 / 3 + 1 / 9, array_sum($sizes) / count($sizes), 0.1);
+    }
+
+    public function testCollectionsWithoutAMaximumSizeDoNotAimForALargeSize(): void
+    {
+        $sizes = array_map(count(...), $this->values(Generators::lists(Generators::booleans()), 10000));
+
+        $this->assertLessThan(100, max($sizes));
+        $this->assertEqualsWithDelta(4, array_sum($sizes) / count($sizes), 0.2);
+    }
+
+    public function testACollectionThatNeverGetsAnotherElementDoesNotAimForItsMaximumSize(): void
+    {
+        $generator = new ListGenerator(AbstractGenerator::from(Generators::booleans()), 2, 6, 0.0);
+
+        foreach ($this->values($generator, 500) as $list) {
+            $this->assertCount(2, $list);
+        }
+    }
+
+    public function testACollectionThatAlwaysGetsAnotherElementHasItsMaximumSize(): void
+    {
+        $generator = new ListGenerator(AbstractGenerator::from(Generators::booleans()), 2, 6, 1.0);
+
+        foreach ($this->values($generator, 500) as $list) {
+            $this->assertCount(6, $list);
+        }
+    }
+
+    public function testAChoiceSequenceIsReplayedAsTheSameCollectionWhetherOrNotTheCollectionAimedForItsMaximumSize(): void
+    {
+        $generator                     = AbstractGenerator::from(Generators::lists(Generators::booleans(), 0, 100));
+        $randomizer                    = new Randomizer(new Xoshiro256StarStar(1));
+        $numberOfListsOfTheMaximumSize = 0;
+
+        for ($i = 0; $i < 2000; $i++) {
+            $source = ChoiceSource::random($randomizer);
+            $list   = $generator->generate($source);
+
+            $this->assertSame($list, $generator->generate(ChoiceSource::replay($source->sequence())));
+
+            if (count($list) === 100) {
+                $numberOfListsOfTheMaximumSize++;
+            }
+        }
+
+        $this->assertGreaterThan(0, $numberOfListsOfTheMaximumSize);
     }
 
     public function testEachElementOfAListIsPrecededByTheChoiceToAddItAndMarkedAsASpan(): void
