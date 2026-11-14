@@ -11,11 +11,13 @@ namespace PHPUnit\Runner\PropertyBased;
 
 use const SIGALRM;
 use function array_is_list;
+use function array_reverse;
 use function assert;
 use function count;
 use function getmypid;
 use function hrtime;
 use function intdiv;
+use function is_callable;
 use function is_int;
 use function is_string;
 use function max;
@@ -107,6 +109,21 @@ use Throwable;
  * choices. It is neither shrunk nor reported. The issues that it triggers are
  * handled as in a test run, but they are not reported either.
  *
+ * While code of the project is run, when PHPUnit is booted, while an example
+ * runs, and while the hook methods of a test class that are called before
+ * its first test and after its last test are called, the error handlers of
+ * the caller are hidden: they are not called, and PHPUnit's error handler
+ * does not forward an issue to them. The error handlers that the bootstrap
+ * script of the project and these hook methods register are the ones of the
+ * project: as in a test run, they are registered while code of the project
+ * is run, and only then. Afterwards, the error handlers of the caller are
+ * registered as before, for the error levels that they were registered for,
+ * also when code of the project did not remove an error handler that it
+ * registered, in a generator, for instance. Only code of the project that
+ * removes at least two error handlers more than it registered removes error
+ * handlers of the caller: the one that was active is then registered again,
+ * for all error levels.
+ *
  * The time limit of an example is enforced with the SIGALRM signal. While an
  * example runs, the handler of this signal, a pending alarm, and whether
  * signals are handled asynchronously are PHPUnit's. Afterwards, the ones of
@@ -119,13 +136,13 @@ use Throwable;
  * When an example ends the process, with exit() or with a fatal error, for
  * instance, its output is discarded, the handler of the SIGALRM signal, the
  * alarm, and whether signals are handled asynchronously of the caller are
- * restored, and PHPUnit's error handler is disabled, in a shutdown function
- * that is registered when PHPUnit is booted, before the hook methods of the
- * prepared test class that are called after its last test are called.
- * PHPUnit prints nothing, and the process ends with the exit status of the
- * example. The shutdown functions that the caller registers after booting
- * PHPUnit are called after it, and the ones that it registers before are
- * called before it.
+ * restored, and the error handlers of the caller are registered as before,
+ * in a shutdown function that is registered when PHPUnit is booted, before
+ * the hook methods of the prepared test class that are called after its last
+ * test are called. PHPUnit prints nothing, and the process ends with the exit
+ * status of the example. The shutdown functions that the caller registers
+ * after booting PHPUnit are called after it, and the ones that it registers
+ * before are called before it.
  *
  * As in a test run, one test class is prepared at a time. The hook methods of
  * a test class that are called before its first test are called before the
@@ -211,14 +228,36 @@ final class PropertyRunner
     private readonly ?int $randomSeed;
 
     /**
+     * The error handlers of the project, from the one that was registered
+     * first to the one that was registered last: the ones that were
+     * registered while PHPUnit was booted, by the bootstrap script, for
+     * instance, and the ones that the hook methods of the test classes that
+     * are called before their first test and after their last test
+     * registered, without the ones that they removed.
+     *
+     * @var list<callable>
+     */
+    private array $errorHandlersOfProject;
+
+    /**
+     * While code of the project is run, what is restored for the caller
+     * afterwards, or when the code of the project ends the process: the error
+     * handler that was active, and the marker below which the error handlers
+     * of the caller are hidden.
+     *
+     * @var ?array{errorHandler: null|array<mixed>|callable|string, marker: Closure(): bool}
+     */
+    private ?array $stateOfCallerWhileCodeOfProjectRuns = null;
+
+    /**
      * While an example runs, what is restored for the caller after it, or
      * when it ends the process: the handler of the SIGALRM signal, whether
      * signals are handled asynchronously, the seconds that were left until an
      * alarm of the caller, when the example started, the level of output
-     * buffering and the active error handler before the example started, and
-     * the process in which it started.
+     * buffering before the example started, and the process in which it
+     * started.
      *
-     * @var ?array{handler: callable|int, asynchronous: bool, remaining: int, started: int, outputBufferingLevel: int, errorHandler: ?callable, process: false|int}
+     * @var ?array{handler: callable|int, asynchronous: bool, remaining: int, started: int, outputBufferingLevel: int, process: false|int}
      */
     private ?array $stateOfCaller = null;
 
@@ -301,10 +340,18 @@ final class PropertyRunner
         // lost
         $facade->startCollectingEvents();
 
+        $errorHandlersOfCaller = self::hideErrorHandlersOfCaller([]);
+
         try {
             $testSuite = self::testSuite($configurationFile, $filter, $randomSeed);
         } finally {
             $events = $facade->stopCollectingEvents();
+
+            // the error handlers that are registered now are the ones of the
+            // project, which its bootstrap script registered, for instance
+            $errorHandlersOfProject = self::removeErrorHandlersOfProject($errorHandlersOfCaller['marker']);
+
+            self::revealErrorHandlersOfCaller($errorHandlersOfCaller);
         }
 
         $errors   = [];
@@ -350,7 +397,7 @@ final class PropertyRunner
             $randomSeed = $configuration->randomSeed();
         }
 
-        $runner = new self(self::propertiesIn($testSuite), $randomSeed);
+        $runner = new self(self::propertiesIn($testSuite), $randomSeed, $errorHandlersOfProject);
 
         self::$bootedSuccessfully = true;
 
@@ -360,10 +407,12 @@ final class PropertyRunner
     /**
      * @param array<non-empty-string, array{property: PropertyTestSuite, test: TestMethod, testClass: TestSuite}> $properties
      * @param ?positive-int                                                                                       $randomSeed
+     * @param list<callable>                                                                                      $errorHandlersOfProject
      */
-    private function __construct(array $properties, ?int $randomSeed)
+    private function __construct(array $properties, ?int $randomSeed, array $errorHandlersOfProject)
     {
-        $this->properties = $properties;
+        $this->properties             = $properties;
+        $this->errorHandlersOfProject = $errorHandlersOfProject;
 
         $propertiesOfTestClass = [];
 
@@ -380,11 +429,13 @@ final class PropertyRunner
                 // an example that ended the process, with exit() or with a
                 // fatal error, for instance, did not restore what was changed
                 // for it: its output is still buffered, PHPUnit's error
-                // handler is still enabled, and its time limit is still
-                // enforced
+                // handler is still enabled, the error handlers of the caller
+                // are still hidden, and its time limit is still enforced
                 $this->discardOutputOfExample();
 
-                $this->restoreErrorHandlerOfCaller();
+                ErrorHandler::instance()->disable();
+
+                $this->restoreCallerAfterCodeOfProject();
 
                 $this->restoreSignalStateOfCaller();
 
@@ -393,7 +444,13 @@ final class PropertyRunner
                 // exit status of a test run that ended prematurely
                 ShutdownHandler::resetMessage();
 
-                $this->finishPreparedTestClass();
+                $this->prepareForCodeOfProject();
+
+                try {
+                    $this->finishPreparedTestClass();
+                } finally {
+                    $this->restoreCallerAfterCodeOfProject();
+                }
             },
         );
     }
@@ -467,15 +524,12 @@ final class PropertyRunner
 
         $property = $this->property($id);
 
-        $result = $this->resultOfTestClass($property['testClass']);
-
-        if ($result === null) {
-            $result = $this->suspendingAlarmOfCaller(
+        return self::asArray(
+            $this->run(
+                $property['testClass'],
                 static fn (): ExampleResult => $property['property']->replayExample($choices, $timeLimit, $exportValues),
-            );
-        }
-
-        return self::asArray($result);
+            ),
+        );
     }
 
     /**
@@ -499,15 +553,38 @@ final class PropertyRunner
 
         $property = $this->property($id);
 
-        $result = $this->resultOfTestClass($property['testClass']);
-
-        if ($result === null) {
-            $result = $this->suspendingAlarmOfCaller(
+        return self::asArray(
+            $this->run(
+                $property['testClass'],
                 static fn (): ExampleResult => $property['property']->generateExample($seed, $timeLimit, $exportValues),
-            );
-        }
+            ),
+        );
+    }
 
-        return self::asArray($result);
+    /**
+     * Prepares the test class of a property unless it is the test class that
+     * was prepared last, and runs an example of the property, with the error
+     * handlers of the project instead of the ones of the caller.
+     *
+     * @param Closure(): ExampleResult $example
+     *
+     * @throws Exception
+     */
+    private function run(TestSuite $testClass, Closure $example): ExampleResult
+    {
+        $this->prepareForCodeOfProject();
+
+        try {
+            $result = $this->resultOfTestClass($testClass);
+
+            if ($result === null) {
+                $result = $this->suspendingAlarmOfCaller($example);
+            }
+
+            return $result;
+        } finally {
+            $this->restoreCallerAfterCodeOfProject();
+        }
     }
 
     /**
@@ -528,7 +605,6 @@ final class PropertyRunner
             'remaining'            => pcntl_alarm(0),
             'started'              => hrtime(true),
             'outputBufferingLevel' => ob_get_level(),
-            'errorHandler'         => self::activeErrorHandler(),
             'process'              => getmypid(),
         ];
 
@@ -594,28 +670,32 @@ final class PropertyRunner
     }
 
     /**
-     * Disables PHPUnit's error handler after an example that ended the
-     * process, and removes the error handlers that the example registered
-     * without removing them, which are on top of PHPUnit's, so that the error
-     * handler of the caller is active again, as after any other example.
+     * Hides the error handlers of the caller before code of the project is
+     * run, and registers the error handlers of the project.
      */
-    private function restoreErrorHandlerOfCaller(): void
+    private function prepareForCodeOfProject(): void
     {
-        $state = $this->stateOfCaller;
+        $this->stateOfCallerWhileCodeOfProjectRuns = self::hideErrorHandlersOfCaller($this->errorHandlersOfProject);
+    }
 
-        if ($state !== null) {
-            while (true) {
-                $handler = self::activeErrorHandler();
+    /**
+     * Removes the error handlers that are registered since the error handlers
+     * of the caller were hidden, so that the ones of the caller are
+     * registered as before, after code of the project was run, or when it
+     * ended the process.
+     */
+    private function restoreCallerAfterCodeOfProject(): void
+    {
+        $state = $this->stateOfCallerWhileCodeOfProjectRuns;
 
-                if ($handler === null || $handler === $state['errorHandler'] || $handler === ErrorHandler::instance()) {
-                    break;
-                }
-
-                restore_error_handler();
-            }
+        if ($state === null) {
+            return;
         }
 
-        ErrorHandler::instance()->disable();
+        $this->stateOfCallerWhileCodeOfProjectRuns = null;
+
+        self::removeErrorHandlersOfProject($state['marker']);
+        self::revealErrorHandlersOfCaller($state);
     }
 
     /**
@@ -637,9 +717,13 @@ final class PropertyRunner
         if ($this->preparedTestClass === null || $this->preparedTestClass['testClass'] !== $testClass) {
             $this->finishPreparedTestClass();
 
+            $outcome = $testClass->invokeMethodsBeforeFirstExample();
+
+            $this->rememberErrorHandlersOfProject();
+
             $this->preparedTestClass = [
                 'testClass' => $testClass,
-                'outcome'   => $testClass->invokeMethodsBeforeFirstExample(),
+                'outcome'   => $outcome,
                 'process'   => getmypid(),
             ];
         }
@@ -730,10 +814,162 @@ final class PropertyRunner
     }
 
     /**
-     * The error handler that is active, which PHP only tells when another one
-     * is set.
+     * Remembers the error handlers that are registered as the ones of the
+     * project, after hook methods of test classes were called: an error
+     * handler that a hook method that is called before the first test of a
+     * test class registers is registered for the examples of its properties,
+     * until a hook method that is called after its last test removes it, as
+     * in a test run.
      */
-    private static function activeErrorHandler(): ?callable
+    private function rememberErrorHandlersOfProject(): void
+    {
+        $state = $this->stateOfCallerWhileCodeOfProjectRuns;
+
+        assert($state !== null);
+
+        $this->errorHandlersOfProject = self::removeErrorHandlersOfProject($state['marker']);
+
+        // a hook method removed the marker: the error handlers of the caller
+        // that are left are hidden below it again
+        if (self::activeErrorHandler() !== $state['marker']) {
+            set_error_handler($state['marker']);
+        }
+
+        set_error_handler(null);
+
+        self::registerErrorHandlers($this->errorHandlersOfProject);
+    }
+
+    /**
+     * Hides the error handlers of the caller, and registers the given ones of
+     * the project.
+     *
+     * PHP has one stack of error handlers. The ones of the caller are left on
+     * it, so that they keep the error levels that they were registered for,
+     * which PHP does not tell, below two entries: a marker, and above it an
+     * entry without an error handler. No error handler is active above this
+     * entry, as when none is registered: PHPUnit's error handler, which
+     * forwards an issue to the one that was active when it was registered,
+     * has none to forward to, and PHPUnit, which removes the error handlers
+     * that a test registered without removing them, finds none below it. The
+     * marker, an error handler that handles nothing, tells that the error
+     * handlers of the caller are still below it when the ones above it are
+     * removed, also when code of the project removed one error handler more
+     * than it registered.
+     *
+     * @param list<callable> $errorHandlersOfProject
+     *
+     * @return array{errorHandler: null|array<mixed>|callable|string, marker: Closure(): bool} the error handler of the caller that was active, and the marker
+     */
+    private static function hideErrorHandlersOfCaller(array $errorHandlersOfProject): array
+    {
+        $errorHandlersOfCaller = [
+            'errorHandler' => self::activeErrorHandler(),
+            'marker'       => static fn (): bool => false,
+        ];
+
+        set_error_handler($errorHandlersOfCaller['marker']);
+        set_error_handler(null);
+
+        self::registerErrorHandlers($errorHandlersOfProject);
+
+        return $errorHandlersOfCaller;
+    }
+
+    /**
+     * Removes the marker below which the error handlers of the caller are,
+     * after the ones above it were removed, so that the error handler of the
+     * caller that was active is active again.
+     *
+     * Code of the project that removed the marker also removed error handlers
+     * of the caller. The one that was active is then registered again, for
+     * all error levels, unless it can only be registered in the scope in
+     * which it was registered.
+     *
+     * @param array{errorHandler: null|array<mixed>|callable|string, marker: Closure(): bool, ...} $errorHandlersOfCaller
+     */
+    private static function revealErrorHandlersOfCaller(array $errorHandlersOfCaller): void
+    {
+        if (self::activeErrorHandler() === $errorHandlersOfCaller['marker']) {
+            restore_error_handler();
+        }
+
+        if (self::activeErrorHandler() === $errorHandlersOfCaller['errorHandler']) {
+            return;
+        }
+
+        if ($errorHandlersOfCaller['errorHandler'] === null || is_callable($errorHandlersOfCaller['errorHandler'])) {
+            set_error_handler($errorHandlersOfCaller['errorHandler']);
+        }
+    }
+
+    /**
+     * Removes the error handlers that are registered above the marker below
+     * which the error handlers of the caller are, and returns them, from the
+     * one that was registered first to the one that was registered last. The
+     * marker is the active error handler afterwards.
+     *
+     * None is returned when code of the project removed the marker: the error
+     * handlers that were removed cannot be told from the ones of the caller
+     * then.
+     *
+     * An error handler that can only be called in the scope in which it was
+     * registered, a private method, for instance, is left out, as it cannot
+     * be registered again. As in a test run, such an error handler is removed
+     * when the first test is run.
+     *
+     * @param Closure(): bool $marker
+     *
+     * @return list<callable>
+     */
+    private static function removeErrorHandlersOfProject(Closure $marker): array
+    {
+        $errorHandlers = [];
+
+        while (true) {
+            $errorHandler = self::activeErrorHandler();
+
+            if ($errorHandler === null || $errorHandler === $marker) {
+                break;
+            }
+
+            restore_error_handler();
+
+            if (is_callable($errorHandler)) {
+                $errorHandlers[] = $errorHandler;
+            }
+        }
+
+        // the entry without an error handler above the marker
+        if ($errorHandler === null) {
+            restore_error_handler();
+        }
+
+        if (self::activeErrorHandler() !== $marker) {
+            return [];
+        }
+
+        return array_reverse($errorHandlers);
+    }
+
+    /**
+     * @param list<callable> $errorHandlers
+     */
+    private static function registerErrorHandlers(array $errorHandlers): void
+    {
+        foreach ($errorHandlers as $errorHandler) {
+            set_error_handler($errorHandler);
+        }
+    }
+
+    /**
+     * The error handler that is active, which PHP only tells when another one
+     * is set. It is not callable here when it can only be called in the scope
+     * in which it was registered, a private method, for instance.
+     *
+     * @return null|array<mixed>|callable|string
+     */
+    private static function activeErrorHandler(): mixed
     {
         $handler = set_error_handler(static fn (): bool => false);
 

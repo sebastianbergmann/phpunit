@@ -1,5 +1,5 @@
 --TEST--
-The API for running examples of properties one at a time raises an exception, rather than running an example, when a previously registered error handler turns an issue that was triggered while the test suite was built into an exception
+The API for running examples of properties one at a time raises an exception, rather than running an example, when an error handler that the bootstrap script registered turns an issue that was triggered while the test suite was built into an exception
 --SKIPIF--
 <?php declare(strict_types=1);
 if (!extension_loaded('pcntl')) {
@@ -13,15 +13,7 @@ require __DIR__ . '/../../bootstrap.php';
 
 chdir(__DIR__ . '/_files/runner-api-test-case-context-issue');
 
-set_error_handler(static function (int $errorNumber, string $errorString, string $errorFile, int $errorLine): bool {
-    if (($errorNumber & error_reporting()) === 0) {
-        return false;
-    }
-
-    throw new ErrorException($errorString, 0, $errorNumber, $errorFile, $errorLine);
-});
-
-$phpunit = PropertyRunner::boot('phpunit.xml');
+$phpunit = PropertyRunner::boot('error-handler-of-bootstrap-script.xml');
 $id      = 'PHPUnit\TestFixture\PropertyBasedTesting\IssueTriggeredWhileGeneratorIsDerivedTest::testParameterIsOfClassThatTriggersADeprecationWhenItIsLoaded';
 
 // the issue is triggered again when an example of the property is run again
