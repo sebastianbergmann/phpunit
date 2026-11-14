@@ -42,7 +42,7 @@ Time: %s, Memory: %s
 
 There was 1 PHPUnit test runner warning:
 
-1) Option "--random-seed-from-git-commit" ignored because no Git commit is checked out in the working directory
+1) Option "--random-seed-from-git-commit" ignored because the Git commit that is checked out in the working directory cannot be determined
 
 OK, but there were issues!
 Tests: 3, Assertions: 3, PHPUnit Warnings: 1.

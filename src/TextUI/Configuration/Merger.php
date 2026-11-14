@@ -1075,7 +1075,7 @@ final readonly class Merger
 
             if ($randomSeed === null) {
                 $this->emitter->testRunnerTriggeredPhpunitWarning(
-                    'Option "--random-seed-from-git-commit" ignored because no Git commit is checked out in the working directory',
+                    'Option "--random-seed-from-git-commit" ignored because the Git commit that is checked out in the working directory cannot be determined',
                 );
             } else {
                 $seedRandomNumberGenerators = true;
