@@ -30,6 +30,7 @@ use function mb_strlen;
 use function parse_url;
 use function preg_match;
 use function str_contains;
+use function str_repeat;
 use function strcmp;
 use function strlen;
 use function strrpos;
@@ -317,6 +318,42 @@ final class ShrinkerTest extends TestCase
                 array_replace(array_fill(0, 256, 0), [200 => 1]),
                 Generators::lists(Generators::integers(-128, 127), 256, 300),
                 static fn (array $value): bool => $value[200] !== 0,
+            ],
+
+            'string that has its maximum length' => [
+                str_repeat('a', 255),
+                Generators::strings(0, 255),
+                static fn (string $value): bool => mb_strlen($value) === 255,
+            ],
+
+            'string whose length is a multiple of five' => [
+                'aaaaa',
+                Generators::strings(),
+                static fn (string $value): bool => $value !== '' && mb_strlen($value) % 5 === 0,
+            ],
+
+            'binary string that has its maximum length' => [
+                str_repeat("\x00", 64),
+                Generators::bytes(0, 64),
+                static fn (string $value): bool => strlen($value) === 64,
+            ],
+
+            'list that has its maximum size' => [
+                array_fill(0, 100, 0),
+                Generators::lists(Generators::integers(), 0, 100),
+                static fn (array $value): bool => count($value) === 100,
+            ],
+
+            'last element of a list that has its maximum size' => [
+                [...array_fill(0, 99, 0), 7],
+                Generators::lists(Generators::integers(0, 9), 0, 100),
+                static fn (array $value): bool => count($value) === 100 && $value[99] >= 7,
+            ],
+
+            'list of booleans that has its maximum size' => [
+                array_fill(0, 400, false),
+                Generators::lists(Generators::booleans(), 0, 400),
+                static fn (array $value): bool => count($value) === 400,
             ],
 
             'values that are combined' => [

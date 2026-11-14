@@ -32,7 +32,7 @@ $b = 11;
 Test Failed (PHPUnit\TestFixture\PropertyBasedTesting\AdditionalInformationOfExamplesTest::testSumIsAtMostTen)
 Failed asserting that 11 is equal to 10 or is less than 10.
 
-Property falsified after 1 example, counterexample shrunk in 3 steps:
+Property falsified after 1 example, counterexample shrunk in 2 steps:
 
     $a = 0;
     $b = 11;

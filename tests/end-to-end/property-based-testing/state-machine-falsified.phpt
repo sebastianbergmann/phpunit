@@ -26,7 +26,7 @@ There were 2 failures:
 1) PHPUnit\TestFixture\PropertyBasedTesting\StateMachine\BankTest::testAccountsAreRebuiltFromTheirEvents
 Failed asserting that 2 is identical to 0.
 
-Property falsified after 5 examples, counterexample shrunk in 34 steps:
+Property falsified after 5 examples, counterexample shrunk in 4 steps:
 
     $accounts1 = $machine->open();
     $machine->deposit(account: $accounts1, amount: 1); // [new MoneyDeposited(account: new AccountId(value: 'account-1'), amount: 1)]
@@ -46,7 +46,7 @@ Failed asserting that two arrays are identical.
 -    'account-2' => 0,
  ]
 
-Property falsified after 4 examples, counterexample shrunk in 17 steps:
+Property falsified after 4 examples, counterexample shrunk in 22 steps:
 
     $accounts1 = $machine->open();
     $machine->catchUpProjection();
