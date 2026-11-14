@@ -11,6 +11,7 @@ namespace PHPUnit\Framework\PropertyBased\Derivation;
 
 use function array_is_list;
 use function array_keys;
+use function class_exists;
 use function count;
 use function in_array;
 use function is_array;
@@ -291,7 +292,7 @@ final class GeneratorDeriverTest extends TestCase
             'class imported as Numeric'                     => [ClassThatImportsClassesNamedLikeKeywords::class, 'Numeric', Resource::class],
             'class imported as Boolean'                     => [ClassThatImportsClassesNamedLikeKeywords::class, 'Boolean', Scalar::class],
             'class named Integer in the same namespace'     => [ClassInNamespaceOfClassesNamedLikeKeywords::class, 'Integer', Integer::class],
-            'class named Resource in the same namespace'    => [ClassInNamespaceOfClassesNamedLikeKeywords::class, 'resource', Resource::class],
+            'class named Resource in the same namespace'    => [ClassInNamespaceOfClassesNamedLikeKeywords::class, 'Resource', Resource::class],
             'class named Scalar in the same namespace'      => [ClassInNamespaceOfClassesNamedLikeKeywords::class, 'Scalar', Scalar::class],
             'class named Integer relative to the namespace' => [ClassThatImportsClassesNamedLikeKeywords::class, 'Keywords\Integer', Integer::class],
             'fully qualified class named Integer'           => [Parameters::class, '\\' . Integer::class, Integer::class],
@@ -368,6 +369,16 @@ final class GeneratorDeriverTest extends TestCase
         $scope = NameScope::forMethod(new ReflectionMethod($scope, 'method'));
 
         $this->assertTrue($isValid($this->replay($this->deriver()->forType((new TypeParser)->parse($type), $scope), [])));
+    }
+
+    public function testANameThatIsAKeywordRefersToTheKeywordWhenAClassInTheNamespaceIsDeclaredWithThatNameInAnotherCase(): void
+    {
+        // PHP finds a class that is loaded by its name in any case
+        $this->assertTrue(class_exists(Integer::class));
+
+        $scope = NameScope::forMethod(new ReflectionMethod(ClassInNamespaceOfClassesNamedLikeKeywords::class, 'method'));
+
+        $this->assertIsInt($this->replay($this->deriver()->forType((new TypeParser)->parse('integer'), $scope), []));
     }
 
     public function testAKeywordThatIsNotSupportedIsReportedWhenNoClassOfThatNameExists(): void

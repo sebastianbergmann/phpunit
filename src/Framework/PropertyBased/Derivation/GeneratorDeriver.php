@@ -132,8 +132,11 @@ final class GeneratorDeriver
      * The keywords of PHPDoc types that PHP does not reserve, so that a class
      * can have one of them as its name. Like in PHPStan, such a name refers
      * to the class when a class of that name exists in the namespace, or is
-     * imported in the file, of the doc comment. The names that PHP reserves,
-     * such as int and iterable, and the ones that contain a hyphen, such as
+     * imported in the file, of the doc comment. A class in the namespace has
+     * to be written as it is declared, Resource rather than resource, for
+     * instance, as only the name of an imported class is resolved to the
+     * name with which it is declared. The names that PHP reserves, such as
+     * int and iterable, and the ones that contain a hyphen, such as
      * positive-int, cannot be the names of classes.
      *
      * @var list<lowercase-string>
@@ -474,7 +477,7 @@ final class GeneratorDeriver
         if (in_array($keyword, self::KEYWORDS_THAT_CAN_BE_CLASS_NAMES, true)) {
             $className = $scope->resolve($type->name());
 
-            if (class_exists($className) || interface_exists($className) || trait_exists($className)) {
+            if ($this->isDeclaredAs($className)) {
                 return $this->forClass($className);
             }
         }
@@ -511,6 +514,23 @@ final class GeneratorDeriver
         }
 
         return $generator;
+    }
+
+    /**
+     * Whether a class, an interface, or a trait is declared with exactly this
+     * name. PHP finds one that is loaded by its name in any case, but an
+     * autoloader only finds one by the name with which it is declared: when
+     * the case did not matter, a name such as resource in the namespace of a
+     * class named Resource would refer to the class when the class happens to
+     * be loaded, and to the keyword when it is not.
+     */
+    private function isDeclaredAs(string $className): bool
+    {
+        if (!class_exists($className) && !interface_exists($className) && !trait_exists($className)) {
+            return false;
+        }
+
+        return new ReflectionClass($className)->getName() === $className;
     }
 
     /**
