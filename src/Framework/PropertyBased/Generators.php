@@ -487,7 +487,10 @@ final class Generators
      *
      * The types of the parameters of $combiner are checked against the types
      * of the values of the first eight generators by static analysis. The
-     * values of further generators are passed to $combiner as well.
+     * values of further generators are passed to $combiner as well, but their
+     * types are not checked, and static analysis only accepts a $combiner
+     * that takes them with a variadic parameter, not one that declares a
+     * ninth parameter.
      *
      * @template T1
      * @template T2
