@@ -46,6 +46,7 @@ use PHPUnit\Framework\TestRunner\TestRunner;
 use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\RandomNumberGeneratorSeeder;
+use PHPUnit\Runner\ShutdownHandler;
 use PHPUnit\Runner\TestRunHistory\TestRunHistory;
 use PHPUnit\Runner\TestRunHistory\TestRunHistoryId;
 use PHPUnit\Runner\TimeLimit\TimeLimitExceededException;
@@ -233,7 +234,16 @@ final class PropertyTestSuite extends IterativeTestSuite
         if ($tests !== []) {
             assert($tests[0] instanceof TestCase);
 
-            $this->check($tests[0], $emitter);
+            // the PHP process can also end between the examples of the
+            // property, while the arguments of an example are generated, for
+            // instance
+            ShutdownHandler::setMessage(TestRunner::messageForPrematureEndOfProcess($tests[0]));
+
+            try {
+                $this->check($tests[0], $emitter);
+            } finally {
+                ShutdownHandler::resetMessage();
+            }
         }
     }
 
@@ -538,7 +548,11 @@ final class PropertyTestSuite extends IterativeTestSuite
 
         $example = $this->exampleRunner()->example($arguments, false, $drawnValues);
 
-        [$exampleEvents] = $this->exampleRunner()->run($example, $emitter, false, $timeLimit);
+        try {
+            [$exampleEvents] = $this->exampleRunner()->run($example, $emitter, false, $timeLimit);
+        } finally {
+            ShutdownHandler::resetMessage();
+        }
 
         $result = $this->resultOf($example, $source, $exampleEvents);
 
