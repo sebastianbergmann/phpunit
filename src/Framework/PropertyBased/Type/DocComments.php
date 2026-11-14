@@ -121,11 +121,18 @@ final class DocComments
         $methods = [];
 
         foreach ((new NodeFinder)->findInstanceOf($nodes, ClassMethod::class) as $method) {
+            $docComment = $method->getDocComment();
+            $text       = null;
+
+            if ($docComment !== null) {
+                $text = $docComment->getText();
+            }
+
             $methods[] = [
                 'name'       => $method->name->toLowerString(),
                 'startLine'  => $method->getStartLine(),
                 'endLine'    => $method->getEndLine(),
-                'docComment' => $method->getDocComment()?->getText(),
+                'docComment' => $text,
             ];
         }
 
