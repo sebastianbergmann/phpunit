@@ -23,6 +23,8 @@ use Closure;
  * used as a generator.
  *
  * @template-covariant T
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 interface ValueGenerator
 {
