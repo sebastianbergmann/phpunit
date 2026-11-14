@@ -967,7 +967,7 @@ final class Generators
      */
     public static function ipv4Addresses(string $network = '0.0.0.0/0'): ValueGenerator
     {
-        if (preg_match('/^([0-9.]+)\/(0|[1-9][0-9]?)$/', $network, $matches) !== 1 ||
+        if (preg_match('/^([0-9.]+)\/(0|[1-9][0-9]?)$/D', $network, $matches) !== 1 ||
             filter_var($matches[1], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === false ||
             (int) $matches[2] > 32) {
             throw new InvalidGeneratorArgumentException(
@@ -1021,7 +1021,7 @@ final class Generators
      */
     public static function ipv6Addresses(string $network = '::/0'): ValueGenerator
     {
-        if (preg_match('/^([0-9A-Fa-f:.]+)\/(0|[1-9][0-9]{0,2})$/', $network, $matches) !== 1 ||
+        if (preg_match('/^([0-9A-Fa-f:.]+)\/(0|[1-9][0-9]{0,2})$/D', $network, $matches) !== 1 ||
             filter_var($matches[1], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === false ||
             (int) $matches[2] > 128) {
             throw new InvalidGeneratorArgumentException(

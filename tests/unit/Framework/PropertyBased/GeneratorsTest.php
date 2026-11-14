@@ -380,6 +380,7 @@ final class GeneratorsTest extends TestCase
             'octet with leading zero'    => ['010.0.0.0/8'],
             'too few octets'             => ['10.0.0/8'],
             'IPv6 address'               => ['::/0'],
+            'trailing line feed'         => ["10.0.0.0/8\n"],
             'empty'                      => [''],
         ];
     }
@@ -396,6 +397,7 @@ final class GeneratorsTest extends TestCase
             'zone identifier'              => ['fe80::%eth0/64'],
             'two runs of zeros compressed' => ['2001::db8::/32'],
             'IPv4 address'                 => ['10.0.0.0/8'],
+            'trailing line feed'           => ["::/0\n"],
             'empty'                        => [''],
         ];
     }
