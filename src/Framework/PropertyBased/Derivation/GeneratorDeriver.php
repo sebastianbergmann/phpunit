@@ -149,6 +149,29 @@ final class GeneratorDeriver
         'scalar',
         'numeric',
     ];
+
+    /**
+     * The keywords of the types whose values are integers or strings, which
+     * are the only values that PHP uses as the keys of an array as they are.
+     *
+     * @var list<lowercase-string>
+     */
+    private const array KEYWORDS_OF_ARRAY_KEYS = [
+        'int',
+        'integer',
+        'positive-int',
+        'negative-int',
+        'non-negative-int',
+        'non-positive-int',
+        'non-zero-int',
+        'string',
+        'non-empty-string',
+        'non-falsy-string',
+        'truthy-string',
+        'numeric-string',
+        'lowercase-string',
+        'array-key',
+    ];
     private readonly GeneratorRegistry $registry;
 
     /**
@@ -474,12 +497,8 @@ final class GeneratorDeriver
         $keyword   = strtolower($type->name());
         $arguments = $type->arguments();
 
-        if (in_array($keyword, self::KEYWORDS_THAT_CAN_BE_CLASS_NAMES, true)) {
-            $className = $scope->resolve($type->name());
-
-            if ($this->isDeclaredAs($className)) {
-                return $this->forClass($className);
-            }
+        if ($this->isClassNamedLikeKeyword($type, $scope)) {
+            return $this->forClass($scope->resolve($type->name()));
         }
 
         switch ($keyword) {
@@ -514,6 +533,20 @@ final class GeneratorDeriver
         }
 
         return $generator;
+    }
+
+    /**
+     * Whether the name of the type is a keyword that PHP does not reserve
+     * that refers to a class, an interface, or a trait of that name rather
+     * than to the keyword.
+     */
+    private function isClassNamedLikeKeyword(NamedType $type, NameScope $scope): bool
+    {
+        if (!in_array(strtolower($type->name()), self::KEYWORDS_THAT_CAN_BE_CLASS_NAMES, true)) {
+            return false;
+        }
+
+        return $this->isDeclaredAs($scope->resolve($type->name()));
     }
 
     /**
@@ -632,6 +665,9 @@ final class GeneratorDeriver
      * Without type arguments, the keys are integers or strings and the values
      * are integers, strings, booleans, floating-point numbers, or null.
      *
+     * A type for the keys is only supported when all of its values are
+     * integers or strings that PHP uses as the keys of an array as they are.
+     *
      * @throws CannotDeriveGeneratorException
      *
      * @return AbstractGenerator<array<array-key, mixed>>
@@ -649,6 +685,8 @@ final class GeneratorDeriver
 
         if (count($arguments) === 2) {
             $keys = $this->forType($arguments[0], $scope);
+
+            $this->ensureValuesAreArrayKeys($type, $arguments[0], $scope);
         }
 
         $values = $this->values();
@@ -658,6 +696,65 @@ final class GeneratorDeriver
         }
 
         return new ArrayGenerator($keys, $values, $this->minimumSize($nonEmpty), null, self::probabilityOfAnotherElement($this->numberOfRecursiveReferences() > $numberOfRecursiveReferences));
+    }
+
+    /**
+     * PHP casts a key that is a boolean, a floating-point number, or null to
+     * an integer or a string, uses an integer in place of a string that is
+     * the decimal representation of that integer, such as '1', and does not
+     * accept any other value, such as a case of an enumeration, as a key. An
+     * array whose keys are of the type that is declared for them can
+     * therefore only be generated when the values of that type, and of every
+     * member of a union, are integers or strings.
+     *
+     * A type whose values include strings that PHP does not use as keys as
+     * they are, such as string and numeric-string, is supported, as the
+     * generator for the array does not use such a string as a key.
+     *
+     * @param NamedType $type the type of the array
+     * @param Type      $keys the type of the keys, for which a generator can be derived
+     *
+     * @throws CannotDeriveGeneratorException
+     */
+    private function ensureValuesAreArrayKeys(NamedType $type, Type $keys, NameScope $scope): void
+    {
+        if ($keys instanceof UnionType) {
+            foreach ($keys->types() as $member) {
+                $this->ensureValuesAreArrayKeys($type, $member, $scope);
+            }
+
+            return;
+        }
+
+        if ($keys instanceof LiteralType) {
+            $value = $keys->value();
+
+            if (is_int($value)) {
+                return;
+            }
+
+            if (is_string($value)) {
+                $key = array_key_first([$value => true]);
+
+                if (is_int($key)) {
+                    throw CannotDeriveGeneratorException::invalidTypeArguments($type->asString(), sprintf('PHP uses the integer %d rather than the string %s as the key of an array', $key, $keys->asString()));
+                }
+
+                return;
+            }
+        }
+
+        if ($keys instanceof NamedType && in_array(strtolower($keys->name()), self::KEYWORDS_OF_ARRAY_KEYS, true) && !$this->isClassNamedLikeKeyword($keys, $scope)) {
+            return;
+        }
+
+        $typeOfKeys = $keys->asString();
+
+        if ($keys instanceof NullableType) {
+            $typeOfKeys = 'null';
+        }
+
+        throw CannotDeriveGeneratorException::invalidTypeArguments($type->asString(), sprintf('the keys of an array are integers or strings, not %s', $typeOfKeys));
     }
 
     /**

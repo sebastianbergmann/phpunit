@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework\PropertyBased\Derivation;
 
+use function array_diff;
+use function array_filter;
 use function array_is_list;
 use function array_keys;
 use function class_exists;
@@ -132,6 +134,12 @@ final class GeneratorDeriverTest extends TestCase
             'array with values'             => ['array<string>', static fn (mixed $value): bool => is_array($value), []],
             'non-empty array'               => ['non-empty-array<int, bool>', static fn (mixed $value): bool => is_array($value) && $value !== [], [0 => false]],
             'array'                         => ['array', is_array(...), []],
+            'array with array-key keys'     => ['non-empty-array<array-key, int>', static fn (mixed $value): bool => is_array($value) && $value !== [], [0 => 0]],
+            'array with integer range keys' => ['non-empty-array<int<1, 5>, int>', static fn (mixed $value): bool => is_array($value) && $value !== [] && array_keys($value) === array_filter(array_keys($value), static fn (mixed $key): bool => is_int($key) && $key >= 1 && $key <= 5), [1 => 0]],
+            'array with union keys'         => ['non-empty-array<positive-int|non-empty-string, int>', static fn (mixed $value): bool => is_array($value) && $value !== [] && !isset($value[0]) && !isset($value['']), [1 => 0]],
+            'array with literal keys'       => ["non-empty-array<'a'|2, int>", static fn (mixed $value): bool => is_array($value) && $value !== [] && array_diff(array_keys($value), ['a', 2]) === [], ['a' => 0]],
+            'array with keyword keys'       => ['non-empty-array<Integer, int>', static fn (mixed $value): bool => is_array($value) && $value !== [] && array_keys($value) === array_filter(array_keys($value), is_int(...)), [0 => 0]],
+            'keys that stay strings in PHP' => ["non-empty-array<'01'|'1.5', int>", static fn (mixed $value): bool => is_array($value) && $value !== [] && array_diff(array_keys($value), ['01', '1.5']) === [], ['01' => 0]],
             'array suffix'                  => ['int[]', is_array(...), []],
             'array shape'                   => ['array{name: non-empty-string, age: int<0, 150>}', is_array(...), ['name' => 'a', 'age' => 0]],
             'array shape with optional key' => ['array{a: int, b?: string}', is_array(...), ['a' => 0]],
@@ -182,6 +190,25 @@ final class GeneratorDeriverTest extends TestCase
             'list with two type arguments'              => ['list<int, string>', 'list<int, string> is not supported, list takes at most a type for its elements'],
             'array with three type arguments'           => ['array<int, string, bool>', 'array<int, string, bool> is not supported, array takes at most a type for its keys and a type for its values'],
             'keyword with type argument'                => ['string<int>', 'string<int> is not supported, string does not take type arguments'],
+            'array with boolean keys'                   => ['array<bool, int>', 'array<bool, int> is not supported, the keys of an array are integers or strings, not bool'],
+            'array with true as key'                    => ['array<true, int>', 'array<true, int> is not supported, the keys of an array are integers or strings, not true'],
+            'array with floating-point keys'            => ['array<float, int>', 'array<float, int> is not supported, the keys of an array are integers or strings, not float'],
+            'array with floating-point literal as key'  => ['array<1.5, int>', 'array<1.5, int> is not supported, the keys of an array are integers or strings, not 1.5'],
+            'array with null as key'                    => ['array<null, int>', 'array<null, int> is not supported, the keys of an array are integers or strings, not null'],
+            'array with nullable keys'                  => ['array<?int, int>', 'array<?int, int> is not supported, the keys of an array are integers or strings, not null'],
+            'array with keys of a union with null'      => ['array<int|null, int>', 'array<int|null, int> is not supported, the keys of an array are integers or strings, not null'],
+            'array with keys of a union with float'     => ['array<int|float, string>', 'array<int|float, string> is not supported, the keys of an array are integers or strings, not float'],
+            'array with keys of a nullable union'       => ['array<?(int|string), int>', 'array<?(int|string), int> is not supported, the keys of an array are integers or strings, not null'],
+            'array with enumeration cases as keys'      => ['array<Currency, int>', 'array<Currency, int> is not supported, the keys of an array are integers or strings, not Currency'],
+            'array with objects as keys'                => ['array<Money, int>', 'array<Money, int> is not supported, the keys of an array are integers or strings, not Money'],
+            'array with lists as keys'                  => ['array<list<int>, int>', 'array<list<int>, int> is not supported, the keys of an array are integers or strings, not list<int>'],
+            'array with array shapes as keys'           => ['array<array{a: int}, int>', 'array<array{a: int}, int> is not supported, the keys of an array are integers or strings, not array{a: int}'],
+            'non-empty array with boolean keys'         => ['non-empty-array<bool, int>', 'non-empty-array<bool, int> is not supported, the keys of an array are integers or strings, not bool'],
+            'array with boolean keys in a list'         => ['list<array<bool, int>>', 'array<bool, int> is not supported, the keys of an array are integers or strings, not bool'],
+            'array with string of an integer as key'    => ["non-empty-array<'1', int>", "non-empty-array<'1', int> is not supported, PHP uses the integer 1 rather than the string '1' as the key of an array"],
+            'string of a negative integer as key'       => ["array<'a'|'-5', int>", "array<'a'|'-5', int> is not supported, PHP uses the integer -5 rather than the string '-5' as the key of an array"],
+            'array with unsupported keyword as keys'    => ['array<scalar, int>', 'scalar is not supported'],
+            'array with keys of an unknown class'       => ['array<Unknown, int>', 'PHPUnit\TestFixture\PropertyBased\Derivation\Unknown is neither a supported type nor the name of an existing class'],
             'object shape'                              => ['object{a: int}', 'object{a: int} is not supported'],
             'unsupported constructor parameter'         => ['ClassWithUnsupportedConstructorParameter', 'cannot derive a generator for parameter $value of PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithUnsupportedConstructorParameter::__construct() of type mixed: mixed is not supported'],
             'unparsable promoted constructor parameter' => ['ClassWithUnparsablePromotedConstructorParameterType', 'cannot derive a generator for parameter $values of PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithUnparsablePromotedConstructorParameterType::__construct(), the type in its @var tag cannot be parsed: unexpected end of the type, expected ">"'],
@@ -727,6 +754,34 @@ final class GeneratorDeriverTest extends TestCase
                 $this->assertIsString($key);
             }
         }
+    }
+
+    public function testTheKeysOfAnArrayWithNumericStringKeysAreNumericStringsThatPhpDoesNotUseAsIntegers(): void
+    {
+        $numberOfKeys = 0;
+
+        foreach ($this->values($this->derive('array<numeric-string, int>'), 500) as $value) {
+            $this->assertIsArray($value);
+
+            foreach (array_keys($value) as $key) {
+                $this->assertIsString($key);
+                $this->assertIsNumeric($key);
+
+                $numberOfKeys++;
+            }
+        }
+
+        $this->assertGreaterThan(0, $numberOfKeys);
+    }
+
+    public function testAClassNamedLikeAKeywordForIntegersIsNotATypeForTheKeysOfAnArray(): void
+    {
+        $scope = NameScope::forMethod(new ReflectionMethod(ClassThatImportsClassesNamedLikeKeywords::class, 'method'));
+
+        $this->expectException(CannotDeriveGeneratorException::class);
+        $this->expectExceptionMessageIs('array<Integer, int> is not supported, the keys of an array are integers or strings, not Integer');
+
+        $this->deriver()->forType((new TypeParser)->parse('array<Integer, int>'), $scope);
     }
 
     public function testUsesTheGeneratorRegisteredForAClass(): void
