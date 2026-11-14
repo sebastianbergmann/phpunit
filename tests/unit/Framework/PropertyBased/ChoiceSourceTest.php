@@ -18,6 +18,7 @@ use PHPUnit\Framework\PropertyBased\Derivation\GeneratorRegistry;
 use PHPUnit\Framework\TestCase;
 use Random\Engine\Xoshiro256StarStar;
 use Random\Randomizer;
+use SebastianBergmann\ChoiceSequence\Bytes;
 use SebastianBergmann\ChoiceSequence\ChoiceSequence;
 use SebastianBergmann\ChoiceSequence\ChoiceTree;
 use SebastianBergmann\ChoiceSequence\Repetition;
@@ -94,6 +95,23 @@ final class ChoiceSourceTest extends TestCase
         $this->expectExceptionMessageIs('No new element for the collection was generated in 10 attempts');
 
         $source->repeat(new Repetition('element', 1, null), static fn (): bool => false);
+    }
+
+    public function testDrawsTheBytesOfABinaryStringWithTheChoiceSequenceLibrary(): void
+    {
+        $source = ChoiceSource::replay(new ChoiceSequence([1, 0x61, 1, 0x62, 0]));
+
+        $this->assertSame('ab', $source->bytes(new Bytes(0, null)));
+    }
+
+    public function testRejectsTheExampleWhenTheBytesOfABinaryStringRequireMoreThanTheMaximumNumberOfChoices(): void
+    {
+        $source = ChoiceSource::replay(new ChoiceSequence([]), 1);
+
+        $this->expectException(ExampleRejectedException::class);
+        $this->expectExceptionMessageIs('Generating the example required more than 1 choices');
+
+        $source->bytes(new Bytes(2, null));
     }
 
     public function testDrawsAndReplaysChoicesWithTheChoiceSourceOfTheChoiceSequenceLibrary(): void

@@ -17,6 +17,7 @@ use PHPUnit\Framework\PropertyBased\Derivation\GeneratorDeriver;
 use PHPUnit\Framework\PropertyBased\Derivation\GeneratorRegistry;
 use PHPUnit\Framework\PropertyBased\Generator\DeferredGenerator;
 use Random\Randomizer;
+use SebastianBergmann\ChoiceSequence\Bytes;
 use SebastianBergmann\ChoiceSequence\ChoiceSequence;
 use SebastianBergmann\ChoiceSequence\ChoiceSource as Choices;
 use SebastianBergmann\ChoiceSequence\ChoiceTree;
@@ -284,6 +285,20 @@ final class ChoiceSource
             throw ExampleRejectedException::tooManyChoices($e->maximumNumberOfChoices());
         } catch (TooManyDuplicateElementsException $e) {
             throw ExampleRejectedException::tooManyDuplicateElements($e->numberOfAttempts());
+        }
+    }
+
+    /**
+     * Draws the bytes of a binary string.
+     *
+     * @throws ExampleRejectedException
+     */
+    public function bytes(Bytes $bytes): string
+    {
+        try {
+            return $bytes->draw($this->choices);
+        } catch (TooManyChoicesException $e) {
+            throw ExampleRejectedException::tooManyChoices($e->maximumNumberOfChoices());
         }
     }
 

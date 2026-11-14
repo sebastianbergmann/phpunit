@@ -9,13 +9,9 @@
  */
 namespace PHPUnit\Framework\PropertyBased\Generator;
 
-use function assert;
-use function chr;
-use function var_export;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
+use SebastianBergmann\ChoiceSequence\Bytes;
 use SebastianBergmann\ChoiceSequence\SpanKind;
-use SebastianBergmann\ChoiceSequence\WeightedRangesDistribution;
-use SebastianBergmann\ChoiceSequence\Repetition;
 
 /**
  * Generates arbitrary binary strings. Each byte is one choice, its value.
@@ -28,13 +24,7 @@ use SebastianBergmann\ChoiceSequence\Repetition;
  */
 final readonly class BytesGenerator extends AbstractGenerator
 {
-    private Repetition $repetition;
-    private WeightedRangesDistribution $byte;
-
-    /**
-     * @var non-empty-string
-     */
-    private string $label;
+    private Bytes $bytes;
 
     /**
      * @param non-negative-int  $minimumLength
@@ -42,23 +32,12 @@ final readonly class BytesGenerator extends AbstractGenerator
      */
     public function __construct(int $minimumLength, ?int $maximumLength)
     {
-        $this->label = self::labelOf('bytes', (string) $minimumLength, var_export($maximumLength, true));
-
-        $this->repetition = new Repetition(self::labelOf('element', $this->label), $minimumLength, $maximumLength);
-
-        $this->byte = new WeightedRangesDistribution(
-            [
-                ['weight' => 0.5, 'minimum' => 0x20, 'maximum' => 0x7E],
-                ['weight' => 0.1, 'minimum' => 0x00, 'maximum' => 0x00],
-                ['weight' => 0.1, 'minimum' => 0xFF, 'maximum' => 0xFF],
-                ['weight' => 0.3, 'minimum' => 0x00, 'maximum' => 0xFF],
-            ],
-        );
+        $this->bytes = new Bytes($minimumLength, $maximumLength);
     }
 
     public function label(): string
     {
-        return $this->label;
+        return $this->bytes->label();
     }
 
     /**
@@ -72,22 +51,6 @@ final readonly class BytesGenerator extends AbstractGenerator
 
     protected function generateValue(ChoiceSource $source): string
     {
-        $bytes = '';
-
-        $source->repeat(
-            $this->repetition,
-            function () use ($source, &$bytes): bool
-            {
-                $byte = $source->draw(0xFF, $this->byte);
-
-                assert($byte <= 0xFF);
-
-                $bytes .= chr($byte);
-
-                return true;
-            },
-        );
-
-        return $bytes;
+        return $source->bytes($this->bytes);
     }
 }
