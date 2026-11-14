@@ -125,8 +125,8 @@ final readonly class ExampleRunner
      * like every test, every example has exactly one sequence of events from
      * Test\PreparationStarted to Test\Finished.
      *
-     * @param ?positive-int      $timeLimit the time limit of the example in seconds, null for the configured one
-     * @param ?Closure(): string $describe  describes the example, which is printed when the PHP process ends while the example is run, because of a fatal error, for instance
+     * @param ?positive-int                $timeLimit the time limit of the example in seconds, null for the configured one
+     * @param ?Closure(): iterable<string> $describe  describes the example, which is printed when the PHP process ends while the example is run, because of a fatal error, for instance
      *
      * @throws Throwable
      *
@@ -377,14 +377,18 @@ final readonly class ExampleRunner
      * reported otherwise are only exported then, in the state in which the
      * example left them.
      *
+     * The example is described in parts, of which each is printed before the
+     * next one is worked out: the arguments are printed before the
+     * counterexample formatter is called, which can end the process as well.
+     *
      * @param array<non-empty-string, mixed>                    $arguments
      * @param array<non-empty-string, AbstractGenerator<mixed>> $generators
      *
-     * @return Closure(): string
+     * @return Closure(): iterable<string>
      */
     public function describerOfGeneratedExample(array $arguments, ChoiceSource $source, DrawnValues $drawnValues, array $generators): Closure
     {
-        return function () use ($arguments, $source, $drawnValues, $generators): string
+        return function () use ($arguments, $source, $drawnValues, $generators): iterable
         {
             $exporter = $this->exporter($source->constructions());
             $values   = [];
@@ -400,8 +404,8 @@ final readonly class ExampleRunner
                     null,
                     $values,
                     $drawnValues->stepsExportedWith($exporter),
-                    $this->formatIgnoringIssues($this->argumentsGeneratedFrom($generators, $source->sequence(), $source->deriver())),
                 ),
+                fn (): ?string => $this->formatIgnoringIssues($this->argumentsGeneratedFrom($generators, $source->sequence(), $source->deriver())),
             );
         };
     }
@@ -413,19 +417,13 @@ final readonly class ExampleRunner
      * @param array<non-empty-string, string> $exportedArguments the arguments of the example, exported as PHP code
      * @param array<non-empty-string, mixed>  $arguments
      *
-     * @return Closure(): string
+     * @return Closure(): iterable<string>
      */
     public function describerOfExplicitExample(array $exportedArguments, array $arguments): Closure
     {
-        return fn (): string => PropertyFalsifiedToStringMapper::mapExampleThatEndedTheProcess(
-            new Event\Code\Counterexample(
-                [],
-                $exportedArguments,
-                null,
-                [],
-                [],
-                $this->formatIgnoringIssues(static fn (): array => $arguments),
-            ),
+        return fn (): iterable => PropertyFalsifiedToStringMapper::mapExampleThatEndedTheProcess(
+            new Event\Code\Counterexample([], $exportedArguments, null, [], []),
+            fn (): ?string => $this->formatIgnoringIssues(static fn (): array => $arguments),
         );
     }
 

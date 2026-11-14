@@ -13,6 +13,8 @@ use function explode;
 use function implode;
 use function is_int;
 use function sprintf;
+use Closure;
+use Generator;
 use PHPUnit\Event\Code\Counterexample;
 use PHPUnit\Framework\PropertyBased\FalsificationReport;
 
@@ -123,18 +125,46 @@ final readonly class PropertyFalsifiedToStringMapper
 
     /**
      * Describes the example of a property that was run when the PHP process
-     * ended, because of a fatal error, for instance, with its arguments and
-     * the values that it drew until then.
+     * ended, because of a fatal error, for instance, with its arguments, the
+     * values that it drew until then, and the steps of its state machine
+     * that were taken until then.
+     *
+     * The description is generated in parts, which are to be separated by an
+     * empty line, so that a part can be printed before the next one is worked
+     * out: the counterexample formatter is only called once the arguments
+     * have been generated, as the PHP process is ending and a formatter that
+     * fails as well would otherwise leave nothing of the example.
+     *
+     * @param Closure(): ?string $formatted returns what the counterexample formatter returns for the arguments of the example, which is not taken from the example
+     *
+     * @return Generator<int, non-empty-string>
      */
-    public static function mapExampleThatEndedTheProcess(Counterexample $example): string
+    public static function mapExampleThatEndedTheProcess(Counterexample $example, Closure $formatted): Generator
     {
-        $arguments = self::arguments($example);
+        $heading   = "The PHP process ended while this example of the property was run:\n\n";
+        $arguments = self::exportedArguments($example);
 
-        if ($arguments === '') {
-            return '';
+        if ($arguments !== '') {
+            yield $heading . $arguments;
+
+            $heading = '';
         }
 
-        return "The PHP process ended while this example of the property was run:\n\n" . $arguments;
+        $formatted = $formatted();
+
+        if ($formatted !== null && $formatted !== '') {
+            yield $heading . self::indented($formatted);
+
+            $heading = '';
+        }
+
+        foreach ([self::drawnValues($example), self::steps($example)] as $section) {
+            if ($section !== '') {
+                yield $heading . $section;
+
+                $heading = '';
+            }
+        }
     }
 
     /**
@@ -157,27 +187,38 @@ final readonly class PropertyFalsifiedToStringMapper
 
     private static function arguments(Counterexample $counterexample): string
     {
-        $buffer      = '';
-        $drawnValues = $counterexample->drawnValues();
-        $steps       = $counterexample->steps();
+        $sections  = [];
+        $formatted = '';
+
+        if ($counterexample->formatted() !== null) {
+            $formatted = self::indented($counterexample->formatted());
+        }
+
+        foreach ([self::exportedArguments($counterexample), $formatted, self::drawnValues($counterexample), self::steps($counterexample)] as $section) {
+            if ($section !== '') {
+                $sections[] = $section;
+            }
+        }
+
+        return implode("\n", $sections);
+    }
+
+    private static function exportedArguments(Counterexample $counterexample): string
+    {
+        $buffer = '';
 
         foreach ($counterexample->arguments() as $parameter => $value) {
             $buffer .= self::indented(sprintf('$%s = %s;', $parameter, $value));
         }
 
-        if ($counterexample->formatted() !== null) {
-            if ($buffer !== '') {
-                $buffer .= "\n";
-            }
+        return $buffer;
+    }
 
-            $buffer .= self::indented($counterexample->formatted());
-        }
+    private static function drawnValues(Counterexample $counterexample): string
+    {
+        $buffer = '';
 
-        if ($buffer !== '' && $drawnValues !== []) {
-            $buffer .= "\n";
-        }
-
-        foreach ($drawnValues as $index => $drawnValue) {
+        foreach ($counterexample->drawnValues() as $index => $drawnValue) {
             if ($drawnValue->label() === null) {
                 $description = sprintf('Draw %d', $index + 1);
             } else {
@@ -187,17 +228,23 @@ final readonly class PropertyFalsifiedToStringMapper
             $buffer .= self::indented($description . ': ' . $drawnValue->value());
         }
 
-        if ($buffer !== '' && $steps !== []) {
-            $buffer .= "\n";
-        }
+        return $buffer;
+    }
 
-        foreach ($steps as $step) {
+    private static function steps(Counterexample $counterexample): string
+    {
+        $buffer = '';
+
+        foreach ($counterexample->steps() as $step) {
             $buffer .= self::indented($step);
         }
 
         return $buffer;
     }
 
+    /**
+     * @return non-empty-string
+     */
     private static function indented(string $lines): string
     {
         return self::INDENTATION . implode("\n" . self::INDENTATION, explode("\n", $lines)) . "\n";

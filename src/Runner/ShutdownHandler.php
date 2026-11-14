@@ -27,12 +27,12 @@ final class ShutdownHandler
     private static string $message  = '';
 
     /**
-     * @var ?Closure(): string
+     * @var ?Closure(): iterable<string>
      */
     private static ?Closure $details = null;
 
     /**
-     * @param ?Closure(): string $details returns what is printed after the message, which is only worked out when the PHP process ends prematurely
+     * @param ?Closure(): iterable<string> $details returns what is printed after the message, which is only worked out when the PHP process ends prematurely, in parts: each part is printed, after an empty line, before the next one is worked out, so that it is printed even when working out the next one ends the process
      */
     public static function setMessage(string $message, ?Closure $details = null): void
     {
@@ -73,13 +73,16 @@ final class ShutdownHandler
 
                 if (self::$details !== null) {
                     try {
-                        $details = rtrim((self::$details)());
-                    } catch (Throwable) {
-                        $details = '';
-                    }
+                        foreach ((self::$details)() as $details) {
+                            $details = rtrim($details);
 
-                    if ($details !== '') {
-                        print "\n" . $details . "\n";
+                            if ($details !== '') {
+                                print "\n" . $details . "\n";
+                            }
+                        }
+                    } catch (Throwable) {
+                        // the details that were worked out before have been
+                        // printed
                     }
                 }
 

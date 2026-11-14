@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\PropertyBased;
 
 use const E_USER_WARNING;
+use function implode;
 use function ob_get_level;
 use function restore_error_handler;
 use function set_error_handler;
@@ -307,7 +308,7 @@ The PHP process ended while this example of the property was run:
     Draw 1 (label): 3
 
 EOT,
-            $describe(),
+            implode("\n", [...$describe()]),
         );
     }
 
@@ -334,7 +335,7 @@ The PHP process ended while this example of the property was run:
     $machine->increment(amount: 1);
 
 EOT,
-            $describe(),
+            implode("\n", [...$describe()]),
         );
     }
 
@@ -353,7 +354,7 @@ The PHP process ended while this example of the property was run:
     value 7, call 1
 
 EOT,
-            $describe(),
+            implode("\n", [...$describe()]),
         );
     }
 

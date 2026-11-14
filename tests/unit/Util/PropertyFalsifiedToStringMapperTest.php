@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Util;
 
+use function implode;
+use function iterator_to_array;
 use PHPUnit\Event\Code\Counterexample;
 use PHPUnit\Event\Code\DrawnValue;
 use PHPUnit\Event\Code\OtherFalsification;
@@ -97,8 +99,9 @@ The PHP process ended while this example of the property was run:
     Draw 1 (list): [5]
 
 EOT,
-            PropertyFalsifiedToStringMapper::mapExampleThatEndedTheProcess(
-                new Counterexample([1, 5], ['size' => '1'], null, [new DrawnValue('list', '[5]')], [], "one element\nin the list"),
+            $this->exampleThatEndedTheProcess(
+                new Counterexample([1, 5], ['size' => '1'], null, [new DrawnValue('list', '[5]')], []),
+                "one element\nin the list",
             ),
         );
     }
@@ -112,9 +115,7 @@ The PHP process ended while this example of the property was run:
     no arguments
 
 EOT,
-            PropertyFalsifiedToStringMapper::mapExampleThatEndedTheProcess(
-                new Counterexample([], [], null, [], [], 'no arguments'),
-            ),
+            $this->exampleThatEndedTheProcess(new Counterexample([], [], null, [], []), 'no arguments'),
         );
     }
 
@@ -129,15 +130,64 @@ The PHP process ended while this example of the property was run:
     Draw 1 (list): [5]
 
 EOT,
-            PropertyFalsifiedToStringMapper::mapExampleThatEndedTheProcess(
+            $this->exampleThatEndedTheProcess(
                 new Counterexample([1, 5], ['size' => '1'], null, [new DrawnValue('list', '[5]')], []),
+                null,
             ),
         );
     }
 
     public function testDoesNotDescribeAnExampleWithoutArgumentsAndDrawnValuesThatWasRunWhenThePhpProcessEnded(): void
     {
-        $this->assertSame('', PropertyFalsifiedToStringMapper::mapExampleThatEndedTheProcess(new Counterexample([], [], null, [], [])));
+        $this->assertSame('', $this->exampleThatEndedTheProcess(new Counterexample([], [], null, [], []), null));
+    }
+
+    public function testDescribesTheStepsOfTheStateMachineOfTheExampleThatWasRunWhenThePhpProcessEnded(): void
+    {
+        $this->assertStringEqualsStringIgnoringLineEndings(
+            <<<'EOT'
+The PHP process ended while this example of the property was run:
+
+    $machine->increment(by: 1);
+    $machine->reset();
+
+EOT,
+            $this->exampleThatEndedTheProcess(
+                new Counterexample([1, 5], [], null, [], ['$machine->increment(by: 1);', '$machine->reset();']),
+                null,
+            ),
+        );
+    }
+
+    public function testDescribesTheArgumentsOfTheExampleThatWasRunWhenThePhpProcessEndedBeforeTheCounterexampleFormatterIsCalled(): void
+    {
+        $called = false;
+
+        $parts = PropertyFalsifiedToStringMapper::mapExampleThatEndedTheProcess(
+            new Counterexample([1, 5], ['size' => '1'], null, [new DrawnValue('list', '[5]')], []),
+            static function () use (&$called): string
+            {
+                $called = true;
+
+                return 'one element';
+            },
+        );
+
+        $this->assertSame("The PHP process ended while this example of the property was run:\n\n    \$size = 1;\n", $parts->current());
+        $this->assertFalse($called);
+
+        $parts->next();
+
+        $this->assertSame("    one element\n", $parts->current());
+        $this->assertTrue($called);
+
+        $parts->next();
+
+        $this->assertSame("    Draw 1 (list): [5]\n", $parts->current());
+
+        $parts->next();
+
+        $this->assertFalse($parts->valid());
     }
 
     public function testDescribesTheValuesThatTheMinimalCounterexampleDrewAfterItsArguments(): void
@@ -355,6 +405,21 @@ EOT,
         $this->assertStringEqualsStringIgnoringLineEndings(
             "Property falsified by explicit example #0.\n",
             PropertyFalsifiedToStringMapper::map($this->event(0, 0, 0, false, false, [], 0)),
+        );
+    }
+
+    /**
+     * The description of the example that was run when the PHP process ended
+     * as it is printed: its parts are separated by an empty line.
+     */
+    private function exampleThatEndedTheProcess(Counterexample $example, ?string $formatted): string
+    {
+        return implode(
+            "\n",
+            iterator_to_array(
+                PropertyFalsifiedToStringMapper::mapExampleThatEndedTheProcess($example, static fn (): ?string => $formatted),
+                false,
+            ),
         );
     }
 
