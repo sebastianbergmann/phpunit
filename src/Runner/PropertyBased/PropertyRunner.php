@@ -323,6 +323,14 @@ final class PropertyRunner
             throw new AlreadyBootedException('PHPUnit cannot be booted because it is already running in this process');
         }
 
+        if ($configurationFile === '') {
+            throw new InvalidArgumentException('The configuration file must not be an empty string');
+        }
+
+        if ($filter === '') {
+            throw new InvalidArgumentException('The filter must not be an empty string');
+        }
+
         if ($randomSeed !== null && $randomSeed < 1) {
             throw new InvalidArgumentException(
                 sprintf(
