@@ -33,6 +33,7 @@ use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
 use PHPUnit\Framework\PropertyBased\InvalidStateMachineException;
 use ReflectionMethod;
 use SebastianBergmann\ChoiceSequence\ExactDistribution;
+use SebastianBergmann\ChoiceSequence\SpanKind;
 use SebastianBergmann\ChoiceSequence\UniformDistribution;
 use Throwable;
 
@@ -48,16 +49,14 @@ use Throwable;
  * of the rules, and the arguments of the rule, all in one span.
  *
  * A value from a pool is drawn as its position among the values of the pool
- * that were not consumed, counted from the value that was produced last. It
- * refers to the same value when a step is deleted that was taken before the
- * value was produced. It refers to another value when a step is deleted that
- * was taken between the step that produced the value and the step that uses
- * it, and that produced a value for the same pool or consumed a value that
- * was produced later: the position would have to be changed together with the
- * deletion, which the shrinker does not do. Such a step is only deleted when
- * the counterexample keeps failing with the other value, so the steps of the
- * minimal counterexample that is reported are not always the fewest steps
- * that falsify the property.
+ * that were not consumed, counted from the value that was produced last, in
+ * a span of the kind Reference, or ConsumingReference when the value is
+ * consumed. A step that produces a value for a pool ends with a choice that is
+ * always 0, in a span of the kind Referable. Both spans are labelled with the
+ * pool. They tell the shrinker which value a position refers to: when it
+ * deletes a step that produced a value for the pool, or that consumed one, it
+ * changes the positions that the steps after it draw, so that they take the
+ * values that they took before.
  *
  * While choices are drawn at random, only rules whose preconditions hold and
  * whose pools have values are drawn, and each example enables a random subset
@@ -505,8 +504,20 @@ final class StateMachineRunner
                 continue;
             }
 
-            // the value that was produced last is the simplest one
-            $produced = $this->source->choose(array_reverse($this->valuesOf($pool)), new UniformDistribution);
+            $kind = SpanKind::Reference;
+
+            if ($parameter->consume()) {
+                $kind = SpanKind::ConsumingReference;
+            }
+
+            $this->source->startSpan($this->labelOfPool($pool), $kind);
+
+            try {
+                // the value that was produced last is the simplest one
+                $produced = $this->source->choose(array_reverse($this->valuesOf($pool)), new UniformDistribution);
+            } finally {
+                $this->source->endSpan();
+            }
 
             $arguments[] = $produced['value'];
             $exported[]  = $parameter->name() . ': $' . $produced['variable'];
@@ -548,6 +559,14 @@ final class StateMachineRunner
             assert($variable !== null);
 
             $this->pools[$produces][] = ['value' => $result, 'variable' => $variable];
+
+            $this->source->startSpan($this->labelOfPool($produces), SpanKind::Referable);
+
+            try {
+                $this->source->draw(0, new ExactDistribution(0));
+            } finally {
+                $this->source->endSpan();
+            }
         } elseif ($result !== null && $this->exporter !== null) {
             $call = $this->withComment($call, $this->exporter->export($result));
         }
@@ -569,8 +588,8 @@ final class StateMachineRunner
     }
 
     /**
-     * Draws the choices that the rule draws for its arguments when it is
-     * applied, without applying it.
+     * Draws the choices that the rule draws for its arguments, and for the
+     * value that it produces, when it is applied, without applying it.
      *
      * @throws ExampleRejectedException
      */
@@ -597,6 +616,20 @@ final class StateMachineRunner
 
             $this->source->draw(max(0, $numberOfValues - 1), new UniformDistribution);
         }
+
+        if ($rule->produces() !== null) {
+            $this->source->draw(0, new ExactDistribution(0));
+        }
+    }
+
+    /**
+     * @param non-empty-string $pool
+     *
+     * @return non-empty-string
+     */
+    private function labelOfPool(string $pool): string
+    {
+        return AbstractGenerator::labelOf('pool', $this->definition->className(), $pool);
     }
 
     /**

@@ -109,7 +109,7 @@ final class DrawnValuesTest extends TestCase
 
     public function testExportsTheStepsOfItsStateMachineThatAreNotReportedOnRequest(): void
     {
-        $drawnValues = DrawnValues::from(ChoiceSource::replay(new ChoiceSequence([0, 1, 1, 0, 1, 0, 1, 3, 0, 0])));
+        $drawnValues = DrawnValues::from(ChoiceSource::replay(new ChoiceSequence([0, 1, 1, 0, 1, 0, 0, 1, 3, 0, 0])));
 
         $drawnValues->runStateMachine(new CounterMachine, 50);
 

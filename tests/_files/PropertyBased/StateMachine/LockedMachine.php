@@ -58,6 +58,14 @@ final class LockedMachine
         $this->locked = false;
     }
 
+    #[StateMachineRule(produces: 'items', precondition: 'isUnlocked')]
+    public function itemOfUnlockedMachine(): int
+    {
+        $this->calls[] = 'itemOfUnlockedMachine()';
+
+        return 2;
+    }
+
     public function isUnlocked(): bool
     {
         return !$this->locked;

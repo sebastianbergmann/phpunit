@@ -39,6 +39,7 @@ use Random\Randomizer;
 use ReflectionMethod;
 use RuntimeException;
 use SebastianBergmann\ChoiceSequence\ChoiceSequence;
+use SebastianBergmann\ChoiceSequence\SpanKind;
 
 #[CoversClass(StateMachineRunner::class)]
 #[Small]
@@ -50,7 +51,7 @@ final class StateMachineRunnerTest extends TestCase
 
         // switchOn(), switchOn() (skipped, the switch is on), token(),
         // useToken() with the latest token, and stop
-        $runner = $this->runner(ChoiceSource::replay(new ChoiceSequence([1, 0, 1, 0, 1, 2, 1, 3, 0, 0])), $machine);
+        $runner = $this->runner(ChoiceSource::replay(new ChoiceSequence([1, 0, 1, 0, 1, 2, 0, 1, 3, 0, 0])), $machine);
 
         $runner->run(50);
 
@@ -79,7 +80,7 @@ final class StateMachineRunnerTest extends TestCase
     {
         $machine = new SwitchMachine;
 
-        $this->runner(ChoiceSource::replay(new ChoiceSequence([1, 2, 1, 2, 1, 2, 1, 3, 0, 1, 3, 2, 0])), $machine)->run(50);
+        $this->runner(ChoiceSource::replay(new ChoiceSequence([1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 3, 0, 1, 3, 2, 0])), $machine)->run(50);
 
         $this->assertSame(['token()', 'token()', 'token()', 'useToken(token3)', 'useToken(token1)'], $this->stepsOf($machine));
     }
@@ -90,7 +91,7 @@ final class StateMachineRunnerTest extends TestCase
 
         // start(0), snapshot(), restore(), restore() (skipped, the pool is
         // empty), and stop
-        $source = ChoiceSource::replay(new ChoiceSequence([0, 1, 0, 1, 4, 0, 1, 4, 0]));
+        $source = ChoiceSource::replay(new ChoiceSequence([0, 1, 0, 0, 1, 4, 0, 1, 4, 0]));
 
         $this->runner($source, $machine)->run(50);
 
@@ -112,13 +113,13 @@ final class StateMachineRunnerTest extends TestCase
     public function testNoMoreStepsAreTakenThanTheMaximumNumberOfSteps(): void
     {
         $machine = new SwitchMachine;
-        $source  = ChoiceSource::replay(new ChoiceSequence([1, 2, 1, 2, 1, 2]));
+        $source  = ChoiceSource::replay(new ChoiceSequence([1, 2, 0, 1, 2, 0, 1, 2, 0]));
         $runner  = $this->runner($source, $machine);
 
         $runner->run(2);
 
         $this->assertSame(2, $runner->numberOfSteps());
-        $this->assertSame([1, 2, 1, 2], $source->sequence()->choices());
+        $this->assertSame([1, 2, 0, 1, 2, 0], $source->sequence()->choices());
     }
 
     public function testTheChoicesForTheArgumentsOfARuleThatIsSkippedAreDrawnSoThatTheStepsAfterItAreTakenAsTheyWereDrawn(): void
@@ -128,14 +129,29 @@ final class StateMachineRunnerTest extends TestCase
         // add(5) (skipped, the machine is locked), take() (skipped, the pool
         // is empty), item(), inspect() of the item (skipped, the machine is
         // locked), unlock(), add(7), and stop
-        $source = ChoiceSource::replay(new ChoiceSequence([1, 0, 5, 1, 1, 0, 1, 2, 1, 3, 0, 1, 4, 1, 0, 7]));
+        $source = ChoiceSource::replay(new ChoiceSequence([1, 0, 5, 1, 1, 0, 1, 2, 0, 1, 3, 0, 1, 4, 1, 0, 7]));
         $runner = $this->runner($source, $machine);
 
         $runner->run(50);
 
         $this->assertSame(['item()', 'unlock()', 'add(7)'], $machine->calls);
         $this->assertSame(3, $runner->numberOfSteps());
-        $this->assertSame([1, 0, 5, 1, 1, 0, 1, 2, 1, 3, 0, 1, 4, 1, 0, 7, 0], $source->sequence()->choices());
+        $this->assertSame([1, 0, 5, 1, 1, 0, 1, 2, 0, 1, 3, 0, 1, 4, 1, 0, 7, 0], $source->sequence()->choices());
+    }
+
+    public function testTheChoiceForTheValueThatARuleThatIsSkippedProducesIsDrawn(): void
+    {
+        $machine = new LockedMachine;
+
+        // itemOfUnlockedMachine() (skipped, the machine is locked), unlock(),
+        // and stop
+        $source = ChoiceSource::replay(new ChoiceSequence([1, 5, 0, 1, 4]));
+        $runner = $this->runner($source, $machine);
+
+        $runner->run(50);
+
+        $this->assertSame(['unlock()'], $machine->calls);
+        $this->assertSame([1, 5, 0, 1, 4, 0], $source->sequence()->choices());
     }
 
     public function testNoMoreStepsAreTakenWhenNoRuleCanBeApplied(): void
@@ -160,33 +176,64 @@ final class StateMachineRunnerTest extends TestCase
 
     public function testStepsAndTheirInitializationsAreMarkedAsSpans(): void
     {
-        $source = ChoiceSource::replay(new ChoiceSequence([1, 2, 1, 3, 0, 0]));
+        // token(), useToken() with the token, and stop
+        $source = ChoiceSource::replay(new ChoiceSequence([1, 2, 0, 1, 3, 0, 0]));
 
         $this->runner($source, new SwitchMachine)->run(50);
 
         $spans = [];
 
         foreach ($source->sequence()->spans() as $span) {
-            $spans[] = [$span->start(), $span->end(), $span->label()];
+            $spans[] = [$span->start(), $span->end(), $span->label(), $span->kind()];
         }
 
         $stateMachine = AbstractGenerator::labelOf('stateMachine', SwitchMachine::class);
         $step         = AbstractGenerator::labelOf('step', SwitchMachine::class);
+        $pool         = AbstractGenerator::labelOf('pool', SwitchMachine::class, 'tokens');
 
+        // the step that produces a value for a pool ends with a choice for
+        // the value, and the position of the value that a step takes from a
+        // pool is a reference to it
         $this->assertSame(
             [
-                [0, 6, $stateMachine],
-                [0, 2, $step],
-                [2, 5, $step],
-                [5, 6, $step],
+                [0, 7, $stateMachine, null],
+                [0, 3, $step, null],
+                [2, 3, $pool, SpanKind::Referable],
+                [3, 6, $step, null],
+                [5, 6, $pool, SpanKind::Reference],
+                [6, 7, $step, null],
             ],
             $spans,
         );
     }
 
+    public function testThePositionOfAValueThatIsConsumedIsMarkedAsAReferenceThatConsumesIt(): void
+    {
+        // start(0), snapshot(), restore(), and stop
+        $source = ChoiceSource::replay(new ChoiceSequence([0, 1, 0, 0, 1, 3, 0, 0]));
+
+        $this->runner($source, new CounterMachine)->run(50);
+
+        $kinds = [];
+
+        foreach ($source->sequence()->spans() as $span) {
+            if ($span->kind() !== null) {
+                $kinds[] = [$span->start(), $span->end(), $span->kind()];
+            }
+        }
+
+        $this->assertSame(
+            [
+                [3, 4, SpanKind::Referable],
+                [6, 7, SpanKind::ConsumingReference],
+            ],
+            $kinds,
+        );
+    }
+
     public function testStepsAreReportedWithAnExporter(): void
     {
-        $runner = $this->runner(ChoiceSource::replay(new ChoiceSequence([1, 0, 1, 2, 1, 3, 0, 1, 4, 0])), new SwitchMachine, true);
+        $runner = $this->runner(ChoiceSource::replay(new ChoiceSequence([1, 0, 1, 2, 0, 1, 3, 0, 1, 4, 0])), new SwitchMachine, true);
 
         $runner->run(50);
 
@@ -209,7 +256,7 @@ EOT,
 
     public function testGeneratedArgumentsAreReported(): void
     {
-        $runner = $this->runner(ChoiceSource::replay(new ChoiceSequence([0, 1, 1, 0, 1, 0, 1, 3, 0, 0])), new CounterMachine, true);
+        $runner = $this->runner(ChoiceSource::replay(new ChoiceSequence([0, 1, 1, 0, 1, 0, 0, 1, 3, 0, 0])), new CounterMachine, true);
 
         $runner->run(50);
 
@@ -228,10 +275,11 @@ EOT,
     {
         // produceX1(), produceX_1(), eleven times produceX(), and consume()
         // with the values that were produced last
-        $choices = [1, 1, 1, 2];
+        $choices = [1, 1, 0, 1, 2, 0];
 
         for ($i = 1; $i <= 11; $i++) {
             $choices[] = 1;
+            $choices[] = 0;
             $choices[] = 0;
         }
 
@@ -259,7 +307,7 @@ EOT,
         $machine                = new SwitchMachine;
         $machine->useTokenFails = true;
 
-        $runner = $this->runner(ChoiceSource::replay(new ChoiceSequence([1, 2, 1, 3, 0])), $machine, true);
+        $runner = $this->runner(ChoiceSource::replay(new ChoiceSequence([1, 2, 0, 1, 3, 0])), $machine, true);
 
         try {
             $runner->run(50);
@@ -284,7 +332,7 @@ EOT,
         $machine                       = new SwitchMachine;
         $machine->invariantFailsWhenOn = true;
 
-        $runner = $this->runner(ChoiceSource::replay(new ChoiceSequence([1, 2, 1, 0])), $machine, true);
+        $runner = $this->runner(ChoiceSource::replay(new ChoiceSequence([1, 2, 0, 1, 0])), $machine, true);
 
         try {
             $runner->run(50);
@@ -307,7 +355,7 @@ EOT,
 
     public function testStepsThatWereTakenWithoutAnExporterCanBeExportedAfterwards(): void
     {
-        $source = ChoiceSource::replay(new ChoiceSequence([0, 1, 1, 0, 1, 0, 1, 3, 0, 0]));
+        $source = ChoiceSource::replay(new ChoiceSequence([0, 1, 1, 0, 1, 0, 0, 1, 3, 0, 0]));
         $runner = $this->runner($source, new CounterMachine);
 
         $runner->run(50);
@@ -326,7 +374,7 @@ EOT,
 
     public function testStepsThatWereTakenWithAnExporterAreNotExportedAgain(): void
     {
-        $source = ChoiceSource::replay(new ChoiceSequence([0, 1, 1, 0, 1, 0, 1, 3, 0, 0]));
+        $source = ChoiceSource::replay(new ChoiceSequence([0, 1, 1, 0, 1, 0, 0, 1, 3, 0, 0]));
         $runner = $this->runner($source, new CounterMachine, true);
 
         $runner->run(50);
