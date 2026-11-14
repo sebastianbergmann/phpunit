@@ -33,8 +33,14 @@ use PHPUnit\Framework\PropertyBased\CannotDeriveGeneratorException;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
 use PHPUnit\Framework\PropertyBased\ExampleRejectedException;
 use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
+use PHPUnit\Framework\PropertyBased\Generator\ArrayGenerator;
+use PHPUnit\Framework\PropertyBased\Generator\ConstantGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\DeferredGenerator;
+use PHPUnit\Framework\PropertyBased\Generator\IntegerGenerator;
+use PHPUnit\Framework\PropertyBased\Generator\ListGenerator;
+use PHPUnit\Framework\PropertyBased\Generator\NullableGenerator;
 use PHPUnit\Framework\PropertyBased\Generator\ObjectGenerator;
+use PHPUnit\Framework\PropertyBased\Generator\OneOfGenerator;
 use PHPUnit\Framework\PropertyBased\GeneratorRefersToItselfException;
 use PHPUnit\Framework\PropertyBased\Generators;
 use PHPUnit\Framework\PropertyBased\Type\NameScope;
@@ -43,13 +49,17 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\PropertyBased\Currency;
 use PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithoutConstructor;
 use PHPUnit\TestFixture\PropertyBased\Derivation\ClassWithVariadicConstructor;
+use PHPUnit\TestFixture\PropertyBased\Derivation\Company;
 use PHPUnit\TestFixture\PropertyBased\Derivation\Customer;
 use PHPUnit\TestFixture\PropertyBased\Derivation\EmailAddress;
 use PHPUnit\TestFixture\PropertyBased\Derivation\ExampleEmailAddress;
 use PHPUnit\TestFixture\PropertyBased\Derivation\Expression;
+use PHPUnit\TestFixture\PropertyBased\Derivation\Forest;
+use PHPUnit\TestFixture\PropertyBased\Derivation\LinkedList;
 use PHPUnit\TestFixture\PropertyBased\Derivation\Money;
 use PHPUnit\TestFixture\PropertyBased\Derivation\Node;
 use PHPUnit\TestFixture\PropertyBased\Derivation\Parameters;
+use PHPUnit\TestFixture\PropertyBased\Derivation\Person;
 use PHPUnit\TestFixture\PropertyBased\Derivation\Tree;
 use Random\Engine\Xoshiro256StarStar;
 use Random\Randomizer;
@@ -229,6 +239,28 @@ final class GeneratorDeriverTest extends TestCase
     }
 
     /**
+     * @return array<string, array{non-empty-string}>
+     */
+    public static function mutuallyRecursiveClassProvider(): array
+    {
+        return [
+            'class with two references to the other class' => ['Person'],
+            'class with one reference to the other class'  => ['Company'],
+        ];
+    }
+
+    /**
+     * @return array<string, array{class-string, class-string}>
+     */
+    public static function mutuallyRecursiveClassesProvider(): array
+    {
+        return [
+            'class with two references to the other class first' => [Person::class, Company::class],
+            'class with one reference to the other class first'  => [Company::class, Person::class],
+        ];
+    }
+
+    /**
      * @param Closure(mixed): bool $isValid
      */
     #[DataProvider('typeProvider')]
@@ -355,6 +387,114 @@ final class GeneratorDeriverTest extends TestCase
         }
 
         $this->assertLessThan(10, $rejected);
+    }
+
+    /**
+     * @param non-empty-string $className
+     */
+    #[DataProvider('mutuallyRecursiveClassProvider')]
+    public function testKeepsObjectsOfMutuallyRecursiveClassesSmall(string $className): void
+    {
+        $generator  = $this->derive($className);
+        $randomizer = new Randomizer(new Xoshiro256StarStar(1));
+        $rejected   = 0;
+
+        for ($i = 0; $i < 200; $i++) {
+            try {
+                $generator->generate(ChoiceSource::random($randomizer));
+            } catch (ExampleRejectedException) {
+                $rejected++;
+            }
+        }
+
+        $this->assertLessThan(10, $rejected);
+    }
+
+    public function testANullableObjectOfARecursiveClassIsNotLessLikelyWhenItIsNotAnArgumentOfTheConstructorOfTheClass(): void
+    {
+        $deriver = $this->deriver();
+        $first   = $deriver->forType((new TypeParser)->parse('?LinkedList'), $this->scope());
+        $second  = $deriver->forType((new TypeParser)->parse('?LinkedList'), $this->scope());
+
+        $this->assertEquals(new NullableGenerator($deriver->forClass(LinkedList::class)), $first);
+        $this->assertEquals($first, $second);
+    }
+
+    public function testAListOfObjectsOfARecursiveClassIsNotShorterWhenItIsNotAnArgumentOfTheConstructorOfTheClass(): void
+    {
+        $deriver = $this->deriver();
+        $first   = $deriver->forType((new TypeParser)->parse('list<Tree>'), $this->scope());
+        $second  = $deriver->forType((new TypeParser)->parse('list<Tree>'), $this->scope());
+
+        $this->assertEquals(new ListGenerator($deriver->forClass(Tree::class), 0, null), $first);
+        $this->assertEquals($first, $second);
+    }
+
+    public function testAnArrayOfObjectsOfARecursiveClassIsNotSmallerWhenItIsNotAnArgumentOfTheConstructorOfTheClass(): void
+    {
+        $deriver = $this->deriver();
+        $first   = $deriver->forType((new TypeParser)->parse('array<int<0, 9>, Tree>'), $this->scope());
+        $second  = $deriver->forType((new TypeParser)->parse('array<int<0, 9>, Tree>'), $this->scope());
+
+        $this->assertEquals(new ArrayGenerator(new IntegerGenerator(0, 9), $deriver->forClass(Tree::class), 0, null), $first);
+        $this->assertEquals($first, $second);
+    }
+
+    public function testAnObjectOfARecursiveClassIsNotLessLikelyInAUnionThatIsNotAnArgumentOfTheConstructorOfTheClass(): void
+    {
+        $deriver = $this->deriver();
+        $first   = $deriver->forType((new TypeParser)->parse('Expression|true'), $this->scope());
+        $second  = $deriver->forType((new TypeParser)->parse('Expression|true'), $this->scope());
+
+        $this->assertEquals(new OneOfGenerator([$deriver->forClass(Expression::class), new ConstantGenerator(true)]), $first);
+        $this->assertEquals($first, $second);
+    }
+
+    public function testAnObjectOfARecursiveClassIsNotLessLikelyInANullableUnionThatIsNotAnArgumentOfTheConstructorOfTheClass(): void
+    {
+        $deriver = $this->deriver();
+        $first   = $deriver->forType((new TypeParser)->parse('Expression|true|null'), $this->scope());
+        $second  = $deriver->forType((new TypeParser)->parse('Expression|true|null'), $this->scope());
+
+        $this->assertEquals(new NullableGenerator(new OneOfGenerator([$deriver->forClass(Expression::class), new ConstantGenerator(true)])), $first);
+        $this->assertEquals($first, $second);
+    }
+
+    public function testACollectionOfObjectsOfARecursiveClassIsNotSmallerWhenItIsAnArgumentOfTheConstructorOfAnotherClass(): void
+    {
+        $deriver = $this->deriver();
+        $forest  = $deriver->forClass(Forest::class);
+        $trees   = new ListGenerator($deriver->forClass(Tree::class), 0, null);
+
+        $this->assertEquals(new ObjectGenerator(Forest::class, ['deciduous' => $trees, 'coniferous' => $trees]), $forest);
+    }
+
+    public function testANullableObjectOfAClassThatRefersToAClassThatIsBeingDerivedIsLessLikelyEachTimeItIsAnArgumentOfTheConstructorOfThatClass(): void
+    {
+        $deriver = $this->deriver();
+        $person  = $deriver->forClass(Person::class);
+
+        // the generator for Company refers to Person, also when it is not
+        // derived again for the second parameter of the constructor of Person
+        $company = new NullableGenerator($deriver->forClass(Company::class), GeneratorDeriver::PROBABILITY_OF_RECURSION);
+
+        $this->assertEquals(new ObjectGenerator(Person::class, ['employer' => $company, 'client' => $company]), $person);
+    }
+
+    /**
+     * @param class-string $first
+     * @param class-string $second
+     */
+    #[DataProvider('mutuallyRecursiveClassesProvider')]
+    public function testANullableObjectOfAMutuallyRecursiveClassIsNotLessLikelyWhenItIsNotAnArgumentOfAConstructorOfTheseClasses(string $first, string $second): void
+    {
+        $deriver = $this->deriver();
+
+        $nullableFirst  = $deriver->forType((new TypeParser)->parse('?\\' . $first), $this->scope());
+        $nullableSecond = $deriver->forType((new TypeParser)->parse('?\\' . $second), $this->scope());
+
+        $this->assertEquals(new NullableGenerator($deriver->forClass($first)), $nullableFirst);
+        $this->assertEquals(new NullableGenerator($deriver->forClass($second)), $nullableSecond);
     }
 
     public function testTheMembersOfAUnionThatDoNotReferToAClassThatIsBeingDerivedAreTheSimplest(): void

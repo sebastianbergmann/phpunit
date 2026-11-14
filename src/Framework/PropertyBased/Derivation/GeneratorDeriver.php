@@ -13,6 +13,7 @@ use const PHP_FLOAT_MAX;
 use const PHP_INT_MAX;
 use const PHP_INT_MIN;
 use function array_key_first;
+use function array_sum;
 use function assert;
 use function class_exists;
 use function count;
@@ -129,7 +130,24 @@ final class GeneratorDeriver
     private array $classes = [];
 
     /**
-     * @var array<lowercase-string, true>
+     * The classes that were being derived, and referred to from within the
+     * generators for the arguments of its constructor, when the generator of
+     * a class was derived, by class. The generator of such a class refers to
+     * them wherever it is used, also when it is not derived again.
+     *
+     * @var array<lowercase-string, list<lowercase-string>>
+     */
+    private array $classesReferredTo = [];
+
+    /**
+     * How often the generator of a class that is being derived was referred
+     * to from within the generators for the arguments of its constructor, by
+     * class. A class is no longer listed, and the references to it are no
+     * longer counted, once its generator is derived, so that a nullable value
+     * or a collection that contains objects of the class, but that is not
+     * used for its constructor, is not considered to be recursive.
+     *
+     * @var array<lowercase-string, non-negative-int>
      */
     private array $classesBeingDerived = [];
 
@@ -137,14 +155,6 @@ final class GeneratorDeriver
      * @var WeakMap<DeferredGenerator<mixed>, AbstractGenerator<mixed>>
      */
     private WeakMap $deferred;
-
-    /**
-     * How often the generator of a class that is being derived was referred
-     * to from within the generators for the arguments of its constructor.
-     *
-     * @var non-negative-int
-     */
-    private int $numberOfRecursiveReferences = 0;
 
     /**
      * The types that the doc comments of methods declare for their
@@ -217,10 +227,10 @@ final class GeneratorDeriver
     public function forType(Type $type, NameScope $scope): AbstractGenerator
     {
         if ($type instanceof NullableType) {
-            $numberOfRecursiveReferences = $this->numberOfRecursiveReferences;
+            $numberOfRecursiveReferences = $this->numberOfRecursiveReferences();
             $generator                   = $this->forType($type->type(), $scope);
 
-            return $this->nullable($generator, $this->numberOfRecursiveReferences > $numberOfRecursiveReferences);
+            return $this->nullable($generator, $this->numberOfRecursiveReferences() > $numberOfRecursiveReferences);
         }
 
         if ($type instanceof UnionType) {
@@ -327,12 +337,18 @@ final class GeneratorDeriver
     {
         $key = strtolower($className);
 
-        if (isset($this->classes[$key])) {
+        if (isset($this->classes[$key], $this->classesReferredTo[$key])) {
+            foreach ($this->classesReferredTo[$key] as $classReferredTo) {
+                if (isset($this->classesBeingDerived[$classReferredTo])) {
+                    $this->classesBeingDerived[$classReferredTo]++;
+                }
+            }
+
             return $this->classes[$key];
         }
 
         if (isset($this->classesBeingDerived[$key])) {
-            $this->numberOfRecursiveReferences++;
+            $this->classesBeingDerived[$key]++;
 
             return new DeferredGenerator(
                 static fn (self $deriver): AbstractGenerator => $deriver->forClass($className),
@@ -352,7 +368,8 @@ final class GeneratorDeriver
             throw CannotDeriveGeneratorException::noPublicConstructor($className);
         }
 
-        $this->classesBeingDerived[$key] = true;
+        $classesBeingDerived             = $this->classesBeingDerived;
+        $this->classesBeingDerived[$key] = 0;
 
         try {
             $arguments = [];
@@ -364,9 +381,18 @@ final class GeneratorDeriver
             unset($this->classesBeingDerived[$key]);
         }
 
+        $classesReferredTo = [];
+
+        foreach ($classesBeingDerived as $classBeingDerived => $numberOfReferences) {
+            if (isset($this->classesBeingDerived[$classBeingDerived]) && $this->classesBeingDerived[$classBeingDerived] > $numberOfReferences) {
+                $classesReferredTo[] = $classBeingDerived;
+            }
+        }
+
         $generator = new ObjectGenerator($className, $arguments);
 
-        $this->classes[$key] = $generator;
+        $this->classes[$key]           = $generator;
+        $this->classesReferredTo[$key] = $classesReferredTo;
 
         return $generator;
     }
@@ -561,7 +587,7 @@ final class GeneratorDeriver
             throw CannotDeriveGeneratorException::invalidTypeArguments($type->asString(), sprintf('%s takes at most a type for its keys and a type for its values', $type->name()));
         }
 
-        $numberOfRecursiveReferences = $this->numberOfRecursiveReferences;
+        $numberOfRecursiveReferences = $this->numberOfRecursiveReferences();
         $keys                        = $this->arrayKeys();
 
         if (count($arguments) === 2) {
@@ -574,7 +600,7 @@ final class GeneratorDeriver
             $values = $this->forType($arguments[count($arguments) - 1], $scope);
         }
 
-        return new ArrayGenerator($keys, $values, $this->minimumSize($nonEmpty), null, self::probabilityOfAnotherElement($this->numberOfRecursiveReferences > $numberOfRecursiveReferences));
+        return new ArrayGenerator($keys, $values, $this->minimumSize($nonEmpty), null, self::probabilityOfAnotherElement($this->numberOfRecursiveReferences() > $numberOfRecursiveReferences));
     }
 
     /**
@@ -590,14 +616,14 @@ final class GeneratorDeriver
             throw CannotDeriveGeneratorException::invalidTypeArguments($type->asString(), sprintf('%s takes at most a type for its elements', $type->name()));
         }
 
-        $numberOfRecursiveReferences = $this->numberOfRecursiveReferences;
+        $numberOfRecursiveReferences = $this->numberOfRecursiveReferences();
         $elements                    = $this->values();
 
         if ($arguments !== []) {
             $elements = $this->forType($arguments[0], $scope);
         }
 
-        return new ListGenerator($elements, $this->minimumSize($nonEmpty), null, self::probabilityOfAnotherElement($this->numberOfRecursiveReferences > $numberOfRecursiveReferences));
+        return new ListGenerator($elements, $this->minimumSize($nonEmpty), null, self::probabilityOfAnotherElement($this->numberOfRecursiveReferences() > $numberOfRecursiveReferences));
     }
 
     /**
@@ -657,7 +683,7 @@ final class GeneratorDeriver
      */
     private function union(UnionType $type, NameScope $scope): AbstractGenerator
     {
-        $numberOfRecursiveReferences = $this->numberOfRecursiveReferences;
+        $numberOfRecursiveReferences = $this->numberOfRecursiveReferences();
         $nonRecursive                = [];
         $recursive                   = [];
         $nullable                    = false;
@@ -669,10 +695,10 @@ final class GeneratorDeriver
                 continue;
             }
 
-            $numberOfRecursiveReferencesBefore = $this->numberOfRecursiveReferences;
+            $numberOfRecursiveReferencesBefore = $this->numberOfRecursiveReferences();
             $generator                         = $this->forType($member, $scope);
 
-            if ($this->numberOfRecursiveReferences > $numberOfRecursiveReferencesBefore) {
+            if ($this->numberOfRecursiveReferences() > $numberOfRecursiveReferencesBefore) {
                 $recursive[] = $generator;
             } else {
                 $nonRecursive[] = $generator;
@@ -698,10 +724,22 @@ final class GeneratorDeriver
         }
 
         if ($nullable) {
-            return $this->nullable($generator, $this->numberOfRecursiveReferences > $numberOfRecursiveReferences);
+            return $this->nullable($generator, $this->numberOfRecursiveReferences() > $numberOfRecursiveReferences);
         }
 
         return $generator;
+    }
+
+    /**
+     * How often the generators of the classes that are being derived were
+     * referred to so far. A generator refers to a class that is being
+     * derived, and generates values that can contain objects of that class
+     * in objects of that class, when this number is greater after it was
+     * derived than before.
+     */
+    private function numberOfRecursiveReferences(): int
+    {
+        return array_sum($this->classesBeingDerived);
     }
 
     private function parameterTypesOf(ReflectionMethod $method): ParameterTypes
