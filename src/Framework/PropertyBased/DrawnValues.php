@@ -122,19 +122,21 @@ final class DrawnValues
     }
 
     /**
-     * @param positive-int $maximumNumberOfSteps
+     * @param positive-int           $maximumNumberOfSteps
+     * @param list<non-empty-string> $namesOfParameters    the names of the parameters of the property, to which its arguments are assigned in the report, so that the steps are not written with variables of these names
      *
      * @throws ExampleRejectedException
      * @throws InvalidStateMachineException
      * @throws Throwable                    when a step or an invariant of the state machine fails
      */
-    public function runStateMachine(object $machine, int $maximumNumberOfSteps): StateMachineRunner
+    public function runStateMachine(object $machine, int $maximumNumberOfSteps, array $namesOfParameters = []): StateMachineRunner
     {
         $this->stateMachine = new StateMachineRunner(
             $this->source,
             $this->exporter,
             new StateMachineDefinitionBuilder()->build($machine::class, $this->source->deriver()),
             $machine,
+            $namesOfParameters,
         );
 
         $this->stateMachine->run($maximumNumberOfSteps);

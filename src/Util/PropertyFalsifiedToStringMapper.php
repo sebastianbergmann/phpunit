@@ -40,7 +40,8 @@ use PHPUnit\Framework\PropertyBased\FalsificationReport;
  *
  * The steps of the state machine that the minimal counterexample ran with
  * runStateMachine() follow, as calls of the methods of the state machine,
- * which is referred to as $machine:
+ * which is referred to as $machine, or as $stateMachine when a parameter of
+ * the property is named machine:
  *
  *     Property falsified after 3 examples, counterexample shrunk in 25 steps:
  *

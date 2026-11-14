@@ -32,6 +32,11 @@ final class PropertyExample
      * @var list<mixed>
      */
     private readonly array $arguments;
+
+    /**
+     * @var list<non-empty-string>
+     */
+    private readonly array $namesOfParameters;
     private readonly bool $failureIsReported;
     private readonly ?DrawnValues $drawnValues;
     private bool $rejected = false;
@@ -65,13 +70,15 @@ final class PropertyExample
     private ?Throwable $throwableThatEndedIt = null;
 
     /**
-     * @param list<mixed>  $arguments
-     * @param bool         $failureIsReported whether the failure or error of the example is the one that is reported for the property, which it is for the final replay of the minimal counterexample and for an explicit example
-     * @param ?DrawnValues $drawnValues       from which the values that the example draws with draw() are drawn, null for an explicit example, for which values cannot be drawn
+     * @param list<mixed>            $arguments
+     * @param bool                   $failureIsReported whether the failure or error of the example is the one that is reported for the property, which it is for the final replay of the minimal counterexample and for an explicit example
+     * @param ?DrawnValues           $drawnValues       from which the values that the example draws with draw() are drawn, null for an explicit example, for which values cannot be drawn
+     * @param list<non-empty-string> $namesOfParameters the names of the parameters of the property, to which the arguments are assigned in the report of the example, so that the steps of its state machine are not written with variables of these names
      */
-    public function __construct(array $arguments, bool $failureIsReported, ?DrawnValues $drawnValues)
+    public function __construct(array $arguments, bool $failureIsReported, ?DrawnValues $drawnValues, array $namesOfParameters = [])
     {
         $this->arguments         = $arguments;
+        $this->namesOfParameters = $namesOfParameters;
         $this->failureIsReported = $failureIsReported;
         $this->drawnValues       = $drawnValues;
     }
@@ -158,7 +165,7 @@ final class PropertyExample
         $this->stateMachineWasRun = true;
 
         try {
-            $stateMachine = $this->drawnValues->runStateMachine($machine, $maximumNumberOfSteps);
+            $stateMachine = $this->drawnValues->runStateMachine($machine, $maximumNumberOfSteps, $this->namesOfParameters);
         } catch (ExampleRejectedException $e) {
             $this->rejectionReason = $e->reason();
 

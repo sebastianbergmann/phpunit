@@ -40,6 +40,7 @@ use PHPUnit\TestFixture\PropertyBased\StateMachine\CounterMachine;
 use PHPUnit\TestFixture\PropertyBased\StateMachine\LockedMachine;
 use PHPUnit\TestFixture\PropertyBased\StateMachine\ObservedMachine;
 use PHPUnit\TestFixture\PropertyBased\StateMachine\PreconditionThatDoesNotReturnABool;
+use PHPUnit\TestFixture\PropertyBased\StateMachine\StateMachineWithPoolsThatAreNamedLikeTheVariableForTheStateMachine;
 use PHPUnit\TestFixture\PropertyBased\StateMachine\StateMachineWithPoolsWhoseNamesEndInDigits;
 use PHPUnit\TestFixture\PropertyBased\StateMachine\StateMachineWithRuleThatReturnsAGivenValue;
 use PHPUnit\TestFixture\PropertyBased\StateMachine\StuckMachine;
@@ -81,6 +82,35 @@ final class StateMachineRunnerTest extends TestCase
             'array' => [
                 '$machine->value(); // [\'?\>\' => [\'?\>\', \'*/\']]',
                 ['?>' => ['?>', '*/']],
+            ],
+        ];
+    }
+
+    /**
+     * @return non-empty-array<non-empty-string, array{non-empty-string, list<non-empty-string>}>
+     */
+    public static function namesOfParametersProvider(): array
+    {
+        return [
+            'no parameters' => [
+                'machine',
+                [],
+            ],
+            'no parameter that is named machine' => [
+                'machine',
+                ['stateMachine', 'Machine', 'machine1'],
+            ],
+            'parameter that is named machine' => [
+                'stateMachine',
+                ['machine'],
+            ],
+            'parameters that are named machine and stateMachine' => [
+                'stateMachine2',
+                ['stateMachine', 'machine'],
+            ],
+            'parameters that are named machine, stateMachine, and stateMachine2' => [
+                'stateMachine3',
+                ['machine', 'stateMachine', 'stateMachine2', 'stateMachine4'],
             ],
         ];
     }
@@ -384,6 +414,131 @@ EOT,
         $this->assertSame('$machine->consume(x: $x__11, x1: $x11, x_1: $x_11);', $steps[13]);
     }
 
+    /**
+     * @param non-empty-string       $variable
+     * @param list<non-empty-string> $namesOfParameters
+     */
+    #[DataProvider('namesOfParametersProvider')]
+    public function testStateMachineIsNotReferredToWithAVariableThatIsNamedLikeAParameterOfTheProperty(string $variable, array $namesOfParameters): void
+    {
+        $machine                       = new SwitchMachine;
+        $machine->invariantFailsWhenOn = true;
+
+        $runner = $this->runner(ChoiceSource::replay(new ChoiceSequence([1, 2, 0, 1, 3, 0, 1, 0])), $machine, true, $namesOfParameters);
+
+        try {
+            $runner->run(50);
+        } catch (RuntimeException) {
+            $this->assertSame(
+                [
+                    '$tokens1 = $' . $variable . '->token();',
+                    '$' . $variable . '->useToken(token: $tokens1); // \'TOKEN1\'',
+                    '$' . $variable . '->switchOn();',
+                    '$' . $variable . '->invariant(); // invariant failed',
+                ],
+                $runner->steps(),
+            );
+
+            return;
+        }
+
+        $this->fail('The invariant did not fail');
+    }
+
+    public function testStateMachineIsNotReferredToWithAVariableThatIsNamedLikeAParameterOfThePropertyInStepsThatAreExportedAfterwards(): void
+    {
+        $machine = new ObservedMachine;
+        $source  = ChoiceSource::replay(new ChoiceSequence([1, 0, 1, 0]));
+        $runner  = $this->runner($source, $machine, false, ['machine']);
+        $steps   = [];
+
+        $machine->whileInvariantIsChecked = function () use ($runner, $source, &$steps): void
+        {
+            $steps[] = $runner->stepsExportedWith($this->exporter($source));
+        };
+
+        $runner->run(50);
+
+        $this->assertSame(
+            [
+                ['$stateMachine->invariant();'],
+                ['$stateMachine->step(amount: 2);', '$stateMachine->invariant();'],
+            ],
+            $steps,
+        );
+    }
+
+    public function testValueOfAPoolIsNotAssignedToAVariableThatIsNamedLikeAParameterOfTheProperty(): void
+    {
+        // three times token(), and useToken() with the token that was
+        // produced last, and with the one that was produced first
+        $runner = $this->runner(
+            ChoiceSource::replay(new ChoiceSequence([1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 3, 0, 1, 3, 2, 0])),
+            new SwitchMachine,
+            true,
+            ['tokens1', 'tokens2', 'tokens_2'],
+        );
+
+        $runner->run(50);
+
+        $this->assertSame(
+            [
+                '$tokens_1 = $machine->token();',
+                '$tokens__2 = $machine->token();',
+                '$tokens3 = $machine->token();',
+                '$machine->useToken(token: $tokens3); // \'TOKEN3\'',
+                '$machine->useToken(token: $tokens_1); // \'TOKEN1\'',
+            ],
+            $runner->steps(),
+        );
+    }
+
+    public function testValueOfAPoolThatIsNamedLikeTheVariableThatRefersToTheStateMachineIsAssignedToAnotherVariable(): void
+    {
+        // produceMachine(), produceStateMachine(), and consume() with their
+        // values
+        $runner = $this->runner(
+            ChoiceSource::replay(new ChoiceSequence([1, 0, 0, 1, 1, 0, 1, 2, 0, 0, 0])),
+            new StateMachineWithPoolsThatAreNamedLikeTheVariableForTheStateMachine,
+            true,
+        );
+
+        $runner->run(50);
+
+        $this->assertSame(
+            [
+                '$machine1 = $machine->produceMachine();',
+                '$stateMachine1 = $machine->produceStateMachine();',
+                '$machine->consume(machine: $machine1, stateMachine: $stateMachine1);',
+            ],
+            $runner->steps(),
+        );
+    }
+
+    public function testValueOfAPoolIsNotAssignedToTheVariableThatRefersToTheStateMachine(): void
+    {
+        // produceMachine(), twice produceStateMachine(), and consume() with
+        // the values that were produced last
+        $runner = $this->runner(
+            ChoiceSource::replay(new ChoiceSequence([1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 2, 0, 0, 0])),
+            new StateMachineWithPoolsThatAreNamedLikeTheVariableForTheStateMachine,
+            true,
+            ['machine', 'stateMachine'],
+        );
+
+        $runner->run(50);
+
+        $this->assertSame(
+            [
+                '$machine1 = $stateMachine2->produceMachine();',
+                '$stateMachine1 = $stateMachine2->produceStateMachine();',
+                '$stateMachine_2 = $stateMachine2->produceStateMachine();',
+                '$stateMachine2->consume(machine: $machine1, stateMachine: $stateMachine_2);',
+            ],
+            $runner->steps(),
+        );
+    }
+
     public function testStepThatFailsIsReported(): void
     {
         $machine                = new SwitchMachine;
@@ -596,7 +751,10 @@ EOT,
         $this->assertLessThanOrEqual(ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES / 2, $runner->numberOfSteps());
     }
 
-    private function runner(ChoiceSource $source, object $machine, bool $reported = false): StateMachineRunner
+    /**
+     * @param list<non-empty-string> $namesOfParameters
+     */
+    private function runner(ChoiceSource $source, object $machine, bool $reported = false, array $namesOfParameters = []): StateMachineRunner
     {
         $exporter = null;
 
@@ -609,6 +767,7 @@ EOT,
             $exporter,
             new StateMachineDefinitionBuilder()->build($machine::class, new GeneratorDeriver(GeneratorRegistry::empty())),
             $machine,
+            $namesOfParameters,
         );
     }
 

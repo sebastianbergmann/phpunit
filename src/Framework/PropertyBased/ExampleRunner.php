@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\PropertyBased;
 
+use function array_keys;
 use function array_values;
 use function assert;
 use function get_debug_type;
@@ -112,7 +113,7 @@ final readonly class ExampleRunner
     {
         $example = ($this->exampleFactory)();
 
-        $example->setPropertyExample(new PropertyExample(array_values($arguments), $failureIsReported, $drawnValues));
+        $example->setPropertyExample(new PropertyExample(array_values($arguments), $failureIsReported, $drawnValues, array_keys($arguments)));
 
         return $example;
     }

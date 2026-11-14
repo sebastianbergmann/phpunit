@@ -79,6 +79,13 @@ use Throwable;
  * null, with ?> written as ?\> as it would end the comment, and an invariant
  * is written only when it failed.
  *
+ * The state machine is referred to as $machine in this code. The report
+ * assigns the arguments of the property to variables that are named after
+ * its parameters before the steps, so when one of them is named machine, the
+ * state machine is referred to as $stateMachine, which is followed by a
+ * number when this name is the one of a parameter as well, and a value of a
+ * pool is not assigned to a variable with the name of a parameter either.
+ *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -104,6 +111,14 @@ final class StateMachineRunner
     private readonly object $machine;
 
     /**
+     * The name of the variable that refers to the state machine in the
+     * report.
+     *
+     * @var non-empty-string
+     */
+    private readonly string $variableOfMachine;
+
+    /**
      * The values that the steps produced and that were not consumed, by pool,
      * in the order in which they were produced, with the names of the
      * variables that they are assigned to in the report.
@@ -118,7 +133,10 @@ final class StateMachineRunner
     private array $numberOfValuesProduced = [];
 
     /**
-     * The names of the variables that values were assigned to in the report.
+     * The names of the variables of the report: those of the parameters of
+     * the property, to which its arguments are assigned, the one of the
+     * variable that refers to the state machine, and those of the variables
+     * that values of pools were assigned to.
      *
      * @var array<non-empty-string, true>
      */
@@ -155,14 +173,21 @@ final class StateMachineRunner
     private array $rulesOfSteps = [];
 
     /**
-     * @param ?CounterexampleExporter $exporter the exporter for the steps that are reported, null when they are not reported
+     * @param ?CounterexampleExporter $exporter          the exporter for the steps that are reported, null when they are not reported
+     * @param list<non-empty-string>  $namesOfParameters the names of the parameters of the property, to which its arguments are assigned in the report
      */
-    public function __construct(ChoiceSource $source, ?CounterexampleExporter $exporter, StateMachineDefinition $definition, object $machine)
+    public function __construct(ChoiceSource $source, ?CounterexampleExporter $exporter, StateMachineDefinition $definition, object $machine, array $namesOfParameters)
     {
         $this->source     = $source;
         $this->exporter   = $exporter;
         $this->definition = $definition;
         $this->machine    = $machine;
+
+        foreach ($namesOfParameters as $nameOfParameter) {
+            $this->variables[$nameOfParameter] = true;
+        }
+
+        $this->variableOfMachine = $this->variableForMachine();
     }
 
     /**
@@ -230,7 +255,7 @@ final class StateMachineRunner
                 $arguments[] = $argument;
             }
 
-            $call = sprintf('$machine->%s(%s);', $step['methodName'], implode(', ', $arguments));
+            $call = sprintf('$%s->%s(%s);', $this->variableOfMachine, $step['methodName'], implode(', ', $arguments));
 
             if ($step['variable'] !== null) {
                 $call = '$' . $step['variable'] . ' = ' . $call;
@@ -516,7 +541,7 @@ final class StateMachineRunner
             $exported[]  = $parameter->name() . ': $' . $produced['variable'];
         }
 
-        $call     = sprintf('$machine->%s(%s);', $step->methodName(), implode(', ', $exported));
+        $call     = sprintf('$%s->%s(%s);', $this->variableOfMachine, $step->methodName(), implode(', ', $exported));
         $produces = $step->produces();
         $variable = null;
 
@@ -621,18 +646,49 @@ final class StateMachineRunner
     private function checkInvariants(array $invariants): void
     {
         foreach ($invariants as $invariant) {
-            $this->stepBeingTaken = sprintf('$machine->%s();', $invariant);
+            $this->stepBeingTaken = sprintf('$%s->%s();', $this->variableOfMachine, $invariant);
 
             try {
                 $this->call($invariant, []);
             } catch (Throwable $t) {
-                $this->record(sprintf('$machine->%s(); // invariant failed', $invariant));
+                $this->record(sprintf('$%s->%s(); // invariant failed', $this->variableOfMachine, $invariant));
 
                 throw $t;
             }
 
             $this->stepBeingTaken = null;
         }
+    }
+
+    /**
+     * The name of the variable that refers to the state machine in the
+     * report: machine, or stateMachine when a parameter of the property is
+     * named machine, followed by a number, counted from 2, when a parameter
+     * of the property is named stateMachine as well.
+     *
+     * @return non-empty-string
+     */
+    private function variableForMachine(): string
+    {
+        foreach (['machine', 'stateMachine'] as $variable) {
+            if (!array_key_exists($variable, $this->variables)) {
+                $this->variables[$variable] = true;
+
+                return $variable;
+            }
+        }
+
+        $number = 2;
+
+        while (array_key_exists('stateMachine' . $number, $this->variables)) {
+            $number++;
+        }
+
+        $variable = 'stateMachine' . $number;
+
+        $this->variables[$variable] = true;
+
+        return $variable;
     }
 
     /**
@@ -643,7 +699,8 @@ final class StateMachineRunner
      * them: the eleventh value of the pool "x" and the first value of the pool
      * "x1" would both be assigned to $x11. The name of the pool and the number
      * of the value are separated by an underscore when the name of the
-     * variable is already used.
+     * variable is already used, by a value of another pool, by a parameter of
+     * the property, or by the variable that refers to the state machine.
      *
      * @param non-empty-string $pool
      *
