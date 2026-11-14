@@ -67,6 +67,14 @@ final class RegularExpressionGeneratorTest extends TestCase
             'POSIX classes'                                        => ['/^[[:alpha:]][[:^digit:]][[:xdigit:][:punct:]]$/'],
             'POSIX classes with the u modifier'                    => ['/^[[:^space:]][[:word:][:blank:][:cntrl:]]$/u'],
             'more POSIX classes'                                   => ['/^[[:alnum:][:upper:][:lower:][:graph:][:print:][:ascii:]]$/'],
+            'bracket and colon that are not a POSIX class'         => ['/^[[:]{4}$/'],
+            'bracket and colon in a negated class'                 => ['/^[^[:]+$/'],
+            'bracket and colon at the end'                         => ['/[[:]/'],
+            'bracket and colon after a character'                  => ['/^[a[:]{4}$/u'],
+            'bracket, colon, and a character'                      => ['/^[[:a]{4}$/'],
+            'bracket and colons before a closing bracket'          => ['/^[[:a:b]]$/'],
+            'bracket and colon before a POSIX class'               => ['/^[[:[:digit:]]{4}$/'],
+            'bracket and colon before an escaped backslash'        => ['/^[[:\\\\]]$/'],
             'lazy quantifier'                                      => ['/^(?:ab|c){2,}?$/'],
             'named groups'                                         => ['/^(?<year>\d{4})-(?P<month>\d\d)-(?\'day\'\d\d)$/'],
             'other delimiters'                                     => ['#^/path/[^/]+$#'],
@@ -245,6 +253,13 @@ final class RegularExpressionGeneratorTest extends TestCase
     {
         $this->assertSame("\u{3000}", $this->replay('/^[^\H]$/u', [18]));
         $this->assertSame("\u{2029}", $this->replay('/^[^\V]$/u', [6]));
+    }
+
+    public function testABracketAndAColonInACharacterClassThatDoNotStartAPosixClassAreLiteralCharacters(): void
+    {
+        $this->assertSame(':', $this->replay('/^[[:]$/', [0]));
+        $this->assertSame('[', $this->replay('/^[[:]$/', [1]));
+        $this->assertSame('a]', $this->replay('/^[[:a:b]]$/', []));
     }
 
     public function testDotDoesNotGenerateANewlineWithoutTheSModifier(): void

@@ -436,7 +436,7 @@ final class Parser
      */
     private function memberOfCharacterClass(string $character, bool $inNegatedCharacterClass): null|CharacterSet|int
     {
-        if ($character === '[' && $this->peek() === ':') {
+        if ($character === '[' && $this->peek() === ':' && $this->isPosixClass()) {
             return $this->posixClass($inNegatedCharacterClass);
         }
 
@@ -445,6 +445,36 @@ final class Parser
         }
 
         return $this->codePoint($character);
+    }
+
+    /**
+     * Whether the bracket and the colon that were found in a character class
+     * start a POSIX class: like in PCRE, they do when a colon that is followed
+     * by a closing bracket is found before another closing bracket or another
+     * opening bracket that is followed by a colon. Otherwise, as in [[:] or
+     * [a[:b], they are literal characters.
+     *
+     * PCRE skips an escaped closing bracket and an escaped backslash while it
+     * looks for the colon. This makes no difference here: the name of a POSIX
+     * class that contains one of them is not known to PCRE, so the regular
+     * expression is not valid.
+     */
+    private function isPosixClass(): bool
+    {
+        for ($offset = 1; $this->peek($offset + 1) !== null; $offset++) {
+            $character = $this->peek($offset);
+            $next      = $this->peek($offset + 1);
+
+            if ($character === ']' || ($character === '[' && $next === ':')) {
+                return false;
+            }
+
+            if ($character === ':' && $next === ']') {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function posixClass(bool $inNegatedCharacterClass): CharacterSet
