@@ -390,6 +390,15 @@ final readonly class StateMachineDefinitionBuilder
                 );
             }
 
+            // the arguments of a step are values, not variables that the
+            // step could assign to
+            if ($parameter->isPassedByReference()) {
+                throw InvalidStateMachineException::because(
+                    $className,
+                    sprintf('parameter $%s of %s is passed by reference, which is not supported', $name, $description),
+                );
+            }
+
             if (isset($fromPool[$name])) {
                 $parameters[] = $this->parameterFromPool($className, $description, $name, $fromPool[$name], isset($forAll[$name]), $isRule);
 

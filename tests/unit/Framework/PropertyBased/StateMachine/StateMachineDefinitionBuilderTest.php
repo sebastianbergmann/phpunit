@@ -233,6 +233,31 @@ final class StateMachineDefinitionBuilderTest extends TestCase
                     }
                 },
             ],
+            'parameter of a rule that is passed by reference' => [
+                'parameter $value of rule step() is passed by reference, which is not supported',
+                new class
+                {
+                    #[StateMachineRule]
+                    public function step(int &$value): void
+                    {
+                    }
+                },
+            ],
+            'parameter of an initialization that is passed by reference' => [
+                'parameter $value of initialization initialize() is passed by reference, which is not supported',
+                new class
+                {
+                    #[StateMachineRule]
+                    public function step(): void
+                    {
+                    }
+
+                    #[InitializeStateMachine]
+                    public function initialize(int &$value): void
+                    {
+                    }
+                },
+            ],
             'pool that a parameter of an initialization takes values from' => [
                 'parameter $value of initialization initialize() cannot take values from a pool, only the parameters of rules can',
                 new class
