@@ -10,12 +10,15 @@
 namespace PHPUnit\Runner\PropertyBased;
 
 use const SIGALRM;
+use const STDERR;
 use function array_is_list;
 use function array_reverse;
 use function assert;
 use function class_exists;
 use function count;
+use function defined;
 use function function_exists;
+use function fwrite;
 use function getmypid;
 use function hrtime;
 use function intdiv;
@@ -147,10 +150,12 @@ use Throwable;
  * restored, and the error handlers of the caller are registered as before,
  * in a shutdown function that is registered when PHPUnit is booted, before
  * the hook methods of the prepared test class that are called after its last
- * test are called. PHPUnit prints nothing, and the process ends with the exit
- * status of the example. The shutdown functions that the caller registers
- * after booting PHPUnit are called after it, and the ones that it registers
- * before are called before it.
+ * test are called. PHPUnit prints nothing, unless one of these hook methods
+ * raises an exception, which is written to the standard error stream, see
+ * below, and the process ends with the exit status of the example. The
+ * shutdown functions that the caller registers after booting PHPUnit are
+ * called after it, and the ones that it registers before are called before
+ * it.
  *
  * As in a test run, one test class is prepared at a time. The hook methods of
  * a test class that are called before its first test are called before the
@@ -173,7 +178,11 @@ use Throwable;
  * test class of this property is prepared and the example is run. The test
  * class that was prepared is finished then, and its hook methods are not
  * called again, so that the call can be repeated, which prepares the other
- * test class and runs the example.
+ * test class and runs the example. When the process ends, nothing can be
+ * raised: the message of the exception, followed by a line break, is written
+ * to the standard error stream instead, and the exit status of the process is
+ * not changed. Nothing is written for a test class that was finished before,
+ * with finish(), for instance.
  *
  * The result of an example tells how it ended, how it falsified the
  * property, and which choices it consumed, with their spans and the maxima
@@ -473,12 +482,21 @@ final class PropertyRunner
 
                 $this->prepareForCodeOfProject();
 
+                $exception = null;
+
                 try {
                     $this->finishPreparedTestClass();
-                } catch (AfterLastTestMethodFailedException) {
-                    // nothing can be raised while the process ends
+                } catch (AfterLastTestMethodFailedException $exception) {
                 } finally {
                     $this->restoreCallerAfterCodeOfProject();
+                }
+
+                // nothing can be raised while the process ends: what a hook
+                // method that is called after the last test of the test class
+                // raised is written to the standard error stream, which only
+                // the CLI has, and the exit status is left as it is
+                if ($exception !== null && defined('STDERR')) {
+                    fwrite(STDERR, $exception->getMessage() . "\n");
                 }
             },
         );
