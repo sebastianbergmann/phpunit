@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\PropertyBased\Falsification\FalsifiedPropertiesTest;
+use PHPUnit\TestFixture\PropertyBased\Falsification\FormattedCounterexamplesTest;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use SebastianBergmann\ChoiceSequence\ChoiceSequence;
 
@@ -223,15 +224,97 @@ final class FalsificationReporterTest extends TestCase
         $this->assertSame(0, $falsification->numberOfReplays());
     }
 
+    #[WithoutErrorHandler]
+    public function testCallsTheCounterexampleFormatterOnceForTheMinimalCounterexample(): void
+    {
+        FormattedCounterexamplesTest::$numberOfCalls = 0;
+
+        [$runner, $falsification, $originalFailure] = $this->falsify('testIsFalsifiedFromFive', 9, FormattedCounterexamplesTest::class);
+
+        $this->shrinkAndReport($runner, 'testIsFalsifiedFromFive', $falsification, $originalFailure, 9, FormattedCounterexamplesTest::class);
+
+        $falsification = $this->onlyReport()['falsification'];
+
+        $this->assertNotNull($falsification);
+        $this->assertSame('value 5, call 1', $falsification->counterexample()->formatted());
+        $this->assertSame(1, FormattedCounterexamplesTest::$numberOfCalls);
+    }
+
+    #[WithoutErrorHandler]
+    public function testCallsTheCounterexampleFormatterOnceForTheSimplestCounterexampleOfEachOtherWayInWhichThePropertyWasFalsified(): void
+    {
+        FormattedCounterexamplesTest::$numberOfCalls = 0;
+
+        [$runner, $falsification, $originalFailure] = $this->falsify('testIsFalsifiedInTwoWays', 9, FormattedCounterexamplesTest::class);
+
+        $this->shrinkAndReport($runner, 'testIsFalsifiedInTwoWays', $falsification, $originalFailure, 9, FormattedCounterexamplesTest::class);
+
+        $falsification = $this->onlyReport()['falsification'];
+
+        $this->assertNotNull($falsification);
+        $this->assertSame('value 5, call 1', $falsification->counterexample()->formatted());
+        $this->assertCount(1, $falsification->otherFalsifications());
+        $this->assertSame('value 3, call 2', $falsification->otherFalsifications()[0]->counterexample()->formatted());
+        $this->assertSame(2, FormattedCounterexamplesTest::$numberOfCalls);
+    }
+
+    #[WithoutErrorHandler]
+    public function testCallsTheCounterexampleFormatterOnceForTheCounterexampleOfAPropertyThatIsFlaky(): void
+    {
+        FormattedCounterexamplesTest::$numberOfCalls = 0;
+        FormattedCounterexamplesTest::$numberOfRuns  = 0;
+
+        [$runner, $falsification, $originalFailure] = $this->falsify('testIsFalsifiedOnlyTheFirstTime', 9, FormattedCounterexamplesTest::class);
+
+        $this->shrinkAndReport($runner, 'testIsFalsifiedOnlyTheFirstTime', $falsification, $originalFailure, 9, FormattedCounterexamplesTest::class);
+
+        $report = $this->onlyReport();
+
+        $this->assertNotNull($report['error']);
+        $this->assertSame(FlakyPropertyException::class, $report['error']->className());
+        $this->assertNotNull($report['falsification']);
+        $this->assertSame('value 9, call 1', $report['falsification']->counterexample()->formatted());
+        $this->assertSame(1, FormattedCounterexamplesTest::$numberOfCalls);
+    }
+
+    #[WithoutErrorHandler]
+    public function testCallsTheCounterexampleFormatterWithTheArgumentsOfTheExplicitExampleThatFalsifiedTheProperty(): void
+    {
+        FormattedCounterexamplesTest::$numberOfCalls = 0;
+
+        $runner  = $this->runner('testIsFalsifiedFromFive', FormattedCounterexamplesTest::class);
+        $example = $runner->example(['value' => 7], true);
+
+        [$exampleEvents] = $runner->run($example, Facade::emitter(), false);
+
+        $falsification = Falsification::of($example);
+
+        $this->assertNotNull($falsification);
+
+        $this->reporter($runner)->reportFalsificationByExplicitExample(
+            $example,
+            $falsification,
+            $exampleEvents,
+            new ExplicitExample('seven', ['value' => 7]),
+            ['value' => '7'],
+        );
+
+        $falsification = $this->onlyReport()['falsification'];
+
+        $this->assertNotNull($falsification);
+        $this->assertSame('value 7, call 1', $falsification->counterexample()->formatted());
+    }
+
     /**
-     * @param non-empty-string $methodName
-     * @param non-negative-int $value
+     * @param non-empty-string       $methodName
+     * @param non-negative-int       $value
+     * @param class-string<TestCase> $className
      *
      * @return array{0: ExampleRunner, 1: Falsification, 2: ?Throwable}
      */
-    private function falsify(string $methodName, int $value): array
+    private function falsify(string $methodName, int $value, string $className = FalsifiedPropertiesTest::class): array
     {
-        $runner  = $this->runner($methodName);
+        $runner  = $this->runner($methodName, $className);
         $example = $runner->example(['value' => $value], false, DrawnValues::from(ChoiceSource::replay(new ChoiceSequence([$value]))));
 
         $runner->run($example, Facade::emitter(), false);
@@ -246,12 +329,13 @@ final class FalsificationReporterTest extends TestCase
     }
 
     /**
-     * @param non-empty-string $methodName
-     * @param non-negative-int $value
+     * @param non-empty-string       $methodName
+     * @param non-negative-int       $value
+     * @param class-string<TestCase> $className
      */
-    private function shrinkAndReport(ExampleRunner $runner, string $methodName, Falsification $falsification, ?Throwable $originalFailure, int $value): void
+    private function shrinkAndReport(ExampleRunner $runner, string $methodName, Falsification $falsification, ?Throwable $originalFailure, int $value, string $className = FalsifiedPropertiesTest::class): void
     {
-        [$deriver, $generators] = $this->generators($methodName);
+        [$deriver, $generators] = $this->generators($methodName, $className);
 
         $this->reporter($runner)->shrinkAndReport($deriver, $generators, $originalFailure, $falsification, new ChoiceSequence([$value]), 3);
     }
@@ -283,27 +367,29 @@ final class FalsificationReporterTest extends TestCase
     }
 
     /**
-     * @param non-empty-string $methodName
+     * @param non-empty-string       $methodName
+     * @param class-string<TestCase> $className
      */
-    private function runner(string $methodName): ExampleRunner
+    private function runner(string $methodName, string $className = FalsifiedPropertiesTest::class): ExampleRunner
     {
         return new ExampleRunner(
-            new FalsifiedPropertiesTest($methodName)->valueObjectForEvents(),
+            new $className($methodName)->valueObjectForEvents(),
             false,
-            static fn (): TestCase => new FalsifiedPropertiesTest($methodName),
-            new GeneratorResolver(new PropertyDefinitionBuilder()->build(FalsifiedPropertiesTest::class, $methodName)),
+            static fn (): TestCase => new $className($methodName),
+            new GeneratorResolver(new PropertyDefinitionBuilder()->build($className, $methodName)),
             Facade::instance(),
             FalsifyingIssues::fromConfiguration(ConfigurationRegistry::get()),
         );
     }
 
     /**
-     * @param non-empty-string $methodName
+     * @param non-empty-string       $methodName
+     * @param class-string<TestCase> $className
      *
      * @return array{0: Derivation\GeneratorDeriver, 1: array<non-empty-string, Generator\AbstractGenerator<mixed>>}
      */
-    private function generators(string $methodName): array
+    private function generators(string $methodName, string $className = FalsifiedPropertiesTest::class): array
     {
-        return new GeneratorResolver(new PropertyDefinitionBuilder()->build(FalsifiedPropertiesTest::class, $methodName))->generators(new FalsifiedPropertiesTest($methodName), $this->createStub(Emitter::class));
+        return new GeneratorResolver(new PropertyDefinitionBuilder()->build($className, $methodName))->generators(new $className($methodName), $this->createStub(Emitter::class));
     }
 }

@@ -314,15 +314,21 @@ final class PropertyTestSuite extends IterativeTestSuite
             // the arguments are exported before the example is run, which can
             // change the state of an object that is passed to it
             $exportedArguments     = $this->exampleRunner()->export($explicitExample->arguments(), new Constructions);
-            $formatted             = $this->exampleRunner()->format($explicitExample->arguments());
             $example               = $this->exampleRunner()->example($explicitExample->arguments(), true);
             [$exampleEvents, $run] = $this->exampleRunner()->run(
                 $example,
                 $emitter,
                 true,
                 null,
-                static fn (): string => PropertyFalsifiedToStringMapper::mapExampleThatEndedTheProcess(
-                    new Event\Code\Counterexample([], $exportedArguments, null, [], [], $formatted),
+                fn (): string => PropertyFalsifiedToStringMapper::mapExampleThatEndedTheProcess(
+                    new Event\Code\Counterexample(
+                        [],
+                        $exportedArguments,
+                        null,
+                        [],
+                        [],
+                        $this->exampleRunner()->formatIgnoringIssues(static fn (): array => $explicitExample->arguments()),
+                    ),
                 ),
             );
             $falsification = $this->exampleRunner()->falsificationOf($example, $exampleEvents);
@@ -348,7 +354,7 @@ final class PropertyTestSuite extends IterativeTestSuite
             $this->statistics()->recordCheckedExplicitExample();
 
             if ($falsification !== null) {
-                $reporter->reportFalsificationByExplicitExample($example, $falsification, $exampleEvents, $explicitExample, $exportedArguments, $formatted);
+                $reporter->reportFalsificationByExplicitExample($example, $falsification, $exampleEvents, $explicitExample, $exportedArguments);
 
                 return;
             }
@@ -428,7 +434,7 @@ final class PropertyTestSuite extends IterativeTestSuite
                 $emitter,
                 true,
                 null,
-                fn (): string => $this->describeExampleThatEndedTheProcess($arguments, $source, $drawnValues),
+                fn (): string => $this->describeExampleThatEndedTheProcess($arguments, $source, $drawnValues, $generators, $deriver),
             );
             $falsification = $this->exampleRunner()->falsificationOf($example, $exampleEvents);
 
@@ -494,9 +500,10 @@ final class PropertyTestSuite extends IterativeTestSuite
      * report of its arguments and of the values that it drew. They are only
      * exported then, in the state in which the example left them.
      *
-     * @param array<non-empty-string, mixed> $arguments
+     * @param array<non-empty-string, mixed>                    $arguments
+     * @param array<non-empty-string, AbstractGenerator<mixed>> $generators
      */
-    private function describeExampleThatEndedTheProcess(array $arguments, ChoiceSource $source, DrawnValues $drawnValues): string
+    private function describeExampleThatEndedTheProcess(array $arguments, ChoiceSource $source, DrawnValues $drawnValues, array $generators, GeneratorDeriver $deriver): string
     {
         $values = [];
 
@@ -511,7 +518,7 @@ final class PropertyTestSuite extends IterativeTestSuite
                 null,
                 $values,
                 [],
-                $this->exampleRunner()->format($arguments),
+                $this->exampleRunner()->formatIgnoringIssues($this->exampleRunner()->argumentsGeneratedFrom($generators, $source->sequence(), $deriver)),
             ),
         );
     }

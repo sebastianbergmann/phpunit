@@ -9,6 +9,11 @@
  */
 namespace PHPUnit\Framework\PropertyBased;
 
+use const E_USER_WARNING;
+use function ob_get_level;
+use function restore_error_handler;
+use function set_error_handler;
+use function trigger_error;
 use LogicException;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Event\Event;
@@ -24,8 +29,10 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\PropertyBased\Falsification\FormattedCounterexamplesTest;
 use PHPUnit\TestFixture\PropertyBased\Properties\ValidPropertiesTest;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
+use RuntimeException;
 use SebastianBergmann\ChoiceSequence\ChoiceSequence;
 
 #[CoversClass(ExampleRunner::class)]
@@ -145,6 +152,134 @@ final class ExampleRunnerTest extends TestCase
         $this->assertTrue(true);
     }
 
+    public function testGeneratesTheArgumentsOfAnExampleAgainFromItsChoices(): void
+    {
+        [$deriver, $generators] = $this->generatorsOfPropertyWithFormatter('testIsFalsifiedFromFive');
+
+        $arguments = $this->runnerOfPropertyWithFormatter('testIsFalsifiedFromFive')->argumentsGeneratedFrom($generators, new ChoiceSequence([7]), $deriver);
+
+        $this->assertSame(['value' => 7], $arguments());
+    }
+
+    #[WithoutErrorHandler]
+    public function testFormatsArgumentsWithTheCounterexampleFormatterOfTheProperty(): void
+    {
+        FormattedCounterexamplesTest::$numberOfCalls = 0;
+
+        $formatted = $this->runnerOfPropertyWithFormatter('testIsFalsifiedFromFive')->format(static fn (): array => ['value' => 7], $this->eventAggregator());
+
+        $this->assertSame('value 7, call 1', $formatted);
+    }
+
+    #[WithoutErrorHandler]
+    public function testDoesNotGenerateArgumentsForAPropertyWithoutACounterexampleFormatter(): void
+    {
+        $generated = false;
+
+        $formatted = $this->runnerOfPropertyWithFormatter('testWithoutFormatter')->format(
+            static function () use (&$generated): array
+            {
+                $generated = true;
+
+                return ['value' => 7];
+            },
+            $this->eventAggregator(),
+        );
+
+        $this->assertNull($formatted);
+        $this->assertFalse($generated);
+    }
+
+    #[WithoutErrorHandler]
+    public function testReportsThatTheArgumentsOfTheCounterexampleFormatterCouldNotBeGeneratedInPlaceOfWhatItReturns(): void
+    {
+        $formatted = $this->runnerOfPropertyWithFormatter('testIsFalsifiedFromFive')->format(static fn (): never => throw new RuntimeException('message'), $this->eventAggregator());
+
+        $this->assertSame(
+            'Counterexample formatter ' . FormattedCounterexamplesTest::class . '::countsCalls() was not called because generating its arguments raised RuntimeException: message',
+            $formatted,
+        );
+    }
+
+    #[WithoutErrorHandler]
+    public function testReportsTheExceptionThatTheCounterexampleFormatterRaisedInPlaceOfWhatItReturns(): void
+    {
+        $formatted = $this->runnerOfPropertyWithFormatter('testWithFormatterThatRaisesAnException')->format(static fn (): array => ['value' => 7], $this->eventAggregator());
+
+        $this->assertSame(
+            'Counterexample formatter ' . FormattedCounterexamplesTest::class . '::raises() raised RuntimeException: message',
+            $formatted,
+        );
+    }
+
+    #[WithoutErrorHandler]
+    public function testReportsThatTheCounterexampleFormatterDidNotReturnAStringInPlaceOfWhatItReturns(): void
+    {
+        $formatted = $this->runnerOfPropertyWithFormatter('testWithFormatterThatDoesNotReturnAString')->format(static fn (): array => ['value' => 7], $this->eventAggregator());
+
+        $this->assertSame(
+            'Counterexample formatter ' . FormattedCounterexamplesTest::class . '::returnsAnInteger() returned int instead of a string',
+            $formatted,
+        );
+    }
+
+    #[WithoutErrorHandler]
+    public function testDoesNotReportAnEmptyStringThatTheCounterexampleFormatterReturns(): void
+    {
+        $formatted = $this->runnerOfPropertyWithFormatter('testWithFormatterThatReturnsAnEmptyString')->format(static fn (): array => ['value' => 7], $this->eventAggregator());
+
+        $this->assertNull($formatted);
+    }
+
+    #[WithoutErrorHandler]
+    public function testDiscardsTheOutputThatTheCounterexampleFormatterPrints(): void
+    {
+        $this->expectOutputString('');
+
+        $formatted = $this->runnerOfPropertyWithFormatter('testWithFormatterThatPrintsOutput')->format(static fn (): array => ['value' => 7], $this->eventAggregator());
+
+        $this->assertSame('value 7', $formatted);
+    }
+
+    #[WithoutErrorHandler]
+    public function testEndsTheOutputBufferThatTheCounterexampleFormatterStartedAndDidNotEnd(): void
+    {
+        $this->expectOutputString('');
+
+        $level = ob_get_level();
+
+        $formatted = $this->runnerOfPropertyWithFormatter('testWithFormatterThatPrintsOutputIntoBufferThatItDoesNotEnd')->format(static fn (): array => ['value' => 7], $this->eventAggregator());
+
+        $this->assertSame('value 7', $formatted);
+        $this->assertSame($level, ob_get_level());
+    }
+
+    #[WithoutErrorHandler]
+    public function testIgnoresTheIssuesThatTheCounterexampleFormatterTriggersForTheExampleThatWasRunWhenTheProcessEnded(): void
+    {
+        $issues = [];
+
+        set_error_handler(
+            static function (int $level, string $message) use (&$issues): bool
+            {
+                $issues[] = $message;
+
+                return true;
+            },
+        );
+
+        try {
+            $formatted = $this->runnerOfPropertyWithFormatter('testWithFormatterThatTriggersWarning')->formatIgnoringIssues(static fn (): array => ['value' => 7]);
+
+            trigger_error('after the formatter was called', E_USER_WARNING);
+        } finally {
+            restore_error_handler();
+        }
+
+        $this->assertSame('value 7', $formatted);
+        $this->assertSame(['after the formatter was called'], $issues);
+    }
+
     /**
      * @param non-empty-string $methodName
      */
@@ -176,6 +311,36 @@ final class ExampleRunnerTest extends TestCase
         [, $generators] = new GeneratorResolver(new PropertyDefinitionBuilder()->build(ValidPropertiesTest::class, $methodName))->generators(new ValidPropertiesTest($methodName), $this->createStub(Emitter::class));
 
         return $generators;
+    }
+
+    /**
+     * @param non-empty-string $methodName
+     */
+    private function runnerOfPropertyWithFormatter(string $methodName): ExampleRunner
+    {
+        return new ExampleRunner(
+            new FormattedCounterexamplesTest($methodName)->valueObjectForEvents(),
+            false,
+            static fn (): TestCase => new FormattedCounterexamplesTest($methodName),
+            new GeneratorResolver(new PropertyDefinitionBuilder()->build(FormattedCounterexamplesTest::class, $methodName)),
+            Facade::instance(),
+            FalsifyingIssues::fromConfiguration(ConfigurationRegistry::get()),
+        );
+    }
+
+    /**
+     * @param non-empty-string $methodName
+     *
+     * @return array{0: Derivation\GeneratorDeriver, 1: array<non-empty-string, Generator\AbstractGenerator<mixed>>}
+     */
+    private function generatorsOfPropertyWithFormatter(string $methodName): array
+    {
+        return new GeneratorResolver(new PropertyDefinitionBuilder()->build(FormattedCounterexamplesTest::class, $methodName))->generators(new FormattedCounterexamplesTest($methodName), $this->createStub(Emitter::class));
+    }
+
+    private function eventAggregator(): EventAggregator
+    {
+        return new EventAggregator(Facade::emitter(), Facade::instance(), $this->valueObjectForEvents());
     }
 
     /**

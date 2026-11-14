@@ -13,11 +13,17 @@ use function array_values;
 use function assert;
 use function get_debug_type;
 use function is_string;
+use function ob_end_clean;
+use function ob_get_level;
+use function ob_start;
+use function restore_error_handler;
+use function set_error_handler;
 use function sprintf;
 use Closure;
 use PHPUnit\Event;
 use PHPUnit\Event\EventCollection;
 use PHPUnit\Event\Test\Prepared;
+use PHPUnit\Framework\PropertyBased\Derivation\GeneratorDeriver;
 use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
 use PHPUnit\Framework\PropertyBased\Type\NameScope;
 use PHPUnit\Framework\TestCase;
@@ -26,6 +32,7 @@ use PHPUnit\Framework\TestRunner\TestRunner;
 use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\Runner\TimeLimit\TimeLimitExceededException;
 use ReflectionMethod;
+use SebastianBergmann\ChoiceSequence\ChoiceSequence;
 use SebastianBergmann\Invoker\Invoker;
 use SebastianBergmann\Invoker\TimeoutException;
 use Throwable;
@@ -291,50 +298,73 @@ final readonly class ExampleRunner
     }
 
     /**
+     * Generates the arguments of an example again from its choices, for the
+     * counterexample formatter, which is not called with the arguments that
+     * an example is run with.
+     *
+     * @param array<non-empty-string, AbstractGenerator<mixed>> $generators
+     *
+     * @return Closure(): array<non-empty-string, mixed>
+     */
+    public function argumentsGeneratedFrom(array $generators, ChoiceSequence $sequence, GeneratorDeriver $deriver): Closure
+    {
+        return fn (): array => $this->generateArguments(
+            $generators,
+            ChoiceSource::replay($sequence, ChoiceSource::DEFAULT_MAXIMUM_NUMBER_OF_CHOICES, $deriver),
+        );
+    }
+
+    /**
      * What the method that is specified with #[CounterexampleFormatter] or
-     * #[CounterexampleFormatterExternal] returns for the arguments of an
-     * example, null when no such method is specified or when it returns an
-     * empty string. Like the arguments are exported, they are formatted
-     * before the example is run, which can change the state of an object that
-     * is passed to it.
+     * #[CounterexampleFormatterExternal] returns for the arguments of a
+     * counterexample that is reported, null when no such method is specified
+     * or when it returns an empty string.
+     *
+     * The formatter is called with arguments of its own, which $arguments
+     * returns, rather than with the ones that an example is run with: an
+     * example cannot change what is formatted, and a formatter that changes
+     * the state of an argument, or consumes an iterator, cannot change what
+     * an example is run with. $arguments is only called when a formatter is
+     * specified.
+     *
+     * The issues that the formatter triggers are handled as issues of the
+     * property and recorded with $events, and the output that it prints is
+     * discarded.
      *
      * A formatter that raises an exception or does not return a string does
-     * not keep the counterexample from being reported: what went wrong is
-     * reported in place of what the formatter should have returned.
+     * not keep the counterexample from being reported, and neither does an
+     * exception that is raised while its arguments are generated: what went
+     * wrong is reported in place of what the formatter should have returned.
      *
-     * @param array<non-empty-string, mixed> $arguments
+     * @param Closure(): array<non-empty-string, mixed> $arguments
      *
      * @return ?non-empty-string
      */
-    public function format(array $arguments): ?string
+    public function format(Closure $arguments, EventAggregator $events): ?string
     {
-        $definition = $this->generatorResolver->definition();
+        return $this->callFormatter(
+            fn (): array => $this->handlingIssues($arguments, null),
+            fn (Closure $formatter): mixed => $this->handlingIssues($formatter, $events),
+        );
+    }
 
-        assert($definition !== null);
-
-        $formatter = $definition->counterexampleFormatter();
-
-        if ($formatter === null) {
-            return null;
-        }
-
-        $name = $formatter['className'] . '::' . $formatter['methodName'] . '()';
-
-        try {
-            $formatted = new ReflectionMethod($formatter['className'], $formatter['methodName'])->invoke(null, ...array_values($arguments));
-        } catch (Throwable $t) {
-            return sprintf('Counterexample formatter %s raised %s: %s', $name, $t::class, $t->getMessage());
-        }
-
-        if (!is_string($formatted)) {
-            return sprintf('Counterexample formatter %s returned %s instead of a string', $name, get_debug_type($formatted));
-        }
-
-        if ($formatted === '') {
-            return null;
-        }
-
-        return $formatted;
+    /**
+     * What the counterexample formatter returns for the arguments of the
+     * example that was run when the PHP process ended, see format(). The
+     * issues that the formatter triggers are ignored: the events of the
+     * property are not dispatched anymore, and PHP would print the issues
+     * into the description of the example.
+     *
+     * @param Closure(): array<non-empty-string, mixed> $arguments
+     *
+     * @return ?non-empty-string
+     */
+    public function formatIgnoringIssues(Closure $arguments): ?string
+    {
+        return $this->callFormatter(
+            static fn (): array => self::ignoringIssues($arguments),
+            static fn (Closure $formatter): mixed => self::ignoringIssues($formatter),
+        );
     }
 
     /**
@@ -368,5 +398,78 @@ final readonly class ExampleRunner
             NameScope::forMethod(new ReflectionMethod($definition->className(), $definition->methodName())),
             $constructions,
         );
+    }
+
+    /**
+     * @param Closure(): array<non-empty-string, mixed> $arguments returns the arguments that the formatter is called with, with the issues that are triggered meanwhile handled
+     * @param Closure(Closure(): mixed): mixed          $call      calls the formatter with the issues that it triggers handled
+     *
+     * @return ?non-empty-string
+     */
+    private function callFormatter(Closure $arguments, Closure $call): ?string
+    {
+        $definition = $this->generatorResolver->definition();
+
+        assert($definition !== null);
+
+        $formatter = $definition->counterexampleFormatter();
+
+        if ($formatter === null) {
+            return null;
+        }
+
+        $name = $formatter['className'] . '::' . $formatter['methodName'] . '()';
+
+        try {
+            $arguments = $arguments();
+        } catch (Throwable $t) {
+            return sprintf('Counterexample formatter %s was not called because generating its arguments raised %s: %s', $name, $t::class, $t->getMessage());
+        }
+
+        $level = ob_get_level();
+
+        ob_start();
+
+        try {
+            $formatted = $call(
+                static fn (): mixed => new ReflectionMethod($formatter['className'], $formatter['methodName'])->invoke(null, ...array_values($arguments)),
+            );
+        } catch (Throwable $t) {
+            return sprintf('Counterexample formatter %s raised %s: %s', $name, $t::class, $t->getMessage());
+        } finally {
+            while (ob_get_level() > $level) {
+                ob_end_clean();
+            }
+        }
+
+        if (!is_string($formatted)) {
+            return sprintf('Counterexample formatter %s returned %s instead of a string', $name, get_debug_type($formatted));
+        }
+
+        if ($formatted === '') {
+            return null;
+        }
+
+        return $formatted;
+    }
+
+    /**
+     * @template T
+     *
+     * @param Closure(): T $callable
+     *
+     * @throws Throwable
+     *
+     * @return T
+     */
+    private static function ignoringIssues(Closure $callable): mixed
+    {
+        set_error_handler(static fn (): bool => true);
+
+        try {
+            return $callable();
+        } finally {
+            restore_error_handler();
+        }
     }
 }
