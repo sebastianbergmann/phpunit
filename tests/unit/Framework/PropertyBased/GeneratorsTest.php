@@ -1632,7 +1632,7 @@ final class GeneratorsTest extends TestCase
         $this->assertSame('ab', AbstractGenerator::from(Generators::bytes(1))->generate($source));
 
         $this->assertSame(
-            [[0, 4, SpanKind::Bytes], [0, 1, SpanKind::Element], [1, 3, SpanKind::Element], [3, 4, SpanKind::Element]],
+            [[0, 4, SpanKind::Bytes], [0, 1, SpanKind::RequiredElement], [1, 3, SpanKind::Element], [3, 4, SpanKind::Element]],
             array_map(static fn (Span $span): array => [$span->start(), $span->end(), $span->kind()], $source->sequence()->spans()),
         );
         $this->assertSame([0xFF, 1, 0xFF, 1], array_map($source->sequence()->maximumAt(...), [0, 1, 2, 3]));
@@ -1645,7 +1645,7 @@ final class GeneratorsTest extends TestCase
         $this->assertSame('a', AbstractGenerator::from(Generators::strings(minimumLength: 1))->generate($source));
 
         $this->assertSame(
-            [[0, 2, SpanKind::Characters], [0, 1, SpanKind::Element], [1, 2, SpanKind::Element]],
+            [[0, 2, SpanKind::Characters], [0, 1, SpanKind::RequiredElement], [1, 2, SpanKind::Element]],
             array_map(static fn (Span $span): array => [$span->start(), $span->end(), $span->kind()], $source->sequence()->spans()),
         );
     }

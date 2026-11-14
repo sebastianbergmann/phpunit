@@ -268,9 +268,10 @@ final class ChoiceSource
 
     /**
      * Draws the elements of a collection: the elements that its minimum size
-     * requires, and then, as long as its maximum size permits, a choice
-     * whether to add another element, followed by that element, each in a
-     * span of the kind SpanKind::Element.
+     * requires, each in a span of the kind SpanKind::RequiredElement, and
+     * then, as long as its maximum size permits, a choice whether to add
+     * another element, followed by that element, each in a span of the kind
+     * SpanKind::Element.
      *
      * @param Closure(): bool $element draws an element and returns whether it
      *                                 was added to the collection, which it is

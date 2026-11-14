@@ -188,7 +188,8 @@ use Throwable;
  * property, and which choices it consumed, with their spans and the maxima
  * of the choices. The kind of a span, when it has one, is the name of the
  * case of SpanKind of sebastian/choice-sequence in lowercase: 'bytes',
- * 'characters', 'element', 'referable', 'reference', or 'consumingreference'.
+ * 'characters', 'element', 'requiredelement', 'referable', 'reference', or
+ * 'consumingreference'.
  * On request, the result also has the arguments
  * of the example, the values that it drew with draw(), and the steps of its
  * state machine, exported as PHPUnit reports them for a counterexample. They
@@ -218,7 +219,7 @@ use Throwable;
  * generate than its time limit allows is aborted, too. The failure of an
  * aborted example tells how it ended.
  *
- * @phpstan-type Result array{outcome: 'aborted'|'errored'|'failed'|'incomplete'|'passed'|'rejected'|'skipped'|'timeout', failure: ?array{kind: 'description'|'throwable'|'timeout', signature: non-empty-string, class: ?class-string, location: ?non-empty-string, description: non-empty-string, message: string}, choices: list<non-negative-int>, spans: list<array{start: non-negative-int, end: non-negative-int, label: string, parent: ?non-negative-int, kind: null|'bytes'|'characters'|'consumingreference'|'element'|'referable'|'reference'}>, maxima: list<?non-negative-int>, arguments: ?array<non-empty-string, string>, drawnValues: ?list<array{label: ?non-empty-string, value: string}>, steps: ?list<non-empty-string>}
+ * @phpstan-type Result array{outcome: 'aborted'|'errored'|'failed'|'incomplete'|'passed'|'rejected'|'skipped'|'timeout', failure: ?array{kind: 'description'|'throwable'|'timeout', signature: non-empty-string, class: ?class-string, location: ?non-empty-string, description: non-empty-string, message: string}, choices: list<non-negative-int>, spans: list<array{start: non-negative-int, end: non-negative-int, label: string, parent: ?non-negative-int, kind: null|'bytes'|'characters'|'consumingreference'|'element'|'referable'|'reference'|'requiredelement'}>, maxima: list<?non-negative-int>, arguments: ?array<non-empty-string, string>, drawnValues: ?list<array{label: ?non-empty-string, value: string}>, steps: ?list<non-empty-string>}
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
@@ -1261,6 +1262,7 @@ final class PropertyRunner
                     SpanKind::Bytes              => 'bytes',
                     SpanKind::Characters         => 'characters',
                     SpanKind::Element            => 'element',
+                    SpanKind::RequiredElement    => 'requiredelement',
                     SpanKind::Referable          => 'referable',
                     SpanKind::Reference          => 'reference',
                     SpanKind::ConsumingReference => 'consumingreference',
