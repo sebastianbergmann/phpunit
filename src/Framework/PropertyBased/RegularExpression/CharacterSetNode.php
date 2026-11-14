@@ -23,11 +23,10 @@ use SebastianBergmann\ChoiceSequence\WeightedRangesDistribution;
  * others, and the simplest character of the set comes first.
  *
  * The set of a character class can contain characters that the class does
- * not match, for instance because of the i modifier, or because the u
- * modifier makes \w match letters other than ASCII ones. Each character is
- * therefore checked with a regular expression that consists of the class: a
- * character that the class does not match is replaced with the next one of
- * the set that it does match.
+ * not match, for instance because of the i modifier, with which [^a] does
+ * not match A. Each character is therefore checked with a regular expression
+ * that consists of the class: a character that the class does not match is
+ * replaced with the next one of the set that it does match.
  *
  * @immutable
  *

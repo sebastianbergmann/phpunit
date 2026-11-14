@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\PropertyBased\RegularExpression;
 
 use function array_map;
+use function array_unique;
 use function mb_check_encoding;
 use function ord;
 use function preg_match;
@@ -64,6 +65,16 @@ final class RegularExpressionGeneratorTest extends TestCase
             'negated \H and \V in negated classes'                 => ['/^[^\H]{8}[^\V]{8}$/u'],
             'negated POSIX class in a negated class'               => ['/^[^[:^alpha:]]{8}[^[:^punct:]]{8}$/u'],
             'negated escape sequences in negated classes in bytes' => ['/^[^\W_]{8}[^\D]{8}[^\S\n]{8}[^\H]{8}[^[:^alpha:]]{8}$/'],
+            '\w in a negated class'                                => ['/^[^\w]{8}$/u'],
+            '\d and \s in negated classes'                         => ['/^[^\d]{8}[^\s]{8}$/u'],
+            '\w and \s in a negated class'                         => ['/^[^\w\s]+$/u'],
+            '\d, \s, and characters in a negated class'            => ['/^[^\d\s_-]{4}$/u'],
+            '\w and \W in negated classes'                         => ['/^[^\w]{4}[^\W]{4}[^\w\S]{4}[^\W\s]{4}$/u'],
+            '\w in a case-insensitive negated class'               => ['/^[^\w]{8}$/iu'],
+            'POSIX classes in negated classes'                     => ['/^[^[:alpha:]]{4}[^[:alnum:][:space:]]+$/u'],
+            'more POSIX classes in negated classes'                => ['/^[^[:upper:]]{4}[^[:lower:]]{4}[^[:graph:]]{4}[^[:punct:]]{4}$/u'],
+            'POSIX classes in case-insensitive negated classes'    => ['/^[^[:upper:]]{8}[^[:lower:]]{8}$/iu'],
+            'escape sequences in negated classes in bytes'         => ['/^[^\w]{8}[^\d\s]{8}[^[:alpha:]]{8}$/'],
             'POSIX classes'                                        => ['/^[[:alpha:]][[:^digit:]][[:xdigit:][:punct:]]$/'],
             'POSIX classes with the u modifier'                    => ['/^[[:^space:]][[:word:][:blank:][:cntrl:]]$/u'],
             'more POSIX classes'                                   => ['/^[[:alnum:][:upper:][:lower:][:graph:][:print:][:ascii:]]$/'],
@@ -132,6 +143,8 @@ final class RegularExpressionGeneratorTest extends TestCase
             'dot'                                        => ['/^.$/u', 'a'],
             'negated escape sequence'                    => ['/^\W$/u', ' '],
             'negated escape sequence in a negated class' => ['/^[^\W_][^\D][^\S\n]$/u', 'a0 '],
+            'escape sequence in a negated class'         => ['/^[^\w][^\d][^\s]$/u', ' aa'],
+            'POSIX class in a negated class'             => ['/^[^[:alpha:]][^[:space:]]$/u', '0a'],
             'digits'                                     => ['/^\d{3}$/', '000'],
             'emoji'                                      => ['/^[\x{1F600}-\x{1F64F}]$/u', "\u{1F600}"],
             'escaped characters'                         => ['/^\x41\x{42}\0\012$/', "AB\0\n"],
@@ -253,6 +266,59 @@ final class RegularExpressionGeneratorTest extends TestCase
     {
         $this->assertSame("\u{3000}", $this->replay('/^[^\H]$/u', [18]));
         $this->assertSame("\u{2029}", $this->replay('/^[^\V]$/u', [6]));
+    }
+
+    public function testANegatedCharacterClassWithAnEscapeSequenceOnlyGeneratesCharactersThatItMatchesWithTheUModifier(): void
+    {
+        // with the u modifier, \w matches letters such as é, and \d matches
+        // the digits of all scripts: a character that [^\w] does not match
+        // would be replaced with the next one that it matches, which would
+        // then be generated for two indexes
+        foreach (['/^[^\w]$/u', '/^[^\d]$/u', '/^[^[:alpha:]]$/u', '/^[^\d\s_-]$/u', '/^[^\w\s]$/iu'] as $regularExpression) {
+            $generator  = AbstractGenerator::from(Generators::fromRegularExpression($regularExpression));
+            $characters = [];
+
+            for ($index = 0; $index < 2000; $index++) {
+                $character = $generator->generate(ChoiceSource::replay(new ChoiceSequence([$index])));
+
+                $this->assertIsString($character);
+                $this->assertMatchesRegularExpression($regularExpression, $character);
+
+                $characters[] = $character;
+            }
+
+            $this->assertCount(2000, array_unique($characters), $regularExpression);
+        }
+    }
+
+    public function testANegatedCharacterClassWithAnEscapeSequenceGeneratesCharactersThatAreNotAsciiCharactersWithTheUModifier(): void
+    {
+        foreach (['/^[^\w]{8}$/u', '/^[^\d]{8}$/u', '/^[^\s]{8}$/u', '/^[^[:alpha:]]{8}$/u', '/^[^\w\s]{8}$/iu'] as $regularExpression) {
+            $withOtherCharacters = 0;
+
+            foreach ($this->values($regularExpression, 200) as $value) {
+                $this->assertTrue(mb_check_encoding($value, 'UTF-8'));
+
+                if (preg_match('/[^\x00-\x7F]/u', $value) === 1) {
+                    $withOtherCharacters++;
+                }
+            }
+
+            $this->assertGreaterThan(0, $withOtherCharacters, $regularExpression);
+        }
+    }
+
+    public function testANegatedCharacterClassWithADigitEscapeSequenceGeneratesLettersThatAreNotAsciiCharactersWithTheUModifier(): void
+    {
+        $withLetters = 0;
+
+        foreach ($this->values('/^[^\d]{8}$/u', 500) as $value) {
+            if (preg_match('/[^\x00-\x7F\P{L}]/u', $value) === 1) {
+                $withLetters++;
+            }
+        }
+
+        $this->assertGreaterThan(0, $withLetters);
     }
 
     public function testABracketAndAColonInACharacterClassThatDoNotStartAPosixClassAreLiteralCharacters(): void

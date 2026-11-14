@@ -58,6 +58,12 @@ use PHPUnit\Framework\PropertyBased\InvalidGeneratorArgumentException;
  * class that contains one of them, such as [^\W_], only generates ASCII
  * characters with the u modifier.
  *
+ * A negated character class that contains \d, \w, \s, or a POSIX class, such
+ * as [^\w], generates the characters that these do not match. With the u
+ * modifier, PCRE is asked for the characters that they match, so that the
+ * other ones, among them characters that are not ASCII characters, are
+ * generated.
+ *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -523,7 +529,7 @@ final class Parser
             return $this->negatedShorthand($set, $inNegatedCharacterClass);
         }
 
-        return $set;
+        return $this->shorthand('[:' . $name . ':]', $set, $inNegatedCharacterClass);
     }
 
     /**
@@ -584,19 +590,19 @@ final class Parser
 
         switch ($character) {
             case 'd':
-                return $this->digitCharacters();
+                return $this->shorthand('\\d', $this->digitCharacters(), $inNegatedCharacterClass);
 
             case 'D':
                 return $this->negatedShorthand($this->digitCharacters(), $inNegatedCharacterClass);
 
             case 'w':
-                return $this->wordCharacters();
+                return $this->shorthand('\\w', $this->wordCharacters(), $inNegatedCharacterClass);
 
             case 'W':
                 return $this->negatedShorthand($this->wordCharacters(), $inNegatedCharacterClass);
 
             case 's':
-                return $this->whitespaceCharacters();
+                return $this->shorthand('\\s', $this->whitespaceCharacters(), $inNegatedCharacterClass);
 
             case 'S':
                 return $this->negatedShorthand($this->whitespaceCharacters(), $inNegatedCharacterClass);
@@ -787,6 +793,29 @@ final class Parser
         }
 
         return CharacterSet::fromRanges($ranges, $this->utf8);
+    }
+
+    /**
+     * The characters that an escape sequence such as \d or a POSIX class
+     * matches: the ASCII ones of $set, which it matches with and without the
+     * u modifier.
+     *
+     * In a negated character class, such as [^\w], the characters that the
+     * escape sequence matches are characters that the character class does
+     * not match. There, with the u modifier, they are all characters that the
+     * escape sequence matches then, so that the character class is not left
+     * with characters that it does not match, such as the letters that are
+     * not ASCII characters.
+     *
+     * @param non-empty-string $shorthand the escape sequence or the POSIX class as it is written in a character class
+     */
+    private function shorthand(string $shorthand, CharacterSet $set, bool $inNegatedCharacterClass): CharacterSet
+    {
+        if ($this->utf8 && $inNegatedCharacterClass) {
+            return UnicodeShorthands::matchedBy($shorthand);
+        }
+
+        return $set;
     }
 
     /**
