@@ -75,16 +75,20 @@ use Throwable;
  * PHPUnit is booted once per process, and it cannot be booted in a process
  * in which it is already running, by a test that the test runner runs, for
  * instance. A boot that fails because the configuration file cannot be found
- * or read changes nothing and can be retried. The configuration file and its
+ * or read changes nothing and can be retried. A boot that fails for another
+ * reason cannot be retried, see boot(). The configuration file and its
  * bootstrap script are loaded as for a test run, but nothing is printed, no
  * code coverage is collected, nothing is logged, and no extensions are
- * loaded. As nothing is printed, an error or a warning that PHPUnit triggers
- * while it is booted, about a property that cannot be checked or a
- * configuration file that did not pass validation, for instance, is raised
- * as an exception, as the test runner would report it and fail. This is so
- * for every test in the test suite that the configuration file configures,
- * also for one that the filter leaves out, as the test suite is built before
- * it is filtered.
+ * loaded. As nothing is printed, an error that PHPUnit triggers while it is
+ * booted, about a property that cannot be checked, for instance, is raised
+ * as an exception, as the test run fails because of it. A warning that
+ * PHPUnit triggers while it is booted, about a configuration file that did
+ * not pass validation, for instance, is raised as an exception when the test
+ * run fails because of it, which it does unless the configuration file sets
+ * failOnPhpunitWarning to false, and is discarded otherwise. This is so for
+ * every test in the test suite that the configuration file configures, also
+ * for one that the filter leaves out, as the test suite is built before it
+ * is filtered.
  *
  * As in a test run, the random number generators whose state is global to
  * the process, the one that mt_rand() uses, for instance, are seeded before
@@ -175,7 +179,16 @@ use Throwable;
  */
 final class PropertyRunner
 {
+    /**
+     * Whether booting PHPUnit changed its global state, after which it cannot
+     * be booted again in this process, also when booting it failed.
+     */
     private static bool $booted = false;
+
+    /**
+     * Whether PHPUnit was booted without booting it having failed.
+     */
+    private static bool $bootedSuccessfully = false;
 
     /**
      * @var array<non-empty-string, array{property: PropertyTestSuite, test: TestMethod, testClass: TestSuite}>
@@ -224,22 +237,38 @@ final class PropertyRunner
      * test suite, with only the tests that match the filter, as with the
      * --filter option of the test runner.
      *
+     * Booting PHPUnit can only be retried when it failed because the
+     * configuration file cannot be found or read. When it failed for another
+     * reason, because the bootstrap script or the test suite cannot be loaded,
+     * or because PHPUnit triggered an error or a warning, for instance, the
+     * global state of PHPUnit and of PHP has been changed in ways that cannot
+     * be reset: the constants and settings of the configuration file are
+     * defined, the bootstrap script and the test classes are loaded, and
+     * PHPUnit is configured for this configuration file. Every further call
+     * then raises an AlreadyBootedException, also one with another
+     * configuration file or another filter, so that examples can only be run
+     * in another process.
+     *
      * @param ?non-empty-string $configurationFile the configuration file, null to look for one in the working directory as the test runner does
      * @param ?non-empty-string $filter            the filter, null for all tests
      * @param ?positive-int     $randomSeed        the random seed with which the random number generators are seeded before each example, as with the --random-seed option of the test runner, null to seed them only when the configuration file configures a random execution order
      *
-     * @throws AlreadyBootedException                when PHPUnit was booted before, or is already running in this process
+     * @throws AlreadyBootedException                when PHPUnit was booted before, also when booting it failed after its global state was changed, or is already running in this process
      * @throws ConfigurationFileNotFoundException    when the configuration file that is passed is a directory without one
      * @throws ErrorTriggeredWhileBootingException   when PHPUnit triggered an error while the test suite was built, for a property that cannot be checked, for instance
      * @throws Exception                             when the configuration file, its bootstrap script, or the test suite cannot be loaded
      * @throws InvalidArgumentException
      * @throws TimeLimitCannotBeEnforcedException
-     * @throws WarningTriggeredWhileBootingException when PHPUnit triggered a warning while the configuration file was loaded or the test suite was built
+     * @throws WarningTriggeredWhileBootingException when PHPUnit triggered a warning while the configuration file was loaded or the test suite was built, and the test run fails because of it
      */
     public static function boot(?string $configurationFile = null, ?string $filter = null, ?int $randomSeed = null): self
     {
         if (self::$booted) {
-            throw new AlreadyBootedException;
+            if (self::$bootedSuccessfully) {
+                throw new AlreadyBootedException;
+            }
+
+            throw new AlreadyBootedException('PHPUnit cannot be booted again in this process because booting it failed before, after it had changed global state that cannot be reset');
         }
 
         // the configuration is initialized before the test runner runs any
@@ -301,11 +330,16 @@ final class PropertyRunner
             throw new ErrorTriggeredWhileBootingException($errors);
         }
 
-        if ($warnings !== []) {
+        $configuration = Registry::get();
+
+        // as PHPUnit\TextUI\ShellExitCodeCalculator decides whether the test
+        // run fails because of a warning that PHPUnit triggered
+        $failOnPhpunitWarning = ($configuration->failOnAllIssues() || $configuration->failOnPhpunitWarning()) &&
+                                !$configuration->doNotFailOnPhpunitWarning();
+
+        if ($warnings !== [] && $failOnPhpunitWarning) {
             throw new WarningTriggeredWhileBootingException($warnings);
         }
-
-        $configuration = Registry::get();
 
         // the random seed is null when the random number generators are not
         // seeded, as the one that PHPUnit chose then has no effect on the
@@ -316,7 +350,11 @@ final class PropertyRunner
             $randomSeed = $configuration->randomSeed();
         }
 
-        return new self(self::propertiesIn($testSuite), $randomSeed);
+        $runner = new self(self::propertiesIn($testSuite), $randomSeed);
+
+        self::$bootedSuccessfully = true;
+
+        return $runner;
     }
 
     /**
