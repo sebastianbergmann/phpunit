@@ -86,6 +86,8 @@ final class RegularExpressionGeneratorTest extends TestCase
             'comment group'                      => ['/^(?#comment)x$/'],
             'multibyte range'                    => ['/^[é\x{e0}-\x{ef}]$/u'],
             'emoji range'                        => ['/^[\x{1F600}-\x{1F64F}]$/u'],
+            'range that spans the surrogates'    => ['/^[a-z\x{80}-\x{FFFF}]+$/u'],
+            'range of all code points'           => ['/^[\x00-\x{10FFFF}]{5}$/u'],
             'horizontal and vertical whitespace' => ['/^\h\v\H\V$/u'],
             'whitespace in bytes'                => ['/^\h\v\H\V$/'],
             'escaped characters'                 => ['/^\x41\x{42}\x4\0\012\o{103}\cA\t\n\r\f\e\a$/u'],
@@ -208,6 +210,14 @@ final class RegularExpressionGeneratorTest extends TestCase
         $this->expectExceptionMessageIs('None of 64 characters that were tried is matched by the character class');
 
         $node->generate(ChoiceSource::replay(new ChoiceSequence([])));
+    }
+
+    public function testACharacterClassWithARangeThatSpansTheSurrogatesDoesNotGenerateASurrogate(): void
+    {
+        // the surrogates U+D800 to U+DFFF are not characters, so that the
+        // character that follows U+D7FF is U+E000
+        $this->assertSame("\u{D7FF}", $this->replay('/^[\x{D7FF}-\x{E000}]$/u', [0]));
+        $this->assertSame("\u{E000}", $this->replay('/^[\x{D7FF}-\x{E000}]$/u', [1]));
     }
 
     public function testDotDoesNotGenerateANewlineWithoutTheSModifier(): void

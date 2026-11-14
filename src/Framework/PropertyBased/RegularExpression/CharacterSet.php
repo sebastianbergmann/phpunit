@@ -62,11 +62,19 @@ final readonly class CharacterSet
     private int $size;
 
     /**
+     * The surrogates that a range of Unicode scalar values spans, from a
+     * character below them to a character above them, for instance, are not
+     * part of the set, as they are not characters and cannot be encoded.
+     *
      * @param list<array{non-negative-int, non-negative-int}> $ranges ranges of characters from the first to the last one of each, in any order
      * @param bool                                            $utf8   whether the characters are Unicode scalar values rather than bytes
      */
     public static function fromRanges(array $ranges, bool $utf8): self
     {
+        if ($utf8) {
+            $ranges = self::withoutSurrogates($ranges);
+        }
+
         usort(
             $ranges,
             static fn (array $a, array $b): int => $a[0] <=> $b[0],
@@ -291,5 +299,33 @@ final readonly class CharacterSet
         assert($encoded !== false && $encoded !== '');
 
         return $encoded;
+    }
+
+    /**
+     * @param list<array{non-negative-int, non-negative-int}> $ranges
+     *
+     * @return list<array{non-negative-int, non-negative-int}>
+     */
+    private static function withoutSurrogates(array $ranges): array
+    {
+        $withoutSurrogates = [];
+
+        foreach ($ranges as [$first, $last]) {
+            if ($last < self::FIRST_SURROGATE || $first > self::LAST_SURROGATE) {
+                $withoutSurrogates[] = [$first, $last];
+
+                continue;
+            }
+
+            if ($first < self::FIRST_SURROGATE) {
+                $withoutSurrogates[] = [$first, self::FIRST_SURROGATE - 1];
+            }
+
+            if ($last > self::LAST_SURROGATE) {
+                $withoutSurrogates[] = [self::LAST_SURROGATE + 1, $last];
+            }
+        }
+
+        return $withoutSurrogates;
     }
 }

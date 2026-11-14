@@ -99,6 +99,33 @@ final class CharacterSetTest extends TestCase
         $this->assertSame("\u{E000}", $set->member(0xD800));
     }
 
+    public function testARangeOfUnicodeScalarValuesThatSpansTheSurrogatesDoesNotContainThem(): void
+    {
+        $set = CharacterSet::fromRanges([[0xD7FE, 0xE001]], true);
+
+        $this->assertSame(4, $set->size());
+        $this->assertFalse($set->contains(0xD800));
+        $this->assertFalse($set->contains(0xDFFF));
+        $this->assertSame("\u{D7FE}", $set->member(0));
+        $this->assertSame("\u{D7FF}", $set->member(1));
+        $this->assertSame("\u{E000}", $set->member(2));
+        $this->assertSame("\u{E001}", $set->member(3));
+    }
+
+    public function testARangeOfUnicodeScalarValuesThatStartsOrEndsWithinTheSurrogatesDoesNotContainThem(): void
+    {
+        $set = CharacterSet::fromRanges([[0xD7FF, 0xD900], [0xDA00, 0xDB00], [0xDF00, 0xE000]], true);
+
+        $this->assertSame(2, $set->size());
+        $this->assertSame("\u{D7FF}", $set->member(0));
+        $this->assertSame("\u{E000}", $set->member(1));
+    }
+
+    public function testARangeOfBytesIsNotChanged(): void
+    {
+        $this->assertSame(0x100, CharacterSet::fromRanges([[0x00, 0xFF]], false)->size());
+    }
+
     public function testAllBytes(): void
     {
         $set = CharacterSet::all(false);
