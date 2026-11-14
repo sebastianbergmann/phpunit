@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\PropertyBased\StateMachine;
 
+use function sprintf;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\ForAll;
@@ -336,6 +337,150 @@ final class StateMachineDefinitionBuilderTest extends TestCase
     }
 
     /**
+     * @return array<non-empty-string, array{class-string, non-empty-string, non-empty-string, object}>
+     */
+    public static function stateMachinesWithInvalidAttributes(): array
+    {
+        return [
+            'rule with an argument that does not exist' => [
+                StateMachineRule::class,
+                'method %s::step()',
+                'Unknown named parameter $preconditon',
+                new class
+                {
+                    #[StateMachineRule]
+                    public function anotherStep(): void
+                    {
+                    }
+
+                    #[StateMachineRule(preconditon: 'canStep')]
+                    public function step(): void
+                    {
+                    }
+
+                    public function canStep(): bool
+                    {
+                        return true;
+                    }
+                },
+            ],
+            'initialization with an argument that does not exist' => [
+                InitializeStateMachine::class,
+                'method %s::initialize()',
+                'Unknown named parameter $produce',
+                new class
+                {
+                    #[StateMachineRule]
+                    public function step(): void
+                    {
+                    }
+
+                    #[InitializeStateMachine(produce: 'values')]
+                    public function initialize(): int
+                    {
+                        return 1;
+                    }
+                },
+            ],
+            'invariant with an argument that does not exist' => [
+                StateMachineInvariant::class,
+                'method %s::invariant()',
+                'Unknown named parameter $atTheEnd',
+                new class
+                {
+                    #[StateMachineRule]
+                    public function step(): void
+                    {
+                    }
+
+                    #[StateMachineInvariant(atTheEnd: true)]
+                    public function invariant(): void
+                    {
+                    }
+                },
+            ],
+            'invariant with an argument of the wrong type' => [
+                StateMachineInvariant::class,
+                'method %s::invariant()',
+                StateMachineInvariant::class . '::__construct(): Argument #1 ($atEnd) must be of type bool, string given, called in ' . __FILE__ . ' on line %d',
+                new class
+                {
+                    #[StateMachineRule]
+                    public function step(): void
+                    {
+                    }
+
+                    #[StateMachineInvariant(atEnd: 'yes')]
+                    public function invariant(): void
+                    {
+                    }
+                },
+            ],
+            'rule that is specified more than once' => [
+                StateMachineRule::class,
+                'method %s::step()',
+                'Attribute "' . StateMachineRule::class . '" must not be repeated',
+                new class
+                {
+                    #[StateMachineRule]
+                    #[StateMachineRule(produces: 'values')]
+                    public function step(): int
+                    {
+                        return 1;
+                    }
+                },
+            ],
+            'pool with an argument that does not exist' => [
+                FromPool::class,
+                'parameter $value of method %s::step()',
+                'Unknown named parameter $consumed',
+                new class
+                {
+                    #[StateMachineRule(produces: 'values')]
+                    public function produce(): int
+                    {
+                        return 1;
+                    }
+
+                    #[StateMachineRule]
+                    public function step(#[FromPool('values', consumed: true)] int $value): void
+                    {
+                    }
+                },
+            ],
+            'generator with an argument that does not exist' => [
+                ForAll::class,
+                'parameter $value of method %s::step()',
+                'Unknown named parameter $generators',
+                new class
+                {
+                    #[StateMachineRule]
+                    public function step(#[ForAll(generators: 'values')] int $value): void
+                    {
+                    }
+                },
+            ],
+            'generator of another class without the name of its method' => [
+                ForAllExternal::class,
+                'parameter $value of method %s::initialize()',
+                'Too few arguments to function ' . ForAllExternal::class . '::__construct(), 1 passed in ' . __FILE__ . ' on line %d and exactly 2 expected',
+                new class
+                {
+                    #[StateMachineRule]
+                    public function step(): void
+                    {
+                    }
+
+                    #[InitializeStateMachine]
+                    public function initialize(#[ForAllExternal(ValidStateMachine::class)] int $value): void
+                    {
+                    }
+                },
+            ],
+        ];
+    }
+
+    /**
      * Closures in attributes require PHP 8.5, so these state machines are
      * referred to by the names of their classes, which are only loaded by
      * the test that requires it.
@@ -416,6 +561,35 @@ final class StateMachineDefinitionBuilderTest extends TestCase
     public function testRejectsAnInvalidStateMachine(string $message, object $machine): void
     {
         $this->assertIsRejected($message, $machine::class);
+    }
+
+    /**
+     * @param class-string     $attributeName
+     * @param non-empty-string $target
+     * @param non-empty-string $error
+     */
+    #[DataProvider('stateMachinesWithInvalidAttributes')]
+    public function testRejectsAStateMachineWithAnAttributeThatCannotBeInstantiated(string $attributeName, string $target, string $error, object $machine): void
+    {
+        try {
+            new StateMachineDefinitionBuilder()->build($machine::class, new GeneratorDeriver(GeneratorRegistry::empty()));
+        } catch (InvalidStateMachineException $e) {
+            $this->assertStringMatchesFormat(
+                sprintf(
+                    "State machine %s cannot be run: invalid attribute %s for %s in %s:%%d\n%s",
+                    $machine::class,
+                    $attributeName,
+                    sprintf($target, $machine::class),
+                    __FILE__,
+                    $error,
+                ),
+                $e->getMessage(),
+            );
+
+            return;
+        }
+
+        $this->fail('The state machine was not rejected');
     }
 
     /**

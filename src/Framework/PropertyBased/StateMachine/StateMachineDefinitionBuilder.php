@@ -29,6 +29,7 @@ use PHPUnit\Framework\PropertyBased\ValueGeneratorNotSupportedException;
 use PHPUnit\Metadata\ForAll;
 use PHPUnit\Metadata\FromPool;
 use PHPUnit\Metadata\InitializeStateMachine;
+use PHPUnit\Metadata\InvalidAttribute;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Metadata\StateMachineInvariant;
@@ -75,7 +76,10 @@ final readonly class StateMachineDefinitionBuilder
 
             assert($methodName !== '');
 
-            $metadata   = MetadataRegistry::parser()->forMethod($method->getDeclaringClass()->getName(), $methodName);
+            $metadata = MetadataRegistry::parser()->forMethod($method->getDeclaringClass()->getName(), $methodName);
+
+            $this->ensureAttributesAreValid($className, $metadata);
+
             $rule       = $metadata->isStateMachineRule();
             $initialize = $metadata->isInitializeStateMachine();
             $invariant  = $metadata->isStateMachineInvariant();
@@ -160,6 +164,33 @@ final readonly class StateMachineDefinitionBuilder
         $this->ensurePoolsAreProduced($className, $initializations, $rules);
 
         return new StateMachineDefinition($className, $initializations, $rules, $invariants, $invariantsAtEnd);
+    }
+
+    /**
+     * An attribute that cannot be instantiated, because the name of one of its
+     * arguments is misspelled, for instance, is not parsed into the metadata
+     * that it stands for. Without this check, a rule, an initialization, or an
+     * invariant with such an attribute would silently not be part of the state
+     * machine, and a parameter with such an attribute would silently receive
+     * values that are generated from its type.
+     *
+     * @param class-string $className
+     *
+     * @throws InvalidStateMachineException
+     */
+    private function ensureAttributesAreValid(string $className, MetadataCollection $metadata): void
+    {
+        $invalidAttributes = $metadata->isInvalidAttribute();
+
+        if ($invalidAttributes->isEmpty()) {
+            return;
+        }
+
+        $invalidAttribute = $invalidAttributes->asArray()[0];
+
+        assert($invalidAttribute instanceof InvalidAttribute);
+
+        throw InvalidStateMachineException::because($className, lcfirst($invalidAttribute->message()));
     }
 
     /**
