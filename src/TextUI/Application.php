@@ -14,10 +14,8 @@ use const PHP_VERSION;
 use const SIGINT;
 use function count;
 use function defined;
-use function dirname;
 use function function_exists;
 use function getmypid;
-use function is_array;
 use function is_file;
 use function is_string;
 use function pcntl_async_signals;
@@ -25,7 +23,6 @@ use function pcntl_signal;
 use function printf;
 use function realpath;
 use function sprintf;
-use function str_starts_with;
 use function trim;
 use function unlink;
 use PHPUnit\Event\Emitter;
@@ -61,6 +58,7 @@ use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\GarbageCollection\GarbageCollectionHandler;
 use PHPUnit\Runner\PhpConfiguration\PhpConfigurationChecker;
 use PHPUnit\Runner\Phpt\TestCase as PhptTestCase;
+use PHPUnit\Runner\Preloader;
 use PHPUnit\Runner\Receipt\Invocation;
 use PHPUnit\Runner\Receipt\InvocationBuilder;
 use PHPUnit\Runner\Receipt\OutcomeBuilder;
@@ -114,7 +112,6 @@ use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\DefaultConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\Util\DifferBuilder;
-use PHPUnit\Util\ExcludeList;
 use PHPUnit\Util\Http\PhpDownloader;
 use SebastianBergmann\Timer\Timer;
 use Throwable;
@@ -148,7 +145,7 @@ final readonly class Application
 
             // the commands above end the process; preloading is therefore only
             // worthwhile once it is known that tests are going to be run
-            $this->preload();
+            Preloader::preload();
 
             $xmlConfiguration = $this->loadXmlConfiguration($pathToXmlConfigurationFile);
 
@@ -1207,64 +1204,5 @@ final readonly class Application
         new TestSuiteFilterProcessor($this->emitter)->process($configuration, $suite);
 
         return $suite->collect();
-    }
-
-    private function preload(): void
-    {
-        if (!defined('PHPUNIT_COMPOSER_INSTALL')) {
-            return;
-        }
-
-        $composerInstall = PHPUNIT_COMPOSER_INSTALL;
-
-        // @codeCoverageIgnoreStart
-        if (!is_string($composerInstall)) {
-            return;
-        }
-        // @codeCoverageIgnoreEnd
-
-        $classMapFile = dirname($composerInstall) . '/composer/autoload_classmap.php';
-
-        // @codeCoverageIgnoreStart
-        if (!is_file($classMapFile)) {
-            return;
-        }
-        // @codeCoverageIgnoreEnd
-
-        $classMap = require $classMapFile;
-
-        // @codeCoverageIgnoreStart
-        if (!is_array($classMap)) {
-            return;
-        }
-        // @codeCoverageIgnoreEnd
-
-        $excludeList = new ExcludeList(true);
-
-        foreach ($classMap as $codeUnitName => $sourceCodeFile) {
-            // @codeCoverageIgnoreStart
-            if (!is_string($codeUnitName) || !is_string($sourceCodeFile)) {
-                continue;
-            }
-            // @codeCoverageIgnoreEnd
-
-            if (!str_starts_with($codeUnitName, 'PHPUnit\\') &&
-                !str_starts_with($codeUnitName, 'SebastianBergmann\\')) {
-                continue;
-            }
-
-            $sourceCodeFile = realpath($sourceCodeFile);
-
-            if ($sourceCodeFile === false) {
-                continue;
-            }
-
-            // only preload code that belongs to PHPUnit or one of its dependencies
-            if (!$excludeList->isExcluded($sourceCodeFile)) {
-                continue;
-            }
-
-            require_once $sourceCodeFile;
-        }
     }
 }

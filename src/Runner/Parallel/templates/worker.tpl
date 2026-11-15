@@ -9,6 +9,7 @@ use PHPUnit\Runner\Parallel\CommandStream;
 use PHPUnit\Runner\Parallel\PassedTestsRecorder;
 use PHPUnit\Runner\Parallel\WorkerDataProvider;
 use PHPUnit\Runner\Parallel\WorkerException;
+use PHPUnit\Runner\Preloader;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\PhpHandler;
@@ -34,6 +35,14 @@ $__phpunit_displayErrors = ini_get('display_errors');
 if ($__phpunit_displayErrors !== false) {
     ini_set('display_errors', $__phpunit_displayErrors);
 }
+
+// A sequential run preloads the code of PHPUnit and of its dependencies before
+// the configuration and the bootstrap script are applied, so that no test
+// triggers the loading of this code: a test may have changed how, or whether,
+// code can be loaded, by replacing a stream wrapper or by registering an
+// autoloader, for instance. The worker preloads the same code at the same
+// point, so that the tests it runs see the same code loaded.
+Preloader::preload();
 
 {childProcessConfiguration}
 
