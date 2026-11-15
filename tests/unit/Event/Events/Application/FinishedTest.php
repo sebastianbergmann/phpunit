@@ -9,12 +9,19 @@
  */
 namespace PHPUnit\Event\Application;
 
+use DateTimeImmutable;
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\UsesClass;
+use PHPUnit\Runner\Receipt\IssueCounts;
+use PHPUnit\Runner\Receipt\Outcome;
+use PHPUnit\Runner\Receipt\Status;
 
 #[CoversClass(Finished::class)]
+#[UsesClass(IssueCounts::class)]
+#[UsesClass(Outcome::class)]
 #[Small]
 #[Group('event-system')]
 #[Group('event-system/events')]
@@ -23,18 +30,43 @@ final class FinishedTest extends AbstractEventTestCase
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = $this->telemetryInfo();
-        $shellExitCode = 0;
+        $outcome       = $this->outcome(1);
 
-        $event = new Finished($telemetryInfo, $shellExitCode);
+        $event = new Finished($telemetryInfo, $outcome);
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
-        $this->assertSame($shellExitCode, $event->shellExitCode());
+        $this->assertSame($outcome, $event->outcome());
+    }
+
+    public function testHasShellExitCodeOfOutcome(): void
+    {
+        $event = new Finished($this->telemetryInfo(), $this->outcome(1));
+
+        $this->assertSame(1, $event->shellExitCode());
     }
 
     public function testCanBeRepresentedAsString(): void
     {
-        $event = new Finished($this->telemetryInfo(), 0);
+        $event = new Finished($this->telemetryInfo(), $this->outcome(0));
 
         $this->assertSame('PHPUnit Finished (Shell Exit Code: 0)', $event->asString());
+    }
+
+    private function outcome(int $shellExitCode): Outcome
+    {
+        return new Outcome(
+            new DateTimeImmutable,
+            Status::Completed,
+            $shellExitCode,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            new IssueCounts(0, 0, 0, 0, 0, 0, 0, 0),
+            new IssueCounts(0, 0, 0, 0, 0, 0, 0, 0),
+        );
     }
 }

@@ -12,6 +12,7 @@ All notable changes of the PHPUnit 13.5 release series are documented in this fi
 * [#7086](https://github.com/sebastianbergmann/phpunit/pull/7086): `--triggering-tests-limit` CLI option and `triggeringTestsLimit` XML attribute to group and limit the tests listed for each issue
 * [#7146](https://github.com/sebastianbergmann/phpunit/issues/7146): Run receipt that records what was run and how the run ended in Open Test Reporting logfile and the compact output
 * `exitCode()` and `signal()` methods on the `TestRunner\ChildProcessFinished` and `TestRunner\ChildProcessErrored` events for the exit code of a child process and the signal that terminated it
+* `outcome()` method on the `Application\Finished` event for how the test run ended, as the run receipt records it: its status, the numbers of tests by outcome, and the numbers of the issues triggered by tests and by the test runner
 
 ### Changed
 

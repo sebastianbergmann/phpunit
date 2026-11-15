@@ -12,6 +12,7 @@ namespace PHPUnit\Event\Application;
 use function sprintf;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
+use PHPUnit\Runner\Receipt\Outcome;
 
 /**
  * @immutable
@@ -21,15 +22,15 @@ use PHPUnit\Event\Telemetry;
 final readonly class Finished implements Event
 {
     private Telemetry\Info $telemetryInfo;
-    private int $shellExitCode;
+    private Outcome $outcome;
 
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function __construct(Telemetry\Info $telemetryInfo, int $shellExitCode)
+    public function __construct(Telemetry\Info $telemetryInfo, Outcome $outcome)
     {
         $this->telemetryInfo = $telemetryInfo;
-        $this->shellExitCode = $shellExitCode;
+        $this->outcome       = $outcome;
     }
 
     public function telemetryInfo(): Telemetry\Info
@@ -39,7 +40,18 @@ final readonly class Finished implements Event
 
     public function shellExitCode(): int
     {
-        return $this->shellExitCode;
+        return $this->outcome->shellExitCode();
+    }
+
+    /**
+     * How the test run ended, as the receipt of the test run records it:
+     * whether every selected test was run, the shell exit code, the numbers
+     * of tests by outcome, and the numbers of the issues that were triggered
+     * by tests and by the test runner.
+     */
+    public function outcome(): Outcome
+    {
+        return $this->outcome;
     }
 
     /**
@@ -49,7 +61,7 @@ final readonly class Finished implements Event
     {
         return sprintf(
             'PHPUnit Finished (Shell Exit Code: %d)',
-            $this->shellExitCode,
+            $this->outcome->shellExitCode(),
         );
     }
 }

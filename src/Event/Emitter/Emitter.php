@@ -17,6 +17,7 @@ use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\TestRunner\ChildProcessReason;
 use PHPUnit\Event\TestSuite\TestSuite;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Runner\Receipt\Outcome;
 use PHPUnit\TextUI\Configuration\Configuration;
 use SebastianBergmann\Comparator\Comparator;
 
@@ -395,5 +396,5 @@ interface Emitter
      */
     public function testRunnerTimeLimitExceeded(int $timeLimit): void;
 
-    public function applicationFinished(int $shellExitCode): void;
+    public function applicationFinished(Outcome $outcome): void;
 }

@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event;
 
+use DateTimeImmutable;
 use Exception;
 use PHPUnit\Event\Code\ClassMethod;
 use PHPUnit\Event\Code\IssueTrigger\IssueTrigger;
@@ -65,6 +66,9 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Metadata\MetadataCollection;
+use PHPUnit\Runner\Receipt\IssueCounts;
+use PHPUnit\Runner\Receipt\Outcome;
+use PHPUnit\Runner\Receipt\Status;
 use PHPUnit\TestFixture\RecordingSubscriber;
 use PHPUnit\TextUI\CliArguments\Builder;
 use PHPUnit\TextUI\Configuration\Merger;
@@ -3842,16 +3846,30 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem,
         );
 
-        $shellExitCode = 0;
+        $outcome = new Outcome(
+            new DateTimeImmutable,
+            Status::Completed,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            new IssueCounts(0, 0, 0, 0, 0, 0, 0, 0),
+            new IssueCounts(0, 0, 0, 0, 0, 0, 0, 0),
+        );
 
-        $emitter->applicationFinished($shellExitCode);
+        $emitter->applicationFinished($outcome);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 
         $event = $subscriber->lastRecordedEvent();
 
         $this->assertInstanceOf(Application\Finished::class, $event);
-        $this->assertSame($shellExitCode, $event->shellExitCode());
+        $this->assertSame($outcome, $event->outcome());
+        $this->assertSame(0, $event->shellExitCode());
     }
 
     private function testSuiteValueObject(): TestSuiteWithName

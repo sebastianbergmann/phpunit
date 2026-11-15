@@ -13,8 +13,6 @@ namespace PHPUnit\Runner\Receipt;
  * How a test run ended.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
- * @internal This enumeration is not covered by the backward compatibility promise for PHPUnit
  */
 enum Status: string
 {

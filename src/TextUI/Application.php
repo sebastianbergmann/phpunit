@@ -427,7 +427,7 @@ final readonly class Application
                 OutputFacade::printReceipt($invocation, $outcome);
             }
 
-            $this->emitter->applicationFinished($shellExitCode);
+            $this->emitter->applicationFinished($outcome);
 
             return $shellExitCode;
             // @codeCoverageIgnoreStart

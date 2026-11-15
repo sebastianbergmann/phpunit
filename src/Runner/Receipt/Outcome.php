@@ -17,9 +17,9 @@ use DateTimeImmutable;
  * It is the last thing that is written for a test run, so that its presence
  * shows that the test run reached its end.
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ * @immutable
  *
- * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final readonly class Outcome
 {
@@ -36,6 +36,9 @@ final readonly class Outcome
     private IssueCounts $issuesTriggeredByTests;
     private IssueCounts $issuesTriggeredByTestRunner;
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public function __construct(DateTimeImmutable $endTime, Status $status, int $shellExitCode, int $numberOfTestsRun, int $numberOfAssertions, int $numberOfErroredTests, int $numberOfFailedTests, int $numberOfSkippedTests, int $numberOfIncompleteTests, int $numberOfRiskyTests, IssueCounts $issuesTriggeredByTests, IssueCounts $issuesTriggeredByTestRunner)
     {
         $this->endTime                     = $endTime;
