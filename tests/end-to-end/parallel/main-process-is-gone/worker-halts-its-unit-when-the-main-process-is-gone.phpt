@@ -1,19 +1,11 @@
 --TEST--
-A worker of phpunit --parallel=2 whose main process is gone lets the test that it is running finish, starts no further test of its class, runs tearDownAfterClass(), and exits
---SKIPIF--
-<?php declare(strict_types=1);
-if (DIRECTORY_SEPARATOR === '\\') {
-    print "skip: this test does not work on Windows / GitHub Actions\n";
-}
-
-if (!function_exists('posix_kill')) {
-    print "skip: this test requires the posix extension\n";
-}
+The workers of phpunit --parallel=2 whose main process is gone let the test that they are running finish, start no further test of its class, run tearDownAfterClass(), and end
 --FILE--
 <?php declare(strict_types=1);
 $prefix = sys_get_temp_dir() . '/phpunit-parallel-main-process-is-gone';
+$files  = ['.A.pid', '.B.pid', '.A.marker', '.B.marker', '.killed'];
 
-foreach (['.pid', '.killed', '.marker'] as $suffix) {
+foreach ($files as $suffix) {
     @unlink($prefix . $suffix);
 }
 
@@ -24,36 +16,59 @@ $mainProcess = proc_open(
         '--do-not-record-test-run-history',
         '--no-configuration',
         '--parallel=2',
-        __DIR__ . '/_files/',
+        __DIR__ . '/_files/AIsRunningWhenTheMainProcessIsKilledTest.php',
+        __DIR__ . '/_files/BIsRunningWhenTheMainProcessIsKilledTest.php',
     ],
     [1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
     $pipes,
 );
 
-// the test tells which worker process runs it once it has started
-for ($waited = 0; $waited < 3000 && !is_file($prefix . '.pid'); $waited++) {
+// each of the two test classes is run by a worker process of its own, and
+// its first test tells which process that is once it has started
+for ($waited = 0; $waited < 3000 && !(is_file($prefix . '.A.pid') && is_file($prefix . '.B.pid')); $waited++) {
     usleep(10000);
 }
 
-$worker = (int) file_get_contents($prefix . '.pid');
-
+// the main process is not asked to end, it is ended: with SIGKILL where
+// there are signals, and with TerminateProcess() on Windows, where the
+// signal is ignored
 proc_terminate($mainProcess, 9);
 
 while (proc_get_status($mainProcess)['running']) {
     usleep(10000);
 }
 
-// the test finishes now that the main process is gone
+// the tests finish now that the main process is gone
 touch($prefix . '.killed');
 
-for ($waited = 0; $waited < 1000 && posix_kill($worker, 0); $waited++) {
+$ended = static function (string $name) use ($prefix): bool
+{
+    return is_file($prefix . '.' . $name . '.marker') &&
+           str_contains((string) file_get_contents($prefix . '.' . $name . '.marker'), 'worker process ended');
+};
+
+for ($waited = 0; $waited < 1000 && !($ended('A') && $ended('B')); $waited++) {
     usleep(10000);
 }
 
-print 'worker process has exited: ';
-var_dump(!posix_kill($worker, 0));
+foreach (['A', 'B'] as $name) {
+    print $name . ':' . PHP_EOL;
 
-print file_get_contents($prefix . '.marker');
+    if (is_file($prefix . '.' . $name . '.marker')) {
+        print file_get_contents($prefix . '.' . $name . '.marker');
+    }
+
+    // a worker process that did not end is not left behind
+    if (!$ended($name) && is_file($prefix . '.' . $name . '.pid')) {
+        $worker = (int) file_get_contents($prefix . '.' . $name . '.pid');
+
+        if ($worker > 0 && DIRECTORY_SEPARATOR === '\\') {
+            exec('taskkill /F /PID ' . $worker . ' 2>NUL');
+        } elseif ($worker > 0) {
+            exec('kill -9 ' . $worker . ' 2>/dev/null');
+        }
+    }
+}
 
 foreach ($pipes as $pipe) {
     fclose($pipe);
@@ -61,10 +76,15 @@ foreach ($pipes as $pipe) {
 
 proc_close($mainProcess);
 
-foreach (['.pid', '.killed', '.marker'] as $suffix) {
+foreach ($files as $suffix) {
     @unlink($prefix . $suffix);
 }
 --EXPECT--
-worker process has exited: bool(true)
+A:
 testIsRunningWhenTheMainProcessIsKilled
 tearDownAfterClass
+worker process ended
+B:
+testIsRunningWhenTheMainProcessIsKilled
+tearDownAfterClass
+worker process ended
