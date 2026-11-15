@@ -1,5 +1,7 @@
 --TEST--
 What was recorded is discarded when the bootstrap script of the test suite is not what it was
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 require __DIR__ . '/_files/print-recorded-test-impact-data.php';

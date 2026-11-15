@@ -1,5 +1,7 @@
 --TEST--
 Only the tests that can be affected by the paths that are named are run
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 function run(array $additionalArguments = []): void

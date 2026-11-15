@@ -1,5 +1,7 @@
 --TEST--
 Every test is run when what is recorded comes from somewhere else than where this test run records it from
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $cacheDirectory = __DIR__ . '/_files/.phpunit.cache.other-provenance';

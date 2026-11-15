@@ -1,5 +1,7 @@
 --TEST--
 A test run that runs every test there is assesses a change to a source file no test refers to
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $sourceFile = __DIR__ . '/_files/source-file-no-test-refers-to/src/Untested.php';

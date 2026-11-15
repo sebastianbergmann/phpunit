@@ -1,5 +1,7 @@
 --TEST--
 Only the tests that are affected by what changed cannot be run while the paths that changed are named
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-record-test-run-history';

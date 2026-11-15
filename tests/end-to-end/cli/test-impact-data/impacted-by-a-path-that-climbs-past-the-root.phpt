@@ -1,5 +1,7 @@
 --TEST--
 A path that names where it is from the root does not name anything above the root
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $cacheDirectory = __DIR__ . '/_files/.phpunit.cache.past-the-root';

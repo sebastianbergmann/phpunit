@@ -1,5 +1,7 @@
 --TEST--
 The paths that are named on the command line and the paths that are listed in a file are both taken into account
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $configuration = __DIR__ . '/_files/phpunit-selection.xml';

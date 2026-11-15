@@ -1,5 +1,7 @@
 --TEST--
 Every test can be affected by a change to what was executed outside of any test, and only the tests a data provider or a test class prepared can be affected by a change to what that data provider or test class executed
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 function run(array $additionalArguments = []): void

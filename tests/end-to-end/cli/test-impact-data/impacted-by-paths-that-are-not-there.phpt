@@ -1,5 +1,7 @@
 --TEST--
 A path that is not there is resolved all the same, and a path nothing is known about means that every test is run
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $configuration = __DIR__ . '/_files/phpunit-selection.xml';

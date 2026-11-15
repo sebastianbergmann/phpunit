@@ -1,5 +1,7 @@
 --TEST--
 Only the tests that can be affected by the paths that are listed in a file, or on standard input, are run
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 function run(array $additionalArguments = [], ?string $standardInput = null): void

@@ -1,5 +1,7 @@
 --TEST--
 The repetitions of a repeated test are recorded as the test they are repetitions of
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 require __DIR__ . '/_files/print-recorded-test-impact-data.php';

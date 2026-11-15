@@ -1,5 +1,7 @@
 --TEST--
 Why what was recorded is not used is reported instead of claiming that nothing was recorded
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 function run(array $additionalArguments = []): void

@@ -1,5 +1,7 @@
 --TEST--
 Test impact data cannot be recorded when no code coverage driver is available
+--CONFLICTS--
+test-impact-data
 --SKIPIF--
 <?php declare(strict_types=1);
 if (extension_loaded('xdebug') || extension_loaded('pcov')) {

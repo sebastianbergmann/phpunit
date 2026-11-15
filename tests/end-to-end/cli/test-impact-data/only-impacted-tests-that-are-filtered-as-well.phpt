@@ -1,5 +1,7 @@
 --TEST--
 How many tests are not run is not said when the tests that are run are filtered as well
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $fixture        = __DIR__ . '/_files/fixture-directory/one.txt';

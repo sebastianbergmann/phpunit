@@ -1,5 +1,7 @@
 --TEST--
 Which tests are recorded as having executed a source file cannot be asked when no cache directory is configured
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--colors=never';

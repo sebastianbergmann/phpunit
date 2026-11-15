@@ -1,5 +1,7 @@
 --TEST--
 What the before-first-test methods and after-last-test methods of a test class execute is recorded for its tests when every one of them runs in a separate process, where these methods are only called in the child processes
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-record-test-run-history';

@@ -1,5 +1,7 @@
 --TEST--
 Deriving test impact data from code coverage targets that are not checked is warned about
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-record-test-run-history';

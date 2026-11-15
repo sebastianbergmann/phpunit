@@ -1,5 +1,7 @@
 --TEST--
 The source files a process that runs a single test loaded are recorded for that test, whether a line of them was executed or not
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-record-test-run-history';

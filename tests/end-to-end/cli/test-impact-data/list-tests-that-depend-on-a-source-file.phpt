@@ -1,5 +1,7 @@
 --TEST--
 Which tests are recorded as having executed a source file can be asked without running tests
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $argumentsForTestRun = [

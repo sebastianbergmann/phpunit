@@ -1,5 +1,7 @@
 --TEST--
 A change to a file in the directory of a test suite that is not a test file and that no test is recorded as depending on runs every test
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $helper   = __DIR__ . '/_files/watched-files/tests/Helper.php';

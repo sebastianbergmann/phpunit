@@ -1,5 +1,7 @@
 --TEST--
 --explain-impacted names the files that were added where added files can only affect a test through a file that was changed to use them, whether what changed is worked out or named, and a file that is added elsewhere runs every test
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $added      = __DIR__ . '/_files/added-files-reached-through-changes/src/Added.php';

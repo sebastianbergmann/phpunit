@@ -1,5 +1,7 @@
 --TEST--
 A fixture a test registers while it runs is recorded for that test
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-record-test-run-history';

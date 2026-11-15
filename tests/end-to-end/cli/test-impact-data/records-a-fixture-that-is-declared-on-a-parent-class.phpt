@@ -1,5 +1,7 @@
 --TEST--
 A fixture a parent class declares that it uses is recorded for the tests of every test class that extends it
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-record-test-run-history';

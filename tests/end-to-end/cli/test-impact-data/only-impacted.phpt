@@ -1,5 +1,7 @@
 --TEST--
 Only the tests that can be affected by what changed are run
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $configuration = __DIR__ . '/_files/phpunit.xml';

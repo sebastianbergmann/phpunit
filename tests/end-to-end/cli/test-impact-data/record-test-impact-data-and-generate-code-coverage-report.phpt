@@ -1,5 +1,7 @@
 --TEST--
 The code coverage report is filtered using code coverage targets while what is recorded for test impact analysis is not
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-record-test-run-history';

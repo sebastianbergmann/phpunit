@@ -1,5 +1,7 @@
 --TEST--
 A change to a file that is watched and that no test is recorded as depending on runs every test, and so does a file that is added where files are watched
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $configuration = __DIR__ . '/_files/watched-files/config/app.php';

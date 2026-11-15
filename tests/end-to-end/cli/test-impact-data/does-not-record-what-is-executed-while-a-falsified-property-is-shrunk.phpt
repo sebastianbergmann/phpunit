@@ -1,5 +1,7 @@
 --TEST--
 What is executed while a falsified property is shrunk, and while its minimal counterexample is replayed, is not recorded
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-record-test-run-history';

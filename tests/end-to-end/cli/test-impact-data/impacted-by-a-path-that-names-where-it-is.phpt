@@ -1,5 +1,7 @@
 --TEST--
 A path that names where it is with "." and ".." names the same file as the path that was recorded
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $configuration = __DIR__ . '/_files/phpunit-paths-with-relative-segments.xml';
