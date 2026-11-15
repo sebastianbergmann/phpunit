@@ -133,12 +133,12 @@ final class ResultAggregator
     private array $collectedUnits = [];
 
     /**
-     * The events streamed by units that are still running, buffered per suite
-     * index until their unit's turn in the release sequence comes.
-     *
-     * @var array<non-negative-int, list<EventCollection>>
+     * The events streamed by units that are still running, held back per
+     * suite index until their unit's turn in the release sequence comes. They
+     * are kept in a file, not in memory: a slow unit holds back the events of
+     * every unit that follows it in suite order.
      */
-    private array $streamedEvents = [];
+    private readonly EventSpool $streamedEvents;
 
     /**
      * The indexes of the units whose streamed events have been forwarded.
@@ -180,11 +180,12 @@ final class ResultAggregator
      */
     public function __construct(Facade $eventFacade, Emitter $emitter, PassedTests $passedTests, CodeCoverage $codeCoverage, callable $shouldStop)
     {
-        $this->eventFacade  = $eventFacade;
-        $this->emitter      = $emitter;
-        $this->passedTests  = $passedTests;
-        $this->codeCoverage = $codeCoverage;
-        $this->shouldStop   = $shouldStop;
+        $this->eventFacade    = $eventFacade;
+        $this->emitter        = $emitter;
+        $this->passedTests    = $passedTests;
+        $this->codeCoverage   = $codeCoverage;
+        $this->shouldStop     = $shouldStop;
+        $this->streamedEvents = new EventSpool;
     }
 
     /**
@@ -313,11 +314,7 @@ final class ResultAggregator
             return;
         }
 
-        if (!isset($this->streamedEvents[$index])) {
-            $this->streamedEvents[$index] = [];
-        }
-
-        $this->streamedEvents[$index][] = $events;
+        $this->streamedEvents->add($index, $events);
     }
 
     /**
@@ -336,7 +333,7 @@ final class ResultAggregator
             return false;
         }
 
-        unset($this->streamedEvents[$index]);
+        $this->streamedEvents->discard($index);
 
         return true;
     }
@@ -423,17 +420,15 @@ final class ResultAggregator
      */
     private function forwardStreamedEventsOf(int $index): void
     {
-        if (!isset($this->streamedEvents[$index])) {
+        if (!$this->streamedEvents->has($index)) {
             return;
         }
 
         $this->forwardedStreamedEvents[$index] = true;
 
-        foreach ($this->streamedEvents[$index] as $events) {
+        foreach ($this->streamedEvents->take($index) as $events) {
             $this->forwardFrame($index, $events);
         }
-
-        unset($this->streamedEvents[$index]);
     }
 
     /**

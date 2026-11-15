@@ -43,10 +43,12 @@ use PHPUnit\Runner\TimeLimit\TimeLimitExceededException;
 use PHPUnit\TestFixture\ParallelWorker\WorkerFirstTest;
 use PHPUnit\TestFixture\ParallelWorker\WorkerSecondTest;
 use PHPUnit\TestRunner\TestResult\PassedTests;
+use WeakReference;
 
 #[CoversClass(ResultAggregator::class)]
 #[UsesClass(TestClassWorkUnit::class)]
 #[UsesClass(CompletedWorkUnit::class)]
+#[UsesClass(EventSpool::class)]
 #[Small]
 final class ResultAggregatorTest extends TestCase
 {
@@ -953,6 +955,23 @@ final class ResultAggregatorTest extends TestCase
         $this->assertStringContainsString(WorkerFirstTest::class, $forwarded[0]);
         $this->assertSame('first test of unit 1', $forwarded[1]);
         $this->assertSame('second test of unit 1', $forwarded[2]);
+    }
+
+    public function testDoesNotKeepTheStreamedEventsOfAUnitThatWaitsForItsTurnInMemory(): void
+    {
+        $forwarded = [];
+
+        $aggregator = $this->aggregatorObservedThrough($forwarded, $this->createStub(Emitter::class));
+
+        $events    = $this->events('first test of unit 1');
+        $reference = WeakReference::create($events);
+
+        $aggregator->addStreamedEvents(1, $events);
+
+        unset($events);
+
+        $this->assertNull($reference->get());
+        $this->assertSame([], $forwarded);
     }
 
     public function testForwardsTheStreamedEventsOfACrashedUnitBeforeReportingTheCrash(): void
