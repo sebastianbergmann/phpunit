@@ -1,5 +1,7 @@
 --TEST--
 Test impact data cannot be recorded while no code coverage is collected
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-record-test-run-history';

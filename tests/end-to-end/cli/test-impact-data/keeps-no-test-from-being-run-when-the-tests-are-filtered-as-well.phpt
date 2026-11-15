@@ -1,5 +1,7 @@
 --TEST--
 That test impact analysis keeps no test from being run is not that every test is run when the tests are filtered as well
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--no-progress';

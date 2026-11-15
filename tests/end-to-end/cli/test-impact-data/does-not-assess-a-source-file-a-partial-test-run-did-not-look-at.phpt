@@ -1,5 +1,7 @@
 --TEST--
 A test run that ran only some of the tests does not assess a source file that no test refers to
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $addedSourceFile = __DIR__ . '/_files/source-file-no-test-refers-to/src/Added.php';

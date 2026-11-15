@@ -1,5 +1,7 @@
 --TEST--
 Test impact data cannot be derived from the code coverage targets the tests declare when code coverage metadata is not required for all tests
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-record-test-run-history';

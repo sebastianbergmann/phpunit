@@ -1,5 +1,7 @@
 --TEST--
 A test that depends on a test that can be affected by what changed is run as well: it is given what that test returns, which is not something it executes
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $process = proc_open(

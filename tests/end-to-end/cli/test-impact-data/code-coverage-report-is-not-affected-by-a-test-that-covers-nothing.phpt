@@ -1,5 +1,7 @@
 --TEST--
 What a test that covers nothing executed is recorded for test impact analysis without reaching the code coverage report
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-record-test-run-history';

@@ -1,5 +1,7 @@
 --TEST--
 The tests that depend on a fixture directory are selected when a file in that directory is named as having changed
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 function run(array $additionalArguments = [], string $input = ''): void

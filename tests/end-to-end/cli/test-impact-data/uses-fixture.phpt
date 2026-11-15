@@ -1,5 +1,7 @@
 --TEST--
 A fixture a data provider declares that it uses is recorded for every test that provider provides data for
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-record-test-run-history';

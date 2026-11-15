@@ -1,5 +1,7 @@
 --TEST--
 The random seed is shown for the properties of a test suite only when a property is among the tests that can be affected by what changed
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 function run(array $additionalArguments, bool $print): void

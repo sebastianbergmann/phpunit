@@ -1,5 +1,7 @@
 --TEST--
 Only the tests that are affected by what changed cannot be run when no cache directory is configured
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--no-progress';

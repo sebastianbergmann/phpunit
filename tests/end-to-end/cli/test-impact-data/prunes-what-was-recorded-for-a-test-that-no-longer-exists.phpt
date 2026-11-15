@@ -1,5 +1,7 @@
 --TEST--
 What was recorded for a test that no longer exists is forgotten by a test run that ran every test there is
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 function phpunit(array $additionalArguments): string

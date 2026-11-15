@@ -1,5 +1,7 @@
 --TEST--
 What was recorded is discarded when where added files can only affect a test through a file that was changed to use them is not what it was
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 function run(string $configuration, array $additionalArguments = []): void

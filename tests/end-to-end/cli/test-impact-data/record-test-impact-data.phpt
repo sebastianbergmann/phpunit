@@ -1,5 +1,7 @@
 --TEST--
 Which source files each test executed is recorded when this is configured
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-record-test-run-history';

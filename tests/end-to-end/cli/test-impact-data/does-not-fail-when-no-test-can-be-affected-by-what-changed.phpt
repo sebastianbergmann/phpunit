@@ -1,5 +1,7 @@
 --TEST--
 A test run that is asked to fail on an empty test suite does not fail when no test can be affected by what changed
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $cacheDirectory = __DIR__ . '/_files/.phpunit.cache.fail-on-empty-test-suite';

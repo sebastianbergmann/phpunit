@@ -1,5 +1,7 @@
 --TEST--
 What every example of a property that covers nothing executed is recorded for the property, whether the example performed assertions or not
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-record-test-run-history';

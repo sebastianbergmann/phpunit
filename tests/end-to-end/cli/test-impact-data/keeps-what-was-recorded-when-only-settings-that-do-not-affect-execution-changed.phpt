@@ -1,5 +1,7 @@
 --TEST--
 What was recorded is kept when only settings that cannot change what code a test executes changed, and discarded when one that can changed
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 function run(string $configuration, array $additionalArguments = []): void

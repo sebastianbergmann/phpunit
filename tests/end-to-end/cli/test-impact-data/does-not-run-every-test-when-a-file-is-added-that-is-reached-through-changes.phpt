@@ -1,5 +1,7 @@
 --TEST--
 A file that is added where added files can only affect a test through a file that was changed to use them does not run every test, and a change to it that no test is recorded as depending on does once a test run recorded it
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $greeter  = __DIR__ . '/_files/added-files-reached-through-changes/src/Greeter.php';

@@ -1,5 +1,7 @@
 --TEST--
 Test impact data is derived from the code coverage targets the tests declare when this is configured
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-record-test-run-history';

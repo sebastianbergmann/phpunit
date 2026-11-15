@@ -1,5 +1,7 @@
 --TEST--
 Which tests can be affected by what changed, and why each of them can be, is reported
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 function run(array $additionalArguments = []): void

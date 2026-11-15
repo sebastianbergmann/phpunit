@@ -1,5 +1,7 @@
 --TEST--
 A test file that is added to the directory of a test suite runs the tests in it, and not every test
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $added = __DIR__ . '/_files/watched-files/tests/AddedTest.php';

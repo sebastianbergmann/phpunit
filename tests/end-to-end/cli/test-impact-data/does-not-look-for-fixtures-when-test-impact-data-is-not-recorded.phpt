@@ -1,5 +1,7 @@
 --TEST--
 A fixture that cannot be resolved is not looked for when the run does not record test impact data
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-record-test-run-history';

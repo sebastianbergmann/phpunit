@@ -1,5 +1,7 @@
 --TEST--
 What is executed outside of the tests is recorded for the tests it can affect: what a data provider executes for the tests that are made from the data it provides, what is executed while the tests of a test class are run for the tests of that class, and everything else for every test
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-record-test-run-history';

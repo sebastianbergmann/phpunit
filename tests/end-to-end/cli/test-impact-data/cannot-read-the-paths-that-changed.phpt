@@ -1,5 +1,7 @@
 --TEST--
 The tests cannot be selected by what changed when the list of paths that changed cannot be read
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--no-progress';

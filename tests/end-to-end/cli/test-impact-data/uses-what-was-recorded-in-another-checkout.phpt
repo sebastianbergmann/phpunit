@@ -1,5 +1,7 @@
 --TEST--
 What was recorded in one checkout of a project is used in another checkout of it, the checkout of another CI runner for instance
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 require __DIR__ . '/../../../_files/delete_directory.php';

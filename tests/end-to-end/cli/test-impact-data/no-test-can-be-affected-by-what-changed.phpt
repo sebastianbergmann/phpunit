@@ -1,5 +1,7 @@
 --TEST--
 A test run that selects the tests that can be affected by what changed runs no test when no test can be affected
+--CONFLICTS--
+test-impact-data
 --FILE--
 <?php declare(strict_types=1);
 $cacheDirectory = __DIR__ . '/_files/.phpunit.cache.no-test-can-be-affected';
