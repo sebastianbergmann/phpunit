@@ -91,9 +91,12 @@ final class ChildProcessBootstrap
     }
 
     /**
+     * The code that is given is run once the configuration has been loaded
+     * and before the bootstrap scripts are run.
+     *
      * @throws ProcessIsolationException
      */
-    public static function configurationFragment(): string
+    public static function configurationFragment(string $beforeBootstrap = ''): string
     {
         $bootstrap = '';
 
@@ -111,6 +114,7 @@ final class ChildProcessBootstrap
                 'serializedConfiguration' => self::stringLiteralFragment(self::configurationFile()),
                 'sourceMapFile'           => self::stringLiteralFragment(self::sourceMapFile()),
                 'bootstrap'               => self::stringLiteralFragment($bootstrap),
+                'beforeBootstrap'         => $beforeBootstrap,
             ],
         );
 

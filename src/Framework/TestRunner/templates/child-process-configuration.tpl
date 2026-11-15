@@ -8,6 +8,7 @@ if ('{sourceMapFile}' !== '') {
 
 (new PhpHandler(Facade::emitter()))->handle(ConfigurationRegistry::get()->php());
 
+{beforeBootstrap}
 if ('{bootstrap}' !== '') {
     require_once '{bootstrap}';
 }

@@ -425,6 +425,11 @@ final class CodeCoverage
         $this->testRunConsistsOfASingleTest = $testRunConsistsOfASingleTest;
     }
 
+    public function testRunConsistsOfASingleTest(): bool
+    {
+        return $this->testRunConsistsOfASingleTest;
+    }
+
     /**
      * What a test that was run in a process of its own executed is recorded
      * in that process, and is recorded here for the test that was run.
@@ -437,6 +442,69 @@ final class CodeCoverage
         $this->testImpactData()->record($recordedTest, $files);
 
         $this->testWasRecorded($test, $recordedTest);
+    }
+
+    /**
+     * What a test that was run in a worker process of a parallel test run
+     * executed is recorded in that process, together with what was executed
+     * there for its test class and for its data provider, and is recorded
+     * here for the test that was run. What the main process executed for its
+     * data provider, when it built the test suite, is added to it as it is
+     * added to what a test executed that was run in the main process.
+     *
+     * @param non-empty-string       $className
+     * @param non-empty-string       $methodName
+     * @param non-empty-string       $recordedTest
+     * @param list<non-empty-string> $files
+     */
+    public function recordTestImpactDataOfTestRunInWorker(string $className, string $methodName, string $recordedTest, array $files): void
+    {
+        $this->testImpactData()->record($recordedTest, $files);
+
+        if ($this->executionOutsideOfTests === null) {
+            return;
+        }
+
+        $this->executionOutsideOfTests->testWasRecorded($recordedTest, $className, $methodName);
+    }
+
+    /**
+     * What a worker process of a parallel test run executed outside of the
+     * tests it ran is recorded in that process, and is recorded here as
+     * executed outside of the tests.
+     *
+     * @param list<non-empty-string> $files
+     */
+    public function recordExecutedOutsideOfTestsInWorker(array $files): void
+    {
+        if ($this->executionOutsideOfTests === null) {
+            return;
+        }
+
+        $this->executionOutsideOfTests->recordExecutedOutsideOfTestsInWorker($files);
+    }
+
+    /**
+     * What was recorded since this was last asked for: what the main process
+     * records when a worker process of a parallel test run ships it with the
+     * result of the tests of a test class it ran.
+     *
+     * @return array{tests: array<non-empty-string, array{className: non-empty-string, methodName: non-empty-string, files: list<non-empty-string>}>, executedOutsideOfTests: list<non-empty-string>}
+     */
+    public function collectedTestImpactData(): array
+    {
+        if ($this->executionOutsideOfTests === null || !$this->isRecordingTestImpactData()) {
+            return [
+                'tests'                  => [],
+                'executedOutsideOfTests' => [],
+            ];
+        }
+
+        $collected = $this->executionOutsideOfTests->handOver($this->testImpactData());
+
+        $this->testImpactData = new DefaultTestImpactData;
+
+        return $collected;
     }
 
     /**

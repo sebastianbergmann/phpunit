@@ -14,6 +14,7 @@ use function array_pop;
 use function array_reverse;
 use function array_slice;
 use function assert;
+use function is_array;
 use function is_string;
 use function sprintf;
 use PHPUnit\Event\Code\Test as CodeTest;
@@ -38,6 +39,7 @@ use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\TimeLimit\TimeLimitExceededException;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 use PHPUnit\TextUI\Output\Printer;
+use stdClass;
 
 /**
  * Collects the results that the workers produce and replays them into the
@@ -691,7 +693,74 @@ final class ResultAggregator
 
         ChildProcessResultEnvelope::mergeCodeCoverage($childResult, $this->codeCoverage);
 
+        $this->recordTestImpactData($childResult);
+
         unset($this->forwardedReportedTests[$completed->unit()->index()], $this->forwardedOpenSuites[$completed->unit()->index()]);
+    }
+
+    /**
+     * What the tests of a unit executed was recorded in the worker process
+     * that ran them, together with what that process executed outside of the
+     * tests it ran, and arrives with the result of the unit. The code
+     * coverage that is merged does not carry it: it is per test, whereas what
+     * is merged is what the code coverage report is made of.
+     */
+    private function recordTestImpactData(stdClass $childResult): void
+    {
+        if (!isset($childResult->testImpactData) || !is_array($childResult->testImpactData)) {
+            return; // @codeCoverageIgnore
+        }
+
+        $tests                  = [];
+        $executedOutsideOfTests = [];
+
+        if (isset($childResult->testImpactData['tests']) && is_array($childResult->testImpactData['tests'])) {
+            $tests = $childResult->testImpactData['tests'];
+        }
+
+        if (isset($childResult->testImpactData['executedOutsideOfTests']) && is_array($childResult->testImpactData['executedOutsideOfTests'])) {
+            $executedOutsideOfTests = $childResult->testImpactData['executedOutsideOfTests'];
+        }
+
+        foreach ($tests as $recordedTest => $recorded) {
+            if (!is_string($recordedTest) || $recordedTest === '' ||
+                !is_array($recorded) ||
+                !isset($recorded['className'], $recorded['methodName'], $recorded['files']) ||
+                !is_string($recorded['className']) || $recorded['className'] === '' ||
+                !is_string($recorded['methodName']) || $recorded['methodName'] === '' ||
+                !is_array($recorded['files'])) {
+                continue; // @codeCoverageIgnore
+            }
+
+            $this->codeCoverage->recordTestImpactDataOfTestRunInWorker(
+                $recorded['className'],
+                $recorded['methodName'],
+                $recordedTest,
+                $this->files($recorded['files']),
+            );
+        }
+
+        $this->codeCoverage->recordExecutedOutsideOfTestsInWorker($this->files($executedOutsideOfTests));
+    }
+
+    /**
+     * @param array<mixed> $files
+     *
+     * @return list<non-empty-string>
+     */
+    private function files(array $files): array
+    {
+        $result = [];
+
+        foreach ($files as $file) {
+            if (!is_string($file) || $file === '') {
+                continue; // @codeCoverageIgnore
+            }
+
+            $result[] = $file;
+        }
+
+        return $result;
     }
 
     /**

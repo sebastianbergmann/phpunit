@@ -46,6 +46,7 @@ use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestRunner\ChildProcessBootstrap;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\TestSuiteLoader;
+use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\Util\PHP\CommandLineIniSettings;
 use PHPUnit\Util\PHP\Job;
 use PHPUnit\Util\PHP\JobRunner;
@@ -1032,8 +1033,24 @@ final class PersistentWorker
             // @codeCoverageIgnoreEnd
         }
 
+        // What the bootstrap script executes in the worker process is
+        // recorded when test impact data is recorded, as it is in the main
+        // process (see PHPUnit\TextUI\Application): it is what the tests
+        // that the worker process runs find when they start.
+        $beforeBootstrap = '';
+
+        if (CodeCoverage::instance()->isRecordingTestImpactData()) {
+            $beforeBootstrap = '\\' . CodeCoverage::class . '::instance()->startRecordingWhatIsExecutedOutsideOfTests(ConfigurationRegistry::get(), \\' . CodeCoverageFilterRegistry::class . '::instance());';
+        }
+
+        if (CodeCoverage::instance()->testRunConsistsOfASingleTest()) {
+            $testRunConsistsOfASingleTest = 'true';
+        } else {
+            $testRunConsistsOfASingleTest = 'false';
+        }
+
         try {
-            $configurationFragment = ChildProcessBootstrap::configurationFragment();
+            $configurationFragment = ChildProcessBootstrap::configurationFragment($beforeBootstrap);
             // @codeCoverageIgnoreStart
         } catch (ProcessIsolationException $e) {
             throw new WorkerException('Unable to write the worker configuration to a temporary file');
@@ -1047,6 +1064,7 @@ final class PersistentWorker
                 'childProcessHead'               => ChildProcessBootstrap::headFragment(''),
                 'childProcessConfiguration'      => $configurationFragment,
                 'collectCodeCoverageInformation' => $coverage,
+                'testRunConsistsOfASingleTest'   => $testRunConsistsOfASingleTest,
                 'testClassFiles'                 => var_export(TestSuiteLoader::loadedSuiteClassFiles(), true),
                 'commandFile'                    => var_export($this->commandFile, true),
                 'lockFile'                       => var_export($this->lockFile, true),

@@ -233,6 +233,77 @@ final class ExecutionOutsideOfTests
         $this->recordedTests[$test] = [$className, $methodName];
     }
 
+    /**
+     * What a worker process of a parallel test run executed outside of the
+     * tests it ran is what the tests can be affected by as well: the
+     * bootstrap script may do in a worker process what it does not do in
+     * the main process.
+     *
+     * @param list<non-empty-string> $files
+     */
+    public function recordExecutedOutsideOfTestsInWorker(array $files): void
+    {
+        foreach ($files as $file) {
+            $this->executedOutsideOfTests[$file] = true;
+        }
+    }
+
+    /**
+     * Hands over what was recorded since it was last handed over: a worker
+     * process of a parallel test run ships what it recorded with the result
+     * of the tests of every test class it ran, and what was shipped is not
+     * shipped again with the tests of the next test class.
+     *
+     * What was executed for the test class and for the data providers of the
+     * tests is added to what the tests executed before it is handed over:
+     * the tests of a test class are run by one worker process, which has
+     * therefore called the methods that are called after the last of them.
+     *
+     * @return array{tests: array<non-empty-string, array{className: non-empty-string, methodName: non-empty-string, files: list<non-empty-string>}>, executedOutsideOfTests: list<non-empty-string>}
+     */
+    public function handOver(TestImpactData $data): array
+    {
+        $collecting = $this->collecting;
+
+        if ($collecting) {
+            $this->collect();
+        }
+
+        $this->addTo($data);
+
+        $tests = [];
+
+        foreach ($data->recorded() as $test => $files) {
+            if (!isset($this->recordedTests[$test])) {
+                continue;
+            }
+
+            [$className, $methodName] = $this->recordedTests[$test];
+
+            $tests[$test] = [
+                'className'  => $className,
+                'methodName' => $methodName,
+                'files'      => $files,
+            ];
+        }
+
+        $executedOutsideOfTests = array_keys($this->executedOutsideOfTests);
+
+        $this->executedOutsideOfTests  = [];
+        $this->executedForTestClass    = [];
+        $this->executedForDataProvider = [];
+        $this->recordedTests           = [];
+
+        if ($collecting) {
+            $this->startCollecting();
+        }
+
+        return [
+            'tests'                  => $tests,
+            'executedOutsideOfTests' => $executedOutsideOfTests,
+        ];
+    }
+
     public function stop(): void
     {
         if ($this->collecting) {
