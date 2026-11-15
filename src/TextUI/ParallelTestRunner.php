@@ -973,7 +973,8 @@ final class ParallelTestRunner
                 // runner reports it wherever the unit runs.
                 if ($dependency->isValid() && $dependency->getTargetClassName() !== $className) {
                     return sprintf(
-                        'test %s depends on %s, a test of another class',
+                        'test %s::%s depends on %s, a test of another class',
+                        $className,
                         $test->name(),
                         $dependency->getTarget(),
                     );

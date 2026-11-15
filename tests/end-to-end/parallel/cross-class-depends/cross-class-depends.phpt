@@ -25,7 +25,7 @@ There were 2 PHPUnit test runner notices:
 
 1) The tests of class PHPUnit\TestFixture\ParallelCrossClassDepends\ProducerTest are run in the main process instead of a parallel worker because test PHPUnit\TestFixture\ParallelCrossClassDepends\ConsumerTest::testConsumes depends on PHPUnit\TestFixture\ParallelCrossClassDepends\ProducerTest::testProduces, a test of this class
 
-2) The tests of class PHPUnit\TestFixture\ParallelCrossClassDepends\ConsumerTest are run in the main process instead of a parallel worker because test testConsumes depends on PHPUnit\TestFixture\ParallelCrossClassDepends\ProducerTest::testProduces, a test of another class
+2) The tests of class PHPUnit\TestFixture\ParallelCrossClassDepends\ConsumerTest are run in the main process instead of a parallel worker because test PHPUnit\TestFixture\ParallelCrossClassDepends\ConsumerTest::testConsumes depends on PHPUnit\TestFixture\ParallelCrossClassDepends\ProducerTest::testProduces, a test of another class
 
 OK, but there were issues!
 Tests: 2, Assertions: 3, PHPUnit Notices: 2.
