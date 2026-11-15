@@ -319,6 +319,195 @@ final class ExecutionOutsideOfTestsTest extends TestCase
         $this->assertSame([$ignored], $this->addedTo(new DefaultTestImpactData, $execution)->executedOutsideOfTests());
     }
 
+    public function testRecordsWhatAWorkerProcessExecutedOutsideOfTestsForEveryTest(): void
+    {
+        $bootstrapped         = $this->writeSourceFile('Bootstrapped');
+        $bootstrappedInWorker = $this->writeSourceFile('BootstrappedInWorker');
+        $driver               = new DriverThatReportsWhatItIsTold;
+        $execution            = $this->executionOutsideOfTests($driver, [$bootstrapped, $bootstrappedInWorker]);
+
+        $execution->start();
+
+        $driver->execute($bootstrapped, self::EXECUTABLE_LINE);
+
+        $execution->recordExecutedOutsideOfTestsInWorker([$bootstrapped, $bootstrappedInWorker]);
+        $execution->stop();
+
+        $this->assertSame(
+            [$bootstrapped, $bootstrappedInWorker],
+            $this->addedTo(new DefaultTestImpactData, $execution)->executedOutsideOfTests(),
+        );
+    }
+
+    public function testHandsOverWhatTheTestsExecutedTogetherWithWhatWasExecutedForTheirTestClassAndForTheirDataProvider(): void
+    {
+        $bootstrapped    = $this->writeSourceFile('Bootstrapped');
+        $provided        = $this->writeSourceFile('Provided');
+        $beforeFirstTest = $this->writeSourceFile('BeforeFirstTest');
+        $executed        = $this->writeSourceFile('Executed');
+        $driver          = new DriverThatReportsWhatItIsTold;
+        $execution       = $this->executionOutsideOfTests($driver, [$bootstrapped, $provided, $beforeFirstTest, $executed]);
+
+        $execution->start();
+        $execution->enterDataProvider('FooTest', 'testOne');
+
+        $driver->execute($provided, self::EXECUTABLE_LINE);
+
+        $execution->leaveDataProvider();
+        $execution->enterTestClass('FooTest');
+
+        $driver->execute($beforeFirstTest, self::EXECUTABLE_LINE);
+
+        $execution->leaveTestClass();
+
+        $driver->execute($bootstrapped, self::EXECUTABLE_LINE);
+
+        $data = new DefaultTestImpactData;
+        $data->record('FooTest::testOne#0', [$executed]);
+        $data->record('FooTest::testTwo', [$executed]);
+
+        $execution->testWasRecorded('FooTest::testOne#0', 'FooTest', 'testOne');
+        $execution->testWasRecorded('FooTest::testTwo', 'FooTest', 'testTwo');
+
+        $this->assertSame(
+            [
+                'tests' => [
+                    'FooTest::testOne#0' => [
+                        'className'  => 'FooTest',
+                        'methodName' => 'testOne',
+                        'files'      => [$executed, $beforeFirstTest, $provided],
+                    ],
+                    'FooTest::testTwo' => [
+                        'className'  => 'FooTest',
+                        'methodName' => 'testTwo',
+                        'files'      => [$executed, $beforeFirstTest],
+                    ],
+                ],
+                'executedOutsideOfTests' => [$bootstrapped],
+            ],
+            $execution->handOver($data),
+        );
+    }
+
+    public function testDoesNotHandOverWhatWasRecordedForATestItWasNotToldAbout(): void
+    {
+        $executed  = $this->writeSourceFile('Executed');
+        $driver    = new DriverThatReportsWhatItIsTold;
+        $execution = $this->executionOutsideOfTests($driver, [$executed]);
+
+        $execution->start();
+
+        $data = new DefaultTestImpactData;
+        $data->record('FooTest::testOne', [$executed]);
+
+        $this->assertSame(
+            [
+                'tests'                  => [],
+                'executedOutsideOfTests' => [],
+            ],
+            $execution->handOver($data),
+        );
+    }
+
+    public function testDoesNotHandOverASecondTimeWhatItHandedOver(): void
+    {
+        $bootstrapped    = $this->writeSourceFile('Bootstrapped');
+        $beforeFirstTest = $this->writeSourceFile('BeforeFirstTest');
+        $executed        = $this->writeSourceFile('Executed');
+        $driver          = new DriverThatReportsWhatItIsTold;
+        $execution       = $this->executionOutsideOfTests($driver, [$bootstrapped, $beforeFirstTest, $executed]);
+
+        $execution->start();
+
+        $driver->execute($bootstrapped, self::EXECUTABLE_LINE);
+
+        $execution->enterTestClass('FooTest');
+
+        $driver->execute($beforeFirstTest, self::EXECUTABLE_LINE);
+
+        $execution->leaveTestClass();
+
+        $data = new DefaultTestImpactData;
+        $data->record('FooTest::testOne', [$executed]);
+
+        $execution->testWasRecorded('FooTest::testOne', 'FooTest', 'testOne');
+        $execution->handOver($data);
+
+        $data = new DefaultTestImpactData;
+        $data->record('FooTest::testTwo', [$executed]);
+
+        $execution->testWasRecorded('FooTest::testTwo', 'FooTest', 'testTwo');
+
+        $this->assertSame(
+            [
+                'tests' => [
+                    'FooTest::testTwo' => [
+                        'className'  => 'FooTest',
+                        'methodName' => 'testTwo',
+                        'files'      => [$executed],
+                    ],
+                ],
+                'executedOutsideOfTests' => [],
+            ],
+            $execution->handOver($data),
+        );
+    }
+
+    public function testKeepsRecordingOnceItHasHandedOverWhatItRecorded(): void
+    {
+        $bootstrapped  = $this->writeSourceFile('Bootstrapped');
+        $executedLater = $this->writeSourceFile('ExecutedLater');
+        $driver        = new DriverThatReportsWhatItIsTold;
+        $execution     = $this->executionOutsideOfTests($driver, [$bootstrapped, $executedLater]);
+
+        $execution->start();
+
+        $driver->execute($bootstrapped, self::EXECUTABLE_LINE);
+
+        $this->assertSame(
+            [
+                'tests'                  => [],
+                'executedOutsideOfTests' => [$bootstrapped],
+            ],
+            $execution->handOver(new DefaultTestImpactData),
+        );
+
+        $this->assertTrue($driver->isRunning());
+
+        $driver->execute($executedLater, self::EXECUTABLE_LINE);
+
+        $this->assertSame(
+            [
+                'tests'                  => [],
+                'executedOutsideOfTests' => [$executedLater],
+            ],
+            $execution->handOver(new DefaultTestImpactData),
+        );
+    }
+
+    public function testHandsOverWhatItRecordedWhileATestIsRunWithoutTakingTheCodeCoverageDriverFromTheTest(): void
+    {
+        $bootstrapped = $this->writeSourceFile('Bootstrapped');
+        $driver       = new DriverThatReportsWhatItIsTold;
+        $execution    = $this->executionOutsideOfTests($driver, [$bootstrapped]);
+
+        $execution->start();
+
+        $driver->execute($bootstrapped, self::EXECUTABLE_LINE);
+
+        $execution->pause();
+
+        $this->assertSame(
+            [
+                'tests'                  => [],
+                'executedOutsideOfTests' => [$bootstrapped],
+            ],
+            $execution->handOver(new DefaultTestImpactData),
+        );
+
+        $this->assertFalse($driver->isRunning());
+    }
+
     /**
      * @param list<non-empty-string> $firstPartyCode
      */
