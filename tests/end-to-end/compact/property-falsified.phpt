@@ -30,3 +30,18 @@ Property falsified after 1 example, counterexample shrunk in 2 steps:
 %sFalsifiedPropertyTest.php:%d
 
 FAILURES (1 test, 2 assertions, 1 failure)
+
+--- RECEIPT
+PHPUnit: %s
+PHP: %s
+Arguments: --do-not-record-test-run-history --no-configuration --random-seed 1234 --compact %s
+Working directory: %s
+Configuration: (none)
+Bootstrap: (none)
+Extensions: (none)
+Started: %s
+Ended: %s (completed)
+Shell exit code: 1
+Tests: 1 run, 2 assertions, 1 failed
+Issues triggered by tests: (none)
+Issues triggered by the test runner: (none)

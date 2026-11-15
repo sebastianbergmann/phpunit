@@ -24,7 +24,7 @@ validate_and_print($logfile);
 unlink($logfile);
 --EXPECTF--
 <?xml version="1.0"?>
-<e:events xmlns="https://schemas.opentest4j.org/reporting/core/0.2.0" xmlns:e="https://schemas.opentest4j.org/reporting/events/0.2.0" xmlns:git="https://schemas.opentest4j.org/reporting/git/0.2.0" xmlns:php="https://schema.phpunit.de/otr/php/0.1.0" xmlns:phpunit="https://schema.phpunit.de/otr/phpunit/0.3.0">
+<e:events xmlns="https://schemas.opentest4j.org/reporting/core/0.2.0" xmlns:e="https://schemas.opentest4j.org/reporting/events/0.2.0" xmlns:git="https://schemas.opentest4j.org/reporting/git/0.2.0" xmlns:php="https://schema.phpunit.de/otr/php/0.1.0" xmlns:phpunit="https://schema.phpunit.de/otr/phpunit/0.5.0">
  <infrastructure>
   <hostName>%s</hostName>
   <userName>%s</userName>
@@ -36,8 +36,18 @@ unlink($logfile);
   <git:commit>%s</git:commit>
   <git:status clean="%s"><![CDATA[%A]]></git:status>
   <phpunit:randomSeed>%d</phpunit:randomSeed>
+  <phpunit:invocation version="%s" workingDirectory="%s" time="%s">
+   <phpunit:argument>--do-not-record-test-run-history</phpunit:argument>
+   <phpunit:argument>--no-configuration</phpunit:argument>
+   <phpunit:argument>--no-output</phpunit:argument>
+   <phpunit:argument>--log-otr</phpunit:argument>
+   <phpunit:argument>%s</phpunit:argument>
+   <phpunit:argument>--include-git-information</phpunit:argument>
+   <phpunit:argument>%s</phpunit:argument>
+  </phpunit:invocation>
  </infrastructure>
- <e:started id="1" name="PHPUnit\TestFixture\Basic\StatusTest" time="%s">
+ <e:started id="0" name="PHPUnit" time="%s"/>
+ <e:started id="1" parentId="0" name="PHPUnit\TestFixture\Basic\StatusTest" time="%s">
   <metadata>
    <phpunit:testDox prettifiedClassName="Test result status with and without message"/>
   </metadata>
@@ -334,6 +344,15 @@ Failed asserting that false is true.
  <e:finished id="1" time="%s">
   <attachments>
    <phpunit:resourceUsage time="%f" memoryUsage="%d" peakMemoryUsage="%d" userCpuTime="%f" systemCpuTime="%f" cpuTime="%f"/>
+  </attachments>
+ </e:finished>
+ <e:finished id="0" time="%s">
+  <attachments>
+   <phpunit:outcome status="completed" shellExitCode="2" time="%s">
+    <phpunit:tests run="13" assertions="4" errored="2" failed="2" skipped="3" incomplete="2" risky="2"/>
+    <phpunit:issuesTriggeredByTests errors="0" deprecations="0" notices="0" warnings="0" phpunitErrors="0" phpunitDeprecations="0" phpunitNotices="0" phpunitWarnings="0"/>
+    <phpunit:issuesTriggeredByTestRunner errors="0" deprecations="0" notices="0" warnings="0" phpunitErrors="0" phpunitDeprecations="0" phpunitNotices="0" phpunitWarnings="2"/>
+   </phpunit:outcome>
   </attachments>
  </e:finished>
 </e:events>

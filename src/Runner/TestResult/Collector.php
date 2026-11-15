@@ -241,6 +241,7 @@ final class Collector
      */
     private array $retriedTests                        = [];
     private ?TimeLimitExceeded $timeLimitExceededEvent = null;
+    private bool $executionAborted                     = false;
 
     /**
      * @var array<non-empty-string, PropertyChecked>
@@ -289,6 +290,7 @@ final class Collector
             new TestRunnerTriggeredIssuePhpWarningSubscriber($this),
             new TestRunnerTriggeredIssueWarningSubscriber($this),
             new TestRunnerTimeLimitExceededSubscriber($this),
+            new TestRunnerExecutionAbortedSubscriber($this),
         );
 
         $this->issueFilter = $issueFilter;
@@ -337,6 +339,7 @@ final class Collector
             $this->retriedTests,
             $this->timeLimitExceededEvent,
             $this->propertyCheckedEvents,
+            $this->executionAborted,
         );
     }
 
@@ -814,6 +817,11 @@ final class Collector
     public function wasTimeLimitExceeded(): bool
     {
         return $this->timeLimitExceededEvent !== null;
+    }
+
+    public function testRunnerExecutionAborted(): void
+    {
+        $this->executionAborted = true;
     }
 
     public function numberOfErroredTests(): int

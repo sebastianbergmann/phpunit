@@ -32,3 +32,18 @@ Test code or tested code printed unexpected output: output of failing test
 
 --- RISKY: PHPUnit\TestFixture\PrintsUnexpectedOutputTest::testPrintsOnlyLineFeed
 Test code or tested code printed unexpected output: 
+
+--- RECEIPT
+PHPUnit: %s
+PHP: %s
+Arguments: --do-not-record-test-run-history --no-configuration --compact --disallow-test-output %s
+Working directory: %s
+Configuration: (none)
+Bootstrap: (none)
+Extensions: (none)
+Started: %s
+Ended: %s (completed)
+Shell exit code: 1
+Tests: 3 run, 3 assertions, 1 failed, 3 risky
+Issues triggered by tests: (none)
+Issues triggered by the test runner: (none)

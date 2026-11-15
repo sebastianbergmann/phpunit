@@ -7,24 +7,20 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Logging\OpenTestReporting;
+namespace PHPUnit\TestRunner\TestResult;
 
-use PHPUnit\Event\Application\Started;
-use PHPUnit\Event\Application\StartedSubscriber;
-use PHPUnit\Event\InvalidArgumentException;
+use PHPUnit\Event\TestRunner\ExecutionAborted;
+use PHPUnit\Event\TestRunner\ExecutionAbortedSubscriber;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class TestRunnerStartedSubscriber extends Subscriber implements StartedSubscriber
+final readonly class TestRunnerExecutionAbortedSubscriber extends Subscriber implements ExecutionAbortedSubscriber
 {
-    /**
-     * @throws InvalidArgumentException
-     */
-    public function notify(Started $event): void
+    public function notify(ExecutionAborted $event): void
     {
-        $this->logger()->testRunnerStarted();
+        $this->collector()->testRunnerExecutionAborted();
     }
 }

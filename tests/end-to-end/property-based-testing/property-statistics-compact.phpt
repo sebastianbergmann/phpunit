@@ -27,3 +27,18 @@ OK (1 test, %d assertions)
      55.6% even
      44.4% odd
      11.1% zero
+
+--- RECEIPT
+PHPUnit: %s
+PHP: %s
+Arguments: --do-not-record-test-run-history --no-configuration --random-seed 1234 --compact --display-property-statistics %s
+Working directory: %s
+Configuration: (none)
+Bootstrap: (none)
+Extensions: (none)
+Started: %s
+Ended: %s (completed)
+Shell exit code: 0
+Tests: 1 run, 20 assertions
+Issues triggered by tests: (none)
+Issues triggered by the test runner: (none)

@@ -30,3 +30,18 @@ Triggered by: PHPUnit\TestFixture\TriggeringTestsLimit\TwoTest (2 tests)
 deprecation triggered in first-party code
 Triggered 3 times (self) by 3 tests
 Triggered by: PHPUnit\TestFixture\TriggeringTestsLimit\OneTest::testFour (3 data sets)
+
+--- RECEIPT
+PHPUnit: %s
+PHP: %s
+Arguments: --do-not-record-test-run-history --configuration %s --compact --triggering-tests-limit 2
+Working directory: %s
+Configuration: %sphpunit.xml (SHA-256: %s)
+Bootstrap: (none)
+Extensions: (none)
+Started: %s
+Ended: %s (completed)
+Shell exit code: 0
+Tests: 8 run, 8 assertions
+Issues triggered by tests: 2 deprecations
+Issues triggered by the test runner: (none)

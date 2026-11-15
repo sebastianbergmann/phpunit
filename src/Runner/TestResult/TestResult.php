@@ -204,6 +204,7 @@ final readonly class TestResult
      */
     private array $retriedTests;
     private ?TimeLimitExceeded $timeLimitExceededEvent;
+    private bool $executionAborted;
 
     /**
      * @var array<non-empty-string, PropertyChecked>
@@ -243,7 +244,7 @@ final readonly class TestResult
      * @param array<non-empty-string, positive-int>                                                                          $retriedTests
      * @param array<non-empty-string, PropertyChecked>                                                                       $propertyCheckedEvents
      */
-    public function __construct(int $numberOfTests, int $numberOfTestsRun, int $numberOfAssertions, array $testErroredEvents, array $testFailedEvents, array $testConsideredRiskyEvents, array $testSuiteSkippedEvents, array $testSkippedEvents, array $testMarkedIncompleteEvents, array $testTriggeredPhpunitDeprecationEvents, array $testTriggeredPhpunitErrorEvents, array $testTriggeredPhpunitNoticeEvents, array $testTriggeredPhpunitWarningEvents, array $testRunnerTriggeredDeprecationEvents, array $testRunnerTriggeredNoticeEvents, array $testRunnerTriggeredWarningEvents, array $testRunnerTriggeredIssueDeprecationEvents, array $testRunnerTriggeredIssueErrorEvents, array $testRunnerTriggeredIssueNoticeEvents, array $testRunnerTriggeredIssuePhpDeprecationEvents, array $testRunnerTriggeredIssuePhpNoticeEvents, array $testRunnerTriggeredIssuePhpWarningEvents, array $testRunnerTriggeredIssueWarningEvents, array $errors, array $deprecations, array $notices, array $warnings, array $phpDeprecations, array $phpNotices, array $phpWarnings, int $numberOfIssuesIgnoredByBaseline, array $numberOfDeprecationsByTrigger, array $retriedTests = [], ?TimeLimitExceeded $timeLimitExceededEvent = null, array $propertyCheckedEvents = [])
+    public function __construct(int $numberOfTests, int $numberOfTestsRun, int $numberOfAssertions, array $testErroredEvents, array $testFailedEvents, array $testConsideredRiskyEvents, array $testSuiteSkippedEvents, array $testSkippedEvents, array $testMarkedIncompleteEvents, array $testTriggeredPhpunitDeprecationEvents, array $testTriggeredPhpunitErrorEvents, array $testTriggeredPhpunitNoticeEvents, array $testTriggeredPhpunitWarningEvents, array $testRunnerTriggeredDeprecationEvents, array $testRunnerTriggeredNoticeEvents, array $testRunnerTriggeredWarningEvents, array $testRunnerTriggeredIssueDeprecationEvents, array $testRunnerTriggeredIssueErrorEvents, array $testRunnerTriggeredIssueNoticeEvents, array $testRunnerTriggeredIssuePhpDeprecationEvents, array $testRunnerTriggeredIssuePhpNoticeEvents, array $testRunnerTriggeredIssuePhpWarningEvents, array $testRunnerTriggeredIssueWarningEvents, array $errors, array $deprecations, array $notices, array $warnings, array $phpDeprecations, array $phpNotices, array $phpWarnings, int $numberOfIssuesIgnoredByBaseline, array $numberOfDeprecationsByTrigger, array $retriedTests = [], ?TimeLimitExceeded $timeLimitExceededEvent = null, array $propertyCheckedEvents = [], bool $executionAborted = false)
     {
         $this->numberOfTests                                = $numberOfTests;
         $this->numberOfTestsRun                             = $numberOfTestsRun;
@@ -280,6 +281,7 @@ final readonly class TestResult
         $this->retriedTests                                 = $retriedTests;
         $this->timeLimitExceededEvent                       = $timeLimitExceededEvent;
         $this->propertyCheckedEvents                        = $propertyCheckedEvents;
+        $this->executionAborted                             = $executionAborted;
     }
 
     /**
@@ -323,6 +325,15 @@ final readonly class TestResult
         assert($this->timeLimitExceededEvent !== null);
 
         return $this->timeLimitExceededEvent;
+    }
+
+    /**
+     * Whether the test runner stopped running tests before every test was
+     * run, for instance because a stopOn* setting told it to.
+     */
+    public function wasExecutionAborted(): bool
+    {
+        return $this->executionAborted;
     }
 
     public function numberOfTestsRun(): int

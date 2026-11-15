@@ -16,11 +16,14 @@ use PHPUnit\Logging\TeamCity\TeamCityLogger;
 use PHPUnit\Logging\TestDox\TestResultCollection;
 use PHPUnit\Runner\DirectoryDoesNotExistException;
 use PHPUnit\Runner\Extension\ExtensionCapabilities;
+use PHPUnit\Runner\Receipt\Invocation;
+use PHPUnit\Runner\Receipt\Outcome;
 use PHPUnit\TestRunner\TestResult\TestResult;
 use PHPUnit\TextUI\CannotOpenSocketException;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\InvalidSocketException;
 use PHPUnit\TextUI\Output\Compact\ProgressPrinter\ProgressPrinter as CompactProgressPrinter;
+use PHPUnit\TextUI\Output\Compact\ReceiptPrinter as CompactReceiptPrinter;
 use PHPUnit\TextUI\Output\Compact\ResultPrinter as CompactResultPrinter;
 use PHPUnit\TextUI\Output\Default\ProgressPrinter\ProgressPrinter as DefaultProgressPrinter;
 use PHPUnit\TextUI\Output\Default\ResultPrinter as DefaultResultPrinter;
@@ -132,6 +135,21 @@ final class Facade
         if (self::$summaryPrinter !== null) {
             self::$summaryPrinter->print($result);
         }
+    }
+
+    /**
+     * The receipt of the test run is part of the compact output, of which it is
+     * the last record.
+     */
+    public static function printReceipt(Invocation $invocation, Outcome $outcome): void
+    {
+        if (self::$compactResultPrinter === null) {
+            return;
+        }
+
+        assert(self::$printer !== null);
+
+        new CompactReceiptPrinter(self::$printer)->print($invocation, $outcome);
     }
 
     /**

@@ -62,6 +62,17 @@ final readonly class Renderer
     }
 
     /**
+     * Prints a line of the current record that consists of a label and a user-supplied value.
+     *
+     * The value is kept on the line of its label so that it cannot be mistaken for
+     * another line of the record, or for the header of another record.
+     */
+    public function printLabelledLine(string $label, string $value): void
+    {
+        $this->printer->print($label . ': ' . $this->singleLine($value) . PHP_EOL);
+    }
+
+    /**
      * Prints one or more lines of user-supplied text that belong to the current record.
      */
     public function printBody(string $body): void

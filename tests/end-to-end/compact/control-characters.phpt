@@ -34,3 +34,18 @@ FAILURES (4 tests, 3 assertions, 2 failures, 1 skipped)
 
 --- SKIPPED: PHPUnit\TestFixture\ControlCharactersTest::testTestDoxLabel
 Skipped\u{001B}[2K\u{000D}Nothing to see here
+
+--- RECEIPT
+PHPUnit: %s
+PHP: %s
+Arguments: --do-not-record-test-run-history --no-configuration --compact --display-skipped %s
+Working directory: %s
+Configuration: (none)
+Bootstrap: (none)
+Extensions: (none)
+Started: %s
+Ended: %s (completed)
+Shell exit code: 1
+Tests: 4 run, 3 assertions, 2 failed, 1 skipped
+Issues triggered by tests: (none)
+Issues triggered by the test runner: (none)

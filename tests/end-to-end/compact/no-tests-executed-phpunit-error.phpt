@@ -23,3 +23,18 @@ Empty data set provided by data provider
 
 --- PHPUNIT TEST RUNNER WARNING
 No tests found in class "PHPUnit\TestFixture\DataProvider\EmptyDatasetTest".
+
+--- RECEIPT
+PHPUnit: %s
+PHP: %s
+Arguments: --do-not-record-test-run-history --no-configuration --compact %s
+Working directory: %s
+Configuration: (none)
+Bootstrap: (none)
+Extensions: (none)
+Started: %s
+Ended: %s (completed)
+Shell exit code: 2
+Tests: 0 run, 0 assertions
+Issues triggered by tests: 1 PHPUnit error
+Issues triggered by the test runner: 1 PHPUnit warning

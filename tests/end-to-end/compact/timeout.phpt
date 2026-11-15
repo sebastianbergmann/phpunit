@@ -30,3 +30,18 @@ ERRORS (1 test, 0 assertions, 1 error)
 
 --- TIME LIMIT EXCEEDED
 The time limit of 1 second for the test run was exceeded.
+
+--- RECEIPT
+PHPUnit: %s
+PHP: %s
+Arguments: --do-not-record-test-run-history --no-configuration --compact --timeout 1 %s
+Working directory: %s
+Configuration: (none)
+Bootstrap: (none)
+Extensions: (none)
+Started: %s
+Ended: %s (time-limit-exceeded)
+Shell exit code: 124
+Tests: 1 run, 0 assertions, 1 errored
+Issues triggered by tests: (none)
+Issues triggered by the test runner: (none)
