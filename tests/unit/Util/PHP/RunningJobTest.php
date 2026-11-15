@@ -271,6 +271,66 @@ EOT,
         $job->wait();
     }
 
+    public function testKeepsWhatAJobWhoseOutputIsCapturedInFilesWroteToItsStandardErrorApartFromWhatItWroteToItsStandardOutput(): void
+    {
+        $job = $this->jobRunner()->capturingOutputInFiles()->start(
+            new Job(
+                <<<'EOT'
+<?php declare(strict_types=1);
+fwrite(STDOUT, 'out-');
+fwrite(STDERR, 'err');
+fwrite(STDOUT, 'put');
+
+EOT,
+                ChildProcessReason::ParallelWorker,
+            ),
+        );
+
+        $job->closeStdin();
+
+        while ($job->isRunning()) {
+            usleep(1000);
+        }
+
+        $this->assertSame(7, $job->outputLength());
+        $this->assertSame(3, $job->errorOutputLength());
+        $this->assertSame('out-put', $job->outputBetween(0, 7));
+        $this->assertSame('put', $job->outputBetween(4, 7));
+        $this->assertSame('err', $job->errorOutputBetween(0, 3));
+        $this->assertSame('', $job->errorOutputBetween(3, 3));
+
+        $result = $job->wait();
+
+        $this->assertSame('out-put', $result->stdout());
+        $this->assertSame('err', $result->stderr());
+    }
+
+    public function testReportsNoErrorOutputForAJobWhoseOutputIsRedirectedToOneFile(): void
+    {
+        $job = $this->jobRunner()->start(
+            new Job(
+                <<<'EOT'
+<?php declare(strict_types=1);
+fwrite(STDERR, 'err');
+
+EOT,
+                ChildProcessReason::ParallelWorker,
+                redirectErrors: true,
+            ),
+        );
+
+        $job->closeStdin();
+
+        while ($job->isRunning()) {
+            usleep(1000);
+        }
+
+        $this->assertSame(0, $job->errorOutputLength());
+        $this->assertSame('', $job->errorOutputBetween(0, 3));
+
+        $job->wait();
+    }
+
     public function testReadsNoOutputOfAJobWhoseOutputIsReadFromPipes(): void
     {
         $job = $this->jobRunner()->start(

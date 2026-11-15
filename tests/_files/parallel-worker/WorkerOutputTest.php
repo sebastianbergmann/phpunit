@@ -27,6 +27,8 @@ final class WorkerOutputTest extends TestCase
     public static function tearDownAfterClass(): void
     {
         print "after the last test\n";
+
+        fwrite(STDERR, "written to the standard error after the last test\n");
     }
 
     public function testOne(): void

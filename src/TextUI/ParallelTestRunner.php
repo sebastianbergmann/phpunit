@@ -53,6 +53,7 @@ use PHPUnit\Runner\TimeLimit\TimeLimitHandler;
 use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 use PHPUnit\TextUI\Configuration\Configuration;
+use PHPUnit\TextUI\Output\DefaultPrinter;
 use PHPUnit\Util\PHP\JobRunner;
 use PHPUnit\Util\PHP\JobRunnerRegistry;
 use Throwable;
@@ -209,6 +210,7 @@ final class ParallelTestRunner
             {
                 return TestResultFacade::shouldStop();
             },
+            DefaultPrinter::standardError(),
         );
 
         $processIsolation = new ProcessIsolation(Event\Facade::emitter());
@@ -483,9 +485,9 @@ final class ParallelTestRunner
                 {
                     $aggregator->add($completed);
                 },
-                static function (WorkUnit $unit, Event\EventCollection $events, string $output) use ($aggregator): void
+                static function (WorkUnit $unit, Event\EventCollection $events, string $output, string $errorOutput) use ($aggregator): void
                 {
-                    $aggregator->addStreamedEvents($unit->index(), $events, $output);
+                    $aggregator->addStreamedEvents($unit->index(), $events, $output, $errorOutput);
                 },
                 static function (WorkUnit $unit) use ($aggregator): bool
                 {

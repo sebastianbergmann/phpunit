@@ -19,6 +19,7 @@ use PHPUnit\Event\Telemetry;
 use PHPUnit\Event\Telemetry\HRTime;
 use PHPUnit\Event\TestRunner\PhpunitWarningTriggered;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
@@ -27,6 +28,17 @@ use PHPUnit\Framework\TestCase;
 final class EventStreamTest extends TestCase
 {
     private const string NONCE = '0123456789abcdef';
+
+    /**
+     * @return array<non-empty-string, array{0: int, 1: int}>
+     */
+    public static function overflowingOutputLengths(): array
+    {
+        return [
+            'standard output' => [-1, 0],
+            'standard error'  => [0, -1],
+        ];
+    }
 
     public function testReadsBackTheFramesItWrote(): void
     {
@@ -47,19 +59,21 @@ final class EventStreamTest extends TestCase
         $second = new EventCollection;
         $second->add($this->warningTriggered('second'));
 
-        $data = EventStream::frame(self::NONCE, $first, 12) . EventStream::frame(self::NONCE, $second, 345);
+        $data = EventStream::frame(self::NONCE, $first, 12, 3) . EventStream::frame(self::NONCE, $second, 345, 67);
 
         $result = EventStream::readFrames($data, self::NONCE);
 
         $this->assertFalse($result['tainted']);
         $this->assertCount(2, $result['frames']);
         $this->assertSame(12, $result['frames'][0]['outputLength']);
+        $this->assertSame(3, $result['frames'][0]['errorOutputLength']);
         $this->assertSame(345, $result['frames'][1]['outputLength']);
+        $this->assertSame(67, $result['frames'][1]['errorOutputLength']);
     }
 
     public function testEncodesAnEmptyCollectionOfEventsToAnEmptyFrame(): void
     {
-        $this->assertSame('', EventStream::frame(self::NONCE, new EventCollection, 0));
+        $this->assertSame('', EventStream::frame(self::NONCE, new EventCollection, 0, 0));
     }
 
     public function testLeavesAFrameWhoseBytesAreNotYetAllVisibleForALaterRead(): void
@@ -111,12 +125,13 @@ final class EventStreamTest extends TestCase
         $this->assertSame([], $result['frames']);
     }
 
-    public function testTaintsTheStreamAtAFrameWhoseOutputLengthOverflows(): void
+    #[DataProvider('overflowingOutputLengths')]
+    public function testTaintsTheStreamAtAFrameWhoseOutputLengthOverflows(int $outputLength, int $errorOutputLength): void
     {
         $events = new EventCollection;
         $events->add($this->warningTriggered('first'));
 
-        $payload = self::NONCE . pack('J', -1) . serialize($events);
+        $payload = self::NONCE . pack('JJ', $outputLength, $errorOutputLength) . serialize($events);
         $data    = pack('J', strlen($payload)) . $payload;
 
         $result = EventStream::readFrames($data, self::NONCE);
@@ -127,7 +142,7 @@ final class EventStreamTest extends TestCase
 
     public function testTaintsTheStreamAtAFrameWhosePayloadIsNotACollectionOfEvents(): void
     {
-        $payload = self::NONCE . pack('J', 0) . 'not-a-serialized-collection-of-events';
+        $payload = self::NONCE . pack('JJ', 0, 0) . 'not-a-serialized-collection-of-events';
         $data    = pack('J', strlen($payload)) . $payload;
 
         $result = EventStream::readFrames($data, self::NONCE);
@@ -167,14 +182,14 @@ final class EventStreamTest extends TestCase
 
             $events->add($this->warningTriggered($message));
 
-            $data .= EventStream::frame(self::NONCE, $events, 0);
+            $data .= EventStream::frame(self::NONCE, $events, 0, 0);
         }
 
         return $data;
     }
 
     /**
-     * @param list<array{events: EventCollection, outputLength: non-negative-int}> $frames
+     * @param list<array{events: EventCollection, outputLength: non-negative-int, errorOutputLength: non-negative-int}> $frames
      *
      * @return list<string>
      */

@@ -191,68 +191,81 @@ final class RunningJob
     }
 
     /**
-     * The number of bytes the worker process has written to its standard
-     * output and standard error so far, for a job whose output is redirected
-     * to a file rather than a pipe. For any other job, it is 0. Once the
-     * process has been reaped, its output is available from wait() instead.
+     * The number of bytes the process has written so far to its standard
+     * output, for a job whose standard output is captured in a file, or to
+     * its standard output and its standard error, for a job whose output is
+     * redirected to one file. For a job whose output is read from pipes, it
+     * is 0. Once the process has been reaped, its output is available from
+     * wait() instead.
      *
      * @return non-negative-int
      */
     public function outputLength(): int
     {
-        if (!is_resource($this->mergedOutputStream)) {
-            return 0;
+        if (is_resource($this->outputFile)) {
+            return $this->lengthOf($this->outputFile);
         }
 
-        $statistics = fstat($this->mergedOutputStream);
-
-        if ($statistics === false) {
-            // @codeCoverageIgnoreStart
-            return 0;
-            // @codeCoverageIgnoreEnd
+        if (is_resource($this->mergedOutputStream)) {
+            return $this->lengthOf($this->mergedOutputStream);
         }
 
-        return max(0, $statistics['size']);
+        return 0;
     }
 
     /**
-     * What the worker process wrote to its standard output and standard
-     * error between the two given offsets, for a job whose output is
-     * redirected to a file rather than a pipe. For any other job, and when
-     * the file cannot be read, it is the empty string.
+     * The number of bytes the process has written to its standard error so
+     * far, for a job whose standard error is captured in a file of its own.
+     * For any other job, it is 0.
      *
-     * The file is read through its name, not through the stream that was
-     * passed to the process: the process writes at the position of that
-     * stream, which reading from it here would move.
+     * @return non-negative-int
+     */
+    public function errorOutputLength(): int
+    {
+        if (is_resource($this->errorFile)) {
+            return $this->lengthOf($this->errorFile);
+        }
+
+        return 0;
+    }
+
+    /**
+     * What the process wrote between the two given offsets of what
+     * outputLength() measures. For a job whose output is read from pipes,
+     * and when the file cannot be read, it is the empty string.
      *
      * @param non-negative-int $from
      * @param non-negative-int $to
      */
     public function outputBetween(int $from, int $to): string
     {
-        $length = $to - $from;
-
-        if (!is_resource($this->mergedOutputStream) || $length <= 0) {
-            return '';
+        if (is_resource($this->outputFile)) {
+            return $this->between($this->outputFile, $from, $to);
         }
 
-        $metaData = stream_get_meta_data($this->mergedOutputStream);
-
-        if (!isset($metaData['uri']) || !is_file($metaData['uri'])) {
-            // @codeCoverageIgnoreStart
-            return '';
-            // @codeCoverageIgnoreEnd
+        if (is_resource($this->mergedOutputStream)) {
+            return $this->between($this->mergedOutputStream, $from, $to);
         }
 
-        $output = file_get_contents($metaData['uri'], false, null, $from, $length);
+        return '';
+    }
 
-        if ($output === false) {
-            // @codeCoverageIgnoreStart
-            return '';
-            // @codeCoverageIgnoreEnd
+    /**
+     * What the process wrote to its standard error between the two given
+     * offsets, for a job whose standard error is captured in a file of its
+     * own. For any other job, and when the file cannot be read, it is the
+     * empty string.
+     *
+     * @param non-negative-int $from
+     * @param non-negative-int $to
+     */
+    public function errorOutputBetween(int $from, int $to): string
+    {
+        if (is_resource($this->errorFile)) {
+            return $this->between($this->errorFile, $from, $to);
         }
 
-        return $output;
+        return '';
     }
 
     /**
@@ -411,6 +424,60 @@ final class RunningJob
         }
 
         return $this->wait();
+    }
+
+    /**
+     * @param resource $file
+     *
+     * @return non-negative-int
+     */
+    private function lengthOf(mixed $file): int
+    {
+        $statistics = fstat($file);
+
+        if ($statistics === false) {
+            // @codeCoverageIgnoreStart
+            return 0;
+            // @codeCoverageIgnoreEnd
+        }
+
+        return max(0, $statistics['size']);
+    }
+
+    /**
+     * The file is read through its name, not through the stream that was
+     * passed to the process: the process writes at the position of that
+     * stream, which reading from it here would move.
+     *
+     * @param resource         $file
+     * @param non-negative-int $from
+     * @param non-negative-int $to
+     */
+    private function between(mixed $file, int $from, int $to): string
+    {
+        $length = $to - $from;
+
+        if ($length <= 0) {
+            return '';
+        }
+
+        $metaData = stream_get_meta_data($file);
+
+        if (!isset($metaData['uri']) || !is_file($metaData['uri'])) {
+            // @codeCoverageIgnoreStart
+            return '';
+            // @codeCoverageIgnoreEnd
+        }
+
+        $output = file_get_contents($metaData['uri'], false, null, $from, $length);
+
+        if ($output === false) {
+            // @codeCoverageIgnoreStart
+            return '';
+            // @codeCoverageIgnoreEnd
+        }
+
+        return $output;
     }
 
     /**

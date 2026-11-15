@@ -60,8 +60,8 @@ final readonly class JobRunner
 
     /**
      * Whether the standard output and the standard error of a process that
-     * startAsync() starts are captured in files instead of pipes (see
-     * capturingOutputInFiles()).
+     * start() or startAsync() starts are captured in files instead of pipes
+     * (see capturingOutputInFiles()).
      */
     private bool $captureOutputInFiles;
 
@@ -89,7 +89,7 @@ final readonly class JobRunner
 
     /**
      * A copy of this job runner that captures the standard output and the
-     * standard error of a process that startAsync() starts in temporary files
+     * standard error of a process that start() or startAsync() starts in temporary files
      * instead of pipes, for a caller that polls many such processes in one
      * loop (see PhptRunner).
      *
@@ -174,7 +174,7 @@ final readonly class JobRunner
             // @codeCoverageIgnoreEnd
         }
 
-        return $this->startProcess($job, $temporaryFile, false);
+        return $this->startProcess($job, $temporaryFile, $this->captureOutputInFiles);
     }
 
     /**

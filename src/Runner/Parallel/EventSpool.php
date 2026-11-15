@@ -26,9 +26,9 @@ use PHPUnit\Event\EventCollection;
 
 /**
  * Keeps the events that units streamed before it is their turn in the release
- * sequence, and what their workers wrote to their standard output and their
- * standard error before they streamed them, in a temporary file rather than
- * in memory.
+ * sequence, and what their workers wrote to their standard output and to
+ * their standard error before they streamed them, in a temporary file rather
+ * than in memory.
  *
  * The events of a unit are held back until every unit that precedes it in
  * suite order has been released. A single slow test class can therefore hold
@@ -77,9 +77,9 @@ final class EventSpool
      *
      * @throws WorkerException
      */
-    public function add(int $index, EventCollection $events, string $output): void
+    public function add(int $index, EventCollection $events, string $output, string $errorOutput): void
     {
-        $serializedEvents = serialize([$events, $output]);
+        $serializedEvents = serialize([$events, $output, $errorOutput]);
         $length           = strlen($serializedEvents);
 
         assert($length > 0);
@@ -111,7 +111,8 @@ final class EventSpool
 
     /**
      * The collections of events that were added for the unit, each with the
-     * output that was added with it, in the order in which they were added.
+     * output and the error output that were added with it, in the order in
+     * which they were added.
      * They are no longer kept: a collection is read from the file when it is
      * asked for, so that only one of them is in memory at a time.
      *
@@ -119,7 +120,7 @@ final class EventSpool
      *
      * @throws WorkerException
      *
-     * @return Generator<int, array{0: EventCollection, 1: string}>
+     * @return Generator<int, array{0: EventCollection, 1: string, 2: string}>
      */
     public function take(int $index): Generator
     {
@@ -154,7 +155,7 @@ final class EventSpool
      *
      * @throws WorkerException
      *
-     * @return array{0: EventCollection, 1: string}
+     * @return array{0: EventCollection, 1: string, 2: string}
      */
     private function read(int $offset, int $length): array
     {
@@ -175,11 +176,12 @@ final class EventSpool
         $eventsAndOutput = unserialize($serializedEvents);
 
         assert(is_array($eventsAndOutput));
-        assert(isset($eventsAndOutput[0], $eventsAndOutput[1]));
+        assert(isset($eventsAndOutput[0], $eventsAndOutput[1], $eventsAndOutput[2]));
         assert($eventsAndOutput[0] instanceof EventCollection);
         assert(is_string($eventsAndOutput[1]));
+        assert(is_string($eventsAndOutput[2]));
 
-        return [$eventsAndOutput[0], $eventsAndOutput[1]];
+        return [$eventsAndOutput[0], $eventsAndOutput[1], $eventsAndOutput[2]];
     }
 
     private function emptyFileWhenNothingIsKept(): void

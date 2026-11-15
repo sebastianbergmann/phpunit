@@ -25,17 +25,18 @@ use PHPUnit\Framework\TestRunner\ChildProcessResultEnvelope;
  *
  * The stream is a sequence of frames that the worker appends to a file. Each
  * frame carries the events collected since the previous frame, serialized and
- * prefixed with the nonce that authenticates them and with the number of
- * bytes that the worker had written to its standard output and its standard
- * error when it wrote the frame; the whole payload is in turn prefixed with
- * its length. Both numbers are unsigned 64-bit big-endian integers:
+ * prefixed with the nonce that authenticates them and with the numbers of
+ * bytes that the worker had written to its standard output and to its
+ * standard error when it wrote the frame; the whole payload is in turn
+ * prefixed with its length. These numbers are unsigned 64-bit big-endian
+ * integers:
  *
- *     length (8 bytes) | nonce | output length (8 bytes) | serialized EventCollection
+ *     length (8 bytes) | nonce | output length (8 bytes) | error output length (8 bytes) | serialized EventCollection
  *
- * The output length is what lets the parent process tell what the worker
+ * The output lengths are what lets the parent process tell what the worker
  * wrote before the tests of a frame finished from what it wrote after: the
- * output of the worker is redirected to a file that the parent process reads
- * (see PersistentWorker).
+ * standard output and the standard error of the worker are captured in files
+ * that the parent process reads (see PersistentWorker).
  *
  * The parent reads the file incrementally while the worker is still appending
  * to it, without any locking. The length prefix is what makes that safe: a
@@ -48,37 +49,38 @@ use PHPUnit\Framework\TestRunner\ChildProcessResultEnvelope;
  */
 final class EventStream
 {
-    private const int FRAME_HEADER_BYTES  = 8;
-    private const int OUTPUT_LENGTH_BYTES = 8;
+    private const int FRAME_HEADER_BYTES   = 8;
+    private const int OUTPUT_LENGTHS_BYTES = 16;
 
     /**
      * Encode one frame: the given events, serialized and prefixed with the
-     * nonce that authenticates them, with the number of bytes that the worker
-     * has written to its standard output and its standard error so far, and
-     * with the length of the whole payload.
+     * nonce that authenticates them, with the numbers of bytes that the
+     * worker has written to its standard output and to its standard error so
+     * far, and with the length of the whole payload.
      *
      * The frame for an empty collection of events is the empty string; there
      * is nothing to transport.
      *
      * @param non-empty-string $nonce
      * @param non-negative-int $outputLength
+     * @param non-negative-int $errorOutputLength
      */
-    public static function frame(string $nonce, EventCollection $events, int $outputLength): string
+    public static function frame(string $nonce, EventCollection $events, int $outputLength, int $errorOutputLength): string
     {
         if ($events->isEmpty()) {
             return '';
         }
 
-        $payload = $nonce . pack('J', $outputLength) . serialize($events);
+        $payload = $nonce . pack('JJ', $outputLength, $errorOutputLength) . serialize($events);
 
         return pack('J', strlen($payload)) . $payload;
     }
 
     /**
      * Decode the complete frames at the beginning of $data into the
-     * collections of events they carry, each with the number of bytes that
-     * the worker had written to its standard output and its standard error
-     * when it wrote the frame.
+     * collections of events they carry, each with the numbers of bytes that
+     * the worker had written to its standard output and to its standard
+     * error when it wrote the frame.
      *
      * An incomplete frame at the end of $data — one whose bytes are not yet
      * all visible to the reader — is not consumed, so that the caller can
@@ -94,7 +96,7 @@ final class EventStream
      *
      * @param ?non-empty-string $nonce
      *
-     * @return array{frames: list<array{events: EventCollection, outputLength: non-negative-int}>, bytesConsumed: non-negative-int, tainted: bool}
+     * @return array{frames: list<array{events: EventCollection, outputLength: non-negative-int, errorOutputLength: non-negative-int}>, bytesConsumed: non-negative-int, tainted: bool}
      */
     public static function readFrames(string $data, ?string $nonce): array
     {
@@ -124,26 +126,32 @@ final class EventStream
 
             $verifiedPayload = ChildProcessResultEnvelope::verifyAndStripNonce($payload, $nonce);
 
-            if ($verifiedPayload === null || strlen($verifiedPayload) < self::OUTPUT_LENGTH_BYTES) {
+            if ($verifiedPayload === null || strlen($verifiedPayload) < self::OUTPUT_LENGTHS_BYTES) {
                 return self::tainted($frames, $position);
             }
 
-            $outputHeader = unpack('Jlength', substr($verifiedPayload, 0, self::OUTPUT_LENGTH_BYTES));
+            $outputHeader = unpack('Joutput/Jerror', substr($verifiedPayload, 0, self::OUTPUT_LENGTHS_BYTES));
 
-            // see above: unpack() cannot fail on exactly eight bytes
-            if ($outputHeader === false || !isset($outputHeader['length']) || !is_int($outputHeader['length']) || $outputHeader['length'] < 0) {
+            // see above: unpack() cannot fail on exactly sixteen bytes
+            if ($outputHeader === false ||
+                !isset($outputHeader['output'], $outputHeader['error']) ||
+                !is_int($outputHeader['output']) ||
+                !is_int($outputHeader['error']) ||
+                $outputHeader['output'] < 0 ||
+                $outputHeader['error'] < 0) {
                 return self::tainted($frames, $position);
             }
 
-            $events = @unserialize(substr($verifiedPayload, self::OUTPUT_LENGTH_BYTES));
+            $events = @unserialize(substr($verifiedPayload, self::OUTPUT_LENGTHS_BYTES));
 
             if (!$events instanceof EventCollection) {
                 return self::tainted($frames, $position);
             }
 
             $frames[] = [
-                'events'       => $events,
-                'outputLength' => $outputHeader['length'],
+                'events'            => $events,
+                'outputLength'      => $outputHeader['output'],
+                'errorOutputLength' => $outputHeader['error'],
             ];
 
             $position += self::FRAME_HEADER_BYTES + $length;
@@ -157,10 +165,10 @@ final class EventStream
     }
 
     /**
-     * @param list<array{events: EventCollection, outputLength: non-negative-int}> $frames
-     * @param non-negative-int                                                     $bytesConsumed
+     * @param list<array{events: EventCollection, outputLength: non-negative-int, errorOutputLength: non-negative-int}> $frames
+     * @param non-negative-int                                                                                          $bytesConsumed
      *
-     * @return array{frames: list<array{events: EventCollection, outputLength: non-negative-int}>, bytesConsumed: non-negative-int, tainted: true}
+     * @return array{frames: list<array{events: EventCollection, outputLength: non-negative-int, errorOutputLength: non-negative-int}>, bytesConsumed: non-negative-int, tainted: true}
      */
     private static function tainted(array $frames, int $bytesConsumed): array
     {

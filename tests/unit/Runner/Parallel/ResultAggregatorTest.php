@@ -43,6 +43,7 @@ use PHPUnit\Runner\TimeLimit\TimeLimitExceededException;
 use PHPUnit\TestFixture\ParallelWorker\WorkerFirstTest;
 use PHPUnit\TestFixture\ParallelWorker\WorkerSecondTest;
 use PHPUnit\TestRunner\TestResult\PassedTests;
+use PHPUnit\TextUI\Output\Printer;
 use WeakReference;
 
 #[CoversClass(ResultAggregator::class)]
@@ -1012,6 +1013,39 @@ final class ResultAggregatorTest extends TestCase
         $this->expectOutputString("output after the last test\n");
     }
 
+    public function testPrintsWhatAWorkerWroteToItsStandardErrorToTheStandardError(): void
+    {
+        $standardError = $this->createMock(Printer::class);
+
+        $standardError->expects($this->exactly(2))->method('print')->willReturnCallback(
+            static function (string $buffer) use (&$printed): void
+            {
+                $printed[] = $buffer;
+            },
+        )->seal();
+
+        $printed    = [];
+        $aggregator = $this->aggregator($this->createStub(Emitter::class), null, $standardError);
+
+        $aggregator->addStreamedEvents(0, $this->events('first test of unit 0'), "output\n", "error output\n");
+
+        $nonce = 'abc';
+
+        $aggregator->add(
+            CompletedWorkUnit::fromEnvelope(
+                new TestClassWorkUnit(0, self::class, []),
+                $nonce . serialize((object) ['codeCoverage' => null, 'events' => new EventCollection, 'passedTests' => new PassedTests]),
+                $nonce,
+                '',
+                "error output after the last test\n",
+            ),
+        );
+
+        $this->assertSame(["error output\n", "error output after the last test\n"], $printed);
+
+        $this->expectOutputString("output\n");
+    }
+
     public function testDoesNotPrintWhatAWorkerWroteOnceTheRunIsToStop(): void
     {
         $forwarded = [];
@@ -1423,7 +1457,7 @@ final class ResultAggregatorTest extends TestCase
         $this->assertSame(['before the stop'], $forwarded);
     }
 
-    private function aggregator(Emitter $emitter, ?callable $shouldStop = null): ResultAggregator
+    private function aggregator(Emitter $emitter, ?callable $shouldStop = null, ?Printer $standardError = null): ResultAggregator
     {
         if ($shouldStop === null) {
             $shouldStop = static function (): bool
@@ -1432,12 +1466,17 @@ final class ResultAggregatorTest extends TestCase
             };
         }
 
+        if ($standardError === null) {
+            $standardError = $this->createStub(Printer::class);
+        }
+
         return new ResultAggregator(
             new Facade,
             $emitter,
             new PassedTests,
             new CodeCoverage($this->createStub(Emitter::class)),
             $shouldStop,
+            $standardError,
         );
     }
 
@@ -1492,6 +1531,7 @@ final class ResultAggregatorTest extends TestCase
             new PassedTests,
             new CodeCoverage($this->createStub(Emitter::class)),
             $shouldStop,
+            $this->createStub(Printer::class),
         );
     }
 
@@ -1591,6 +1631,7 @@ final class ResultAggregatorTest extends TestCase
             new PassedTests,
             new CodeCoverage($this->createStub(Emitter::class)),
             $shouldStop,
+            $this->createStub(Printer::class),
         );
     }
 

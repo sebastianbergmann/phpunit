@@ -82,23 +82,24 @@ function __phpunit_worker_halt_was_requested(string $haltFile): bool
     return is_file($haltFile);
 }
 
-// The standard output and the standard error of the worker are redirected to
-// one file, which the parent process reads (see PersistentWorker): what is
+// The standard output and the standard error of the worker are captured in
+// two files, which the parent process reads (see PersistentWorker): what is
 // written to them while a unit runs, by a test whose output is not buffered
 // or by a method that is called before the first or after the last test of a
-// test class, for instance, is printed by the parent process, as it is
-// printed in a sequential run. The number of bytes written so far travels
-// with the events of every test that finishes, so that the parent process
-// can tell what was written before the test finished from what was written
-// after. A test may have closed the standard output: what the worker wrote
-// is then handed over with the result of the unit.
-function __phpunit_worker_output_length(): int
+// test class, for instance, is printed by the parent process, to its standard
+// output and to its standard error, as it is printed in a sequential run. The
+// numbers of bytes written so far travel with the events of every test that
+// finishes, so that the parent process can tell what was written before the
+// test finished from what was written after. A test may have closed the
+// stream: what the worker wrote to it is then handed over with the result of
+// the unit.
+function __phpunit_worker_output_length(mixed $stream): int
 {
-    if (!is_resource(STDOUT)) {
+    if (!is_resource($stream)) {
         return 0;
     }
 
-    $statistics = fstat(STDOUT);
+    $statistics = fstat($stream);
 
     if ($statistics === false) {
         return 0;
@@ -198,7 +199,7 @@ function __phpunit_worker_run_unit(array $command, array $extensionSubscribers, 
                     return;
                 }
 
-                fwrite($handle, PHPUnit\Runner\Parallel\EventStream::frame($this->nonce, $this->dispatcher->flush(), __phpunit_worker_output_length()));
+                fwrite($handle, PHPUnit\Runner\Parallel\EventStream::frame($this->nonce, $this->dispatcher->flush(), __phpunit_worker_output_length(STDOUT), __phpunit_worker_output_length(STDERR)));
 
                 fclose($handle);
             }

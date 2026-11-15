@@ -92,7 +92,7 @@ final class WorkerPool
     private $onCompleted;
 
     /**
-     * @var ?callable(WorkUnit, EventCollection, string):void
+     * @var ?callable(WorkUnit, EventCollection, string, string):void
      */
     private $onStreamedEvents;
 
@@ -199,10 +199,10 @@ final class WorkerPool
      * finished unit. The events of a unit are always delivered before its
      * completion.
      *
-     * @param list<WorkUnit>                                   $units
-     * @param callable(CompletedWorkUnit):void                 $onCompleted
-     * @param callable(WorkUnit, EventCollection, string):void $onStreamedEvents
-     * @param callable(WorkUnit): bool                         $onCrashedUnitRetry
+     * @param list<WorkUnit>                                           $units
+     * @param callable(CompletedWorkUnit):void                         $onCompleted
+     * @param callable(WorkUnit, EventCollection, string, string):void $onStreamedEvents
+     * @param callable(WorkUnit): bool                                 $onCrashedUnitRetry
      */
     public function run(array $units, callable $onCompleted, callable $onStreamedEvents, callable $onCrashedUnitRetry): void
     {
@@ -225,10 +225,10 @@ final class WorkerPool
      * is what lets the parallel test runner advance the worker pool and the
      * PHPT runner side by side in one polling loop.
      *
-     * @param list<WorkUnit>                                   $units
-     * @param callable(CompletedWorkUnit):void                 $onCompleted
-     * @param callable(WorkUnit, EventCollection, string):void $onStreamedEvents
-     * @param callable(WorkUnit): bool                         $onCrashedUnitRetry
+     * @param list<WorkUnit>                                           $units
+     * @param callable(CompletedWorkUnit):void                         $onCompleted
+     * @param callable(WorkUnit, EventCollection, string, string):void $onStreamedEvents
+     * @param callable(WorkUnit): bool                                 $onCrashedUnitRetry
      */
     public function begin(array $units, callable $onCompleted, callable $onStreamedEvents, callable $onCrashedUnitRetry): void
     {

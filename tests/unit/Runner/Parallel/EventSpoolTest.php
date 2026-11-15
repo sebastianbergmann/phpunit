@@ -28,8 +28,8 @@ final class EventSpoolTest extends TestCase
     {
         $spool = new EventSpool;
 
-        $spool->add(1, $this->events('first'), '');
-        $spool->add(1, $this->events('second'), '');
+        $spool->add(1, $this->events('first'), '', '');
+        $spool->add(1, $this->events('second'), '', '');
 
         $this->assertSame(['first', 'second'], $this->messagesOf($spool->take(1)));
     }
@@ -38,25 +38,28 @@ final class EventSpoolTest extends TestCase
     {
         $spool = new EventSpool;
 
-        $spool->add(1, $this->events('first'), 'output before first');
-        $spool->add(1, $this->events('second'), '');
+        $spool->add(1, $this->events('first'), 'output before first', '');
+        $spool->add(1, $this->events('second'), '', 'error output before second');
 
-        $output = [];
+        $output      = [];
+        $errorOutput = [];
 
-        foreach ($spool->take(1) as [$events, $outputBeforeEvents]) {
-            $output[] = $outputBeforeEvents;
+        foreach ($spool->take(1) as [$events, $outputBeforeEvents, $errorOutputBeforeEvents]) {
+            $output[]      = $outputBeforeEvents;
+            $errorOutput[] = $errorOutputBeforeEvents;
         }
 
         $this->assertSame(['output before first', ''], $output);
+        $this->assertSame(['', 'error output before second'], $errorOutput);
     }
 
     public function testKeepsTheEventsOfEachUnitApart(): void
     {
         $spool = new EventSpool;
 
-        $spool->add(1, $this->events('first of unit 1'), '');
-        $spool->add(2, $this->events('first of unit 2'), '');
-        $spool->add(1, $this->events('second of unit 1'), '');
+        $spool->add(1, $this->events('first of unit 1'), '', '');
+        $spool->add(2, $this->events('first of unit 2'), '', '');
+        $spool->add(1, $this->events('second of unit 1'), '', '');
 
         $this->assertSame(['first of unit 2'], $this->messagesOf($spool->take(2)));
         $this->assertSame(['first of unit 1', 'second of unit 1'], $this->messagesOf($spool->take(1)));
@@ -68,7 +71,7 @@ final class EventSpoolTest extends TestCase
 
         $this->assertFalse($spool->has(1));
 
-        $spool->add(1, $this->events('first'), '');
+        $spool->add(1, $this->events('first'), '', '');
 
         $this->assertTrue($spool->has(1));
 
@@ -82,8 +85,8 @@ final class EventSpoolTest extends TestCase
     {
         $spool = new EventSpool;
 
-        $spool->add(1, $this->events('first of unit 1'), '');
-        $spool->add(2, $this->events('first of unit 2'), '');
+        $spool->add(1, $this->events('first of unit 1'), '', '');
+        $spool->add(2, $this->events('first of unit 2'), '', '');
 
         $spool->discard(1);
 
@@ -96,15 +99,15 @@ final class EventSpoolTest extends TestCase
     {
         $spool = new EventSpool;
 
-        $spool->add(1, $this->events('handed out'), '');
-        $spool->add(2, $this->events('discarded'), '');
+        $spool->add(1, $this->events('handed out'), '', '');
+        $spool->add(2, $this->events('discarded'), '', '');
 
         $this->messagesOf($spool->take(1));
 
         $spool->discard(2);
 
-        $spool->add(3, $this->events('first'), '');
-        $spool->add(3, $this->events('second'), '');
+        $spool->add(3, $this->events('first'), '', '');
+        $spool->add(3, $this->events('second'), '', '');
 
         $this->assertSame(['first', 'second'], $this->messagesOf($spool->take(3)));
     }
@@ -116,7 +119,7 @@ final class EventSpoolTest extends TestCase
 
         $reference = WeakReference::create($events);
 
-        $spool->add(1, $events, '');
+        $spool->add(1, $events, '', '');
 
         unset($events);
 
@@ -125,7 +128,7 @@ final class EventSpoolTest extends TestCase
     }
 
     /**
-     * @param iterable<array{0: EventCollection, 1: string}> $collections
+     * @param iterable<array{0: EventCollection, 1: string, 2: string}> $collections
      *
      * @return list<string>
      */
@@ -133,7 +136,7 @@ final class EventSpoolTest extends TestCase
     {
         $messages = [];
 
-        foreach (iterator_to_array($collections, false) as [$events, $output]) {
+        foreach (iterator_to_array($collections, false) as [$events, $output, $errorOutput]) {
             foreach ($events as $event) {
                 $this->assertInstanceOf(PhpunitWarningTriggered::class, $event);
 

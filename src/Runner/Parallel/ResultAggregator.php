@@ -37,6 +37,7 @@ use PHPUnit\Framework\TestSuite as FrameworkTestSuite;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\TimeLimit\TimeLimitExceededException;
 use PHPUnit\TestRunner\TestResult\PassedTests;
+use PHPUnit\TextUI\Output\Printer;
 
 /**
  * Collects the results that the workers produce and replays them into the
@@ -139,6 +140,7 @@ final class ResultAggregator
      * every unit that follows it in suite order.
      */
     private readonly EventSpool $streamedEvents;
+    private readonly Printer $standardError;
 
     /**
      * The indexes of the units whose streamed events have been forwarded.
@@ -177,14 +179,16 @@ final class ResultAggregator
 
     /**
      * @param callable(): bool $shouldStop
+     * @param Printer          $standardError prints what the workers wrote to their standard error
      */
-    public function __construct(Facade $eventFacade, Emitter $emitter, PassedTests $passedTests, CodeCoverage $codeCoverage, callable $shouldStop)
+    public function __construct(Facade $eventFacade, Emitter $emitter, PassedTests $passedTests, CodeCoverage $codeCoverage, callable $shouldStop, Printer $standardError)
     {
         $this->eventFacade    = $eventFacade;
         $this->emitter        = $emitter;
         $this->passedTests    = $passedTests;
         $this->codeCoverage   = $codeCoverage;
         $this->shouldStop     = $shouldStop;
+        $this->standardError  = $standardError;
         $this->streamedEvents = new EventSpool;
     }
 
@@ -298,16 +302,17 @@ final class ResultAggregator
      * so showing them live cannot violate the ordering guarantee. The events
      * of any later unit are buffered and forwarded when its turn comes.
      *
-     * What the worker wrote to its standard output and its standard error
-     * before it streamed the events, and after it streamed the previous ones,
-     * is printed before the events are forwarded: this is where a sequential
-     * run prints what a test prints while its output is not buffered, or what
-     * a method that is called before the first test of a test class prints,
-     * for instance.
+     * What the worker wrote to its standard output, and to its standard
+     * error, before it streamed the events, and after it streamed the
+     * previous ones, is printed before the events are forwarded, to the
+     * standard output and to the standard error of this process: this is
+     * where a sequential run prints what a test prints while its output is
+     * not buffered, or what a method that is called before the first test of
+     * a test class prints, for instance.
      *
      * @param non-negative-int $index
      */
-    public function addStreamedEvents(int $index, EventCollection $events, string $output = ''): void
+    public function addStreamedEvents(int $index, EventCollection $events, string $output = '', string $errorOutput = ''): void
     {
         // Events that arrive after the collected results have called for the
         // run to stop are buffered rather than forwarded; the release
@@ -316,12 +321,12 @@ final class ResultAggregator
         if ($index === $this->nextIndex && !($this->shouldStop)()) {
             $this->forwardedStreamedEvents[$index] = true;
 
-            $this->forwardFrame($index, $events, $output);
+            $this->forwardFrame($index, $events, $output, $errorOutput);
 
             return;
         }
 
-        $this->streamedEvents->add($index, $events, $output);
+        $this->streamedEvents->add($index, $events, $output, $errorOutput);
     }
 
     /**
@@ -433,8 +438,8 @@ final class ResultAggregator
 
         $this->forwardedStreamedEvents[$index] = true;
 
-        foreach ($this->streamedEvents->take($index) as [$events, $output]) {
-            $this->forwardFrame($index, $events, $output);
+        foreach ($this->streamedEvents->take($index) as [$events, $output, $errorOutput]) {
+            $this->forwardFrame($index, $events, $output, $errorOutput);
         }
     }
 
@@ -500,15 +505,22 @@ final class ResultAggregator
      *
      * @param non-negative-int $index
      */
-    private function forwardFrame(int $index, EventCollection $events, string $output): void
+    private function forwardFrame(int $index, EventCollection $events, string $output, string $errorOutput): void
     {
         // What the worker wrote before it emitted these events is printed the
-        // way a sequential run prints it: as it is, where the test runner
-        // prints its own output. It is not printed once the run is to stop:
-        // the tests that printed it are tests that a sequential run would
-        // not have run.
-        if ($output !== '' && !($this->shouldStop)()) {
-            print $output;
+        // way a sequential run prints it: as it is, to the standard output
+        // what was written to the standard output, and to the standard error
+        // what was written to the standard error. It is not printed once the
+        // run is to stop: the tests that printed it are tests that a
+        // sequential run would not have run.
+        if (!($this->shouldStop)()) {
+            if ($output !== '') {
+                print $output;
+            }
+
+            if ($errorOutput !== '') {
+                $this->standardError->print($errorOutput);
+            }
         }
 
         if (!isset($this->forwardedReportedTests[$index])) {
@@ -673,7 +685,7 @@ final class ResultAggregator
         // not be streamed (see the worker template). They are forwarded test
         // by test, like the streamed events, after what the worker wrote
         // once the last test of the unit had finished.
-        $this->forwardFrame($completed->unit()->index(), $childResult->events, $completed->output());
+        $this->forwardFrame($completed->unit()->index(), $childResult->events, $completed->output(), $completed->errorOutput());
 
         $this->passedTests->import($childResult->passedTests);
 

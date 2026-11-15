@@ -386,13 +386,15 @@ final class PersistentWorkerTest extends TestCase
             ),
         );
 
-        $output = [];
+        $output      = [];
+        $errorOutput = [];
 
         while (true) {
             $completed = $worker->poll(
-                static function (WorkUnit $unit, EventCollection $events, string $outputBeforeEvents) use (&$output): void
+                static function (WorkUnit $unit, EventCollection $events, string $outputBeforeEvents, string $errorOutputBeforeEvents) use (&$output, &$errorOutput): void
                 {
-                    $output[] = $outputBeforeEvents;
+                    $output[]      = $outputBeforeEvents;
+                    $errorOutput[] = $errorOutputBeforeEvents;
                 },
             );
 
@@ -409,9 +411,13 @@ final class PersistentWorkerTest extends TestCase
 
         // What was written before a test finished is handed over with the
         // events of that test, and what was written after the last test had
-        // finished is handed over with the result of the unit.
-        $this->assertSame(["before the first test\nfirst test\n", "second test\n"], $output);
+        // finished is handed over with the result of the unit. What was
+        // written to the standard error is kept apart from what was written
+        // to the standard output.
+        $this->assertSame(["before the first test\n", ''], $output);
+        $this->assertSame(["first test\n", "second test\n"], $errorOutput);
         $this->assertSame("after the last test\n", $completed->output());
+        $this->assertSame("written to the standard error after the last test\n", $completed->errorOutput());
     }
 
     public function testDoesNotHandOverWhatTheWorkerWroteWhileItRanAnEarlierUnit(): void
@@ -433,6 +439,7 @@ final class PersistentWorkerTest extends TestCase
         $worker->stop();
 
         $this->assertSame('', $completed->output());
+        $this->assertSame('', $completed->errorOutput());
     }
 
     public function testDoesNotReportTheEventsOfAFinishedTestAgainWhenNothingWasStreamedSinceTheLastPoll(): void

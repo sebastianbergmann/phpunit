@@ -141,17 +141,23 @@ final class PersistentWorker
     private bool $currentStreamTainted = false;
 
     /**
-     * How much of the output of the worker process does not belong to what
-     * the current unit still has to report: what the worker process had
-     * written when the unit was dispatched, and what was handed over with the
-     * events that the unit has streamed since. What the worker process wrote
-     * after that point is handed over with the next events that the unit
-     * streams, with its result, or, should the worker die while running the
-     * unit, reported along with the crash.
+     * How much of what the worker process wrote to its standard output, and
+     * to its standard error, does not belong to what the current unit still
+     * has to report: what the worker process had written when the unit was
+     * dispatched, and what was handed over with the events that the unit has
+     * streamed since. What the worker process wrote after that point is
+     * handed over with the next events that the unit streams, with its
+     * result, or, should the worker die while running the unit, reported
+     * along with the crash.
      *
      * @var non-negative-int
      */
     private int $currentOutputOffset = 0;
+
+    /**
+     * @var non-negative-int
+     */
+    private int $currentErrorOutputOffset = 0;
 
     /**
      * @var non-negative-int
@@ -198,7 +204,7 @@ final class PersistentWorker
      */
     public function __construct(JobRunner $jobRunner, int $id = 0, bool $requiresXdebug = false)
     {
-        $this->jobRunner      = $jobRunner;
+        $this->jobRunner      = $jobRunner->capturingOutputInFiles();
         $this->id             = $id;
         $this->requiresXdebug = $requiresXdebug;
         $this->token          = $this->newToken();
@@ -233,14 +239,16 @@ final class PersistentWorker
             'PHPUNIT_WORKER_TOKEN' => $this->token,
         ];
 
-        // The worker's standard output and standard error are redirected to a
-        // temporary file rather than pipes: the parent does not read a
-        // worker's output while units are executing (results travel through
-        // the filesystem, see dispatch() and poll()), and a pipe that is
-        // never read would fill its buffer and block the worker forever once
-        // a test writes enough to it — for instance with fwrite(STDERR, ...),
-        // which bypasses PHPUnit's output buffering. The accumulated output
-        // is harvested when the worker is stopped.
+        // The worker's standard output and standard error are captured in
+        // two temporary files rather than pipes (see the constructor): a
+        // pipe that is not read in time would fill its buffer and block the
+        // worker once a test writes enough to it — for instance with
+        // fwrite(STDERR, ...), which bypasses PHPUnit's output buffering —
+        // and reading a pipe without blocking is not possible on Windows.
+        // What the worker writes while it runs a unit is read from the files
+        // and handed over with the events and the result of the unit (see
+        // poll()); the two files keep what was written to the standard error
+        // apart from what was written to the standard output.
         // The worker process is started with the INI settings that the main
         // process was started with, a memory limit given to the PHP binary
         // with -d for instance: a sequential run runs its tests with these
@@ -255,7 +263,7 @@ final class PersistentWorker
                 $environmentVariables,
                 [],
                 null,
-                true,
+                false,
                 $this->requiresXdebug,
             ),
         );
@@ -324,13 +332,14 @@ final class PersistentWorker
 
         $encodedCommand = CommandStream::encode($command);
 
-        $this->currentUnit            = $unit;
-        $this->currentNonce           = $nonce;
-        $this->currentResultFile      = $resultFile;
-        $this->currentStreamOffset    = 0;
-        $this->currentStreamSeenBytes = 0;
-        $this->currentStreamTainted   = false;
-        $this->currentOutputOffset    = $this->job->outputLength();
+        $this->currentUnit              = $unit;
+        $this->currentNonce             = $nonce;
+        $this->currentResultFile        = $resultFile;
+        $this->currentStreamOffset      = 0;
+        $this->currentStreamSeenBytes   = 0;
+        $this->currentStreamTainted     = false;
+        $this->currentOutputOffset      = $this->job->outputLength();
+        $this->currentErrorOutputOffset = $this->job->errorOutputLength();
 
         $this->sendCommand($encodedCommand);
     }
@@ -371,16 +380,17 @@ final class PersistentWorker
      * poll are drained first and handed, one frame at a time, to the given
      * callback, so that the caller can report progress while the unit is still
      * running. With the events of a frame, the callback is handed what the
-     * worker process wrote to its standard output and its standard error
-     * before it wrote the frame and after it wrote the previous one: what a
-     * test prints while its output is not buffered, and what the methods that
-     * are called before the first test of a test class print, for instance.
+     * worker process wrote to its standard output, and what it wrote to its
+     * standard error, before it wrote the frame and after it wrote the
+     * previous one: what a test prints while its output is not buffered, and
+     * what the methods that are called before the first test of a test class
+     * print, for instance.
      *
      * Returns null while the unit is still running. The caller is expected to
      * call this repeatedly, sleeping briefly between rounds, until it returns a
      * completed unit.
      *
-     * @param callable(WorkUnit, EventCollection, string):void $onStreamedEvents
+     * @param callable(WorkUnit, EventCollection, string, string):void $onStreamedEvents
      */
     public function poll(callable $onStreamedEvents): ?CompletedWorkUnit
     {
@@ -392,8 +402,8 @@ final class PersistentWorker
         // been read in its entirety.
         $done = is_file($this->currentDoneFile());
 
-        foreach ($this->drainStreamedEvents($done) as [$events, $output]) {
-            $onStreamedEvents($this->currentUnit, $events, $output);
+        foreach ($this->drainStreamedEvents($done) as [$events, $output, $errorOutput]) {
+            $onStreamedEvents($this->currentUnit, $events, $output, $errorOutput);
         }
 
         if ($done) {
@@ -407,8 +417,8 @@ final class PersistentWorker
             // instance. It can write no more now, so what is left of the stream
             // is read in its entirety; a frame that the worker process did not
             // finish writing is left unread.
-            foreach ($this->drainStreamedEvents(true) as [$events, $output]) {
-                $onStreamedEvents($this->currentUnit, $events, $output);
+            foreach ($this->drainStreamedEvents(true) as [$events, $output, $errorOutput]) {
+                $onStreamedEvents($this->currentUnit, $events, $output, $errorOutput);
             }
 
             return $this->crashed();
@@ -466,7 +476,7 @@ final class PersistentWorker
      * previous poll are handed to the given callback first, so that the tests
      * that finished before the worker was terminated are reported.
      *
-     * @param callable(WorkUnit, EventCollection, string):void $onStreamedEvents
+     * @param callable(WorkUnit, EventCollection, string, string):void $onStreamedEvents
      */
     public function abort(callable $onStreamedEvents): WorkUnit
     {
@@ -474,8 +484,8 @@ final class PersistentWorker
 
         assert($unit !== null);
 
-        foreach ($this->drainStreamedEvents(false) as [$events, $output]) {
-            $onStreamedEvents($unit, $events, $output);
+        foreach ($this->drainStreamedEvents(false) as [$events, $output, $errorOutput]) {
+            $onStreamedEvents($unit, $events, $output, $errorOutput);
         }
 
         $this->kill();
@@ -546,7 +556,7 @@ final class PersistentWorker
      * further, and finished() reports the unit as compromised instead of
      * trusting its result.
      *
-     * @return list<array{0: EventCollection, 1: string}>
+     * @return list<array{0: EventCollection, 1: string, 2: string}>
      */
     private function drainStreamedEvents(bool $streamIsComplete): array
     {
@@ -595,16 +605,19 @@ final class PersistentWorker
         $frames = [];
 
         foreach ($result['frames'] as $frame) {
-            $frames[] = [$frame['events'], $this->outputUpTo($frame['outputLength'])];
+            $frames[] = [
+                $frame['events'],
+                $this->outputUpTo($frame['outputLength']),
+                $this->errorOutputUpTo($frame['errorOutputLength']),
+            ];
         }
 
         return $frames;
     }
 
     /**
-     * What the worker process wrote to its standard output and its standard
-     * error that was not handed over yet, up to the given length of its
-     * output.
+     * What the worker process wrote to its standard output that was not
+     * handed over yet, up to the given length of what it wrote to it.
      *
      * @param non-negative-int $length
      */
@@ -627,6 +640,33 @@ final class PersistentWorker
         $this->currentOutputOffset = $length;
 
         return $output;
+    }
+
+    /**
+     * What the worker process wrote to its standard error that was not
+     * handed over yet, up to the given length of what it wrote to it.
+     *
+     * @param non-negative-int $length
+     */
+    private function errorOutputUpTo(int $length): string
+    {
+        if ($this->job === null) {
+            // @codeCoverageIgnoreStart
+            return '';
+            // @codeCoverageIgnoreEnd
+        }
+
+        $length = min($length, $this->job->errorOutputLength());
+
+        if ($length <= $this->currentErrorOutputOffset) {
+            return '';
+        }
+
+        $errorOutput = $this->job->errorOutputBetween($this->currentErrorOutputOffset, $length);
+
+        $this->currentErrorOutputOffset = $length;
+
+        return $errorOutput;
     }
 
     /**
@@ -684,10 +724,12 @@ final class PersistentWorker
         // What the worker process wrote after the last test of the unit had
         // finished: what the methods that are called after the last test of
         // a test class print, for instance.
-        $output = '';
+        $output      = '';
+        $errorOutput = '';
 
         if ($this->job !== null) {
-            $output = $this->outputUpTo($this->job->outputLength());
+            $output      = $this->outputUpTo($this->job->outputLength());
+            $errorOutput = $this->errorOutputUpTo($this->job->errorOutputLength());
         }
 
         $this->deleteCurrentUnitFiles();
@@ -735,6 +777,7 @@ final class PersistentWorker
             $serializedResult,
             $this->currentNonce,
             $output,
+            $errorOutput,
         );
 
         $this->clearCurrentUnit();
@@ -761,7 +804,7 @@ final class PersistentWorker
         if ($this->job !== null) {
             $result = $this->job->wait();
 
-            $output = trim(substr($result->stdout() . $result->stderr(), $this->currentOutputOffset));
+            $output = trim(substr($result->stdout(), $this->currentOutputOffset) . substr($result->stderr(), $this->currentErrorOutputOffset));
 
             $this->job = null;
         }
@@ -882,13 +925,14 @@ final class PersistentWorker
 
     private function clearCurrentUnit(): void
     {
-        $this->currentUnit            = null;
-        $this->currentNonce           = null;
-        $this->currentResultFile      = null;
-        $this->currentStreamOffset    = 0;
-        $this->currentStreamSeenBytes = 0;
-        $this->currentStreamTainted   = false;
-        $this->currentOutputOffset    = 0;
+        $this->currentUnit              = null;
+        $this->currentNonce             = null;
+        $this->currentResultFile        = null;
+        $this->currentStreamOffset      = 0;
+        $this->currentStreamSeenBytes   = 0;
+        $this->currentStreamTainted     = false;
+        $this->currentOutputOffset      = 0;
+        $this->currentErrorOutputOffset = 0;
     }
 
     /**
