@@ -18,6 +18,7 @@ use PHPUnit\Framework\PropertyBased\InvalidPropertyException;
 use PHPUnit\Framework\PropertyTestSuite;
 use PHPUnit\Framework\TestBuilder;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Runner\ErrorHandler;
 use ReflectionClass;
 
 /**
@@ -100,6 +101,16 @@ final readonly class PropertySuiteDescriptor extends TestDescriptor
         // when its test method asks for it, which does not apply to a
         // property. The test builder builds the examples of a property
         // without it.
+        //
+        // The suite is built the way the parent process built it, with the
+        // error handler for issues outside of tests registered: an issue that
+        // is triggered while the generators of the property are derived is
+        // an issue of the property, and it is reported when the property is
+        // checked, which is here. The parent process, where the issue was
+        // triggered as well, does not check the property and does not report
+        // it.
+        ErrorHandler::instance()->registerForNonTestCaseContext();
+
         try {
             $suite = new TestBuilder(EventFacade::emitter())->build(
                 new ReflectionClass($className),
@@ -116,6 +127,8 @@ final readonly class PropertySuiteDescriptor extends TestDescriptor
                 $e->getCode(),
                 $e,
             );
+        } finally {
+            ErrorHandler::instance()->restoreForNonTestCaseContext();
         }
 
         if (!$suite instanceof PropertyTestSuite) {
