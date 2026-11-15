@@ -1,5 +1,7 @@
 --TEST--
 phpunit --parallel=2 --stop-on-failure does not start the next test suite when the previous test suite's last result trips the stop condition
+--CONFLICTS--
+phpunit-parallel-stop-on-failure.marker
 --FILE--
 <?php declare(strict_types=1);
 $marker = sys_get_temp_dir() . '/phpunit-parallel-stop-on-failure.marker';

@@ -1,5 +1,7 @@
 --TEST--
 phpunit --repeat 2 --parallel=2 --stop-on-failure abandons a repeated PHPT test as a whole: the repetition that is running finishes and the repetitions that have not started are not run
+--CONFLICTS--
+phpunit-parallel-stop-on-failure.marker
 --FILE--
 <?php declare(strict_types=1);
 $marker = sys_get_temp_dir() . '/phpunit-parallel-stop-on-failure.marker';

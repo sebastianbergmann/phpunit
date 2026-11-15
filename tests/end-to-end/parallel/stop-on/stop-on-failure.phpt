@@ -1,5 +1,7 @@
 --TEST--
 phpunit --parallel=2 --stop-on-failure stops when the failure is reported and reports nothing for the test of the other worker
+--CONFLICTS--
+phpunit-parallel-stop-on-failure.marker
 --FILE--
 <?php declare(strict_types=1);
 $marker = sys_get_temp_dir() . '/phpunit-parallel-stop-on-failure.marker';

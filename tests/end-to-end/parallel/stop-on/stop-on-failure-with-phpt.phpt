@@ -1,5 +1,7 @@
 --TEST--
 phpunit --parallel=2 --stop-on-failure lets the child process of a PHPT test that is still running when the run stops finish, and reports nothing for the test
+--CONFLICTS--
+phpunit-parallel-stop-on-failure.marker
 --FILE--
 <?php declare(strict_types=1);
 $marker = sys_get_temp_dir() . '/phpunit-parallel-stop-on-failure.marker';
