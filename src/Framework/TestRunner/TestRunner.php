@@ -322,8 +322,12 @@ final class TestRunner
         // property performed assertions, and therefore whether the data is
         // appended, is decided on all of its examples; it is not held back
         // when the example would be considered risky for lacking code
-        // coverage metadata had it performed assertions
+        // coverage metadata had it performed assertions, and it is not held
+        // back when it is only collected so that what the example executed
+        // can be recorded: nothing of it reaches the code coverage report,
+        // so there is nothing to decide
         $holdBackCodeCoverage = $collectCodeCoverage &&
+                                !$collectCodeCoverageForTestImpactDataOnly &&
                                 $riskyBecauseOfNoAssertions !== null &&
                                 $exampleOfProperty &&
                                 $test->status()->isSuccess() &&
