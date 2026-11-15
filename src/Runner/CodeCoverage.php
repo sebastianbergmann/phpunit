@@ -106,6 +106,16 @@ final class CodeCoverage
     private ?ExecutionOutsideOfTests $executionOutsideOfTests = null;
     private bool $testRunConsistsOfASingleTest                = false;
 
+    /**
+     * @var ?non-empty-string
+     */
+    private ?string $propertyWhoseExamplesAreRecorded = null;
+
+    /**
+     * @var list<non-empty-string>
+     */
+    private array $filesOfExamplesRecordedBefore = [];
+
     public static function instance(): self
     {
         if (self::$instance === null) {
@@ -525,6 +535,10 @@ final class CodeCoverage
      * Stops collecting code coverage data for the current test, an example of
      * a property that passed without performing assertions, and holds the
      * data back instead of appending it, see appendHeldBack().
+     *
+     * What the example executed is recorded all the same: the property
+     * depends on it, whether the data ends up in the code coverage report or
+     * not.
      */
     public function stopAndHoldBack(null|false|TargetCollection $covers, ?TargetCollection $uses): void
     {
@@ -548,6 +562,13 @@ final class CodeCoverage
             'covers' => $covers,
             'uses'   => $uses,
         ];
+
+        if ($this->recordTestImpactData) {
+            $this->recordTestImpactDataFor(
+                $this->test,
+                $this->codeCoverage->dataNotFilteredUsingTargets(),
+            );
+        }
 
         $this->test = null;
 
@@ -1081,10 +1102,46 @@ final class CodeCoverage
         }
 
         $recordedTest = $test->valueObjectForEvents()->idWithoutRepetitionAndAttempt();
+        $files        = array_values(array_unique($files));
 
-        $this->testImpactData()->record($recordedTest, array_values(array_unique($files)));
+        if ($test->propertyExample() !== null) {
+            $files = $this->withFilesOfExamplesRecordedBefore($test, $files);
+        }
+
+        $this->testImpactData()->record($recordedTest, $files);
 
         $this->testWasRecorded($test, $recordedTest);
+    }
+
+    /**
+     * The examples of a property are recorded as the property, and what a
+     * property depends on is what all of its examples executed: an example
+     * executes what its arguments lead it to, and the arguments of the next
+     * example may lead it somewhere else. What was recorded for the examples
+     * that were run before is therefore kept for as long as the examples are
+     * those of the same property. A repetition and another attempt start
+     * over, as they do for every other test.
+     *
+     * @param list<non-empty-string> $files
+     *
+     * @return list<non-empty-string>
+     */
+    private function withFilesOfExamplesRecordedBefore(TestCase $example, array $files): array
+    {
+        $property = $example->valueObjectForEvents()->id();
+
+        if ($this->propertyWhoseExamplesAreRecorded !== $property) {
+            $this->propertyWhoseExamplesAreRecorded = $property;
+            $this->filesOfExamplesRecordedBefore    = [];
+        }
+
+        foreach ($files as $file) {
+            $this->filesOfExamplesRecordedBefore[] = $file;
+        }
+
+        $this->filesOfExamplesRecordedBefore = array_values(array_unique($this->filesOfExamplesRecordedBefore));
+
+        return $this->filesOfExamplesRecordedBefore;
     }
 
     /**
