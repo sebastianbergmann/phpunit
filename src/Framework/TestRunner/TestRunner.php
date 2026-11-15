@@ -158,12 +158,27 @@ final class TestRunner
      */
     public function runExampleOfProperty(TestCase $example, bool $collectCodeCoverage, ?int $timeLimit = null, ?Closure $describe = null): ExampleRun
     {
+        /*
+         * What an example executes for which no code coverage is collected is
+         * not recorded for test impact analysis, neither for the property nor
+         * as something that is executed outside of the tests: a property that
+         * was falsified is run again whatever changed, and what it depends on
+         * is what the examples that were checked executed.
+         */
+        if (!$collectCodeCoverage) {
+            CodeCoverage::instance()->pauseRecordingWhatIsExecutedOutsideOfTests();
+        }
+
         try {
             ShutdownHandler::setMessage(self::messageForPrematureEndOfProcess($example), $describe);
 
             $contributedToCodeCoverage = $this->runInProcess($example, true, $collectCodeCoverage, $timeLimit);
         } finally {
             ShutdownHandler::setMessage(self::messageForPrematureEndOfProcess($example));
+
+            if (!$collectCodeCoverage) {
+                CodeCoverage::instance()->resumeRecordingWhatIsExecutedOutsideOfTests();
+            }
         }
 
         return new ExampleRun(
@@ -258,10 +273,15 @@ final class TestRunner
          * What is collected for it must not reach the code coverage report,
          * though, which is what passing false instead of the code coverage
          * targets of the test achieves.
+         *
+         * Nothing is collected for an example of a property that is run while
+         * the property is shrunk, or for the final replay of its minimal
+         * counterexample, see runExampleOfProperty().
          */
         $collectCodeCoverageForTestImpactDataOnly = false;
 
         if (!$collectCodeCoverage &&
+            $collectCodeCoverageForTest &&
             CodeCoverage::instance()->isActive() &&
             CodeCoverage::instance()->isRecordingTestImpactData()) {
             $collectCodeCoverage                      = true;
