@@ -30,3 +30,18 @@ output of failing test
 --- OUTPUT: PHPUnit\TestFixture\PrintsUnexpectedOutputTest::testPrintsOnlyLineFeed
 
 FAILURES (3 tests, 3 assertions, 1 failure)
+
+--- RECEIPT
+PHPUnit: %s
+PHP: %s
+Arguments: --do-not-record-test-run-history --no-configuration --compact %s
+Working directory: %s
+Configuration: (none)
+Bootstrap: (none)
+Extensions: (none)
+Started: %s
+Ended: %s (completed)
+Shell exit code: 1
+Tests: 3 run, 3 assertions, 1 failed
+Issues triggered by tests: (none)
+Issues triggered by the test runner: (none)

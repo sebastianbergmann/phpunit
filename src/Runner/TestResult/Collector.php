@@ -237,6 +237,7 @@ final class Collector
      */
     private array $retriedTests                        = [];
     private ?TimeLimitExceeded $timeLimitExceededEvent = null;
+    private bool $executionAborted                     = false;
 
     public function __construct(Facade $facade, IssueFilter $issueFilter)
     {
@@ -281,6 +282,7 @@ final class Collector
             new TestRunnerTriggeredIssueWarningSubscriber($this),
             new ChildProcessErroredSubscriber($this),
             new TestRunnerTimeLimitExceededSubscriber($this),
+            new TestRunnerExecutionAbortedSubscriber($this),
         );
 
         $this->issueFilter = $issueFilter;
@@ -328,6 +330,7 @@ final class Collector
             ],
             $this->retriedTests,
             $this->timeLimitExceededEvent,
+            $this->executionAborted,
         );
     }
 
@@ -811,6 +814,11 @@ final class Collector
     public function wasTimeLimitExceeded(): bool
     {
         return $this->timeLimitExceededEvent !== null;
+    }
+
+    public function testRunnerExecutionAborted(): void
+    {
+        $this->executionAborted = true;
     }
 
     public function childProcessErrored(ChildProcessErrored $event): void

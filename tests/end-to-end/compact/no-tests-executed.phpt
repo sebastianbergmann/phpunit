@@ -18,3 +18,18 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 Runtime: %s
 
 No tests executed!
+
+--- RECEIPT
+PHPUnit: %s
+PHP: %s
+Arguments: --do-not-record-test-run-history --no-configuration --compact --filter doesNotMatch %s
+Working directory: %s
+Configuration: (none)
+Bootstrap: (none)
+Extensions: (none)
+Started: %s
+Ended: %s (completed)
+Shell exit code: 1
+Tests: 0 run, 0 assertions
+Issues triggered by tests: (none)
+Issues triggered by the test runner: (none)

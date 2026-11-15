@@ -44,3 +44,18 @@ This test did not perform any assertions
 
 --- RISKY: PHPUnit\TestFixture\Basic\StatusTest::testRiskyWithMessage
 This test did not perform any assertions
+
+--- RECEIPT
+PHPUnit: %s
+PHP: %s
+Arguments: --do-not-record-test-run-history --no-configuration --compact %s
+Working directory: %s
+Configuration: (none)
+Bootstrap: (none)
+Extensions: (none)
+Started: %s
+Ended: %s (completed)
+Shell exit code: 2
+Tests: 13 run, 4 assertions, 2 errored, 2 failed, 3 skipped, 2 incomplete, 2 risky
+Issues triggered by tests: (none)
+Issues triggered by the test runner: (none)

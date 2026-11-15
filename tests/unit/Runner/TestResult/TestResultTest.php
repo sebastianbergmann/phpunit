@@ -69,6 +69,20 @@ final class TestResultTest extends AbstractEventTestCase
         $this->assertSame($event, $result->timeLimitExceededEvent());
     }
 
+    public function testExecutionIsNotAbortedByDefault(): void
+    {
+        $this->assertFalse($this->collector()->result()->wasExecutionAborted());
+    }
+
+    public function testKnowsThatExecutionWasAborted(): void
+    {
+        $collector = $this->collector();
+
+        $collector->testRunnerExecutionAborted();
+
+        $this->assertTrue($collector->result()->wasExecutionAborted());
+    }
+
     public function testHasNoPhpOrUserDeprecationsByDefault(): void
     {
         $this->assertFalse($this->collector()->result()->hasPhpOrUserDeprecations());

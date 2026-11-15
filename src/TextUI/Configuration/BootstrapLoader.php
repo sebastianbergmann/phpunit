@@ -35,11 +35,25 @@ final class BootstrapLoader
      */
     public function handle(Configuration $configuration): void
     {
+        foreach ($this->scripts($configuration) as $script) {
+            $this->load($script);
+        }
+    }
+
+    /**
+     * The bootstrap scripts that handle() loads, in the order in which it
+     * loads them: the bootstrap script, followed by the bootstrap scripts of
+     * the test suites that are not left out of the test run.
+     *
+     * @return list<non-empty-string>
+     */
+    public function scripts(Configuration $configuration): array
+    {
         if (!$configuration->hasBootstrap()) {
-            return;
+            return [];
         }
 
-        $this->load($configuration->bootstrap());
+        $scripts = [$configuration->bootstrap()];
 
         foreach ($configuration->bootstrapForTestSuite() as $testSuiteName => $bootstrapForTestSuite) {
             if ($configuration->includeTestSuites() !== [] && !in_array($testSuiteName, $configuration->includeTestSuites(), true)) {
@@ -50,8 +64,10 @@ final class BootstrapLoader
                 continue;
             }
 
-            $this->load($bootstrapForTestSuite);
+            $scripts[] = $bootstrapForTestSuite;
         }
+
+        return $scripts;
     }
 
     /**

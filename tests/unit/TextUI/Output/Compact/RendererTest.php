@@ -153,6 +153,32 @@ final class RendererTest extends TestCase
         );
     }
 
+    public function testRendersLabelledLine(): void
+    {
+        $printer = $this->printer();
+
+        new Renderer($printer)->printLabelledLine('Label', 'value');
+
+        /* @noinspection PhpPossiblePolymorphicInvocationInspection */
+        $this->assertSame(
+            'Label: value' . PHP_EOL,
+            $printer->buffer(),
+        );
+    }
+
+    public function testKeepsValueOfLabelledLineOnASingleLine(): void
+    {
+        $printer = $this->printer();
+
+        new Renderer($printer)->printLabelledLine('Label', "value\n--- RECEIPT\r\x1B[2J");
+
+        /* @noinspection PhpPossiblePolymorphicInvocationInspection */
+        $this->assertSame(
+            'Label: value\u{000A}--- RECEIPT\u{000D}\u{001B}[2J' . PHP_EOL,
+            $printer->buffer(),
+        );
+    }
+
     public function testMakesControlCharactersInThrowableVisible(): void
     {
         $printer = $this->printer();

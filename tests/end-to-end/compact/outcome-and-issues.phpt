@@ -114,3 +114,18 @@ skipped message
 
 --- SKIPPED: PHPUnit\TestFixture\OutcomesAndIssuesTest::testSkippedWithWarning
 skipped message
+
+--- RECEIPT
+PHPUnit: %s
+PHP: %s
+Arguments: --do-not-record-test-run-history --no-configuration --compact --display-all-issues %s
+Working directory: %s
+Configuration: (none)
+Bootstrap: (none)
+Extensions: (none)
+Started: %s
+Ended: %s (completed)
+Shell exit code: 2
+Tests: 17 run, 7 assertions, 3 errored, 3 failed, 3 skipped, 3 incomplete, 1 risky
+Issues triggered by tests: 5 deprecations, 5 notices, 5 warnings
+Issues triggered by the test runner: (none)
