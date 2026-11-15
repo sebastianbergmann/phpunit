@@ -17,7 +17,23 @@ use PHPUnit\TestRunner\TestResult\Facade as TestResultFacade;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 use PHPUnit\Util\DifferBuilder;
 
+// The head that the worker shares with the child process of a test that is
+// run in a separate process has PHP display errors on the standard error. In
+// a worker, what PHP displays for an error that the error handler of PHPUnit
+// does not handle, in a method that is called before the first test of a
+// test class, for instance, is printed by the main process where the worker
+// wrote it (see __phpunit_worker_output_length()). The setting that the
+// worker was started with, which is the one the main process was started
+// with, is therefore put back, before the configuration and the bootstrap
+// script are applied as they were in the main process, so that PHP displays
+// errors in a worker where it displays them in a sequential run.
+$__phpunit_displayErrors = ini_get('display_errors');
+
 {childProcessHead}
+
+if ($__phpunit_displayErrors !== false) {
+    ini_set('display_errors', $__phpunit_displayErrors);
+}
 
 {childProcessConfiguration}
 
