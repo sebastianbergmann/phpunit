@@ -518,7 +518,7 @@ final class TestCase implements Reorderable, SelfDescribing, Test
             true,
         );
 
-        $emitter->childProcessFinished(ChildProcessReason::PhptTest, $jobResult->stdout(), $jobResult->stderr());
+        $emitter->childProcessFinished(ChildProcessReason::PhptTest, $jobResult->stdout(), $jobResult->stderr(), $jobResult->exitCode(), $jobResult->signal());
 
         /** @phpstan-ignore booleanOr.leftAlwaysFalse (the run may be interrupted while the yielded job executes) */
         if (TestResultFacade::wasInterrupted() || ($interruption !== null && $interruption->interrupted())) {
@@ -714,7 +714,7 @@ final class TestCase implements Reorderable, SelfDescribing, Test
 
             $output = $jobResult->stdout();
 
-            $emitter->childProcessFinished(ChildProcessReason::PhptSkipIfSection, $output, $jobResult->stderr());
+            $emitter->childProcessFinished(ChildProcessReason::PhptSkipIfSection, $output, $jobResult->stderr(), $jobResult->exitCode(), $jobResult->signal());
         } else {
             $output = $this->runCodeInLocalSandbox($skipIfCode);
         }
@@ -859,7 +859,7 @@ final class TestCase implements Reorderable, SelfDescribing, Test
 
             $output = $jobResult->stdout();
 
-            $emitter->childProcessFinished(ChildProcessReason::PhptCleanSection, $jobResult->stdout(), $jobResult->stderr());
+            $emitter->childProcessFinished(ChildProcessReason::PhptCleanSection, $jobResult->stdout(), $jobResult->stderr(), $jobResult->exitCode(), $jobResult->signal());
         } else {
             $output = $this->runCodeInLocalSandbox($cleanCode);
         }

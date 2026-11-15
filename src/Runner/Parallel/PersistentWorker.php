@@ -535,7 +535,13 @@ final class PersistentWorker
 
         $result = $job->wait();
 
-        EventFacade::emitter()->childProcessFinished(ChildProcessReason::ParallelWorker, $result->stdout(), $result->stderr());
+        EventFacade::emitter()->childProcessFinished(
+            ChildProcessReason::ParallelWorker,
+            $result->stdout(),
+            $result->stderr(),
+            $result->exitCode(),
+            $result->signal(),
+        );
 
         $this->job = null;
 

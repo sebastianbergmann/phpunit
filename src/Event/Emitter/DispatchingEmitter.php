@@ -32,6 +32,7 @@ use PHPUnit\Event\TestSuite\TestSuite;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\IgnorePhpunitWarnings;
 use PHPUnit\Metadata\Parser\Registry;
+use PHPUnit\Runner\Receipt\Outcome;
 use PHPUnit\TextUI\Configuration\Configuration;
 use SebastianBergmann\Comparator\Comparator;
 
@@ -297,18 +298,20 @@ final class DispatchingEmitter implements Emitter
     /**
      * @param non-empty-string $message
      */
-    public function childProcessErrored(TestRunner\ChildProcessReason $reason, string $message): void
+    public function childProcessErrored(TestRunner\ChildProcessReason $reason, string $message, ?int $exitCode, ?int $signal): void
     {
         $this->dispatcher->dispatch(
             new TestRunner\ChildProcessErrored(
                 $this->telemetryInfo(),
                 $reason,
                 $message,
+                $exitCode,
+                $signal,
             ),
         );
     }
 
-    public function childProcessFinished(TestRunner\ChildProcessReason $reason, string $stdout, string $stderr): void
+    public function childProcessFinished(TestRunner\ChildProcessReason $reason, string $stdout, string $stderr, ?int $exitCode, ?int $signal): void
     {
         $this->dispatcher->dispatch(
             new TestRunner\ChildProcessFinished(
@@ -316,6 +319,8 @@ final class DispatchingEmitter implements Emitter
                 $reason,
                 $stdout,
                 $stderr,
+                $exitCode,
+                $signal,
             ),
         );
     }
@@ -1728,12 +1733,12 @@ final class DispatchingEmitter implements Emitter
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
-    public function applicationFinished(int $shellExitCode): void
+    public function applicationFinished(Outcome $outcome): void
     {
         $this->dispatcher->dispatch(
             new Application\Finished(
                 $this->telemetryInfo(),
-                $shellExitCode,
+                $outcome,
             ),
         );
     }

@@ -10,6 +10,7 @@
 namespace PHPUnit\Event;
 
 use function getmypid;
+use DateTimeImmutable;
 use Exception;
 use PHPUnit\Event\Code\Classification;
 use PHPUnit\Event\Code\ClassMethod;
@@ -72,6 +73,9 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Metadata\MetadataCollection;
+use PHPUnit\Runner\Receipt\IssueCounts;
+use PHPUnit\Runner\Receipt\Outcome;
+use PHPUnit\Runner\Receipt\Status;
 use PHPUnit\TestFixture\RecordingSubscriber;
 use PHPUnit\TextUI\CliArguments\Builder;
 use PHPUnit\TextUI\Configuration\Merger;
@@ -721,7 +725,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $reason  = ChildProcessReason::ParallelWorker;
         $message = 'message';
 
-        $emitter->childProcessErrored($reason, $message);
+        $emitter->childProcessErrored($reason, $message, 2, null);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 
@@ -730,6 +734,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertInstanceOf(ChildProcessErrored::class, $event);
         $this->assertSame($reason, $event->reason());
         $this->assertSame($message, $event->message());
+        $this->assertSame(2, $event->exitCode());
+        $this->assertNull($event->signal());
     }
 
     #[TestDox('childProcessFinished() emits TestRunner\ChildProcessFinished event')]
@@ -760,7 +766,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $stdout = 'stdout';
         $stderr = 'stderr';
 
-        $emitter->childProcessFinished($reason, $stdout, $stderr);
+        $emitter->childProcessFinished($reason, $stdout, $stderr, null, 9);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 
@@ -770,6 +776,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($reason, $event->reason());
         $this->assertSame($stdout, $event->stdout());
         $this->assertSame($stderr, $event->stderr());
+        $this->assertNull($event->exitCode());
+        $this->assertSame(9, $event->signal());
     }
 
     #[TestDox('testSuiteSkipped() emits TestSuite\Skipped event')]
@@ -3920,16 +3928,30 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem,
         );
 
-        $shellExitCode = 0;
+        $outcome = new Outcome(
+            new DateTimeImmutable,
+            Status::Completed,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            new IssueCounts(0, 0, 0, 0, 0, 0, 0, 0),
+            new IssueCounts(0, 0, 0, 0, 0, 0, 0, 0),
+        );
 
-        $emitter->applicationFinished($shellExitCode);
+        $emitter->applicationFinished($outcome);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 
         $event = $subscriber->lastRecordedEvent();
 
         $this->assertInstanceOf(Application\Finished::class, $event);
-        $this->assertSame($shellExitCode, $event->shellExitCode());
+        $this->assertSame($outcome, $event->outcome());
+        $this->assertSame(0, $event->shellExitCode());
     }
 
     public function testEventsCarryTheTelemetryOfTheLastEventWhoseTelemetryWasMeasuredOnceMeasuringTelemetryIsStopped(): void

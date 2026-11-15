@@ -13,9 +13,9 @@ namespace PHPUnit\Runner\Receipt;
  * The numbers of the issues that have the same origin: they were either
  * triggered by tests or by the test runner.
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ * @immutable
  *
- * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final readonly class IssueCounts
 {
@@ -28,6 +28,9 @@ final readonly class IssueCounts
     private int $phpunitNotices;
     private int $phpunitWarnings;
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public function __construct(int $errors, int $deprecations, int $notices, int $warnings, int $phpunitErrors, int $phpunitDeprecations, int $phpunitNotices, int $phpunitWarnings)
     {
         $this->errors              = $errors;

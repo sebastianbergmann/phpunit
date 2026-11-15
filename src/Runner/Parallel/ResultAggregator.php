@@ -798,7 +798,7 @@ final class ResultAggregator
         // left to report it for, it is reported as a test runner warning, so
         // that it is shown and fails the test run.
         if (!$anyStubs && !$abortedByTimeLimit) {
-            $this->emitter->childProcessErrored(ChildProcessReason::ParallelWorker, $message);
+            $this->emitter->childProcessErrored(ChildProcessReason::ParallelWorker, $message, null, null);
             $this->emitter->testRunnerTriggeredPhpunitWarning($message);
         }
 
@@ -828,7 +828,7 @@ final class ResultAggregator
                 $this->emitter->testPreparationStarted($testMethod);
 
                 if (!$abortedByTimeLimit) {
-                    $this->emitter->childProcessErrored(ChildProcessReason::ParallelWorker, $message);
+                    $this->emitter->childProcessErrored(ChildProcessReason::ParallelWorker, $message, null, null);
                 }
 
                 $this->emitter->testErrored($testMethod, $throwable);

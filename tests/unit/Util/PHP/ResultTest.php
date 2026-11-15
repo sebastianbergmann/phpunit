@@ -27,8 +27,28 @@ final class ResultTest extends TestCase
         $this->assertSame('stderr', $this->fixture()->stderr());
     }
 
+    public function testHasExitCode(): void
+    {
+        $this->assertSame(1, $this->fixture()->exitCode());
+    }
+
+    public function testMayNotHaveExitCode(): void
+    {
+        $this->assertNull(new Result('stdout', 'stderr', null, 9)->exitCode());
+    }
+
+    public function testHasSignal(): void
+    {
+        $this->assertSame(9, new Result('stdout', 'stderr', null, 9)->signal());
+    }
+
+    public function testMayNotHaveSignal(): void
+    {
+        $this->assertNull($this->fixture()->signal());
+    }
+
     private function fixture(): Result
     {
-        return new Result('stdout', 'stderr');
+        return new Result('stdout', 'stderr', 1, null);
     }
 }

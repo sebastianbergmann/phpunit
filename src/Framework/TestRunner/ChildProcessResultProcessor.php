@@ -49,9 +49,11 @@ final readonly class ChildProcessResultProcessor
     }
 
     /**
+     * @param ?int              $exitCode           the exit code of the child process, or null when it was terminated by a signal
+     * @param ?int              $signal             the signal that terminated the child process, or null when it was not terminated by a signal
      * @param ?non-empty-string $processResultNonce
      */
-    public function process(Test $test, string $serializedProcessResult, string $stderr, ?string $processResultNonce = null): void
+    public function process(Test $test, string $serializedProcessResult, string $stderr, ?int $exitCode, ?int $signal, ?string $processResultNonce = null): void
     {
         assert($test instanceof TestCase);
 
@@ -67,6 +69,8 @@ final readonly class ChildProcessResultProcessor
             $this->childProcessErrored(
                 $test,
                 'Test was run in child process and the result file was tampered with or written by an unexpected process',
+                $exitCode,
+                $signal,
             );
 
             return;
@@ -86,6 +90,8 @@ final readonly class ChildProcessResultProcessor
                     'Test was run in child process and its result could not be unserialized: %s',
                     $t->getMessage(),
                 ),
+                $exitCode,
+                $signal,
             );
 
             return;
@@ -101,6 +107,8 @@ final readonly class ChildProcessResultProcessor
             $this->childProcessErrored(
                 $test,
                 'Test was run in child process and ended unexpectedly',
+                $exitCode,
+                $signal,
             );
 
             return;
@@ -129,7 +137,7 @@ final readonly class ChildProcessResultProcessor
     /**
      * @param non-empty-string $message
      */
-    private function childProcessErrored(TestCase $test, string $message): void
+    private function childProcessErrored(TestCase $test, string $message, ?int $exitCode, ?int $signal): void
     {
         if (TestResultFacade::wasInterrupted()) {
             $this->testWasInterrupted($test);
@@ -137,7 +145,7 @@ final readonly class ChildProcessResultProcessor
             return;
         }
 
-        $this->emitter->childProcessErrored(ChildProcessReason::TestRequiringProcessIsolation, $message);
+        $this->emitter->childProcessErrored(ChildProcessReason::TestRequiringProcessIsolation, $message, $exitCode, $signal);
 
         $this->testErrored($test, new AssertionFailedError($message));
     }

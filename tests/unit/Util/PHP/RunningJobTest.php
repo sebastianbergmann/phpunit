@@ -462,6 +462,62 @@ EOT,
         $this->assertSame('err', $result->stderr());
     }
 
+    public function testRecordsTheExitCodeOfAJobThatEndedNormally(): void
+    {
+        $result = $this->jobRunner()->run(
+            new Job(
+                <<<'EOT'
+<?php declare(strict_types=1);
+exit(5);
+
+EOT,
+                ChildProcessReason::TestRequiringProcessIsolation,
+            ),
+        );
+
+        $this->assertSame(5, $result->exitCode());
+        $this->assertNull($result->signal());
+    }
+
+    public function testRecordsTheExitCodeOfAJobWhoseOutputIsNotReadFromPipes(): void
+    {
+        $result = $this->jobRunner()->run(
+            new Job(
+                <<<'EOT'
+<?php declare(strict_types=1);
+fclose(STDOUT);
+fclose(STDERR);
+usleep(50000);
+exit(5);
+
+EOT,
+                ChildProcessReason::TestRequiringProcessIsolation,
+                redirectErrors: true,
+            ),
+        );
+
+        $this->assertSame(5, $result->exitCode());
+        $this->assertNull($result->signal());
+    }
+
+    #[RequiresPhpExtension('posix')]
+    public function testRecordsTheSignalThatTerminatedAJob(): void
+    {
+        $result = $this->jobRunner()->run(
+            new Job(
+                <<<'EOT'
+<?php declare(strict_types=1);
+posix_kill(getmypid(), 9);
+
+EOT,
+                ChildProcessReason::TestRequiringProcessIsolation,
+            ),
+        );
+
+        $this->assertNull($result->exitCode());
+        $this->assertSame(9, $result->signal());
+    }
+
     public function testCanDriveSeveralJobsThroughASingleSelectLoop(): void
     {
         $runner = $this->jobRunner();

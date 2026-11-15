@@ -25,6 +25,7 @@ use PHPUnit\Event\Telemetry\Snapshot;
 use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\PreparationStarted;
 use PHPUnit\Event\Test\Prepared;
+use PHPUnit\Event\TestRunner\ChildProcessReason;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
@@ -52,7 +53,7 @@ final class ChildProcessResultProcessorTest extends TestCase
             ->method('testFinished')
             ->seal();
 
-        $this->processor($emitter)->process(new Success('testOne'), '', 'error');
+        $this->processor($emitter)->process(new Success('testOne'), '', 'error', 0, null);
     }
 
     #[TestDox('Does not forward the Test\PreparationStarted event of the child process')]
@@ -75,7 +76,7 @@ final class ChildProcessResultProcessorTest extends TestCase
 
         $facade->startCollectingEvents();
 
-        $this->processor($this->createStub(Emitter::class), $facade)->process($test, serialize($childResult), '');
+        $this->processor($this->createStub(Emitter::class), $facade)->process($test, serialize($childResult), '', 0, null);
 
         $forwardedEvents = $facade->stopCollectingEvents()->asArray();
 
@@ -102,7 +103,7 @@ final class ChildProcessResultProcessorTest extends TestCase
             ->method('testFinished')
             ->seal();
 
-        $this->processor($emitter)->process(new Success('testOne'), '', '');
+        $this->processor($emitter)->process(new Success('testOne'), '', '', 0, null);
     }
 
     #[TestDox('Emits Test\Errored event when process result nonce is shorter than the expected nonce')]
@@ -127,6 +128,8 @@ final class ChildProcessResultProcessorTest extends TestCase
             new Success('testOne'),
             'too-short',
             '',
+            0,
+            null,
             'abcdef0123456789abcdef0123456789',
         );
     }
@@ -153,6 +156,8 @@ final class ChildProcessResultProcessorTest extends TestCase
             new Success('testOne'),
             '00000000000000000000000000000000payload',
             '',
+            0,
+            null,
             'abcdef0123456789abcdef0123456789',
         );
     }
@@ -179,8 +184,46 @@ final class ChildProcessResultProcessorTest extends TestCase
             new Success('testOne'),
             'abcdef0123456789abcdef0123456789',
             '',
+            0,
+            null,
             'abcdef0123456789abcdef0123456789',
         );
+    }
+
+    #[TestDox('Emits TestRunner\ChildProcessErrored event with the exit code of the child process')]
+    public function testEmitsChildProcessErroredEventWithExitCodeOfChildProcess(): void
+    {
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter
+            ->expects($this->once())
+            ->method('childProcessErrored')
+            ->with(
+                ChildProcessReason::TestRequiringProcessIsolation,
+                'Test was run in child process and ended unexpectedly',
+                2,
+                null,
+            );
+
+        $this->processor($emitter)->process(new Success('testOne'), '', '', 2, null);
+    }
+
+    #[TestDox('Emits TestRunner\ChildProcessErrored event with the signal that terminated the child process')]
+    public function testEmitsChildProcessErroredEventWithSignalThatTerminatedChildProcess(): void
+    {
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter
+            ->expects($this->once())
+            ->method('childProcessErrored')
+            ->with(
+                ChildProcessReason::TestRequiringProcessIsolation,
+                'Test was run in child process and ended unexpectedly',
+                null,
+                9,
+            );
+
+        $this->processor($emitter)->process(new Success('testOne'), '', '', null, 9);
     }
 
     private function processor(Emitter $emitter, Facade $facade = new Facade): ChildProcessResultProcessor
