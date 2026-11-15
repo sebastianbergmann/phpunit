@@ -21,11 +21,11 @@ Test Runner Execution Started (3 tests)
 Test Suite Started (PHPUnit\TestFixture\Repeat\RepeatInSeparateProcessCrashTest, 3 tests)
 Test Suite for Repeated Test Method Started (PHPUnit\TestFixture\Repeat\RepeatInSeparateProcessCrashTest::testOne, 3 repetitions)
 Child Process Started (test requiring process isolation)
-Child Process Errored (test requiring process isolation)
+Child Process Errored (test requiring process isolation, exit code 2)
 Test Errored (PHPUnit\TestFixture\Repeat\RepeatInSeparateProcessCrashTest::testOne (repetition 1 of 3))
 Test was run in child process and ended unexpectedly
 Test Finished (PHPUnit\TestFixture\Repeat\RepeatInSeparateProcessCrashTest::testOne (repetition 1 of 3))
-Child Process Finished (test requiring process isolation)
+Child Process Finished (test requiring process isolation, exit code 2)
 Test Skipped (PHPUnit\TestFixture\Repeat\RepeatInSeparateProcessCrashTest::testOne (repetition 2 of 3))
 Remaining repetition skipped after failure in repetition 1
 Test Skipped (PHPUnit\TestFixture\Repeat\RepeatInSeparateProcessCrashTest::testOne (repetition 3 of 3))

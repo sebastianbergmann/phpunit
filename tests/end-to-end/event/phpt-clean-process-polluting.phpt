@@ -25,7 +25,7 @@ Child Process Started (FILE section of a PHPT test)
 Child Process Finished (FILE section of a PHPT test)
 Test Passed (%sphpt-clean-process-polluting.phpt)
 Child Process Started (CLEAN section of a PHPT test)
-Child Process Finished (CLEAN section of a PHPT test)
+Child Process Finished (CLEAN section of a PHPT test, exit code 1)
 Test Finished (%sphpt-clean-process-polluting.phpt)
 Test Suite Finished (%sphpt-clean-process-polluting.phpt, 1 test)
 Test Runner Execution Finished

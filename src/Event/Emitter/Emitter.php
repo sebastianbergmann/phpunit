@@ -305,9 +305,9 @@ interface Emitter
     /**
      * @param non-empty-string $message
      */
-    public function childProcessErrored(ChildProcessReason $reason, string $message): void;
+    public function childProcessErrored(ChildProcessReason $reason, string $message, ?int $exitCode, ?int $signal): void;
 
-    public function childProcessFinished(ChildProcessReason $reason, string $stdout, string $stderr): void;
+    public function childProcessFinished(ChildProcessReason $reason, string $stdout, string $stderr, ?int $exitCode, ?int $signal): void;
 
     public function testRunnerStartedStaticAnalysisForCodeCoverage(): void;
 

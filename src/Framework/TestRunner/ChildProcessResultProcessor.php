@@ -54,9 +54,11 @@ final readonly class ChildProcessResultProcessor
     }
 
     /**
+     * @param ?int              $exitCode           the exit code of the child process, or null when it was terminated by a signal
+     * @param ?int              $signal             the signal that terminated the child process, or null when it was not terminated by a signal
      * @param ?non-empty-string $processResultNonce
      */
-    public function process(Test $test, string $serializedProcessResult, string $stderr, ?string $processResultNonce = null): void
+    public function process(Test $test, string $serializedProcessResult, string $stderr, ?int $exitCode, ?int $signal, ?string $processResultNonce = null): void
     {
         if ($stderr !== '') {
             if (TestResultFacade::wasInterrupted()) {
@@ -92,7 +94,7 @@ final readonly class ChildProcessResultProcessor
 
                 $message = 'Test was run in child process and the result file was tampered with or written by an unexpected process';
 
-                $this->emitter->childProcessErrored(ChildProcessReason::TestRequiringProcessIsolation, $message);
+                $this->emitter->childProcessErrored(ChildProcessReason::TestRequiringProcessIsolation, $message, $exitCode, $signal);
 
                 $exception = new AssertionFailedError($message);
 
@@ -135,7 +137,7 @@ final readonly class ChildProcessResultProcessor
                 $t->getMessage(),
             );
 
-            $this->emitter->childProcessErrored(ChildProcessReason::TestRequiringProcessIsolation, $message);
+            $this->emitter->childProcessErrored(ChildProcessReason::TestRequiringProcessIsolation, $message, $exitCode, $signal);
 
             $exception = new AssertionFailedError($message);
 
@@ -175,7 +177,7 @@ final readonly class ChildProcessResultProcessor
 
             $message = 'Test was run in child process and ended unexpectedly';
 
-            $this->emitter->childProcessErrored(ChildProcessReason::TestRequiringProcessIsolation, $message);
+            $this->emitter->childProcessErrored(ChildProcessReason::TestRequiringProcessIsolation, $message, $exitCode, $signal);
 
             $exception = new AssertionFailedError($message);
 

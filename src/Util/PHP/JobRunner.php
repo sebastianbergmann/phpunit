@@ -81,10 +81,18 @@ final readonly class JobRunner
             $test,
             $processResult,
             $result->stderr(),
+            $result->exitCode(),
+            $result->signal(),
             $processResultNonce,
         );
 
-        $this->emitter->childProcessFinished($job->reason(), $result->stdout(), $result->stderr());
+        $this->emitter->childProcessFinished(
+            $job->reason(),
+            $result->stdout(),
+            $result->stderr(),
+            $result->exitCode(),
+            $result->signal(),
+        );
     }
 
     /**

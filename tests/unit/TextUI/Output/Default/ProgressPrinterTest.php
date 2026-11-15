@@ -898,6 +898,8 @@ final class ProgressPrinterTest extends TestCase
             $this->telemetryInfo(),
             ChildProcessReason::TestRequiringProcessIsolation,
             'message',
+            2,
+            null,
         );
     }
 

@@ -733,7 +733,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $reason  = ChildProcessReason::TestRequiringProcessIsolation;
         $message = 'message';
 
-        $emitter->childProcessErrored($reason, $message);
+        $emitter->childProcessErrored($reason, $message, 2, null);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 
@@ -742,6 +742,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertInstanceOf(ChildProcessErrored::class, $event);
         $this->assertSame($reason, $event->reason());
         $this->assertSame($message, $event->message());
+        $this->assertSame(2, $event->exitCode());
+        $this->assertNull($event->signal());
     }
 
     #[TestDox('childProcessFinished() emits TestRunner\ChildProcessFinished event')]
@@ -772,7 +774,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $stdout = 'stdout';
         $stderr = 'stderr';
 
-        $emitter->childProcessFinished($reason, $stdout, $stderr);
+        $emitter->childProcessFinished($reason, $stdout, $stderr, null, 9);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 
@@ -782,6 +784,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($reason, $event->reason());
         $this->assertSame($stdout, $event->stdout());
         $this->assertSame($stderr, $event->stderr());
+        $this->assertNull($event->exitCode());
+        $this->assertSame(9, $event->signal());
     }
 
     #[TestDox('testSuiteSkipped() emits TestSuite\Skipped event')]

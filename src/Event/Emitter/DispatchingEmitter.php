@@ -289,18 +289,20 @@ final class DispatchingEmitter implements Emitter
     /**
      * @param non-empty-string $message
      */
-    public function childProcessErrored(TestRunner\ChildProcessReason $reason, string $message): void
+    public function childProcessErrored(TestRunner\ChildProcessReason $reason, string $message, ?int $exitCode, ?int $signal): void
     {
         $this->dispatcher->dispatch(
             new TestRunner\ChildProcessErrored(
                 $this->telemetryInfo(),
                 $reason,
                 $message,
+                $exitCode,
+                $signal,
             ),
         );
     }
 
-    public function childProcessFinished(TestRunner\ChildProcessReason $reason, string $stdout, string $stderr): void
+    public function childProcessFinished(TestRunner\ChildProcessReason $reason, string $stdout, string $stderr, ?int $exitCode, ?int $signal): void
     {
         $this->dispatcher->dispatch(
             new TestRunner\ChildProcessFinished(
@@ -308,6 +310,8 @@ final class DispatchingEmitter implements Emitter
                 $reason,
                 $stdout,
                 $stderr,
+                $exitCode,
+                $signal,
             ),
         );
     }

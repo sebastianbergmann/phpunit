@@ -29,7 +29,7 @@ Test Suite Started (PHPUnit\TestFixture\TestRunnerStopping\InterruptTerminatingC
 Child Process Started (test requiring process isolation)
 Test Skipped (PHPUnit\TestFixture\TestRunnerStopping\InterruptTerminatingChildProcessTest::testOne)
 Test was run in child process and test execution was interrupted by a signal
-Child Process Finished (test requiring process isolation)
+Child Process Finished (test requiring process isolation, terminated by signal 2)
 Test Runner Execution Aborted
 Test Suite Finished (PHPUnit\TestFixture\TestRunnerStopping\InterruptTerminatingChildProcessTest, 2 tests)
 Test Runner Execution Finished
