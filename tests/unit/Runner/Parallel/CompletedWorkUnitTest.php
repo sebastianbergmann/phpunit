@@ -96,6 +96,46 @@ final class CompletedWorkUnitTest extends TestCase
         $this->assertSame('output', CompletedWorkUnit::fromCrash($this->unit(), null, 'output')->output());
     }
 
+    public function testAUnitThatCrashedCarriesNeitherAnExitCodeNorASignalWhenItIsNotKnownHowTheWorkerEnded(): void
+    {
+        $completed = CompletedWorkUnit::fromCrash($this->unit());
+
+        $this->assertNull($completed->exitCode());
+        $this->assertNull($completed->signal());
+    }
+
+    public function testCarriesTheExitCodeOfTheWorkerThatDiedWhileRunningAUnit(): void
+    {
+        $completed = CompletedWorkUnit::fromCrash($this->unit(), null, '', 2, null);
+
+        $this->assertSame(2, $completed->exitCode());
+        $this->assertNull($completed->signal());
+    }
+
+    public function testCarriesTheSignalThatTerminatedTheWorkerWhileItWasRunningAUnit(): void
+    {
+        $completed = CompletedWorkUnit::fromCrash($this->unit(), null, '', null, 9);
+
+        $this->assertNull($completed->exitCode());
+        $this->assertSame(9, $completed->signal());
+    }
+
+    public function testAUnitThatFinishedCarriesNeitherAnExitCodeNorASignal(): void
+    {
+        $completed = CompletedWorkUnit::fromEnvelope($this->unit(), 'nonce-envelope', 'nonce');
+
+        $this->assertNull($completed->exitCode());
+        $this->assertNull($completed->signal());
+    }
+
+    public function testAUnitThatWasAbortedByTheTimeLimitCarriesNeitherAnExitCodeNorASignal(): void
+    {
+        $completed = CompletedWorkUnit::fromAbortionByTimeLimit($this->unit(), 'message');
+
+        $this->assertNull($completed->exitCode());
+        $this->assertNull($completed->signal());
+    }
+
     private function unit(): TestClassWorkUnit
     {
         return new TestClassWorkUnit(

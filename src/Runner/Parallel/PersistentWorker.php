@@ -794,8 +794,9 @@ final class PersistentWorker
     /**
      * Record that the worker died while running the dispatched unit and reap
      * the dead process so that it is not used again. What the worker wrote
-     * while it was running the unit is kept with the crash, as it may tell
-     * why the worker died.
+     * while it was running the unit, its exit code, and the signal that
+     * terminated it are kept with the crash, as they may tell why the worker
+     * died.
      */
     private function crashed(): CompletedWorkUnit
     {
@@ -805,17 +806,21 @@ final class PersistentWorker
 
         $this->deleteCurrentUnitFiles();
 
-        $output = '';
+        $output   = '';
+        $exitCode = null;
+        $signal   = null;
 
         if ($this->job !== null) {
             $result = $this->job->wait();
 
-            $output = trim(substr($result->stdout(), $this->currentOutputOffset) . substr($result->stderr(), $this->currentErrorOutputOffset));
+            $output   = trim(substr($result->stdout(), $this->currentOutputOffset) . substr($result->stderr(), $this->currentErrorOutputOffset));
+            $exitCode = $result->exitCode();
+            $signal   = $result->signal();
 
             $this->job = null;
         }
 
-        $completed = CompletedWorkUnit::fromCrash($unit, null, $output);
+        $completed = CompletedWorkUnit::fromCrash($unit, null, $output, $exitCode, $signal);
 
         $this->clearCurrentUnit();
 

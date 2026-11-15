@@ -66,16 +66,28 @@ final readonly class CompletedWorkUnit
     private bool $abortedByTimeLimit;
 
     /**
+     * The exit code of the worker process that died while it was running
+     * the unit, when the worker process ended on its own and it is known how.
+     */
+    private ?int $exitCode;
+
+    /**
+     * The signal that terminated the worker process that died while it was
+     * running the unit, when a signal terminated it.
+     */
+    private ?int $signal;
+
+    /**
      * @param non-empty-string $nonce
      */
     public static function fromEnvelope(WorkUnit $unit, string $serializedResult, string $nonce, string $output = '', string $errorOutput = ''): self
     {
-        return new self($unit, $serializedResult, $nonce, false, null, $output, $errorOutput, false);
+        return new self($unit, $serializedResult, $nonce, false, null, $output, $errorOutput, false, null, null);
     }
 
-    public static function fromCrash(WorkUnit $unit, ?string $message = null, string $output = ''): self
+    public static function fromCrash(WorkUnit $unit, ?string $message = null, string $output = '', ?int $exitCode = null, ?int $signal = null): self
     {
-        return new self($unit, '', null, true, $message, $output, '', false);
+        return new self($unit, '', null, true, $message, $output, '', false, $exitCode, $signal);
     }
 
     /**
@@ -83,13 +95,13 @@ final readonly class CompletedWorkUnit
      */
     public static function fromAbortionByTimeLimit(WorkUnit $unit, string $message): self
     {
-        return new self($unit, '', null, false, $message, '', '', true);
+        return new self($unit, '', null, false, $message, '', '', true, null, null);
     }
 
     /**
      * @param ?non-empty-string $nonce
      */
-    private function __construct(WorkUnit $unit, string $serializedResult, ?string $nonce, bool $crashed, ?string $message, string $output, string $errorOutput, bool $abortedByTimeLimit)
+    private function __construct(WorkUnit $unit, string $serializedResult, ?string $nonce, bool $crashed, ?string $message, string $output, string $errorOutput, bool $abortedByTimeLimit, ?int $exitCode, ?int $signal)
     {
         $this->unit               = $unit;
         $this->serializedResult   = $serializedResult;
@@ -99,6 +111,8 @@ final readonly class CompletedWorkUnit
         $this->output             = $output;
         $this->errorOutput        = $errorOutput;
         $this->abortedByTimeLimit = $abortedByTimeLimit;
+        $this->exitCode           = $exitCode;
+        $this->signal             = $signal;
     }
 
     public function abortedByTimeLimit(): bool
@@ -142,5 +156,15 @@ final readonly class CompletedWorkUnit
     public function errorOutput(): string
     {
         return $this->errorOutput;
+    }
+
+    public function exitCode(): ?int
+    {
+        return $this->exitCode;
+    }
+
+    public function signal(): ?int
+    {
+        return $this->signal;
     }
 }

@@ -240,6 +240,26 @@ final class PersistentWorkerTest extends TestCase
         $this->assertTrue($completed->crashed());
     }
 
+    public function testReportsTheExitCodeOfTheWorkerThatDiedWhileRunningAUnit(): void
+    {
+        $worker = $this->worker();
+
+        $worker->start();
+
+        $completed = $this->runToCompletion(
+            $worker,
+            new TestClassWorkUnit(0, WorkerSecondTest::class, [new WorkerSecondTest('testThatKillsTheWorkerProcess')]),
+        );
+
+        $worker->stop();
+
+        // The test ends the worker process with exit(1); the worker process
+        // ends with the exit code that the test runner uses for a process
+        // that ended prematurely.
+        $this->assertSame(2, $completed->exitCode());
+        $this->assertNull($completed->signal());
+    }
+
     public function testReportsWhatTheWorkerWroteWhileRunningTheUnitThatCrashed(): void
     {
         $worker = $this->worker();

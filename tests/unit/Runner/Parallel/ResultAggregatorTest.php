@@ -222,6 +222,56 @@ final class ResultAggregatorTest extends TestCase
         );
     }
 
+    public function testReportsTheExitCodeOfTheWorkerOfACrashedUnit(): void
+    {
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter
+            ->expects($this->once())
+            ->method('childProcessErrored')
+            ->with(
+                ChildProcessReason::ParallelWorker,
+                'The worker process running ' . WorkerSecondTest::class . ' ended unexpectedly',
+                2,
+                null,
+            );
+
+        $this->aggregator($emitter)->add(
+            CompletedWorkUnit::fromCrash(
+                new TestClassWorkUnit(0, WorkerSecondTest::class, [new WorkerSecondTest('testThatFails')]),
+                null,
+                '',
+                2,
+                null,
+            ),
+        );
+    }
+
+    public function testReportsTheSignalThatTerminatedTheWorkerOfACrashedUnit(): void
+    {
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter
+            ->expects($this->once())
+            ->method('childProcessErrored')
+            ->with(
+                ChildProcessReason::ParallelWorker,
+                'The worker process running ' . WorkerSecondTest::class . ' ended unexpectedly',
+                null,
+                9,
+            );
+
+        $this->aggregator($emitter)->add(
+            CompletedWorkUnit::fromCrash(
+                new TestClassWorkUnit(0, WorkerSecondTest::class, [new WorkerSecondTest('testThatFails')]),
+                null,
+                '',
+                null,
+                9,
+            ),
+        );
+    }
+
     public function testDoesNotReportATestThatTestSelectionExcludedFromACrashedUnit(): void
     {
         // The unit dispatched only the tests that test selection selected, so
