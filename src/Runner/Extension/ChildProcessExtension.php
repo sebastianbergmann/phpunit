@@ -55,11 +55,13 @@ use PHPUnit\TextUI\Configuration\Configuration;
  * has run its last test and before it reports to the main process: in a
  * separate process, after its test has run; in a worker process, at the end
  * of the test run and when the worker is replaced with a fresh process
- * because it has run the configured number of test classes. It is not called
- * when the child process dies or is terminated before that: when a test calls
- * exit() or triggers a fatal error, when a test runs into the timeout, or
- * when the test run is stopped early (--stop-on-*) while a worker process is
- * running tests. No subscriber receives an event of a worker process while
+ * because it has run the configured number of test classes. A test run that
+ * is stopped early (--stop-on-*) ends for a worker process as any other test
+ * run does: a worker process that is running tests then finishes the test
+ * that it is running and is shut down, so shutdownChildProcess() is called.
+ * It is not called when the child process dies or is terminated before that:
+ * when a test calls exit() or triggers a fatal error, or when a test runs
+ * into the timeout. No subscriber receives an event of a worker process while
  * it runs, and what it prints is not shown.
  *
  * A failure of bootstrapChildProcess() or shutdownChildProcess() is reported
