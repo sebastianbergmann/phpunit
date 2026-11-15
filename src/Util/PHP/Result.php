@@ -20,11 +20,15 @@ final readonly class Result
 {
     private string $stdout;
     private string $stderr;
+    private ?int $exitCode;
+    private ?int $signal;
 
-    public function __construct(string $stdout, string $stderr)
+    public function __construct(string $stdout, string $stderr, ?int $exitCode, ?int $signal)
     {
-        $this->stdout = $stdout;
-        $this->stderr = $stderr;
+        $this->stdout   = $stdout;
+        $this->stderr   = $stderr;
+        $this->exitCode = $exitCode;
+        $this->signal   = $signal;
     }
 
     public function stdout(): string
@@ -35,5 +39,23 @@ final readonly class Result
     public function stderr(): string
     {
         return $this->stderr;
+    }
+
+    /**
+     * The exit code of the process, or null when the process was terminated
+     * by a signal or when it is not known how the process ended.
+     */
+    public function exitCode(): ?int
+    {
+        return $this->exitCode;
+    }
+
+    /**
+     * The signal that terminated the process, or null when the process was
+     * not terminated by a signal.
+     */
+    public function signal(): ?int
+    {
+        return $this->signal;
     }
 }

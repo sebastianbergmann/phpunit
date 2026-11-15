@@ -14,11 +14,14 @@ use function fclose;
 use function feof;
 use function fwrite;
 use function is_resource;
+use function min;
 use function proc_close;
+use function proc_get_status;
 use function rewind;
 use function stream_get_contents;
 use function stream_set_blocking;
 use function unlink;
+use function usleep;
 
 /**
  * Handle for a worker process that has been spawned by the JobRunner.
@@ -36,6 +39,17 @@ use function unlink;
  */
 final class RunningJob
 {
+    /**
+     * How long wait() sleeps before it checks for the first time, and at
+     * most, whether the process has ended. The interval doubles from the
+     * former to the latter, so that a process that ends right away is not
+     * waited for longer than necessary and a process that runs for long is
+     * not checked more often than necessary.
+     */
+    private const int INITIAL_POLL_INTERVAL_MICROSECONDS = 100;
+
+    private const int MAXIMUM_POLL_INTERVAL_MICROSECONDS = 1000;
+
     /**
      * @var resource
      */
@@ -153,7 +167,8 @@ final class RunningJob
 
     /**
      * Block until the worker process has terminated, then reap it and return
-     * its accumulated output.
+     * its accumulated output together with how it ended: its exit code or
+     * the signal that terminated it.
      */
     public function wait(): Result
     {
@@ -166,6 +181,16 @@ final class RunningJob
 
         $this->stdout = null;
         $this->stderr = null;
+
+        $status   = $this->statusOnceEnded();
+        $exitCode = null;
+        $signal   = null;
+
+        if ($status['signaled']) {
+            $signal = $status['termsig'];
+        } elseif ($status['exitcode'] >= 0) {
+            $exitCode = $status['exitcode'];
+        }
 
         proc_close($this->process);
 
@@ -186,9 +211,36 @@ final class RunningJob
             unlink($this->temporaryFile);
         }
 
-        $this->result = new Result($this->stdoutBuffer, $this->stderrBuffer);
+        $this->result = new Result($this->stdoutBuffer, $this->stderrBuffer, $exitCode, $signal);
 
         return $this->result;
+    }
+
+    /**
+     * Wait until the process has ended and return its status.
+     *
+     * How the process ended is read from proc_get_status() because
+     * proc_close() does not tell: for a process that was terminated by a
+     * signal, it returns the wait status as is, which cannot be told apart
+     * from an exit code. proc_get_status() does not block, so the process is
+     * polled: a process that writes its output to a file instead of a pipe
+     * has not necessarily ended when its output has been read.
+     *
+     * @return array{command: string, pid: int, running: bool, signaled: bool, stopped: bool, exitcode: int, termsig: int, stopsig: int}
+     */
+    private function statusOnceEnded(): array
+    {
+        $interval = self::INITIAL_POLL_INTERVAL_MICROSECONDS;
+        $status   = proc_get_status($this->process);
+
+        while ($status['running']) {
+            usleep($interval);
+
+            $interval = min($interval * 2, self::MAXIMUM_POLL_INTERVAL_MICROSECONDS);
+            $status   = proc_get_status($this->process);
+        }
+
+        return $status;
     }
 
     /**

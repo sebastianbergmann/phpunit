@@ -33,7 +33,7 @@ final class JobRunnerTest extends TestCase
     public static function provider(): Generator
     {
         yield 'output to stdout' => [
-            new Result('test', ''),
+            new Result('test', '', 0, null),
             new Job(
                 <<<'EOT'
 <?php declare(strict_types=1);
@@ -45,7 +45,7 @@ EOT,
         ];
 
         yield 'output to stderr' => [
-            new Result('', 'test'),
+            new Result('', 'test', 0, null),
             new Job(
                 <<<'EOT'
 <?php declare(strict_types=1);
@@ -57,7 +57,7 @@ EOT,
         ];
 
         yield 'output to stdout and stderr' => [
-            new Result('test-stdout', 'test-stderr'),
+            new Result('test-stdout', 'test-stderr', 0, null),
             new Job(
                 <<<'EOT'
 <?php declare(strict_types=1);
@@ -70,7 +70,7 @@ EOT,
         ];
 
         yield 'stderr redirected to stdout' => [
-            new Result('test', ''),
+            new Result('test', '', 0, null),
             new Job(
                 <<<'EOT'
 <?php declare(strict_types=1);
@@ -83,7 +83,7 @@ EOT,
         ];
 
         yield 'configured environment variables' => [
-            new Result('test', ''),
+            new Result('test', '', 0, null),
             new Job(
                 <<<'EOT'
 <?php declare(strict_types=1);
@@ -96,7 +96,7 @@ EOT,
         ];
 
         yield 'arguments' => [
-            new Result('test', ''),
+            new Result('test', '', 0, null),
             new Job(
                 <<<'EOT'
 <?php declare(strict_types=1);
@@ -109,7 +109,7 @@ EOT,
         ];
 
         yield 'input from stdin' => [
-            new Result('test', ''),
+            new Result('test', '', 0, null),
             new Job(
                 <<<'EOT'
 <?php declare(strict_types=1);
@@ -122,7 +122,7 @@ EOT,
         ];
 
         yield 'arguments that start with a dash' => [
-            new Result('--option -o', ''),
+            new Result('--option -o', '', 0, null),
             new Job(
                 <<<'EOT'
 <?php declare(strict_types=1);
@@ -135,7 +135,7 @@ EOT,
         ];
 
         yield 'arguments that start with a dash and input from stdin' => [
-            new Result('--option -o test', ''),
+            new Result('--option -o test', '', 0, null),
             new Job(
                 <<<'EOT'
 <?php declare(strict_types=1);
@@ -151,7 +151,7 @@ EOT,
         $obfuscationRegex = '(?i)(?:(?:"|%22)?)(?:(?:old[-_]?|new[-_]?)?p(?:ass)?w(?:or)?d(?:1|2)?|pass(?:[-_]?phrase)?|secret|(?:api_?|private_?|public_?|access_?|secret_?)key(?:_?id)?|token|consumer_?(?:id|key|secret)|sign(?:ed|ature)?|auth(?:entication|orization)?)(?:(?:\s|%20)*(?:=|%3D)[^&]+|(?:"|%22)(?:\s|%20)*(?::|%3A)(?:\s|%20)*(?:"|%22)(?:%2[^2]|%[^2]|[^"%])+(?:"|%22))|bearer(?:\s|%20)+[a-z0-9\._\-]+|token(?::|%3A)[a-z0-9]{13}|gh[opsu]_[0-9a-zA-Z]{36}|ey[I-L](?:[\w=-]|%3D)+\.ey[I-L](?:[\w=-]|%3D)+(?:\.(?:[\w.+\/=-]|%3D|%2F|%2B)+)?|-{5}BEGIN(?:[a-z\s]|%20)+PRIVATE(?:\s|%20)KEY-{5}[^\-]+-{5}END(?:[a-z\s]|%20)+PRIVATE(?:\s|%20)KEY(?:-{5})?(?:\n|%0A)?';
 
         yield 'PHP setting value containing INI metacharacters' => [
-            new Result($obfuscationRegex, ''),
+            new Result($obfuscationRegex, '', 0, null),
             new Job(
                 <<<'EOT'
 <?php declare(strict_types=1);
@@ -164,7 +164,7 @@ EOT,
         ];
 
         yield 'PHP setting without value' => [
-            new Result('1', ''),
+            new Result('1', '', 0, null),
             new Job(
                 <<<'EOT'
 <?php declare(strict_types=1);
@@ -180,7 +180,7 @@ EOT,
         $valueContainingEquals = 'phpstorm://open?file=%f&line=%l';
 
         yield 'PHP setting value containing equals sign' => [
-            new Result($valueContainingEquals, ''),
+            new Result($valueContainingEquals, '', 0, null),
             new Job(
                 <<<'EOT'
 <?php declare(strict_types=1);
@@ -195,7 +195,7 @@ EOT,
         $valueContainingTilde = 'C:\Users\RUNNER~1\AppData\Local\Temp';
 
         yield 'PHP setting value containing tilde' => [
-            new Result($valueContainingTilde, ''),
+            new Result($valueContainingTilde, '', 0, null),
             new Job(
                 <<<'EOT'
 <?php declare(strict_types=1);
@@ -210,7 +210,7 @@ EOT,
         $valueContainingParentheses = 'C:\Program Files (x86)\PHP';
 
         yield 'PHP setting value containing parentheses' => [
-            new Result($valueContainingParentheses, ''),
+            new Result($valueContainingParentheses, '', 0, null),
             new Job(
                 <<<'EOT'
 <?php declare(strict_types=1);
@@ -223,7 +223,7 @@ EOT,
         ];
 
         yield 'PHP setting that configures xdebug.mode' => [
-            new Result('test', ''),
+            new Result('test', '', 0, null),
             new Job(
                 <<<'EOT'
 <?php declare(strict_types=1);
@@ -238,7 +238,7 @@ EOT,
         $valueContainingConsecutiveBackslashes = '\\\\server\\share (x86)';
 
         yield 'PHP setting value containing consecutive backslashes' => [
-            new Result($valueContainingConsecutiveBackslashes, ''),
+            new Result($valueContainingConsecutiveBackslashes, '', 0, null),
             new Job(
                 <<<'EOT'
 <?php declare(strict_types=1);
@@ -268,6 +268,8 @@ EOT,
 
         $this->assertSame($expected->stdout(), $result->stdout());
         $this->assertSame($expected->stderr(), $result->stderr());
+        $this->assertSame($expected->exitCode(), $result->exitCode());
+        $this->assertSame($expected->signal(), $result->signal());
     }
 
     public function testStartsJobAsProcessWhoseStandardInputRemainsOpen(): void
