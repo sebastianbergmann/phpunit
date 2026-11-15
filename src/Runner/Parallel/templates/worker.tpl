@@ -271,10 +271,20 @@ function __phpunit_worker_run_unit(array $command, array $extensionSubscribers, 
         $failure = $e->getMessage();
     }
 
+    // The value objects with which the tests of the unit are reported are
+    // built when they are first asked for, which the parent process did
+    // before it ran a test: when it reported that the test suite was loaded.
+    // Building them can emit events, an error for a method that cannot be
+    // used as a TestDox formatter, for instance. They are built here, before
+    // the unit is run, so that these events are emitted here as well.
+    PHPUnit\Event\TestSuite\TestSuiteBuilder::from($suite);
+
     // Invoking the data providers emitted the events that a data provider
-    // invocation emits. The parent process emitted the same events when it
-    // built the suite, and it is the parent's that are reported; the ones
-    // emitted here are discarded so that they are not reported a second time.
+    // invocation emits, and building the value objects of the tests emitted
+    // the events that building them emits. The parent process emitted the
+    // same events when it built the suite, and it is the parent's that are
+    // reported; the ones emitted here are discarded so that they are not
+    // reported a second time.
     $dispatcher->flush();
 
     // A unit whose halt was requested before it started is not run at all:
