@@ -44,8 +44,10 @@ final readonly class CompletedWorkUnit
 
     /**
      * What the worker process wrote to its standard output and standard error
-     * while it was running a crashed unit, which may tell why it died: the
-     * message of a fatal error, for instance.
+     * while it was running the unit, and that was not handed over with the
+     * events that the unit streamed. For a unit that finished, this is what
+     * was written after its last test had finished; for a unit whose worker
+     * died, it may tell why the worker died.
      */
     private string $output;
 
@@ -59,9 +61,9 @@ final readonly class CompletedWorkUnit
     /**
      * @param non-empty-string $nonce
      */
-    public static function fromEnvelope(WorkUnit $unit, string $serializedResult, string $nonce): self
+    public static function fromEnvelope(WorkUnit $unit, string $serializedResult, string $nonce, string $output = ''): self
     {
-        return new self($unit, $serializedResult, $nonce, false, null, '', false);
+        return new self($unit, $serializedResult, $nonce, false, null, $output, false);
     }
 
     public static function fromCrash(WorkUnit $unit, ?string $message = null, string $output = ''): self

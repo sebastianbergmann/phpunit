@@ -44,6 +44,7 @@ use PHPUnit\Framework\TestRunner\ChildProcessResultProcessor;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TestFixture\ParallelWorker\WorkerFirstTest;
 use PHPUnit\TestFixture\ParallelWorker\WorkerHaltedTest;
+use PHPUnit\TestFixture\ParallelWorker\WorkerOutputTest;
 use PHPUnit\TestFixture\ParallelWorker\WorkerPassesAndThenDiesTest;
 use PHPUnit\TestFixture\ParallelWorker\WorkerSecondTest;
 use PHPUnit\TestFixture\ParallelWorker\WorkerStreamingTest;
@@ -366,6 +367,72 @@ final class PersistentWorkerTest extends TestCase
         // that were emitted after the last test finished.
         $this->assertTrue($this->streamedEventsContainAFinishedTest());
         $this->assertFalse($this->eventsContainAFinishedTest($this->eventsOf($completed)->asArray()));
+    }
+
+    public function testHandsOverWhatTheWorkerWroteWithTheEventsOfTheTestsThatFinishedAfterItAndWithTheResultOfTheUnit(): void
+    {
+        $worker = $this->worker();
+
+        $worker->start();
+
+        $worker->dispatch(
+            new TestClassWorkUnit(
+                0,
+                WorkerOutputTest::class,
+                [
+                    new WorkerOutputTest('testOne'),
+                    new WorkerOutputTest('testTwo'),
+                ],
+            ),
+        );
+
+        $output = [];
+
+        while (true) {
+            $completed = $worker->poll(
+                static function (WorkUnit $unit, EventCollection $events, string $outputBeforeEvents) use (&$output): void
+                {
+                    $output[] = $outputBeforeEvents;
+                },
+            );
+
+            if ($completed !== null) {
+                break;
+            }
+
+            usleep(1000);
+        }
+
+        $worker->stop();
+
+        $this->assertFalse($completed->crashed());
+
+        // What was written before a test finished is handed over with the
+        // events of that test, and what was written after the last test had
+        // finished is handed over with the result of the unit.
+        $this->assertSame(["before the first test\nfirst test\n", "second test\n"], $output);
+        $this->assertSame("after the last test\n", $completed->output());
+    }
+
+    public function testDoesNotHandOverWhatTheWorkerWroteWhileItRanAnEarlierUnit(): void
+    {
+        $worker = $this->worker();
+
+        $worker->start();
+
+        $this->runToCompletion(
+            $worker,
+            new TestClassWorkUnit(0, WorkerOutputTest::class, [new WorkerOutputTest('testOne')]),
+        );
+
+        $completed = $this->runToCompletion(
+            $worker,
+            new TestClassWorkUnit(1, WorkerFirstTest::class, [new WorkerFirstTest('testStartsTheProcessLocalCounter')]),
+        );
+
+        $worker->stop();
+
+        $this->assertSame('', $completed->output());
     }
 
     public function testDoesNotReportTheEventsOfAFinishedTestAgainWhenNothingWasStreamedSinceTheLastPoll(): void

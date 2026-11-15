@@ -957,6 +957,94 @@ final class ResultAggregatorTest extends TestCase
         $this->assertSame('second test of unit 1', $forwarded[2]);
     }
 
+    public function testPrintsWhatTheWorkerOfTheUnitThatIsNextInSuiteOrderWroteBeforeItForwardsTheEventsThatWereStreamedAfterIt(): void
+    {
+        $forwarded = [];
+
+        $aggregator = $this->aggregatorObservedThrough($forwarded, $this->createStub(Emitter::class));
+
+        $aggregator->addStreamedEvents(0, $this->events('first test of unit 0'), "output of unit 0\n");
+
+        $this->assertSame(['first test of unit 0'], $forwarded);
+
+        $this->expectOutputString("output of unit 0\n");
+    }
+
+    public function testPrintsWhatTheWorkerOfALaterUnitWroteWhenTheTurnOfTheUnitComes(): void
+    {
+        $forwarded = [];
+
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter->method('testSuiteStarted');
+        $emitter->method('testSuiteFinished');
+        $emitter->method('testRunnerTriggeredPhpunitWarning');
+        $emitter->method('childProcessErrored')->seal();
+
+        $aggregator = $this->aggregatorObservedThrough($forwarded, $emitter);
+
+        $aggregator->addStreamedEvents(1, $this->events('first test of unit 1'), "output of unit 1\n");
+
+        $this->assertSame('', $this->output());
+
+        $aggregator->add(CompletedWorkUnit::fromCrash(new TestClassWorkUnit(0, WorkerFirstTest::class, [])));
+
+        $this->assertSame(['first test of unit 1'], $forwarded);
+
+        $this->expectOutputString("output of unit 1\n");
+    }
+
+    public function testPrintsWhatTheWorkerWroteAfterTheLastTestOfAUnitHadFinished(): void
+    {
+        $aggregator = $this->aggregator($this->createStub(Emitter::class));
+
+        $nonce = 'abc';
+
+        $aggregator->add(
+            CompletedWorkUnit::fromEnvelope(
+                new TestClassWorkUnit(0, self::class, []),
+                $nonce . serialize((object) ['codeCoverage' => null, 'events' => new EventCollection, 'passedTests' => new PassedTests]),
+                $nonce,
+                "output after the last test\n",
+            ),
+        );
+
+        $this->expectOutputString("output after the last test\n");
+    }
+
+    public function testDoesNotPrintWhatAWorkerWroteOnceTheRunIsToStop(): void
+    {
+        $forwarded = [];
+
+        $emitter = $this->createMock(Emitter::class);
+
+        $emitter->method('testSuiteStarted');
+        $emitter->method('testSuiteFinished');
+        $emitter->method('testRunnerTriggeredPhpunitWarning');
+        $emitter->method('childProcessErrored')->seal();
+
+        $aggregator = $this->aggregatorObservedThrough(
+            $forwarded,
+            $emitter,
+            static function () use (&$forwarded): bool
+            {
+                return in_array('first test of unit 1', $forwarded, true);
+            },
+        );
+
+        // The run is to stop once the first test of the unit at index 1 has
+        // been forwarded: what its worker wrote after that belongs to a test
+        // that a sequential run would not have run.
+        $aggregator->addStreamedEvents(1, $this->events('first test of unit 1'), "before the first test\n");
+        $aggregator->addStreamedEvents(1, $this->events('second test of unit 1'), "before the second test\n");
+
+        $aggregator->add(CompletedWorkUnit::fromCrash(new TestClassWorkUnit(0, WorkerFirstTest::class, [])));
+
+        $this->assertSame(['first test of unit 1'], $forwarded);
+
+        $this->expectOutputString("before the first test\n");
+    }
+
     public function testDoesNotKeepTheStreamedEventsOfAUnitThatWaitsForItsTurnInMemory(): void
     {
         $forwarded = [];

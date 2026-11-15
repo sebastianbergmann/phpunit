@@ -483,9 +483,9 @@ final class ParallelTestRunner
                 {
                     $aggregator->add($completed);
                 },
-                static function (WorkUnit $unit, Event\EventCollection $events) use ($aggregator): void
+                static function (WorkUnit $unit, Event\EventCollection $events, string $output) use ($aggregator): void
                 {
-                    $aggregator->addStreamedEvents($unit->index(), $events);
+                    $aggregator->addStreamedEvents($unit->index(), $events, $output);
                 },
                 static function (WorkUnit $unit) use ($aggregator): bool
                 {

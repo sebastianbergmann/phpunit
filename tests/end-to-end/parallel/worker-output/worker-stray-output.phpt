@@ -1,5 +1,5 @@
 --TEST--
-phpunit --parallel=2 completes when a test writes more output to STDERR than an operating system pipe buffers
+phpunit --parallel=2 completes when a test writes more output to STDERR than an operating system pipe buffers, and prints that output
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-record-test-run-history';
@@ -17,7 +17,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 Runtime:       %s
 Parallel:      2 workers
 
-..                                                                  2 / 2 (100%)
+%sx..                                                                  2 / 2 (100%)
 
 Time: %s, Memory: %s
 

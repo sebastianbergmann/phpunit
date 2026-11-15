@@ -25,6 +25,7 @@ use function hrtime;
 use function is_array;
 use function is_file;
 use function is_string;
+use function min;
 use function random_bytes;
 use function rename;
 use function sprintf;
@@ -140,9 +141,13 @@ final class PersistentWorker
     private bool $currentStreamTainted = false;
 
     /**
-     * How much output the worker process had written when the current unit
-     * was dispatched. Should the worker die while running the unit, only
-     * what it wrote after that point is reported along with the crash.
+     * How much of the output of the worker process does not belong to what
+     * the current unit still has to report: what the worker process had
+     * written when the unit was dispatched, and what was handed over with the
+     * events that the unit has streamed since. What the worker process wrote
+     * after that point is handed over with the next events that the unit
+     * streams, with its result, or, should the worker die while running the
+     * unit, reported along with the crash.
      *
      * @var non-negative-int
      */
@@ -365,13 +370,17 @@ final class PersistentWorker
      * Either way, the events that the worker has streamed since the previous
      * poll are drained first and handed, one frame at a time, to the given
      * callback, so that the caller can report progress while the unit is still
-     * running.
+     * running. With the events of a frame, the callback is handed what the
+     * worker process wrote to its standard output and its standard error
+     * before it wrote the frame and after it wrote the previous one: what a
+     * test prints while its output is not buffered, and what the methods that
+     * are called before the first test of a test class print, for instance.
      *
      * Returns null while the unit is still running. The caller is expected to
      * call this repeatedly, sleeping briefly between rounds, until it returns a
      * completed unit.
      *
-     * @param callable(WorkUnit, EventCollection):void $onStreamedEvents
+     * @param callable(WorkUnit, EventCollection, string):void $onStreamedEvents
      */
     public function poll(callable $onStreamedEvents): ?CompletedWorkUnit
     {
@@ -383,8 +392,8 @@ final class PersistentWorker
         // been read in its entirety.
         $done = is_file($this->currentDoneFile());
 
-        foreach ($this->drainStreamedEvents($done) as $events) {
-            $onStreamedEvents($this->currentUnit, $events);
+        foreach ($this->drainStreamedEvents($done) as [$events, $output]) {
+            $onStreamedEvents($this->currentUnit, $events, $output);
         }
 
         if ($done) {
@@ -398,8 +407,8 @@ final class PersistentWorker
             // instance. It can write no more now, so what is left of the stream
             // is read in its entirety; a frame that the worker process did not
             // finish writing is left unread.
-            foreach ($this->drainStreamedEvents(true) as $events) {
-                $onStreamedEvents($this->currentUnit, $events);
+            foreach ($this->drainStreamedEvents(true) as [$events, $output]) {
+                $onStreamedEvents($this->currentUnit, $events, $output);
             }
 
             return $this->crashed();
@@ -457,7 +466,7 @@ final class PersistentWorker
      * previous poll are handed to the given callback first, so that the tests
      * that finished before the worker was terminated are reported.
      *
-     * @param callable(WorkUnit, EventCollection):void $onStreamedEvents
+     * @param callable(WorkUnit, EventCollection, string):void $onStreamedEvents
      */
     public function abort(callable $onStreamedEvents): WorkUnit
     {
@@ -465,8 +474,8 @@ final class PersistentWorker
 
         assert($unit !== null);
 
-        foreach ($this->drainStreamedEvents(false) as $events) {
-            $onStreamedEvents($unit, $events);
+        foreach ($this->drainStreamedEvents(false) as [$events, $output]) {
+            $onStreamedEvents($unit, $events, $output);
         }
 
         $this->kill();
@@ -537,7 +546,7 @@ final class PersistentWorker
      * further, and finished() reports the unit as compromised instead of
      * trusting its result.
      *
-     * @return list<EventCollection>
+     * @return list<array{0: EventCollection, 1: string}>
      */
     private function drainStreamedEvents(bool $streamIsComplete): array
     {
@@ -583,7 +592,41 @@ final class PersistentWorker
             $this->currentStreamTainted = true;
         }
 
-        return $result['frames'];
+        $frames = [];
+
+        foreach ($result['frames'] as $frame) {
+            $frames[] = [$frame['events'], $this->outputUpTo($frame['outputLength'])];
+        }
+
+        return $frames;
+    }
+
+    /**
+     * What the worker process wrote to its standard output and its standard
+     * error that was not handed over yet, up to the given length of its
+     * output.
+     *
+     * @param non-negative-int $length
+     */
+    private function outputUpTo(int $length): string
+    {
+        if ($this->job === null) {
+            // @codeCoverageIgnoreStart
+            return '';
+            // @codeCoverageIgnoreEnd
+        }
+
+        $length = min($length, $this->job->outputLength());
+
+        if ($length <= $this->currentOutputOffset) {
+            return '';
+        }
+
+        $output = $this->job->outputBetween($this->currentOutputOffset, $length);
+
+        $this->currentOutputOffset = $length;
+
+        return $output;
     }
 
     /**
@@ -638,6 +681,15 @@ final class PersistentWorker
 
         $serializedResult = file_get_contents($this->currentResultFile);
 
+        // What the worker process wrote after the last test of the unit had
+        // finished: what the methods that are called after the last test of
+        // a test class print, for instance.
+        $output = '';
+
+        if ($this->job !== null) {
+            $output = $this->outputUpTo($this->job->outputLength());
+        }
+
         $this->deleteCurrentUnitFiles();
 
         if ($serializedResult === false) {
@@ -682,6 +734,7 @@ final class PersistentWorker
             $unit,
             $serializedResult,
             $this->currentNonce,
+            $output,
         );
 
         $this->clearCurrentUnit();

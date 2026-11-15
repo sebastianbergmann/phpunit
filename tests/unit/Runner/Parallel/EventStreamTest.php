@@ -11,6 +11,7 @@ namespace PHPUnit\Runner\Parallel;
 
 use function hrtime;
 use function pack;
+use function serialize;
 use function strlen;
 use function substr;
 use PHPUnit\Event\EventCollection;
@@ -38,9 +39,27 @@ final class EventStreamTest extends TestCase
         $this->assertSame(['first', 'second'], $this->messagesOf($result['frames']));
     }
 
+    public function testReadsBackHowMuchTheWorkerHadWrittenWhenItWroteAFrame(): void
+    {
+        $first = new EventCollection;
+        $first->add($this->warningTriggered('first'));
+
+        $second = new EventCollection;
+        $second->add($this->warningTriggered('second'));
+
+        $data = EventStream::frame(self::NONCE, $first, 12) . EventStream::frame(self::NONCE, $second, 345);
+
+        $result = EventStream::readFrames($data, self::NONCE);
+
+        $this->assertFalse($result['tainted']);
+        $this->assertCount(2, $result['frames']);
+        $this->assertSame(12, $result['frames'][0]['outputLength']);
+        $this->assertSame(345, $result['frames'][1]['outputLength']);
+    }
+
     public function testEncodesAnEmptyCollectionOfEventsToAnEmptyFrame(): void
     {
-        $this->assertSame('', EventStream::frame(self::NONCE, new EventCollection));
+        $this->assertSame('', EventStream::frame(self::NONCE, new EventCollection, 0));
     }
 
     public function testLeavesAFrameWhoseBytesAreNotYetAllVisibleForALaterRead(): void
@@ -81,9 +100,34 @@ final class EventStreamTest extends TestCase
         $this->assertSame([], $result['frames']);
     }
 
+    public function testTaintsTheStreamAtAFrameThatDoesNotSayHowMuchTheWorkerHadWritten(): void
+    {
+        $payload = self::NONCE . 'short';
+        $data    = pack('J', strlen($payload)) . $payload;
+
+        $result = EventStream::readFrames($data, self::NONCE);
+
+        $this->assertTrue($result['tainted']);
+        $this->assertSame([], $result['frames']);
+    }
+
+    public function testTaintsTheStreamAtAFrameWhoseOutputLengthOverflows(): void
+    {
+        $events = new EventCollection;
+        $events->add($this->warningTriggered('first'));
+
+        $payload = self::NONCE . pack('J', -1) . serialize($events);
+        $data    = pack('J', strlen($payload)) . $payload;
+
+        $result = EventStream::readFrames($data, self::NONCE);
+
+        $this->assertTrue($result['tainted']);
+        $this->assertSame([], $result['frames']);
+    }
+
     public function testTaintsTheStreamAtAFrameWhosePayloadIsNotACollectionOfEvents(): void
     {
-        $payload = self::NONCE . 'not-a-serialized-collection-of-events';
+        $payload = self::NONCE . pack('J', 0) . 'not-a-serialized-collection-of-events';
         $data    = pack('J', strlen($payload)) . $payload;
 
         $result = EventStream::readFrames($data, self::NONCE);
@@ -123,14 +167,14 @@ final class EventStreamTest extends TestCase
 
             $events->add($this->warningTriggered($message));
 
-            $data .= EventStream::frame(self::NONCE, $events);
+            $data .= EventStream::frame(self::NONCE, $events, 0);
         }
 
         return $data;
     }
 
     /**
-     * @param list<EventCollection> $frames
+     * @param list<array{events: EventCollection, outputLength: non-negative-int}> $frames
      *
      * @return list<string>
      */
@@ -138,8 +182,8 @@ final class EventStreamTest extends TestCase
     {
         $messages = [];
 
-        foreach ($frames as $events) {
-            foreach ($events as $event) {
+        foreach ($frames as $frame) {
+            foreach ($frame['events'] as $event) {
                 $this->assertInstanceOf(PhpunitWarningTriggered::class, $event);
 
                 $messages[] = $event->message();

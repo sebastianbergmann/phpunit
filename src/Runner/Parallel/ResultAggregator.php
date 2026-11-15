@@ -298,9 +298,16 @@ final class ResultAggregator
      * so showing them live cannot violate the ordering guarantee. The events
      * of any later unit are buffered and forwarded when its turn comes.
      *
+     * What the worker wrote to its standard output and its standard error
+     * before it streamed the events, and after it streamed the previous ones,
+     * is printed before the events are forwarded: this is where a sequential
+     * run prints what a test prints while its output is not buffered, or what
+     * a method that is called before the first test of a test class prints,
+     * for instance.
+     *
      * @param non-negative-int $index
      */
-    public function addStreamedEvents(int $index, EventCollection $events): void
+    public function addStreamedEvents(int $index, EventCollection $events, string $output = ''): void
     {
         // Events that arrive after the collected results have called for the
         // run to stop are buffered rather than forwarded; the release
@@ -309,12 +316,12 @@ final class ResultAggregator
         if ($index === $this->nextIndex && !($this->shouldStop)()) {
             $this->forwardedStreamedEvents[$index] = true;
 
-            $this->forwardFrame($index, $events);
+            $this->forwardFrame($index, $events, $output);
 
             return;
         }
 
-        $this->streamedEvents->add($index, $events);
+        $this->streamedEvents->add($index, $events, $output);
     }
 
     /**
@@ -426,8 +433,8 @@ final class ResultAggregator
 
         $this->forwardedStreamedEvents[$index] = true;
 
-        foreach ($this->streamedEvents->take($index) as $events) {
-            $this->forwardFrame($index, $events);
+        foreach ($this->streamedEvents->take($index) as [$events, $output]) {
+            $this->forwardFrame($index, $events, $output);
         }
     }
 
@@ -493,8 +500,17 @@ final class ResultAggregator
      *
      * @param non-negative-int $index
      */
-    private function forwardFrame(int $index, EventCollection $events): void
+    private function forwardFrame(int $index, EventCollection $events, string $output): void
     {
+        // What the worker wrote before it emitted these events is printed the
+        // way a sequential run prints it: as it is, where the test runner
+        // prints its own output. It is not printed once the run is to stop:
+        // the tests that printed it are tests that a sequential run would
+        // not have run.
+        if ($output !== '' && !($this->shouldStop)()) {
+            print $output;
+        }
+
         if (!isset($this->forwardedReportedTests[$index])) {
             $this->forwardedReportedTests[$index] = [];
         }
@@ -655,8 +671,9 @@ final class ResultAggregator
         // The events that the unit emitted after its last test finished arrive
         // with its result, and so do the events of its tests when they could
         // not be streamed (see the worker template). They are forwarded test
-        // by test, like the streamed events.
-        $this->forwardFrame($completed->unit()->index(), $childResult->events);
+        // by test, like the streamed events, after what the worker wrote
+        // once the last test of the unit had finished.
+        $this->forwardFrame($completed->unit()->index(), $childResult->events, $completed->output());
 
         $this->passedTests->import($childResult->passedTests);
 

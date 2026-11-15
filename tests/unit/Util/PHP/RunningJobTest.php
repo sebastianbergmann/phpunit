@@ -243,6 +243,53 @@ EOT,
         $job->wait();
     }
 
+    public function testReadsWhatAJobWhoseOutputIsRedirectedToAFileHasWrittenBetweenTwoOffsets(): void
+    {
+        $job = $this->jobRunner()->start(
+            new Job(
+                <<<'EOT'
+<?php declare(strict_types=1);
+fwrite(STDOUT, 'out-');
+fwrite(STDERR, 'err');
+
+EOT,
+                ChildProcessReason::ParallelWorker,
+                redirectErrors: true,
+            ),
+        );
+
+        $job->closeStdin();
+
+        while ($job->isRunning()) {
+            usleep(1000);
+        }
+
+        $this->assertSame('out-', $job->outputBetween(0, 4));
+        $this->assertSame('err', $job->outputBetween(4, 7));
+        $this->assertSame('', $job->outputBetween(4, 4));
+
+        $job->wait();
+    }
+
+    public function testReadsNoOutputOfAJobWhoseOutputIsReadFromPipes(): void
+    {
+        $job = $this->jobRunner()->start(
+            new Job(
+                <<<'EOT'
+<?php declare(strict_types=1);
+fwrite(STDOUT, 'out');
+
+EOT,
+                ChildProcessReason::ParallelWorker,
+            ),
+        );
+
+        $this->assertSame('', $job->outputBetween(0, 3));
+
+        $job->closeStdin();
+        $job->wait();
+    }
+
     public function testReportsNoOutputLengthForAJobWhoseOutputIsReadFromPipes(): void
     {
         $job = $this->jobRunner()->start(

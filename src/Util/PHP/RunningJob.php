@@ -13,8 +13,10 @@ use const PHP_OS_FAMILY;
 use function assert;
 use function fclose;
 use function feof;
+use function file_get_contents;
 use function fstat;
 use function fwrite;
+use function is_file;
 use function is_resource;
 use function max;
 use function proc_close;
@@ -22,6 +24,7 @@ use function proc_get_status;
 use function proc_terminate;
 use function rewind;
 use function stream_get_contents;
+use function stream_get_meta_data;
 use function stream_set_blocking;
 use function unlink;
 use function usleep;
@@ -210,6 +213,46 @@ final class RunningJob
         }
 
         return max(0, $statistics['size']);
+    }
+
+    /**
+     * What the worker process wrote to its standard output and standard
+     * error between the two given offsets, for a job whose output is
+     * redirected to a file rather than a pipe. For any other job, and when
+     * the file cannot be read, it is the empty string.
+     *
+     * The file is read through its name, not through the stream that was
+     * passed to the process: the process writes at the position of that
+     * stream, which reading from it here would move.
+     *
+     * @param non-negative-int $from
+     * @param non-negative-int $to
+     */
+    public function outputBetween(int $from, int $to): string
+    {
+        $length = $to - $from;
+
+        if (!is_resource($this->mergedOutputStream) || $length <= 0) {
+            return '';
+        }
+
+        $metaData = stream_get_meta_data($this->mergedOutputStream);
+
+        if (!isset($metaData['uri']) || !is_file($metaData['uri'])) {
+            // @codeCoverageIgnoreStart
+            return '';
+            // @codeCoverageIgnoreEnd
+        }
+
+        $output = file_get_contents($metaData['uri'], false, null, $from, $length);
+
+        if ($output === false) {
+            // @codeCoverageIgnoreStart
+            return '';
+            // @codeCoverageIgnoreEnd
+        }
+
+        return $output;
     }
 
     /**

@@ -82,6 +82,31 @@ function __phpunit_worker_halt_was_requested(string $haltFile): bool
     return is_file($haltFile);
 }
 
+// The standard output and the standard error of the worker are redirected to
+// one file, which the parent process reads (see PersistentWorker): what is
+// written to them while a unit runs, by a test whose output is not buffered
+// or by a method that is called before the first or after the last test of a
+// test class, for instance, is printed by the parent process, as it is
+// printed in a sequential run. The number of bytes written so far travels
+// with the events of every test that finishes, so that the parent process
+// can tell what was written before the test finished from what was written
+// after. A test may have closed the standard output: what the worker wrote
+// is then handed over with the result of the unit.
+function __phpunit_worker_output_length(): int
+{
+    if (!is_resource(STDOUT)) {
+        return 0;
+    }
+
+    $statistics = fstat(STDOUT);
+
+    if ($statistics === false) {
+        return 0;
+    }
+
+    return max(0, $statistics['size']);
+}
+
 // The parent process holds a lock on the lock file for as long as it lives
 // (see PersistentWorker). Once the lock can be taken, or the lock file is not
 // there anymore, the parent process is gone: it was killed, or it ended with
@@ -173,7 +198,7 @@ function __phpunit_worker_run_unit(array $command, array $extensionSubscribers, 
                     return;
                 }
 
-                fwrite($handle, PHPUnit\Runner\Parallel\EventStream::frame($this->nonce, $this->dispatcher->flush()));
+                fwrite($handle, PHPUnit\Runner\Parallel\EventStream::frame($this->nonce, $this->dispatcher->flush(), __phpunit_worker_output_length()));
 
                 fclose($handle);
             }
@@ -326,12 +351,6 @@ function __phpunit_worker_run_unit(array $command, array $extensionSubscribers, 
     // its passes imported ahead of that turn, because a test that depends on
     // one of them would then run where a sequential run would have skipped it.
     PassedTests::instance()->reset();
-
-    // Reset the stream that captures test output so that the next unit does
-    // not inherit the output of the unit that has just finished.
-    if (@rewind(STDOUT)) {
-        @ftruncate(STDOUT, 0);
-    }
 
     return $result;
 }
