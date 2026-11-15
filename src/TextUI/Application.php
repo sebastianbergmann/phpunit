@@ -315,11 +315,16 @@ final readonly class Application
                 $extensionCapabilities->requiresCodeCoverageCollection(),
             );
 
-            $selection = $this->selectTests($configuration, $cliConfiguration, $testSuite, $testRunHistory);
+            $selection     = $this->selectTests($configuration, $cliConfiguration, $testSuite, $testRunHistory);
+            $selectedTests = null;
+
+            if ($selection !== null && !$selection->isEverything()) {
+                $selectedTests = $selection->tests();
+            }
 
             if (!$configuration->debug() && !$extensionCapabilities->replacesOutput()) {
                 $this->writeRuntimeInformation($printer, $configuration);
-                $this->writeRandomSeedInformation($printer, $configuration, $testSuite);
+                $this->writeRandomSeedInformation($printer, $configuration, $testSuite, $selectedTests);
                 $this->writeTestSelectionInformation($printer, $configuration, $selection);
 
                 $printer->print(PHP_EOL);
@@ -335,12 +340,6 @@ final readonly class Application
             if ($coverageInitializationStatus === CodeCoverageInitializationStatus::NOT_REQUESTED ||
                 $coverageInitializationStatus === CodeCoverageInitializationStatus::SUCCEEDED) {
                 $started = true;
-
-                $selectedTests = null;
-
-                if ($selection !== null && !$selection->isEverything()) {
-                    $selectedTests = $selection->tests();
-                }
 
                 if ($configuration->numberOfParallelWorkers() > 1) {
                     new ParallelTestRunner()->run(
@@ -816,13 +815,18 @@ final readonly class Application
         );
     }
 
-    private function writeRandomSeedInformation(Printer $printer, Configuration $configuration, TestSuite $testSuite): void
+    /**
+     * @param ?list<non-empty-string> $selectedTests the tests that test impact analysis selected, when it selected any
+     */
+    private function writeRandomSeedInformation(Printer $printer, Configuration $configuration, TestSuite $testSuite, ?array $selectedTests): void
     {
         if (!$configuration->seedRandomNumberGenerators()) {
             // the test selection is only built for a test suite that contains a
-            // property, which it may not select
+            // property, which it may not select; the tests that test impact
+            // analysis selected are part of it, as they are when the test
+            // suite is run
             if (!$this->containsProperty($testSuite, null) ||
-                !$this->containsProperty($testSuite, new TestSuiteFilterProcessor($this->emitter)->filter($configuration))) {
+                !$this->containsProperty($testSuite, new TestSuiteFilterProcessor($this->emitter)->filter($configuration, $selectedTests))) {
                 return;
             }
         }
