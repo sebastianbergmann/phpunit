@@ -351,6 +351,28 @@ final class CodeCoverage
     }
 
     /**
+     * What is executed while recording is paused is not recorded for any
+     * test, see TestRunner::runExampleOfProperty().
+     */
+    public function pauseRecordingWhatIsExecutedOutsideOfTests(): void
+    {
+        if ($this->executionOutsideOfTests === null) {
+            return;
+        }
+
+        $this->executionOutsideOfTests->pause();
+    }
+
+    public function resumeRecordingWhatIsExecutedOutsideOfTests(): void
+    {
+        if ($this->executionOutsideOfTests === null) {
+            return;
+        }
+
+        $this->executionOutsideOfTests->resume();
+    }
+
+    /**
      * @param non-empty-string $className
      */
     public function enterTestClass(string $className): void

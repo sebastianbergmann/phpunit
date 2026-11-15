@@ -130,7 +130,9 @@ final class ExecutionOutsideOfTests
     }
 
     /**
-     * A test starts, and what it executes is recorded for it.
+     * A test starts, and what it executes is recorded for it, or an example
+     * of a property is run for which nothing is recorded: one that is run
+     * while the property is shrunk, or to replay its minimal counterexample.
      */
     public function pause(): void
     {
@@ -144,7 +146,7 @@ final class ExecutionOutsideOfTests
     }
 
     /**
-     * A test has finished.
+     * The test, or the example of a property, has finished.
      */
     public function resume(): void
     {
