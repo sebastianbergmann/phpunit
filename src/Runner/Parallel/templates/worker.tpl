@@ -82,7 +82,48 @@ function __phpunit_worker_halt_was_requested(string $haltFile): bool
     return is_file($haltFile);
 }
 
-function __phpunit_worker_run_unit(array $command, array $extensionSubscribers): string
+// The parent process holds a lock on the lock file for as long as it lives
+// (see PersistentWorker). Once the lock can be taken, or the lock file is not
+// there anymore, the parent process is gone: it was killed, or it ended with
+// a fatal error. The files are checked for before they are opened, so that no
+// warning reaches an error handler that the bootstrap script may have
+// registered.
+function __phpunit_worker_parent_process_is_gone(string $lockFile): bool
+{
+    clearstatcache(true, $lockFile);
+
+    if (!is_file($lockFile)) {
+        return true;
+    }
+
+    $lock = fopen($lockFile, 'rb');
+
+    if ($lock === false) {
+        return true;
+    }
+
+    $parentProcessIsGone = flock($lock, LOCK_SH | LOCK_NB);
+
+    fclose($lock);
+
+    return $parentProcessIsGone;
+}
+
+// A unit is halted between two of its tests when the main process asks for
+// it, and when the main process is gone: nobody is left to report the results
+// of the tests that the unit would still run to, and a worker that goes on
+// running them works on what the tests work on, a database for instance,
+// after the test run has ended for whoever started it.
+function __phpunit_worker_unit_is_to_be_halted(string $haltFile, string $lockFile): bool
+{
+    if (__phpunit_worker_halt_was_requested($haltFile)) {
+        return true;
+    }
+
+    return __phpunit_worker_parent_process_is_gone($lockFile);
+}
+
+function __phpunit_worker_run_unit(array $command, array $extensionSubscribers, string $lockFile): string
 {
     $dispatcher = Facade::instance()->initForIsolation(
         PHPUnit\Event\Telemetry\HRTime::fromSecondsAndNanoseconds(
@@ -152,22 +193,26 @@ function __phpunit_worker_run_unit(array $command, array $extensionSubscribers):
     // is of no concern: the main process does not dispatch another unit once
     // the run is stopping.
     //
+    // The unit is halted in the same way when the main process is gone (see
+    // __phpunit_worker_unit_is_to_be_halted()).
+    //
     // The examples of a property are tests that finish as well, but their
     // events are diverted into a collection window and not dispatched to
     // subscribers. The request is therefore also checked for when such a
     // test has finished, so that a property is not checked for all of its
     // examples after the run was stopped: it stops between two examples, as
     // it does in a sequential run.
-    $__phpunit_halt_subscriber = new class($command['haltFile']) implements PHPUnit\Event\Test\FinishedSubscriber
+    $__phpunit_halt_subscriber = new class($command['haltFile'], $lockFile) implements PHPUnit\Event\Test\FinishedSubscriber
     {
         public function __construct(
             private readonly string $haltFile,
+            private readonly string $lockFile,
         ) {
         }
 
         public function notify(PHPUnit\Event\Test\Finished $event): void
         {
-            if (__phpunit_worker_halt_was_requested($this->haltFile)) {
+            if (__phpunit_worker_unit_is_to_be_halted($this->haltFile, $this->lockFile)) {
                 TestResultFacade::interrupt();
             }
         }
@@ -177,16 +222,17 @@ function __phpunit_worker_run_unit(array $command, array $extensionSubscribers):
     $dispatcher->registerSubscriberForCollectedEvents($__phpunit_halt_subscriber);
 
     $dispatcher->registerSubscriber(
-        new class($command['haltFile']) implements PHPUnit\Event\Test\BeforeFirstTestMethodFinishedSubscriber
+        new class($command['haltFile'], $lockFile) implements PHPUnit\Event\Test\BeforeFirstTestMethodFinishedSubscriber
         {
             public function __construct(
                 private readonly string $haltFile,
+                private readonly string $lockFile,
             ) {
             }
 
             public function notify(PHPUnit\Event\Test\BeforeFirstTestMethodFinished $event): void
             {
-                if (__phpunit_worker_halt_was_requested($this->haltFile)) {
+                if (__phpunit_worker_unit_is_to_be_halted($this->haltFile, $this->lockFile)) {
                     TestResultFacade::interrupt();
                 }
             }
@@ -286,10 +332,10 @@ function __phpunit_worker_run_unit(array $command, array $extensionSubscribers):
 // starts and that inherits it, would otherwise wait forever for input on a
 // channel that stays open between commands (see PersistentWorker). The worker
 // polls for the next command and, every so often, checks whether the parent
-// process still holds the lock on the lock file; once it does not, the parent
-// process is gone and the worker exits. The files are checked for before they
-// are opened, so that no warning reaches an error handler that the bootstrap
-// script may have registered.
+// process is gone (see __phpunit_worker_parent_process_is_gone()); once it
+// is, the worker exits. The command file is checked for before it is opened,
+// so that no warning reaches an error handler that the bootstrap script may
+// have registered.
 function __phpunit_worker_next_command(string $commandFile, string $lockFile): ?string
 {
     $nextLockCheck = 0;
@@ -310,23 +356,7 @@ function __phpunit_worker_next_command(string $commandFile, string $lockFile): ?
         }
 
         if (hrtime(true) >= $nextLockCheck) {
-            clearstatcache(true, $lockFile);
-
-            if (!is_file($lockFile)) {
-                return null;
-            }
-
-            $lock = fopen($lockFile, 'rb');
-
-            if ($lock === false) {
-                return null;
-            }
-
-            $parentProcessIsGone = flock($lock, LOCK_SH | LOCK_NB);
-
-            fclose($lock);
-
-            if ($parentProcessIsGone) {
+            if (__phpunit_worker_parent_process_is_gone($lockFile)) {
                 return null;
             }
 
@@ -336,6 +366,8 @@ function __phpunit_worker_next_command(string $commandFile, string $lockFile): ?
         usleep(1000);
     }
 }
+
+$__phpunit_stopped = false;
 
 while (($__phpunit_line = __phpunit_worker_next_command({commandFile}, {lockFile})) !== null) {
     $__phpunit_line = trim($__phpunit_line);
@@ -373,13 +405,31 @@ while (($__phpunit_line = __phpunit_worker_next_command({commandFile}, {lockFile
             $__phpunit_command['nonce'] . serialize($__phpunit_extensionWarnings),
         );
 
+        $__phpunit_stopped = true;
+
         break;
     }
 
     $__phpunit_result = __phpunit_worker_run_unit(
         $__phpunit_command,
         $__phpunit_extensionFacade->subscribers(),
+        {lockFile},
     );
+
+    // Nobody is left to read the result of the unit when the parent process
+    // is gone, and nobody is left to delete the files through which the
+    // result of the unit travels: the worker deletes them before it exits.
+    if (__phpunit_worker_parent_process_is_gone({lockFile})) {
+        foreach ([$__phpunit_command['resultFile'], $__phpunit_command['streamFile']] as $__phpunit_file) {
+            clearstatcache(true, $__phpunit_file);
+
+            if (is_file($__phpunit_file)) {
+                unlink($__phpunit_file);
+            }
+        }
+
+        break;
+    }
 
     file_put_contents($__phpunit_command['resultFile'], $__phpunit_result);
 
@@ -389,4 +439,15 @@ while (($__phpunit_line = __phpunit_worker_next_command({commandFile}, {lockFile
     // ready to be read. This avoids the parent having to read the worker's
     // output pipe, which cannot be done without blocking on Windows.
     file_put_contents($__phpunit_command['doneFile'], $__phpunit_command['nonce']);
+}
+
+// A worker that was not stopped by the parent process, but exits because the
+// parent process is gone, deletes the lock file that the parent process left
+// behind.
+if (!$__phpunit_stopped && __phpunit_worker_parent_process_is_gone({lockFile})) {
+    clearstatcache(true, {lockFile});
+
+    if (is_file({lockFile})) {
+        unlink({lockFile});
+    }
 }
