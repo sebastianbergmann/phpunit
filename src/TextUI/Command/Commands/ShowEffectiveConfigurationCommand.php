@@ -327,7 +327,8 @@ final readonly class ShowEffectiveConfigurationCommand implements Command
      * constants. It is shown as the value that is used to configure it using
      * the --order-by CLI option or the executionOrder XML configuration
      * attribute, which is what ReorderPipeline::describe() returns for the
-     * stage that such a constant configures.
+     * stage that such a constant configures. The pipeline is only described
+     * and never applied, so the random seed it is created with is not used.
      *
      * @return ?non-empty-string null when the setting is not an order
      */
@@ -335,8 +336,8 @@ final readonly class ShowEffectiveConfigurationCommand implements Command
     {
         try {
             $pipeline = match ($setting) {
-                'executionOrder'        => ReorderPipeline::fromConfiguration($value, TestSuiteSorter::ORDER_DEFAULT, false),
-                'executionOrderDefects' => ReorderPipeline::fromConfiguration(TestSuiteSorter::ORDER_DEFAULT, $value, false),
+                'executionOrder'        => ReorderPipeline::fromConfiguration($value, TestSuiteSorter::ORDER_DEFAULT, false, 0),
+                'executionOrderDefects' => ReorderPipeline::fromConfiguration(TestSuiteSorter::ORDER_DEFAULT, $value, false, 0),
                 default                 => null,
             };
             // @codeCoverageIgnoreStart

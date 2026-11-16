@@ -44,13 +44,15 @@ final readonly class ReorderPipeline
      * Dependency resolution is always the last stage: any stage applied after
      * it would undo the order it establishes.
      *
+     * The random seed is only used when the tests are run in random order.
+     *
      * @throws InvalidOrderException
      */
-    public static function fromConfiguration(int $order, int $orderDefects, bool $resolveDependencies): self
+    public static function fromConfiguration(int $order, int $orderDefects, bool $resolveDependencies, int $randomSeed): self
     {
         $stages = [];
 
-        $mainOrder = self::mainOrderStage($order);
+        $mainOrder = self::mainOrderStage($order, $randomSeed);
 
         if ($mainOrder !== null) {
             $stages[] = $mainOrder;
@@ -118,7 +120,7 @@ final readonly class ReorderPipeline
     /**
      * @throws InvalidOrderException
      */
-    private static function mainOrderStage(int $order): ?ReorderStage
+    private static function mainOrderStage(int $order, int $randomSeed): ?ReorderStage
     {
         if ($order === TestSuiteSorter::ORDER_DEFAULT) {
             return null;
@@ -129,7 +131,7 @@ final readonly class ReorderPipeline
         }
 
         if ($order === TestSuiteSorter::ORDER_RANDOMIZED) {
-            return new Randomize;
+            return new Randomize($randomSeed);
         }
 
         if ($order === TestSuiteSorter::ORDER_DURATION_ASCENDING) {

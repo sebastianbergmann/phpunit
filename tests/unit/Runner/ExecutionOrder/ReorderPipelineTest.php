@@ -135,7 +135,7 @@ final class ReorderPipelineTest extends TestCase
     #[DataProvider('provider')]
     public function testCompilesConfigurationToStages(array $expected, int $order, int $orderDefects, bool $resolveDependencies): void
     {
-        $pipeline = ReorderPipeline::fromConfiguration($order, $orderDefects, $resolveDependencies);
+        $pipeline = ReorderPipeline::fromConfiguration($order, $orderDefects, $resolveDependencies, 0);
 
         $this->assertSame($expected, $pipeline->describe());
         $this->assertSame($expected === [], $pipeline->isEmpty());
@@ -148,6 +148,7 @@ final class ReorderPipelineTest extends TestCase
             TestSuiteSorter::ORDER_SIZE_DESCENDING,
             TestSuiteSorter::ORDER_DEFECTS_FIRST,
             true,
+            0,
         )->describe();
 
         $this->assertSame('resolve-dependencies', $stages[array_key_last($stages)]);

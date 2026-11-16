@@ -48,6 +48,7 @@ final class TestRunner
                 $configuration->executionOrder(),
                 $configuration->executionOrderDefects(),
                 $configuration->resolveDependencies(),
+                $configuration->randomSeed(),
             );
 
             if (!$pipeline->isEmpty()) {
