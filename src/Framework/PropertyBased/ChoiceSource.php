@@ -379,6 +379,7 @@ final class ChoiceSource
      * @template T
      *
      * @param non-empty-list<T> $candidates
+     * @param float<0, 1>       $probability
      *
      * @return ?T
      */

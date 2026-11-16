@@ -223,6 +223,8 @@ final class GeneratorDeriver
      * generator for the collection, so that the generated values stay small.
      *
      * @param bool $recursive whether the generator for the elements refers to a class that is being derived, directly or nested in other types such as a union or a collection, or to the generator for the collection
+     *
+     * @return float<0, 1>
      */
     public static function probabilityOfAnotherElement(bool $recursive): float
     {

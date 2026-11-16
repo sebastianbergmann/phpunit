@@ -64,7 +64,7 @@ final class PropertyExample
     private array $observations = [];
 
     /**
-     * @var array<non-empty-string, float|int>
+     * @var array<non-empty-string, finite-float|int>
      */
     private array $targets                   = [];
     private ?Throwable $throwableThatEndedIt = null;
@@ -290,7 +290,7 @@ final class PropertyExample
     /**
      * The scores that the example targeted with target(), by their label.
      *
-     * @return array<non-empty-string, float|int>
+     * @return array<non-empty-string, finite-float|int>
      */
     public function targets(): array
     {

@@ -52,6 +52,7 @@ final readonly class ListGenerator extends AbstractGenerator
      * @param AbstractGenerator<T> $elements
      * @param non-negative-int     $minimumSize
      * @param ?non-negative-int    $maximumSize
+     * @param float<0, 1>          $probabilityOfAnotherElement
      */
     public function __construct(AbstractGenerator $elements, int $minimumSize, ?int $maximumSize, float $probabilityOfAnotherElement = Repetition::DEFAULT_PROBABILITY_OF_ANOTHER_ELEMENT, bool $unique = false)
     {

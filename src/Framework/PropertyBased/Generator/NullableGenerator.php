@@ -40,6 +40,7 @@ final readonly class NullableGenerator extends AbstractGenerator
 
     /**
      * @param AbstractGenerator<T> $generator
+     * @param float<0, 1>          $probabilityOfValue
      */
     public function __construct(AbstractGenerator $generator, float $probabilityOfValue = self::DEFAULT_PROBABILITY_OF_VALUE)
     {

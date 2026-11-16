@@ -56,6 +56,7 @@ final readonly class ArrayGenerator extends AbstractGenerator
      * @param AbstractGenerator<V> $values
      * @param non-negative-int     $minimumSize
      * @param ?non-negative-int    $maximumSize
+     * @param float<0, 1>          $probabilityOfAnotherElement
      */
     public function __construct(AbstractGenerator $keys, AbstractGenerator $values, int $minimumSize, ?int $maximumSize, float $probabilityOfAnotherElement = Repetition::DEFAULT_PROBABILITY_OF_ANOTHER_ELEMENT)
     {
