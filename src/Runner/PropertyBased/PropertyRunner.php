@@ -64,7 +64,6 @@ use PHPUnit\TextUI\XmlConfiguration\DefaultConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\Util\DifferBuilder;
 use SebastianBergmann\ChoiceSequence\ChoiceSequence;
-use SebastianBergmann\ChoiceSequence\SpanKind;
 use SebastianBergmann\Invoker\Invoker;
 use Throwable;
 
@@ -186,9 +185,9 @@ use Throwable;
  *
  * The result of an example tells how it ended, how it falsified the
  * property, and which choices it consumed, with their spans and the maxima
- * of the choices. The kind of a span, when it has one, is the name of the
- * case of SpanKind of sebastian/choice-sequence in lowercase: 'bytes',
- * 'characters', 'element', 'requiredelement', 'referable', 'reference', or
+ * of the choices. The kind of a span, when it has one, is the value of the
+ * case of SpanKind of sebastian/choice-sequence: 'bytes', 'characters',
+ * 'element', 'requiredelement', 'referable', 'reference', or
  * 'consumingreference'.
  * On request, the result also has the arguments
  * of the example, the values that it drew with draw(), and the steps of its
@@ -1258,16 +1257,7 @@ final class PropertyRunner
                 'end'    => $span->end(),
                 'label'  => $span->label(),
                 'parent' => $span->parent(),
-                'kind'   => match ($span->kind()) {
-                    SpanKind::Bytes              => 'bytes',
-                    SpanKind::Characters         => 'characters',
-                    SpanKind::Element            => 'element',
-                    SpanKind::RequiredElement    => 'requiredelement',
-                    SpanKind::Referable          => 'referable',
-                    SpanKind::Reference          => 'reference',
-                    SpanKind::ConsumingReference => 'consumingreference',
-                    null                         => null,
-                },
+                'kind'   => $span->kind()?->value,
             ];
         }
 
