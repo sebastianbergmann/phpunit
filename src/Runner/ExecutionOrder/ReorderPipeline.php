@@ -39,14 +39,16 @@ final readonly class ReorderPipeline
     private array $stages;
 
     /**
+     * The random seed is only used when the tests are run in random order.
+     *
      * @param list<Order> $order
      */
-    public static function fromConfiguration(array $order, bool $resolveDependencies): self
+    public static function fromConfiguration(array $order, bool $resolveDependencies, int $randomSeed): self
     {
         $stages = [];
 
         foreach ($order as $element) {
-            $stages[] = self::stageFor($element);
+            $stages[] = self::stageFor($element, $randomSeed);
         }
 
         if ($resolveDependencies) {
@@ -100,7 +102,7 @@ final readonly class ReorderPipeline
         return $tests;
     }
 
-    private static function stageFor(Order $order): ReorderStage
+    private static function stageFor(Order $order, int $randomSeed): ReorderStage
     {
         return match ($order) {
             Order::Defects            => new DefectsFirst(new DefaultDefectWeightPolicy),
@@ -108,7 +110,7 @@ final readonly class ReorderPipeline
             Order::DurationDescending => new ByDuration(Direction::Descending),
             Order::ModifiedAscending  => new ByModificationTime(Direction::Ascending),
             Order::ModifiedDescending => new ByModificationTime(Direction::Descending),
-            Order::Random             => new Randomize,
+            Order::Random             => new Randomize($randomSeed),
             Order::Reverse            => new Reverse,
             Order::SizeAscending      => new BySize(Direction::Ascending),
             Order::SizeDescending     => new BySize(Direction::Descending),

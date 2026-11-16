@@ -63,6 +63,7 @@ final readonly class TestRunnerLifecycle
             $pipeline = ReorderPipeline::fromConfiguration(
                 $configuration->executionOrder(),
                 $configuration->resolveDependencies(),
+                $configuration->randomSeed(),
             );
 
             if (!$pipeline->isEmpty()) {
