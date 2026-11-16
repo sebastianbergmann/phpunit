@@ -166,6 +166,7 @@ final class CodeCoverage
      */
     public function driverNameAndVersion(): string
     {
+        /** @phpstan-ignore method.internalClass */
         return $this->driver->nameAndVersion();
     }
 
