@@ -18,6 +18,7 @@ use PHPUnit\Framework\PropertyBased\Derivation\GeneratorRegistry;
 use PHPUnit\Framework\PropertyBased\Generator\DeferredGenerator;
 use Random\Randomizer;
 use SebastianBergmann\ChoiceSequence\Bytes;
+use SebastianBergmann\ChoiceSequence\Characters;
 use SebastianBergmann\ChoiceSequence\ChoiceSequence;
 use SebastianBergmann\ChoiceSequence\ChoiceSource as Choices;
 use SebastianBergmann\ChoiceSequence\ChoiceTree;
@@ -299,6 +300,20 @@ final class ChoiceSource
     {
         try {
             return $bytes->draw($this->choices);
+        } catch (TooManyChoicesException $e) {
+            throw ExampleRejectedException::tooManyChoices($e->maximumNumberOfChoices());
+        }
+    }
+
+    /**
+     * Draws the characters of a string of Unicode characters.
+     *
+     * @throws ExampleRejectedException
+     */
+    public function characters(Characters $characters): string
+    {
+        try {
+            return $characters->draw($this->choices);
         } catch (TooManyChoicesException $e) {
             throw ExampleRejectedException::tooManyChoices($e->maximumNumberOfChoices());
         }

@@ -19,8 +19,10 @@ use PHPUnit\Framework\TestCase;
 use Random\Engine\Xoshiro256StarStar;
 use Random\Randomizer;
 use SebastianBergmann\ChoiceSequence\Bytes;
+use SebastianBergmann\ChoiceSequence\Characters;
 use SebastianBergmann\ChoiceSequence\ChoiceSequence;
 use SebastianBergmann\ChoiceSequence\ChoiceTree;
+use SebastianBergmann\ChoiceSequence\CodePoints;
 use SebastianBergmann\ChoiceSequence\Pool;
 use SebastianBergmann\ChoiceSequence\Repetition;
 use SebastianBergmann\ChoiceSequence\Span;
@@ -113,6 +115,23 @@ final class ChoiceSourceTest extends TestCase
         $this->expectExceptionMessageIs('Generating the example required more than 1 choices');
 
         $source->bytes(new Bytes(2, null));
+    }
+
+    public function testDrawsTheCharactersOfAStringWithTheChoiceSequenceLibrary(): void
+    {
+        $source = ChoiceSource::replay(new ChoiceSequence([1, CodePoints::index(0x61), 1, CodePoints::index(0xE4), 0]));
+
+        $this->assertSame("a\u{E4}", $source->characters(new Characters(0, null)));
+    }
+
+    public function testRejectsTheExampleWhenTheCharactersOfAStringRequireMoreThanTheMaximumNumberOfChoices(): void
+    {
+        $source = ChoiceSource::replay(new ChoiceSequence([]), 1);
+
+        $this->expectException(ExampleRejectedException::class);
+        $this->expectExceptionMessageIs('Generating the example required more than 1 choices');
+
+        $source->characters(new Characters(2, null));
     }
 
     public function testAddsValuesToAPoolAndTakesThemFromItWithTheChoiceSequenceLibrary(): void

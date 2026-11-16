@@ -14,7 +14,7 @@ use function count;
 use function mb_chr;
 use function var_export;
 use PHPUnit\Framework\PropertyBased\ChoiceSource;
-use SebastianBergmann\ChoiceSequence\CodePoints;
+use SebastianBergmann\ChoiceSequence\Characters;
 use SebastianBergmann\ChoiceSequence\Distribution;
 use SebastianBergmann\ChoiceSequence\Repetition;
 use SebastianBergmann\ChoiceSequence\SpanKind;
@@ -42,8 +42,14 @@ final readonly class StringGenerator extends AbstractGenerator
      */
     private ?array $alphabet;
     private ?CodePointRanges $codePointRanges;
-    private Repetition $repetition;
-    private Distribution $character;
+
+    /**
+     * Draws the characters of a string of any Unicode characters, null when
+     * there is an alphabet or there are code point ranges.
+     */
+    private ?Characters $characters;
+    private ?Repetition $repetition;
+    private ?Distribution $character;
 
     /**
      * @var non-empty-string
@@ -60,21 +66,30 @@ final readonly class StringGenerator extends AbstractGenerator
     {
         assert($alphabet === null || $codePointRanges === null);
 
-        $alphabetSize = 'unicode';
+        $this->alphabet        = $alphabet;
+        $this->codePointRanges = $codePointRanges;
+
+        // a string of any Unicode characters is drawn by
+        // sebastian/choice-sequence, so that other tools that use this
+        // library draw such a string from the same choices
+        if ($alphabet === null && $codePointRanges === null) {
+            $this->characters = new Characters($minimumLength, $maximumLength);
+            $this->label      = $this->characters->label();
+            $this->repetition = null;
+            $this->character  = null;
+
+            return;
+        }
 
         if ($alphabet !== null) {
             $alphabetSize = (string) count($alphabet);
-        }
-
-        if ($codePointRanges !== null) {
+        } else {
             $alphabetSize = $codePointRanges->asString();
         }
 
-        $this->label = self::labelOf('strings', $alphabetSize, (string) $minimumLength, var_export($maximumLength, true));
-
-        $this->alphabet        = $alphabet;
-        $this->codePointRanges = $codePointRanges;
-        $this->repetition      = new Repetition(self::labelOf('element', $this->label), $minimumLength, $maximumLength);
+        $this->characters = null;
+        $this->label      = self::labelOf('strings', $alphabetSize, (string) $minimumLength, var_export($maximumLength, true));
+        $this->repetition = new Repetition(self::labelOf('element', $this->label), $minimumLength, $maximumLength);
 
         if ($alphabet !== null) {
             $this->character = new UniformDistribution;
@@ -84,36 +99,13 @@ final readonly class StringGenerator extends AbstractGenerator
 
         // the characters of each range are chosen equally often, so that a
         // small range is not drowned out by a large one
-        if ($codePointRanges !== null) {
-            $ranges = [];
+        $ranges = [];
 
-            foreach ($codePointRanges->indexRanges() as $indexRange) {
-                $ranges[] = ['weight' => 1.0, 'minimum' => $indexRange['minimum'], 'maximum' => $indexRange['maximum']];
-            }
-
-            $this->character = new WeightedRangesDistribution($ranges);
-
-            return;
+        foreach ($codePointRanges->indexRanges() as $indexRange) {
+            $ranges[] = ['weight' => 1.0, 'minimum' => $indexRange['minimum'], 'maximum' => $indexRange['maximum']];
         }
 
-        $this->character = new WeightedRangesDistribution(
-            [
-                // printable ASCII characters
-                ['weight' => 0.5, 'minimum' => 0, 'maximum' => 94],
-                // ASCII control characters
-                ['weight' => 0.03, 'minimum' => 95, 'maximum' => 127],
-                // characters that are encoded with two bytes
-                ['weight' => 0.12, 'minimum' => CodePoints::index(0x80), 'maximum' => CodePoints::index(0x7FF)],
-                // combining diacritical marks
-                ['weight' => 0.1, 'minimum' => CodePoints::index(0x300), 'maximum' => CodePoints::index(0x36F)],
-                // characters that are encoded with three bytes
-                ['weight' => 0.1, 'minimum' => CodePoints::index(0x800), 'maximum' => CodePoints::index(0xFFFF)],
-                // emoji, which are encoded with four bytes
-                ['weight' => 0.1, 'minimum' => CodePoints::index(0x1F300), 'maximum' => CodePoints::index(0x1FAFF)],
-                // any character
-                ['weight' => 0.05, 'minimum' => 0, 'maximum' => CodePoints::LARGEST_INDEX],
-            ],
-        );
+        $this->character = new WeightedRangesDistribution($ranges);
     }
 
     public function label(): string
@@ -140,6 +132,12 @@ final readonly class StringGenerator extends AbstractGenerator
 
     protected function generateValue(ChoiceSource $source): string
     {
+        if ($this->characters !== null) {
+            return $source->characters($this->characters);
+        }
+
+        assert($this->repetition !== null);
+
         $string = '';
 
         $source->repeat(
@@ -160,23 +158,15 @@ final readonly class StringGenerator extends AbstractGenerator
      */
     private function character(ChoiceSource $source): string
     {
+        assert($this->character !== null);
+
         if ($this->alphabet !== null) {
             return $source->choose($this->alphabet, $this->character);
         }
 
-        if ($this->codePointRanges !== null) {
-            $character = mb_chr($this->codePointRanges->codePoint($source->draw($this->codePointRanges->numberOfCodePoints() - 1, $this->character)), 'UTF-8');
+        assert($this->codePointRanges !== null);
 
-            assert($character !== false && $character !== '');
-
-            return $character;
-        }
-
-        $index = $source->draw(CodePoints::LARGEST_INDEX, $this->character);
-
-        assert($index <= CodePoints::LARGEST_INDEX);
-
-        $character = mb_chr(CodePoints::codePoint($index), 'UTF-8');
+        $character = mb_chr($this->codePointRanges->codePoint($source->draw($this->codePointRanges->numberOfCodePoints() - 1, $this->character)), 'UTF-8');
 
         assert($character !== false && $character !== '');
 
