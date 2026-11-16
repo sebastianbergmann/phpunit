@@ -20,7 +20,6 @@ use function implode;
 use function is_bool;
 use function max;
 use function min;
-use function range;
 use function sprintf;
 use function str_contains;
 use function str_replace;
@@ -314,11 +313,10 @@ final class StateMachineRunner
         // while choices are drawn at random, the number of steps is chosen
         // uniformly, so that short and long sequences of steps are equally
         // likely; it is chosen from the numbers of steps for which choices
-        // can be drawn, as a step draws at least two of them, so that the
-        // numbers to choose from are not more than can be held in memory
-        $plannedNumberOfSteps = $this->source->suggest(
-            range(1, min($maximumNumberOfSteps, self::LARGEST_PLANNED_NUMBER_OF_STEPS)),
-            1.0,
+        // can be drawn, as a step draws at least two of them
+        $plannedNumberOfSteps = $this->source->suggestInteger(
+            1,
+            min($maximumNumberOfSteps, self::LARGEST_PLANNED_NUMBER_OF_STEPS),
         );
         $enabledRules = $this->enabledRules();
 

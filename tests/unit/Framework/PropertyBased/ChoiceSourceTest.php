@@ -192,10 +192,12 @@ final class ChoiceSourceTest extends TestCase
         $this->assertSame(2, $source->numberOfChoices());
         $this->assertFalse($source->drewDifferentlyThanBefore());
         $this->assertSame('candidate', $source->suggest(['candidate'], 1.0));
+        $this->assertSame(7, $source->suggestInteger(7, 7));
         $this->assertSame(['element'], array_map(static fn (Span $span): string => $span->label(), $source->sequence()->spans()));
 
         $replay = ChoiceSource::replay($source->sequence());
 
+        $this->assertNull($replay->suggestInteger(7, 7));
         $this->assertSame($choice, $replay->draw(10, new UniformDistribution));
         $this->assertSame($element, $replay->choose(['a', 'b', 'c'], new UniformDistribution));
         $this->assertSame($source->sequence()->choices(), $replay->sequence()->choices());

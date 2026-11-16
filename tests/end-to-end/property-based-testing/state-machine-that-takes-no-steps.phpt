@@ -24,7 +24,7 @@ Time: %s, Memory: %s
 There was 1 risky test:
 
 1) PHPUnit\TestFixture\PropertyBasedTesting\StateMachine\StateMachineWithRarelyApplicableRulesTest::testStateMachineRarelyTakesSteps
-The state machine of this property took no step in 100 of 100 examples because none of its rules could be applied; make sure that the preconditions of the rules hold and that values are produced for the pools from which they take values
+The state machine of this property took no step in 99 of 100 examples because none of its rules could be applied; make sure that the preconditions of the rules hold and that values are produced for the pools from which they take values
 
 %sStateMachineWithRarelyApplicableRulesTest.php:%d
 

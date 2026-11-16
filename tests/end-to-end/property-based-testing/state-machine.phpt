@@ -29,10 +29,10 @@ Statistics of 1 property:
 1) PHPUnit\TestFixture\PropertyBasedTesting\StateMachine\BankTest::testBankKeepsTheBalancesOfAccounts
 100 examples checked, 0 rejected
 
-    steps: count 100, min 1, median 24, mean 25.7, p90 46, max 50
-    steps with open(): count 100, min 0, median 1, mean 6.2, p90 18, max 49
-    steps with deposit(): count 100, min 0, median 0, mean 5.42, p90 21, max 37
-    steps with withdraw(): count 100, min 0, median 0, mean 4.74, p90 16, max 44
-    steps with catchUpProjection(): count 100, min 0, median 3, mean 9.34, p90 30, max 50
+    steps: count 100, min 1, median 25, mean 24.24, p90 45, max 50
+    steps with open(): count 100, min 0, median 1, mean 5.8, p90 15, max 39
+    steps with deposit(): count 100, min 0, median 0, mean 4.72, p90 12, max 47
+    steps with withdraw(): count 100, min 0, median 0, mean 4.13, p90 13, max 42
+    steps with catchUpProjection(): count 100, min 0, median 4, mean 9.59, p90 29, max 50
 
 OK (1 test, %d assertions)

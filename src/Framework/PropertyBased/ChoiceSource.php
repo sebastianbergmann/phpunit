@@ -389,6 +389,19 @@ final class ChoiceSource
     }
 
     /**
+     * Returns, while choices are drawn at random, an integer that is drawn
+     * uniformly from the range [$minimum, $maximum], and null otherwise.
+     *
+     * No choice is drawn, as for suggest().
+     *
+     * @param int $maximum not smaller than the minimum
+     */
+    public function suggestInteger(int $minimum, int $maximum): ?int
+    {
+        return $this->choices->suggestInteger($minimum, $maximum);
+    }
+
+    /**
      * Marks the start of a span: the choices that are drawn until the span is
      * ended form one part of the value, for instance an element of a list.
      *
