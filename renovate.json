@@ -13,11 +13,13 @@
     "rebaseWhen": "conflicted",
     "prHourlyLimit": 2,
     "prConcurrentLimit": 10,
-    "dependencyDashboard": true,
+    "dependencyDashboard": {
+        "enabled": true,
+        "osvVulnerabilitySummary": "all"
+    },
     "labels": ["type/dependencies"],
     "platformAutomerge": true,
     "osvVulnerabilityAlerts": true,
-    "dependencyDashboardOSVVulnerabilitySummary": "all",
     "vulnerabilityAlerts": {
         "enabled": true,
         "labels": ["type/security", "type/dependencies"]
