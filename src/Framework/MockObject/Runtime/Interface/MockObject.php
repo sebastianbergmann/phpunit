@@ -12,6 +12,11 @@ namespace PHPUnit\Framework\MockObject;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 
 /**
+ * This interface is not meant to be implemented outside of PHPUnit: a mock
+ * object is created by PHPUnit, for instance using TestCase::createMock().
+ *
+ * @phpstan-sealed MockObjectInternal
+ *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 interface MockObject extends Stub
