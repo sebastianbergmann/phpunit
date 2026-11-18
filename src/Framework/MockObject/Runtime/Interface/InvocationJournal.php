@@ -16,7 +16,12 @@ use IteratorAggregate;
  * Records, in the order in which they happen, the invocations of methods of
  * mock objects that were registered using MockObject::recordInvocationsIn().
  *
+ * This interface is not meant to be implemented outside of PHPUnit: an
+ * invocation journal is created using TestCase::createInvocationJournal().
+ *
  * @template-extends IteratorAggregate<non-negative-int, non-empty-string>
+ *
+ * @phpstan-sealed InvocationJournalInternal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
