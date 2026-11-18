@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\PropertyBased;
 
 use Closure;
+use PHPUnit\Framework\PropertyBased\Generator\AbstractGenerator;
 
 /**
  * Generates values of type T for the parameters of a property.
@@ -23,6 +24,8 @@ use Closure;
  * used as a generator.
  *
  * @template-covariant T
+ *
+ * @phpstan-sealed AbstractGenerator
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
