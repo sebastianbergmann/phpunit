@@ -22,6 +22,9 @@ final readonly class ConstraintRequirement extends Requirement
 {
     private VersionConstraint $constraint;
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public function __construct(VersionConstraint $constraint)
     {
         $this->constraint = $constraint;
