@@ -1679,6 +1679,8 @@ abstract class Assert
      * Asserts that a variable is finite.
      *
      * @throws ExpectationFailedException
+     *
+     * @phpstan-assert finite-float|int $actual
      */
     final public static function assertFinite(mixed $actual, string $message = ''): void
     {

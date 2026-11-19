@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 12.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [12.5.46] - 2026-MM-DD
+
+### Fixed
+
+* `assertFinite()` does not tell PHPStan that the value is a finite `float` or an `int`, so the type of the value is not narrowed when test code is analysed with PHPStan (this requires PHPStan 2.3.6 or newer)
+
 ## [12.5.45] - 2026-11-19
 
 ### Fixed
@@ -417,6 +423,7 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 * [#6380](https://github.com/sebastianbergmann/phpunit/pull/6380): Allow `Throwable` in `expectExceptionObject()`
 * A PHPUnit notice is now emitted for test methods that create a mock object but do not configure an expectation for it
 
+[12.5.46]: https://github.com/sebastianbergmann/phpunit/compare/12.5.45...12.5
 [12.5.45]: https://github.com/sebastianbergmann/phpunit/compare/12.5.44...12.5.45
 [12.5.44]: https://github.com/sebastianbergmann/phpunit/compare/12.5.43...12.5.44
 [12.5.43]: https://github.com/sebastianbergmann/phpunit/compare/12.5.42...12.5.43
