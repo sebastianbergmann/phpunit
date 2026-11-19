@@ -20,6 +20,8 @@ use Attribute;
  * the pool that is named with $produces.
  *
  * @immutable
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 #[Attribute(Attribute::TARGET_METHOD)]
 final readonly class StateMachineRule

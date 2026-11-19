@@ -17,6 +17,8 @@ use Attribute;
  * examples, or the configured default number of examples when it is null.
  *
  * @immutable
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 #[Attribute(Attribute::TARGET_METHOD)]
 final readonly class Property

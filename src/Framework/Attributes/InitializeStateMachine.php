@@ -21,6 +21,8 @@ use Attribute;
  * extends it.
  *
  * @immutable
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 #[Attribute(Attribute::TARGET_METHOD)]
 final readonly class InitializeStateMachine

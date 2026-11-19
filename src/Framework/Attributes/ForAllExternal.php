@@ -17,6 +17,8 @@ use Attribute;
  * instance #[ForAllExternal(MoneyGenerators::class, 'smallAmounts')].
  *
  * @immutable
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 #[Attribute(Attribute::TARGET_PARAMETER)]
 final readonly class ForAllExternal
