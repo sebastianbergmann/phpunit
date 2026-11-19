@@ -29,6 +29,9 @@ final readonly class AddedFilesAreReachedThroughChanges
     private FilterDirectoryCollection $excludeDirectories;
     private FilterFileCollection $excludeFiles;
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public function __construct(FilterDirectoryCollection $includeDirectories, FilterFileCollection $includeFiles, FilterDirectoryCollection $excludeDirectories, FilterFileCollection $excludeFiles)
     {
         $this->includeDirectories = $includeDirectories;

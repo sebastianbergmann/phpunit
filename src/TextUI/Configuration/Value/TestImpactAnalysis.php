@@ -30,6 +30,9 @@ final readonly class TestImpactAnalysis
     private FilterFileCollection $watchedFiles;
     private AddedFilesAreReachedThroughChanges $addedFilesAreReachedThroughChanges;
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public function __construct(FilterDirectoryCollection $watchedDirectories, FilterFileCollection $watchedFiles, AddedFilesAreReachedThroughChanges $addedFilesAreReachedThroughChanges)
     {
         $this->watchedDirectories                 = $watchedDirectories;
