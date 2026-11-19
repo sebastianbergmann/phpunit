@@ -29,6 +29,8 @@ final readonly class FilterFileCollection implements Countable, IteratorAggregat
 
     /**
      * @param list<FilterFile> $files
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function fromArray(array $files): self
     {
