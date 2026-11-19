@@ -175,6 +175,8 @@ abstract readonly class Metadata
 
     /**
      * @param non-empty-string $path
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function coversFile(string $path): CoversFile
     {
@@ -183,6 +185,8 @@ abstract readonly class Metadata
 
     /**
      * @param non-empty-string $directory
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function coversDirectory(string $directory): CoversDirectory
     {
@@ -191,6 +195,8 @@ abstract readonly class Metadata
 
     /**
      * @param non-empty-string $directory
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function coversDirectoryRecursively(string $directory): CoversDirectoryRecursively
     {
@@ -224,6 +230,9 @@ abstract readonly class Metadata
         return new DataProvider(Level::METHOD_LEVEL, $className, $methodName, $validateArgumentCount, $skipWhenEmpty);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function dataProviderClosure(Closure $callable, bool $validateArgumentCount): DataProviderClosure
     {
         return new DataProviderClosure(Level::METHOD_LEVEL, $callable, $validateArgumentCount);
@@ -374,6 +383,8 @@ abstract readonly class Metadata
 
     /**
      * @param non-empty-string $message
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function invalidAttributeOnClass(string $message): InvalidAttribute
     {
@@ -382,6 +393,8 @@ abstract readonly class Metadata
 
     /**
      * @param non-empty-string $message
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function invalidAttributeOnMethod(string $message): InvalidAttribute
     {
@@ -442,6 +455,8 @@ abstract readonly class Metadata
 
     /**
      * @param non-empty-string $className
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function requiresClassOnClass(string $className): RequiresClass
     {
@@ -450,6 +465,8 @@ abstract readonly class Metadata
 
     /**
      * @param non-empty-string $className
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function requiresClassOnMethod(string $className): RequiresClass
     {
@@ -663,6 +680,8 @@ abstract readonly class Metadata
     /**
      * @param positive-int $times
      * @param positive-int $failureThreshold
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function repeat(int $times, int $failureThreshold): Repeat
     {
@@ -671,6 +690,8 @@ abstract readonly class Metadata
 
     /**
      * @param positive-int $maxAttempts
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function retry(int $maxAttempts): Retry
     {
@@ -807,6 +828,8 @@ abstract readonly class Metadata
 
     /**
      * @param non-empty-string $path
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function usesFile(string $path): UsesFile
     {
@@ -815,6 +838,8 @@ abstract readonly class Metadata
 
     /**
      * @param non-empty-string $directory
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function usesDirectory(string $directory): UsesDirectory
     {
@@ -823,6 +848,8 @@ abstract readonly class Metadata
 
     /**
      * @param non-empty-string $directory
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function usesDirectoryRecursively(string $directory): UsesDirectoryRecursively
     {
