@@ -27,51 +27,81 @@ abstract readonly class Metadata
      */
     private int $level;
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function after(int $priority): After
     {
         return new After(self::METHOD_LEVEL, $priority);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function afterClass(int $priority): AfterClass
     {
         return new AfterClass(self::METHOD_LEVEL, $priority);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function allowMockObjectsWithoutExpectationsOnClass(): AllowMockObjectsWithoutExpectations
     {
         return new AllowMockObjectsWithoutExpectations(self::CLASS_LEVEL);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function allowMockObjectsWithoutExpectationsOnMethod(): AllowMockObjectsWithoutExpectations
     {
         return new AllowMockObjectsWithoutExpectations(self::METHOD_LEVEL);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function backupGlobalsOnClass(bool $enabled): BackupGlobals
     {
         return new BackupGlobals(self::CLASS_LEVEL, $enabled);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function backupGlobalsOnMethod(bool $enabled): BackupGlobals
     {
         return new BackupGlobals(self::METHOD_LEVEL, $enabled);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function backupStaticPropertiesOnClass(bool $enabled): BackupStaticProperties
     {
         return new BackupStaticProperties(self::CLASS_LEVEL, $enabled);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function backupStaticPropertiesOnMethod(bool $enabled): BackupStaticProperties
     {
         return new BackupStaticProperties(self::METHOD_LEVEL, $enabled);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function before(int $priority): Before
     {
         return new Before(self::METHOD_LEVEL, $priority);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function beforeClass(int $priority): BeforeClass
     {
         return new BeforeClass(self::METHOD_LEVEL, $priority);
@@ -79,6 +109,8 @@ abstract readonly class Metadata
 
     /**
      * @param non-empty-string $namespace
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function coversNamespace(string $namespace): CoversNamespace
     {
@@ -87,6 +119,8 @@ abstract readonly class Metadata
 
     /**
      * @param class-string $className
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function coversClass(string $className): CoversClass
     {
@@ -95,6 +129,8 @@ abstract readonly class Metadata
 
     /**
      * @param class-string $className
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function coversClassesThatExtendClass(string $className): CoversClassesThatExtendClass
     {
@@ -103,6 +139,8 @@ abstract readonly class Metadata
 
     /**
      * @param class-string $interfaceName
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function coversClassesThatImplementInterface(string $interfaceName): CoversClassesThatImplementInterface
     {
@@ -111,6 +149,8 @@ abstract readonly class Metadata
 
     /**
      * @param trait-string $traitName
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function coversTrait(string $traitName): CoversTrait
     {
@@ -120,6 +160,8 @@ abstract readonly class Metadata
     /**
      * @param class-string     $className
      * @param non-empty-string $methodName
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function coversMethod(string $className, string $methodName): CoversMethod
     {
@@ -128,17 +170,25 @@ abstract readonly class Metadata
 
     /**
      * @param non-empty-string $functionName
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function coversFunction(string $functionName): CoversFunction
     {
         return new CoversFunction(self::CLASS_LEVEL, $functionName);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function coversNothingOnClass(): CoversNothing
     {
         return new CoversNothing(self::CLASS_LEVEL);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function coversNothingOnMethod(): CoversNothing
     {
         return new CoversNothing(self::METHOD_LEVEL);
@@ -147,6 +197,8 @@ abstract readonly class Metadata
     /**
      * @param class-string     $className
      * @param non-empty-string $methodName
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function dataProvider(string $className, string $methodName, bool $validateArgumentCount): DataProvider
     {
@@ -155,6 +207,8 @@ abstract readonly class Metadata
 
     /**
      * @param class-string $className
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function dependsOnClass(string $className, bool $deepClone, bool $shallowClone): DependsOnClass
     {
@@ -164,22 +218,33 @@ abstract readonly class Metadata
     /**
      * @param class-string     $className
      * @param non-empty-string $methodName
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function dependsOnMethod(string $className, string $methodName, bool $deepClone, bool $shallowClone): DependsOnMethod
     {
         return new DependsOnMethod(self::METHOD_LEVEL, $className, $methodName, $deepClone, $shallowClone);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function disableReturnValueGenerationForTestDoubles(): DisableReturnValueGenerationForTestDoubles
     {
         return new DisableReturnValueGenerationForTestDoubles(self::CLASS_LEVEL);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function doesNotPerformAssertionsOnClass(): DoesNotPerformAssertions
     {
         return new DoesNotPerformAssertions(self::CLASS_LEVEL);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function doesNotPerformAssertionsOnMethod(): DoesNotPerformAssertions
     {
         return new DoesNotPerformAssertions(self::METHOD_LEVEL);
@@ -187,6 +252,8 @@ abstract readonly class Metadata
 
     /**
      * @param non-empty-string $globalVariableName
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function excludeGlobalVariableFromBackupOnClass(string $globalVariableName): ExcludeGlobalVariableFromBackup
     {
@@ -195,6 +262,8 @@ abstract readonly class Metadata
 
     /**
      * @param non-empty-string $globalVariableName
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function excludeGlobalVariableFromBackupOnMethod(string $globalVariableName): ExcludeGlobalVariableFromBackup
     {
@@ -204,6 +273,8 @@ abstract readonly class Metadata
     /**
      * @param class-string     $className
      * @param non-empty-string $propertyName
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function excludeStaticPropertyFromBackupOnClass(string $className, string $propertyName): ExcludeStaticPropertyFromBackup
     {
@@ -213,6 +284,8 @@ abstract readonly class Metadata
     /**
      * @param class-string     $className
      * @param non-empty-string $propertyName
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function excludeStaticPropertyFromBackupOnMethod(string $className, string $propertyName): ExcludeStaticPropertyFromBackup
     {
@@ -221,6 +294,8 @@ abstract readonly class Metadata
 
     /**
      * @param non-empty-string $groupName
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function groupOnClass(string $groupName): Group
     {
@@ -229,6 +304,8 @@ abstract readonly class Metadata
 
     /**
      * @param non-empty-string $groupName
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function groupOnMethod(string $groupName): Group
     {
@@ -237,6 +314,8 @@ abstract readonly class Metadata
 
     /**
      * @param null|non-empty-string $messagePattern
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function ignoreDeprecationsOnClass(?string $messagePattern = null): IgnoreDeprecations
     {
@@ -245,6 +324,8 @@ abstract readonly class Metadata
 
     /**
      * @param null|non-empty-string $messagePattern
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function ignoreDeprecationsOnMethod(?string $messagePattern = null): IgnoreDeprecations
     {
@@ -267,21 +348,33 @@ abstract readonly class Metadata
         return new IgnorePhpunitDeprecations(self::METHOD_LEVEL);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function postCondition(int $priority): PostCondition
     {
         return new PostCondition(self::METHOD_LEVEL, $priority);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function preCondition(int $priority): PreCondition
     {
         return new PreCondition(self::METHOD_LEVEL, $priority);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function preserveGlobalStateOnClass(bool $enabled): PreserveGlobalState
     {
         return new PreserveGlobalState(self::CLASS_LEVEL, $enabled);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function preserveGlobalStateOnMethod(bool $enabled): PreserveGlobalState
     {
         return new PreserveGlobalState(self::METHOD_LEVEL, $enabled);
@@ -289,6 +382,8 @@ abstract readonly class Metadata
 
     /**
      * @param non-empty-string $functionName
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function requiresFunctionOnClass(string $functionName): RequiresFunction
     {
@@ -297,6 +392,8 @@ abstract readonly class Metadata
 
     /**
      * @param non-empty-string $functionName
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function requiresFunctionOnMethod(string $functionName): RequiresFunction
     {
@@ -306,6 +403,8 @@ abstract readonly class Metadata
     /**
      * @param non-empty-string $className
      * @param non-empty-string $methodName
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function requiresMethodOnClass(string $className, string $methodName): RequiresMethod
     {
@@ -315,6 +414,8 @@ abstract readonly class Metadata
     /**
      * @param non-empty-string $className
      * @param non-empty-string $methodName
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function requiresMethodOnMethod(string $className, string $methodName): RequiresMethod
     {
@@ -323,6 +424,8 @@ abstract readonly class Metadata
 
     /**
      * @param non-empty-string $operatingSystem
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function requiresOperatingSystemOnClass(string $operatingSystem): RequiresOperatingSystem
     {
@@ -331,6 +434,8 @@ abstract readonly class Metadata
 
     /**
      * @param non-empty-string $operatingSystem
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function requiresOperatingSystemOnMethod(string $operatingSystem): RequiresOperatingSystem
     {
@@ -339,6 +444,8 @@ abstract readonly class Metadata
 
     /**
      * @param non-empty-string $operatingSystemFamily
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function requiresOperatingSystemFamilyOnClass(string $operatingSystemFamily): RequiresOperatingSystemFamily
     {
@@ -347,17 +454,25 @@ abstract readonly class Metadata
 
     /**
      * @param non-empty-string $operatingSystemFamily
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function requiresOperatingSystemFamilyOnMethod(string $operatingSystemFamily): RequiresOperatingSystemFamily
     {
         return new RequiresOperatingSystemFamily(self::METHOD_LEVEL, $operatingSystemFamily);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function requiresPhpOnClass(Requirement $versionRequirement): RequiresPhp
     {
         return new RequiresPhp(self::CLASS_LEVEL, $versionRequirement);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function requiresPhpOnMethod(Requirement $versionRequirement): RequiresPhp
     {
         return new RequiresPhp(self::METHOD_LEVEL, $versionRequirement);
@@ -365,6 +480,8 @@ abstract readonly class Metadata
 
     /**
      * @param non-empty-string $extension
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function requiresPhpExtensionOnClass(string $extension, ?Requirement $versionRequirement): RequiresPhpExtension
     {
@@ -373,17 +490,25 @@ abstract readonly class Metadata
 
     /**
      * @param non-empty-string $extension
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function requiresPhpExtensionOnMethod(string $extension, ?Requirement $versionRequirement): RequiresPhpExtension
     {
         return new RequiresPhpExtension(self::METHOD_LEVEL, $extension, $versionRequirement);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function requiresPhpunitOnClass(Requirement $versionRequirement): RequiresPhpunit
     {
         return new RequiresPhpunit(self::CLASS_LEVEL, $versionRequirement);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function requiresPhpunitOnMethod(Requirement $versionRequirement): RequiresPhpunit
     {
         return new RequiresPhpunit(self::METHOD_LEVEL, $versionRequirement);
@@ -391,6 +516,8 @@ abstract readonly class Metadata
 
     /**
      * @param class-string<Extension> $extensionClass
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function requiresPhpunitExtensionOnClass(string $extensionClass): RequiresPhpunitExtension
     {
@@ -399,27 +526,41 @@ abstract readonly class Metadata
 
     /**
      * @param class-string<Extension> $extensionClass
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function requiresPhpunitExtensionOnMethod(string $extensionClass): RequiresPhpunitExtension
     {
         return new RequiresPhpunitExtension(self::METHOD_LEVEL, $extensionClass);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function requiresEnvironmentVariableOnClass(string $environmentVariableName, null|string $value): RequiresEnvironmentVariable
     {
         return new RequiresEnvironmentVariable(self::CLASS_LEVEL, $environmentVariableName, $value);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function requiresEnvironmentVariableOnMethod(string $environmentVariableName, null|string $value): RequiresEnvironmentVariable
     {
         return new RequiresEnvironmentVariable(self::METHOD_LEVEL, $environmentVariableName, $value);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function withEnvironmentVariableOnClass(string $environmentVariableName, null|string $value): WithEnvironmentVariable
     {
         return new WithEnvironmentVariable(self::CLASS_LEVEL, $environmentVariableName, $value);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function withEnvironmentVariableOnMethod(string $environmentVariableName, null|string $value): WithEnvironmentVariable
     {
         return new WithEnvironmentVariable(self::METHOD_LEVEL, $environmentVariableName, $value);
@@ -428,6 +569,8 @@ abstract readonly class Metadata
     /**
      * @param non-empty-string $setting
      * @param non-empty-string $value
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function requiresSettingOnClass(string $setting, string $value): RequiresSetting
     {
@@ -437,27 +580,41 @@ abstract readonly class Metadata
     /**
      * @param non-empty-string $setting
      * @param non-empty-string $value
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function requiresSettingOnMethod(string $setting, string $value): RequiresSetting
     {
         return new RequiresSetting(self::METHOD_LEVEL, $setting, $value);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function runClassInSeparateProcess(): RunClassInSeparateProcess
     {
         return new RunClassInSeparateProcess(self::CLASS_LEVEL);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function runTestsInSeparateProcesses(): RunTestsInSeparateProcesses
     {
         return new RunTestsInSeparateProcesses(self::CLASS_LEVEL);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function runInSeparateProcess(): RunInSeparateProcess
     {
         return new RunInSeparateProcess(self::METHOD_LEVEL);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function test(): Test
     {
         return new Test(self::METHOD_LEVEL);
@@ -465,6 +622,8 @@ abstract readonly class Metadata
 
     /**
      * @param non-empty-string $text
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function testDoxOnClass(string $text): TestDox
     {
@@ -473,6 +632,8 @@ abstract readonly class Metadata
 
     /**
      * @param non-empty-string $text
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function testDoxOnMethod(string $text): TestDox
     {
@@ -482,6 +643,8 @@ abstract readonly class Metadata
     /**
      * @param class-string     $className
      * @param non-empty-string $methodName
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function testDoxFormatter(string $className, string $methodName): TestDoxFormatter
     {
@@ -490,6 +653,8 @@ abstract readonly class Metadata
 
     /**
      * @param ?non-empty-string $name
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function testWith(mixed $data, ?string $name = null): TestWith
     {
@@ -498,6 +663,8 @@ abstract readonly class Metadata
 
     /**
      * @param non-empty-string $namespace
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function usesNamespace(string $namespace): UsesNamespace
     {
@@ -506,6 +673,8 @@ abstract readonly class Metadata
 
     /**
      * @param class-string $className
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function usesClass(string $className): UsesClass
     {
@@ -514,6 +683,8 @@ abstract readonly class Metadata
 
     /**
      * @param class-string $className
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function usesClassesThatExtendClass(string $className): UsesClassesThatExtendClass
     {
@@ -522,6 +693,8 @@ abstract readonly class Metadata
 
     /**
      * @param class-string $interfaceName
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function usesClassesThatImplementInterface(string $interfaceName): UsesClassesThatImplementInterface
     {
@@ -530,6 +703,8 @@ abstract readonly class Metadata
 
     /**
      * @param trait-string $traitName
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function usesTrait(string $traitName): UsesTrait
     {
@@ -538,6 +713,8 @@ abstract readonly class Metadata
 
     /**
      * @param non-empty-string $functionName
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function usesFunction(string $functionName): UsesFunction
     {
@@ -547,12 +724,17 @@ abstract readonly class Metadata
     /**
      * @param class-string     $className
      * @param non-empty-string $methodName
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function usesMethod(string $className, string $methodName): UsesMethod
     {
         return new UsesMethod(self::CLASS_LEVEL, $className, $methodName);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function withoutErrorHandler(): WithoutErrorHandler
     {
         return new WithoutErrorHandler(self::METHOD_LEVEL);
@@ -560,6 +742,8 @@ abstract readonly class Metadata
 
     /**
      * @param null|non-empty-string $messagePattern
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function ignorePhpunitWarnings(?string $messagePattern): IgnorePhpunitWarnings
     {
