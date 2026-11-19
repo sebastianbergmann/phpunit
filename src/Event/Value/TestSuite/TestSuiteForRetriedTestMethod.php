@@ -41,6 +41,8 @@ final readonly class TestSuiteForRetriedTestMethod extends TestSuite
      * @param class-string     $className
      * @param non-empty-string $methodName
      * @param positive-int     $maxAttempts
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public function __construct(string $name, int $size, TestCollection $tests, string $className, string $methodName, string $file, int $line, bool $isForDataSet, int $maxAttempts)
     {
