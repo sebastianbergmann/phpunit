@@ -16,6 +16,8 @@ use Iterator;
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @template-implements Iterator<non-negative-int, ExtensionBootstrap>
+ *
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class ExtensionBootstrapCollectionIterator implements Iterator
 {
