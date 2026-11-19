@@ -28,6 +28,8 @@ abstract readonly class Requirement
     /**
      * @throws InvalidVersionOperatorException
      * @throws InvalidVersionRequirementException
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function from(string $versionRequirement): self
     {
