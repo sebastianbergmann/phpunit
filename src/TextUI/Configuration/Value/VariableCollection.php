@@ -29,6 +29,8 @@ final readonly class VariableCollection implements Countable, IteratorAggregate
 
     /**
      * @param list<Variable> $variables
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function fromArray(array $variables): self
     {

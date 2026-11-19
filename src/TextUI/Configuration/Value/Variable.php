@@ -25,6 +25,8 @@ final readonly class Variable
 
     /**
      * @param non-empty-string $name
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public function __construct(string $name, mixed $value, bool $force)
     {

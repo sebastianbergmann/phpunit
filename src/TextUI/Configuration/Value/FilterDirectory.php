@@ -31,6 +31,8 @@ final readonly class FilterDirectory
     /**
      * @param non-empty-string $path
      * @param non-empty-string $suffix
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public function __construct(string $path, string $prefix, string $suffix, bool $includeInCodeCoverage = true)
     {
