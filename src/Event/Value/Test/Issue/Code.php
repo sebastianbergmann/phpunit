@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Event\Code\IssueTrigger;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ */
 enum Code: string
 {
     public function isFirstPartyOrTest(): bool
