@@ -16,6 +16,8 @@ use Iterator;
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @template-implements Iterator<non-negative-int, Group>
+ *
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class GroupCollectionIterator implements Iterator
 {
