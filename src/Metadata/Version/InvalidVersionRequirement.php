@@ -23,6 +23,8 @@ final readonly class InvalidVersionRequirement extends Requirement
 
     /**
      * @param non-empty-string $message
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public function __construct(string $message)
     {

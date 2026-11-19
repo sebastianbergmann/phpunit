@@ -16,6 +16,9 @@ namespace PHPUnit\Event\TestData;
  */
 final readonly class DataFromTestDependency extends TestData
 {
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function from(string $data): self
     {
         return new self($data);

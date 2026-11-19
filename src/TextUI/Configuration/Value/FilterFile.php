@@ -24,6 +24,8 @@ final readonly class FilterFile
 
     /**
      * @param non-empty-string $path
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public function __construct(string $path, bool $includeInCodeCoverage = true)
     {

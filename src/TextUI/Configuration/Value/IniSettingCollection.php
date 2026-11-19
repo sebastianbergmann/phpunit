@@ -29,6 +29,8 @@ final readonly class IniSettingCollection implements Countable, IteratorAggregat
 
     /**
      * @param list<IniSetting> $iniSettings
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function fromArray(array $iniSettings): self
     {

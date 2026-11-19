@@ -28,6 +28,8 @@ final readonly class Duration
 
     /**
      * @throws InvalidArgumentException
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function fromSecondsAndNanoseconds(int $seconds, int $nanoseconds): self
     {

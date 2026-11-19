@@ -29,6 +29,8 @@ final readonly class TestCollection implements Countable, IteratorAggregate
 
     /**
      * @param list<Test> $tests
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function fromArray(array $tests): self
     {

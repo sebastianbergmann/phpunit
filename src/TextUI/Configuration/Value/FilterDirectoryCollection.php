@@ -29,6 +29,8 @@ final readonly class FilterDirectoryCollection implements Countable, IteratorAgg
 
     /**
      * @param list<FilterDirectory> $directories
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function fromArray(array $directories): self
     {

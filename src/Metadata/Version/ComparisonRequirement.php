@@ -26,6 +26,8 @@ final readonly class ComparisonRequirement extends Requirement
 
     /**
      * @param non-empty-string $version
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public function __construct(string $version, VersionComparisonOperator $operator)
     {
