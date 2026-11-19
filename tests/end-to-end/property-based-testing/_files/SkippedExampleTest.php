@@ -17,7 +17,7 @@ final class SkippedExampleTest extends TestCase
     /**
      * @param int<0, 10> $value
      */
-    #[Property(examples: 10)]
+    #[Property(10)]
     public function testSkipsTheExample(int $value): void
     {
         $this->markTestSkipped('skipped');

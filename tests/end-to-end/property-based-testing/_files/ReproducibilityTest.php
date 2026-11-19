@@ -22,7 +22,7 @@ final class ReproducibilityTest extends TestCase
     /**
      * @param list<int> $values
      */
-    #[Property(examples: 20)]
+    #[Property(20)]
     public function testOne(array $values): void
     {
         $this->log('testOne', $values);
@@ -30,7 +30,7 @@ final class ReproducibilityTest extends TestCase
         $this->assertIsArray($values);
     }
 
-    #[Property(examples: 20)]
+    #[Property(20)]
     public function testTwo(string $value): void
     {
         $this->log('testTwo', $value);

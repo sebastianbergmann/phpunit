@@ -20,7 +20,7 @@ final class AssumeInAfterMethodTest extends TestCase
     /**
      * @param int<0, 9> $value
      */
-    #[Property(examples: 10)]
+    #[Property(10)]
     public function testExamplesAreDiscardedInAnAfterMethod(int $value): void
     {
         $this->value = $value;

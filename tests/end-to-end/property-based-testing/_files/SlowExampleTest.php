@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 
 final class SlowExampleTest extends TestCase
 {
-    #[Property(examples: 10)]
+    #[Property(10)]
     public function testTakesLongerThanTheTimeLimitOfTheTestRun(int $value): void
     {
         usleep(1500000);

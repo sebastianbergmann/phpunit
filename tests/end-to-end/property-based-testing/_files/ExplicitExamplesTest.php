@@ -26,7 +26,7 @@ final class ExplicitExamplesTest extends TestCase
      * @param int<0, 1000> $a
      * @param int<0, 1000> $b
      */
-    #[Property(examples: 3)]
+    #[Property(3)]
     #[TestWith([-1, -2])]
     #[TestWith(['b' => -4, 'a' => -3], 'named arguments')]
     #[TestWithJson('[-5, -6]')]

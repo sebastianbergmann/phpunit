@@ -37,7 +37,7 @@ final class GeneratorThatThrowsAfterPropertyWasFalsifiedTest extends TestCase
         );
     }
 
-    #[Property(examples: 10)]
+    #[Property(10)]
     public function testIsFalsifiedByTheFirstExample(#[ForAll('integers')] int $value): void
     {
         self::$falsified = true;

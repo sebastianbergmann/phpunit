@@ -40,7 +40,7 @@ abstract class ParentStateMachine
     {
     }
 
-    #[StateMachineInvariant(atEnd: true)]
+    #[StateMachineInvariant(true)]
     public function invariantAtEndOfParent(): void
     {
     }

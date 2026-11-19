@@ -16,7 +16,7 @@ final class FlakyAfterShrinkingTest extends TestCase
 {
     private static int $numberOfCalls = 0;
 
-    #[Property(examples: 10)]
+    #[Property(10)]
     public function testFailsForLargeValuesUntilItWasCalledTwelveTimes(int $value): void
     {
         self::$numberOfCalls++;

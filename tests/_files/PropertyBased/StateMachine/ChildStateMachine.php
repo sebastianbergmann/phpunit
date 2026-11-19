@@ -35,7 +35,7 @@ final class ChildStateMachine extends ParentStateMachine
     {
     }
 
-    #[StateMachineInvariant(atEnd: true)]
+    #[StateMachineInvariant(true)]
     public function invariantAtEndOfChild(): void
     {
     }

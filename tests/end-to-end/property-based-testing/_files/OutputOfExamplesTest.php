@@ -16,7 +16,7 @@ final class OutputOfExamplesTest extends TestCase
 {
     private static int $example = 0;
 
-    #[Property(examples: 3)]
+    #[Property(3)]
     public function testPrintsOutputForEveryExample(int $value): void
     {
         self::$example++;

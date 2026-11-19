@@ -39,7 +39,7 @@ final class HashTableMachine
         $this->table = new HashTable;
     }
 
-    #[StateMachineRule(produces: 'keys', precondition: 'hasFreeSlots')]
+    #[StateMachineRule('hasFreeSlots', 'keys')]
     public function put(#[ForAll('keys')] int $key, int $value): int
     {
         $this->table->put($key, $value);
@@ -66,7 +66,7 @@ final class HashTableMachine
     }
 
     #[StateMachineRule]
-    public function delete(#[FromPool('keys', consume: true)] int $key): void
+    public function delete(#[FromPool('keys', true)] int $key): void
     {
         $this->table->delete($key);
 

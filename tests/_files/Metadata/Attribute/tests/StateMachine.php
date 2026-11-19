@@ -16,7 +16,7 @@ use PHPUnit\Framework\Attributes\StateMachineRule;
 
 final class StateMachine
 {
-    #[InitializeStateMachine(produces: 'accounts')]
+    #[InitializeStateMachine('accounts')]
     public function initialize(): string
     {
         return 'account';
@@ -27,8 +27,8 @@ final class StateMachine
     {
     }
 
-    #[StateMachineRule(precondition: 'canWithdraw', produces: 'receipts')]
-    public function withdraw(#[FromPool('accounts')] string $account, int $amount, #[FromPool('receipts', consume: true)] string $receipt): string
+    #[StateMachineRule('canWithdraw', 'receipts')]
+    public function withdraw(#[FromPool('accounts')] string $account, int $amount, #[FromPool('receipts', true)] string $receipt): string
     {
         return 'receipt';
     }
@@ -43,7 +43,7 @@ final class StateMachine
     {
     }
 
-    #[StateMachineInvariant(atEnd: true)]
+    #[StateMachineInvariant(true)]
     public function invariantAtEnd(): void
     {
     }

@@ -19,7 +19,7 @@ final class PropertyTest extends TestCase
     /**
      * @param int<0, 9> $value
      */
-    #[Property(examples: 20)]
+    #[Property(20)]
     public function testSomeExamplesContributeToCodeCoverage(int $value): void
     {
         if ($value > 5) {
@@ -31,7 +31,7 @@ final class PropertyTest extends TestCase
         $this->assertLessThanOrEqual(5, $value);
     }
 
-    #[Property(examples: 20)]
+    #[Property(20)]
     public function testNoExampleContributesToCodeCoverage(int $value): void
     {
         $this->assertSame($value, $value);

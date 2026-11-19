@@ -43,7 +43,7 @@ final class CounterMachine
         $this->counter = $value;
     }
 
-    #[StateMachineRule(produces: 'snapshots')]
+    #[StateMachineRule(null, 'snapshots')]
     public function snapshot(): int
     {
         $this->calls[] = 'snapshot()';
@@ -64,7 +64,7 @@ final class CounterMachine
         return $this->counter;
     }
 
-    #[StateMachineRule(precondition: 'isPositive')]
+    #[StateMachineRule('isPositive')]
     public function decrement(): void
     {
         $this->calls[] = 'decrement()';
@@ -73,7 +73,7 @@ final class CounterMachine
     }
 
     #[StateMachineRule]
-    public function restore(#[FromPool('snapshots', consume: true)] int $snapshot): void
+    public function restore(#[FromPool('snapshots', true)] int $snapshot): void
     {
         $this->calls[] = sprintf('restore(%d)', $snapshot);
 
@@ -93,7 +93,7 @@ final class CounterMachine
         Assert::assertGreaterThanOrEqual(0, $this->counter);
     }
 
-    #[StateMachineInvariant(atEnd: true)]
+    #[StateMachineInvariant(true)]
     public function checkedAtEnd(): void
     {
         $this->calls[] = 'checkedAtEnd()';

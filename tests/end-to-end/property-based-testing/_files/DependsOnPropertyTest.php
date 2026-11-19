@@ -15,13 +15,13 @@ use PHPUnit\Framework\TestCase;
 
 final class DependsOnPropertyTest extends TestCase
 {
-    #[Property(examples: 10)]
+    #[Property(10)]
     public function testHolds(int $value): void
     {
         $this->assertIsInt($value);
     }
 
-    #[Property(examples: 10)]
+    #[Property(10)]
     public function testDoesNotHold(int $value): void
     {
         $this->assertIsString($value);

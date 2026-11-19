@@ -18,7 +18,7 @@ final class ObservedValuesTest extends TestCase
     /**
      * @param int<0, 9> $value
      */
-    #[Property(examples: 10)]
+    #[Property(10)]
     #[TestWith([100])]
     public function testObservesValuesOfItsExamples(int $value): void
     {

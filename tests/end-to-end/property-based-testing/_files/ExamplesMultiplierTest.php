@@ -20,7 +20,7 @@ final class ExamplesMultiplierTest extends TestCase
         $this->assertIsInt($value);
     }
 
-    #[Property(examples: 4)]
+    #[Property(4)]
     public function testWithSpecifiedNumberOfExamples(int $value): void
     {
         $this->assertIsInt($value);

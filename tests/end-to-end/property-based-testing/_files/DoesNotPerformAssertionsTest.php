@@ -15,13 +15,13 @@ use PHPUnit\Framework\TestCase;
 
 final class DoesNotPerformAssertionsTest extends TestCase
 {
-    #[Property(examples: 10)]
+    #[Property(10)]
     #[DoesNotPerformAssertions]
     public function testPerformsNoAssertions(int $value): void
     {
     }
 
-    #[Property(examples: 10)]
+    #[Property(10)]
     #[DoesNotPerformAssertions]
     public function testPerformsAnAssertionForEveryExample(int $value): void
     {

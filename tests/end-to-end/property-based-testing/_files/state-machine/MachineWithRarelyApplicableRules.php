@@ -30,7 +30,7 @@ final class MachineWithRarelyApplicableRules
         $this->level = $level;
     }
 
-    #[StateMachineRule(precondition: 'isOpen', produces: 'tokens')]
+    #[StateMachineRule('isOpen', 'tokens')]
     public function token(): int
     {
         return 1;

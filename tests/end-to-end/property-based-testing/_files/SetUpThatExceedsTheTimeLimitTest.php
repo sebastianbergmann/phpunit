@@ -26,7 +26,7 @@ final class SetUpThatExceedsTheTimeLimitTest extends TestCase
     /**
      * @param int<0, 50> $value
      */
-    #[Property(examples: 10)]
+    #[Property(10)]
     public function testGeneratedExample(int $value): void
     {
         $this->assertLessThanOrEqual(50, $value);
@@ -35,7 +35,7 @@ final class SetUpThatExceedsTheTimeLimitTest extends TestCase
     /**
      * @param int<0, 50> $value
      */
-    #[Property(examples: 10)]
+    #[Property(10)]
     #[TestWith([25])]
     public function testExplicitExample(int $value): void
     {

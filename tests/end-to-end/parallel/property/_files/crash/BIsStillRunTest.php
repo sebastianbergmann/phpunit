@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 final class BIsStillRunTest extends TestCase
 {
-    #[Property(examples: 10)]
+    #[Property(10)]
     public function testHolds(int $value): void
     {
         $this->assertIsInt($value);

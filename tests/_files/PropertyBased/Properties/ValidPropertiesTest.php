@@ -45,7 +45,7 @@ final class ValidPropertiesTest extends TestCase
     /**
      * @param non-empty-string $name
      */
-    #[Property(examples: 50)]
+    #[Property(50)]
     public function testWithParameters(#[ForAll('smallIntegers')] int $small, string $name, Money $money): void
     {
     }

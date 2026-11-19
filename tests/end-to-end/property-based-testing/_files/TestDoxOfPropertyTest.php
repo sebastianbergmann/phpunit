@@ -21,14 +21,14 @@ final class TestDoxOfPropertyTest extends TestCase
         return 'Formatted ' . $a;
     }
 
-    #[Property(examples: 3)]
+    #[Property(3)]
     #[TestDox('Adding $a and $b is commutative')]
     public function testAddingIsCommutative(int $a, int $b): void
     {
         $this->assertSame($a + $b, $b + $a);
     }
 
-    #[Property(examples: 3)]
+    #[Property(3)]
     #[TestDoxFormatter('formatter')]
     public function testIsAnnotatedWithTestDoxFormatter(int $a): void
     {

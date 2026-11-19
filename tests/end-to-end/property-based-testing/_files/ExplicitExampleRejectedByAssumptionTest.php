@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 
 final class ExplicitExampleRejectedByAssumptionTest extends TestCase
 {
-    #[Property(examples: 10)]
+    #[Property(10)]
     #[TestWith([-1])]
     #[TestWith([1])]
     public function testRejectsNegativeValues(int $value): void

@@ -33,7 +33,7 @@ final class IntegerDistributionTest extends TestCase
         return Generators::integers();
     }
 
-    #[Property(examples: 200)]
+    #[Property(200)]
     public function testInt(int $value): void
     {
         self::$values['int'][] = $value;
@@ -44,7 +44,7 @@ final class IntegerDistributionTest extends TestCase
     /**
      * @param int<-9223372036854775807, max> $value
      */
-    #[Property(examples: 200)]
+    #[Property(200)]
     public function testIntegerRange(int $value): void
     {
         self::$values['range'][] = $value;
@@ -53,7 +53,7 @@ final class IntegerDistributionTest extends TestCase
         $this->assertGreaterThanOrEqual(-PHP_INT_MAX, $value);
     }
 
-    #[Property(examples: 200)]
+    #[Property(200)]
     public function testGeneratorsIntegers(#[ForAll('integers')] int $value): void
     {
         self::$values['integers'][] = $value;

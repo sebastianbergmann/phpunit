@@ -19,7 +19,7 @@ final class PropertyTest extends TestCase
     /**
      * @param int<0, 9> $value
      */
-    #[Property(examples: 20)]
+    #[Property(20)]
     public function testOnlyExamplesWithoutAssertionsContributeToCodeCoverage(int $value): void
     {
         if ($value > 5) {

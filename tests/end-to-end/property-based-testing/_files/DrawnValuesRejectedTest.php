@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 
 final class DrawnValuesRejectedTest extends TestCase
 {
-    #[Property(examples: 2)]
+    #[Property(2)]
     public function testDrawsValuesThatCannotBeGenerated(): void
     {
         $value = $this->draw(Generators::integers()->filter(static fn (int $value): bool => false));

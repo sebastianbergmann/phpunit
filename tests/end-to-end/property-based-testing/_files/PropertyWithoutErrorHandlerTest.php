@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 
 final class PropertyWithoutErrorHandlerTest extends TestCase
 {
-    #[Property(examples: 10)]
+    #[Property(10)]
     #[WithoutErrorHandler]
     public function testIsCheckedWithoutTheErrorHandler(int $value): void
     {

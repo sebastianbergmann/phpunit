@@ -45,7 +45,7 @@ final class BankMachine
         $this->projection = $projection;
     }
 
-    #[StateMachineRule(produces: 'accounts')]
+    #[StateMachineRule(null, 'accounts')]
     public function open(): AccountId
     {
         $account = $this->bank->openAccount();
@@ -110,7 +110,7 @@ final class BankMachine
         Assert::assertSame($this->projectedBalances, $this->projection->balances());
     }
 
-    #[StateMachineInvariant(atEnd: true)]
+    #[StateMachineInvariant(true)]
     public function accountsRebuiltFromTheirEventsMatchTheModel(): void
     {
         foreach ($this->balances as $account => $balance) {

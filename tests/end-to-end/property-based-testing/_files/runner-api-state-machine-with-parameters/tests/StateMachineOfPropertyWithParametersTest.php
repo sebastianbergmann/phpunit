@@ -31,14 +31,14 @@ final class StateMachineOfPropertyWithParametersTest extends TestCase
 
 final class MachineWithPoolOfPropertyWithParameters
 {
-    #[StateMachineRule(produces: 'items')]
+    #[StateMachineRule(null, 'items')]
     public function item(): int
     {
         return 1;
     }
 
     #[StateMachineRule]
-    public function take(#[FromPool('items', consume: true)] int $item): void
+    public function take(#[FromPool('items', true)] int $item): void
     {
     }
 }

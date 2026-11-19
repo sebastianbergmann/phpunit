@@ -14,7 +14,7 @@ use PHPUnit\Framework\Attributes\StateMachineRule;
 
 final class MachineWithPool
 {
-    #[StateMachineRule(produces: 'items')]
+    #[StateMachineRule(null, 'items')]
     public function item(): int
     {
         return 1;
@@ -26,7 +26,7 @@ final class MachineWithPool
     }
 
     #[StateMachineRule]
-    public function take(#[FromPool('items', consume: true)] int $item): void
+    public function take(#[FromPool('items', true)] int $item): void
     {
     }
 }

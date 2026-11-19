@@ -21,7 +21,7 @@ final class ExplicitExampleThatExceedsTheTimeLimitTest extends TestCase
     /**
      * @param int<0, 50> $value
      */
-    #[Property(examples: 10)]
+    #[Property(10)]
     #[TestWith([51])]
     public function testDoesNotTerminateForValuesGreaterThanFifty(int $value): void
     {

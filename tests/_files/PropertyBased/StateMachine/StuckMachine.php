@@ -13,7 +13,7 @@ use PHPUnit\Framework\Attributes\StateMachineRule;
 
 final class StuckMachine
 {
-    #[StateMachineRule(precondition: 'canStep')]
+    #[StateMachineRule('canStep')]
     public function step(): void
     {
     }

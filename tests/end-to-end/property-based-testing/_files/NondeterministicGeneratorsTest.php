@@ -50,7 +50,7 @@ final class NondeterministicGeneratorsTest extends TestCase
         );
     }
 
-    #[Property(examples: 20)]
+    #[Property(20)]
     public function testDrawsFromARangeThatGrows(#[ForAll('integersUpToAMaximumThatGrows')] int $value): void
     {
         $this->assertGreaterThanOrEqual(0, $value);

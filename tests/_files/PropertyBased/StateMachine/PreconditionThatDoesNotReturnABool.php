@@ -13,7 +13,7 @@ use PHPUnit\Framework\Attributes\StateMachineRule;
 
 final class PreconditionThatDoesNotReturnABool
 {
-    #[StateMachineRule(precondition: 'canStep')]
+    #[StateMachineRule('canStep')]
     public function step(): void
     {
     }

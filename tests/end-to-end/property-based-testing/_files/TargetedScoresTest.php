@@ -18,7 +18,7 @@ final class TargetedScoresTest extends TestCase
     /**
      * @param int<0, 2000000> $value
      */
-    #[Property(examples: 200)]
+    #[Property(200)]
     public function testFindsTheRareValuesThatFalsifyItByTargetingHowCloseValuesComeToThem(int $value): void
     {
         $this->target('closeness', -abs($value - 1_000_050));
@@ -29,7 +29,7 @@ final class TargetedScoresTest extends TestCase
     /**
      * @param int<0, 2000000> $value
      */
-    #[Property(examples: 200)]
+    #[Property(200)]
     public function testDoesNotFindTheRareValuesThatFalsifyItWithoutTargetingThem(int $value): void
     {
         $this->assertFalse($value >= 1_000_000 && $value <= 1_000_100);

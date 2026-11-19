@@ -18,7 +18,7 @@ final class FailsDifferentlyAfterShrinkingTest extends TestCase
 {
     private static int $numberOfCallsWithOneHundred = 0;
 
-    #[Property(examples: 10)]
+    #[Property(10)]
     public function testFailsDifferentlyWhenItIsCalledWithOneHundredForTheSecondTime(int $value): void
     {
         if ($value === 100) {

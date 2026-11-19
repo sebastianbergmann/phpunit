@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 
 final class SlowShrinkingTest extends TestCase
 {
-    #[Property(examples: 10)]
+    #[Property(10)]
     public function testTakesLongerToShrinkThanTheTimeLimitOfTheTestRun(int $value): void
     {
         usleep(100000);

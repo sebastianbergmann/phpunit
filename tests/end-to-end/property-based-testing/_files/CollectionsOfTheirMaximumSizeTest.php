@@ -47,7 +47,7 @@ final class CollectionsOfTheirMaximumSizeTest extends TestCase
         return Generators::lists(Generators::integers(), 0, 100);
     }
 
-    #[Property(examples: 1000)]
+    #[Property(1000)]
     public function testString(#[ForAll('stringsOfAtMostFiftyCharacters')] string $string): void
     {
         self::$lengths[] = mb_strlen($string);
@@ -58,7 +58,7 @@ final class CollectionsOfTheirMaximumSizeTest extends TestCase
     /**
      * @param list<int> $list
      */
-    #[Property(examples: 1000)]
+    #[Property(1000)]
     public function testList(#[ForAll('listsOfAtMostOneHundredIntegers')] array $list): void
     {
         self::$sizes[] = count($list);

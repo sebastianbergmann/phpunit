@@ -29,7 +29,7 @@ final class ProcessIsolationClassHooksTest extends TestCase
     /**
      * @param int<0, 9> $value
      */
-    #[Property(examples: 3)]
+    #[Property(3)]
     public function testSeesWhatTheHookMethodBeforeTheFirstTestSetUp(int $value): void
     {
         $this->assertSame('prepared', self::$state);

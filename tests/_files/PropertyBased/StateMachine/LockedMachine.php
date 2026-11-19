@@ -24,7 +24,7 @@ final class LockedMachine
     /**
      * @param int<0, 9> $amount
      */
-    #[StateMachineRule(precondition: 'isUnlocked')]
+    #[StateMachineRule('isUnlocked')]
     public function add(int $amount): void
     {
         $this->calls[] = sprintf('add(%d)', $amount);
@@ -36,7 +36,7 @@ final class LockedMachine
         $this->calls[] = sprintf('take(%d)', $item);
     }
 
-    #[StateMachineRule(produces: 'items')]
+    #[StateMachineRule(null, 'items')]
     public function item(): int
     {
         $this->calls[] = 'item()';
@@ -44,7 +44,7 @@ final class LockedMachine
         return 1;
     }
 
-    #[StateMachineRule(precondition: 'isUnlocked')]
+    #[StateMachineRule('isUnlocked')]
     public function inspect(#[FromPool('items')] int $item): void
     {
         $this->calls[] = sprintf('inspect(%d)', $item);
@@ -58,7 +58,7 @@ final class LockedMachine
         $this->locked = false;
     }
 
-    #[StateMachineRule(produces: 'items', precondition: 'isUnlocked')]
+    #[StateMachineRule('isUnlocked', 'items')]
     public function itemOfUnlockedMachine(): int
     {
         $this->calls[] = 'itemOfUnlockedMachine()';

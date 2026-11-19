@@ -18,7 +18,7 @@ final class TargetedScoreTest extends TestCase
     /**
      * @param int<0, 1000> $value
      */
-    #[Property(examples: 20)]
+    #[Property(20)]
     #[TestWith([5000])]
     public function testTargetsTheValue(int $value): void
     {

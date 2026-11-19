@@ -15,7 +15,7 @@ use PHPUnit\Framework\Attributes\StateMachineRule;
 
 final class MachineWithInvalidAttributeOnParameter
 {
-    #[StateMachineRule(produces: 'values')]
+    #[StateMachineRule(null, 'values')]
     public function produce(): int
     {
         return 1;

@@ -27,7 +27,7 @@ final class BIsBeingCheckedWhenTheRunStopsTest extends TestCase
      * Checking this property for all of its examples takes longer than the
      * test of the other class waits before it fails.
      */
-    #[Property(examples: 300)]
+    #[Property(300)]
     public function testIsBeingCheckedWhenTheRunStops(int $value): void
     {
         self::mark('.');

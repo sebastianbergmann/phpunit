@@ -19,7 +19,7 @@ final class IssuesTriggeredByRejectedExamplesTest extends TestCase
     /**
      * @param int<0, 9> $value
      */
-    #[Property(examples: 5)]
+    #[Property(5)]
     public function testTriggersADeprecationForTheValuesThatAreRejected(int $value): void
     {
         if ($value % 2 !== 0) {

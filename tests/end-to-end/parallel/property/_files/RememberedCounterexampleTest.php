@@ -18,13 +18,13 @@ final class RememberedCounterexampleTest extends TestCase
      * Random examples practically never falsify this property, but its
      * counterexample is remembered in the test run history.
      */
-    #[Property(examples: 10)]
+    #[Property(10)]
     public function testValueIsNotMagic(int $value): void
     {
         $this->assertNotSame(12345, $value);
     }
 
-    #[Property(examples: 10)]
+    #[Property(10)]
     public function testHolds(int $value): void
     {
         $this->assertIsInt($value);

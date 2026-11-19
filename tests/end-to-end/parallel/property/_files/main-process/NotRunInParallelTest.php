@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 #[DoNotRunInParallel]
 final class NotRunInParallelTest extends TestCase
 {
-    #[Property(examples: 10)]
+    #[Property(10)]
     public function testExamplesAreRunInTheMainProcess(int $value): void
     {
         $this->assertFalse(getenv('PHPUNIT_WORKER_ID'));

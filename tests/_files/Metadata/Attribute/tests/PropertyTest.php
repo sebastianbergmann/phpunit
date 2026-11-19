@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 
 final class PropertyTest extends TestCase
 {
-    #[Property(examples: 500)]
+    #[Property(500)]
     public function testWithNumberOfExamples(int $value): void
     {
     }
@@ -25,7 +25,7 @@ final class PropertyTest extends TestCase
     {
     }
 
-    #[Property(examples: 0)]
+    #[Property(0)]
     public function testWithInvalidNumberOfExamples(int $value): void
     {
     }

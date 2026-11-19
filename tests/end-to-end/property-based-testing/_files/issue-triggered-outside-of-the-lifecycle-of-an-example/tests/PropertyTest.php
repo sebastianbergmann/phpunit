@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 
 final class PropertyTest extends TestCase
 {
-    #[Property(examples: 3)]
+    #[Property(3)]
     public function testProperty(int $value): void
     {
         $this->assertTrue(is_int($value));

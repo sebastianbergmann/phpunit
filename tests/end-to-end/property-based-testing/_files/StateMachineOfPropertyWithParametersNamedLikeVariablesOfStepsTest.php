@@ -33,7 +33,7 @@ final class MachineWithCountersThatAreNotToBeIncremented
 {
     private bool $counterWasIncremented = false;
 
-    #[StateMachineRule(produces: 'counters')]
+    #[StateMachineRule(null, 'counters')]
     public function counter(): int
     {
         return 0;

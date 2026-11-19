@@ -20,7 +20,7 @@ final class RequirementMetAtRunTimeTest extends TestCase
         require_once __DIR__ . '/function_declared_at_run_time.php';
     }
 
-    #[Property(examples: 5)]
+    #[Property(5)]
     #[RequiresFunction('PHPUnit\TestFixture\PropertyBasedTesting\identity')]
     public function testRequiresAFunctionThatIsDeclaredAtRunTime(int $value): void
     {

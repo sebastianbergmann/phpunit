@@ -19,7 +19,7 @@ final class SlowTest extends TestCase
      * Checking this property for all of its examples takes longer than the
      * time limit for the test run.
      */
-    #[Property(examples: 300)]
+    #[Property(300)]
     public function testIsBeingCheckedWhenTheTimeLimitIsExceeded(int $value): void
     {
         usleep(100000);

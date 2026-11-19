@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
 #[RunTestsInSeparateProcesses]
 final class RunTestsInSeparateProcessesTest extends TestCase
 {
-    #[Property(examples: 10)]
+    #[Property(10)]
     public function testIsDeclaredInAClassThatRunsTestsInSeparateProcesses(int $value): void
     {
         $this->assertTrue(true);

@@ -27,7 +27,7 @@ final class SwitchMachine
     private bool $on                  = false;
     private int $numberOfTokens       = 0;
 
-    #[StateMachineRule(precondition: 'isOff')]
+    #[StateMachineRule('isOff')]
     public function switchOn(): void
     {
         $this->calls[] = 'switchOn()';
@@ -35,7 +35,7 @@ final class SwitchMachine
         $this->on = true;
     }
 
-    #[StateMachineRule(precondition: 'isOn')]
+    #[StateMachineRule('isOn')]
     public function switchOff(): void
     {
         $this->calls[] = 'switchOff()';
@@ -43,7 +43,7 @@ final class SwitchMachine
         $this->on = false;
     }
 
-    #[StateMachineRule(produces: 'tokens')]
+    #[StateMachineRule(null, 'tokens')]
     public function token(): string
     {
         $this->numberOfTokens++;

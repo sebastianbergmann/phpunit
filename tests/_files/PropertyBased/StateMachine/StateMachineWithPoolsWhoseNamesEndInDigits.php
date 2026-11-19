@@ -14,26 +14,26 @@ use PHPUnit\Framework\Attributes\StateMachineRule;
 
 final class StateMachineWithPoolsWhoseNamesEndInDigits
 {
-    #[StateMachineRule(produces: 'x')]
+    #[StateMachineRule(null, 'x')]
     public function produceX(): int
     {
         return 1;
     }
 
-    #[StateMachineRule(produces: 'x1')]
+    #[StateMachineRule(null, 'x1')]
     public function produceX1(): int
     {
         return 2;
     }
 
-    #[StateMachineRule(produces: 'x_1')]
+    #[StateMachineRule(null, 'x_1')]
     public function produceX_1(): int
     {
         return 3;
     }
 
     #[StateMachineRule]
-    public function consume(#[FromPool('x', consume: true)] int $x, #[FromPool('x1')] int $x1, #[FromPool('x_1')] int $x_1): void
+    public function consume(#[FromPool('x', true)] int $x, #[FromPool('x1')] int $x1, #[FromPool('x_1')] int $x_1): void
     {
     }
 }

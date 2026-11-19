@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 final class RejectedExamplesTest extends TestCase
 {
-    #[Property(examples: 10)]
+    #[Property(10)]
     public function testRejectsAlmostAllExamples(int $value): void
     {
         $this->assume($value === 0);

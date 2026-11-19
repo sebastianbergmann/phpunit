@@ -16,7 +16,7 @@ final class FlakyPropertyTest extends TestCase
 {
     private static int $numberOfExamples = 0;
 
-    #[Property(examples: 10)]
+    #[Property(10)]
     public function testFailsOnlyForTheThirdExample(int $value): void
     {
         self::$numberOfExamples++;

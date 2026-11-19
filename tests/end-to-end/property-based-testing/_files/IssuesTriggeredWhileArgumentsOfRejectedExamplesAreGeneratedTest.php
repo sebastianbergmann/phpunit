@@ -52,13 +52,13 @@ final class IssuesTriggeredWhileArgumentsOfRejectedExamplesAreGeneratedTest exte
         );
     }
 
-    #[Property(examples: 1)]
+    #[Property(1)]
     public function testClosurePassedToFilterTriggersADeprecationAndRejectsEveryValue(#[ForAll('integersFilteredByAClosureThatTriggersADeprecationAndRejectsEveryValue')] int $value): void
     {
         $this->assertSame(0, $value);
     }
 
-    #[Property(examples: 5)]
+    #[Property(5)]
     public function testClosurePassedToMapTriggersANoticeForTheValuesThatAreRejectedByAssume(#[ForAll('integersMappedByAClosureThatTriggersANoticeForOddValues')] int $value): void
     {
         $this->assume($value % 2 === 0);

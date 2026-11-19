@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 
 final class RunInWorkerTest extends TestCase
 {
-    #[Property(examples: 10)]
+    #[Property(10)]
     public function testExamplesAreRunInAWorker(int $value): void
     {
         $this->assertIsString(getenv('PHPUNIT_WORKER_ID'));

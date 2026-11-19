@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
 
 final class IneligibleAttributesTest extends TestCase
 {
-    #[Property(examples: 10)]
+    #[Property(10)]
     #[RunInSeparateProcess]
     public function testIsAnnotatedWithRunInSeparateProcess(int $value): void
     {

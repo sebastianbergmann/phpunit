@@ -18,7 +18,7 @@ final class PassingPropertyTest extends TestCase
     /**
      * @param list<int> $input
      */
-    #[Property(examples: 10)]
+    #[Property(10)]
     public function testReversingTwiceIsIdentity(array $input): void
     {
         $this->assertSame($input, array_reverse(array_reverse($input)));

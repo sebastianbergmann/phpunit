@@ -18,7 +18,7 @@ final class RequiredClassificationsTest extends TestCase
     /**
      * @param int<0, 9> $value
      */
-    #[Property(examples: 10)]
+    #[Property(10)]
     #[RequireClassification('even', 50)]
     #[RequireClassification('zero', 20)]
     public function testClassifiesTooFewExamplesAsZero(int $value): void
@@ -37,7 +37,7 @@ final class RequiredClassificationsTest extends TestCase
     /**
      * @param int<0, 9> $value
      */
-    #[Property(examples: 10)]
+    #[Property(10)]
     #[RequireClassification('never', 1)]
     public function testIsFalsified(int $value): void
     {

@@ -14,13 +14,13 @@ use PHPUnit\Framework\Attributes\StateMachineRule;
 
 final class StateMachineWithPoolsThatAreNamedLikeTheVariableForTheStateMachine
 {
-    #[StateMachineRule(produces: 'machine')]
+    #[StateMachineRule(null, 'machine')]
     public function produceMachine(): int
     {
         return 1;
     }
 
-    #[StateMachineRule(produces: 'stateMachine')]
+    #[StateMachineRule(null, 'stateMachine')]
     public function produceStateMachine(): int
     {
         return 2;

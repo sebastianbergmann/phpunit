@@ -1065,7 +1065,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * with #[StateMachineRule] are the steps that can be taken, whose methods
      * with #[InitializeStateMachine] are called before the first step, and
      * whose methods with #[StateMachineInvariant] are called after each step,
-     * or only after the last one with #[StateMachineInvariant(atEnd: true)].
+     * or only after the last one with #[StateMachineInvariant(true)].
      * The steps are drawn like the values that are drawn with draw(), so they
      * are replayed and shrunk together with the arguments of the property, and
      * the steps that the minimal counterexample takes are reported as PHP code

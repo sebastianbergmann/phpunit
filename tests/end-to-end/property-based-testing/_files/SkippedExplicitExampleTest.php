@@ -18,7 +18,7 @@ final class SkippedExplicitExampleTest extends TestCase
     /**
      * @param positive-int $value
      */
-    #[Property(examples: 10)]
+    #[Property(10)]
     #[TestWith([0])]
     public function testSkipsTheExampleForZero(int $value): void
     {

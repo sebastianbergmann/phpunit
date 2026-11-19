@@ -25,7 +25,7 @@ final class RejectionReasonsTest extends TestCase
         return Generators::integers(0, 1000)->filter(static fn (int $value): bool => $value % 2 === 0);
     }
 
-    #[Property(examples: 3)]
+    #[Property(3)]
     public function testRejectsEveryExampleForSeveralReasons(#[ForAll('evenIntegers')] int $value): void
     {
         $this->assume($value < 0);

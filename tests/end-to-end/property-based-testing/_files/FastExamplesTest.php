@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 
 final class FastExamplesTest extends TestCase
 {
-    #[Property(examples: 100000)]
+    #[Property(100000)]
     public function testHasMoreExamplesThanFitIntoTheTimeLimitOfTheTestRun(int $value): void
     {
         usleep(1000);

@@ -17,21 +17,21 @@ use PHPUnit\Framework\TestCase;
 
 final class IneligibleAttributesTest extends TestCase
 {
-    #[Property(examples: 10)]
+    #[Property(10)]
     #[Repeat(2)]
     public function testIsAnnotatedWithRepeat(int $value): void
     {
         $this->assertTrue(true);
     }
 
-    #[Property(examples: 10)]
+    #[Property(10)]
     #[Retry(2)]
     public function testIsAnnotatedWithRetry(int $value): void
     {
         $this->assertTrue(true);
     }
 
-    #[Property(examples: 10)]
+    #[Property(10)]
     #[RunInSeparateProcess]
     public function testIsAnnotatedWithRunInSeparateProcess(int $value): void
     {

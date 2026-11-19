@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 
 final class GarbageCollectionTest extends TestCase
 {
-    #[Property(examples: 2)]
+    #[Property(2)]
     public function testProperty(int $value): void
     {
         $this->assertTrue(is_int($value));

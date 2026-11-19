@@ -40,7 +40,7 @@ final class ValidStateMachine
         return Generators::elements('a', 'b');
     }
 
-    #[InitializeStateMachine(produces: 'accounts')]
+    #[InitializeStateMachine('accounts')]
     public function openInitialAccount(): string
     {
         $this->balances['initial'] = 0;
@@ -53,7 +53,7 @@ final class ValidStateMachine
     {
     }
 
-    #[StateMachineRule(produces: 'accounts')]
+    #[StateMachineRule(null, 'accounts')]
     public function open(#[ForAll('names')] string $name): string
     {
         $this->balances[$name] = 0;
@@ -67,8 +67,8 @@ final class ValidStateMachine
         $this->balances[$account] += $amount;
     }
 
-    #[StateMachineRule(precondition: 'hasAccounts')]
-    public function close(#[FromPool('accounts', consume: true)] string $account): void
+    #[StateMachineRule('hasAccounts')]
+    public function close(#[FromPool('accounts', true)] string $account): void
     {
         unset($this->balances[$account]);
     }
@@ -83,7 +83,7 @@ final class ValidStateMachine
     {
     }
 
-    #[StateMachineInvariant(atEnd: true)]
+    #[StateMachineInvariant(true)]
     public function balancesAddUp(): void
     {
     }

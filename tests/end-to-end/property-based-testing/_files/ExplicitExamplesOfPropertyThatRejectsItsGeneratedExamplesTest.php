@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
 
 final class ExplicitExamplesOfPropertyThatRejectsItsGeneratedExamplesTest extends TestCase
 {
-    #[Property(examples: 10)]
+    #[Property(10)]
     #[TestWith(['explicit example 1'])]
     #[TestWith(['explicit example 2'])]
     public function testAcceptsOnlyItsExplicitExamples(string $value): void

@@ -15,13 +15,13 @@ use PHPUnit\Framework\TestCase;
 
 final class GarbageCollectionWhileExamplesAreRunTest extends TestCase
 {
-    #[Property(examples: 4)]
+    #[Property(4)]
     public function testPropertyThatHolds(int $value): void
     {
         $this->assertTrue(is_int($value));
     }
 
-    #[Property(examples: 4)]
+    #[Property(4)]
     public function testPropertyThatIsFalsified(bool $value): void
     {
         $this->assertFalse($value);

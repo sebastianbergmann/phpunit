@@ -48,19 +48,19 @@ final class IssuesTriggeredWhileArgumentsAreGeneratedTest extends TestCase
         );
     }
 
-    #[Property(examples: 5)]
+    #[Property(5)]
     public function testConstructorOfParameterTriggersAWarning(ClassWhoseConstructorTriggersAWarning $object): void
     {
         $this->assertTrue(is_int($object->value()));
     }
 
-    #[Property(examples: 5)]
+    #[Property(5)]
     public function testClosurePassedToMapTriggersADeprecation(#[ForAll('integersMappedByAClosureThatTriggersADeprecation')] int $value): void
     {
         $this->assertTrue(is_int($value));
     }
 
-    #[Property(examples: 5)]
+    #[Property(5)]
     public function testGeneratorMethodTriggersANotice(#[ForAll('integers')] int $value): void
     {
         $this->assertTrue(is_int($value));

@@ -25,7 +25,7 @@ final class IntegerRangeWithOneNegativeValueTest extends TestCase
     /**
      * @param int<-1, max> $limit
      */
-    #[Property(examples: 1000)]
+    #[Property(1000)]
     public function testLimit(int $limit, string $name): void
     {
         self::$limits[] = $limit;

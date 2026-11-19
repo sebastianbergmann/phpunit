@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 
 final class LargestNumberOfExamplesTest extends TestCase
 {
-    #[Property(examples: PHP_INT_MAX)]
+    #[Property(PHP_INT_MAX)]
     public function testIsFalsifiedByTheFirstExample(int $value): void
     {
         $this->fail('falsified');

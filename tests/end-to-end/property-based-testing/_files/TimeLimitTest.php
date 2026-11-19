@@ -20,7 +20,7 @@ final class TimeLimitTest extends TestCase
     /**
      * @param int<0, 100> $value
      */
-    #[Property(examples: 50)]
+    #[Property(50)]
     public function testDoesNotTerminateForValuesGreaterThanFifty(int $value): void
     {
         while ($value > 50) {

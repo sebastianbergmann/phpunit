@@ -27,7 +27,7 @@ spl_autoload_register(
 
 final class IssueTriggeredWhileGeneratorIsDerivedTest extends TestCase
 {
-    #[Property(examples: 3)]
+    #[Property(3)]
     public function testParameterIsOfClassThatTriggersADeprecationWhenItIsLoaded(ClassThatTriggersADeprecationWhenItIsLoaded $object): void
     {
         $this->assertTrue(is_int($object->value()));

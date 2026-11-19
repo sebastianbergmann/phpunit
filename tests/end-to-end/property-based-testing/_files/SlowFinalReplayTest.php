@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 
 final class SlowFinalReplayTest extends TestCase
 {
-    #[Property(examples: 10)]
+    #[Property(10)]
     public function testTakesLongerToReplayTheCounterexampleThanTheTimeLimitOfTheTestRun(int $value): void
     {
         if ($value < 1000) {

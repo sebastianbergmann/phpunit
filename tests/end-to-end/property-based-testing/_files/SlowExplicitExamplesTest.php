@@ -17,7 +17,7 @@ use PHPUnit\Runner\TimeLimit\TimeLimitExceededException;
 
 final class SlowExplicitExamplesTest extends TestCase
 {
-    #[Property(examples: 10)]
+    #[Property(10)]
     #[TestWith([1])]
     #[TestWith([2])]
     public function testTakesLongerThanTheTimeLimitOfTheTestRun(int $value): void

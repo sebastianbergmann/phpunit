@@ -16,7 +16,7 @@ final class PartiallyReproducedFailureTest extends TestCase
 {
     private static int $numberOfCalls = 0;
 
-    #[Property(examples: 10)]
+    #[Property(10)]
     public function testFailsForLargeValuesInEverySecondCall(int $value): void
     {
         self::$numberOfCalls++;

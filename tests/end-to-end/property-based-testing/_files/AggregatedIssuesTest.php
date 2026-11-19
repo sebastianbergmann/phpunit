@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
 
 final class AggregatedIssuesTest extends TestCase
 {
-    #[Property(examples: 10)]
+    #[Property(10)]
     public function testPerformsNoAssertions(int $value): void
     {
     }
@@ -24,7 +24,7 @@ final class AggregatedIssuesTest extends TestCase
     /**
      * @param int<0, 1> $value
      */
-    #[Property(examples: 10)]
+    #[Property(10)]
     public function testPerformsAssertionsForSomeExamplesOnly(int $value): void
     {
         if ($value === 1) {
@@ -32,7 +32,7 @@ final class AggregatedIssuesTest extends TestCase
         }
     }
 
-    #[Property(examples: 10)]
+    #[Property(10)]
     public function testTriggersADeprecationForEveryExample(int $value): void
     {
         trigger_error('deprecation', E_USER_DEPRECATED);

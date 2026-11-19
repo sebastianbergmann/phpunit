@@ -68,7 +68,7 @@ use Throwable;
  * applied.
  *
  * The invariants are checked after the initializations and after every step,
- * except for those with #[StateMachineInvariant(atEnd: true)], which are
+ * except for those with #[StateMachineInvariant(true)], which are
  * checked after the initializations and after the last step.
  *
  * With an exporter, the steps are recorded as PHP code that calls the methods

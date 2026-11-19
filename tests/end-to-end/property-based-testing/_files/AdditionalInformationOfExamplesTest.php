@@ -31,7 +31,7 @@ final class AdditionalInformationOfExamplesTest extends TestCase
     /**
      * @param int<0, 1000> $value
      */
-    #[Property(examples: 3)]
+    #[Property(3)]
     #[TestWith([1])]
     #[TestWith([-1])]
     public function testValueIsNotNegative(int $value): void
@@ -44,7 +44,7 @@ final class AdditionalInformationOfExamplesTest extends TestCase
     /**
      * @param int<0, 1000> $value
      */
-    #[Property(examples: 3)]
+    #[Property(3)]
     public function testHolds(int $value): void
     {
         $this->provideAdditionalInformation(sprintf('value %d', $value));
