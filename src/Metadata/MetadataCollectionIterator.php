@@ -29,6 +29,9 @@ final class MetadataCollectionIterator implements Iterator
      */
     private int $position = 0;
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public function __construct(MetadataCollection $metadata)
     {
         $this->metadata = $metadata->asArray();
