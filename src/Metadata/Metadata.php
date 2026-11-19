@@ -187,6 +187,8 @@ abstract readonly class Metadata
     /**
      * @param non-empty-string $path
      * @param non-empty-string $declaringFile
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function usesFixtureOnClass(string $path, string $declaringFile): UsesFixture
     {
@@ -196,6 +198,8 @@ abstract readonly class Metadata
     /**
      * @param non-empty-string $path
      * @param non-empty-string $declaringFile
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function usesFixtureOnMethod(string $path, string $declaringFile): UsesFixture
     {
@@ -286,11 +290,17 @@ abstract readonly class Metadata
         return new DisableReturnValueGenerationForTestDoubles(Level::CLASS_LEVEL);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function doNotRunInParallelOnClass(): DoNotRunInParallel
     {
         return new DoNotRunInParallel(Level::CLASS_LEVEL);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function doNotRunInParallelOnMethod(): DoNotRunInParallel
     {
         return new DoNotRunInParallel(Level::METHOD_LEVEL);
@@ -358,6 +368,8 @@ abstract readonly class Metadata
      * @param non-empty-string                                  $parameterName
      * @param class-string                                      $className
      * @param Closure(): ValueGenerator<mixed>|non-empty-string $generator
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function forAll(string $parameterName, string $className, Closure|string $generator): ForAll
     {
@@ -366,6 +378,8 @@ abstract readonly class Metadata
 
     /**
      * @param class-string $className
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function generatorFor(string $className): GeneratorFor
     {
@@ -374,6 +388,8 @@ abstract readonly class Metadata
 
     /**
      * @param class-string $className
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function useGeneratorsOnClass(string $className): UseGenerators
     {
@@ -382,6 +398,8 @@ abstract readonly class Metadata
 
     /**
      * @param class-string $className
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function useGeneratorsOnMethod(string $className): UseGenerators
     {
@@ -390,22 +408,33 @@ abstract readonly class Metadata
 
     /**
      * @param non-empty-string $label
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function requireClassification(string $label, float $minimumPercentage): RequireClassification
     {
         return new RequireClassification(Level::METHOD_LEVEL, $label, $minimumPercentage);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function stateMachineRule(?string $precondition, ?string $produces): StateMachineRule
     {
         return new StateMachineRule(Level::METHOD_LEVEL, $precondition, $produces);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function initializeStateMachine(?string $produces): InitializeStateMachine
     {
         return new InitializeStateMachine(Level::METHOD_LEVEL, $produces);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function stateMachineInvariant(bool $atEnd): StateMachineInvariant
     {
         return new StateMachineInvariant(Level::METHOD_LEVEL, $atEnd);
@@ -413,6 +442,8 @@ abstract readonly class Metadata
 
     /**
      * @param non-empty-string $parameterName
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function fromPool(string $parameterName, string $pool, bool $consume): FromPool
     {
@@ -513,6 +544,8 @@ abstract readonly class Metadata
 
     /**
      * @param ?positive-int $examples
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function property(?int $examples): Property
     {
@@ -839,6 +872,8 @@ abstract readonly class Metadata
     /**
      * @param class-string     $className
      * @param non-empty-string $methodName
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function counterexampleFormatter(string $className, string $methodName): CounterexampleFormatter
     {
