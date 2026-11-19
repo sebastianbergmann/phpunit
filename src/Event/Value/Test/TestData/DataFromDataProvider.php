@@ -19,6 +19,9 @@ final readonly class DataFromDataProvider extends TestData
     private int|string $dataSetName;
     private string $dataAsStringForResultOutput;
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function from(int|string $dataSetName, string $data, string $dataAsStringForResultOutput): self
     {
         return new self($dataSetName, $data, $dataAsStringForResultOutput);

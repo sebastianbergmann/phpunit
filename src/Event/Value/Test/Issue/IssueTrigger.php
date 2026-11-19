@@ -21,6 +21,9 @@ final readonly class IssueTrigger
     private ?Code $callee;
     private ?Code $caller;
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function from(?Code $callee, ?Code $caller): self
     {
         return new self($callee, $caller);

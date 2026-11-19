@@ -18,6 +18,9 @@ final readonly class MemoryUsage
 {
     private int $bytes;
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function fromBytes(int $bytes): self
     {
         return new self($bytes);
