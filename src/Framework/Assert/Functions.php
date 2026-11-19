@@ -1926,6 +1926,8 @@ if (!function_exists('PHPUnit\Framework\assertFinite')) {
      *
      * @throws ExpectationFailedException
      *
+     * @phpstan-assert finite-float|int $actual
+     *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
      * @see Assert::assertFinite
