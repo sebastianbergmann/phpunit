@@ -29,6 +29,9 @@ final class FileCollectionIterator implements Iterator
      */
     private int $position = 0;
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public function __construct(FileCollection $files)
     {
         $this->files = $files->asArray();

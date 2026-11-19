@@ -20,6 +20,9 @@ final readonly class Variable
     private mixed $value;
     private bool $force;
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public function __construct(string $name, mixed $value, bool $force)
     {
         $this->name  = $name;

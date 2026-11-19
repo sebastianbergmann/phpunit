@@ -19,6 +19,9 @@ final readonly class Constant
     private string $name;
     private bool|string $value;
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public function __construct(string $name, bool|string $value)
     {
         $this->name  = $name;

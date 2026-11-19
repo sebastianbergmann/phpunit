@@ -35,6 +35,8 @@ final readonly class TestDirectory
     /**
      * @param non-empty-string       $path
      * @param list<non-empty-string> $groups
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public function __construct(string $path, string $prefix, string $suffix, string $phpVersion, VersionComparisonOperator $phpVersionOperator, array $groups)
     {
