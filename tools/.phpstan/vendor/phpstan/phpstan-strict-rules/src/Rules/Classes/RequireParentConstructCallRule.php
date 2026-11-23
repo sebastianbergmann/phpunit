@@ -58,7 +58,7 @@ class RequireParentConstructCallRule implements Rule
 			return [
 				RuleErrorBuilder::message(sprintf(
 					'%s::__construct() does not call parent constructor from %s.',
-					$classReflection->getName(),
+					$scope->getClassReflection()->getDisplayName(),
 					$parentClass->getName(),
 				))->identifier('constructor.missingParentCall')->build(),
 			];
