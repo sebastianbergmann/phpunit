@@ -38,7 +38,7 @@ class RestrictedDeprecatedPropertyUsageExtension implements RestrictedPropertyUs
 						$propertyReflection->isStatic() ? 'static ' : '',
 						$propertyReflection->getName(),
 						strtolower($propertyReflection->getDeclaringClass()->getClassTypeDescription()),
-						$propertyReflection->getDeclaringClass()->getName(),
+						$propertyReflection->getDeclaringClass()->getDisplayName(),
 					),
 					sprintf(
 						'%s.deprecated%s',
@@ -54,7 +54,7 @@ class RestrictedDeprecatedPropertyUsageExtension implements RestrictedPropertyUs
 					$propertyReflection->isStatic() ? 'static ' : '',
 					$propertyReflection->getName(),
 					strtolower($propertyReflection->getDeclaringClass()->getClassTypeDescription()),
-					$propertyReflection->getDeclaringClass()->getName(),
+					$propertyReflection->getDeclaringClass()->getDisplayName(),
 					$classDescription,
 				),
 				sprintf(
@@ -77,7 +77,7 @@ class RestrictedDeprecatedPropertyUsageExtension implements RestrictedPropertyUs
 					$propertyReflection->isStatic() ? 'static ' : '',
 					$propertyReflection->getName(),
 					strtolower($propertyReflection->getDeclaringClass()->getClassTypeDescription()),
-					$propertyReflection->getDeclaringClass()->getName(),
+					$propertyReflection->getDeclaringClass()->getDisplayName(),
 				),
 				sprintf('%s.deprecated', $propertyReflection->isStatic() ? 'staticProperty' : 'property'),
 			);
@@ -89,7 +89,7 @@ class RestrictedDeprecatedPropertyUsageExtension implements RestrictedPropertyUs
 				$propertyReflection->isStatic() ? 'static ' : '',
 				$propertyReflection->getName(),
 				strtolower($propertyReflection->getDeclaringClass()->getClassTypeDescription()),
-				$propertyReflection->getDeclaringClass()->getName(),
+				$propertyReflection->getDeclaringClass()->getDisplayName(),
 				$description,
 			),
 			sprintf('%s.deprecated', $propertyReflection->isStatic() ? 'staticProperty' : 'property'),

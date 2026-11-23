@@ -106,7 +106,7 @@ class RestrictedDeprecatedClassNameUsageExtension implements RestrictedClassName
 
 		if ($location->value === ClassNameUsageLocation::CLASS_CONSTANT_ACCESS) {
 			$constant = $location->getClassConstant();
-			if ($constant !== null) {
+			if ($constant !== null && $constant->getName() !== 'class') {
 				if ($constant->isDeprecated()->yes() || $constant->getDeclaringClass()->isDeprecated()) {
 					return null;
 				}
