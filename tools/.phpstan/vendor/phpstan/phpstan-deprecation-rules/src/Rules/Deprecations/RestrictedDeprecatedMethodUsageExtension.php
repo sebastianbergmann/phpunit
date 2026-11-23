@@ -37,7 +37,7 @@ class RestrictedDeprecatedMethodUsageExtension implements RestrictedMethodUsageE
 						'Call to method %s() of deprecated %s %s.',
 						$methodReflection->getName(),
 						strtolower($methodReflection->getDeclaringClass()->getClassTypeDescription()),
-						$methodReflection->getDeclaringClass()->getName(),
+						$methodReflection->getDeclaringClass()->getDisplayName(),
 					),
 					sprintf(
 						'%s.deprecated%s',
@@ -52,7 +52,7 @@ class RestrictedDeprecatedMethodUsageExtension implements RestrictedMethodUsageE
 					"Call to method %s() of deprecated %s %s:\n%s",
 					$methodReflection->getName(),
 					strtolower($methodReflection->getDeclaringClass()->getClassTypeDescription()),
-					$methodReflection->getDeclaringClass()->getName(),
+					$methodReflection->getDeclaringClass()->getDisplayName(),
 					$classDescription,
 				),
 				sprintf(
@@ -73,7 +73,7 @@ class RestrictedDeprecatedMethodUsageExtension implements RestrictedMethodUsageE
 				return RestrictedUsage::create(
 					sprintf(
 						'Casting class %s to string is deprecated.',
-						$methodReflection->getDeclaringClass()->getName(),
+						$methodReflection->getDeclaringClass()->getDisplayName(),
 					),
 					'class.toStringDeprecated',
 				);
@@ -82,7 +82,7 @@ class RestrictedDeprecatedMethodUsageExtension implements RestrictedMethodUsageE
 			return RestrictedUsage::create(
 				sprintf(
 					"Casting class %s to string is deprecated.:\n%s",
-					$methodReflection->getDeclaringClass()->getName(),
+					$methodReflection->getDeclaringClass()->getDisplayName(),
 					$description,
 				),
 				'class.toStringDeprecated',
@@ -95,7 +95,7 @@ class RestrictedDeprecatedMethodUsageExtension implements RestrictedMethodUsageE
 					'Call to deprecated method %s() of %s %s.',
 					$methodReflection->getName(),
 					strtolower($methodReflection->getDeclaringClass()->getClassTypeDescription()),
-					$methodReflection->getDeclaringClass()->getName(),
+					$methodReflection->getDeclaringClass()->getDisplayName(),
 				),
 				sprintf('%s.deprecated', $methodReflection->isStatic() ? 'staticMethod' : 'method'),
 			);
@@ -106,7 +106,7 @@ class RestrictedDeprecatedMethodUsageExtension implements RestrictedMethodUsageE
 				"Call to deprecated method %s() of %s %s:\n%s",
 				$methodReflection->getName(),
 				strtolower($methodReflection->getDeclaringClass()->getClassTypeDescription()),
-				$methodReflection->getDeclaringClass()->getName(),
+				$methodReflection->getDeclaringClass()->getDisplayName(),
 				$description,
 			),
 			sprintf('%s.deprecated', $methodReflection->isStatic() ? 'staticMethod' : 'method'),
