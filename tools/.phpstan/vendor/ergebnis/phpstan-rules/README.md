@@ -388,6 +388,8 @@ This project currently supports the following PHP versions:
 - [PHP 8.5](https://www.php.net/releases/#8.5.0)
 - [PHP 8.6](https://www.php.net/releases/#8.6.0)
 
+The maintainers of this project _may_ allow installation on a PHP version as soon as they become aware of it, but do not support it before its initial release.
+
 The maintainers of this project add support for a PHP version following its initial release and _may_ drop support for a PHP version when it has reached its [end of life](https://www.php.net/supported-versions.php).
 
 ## Security Policy
