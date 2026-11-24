@@ -12,15 +12,16 @@ on:
 
 name: "API Surface Check"
 
-permissions: {}
+permissions:
+  contents: read
 
 concurrency:
   group: api-surface-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 
 jobs:
-  signal:
-    name: Signal
+  analyze:
+    name: Analyze API Surface
     runs-on: ubuntu-latest
     steps:
-      - run: "true"
+      - uses: composer/api-surface-check@09e3754365a4626daac35eef61d474a389961084 # 2.0.0
