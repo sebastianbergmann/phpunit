@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# Prepares an Amp orb: installs PHP, Composer, project dependencies and the coding standard.
+set -euo pipefail
+cd "$(dirname "${BASH_SOURCE[0]}")/.."
+
+step() {
+	echo "==> $(basename "$PWD"): $*"
+	SECONDS=0
+}
+
+step "PHP"
+packages=(php8.2-cli php8.2-curl php8.2-intl php8.2-mbstring php8.2-xml php8.2-zip unzip)
+missing=()
+for package in "${packages[@]}"; do
+	dpkg-query -W -f='${Status}' "$package" 2>/dev/null | grep -q 'install ok installed' || missing+=("$package")
+done
+if ((${#missing[@]})); then
+	sudo apt-get update -qq
+	sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends "${missing[@]}"
+fi
+echo "    $(php -r 'echo PHP_VERSION;') (${SECONDS}s)"
+
+step "Composer"
+if ! command -v composer >/dev/null 2>&1; then
+	tmp="$(mktemp -d)"
+	curl -fsSL -o "$tmp/composer.phar" https://getcomposer.org/download/latest-stable/composer.phar
+	curl -fsSL -o "$tmp/composer.phar.sha256sum" https://getcomposer.org/download/latest-stable/composer.phar.sha256sum
+	(cd "$tmp" && sed 's/ .*/  composer.phar/' composer.phar.sha256sum | sha256sum -c --quiet)
+	sudo install -m 0755 "$tmp/composer.phar" /usr/local/bin/composer
+	rm -rf "$tmp"
+fi
+echo "    $(composer --version --no-ansi 2>/dev/null | head -n1) (${SECONDS}s)"
+
+step "composer update"
+# There is no committed lockfile, so resolve like CI does.
+composer update --no-interaction --no-progress --quiet
+echo "    (${SECONDS}s)"
+
+step "make cs-install"
+make -s cs-install
+echo "    (${SECONDS}s)"
