@@ -13,11 +13,12 @@ use Generator;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\TestRunner\ChildProcessReason;
+use PHPUnit\Framework\Attributes\BackupGlobals;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
-use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\UsesClass;
+use PHPUnit\Framework\Attributes\WithEnvironmentVariable;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestRunner\ChildProcessResultProcessor;
 use PHPUnit\Runner\CodeCoverage;
@@ -301,44 +302,6 @@ EOT,
         $this->assertSame("echoed\n", $running->wait()->stdout());
     }
 
-    #[TestDox('Server variables that cannot be represented as environment variables are not forwarded')]
-    public function testDoesNotForwardServerVariablesThatAreNotEnvironmentVariables(): void
-    {
-        $server = $_SERVER;
-
-        $_SERVER[0]                     = 'value for non-string key';
-        $_SERVER['__test_array_value']  = ['value'];
-        $_SERVER['__test_string_value'] = 'value';
-
-        try {
-            $jobRunner = new JobRunner(
-                new ChildProcessResultProcessor(
-                    new Facade,
-                    $this->createStub(Emitter::class),
-                    new PassedTests,
-                    new CodeCoverage($this->createStub(Emitter::class)),
-                ),
-                $this->createStub(Emitter::class),
-            );
-
-            $result = $jobRunner->run(
-                new Job(
-                    <<<'EOT'
-<?php declare(strict_types=1);
-var_dump(getenv('__test_array_value'), getenv('__test_string_value'));
-
-EOT,
-                    ChildProcessReason::TestRequiringProcessIsolation,
-                    environmentVariables: ['test' => 'test'],
-                ),
-            );
-
-            $this->assertSame("bool(false)\nstring(5) \"value\"\n", $result->stdout());
-        } finally {
-            $_SERVER = $server;
-        }
-    }
-
     public function testEmitsEventWhenChildProcessIsStarted(): void
     {
         $emitter = $this->createMock(Emitter::class);
@@ -371,6 +334,67 @@ EOT,
         );
 
         $this->assertSame('started', $result->stdout());
+    }
+
+    #[WithEnvironmentVariable('PHPUNIT_JOB_RUNNER_TEST', 'inherited')]
+    public function testJobWithEnvironmentVariablesInheritsEnvironmentOfParentProcess(): void
+    {
+        $jobRunner = new JobRunner(
+            new ChildProcessResultProcessor(
+                new Facade,
+                $this->createStub(Emitter::class),
+                new PassedTests,
+                new CodeCoverage($this->createStub(Emitter::class)),
+            ),
+            $this->createStub(Emitter::class),
+        );
+
+        $job = new Job(
+            <<<'EOT'
+<?php declare(strict_types=1);
+print getenv('PHPUNIT_JOB_RUNNER_TEST') . ' ' . getenv('test');
+
+EOT,
+            ChildProcessReason::TestRequiringProcessIsolation,
+            environmentVariables: ['test' => 'configured'],
+        );
+
+        $result = $jobRunner->run($job);
+
+        $this->assertSame('inherited configured', $result->stdout());
+        $this->assertSame('', $result->stderr());
+    }
+
+    #[BackupGlobals(true)]
+    public function testJobWithEnvironmentVariablesDoesNotInheritServerVariablesOfParentProcess(): void
+    {
+        $_SERVER['PHPUNIT_JOB_RUNNER_TEST'] = 'not-an-environment-variable';
+
+        $jobRunner = new JobRunner(
+            new ChildProcessResultProcessor(
+                new Facade,
+                $this->createStub(Emitter::class),
+                new PassedTests,
+                new CodeCoverage($this->createStub(Emitter::class)),
+            ),
+            $this->createStub(Emitter::class),
+        );
+
+        $job = new Job(
+            <<<'EOT'
+<?php declare(strict_types=1);
+var_dump(getenv('PHPUNIT_JOB_RUNNER_TEST'));
+print getenv('test');
+
+EOT,
+            ChildProcessReason::TestRequiringProcessIsolation,
+            environmentVariables: ['test' => 'configured'],
+        );
+
+        $result = $jobRunner->run($job);
+
+        $this->assertSame("bool(false)\nconfigured", $result->stdout());
+        $this->assertSame('', $result->stderr());
     }
 
     public function testRejectsPhpSettingValueContainingLineBreak(): void
