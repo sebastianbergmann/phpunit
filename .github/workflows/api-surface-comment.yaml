@@ -24,4 +24,4 @@ jobs:
     permissions:
       pull-requests: write # required to post the API surface diff comment on the PR
     steps:
-      - uses: composer/api-surface-check@bba9f1cb940df6e02271b1b6158679ac0b3f39d3 # 1.0.1
+      - uses: composer/api-surface-check@09e3754365a4626daac35eef61d474a389961084 # 2.0.0
