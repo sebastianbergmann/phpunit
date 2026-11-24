@@ -2,30 +2,30 @@
     "packages": [
         {
             "name": "ergebnis/phpstan-rules",
-            "version": "2.18.0",
-            "version_normalized": "2.18.0.0",
+            "version": "2.19.0",
+            "version_normalized": "2.19.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ergebnis/phpstan-rules.git",
-                "reference": "f8014018e83ee4afbe6a72a529622d1524749c7f"
+                "reference": "538387f06e6a444669e242df45b2d68b3dc0682a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ergebnis/phpstan-rules/zipball/f8014018e83ee4afbe6a72a529622d1524749c7f",
-                "reference": "f8014018e83ee4afbe6a72a529622d1524749c7f",
+                "url": "https://api.github.com/repos/ergebnis/phpstan-rules/zipball/538387f06e6a444669e242df45b2d68b3dc0682a",
+                "reference": "538387f06e6a444669e242df45b2d68b3dc0682a",
                 "shasum": ""
             },
             "require": {
                 "composer-runtime-api": "^2.0.0",
                 "ergebnis/version": "^1.4.0",
                 "ext-mbstring": "*",
-                "php": "~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0 || ~8.6.0",
+                "php": "~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0 || ~8.6.0 || ~8.7.0",
                 "phpstan/phpstan": "^2.1.35"
             },
             "require-dev": {
                 "codeception/codeception": "^4.0.0 || ^5.0.0",
                 "doctrine/orm": "^2.20.0 || ^3.3.0",
-                "ergebnis/composer-normalize": "^2.56.1",
+                "ergebnis/composer-normalize": "^2.57.0",
                 "ergebnis/license": "^2.9.0",
                 "ergebnis/php-cs-fixer-config": "^6.64.3",
                 "ergebnis/phpunit-slow-test-detector": "^2.27.0",
@@ -41,8 +41,8 @@
                 "symfony/finder": "^5.4.45",
                 "symfony/process": "^5.4.51"
             },
-            "time": "2026-11-19T13:18:51+00:00",
-            "published-time": "2026-11-19T13:18:57+00:00",
+            "time": "2026-11-24T15:49:29+00:00",
+            "published-time": "2026-11-24T15:49:35+00:00",
             "type": "phpstan-extension",
             "extra": {
                 "phpstan": {
@@ -51,7 +51,7 @@
                     ]
                 },
                 "branch-alias": {
-                    "dev-main": "2.18-dev"
+                    "dev-main": "2.19-dev"
                 }
             },
             "installation-source": "dist",
