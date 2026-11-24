@@ -11,7 +11,6 @@ use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
-use PHPStan\Type\Constant\ConstantBooleanType;
 use function array_key_exists;
 use function sprintf;
 use function strtolower;
@@ -79,8 +78,7 @@ class StrictFunctionCallsRule implements Rule
 		}
 
 		$argumentType = $scope->getType($node->getArgs()[$argumentPosition]->value);
-		$trueType = new ConstantBooleanType(true);
-		if (!$trueType->isSuperTypeOf($argumentType)->yes()) {
+		if (!$argumentType->isTrue()->yes()) {
 			return [
 				RuleErrorBuilder::message(sprintf(
 					'Call to function %s() requires parameter #%d to be true.',
