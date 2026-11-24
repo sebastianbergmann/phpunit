@@ -22,8 +22,8 @@ use function file_get_contents;
 use function file_put_contents;
 use function function_exists;
 use function fwrite;
+use function getenv;
 use function ini_get_all;
-use function is_array;
 use function is_file;
 use function is_resource;
 use function proc_close;
@@ -132,20 +132,7 @@ final readonly class JobRunner
         $environmentVariables = null;
 
         if ($job->hasEnvironmentVariables()) {
-            /** @phpstan-ignore nullCoalesce.variable */
-            $environmentVariables = $_SERVER ?? [];
-
-            unset($environmentVariables['argv'], $environmentVariables['argc']);
-
-            $environmentVariables = array_merge($environmentVariables, $job->environmentVariables());
-
-            foreach ($environmentVariables as $key => $value) {
-                if (is_array($value)) {
-                    unset($environmentVariables[$key]);
-                }
-            }
-
-            unset($key, $value);
+            $environmentVariables = array_merge(getenv(), $job->environmentVariables());
         }
 
         $pipeSpec = [

@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 ### Fixed
 
 * `assertFinite()` does not tell PHPStan that the value is a finite `float` or an `int`, so the type of the value is not narrowed when test code is analysed with PHPStan (this requires PHPStan 2.3.6 or newer)
+* The process that runs a PHPT test with an `--ENV--` section is started with an environment that is built from `$_SERVER` instead of the environment of the test runner's process: environment variables that were set using `putenv()`, for instance those configured using `<env>` in the XML configuration file, are missing, and elements of `$_SERVER` that are not environment variables, for instance those configured using `<server>` in the XML configuration file, are exported as environment variables
 
 ## [12.5.45] - 2026-11-19
 
