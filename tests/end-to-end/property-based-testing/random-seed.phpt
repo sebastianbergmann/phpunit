@@ -6,7 +6,7 @@ $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--do-not-record-test-run-history';
 $_SERVER['argv'][] = __DIR__ . '/_files/PassingPropertyTest.php';
 
-require __DIR__ . '/../../../bootstrap.php';
+require __DIR__ . '/../../bootstrap.php';
 
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--
