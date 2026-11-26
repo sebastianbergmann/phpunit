@@ -5,7 +5,7 @@ A test that is marked incomplete before it started is counted as a test that ran
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--no-progress';
-$_SERVER['argv'][] = __DIR__ . '/_files/IncompleteInSetUpTest.php';
+$_SERVER['argv'][] = __DIR__ . '/../_files/IncompleteInSetUpTest.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);

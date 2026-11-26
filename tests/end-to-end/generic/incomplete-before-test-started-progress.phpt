@@ -5,7 +5,7 @@ The progress of a test that is marked incomplete before it started is printed
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--colors=never';
-$_SERVER['argv'][] = __DIR__ . '/_files/IncompleteInSetUpTest.php';
+$_SERVER['argv'][] = __DIR__ . '/../_files/IncompleteInSetUpTest.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);

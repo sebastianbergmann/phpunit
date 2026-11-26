@@ -7,7 +7,7 @@ https://github.com/sebastianbergmann/phpunit/issues/6102
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--process-isolation';
-$_SERVER['argv'][] = __DIR__ . '/../../end-to-end/generic/_files/TestForDeprecatedFeatureTest.php';
+$_SERVER['argv'][] = __DIR__ . '/../_files/TestForDeprecatedFeatureTest.php';
 
 require __DIR__ . '/../../bootstrap.php';
 
