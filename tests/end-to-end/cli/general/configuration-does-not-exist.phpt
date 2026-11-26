@@ -6,7 +6,7 @@ $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = 'does-not-exist.xml';
 
-require_once __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../../../bootstrap.php';
 
 (new PHPUnit\TextUI\Application)->run($_SERVER['argv']);
 --EXPECTF--

@@ -43,7 +43,6 @@
             <directory suffix=".phpt" groups="expectations">tests/end-to-end/expectations</directory>
             <directory suffix=".phpt" groups="extensions">tests/end-to-end/extension-cli</directory>
             <directory suffix=".phpt" groups="extensions">tests/end-to-end/extension-xml</directory>
-            <directory suffix=".phpt" groups="generic">tests/end-to-end/generic</directory>
             <directory suffix=".phpt" groups="test-selection,test-selection/group">tests/end-to-end/groups-from-configuration</directory>
             <directory suffix=".phpt" groups="logging,logging/junit">tests/end-to-end/logging/junit</directory>
             <directory suffix=".phpt" groups="logging,logging/open-test-reporting">tests/end-to-end/logging/open-test-reporting</directory>
