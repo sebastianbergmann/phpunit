@@ -35,6 +35,7 @@
             <directory suffix=".phpt" groups="cli">tests/end-to-end/cli/shutdown-handler</directory>
             <directory suffix=".phpt" groups="cli,stop-on">tests/end-to-end/cli/stop-on</directory>
             <directory suffix=".phpt" groups="cli,test-selection,test-selection/test-suite">tests/end-to-end/cli/test-suite</directory>
+            <directory suffix=".phpt" groups="code-coverage">tests/end-to-end/code-coverage</directory>
             <directory suffix=".phpt" groups="data-provider">tests/end-to-end/data-provider</directory>
             <directory suffix=".phpt" groups="error-handler">tests/end-to-end/error-handler</directory>
             <directory suffix=".phpt" groups="event-system">tests/end-to-end/event</directory>
