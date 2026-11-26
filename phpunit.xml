@@ -15,27 +15,44 @@
         </testsuite>
 
         <testsuite name="end-to-end">
-            <directory suffix=".phpt">tests/end-to-end/baseline</directory>
-            <directory suffix=".phpt">tests/end-to-end/check-php-configuration</directory>
-            <directory suffix=".phpt">tests/end-to-end/cli</directory>
-            <directory suffix=".phpt">tests/end-to-end/data-provider</directory>
-            <directory suffix=".phpt">tests/end-to-end/error-handler</directory>
-            <directory suffix=".phpt">tests/end-to-end/event</directory>
-            <directory suffix=".phpt">tests/end-to-end/execution-order</directory>
-            <directory suffix=".phpt">tests/end-to-end/extension-cli</directory>
-            <directory suffix=".phpt">tests/end-to-end/extension-xml</directory>
-            <directory suffix=".phpt">tests/end-to-end/generic</directory>
-            <directory suffix=".phpt">tests/end-to-end/groups-from-configuration</directory>
-            <directory suffix=".phpt">tests/end-to-end/logging/junit</directory>
-            <directory suffix=".phpt">tests/end-to-end/logging/open-test-reporting</directory>
-            <directory suffix=".phpt">tests/end-to-end/logging/teamcity</directory>
-            <directory suffix=".phpt">tests/end-to-end/logging/testdox</directory>
-            <directory suffix=".phpt">tests/end-to-end/metadata</directory>
-            <directory suffix=".phpt">tests/end-to-end/migration</directory>
-            <directory suffix=".phpt">tests/end-to-end/mock-objects</directory>
-            <directory suffix=".phpt">tests/end-to-end/phpt</directory>
-            <directory suffix=".phpt">tests/end-to-end/regression</directory>
-            <directory suffix=".phpt">tests/end-to-end/testdox</directory>
+            <directory suffix=".phpt" groups="baseline">tests/end-to-end/baseline</directory>
+            <directory suffix=".phpt" groups="cli">tests/end-to-end/check-php-configuration</directory>
+            <directory suffix=".phpt" groups="cli">tests/end-to-end/cli/columns</directory>
+            <directory suffix=".phpt" groups="cli,test-selection">tests/end-to-end/cli/configuration-file-based-test-selection</directory>
+            <directory suffix=".phpt" groups="cli,code-coverage">tests/end-to-end/cli/coverage</directory>
+            <directory suffix=".phpt" groups="cli,fail-on">tests/end-to-end/cli/do-not-fail-on</directory>
+            <directory suffix=".phpt" groups="cli,test-selection,test-selection/filter">tests/end-to-end/cli/exclude-filter</directory>
+            <directory suffix=".phpt" groups="cli,fail-on">tests/end-to-end/cli/fail-on</directory>
+            <directory suffix=".phpt" groups="cli,test-selection,test-selection/filter">tests/end-to-end/cli/filter</directory>
+            <directory suffix=".phpt" groups="cli,error-handler">tests/end-to-end/cli/filter-error-handler</directory>
+            <directory suffix=".phpt" groups="cli">tests/end-to-end/cli/general</directory>
+            <directory suffix=".phpt" groups="cli,test-selection,test-selection/group">tests/end-to-end/cli/group</directory>
+            <directory suffix=".phpt" groups="cli">tests/end-to-end/cli/help</directory>
+            <directory suffix=".phpt" groups="cli,listing">tests/end-to-end/cli/list-suites</directory>
+            <directory suffix=".phpt" groups="cli,listing">tests/end-to-end/cli/list-test-files</directory>
+            <directory suffix=".phpt" groups="cli,listing">tests/end-to-end/cli/listing-tests-and-groups</directory>
+            <directory suffix=".phpt" groups="cli,event-system">tests/end-to-end/cli/log-events</directory>
+            <directory suffix=".phpt" groups="cli">tests/end-to-end/cli/shutdown-handler</directory>
+            <directory suffix=".phpt" groups="cli,stop-on">tests/end-to-end/cli/stop-on</directory>
+            <directory suffix=".phpt" groups="cli,test-selection,test-selection/test-suite">tests/end-to-end/cli/test-suite</directory>
+            <directory suffix=".phpt" groups="data-provider">tests/end-to-end/data-provider</directory>
+            <directory suffix=".phpt" groups="error-handler">tests/end-to-end/error-handler</directory>
+            <directory suffix=".phpt" groups="event-system">tests/end-to-end/event</directory>
+            <directory suffix=".phpt" groups="execution-order">tests/end-to-end/execution-order</directory>
+            <directory suffix=".phpt" groups="extensions">tests/end-to-end/extension-cli</directory>
+            <directory suffix=".phpt" groups="extensions">tests/end-to-end/extension-xml</directory>
+            <directory suffix=".phpt" groups="generic">tests/end-to-end/generic</directory>
+            <directory suffix=".phpt" groups="test-selection,test-selection/group">tests/end-to-end/groups-from-configuration</directory>
+            <directory suffix=".phpt" groups="logging,logging/junit">tests/end-to-end/logging/junit</directory>
+            <directory suffix=".phpt" groups="logging,logging/open-test-reporting">tests/end-to-end/logging/open-test-reporting</directory>
+            <directory suffix=".phpt" groups="logging,logging/teamcity">tests/end-to-end/logging/teamcity</directory>
+            <directory suffix=".phpt" groups="logging,logging/testdox,testdox">tests/end-to-end/logging/testdox</directory>
+            <directory suffix=".phpt" groups="metadata">tests/end-to-end/metadata</directory>
+            <directory suffix=".phpt" groups="configuration,configuration/migration">tests/end-to-end/migration</directory>
+            <directory suffix=".phpt" groups="test-doubles,test-doubles/generator">tests/end-to-end/mock-objects</directory>
+            <directory suffix=".phpt" groups="phpt">tests/end-to-end/phpt</directory>
+            <directory suffix=".phpt" groups="regression">tests/end-to-end/regression</directory>
+            <directory suffix=".phpt" groups="testdox">tests/end-to-end/testdox</directory>
 
             <exclude>tests/end-to-end/event/_files</exclude>
             <exclude>tests/end-to-end/execution-order/_files</exclude>
