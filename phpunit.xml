@@ -56,6 +56,7 @@
             <directory suffix=".phpt" groups="process-isolation">tests/end-to-end/process-isolation</directory>
             <directory suffix=".phpt" groups="regression">tests/end-to-end/regression</directory>
             <directory suffix=".phpt" groups="test-loading">tests/end-to-end/test-loading</directory>
+            <directory suffix=".phpt" groups="test-outcome">tests/end-to-end/test-outcome</directory>
             <directory suffix=".phpt" groups="testdox">tests/end-to-end/testdox</directory>
 
             <exclude>tests/end-to-end/event/_files</exclude>
