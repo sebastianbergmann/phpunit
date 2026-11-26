@@ -51,6 +51,7 @@
             <directory suffix=".phpt" groups="configuration,configuration/migration">tests/end-to-end/migration</directory>
             <directory suffix=".phpt" groups="test-doubles,test-doubles/generator">tests/end-to-end/mock-objects</directory>
             <directory suffix=".phpt" groups="phpt">tests/end-to-end/phpt</directory>
+            <directory suffix=".phpt" groups="process-isolation">tests/end-to-end/process-isolation</directory>
             <directory suffix=".phpt" groups="regression">tests/end-to-end/regression</directory>
             <directory suffix=".phpt" groups="testdox">tests/end-to-end/testdox</directory>
 

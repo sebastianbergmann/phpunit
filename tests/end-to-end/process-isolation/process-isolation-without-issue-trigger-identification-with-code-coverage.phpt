@@ -4,7 +4,7 @@ The source map is still shared with a child process when the identification of i
 <?php declare(strict_types=1);
 require __DIR__ . '/../../_files/skip-if-requires-code-coverage-driver.php';
 --INI--
-pcov.directory=tests/end-to-end/generic/_files/process-isolation-without-issue-trigger-identification-with-code-coverage
+pcov.directory=tests/end-to-end/process-isolation/_files/process-isolation-without-issue-trigger-identification-with-code-coverage
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
