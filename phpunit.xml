@@ -39,6 +39,7 @@
             <directory suffix=".phpt" groups="error-handler">tests/end-to-end/error-handler</directory>
             <directory suffix=".phpt" groups="event-system">tests/end-to-end/event</directory>
             <directory suffix=".phpt" groups="execution-order">tests/end-to-end/execution-order</directory>
+            <directory suffix=".phpt" groups="expectations">tests/end-to-end/expectations</directory>
             <directory suffix=".phpt" groups="extensions">tests/end-to-end/extension-cli</directory>
             <directory suffix=".phpt" groups="extensions">tests/end-to-end/extension-xml</directory>
             <directory suffix=".phpt" groups="generic">tests/end-to-end/generic</directory>
