@@ -404,10 +404,10 @@ jobs:
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
         with:
-          php-version: ${{ env.PHP_VERSION }}
+          php-version: 8.6
           coverage: xdebug
           extensions: none, ctype, curl, dom, gmp, json, libxml, mbstring, pdo, phar, tokenizer, xmlwriter, pcntl
-          ini-values: zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On, display_startup_errors=On
+          ini-values: zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On, display_startup_errors=On, opcache.enable_cli=1, opcache.jit=disable, opcache.optimization_level=0, opcache.file_update_protection=0
           tools: none
 
       - name: Get Composer cache directory
