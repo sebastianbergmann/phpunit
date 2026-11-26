@@ -251,12 +251,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "97a36f0825e482a2057736ae57b3b73732b0587d"
+                "reference": "f1e9ea0da7387034ff6000b865f39e796a1bdb25"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/97a36f0825e482a2057736ae57b3b73732b0587d",
-                "reference": "97a36f0825e482a2057736ae57b3b73732b0587d",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/f1e9ea0da7387034ff6000b865f39e796a1bdb25",
+                "reference": "f1e9ea0da7387034ff6000b865f39e796a1bdb25",
                 "shasum": ""
             },
             "require": {
@@ -274,7 +274,7 @@
                 "sebastian/version": "^7.1.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^13.4.6"
+                "phpunit/phpunit": "^13.4.8"
             },
             "suggest": {
                 "ext-pcov": "PHP extension that provides line coverage",
@@ -333,8 +333,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-11-09T10:35:35+00:00",
-            "published-time": "2026-11-09T10:40:40+00:00"
+            "time": "2026-11-26T07:11:19+00:00",
+            "published-time": "2026-11-26T07:11:26+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
